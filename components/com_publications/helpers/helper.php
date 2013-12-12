@@ -587,7 +587,7 @@ class PublicationHelper extends JObject
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$cc = new CitationsCitation( $database );
 	
@@ -628,7 +628,7 @@ class PublicationHelper extends JObject
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$cc = new CitationsCitation( $database );
 
@@ -696,7 +696,7 @@ class PublicationHelper extends JObject
 		}
 		
 		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$rt = new PublicationTags( $database );
 		$this->tagCloud = $rt->get_tag_cloud(0, $admin, $this->_pub_id);

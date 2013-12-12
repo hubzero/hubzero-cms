@@ -187,7 +187,7 @@ class CitationFormat
 
 		$c_type = 'journal';
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$ct = new CitationsType($db);
 		$types = $ct->getType();
 
@@ -528,7 +528,7 @@ class CitationFormat
 	{
 		$html = "";
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$text = $openurl['text'];
 		$icon = $openurl['icon'];
@@ -638,7 +638,7 @@ class CitationFormat
 		$internally_cited_image_multiple = $config->get('citation_cited_multiple', '');
 		
 		//database
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Get the associations
 		$assoc = new CitationsAssociation($database);
@@ -878,7 +878,7 @@ class CitationFormat
 		if (CitationFormat::keyExistsOrIsNotEmpty('author', $row)) 
 		{
 			$xprofile =& Hubzero_Factory::getProfile();
-			$app   =& JFactory::getApplication();
+			$app   = JFactory::getApplication();
 			$auths = explode(';', $row->author);
 			$a = array();
 			foreach ($auths as $auth)

@@ -124,7 +124,7 @@ function authorize($dd)
 	global $dv_conf;
 	ximport('Hubzero_Group');
 	ximport('Hubzero_User_Helper');
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 
 	if (isset($dd['acl']['allowed_users']) && (is_array($dd['acl']['allowed_users']) || $dd['acl']['allowed_users'] === false || $dd['acl']['allowed_users'] == 'registered')) {
 		$dv_conf['acl']['allowed_users'] = $dd['acl']['allowed_users'];

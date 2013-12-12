@@ -185,7 +185,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 		// Handling ids of the the boxes checked for download
 		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 
 		// If it's new search remove all user citation checkmarks
 		if (isset($_POST['filter']))
@@ -320,7 +320,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		//push jquery to doc
 		if (!JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
 		}
 
@@ -399,11 +399,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength) ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;' : $this->view->citation->title;
 		
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle( "Citation: " . $this->view->shortenedTitle );
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
@@ -417,7 +417,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$typeAlias = $type[0]['type'];
 		
 		//build paths to type specific overrides
-		$application =& JFactory::getApplication();
+		$application = JFactory::getApplication();
 		$componentTypeOverride = JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
 		$tempalteTypeOverride = JPATH_ROOT . DS . 'templates' . DS . $application->getTemplate() . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
 		
@@ -631,7 +631,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength) ? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;' : $this->view->row->title;
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		$pathway->addItem( JText::_(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
 		if ($id && $id != 0)
 		{
@@ -640,11 +640,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$pathway->addItem( 'Edit', 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle( "Edit Citation: " . $shortenedTitle );
 
 		//push jquery to doc
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		if (!JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');

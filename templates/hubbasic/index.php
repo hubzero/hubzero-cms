@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Document');
 
-$config =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$config = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 //do we want to include jQuery
 if (JPluginHelper::isEnabled('system', 'jquery')) 
@@ -110,7 +110,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 	if (!$juser->get('guest')) {
 		// Find the user's most recent support tickets
 		ximport('Hubzero_Message_Helper');
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$recipient = new Hubzero_Message_Recipient($database);
 		$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
 ?>

@@ -60,7 +60,7 @@ class EventsControllerCategories extends Hubzero_Controller
 	{
 		$this->view->section = $this->_option;
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming

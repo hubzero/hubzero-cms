@@ -5,7 +5,7 @@ function cloud()
 	$base = 140;
 	$mod = 30;
 
-	$dbh =& JFactory::getDBO();
+	$dbh = JFactory::getDBO();
 	$dbh->setQuery('select tagid, count(*) as count, tag, raw_tag, description from #__tags_object jto inner join #__tags jt on jt.id = tagid where raw_tag not like \'tool:%\' group by tagid order by count desc limit 20');
 	if (!($tags = $dbh->loadAssocList()))
 		return;

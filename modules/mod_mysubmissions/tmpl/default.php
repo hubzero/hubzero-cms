@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 if ($juser->get('guest')) { ?>
 	<p class="warning"><?php echo JText::_('MOD_MYSUBMISSIONS_WARNING'); ?></p>
 <?php } else {

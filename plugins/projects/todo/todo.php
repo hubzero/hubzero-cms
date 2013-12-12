@@ -82,7 +82,7 @@ class plgProjectsTodo extends JPlugin
 	 */
 	public function &onProjectCount( $project, &$counts, $admin = 0 ) 
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 				
 		$objTD = new ProjectTodo( $database );
 		$counts['todo'] = $objTD->getTodos($project->id, $filters = array('count' => 1));
@@ -155,7 +155,7 @@ class plgProjectsTodo extends JPlugin
 			// Load language file
 			$this->loadLanguage();
 			
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			
 			// Load component configs
 			$this->_config =& JComponentHelper::getParams( 'com_projects' );
@@ -165,7 +165,7 @@ class plgProjectsTodo extends JPlugin
 			ximport('Hubzero_Plugin_View');
 			
 			// Get JS and css
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 						
 			Hubzero_Document::addPluginScript('projects', 'todo');
@@ -193,7 +193,7 @@ class plgProjectsTodo extends JPlugin
 			$this->_uid = $uid;
 			if (!$this->_uid) 
 			{
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
 			
@@ -377,7 +377,7 @@ class plgProjectsTodo extends JPlugin
 			);
 								
 			// Append breadcrumbs
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$pathway =& $app->getPathway();
 			$pathway->addItem(
 					stripslashes($objTD->content),

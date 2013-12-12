@@ -94,7 +94,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -232,7 +232,7 @@ class EventsControllerEvents extends Hubzero_Controller
 				}
 			break;
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -261,7 +261,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		 */
 		define('_CAL_CONF_DATEFORMAT', $config->getCfg('dateformat'));
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
 		// Incoming
@@ -846,11 +846,11 @@ class EventsControllerEvents extends Hubzero_Controller
 		$tags = $rt->get_tag_cloud(0, 0, $row->id);
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task)) . ': ' . stripslashes($row->title));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(JText::_(
@@ -955,7 +955,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	 */
 	protected function register()
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		// Get some needed info
 		$offset = $this->offset;
@@ -1001,7 +1001,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER').': '.stripslashes($event->title));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(JText::_(
@@ -1121,7 +1121,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	 */
 	protected function process()
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		// Get some needed info
 		$offset = $this->offset;
@@ -1174,7 +1174,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . JText::_('EVENTS_REGISTER') . ': ' . stripslashes($event->title));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(JText::_(
@@ -1238,7 +1238,7 @@ class EventsControllerEvents extends Hubzero_Controller
 
 		if ($register['firstname'] && $register['lastname'] && ($validemail == 1)) 
 		{
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			$email = $event->email;
 			$subject = JText::_('EVENTS_EVENT_REGISTRATION') . ' (' . $event->id . ')';
@@ -1417,7 +1417,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
 		{
-			$pathway =& JFactory::getApplication()->getPathway();
+			$pathway = JFactory::getApplication()->getPathway();
 			if (count($pathway->getPathWay()) <= 0) 
 			{
 				$pathway->addItem(
@@ -1435,7 +1435,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		}
 
 		// Push some styles to the tmeplate
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 
 		$this->_getScripts('assets/js/' . $this->_name);
@@ -1647,11 +1647,11 @@ class EventsControllerEvents extends Hubzero_Controller
 		$lists['tags'] = $rt->get_tag_string($row->id, 0, 0, NULL, 0, 1);
 
 		// Set the title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task)));
 
 		// Set the pathway
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -1756,7 +1756,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$category->updateCount($event->catid);
 		*/
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// E-mail subject line
 		$subject  = '[' . $jconfig->getValue('config.sitename') . ' ' . JText::_('EVENTS') . '] - ' . JText::_('EVENTS_EVENT_DELETED');
@@ -2057,7 +2057,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$rt = new EventsTags($this->database);
 		$rt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Build the message to be e-mailed
 		if ($state == 'add') 
@@ -2099,7 +2099,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	{
 		if ($hub) 
 		{
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$contact_email = $hub['email'];
 			$contact_name  = $hub['name'];
 

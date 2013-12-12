@@ -44,7 +44,7 @@ class modYoutubeHelper extends Hubzero_Module
 	public function display()
 	{
 		//get the document
-		$jdocument =& JFactory::getDocument();
+		$jdocument = JFactory::getDocument();
 
 		//get the module id
 		$id = $this->module->id;

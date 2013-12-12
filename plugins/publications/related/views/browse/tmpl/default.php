@@ -34,8 +34,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-$juser =& JFactory::getUser();
-$database =& JFactory::getDBO();
+$juser = JFactory::getUser();
+$database = JFactory::getDBO();
 
 // Get publications helper & author classes
 $helper = new PublicationHelper($database);

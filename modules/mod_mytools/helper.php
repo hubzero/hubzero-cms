@@ -289,7 +289,7 @@ class modToolList extends Hubzero_Module
 		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->supportedtag = $rconfig->get('supportedtag');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		if ($this->supportedtag) 
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');

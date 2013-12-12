@@ -30,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 ?>

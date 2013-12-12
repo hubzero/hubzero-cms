@@ -48,7 +48,7 @@ class Hubzero_Register_Premis
 	 */
 	public static function getPremisUser($premisUsername)
 	{
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$sql = 'SELECT `userId` FROM `#__premis_users` WHERE `premisId` = ';
 		$sql .= $db->quote($premisUsername);
@@ -70,7 +70,7 @@ class Hubzero_Register_Premis
 	 */
 	public static function getPremisUserId($uId)
 	{
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$sql = 'SELECT `premisEnrollmentId` FROM `#__premis_users` WHERE `userId` = ';
 		$sql .= $db->quote($uId);
@@ -93,7 +93,7 @@ class Hubzero_Register_Premis
 	 */
 	public static function savePremisUser($uId, $premisId, $premisEnrollmentId)
 	{
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$sql = 	'INSERT INTO `#__premis_users` SET ' .
 				'`premisId` = ' . $db->quote($premisId) . ', ' .
@@ -116,7 +116,7 @@ class Hubzero_Register_Premis
 	 */
 	public static function isPremisUser($uId)
 	{
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$sql = 	'SELECT * FROM `#__premis_users` WHERE ' .
 				'`userId` = ' . $db->quote($uId);
@@ -142,7 +142,7 @@ class Hubzero_Register_Premis
 	 */
 	public static function savePremisActivity($user, $courses)
 	{
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$sql = 	'INSERT INTO `#__premis_log` SET ' .
 				'`premisId` = ' . $db->quote($user['premisId']) . ', ' .
@@ -321,7 +321,7 @@ class Hubzero_Register_Premis
 			//$xprofile =& Hubzero_Factory::getProfile();
 
 			// Get some settings
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$params =& JComponentHelper::getParams('com_members');
 			$hubHomeDir = rtrim($params->get('homedir'), '/');
 			
@@ -329,7 +329,7 @@ class Hubzero_Register_Premis
 			$config   =& JComponentHelper::getParams('com_users');
 			$usertype = $config->get('new_usertype', 'Registered');
 	
-			$acl =& JFactory::getACL();
+			$acl = JFactory::getACL();
 	
 			// Create a new Joomla user
 			$target_juser = new JUser();

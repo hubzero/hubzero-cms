@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juri =& JURI::getInstance();
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')

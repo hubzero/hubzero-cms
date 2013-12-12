@@ -131,7 +131,7 @@ class SliderMacro extends WikiMacro
 			$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
 		$html .= '</div>';
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins/hubzero/wikiparser/macros/macro-assets/slider/slider.css');
 		if (!JPluginHelper::isEnabled('system', 'jquery')) 
 		{

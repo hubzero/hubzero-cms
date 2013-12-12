@@ -67,10 +67,10 @@ function submitbutton(pressbutton)
 			$k = 0;
 			$filterstring  = ($this->filters['sortby'])   ? '&amp;sort='.$this->filters['sortby']     : '';
 
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$now = date( "Y-m-d H:i:s" );
 			
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$pt = new ProjectTags($database);
 			
 			for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 

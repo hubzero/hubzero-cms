@@ -100,7 +100,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 */
 	public function _buildPathway($row)
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -164,7 +164,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			$this->_title .= ': ' . JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . JText::_('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
 		}
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -937,7 +937,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	{
 		$id = JRequest::getInt('id', 0);
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$this->database->setQuery(

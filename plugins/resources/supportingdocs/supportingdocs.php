@@ -119,7 +119,7 @@ class plgResourcesSupportingDocs extends JPlugin
 			)
 		);
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Pass the view some info
 		$view->option    = $option;

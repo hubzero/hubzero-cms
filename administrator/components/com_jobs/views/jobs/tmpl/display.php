@@ -102,7 +102,7 @@ $k = 0;
 
 $now = JFactory::getDate()->toSql();
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $jt = new JobType($database);
 $jc = new JobCategory($database);

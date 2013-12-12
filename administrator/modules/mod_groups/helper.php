@@ -88,7 +88,7 @@ class modGroups extends Hubzero_Module
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE created >= '$lastDay' AND type='$type'");
 		$this->pastDay = $this->database->loadResult();
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 
 		// Get the view

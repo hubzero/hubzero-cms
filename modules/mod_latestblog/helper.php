@@ -71,7 +71,7 @@ class modLatestBlog extends Hubzero_Module
 		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
 		{
 			ximport('Hubzero_Group_Helper');
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			//make sure that the group for each blog post has the right privacy setting
 			foreach ($rows as $k => $gf)
@@ -121,7 +121,7 @@ class modLatestBlog extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));

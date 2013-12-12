@@ -44,13 +44,13 @@ class modXWhosonline extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$this->online = $this->params->get('online');
 		$this->users  = $this->params->get('users');
 		$moduleclass_sfx = $this->params->get('moduleclass_sfx');
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$this->admin = $juser->authorize('mod_xwhosonline', 'manage');
 
 		if ($this->online) 

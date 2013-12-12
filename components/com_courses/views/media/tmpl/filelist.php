@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app =& JFactory::getApplication();
+$app = JFactory::getApplication();
 
 ximport('Hubzero_Course');
 $course = Hubzero_Course::getInstance($this->listdir);

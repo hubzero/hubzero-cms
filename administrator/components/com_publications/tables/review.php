@@ -198,7 +198,7 @@ class PublicationReview extends JTable
 		}		
 		if (!$uid) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$uid = $juser->get('id');
 		}	
 		
@@ -236,7 +236,7 @@ class PublicationReview extends JTable
 
 		if (!$uid) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 				

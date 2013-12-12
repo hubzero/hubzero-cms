@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 function com_install()
 {
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 
 	// Do the clean up if installed on a previous installation
 	$database->setQuery("SELECT count(extension_id) as count, max(extension_id) as lastInstalled FROM #__extensions WHERE element='com_events'");

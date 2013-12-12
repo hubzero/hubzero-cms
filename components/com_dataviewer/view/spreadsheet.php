@@ -15,7 +15,7 @@ function view($dd = false) {
 	global $com_name, $html_path, $dv_conf;
 	$name = $dd['dv_id'];
 
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 
 //	dv_add_script('modernizr.js');
 
@@ -423,7 +423,7 @@ function view($dd = false) {
 
 		// Filter dialog show/hide parameter
 		$dv_show_filters = 'false';
-		$u =& JFactory::getURI();
+		$u = JFactory::getURI();
 		$path = explode('/', $u->getPath());
 		if (isset($path[5]) && $path[5] == 'filter_dialog') {
 			$dv_show_filters = 'true';

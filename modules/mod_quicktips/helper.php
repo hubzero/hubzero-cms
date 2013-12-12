@@ -48,7 +48,7 @@ class modQuickTips extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));
@@ -56,7 +56,7 @@ class modQuickTips extends Hubzero_Module
 			return;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$catid = trim($this->params->get('catid'));
 		$secid = trim($this->params->get('secid'));

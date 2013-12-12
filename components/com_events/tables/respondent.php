@@ -264,7 +264,7 @@ class EventsRespondent extends JTable
 	 */
 	public static function getRacialIdentification($resp_id)
 	{
-		$dbh =& JFactory::getDBO();
+		$dbh = JFactory::getDBO();
 		if (is_array($resp_id)) 
 		{
 			$dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN (' . implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');

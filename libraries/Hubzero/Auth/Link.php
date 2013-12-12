@@ -239,7 +239,7 @@ class Hubzero_Auth_Link
 	 */
     public function create()
     {
-        $db = &JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
         if (empty($db))
         {
@@ -378,7 +378,7 @@ class Hubzero_Auth_Link
 	 */
  	function update($all = false)
     {
-        $db = &JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
         $query = "UPDATE #__auth_link SET ";
 

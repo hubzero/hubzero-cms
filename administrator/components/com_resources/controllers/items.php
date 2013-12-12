@@ -70,11 +70,11 @@ class ResourcesControllerItems extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -158,11 +158,11 @@ class ResourcesControllerItems extends Hubzero_Controller
 	public function childrenTask()
 	{
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Resource's parent ID
@@ -260,13 +260,13 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$this->view->setLayout('children');
 
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
 		$this->view->pid = '-1';
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -659,7 +659,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$this->view->rconfig = $this->config;
 
 		// Push some needed styles to the tmeplate
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components/' . $this->_option . '/assets/css/resources.css');
 
 		// Incoming resource ID
@@ -1158,7 +1158,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 		if ($contributors && count($contributors) > 0)
 		{
 			// Email all the contributors
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// E-mail "from" info
 			$from = array();
@@ -1718,7 +1718,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 	 */
 	private function userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$group_id = 'g.id';
 		$aro_id = 'aro.id';

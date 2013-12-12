@@ -96,7 +96,7 @@ class plgProjectsDatabases extends JPlugin
 			
 			if (!$alias)
 			{
-				$database =& JFactory::getDBO();
+				$database = JFactory::getDBO();
 				$obj = new Project( $database );
 				$alias = $obj->getAlias( $id );
 			}
@@ -124,7 +124,7 @@ class plgProjectsDatabases extends JPlugin
 	 */
 	public function &onProjectCount($project, &$counts)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$objPD = new ProjectDatabase($database);
 		$total = $objPD->getItems($project->id, array('count' => 1));
@@ -215,12 +215,12 @@ class plgProjectsDatabases extends JPlugin
 
 		$this->_project 	= $project;
 		$this->_option 		= $option;
-		$this->_database 	=& JFactory::getDBO();
+		$this->_database 	= JFactory::getDBO();
 		$this->_authorized  = $authorized;
 		$this->_uid = $uid;
 		if (!$this->_uid) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->_uid = $juser->get('id');
 		}
 
@@ -259,7 +259,7 @@ class plgProjectsDatabases extends JPlugin
 		} 
 		else 
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 
 			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
 
@@ -781,7 +781,7 @@ class plgProjectsDatabases extends JPlugin
 		$d 		= json_decode($d, true);
 			
 		$db 	= $this->get_ds_db($this->_project->id);
-		$juser 	= &JFactory::getUser();
+		$juser 	=  JFactory::getUser();
 		$table 	= array();
 
 		// Add new or Recreate
@@ -1193,7 +1193,7 @@ class plgProjectsDatabases extends JPlugin
 			$project = $this->_project;
 		}
 
-		$db 	= &JFactory::getDBO();
+		$db 	=  JFactory::getDBO();
 		$ds_db 	= $this->get_ds_db($project->id);
 
 		// Load database record
@@ -1280,7 +1280,7 @@ class plgProjectsDatabases extends JPlugin
 			$project = $this->_project;
 		}
 
-		$db 	= &JFactory::getDBO();
+		$db 	=  JFactory::getDBO();
 		$ds_db 	= $this->get_ds_db($project->id);
 
 		// Load database record

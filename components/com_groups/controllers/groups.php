@@ -657,7 +657,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Get some needed objects
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		
 		// Build the e-mail message
 		if ($this->_task == 'new') 
@@ -1206,7 +1206,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		//get site config for mailing
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Build the "from" info for e-mails
 		$from = array();

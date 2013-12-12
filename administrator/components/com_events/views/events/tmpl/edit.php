@@ -7,7 +7,7 @@ JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': '. $text, 'event.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-$editor =& JFactory::getEditor();
+$editor = JFactory::getEditor();
 
 ximport('Hubzero_User_Profile');
 $xprofilec =& Hubzero_User_Profile::getInstance($this->row->created_by);

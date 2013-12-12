@@ -166,7 +166,7 @@ class Hubzero_User_Password
 	 */
 	public function create()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		if (empty($db))
 		{
@@ -279,7 +279,7 @@ class Hubzero_User_Password
 	 */
 	function update()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$query = "UPDATE #__users_password SET ";
 		

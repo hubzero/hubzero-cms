@@ -37,7 +37,7 @@ JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('messages.html', true);
 
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();

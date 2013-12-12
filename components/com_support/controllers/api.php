@@ -105,7 +105,7 @@ class SupportControllerApi extends Hubzero_Api_Controller
 		$group = JRequest::getVar('group', '');
 
 		// Set up some dates
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));

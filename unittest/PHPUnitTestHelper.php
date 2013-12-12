@@ -11,7 +11,7 @@ class PHPUnitTestHelper
 	function siteSetup()
 	{
 		// Trick joomla into thinking client is 'site'
-		$app =& JFactory::getApplication('site');
+		$app = JFactory::getApplication('site');
 
 		return true;
 	}
@@ -44,13 +44,13 @@ class PHPUnitTestHelper
 		$db =& JDatabase::getInstance($options);
 
 		// Get the application environment
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 		$environment = $config->getValue('config.application_env');
 
 		// If that didn't work, and we're not on a production machine, get the default db
 		if(get_class($db) != 'JDatabaseMySQL' && $environment != 'production')
 		{
-			$db =& JFactory::getDBO();
+			$db = JFactory::getDBO();
 		}
 		elseif(get_class($db) != 'JDatabaseMySQL' && $environment == 'production')
 		{

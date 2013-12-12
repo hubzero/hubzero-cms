@@ -59,7 +59,7 @@ class plgSupportBlog extends JPlugin
 					FROM #__blog_comments AS rc 
 					WHERE rc.id=" . $refid;
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery($query);
 
 		$rows = $database->loadObjectList();
@@ -105,7 +105,7 @@ class plgSupportBlog extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$comment = new BlogTableComment($database);
 		$comment->load($refid);

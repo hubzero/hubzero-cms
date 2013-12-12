@@ -186,7 +186,7 @@ class CitationsControllerImport extends Hubzero_Controller
 		}
 
 		// get the session object
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// write the citation data to files
@@ -210,7 +210,7 @@ class CitationsControllerImport extends Hubzero_Controller
 	public function reviewTask()
 	{
 		// get the session object
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// get the citations
@@ -231,7 +231,7 @@ class CitationsControllerImport extends Hubzero_Controller
 		}
 
 		// push jquery to doc
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
 
 		// Push some styles to the template
@@ -269,7 +269,7 @@ class CitationsControllerImport extends Hubzero_Controller
 	public function saveTask()
 	{
 		// get the session object
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// read in contents of citations file
@@ -491,7 +491,7 @@ class CitationsControllerImport extends Hubzero_Controller
 		}
 
 		//get the session object
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 
 		//ids of sessions saved and not saved
 		$session->set('citations_saved', $citations_saved);
@@ -517,7 +517,7 @@ class CitationsControllerImport extends Hubzero_Controller
 	public function savedTask()
 	{
 		// Get the session object
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 
 		// Get the citations
 		$citations_saved     = $session->get('citations_saved');

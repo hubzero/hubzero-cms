@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label><?php echo JText::_('About'); ?>:<span class="required">*</span></label></td>
 						<td><?php 
-							$editor =& JFactory::getEditor();
+							$editor = JFactory::getEditor();
 							echo $editor->display('fields[info]', stripslashes($this->row->info), '', '', '50', '4', false);
 						?>
 							<span class="hint"><?php echo JText::_('Short description of license'); ?></span>
@@ -81,7 +81,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label><?php echo JText::_('Content'); ?>:</label></td>
 						<td><?php 
-							$editor =& JFactory::getEditor();
+							$editor = JFactory::getEditor();
 							echo $editor->display('fields[text]', stripslashes($this->row->text), '', '', '50', '10', false);
 						?></td>
 					</tr>

@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 $juri =& JURI::getInstance();
 ?>
 
@@ -38,7 +38,7 @@ $juri =& JURI::getInstance();
 		<h3>Help</h3>
 		<ul>
 <?php
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 if ($juser->get('guest')) {
 ?>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_register'); ?>">Sign up for free!</a></li>

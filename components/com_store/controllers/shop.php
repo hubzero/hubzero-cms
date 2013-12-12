@@ -59,7 +59,7 @@ class StoreControllerShop extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -114,7 +114,7 @@ class StoreControllerShop extends Hubzero_Controller
 		{
 			$this->view->title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 	}
 
@@ -548,7 +548,7 @@ class StoreControllerShop extends Hubzero_Controller
 			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
 			$BTL->hold($order->total, JText::_('COM_STORE_BANKING_HOLD'), 'store', $orderid);
 
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// Compose confirmation "from"
 			$hub = array(

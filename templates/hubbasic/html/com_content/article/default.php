@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canEdit = ($this->user->authorize('com_content', 'edit', 'content', 'all') || $this->user->authorize('com_content', 'edit', 'content', 'own'));
 
-$app =& JFactory::getApplication();
+$app = JFactory::getApplication();
 $pathway =& $app->getPathway();
 if (count($pathway->getPathWay()) <= 0) {
 	//$pathway->addItem($this->escape($this->article->title),$this->article->readmore_link);

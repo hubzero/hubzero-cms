@@ -462,7 +462,7 @@ class ResourcesResource extends JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$now = JFactory::getDate()->toSql();
 
 		$query  = "";
@@ -665,8 +665,8 @@ class ResourcesResource extends JTable
 	 */
 	public function buildPluginQuery($filters=array())
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 		$rt = new ResourcesType($database);

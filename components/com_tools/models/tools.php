@@ -76,7 +76,7 @@ class ToolsModelTools extends JModel
 			{
 				$aliases = implode("','", $result);
 
-				$database =& JFactory::getDBO();
+				$database = JFactory::getDBO();
 
 				$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state 
 							FROM #__tool as t, #__tool_version as v 

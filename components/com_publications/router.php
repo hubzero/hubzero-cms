@@ -128,7 +128,7 @@ function PublicationsParseRoute($segments)
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
 			. 'com_publications' . DS . 'tables' . DS . 'category.php');
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$t = new PublicationCategory( $database );
 		$cats = $t->getCategories();

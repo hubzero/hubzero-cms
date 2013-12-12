@@ -52,7 +52,7 @@ class Hubzero_ToolHelper
 	 */
 	static public function iterate($func)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (true)
 		{
@@ -249,7 +249,7 @@ class Hubzero_Tool
 	 */
 	public function getToolNames()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$db->setQuery("SELECT toolname FROM #__tool;");
 		return $db->loadResultArray();
@@ -338,7 +338,7 @@ class Hubzero_Tool
 	 */
 	public function _mysql_create()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -531,7 +531,7 @@ class Hubzero_Tool
 	 */
 	function _mysql_update($all = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$xlog = &Hubzero_Factory::getLogger();
 
 		$query = "UPDATE #__tool SET ";
@@ -828,7 +828,7 @@ class Hubzero_Tool
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db = &JFactory::getDBO();
+				$db =  JFactory::getDBO();
 
 				if (is_object($db))
 				{
@@ -1089,7 +1089,7 @@ class Hubzero_Tool
 	 */
 	public function getDevelopmentGroup()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "SELECT cn FROM #__tool_groups WHERE toolid=" .
 			$db->Quote($this->id) . " AND role='1';";
@@ -1116,7 +1116,7 @@ class Hubzero_Tool
 	 */
 	public function unpublishVersion($instance)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($this->toolname))
 		{
@@ -1162,7 +1162,7 @@ class Hubzero_Tool
 	 */
 	public function unpublishAllVersions()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($this->toolname))
 		{
@@ -1273,7 +1273,7 @@ class Hubzero_Tool
 	 */
 	protected static function buildQuerySearch($filters = array(), $admin = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($filters['search']))
 		{
@@ -1342,7 +1342,7 @@ class Hubzero_Tool
 	 */
 	static function getToolCount($filters = array(), $admin = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "SELECT count(DISTINCT t.toolname) FROM #__tool AS t ";
 		$query .= "WHERE 1=1 ";
@@ -1364,7 +1364,7 @@ class Hubzero_Tool
 	 */
 	static function getToolSummaries($filters = array(), $admin = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "SELECT t.id,t.toolname,t.title,count(v.revision) as versions,t.registered," .
 			" t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v " .
@@ -1392,7 +1392,7 @@ class Hubzero_Tool
 	{
 		// id  instance  version revision state
 
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "SELECT v.id,v.instance,v.version,v.revision,v.state FROM #__tool_version AS v " .
 			" WHERE v.toolid=" . $db->Quote($this->id);
@@ -1417,7 +1417,7 @@ class Hubzero_Tool
 			return false;
 		}
 
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$sql = "SELECT f.toolname FROM #__tool as f " . "JOIN #__tool_groups AS g ON " .
 			" f.id=g.toolid AND g.role=1 " . "JOIN #__xgroups AS xg ON g.cn=xg.cn " .
@@ -1439,7 +1439,7 @@ class Hubzero_Tool
 	 */
 	public function getResourceId($toolname = null, $id = null)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (isset($this) && is_a($this,'Hubzero_Tool'))
 		{
@@ -1510,7 +1510,7 @@ class Hubzero_Tool
 	 */
 	static public function validate(&$tool, &$err, $id)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$xlog = &Hubzero_Factory::getLogger();
 
 		$query = "SELECT t.id FROM #__tool AS t WHERE LOWER(t.toolname)=LOWER(" .  $db->Quote($tool['toolname']) . ") ";
@@ -1653,7 +1653,7 @@ class Hubzero_Tool
 	 */
 	static public function validateVersion($newversion, &$err, $id)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$xlog = &Hubzero_Factory::getLogger();
 
 		$err = '';
@@ -1727,7 +1727,7 @@ class Hubzero_Tool
 	 */
 	static public function getMyTools()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
 				FROM #__resources AS r, #__tool_version AS v	
 				WHERE r.published=1 
@@ -1752,7 +1752,7 @@ class Hubzero_Tool
 	 */
 	static public function getToolId($toolname=NULL)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		if ($toolname=== NULL) 
 		{
 			return false;
@@ -1771,7 +1771,7 @@ class Hubzero_Tool
 	 */
 	static public function getToolDevelopers($toolid)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query  = "SELECT m.uidNumber FROM #__tool_groups AS g ";
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
@@ -1793,7 +1793,7 @@ class Hubzero_Tool
 	 */
 	static public function getToolGroups($toolid, $groups = array())
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
@@ -1818,7 +1818,7 @@ class Hubzero_Tool
 	 */
 	static public function getToolGroupsRestriction($toolid, $instance)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query  = "SELECT tv.toolname, tg.cn ";
 		$query .= "FROM #__tool_groups AS tg, #__tool_version AS tv ";
@@ -1839,7 +1839,7 @@ class Hubzero_Tool
 	 */
 	static public function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		if ($toolid=== NULL or $ticketid=== NULL) 
 		{
 			return false;
@@ -1863,7 +1863,7 @@ class Hubzero_Tool
 	 */
  	static public function getTicketId($toolid=NULL)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		if ($toolid=== NULL) 
 		{
 			return false;
@@ -1883,7 +1883,7 @@ class Hubzero_Tool
 	 */
 	static public function xbuildQuery($filters, $admin)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// get and set record filter
 		$filter = ($admin) ? " WHERE f.id!=0": " WHERE f.state!=9";
@@ -1940,7 +1940,7 @@ class Hubzero_Tool
 	 */
 	public function getTools($filters=array(), $admin=false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$filter = self::xbuildQuery($filters, $admin);
 
 		$sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"

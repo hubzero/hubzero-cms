@@ -93,10 +93,10 @@ if (is_file(JPATH_ROOT.$firstattach->url))
 	}
 	else if (in_array(strtolower($firstattach->ext), $files)) {
 		$token = '';
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$juser->get('guest'))
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 
 			$session_id = $session->getId();
 			

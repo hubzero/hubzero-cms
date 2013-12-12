@@ -159,10 +159,10 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		}
 		
 		//Create user object
-		$this->juser =& JFactory::getUser();
+		$this->juser = JFactory::getUser();
 		
 		//creat database object
-		$this->database =& JFactory::getDBO();
+		$this->database = JFactory::getDBO();
 		
 		//get the group members
 		$members = $group->get('members');

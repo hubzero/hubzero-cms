@@ -102,11 +102,11 @@ class Hubzero_Plugin extends JPlugin
 			//preserve plugin messages after redirect
 			if (count($this->pluginMessageQueue))
 			{
-				$session =& JFactory::getSession();
+				$session = JFactory::getSession();
 				$session->set('plugin.message.queue', $this->pluginMessageQueue);
 			}
 			
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($url, $msg, $msgType);
 		}
 	}
@@ -122,7 +122,7 @@ class Hubzero_Plugin extends JPlugin
 	{
 		if (!count($this->pluginMessageQueue)) 
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$pluginMessage = $session->get('plugin.message.queue');
 			if (count($pluginMessage)) 
 			{
@@ -182,7 +182,7 @@ class Hubzero_Plugin extends JPlugin
 	public function getParams( $name, $folder )
 	{
 		//vars
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$table = "#__plugins";
 		$paramsClass = 'JParameter';
 		$enabled = " published=1";

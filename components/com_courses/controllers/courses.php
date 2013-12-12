@@ -76,7 +76,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 */
 	public function _buildPathway($course_pages = array())
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -110,7 +110,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		}
 
 		//set title of browser window
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 

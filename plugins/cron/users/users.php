@@ -79,7 +79,7 @@ class plgCronUsers extends JPlugin
 		{
 			foreach ($users as $u)
 			{
-				$juser =& JFactory::getUser($u->id);
+				$juser = JFactory::getUser($u->id);
 
 				if (is_object($juser) && strtotime($juser->get('lastvisitDate')) < $yesterday)
 				{

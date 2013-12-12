@@ -359,7 +359,7 @@ class ForumTableCategory extends JTable
 		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
 		$this->scope_id = intval($this->scope_id);
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
 			$this->created = JFactory::getDate()->toSql();

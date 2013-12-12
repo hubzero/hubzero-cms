@@ -320,7 +320,7 @@ class ContribtoolHtml
 	public function getNumofTools($status, $toolnum='')
 	{
 		// get hub parameters
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		$sitename = $jconfig->getValue('config.sitename');
 		

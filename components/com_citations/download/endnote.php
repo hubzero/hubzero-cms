@@ -91,7 +91,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		$doc = '';
 
 		//get all the citation types
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$ct = new CitationsType($db);
 		$types = $ct->getType();
 

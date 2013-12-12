@@ -1304,7 +1304,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		// Build outgoing email message
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
 		$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n\r\n" ;
 		$prependtext .= $juser->name . " (". $juser->username . ") wrote:";
@@ -1379,7 +1379,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			foreach ($userIDsToEmail as $userID)
 			{
 				$encryptor = new Hubzero_EmailToken();
-				$jconfig =& JFactory::getConfig();
+				$jconfig = JFactory::getConfig();
 
 				// Construct User specific Email ThreadToken
 				// Version, type, userid, xforumid
@@ -1813,7 +1813,7 @@ class plgGroupsForum extends Hubzero_Plugin
 	 */
 	private function settings()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -1863,7 +1863,7 @@ class plgGroupsForum extends Hubzero_Plugin
 	 */
 	private function savesettings()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -1915,7 +1915,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		//$this->message = JText::_('Settings successfully saved!');
 		//return $this->_settings();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->enqueueMessage(JText::_('PLG_GROUPS_FORUM_SETTINGS_SAVED'), 'passed');
 		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'));
 	}

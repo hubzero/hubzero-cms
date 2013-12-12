@@ -145,7 +145,7 @@ class EventsHtml
 	 */
 	public function buildCategorySelect($catid, $args, $gid, $option)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
@@ -317,7 +317,7 @@ class EventsHtml
 	 */
 	public function getColorBar($event_id=NULL,$newcolor)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if ($event_id != NULL) {
 			$database->setQuery( "SELECT color_bar FROM #__events WHERE id = '$event_id'" );
@@ -435,7 +435,7 @@ class EventsHtml
 	 */
 	public function downloadlist($resp, $option)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$ee = new EventsEvent( $database );
 		header('Content-type: text/comma-separated-values');
 		header('Content-disposition: attachment; filename="eventrsvp.csv"');

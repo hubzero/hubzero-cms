@@ -92,7 +92,7 @@ class plgWhatsnewEvents extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Build the query
 		$e_count = "SELECT count(DISTINCT e.id)";

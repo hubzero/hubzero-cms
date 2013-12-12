@@ -41,7 +41,7 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'delete');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 ?>
 
 <form action="index.php" method="post" name="adminForm">

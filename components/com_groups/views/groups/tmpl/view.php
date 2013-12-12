@@ -32,8 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get objects
-$config 	=& JFactory::getConfig();
-$database 	=& JFactory::getDBO();
+$config 	= JFactory::getConfig();
+$database 	= JFactory::getDBO();
 
 //is membership control managed on group?
 $membership_control = $this->gparams->get('membership_control', 1);

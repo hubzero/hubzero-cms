@@ -59,7 +59,7 @@ class Hubzero_Group_Helper
 	public static function getPopularGroups($limit=0)
 	{
 		//database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//query
 		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc, 
@@ -88,7 +88,7 @@ class Hubzero_Group_Helper
 	public static function getFeaturedGroups( $groupList )
 	{
 		//database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//parse the group list
 		$groupList = array_map('trim', array_filter(explode(',', $groupList), 'trim'));
@@ -119,7 +119,7 @@ class Hubzero_Group_Helper
 	public static function getGroupsMatchingTagString( $usertags, $usergroups )
 	{
 		//database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//
 		$gt = new GroupsTags( $database );
@@ -176,10 +176,10 @@ class Hubzero_Group_Helper
 	public function listGroups( $name="", $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
 	{
 		//user object
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		
 		//database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//check to see if we have any groups to show
 		if(!$groups)
@@ -428,7 +428,7 @@ class Hubzero_Group_Helper
 	public static function displayGroupMenu($group, $sections, $cats, $access_levels, $group_pages, $active_tab)
 	{
 		//instantiate objects
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		//variable to hold group menu html
 		$group_menu = "";
@@ -561,7 +561,7 @@ class Hubzero_Group_Helper
 		if ($role == '')
 			return false;
 		
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$query = "SELECT uidNumber FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.gidNumber='" . $group->gidNumber . "'";
 		

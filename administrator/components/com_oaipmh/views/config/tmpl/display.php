@@ -34,7 +34,7 @@ JToolBarHelper::cancel();
 
 //$this->last;
 
-$document = &JFactory::getDocument();
+$document =  JFactory::getDocument();
 $document->addScript('/media/system/js/jquery.js');
 $document->addScript('/media/system/js/jquery.noconflict.js');
 $document->addScript('/media/system/js/jquery.ui.js');

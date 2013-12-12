@@ -141,7 +141,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		if ($result === false)	return $this->not_found();
 		
 		//instantiate database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//get request vars
 		$tool 		= JRequest::getVar('tool', '');
@@ -357,7 +357,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		
 		//create database object
 		JLoader::import("joomla.database.table");
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//load the tool version
 		$tv = new ToolVersion($database);
@@ -519,7 +519,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 		
 		//instantiate db objects
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$mwdb =& ToolsHelperUtils::getMWDBO();
 		
 		//get request vars

@@ -82,7 +82,7 @@ if (!$this->tagged)
 }
 else
 {
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	$rows2 = $this->rows2;
 
 	$html .= "\t" . '<p class="category-header-details">' . "\n";

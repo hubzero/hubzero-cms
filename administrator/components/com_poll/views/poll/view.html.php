@@ -31,8 +31,8 @@ class PollViewPoll extends JView
 	{
 		global $mainframe;
 
-		$db		=& JFactory::getDBO();
-		$user 	=& JFactory::getUser();
+		$db		= JFactory::getDBO();
+		$user 	= JFactory::getUser();
 
 		$cid 	= JRequest::getVar( 'cid', array(0), '', 'array' );
 		$option = JRequest::getCmd( 'option');

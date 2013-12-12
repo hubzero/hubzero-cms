@@ -15,7 +15,7 @@ function dv_dataview_list()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
 	$db_id = JRequest::getString('db', false);
@@ -94,7 +94,7 @@ function dv_dataview_list()
 					$cmd = "cd " . JPATH_COMPONENT . "; php ./ddconvert.php -i$php_file -o$json_file";
 					system($cmd);
 
-					$juser =& JFactory::getUser();
+					$juser = JFactory::getUser();
 					$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
 					$cmd = "cd $path; git add $dd_name.json; git commit $dd_name.json --author=\"$author\" -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
 					system($cmd);

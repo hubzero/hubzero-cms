@@ -871,7 +871,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		if (!empty($receivers)) 
 		{
 			// Send a message about the new question to authorized users (specified admins or related content authors)
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$from = array(
 				'email'     => $jconfig->getValue('config.mailfrom'),
 				'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
@@ -997,7 +997,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		{
 			if ($responses) 
 			{
-				$jconfig =& JFactory::getConfig();
+				$jconfig = JFactory::getConfig();
 
 				$users = array();
 				foreach ($responses as $r)
@@ -1135,7 +1135,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Load the question
 		$question = new AnswersModelQuestion($row->get('qid'));
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// ---
 
@@ -1462,13 +1462,13 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	public function latestTask()
 	{
 		//get the joomla document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 
 		//load joomla config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		//instantiate database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		//import Hubzero Libs
 		ximport('Hubzero_View_Helper_Html');
@@ -1523,7 +1523,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		foreach($questions as $question)
 		{
 			//get the authors name
-			$a =& JFactory::getUser($question['created_by']);
+			$a = JFactory::getUser($question['created_by']);
 			$author = ($a) ? $a->get("name") : "";
 			$author = ($question['anonymous']) ? "Anonymous" : $author;
 

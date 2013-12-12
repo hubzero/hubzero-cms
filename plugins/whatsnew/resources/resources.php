@@ -93,7 +93,7 @@ class plgWhatsnewResources extends JPlugin
 		if (!is_array($categories)) 
 		{
 			// Get categories
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$rt = new ResourcesType($database);
 			$this->_cats = $rt->getMajorTypes();
 		}
@@ -146,7 +146,7 @@ class plgWhatsnewResources extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Instantiate some needed objects
 		$rr = new ResourcesResource($database);
@@ -162,7 +162,7 @@ class plgWhatsnewResources extends JPlugin
 		}
 
 		ximport('Hubzero_User_Helper');
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 
 		// Get categories
@@ -280,7 +280,7 @@ class plgWhatsnewResources extends JPlugin
 	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
-	 	$document =& JFactory::getDocument();
+	 	$document = JFactory::getDocument();
 		$document->addScript('components' . DS . 'com_resources' . DS . 'assets' . DS . 'css' . DS . 'resources.js');
 
 		ximport('Hubzero_Document');
@@ -300,8 +300,8 @@ class plgWhatsnewResources extends JPlugin
 	 */
 	public function out($row, $period)
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Instantiate a helper object
 		$helper = new ResourcesHelper($row->id, $database);

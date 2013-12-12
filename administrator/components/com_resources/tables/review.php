@@ -154,7 +154,7 @@ class ResourcesReview extends JTable
 	 */
 	public function getRatings($resource_id=NULL)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (!$resource_id) 
 		{
@@ -185,7 +185,7 @@ class ResourcesReview extends JTable
 	{
 		if (!$userid) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$userid = $juser->get('id');
 		}
 

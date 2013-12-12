@@ -67,14 +67,14 @@ class MwUtils
 			 && (!isset($options['user']) || $options['user'] == '')
 			 && (!isset($options['database']) || $options['database'] == '')) 
 			{
-				$instance =& JFactory::getDBO();
+				$instance = JFactory::getDBO();
 			}
 			else 
 			{
 				$instance =& JDatabase::getInstance($options);
 				if (JError::isError($instance)) 
 				{
-					$instance =& JFactory::getDBO();
+					$instance = JFactory::getDBO();
 				}
 			}
 		}

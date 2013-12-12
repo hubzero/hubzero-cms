@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('Registration') . ': <small><small>[ ' . JText::_('Incremental Registration Options') . ' ]</small></small>', 'user.png');
 JToolBarHelper::save();
 
-$dbh =& JFactory::getDBO();
+$dbh = JFactory::getDBO();
 $dbh->setQuery('SELECT popover_text, award_per, test_group FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
 list($popoverText, $awardPer, $testGroup) = $dbh->loadRow();
 $dbh->setQuery('SELECT hours FROM #__incremental_registration_popover_recurrence ORDER BY idx');

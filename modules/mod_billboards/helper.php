@@ -43,7 +43,7 @@ class modBillboards extends Hubzero_Module
 	 */
 	private function _getList()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// Get the correct billboards collection to display from the parameters
 		$collection = (int) $this->params->get('collection', 1);
@@ -70,7 +70,7 @@ class modBillboards extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$jdocument =& JFactory::getDocument();
+		$jdocument = JFactory::getDocument();
 
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once

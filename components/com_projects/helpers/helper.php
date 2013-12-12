@@ -295,7 +295,7 @@ class ProjectsHelper extends JObject {
 		
 		if (!$uid)
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$uid   = $juser->get('id');
 		}
 		
@@ -485,7 +485,7 @@ class ProjectsHelper extends JObject {
 		}
 		
 		// Set up email config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('COM_PROJECTS');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
@@ -915,7 +915,7 @@ class ProjectsHelper extends JObject {
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Inlcude public stamps class
 		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
@@ -1068,7 +1068,7 @@ class ProjectsHelper extends JObject {
 			return $html;
 		}
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$pagename = $page->pagename;
 		
 		// Change all relative links to point to correct locations
@@ -1145,7 +1145,7 @@ class ProjectsHelper extends JObject {
 			$config->get('offroot', 0)
 		);
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Get wiki upload path
 		$previewPath = ProjectsHelper::getWikiPath($page->id);

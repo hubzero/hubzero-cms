@@ -55,7 +55,7 @@ if ($canDo->get('core.delete'))
 
 $preload = null;
 
-$doc =& JFactory::getDocument();
+$doc = JFactory::getDocument();
 
 $doc->addScript('/administrator/components/' . $this->option . '/assets/js/jquery.js');
 $doc->addScript('/administrator/components/' . $this->option . '/assets/js/jquery-ui.js');

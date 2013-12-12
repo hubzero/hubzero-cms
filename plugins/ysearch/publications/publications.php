@@ -104,7 +104,7 @@ class plgYSearchPublications extends YSearchPlugin
 		// Joomla 1.6+
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
 
 			$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
 			$viewlevels = implode(',', $user->getAuthorisedViewLevels());

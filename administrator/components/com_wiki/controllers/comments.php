@@ -47,7 +47,7 @@ class WikiControllerComments extends Hubzero_Controller
 	{
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->view->filters = array();
 		$this->view->filters['pageid']     = trim($app->getUserStateFromRequest(

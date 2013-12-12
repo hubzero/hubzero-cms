@@ -194,7 +194,7 @@ class WishlistController extends JObject
 		}
 		$this->config = $config;
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$objWishlist = new Wishlist($database);
 
 		// Check if main wishlist exists, create one if missing
@@ -264,7 +264,7 @@ class WishlistController extends JObject
 	{
 		if ($this->_redirect != NULL) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
@@ -338,7 +338,7 @@ class WishlistController extends JObject
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -350,7 +350,7 @@ class WishlistController extends JObject
 	 */
 	private function _buildPathway($wishlist)
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 
 		$comtitle  = JText::_(strtoupper($this->_option));
@@ -461,11 +461,11 @@ class WishlistController extends JObject
 	protected function abort()
 	{
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -514,8 +514,8 @@ class WishlistController extends JObject
 	{
 		ximport('Hubzero_Group');
 
-		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser 	  = JFactory::getUser();
 
 		// Incoming
 		$id 	= JRequest::getInt('id', 0);
@@ -714,8 +714,8 @@ class WishlistController extends JObject
 	 */
 	public function wish()
 	{
-		$database   =& JFactory::getDBO();
-		$juser 		=& JFactory::getUser();
+		$database   = JFactory::getDBO();
+		$juser 		= JFactory::getUser();
 
 		$wishid  	= JRequest::getInt('wishid', 0);
 		$id  		= JRequest::getInt('id', 0);
@@ -1000,8 +1000,8 @@ class WishlistController extends JObject
 	 */
 	public function savesettings() 
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		$listid  = JRequest::getInt('listid', 0);
 		$action  = JRequest::getVar('action', '');
@@ -1111,8 +1111,8 @@ class WishlistController extends JObject
 	 */
 	public function settings()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// get list id
 		$id  = JRequest::getInt('id', 0);
@@ -1205,8 +1205,8 @@ class WishlistController extends JObject
 	 */
 	public function saveplan() 
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
 
 		$wishid = JRequest::getInt('wishid', 0);
@@ -1339,7 +1339,7 @@ class WishlistController extends JObject
 		else if ($new_assignee) 
 		{
 			// Build e-mail components
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$admin_email = $jconfig->getValue('config.mailfrom');
 
 			// to wish assignee
@@ -1394,8 +1394,8 @@ class WishlistController extends JObject
 	 */
 	public function addwish($wishid=0)
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Incoming
 		$listid 	= JRequest::getInt('id', 0);
@@ -1551,8 +1551,8 @@ class WishlistController extends JObject
 	 */
 	public function savewish()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
 
 		$listid = JRequest::getInt('wishlist', 0);
@@ -1686,7 +1686,7 @@ class WishlistController extends JObject
 		if (!$wishid) 
 		{
 			// Build e-mail components
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$admin_email = $jconfig->getValue('config.mailfrom');
 
 			// Get author name
@@ -1759,8 +1759,8 @@ class WishlistController extends JObject
 	 */
 	public function editwish()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
 
 		$wishid = JRequest::getInt('wishid', 0);
@@ -1876,7 +1876,7 @@ class WishlistController extends JObject
 				if ($changed) 
 				{
 					// Build e-mail components
-					$jconfig =& JFactory::getConfig();
+					$jconfig = JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
 					// to wish author
@@ -1975,8 +1975,8 @@ class WishlistController extends JObject
 	{
 		ximport('Hubzero_Group');
 
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
 
 		$listid   = JRequest::getInt('wishlist', 0);
@@ -2157,7 +2157,7 @@ class WishlistController extends JObject
 					}
 
 					// send message about transferred wish
-					$jconfig =& JFactory::getConfig();
+					$jconfig = JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
 					$oldtitle = $objWishlist->getTitle($listid);
@@ -2236,8 +2236,8 @@ class WishlistController extends JObject
 	 */
 	public function addbonus()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		$listid = JRequest::getInt('wishlist', 0);
 		$wishid = JRequest::getInt('wish', 0);
@@ -2319,8 +2319,8 @@ class WishlistController extends JObject
 	 */
 	public function deletewish()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		$wishid = JRequest::getInt('wishid', 0);
 		$id     = JRequest::getInt('id', 0);
@@ -2414,8 +2414,8 @@ class WishlistController extends JObject
 	 */
 	public function savevote()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		$refid    = JRequest::getInt('rid', 0);
 		$category = JRequest::getVar('category', '');
@@ -2555,8 +2555,8 @@ class WishlistController extends JObject
 		// get admin priviliges
 		$this->authorize_admin($this->listid);
 
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 		$filters = $this->getFilters();
 
 		$objWishlist = new Wishlist($database);
@@ -2693,8 +2693,8 @@ class WishlistController extends JObject
 	 */
 	public function savereply()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
 
 		// Incoming
@@ -2797,7 +2797,7 @@ class WishlistController extends JObject
 				$objWish->load($wishid);
 
 				// Build e-mail components
-				$jconfig =& JFactory::getConfig();
+				$jconfig = JFactory::getConfig();
 				$admin_email = $jconfig->getValue('config.mailfrom');
 
 				$name = JText::_('UNKNOWN');
@@ -2923,8 +2923,8 @@ class WishlistController extends JObject
 	 */
 	public function deletereply()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Incoming
 		$replyid = JRequest::getInt('replyid', 0);
@@ -2968,8 +2968,8 @@ class WishlistController extends JObject
 	 */
 	public function reply()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Retrieve a review or comment ID and category
 		$listid = JRequest::getInt('id', 0);
@@ -3011,8 +3011,8 @@ class WishlistController extends JObject
 	 */
 	public function rateitem()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Incoming
 		$id   = JRequest::getInt('refid', 1);
@@ -3157,8 +3157,8 @@ class WishlistController extends JObject
 	 */
 	public function getComments($parentid, $itemid, $category, $level, $abuse=false, $owners, $admin, $skipattachments=0, $getauthors = 0)
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 		$live_site = rtrim(JURI::base(),'/');
 
 		$level++;
@@ -3273,7 +3273,7 @@ class WishlistController extends JObject
 	 */
 	public function authorize_admin($listid = 0, $admin = 0)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) 
 		{
@@ -3285,7 +3285,7 @@ class WishlistController extends JObject
 			$admingroup = $this->config->get('group', 'hubadmin');
 
 			// Get list administrators
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$objOwner = new WishlistOwner($database);
 			$owners = $objOwner->get_owners($listid,  $admingroup);
 			$managers =  $owners['individuals'];
@@ -3322,7 +3322,7 @@ class WishlistController extends JObject
 	 */
 	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$query = "SELECT a.id AS value, a.name AS text"
 			  . "\n FROM #__users AS a"
@@ -3568,7 +3568,7 @@ class WishlistController extends JObject
 	 */
 	private function getAutocomplete($filters=array(), $which)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if ($which == 'resource') 
 		{
@@ -3668,7 +3668,7 @@ class WishlistController extends JObject
 			// File was uploaded
 			$description = htmlspecialchars($description);
 
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$row = new WishAttachment($database);
 			$row->bind(array(
 				'id' => 0,
@@ -3703,7 +3703,7 @@ class WishlistController extends JObject
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$file = JRequest::getVar('file', '');
 		$wishid = JRequest::getInt('wishid', 0);

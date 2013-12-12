@@ -35,7 +35,7 @@ class Hubzero_Password_Blacklist
 {
 	public function inBlacklist($word)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db)) {
 			return false;
@@ -305,7 +305,7 @@ class Hubzero_Password_Blacklist
 
 	public function basedOnBlacklist($word)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db)) {
 			return false;

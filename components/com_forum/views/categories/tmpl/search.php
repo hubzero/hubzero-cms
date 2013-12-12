@@ -30,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>

@@ -112,7 +112,7 @@ class EventsControllerRespondents extends Hubzero_Controller
 	 */
 	private function getRespondents()
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		$sorting = JRequest::getVar('sortby', 'registered DESC');

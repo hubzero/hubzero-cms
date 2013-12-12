@@ -24,7 +24,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 
 $document->addScript('/plugins/projects/databases/res/dataTables/jquery.dataTables.js');
 $document->addStyleSheet('/plugins/projects/databases/res/dataTables/jquery.dataTables.css');

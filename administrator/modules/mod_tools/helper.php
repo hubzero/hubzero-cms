@@ -123,7 +123,7 @@ class modTools extends Hubzero_Module
 		$this->database->setQuery($sql);
 		$this->abandoned = $this->database->loadResult();*/
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 
 		// Get the view

@@ -137,7 +137,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
 		{
 			$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript( $base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
 			$document->addScript( $base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
 			

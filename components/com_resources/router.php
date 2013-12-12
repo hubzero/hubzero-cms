@@ -131,7 +131,7 @@ function ResourcesParseRoute($segments)
 	{
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$t = new ResourcesType($database);
 		$types = $t->getMajorTypes();

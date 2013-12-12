@@ -44,7 +44,7 @@ class modDashboard extends Hubzero_Module
 	public function display()
 	{
 		$mosConfig_bankAccounts = 0;
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$jconfig = JFactory::getConfig();
 		$upconfig =& JComponentHelper::getParams('com_members');
@@ -109,7 +109,7 @@ class modDashboard extends Hubzero_Module
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php');
 			$obj = new Wishlist($database);
 			$objWish = new Wish($database);
-			$juser 	  =& JFactory::getUser();
+			$juser 	  = JFactory::getUser();
 
 			// Check if main wishlist exists, create one if missing
 			$mainlist = $obj->get_wishlistID(1, 'general');
@@ -123,7 +123,7 @@ class modDashboard extends Hubzero_Module
 		}
 
 		// Get styles
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . substr($this->module->module, 4). '.css');
 
 		// Get the view

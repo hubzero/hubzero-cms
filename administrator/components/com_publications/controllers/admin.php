@@ -55,7 +55,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		return;
 		
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 				
 		$obj = new Project( $this->database );
@@ -74,7 +74,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		$this->view->projects = $obj->getRecords( $this->view->filters, true, 0, 1 );
 
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Set any errors

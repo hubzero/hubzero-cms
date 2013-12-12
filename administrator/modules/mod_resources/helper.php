@@ -63,7 +63,7 @@ class modResources extends Hubzero_Module
 		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=4 AND standalone=1");
 		$this->removed = $this->database->loadResult();
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 
 		// Get the view

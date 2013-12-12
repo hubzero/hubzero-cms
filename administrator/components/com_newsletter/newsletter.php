@@ -35,7 +35,7 @@ $option = 'com_support';
 
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$jacl =& JFactory::getacl();
+	$jacl = JFactory::getacl();
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');

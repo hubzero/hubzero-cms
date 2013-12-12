@@ -353,7 +353,7 @@ class JobSeeker extends JTable
 			return false;
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$query  = "SELECT DISTINCT x.name, x.countryresident, r.title, r.filename, r.created, ";
 		$query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";

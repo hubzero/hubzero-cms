@@ -41,7 +41,7 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -94,7 +94,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 $p = new EventsPage($database);
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {

@@ -93,7 +93,7 @@ class plgMembersUsage extends Hubzero_Plugin
 			}
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$tables = $database->getTableList();
 
 		if ($returnhtml && 
@@ -184,7 +184,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 */
 	public function first_last_contribution($authorid)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$sql = 'SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), "%d %b %Y") AS first_contrib, DATE_FORMAT(MAX(res.publish_up), "%d %b %Y") AS last_contrib FROM #__resources AS res, #__author_assoc AS aa, #__resource_types AS restypes WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = "' . $authorid . '" AND res.standalone = 1 AND res.published = 1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources"';
 
@@ -218,7 +218,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 */
 	public function get_simcount($resid, $period)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$sql = 'SELECT jobs FROM #__resource_stats_tools WHERE resid="' . $resid . '" AND period="' . $period . '" ORDER BY datetime DESC LIMIT 1';
 
@@ -242,7 +242,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 */
 	public function get_usercount($resid, $period, $restype='0')
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if ($restype == '7') 
 		{
@@ -277,7 +277,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 */
 	public function get_classroom_usage($authorid) 
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 	
 		$cluster['classes'] = 0;
 		$cluster['users']   = 0;
@@ -319,7 +319,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 */
 	public function get_citationcount($resid, $authorid=0)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if ($authorid) 
 		{
@@ -352,7 +352,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 */
 	public function get_rank($authorid)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$rank = 0;
 		$i = 1;
@@ -405,7 +405,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 */
 	public function get_total_stats($authorid, $user_type, $period)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$sql = 'SELECT ' . $user_type . ' FROM #__author_stats WHERE authorid = "' . $authorid . '" AND period = "' . $period . '" ORDER BY datetime DESC LIMIT 1';
 

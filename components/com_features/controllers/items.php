@@ -88,11 +88,11 @@ class FeaturesControllerItems extends Hubzero_Controller
 
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option));
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -173,11 +173,11 @@ class FeaturesControllerItems extends Hubzero_Controller
 
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$jacl =& JFactory::getACL();
+	$jacl = JFactory::getACL();
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');

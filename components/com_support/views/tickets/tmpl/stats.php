@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (intval($this->config->get('cache', 1)))
 {
-	$cache =& JFactory::getCache('callback');
+	$cache = JFactory::getCache('callback');
 	$cache->setCaching(1);
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 

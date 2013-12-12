@@ -54,7 +54,7 @@ if ($this->show_edit != 0) {
 $html .= '</p>'."\n";
 	
 if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 
 	// Get statistics info
 	$this->helper->getCitationsCount();

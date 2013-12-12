@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = MembersHelper::getActions('component');
 
-$juser = & JFactory::getUser();
+$juser =  JFactory::getUser();
 
 JToolBarHelper::title(JText::_('MEMBERS'), 'user.png');
 if ($canDo->get('core.create')) 

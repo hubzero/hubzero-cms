@@ -134,7 +134,7 @@ class WishlistOwner extends JTable
 					}
 
 					// send email to added user
-					$jconfig =& JFactory::getConfig();
+					$jconfig = JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
 					$kind = $type==2 ? JText::_('member of Advisory Committee') : JText::_('list administrator');

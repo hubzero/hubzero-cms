@@ -65,7 +65,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 	 */
 	protected function _buildPathway($session=null)
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -135,7 +135,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		{
 			$title .= ': ';
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -243,13 +243,13 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$title .= ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($title);
 
 		$this->_getStyles($this->_option, 'assets/css/tools.css');
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -984,11 +984,11 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$title .= ': ' . JText::_('Session');
 		$title .= ($app->caption) ? ': ' . $app->sess . ' "' . $app->caption . '"' : ': ' . $app->sess;
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($title);
 
 		// Set the breadcrumbs
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(

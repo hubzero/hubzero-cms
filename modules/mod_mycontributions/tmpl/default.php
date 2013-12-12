@@ -110,7 +110,7 @@ if ($this->show_tools && $tools) {
 	//$html .= '</div>'."\n";
 	$html .= '<h4>'.JText::_('MOD_MYCONTRIBUTIONS_OTHERS_IN_PROGRESS');
 	if ($this->contributions && count($this->contributions) > $this->limit_other)  {
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$html .= ' <small><a href="'.JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '&active=contributions">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').'</a></small>'."\n";
 	}
 	$html .= '</h4>'."\n";

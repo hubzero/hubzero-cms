@@ -46,7 +46,7 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		$limit = JRequest::getVar("limit", 5);
 		
 		//get newsletter object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$newsletterNewsletter = new NewsletterNewsletter( $database );
 		
 		//get newsletters
@@ -70,7 +70,7 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		$format = JRequest::getVar("format", "json");
 		
 		//instantiate newsletter campaign object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$newsletterNewsletter = new NewsletterNewsletter( $database );
 		
 		//get the current newsletter
@@ -102,7 +102,7 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		$format = JRequest::getVar("format", "json");
 		
 		//instantiate newsletter campaign object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$newsletterNewsletter = new NewsletterNewsletter( $database );
 		
 		//get newsletters

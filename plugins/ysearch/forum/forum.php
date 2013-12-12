@@ -68,7 +68,7 @@ class plgYSearchForum extends YSearchPlugin
 			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.comment NOT LIKE '%$forb%')";
 		}
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$gids = $authz->get_group_ids();

@@ -46,7 +46,7 @@ if ($mode != 'preview')
 	}
 }
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 ?>
 		<div class="main section upperpane">
 			<div class="aside rankarea">

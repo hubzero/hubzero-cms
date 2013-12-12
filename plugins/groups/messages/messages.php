@@ -111,7 +111,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 			$group_plugin_acl = $access[$active];
 
 			//Create user object
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -182,7 +182,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 	protected function _sent()
 	{
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . JText::_('PLG_GROUPS_MESSAGES_SENT'));
 
 		// Filters for returning results
@@ -192,7 +192,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		$filters['group_id'] = $this->group->get('gidNumber');
 
 		// Instantiate our message object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$recipient = new Hubzero_Message_Message($database);
 
 		// Retrieve data
@@ -253,7 +253,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		}
 
 		//insantiate db
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Load the message and parse it
 		$xmessage = new Hubzero_Message_Message($database);
@@ -311,7 +311,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		}
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_MESSAGES_SEND'));
 
 		// Instantiate a vew
@@ -325,7 +325,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		);
 
 		//get all member roles
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber='".$this->group->get('gidNumber')."'";
 		$db->setQuery($sql);
 		$member_roles = $db->loadAssocList();
@@ -363,7 +363,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 	protected function _send()
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			return false;
@@ -404,7 +404,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 					if (strstr($mbr, '_')) 
 					{
 						$role = explode('_', $mbr);
-						$db =& JFactory::getDBO();
+						$db = JFactory::getDBO();
 						$sql = "SELECT uidNumber FROM #__xgroups_member_roles WHERE role=" . $db->Quote($role[1]);
 						$db->setQuery($sql);
 						$member_roles = $db->loadAssocList();
@@ -449,7 +449,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 
 		// Build the "from" data for the e-mail
 		$from = array();
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 		$from['name'] = $this->group->get('description') . " Group on " . $config->getValue("fromname");
 		$from['email'] = $config->getValue("mailfrom");
 		$from['replytoname'] = 'DO NOT REPLY TO THIS MESSAGE';
@@ -469,7 +469,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		// Log the action
 		if ($action) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->timestamp = JFactory::getDate()->toSql();

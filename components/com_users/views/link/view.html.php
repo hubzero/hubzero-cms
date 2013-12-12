@@ -40,8 +40,8 @@ class UsersViewLink extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$user     =& JFactory::getUser();
-		$document =& JFactory::getDocument();
+		$user     = JFactory::getUser();
+		$document = JFactory::getDocument();
 
 		// If this is an auth_link account update, carry on, otherwise raise an error
 		if(!is_object($user)
@@ -112,7 +112,7 @@ class UsersViewLink extends JViewLegacy
 		// @TODO: Could also check for high probability of name matches???
 
 		// Get the site name
-		$jconfig  =& JFactory::getConfig();
+		$jconfig  = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 
 		// Assign variables to the view

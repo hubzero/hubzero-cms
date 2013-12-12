@@ -105,7 +105,7 @@ class plgResourcesCitations extends JPlugin
 			return $arr;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Get a needed library
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');

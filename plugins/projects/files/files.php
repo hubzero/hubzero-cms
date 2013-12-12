@@ -174,7 +174,7 @@ class plgProjectsFiles extends JPlugin
 			ximport('Hubzero_View_Helper_Html');
 			ximport('Hubzero_Plugin_View');
 			
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 								
 			// Get joomla libraries
 			jimport('joomla.filesystem.folder');
@@ -213,7 +213,7 @@ class plgProjectsFiles extends JPlugin
 			$this->_uid = $uid;
 			if (!$this->_uid) 
 			{
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
 			
@@ -221,7 +221,7 @@ class plgProjectsFiles extends JPlugin
 			$zone = date_default_timezone_get();
 						
 			// Get JS and CSS
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			ximport('Hubzero_Document');
 			if ($this->_task != 'browser')
 			{
@@ -387,7 +387,7 @@ class plgProjectsFiles extends JPlugin
 		// Get path
 		$path = $this->getProjectPath();
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
 		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');	
@@ -500,7 +500,7 @@ class plgProjectsFiles extends JPlugin
 		$view->project 		= $this->_project;
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
-		$view->juser		=& JFactory::getUser();
+		$view->juser		= JFactory::getUser();
 		$view->filters 		= $filters;
 		$view->subdir 		= $subdir;
 		$view->task			= $this->_task;
@@ -696,7 +696,7 @@ class plgProjectsFiles extends JPlugin
 		$message  = '';
 		
 		// Get session
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 
 		// Get values from session
 		$updated 	= $jsession->get('projects.updated');
@@ -822,7 +822,7 @@ class plgProjectsFiles extends JPlugin
 		// Add uploader css		
 		if (!$ajax)
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
 		}
 		
@@ -904,7 +904,7 @@ class plgProjectsFiles extends JPlugin
 		$exists	  	= 0;
 				
 		// Get session
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 		
 		// Get values from session
 		$updateVal = $jsession->get('projects.updated');
@@ -3195,7 +3195,7 @@ class plgProjectsFiles extends JPlugin
 		$file = $data->file;
 		$disp = isset($data->disp) ? $data->disp : 'inline';
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Instantiate a project
 		$obj = new Project( $database );
@@ -5379,7 +5379,7 @@ class plgProjectsFiles extends JPlugin
 		
 		if ($by != 'admin')
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
 			$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
 		}
@@ -5438,7 +5438,7 @@ class plgProjectsFiles extends JPlugin
 			$filters['ignore_access']   = 1;
 			$filters['dev']   	 		= 1;
 			
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			
 			$objP 				= new Publication( $database );
 			$pubs 				= $objP->getRecords($filters);
@@ -6074,7 +6074,7 @@ class plgProjectsFiles extends JPlugin
 			return 0;
 		}
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$obj = new Project( $database );
 		if (!$obj->loadProject($identifier))
@@ -6326,7 +6326,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Get site name
-		$jconfig =& JFactory::getConfig();		
+		$jconfig = JFactory::getConfig();		
 		$sitename = $jconfig->getValue('config.sitename') ? $jconfig->getValue('config.sitename') : 'myhub';
 
 		// Get configs

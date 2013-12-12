@@ -119,7 +119,7 @@ class CollectionsTableVote extends JTable
 			return false;
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$this->id) 
 		{
 			$this->voted = JFactory::getDate()->toSql();

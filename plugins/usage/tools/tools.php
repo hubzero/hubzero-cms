@@ -581,7 +581,7 @@ class plgUsageTools extends JPlugin
 	 */
 	private function check_for_data($yearmonth, $period)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$sql = "SELECT COUNT(datetime) FROM #__stats_topvals WHERE LEFT(datetime,7) = " . $database->Quote($yearmonth) . " AND period = " . $database->Quote($period);
 		$database->setQuery($sql);
@@ -671,7 +671,7 @@ class plgUsageTools extends JPlugin
 			}
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();

@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		case 'edit':
 			if ($this->self) {
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 
 				$html .= '<div class="help">'."\n";
 				$html .= "\t".'<h4>How do I change my password?</h4>'."\n";
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 		// There are third party plugins, so show them on the registration form
 		if(!empty($authenticators))
 		{
-			$doc =& JFactory::getDocument();
+			$doc = JFactory::getDocument();
 			$com_users = (version_compare(JVERSION, '1.6', 'ge')) ? 'com_users' : 'com_user';
 			$doc->addStylesheet(DS . 'components' . DS . $com_users . DS . 'assets' . DS . 'css' . DS . 'providers.css');
 			$html .= '<div class="explaination"><p class="info">You can choose to log in via one of these services, and we\'ll help you fill in the info below!</p></div>';
@@ -367,7 +367,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= "\t\t".'</div>'."\n";
 
 			if ($this->registrationEmail != REG_HIDE) {
-				$jconfig =& JFactory::getConfig();
+				$jconfig = JFactory::getConfig();
 				if ($this->task == 'proxycreate') {
 					$html .= "\t\t".RegistrationHelperHtml::warning('Important! The user <strong>MUST</strong> click on the email confirmation link that you will send them in order for them to start using the account you have created for them.');
 				} else if ($this->task == 'create') {
@@ -443,7 +443,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= "\t\t\t\t" . '<select name="orgtype" id="orgtype">' . "\n";
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$rot = new RegisterOrganizationType($database);
 			$types = $rot->getTypes();
 
@@ -492,7 +492,7 @@ defined('_JEXEC') or die('Restricted access');
 			$org_known = 0;
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organization.php');
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$xo = new RegisterOrganization($database);
 			$orgs = $xo->getOrgs();
 

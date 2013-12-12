@@ -190,7 +190,7 @@ class MwSession extends JTable
 		} 
 		else 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
 					  WHERE v.sessnum=" . $sess . " 
@@ -236,7 +236,7 @@ class MwSession extends JTable
 		{
 			// Note: this check is different from others.
 			// Here, we check that the $juser->get('username') OWNS the session.
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
 					  WHERE v.sessnum=" . $sess . " 

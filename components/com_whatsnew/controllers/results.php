@@ -226,11 +226,11 @@ class WhatsnewControllerResults extends Hubzero_Controller
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . $this->_jtext($this->view->period);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -286,10 +286,10 @@ class WhatsnewControllerResults extends Hubzero_Controller
 	{
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
@@ -380,7 +380,7 @@ class WhatsnewControllerResults extends Hubzero_Controller
 			)
 		);
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();

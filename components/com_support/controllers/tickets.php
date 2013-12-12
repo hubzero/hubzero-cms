@@ -62,7 +62,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	protected function _buildPathway($ticket=null)
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -123,7 +123,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$this->_title .= ' #' . $ticket->id;
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -179,7 +179,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		//$this->view->sort = JRequest::getVar('sort', 'name');
 
 		// Set up some dates
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
@@ -590,7 +590,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$obj = new SupportTicket($this->database);
 
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->view->total = 0;
 		$this->view->rows = array();
@@ -1196,7 +1196,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Get some email settings
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		//$admin   = $jconfig->getValue('config.mailfrom');
 		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_SUPPORT') . ', ' . JText::sprintf('COM_SUPPORT_TICKET_NUMBER', $row->id);
 		
@@ -1296,7 +1296,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// otherwise, we're only recording a changelog
 		if ($row->owner) 
 		{
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// Parse comments for attachments
 			/*$attach = new SupportAttachment($this->database);
@@ -1783,7 +1783,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Incoming
 		//$this->view->filters = $this->_getFilters();
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->view->filters = array();
 		// Paging
@@ -2265,7 +2265,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				// otherwise, we're only recording a changelog
 				if ($comment || $row->owner != $old->owner) 
 				{
-					$jconfig =& JFactory::getConfig();
+					$jconfig = JFactory::getConfig();
 
 					// Parse comments for attachments
 					$attach = new SupportAttachment($this->database);

@@ -24,7 +24,7 @@ function dv_data_definition_update()
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
 
 

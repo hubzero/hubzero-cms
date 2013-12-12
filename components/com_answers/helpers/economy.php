@@ -160,7 +160,7 @@ class AnswersEconomy extends JObject
 	 */
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if ($qid === NULL) 
 		{

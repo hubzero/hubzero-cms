@@ -52,10 +52,10 @@ class SupportControllerTickets extends Hubzero_Controller
 	{
 		// Get configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
 
 		$obj = new SupportTicket($this->database);
@@ -241,7 +241,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->view->setLayout('edit');
 
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
 		//$document->addScript('/components' . DS . 'com_support' . DS . 'autosave.js');
 
@@ -613,7 +613,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				if ($comment || $row->owner != $old->owner)
 				{
 					$juri =& JURI::getInstance();
-					$jconfig =& JFactory::getConfig();
+					$jconfig = JFactory::getConfig();
 
 					$base = $juri->base();
 					if (substr($base, -14) == 'administrator/')

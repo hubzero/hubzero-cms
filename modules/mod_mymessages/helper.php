@@ -45,7 +45,7 @@ class modMyMessages extends Hubzero_Module
 	public function display()
 	{
 		$this->juser = JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
 		$limit = intval($this->params->get('limit', 10));

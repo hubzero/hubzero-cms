@@ -68,7 +68,7 @@ class CartModelCart
 	public function __construct($crtId = NULL, $staticMode = false)
 	{
 		// Initialize DB
-		$this->_db =& JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 		
 		// Load language file
 		JFactory::getLanguage()->load('com_cart');
@@ -77,7 +77,7 @@ class CartModelCart
 		if (!$crtId && !$staticMode)
 		{
 			// Get user
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			
 			// get cart from session
 			$cart = $this->liftSessionCart();
@@ -345,7 +345,7 @@ class CartModelCart
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart') . '/checkout/' . $where;
 		}
 				
-		$app  = & JFactory::getApplication();
+		$app  =  JFactory::getApplication();
 		$app->redirect($redirect_url);	
 	}
 	
@@ -635,7 +635,7 @@ class CartModelCart
 				$sqlUpdateValues = str_replace('tiShipping', 'sa', $sqlUpdateValues);
 				
 				// Get user
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 				$uId = $juser->id;
 				
 				$sql = "INSERT IGNORE INTO `#__cart_saved_addresses` 
@@ -870,7 +870,7 @@ class CartModelCart
 	 */
 	public function getSavedShippingAddresses()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$uId = $juser->id;
 		$uId = Cart_Helper::escapeDb($uId);
 		
@@ -1062,7 +1062,7 @@ class CartModelCart
 		$this->apply($cnId);
 						
 		// If user is logged in subtract coupon use count. If not logged in subtraction will happen when user logs in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->id)
 		{
 			$coupons->apply($cnId);	
@@ -1543,7 +1543,7 @@ class CartModelCart
 		$coupons = new Hubzero_Storefront_Coupons;
 				
 		// If user is logged in return coupon back to the coupons pool.
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->id)
 		{
 			//print_r($juser); die;
@@ -2063,7 +2063,7 @@ class CartModelCart
 			echo "<br>Creating new cart";
 		}
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		$uId = 'NULL';
 		if (!$juser->get('guest'))
@@ -2149,7 +2149,7 @@ class CartModelCart
 		setcookie("cartId", '', time() - 60 * 60 * 24 * 90); // -90 days
 		
 		// Get user
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		// Check if session cart is not someone else's. Otherwise load user's cart and done
 		if ($this->cartIsLinked($this->crtId)) 

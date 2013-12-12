@@ -109,8 +109,8 @@ class plgResourcesWishlist extends JPlugin
 			return $arr;
 		}
 
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser    = JFactory::getUser();
 
 		$option = 'com_wishlist';
 		$cat    = 'resource';

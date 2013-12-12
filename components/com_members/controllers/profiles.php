@@ -225,11 +225,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$this->view->contribution_counting = $this->config->get('contribution_counting', true);
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -311,11 +311,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -349,7 +349,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		// Initiate a contributor object
 		$c = new MembersProfile($this->database);
 
-		$cache =& JFactory::getCache('callback');
+		$cache = JFactory::getCache('callback');
 		$cache->setCaching(1);
 		$cache->setLifeTime(intval($this->config->get('cache_time', 15)));
 		$stats = $cache->call(array($this, 'stats'));
@@ -460,7 +460,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$this->view->title  = JText::_(strtoupper($this->_name));
 		$this->view->title .= ($this->_task) ? ': ' . JText::_(strtoupper($this->_task)) : '';
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -618,11 +618,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': ' . JText::_(strtoupper($this->_task)) : '';
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($title);
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -835,7 +835,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		// Redirect user back to main account page
 		$return = base64_decode(JRequest::getVar('return', '',  'method', 'base64'));
 		$this->_redirect = $return ? $return : JRoute::_('index.php?option=' . $this->_option . '&id=' . $id);
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 
 		// Redirect user back to main account page
 		if (JRequest::getInt('no_html', 0))
@@ -873,11 +873,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$this->view->title  = JText::_(strtoupper($this->_name));
 		$this->view->title .= ($this->_task) ? ': ' . JText::_(strtoupper($this->_task)) : '';
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -1131,11 +1131,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$this->view->title  = JText::_(strtoupper($this->_name));
 		$this->view->title .= ($this->_task) ? ': ' . JText::_(strtoupper($this->_task)) : '';
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -1563,7 +1563,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		//if were declinging the terms we want to logout user and tell the javascript
 		if ($declineTOU)
 		{
-			$application =& JFactory::getApplication();
+			$application = JFactory::getApplication();
 			$application->logout();
 			echo json_encode(array('loggedout' => true));
 			return;
@@ -1594,7 +1594,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 	 */
 	private function _sendConfirmationCode($login, $email, $confirm)
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$juri = JURI::getInstance();
 
 		// Email subject
@@ -1635,7 +1635,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 	public function saveaccessTask()
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($this->juser->get('guest')) 
 		{
 			return false;
@@ -1683,11 +1683,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 	public function activityTask()
 	{
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_task)));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(

@@ -44,8 +44,8 @@ class modMyFavorites extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
 		$limit = intval($this->params->get('limit', 5));

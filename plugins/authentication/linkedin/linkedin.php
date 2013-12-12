@@ -118,7 +118,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 
 		// Check to see if a return parameter was specified
 		if($return = JRequest::getVar('return', '', 'method', 'base64'))
@@ -218,7 +218,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			if($reply['success'] === TRUE)
 			{
 				// Store the request token
-				$jsession =& JFactory::getSession();
+				$jsession = JFactory::getSession();
 				$jsession->set('linkedin.oauth.request', $reply['linkedin']);
 
 				// Redirect the user to the LinkedIn authentication/authorization page to initiate validation
@@ -257,7 +257,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Make sure we have authorization
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 		if($jsession->get('linkedin.oauth.authorized') == TRUE)
 		{
 			// User initiated LinkedIn connection, set up config
@@ -329,7 +329,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 	{
 		$app = JFactory::getApplication();
 		$juser    = JFactory::getUser();
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 
 		// Set up linkedin configuration
 		$linkedin_config['appKey']    = $this->params->get('api_key');
@@ -355,7 +355,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		if($reply['success'] === TRUE)
 		{
 			// The request went through without an error, gather user's 'access' tokens
-			$jsession =& JFactory::getSession();
+			$jsession = JFactory::getSession();
 			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference

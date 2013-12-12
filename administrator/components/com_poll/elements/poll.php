@@ -26,7 +26,7 @@ class JElementPoll extends JElement
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = 'SELECT a.id, a.title'
 		. ' FROM #__polls AS a'

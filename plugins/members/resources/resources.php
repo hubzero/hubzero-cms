@@ -93,7 +93,7 @@ class plgMembersResources extends JPlugin
 		if (!is_array($categories)) 
 		{
 			// Get categories
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$rt = new ResourcesType($database);
 			$categories = $rt->getMajorTypes();
 			$this->_cats = $categories;
@@ -144,7 +144,7 @@ class plgMembersResources extends JPlugin
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if (is_array($areas) && $limit) 
 		{
@@ -323,12 +323,12 @@ class plgMembersResources extends JPlugin
 	public function out($row)
 	{
 		$authorized = false;
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->authorize('com_resources', 'manage'))
 		{
 			$authorized = true;
 		}
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Instantiate a helper object
 		$helper = new ResourcesHelper($row->id, $database);
@@ -498,7 +498,7 @@ class plgMembersResources extends JPlugin
 	 */
 	public function onMembersFavorites($member, $option, $limit=0, $limitstart=0, $areas=null)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if (is_array($areas) && $limit) 
 		{

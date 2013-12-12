@@ -50,9 +50,9 @@ class CoursesControllerMedia extends Hubzero_Controller
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
 
 		// Instantiate objects
-		$juser    =& JFactory::getUser();
-		$database =& JFactory::getDBO();
-		$session  =& JFactory::getSession();
+		$juser    = JFactory::getUser();
+		$database = JFactory::getDBO();
+		$session  = JFactory::getSession();
 
 		// Get request vars
 		$time       = JRequest::getVar('time', 0);

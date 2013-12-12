@@ -320,7 +320,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$currentEmails = array_keys($newsletterMailinglist->getListEmails( $this->mid, $key ='email', $filters ));
 		
 		//get the applicaton
-		$application =& JFactory::getApplication();
+		$application = JFactory::getApplication();
 		
 		//get com_media params
 		$config =& JComponentHelper::getParams('com_media');

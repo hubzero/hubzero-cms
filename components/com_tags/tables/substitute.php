@@ -111,7 +111,7 @@ class TagsTableSubstitute extends JTable
 
 		if (!$this->id) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}

@@ -268,7 +268,7 @@ class UsersControllerUser extends UsersController
 		// Check for errors.
 		if ($return === false) {
 			// Get the validation messages.
-			$app	= &JFactory::getApplication();
+			$app	=  JFactory::getApplication();
 			$errors	= $model->getErrors();
 
 			// Push up to three validation messages out to the user.

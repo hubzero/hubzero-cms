@@ -79,7 +79,7 @@ class PollController extends JController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 
 		// save the poll parent information
 		$row	=& JTable::getInstance('poll', 'Table');
@@ -144,7 +144,7 @@ class PollController extends JController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$cid	= JRequest::getVar( 'cid', array(), '', 'array' );
 
 		JArrayHelper::toInteger($cid);
@@ -174,8 +174,8 @@ class PollController extends JController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$db 	=& JFactory::getDBO();
-		$user 	=& JFactory::getUser();
+		$db 	= JFactory::getDBO();
+		$user 	= JFactory::getUser();
 
 		$cid		= JRequest::getVar( 'cid', array(), '', 'array' );
 		$publish	= ( $this->getTask() == 'publish' ? 1 : 0 );
@@ -222,8 +222,8 @@ class PollController extends JController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$db 	=& JFactory::getDBO();
-		$user 	=& JFactory::getUser();
+		$db 	= JFactory::getDBO();
+		$user 	= JFactory::getUser();
 
 		$cid		= JRequest::getVar( 'cid', array(), '', 'array' );
 		$publish	= ( $this->getTask() == 'open' ? 1 : 0 );
@@ -263,7 +263,7 @@ class PollController extends JController
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$id		= JRequest::getVar( 'id', 0, '', 'int' );
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$row	=& JTable::getInstance('poll', 'Table');
 
 		$row->checkin( $id );

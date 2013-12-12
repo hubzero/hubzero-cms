@@ -56,7 +56,7 @@ class modFeaturedblog extends Hubzero_Module
 
 		ximport('Hubzero_User_Profile');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$pass = 1;
 		$filters = array();
@@ -78,13 +78,13 @@ class modFeaturedblog extends Hubzero_Module
 		if ($catid) 
 		{
 			// Yes - so we need to check if there's an active article to display
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$aid = $juser->get('aid', 0);
 
 			$contentConfig =& JComponentHelper::getParams('com_content');
 			$noauth = !$contentConfig->get('shownoauth');
 
-			$date =& JFactory::getDate();
+			$date = JFactory::getDate();
 			$now = $date->toMySQL();
 
 			$nullDate = $database->getNullDate();

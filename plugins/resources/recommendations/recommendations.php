@@ -94,7 +94,7 @@ class plgResourcesRecommendations extends JPlugin
 		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 10;
 
 		// Get recommendations
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$r = new ResourcesRecommendation($database);
 		$results = $r->getResults($filters);
 

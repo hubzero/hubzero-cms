@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 
 $i = 1;
 $limit = intval($this->_params->get('icons_limit')) ? intval($this->_params->get('icons_limit')) : 8;

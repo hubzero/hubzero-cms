@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label><?php echo JText::_('Description'); ?>:</label></td>
 						<td><?php 
-							$editor =& JFactory::getEditor();
+							$editor = JFactory::getEditor();
 							echo $editor->display('fields[description]', stripslashes($this->row->description), '', '', '45', '10', false);
 						?></td>
 					</tr>

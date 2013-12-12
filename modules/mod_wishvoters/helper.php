@@ -44,8 +44,8 @@ class modWishVoters extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.plan.php');

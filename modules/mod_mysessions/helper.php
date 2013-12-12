@@ -110,7 +110,7 @@ class modMySessions extends Hubzero_Module
 		//set ACL for com_tools
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$jacl =& JFactory::getACL();
+			$jacl = JFactory::getACL();
 			$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
 			$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
 			$jacl->addACL('com_tools', 'manage', 'users', 'manager');

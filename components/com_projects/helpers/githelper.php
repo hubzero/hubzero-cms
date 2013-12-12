@@ -73,7 +73,7 @@ class ProjectsGitHelper extends JObject {
 		
 		if (!$userid)
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->_uid = $juser->get('id');
 		}		
 	}

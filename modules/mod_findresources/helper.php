@@ -48,7 +48,7 @@ class modFindResources extends Hubzero_Module
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$obj = new TagsTableTag($database);
 
@@ -72,7 +72,7 @@ class modFindResources extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));

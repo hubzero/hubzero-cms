@@ -241,7 +241,7 @@ class WishlistEconomy extends JObject
 		}
 
 		// Points for wish author (needs to be granted by another person)
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($wish->ranking > 0 && $wish->proposed_by != $juser->get('id') && $wish->proposed_by) 
 		{
 			$o =& JUser::getInstance($wish->proposed_by);

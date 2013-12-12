@@ -207,7 +207,7 @@ class CartMessenger
 		// Get message plugin
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher =& JDispatcher::getInstance();
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		
 		// "from" info
 		$from = array();		
@@ -244,7 +244,7 @@ class CartMessenger
 		// "from" info
 		$from = array();
 		
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$from['name']  = $jconfig->getValue('config.sitename');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 		

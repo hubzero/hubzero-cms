@@ -32,7 +32,7 @@ class PollViewPolls extends JView
 		$option = 'com_poll';
 		$mainframe = JFactory::getApplication();
 
-		$db					=& JFactory::getDBO();
+		$db					= JFactory::getDBO();
 		$filter_order		= $mainframe->getUserStateFromRequest( "$option.filter_order",		'filter_order',		'm.id',	'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( "$option.filter_order_Dir",	'filter_order_Dir',	'',		'word' );
 		$filter_state		= $mainframe->getUserStateFromRequest( "$option.filter_state",		'filter_state',		'',		'word' );

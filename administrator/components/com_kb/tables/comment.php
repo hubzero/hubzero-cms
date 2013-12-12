@@ -191,7 +191,7 @@ class KbTableComment extends JTable
 			$parent = 0;
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		//$sql = "SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND parent=$parent ORDER BY created ASC";
 		if (!$juser->get('guest')) 

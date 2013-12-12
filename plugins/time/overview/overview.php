@@ -98,7 +98,7 @@ class plgTimeOverview extends Hubzero_Plugin
 		$this->_option =  $option;
 		$this->action  =  $action;
 		$this->db      =  JFactory::getDBO();
-		$this->juser   =& JFactory::getUser();
+		$this->juser   = JFactory::getUser();
 
 		// Include needed DB class(es)
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
@@ -111,7 +111,7 @@ class plgTimeOverview extends Hubzero_Plugin
 		Hubzero_Document::addPluginStylesheet('time','overview');
 
 		// Get the Joomla document and add google JS API
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addScript('https://www.google.com/jsapi');
 
 		// Generate script to draw chart and push to the page

@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Push some styles to the template
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'conditions.css');
 
 $tmpl = JRequest::getVar('tmpl', '');

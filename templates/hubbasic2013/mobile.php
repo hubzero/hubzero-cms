@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Document');
 ximport('Hubzero_Device');
 
-$config =& JFactory::getConfig();
+$config = JFactory::getConfig();
 
 //define tempate
 $this->template = 'hubbasic2013';

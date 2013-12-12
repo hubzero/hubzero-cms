@@ -233,10 +233,10 @@ if ($this->resource->type == 4) {
 			$html .= '<img ' . $attributes . ' src="' . $url . '" alt="Image" />'."\n";
 		} else if (in_array(strtolower($type), $files)) {
 			$token = '';
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			if (!$juser->get('guest'))
 			{
-				$session =& JFactory::getSession();
+				$session = JFactory::getSession();
 
 				$session_id = $session->getId();
 

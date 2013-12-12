@@ -545,12 +545,12 @@ class PublicationsHtml
 				}
 				if (strtolower($name) == $active) 
 				{
-					$app =& JFactory::getApplication();
+					$app = JFactory::getApplication();
 					$pathway =& $app->getPathway();
 					$pathway->addItem($cat[$name],$url);
 					
 					if ($active != 'about') {
-						$document =& JFactory::getDocument();
+						$document = JFactory::getDocument();
 						$title = $document->getTitle();
 						$document->setTitle( $title.': '.$cat[$name] );
 					}
@@ -1274,7 +1274,7 @@ class PublicationsHtml
 			$tz = false;
 		}
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$config =& JComponentHelper::getParams( 'com_publications' );
 		

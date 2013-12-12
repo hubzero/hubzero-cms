@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //database object
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 //declare vars
 $citations_require_attention = $this->citations_require_attention;

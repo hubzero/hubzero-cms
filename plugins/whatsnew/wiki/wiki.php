@@ -92,7 +92,7 @@ class plgWhatsnewWiki extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
@@ -105,7 +105,7 @@ class plgWhatsnewWiki extends JPlugin
 		$filters['enddate']    = $period->cEndDate;
 		$filters['sortby']     = 'date';
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$filters['authorized'] = false;
 		if (!$juser->get('guest')) 
 		{

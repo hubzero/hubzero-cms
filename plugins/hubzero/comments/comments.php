@@ -286,7 +286,7 @@ class plgHubzeroComments extends JPlugin
 
 		if ($url) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($url, $msg, $msgType);
 		}
 	}
@@ -575,11 +575,11 @@ class plgHubzeroComments extends JPlugin
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		//$params =& $mainframe->getParams();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$params =& $app->getParams();
 
 		// Start a new feed object
@@ -604,7 +604,7 @@ class plgHubzeroComments extends JPlugin
 		//$month = JRequest::getInt('month', 0);
 
 		// Build some basic RSS document information
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$doc->title  = $jconfig->getValue('config.sitename').' - '.JText::_(strtoupper($this->_option));
 		//$doc->title .= ($year) ? ': '.$year : '';
 		//$doc->title .= ($month) ? ': '.sprintf("%02d",$month) : '';

@@ -426,7 +426,7 @@ class plgResourcesQuestions extends JPlugin
 		if (!empty($receivers)) 
 		{
 			// Send a message about the new question to authorized users (specified admins or related content authors)
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$from = array(
 				'email' => $jconfig->getValue('config.mailfrom'),
 				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),

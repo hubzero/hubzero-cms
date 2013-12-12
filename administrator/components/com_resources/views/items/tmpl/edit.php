@@ -43,7 +43,7 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 
 if ($this->row->standalone == 1) {
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 
 	$type = new ResourcesType($database);
 	$type->load($this->row->type);
@@ -236,7 +236,7 @@ function popratings()
 					<td colspan="4">
 						<label>Intro Text:</label><br />
 						<?php
-						$editor =& JFactory::getEditor();
+						$editor = JFactory::getEditor();
 						echo $editor->display('introtext', $this->escape(stripslashes($this->row->introtext)), '100%', '100px', '45', '10', false);
 						?>
 					</td>

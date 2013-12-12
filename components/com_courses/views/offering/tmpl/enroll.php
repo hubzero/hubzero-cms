@@ -32,8 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get objects
-$config 	=& JFactory::getConfig();
-$database 	=& JFactory::getDBO();
+$config 	= JFactory::getConfig();
+$database 	= JFactory::getDBO();
 
 $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 ?>

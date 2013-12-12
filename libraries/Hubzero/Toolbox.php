@@ -46,7 +46,7 @@ class Hubzero_Toolbox
 	 */
 	public function send_email($email, $subject, $message)
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$contact_email = $jconfig->getValue('config.mailfrom');
 		$contact_name  = $jconfig->getValue('config.sitename') . ' Administrator';

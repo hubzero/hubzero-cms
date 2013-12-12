@@ -141,7 +141,7 @@ class CollectionsTablePost extends JTable
 			return false;
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$this->id) 
 		{
 			$this->created = JFactory::getDate()->toSql();

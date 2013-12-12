@@ -110,7 +110,7 @@ class plgPublicationsQuestions extends JPlugin
 			return $arr;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Get a needed library
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php' );

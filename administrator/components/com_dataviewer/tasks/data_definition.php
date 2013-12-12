@@ -15,7 +15,7 @@ function dv_data_definition()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
 	$db_id = JRequest::getString('db', false);

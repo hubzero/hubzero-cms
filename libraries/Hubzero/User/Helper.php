@@ -90,7 +90,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getXDomainId($domain)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
@@ -119,7 +119,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getXDomainUserId($domain_username, $domain)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return $domain_username;
@@ -149,7 +149,7 @@ class Hubzero_User_Helper
 	 */
 	public static function deleteXDomainUserId($id)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if (empty($id))
 			return false;
@@ -178,7 +178,7 @@ class Hubzero_User_Helper
 	 */
 	public static function isXDomainUser($uid)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = 'SELECT uidNumber FROM #__xdomain_users WHERE #__xdomain_users.uidNumber=' . $db->Quote($uid);
 
@@ -202,7 +202,7 @@ class Hubzero_User_Helper
 	 */
 	public static function createXDomain($domain)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
@@ -257,7 +257,7 @@ class Hubzero_User_Helper
 	 */
 	public static function mapXDomainUser($domain_username, $domain, $uidNumber)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if (empty($domain))
 			return 0;
@@ -308,7 +308,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getGroups($uid, $type='all', $cat = null)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$g = '';
 		if ($cat == 1) {
@@ -383,7 +383,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getCourses($uid, $type='all', $cat = null)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$g = '';
 		if ($cat == 1) {

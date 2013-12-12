@@ -211,7 +211,7 @@ class StoreControllerMedia extends Hubzero_Controller
 		$path = JPATH_ROOT . $this->view->path;
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'store.css');
 
 		if (is_dir($path))

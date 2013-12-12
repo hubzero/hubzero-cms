@@ -321,7 +321,7 @@ class Hubzero_Bank_Transaction extends JTable
 
 		if ($uid == null) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 

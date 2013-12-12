@@ -477,7 +477,7 @@ class Hubzero_Item_Comment extends JTable
 			return false;
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (!$juser->get('guest')) 
 		{

@@ -81,10 +81,10 @@ $docs 	= array('pdf', 'doc', 'docx', 'xls', 'xlsx',
 $html5video = array("mp4","m4v","webm","ogv");
 
 $token = '';
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 if (!$juser->get('guest'))
 {
-	$session =& JFactory::getSession();
+	$session = JFactory::getSession();
 
 	$session_id = $session->getId();
 	

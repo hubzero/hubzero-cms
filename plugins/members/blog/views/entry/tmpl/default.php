@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile_Helper');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $entry_year  = substr($this->row->get('publish_up'), 0, 4);
 $entry_month = substr($this->row->get('publish_up'), 5, 2);

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 //$document->addScript('components/'.$this->option.'/assets/js/xsortables.js');
 //$document->addScript('components/'.$this->option.'/assets/js/resources.js');
 

@@ -53,7 +53,7 @@ if ($mode != 'preview')
 		$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';
         	$html .= '<img src="'.$thumb.'" alt="'.$resource->id.' Impact Graph"/></a>';
 	}
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 ?>
 		<div class="main section upperpane">
 			<div class="aside rankarea">

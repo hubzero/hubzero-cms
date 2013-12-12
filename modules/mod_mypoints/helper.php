@@ -44,9 +44,9 @@ class modMyPoints extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$jconfig =& JFactory::getConfig();
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$jconfig = JFactory::getConfig();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 10));

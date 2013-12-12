@@ -46,11 +46,11 @@ class JobsControllerJobs extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'jobs.css');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		$this->view->filters = array();
@@ -146,11 +146,11 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		$this->view->setLayout('edit');
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'jobs.css');
 
 		// Incoming job ID
@@ -351,7 +351,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		if (($message && $action == 'message' && $id) || ($action && $action != 'message')) 
 		{
 			// Email all the contributors
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// E-mail "from" info
 			$from = array();

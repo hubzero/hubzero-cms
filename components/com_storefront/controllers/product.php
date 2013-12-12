@@ -48,7 +48,7 @@ class StorefrontControllerProduct extends ComponentController
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 		
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 				
 		$this->pathway = $pathway;
@@ -92,7 +92,7 @@ class StorefrontControllerProduct extends ComponentController
 		$view = new JView( array('name'=>'product', 'layout' => 'display') );
 		$view->pId = $pId;
 		
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addScript(DS . 'components' . DS . 'com_storefront' . DS . 'assets' . DS . 'js' . DS . 'product_display.js');
 		//$doc->addScript(JURI::root() . 'storefront/product/getJs');
 		
@@ -129,7 +129,7 @@ class StorefrontControllerProduct extends ComponentController
 				// prevent resubmitting by refresh
 				// If not an ajax call, redirect to cart
 				$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-				$app  = & JFactory::getApplication();
+				$app  =  JFactory::getApplication();
 				$app->redirect($redirect_url);		
 			}			
 		}

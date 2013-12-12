@@ -52,8 +52,8 @@ class modMyResources extends Hubzero_Module
 			$this->addScript();
 		}
 
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		$this->limit = intval($this->params->get('limit', 5));
 

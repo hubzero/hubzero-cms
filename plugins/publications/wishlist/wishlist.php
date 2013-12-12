@@ -116,8 +116,8 @@ class plgPublicationsWishlist extends JPlugin
 			}
 		}
 				
-		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser 	  = JFactory::getUser();
 		
 		$option = 'com_wishlist';
 		$cat 	= 'publication';

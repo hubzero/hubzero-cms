@@ -287,7 +287,7 @@ if ($this->registration->Organization != REG_HIDE) {
 	//$orgs = array();
 	//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_hub'.DS.'xorganization.php' );
 	include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organization.php' );
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 	//$xo = new XOrganization( $database );
 	$xo = new RegisterOrganization( $database );
 	$orgs = $xo->getOrgs();

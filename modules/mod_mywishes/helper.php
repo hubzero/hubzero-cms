@@ -44,8 +44,8 @@ class modMyWishes extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 
 		$limit = intval($this->params->get('limit', 10));
 

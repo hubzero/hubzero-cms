@@ -63,7 +63,7 @@ class Hubzero_Message_Helper extends JObject
 		// Do we have any user IDs?
 		if (count($uids) > 0) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 
 			// Loop through each ID
 			foreach ($uids as $uid)
@@ -119,8 +119,8 @@ class Hubzero_Message_Helper extends JObject
 			}
 		}
 
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Create the message object and store it in the database
 		$xmessage = new Hubzero_Message_Message($database);

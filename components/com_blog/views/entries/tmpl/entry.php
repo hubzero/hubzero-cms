@@ -269,7 +269,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					$feed = JRoute::_($this->row->link() . '/comments.rss');
 					if (substr($feed, 0, 4) != 'http') 
 					{
-						$jconfig =& JFactory::getConfig();
+						$jconfig = JFactory::getConfig();
 						$live_site = rtrim(JURI::base(), '/');
 						
 						$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);

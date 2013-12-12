@@ -119,7 +119,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			$group_plugin_acl = $access[$active];
 
 			//Create user object
-			//$juser =& JFactory::getUser();
+			//$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -332,7 +332,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 	{
 		$route = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->enqueueMessage(JText::_('GROUPS_LOGIN_NOTICE'), 'warning');
 		$app->redirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($route)));
 		return;
@@ -913,7 +913,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 
 		if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->enqueueMessage(JText::_('You are not authorized to perform this action.'), 'error');
 			$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name));
 			return;
@@ -1087,7 +1087,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			return $this->_edit($row);
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias')));
 	}
 
@@ -1255,7 +1255,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 
@@ -1295,7 +1295,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 
@@ -1387,7 +1387,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 
@@ -1500,7 +1500,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Display the main listing
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias')));
 	}
 
@@ -1531,7 +1531,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection')) 
 		{
 			$board = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->enqueueMessage(JText::_('You are not authorized to edit this collection.'), 'error');
 			$app->redirect($board);
 			return;
@@ -1627,7 +1627,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		}
 
 		// Redirect to collection
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $row->get('alias')));
 	}
 
@@ -1719,7 +1719,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 
@@ -1828,7 +1828,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 
 		//$this->message = JText::_('Settings successfully saved!');
 		//return $this->_settings();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->enqueueMessage('Settings successfully saved!', 'passed');
 		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name));
 	}

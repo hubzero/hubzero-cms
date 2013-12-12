@@ -207,7 +207,7 @@ class GroupsControllerPages extends Hubzero_Controller
 		$page = JRequest::getVar('page', array(), 'post', 'none', 2);
 
 		// instatiate group page object for saving
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$Gpage = new GroupPages($db);
 
 		// Load the group page

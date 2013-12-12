@@ -38,8 +38,8 @@ if ($this->results) {
 
 	plgGroupsResources::documents();
 
-	$database =& JFactory::getDBO();
-	$juser =& JFactory::getUser();
+	$database = JFactory::getDBO();
+	$juser = JFactory::getUser();
 ?>
 	<table class="related-resources" summary="<?php echo JText::_('PLG_GROUPS_RESOURCES_DASHBOARD_SUMMARY'); ?>">
 		<tbody>

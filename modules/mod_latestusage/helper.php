@@ -44,7 +44,7 @@ class modLatestusage extends Hubzero_Module
 	 */
 	private function _getOnlineCount()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sessions = null;
 
 		// calculate number of guests and members
@@ -91,7 +91,7 @@ class modLatestusage extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_usage' . DS . 'helpers' . DS . 'helper.php');
 		$udb =& UsageHelper::getUDBO();

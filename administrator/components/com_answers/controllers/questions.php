@@ -64,7 +64,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	{
 		// Get Joomla configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Filters
 		$this->view->filters = array();

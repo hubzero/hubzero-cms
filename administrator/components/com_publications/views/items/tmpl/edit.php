@@ -48,7 +48,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 // Get pub category
 $rt = new PublicationCategory( $database );
@@ -57,7 +57,7 @@ $customFields = $rt->customFields;
 
 //$canedit = $this->row->state == 3 ? 1 : 0;
 $canedit = 1;
-$editor =& JFactory::getEditor();
+$editor = JFactory::getEditor();
 
 // Get metadata fields
 $fields = array();

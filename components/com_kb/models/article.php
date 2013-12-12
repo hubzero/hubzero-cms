@@ -472,7 +472,7 @@ class KbModelArticle extends \Hubzero\Model
 				$feed = JRoute::_($link);
 				if (substr($feed, 0, 4) != 'http') 
 				{
-					$jconfig =& JFactory::getConfig();
+					$jconfig = JFactory::getConfig();
 					$live_site = rtrim(JURI::base(), '/');
 
 					$feed = $live_site . '/' . ltrim($feed, '/');

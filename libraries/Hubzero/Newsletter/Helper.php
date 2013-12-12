@@ -133,7 +133,7 @@ class Hubzero_Newsletter_Helper
 		}
 		
 		//instantiate database
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//try to load mailing recipient object to validate
 		$sql = "SELECT * FROM #__newsletter_mailing_recipients 
@@ -192,7 +192,7 @@ class Hubzero_Newsletter_Helper
 		}
 		
 		//instantiate database
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//attempt to load mailing list email object
 		$sql = "SELECT * FROM #__newsletter_mailinglist_emails AS mle

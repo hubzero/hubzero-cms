@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juri    =& JURI::getInstance();
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 
 // get the group
 $group = Hubzero_Group::getInstance( $this->announcement->scope_id );

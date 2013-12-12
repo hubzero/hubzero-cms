@@ -57,7 +57,7 @@ if ($mode != 'preview')
 	$alltools 		= $this->alltools;
 	$revision 		= $this->revision;
 
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 
 ?>
 		<div class="main section upperpane">

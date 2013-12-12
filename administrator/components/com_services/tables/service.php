@@ -248,7 +248,7 @@ class Service extends JTable
 
 		// do we have special admin group
 		if ($specialgroup) {
-			$juser 	  =& JFactory::getUser();
+			$juser 	  = JFactory::getUser();
 
 			$query .= "JOIN #__xgroups AS xg ON xg.cn='".$specialgroup."' ";
 			$query .= " LEFT JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber AND m.uidNumber='".$juser->get('id')."' ";

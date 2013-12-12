@@ -112,7 +112,7 @@ class plgPublicationsFavorite extends JPlugin
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
 			if ($rtrn == 'all' || $rtrn == 'metadata') 
@@ -127,7 +127,7 @@ class plgPublicationsFavorite extends JPlugin
 					return $arr;
 				}
 
-				$database =& JFactory::getDBO();
+				$database = JFactory::getDBO();
 
 				$fav = new Hubzero_Favorite($database);
 				$fav->loadFavorite($juser->get('id'), $publication->id, 'publications');
@@ -187,12 +187,12 @@ class plgPublicationsFavorite extends JPlugin
 	 */
 	public function fav($oid)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
 			ximport('Hubzero_Favorite');
 
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 
 			$fav = new Hubzero_Favorite($database);
 			$fav->loadFavorite($juser->get('id'), $oid, 'publications');

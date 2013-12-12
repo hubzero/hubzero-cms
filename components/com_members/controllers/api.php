@@ -137,7 +137,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.class.php' ); 
 
 		//get db connection
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		//get Middleware DB connection
 		$mwdb =& MwUtils::getMWDBO();
@@ -243,7 +243,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 		if ($result === false)	return $this->not_found();
 		
 		//load database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//get the supported tag
 		$rconfig = JComponentHelper::getParams('com_resources');

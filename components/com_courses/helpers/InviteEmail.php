@@ -92,7 +92,7 @@ Class Hubzero_Course_Invite_Email extends JTable
 	public function getInviteEmails( $gid, $email_only = false )
 	{
 		$final = array();
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$sql = "SELECT * FROM $this->_tbl WHERE gidNumber=".$db->Quote($gid);
 		$db->setQuery($sql);
@@ -146,7 +146,7 @@ Class Hubzero_Course_Invite_Email extends JTable
 				$sql_values[] = "('".$a."',".$gid.",'".md5($a)."')";
 			}
 			$sql = $sql . implode(",", $sql_values);
-			$db =& JFactory::getDBO();
+			$db = JFactory::getDBO();
 			$db->setQuery($sql);
 			$db->query();
 		}

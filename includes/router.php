@@ -609,7 +609,7 @@ class JRouterSite extends JRouter
 			/* START: HUBzero Extension to check redirection table if otherwise unable to match URL to content */
 			if (!isset($vars['option'])) {
 				jimport('joomla.juri');
-				$db =& JFactory::getDBO();
+				$db = JFactory::getDBO();
 				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
 				$db->setQuery($sql);
 				$row = $db->loadObject();

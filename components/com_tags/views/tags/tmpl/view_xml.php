@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->setMimeEncoding( 'text/xml' );
 
 // Output XML header.
@@ -57,7 +57,7 @@ $juri =& JURI::getInstance();
 $foundresults = false;
 $dopaging = false;
 $cats = $this->cats;
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 $html = "\t".'<categories>'."\n";
 $k = 0;
 foreach ($this->results as $category)

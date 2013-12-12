@@ -45,7 +45,7 @@ class JRouterApi extends JRouter
 		$vars = array();
 
 			// Get the application
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if($app->getCfg('force_ssl') == 2 && strtolower($uri->getScheme()) != 'https') {
 			//forward to https
@@ -60,7 +60,7 @@ class JRouterApi extends JRouter
 		if($this->_mode == JROUTER_MODE_SEF)
 		{
 			// Get the application
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 
 			if($app->getCfg('sef_suffix') && !(substr($path, -9) == 'index.php' || substr($path, -1) == '/'))
 			{
@@ -84,11 +84,11 @@ class JRouterApi extends JRouter
 
 		/* HUBzero Extensions Follow to force registration and email confirmation */
 
-		$juser = &JFactory::getUser();
+		$juser =  JFactory::getUser();
 
 		if (!$juser->get('guest'))
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$registration_incomplete = $session->get('registration.incomplete');
 
 			if ($registration_incomplete)
@@ -180,7 +180,7 @@ class JRouterApi extends JRouter
 		//Add the suffix to the uri
 		if($this->_mode == JROUTER_MODE_SEF && $route)
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 
 			if($app->getCfg('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/'))
 			{
@@ -227,7 +227,7 @@ class JRouterApi extends JRouter
 	{
 		$vars = array();
 
-		$menu =& JFactory::getApplication()->getMenu(true);
+		$menu = JFactory::getApplication()->getMenu(true);
 
 		//Handle an empty URL (special case)
 		if(!$uri->getVar('Itemid') && !$uri->getVar('option'))
@@ -493,7 +493,7 @@ class JRouterApi extends JRouter
 
 			if (!isset($vars['option'])) {
 				jimport('joomla.juri');
-				$db =& JFactory::getDBO();
+				$db = JFactory::getDBO();
 				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
 	        	$db->setQuery($sql);
 		        $row = $db->loadObject();
@@ -591,7 +591,7 @@ class JRouterApi extends JRouter
 			return;
 		}
 
-		$menu =& JFactory::getApplication()->getMenu();
+		$menu = JFactory::getApplication()->getMenu();
 
 		/*
 		 * Build the component route
@@ -673,7 +673,7 @@ class JRouterApi extends JRouter
 		// Process the pagination support
 		if($this->_mode == JROUTER_MODE_SEF)
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 
 			if($start = $uri->getVar('start'))
 			{
@@ -698,7 +698,7 @@ class JRouterApi extends JRouter
 		// Make sure any menu vars are used if no others are specified
 		if(($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2)
 		{
-			$menu =& JFactory::getApplication()->getMenu();
+			$menu = JFactory::getApplication()->getMenu();
 
 			// Get the active menu item
 			$itemid = $uri->getVar('Itemid');
@@ -716,7 +716,7 @@ class JRouterApi extends JRouter
 
 		if($this->_mode == JROUTER_MODE_SEF && $route)
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 
 			if ($limitstart = $uri->getVar('limitstart'))
 			{
@@ -742,7 +742,7 @@ class JRouterApi extends JRouter
 		$uri =& parent::_createURI($url);
 
 		// Set URI defaults
-		$menu =& JFactory::getApplication()->getMenu();
+		$menu = JFactory::getApplication()->getMenu();
 
 		// Get the itemid form the URI
 		$itemid = $uri->getVar('Itemid');
@@ -811,7 +811,7 @@ class JRouterApi extends JRouter
 			return($segments);
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$id = intval($query['id']);
 
 		$sql = "SELECT #__sections.alias AS section, #__categories.alias AS category, #__content.alias AS alias FROM jos_sections, jos_categories, jos_content WHERE #__content.id='" . $id . "' AND #__content.sectionid=#__sections.id AND #__content.catid=#__categories.id LIMIT 1;";
@@ -865,9 +865,9 @@ class JRouterApi extends JRouter
 	function _parseContentRoute(&$segments)
 	{
 		$view = 'article';
-		$menu =& JFactory::getApplication()->getMenu(true);
+		$menu = JFactory::getApplication()->getMenu(true);
 		$item =& $menu->getActive();
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$count = count($segments);
 
 		if (($count == 1) && (is_numeric($segments[0])))

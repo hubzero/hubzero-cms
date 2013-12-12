@@ -39,7 +39,7 @@ class EventsControllerApi extends Hubzero_Api_Controller
 		$format = JRequest::getVar('format', 'json');
 		
 		//load up the events
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$query = "SELECT * FROM #__events as e 
 					/* WHERE publish_up <= UTC_TIMESTAMP() */
 					WHERE publish_down >= UTC_TIMESTAMP()

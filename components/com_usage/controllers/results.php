@@ -111,7 +111,7 @@ class UsageControllerResults extends Hubzero_Controller
 		$this->view->task = $this->_task;
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -143,7 +143,7 @@ class UsageControllerResults extends Hubzero_Controller
 		$this->view->title .= ($this->_task) ? ': ' . JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Output HTML

@@ -111,7 +111,7 @@ class TagsTableLog extends JTable
 			return false;
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$this->id) 
 		{
 			$this->timestamp = JFactory::getDate()->toSql();

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_Wiki_Editor');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 $editor =& Hubzero_Wiki_Editor::getInstance();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog'

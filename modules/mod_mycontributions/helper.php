@@ -46,8 +46,8 @@ class modMyContributions extends Hubzero_Module
 	 */
 	private function _getContributions()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Container for the various types of contributions
 		//$contributions = array();
@@ -105,8 +105,8 @@ class modMyContributions extends Hubzero_Module
 	 */
 	private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools='40')
 	{
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 		ximport('Hubzero_Tool');
 		// Query filters defaults
 		$filters = array();
@@ -292,7 +292,7 @@ class modMyContributions extends Hubzero_Module
 	{
 		// Get the user's profile 
 		$xprofile =& Hubzero_Factory::getProfile();
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$session_quota = $xprofile->get('jobsAllowed');
 		$administrator = in_array('middleware', $xprofile->get('admin'));
 

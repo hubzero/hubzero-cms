@@ -207,7 +207,7 @@ class Hubzero_Trac_Project
 	 */
 	public function create()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db)) {
 			return false;
@@ -262,7 +262,7 @@ class Hubzero_Trac_Project
 	 */
 	public function read()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$lazyloading = false;
 
@@ -308,7 +308,7 @@ class Hubzero_Trac_Project
 	 */
 	public function update($all = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "UPDATE #__trac_project SET ";
 
@@ -447,7 +447,7 @@ class Hubzero_Trac_Project
 
         if (in_array($property, $this->_list_keys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
-                $db = &JFactory::getDBO();
+                $db =  JFactory::getDBO();
 
                 if (is_object($db)) {
                     $query = null;
@@ -626,7 +626,7 @@ class Hubzero_Trac_Project
 	 */
 	public function add_user_permission($user,$action)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if ($user == 'anonymous') {
 			$user = '0';
@@ -673,7 +673,7 @@ class Hubzero_Trac_Project
 	 */
 	public function add_group_permission($group,$action)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if ($group == 'authenticated') {
 			$group = '0';
@@ -718,7 +718,7 @@ class Hubzero_Trac_Project
 	 */
 	public function remove_user_permission($user,$action)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$all = false;
 
 		if ($user == 'anonymous') {
@@ -772,7 +772,7 @@ class Hubzero_Trac_Project
 	 */
 	public function remove_group_permission($group,$action)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$all = false;
 
 		if ($group == 'authenticated') {
@@ -823,7 +823,7 @@ class Hubzero_Trac_Project
 	 */
 	public function get_user_permission($user)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$quoted_project_id = $db->Quote($this->id);
 
 		if ($user == "anonymous") {
@@ -853,7 +853,7 @@ class Hubzero_Trac_Project
 	 */
 	public function get_group_permission($group)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$quoted_project_id = $db->Quote($this->id);
 
 		if ($group == 'authenticated') {

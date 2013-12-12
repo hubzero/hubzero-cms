@@ -58,7 +58,7 @@ class modFeedYoutubeHelper extends Hubzero_Module
 			return;
 		}
 
-		$rssDoc =& JFactory::getXMLparser('RSS', $options);
+		$rssDoc = JFactory::getXMLparser('RSS', $options);
 
 		$this->feed = new stdclass();
 

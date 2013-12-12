@@ -194,11 +194,11 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$this->view->shot = $ss->getScreenshot($this->view->file, $pid, $vid);
 
 		// Get the app
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_TASK_EDIT_SS');
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		$this->view->pid = $pid;

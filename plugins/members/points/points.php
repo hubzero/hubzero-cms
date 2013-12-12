@@ -102,7 +102,7 @@ class plgMembersPoints extends Hubzero_Plugin
 			'metadata' => ''
 		);
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'users_points';
 

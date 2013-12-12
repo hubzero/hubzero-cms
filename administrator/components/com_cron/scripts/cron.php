@@ -62,7 +62,7 @@ JDEBUG ? $_PROFILER->mark('afterLoad') : null;
  *
  * NOTE :
  */
-$mainframe =& JFactory::getApplication('site');
+$mainframe = JFactory::getApplication('site');
 
 /**
  * INITIALISE THE APPLICATION

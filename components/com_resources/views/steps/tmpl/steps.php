@@ -37,7 +37,7 @@ $tags = array();
 $state = 'draft';
 if ($this->resource->id)
 {
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 	$ra = new ResourcesAssoc($database);
 	$rc = new ResourcesContributor($database);
 	$rt = new ResourcesTags($database);

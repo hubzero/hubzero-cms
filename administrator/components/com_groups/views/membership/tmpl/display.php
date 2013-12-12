@@ -76,7 +76,7 @@ switch ($this->filters['status'])
 
 $database = JFactory::getDBO();
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'groups.css');
 
 JHTML::_('behavior.tooltip');

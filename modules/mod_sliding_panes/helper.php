@@ -43,7 +43,7 @@ class modSlidingPanes extends Hubzero_Module
 	 */
 	private function _getList()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$catid 	 = (int) $this->params->get('catid', 0);
 		$random  = $this->params->get('random', 0);
@@ -51,7 +51,7 @@ class modSlidingPanes extends Hubzero_Module
 		$limit   = (int) $this->params->get('limitslides', 0);
 		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
-		$date =& JFactory::getDate();
+		$date = JFactory::getDate();
 		$now = $date->toMySQL();
 
 		$nullDate = $db->getNullDate();
@@ -98,7 +98,7 @@ class modSlidingPanes extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$jdocument =& JFactory::getDocument();
+		$jdocument = JFactory::getDocument();
 
 		$type = $this->params->get('animation', 'slide');
 

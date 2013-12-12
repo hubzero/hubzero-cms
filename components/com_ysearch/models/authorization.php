@@ -55,7 +55,7 @@ class YSearchAuthorization
 	 */
 	public function __construct()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->guest)
 		{
 			$this->groups = array();
@@ -95,7 +95,7 @@ class YSearchAuthorization
 	{
 		if (is_null($this->groups))
 		{
-			$dbh =& JFactory::getDBO();
+			$dbh = JFactory::getDBO();
 			$dbh->setQuery(
 				'select distinct xm.gidNumber, cn from #__xgroups_members xm inner join #__xgroups g on g.gidNumber = xm.gidNumber where uidNumber = '.$this->uid.' union select distinct xm.gidNumber, cn from #__xgroups_managers xm inner join #__xgroups g on g.gidNumber = xm.gidNumber where uidNumber = '.$this->uid
 			);

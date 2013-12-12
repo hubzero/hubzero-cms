@@ -84,7 +84,7 @@ class plgSupportAnswers extends JPlugin
 			break;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows) 
@@ -116,7 +116,7 @@ class plgSupportAnswers extends JPlugin
 	{
 		ximport('Hubzero_Comment');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$refid = $parentid;
 
 		if ($category == 'answercomment') 
@@ -162,7 +162,7 @@ class plgSupportAnswers extends JPlugin
 	 */
 	public function parent($parentid)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$parent = new Hubzero_Comment($database);
 		$parent->load($parentid);
@@ -216,8 +216,8 @@ class plgSupportAnswers extends JPlugin
 			return null;
 		}
 
-		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser 	  = JFactory::getUser();
 
 		switch ($category)
 		{
@@ -285,7 +285,7 @@ class plgSupportAnswers extends JPlugin
 							{
 								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email) 
 								{
-									$jconfig =& JFactory::getConfig();
+									$jconfig = JFactory::getConfig();
 
 									$admin_email = $jconfig->getValue('config.mailfrom');
 									$sub  = $jconfig->getValue('config.sitename') . ' Answers, Question #' . $referenceid . ' was removed';
@@ -368,7 +368,7 @@ class plgSupportAnswers extends JPlugin
 	 */
 	public function getReward($id)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// check if question owner assigned a reward for answering his Q 
 		$sql = "SELECT amount FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=" . $id;

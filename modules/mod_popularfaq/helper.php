@@ -46,7 +46,7 @@ class modPopularFaq extends Hubzero_Module
 	 */
 	public function run()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$limit = intval($this->params->get('limit', 5));
 		$this->cssId = $this->params->get('cssId');
@@ -71,7 +71,7 @@ class modPopularFaq extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));

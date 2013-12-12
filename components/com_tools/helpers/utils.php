@@ -67,14 +67,14 @@ class ToolsHelperUtils
 			 && (!isset($options['user']) || $options['user'] == '')
 			 && (!isset($options['database']) || $options['database'] == '')) 
 			{
-				$instance =& JFactory::getDBO();
+				$instance = JFactory::getDBO();
 			}
 			else 
 			{
 				$instance =& JDatabase::getInstance($options);
 				if (JError::isError($instance)) 
 				{
-					$instance =& JFactory::getDBO();
+					$instance = JFactory::getDBO();
 				}
 			}
 		}
@@ -310,8 +310,8 @@ class ToolsHelperUtils
 
 		//instantiate objects
 		$access 	= new stdClass();
-		$juser		=& JFactory::getUser();
-		$database 	=& JFactory::getDBO();
+		$juser		= JFactory::getUser();
+		$database 	= JFactory::getDBO();
 		$xlog 		=& Hubzero_Factory::getLogger();
 		
 		// Ensure we have a tool
@@ -552,8 +552,8 @@ class ToolsHelperUtils
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
 		
 		//instantiate needed objects
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 		
 		//load tool version
 		$toolVersion = new ToolVersion( $database );

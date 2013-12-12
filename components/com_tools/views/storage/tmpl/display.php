@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
-$jconfig =& JFactory::getConfig();
+$juser = JFactory::getUser();
+$jconfig = JFactory::getConfig();
 ?>
 <div id="content-header">
 	<h2><?php echo JText::_('COM_TOOLS_STORAGE'); ?></h2>

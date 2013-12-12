@@ -119,13 +119,13 @@ class plgCoursesAnnouncements extends JPlugin
 		$this->config = $config;
 
 		//Create user object
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_ANNOUNCEMENTS'));
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		$pathway->addItem(
 			JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
 			'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->_name

@@ -37,14 +37,14 @@ class modAnnouncementsHelper extends Hubzero_Module
 	 */
 	private function _getList()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 	
 		$catid   = (int) $this->params->get('catid', 0);
 		$orderby = 'a.publish_up DESC';
 		$limit   = (int) $this->params->get('numitems', 0);
 		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
-		$date =& JFactory::getDate();
+		$date = JFactory::getDate();
 		$now = $date->toMySQL();
 
 		$nullDate = $db->getNullDate();

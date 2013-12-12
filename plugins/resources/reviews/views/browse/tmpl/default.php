@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile_Helper');
 
-$database =& JFactory::getDBO();
-$juser =& JFactory::getUser();
+$database = JFactory::getDBO();
+$juser = JFactory::getUser();
 $html = '';
 ?>
 <h3 class="section-header">

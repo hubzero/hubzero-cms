@@ -63,7 +63,7 @@ class StoreControllerOrders extends Hubzero_Controller
 		$this->view->store_enabled = $this->config->get('store_enabled');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Get paging variables
@@ -217,7 +217,7 @@ class StoreControllerOrders extends Hubzero_Controller
 	//	require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
 
 		// Get the Joomla config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Build the link displayed
 		$juri =& JURI::getInstance();
@@ -439,7 +439,7 @@ class StoreControllerOrders extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$statusmsg = '';
 		$email = 1; // turn emailing on/off

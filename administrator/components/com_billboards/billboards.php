@@ -36,7 +36,7 @@ $option = 'com_billboards';
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	// Set access levels
-	$jacl =& JFactory::getACL();
+	$jacl = JFactory::getACL();
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');

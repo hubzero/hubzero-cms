@@ -107,7 +107,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			$this->_title .= ': #' . $this->view->thread->get('id') . ' - ' . stripslashes($this->view->thread->get('title'));
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -204,10 +204,10 @@ class ForumControllerThreads extends Hubzero_Controller
 		ximport('Hubzero_Group');
 		ximport('Hubzero_View_Helper_Html');
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object

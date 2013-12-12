@@ -20,7 +20,7 @@ class AnswersControllerTagsTest extends PHPUnit_Framework_TestCase
 	 */
 	function setUp()
 	{
-		$app =& JFactory::getApplication('site');
+		$app = JFactory::getApplication('site');
 		$this->instance = new AnswersControllerQuestions();
 	}
 

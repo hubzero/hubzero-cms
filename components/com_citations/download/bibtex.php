@@ -93,7 +93,7 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		$addarray = array();
 
 		//get all the citation types
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$ct = new CitationsType($db);
 		$types = $ct->getType();
 

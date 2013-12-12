@@ -205,7 +205,7 @@ class ResourcesHtml
 	 */
 	public function adminIcon($id, $published, $show_edit, $created_by=0, $type, $r_type)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if ($published < 0) 
 		{
@@ -686,7 +686,7 @@ class ResourcesHtml
 		$license = str_replace(' ', '-', strtolower($license));
 		$license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$rl = new ResourcesLicense($database);
 		$rl->load($license);
 
@@ -785,13 +785,13 @@ class ResourcesHtml
 				}
 				if (strtolower($name) == $active) 
 				{
-					$app =& JFactory::getApplication();
+					$app = JFactory::getApplication();
 					$pathway =& $app->getPathway();
 					$pathway->addItem($cat[$name],$url);
 
 					if ($active != 'about') 
 					{
-						$document =& JFactory::getDocument();
+						$document = JFactory::getDocument();
 						$title = $document->getTitle();
 						$document->setTitle($title . ': ' . $cat[$name]);
 					}
@@ -1022,7 +1022,7 @@ class ResourcesHtml
 		$maintext = stripslashes($maintext);
 
 		if ($introtext) {
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->setDescription(self::encode_html(strip_tags($introtext)));
 		}
 
@@ -1120,7 +1120,7 @@ class ResourcesHtml
 			if ($params->get('show_metadata')) {
 				$supported = null;
 				if ($resource->type == 7) {
-					$database =& JFactory::getDBO();
+					$database = JFactory::getDBO();
 					$rt = new ResourcesTags($database);
 					$supported = $rt->checkTagUsage($config->get('supportedtag'), $resource->id);
 				}
@@ -1157,7 +1157,7 @@ class ResourcesHtml
 		} else {
 			$helper->getFirstChild();
 
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			switch ($resource->type)
 			{
@@ -1496,7 +1496,7 @@ class ResourcesHtml
 			{
 				$helper->getTagCloud($show_edit);
 
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 
 				if ($helper->tagCloud) 
 				{
@@ -1611,7 +1611,7 @@ class ResourcesHtml
 	 */
 	public function writeChildren($config, $option, $database, $resource, $children, $live_site, $id=0, $active=0, $pid=0, $fsize=0)
 	{
-	    $juser =& JFactory::getUser();
+	    $juser = JFactory::getUser();
 		$out   = '';
 		$blorp = '';
 		if ($children != NULL) 
@@ -1805,8 +1805,8 @@ class ResourcesHtml
 	 */
 	public function processPath($option, $item, $pid=0, $action=0)
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		$rt = new ResourcesType($database);
 		$rt->load($item->type);
@@ -1880,9 +1880,9 @@ class ResourcesHtml
 	 */
 	public function primary_child($option, $resource, $firstChild, $xact='')
 	{
-	    $juser =& JFactory::getUser();
+	    $juser = JFactory::getUser();
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$html = '';
 
@@ -1891,7 +1891,7 @@ class ResourcesHtml
 			case 7:
 				if (version_compare(JVERSION, '1.6', 'lt'))
 				{
-					$jacl =& JFactory::getACL();
+					$jacl = JFactory::getACL();
 					$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
 					$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
 					$jacl->addACL('com_tools', 'manage', 'users', 'manager');
@@ -1903,7 +1903,7 @@ class ResourcesHtml
 					$authorized = $juser->authorise('core.manage', 'com_tools.' . $this->get('id'));
 				}
 
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 
 				$mconfig = JComponentHelper::getParams('com_tools');
 
@@ -1926,7 +1926,7 @@ class ResourcesHtml
 
 				// Generate the URL that launches a tool session
 				$lurl ='';
-				$database =& JFactory::getDBO();
+				$database = JFactory::getDBO();
 				$tables = $database->getTableList();
 				$table = $database->getPrefix() . 'tool_version';
 
@@ -2402,7 +2402,7 @@ class ResourcesHtml
 			$paramsClass = 'JRegistry';
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$config =& JComponentHelper::getParams('com_resources');
 

@@ -91,7 +91,7 @@ class plgCronNewsletter extends JPlugin
 		}
 		
 		//create needed objects
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//get all queued mailing recipients
 		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.body, nm.headers, nm.args, nm.tracking
@@ -165,7 +165,7 @@ class plgCronNewsletter extends JPlugin
 		
 		//get deo db
 		$geodatabase = Hubzero_Geo::getGeoDBO();
-		$database    =& JFactory::getDBO();
+		$database    = JFactory::getDBO();
 		
 		//make sure we have a database
 		if (!is_object($geodatabase))

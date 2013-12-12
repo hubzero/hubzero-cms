@@ -158,7 +158,7 @@ class SupportUtilities
 	 */
 	public function getFilters()
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Query filters defaults
@@ -253,7 +253,7 @@ class SupportUtilities
 					{
 						if ($pieces[1] == 'me') 
 						{
-							$juser =& JFactory::getUser();
+							$juser = JFactory::getUser();
 							$pieces[1] = $juser->get('username');
 						} 
 						else if ($pieces[1] == 'none') 

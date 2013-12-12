@@ -36,8 +36,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = null;
 }
 
-$database =& JFactory::getDBO();
-$juser =& JFactory::getUser();
+$database = JFactory::getDBO();
+$juser = JFactory::getUser();
 $html = '';
 ?>
 <h3>

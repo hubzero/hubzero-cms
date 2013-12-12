@@ -56,11 +56,11 @@ class PublicationsControllerItems extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 			
 		// Incoming
@@ -153,7 +153,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Incoming publication ID
@@ -372,7 +372,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		}
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
@@ -882,7 +882,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		if ($authors && count($authors) > 0)
 		{
 			// Email all the contributors
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// E-mail "from" info
 			$from = array();
@@ -936,7 +936,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Incoming publication ID
@@ -1223,7 +1223,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 	 */
 	private function userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$group_id = 'g.id';
 		$aro_id = 'aro.id';

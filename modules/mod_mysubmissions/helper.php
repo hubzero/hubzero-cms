@@ -69,7 +69,7 @@ class modMySubmissions extends Hubzero_Module
 	{
 		if ($id) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$ra = new ResourcesAssoc($database);
 			$total = $ra->getCount($id);
 		} 
@@ -90,7 +90,7 @@ class modMySubmissions extends Hubzero_Module
 	{
 		if ($id) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$rc = new ResourcesContributor($database);
 			$contributors = $rc->getCount($id, 'resources');
 		} 
@@ -110,7 +110,7 @@ class modMySubmissions extends Hubzero_Module
 	 */
 	public function step_tags_check($id)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$rt = new ResourcesTags($database);
 		$tags = $rt->getTags($id);
@@ -143,7 +143,7 @@ class modMySubmissions extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			return false;
@@ -154,7 +154,7 @@ class modMySubmissions extends Hubzero_Module
 
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$rr = new ResourcesResource($database);
 		$rt = new ResourcesType($database);

@@ -98,9 +98,9 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$config	=& JFactory::getConfig();
-$now	=& JFactory::getDate();
-$db		=& JFactory::getDBO();
+$config	= JFactory::getConfig();
+$now	= JFactory::getDate();
+$db		= JFactory::getDBO();
 
 $nullDate = $db->getNullDate();
 $rows = $this->rows;

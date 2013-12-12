@@ -68,7 +68,7 @@ class plgUserXusers extends JPlugin
 	{
 		jimport('joomla.user.helper');
 
-		$juser = &JFactory::getUser();   // get user from session (might be tmp_user, can't fetch from db)
+		$juser =  JFactory::getUser();   // get user from session (might be tmp_user, can't fetch from db)
 
 		if ($juser->get('guest') == '1') { // joomla user plugin hasn't run or something went very badly
 
@@ -108,7 +108,7 @@ class plgUserXusers extends JPlugin
 		apache_note('auth','login');
 
 		// update session tracking with new data
-		$session = &JFactory::getSession();
+		$session =  JFactory::getSession();
 		
 		$session->set('tracker.user_id', $juser->get('id'));
 		
@@ -210,7 +210,7 @@ class plgUserXusers extends JPlugin
 			$session->set('linkaccount', true);
 		}
 
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		$session->set('registration.incomplete', true);
 
 		return true;
@@ -483,7 +483,7 @@ class plgUserXusers extends JPlugin
 		// then delete the temp account
 		if(is_numeric($user['username']) && $user['username'] < 0)
 		{
-			$juser = &JFactory::getUser($user['id']);
+			$juser =  JFactory::getUser($user['id']);
 
 			// Further check to make sure this was an abandoned auth_link account
 			if(substr($juser->email, -8) == '@invalid')

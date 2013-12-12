@@ -164,7 +164,7 @@ class modSlideshow extends Hubzero_Module
 		{
 			Hubzero_Document::addModuleScript($this->module->module);
 	
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScriptDeclaration('HUB.ModSlideshow.src="' . $swffile . '"; HUB.ModSlideshow.alias="' . $alias . '"; HUB.ModSlideshow.height="' . $height . '"; HUB.ModSlideshow.width="' . $width . '"');
 		}
 

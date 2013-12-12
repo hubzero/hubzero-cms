@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 if ($this->error) {
 	echo '<p class="error">' . JText::_('MOD_MYFAVORITES_MISSING_TABLE') . '</p>' . "\n";
 } else {
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 
 	$results = $this->results;
 	$cats = $this->cats;

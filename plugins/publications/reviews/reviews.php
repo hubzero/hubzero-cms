@@ -155,7 +155,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 		$h->execute();
 
 		// Get reviews for this publication
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$r = new PublicationReview( $database );
 		$reviews = $r->getRatings( $publication->id );
 		
@@ -260,7 +260,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 	 */
 	public function getComments($item, $category, $level, $abuse=false)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$level++;
 
@@ -290,7 +290,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 	 */	
 	public function getAbuseReports($item, $category)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ra = new ReportAbuse( $database );
 		return $ra->getCount( array('id'=>$item, 'category'=>$category) );
@@ -385,7 +385,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	{
 		if ($this->_redirect != NULL) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
@@ -404,7 +404,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		
 		if ($action) {
 			// Check the user's logged-in status
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			if ($juser->get('guest')) 
 			{
 				$this->loggedin = false;
@@ -432,7 +432,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	 */	
 	private function savereply()
 	{	
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		// Is the user logged in?
 		if ($juser->get('guest')) 
@@ -464,7 +464,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			return;
 		}
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		ximport( 'Hubzero_Comment' );
 			
 		$row = new Hubzero_Comment( $database );
@@ -503,7 +503,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	 */	
 	public function deletereply()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$publication =& $this->publication;
 		
 		// Incoming
@@ -545,8 +545,8 @@ class PlgPublicationsReviewsHelper extends JObject
 	 */	
 	public function rateitem()
 	{		
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 				
 		$id   = JRequest::getInt( 'refid', 0 );
 		$ajax = JRequest::getInt( 'ajax', 0 );
@@ -635,7 +635,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function editreview()
 	{
 		// Is the user logged in?
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
@@ -655,7 +655,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		// Incoming
 		$myr = JRequest::getInt( 'myrating', 0 );
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$review = new PublicationReview( $database );
 		$review->loadUserReview( $publication->id, $juser->get('id'), $publication->version_id  );
@@ -692,7 +692,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function savereview()
 	{
 		// Is the user logged in?
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
@@ -710,7 +710,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			return;
 		}
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Bind the form data to our object
 		$row = new PublicationReview( $database );
@@ -764,13 +764,13 @@ class PlgPublicationsReviewsHelper extends JObject
 		$users = $pa->getAuthors($publication->version_id, 1, 1, true );
 		
 		// Get the HUB configuration
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		
 		// Build the subject
 		$subject = $jconfig->getValue('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
 		
 		// Message
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$eview = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'publications',
@@ -813,7 +813,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	 */	
 	public function deletereview()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$publication =& $this->publication;
 		
 		// Incoming

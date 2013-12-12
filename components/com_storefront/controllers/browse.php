@@ -48,7 +48,7 @@ class StorefrontControllerBrowse extends ComponentController
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 		
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 				
 		$this->pathway = $pathway;

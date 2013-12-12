@@ -799,7 +799,7 @@ class YSearchResultSql extends YSearchResult
 	 */
 	public function to_associative()
 	{
-		$dbh =& JFactory::getDBO();
+		$dbh = JFactory::getDBO();
 		$dbh->setQuery($this->sql);
 		if (isset($_GET['dbgsql']))
 			echo '<pre>'.$dbh->getQuery().'</pre>';

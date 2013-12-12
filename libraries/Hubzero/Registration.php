@@ -448,7 +448,7 @@ class Hubzero_Registration
 		
 		//get user tags
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php' );
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$mt = new MembersTags($database);
 		$tag_string = $mt->get_tag_string( $xprofile->get('uidNumber') );
 		
@@ -611,7 +611,7 @@ class Hubzero_Registration
 	public function getEmailId($email)
 	{
 		// Initialize some variables
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = 'SELECT id FROM #__users WHERE email = ' . $db->Quote( $email );
 		$db->setQuery($query, 0, 1);
@@ -636,7 +636,7 @@ class Hubzero_Registration
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if ($id == 0) {
 			$id = $juser->get('id');
@@ -1259,7 +1259,7 @@ class Hubzero_Registration
 		}
 				
 		// Initialize database
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote( $username );
 		$db->setQuery($query);

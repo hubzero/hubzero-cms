@@ -168,7 +168,7 @@ class CartControllerCart extends ComponentController
 			// prevent resubmitting form by refresh
 			// If not an ajax call, redirect to cart
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-			$app  = & JFactory::getApplication();
+			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url);		
 		}
 		
@@ -197,7 +197,7 @@ class CartControllerCart extends ComponentController
 			$this->view->setError($cartChanges);
 		}
 		
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'cart.js');
 				
 		$this->view->display();		

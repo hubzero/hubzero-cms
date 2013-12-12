@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 if ($this->error) {
 	echo '<p class="error">' . JText::_('MOD_MYPOINTS_MISSING_TABLE') . '</p>' . "\n";
 } else {
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<p id="point-balance">

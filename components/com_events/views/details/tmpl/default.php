@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

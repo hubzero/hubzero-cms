@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	// load some classes
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	
 	$jobsHtml = new JobsHtml();
 

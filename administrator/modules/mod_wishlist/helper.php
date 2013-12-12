@@ -77,7 +77,7 @@ class modWishlist extends Hubzero_Module
 
 		if ($this->params->get('showMine', 0))
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->username = $juser->get('username');
 
 			$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=1 AND proposed_by=" . $juser->get('id'));
@@ -90,7 +90,7 @@ class modWishlist extends Hubzero_Module
 			$this->accepted = $this->database->loadResult();
 		}
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 
 		// Get the view

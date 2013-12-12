@@ -517,7 +517,7 @@ class Hubzero_User_Profile extends JObject
 	{
 		static $_propertyauthormap = array('uidNumber'=>'id', 'givenName'=>'firstname', 'middleName'=>'middlename', 'surname'=>'lastname', 'organization'=>'org', 'bio'=>'bio', 'url'=>'url', 'picture'=>'picture', 'vip'=>'principal_investigator');
 		
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$query = "SELECT * FROM #__author WHERE id=" . $db->Quote($authorid);
 		
@@ -766,7 +766,7 @@ class Hubzero_User_Profile extends JObject
 	 */
 	public function create()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 		
@@ -866,7 +866,7 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 		
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 		
@@ -1022,7 +1022,7 @@ class Hubzero_User_Profile extends JObject
 	 */
 	public function delete()
 	{
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		if (!is_numeric($this->get('uidNumber')))
 		{
@@ -1458,7 +1458,7 @@ class Hubzero_User_Profile extends JObject
 	{
 		$user_roles = '';
 		
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$sql = "SELECT r.id, r.role FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.role AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
 		$db->setQuery($sql);
 		
@@ -1482,7 +1482,7 @@ class Hubzero_User_Profile extends JObject
 	{
 		$user_roles = '';
 		
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		$sql = "SELECT r.id, r.role FROM #__courses_roles as r, #__courses_member_roles as m WHERE r.id=m.role AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
 		$db->setQuery($sql);
 		

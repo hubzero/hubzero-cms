@@ -335,7 +335,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get and set some vars
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Build the "from" info for e-mails
 		$from = array();
@@ -577,7 +577,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		//get site config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// E-mail subject
 		$subject = JText::sprintf('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_SUBJECT', $this->view->group->get('cn'));
@@ -699,7 +699,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$reason->deleteReason($this->juser->get('id'), $this->view->group->get('gidNumber'));
 
 		//get site config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Email subject
 		$subject = JText::sprintf('COM_GROUPS_EMAIL_MEMBERSHIP_CANCELLED_SUBJECT', $this->view->group->get('cn'));
@@ -961,7 +961,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		//get site config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// E-mail subject
 		$subject = JText::sprintf('COM_GROUPS_JOIN_REQUEST_EMAIL_SUBJECT', $this->view->group->get('cn'));

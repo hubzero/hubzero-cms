@@ -48,7 +48,7 @@ class SupportControllerStats extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
 
 		// Instantiate a new view
@@ -62,7 +62,7 @@ class SupportControllerStats extends Hubzero_Controller
 		$this->view->sort = JRequest::getVar('sort', 'name');
 
 		// Set up some dates
-		/*$jconfig =& JFactory::getConfig();
+		/*$jconfig = JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
@@ -210,7 +210,7 @@ class SupportControllerStats extends Hubzero_Controller
 				$this->view->group
 			);
 		}*/
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));

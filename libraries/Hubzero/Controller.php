@@ -392,7 +392,7 @@ class Hubzero_Controller extends JObject
 			//preserve component messages after redirect
 			if (count($this->componentMessageQueue))
 			{
-				$session =& JFactory::getSession();
+				$session = JFactory::getSession();
 				$session->set('component.message.queue', $this->componentMessageQueue);
 			}
 
@@ -434,7 +434,7 @@ class Hubzero_Controller extends JObject
 	{
 		if (!count($this->componentMessageQueue))
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$componentMessage = $session->get('component.message.queue');
 			if (count($componentMessage)) 
 			{

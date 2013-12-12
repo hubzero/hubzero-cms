@@ -171,7 +171,7 @@ class plgAuthenticationGoogle extends JPlugin
 			$client->authenticate();
 
 			// Add the access token to the session
-			$jsession =& JFactory::getSession();
+			$jsession = JFactory::getSession();
 			$jsession->set('google.token', $client->getAccessToken());
 		}
 		else
@@ -272,7 +272,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$oauth2 = new Google_Oauth2Service($client);
 
 		// Check if there's an active token in the session
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 		if ($jsession->get('google.token', NULL))
 		{
 			$client->setAccessToken($jsession->get('google.token'));

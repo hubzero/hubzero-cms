@@ -115,7 +115,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$group_plugin_acl = $access[$active];
 
 			//Create user object
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -170,7 +170,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 			Hubzero_Document::addPluginScript('groups', $this->_name);
 
 			// Append to document the title
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_GROUPS_BLOG'));
 
 			if (is_numeric($this->action)) 
@@ -214,7 +214,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 			'group_id' => $group->get('gidNumber')
 		);
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$filters['state'] = 'public';
@@ -345,7 +345,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		$view->canpost = $this->_getPostingPermissions();
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$view->filters['state'] = 'public';
@@ -403,7 +403,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
@@ -436,7 +436,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		// Build some basic RSS document information
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$doc->title       = $jconfig->getValue('config.sitename') . ': ' . JText::_('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . JText::_('Blog');
 		$doc->description = JText::sprintf('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
 		$doc->copyright   = JText::sprintf('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
@@ -552,7 +552,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		// Check authorization
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (($view->row->get('state') == 2 && $juser->get('guest'))
 		 || ($view->row->get('state') == 0 && $juser->get('id') != $view->row->get('created_by') && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin')) 
 		{
@@ -607,8 +607,8 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _edit($row=null)
 	{
-		$juser =& JFactory::getUser();
-		$app =& JFactory::getApplication();
+		$juser = JFactory::getUser();
+		$app = JFactory::getApplication();
 		$blog = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
 		if ($juser->get('guest')) 
@@ -681,7 +681,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _save()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -737,7 +737,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		//return $this->_entry();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_($row->link()));
 	}
 
@@ -748,7 +748,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _delete()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -834,7 +834,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	private function _savecomment()
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -870,7 +870,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	private function _deletecomment()
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -907,7 +907,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _settings()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -958,7 +958,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _savesettings()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -1010,7 +1010,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		//$this->message = JText::_('Settings successfully saved!');
 		//return $this->_settings();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->enqueueMessage(JText::_('PLG_GROUPS_BLOG_SETTINGS_SAVED'), 'passed');
 		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'));
 	}

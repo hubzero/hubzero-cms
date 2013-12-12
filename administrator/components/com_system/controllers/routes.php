@@ -48,7 +48,7 @@ class SystemControllerRoutes extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming

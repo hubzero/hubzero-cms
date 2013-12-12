@@ -132,7 +132,7 @@ class ResourcesSponsor extends JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$this->id) 
 		{
 			$this->created = JFactory::getDate()->toSql();

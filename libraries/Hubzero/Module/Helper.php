@@ -139,7 +139,7 @@ class Hubzero_Module_Helper
 	public function getParams($id)
 	{
 		//database object
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		//select module params based on name passed in
 		$sql = "SELECT params FROM #__modules WHERE id='" . $id . "' AND published=1";

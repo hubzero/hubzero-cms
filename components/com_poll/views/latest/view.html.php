@@ -29,9 +29,9 @@ class PollViewLatest extends JView
 {
 	public function display($tpl = null)
 	{
-		$mainframe =& JFactory::getApplication();
-		$db        =& JFactory::getDBO();
-		$document  =& JFactory::getDocument();
+		$mainframe = JFactory::getApplication();
+		$db        = JFactory::getDBO();
+		$document  = JFactory::getDocument();
 		$pathway   =& $mainframe->getPathway();
 
 		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'poll.php');

@@ -125,6 +125,6 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 </div>
 
 <?php
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->setTitle( $this->resource->title );
 ?>

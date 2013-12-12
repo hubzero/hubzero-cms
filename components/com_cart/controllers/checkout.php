@@ -56,7 +56,7 @@ class CartControllerCheckout extends ComponentController
 			$this->registerTask('__default', $this->_task);
 		}
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		// Check if they're logged in
 		if($juser->get('guest')) 
@@ -90,7 +90,7 @@ class CartControllerCheckout extends ComponentController
 		{
 			// redirect back to cart to display all messages
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-			$app = & JFactory::getApplication();
+			$app =  JFactory::getApplication();
 			$app->redirect($redirect_url);
 		}
 		
@@ -324,7 +324,7 @@ class CartControllerCheckout extends ComponentController
 		}
 		
 		// Add auto submission script
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'spin.min.js');
 		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'autosubmit.js');
 		

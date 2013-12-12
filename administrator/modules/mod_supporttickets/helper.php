@@ -46,11 +46,11 @@ class modSupportTickets extends Hubzero_Module
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$this->database = JFactory::getDBO();
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
 		$type = JRequest::getVar('type', 'submitted');
@@ -111,7 +111,7 @@ class modSupportTickets extends Hubzero_Module
 		// Get avgerage lifetime
 		$this->lifetime = $st->getAverageLifeOfTicket($this->type, $this->year, $this->group);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 
 		// Get the view

@@ -86,7 +86,7 @@ class plgPublicationsRelated extends JPlugin
 			'metadata'=>''
 		);
 			
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Build the query that checks topic pages
 		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, 
@@ -97,7 +97,7 @@ class plgPublicationsRelated extends JPlugin
 				OR v.pagetext LIKE '%[[Resource(".$publication->id.",%' OR v.pagetext LIKE '%[/Resource/".$publication->id." %'";
 		
 		$sql1 .= ($publication->alias) ? " OR v.pagetext LIKE '%[[Resource(".$publication->alias."%') " : ") ";
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		if (!$juser->get('guest')) 
 		{

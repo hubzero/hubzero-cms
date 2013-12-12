@@ -132,7 +132,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		$group_plugin_acl = $access[$active];
 
 		//Create user object
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		//get the group members
 		$members = $group->get('members');
@@ -192,7 +192,7 @@ class plgGroupsResources extends Hubzero_Plugin
 			}
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Incoming paging vars
@@ -382,7 +382,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		$log = JText::_('PLG_GROUPS_RESOURCES_LOG') . ': ';
 		if (count($ids) > 0) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 
 			// Loop through all the IDs for resources associated with this group
 			foreach ($ids as $id)
@@ -430,7 +430,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		{
 			return array();
 		}
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$rr = new ResourcesResource($database);
 
@@ -455,7 +455,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		if (!is_array($categories)) 
 		{
 			// Get categories
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$rt = new ResourcesType($database);
 			$categories = $rt->getMajorTypes();
 			$this->_cats = $categories;
@@ -512,7 +512,7 @@ class plgGroupsResources extends Hubzero_Plugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Instantiate some needed objects
 		$rr = new ResourcesResource($database);
@@ -649,7 +649,7 @@ class plgGroupsResources extends Hubzero_Plugin
 	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScript('components' . DS . 'com_resources' . DS . 'assets' . DS . 'css' . DS . 'resources.js');
 
 		ximport('Hubzero_Document');
@@ -667,7 +667,7 @@ class plgGroupsResources extends Hubzero_Plugin
 	 */
 	public function out($row, $authorized=false)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Instantiate a helper object
 		$RE = new ResourcesHelper($row->id, $database);

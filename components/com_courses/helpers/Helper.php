@@ -59,7 +59,7 @@ class Hubzero_Course_Helper
 	public static function getPopularCourses($limit=0)
 	{
 		//database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//query
 		$sql = "SELECT g.id, g.alias, g.title, g.blurb, 
@@ -88,7 +88,7 @@ class Hubzero_Course_Helper
 	public static function getCoursesMatchingTagString( $usertags, $usercourses )
 	{
 		//database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//
 		$gt = new CoursesTags( $database );
@@ -144,10 +144,10 @@ class Hubzero_Course_Helper
 	public function listCourses( $name="", $config, $courses=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
 	{
 		//user object
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		
 		//database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//check to see if we have any courses to show
 		if(!$courses)
@@ -376,7 +376,7 @@ class Hubzero_Course_Helper
 	public static function displayCourseMenu($course, $instance, $sections, $cats, $access_levels, $course_pages, $active_tab)
 	{
 		//instantiate objects
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		//variable to hold course menu html
 		$course_menu = "";
@@ -509,7 +509,7 @@ class Hubzero_Course_Helper
 		if ($role == '')
 			return false;
 		
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		
 		$query = "SELECT uidNumber FROM #__courses_roles as r, #__courses_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.id='" . $course->id . "'";
 		

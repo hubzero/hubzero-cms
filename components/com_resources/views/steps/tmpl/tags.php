@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (JPluginHelper::isEnabled('system', 'jquery')) 
 {
-	$doc =& JFactory::getDocument();
+	$doc = JFactory::getDocument();
 	$doc->addScript('/components/com_resources/assets/js/tags.js');
 }
 
@@ -57,7 +57,7 @@ class RecommendedTags
 		), $opts);
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'Inflect.php';
-		$dbh =& JFactory::getDBO();
+		$dbh = JFactory::getDBO();
 
 		$dbh->setQuery(
 			'SELECT t.raw_tag, fa.* 

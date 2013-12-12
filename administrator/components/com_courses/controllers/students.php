@@ -50,7 +50,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -443,7 +443,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 	public function csvTask() 
 	{	
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		$this->view->filters['offering']    = $app->getUserStateFromRequest(

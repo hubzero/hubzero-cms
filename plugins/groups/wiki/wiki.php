@@ -143,7 +143,7 @@ class plgGroupsWiki extends Hubzero_Plugin
 			$group_plugin_acl = $access[$active];
 
 			//Create user object
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -294,7 +294,7 @@ class plgGroupsWiki extends Hubzero_Plugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
 		// Instantiate a WikiPage object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Start the log text
 		$log = JText::_('PLG_GROUPS_WIKI_LOG') . ': ';
@@ -353,7 +353,7 @@ class plgGroupsWiki extends Hubzero_Plugin
 		{
 			return array();
 		}
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery("SELECT id FROM #__wiki_page AS p WHERE p.group_cn='" . $gid . "'");
 		return $database->loadObjectList();
 	}

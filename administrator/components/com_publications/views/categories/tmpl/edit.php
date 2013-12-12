@@ -92,14 +92,14 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label><?php echo JText::_('Custom Fields'); ?>:</label></td>
 						<td><?php 
-							$editor =& JFactory::getEditor();
+							$editor = JFactory::getEditor();
 							echo $editor->display('fields[customFields]', stripslashes($this->row->customFields), '', '', '50', '5', false);
 						?></td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Params'); ?>:</label></td>
 						<td><?php 
-							$editor =& JFactory::getEditor();
+							$editor = JFactory::getEditor();
 							echo $editor->display('fields[params]', stripslashes($this->row->params), '', '', '50', '5', false);
 						?></td>
 					</tr>

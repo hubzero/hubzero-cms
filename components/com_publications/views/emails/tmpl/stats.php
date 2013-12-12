@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 $ih = new MembersImgHandler();
 
 $baseManage = 'publications/submit';

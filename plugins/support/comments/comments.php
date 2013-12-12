@@ -72,7 +72,7 @@ class plgSupportComments extends JPlugin
 			break;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery($query);
 
 		if ($rows = $database->loadObjectList())
@@ -126,7 +126,7 @@ class plgSupportComments extends JPlugin
 			return null;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		switch ($category)
 		{
@@ -168,7 +168,7 @@ class plgSupportComments extends JPlugin
 			return null;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		switch ($category)
 		{
@@ -213,7 +213,7 @@ class plgSupportComments extends JPlugin
 			return null;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		switch ($category)
 		{

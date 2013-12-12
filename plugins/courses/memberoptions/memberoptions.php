@@ -101,7 +101,7 @@ class plgCoursesMemberOptions extends JPlugin
 			'html'=>''
 		);
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$this->course = $course;
 		$this->option = $option;
 
@@ -154,7 +154,7 @@ class plgCoursesMemberOptions extends JPlugin
 
 		// Load the options
 		/* @var $recvEmailOption courses_MemberOption */
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$recvEmailOption = new courses_MemberOption($database);
 		$recvEmailOption->loadRecord( $course->get('gidNumber'), $user->id, COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
@@ -196,7 +196,7 @@ class plgCoursesMemberOptions extends JPlugin
 		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
 		
 		//instantaite database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Save the COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
 		/* @var $row XForum */
@@ -223,7 +223,7 @@ class plgCoursesMemberOptions extends JPlugin
 			return $this->edittopic();
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->enqueueMessage('You have successfully updated your email settings','Message');
 		
 		if(!$postSaveRedirect)

@@ -43,7 +43,7 @@ class Hubzero_User_Password_History
 
 	public function getInstance($instance)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db)) {
 			return false;
@@ -72,7 +72,7 @@ class Hubzero_User_Password_History
 
 	public function add($passhash = null, $invalidated = null)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db)) {
 			return false;

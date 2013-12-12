@@ -111,7 +111,7 @@ class plgMembersBlog extends JPlugin
 			Hubzero_Document::addPluginScript('members', $this->_name);
 
 			// Append to document the title
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_MEMBERS_BLOG'));
 
 			// Get and determine task
@@ -172,7 +172,7 @@ class plgMembersBlog extends JPlugin
 			'created_by' => $member->get('uidNumber')
 		);
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$filters['state'] = 'public';
@@ -301,7 +301,7 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Check logged-in status
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$view->filters['state'] = 'public';
@@ -351,7 +351,7 @@ class plgMembersBlog extends JPlugin
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
@@ -383,7 +383,7 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Build some basic RSS document information
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$doc->title       = $jconfig->getValue('config.sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . JText::_('Blog');
 		$doc->description = JText::sprintf('PLG_MEMBERS_BLOG_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'),stripslashes($this->member->get('name')));
 		$doc->copyright   = JText::sprintf('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
@@ -468,7 +468,7 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Check authorization
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (($view->row->get('state') == 2 && $juser->get('guest')) 
 		 || ($view->row->get('state') == 0 && $juser->get('id') != $this->member->get('uidNumber'))) 
 		{
@@ -525,7 +525,7 @@ class plgMembersBlog extends JPlugin
 	private function _edit($row=null) 
 	{
 		// Login check
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
@@ -591,7 +591,7 @@ class plgMembersBlog extends JPlugin
 	private function _save() 
 	{
 		// Login check
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
@@ -625,7 +625,7 @@ class plgMembersBlog extends JPlugin
 		}
 
 		//return $this->_entry();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_($row->link()));
 	}
 
@@ -636,7 +636,7 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _delete() 
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
@@ -705,7 +705,7 @@ class plgMembersBlog extends JPlugin
 
 		// Return the topics list
 		//return $this->_browse();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
 	}
 
@@ -717,7 +717,7 @@ class plgMembersBlog extends JPlugin
 	private function _savecomment() 
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
@@ -748,7 +748,7 @@ class plgMembersBlog extends JPlugin
 			$this->entry = new BlogModelEntry($row->get('entry_id'));
 
 			// Get the site configuration
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// Build the "from" data for the e-mail
 			$from = array();
@@ -784,7 +784,7 @@ class plgMembersBlog extends JPlugin
 	private function _deletecomment() 
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
@@ -821,7 +821,7 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _settings() 
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -869,7 +869,7 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _savesettings() 
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));

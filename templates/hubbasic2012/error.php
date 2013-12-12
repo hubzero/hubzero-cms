@@ -4,12 +4,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Module_Helper');
 ximport('Hubzero_Document');
 
-$config =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$config = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 $this->template = 'hubbasic2012';
 
-$lang =& JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load('tpl_hubbasic2012');
 
 ximport('Hubzero_Browser');

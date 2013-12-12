@@ -105,7 +105,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	{
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Filters
@@ -146,7 +146,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
 		$this->_getScripts('assets/js/' . $this->_controller . '.js');
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -281,14 +281,14 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// Set the page title
 		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 		$this->view->title .= $status['toolname'] ? ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'] : '';
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Get some needed styles
 		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
 		$this->_getScripts('assets/js/' . $this->_controller);
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -379,7 +379,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ';
 		$this->view->title .= ($this->_action=='confirm') ? JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : JText::_('COM_TOOLS_TASK_VERSIONS');
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		$hzt = Hubzero_Tool::getInstance($this->_toolid);
@@ -398,7 +398,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : '')
 		);
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -495,10 +495,10 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -602,10 +602,10 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ';
 		$this->view->title .= ($this->_action == 'confirm') ? JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : JText::_('COM_TOOLS_TASK_LICENSE');
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -799,14 +799,14 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' .  JText::_('COM_TOOLS_TASK_CREATE_NEW_TOOL');
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Get some needed styles
 		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
 		$this->_getScripts('assets/js/' . $this->_controller);
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -886,14 +886,14 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_('COM_TOOLS_TASK_EDIT_TOOL');
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Get some needed styles
 		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
 		$this->_getScripts('assets/js/' . $this->_controller);
 
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -1041,7 +1041,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		{
 			// display form with errors
 			//$title = JText::_(strtoupper($this->_option)).': '.JText::_('COM_TOOLS_EDIT_TOOL');
-			//$document =& JFactory::getDocument();
+			//$document = JFactory::getDocument();
 			//$document->setTitle($title);
 			if (is_array($err))
 			{
@@ -1763,7 +1763,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$headline = '';
 

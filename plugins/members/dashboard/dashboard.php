@@ -370,7 +370,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 				$view->rendered = $rendered;
 				$view->juser = $this->juser;
 
-				$app =& JFactory::getApplication();
+				$app = JFactory::getApplication();
 				$view->admin = $app->isAdmin();
 
 				$html .= $view->loadTemplate();
@@ -433,7 +433,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 	 */
 	protected function save($rtrn=0)
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if ($app->isAdmin())
 		{
 			return $this->saveTask($rtrn);
@@ -553,7 +553,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 			)
 		);
 		
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		
 		// Incoming
 		$mid = JRequest::getInt('mid', 0);
@@ -655,7 +655,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 		if (in_array($mid, $mods))
 		{
 			// This module already exists
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			if (!$app->isAdmin())
 			{
 				return 'ERROR';
@@ -863,7 +863,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 
 		$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStylesheet($base . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.css');
 		//$document->addScript($base . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'xsortables.js');
 		//$document->addScript($base . DS . 'media/system/js/jquery.js');

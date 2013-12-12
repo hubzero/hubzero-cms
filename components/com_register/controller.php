@@ -103,7 +103,7 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		$xprofile =& Hubzero_Factory::getProfile();
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 
 		// Get the return URL
 		$return = base64_decode(JRequest::getVar('return', '',  'method', 'base64'));
@@ -384,7 +384,7 @@ class RegisterController extends Hubzero_Controller
 		$xprofile =& Hubzero_Factory::getProfile();
 
 		// Get some settings
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$this->jconfig = $jconfig;
 		$params =& JComponentHelper::getParams('com_members');
 		$hubHomeDir = rtrim($params->get('homedir'),'/');
@@ -393,7 +393,7 @@ class RegisterController extends Hubzero_Controller
 		$config   =& JComponentHelper::getParams('com_users');
 		$usertype = $config->get('new_usertype', 'Registered');
 
-		$acl =& JFactory::getACL();
+		$acl = JFactory::getACL();
 
 		// Create a new Joomla user
 		$target_juser = new JUser();
@@ -525,7 +525,7 @@ class RegisterController extends Hubzero_Controller
 		$xregistration = new Hubzero_Registration();
 
 		$xprofile    =& Hubzero_Factory::getProfile();
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 
 		$hzal = Hubzero_Auth_Link::find_by_id($this->juser->get('auth_link_id'));
 
@@ -758,7 +758,7 @@ class RegisterController extends Hubzero_Controller
 
 		if (!$this->juser->get('guest') && !$this->juser->get('tmp_user')) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect("/members/myaccount", JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION'), "warning");
 			return;
 		}
@@ -788,10 +788,10 @@ class RegisterController extends Hubzero_Controller
 			{
 				// Get required system objects
 				$user 		= clone(JFactory::getUser());
-				$pathway 	=& JFactory::getApplication()->getPathway();
-				$config		=& JFactory::getConfig();
-				$authorize	=& JFactory::getACL();
-				$document   =& JFactory::getDocument();
+				$pathway 	= JFactory::getApplication()->getPathway();
+				$config		= JFactory::getConfig();
+				$authorize	= JFactory::getACL();
+				$document   = JFactory::getDocument();
 
 				// If user registration is not allowed, show 403 not authorized.
 				$usersConfig = &JComponentHelper::getParams('com_users');
@@ -839,7 +839,7 @@ class RegisterController extends Hubzero_Controller
 					$user->set('groups', array($result));
 				}
 
-				$date =& JFactory::getDate();
+				$date = JFactory::getDate();
 				$user->set('registerDate', $date->toMySQL());
 
 				/*
@@ -1734,7 +1734,7 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -1767,7 +1767,7 @@ class RegisterController extends Hubzero_Controller
 		{
 			$title = JText::_('COM_REGISTER');
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($title);
 	}
 
@@ -1779,7 +1779,7 @@ class RegisterController extends Hubzero_Controller
 	private function _cookie_check()
 	{
 		$app = JFactory::getApplication();
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 		$jcookie = $jsession->getName();
 
 		if (!isset($_COOKIE[$jcookie])) 

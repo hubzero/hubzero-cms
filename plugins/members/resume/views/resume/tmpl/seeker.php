@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 	$juser = JFactory::getUser();
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 
 	$jt = new JobType($database);
 	$jc = new JobCategory($database);

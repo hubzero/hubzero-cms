@@ -563,7 +563,7 @@ class WikiPage extends JTable
 				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
 			$this->modified = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
@@ -831,7 +831,7 @@ class WikiPage extends JTable
 	 */
 	public function buildPluginQuery($filters=array())
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{

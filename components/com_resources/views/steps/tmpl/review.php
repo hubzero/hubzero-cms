@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser =& JFactory::getUser();
-$jconfig =& JFactory::getConfig();
+$juser = JFactory::getUser();
+$jconfig = JFactory::getConfig();
 
 $paramsClass = 'JRegistry';
 if (version_compare(JVERSION, '1.6', 'lt'))

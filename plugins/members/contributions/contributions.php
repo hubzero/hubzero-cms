@@ -97,7 +97,7 @@ class plgMembersContributions extends JPlugin
 			'metadata' => ''
 		);
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Incoming paging vars
@@ -253,7 +253,7 @@ class plgMembersContributions extends JPlugin
 		$total = 0;
 
 		//user object
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		//count all members contributions
 		foreach ($cats as $cat) 

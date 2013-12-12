@@ -208,7 +208,7 @@ JHTML::_('behavior.tooltip');
 			ximport('Hubzero_View_Helper_Html');
 
 			$k = 0;
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$sc = new SupportComment($database);
 			$st = new SupportTags($database);
 

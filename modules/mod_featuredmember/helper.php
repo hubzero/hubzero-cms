@@ -54,7 +54,7 @@ class modFeaturedmember extends Hubzero_Module
 
 		ximport('Hubzero_User_Profile');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$filters = array();
 		$filters['limit'] = 1;
@@ -74,7 +74,7 @@ class modFeaturedmember extends Hubzero_Module
 
 		$fh = new FeaturesHistory($database);
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Is a specific content category set?
 		if ($catid) 
@@ -85,7 +85,7 @@ class modFeaturedmember extends Hubzero_Module
 			$contentConfig =& JComponentHelper::getParams('com_content');
 			$noauth = !$contentConfig->get('shownoauth');
 
-			$date =& JFactory::getDate();
+			$date = JFactory::getDate();
 			$now = $date->toMySQL();
 
 			$nullDate = $database->getNullDate();
@@ -298,7 +298,7 @@ class modFeaturedmember extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));

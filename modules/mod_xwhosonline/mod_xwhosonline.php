@@ -37,7 +37,7 @@ require_once(dirname(__FILE__) . DS . 'helper.php');
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	// Editor usertype check
-	$jacl =& JFactory::getACL();
+	$jacl = JFactory::getACL();
 	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'super administrator');
 	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'administrator');
 	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'manager');

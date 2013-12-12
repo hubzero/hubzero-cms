@@ -45,7 +45,7 @@ if (!$publishing)
 	return false;
 }
 
-$database 	=& JFactory::getDBO();
+$database 	= JFactory::getDBO();
 
 $filters = array();
 $filters['sortby']   		= 'title';

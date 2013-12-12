@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>

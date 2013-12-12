@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 if (!$this->filters['filterby']) 
 {

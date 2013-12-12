@@ -108,8 +108,8 @@ class TimeController extends Hubzero_Controller
 	 */
 	protected function _getTimeStyles()
 	{
-		$doc       =& JFactory::getDocument();
-		$mainframe =& JFactory::getApplication();
+		$doc       = JFactory::getDocument();
+		$mainframe = JFactory::getApplication();
 		$template  = $mainframe->getTemplate();
 		$task      = $this->_task;
 
@@ -142,7 +142,7 @@ class TimeController extends Hubzero_Controller
 	 */
 	protected function _getTimeScripts()
 	{
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 
 		$component_js = "/components".DS."com_time".DS."time.jquery.js";
 		$hover_intent = DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.hoverIntent.js';
@@ -179,7 +179,7 @@ class TimeController extends Hubzero_Controller
 	protected function _buildPathway()
 	{
 		//$option = substr($this->_option,4);
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
@@ -216,7 +216,7 @@ class TimeController extends Hubzero_Controller
 		$this->_title = JText::_(strtoupper($this->_option));
 
 		// Set the title of the browser window
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 

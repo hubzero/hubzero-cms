@@ -32,8 +32,8 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Document');
 
-$config =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$config = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 // Set the generator statement
 $this->setGenerator('HUBzero - The open source platform for scientific and educational collaboration');

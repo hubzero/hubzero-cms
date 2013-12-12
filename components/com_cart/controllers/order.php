@@ -118,7 +118,7 @@ class CartControllerOrder extends ComponentController
 			die('Error processing your order.');
 			//JError::raiseError(404, JText::_('Error processing transaction.'));
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-			$app  = & JFactory::getApplication();
+			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url);
 		}
 		
@@ -147,7 +147,7 @@ class CartControllerOrder extends ComponentController
 		if (!$transaction)
 		{
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-			$app  = & JFactory::getApplication();
+			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url);	
 		}
 				
@@ -186,7 +186,7 @@ class CartControllerOrder extends ComponentController
 			// redirect to thank you page
 			$redirect_url = JRoute::_('index.php?option=' . 'com_cart') . '/order/complete/' . 
 							'?' . $verificationVar . '=' . $token . '-' . $transaction->info->tId;
-			$app  = & JFactory::getApplication();
+			$app  =  JFactory::getApplication();
 			//echo 'redirect';
 			$app->redirect($redirect_url);	
 		}

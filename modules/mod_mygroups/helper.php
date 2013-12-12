@@ -46,7 +46,7 @@ class modMyGroups extends Hubzero_Module
 	 */
 	private function _getGroups($uid, $type='all')
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// Get all groups the user is a member of
 		$query1 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager 
@@ -148,7 +148,7 @@ class modMyGroups extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');

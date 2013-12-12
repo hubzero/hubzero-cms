@@ -41,7 +41,7 @@ class NewsControllerApi extends Hubzero_Api_Controller
 		$format 	= JRequest::getVar('format', 'json');
 		
 		//load up the news articles
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$query = "SELECT c.* 

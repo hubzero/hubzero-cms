@@ -173,7 +173,7 @@ class plgMembersProfile extends Hubzero_Plugin
 		
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript("/media/system/js/jquery.fileuploader.js");
 		}
 
@@ -188,11 +188,11 @@ class plgMembersProfile extends Hubzero_Plugin
 
 		$registration_update = null;
 
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		if ($session->get('registration.incomplete'))
 		{
 			$xreg = new Hubzero_Registration();
-			$juser = & JFactory::getUser(); 
+			$juser =  JFactory::getUser(); 
 			$xprofile =& Hubzero_Factory::getProfile();
 
 			if (is_object($xprofile)) 
@@ -320,7 +320,7 @@ class plgMembersProfile extends Hubzero_Plugin
 		$registration->loadProfile($profile);
 
 		//add tags to the registration object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$mt = new MembersTags($database);
 		$registration->_registration['tags'] = $mt->get_tag_string($profile->get('uidNumber'));
 

@@ -285,7 +285,7 @@ class plgMembersCollections extends JPlugin
 	{
 		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->enqueueMessage(JText::_('MEMBERS_LOGIN_NOTICE'), 'warning');
 		$app->redirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($route)));
 		return;
@@ -1050,7 +1050,7 @@ class plgMembersCollections extends JPlugin
 
 		if (!$this->params->get('access-edit-item') && !$this->params->get('access-create-item')) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->enqueueMessage(JText::_('You are not authorized to perform this action.'), 'error');
 			$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
 			return;
@@ -1220,7 +1220,7 @@ class plgMembersCollections extends JPlugin
 			return $this->_edit($row);
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $this->model->collection($p['collection_id'])->get('alias')));
 	}
 
@@ -1387,7 +1387,7 @@ class plgMembersCollections extends JPlugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 
@@ -1427,7 +1427,7 @@ class plgMembersCollections extends JPlugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 
@@ -1519,7 +1519,7 @@ class plgMembersCollections extends JPlugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 
@@ -1632,7 +1632,7 @@ class plgMembersCollections extends JPlugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Display the main listing
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
 	}
 
@@ -1653,7 +1653,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _editcollection($row=null)
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$collection = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
 
@@ -1758,7 +1758,7 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Redirect to collection
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $row->get('alias')));
 	}
 
@@ -1850,7 +1850,7 @@ class plgMembersCollections extends JPlugin
 			exit;
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect($route);
 	}
 

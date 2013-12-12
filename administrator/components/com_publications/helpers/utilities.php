@@ -50,7 +50,7 @@ class PublicationUtilities
 	public function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $reserve = 0 )
 	{
 		// Get configs
-		$jconfig 	=& JFactory::getConfig();
+		$jconfig 	= JFactory::getConfig();
 		$shoulder   = $config->get('doi_shoulder');
 		$service    = trim($config->get('doi_service'), DS);
 		$prefix     = $config->get('doi_prefix', '' );
@@ -227,7 +227,7 @@ class PublicationUtilities
 		// Get configs
 		$juri =& JURI::getInstance();
 		
-		$jconfig 	=& JFactory::getConfig();
+		$jconfig 	= JFactory::getConfig();
 		$service    = trim($config->get('doi_service'), DS);
 		$userpw		= $config->get('doi_userpw');
 		

@@ -256,7 +256,7 @@ class MembersPasswordRules extends JTable
 							'value'       => '120');
 
 		// Get a few config values from joomla
-		$app    =& JFactory::getApplication();
+		$app    = JFactory::getApplication();
 		$schema = $app->getCfg('db');
 		$prefix = $app->getCfg('dbprefix');
 

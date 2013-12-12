@@ -53,7 +53,7 @@ function get_dd($db_id)
 		$dd['table'] = $dv_id;
 		$dd['serverside'] = true;
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$juser->get('guest') && isset($dv_conf['_managers']) && $dv_conf['_managers'] !== false) {
 			$dd['acl']['allowed_groups'] = $dv_conf['_managers'];
 		} elseif (!$juser->get('guest') && $juser->authorize('login', 'administrator')) {
@@ -180,9 +180,9 @@ function _dd_post($dd)
 
 function pathway($dd)
 {
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 	$document->setTitle($dd['title']);
-	$mainframe = &JFactory::getApplication();
+	$mainframe =  JFactory::getApplication();
 	$pathway =& $mainframe->getPathway();
 
 	if(isset($_SERVER['HTTP_REFERER'])) {

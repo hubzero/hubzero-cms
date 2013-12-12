@@ -109,7 +109,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		// Get our database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Are we returning HTML?
 		if ($returnhtml) 
@@ -680,7 +680,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$xseen->mid = $mid;
 		$xseen->uid = $member->get('uidNumber');
 		$xseen->loadRecord();
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('id') == $member->get('uidNumber')) 
 		{
 			if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL) 
@@ -951,7 +951,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		if (count($ids) > 0) 
 		{
 			$sql = "DELETE FROM #__xmessage_seen WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$database->setQuery($sql);
 			$database->query();
 		}
@@ -1066,7 +1066,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	public function send($database, $option, $member)
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			return false;

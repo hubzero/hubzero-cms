@@ -92,7 +92,7 @@ class plgWhatsnewKb extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Build the query
 		$f_count = "SELECT COUNT(*)";

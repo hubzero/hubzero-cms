@@ -304,11 +304,11 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			</form>
 			<?php 
 			$juser = JFactory::getUser();
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$juri =& JURI::getInstance();
 			//$juri->base();
 
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$sitename 	= $jconfig->getValue('config.sitename');
 			$hubShortURL 	= str_replace('https://', '', $juri->base()); //$hubShortURL;
 

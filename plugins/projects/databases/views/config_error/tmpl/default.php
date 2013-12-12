@@ -24,7 +24,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 
 ?>
 <div id="prj-db-list">

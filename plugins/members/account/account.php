@@ -136,7 +136,7 @@ class plgMembersAccount extends Hubzero_Plugin
 			Hubzero_Document::addSystemScript('jquery.hoverIntent');
 
 			// Add providers stylesheet
-			$doc =& JFactory::getDocument();
+			$doc = JFactory::getDocument();
 			if (version_compare(JVERSION, '2.5', 'ge'))
 			{
 				$doc->addStylesheet(DS . 'components' . DS . 'com_users' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
@@ -908,7 +908,7 @@ class plgMembersAccount extends Hubzero_Plugin
 	private function setToken($hashedToken)
 	{
 		// Create the database object and set the token
-		$db     =& JFactory::getDBO();
+		$db     = JFactory::getDBO();
 		$query	= 'UPDATE #__users'
 				. ' SET activation = ' . $db->Quote($hashedToken)
 				. ' WHERE id = ' . (int) $this->user->get('id')
@@ -935,7 +935,7 @@ class plgMembersAccount extends Hubzero_Plugin
 	private function getToken()
 	{
 		// Create database object and check that token matches that of the user stored in the db
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$db->setQuery('SELECT id, activation FROM #__users WHERE block = 0 AND username = '.$db->Quote($this->user->get('username')));
 
 		return $db->loadObject();

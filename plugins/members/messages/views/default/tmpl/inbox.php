@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get the database object
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 ?>
 
 

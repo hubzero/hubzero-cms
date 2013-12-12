@@ -58,8 +58,8 @@ class plgMembersImpact extends JPlugin
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin('members', 'impact');
 		$this->_params = new $paramsClass($this->_plugin->params);
-		$this->_database =& JFactory::getDBO();
-		$this->_juser =& JFactory::getUser();
+		$this->_database = JFactory::getDBO();
+		$this->_juser = JFactory::getUser();
 		$this->_pubconfig =& JComponentHelper::getParams( 'com_publications' );
 		
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
@@ -126,7 +126,7 @@ class plgMembersImpact extends JPlugin
 		ximport('Hubzero_View_Helper_Html');
 
 		// Add stylesheet
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
 		
 		require_once( JPATH_ROOT . DS . 'components'.DS

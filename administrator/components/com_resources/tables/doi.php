@@ -242,7 +242,7 @@ class ResourcesDoi extends JTable
 		}
 
 		// Get configs
-		$jconfig 	=& JFactory::getConfig();
+		$jconfig 	= JFactory::getConfig();
 		$shoulder   = $config->get('doi_shoulder');
 		$service    = $config->get('doi_newservice');
 		$prefix     = $config->get('doi_newprefix');
@@ -292,7 +292,7 @@ class ResourcesDoi extends JTable
 		}
 		else 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$creatorName = $juser->get('name');
 		}
 

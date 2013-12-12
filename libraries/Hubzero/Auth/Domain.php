@@ -217,7 +217,7 @@ class Hubzero_Auth_Domain
 	 */
 	public function create()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -336,7 +336,7 @@ class Hubzero_Auth_Domain
 	 */
 	function update($all = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "UPDATE #__auth_domain SET ";
 

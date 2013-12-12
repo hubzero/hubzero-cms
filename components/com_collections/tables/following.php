@@ -138,7 +138,7 @@ class CollectionsTableFollowing extends JTable
 	 */
 	public function check()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$this->follower_id = intval($this->follower_id);
 		if (!$this->follower_id) 

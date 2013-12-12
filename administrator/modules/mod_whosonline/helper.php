@@ -72,7 +72,7 @@ class modWhosOnline extends Hubzero_Module
 		$this->rows = $this->database->loadObjectList();
 		
 		//add stylesheets to view
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 
 		// Get the view

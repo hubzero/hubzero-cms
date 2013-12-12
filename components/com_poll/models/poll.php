@@ -49,7 +49,7 @@ class PollModelPoll extends JModel
 		$db->setQuery( $query );
 		$db->query();
 
-		$date =& JFactory::getDate();
+		$date = JFactory::getDate();
 
 		$query = 'INSERT INTO #__poll_date'
 			. ' SET date = ' . $db->Quote($date->toMySQL())
@@ -62,7 +62,7 @@ class PollModelPoll extends JModel
 
 	function getLatest()
 	{
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$result	= null;
 
 		$query = 'SELECT id'
@@ -84,7 +84,7 @@ class PollModelPoll extends JModel
 
 	function getPollOptions($id)
 	{
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		$query = 'SELECT id, text' .
 			' FROM #__poll_data' .

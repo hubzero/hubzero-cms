@@ -438,7 +438,7 @@ window.addEvent('domready', function(){
 					<th><?php echo $this->profile->get('modifiedDate'); ?></th>
 				</tr>
 				<?php
-				$database =& JFactory::getDBO();
+				$database = JFactory::getDBO();
 				$database->setQuery("SELECT du.*, d.domain FROM #__xdomain_users AS du, #__xdomains AS d WHERE du.domain_id=d.domain_id AND du.uidNumber=".$this->profile->get('uidNumber'));
 				$domains = $database->loadObjectList();
 				if ($domains) {

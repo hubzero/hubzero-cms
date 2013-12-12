@@ -45,8 +45,8 @@ class WikiSetup
 	 */
 	public function initialize($option, $group_cn=null)
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		$pages = WikiSetup::defaultPages($group_cn);
 

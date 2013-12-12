@@ -162,7 +162,7 @@ class plgPublicationsShare extends JPlugin
 	 */
 	public function share($with, $url, $publication, $version)
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$link = '';
 		switch ($with)
@@ -210,7 +210,7 @@ class plgPublicationsShare extends JPlugin
 		
 		if ($link) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($link, '', '');
 		}
 	}

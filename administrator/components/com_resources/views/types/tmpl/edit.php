@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $base = str_replacE('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
 // Push some styles to the template
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
 $canDo = ResourcesHelperPermissions::getActions('type');
@@ -116,7 +116,7 @@ function submitbutton(pressbutton)
 				<tr>
 					<td class="key"><label><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label></td>
 					<td><?php 
-						$editor =& JFactory::getEditor();
+						$editor = JFactory::getEditor();
 						echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false);
 					?></td>
 				</tr>
@@ -142,7 +142,7 @@ function submitbutton(pressbutton)
 				</thead>
 				<tbody>
 				<?php 
-				$database =& JFactory::getDBO();
+				$database = JFactory::getDBO();
 				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
 					$database->setQuery( "SELECT * FROM #__extensions WHERE `type`='plugin' AND `folder`='resources'" );

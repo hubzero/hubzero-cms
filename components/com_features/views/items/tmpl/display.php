@@ -75,7 +75,7 @@ $types = array(
 if (count($this->rows) > 0) 
 {
 		$txt_length = 300;
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		switch ($this->filters['type'])
 		{
 			case 'profiles':

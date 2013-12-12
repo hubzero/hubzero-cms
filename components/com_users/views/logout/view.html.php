@@ -59,8 +59,8 @@ class UsersViewLogout extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Initialize variables
-		$document	=& JFactory::getDocument();
-		$user		=& JFactory::getUser();
+		$document	= JFactory::getDocument();
+		$user		= JFactory::getUser();
 		$image		= '';
 
 		$menu   =& JSite::getMenu();

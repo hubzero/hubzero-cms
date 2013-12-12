@@ -31,7 +31,7 @@ function get_dd($db_id)
 {
 	global $dv_conf;
 	$dd = false;
-	$db = &JFactory::getDBO();
+	$db =  JFactory::getDBO();
 
 	$dv_id = JRequest::getVar('dv');
 
@@ -188,7 +188,7 @@ function get_dd($db_id)
 	}
 
 	// Giving Hub admins full access to the DataStore dataviews
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	if ($juser->get('usertype') == 'Super Administrator' || $juser->get('usertype') == 'Administrator' || $juser->get('usertype') == 'Manager' ) {
 		$dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
 		$dd['acl']['allowed_users'][] = $juser->get('username');
@@ -259,10 +259,10 @@ function pathway($dd)
 {
 	$db_id = $dd['db_id'];
 
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 	$document->setTitle($dd['title']);
 
-	$mainframe = &JFactory::getApplication();
+	$mainframe =  JFactory::getApplication();
 	$pathway = &$mainframe->getPathway();
 
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {

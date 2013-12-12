@@ -95,7 +95,7 @@ class plgProjectsNotes extends JPlugin
 	 */
 	public function &onProjectCount( $project, &$counts ) 
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 				
 		// Get helper
 		$projectsHelper = new ProjectsHelper( $database );
@@ -171,7 +171,7 @@ class plgProjectsNotes extends JPlugin
 			$this->loadLanguage();
 						
 			// Get database
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			
 			// Set vars
 			$this->_database 	= $database;
@@ -181,7 +181,7 @@ class plgProjectsNotes extends JPlugin
 			
 			if ( !$this->_uid) 
 			{
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
 			$this->_msg = $msg;
@@ -191,7 +191,7 @@ class plgProjectsNotes extends JPlugin
 			}
 			
 			// Get JS
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginScript('projects', 'notes');
@@ -685,7 +685,7 @@ class plgProjectsNotes extends JPlugin
 	protected function _createDefaultPage( $pagename = '', $scope = '', $pagePrefix = '' )
 	{
 		ximport('Hubzero_Plugin_View');
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		// Compose default tool page
 		$eview = new Hubzero_Plugin_View(
@@ -770,7 +770,7 @@ class plgProjectsNotes extends JPlugin
 	 */
 	public function fixupPathway()
 	{		
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$pathway->setPathway(array());
 		
@@ -929,7 +929,7 @@ class plgProjectsNotes extends JPlugin
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Instantiate a project
 		$obj = new Project( $database );
@@ -957,7 +957,7 @@ class plgProjectsNotes extends JPlugin
 		}
 		
 		// Add styling
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . 'com_publications' . DS . 'assets' . DS . 'css' . DS . 'wiki.css');
 		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
 		

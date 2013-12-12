@@ -46,11 +46,11 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'admin.' . $this->_name . '.css');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		$this->view->filters = array();
@@ -300,7 +300,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 
 		if ($email || $message) 
 		{
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// E-mail "from" info
 			$from = array();

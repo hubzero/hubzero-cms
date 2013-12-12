@@ -375,7 +375,7 @@ class Hubzero_Announcement extends JTable
 		$message             = $eview->loadTemplate();
 		$message             = str_replace("\n", "\r\n", $message);
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// define headers
 		$headers  = 'MIME-Version: 1.0' . "\r\n";

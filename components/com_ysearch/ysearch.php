@@ -66,14 +66,14 @@ class YSearchController extends JController
 	 */
 	public function display()
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$pathway->addItem('Search', '/search');
 
 		$terms = new YSearchModelTerms(JRequest::getString('terms'));
 		JFactory::getDocument()->setTitle($terms->is_set() ? 'Search results for \''.htmlspecialchars($terms->get_raw(), ENT_NOQUOTES).'\'' : 'Search');
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$results = new YSearchModelResultSet($terms);
 		$results->set_limit($app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int'));
 		$results->set_offset(JRequest::getInt('limitstart', 0));

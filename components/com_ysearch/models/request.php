@@ -171,7 +171,7 @@ class YSearchModelRequest
 
 		if ($tag_ids)
 		{
-			$dbh =& JFactory::getDBO();
+			$dbh = JFactory::getDBO();
 			$dbh->setQuery(
 				'SELECT objectid, tbl FROM #__tags_object WHERE tagid IN (' . join(',', $tag_ids) . ')'
 			);

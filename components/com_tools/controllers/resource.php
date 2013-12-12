@@ -357,11 +357,11 @@ class ToolsControllerResource extends Hubzero_Controller
 
 		// Set the document title
 		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -588,7 +588,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$objV->compileResource($thistool, '', $resource, 'dev', $this->rconfig);
 
 		// get language library
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		if (!$lang->load(strtolower('com_resources'), JPATH_BASE)) 
 		{
 			$this->setError(JText::_('COM_TOOLS_Failed to load language file'));
@@ -603,11 +603,11 @@ class ToolsControllerResource extends Hubzero_Controller
 
 		// Set the document title
 		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(

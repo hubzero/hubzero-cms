@@ -48,7 +48,7 @@ class Hubzero_Factory
 		if (!is_object($instances[0]))
 		{
 			ximport('Hubzero_User_Profile');
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$instances[0] =& Hubzero_User_Profile::getInstance($juser->get('id'));
 
 			if (is_object($instances[0]))

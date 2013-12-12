@@ -90,7 +90,7 @@ class BillboardsController extends Hubzero_Controller
 		$view->task = $this->_task;
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -303,7 +303,7 @@ class BillboardsController extends Hubzero_Controller
 		}
 
 		// Clear the component's cache
-		$cache =& JFactory::getCache('com_billboards');
+		$cache = JFactory::getCache('com_billboards');
 		$cache->clean();
 
 		// Redirect
@@ -435,7 +435,7 @@ class BillboardsController extends Hubzero_Controller
 		$view->task = $this->_task;
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Get paging variables
@@ -593,7 +593,7 @@ class BillboardsController extends Hubzero_Controller
 	 */
 	protected function ordering(&$row, $id, $query, $neworder = 0)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if ($id) 
 		{

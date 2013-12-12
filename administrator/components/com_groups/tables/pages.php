@@ -164,7 +164,7 @@ Class GroupPages extends JTable
 	 */
 	public function displayPage()
 	{
-		$this->juser =& JFactory::getUser();
+		$this->juser = JFactory::getUser();
 
 		//var to hold page content
 		$page = '';

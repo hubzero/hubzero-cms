@@ -164,7 +164,7 @@ class plgCitationBibtex extends JPlugin
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
 
 		//database object
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		//query
 		$sql = "SELECT id, title, doi, isbn FROM #__citations";

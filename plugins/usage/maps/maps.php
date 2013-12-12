@@ -327,7 +327,7 @@ class plgUsageMaps extends JPlugin
 			}
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$pathway->addItem(JText::_('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
 

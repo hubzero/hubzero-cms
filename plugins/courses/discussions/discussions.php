@@ -496,7 +496,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 			$this->base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=' . $this->_name;
 
-			$pathway =& JFactory::getApplication()->getPathway();
+			$pathway = JFactory::getApplication()->getPathway();
 			$pathway->addItem(
 				JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
 				'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->_name

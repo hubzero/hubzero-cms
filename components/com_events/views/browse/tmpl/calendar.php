@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$database =& JFactory::getDBO();
-$juser =& JFactory::getUser();
+$database = JFactory::getDBO();
+$juser = JFactory::getUser();
 $gid = $juser->get('gid');
 $gid = (intval($gid)) ? $gid : 0;
 

@@ -187,7 +187,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 					$templates = $this->page->getTemplates();
 
 					if ($templates) {
-						$database =& JFactory::getDBO();
+						$database = JFactory::getDBO();
 						$temprev = new WikiPageRevision($database);
 
 						foreach ($templates as $template)
@@ -283,7 +283,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 			$cls = ' hide';
 		}
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$this->page->id || $this->page->created_by == $juser->get('id') || $this->config->get('access-manage')) { ?>
 			<label for="params_mode">
 				<?php echo JText::_('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>

@@ -66,7 +66,7 @@ class StoreControllerItems extends Hubzero_Controller
 		$this->view->store_enabled = $this->config->get('store_enabled');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Get paging variables

@@ -246,7 +246,7 @@ class VideoMacro extends WikiMacro
 			jimport('joomla.filesystem.file');
 			$ext = strtolower(JFile::getExt($video_url));
 
-			$doc =& JFactory::getDocument();
+			$doc = JFactory::getDocument();
 			$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 			$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 

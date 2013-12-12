@@ -46,9 +46,9 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.detailed.php';
 		
 		//instantiate objects
-		$juser    =& JFactory::getUser();
-		$database =& JFactory::getDBO();
-		$session  =& JFactory::getSession();
+		$juser    = JFactory::getUser();
+		$database = JFactory::getDBO();
+		$session  = JFactory::getSession();
 		
 		//get request vars
 		$time       = JRequest::getVar('time', 0);

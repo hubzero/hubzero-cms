@@ -45,7 +45,7 @@ if ($this->rows) {
 	<ul class="questions plugin">
 <?php
 	$i=1;
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 
 	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 	$tagging = new AnswersTags( $database );

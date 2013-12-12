@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$filters 		= $this->filters;
 	$version 	    = $this->version;
 	
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 
 	$html  = '<div class="main section upperpane">'."\n";
 	$html .= '<div class="aside rankarea">'."\n";

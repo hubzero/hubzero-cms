@@ -46,7 +46,7 @@ class modMyCourses extends Hubzero_Module
 	 */
 	private function _getCourses($uid, $type='all')
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// Get all groups the user is a member of
 		/*$query1 = "SELECT c.id, c.alias, c.title, c.created AS enrolled, NULL AS starts, NULL AS ends, 'manager' AS role, NULL AS offering_alias, NULL AS offering_title, NULL AS section_alias, NULL AS section_title
@@ -124,7 +124,7 @@ class modMyCourses extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');

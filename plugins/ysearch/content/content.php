@@ -58,7 +58,7 @@ class plgYSearchContent extends YSearchPlugin
 			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' AND c.`fulltext` NOT LIKE '%$forb%')";
 		}
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$addtl_where[] = '(c.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';

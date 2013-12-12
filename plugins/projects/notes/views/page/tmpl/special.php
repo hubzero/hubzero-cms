@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->page->pagename = $this->page->stripNamespace();
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->page->stripNamespace($this->page->getTitle()); ?></h2>

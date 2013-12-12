@@ -47,7 +47,7 @@ class ServicesControllerServices extends Hubzero_Controller
 	{
 		// Get configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->view->filters = array();
 
@@ -111,7 +111,7 @@ class ServicesControllerServices extends Hubzero_Controller
 	 */
 	protected function setupServices()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$objS = new Service($database);
 		$now = JFactory::getDate()->toSql();

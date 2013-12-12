@@ -43,7 +43,7 @@ class RegisterControllerIncremental extends Hubzero_Controller
 	}
 
 	public function saveTask() {
-		$dbh =& JFactory::getDBO();
+		$dbh = JFactory::getDBO();
 		$dbh->execute('DELETE FROM #__incremental_registration_groups');
 		$dbh->execute('DELETE FROM #__incremental_registration_group_label_rel');
 		

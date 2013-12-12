@@ -68,7 +68,7 @@ class modRapidContact extends Hubzero_Module
 	    $this->invalid_email = $this->params->get('invalid_email', JText::_('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
 
 		// From
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$this->from_name     = @$this->params->get('from_name', JText::_('MOD_RAPID_CONTACT'));
 		$this->from_email    = @$this->params->get('from_email', 'rapid_contact@yoursite.com');
 
@@ -153,7 +153,7 @@ class modRapidContact extends Hubzero_Module
 				$this->from_email = $this->posted['email'];
 				$this->from_name  = (isset($this->posted['name']) && $this->_cleanXss($this->posted['name'])) ? $this->_cleanXss($this->posted['name']) : $this->posted['email'];
 
-				$mailSender = &JFactory::getMailer();
+				$mailSender =  JFactory::getMailer();
 				$mailSender->addRecipient($this->recipient);
 				$mailSender->setSender(array($this->from_email, $this->from_name));
 				$mailSender->addReplyTo(array($this->posted['email'], ''));

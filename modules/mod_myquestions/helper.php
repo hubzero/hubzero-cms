@@ -91,8 +91,8 @@ class modMyQuestions extends Hubzero_Module
 	 */
 	private function _getInterests($cloud=0)
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 
@@ -119,8 +119,8 @@ class modMyQuestions extends Hubzero_Module
 	 */
 	private function _getQuestions($kind='open', $interests=array())
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Get some classes we need
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
@@ -220,7 +220,7 @@ class modMyQuestions extends Hubzero_Module
 			ximport('Hubzero_Bank');
 		}
 
-		//$juser =& JFactory::getUser();
+		//$juser = JFactory::getUser();
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);

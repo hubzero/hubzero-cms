@@ -92,7 +92,7 @@ class plgWhatsnewContent extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Build the query
 		$c_count = " SELECT count(DISTINCT c.id)";
@@ -212,7 +212,7 @@ class plgWhatsnewContent extends JPlugin
 			unset($aliases);
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery("SELECT alias, parent FROM #__menu WHERE id='$id' LIMIT 1");
 		$level = $database->loadRow();
 

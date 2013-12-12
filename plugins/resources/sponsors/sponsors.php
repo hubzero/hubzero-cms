@@ -207,7 +207,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 		$this->view->task = $this->_task;
 		
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming

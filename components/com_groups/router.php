@@ -60,7 +60,7 @@ function GroupsBuildRoute(&$query)
 		if ($debug)
 		{
 			//get the application object
-			$application =& JFactory::getApplication();
+			$application = JFactory::getApplication();
 		
 			//check to see if we were already warned
 			$alreadyWarned = JRequest::getBOOL('warned', 0);

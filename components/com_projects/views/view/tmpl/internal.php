@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $html  = '';
 
 // Add new activity count to page title
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $title = $this->project->counts['newactivity'] > 0 
 	&& $this->active == 'feed' 
 	? $this->title.' (' . $this->project->counts['newactivity'].')' 

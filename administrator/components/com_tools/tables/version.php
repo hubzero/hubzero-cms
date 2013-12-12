@@ -656,7 +656,7 @@ class ToolVersion extends  JTable
 		$xlog =& Hubzero_Factory::getLogger();
 
 		// data comes from mysql
-		$juser  =& JFactory::getUser();
+		$juser  = JFactory::getUser();
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id) 
@@ -1024,7 +1024,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getToolname($instance) 
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$query  = "SELECT toolname FROM #__tool_version WHERE instance=" . $this->_db->Quote($instance) . " LIMIT 1";
 		$this->_db->setQuery($query);
 		$toolname = $this->_db->loadResult();
@@ -1046,7 +1046,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getCurrentVersionProperty($toolname, $property) 
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$query  = "SELECT " . $property . " FROM #__tool_version  WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -1063,7 +1063,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getDevVersionProperty($toolname, $property) 
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$query  = "SELECT " . $property . " FROM #__tool_version WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

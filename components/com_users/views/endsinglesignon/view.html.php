@@ -46,7 +46,7 @@ class UsersViewEndsinglesignon extends JViewLegacy
 		Hubzero_Document::addComponentStylesheet('com_user', 'login.css');
 
 		// Get the site name
-		$jconfig  =& JFactory::getConfig();
+		$jconfig  = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 
 		// Get the display name for the current plugin being used

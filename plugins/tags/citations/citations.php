@@ -116,7 +116,7 @@ class plgTagsCitations extends JPlugin
 					'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
 		$e_from  = " FROM #__citations AS e, #__tags_object AS t"; //", #__users AS u";
 		$e_where = " WHERE t.objectid=e.id AND t.tbl='citations' AND t.tagid IN ($ids)"; //e.uid=u.id AND 
-		/*$juser =& JFactory::getUser();
+		/*$juser = JFactory::getUser();
 		if ($juser->get('guest')) {
 			$e_where .= " AND e.state=1";
 		} else {

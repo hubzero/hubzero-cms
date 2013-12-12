@@ -107,7 +107,7 @@ switch ($this->level)
 		$html .= '<h3>'.JText::_('COM_RESOURCES').' '.ResourcesHtml::formSelect('sortby', $sortbys, $this->bits['sortby'], '" onchange="javascript:HUB.TagBrowser.changeSort();"').'</h3>';
 		$html .= '<ul id="ulitems">';
 		if ($tools && count($tools) > 0) {
-			//$database =& JFactory::getDBO();
+			//$database = JFactory::getDBO();
 			foreach ($tools as $tool)
 			{
 				$tool->title = Hubzero_View_Helper_Html::shortenText($tool->title, 40, 0);
@@ -161,7 +161,7 @@ switch ($this->level)
 		$config = $this->bits['config'];
 		$authorized = $this->bits['authorized'];
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$statshtml = '';
 		if ($params->get('show_ranking')) {
@@ -192,7 +192,7 @@ switch ($this->level)
 		$html .= '><a href="'.$sef.'">'.$this->escape(stripslashes($resource->title)).'</a></h4>';
 		$html .= '<p>'.Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 400, 0).' &nbsp; <a href="'.$sef.'">'.JText::_('COM_RESOURCES_LEARN_MORE').'</a></p>';
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) {
 			ximport('Hubzero_User_Helper');
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');

@@ -51,7 +51,7 @@ class Hubzero_Tool_VersionHelper
 	 */
     public function iterate($func)
     {
-        $db = &JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
 		if (true)
         {
@@ -85,7 +85,7 @@ class Hubzero_Tool_VersionHelper
 	 */
     public function getCurrentToolVersion($toolid)
     {
-        $db = & JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
         if (is_numeric($toolid))
         {
@@ -120,7 +120,7 @@ class Hubzero_Tool_VersionHelper
 	 */
     public function getDevelopmentToolVersion($toolid)
     {
-        $db = & JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
         if (is_numeric($toolid))
         {
@@ -156,7 +156,7 @@ class Hubzero_Tool_VersionHelper
 	 */
 	public function getToolRevision($toolid, $revision)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if ($revision == 'dev' || $revision == 'development')
 		{
@@ -542,7 +542,7 @@ class Hubzero_Tool_Version
 	 */
     public function getTool_VersionNames($tool = null)
     {
-        $db = &JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
         if (!isset($this))
         { // static method call
@@ -674,7 +674,7 @@ class Hubzero_Tool_Version
 	 */
     private function _mysql_create()
     {
-        $db = &JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
         if (empty($db))
         {
@@ -875,7 +875,7 @@ class Hubzero_Tool_Version
 	 */
     private function _mysql_update($all = false)
     {
-        $db = &JFactory::getDBO();
+        $db =  JFactory::getDBO();
         $xlog = &Hubzero_Factory::getLogger();
 
     	$xlog->logDebug('_mysql_update() start');
@@ -1275,7 +1275,7 @@ class Hubzero_Tool_Version
         {
             if (!array_key_exists($property, get_object_vars($this)))
             {
-                $db = &JFactory::getDBO();
+                $db =  JFactory::getDBO();
 
                 if (is_object($db))
                 {
@@ -1560,7 +1560,7 @@ class Hubzero_Tool_Version
 	 */
 	public function getDevelopmentGroup($byid = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if ($byid == false)
 		{
@@ -1588,7 +1588,7 @@ class Hubzero_Tool_Version
 	 */
 	public function getVersionInfo($id, $version=null, $toolname=null, $instance=null)
     {
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
         // data comes from mysql
         $query  = "SELECT v.*, d.doi_label as doi ";
         $query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";

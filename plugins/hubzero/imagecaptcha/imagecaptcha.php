@@ -102,7 +102,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 	 */
 	private function _confirm($word, $instanceNo='')
 	{
-		$currentSession =& JFactory::getSession();
+		$currentSession = JFactory::getSession();
 
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
@@ -157,7 +157,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStyleSheet('hubzero', 'imagecaptcha');
-		//$document =& JFactory::getDocument();
+		//$document = JFactory::getDocument();
 		//$document->addScript(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.js');
 		//$document->addStyleSheet(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.css');
 
@@ -432,7 +432,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		$security_code = strtolower(str_replace(' ', '', trim($this->keystring)));
 
 		//Set the session to store the security code
-		$currentSession =& JFactory::getSession();
+		$currentSession = JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
 		$width = 120;
 		$height = 40;
@@ -452,7 +452,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		$security_code = str_replace(array("0","O","o"), array("p"), substr($md5_hash, 15, 5));
 
 		// Set the session to store the security code
-		$currentSession =& JFactory::getSession();
+		$currentSession = JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
 
 		$width = 120;

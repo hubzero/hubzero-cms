@@ -37,7 +37,7 @@ function controller_exec()
 		$task_func = 'dv_' . $task;
 		if (function_exists($task_func)) {
 			if (file_exists(JPATH_COMPONENT . DS . 'tasks' . DS . 'html' . DS . $task . '.js')) {
-				$document = &JFactory::getDocument();
+				$document =  JFactory::getDocument();
 				$document->addScript(DB_PATH . DS . 'tasks' . DS . 'html' . DS . $task . '.js?v=2');
 			}
 			$task_func();
@@ -48,7 +48,7 @@ function controller_exec()
 function authorized()
 {
 	global $conf;
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	ximport('Hubzero_User_Helper');
 
 	if ($conf['access_limit_to_group'] === false) {

@@ -47,7 +47,7 @@ class modRandomQuote extends Hubzero_Module
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'selectedquotes.php');
 		ximport('Hubzero_View_Helper_Html');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		//Get the admin configured settings
 		$filters = array();
@@ -98,7 +98,7 @@ class modRandomQuote extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));

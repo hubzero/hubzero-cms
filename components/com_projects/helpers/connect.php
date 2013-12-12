@@ -124,7 +124,7 @@ class ProjectsConnectHelper extends JObject {
 		
 		if (!$userid)
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->_uid = $juser->get('id');
 		}
 		
@@ -382,7 +382,7 @@ class ProjectsConnectHelper extends JObject {
 		}		
 		
 		$config = $this->_connect[$service];
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 		
 		// Make sure we have service
 		if (!isset($config) || !$config)
@@ -498,7 +498,7 @@ class ProjectsConnectHelper extends JObject {
 			}
 			
 			// Acting user - get token from session
-			$jsession =& JFactory::getSession();
+			$jsession = JFactory::getSession();
 			$access_token = $jsession->get('projects.' . $service . '.token');
 		}
 

@@ -205,7 +205,7 @@ class OaipmhControllerXml extends Hubzero_Controller
 			case 'ListRecords':
 				$response .= "<request verb=\"$verb\" metadataPrefix=\"$this->metadata\">http://$this->hubname/oaipmh</request>";
 				// get session
-				$session =& JFactory::getSession();
+				$session = JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
 				// get IDs
 				$ids = $this->getRecords($customs, $this->from, $this->until);
@@ -223,7 +223,7 @@ class OaipmhControllerXml extends Hubzero_Controller
 					// check completion
 					if (!empty($resumption)) 
 					{
-						$session =& JFactory::getSession();
+						$session = JFactory::getSession();
 						$completed = $session->get($resumption);
 						$resumptionToken = $resumption;
 					}
@@ -242,7 +242,7 @@ class OaipmhControllerXml extends Hubzero_Controller
 					// set resumption session
 					if (empty($resumption)) 
 					{
-						$session =& JFactory::getSession();
+						$session = JFactory::getSession();
 						$resumptionToken = uniqid();
 					}
 					$session->set($resumptionToken, $begin + $toWrite);
@@ -300,7 +300,7 @@ class OaipmhControllerXml extends Hubzero_Controller
 			case 'ListSets':
 				$response .= "<request verb=\"ListSets\">http://$this->hubname/oaipmh</request>";
 				// get session
-				$session = &JFactory::getSession();
+				$session =  JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
 				// check for errors
 				$error = $this->errorCheck('ListSets',$resumption,$sessionTokenResumptionTemp);

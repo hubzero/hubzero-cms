@@ -56,7 +56,7 @@ class EventsControllerPages extends Hubzero_Controller
 
 		// Get configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Get filters
 		$this->view->filters = array();

@@ -293,12 +293,12 @@ if (!$c)
 
 						if (strtolower($name) == $this->active) 
 						{
-							$pathway =& JFactory::getApplication()->getPathway();
+							$pathway = JFactory::getApplication()->getPathway();
 							$pathway->addItem($cat[$name], $url);
 
 							if ($this->active != 'overview') 
 							{
-								$document =& JFactory::getDocument();
+								$document = JFactory::getDocument();
 								$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
 							}
 						}

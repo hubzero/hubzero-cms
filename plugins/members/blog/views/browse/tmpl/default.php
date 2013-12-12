@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 $live_site = rtrim(JURI::base(),'/');
 
 $first = $this->model->entries('first');

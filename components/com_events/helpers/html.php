@@ -314,7 +314,7 @@ class EventsHtml
 	 */
 	public static function buildCategorySelect($catid, $args, $gid, $option)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
@@ -572,7 +572,7 @@ class EventsHtml
 		} 
 		else 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$database->setQuery("SELECT created_by_alias FROM #__events WHERE id='$agid'");
 			$userdet = $database->loadResult();
 			if ($userdet) 

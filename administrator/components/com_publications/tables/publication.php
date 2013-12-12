@@ -179,7 +179,7 @@ class Publication extends JTable
 	 */	
 	public function buildQuery( $filters = array(), $usergroups = array() ) 
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$now = JFactory::getDate()->toSql();
 		$restricted = 0;
 		$groupby = ' GROUP BY C.id ';
@@ -507,7 +507,7 @@ class Publication extends JTable
 			return false;
 		}
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$now = JFactory::getDate()->toSql();
 		$alias = str_replace( ':', '-', $alias );
 		

@@ -45,7 +45,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -70,7 +70,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 		$this->_title = JText::_(strtoupper($this->_option));
 		$this->_title .= ': ' . JText::_(strtoupper('REPORT_ABUSE'));
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -231,7 +231,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 		// Send notification email 
 		if ($email) 
 		{
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			$from = array();
 			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('REPORTABUSE');

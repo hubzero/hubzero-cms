@@ -105,7 +105,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		}
 		
 		//Create user object
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		//get the group members
 		$members = $group->get('members');
@@ -161,7 +161,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			//check to see if we need to include the mootools datepicker
 			if (!JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				$document =& JFactory::getDocument();
+				$document = JFactory::getDocument();
 				if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js')) 
 				{
 					$document->addScript('components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js');
@@ -174,7 +174,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			$this->calendar = JRequest::getInt('calendar', 0, 'get');
 			
 			//set vars for reuse purposes
-			$this->database =& JFactory::getDBO();
+			$this->database = JFactory::getDBO();
 			
 			//include needed event libs
 			ximport('Hubzero_Event_Helper');
@@ -263,7 +263,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			$message  = 'There is an issue with the following group calendar subscriptions:' . "\n";
 			$message .= '---------------------------------------------------------------------------------------------------' . "\n\n";
 			$message .= " - " . implode( "\n - ", $syncErrors);
-			$config =& JFactory::getConfig();
+			$config = JFactory::getConfig();
 			$from['name'] = $this->group->get('description') . " Group on " . $config->getValue("fromname");
 			$from['email'] = $config->getValue("mailfrom");
 			
@@ -1858,7 +1858,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$start = JFactory::getDate(mktime(0,0,0,$month,$day,$year))->format("Y-m-d H:i:s");
 		$end = JFactory::getDate(mktime(23,59,59,$month,$day,$year))->format("Y-m-d H:i:s");
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$sql = "SELECT e.*, ec.title AS event_calendar_title, ec.color AS event_calendar_color
 				FROM #__events AS e
 				LEFT JOIN #__events_calendars AS ec
@@ -1887,7 +1887,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	 */
 	private function _getAllFutureEvents()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT COUNT(*) 
 				FROM #__events 
 				WHERE scope=" . $db->quote('group') . " 
@@ -1906,7 +1906,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	 */
 	private function _getFutureEventsThisMonth()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT COUNT(*) 
 				FROM #__events 
 				WHERE scope=" . $db->quote('group') . "

@@ -101,7 +101,7 @@ class plgGroupsMemberOptions extends JPlugin
 			'html'=>''
 		);
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$this->group = $group;
 		$this->option = $option;
 
@@ -154,7 +154,7 @@ class plgGroupsMemberOptions extends JPlugin
 
 		// Load the options
 		/* @var $recvEmailOption XGroups_MemberOption */
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$recvEmailOption = new XGroups_MemberOption($database);
 		$recvEmailOption->loadRecord( $group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
@@ -196,7 +196,7 @@ class plgGroupsMemberOptions extends JPlugin
 		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
 		
 		//instantaite database object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
 		/* @var $row XForum */
@@ -223,7 +223,7 @@ class plgGroupsMemberOptions extends JPlugin
 			return $this->edittopic();
 		}
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->enqueueMessage('You have successfully updated your email settings','Message');
 		
 		if(!$postSaveRedirect)
@@ -236,7 +236,7 @@ class plgGroupsMemberOptions extends JPlugin
 	public function onGroupUserEnrollment($gidNumber, $userid)
 	{
 		//get database
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//get hubzero logger
 		$logger = &Hubzero_Factory::getLogger();

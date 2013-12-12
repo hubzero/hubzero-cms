@@ -69,8 +69,8 @@ class plgSupportTransfer extends JPlugin
 	 */
 	public function transferItem($from_type, $from_id, $to_type, $rid=0, $deactivate=1)
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		if ($from_type == NULL or $from_id == NULL or $to_type == NULL) 
 		{

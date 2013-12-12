@@ -50,7 +50,7 @@ class PaymentProvider
 	 */
 	public function __construct()
 	{	
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$hubName  = $jconfig->getValue('config.sitename');
 		
 		$params = &JComponentHelper::getParams(JRequest::getVar('option'));

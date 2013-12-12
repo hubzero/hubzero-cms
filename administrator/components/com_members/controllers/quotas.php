@@ -47,7 +47,7 @@ class MembersControllerQuotas extends Hubzero_Controller
 	{
 		// Get configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Incoming
 		$this->view->filters = array();
@@ -316,7 +316,7 @@ class MembersControllerQuotas extends Hubzero_Controller
 	{
 		// Get configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Incoming
 		$this->view->filters = array();
@@ -645,7 +645,7 @@ class MembersControllerQuotas extends Hubzero_Controller
 	{
 		// Get configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->view->config = $this->config;
 

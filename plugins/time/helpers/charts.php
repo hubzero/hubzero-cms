@@ -180,7 +180,7 @@ class ChartsHtml
 		$rows    = $records->getSummaryHours($limit, $uid);
 		$count   = 0;
 
-		$user = &JFactory::getUser($uid);
+		$user =  JFactory::getUser($uid);
 
 		// Go through the rows and build the data for the chart
 		foreach($rows as $row) {

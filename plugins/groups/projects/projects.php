@@ -59,9 +59,9 @@ class plgGroupsProjects extends Hubzero_Plugin
 		$this->_plugin = JPluginHelper::getPlugin('groups', 'projects');
 		$this->_params = new $paramsClass($this->_plugin->params);
 		$this->_config =& JComponentHelper::getParams('com_projects');
-		$this->_database =& JFactory::getDBO();
+		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$this->_juser =& JFactory::getUser();
+		$this->_juser = JFactory::getUser();
 	}
 
 	/**
@@ -122,7 +122,7 @@ class plgGroupsProjects extends Hubzero_Plugin
 			$group_plugin_acl = $access[$active];
 
 			//Create user object
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -477,7 +477,7 @@ class plgGroupsProjects extends Hubzero_Plugin
 		);
 
 		//instatiate db
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		//select all projects either belonging to the group or the group is collaborating on
 		$sql = "SELECT DISTINCT

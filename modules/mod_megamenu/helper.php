@@ -38,7 +38,7 @@ class modMegaMenuHelper
 		$maxdepth = $params->get('maxdepth',10);
 
 		// Build Menu Tree root down (orphan proof - child might have lower id than parent)
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$ids = array();
 		$ids[0] = true;
 		$last = null;
@@ -72,7 +72,7 @@ class modMegaMenuHelper
 		static $xmls;
 
 		if (!isset($xmls[$type])) {
-			$cache =& JFactory::getCache('mod_megamenu');
+			$cache = JFactory::getCache('mod_megamenu');
 			$string = $cache->call(array('modMegaMenuHelper', 'buildXML'), $params);
 			$xmls[$type] = $string;
 		}

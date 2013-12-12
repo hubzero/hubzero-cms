@@ -130,7 +130,7 @@ $filterstring  = ''; //($this->filters['sort'])   ? '&amp;sort='.$this->filters[
 //$filterstring .= '&amp;status='.$this->filters['status'];
 //$filterstring .= ($this->filters['type'])   ? '&amp;type='.$this->filters['type']     : '';
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 $rt = new ResourcesTags($database);
 
 $paramsClass = 'JParameter';

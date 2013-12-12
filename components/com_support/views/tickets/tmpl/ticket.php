@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
@@ -526,7 +526,7 @@ ximport('Hubzero_User_Profile_Helper');
 							$hi = array();
 							$o  = '<select name="messages" id="messages">' . "\n";
 							$o .= "\t" . '<option value="mc">' . JText::_('COMMENT_CUSTOM') . '</option>' . "\n";
-							$jconfig =& JFactory::getConfig();
+							$jconfig = JFactory::getConfig();
 							foreach ($this->lists['messages'] as $message)
 							{
 								$message->message = str_replace('"', '&quot;', $message->message);

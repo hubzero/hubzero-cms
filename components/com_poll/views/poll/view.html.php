@@ -29,10 +29,10 @@ class PollViewPoll extends JView
 {
 	public function display($tpl = null)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$db 	  =& JFactory::getDBO();
-		$document =& JFactory::getDocument();
+		$db 	  = JFactory::getDBO();
+		$document = JFactory::getDocument();
 		$pathway  =& $mainframe->getPathway();
 
 		$poll_id = JRequest::getVar('id', 0, '', 'int');

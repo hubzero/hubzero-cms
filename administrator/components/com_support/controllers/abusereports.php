@@ -50,7 +50,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -342,7 +342,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			return;
 		}
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Notify item owner
 		if ($email)

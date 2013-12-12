@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $newSession = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='. $this->app->version), 'server');
 if (strstr($newSession, '?'))

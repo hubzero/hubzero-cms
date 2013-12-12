@@ -42,7 +42,7 @@ if ($tmpl != 'component')
 	JToolBarHelper::cancel();
 }
 
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 $offset = $jconfig->getValue('config.offset');
 
 $year  = strftime("%Y", time()+($offset*60*60));

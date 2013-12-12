@@ -89,12 +89,12 @@ class plgCronSupport extends JPlugin
 		$database = JFactory::getDBO();
 		$juri =& JURI::getInstance();
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		//$jconfig->getValue('config.sitename')
 		$sconfig = JComponentHelper::getParams('com_support');
 
 		//JLanguage::load('com_support');
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('com_support', JPATH_BASE);
 
 		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2";

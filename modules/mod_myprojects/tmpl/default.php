@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 $projects = $this->rows;
 
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;

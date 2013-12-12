@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get site config
-$config =& JFactory::getConfig(); 
+$config = JFactory::getConfig(); 
 
 $no_html = JRequest::getVar("no_html", 0);
 
@@ -54,7 +54,7 @@ if(is_file(JPATH_ROOT . DS . $temp_path)) {
 	$tmpl = true;
 
 	//get the document
-	$doc =& JFactory::getDocument();
+	$doc = JFactory::getDocument();
 
 	//if the css file exists push to the page
 	if(is_file(JPATH_ROOT . DS . $css_path)) {

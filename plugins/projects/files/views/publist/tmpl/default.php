@@ -36,7 +36,7 @@ else
 	return false;
 }
 
-$database 	=& JFactory::getDBO();
+$database 	= JFactory::getDBO();
 $objSt 		= new ProjectPubStamp( $database );
 
 // Get listed public files

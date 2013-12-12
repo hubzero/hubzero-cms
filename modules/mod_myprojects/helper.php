@@ -44,8 +44,8 @@ class modMyProjects extends Hubzero_Module
 	 */
 	public function display() 
 	{
-		$juser =& JFactory::getUser();
-		$db =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$db = JFactory::getDBO();
 
 		// Get the module parameters
 		$params =& $this->params;

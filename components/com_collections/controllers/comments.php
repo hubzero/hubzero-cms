@@ -111,7 +111,7 @@ class plgGroupsBulletinboard extends JPlugin
 			$group_plugin_acl = $access[$active];
 
 			//Create user object
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -212,7 +212,7 @@ class plgGroupsBulletinboard extends JPlugin
 		$filters['scope']    = 'group';
 		$filters['group_id'] = $group->get('gidNumber');
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$filters['state'] = 'public';
@@ -276,7 +276,7 @@ class plgGroupsBulletinboard extends JPlugin
 
 		/*$view->canpost = $this->_getPostingPermissions();
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$filters['state'] = 'public';
@@ -436,7 +436,7 @@ class plgGroupsBulletinboard extends JPlugin
 		}
 
 		// Check authorization
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (($view->row->state == 2 && $juser->get('guest'))
 		 || ($view->row->state == 0 && $juser->get('id') != $view->row->created_by && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin')) 
 		{
@@ -444,7 +444,7 @@ class plgGroupsBulletinboard extends JPlugin
 			return;
 		}
 
-		//$juser =& JFactory::getUser();
+		//$juser = JFactory::getUser();
 		if ($juser->get('id') != $view->row->created_by) 
 		{
 			$view->row->hit();
@@ -541,7 +541,7 @@ class plgGroupsBulletinboard extends JPlugin
 		$view->recent = $view->row->getRecentEntries($filters);
 
 		// Push some scripts to the template
-		/*$document =& JFactory::getDocument();
+		/*$document = JFactory::getDocument();
 		if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'whiteboard' . DS . 'whiteboard.js')) {
 			$document->addScript('plugins' . DS . 'groups' . DS . 'whiteboard' . DS . 'whiteboard.js');
 		}*/
@@ -577,8 +577,8 @@ class plgGroupsBulletinboard extends JPlugin
 	 */
 	private function _edit()
 	{
-		$juser =& JFactory::getUser();
-		$app =& JFactory::getApplication();
+		$juser = JFactory::getUser();
+		$app = JFactory::getApplication();
 
 		$board = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=bulletinboard');
 		if ($juser->get('guest')) 
@@ -685,7 +685,7 @@ class plgGroupsBulletinboard extends JPlugin
 	 */
 	private function _save()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -760,7 +760,7 @@ class plgGroupsBulletinboard extends JPlugin
 		$bt = new BulletinboardTags($this->database);
 		$bt->tag_object($juser->get('id'), $row->id, $tags, 1, 1);
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=' . $this->_name));
 	}
 
@@ -883,7 +883,7 @@ class plgGroupsBulletinboard extends JPlugin
 	 */
 	/*private function _delete()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -968,7 +968,7 @@ class plgGroupsBulletinboard extends JPlugin
 	/*private function _savecomment()
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -1017,7 +1017,7 @@ class plgGroupsBulletinboard extends JPlugin
 	/*private function _deletecomment()
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
@@ -1132,7 +1132,7 @@ class plgGroupsBulletinboard extends JPlugin
 	private function _upload($files, $listdir, $type, $descriptions)
 	{
 		// Ensure the user is logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));

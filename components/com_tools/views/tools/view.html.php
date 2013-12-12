@@ -55,8 +55,8 @@ class ToolsViewTools extends JView
 		$model = & $this->getModel();
 
 		// Get some vars to fill in text
-		$config =& JFactory::getConfig();
-		$jconfig =& JFactory::getConfig();
+		$config = JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
 		$slive_site = preg_replace('/^http:\/\//','https://',$live_site,1);

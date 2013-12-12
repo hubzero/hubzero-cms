@@ -45,7 +45,7 @@ jimport('joomla.html.editor');
 
 $editor =& JEditor::getInstance();
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');
 /*$paramsClass = 'JParameter';
 if (version_compare(JVERSION, '1.6', 'ge'))

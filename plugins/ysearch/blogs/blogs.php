@@ -64,7 +64,7 @@ class plgYSearchBlogs extends YSearchPlugin
 			$authorization = 'state = 1 || state = 2';
 		}
 
-		$date =& JFactory::getDate();
+		$date = JFactory::getDate();
 		$now = $date->toMySQL();
 
 		$terms = $request->get_term_ar();

@@ -65,7 +65,7 @@ class plgYSearchWiki extends YSearchPlugin
 		# TODO
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
 			$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
 			
 			if (($gids = $authz->get_group_ids()))

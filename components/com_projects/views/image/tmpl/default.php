@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app =& JFactory::getApplication();
+$app = JFactory::getApplication();
 $src = $this->thumb && file_exists( $this->file_path.DS.$this->thumb ) ? $this->path.DS.$this->thumb :  $this->default_picture;
 
 ?>

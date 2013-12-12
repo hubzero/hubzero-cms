@@ -241,7 +241,7 @@ class SystemControllerApc extends Hubzero_Controller
 	public function hostTask()
 	{
 		// Add stylesheet
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
 
 		// A few variables to grab from outside (to compute other values)
@@ -301,7 +301,7 @@ class SystemControllerApc extends Hubzero_Controller
 	public function systemTask()
 	{
 		// Add stylesheet
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
 
 		// Instantiate a new view
@@ -332,7 +332,7 @@ class SystemControllerApc extends Hubzero_Controller
 	public function versionTask()
 	{
 		// Add stylesheet
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
 
 		// Set any errors
@@ -356,7 +356,7 @@ class SystemControllerApc extends Hubzero_Controller
 	public function userTask()
 	{
 		// Add stylesheet
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
 
 		$this->view->MYREQUEST       = $this->MYREQUEST;
@@ -386,7 +386,7 @@ class SystemControllerApc extends Hubzero_Controller
 	public function dircacheTask()
 	{
 		// Add stylesheet
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
 
 		$this->view->MYREQUEST       = $this->MYREQUEST;

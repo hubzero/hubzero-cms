@@ -80,7 +80,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -110,7 +110,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		$this->_title .= ': ' . stripslashes($this->juser->get('name'));
 		$this->_title .= ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 

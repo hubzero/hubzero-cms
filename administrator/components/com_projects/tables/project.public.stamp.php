@@ -235,7 +235,7 @@ class ProjectPubStamp extends JTable
 			$this->type			= $type;
 			$this->created 		= JFactory::getDate()->toSql();
 			
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->created_by	= $juser->get('id');
 			
 			$this->listed		= $listed;	

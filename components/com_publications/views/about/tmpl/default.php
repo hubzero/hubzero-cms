@@ -12,7 +12,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $abstract = stripslashes($this->publication->abstract);
 if ($this->publication->abstract) {
-	$document =& JFactory::getDocument();
+	$document = JFactory::getDocument();
 	$document->setDescription(PublicationsHtml::encode_html(strip_tags($abstract)));
 }
 
@@ -68,7 +68,7 @@ if ($this->params->get('show_citation') && $this->publication->state == 1)
 		$cite->date = '';
 		
 		// Get hub config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$site = trim( $jconfig->getValue('config.live_site'), DS);
 		
 		$cite->url 		= $site . DS . 'publications' . DS . $this->publication->id . '?v='.$this->version;

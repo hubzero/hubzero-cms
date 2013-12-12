@@ -72,7 +72,7 @@ class plgSupportForum extends JPlugin
 					LEFT JOIN #__forum_sections AS s ON s.id = c.section_id
 					WHERE rc.id=" . $refid;
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows) 
@@ -124,7 +124,7 @@ class plgSupportForum extends JPlugin
 	 */
 	private function _getThread($parent=0)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$comment = new ForumTablePost($database);
 		$comment->load($parent);
@@ -156,7 +156,7 @@ class plgSupportForum extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$comment = new ForumTablePost($database);
 		$comment->load($refid);

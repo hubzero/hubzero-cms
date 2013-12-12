@@ -97,8 +97,8 @@ class plgTimeTasks extends Hubzero_Plugin
 		$this->action    =  $action;
 		$this->active    =  $active;
 		$this->db        =  JFactory::getDBO();
-		$this->juser     =& JFactory::getUser();
-		$this->mainframe =& JFactory::getApplication();
+		$this->juser     = JFactory::getUser();
+		$this->mainframe = JFactory::getApplication();
 
 		// Include needed DB classes and helper files
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'tasks.php');

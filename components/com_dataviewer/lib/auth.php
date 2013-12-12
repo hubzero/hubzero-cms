@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 function dv_auth()
 {
 	global $dv_conf;
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	ximport('Hubzero_Group');
 	ximport('Hubzero_User_Helper');
 

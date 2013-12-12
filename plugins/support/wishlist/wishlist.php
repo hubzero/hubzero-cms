@@ -82,7 +82,7 @@ class plgSupportWishlist extends JPlugin
 			$query .= " WHERE rr.id=" . $refid;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows) 
@@ -110,7 +110,7 @@ class plgSupportWishlist extends JPlugin
 	{
 		ximport('Hubzero_Comment');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$refid = $parentid;
 
 		if ($category == 'wishcomment') 
@@ -151,7 +151,7 @@ class plgSupportWishlist extends JPlugin
 	 */
 	public function parent($parentid)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$parent = new Hubzero_Comment($database);
 		$parent->load($parentid);
@@ -201,7 +201,7 @@ class plgSupportWishlist extends JPlugin
 			return null;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		switch ($category)
 		{

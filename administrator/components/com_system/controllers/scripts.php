@@ -61,7 +61,7 @@ class SystemControllerScripts extends Hubzero_Controller
 			return;
 		}
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$this->_log = $jconfig->getValue('config.log_path') . DS . 'ximport.php';
 

@@ -59,7 +59,7 @@ class WikiControllerPages extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		$this->view->filters = array(

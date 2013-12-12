@@ -177,7 +177,7 @@ class plgResourcesShare extends JPlugin
 	 */
 	public function share($with, $url, $resource)
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$link = '';
 		switch ($with)
@@ -213,7 +213,7 @@ class plgResourcesShare extends JPlugin
 
 		if ($link) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($link, '', '');
 		}
 	}

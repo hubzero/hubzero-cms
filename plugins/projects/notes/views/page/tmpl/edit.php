@@ -121,7 +121,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 $hi = array();
 
 if ($templates) {
-	$database =& JFactory::getDBO();
+	$database = JFactory::getDBO();
 	$temprev = new WikiPageRevision($database);
 
 	foreach ($templates as $template)
@@ -210,7 +210,7 @@ if ($this->config->get('access-edit')) {
 		$cls = ' class="hide"';
 	}
 
-		$juser =& JFactory::getUser(); ?>
+		$juser = JFactory::getUser(); ?>
 		
 			<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
 

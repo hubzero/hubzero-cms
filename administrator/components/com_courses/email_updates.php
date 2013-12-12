@@ -88,7 +88,7 @@ function apache_note()
 JDEBUG ? $_PROFILER->mark( 'afterLoad' ) : null;
 
 //CREATE THE APPLICATION
-$mainframe =& JFactory::getApplication('site');
+$mainframe = JFactory::getApplication('site');
 
 echo "right before initialise \n";
 

@@ -167,7 +167,7 @@ class PublicationLog extends JTable
 	{
 		$filename = 'pub-' . $pid . '-v-' . $vid . '.' . JFactory::getDate()->format('Y-m') . '.log';
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$uid 	= $juser->get('id');
 		$uid 	= $uid ? $uid : 'guest';
 		

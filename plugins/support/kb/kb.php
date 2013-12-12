@@ -76,7 +76,7 @@ class plgSupportKb extends JPlugin
 						ON c.id = f.category
 					WHERE rc.id=" . $refid;
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows) 

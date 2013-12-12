@@ -38,7 +38,7 @@ JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('ticket.html', true);
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 ximport('Hubzero_User');
 $user = new Hubzero_User_Profile();

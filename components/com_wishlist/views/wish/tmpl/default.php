@@ -664,7 +664,7 @@ if ($this->wishlist && $this->wish) {
 						<?php 
 						if (!JPluginHelper::isEnabled('system', 'jquery'))
 						{
-							$document =& JFactory::getDocument();
+							$document = JFactory::getDocument();
 							$document->addScript('/components/com_wishlist/assets/js/observer.js');
 							$document->addScript('/components/com_wishlist/assets/js/autocompleter.js');
 							$document->addStyleSheet('/components/com_wishlist/assets/js/autocompleter.css');

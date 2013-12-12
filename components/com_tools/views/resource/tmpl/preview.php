@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 //$license = '/legal/license';
 $database = JFactory::getDBO();
 $html = '';

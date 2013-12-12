@@ -66,7 +66,7 @@ class CronControllerPlugins extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -366,7 +366,7 @@ class CronControllerPlugins extends Hubzero_Controller
 		{
 			$this->view->row->checkout($this->juser->get('id'));
 
-			$lang =& JFactory::getLanguage();
+			$lang = JFactory::getLanguage();
 			$lang->load('plg_' . trim($this->view->row->folder) . '_' . trim($this->view->row->element), JPATH_ADMINISTRATOR);
 
 			$data = JApplicationHelper::parseXMLInstallFile(JPATH_SITE . DS . 'plugins' . DS  .$this->view->row->folder . DS . $this->view->row->element . '.xml');

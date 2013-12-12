@@ -54,10 +54,10 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 	 */
 	public function render()
 	{
-		$now  =& JFactory::getDate();
+		$now  = JFactory::getDate();
 		$data =& $this->_doc;
 
-		$uri =& JFactory::getURI();
+		$uri = JFactory::getURI();
 		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 
 		$feed  = '<rss xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd" version="2.0">' . "\n";
@@ -149,7 +149,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 		}
 		if ($data->pubDate != '') 
 		{
-			$pubDate =& JFactory::getDate($data->pubDate);
+			$pubDate = JFactory::getDate($data->pubDate);
 			$feed .= "		<pubDate>" . $this->escape($pubDate->toRFC822()) . "</pubDate>\n";
 		}
 		if ($data->category != '') 
@@ -254,7 +254,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 			}
 			if ($data->items[$i]->date != '') 
 			{
-				$itemDate =& JFactory::getDate($data->items[$i]->date);
+				$itemDate = JFactory::getDate($data->items[$i]->date);
 				$feed .= "			<pubDate>" . $this->escape($itemDate->toRFC822()) . "</pubDate>\n";
 			}
 			if ($data->items[$i]->guid != '') 

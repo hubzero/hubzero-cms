@@ -106,7 +106,7 @@ class plgResourcesVersions extends JPlugin
 			return $arr;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{

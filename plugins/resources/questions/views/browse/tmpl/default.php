@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php
 		$i = 1;
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		foreach ($this->rows as $row)
 		{

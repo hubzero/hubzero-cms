@@ -61,7 +61,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -117,7 +117,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		//set title of browser window
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -532,7 +532,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Get and set some vars
 		$date = JFactory::getDate();
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Build the "from" info for e-mails
 		$from = array();

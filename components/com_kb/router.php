@@ -143,7 +143,7 @@ function kbParseRoute($segments)
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'archive.php');
 
-			$db =& JFactory::getDBO();
+			$db = JFactory::getDBO();
 
 			$category = new KbTableCategory($db);
 			$category->loadAlias($title2);

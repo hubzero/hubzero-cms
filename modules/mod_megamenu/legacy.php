@@ -168,7 +168,7 @@ function mosShowVIMenu(& $params)
 
 	$template = $mainframe->getTemplate();
 	$menu =& JSite::getMenu();
-	$user =& JFactory::getUser();
+	$user = JFactory::getUser();
 
 	// indent icons
 	switch ($params->get('indent_image')) {
@@ -341,7 +341,7 @@ function mosRecurseVIMenu($id, $level, & $children, & $open, & $indents, & $para
 function mosShowHFMenu(& $params, $style = 0)
 {
 	$menu = & JSite::getMenu();
-	$user = & JFactory::getUser();
+	$user =  JFactory::getUser();
 
 	//get menu items
 	$rows = $menu->getItems('menutype', $params->get('menutype'));
@@ -357,7 +357,7 @@ function mosShowHFMenu(& $params, $style = 0)
 	}
 
 	$menuclass = 'mainlevel' . $params->get('class_sfx');
-	$lang =& JFactory::getLanguage();
+	$lang = JFactory::getLanguage();
 
 	if (count($links))
 	{

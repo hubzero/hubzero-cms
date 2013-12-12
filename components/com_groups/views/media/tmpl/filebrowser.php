@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app =& JFactory::getApplication();
+$app = JFactory::getApplication();
 ?>
 <?php if (JPluginHelper::isEnabled('system', 'jquery')) : ?>
 	<script src="/media/system/js/jquery.js"></script>

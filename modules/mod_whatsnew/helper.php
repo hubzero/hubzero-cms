@@ -128,7 +128,7 @@ class modWhatsNew extends Hubzero_Module
 		$this->period = $this->params->get('period', 'resources:month');
 		$this->tagged = intval($this->params->get('tagged', 0));
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Build the feed link if necessary
 		if ($this->feed)
@@ -231,7 +231,7 @@ class modWhatsNew extends Hubzero_Module
 
 		if ($this->tagged)
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 			$mt = new MembersTags($database);
@@ -293,7 +293,7 @@ class modWhatsNew extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));

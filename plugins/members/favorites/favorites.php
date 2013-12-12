@@ -88,7 +88,7 @@ class plgMembersFavorites extends JPlugin
 			}
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Incoming paging vars

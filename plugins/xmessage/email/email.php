@@ -95,7 +95,7 @@ class plgXMessageEmail extends JPlugin
 		}
 
 		//get site config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		//if we dont have a from set the use site from name and email
 		if (!isset($from['name']) || $from['name'] == '') 

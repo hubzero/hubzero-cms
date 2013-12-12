@@ -122,7 +122,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$group_plugin_acl = $access[$active];
 
 			//Create user object
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -154,7 +154,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			}
 
 			// Set the page title
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->description.': '.JText::_('PLG_GROUPS_MEMBERS'));
 
 			ximport('Hubzero_Document');
@@ -236,7 +236,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 				$view->messages_acl = Hubzero_Group_Helper::getPluginAccess($group, 'messages');
 
 				//get all member roles
-				$db =& JFactory::getDBO();
+				$db = JFactory::getDBO();
 				$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber='".$group->get('gidNumber')."'";
 				$db->setQuery($sql);
 				$view->member_roles = $db->loadAssocList();
@@ -369,7 +369,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			return false;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Set a flag for emailing any changes made
 		$admchange = '';
@@ -437,7 +437,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->group->update();
 
 		// Log the changes
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		foreach ($users as $user)
 		{
 			$log = new XGroupLog($database);
@@ -523,8 +523,8 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->group->update();
 
 		// Log the changes
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 		foreach ($users as $user)
 		{
 			$log = new XGroupLog($database);
@@ -626,8 +626,8 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->group->update();
 
 		// Log the changes
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 		foreach ($users as $user)
 		{
 			$log = new XGroupLog($database);
@@ -676,7 +676,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
@@ -794,8 +794,8 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->group->update();
 
 		// Log the changes
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		$juser = JFactory::getUser();
+		$database = JFactory::getDBO();
 		foreach ($users_mem as $user_mem)
 		{
 			$log = new XGroupLog($database);
@@ -858,7 +858,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$msg = $this->group->get('restrict_msg');
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
@@ -902,7 +902,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			return false;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$admchange = '';
 
@@ -947,7 +947,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->group->update();
 
 		// Log the changes
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		foreach ($users as $user)
 		{
 			$log = new XGroupLog($database);
@@ -990,7 +990,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
@@ -1030,7 +1030,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			return false;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// An array for the users we're going to deny
 		$users = array();
@@ -1082,7 +1082,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->group->update();
 
 		//delete any email invited users
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		foreach ($user_emails as $ue) 
 		{
 			$sql = "DELETE FROM #__xgroups_inviteemails WHERE email=".$db->Quote($ue);
@@ -1091,7 +1091,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		// Log the changes
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		foreach ($users as $user)
 		{
 			$log = new XGroupLog($database);
@@ -1187,7 +1187,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			return false;
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "DELETE FROM #__xgroups_member_roles WHERE role=".$db->Quote($role);
 		$db->setQuery($sql);
 		$db->query();
@@ -1228,7 +1228,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		// Set the page title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
@@ -1241,7 +1241,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			)
 		);
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber=".$db->Quote($this->group->get('gidNumber'));
 		$db->setQuery($sql);
 		$roles = $db->loadAssocList();
@@ -1288,7 +1288,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			return;
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "INSERT INTO #__xgroups_member_roles(role,uidNumber) VALUES(" . $db->Quote($role) . "," . $db->Quote($uid) . ")";
 		$db->setQuery($sql);
 		$db->query();
@@ -1321,7 +1321,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			return false;
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$sql = "DELETE FROM #__xgroups_member_roles WHERE role=" . $db->Quote($role) . " AND uidNumber=" . $db->Quote($uid);
 		$db->setQuery($sql);
@@ -1392,7 +1392,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		// Get the site configuration
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Build the URL to attach to the message
 		$juri =& JURI::getInstance();
@@ -1435,7 +1435,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$sef = ltrim($sef, DS);
 
 		// Get the site configuration
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Start building the subject
 		$subject = '';
@@ -1546,7 +1546,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$sef = ltrim($sef, DS);
 
 		// Get the site configuration
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		//get the reason
 		$reason = JRequest::getVar('reason', '', 'post');

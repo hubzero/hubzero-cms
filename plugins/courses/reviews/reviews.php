@@ -102,7 +102,7 @@ class plgCoursesReviews extends JPlugin
 		}
 
 		// Get reviews for this resource
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		ximport('Hubzero_Item_Comment');
 
@@ -315,7 +315,7 @@ class plgCoursesReviews extends JPlugin
 
 		if ($url) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($url, $msg, $msgType);
 		}
 	}

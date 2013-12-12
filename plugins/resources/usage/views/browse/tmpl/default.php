@@ -58,7 +58,7 @@ $img2 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->re
 
 $cls = 'even';
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $topvals = new ResourcesStatsToolsTopvals($database);
 
@@ -72,7 +72,7 @@ switch ($this->params->get('defaultDataset', 'cumulative'))
 
 if (intval($this->params->get('cache', 1)))
 {
-	$cache =& JFactory::getCache('callback');
+	$cache = JFactory::getCache('callback');
 	$cache->setCaching(1);
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 	$results = $cache->call(array('plgResourcesUsage', 'getOverview'), $this->resource->id, $prd);
@@ -255,7 +255,7 @@ if ($results)
 
 				if (intval($this->params->get('cache', 1)))
 				{
-					$cache =& JFactory::getCache('callback');
+					$cache = JFactory::getCache('callback');
 					$cache->setCaching(1);
 					$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 					$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
@@ -370,7 +370,7 @@ if ($results)
 					<?php 
 					if (intval($this->params->get('cache', 1)))
 					{
-						$cache =& JFactory::getCache('callback');
+						$cache = JFactory::getCache('callback');
 						$cache->setCaching(1);
 						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 						$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
@@ -489,7 +489,7 @@ if ($results)
 					<?php 
 					if (intval($this->params->get('cache', 1)))
 					{
-						$cache =& JFactory::getCache('callback');
+						$cache = JFactory::getCache('callback');
 						$cache->setCaching(1);
 						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 						$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);

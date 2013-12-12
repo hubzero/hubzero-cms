@@ -198,7 +198,7 @@ class ToolAuthor extends  JTable
 	 */
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
-		$juser = &JFactory::getUser();
+		$juser =  JFactory::getUser();
 
 		if ($version == 'dev' && $rid) 
 		{

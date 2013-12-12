@@ -73,7 +73,7 @@ class plgCoursesRelated extends JPlugin
 			$ids[] = (int) $instructor->get('user_id');
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$query  = "SELECT c.* 
 					FROM #__courses AS c 

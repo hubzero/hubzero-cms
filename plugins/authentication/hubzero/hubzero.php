@@ -95,7 +95,7 @@ class plgAuthenticationHubzero extends JPlugin
 		$conditions = '';
 
 		// Get a database object
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// Determine if attempting to log in via username or email address
 		if (strpos($credentials['username'], '@'))
@@ -145,12 +145,12 @@ class plgAuthenticationHubzero extends JPlugin
 				$msg = Hubzero_Password_Rule::validate($credentials['password'], $password_rules, $result->username);
 				if(is_array($msg) && !empty($msg[0]))
 				{
-					$session =& JFactory::getSession();
+					$session = JFactory::getSession();
 					$session->set('badpassword', '1');
 				}
 				if(Hubzero_User_Password::isPasswordExpired($result->username))
 				{
-					$session =& JFactory::getSession();
+					$session = JFactory::getSession();
 					$session->set('expiredpassword', '1');
 				}
 			} else {

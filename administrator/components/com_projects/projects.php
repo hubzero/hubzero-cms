@@ -73,7 +73,7 @@ include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . D
 include_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'install.php' );
 
 // Check to make sure component is installed
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 $tables = $database->getTableList();
 $installHelper = new ProjectsInstall($database, $tables);
 

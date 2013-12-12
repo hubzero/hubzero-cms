@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app =& JFactory::getApplication();
+$app = JFactory::getApplication();
 ?>
 		<script type="text/javascript">
 			/*function updateDir()

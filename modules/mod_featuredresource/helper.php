@@ -62,7 +62,7 @@ class modFeaturedresource extends Hubzero_Module
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		//Get the admin configured settings
 		$filters = array();
@@ -91,13 +91,13 @@ class modFeaturedresource extends Hubzero_Module
 		if ($catid) 
 		{
 			// Yes - so we need to check if there's an active article to display
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$aid = $juser->get('aid', 0);
 
 			$contentConfig =& JComponentHelper::getParams('com_content');
 			$noauth = !$contentConfig->get('shownoauth');
 
-			$date =& JFactory::getDate();
+			$date = JFactory::getDate();
 			$now = $date->toMySQL();
 
 			$nullDate = $database->getNullDate();
@@ -251,11 +251,11 @@ class modFeaturedresource extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));

@@ -84,7 +84,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	 */
 	protected function _getScripts()
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'js' . DS . $this->_name . '.js')) 
 		{
 			$document->addScript('components' . DS . $this->_option . DS . 'js' . DS . 'calendar.rc4.js');
@@ -100,7 +100,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -255,7 +255,7 @@ class EventsControllerEvents extends Hubzero_Controller
 			$this->_message = JText::_('COM_EVENTS_CAL_LANG_WARN_CHECKEDOUT');
 		}
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('..' . DS . 'components' . DS . $this->_option . DS . 'calendar.css');
 
 		if ($this->view->row->id) 
@@ -454,7 +454,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$config = JFactory::getConfig();
 		$offset = $config->getValue('config.offset');
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Incoming
 		$start_time = JRequest::getVar('start_time', '08:00', 'post');

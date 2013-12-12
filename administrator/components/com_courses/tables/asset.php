@@ -150,7 +150,7 @@ class CoursesTableAsset extends JTable
 		{
 			$this->state = (isset($this->state)) ? $this->state : 1;
 
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}

@@ -42,7 +42,7 @@ if ($this->row->image == '') {
 	$this->row->image = 'blank.png';
 }
 
-$editor =& JFactory::getEditor();
+$editor = JFactory::getEditor();
 ?>
 
 <script language="javascript" type="text/javascript">

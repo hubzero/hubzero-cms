@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_User_Helper');
 ximport("Hubzero_User_Profile_Helper");
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
 $user_messaging = $this->config->get('user_messaging', 0);
 

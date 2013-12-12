@@ -51,7 +51,7 @@ class plgYSearchProjects extends YSearchPlugin
 		$from = '';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			if (!$juser->authorise('core.view', 'com_groups'))
 			{
 				$from = " JOIN #__xgroups_members AS m ON m.gidNumber=p.owned_by_group AND m.uidNumber=" . $juser->get('id');

@@ -124,7 +124,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -192,7 +192,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				}
 			}
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -273,7 +273,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Determine if user can edit
 		$view->authorized = $this->_authorize();
 
-		//$juser =& JFactory::getUser();
+		//$juser = JFactory::getUser();
 
 		// Get major types
 		$t = new ResourcesType($this->database);
@@ -914,9 +914,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$child = JRequest::getVar('resid', '');
 		
 		//document object
-		$document =& JFactory::getDocument();
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$document = JFactory::getDocument();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		//add the HUBpresenter stylesheet
 		$this->_getStyles($this->_option,'hubpresenter.css');
@@ -1015,7 +1015,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	protected function video()
 	{
 		//get the document to push resources to
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		
 		//add the video css
 		$this->_getStyles($this->_option,'video.css');
@@ -1266,7 +1266,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$helper = new ResourcesHelper($this->model->resource->id, $this->database);
 
 		// Build the pathway
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if ($this->model->inGroup()) 
 		{
@@ -1320,7 +1320,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Tool development version requested
-		//$juser =& JFactory::getUser();
+		//$juser = JFactory::getUser();
 		if ($this->juser->get('guest') && $revision == 'dev') 
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
@@ -1502,7 +1502,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$view->content_folder = $content_folder;
 				$view->pid            = $id;
 				$view->resid          = JRequest::getVar('resid', '');
-				$view->doc            =& JFactory::getDocument();
+				$view->doc            = JFactory::getDocument();
 
 				// Output HTML
 				if ($this->getError()) 
@@ -1527,7 +1527,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Write title
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
 
 		if ($canonical = $this->model->attribs->get('canonical', '')) 
@@ -1556,7 +1556,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			'name'      => 'view'
 		);
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if ($type_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
 			|| is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php'))) 
@@ -1610,13 +1610,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
 		ximport('Hubzero_Document_Feed');
 		$doc = new Hubzero_Document_Feed;
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$params =& $app->getParams();
 
 		// Incoming
@@ -1689,7 +1689,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$rows = $helper->getStandaloneChildren($filters);
 
 		// Get HUB configuration
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$juri =& JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
@@ -2138,19 +2138,19 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$crypter = new JSimpleCrypt();
 			$session_id = $crypter->decrypt($token);
 
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$query = "SELECT * FROM #__session WHERE session_id = " . $db->Quote($session_id);
 			$db->setQuery($query);
 			$session = $db->loadObject();
 
-			$juser =& JFactory::getUser($session->userid);
+			$juser = JFactory::getUser($session->userid);
 			$juser->guest = 0;
 			$juser->id = $session->userid;
 			$juser->usertype = $session->usertype;
 		} 
 		else 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 		}
 
 		if ($resource->access == 1 && $juser->get('guest')) 
@@ -2381,7 +2381,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$title = stripslashes($row->title) . ': ' . JText::_('COM_RESOURCES_LICENSE');
 
 			// Write title
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->setTitle($title);
 		} 
 		else 
@@ -2679,7 +2679,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	protected function savetags()
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($this->juser->get('guest')) 
 		{
 			$this->view();
@@ -2765,7 +2765,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		//$juser =& Hubzero_Factory::getUser();
 		if (!$juser) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 		}
 		if (!$juser->get('guest')) 
 		{

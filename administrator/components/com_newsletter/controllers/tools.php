@@ -56,7 +56,7 @@ class NewsletterControllerTools extends Hubzero_Controller
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
 		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
 		}

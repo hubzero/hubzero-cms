@@ -113,7 +113,7 @@ class plgGroupsWishlist extends Hubzero_Plugin
 		}
 
 		//Create user object
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		//get the group members
 		$members = $group->get('members');
@@ -153,7 +153,7 @@ class plgGroupsWishlist extends Hubzero_Plugin
 			}
 		}
 			//instantiate database
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 
 			// Set some variables so other functions have access
 			$this->juser = $juser;

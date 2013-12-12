@@ -175,7 +175,7 @@ class Tool extends JTable
 	 */
 	public function buildQuery($filters, $admin)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// get and set record filter
 		$filter = ($admin) ? " WHERE f.id!=0": " WHERE f.state!=9";
@@ -502,7 +502,7 @@ class Tool extends JTable
 	 */
 	public function getToolInfo($toolid, $toolname='')
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$query  = "SELECT t.id, t.toolname, t.published, t.state, t.priority, t.registered, t.registered_by, t.ticketid, t.state_changed, r.id as rid, g.cn as devgroup";
 		$query .= ", r.created as rcreated, r.modified as rmodified, r.fulltxt as rfulltxt";
 		/*$query .= ", (SELECT COUNT(*) FROM #__support_comments AS sc LEFT JOIN #__tool_statusviews AS v ON v.ticketid=sc.ticket WHERE sc.ticket=t.ticketid AND

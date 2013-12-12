@@ -60,7 +60,7 @@ class StorefrontModelWarehouse
 	 */
 	public function __construct()
 	{
-		$this->_db =& JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 		
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');

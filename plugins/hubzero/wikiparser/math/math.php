@@ -393,7 +393,7 @@ class MathRenderer
 			}
 
 			// Now save it back to the DB:
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$outmd5_sql = $this->hash; //pack('H32', $this->hash);
 			$md5_sql    = $this->md5; //pack('H32', $this->md5); // Binary packed, not hex
 
@@ -440,7 +440,7 @@ class MathRenderer
 	{
 		$this->md5 = md5($this->tex);
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$wm = new WikiPageMath($database);
 		//$wm->loadByInput($this->_encodeBlob(pack("H32", $this->md5)));
 		$wm->loadByInput($this->_encodeBlob($this->md5));

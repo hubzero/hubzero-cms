@@ -51,10 +51,10 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'tools.css');
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		$this->view->filters = array();
@@ -258,7 +258,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	public function batchdoiTask()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$yearFormat = '%Y';
 		$tz = null;
@@ -282,7 +282,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$objV = new ToolVersion($this->database);
 		$objA = new ToolAuthor($this->database);
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		$sitename 	= $jconfig->getValue('config.sitename');
 		

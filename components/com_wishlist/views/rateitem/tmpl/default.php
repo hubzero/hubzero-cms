@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/*$juser =& JFactory::getUser();
+/*$juser = JFactory::getUser();
 
 $title = ($juser->get('id') == $this->item->proposed_by) ? JText::_('You cannot vote for your own wish') : '';
 if ($juser->get('guest')) { 

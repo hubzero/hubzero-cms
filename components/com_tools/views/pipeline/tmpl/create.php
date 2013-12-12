@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 
 $exec_pu = $this->config->get('exec_pu', 1);
 

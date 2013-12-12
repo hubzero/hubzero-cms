@@ -692,7 +692,7 @@ class BlogControllerEntries extends Hubzero_Controller
 			$this->entry->load($row->entry_id);
 			
 			// Get the site configuration
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 
 			// Build the "from" data for the e-mail
 			$from = array();

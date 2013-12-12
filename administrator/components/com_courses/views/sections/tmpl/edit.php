@@ -49,7 +49,7 @@ $editor =& JEditor::getInstance();
 
 $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');
 
 $course_id = 0;

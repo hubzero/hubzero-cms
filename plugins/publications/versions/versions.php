@@ -106,7 +106,7 @@ class plgPublicationsVersions extends JPlugin
 			}
 		}
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Get pub configs
 		$config =& JComponentHelper::getParams( $option );

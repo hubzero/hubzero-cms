@@ -111,7 +111,7 @@ class plgResourcesUsage extends JPlugin
 		}
 
 		// Check if we have a needed database table
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$tables = $database->getTableList();
 		$table  = $database->getPrefix() . 'resource_stats_tools';
@@ -254,7 +254,7 @@ class plgResourcesUsage extends JPlugin
 	 */
 	public static function getOverview($id, $period=1)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$sql = "SELECT * 
 				FROM #__resource_stats_tools 
@@ -276,7 +276,7 @@ class plgResourcesUsage extends JPlugin
 	 */
 	public static function getTopValue($id, $top, $tid, $datetime, $prd=14)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if (!$id || !$tid)
 		{
@@ -307,7 +307,7 @@ class plgResourcesUsage extends JPlugin
 	 */
 	public static function getTid($id, $datetime, $period=14)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$sql = "SELECT t.id FROM #__resource_stats_tools AS t WHERE t.resid = '$id' AND t.period = '" . $period . "' AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
 		$database->setQuery($sql);
@@ -400,7 +400,7 @@ class plgResourcesUsage extends JPlugin
 
 		$json = new stdClass;
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$tid = $this->getTid($id, $datetime, $period);
 

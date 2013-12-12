@@ -40,7 +40,7 @@ class BillboardsControllerApi extends Hubzero_Api_Controller
 		$limitstart = JRequest::getVar("limitstart", 0);
 		
 		//load up the
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'tables' . DS . 'collection.php' );
 		$BillboardsCollections = new BillboardsCollection( $database );
 		$collections = $BillboardsCollections->getRecords( array("limit" => $limit, "start" => $limitstart) );
@@ -74,7 +74,7 @@ class BillboardsControllerApi extends Hubzero_Api_Controller
 		}
 		
 		//load up the
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'tables' . DS . 'collection.php' );
 		$BillboardsCollections = new BillboardsCollection( $database );
 		$BillboardsCollections->load($collection);

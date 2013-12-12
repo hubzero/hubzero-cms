@@ -338,7 +338,7 @@ class Subscription extends JTable
 	 */
 	public function buildQuery( $filters=array(), $admin=false )
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$now = JFactory::getDate()->toSql();
 
 		$query  = "";

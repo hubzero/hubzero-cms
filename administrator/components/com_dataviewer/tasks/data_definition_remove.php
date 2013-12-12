@@ -19,7 +19,7 @@ function dv_data_definition_remove()
 	$db_id = JRequest::getString('db', false);
 	$dd_name = JRequest::getString('dd_name', false);
 
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
 
 

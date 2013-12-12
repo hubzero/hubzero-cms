@@ -12,7 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-$config =& JFactory::getConfig();
+$config = JFactory::getConfig();
 
 $this->template = 'hubbasic2012';
 

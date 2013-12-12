@@ -73,7 +73,7 @@ class ResourceMediaTracking extends JTable
 		//if we dont have a user id use session id
 		if(!$user_id)
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$session_id = $session->getId();
 			$sql .= "WHERE m.session_id='" . $session_id . "' ";
 		}

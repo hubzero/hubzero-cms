@@ -82,7 +82,7 @@ class plgProjectsTeam extends JPlugin
 	 */
 	public function &onProjectCount( $project, &$counts ) 
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 				
 		$objO = new ProjectOwner($database);		
 		$counts['team'] = $objO->countOwners($project->id, $filters = array());
@@ -140,7 +140,7 @@ class plgProjectsTeam extends JPlugin
 			// Load component configs
 			$this->_config =& JComponentHelper::getParams( 'com_projects' );
 			
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');
@@ -155,7 +155,7 @@ class plgProjectsTeam extends JPlugin
 			$this->_uid 		= $uid;
 			if (!$this->_uid) 
 			{
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
 			$this->_msg = $msg;
@@ -166,7 +166,7 @@ class plgProjectsTeam extends JPlugin
 			}
 			
 			// Add CSS and JS
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginScript('projects', 'team');
 			Hubzero_Document::addPluginStylesheet('projects', 'team');
@@ -949,7 +949,7 @@ class plgProjectsTeam extends JPlugin
 		}
 				
 		// Set up email config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_option));
 		$from['email'] = $jconfig->getValue('config.mailfrom');

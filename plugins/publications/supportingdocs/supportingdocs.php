@@ -118,13 +118,13 @@ class plgPublicationsSupportingDocs extends JPlugin
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('publications', 'supportingdocs');
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Initiate a publication helper class
 		$helper = new PublicationHelper($database, $publication->id, $publication->version_id);
 			
 		$config =& JComponentHelper::getParams( $option );
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 				
 		// Instantiate a view
 		ximport('Hubzero_Plugin_View');

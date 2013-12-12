@@ -81,7 +81,7 @@ class plgCronProjects extends JPlugin
 		$database = JFactory::getDBO();
 		$juri =& JURI::getInstance();
 		
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
 		
 		$period = 'alltime';
@@ -139,7 +139,7 @@ class plgCronProjects extends JPlugin
 		$database = JFactory::getDBO();
 		$juri =& JURI::getInstance();
 		
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
 		
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
@@ -230,7 +230,7 @@ class plgCronProjects extends JPlugin
 		$database = JFactory::getDBO();
 		$juri =& JURI::getInstance();
 		
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
 		
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS

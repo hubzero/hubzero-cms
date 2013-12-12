@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get user object
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 //flags for not logged in and not user
 $loggedin = false;
@@ -276,7 +276,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							//get list of organizations from db
 							include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organization.php' );
-							$database =& JFactory::getDBO();
+							$database = JFactory::getDBO();
 							$xo = new RegisterOrganization( $database );
 							$orgs = $xo->getOrgs();
 						
@@ -343,7 +343,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							//get organization types from db
 							include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organizationtype.php' );
-							$database =& JFactory::getDBO();
+							$database = JFactory::getDBO();
 							$xot = new RegisterOrganizationType( $database );
 							$orgtypes = $xot->getTypes();
 
@@ -740,7 +740,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				) : ?>
 				<?php
 					$cls = "";
-					$database =& JFactory::getDBO();
+					$database = JFactory::getDBO();
 					$mt = new MembersTags( $database );
 					$tags = $mt->get_tag_cloud(0,0,$this->profile->get('uidNumber'));
 					$tag_string = $mt->get_tag_string( $this->profile->get('uidNumber') );

@@ -84,7 +84,7 @@ class plgSupportResources extends JPlugin
 						WHERE rr.id=" . $refid;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows) 
@@ -108,7 +108,7 @@ class plgSupportResources extends JPlugin
 	{
 		ximport('Hubzero_Comment');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$refid = $parentid;
 
 		if ($category == 'reviewcomment') 
@@ -149,7 +149,7 @@ class plgSupportResources extends JPlugin
 	 */
 	public function parent($parentid)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$parent = new Hubzero_Comment($database);
 		$parent->load($parentid);
@@ -199,7 +199,7 @@ class plgSupportResources extends JPlugin
 			return null;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		switch ($category)
 		{

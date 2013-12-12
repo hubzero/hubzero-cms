@@ -165,7 +165,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	 */
 	protected function _buildPathway() 
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
@@ -279,7 +279,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				}
 			}
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
 	
@@ -815,7 +815,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$filters['id']     	= $publication->id;
 
 		// Write title & build pathway
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($publication->title) );	
 		
 		// Set the pathway
@@ -823,7 +823,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		
 		// Determine the layout we're using
 		$v = array('name'=>'view');
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if ($publication->cat_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' 
 			. DS . $this->_option . DS . 'view' . DS . $publication->cat_url.'.php') 
@@ -944,7 +944,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$sections[] = array('html' => $this->content, 'metadata' => '', 'area' => 'play');
 		
 		// Write title & build pathway
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($this->publication->title) );	
 		
 		// Set the pathway
@@ -1061,19 +1061,19 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			$crypter = new JSimpleCrypt();
 			$session_id = $crypter->decrypt($token);
 
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$query = "SELECT * FROM #__session WHERE session_id = ".$db->Quote($session_id);
 			$db->setQuery($query);
 			$session = $db->loadObject();
 
-			$juser =& JFactory::getUser($session->userid);
+			$juser = JFactory::getUser($session->userid);
 			$juser->guest = 0;
 			$juser->id = $session->userid;
 			$juser->usertype = $session->usertype;
 		} 
 		else 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 		}
 		
 		// Check if user has access to content
@@ -1453,7 +1453,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Push some styles to the template
 		$this->_getStyles();
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . 'com_publications' . DS . 'assets' . DS . 'css' . DS . 'wiki.css');
 		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
 		
@@ -1510,7 +1510,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		//document object
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 
 		//add the HUBpresenter stylesheet
 		$jdoc->addStyleSheet("/components/" . $this->_option . "/presenter/css/app.css");
@@ -1603,7 +1603,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$errors = array();
 		
 		//database object                      
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		//inlude the HUBpresenter library
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
@@ -1732,7 +1732,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		//document object
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->_scripts = array();
 
 		// Add the stylesheet
@@ -1927,7 +1927,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$publication = $objP->getPublication($id, $version);
 		
 		// Get HUB configuration
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		
 		// Make sure we got a result from the database
@@ -2182,13 +2182,13 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		include_once( JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 		
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
 		ximport('Hubzero_Document_Feed');
 		$doc = new Hubzero_Document_Feed;
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$params =& $app->getParams();
 
 		// Incoming
@@ -2246,7 +2246,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		// Get HUB configuration
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		$juri =& JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
@@ -2646,7 +2646,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$no_html = JRequest::getInt( 'no_html', 0 );
 		
 		// Process tags
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$rt = new PublicationTags( $database );
 		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 0);
 	

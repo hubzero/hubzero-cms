@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $pclass = (isset($this->item->vote) && $this->item->vote=="yes") ? 'yes' : 'zero';
 $nclass = (isset($this->item->vote) && $this->item->vote=="no") ? 'no' : 'zero';

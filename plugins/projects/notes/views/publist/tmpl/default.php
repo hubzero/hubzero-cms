@@ -46,7 +46,7 @@ if (!$params->get('enable_publinks'))
 }
 */
 
-$database 	=& JFactory::getDBO();
+$database 	= JFactory::getDBO();
 $objSt 		= new ProjectPubStamp( $database );
 $page		= new WikiPage( $database );	
 

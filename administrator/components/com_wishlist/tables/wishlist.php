@@ -195,7 +195,7 @@ class Wishlist extends JTable
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$this->created     = JFactory::getDate()->toSql();
 		$this->category    = $category;

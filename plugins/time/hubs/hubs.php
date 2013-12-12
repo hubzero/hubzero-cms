@@ -97,8 +97,8 @@ class plgTimeHubs extends Hubzero_Plugin
 		$this->action    =  $action;
 		$this->active    =  $active;
 		$this->db        =  JFactory::getDBO();
-		$this->juser     =& JFactory::getUser();
-		$this->mainframe =& JFactory::getApplication();
+		$this->juser     = JFactory::getUser();
+		$this->mainframe = JFactory::getApplication();
 
 		// Include needed DB classes and helpers
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'html.php');

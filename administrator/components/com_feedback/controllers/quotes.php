@@ -45,7 +45,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$this->type = urldecode($app->getUserStateFromRequest(
 			$this->_option . '.type',
 			'type',
@@ -78,7 +78,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 		$this->view->type = $this->type;
 
 		// Get site configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming

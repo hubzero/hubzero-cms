@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $this->item->helpful    = ($this->item->helpful)    ? $this->item->helpful    : 0;
 $this->item->nothelpful = ($this->item->nothelpful) ? $this->item->nothelpful : 0;

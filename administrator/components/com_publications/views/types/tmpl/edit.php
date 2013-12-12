@@ -83,7 +83,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label><?php echo JText::_('Params'); ?>:</label></td>
 						<td><?php 
-							$editor =& JFactory::getEditor();
+							$editor = JFactory::getEditor();
 							echo $editor->display('fields[params]', stripslashes($this->row->params), '', '', '50', '3', false);
 						?></td>
 					</tr>

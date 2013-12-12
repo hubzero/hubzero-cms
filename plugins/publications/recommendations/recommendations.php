@@ -98,7 +98,7 @@ class plgPublicationRecommendations extends JPlugin
 		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 10;
 		
 		// Get recommendations
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$r = new PublicationRecommendation($database);
 		$results = $r->getResults($filters);
 		

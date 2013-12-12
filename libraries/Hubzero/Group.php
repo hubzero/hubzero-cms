@@ -322,7 +322,7 @@ class Hubzero_Group
 	 */
 	public function create()
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -765,7 +765,7 @@ class Hubzero_Group
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db = &JFactory::getDBO();
+				$db =  JFactory::getDBO();
 
 				if (is_object($db))
 				{
@@ -1065,7 +1065,7 @@ class Hubzero_Group
 	 */
 	static function iterate($func)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "SELECT cn FROM #__xgroups;";
 
@@ -1507,7 +1507,7 @@ class Hubzero_Group
 		$table = '#__xgroups_' . $tbl;
 		$user_table = '#__users';
 
-		$db = & JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u 
 					WHERE t.gidNumber={$db->Quote($this->gidNumber)} 

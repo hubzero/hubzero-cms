@@ -62,7 +62,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		}
 		
 		//set title of browser window
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
 	
@@ -75,7 +75,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 	public function _buildPathway( $newsletter = null )
 	{
 		//get the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		
 		//add 'newlsetters' item to pathway
 		if (count($pathway->getPathWay()) <= 0)

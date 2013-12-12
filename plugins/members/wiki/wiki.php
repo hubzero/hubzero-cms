@@ -109,7 +109,7 @@ class plgMembersWiki extends JPlugin
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if (is_array($areas) && $limit) 
 		{
@@ -206,7 +206,7 @@ class plgMembersWiki extends JPlugin
 	 */
 	public function out($row)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
@@ -255,7 +255,7 @@ class plgMembersWiki extends JPlugin
 	 */
 	public function onMembersFavorites($member, $option, $limit=0, $limitstart=0, $areas=null)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		if (is_array($areas) && $limit) 
 		{

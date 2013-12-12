@@ -228,7 +228,7 @@ class CollectionsTableCollection extends JTable
 		);
 		if (!$result['created_by'])
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$result['created_by'] = $juser->get('id');
 		}
 		if (!$this->bind($result))
@@ -296,7 +296,7 @@ class CollectionsTableCollection extends JTable
 				return false;
 			}
 
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->created    = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 			$this->state      = 1;

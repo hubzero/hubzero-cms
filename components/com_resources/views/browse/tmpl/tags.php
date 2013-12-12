@@ -88,7 +88,7 @@ Hubzero_Document::addPluginStylesheet('resources', 'share');
 		<div class="clear"></div>
 
 <?php
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 if ($this->supportedtag) {
 	include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');

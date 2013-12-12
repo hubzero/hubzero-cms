@@ -214,7 +214,7 @@ $option = 'com_groups';
 
 							// Some needed libraries
 							ximport('Hubzero_User_Profile');
-							$juser =& JFactory::getUser();
+							$juser = JFactory::getUser();
 							// Loop through the results
 							$html = '';
 							if ($this->limit == 0) 
@@ -340,7 +340,7 @@ $option = 'com_groups';
 								}
 
 								if ($this->filter == 'pending') {
-									$database =& JFactory::getDBO();
+									$database = JFactory::getDBO();
 									$row = new GroupsReason($database);
 									$row->loadReason($u->get('uidNumber'), $this->group->gidNumber);
 

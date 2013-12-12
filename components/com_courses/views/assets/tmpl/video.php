@@ -63,7 +63,7 @@ else
 if (!JPluginHelper::isEnabled('system', 'jquery'))
 {
 	// Create the document object
-	$doc =& JFactory::getDocument();
+	$doc = JFactory::getDocument();
 
 	$doc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
 	$doc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");

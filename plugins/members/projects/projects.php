@@ -59,9 +59,9 @@ class plgMembersProjects extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin('members', 'projects');
 		$this->_params = new $paramsClass($this->_plugin->params);
 		$this->_config =& JComponentHelper::getParams('com_projects');
-		$this->_database =& JFactory::getDBO();
+		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$this->_juser =& JFactory::getUser();
+		$this->_juser = JFactory::getUser();
 		$this->_filters = array();
 		$this->_total = 0;
 	}

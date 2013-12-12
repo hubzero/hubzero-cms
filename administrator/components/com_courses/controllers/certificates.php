@@ -50,7 +50,7 @@ class CoursesControllerCertificates extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -298,7 +298,7 @@ class CoursesControllerCertificates extends Hubzero_Controller
 		}
 		//$this->view->offering = $this->view->course->offering(JRequest::getInt('offering', 0));
 
-		/*$jconfig =& JFactory::getConfig();
+		/*$jconfig = JFactory::getConfig();
 
 		// Build the link displayed
 		$juri =& JURI::getInstance();

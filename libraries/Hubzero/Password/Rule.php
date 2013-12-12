@@ -35,7 +35,7 @@ class Hubzero_Password_Rule
 {
 	public function getRules($group = null, $all = false)
 	{
-		$db = &JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		if (empty($db)) {
 			return array();

@@ -43,7 +43,7 @@ $class = PublicationHelper::getPubStateProperty($this->pub, 'class');
 $v = $this->version == 'default' ? '' : '?v='.$this->version;
 
 // Get hub config
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 $site = $jconfig->getValue('config.live_site');
 
 $now = JFactory::getDate()->toSql();

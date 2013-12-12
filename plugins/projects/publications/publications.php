@@ -124,7 +124,7 @@ class plgProjectsPublications extends JPlugin
 		}
 		else
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			
 			// Instantiate project publication
 			$objP = new Publication( $database );
@@ -185,7 +185,7 @@ class plgProjectsPublications extends JPlugin
 		// Load language file
 		$this->loadLanguage();
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Enable views
 		ximport('Hubzero_View_Helper_Html');
@@ -214,7 +214,7 @@ class plgProjectsPublications extends JPlugin
 		$this->_uid = $uid;
 		if (!$this->_uid) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->_uid = $juser->get('id');
 		}
 		$this->_database = $database;
@@ -436,7 +436,7 @@ class plgProjectsPublications extends JPlugin
 		$mt = new PublicationMasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
 		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');		
 				
@@ -556,7 +556,7 @@ class plgProjectsPublications extends JPlugin
 		$view->url = JRoute::_($view->route);
 		
 		// Append breadcrumbs
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$pathway->addItem(
 			stripslashes(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
@@ -648,7 +648,7 @@ class plgProjectsPublications extends JPlugin
 		$view->url = JRoute::_($view->route . '?action=start');
 		
 		// Append breadcrumbs
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$pathway->addItem(
 			stripslashes(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')),
@@ -721,7 +721,7 @@ class plgProjectsPublications extends JPlugin
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
 		
 		// Add stylesheet
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
 		
 		// Is logging enabled?
@@ -941,7 +941,7 @@ class plgProjectsPublications extends JPlugin
 		$row->loadVersion($pid, $version);
 			
 		// Append breadcrumbs
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$url = $version != 'default' ? $view->url.a.'version='.$version : $view->url;
 		$pathway->addItem(
@@ -958,7 +958,7 @@ class plgProjectsPublications extends JPlugin
 			
 			if (!$plugin || $p_params->get('noconflictSite'))
 			{
-				$document =& JFactory::getDocument();
+				$document = JFactory::getDocument();
 				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
 				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
 				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
@@ -1217,7 +1217,7 @@ class plgProjectsPublications extends JPlugin
 				// Include support scripts
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 				
 				// Load the support config
 				$sparams = JComponentHelper::getParams('com_support');
@@ -1647,7 +1647,7 @@ class plgProjectsPublications extends JPlugin
 		$version 	= JRequest::getVar('version', '');
 		$pubdate 	= JRequest::getVar('publish_date');	
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 				
 		// Check that version number exists
@@ -1697,7 +1697,7 @@ class plgProjectsPublications extends JPlugin
 		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
 			
 		// Append breadcrumbs
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$url =  $view->url . '?version='.$version;
 		$pathway->addItem(
@@ -1796,7 +1796,7 @@ class plgProjectsPublications extends JPlugin
 		$view->shots = PublicationsHtml::showGallery($gallery, $gallery_path);
 		
 		// Get JS
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScript('components' . DS . 'com_publications' . DS . 'publications.js');
 		
 		//Import the wiki parser
@@ -2645,7 +2645,7 @@ class plgProjectsPublications extends JPlugin
 				$apu = explode(',', $apu);
 				$apu = array_map('trim',$apu);
 				
-				$juser =& JFactory::getUser();				
+				$juser = JFactory::getUser();				
 				if (in_array($juser->get('username'),$apu)) 
 				{
 					// Set status to published
@@ -2998,7 +2998,7 @@ class plgProjectsPublications extends JPlugin
 		// Append breadcrumbs
 		if (!$ajax) 
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$pathway =& $app->getPathway();
 			$pathway->addItem(
 				stripslashes($pub->title),
@@ -5119,7 +5119,7 @@ class plgProjectsPublications extends JPlugin
 		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
 			
 		// Append breadcrumbs
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$pathway->addItem(
 			stripslashes($view->pub->title),
@@ -5158,7 +5158,7 @@ class plgProjectsPublications extends JPlugin
 	public function contribute() 
 	{
 		// Get user info
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -5718,11 +5718,11 @@ class plgProjectsPublications extends JPlugin
 		);
 		
 		// Include styling and js
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
 		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Build query
 		$filters = array();
@@ -5777,7 +5777,7 @@ class plgProjectsPublications extends JPlugin
 			return false;
 		}
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Archival name
 		$tarname = JText::_('Publication').'_'.$pid.'.zip';
@@ -6071,7 +6071,7 @@ class plgProjectsPublications extends JPlugin
 			return false;
 		}
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Instantiate a project
 		$obj = new Project( $database );

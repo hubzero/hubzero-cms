@@ -15,7 +15,7 @@ function dv_data_definition_new()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 
 	$db_id = JRequest::getString('db', false);
 	$table = JRequest::getString('table', false);
@@ -77,7 +77,7 @@ function dv_data_definition_new()
 
 	$dd_name = $name;
 
-	$juser =& JFactory::getUser();
+	$juser = JFactory::getUser();
 	$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
 
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";

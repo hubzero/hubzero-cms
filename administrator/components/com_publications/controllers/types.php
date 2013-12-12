@@ -47,7 +47,7 @@ class PublicationsControllerTypes extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -83,7 +83,7 @@ class PublicationsControllerTypes extends Hubzero_Controller
 		$this->view->filters['state'] = 'all';
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 		
 		// Instantiate an object
@@ -160,7 +160,7 @@ class PublicationsControllerTypes extends Hubzero_Controller
 		}
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 		
 		// Output the HTML
