@@ -41,7 +41,11 @@ function ProjectsBuildRoute(&$query)
 {
 	$segments = array();
 	$scope = 0;
-
+	
+	if (!empty($query['controller'])) 
+	{
+		unset($query['controller']);
+	}
     if (!empty($query['alias'])) 
 	{
 		$segments[] = $query['alias'];
@@ -134,7 +138,8 @@ function ProjectsParseRoute($segments)
 	// Views (plugins or view panels)
 	$views = array('feed', 'info', 'team', 
 		'files', 'tools', 'publications', 
-		'notes', 'todo', 'activity', 'databases'
+		'notes', 'todo', 'activity', 
+		'databases', 'links'
 	);
 	
 	// Wiki actions
@@ -151,7 +156,7 @@ function ProjectsParseRoute($segments)
 	// App actions
 	$app_actions = array('status', 'history', 'wiki', 'browse', 
 		'edit', 'start', 'save', 'register', 'attach', 'source',
-		'cancel', 'update', 'message'
+		'cancel', 'update', 'message', 'update'
 	);
 		
 	if (empty($segments[0]))

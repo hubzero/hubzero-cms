@@ -554,7 +554,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		var over = this.checkMaxSize(size);
 		if (over && elError)
 		{
-			elError.innerHTML = 'File exceeds upload size limit';
+			elError.innerHTML = 'File over upload limit';
 		}
 		
 		var elName  = this._find(item, 'name'); 

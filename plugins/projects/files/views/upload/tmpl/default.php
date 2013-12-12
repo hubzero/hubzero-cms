@@ -111,8 +111,8 @@ if (!$this->getError()) {
 		</div>
 		<div id="upload-csize">
 		</div>
-		<?php if (!$this->ajax) { ?>
-		<div class="sharing-option-extra nojs" id="archiveCheck">
+		<?php if (!$this->ajax || $basic) { ?>
+		<div class="sharing-option-extra" id="archiveCheck">
 			<label class="sharing-option">
 				<input type="checkbox" name="expand_zip" id="expand_zip" value="1" />
 				<?php echo JText::_('COM_PROJECTS_FILES_UPLOAD_UNZIP_ARCHIVES'); ?>
@@ -120,7 +120,7 @@ if (!$this->getError()) {
 		</div>
 		<?php } ?>
 		
-		<input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?php echo $this->config->get('maxUpload', '104857600'); ?>" />	
+		<input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?php echo $this->params->get('maxUpload', '104857600'); ?>" />	
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 		<input type="hidden" name="action" id="formaction" value="save" />

@@ -817,6 +817,11 @@ class ProjectsHtml
 	{		
 		$src  = '';
 		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
+		
+		if (file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
+		{
+			return $path . DS . 'thumb.png';
+		}
 	
 		if ($picname) 
 		{

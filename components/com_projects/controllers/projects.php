@@ -316,8 +316,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 * Get notifications
 	 * @param  string $type
 	 * @return $messages if they exist
-	 */
-	
+	 */	
 	public function getNotifications($type = 'success') 
 	{	
 		// Get messages in quene 
