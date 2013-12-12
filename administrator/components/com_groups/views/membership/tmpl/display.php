@@ -34,7 +34,7 @@ $canDo = GroupsHelper::getActions('group');
 
 JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
 
-$bar = & JToolBar::getInstance('toolbar');
+$bar =  JToolBar::getInstance('toolbar');
 // Add an upload button
 $bar->appendButton( 'Popup', 'new', JText::_('New'), 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170 );
 

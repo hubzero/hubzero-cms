@@ -36,7 +36,7 @@ JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Coupon Codes'),
 if ($canDo->get('core.create')) 
 {
 	//JToolBarHelper::custom('generate', 'refresh', JText::_('Generate'), JText::_('Generate'), true, false);
-	$bar = & JToolBar::getInstance('toolbar');
+	$bar =  JToolBar::getInstance('toolbar');
 	$bar->appendButton('Popup', 'refresh', 'Generate', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
 
 	JToolBarHelper::spacer();
