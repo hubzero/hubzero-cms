@@ -29,6 +29,7 @@ HUB.User = {
 		var password     = $('#password');
 		var error        = $('#authentication .error');
 		var hcredentials = $('#credentials-hub');
+		var attempts     = 0;
 
 		$('input:checkbox').uniform();
 
@@ -72,8 +73,22 @@ HUB.User = {
 				data: form.serialize(),
 				success: function(data, status, xhr)
 				{
-					// Parse the returned json data
-					var response = jQuery.parseJSON(data);
+					var response = {};
+					try {
+						// Parse the returned json data
+						response = jQuery.parseJSON(data);
+					} catch (err) {
+						console.log(err);
+						password.val('');
+						password.focus();
+						error.html('Sorry. Something went wong. Please try logging in again.');
+						error.slideDown('fast', function(){});
+						attempts++;
+
+						if (attempts >= 3) {
+							window.location.reload();
+						}
+					}
 
 					// If all went well
 					if(response.success)
@@ -87,6 +102,7 @@ HUB.User = {
 						password.focus();
 						error.html(response.error);
 						error.slideDown('fast', function(){});
+						attempts++;
 					}
 				},
 				error: function(xhr, status, error)
