@@ -82,7 +82,7 @@ class Hubzero_Wiki_Editor extends JObservable
 	 * if it doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 * 		<pre>  $editor =& Hubzer_Wiki_Editor::getInstance($editor);</pre>
+	 * 		<pre>  $editor = Hubzero_Wiki_Editor::getInstance($editor);</pre>
 	 *
 	 * @access	public
 	 * @param	string	$editor  The editor to use.
