@@ -1466,7 +1466,7 @@ class RegisterController extends Hubzero_Controller
 				else 
 				{
 					// New email submitted - attempt to save it
-					$xprofile =& Hubzero_User_Profile::getInstance($login);
+					$xprofile = Hubzero_User_Profile::getInstance($login);
 					if ($xprofile) 
 					{
 						$dtmodify = JFactory::getDate()->toSql();

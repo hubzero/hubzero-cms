@@ -1351,7 +1351,7 @@ class WishlistController extends JObject
 
 			$name = JText::_('COM_WISHLIST_UNKNOWN');
 			$login = JText::_('COM_WISHLIST_UNKNOWN');
-			$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
+			$ruser = Hubzero_User_Profile::getInstance($objWish->proposed_by);
 			if (is_object($ruser)) 
 			{
 				$name  = $ruser->get('name');
@@ -1891,7 +1891,7 @@ class WishlistController extends JObject
 
 					$name = JText::_('COM_WISHLIST_UNKNOWN');
 					$login = JText::_('COM_WISHLIST_UNKNOWN');
-					$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
+					$ruser = Hubzero_User_Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) 
 					{
 						$name = $ruser->get('name');
@@ -2165,7 +2165,7 @@ class WishlistController extends JObject
 
 					$name = JText::_('COM_WISHLIST_UNKNOWN');
 					$login = JText::_('COM_WISHLIST_UNKNOWN');
-					$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
+					$ruser = Hubzero_User_Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) 
 					{
 						$name  = $ruser->get('name');
@@ -2802,7 +2802,7 @@ class WishlistController extends JObject
 
 				$name = JText::_('UNKNOWN');
 				$login = JText::_('UNKNOWN');
-				$ruser =& Hubzero_User_Profile::getInstance($row->added_by);
+				$ruser = Hubzero_User_Profile::getInstance($row->added_by);
 				if (is_object($ruser)) 
 				{
 					$name = $ruser->get('name');

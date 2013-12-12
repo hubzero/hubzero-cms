@@ -384,7 +384,7 @@ Class GroupPages extends JTable
 				$counter++;
 				if ($counter <= 12) 
 				{
-					$user =& Hubzero_User_Profile::getInstance($member);
+					$user = Hubzero_User_Profile::getInstance($member);
 					if (is_object($user))
 					{
 						$cls = "member-border";

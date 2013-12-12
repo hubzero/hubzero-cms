@@ -193,7 +193,7 @@ defined('_JEXEC') or die('Restricted access');
 				$k=1;
 				for ($i=0, $n=count($wishlist->owners); $i < $n; $i++) {
 					if (!in_array($wishlist->owners[$i], $allmembers)) { 
-						$kuser =& Hubzero_User_Profile::getInstance($wishlist->owners[$i]);
+						$kuser = Hubzero_User_Profile::getInstance($wishlist->owners[$i]);
 					?>
 								<tr>
 									<td><?php echo $k; ?>.</td>
@@ -251,7 +251,7 @@ defined('_JEXEC') or die('Restricted access');
 					{
 						if (!in_array($wishlist->advisory[$i], $allmembers)) 
 						{
-							$quser =& Hubzero_User_Profile::getInstance($wishlist->advisory[$i]);
+							$quser = Hubzero_User_Profile::getInstance($wishlist->advisory[$i]);
 						?>
 								<tr>
 									<td><?php echo $k; ?>.</td>

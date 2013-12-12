@@ -1798,7 +1798,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			{
 				foreach ($members as $member) 
 				{
-					$muser =& Hubzero_User_Profile::getInstance($member);
+					$muser = Hubzero_User_Profile::getInstance($member);
 					if (is_object($muser)) 
 					{
 						$admins[] = $member;

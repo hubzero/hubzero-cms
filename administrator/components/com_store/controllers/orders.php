@@ -461,7 +461,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			$row->total = $cost;
 
 			// get user bank account
-			//$xprofile =& Hubzero_User_Profile::getInstance($row->uid);
+			//$xprofile = Hubzero_User_Profile::getInstance($row->uid);
 			$xprofile = JUser::getInstance($row->uid);
 			$BTL_Q = new Hubzero_Bank_Teller($this->database, $xprofile->get('id'));
 
