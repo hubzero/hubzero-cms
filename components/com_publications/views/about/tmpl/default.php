@@ -11,8 +11,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 $abstract = stripslashes($this->publication->abstract);
-if ($this->publication->abstract) {
-	$document = JFactory::getDocument();
+
+// Set the document description
+if ($this->publication->abstract) 
+{
+	$document =& JFactory::getDocument();
 	$document->setDescription(PublicationsHtml::encode_html(strip_tags($abstract)));
 }
 
@@ -26,9 +29,6 @@ if ($this->publication->description)
 	}
 }
 
-// Process metadata
-$metadata = PublicationsHtml::processMetadata($this->publication->metadata, $this->publication->_category, 1, $this->publication->id, $this->option, $this->parser, $this->wikiconfig);
-
 // Start display
 $html  = '<div class="subject abouttab">'."\n";	
 
@@ -37,21 +37,32 @@ $webpath = $this->config->get('webpath');
 $gallery_path = $this->helper->buildPath($this->publication->id, $this->publication->version_id, $webpath, 'gallery');
 
 // Show gallery images
-$pScreenshot = new PublicationScreenshot($this->database);
-$gallery = $pScreenshot->getScreenshots( $this->publication->version_id );	
-$shots = PublicationsHtml::showGallery($gallery, $gallery_path);
-if($shots) 
+if ($this->params->get('show_gallery'))
 {
-	$html .= ' <div class="sscontainer">'."\n";					
-	$html .= $shots;
-	$html .= ' </div><!-- / .sscontainer -->'."\n";
-}		
+	$pScreenshot = new PublicationScreenshot($this->database);
+	$gallery = $pScreenshot->getScreenshots( $this->publication->version_id );	
+	$shots = PublicationsHtml::showGallery($gallery, $gallery_path);
+	if ($shots) 
+	{
+		$html .= ' <div class="sscontainer">'."\n";					
+		$html .= $shots;
+		$html .= ' </div><!-- / .sscontainer -->'."\n";
+	}		
+}
 
 // Show description and metadata
 $html .= "\t".'<table class="resource">'."\n";
 $html .= "\t\t".'<tbody>'."\n";
 $html .= PublicationsHtml::tableRow( JText::_('COM_PUBLICATIONS_ABSTRACT'), $description );
-$html .= $metadata['html'] ? $metadata['html'] : '';
+
+if ($this->params->get('show_metadata')) 
+{
+	// Process metadata
+	$metadata = PublicationsHtml::processMetadata($this->publication->metadata, 
+		$this->publication->_category, $this->parser, $this->wikiconfig);
+	$html .= $metadata['html'] ? $metadata['html'] : '';
+}
+
 $citations = $metadata['citations'];
 
 // Show citations
@@ -68,7 +79,7 @@ if ($this->params->get('show_citation') && $this->publication->state == 1)
 		$cite->date = '';
 		
 		// Get hub config
-		$jconfig = JFactory::getConfig();
+		$jconfig =& JFactory::getConfig();
 		$site = trim( $jconfig->getValue('config.live_site'), DS);
 		
 		$cite->url 		= $site . DS . 'publications' . DS . $this->publication->id . '?v='.$this->version;
@@ -90,7 +101,8 @@ if ($this->params->get('show_citation') && $this->publication->state == 1)
 }
 
 // Show tags
-if ($this->params->get('show_tags')) {
+if ($this->params->get('show_tags')) 
+{
 	$this->helper->getTagCloud( $this->authorized );
 	
 	if ($this->helper->tagCloud) {
@@ -98,9 +110,9 @@ if ($this->params->get('show_tags')) {
 	}
 }
 
-
 // Show version notes
-if($this->publication->release_notes) {
+if ($this->params->get('show_notes') && $this->publication->release_notes) 
+{
 	$notes = $this->parser->parse( stripslashes($this->publication->release_notes), $this->wikiconfig );
 	$html .= PublicationsHtml::tableRow( JText::_('COM_PUBLICATIONS_VERSION')
 	. ' ' . $this->publication->version_label . ' ' . JText::_('COM_PUBLICATIONS_NOTES'),$notes);	

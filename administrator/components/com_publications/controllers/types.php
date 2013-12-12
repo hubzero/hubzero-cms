@@ -159,6 +159,8 @@ class PublicationsControllerTypes extends Hubzero_Controller
 			$this->view->setError($this->getError());
 		}
 		
+		$this->view->config = $this->config;
+		
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
@@ -182,43 +184,45 @@ class PublicationsControllerTypes extends Hubzero_Controller
 		
 		// Initiate extended database class
 		$row = new PublicationMasterType($this->database);
+		
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $fields['id'];
+		
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			);
+			$this->setRedirect($url);
 			return;
 		}
-		
-		$row->contributable = JRequest::getInt('contributable', 0, 'post');
-		$row->supporting 	= JRequest::getInt('supporting', 0, 'post');
-				
+
+		// Get parameters
+		$params = JRequest::getVar('params', '', 'post');
+		if (is_array($params))
+		{
+			$txt = array();
+			foreach ($params as $k => $v)
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode("\n", $txt);
+		}
+						
 		// Check content
 		if (!$row->check())
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $fields['id'],
-				$row->getError(), 'error'
-			);
+			$this->setRedirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$row->getError(), 'error'
-			);
+			$this->setRedirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Publication Master Type successfully saved')
-		);
+		$this->setRedirect( $url, JText::_('Publication Master Type successfully saved'));
+		return;
 	}
 	
 	public function orderupTask()

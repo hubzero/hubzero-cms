@@ -105,7 +105,14 @@ class plgPublicationsSupportingDocs extends JPlugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
 			{
-				$rtrn = 'metadata';
+				if ($publication->_category->_params->get('plg_supportingdocs')) 
+				{
+					$rtrn == 'metadata';
+				}
+				else
+				{
+					return $arr;
+				}
 			}
 		}
 		

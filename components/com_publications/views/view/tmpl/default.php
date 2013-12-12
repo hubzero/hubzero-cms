@@ -126,12 +126,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	}
 		
 	// Sort out supporting docs
-//	if($content['secondary']) 
-//	{
-		$html .= $tab != 'play' && $publication->state != 0
-			   ? PublicationsHtml::sortSupportingDocs( $publication, $version, $option, $content['secondary'], $restricted, $this->archPath ) 
-			   : '';
-//	}	
+	$html .= $tab != 'play' && $publication->state != 0
+		   ? PublicationsHtml::sortSupportingDocs( $publication, $version, $option, $content['secondary'], $restricted, $this->archPath ) 
+		   : '';	
 	
 	// Show version information
 	$html .=  $tab != 'play' ? PublicationsHtml::showVersionInfo( $publication, $version, $option, $config, $this->lastPubRelease ) : '';

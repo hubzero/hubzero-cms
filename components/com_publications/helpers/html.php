@@ -667,89 +667,61 @@ class PublicationsHtml
 	 * Process metadata for a publication
 	 * 
 	 * @param      string  $metadata  	Pub metadata
-	 * @param      object  $category  	Pub category
-	 * @param      boolean $table     	Put data in html table?
-	 * @param      integer $id 		  	Pub id
-	 * @param      string  $option    	Component name
-	 * @param      object  $parser    	Wiki parser
-	 * @param      array   $wikicinfig  Wiki config
 	 * @return     array
 	 */	
-	public function processMetadata( $metadata = '', $category = '', $table = 1, $id, $option, $parser, $wikiconfig ) 
+	public function processMetadata( $metadata, $category, $parser, $config, $table = 1 ) 
 	{	
-		$html = '';
+		$html 		= '';
+		$citations 	= '';
 		
-		if (!$category) 
+		if (!$metadata)
 		{
-			$fields = array('credits', 'sponsoredby', 'references');
+			return false;
 		}
-		else
+		
+		$publicationsHtml 	= new PublicationsHtml();
+		
+		// Parse data
+		$data = array();
+		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $metadata, $matches, PREG_SET_ORDER);
+		if (count($matches) > 0) 
 		{
-			// Get publication type fields
-			$fields = array();
-			if (trim($category->customFields) != '') 
+			foreach ($matches as $match)
 			{
-				$fs = explode("\n", trim($category->customFields));
-				foreach ($fs as $f) 
-				{
-					$fields[] = explode('=', $f);
-				}
+				$data[$match[1]] = $publicationsHtml->_txtUnpee($match[2]);
 			}
 		}
 		
-		// Filter meta data
-		if (!empty($fields)) {
-			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
-			{
-				preg_match("#<nb:".$fields[$i][0].">(.*?)</nb:".$fields[$i][0].">#s", $metadata, $matches);
-				if (count($matches) > 0) 
-				{
-					$match = $matches[0];
-					$match = str_replace('<nb:'.$fields[$i][0].'>','',$match);
-					$match = str_replace('</nb:'.$fields[$i][0].'>','',$match);
-				} 
-				else 
-				{
-					$match = '';
-				}
+		$customFields = $category->customFields && $category->customFields != '{"fields":[]}' 
+						? $category->customFields 
+						: '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
 
-				// Explore the text and pull out all matches
-				array_push($fields[$i], $match);
-			}
-		}
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
-		if (!empty($fields)) 
-		{
-			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
-			{
-				// Explore the text and pull out all matches
-				array_push($fields[$i], PublicationsHtml::parseTag($metadata, $fields[$i][0]));
-			}
-		}
+		$elements 	= new PublicationsElements($data, $customFields);
+		$schema 	= $elements->getSchema();
 		
-		// Display table rows
-		$citations = '';
-		foreach ($fields as $field) 
+		foreach ($schema->fields as $field)
 		{
-			if (end($field) != NULL) 
-			{	
-				// Parse wiki if not HTML already
-				$wiki = end($field) == strip_tags(end($field)) ? $parser->parse( end($field), $wikiconfig ) : end($field);
-				
-				if ($field[0] == 'citations') 
+			if (isset($data[$field->name])) 
+			{
+				if ($field->name == 'citations') 
 				{
-					$citations = $wiki;
+					$citations = $data[$field->name];
 				} 
-				else 
+				elseif ($value = $elements->display($field->type, $data[$field->name])) 
 				{
+					// Parse wiki format if not HTML already
+					$value = $value == strip_tags($value) ? $parser->parse( $value, $wikiconfig ) : $value;
+					
 					if ($table) 
 					{
-						$html .= PublicationsHtml::tableRow( $field[1], $wiki );	
+						$html .= $publicationsHtml->tableRow( $field->label, $value );	
 					}
 					else 
 					{
-						$html .= '<p class="pub-review-label">'.$field[1].'</p>';
-						$html .= $wiki ;
+						$html .= '<p class="pub-review-label">' . $field->label . '</p>';
+						$html .= $value;
 					}
 				}
 			}
@@ -1579,4 +1551,20 @@ class PublicationsHtml
 		return $match;
 	}
 	
+	/**
+	 * Remove paragraph tags and break tags
+	 * 
+	 * @param      string $pee Text to unparagraph
+	 * @return     string
+	 */
+	public function _txtUnpee($pee)
+	{
+		$pee = str_replace("\t", '', $pee);
+		$pee = str_replace('</p><p>', '', $pee);
+		$pee = str_replace('<p>', '', $pee);
+		$pee = str_replace('</p>', "\n", $pee);
+		$pee = str_replace('<br />', '', $pee);
+		$pee = trim($pee);
+		return $pee;
+	}
 }

@@ -59,10 +59,6 @@ class plgProjectsPublications extends JPlugin
 		// Load publications component configs
 		$this->_pubconfig = JComponentHelper::getParams( 'com_publications' );					
 			
-		// Areas required for publication
-		$this->_required = ProjectsHelper::getParamArray(
-			$this->_params->get('required_areas', 'content, description, authors, license' ));
-
 		// Areas that can be updated after publication
 		$this->_updateAllowed = ProjectsHelper::getParamArray(
 			$this->_params->get('updatable_areas', '' ));
@@ -625,9 +621,9 @@ class plgProjectsPublications extends JPlugin
 			$base = 'files'; // default to files
 		}
 		
-		// Get Files JS
-		Hubzero_Document::addPluginScript('projects', 'files');
-		Hubzero_Document::addPluginStylesheet('projects', 'files');
+		// Get content plugin JS/CSS
+		Hubzero_Document::addPluginScript('projects', $base);
+		Hubzero_Document::addPluginStylesheet('projects', $base);
 		
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id) 
@@ -668,6 +664,10 @@ class plgProjectsPublications extends JPlugin
 		$view->lastpane 	= 'content';
 		$view->last_idx 	= 0;
 		$view->current_idx 	= 0;
+		
+		// Initialize other helpers
+		$view->htmlHelper	  = new PublicationsHtml();
+		$view->contribHelper  = new PublicationContribHelper();
 		
 		// Checked areas
 		$view->checked = array();
@@ -856,6 +856,10 @@ class plgProjectsPublications extends JPlugin
 			$base = 'files';
 		}
 		
+		// Master type params (determines management options)
+		$mType = $mt->getType($pub->base);
+		$typeParams = new JParameter( $mType->params );
+		
 		// New version?
 		if ($this->_task == 'newversion') 
 		{
@@ -884,7 +888,7 @@ class plgProjectsPublications extends JPlugin
 			}
 		}
 		// Which description panel?
-		if ($section == 'description' && $this->_pubconfig->get('show_metadata', 0)) 
+		if ($section == 'description' && $typeParams->get('show_metadata', 0)) 
 		{
 			$layout = $step == 'metadata' ? 'metadata' : 'description';
 		}
@@ -929,14 +933,19 @@ class plgProjectsPublications extends JPlugin
 		$view->panels = $this->_panels;	
 		$view->pub = $pub;
 		$view->route = $route;
-		
+				
 		// Build pub url
 		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
 		
 		// Get publications helper
 		$helper = new PublicationHelper($this->_database, $pub->version_id, $pub->id);
 		$view->helper = $helper;
-				
+		
+		// Initialize other helpers
+		$view->htmlHelper	  = new PublicationsHtml();
+		$view->contribHelper  = new PublicationContribHelper();
+		$view->projectsHelper = new ProjectsHelper( $this->_database );
+								
 		// Instantiate publication version
 		$row->loadVersion($pid, $version);
 			
@@ -985,10 +994,7 @@ class plgProjectsPublications extends JPlugin
 				$view->fpath = ProjectsHelper::getProjectPath($this->_project->alias, 
 						$this->_config->get('webpath'), 1);
 				$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
-				
-				// Get projects helper
-				$view->projectsHelper = new ProjectsHelper( $this->_database );
-																
+																				
 				// Get Files JS
 				Hubzero_Document::addPluginScript('projects', 'files');
 				Hubzero_Document::addPluginStylesheet('projects', 'files');							
@@ -1005,6 +1011,12 @@ class plgProjectsPublications extends JPlugin
 				// Get authors
 				$pa = new PublicationAuthor( $this->_database );
 				$view->authors = $pa->getAuthors($row->id);
+				
+				// Showing submitter?
+				if ($typeParams->get('show_submitter'))
+				{
+					$view->submitter = $pa->getSubmitter($row->id, $row->created_by);
+				}
 				
 				// Get team members
 				$objO = new ProjectOwner( $this->_database );
@@ -1064,12 +1076,9 @@ class plgProjectsPublications extends JPlugin
 				$pScreenshot = new PublicationScreenshot( $this->_database );
 				$view->shots = $pScreenshot->getScreenshots( $row->id );
 				
-				// Get publications helper
-				$helper = new PublicationHelper( $this->_database );
-				
 				// Get gallery path
 				$webpath = $this->_pubconfig->get('webpath');
-				$view->gallery_path = $helper->buildPath($row->publication_id, $row->id, $webpath, 'gallery');
+				$view->gallery_path = $view->helper->buildPath($row->publication_id, $row->id, $webpath, 'gallery');
 				
 				// Get project file path
 				$view->fpath = ProjectsHelper::getProjectPath($this->_project->alias, 
@@ -1080,7 +1089,6 @@ class plgProjectsPublications extends JPlugin
 			case 'tags':
 				// Get tags
 				$tagsHelper = new PublicationTags( $this->_database);
-				//$view->tags = $tagsHelper->getTags($row->publication_id);
 				
 				$tags_men = $tagsHelper->get_tags_on_object($row->publication_id, 0, 0, 0, 0);
 
@@ -1126,20 +1134,17 @@ class plgProjectsPublications extends JPlugin
 		$view->checked = $this->_checkDraft( $pub->base, $row, $version );
 		
 		// Areas required for publication
-		$view->required = $this->_required;
+		$view->required = $this->_getPanels( true );
 
 		// Areas that can be updated after publication
 		$view->mayupdate = $this->_updateAllowed;
 		
 		// Check if all required area are filled in
-		$view->publication_allowed = $this->_checkPublicationPermit($view->checked);
-		
-		// Master type params (determines management options)
-		$mType = $mt->getType($this->_base);
-		$view->typeParams = new JParameter( $mType->params );
-		
+		$view->publication_allowed = $this->_checkPublicationPermit($view->checked, $pub->base);
+				
 		$view->_pubTypeHelper = $this->_pubTypeHelper->dispatch($pub->base, 'getHelper');
 		$view->_typeHelper 	  = $this->_pubTypeHelper;
+		$view->typeParams	  = $typeParams;
 								
 		// Output HTML
 		$view->option 		= $this->_option;
@@ -1735,13 +1740,13 @@ class plgProjectsPublications extends JPlugin
 		$view->checked = $this->_checkDraft( $pub->base, $row, $version );
 
 		// Areas required for publication
-		$view->required = $this->_required;
+		$view->required = $this->_getPanels( true, $pub->base );
 
 		// Areas that can be updated after publication
 		$view->mayupdate = $this->_updateAllowed;
 
 		// Check if all required area are filled in
-		$view->publication_allowed = $this->_checkPublicationPermit($view->checked);
+		$view->publication_allowed = $this->_checkPublicationPermit($view->checked, $pub->base);
 		
 		// Get detailed information
 		// Get authors
@@ -1830,6 +1835,13 @@ class plgProjectsPublications extends JPlugin
 		$view->title		= $this->_area['title'];
 		$view->pubdate		= $pubdate;
 		
+		// Master type params (determines management options)
+		$mType = $mt->getType($this->_base);
+		$typeParams = new JParameter( $mType->params );
+		
+		// Merge with publication master type params
+		$view->pubconfig->merge( $typeParams );
+		
 		// Get type helper
 		$view->_pubTypeHelper = $this->_pubTypeHelper->dispatch($this->_base, 'getHelper');
 		$view->_typeHelper	  = $this->_pubTypeHelper;
@@ -1910,7 +1922,7 @@ class plgProjectsPublications extends JPlugin
 				// Determine publication master type
 				$choices = $mt->getTypes('alias', 1);
 				
-				// Check that choices apply to a particular project
+				// Check what choices apply to a particular project
 				$choices = $this->_getAllowedTypes($choices);
 				
 				$mastertype = in_array($base, $choices) ? $base : 'files';
@@ -1918,9 +1930,9 @@ class plgProjectsPublications extends JPlugin
 				// Need to provision a project
 				if (!is_object($this->_project) or !$this->_project->id) 
 				{			
-					$this->_project = new Project( $this->_database );
-					$this->_project->provisioned = 1;
-					$random = strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+					$this->_project 					= new Project( $this->_database );
+					$this->_project->provisioned 		= 1;
+					$random 							= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
 					$this->_project->alias 	 			= 'pub-' . $random;
 					$this->_project->title 	 			= $this->_project->alias;
 					$this->_project->type 	 			= $base == 'tools' ? 2 : 3; // content publication
@@ -1958,47 +1970,12 @@ class plgProjectsPublications extends JPlugin
 						: $objT->getCatId($objT->suggestCat($arr));
 
 				// Determine title
-				$title = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE');
-				if ($base == 'files' && count($selections['files']) == 1) 
-				{
-					$title = $first_item;
-				}
-				elseif ($base == 'databases')
-				{
-					// Get project database object
-					$objPD = new ProjectDatabase($this->_database);
-					if (!$objPD->loadRecord($first_item))
-					{
-						JError::raiseError( $objPD->getError() );
-						return false;
-					}
-					else
-					{
-						$title = $objPD->title;
-					}
-				} 
-				elseif ($base == 'notes')
-				{
-					// Get helper
-					$projectsHelper = new ProjectsHelper( $this->_database );
-					
-					$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
-					$group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
-
-					$note = $projectsHelper->getSelectedNote($first_item, $group, $masterscope);
-					$title = $note ? $note->title : '';					
-				}
-				elseif ($base == 'tools')
-				{
-					$tool = new ProjectTool($this->_database);
-					if ($tool->loadTool($first_item))
-					{
-						$title = $tool->title;
-					}
-				}
+				$title = $this->_pubTypeHelper->dispatch($base, 'getPubTitle', 
+						$data = array('item' => $first_item)
+				);
 				
-				$title = $title == '' ? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE') : $title;
-				
+				$title = $title ? $title : JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE');
+								
 				// Make a new publication entry
 				$objP->master_type 		= $mt->getTypeId($mastertype);
 				$objP->category 		= $cat;				
@@ -2106,6 +2083,9 @@ class plgProjectsPublications extends JPlugin
 			return;
 		}
 		
+		// Master type
+		$this->_base = $mt->getTypeAlias($objP->master_type);
+		
 		// Saving existing publication
 		if (!$newpub && !$this->getError()) 
 		{				
@@ -2118,6 +2098,9 @@ class plgProjectsPublications extends JPlugin
 			}
 			// Disable editing for some DOI-related info, if published
 			$canedit = ($row->state == 1 || $row->state == 0 || $row->state == 6) ? 0 : 1;
+			
+			// Areas required for publication
+			$required = $this->_getPanels( true );
 			
 			// Make sure version has a secret id
 			if (!$row->secret) 
@@ -2176,7 +2159,7 @@ class plgProjectsPublications extends JPlugin
 				case 'description':
 					if ($step == 'metadata') 
 					{
-						$row->metadata = $this->_processMetadata( $objP->type );
+						$row->metadata = $this->_processMetadata( $objP->category );
 					}
 					else 
 					{
@@ -2189,21 +2172,13 @@ class plgProjectsPublications extends JPlugin
 
 						if ($canedit) 
 						{
-							if (!$title || !$description || !$abstract) 
+							if (!$title) 
 							{
 								$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_MISSING_REQUIRED_INFO') );
 							}
-							$row->title = $title;
-							$row->abstract = Hubzero_View_Helper_Html::shortenText($abstract, 250, 0);
-							$row->description = $description;						
-						}
-						elseif (!$description) 
-						{
-							$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_MISSING_REQUIRED_INFO') );
-						}
-						else 
-						{
-							$row->description = $description;
+							$row->title 		= $title;
+							$row->abstract 		= $abstract ? Hubzero_View_Helper_Html::shortenText($abstract, 250, 0) : $title;
+							$row->description 	= $description ? $description : $title;						
 						}						
 					}
 					
@@ -2231,7 +2206,7 @@ class plgProjectsPublications extends JPlugin
 							$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SAVED');		
 						}									
 					}
-					else 
+					elseif (in_array('authors', $required))
 					{
 						$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_NO_AUTHORS_SAVED') );
 					}
@@ -2367,10 +2342,7 @@ class plgProjectsPublications extends JPlugin
 			$indexes = $this->_getIndex($row, $lastpane, $section);
 			$last_idx = $indexes['last_idx'];
 			$next_idx = $indexes['next_idx'];
-			
-			// Master type
-			$this->_base = $mt->getTypeAlias($objP->master_type);
-			
+						
 			// Get active panels
 			$this->_getPanels();
 
@@ -2727,7 +2699,7 @@ class plgProjectsPublications extends JPlugin
 			$checked = $this->_checkDraft( $pub->base, $row, $version );
 
 			// Check if all required areas are filled in
-			$publication_allowed = $this->_checkPublicationPermit($checked);
+			$publication_allowed = $this->_checkPublicationPermit($checked, $pub->base);
 			if (!$publication_allowed) 
 			{
 				JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
@@ -2767,7 +2739,7 @@ class plgProjectsPublications extends JPlugin
 			
 			// Get license type
 			$objL = new PublicationLicense( $this->_database);
-			if ($objL->load($row->license_type))
+			if ($objL->loadLicense($row->license_type))
 			{
 				$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
 				$metadata['license'] = $objL->title;
@@ -5212,16 +5184,78 @@ class plgProjectsPublications extends JPlugin
 	//----------------------------------------
 	
 	/**
+	 * Get panels
+	 *
+	 * @return    void
+	 */
+	protected function _getPanels( $required = false, $base = NULL)
+	{
+		$this->_panels = array();
+		$rPanels 	   = array();
+		
+		$base = $base ? $base : $this->_base;
+		
+		// Get master type params
+		$typeParams = NULL;
+		if ($base)
+		{
+			$mt = new PublicationMasterType( $this->_database );
+			$mType = $mt->getType($base);
+			$typeParams = new JParameter( $mType->params );
+		}
+		
+		// Available panels and default config
+		$panels = array(
+			'content' 		=> 2, 
+			'description' 	=> 2,
+			'authors'		=> 2,
+			'audience'		=> 0,
+			'gallery'		=> 1,
+			'tags'			=> 1,
+			'access'		=> 0,
+			'license'		=> 2,
+			'notes'			=> 1
+		);
+				
+		// Skip some panels if set in params
+		foreach ($panels as $panel => $val) 
+		{			
+			$on = $val;
+			if ($typeParams)
+			{
+				$on = $typeParams->get('show_' . trim($panel), $val);				
+			}
+			
+			if ($on > 0)
+			{
+				$this->_panels[] = trim($panel);
+			}
+			
+			if ($on == 2)
+			{
+				$rPanels[] = trim($panel);
+			}
+		}
+		
+		if ($required == true)
+		{
+			return $rPanels;
+		}
+	}
+	
+	/**
 	 * Check if publication may be published
 	 * 
 	 * @param      array 		$checked
 	 *
 	 * @return     boolean
 	 */	
-	protected function _checkPublicationPermit( $checked = array() ) 
+	protected function _checkPublicationPermit( $checked = array(), $base = NULL ) 
 	{
 		$publication_allowed = true;
-		foreach($this->_required as $req) 
+		$required = $this->_getPanels( true , $base);
+		
+		foreach ($required as $req) 
 		{
 			if (isset($checked[$req]) && $checked[$req] != 1) 
 			{
@@ -5246,12 +5280,12 @@ class plgProjectsPublications extends JPlugin
 		$checked = array();
 		
 		if (!isset($this->_panels))
-		{
-			$this->_base = $type;
-			
+		{			
 			// Get active panels
-			$this->_getPanels();
+			$this->_getPanels( false, $type);
 		}
+		
+		$required = $this->_getPanels( true, $type );
 		
 		// Check each enabled panel
 		foreach ($this->_panels as $key => $value) 
@@ -5282,8 +5316,7 @@ class plgProjectsPublications extends JPlugin
 			elseif ($value == 'license')
 			{
 				// Check license
-				$checked['license'] = ($row->license_type) ? 1 : 0;	
-				
+				$checked['license'] = ($row->license_type) ? 1 : 0;					
 			}
 			elseif ($value == 'audience')
 			{
@@ -5572,77 +5605,6 @@ class plgProjectsPublications extends JPlugin
 		
 		return $arr;
 	}
-		
-	/**
-	 * Get panels
-	 *
-	 * @return    void
-	 */
-	protected function _getPanels()
-	{
-		// Availbale panels, in order
-		$availPanels = 'content,description,authors,audience,gallery,tags,access,license,notes';
-		
-		// Get panels order from config
-		$panels = $this->_pubconfig->get('panels', $availPanels);
-		
-		$availPanels = explode (',', $availPanels);
-		$panels = ProjectsHelper::getParamArray($panels);
-		$this->_panels = array();
-		
-		// Get master type params
-		$typeParams = NULL;
-		if (isset($this->_base))
-		{
-			$mt = new PublicationMasterType( $this->_database );
-			$mType = $mt->getType($this->_base);
-			$typeParams = new JParameter( $mType->params );
-		}
-				
-		// Skip some panels if set in params
-		foreach ($panels as $panel) 
-		{
-			if (!in_array(trim($panel), $availPanels))
-			{
-				continue;
-			}
-			
-			if ($typeParams)
-			{
-				$on = $typeParams->get('panel_' . $panel);
-				if ($on && $on == 2)
-				{
-					continue;
-				}
-			}
-			
-			if (trim($panel) == 'access' && $this->_pubconfig->get('show_access', 0) == 0) 
-			{
-				continue;
-			}
-			elseif (trim($panel) == 'audience' && $this->_pubconfig->get('show_audience', 0) == 0) 
-			{
-				continue;
-			}
-			elseif (trim($panel) == 'gallery' && $this->_pubconfig->get('show_gallery', 0) == 0) 
-			{
-				continue;
-			}
-			elseif (trim($panel) == 'license' && $this->_pubconfig->get('show_license', 0) == 0) 
-			{
-				continue;
-			}
-			elseif (trim($panel) == 'tags' && $this->_pubconfig->get('show_tags', 0) == 0) 
-			{
-				continue;
-			}
-			elseif (trim($panel) == 'notes' && $this->_pubconfig->get('show_notes', 0) == 0) 
-			{
-				continue;
-			}
-			$this->_panels[] = trim($panel);
-		}
-	}
 	
 	/**
 	 * Get data as CSV file
@@ -5828,7 +5790,7 @@ class plgProjectsPublications extends JPlugin
 		// Get license type
 		$objL = new PublicationLicense( $database);
 		$license = '';
-		if ($objL->load($objV->license_type))
+		if ($objL->loadLicense($objV->license_type))
 		{
 			$license = $objL->title . "\n ";
 		}

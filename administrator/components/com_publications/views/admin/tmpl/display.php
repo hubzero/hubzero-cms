@@ -32,27 +32,18 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Publications') . '</a>: <small><small>[' . JText::_('Admin Controls') . ']</small></small>', 'addedit.png');
 ?>
-<h5>Administrative project(s):</h5>
-<?php if (count($this->projects) > 0) { ?>
-<ul class="projectlist">
-<?php
-	foreach ($this->projects as $project) { ?>
-	<li><a href="index.php?option=com_projects&amp;task=edit&amp;id[]=<?php echo $project->id; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($project->title, 50, 0);  ?> (id <?php echo $project->id; ?>)</a></li>	
-<?php	} ?>
-</ul>
-<?php }
-else
-{ ?>
-	<p>No admin projects found</p>
-<?php } ?>	
+<form action="index.php" method="post" name="adminForm" id="resourceForm" >
+	<table>
+		<tr>
+			<th>
+			<?php echo JText::_('Convert a resource into a publication:'); ?>
+			</th>
+			<th></th>
+		</tr>
+		<tr>
+			<td class="key"><label>Resource ID:</label></td>
+			<td></td>
+		</tr>
+	</table>
+</form>
 
-<h5>Available Admin Options:</h5>
-<?php if (!$this->workspace) { ?>
-<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=workspace">Make Workspace tool a publication</a>
-<?php }
-else
-{ ?>
-	<span class="done"></span> Make Workspace tool a publication (done)
-	<br />
-	View <a href="/publications/workspace">workspace tool publication</a>
-<?php } ?>

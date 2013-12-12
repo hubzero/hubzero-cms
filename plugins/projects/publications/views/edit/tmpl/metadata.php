@@ -27,45 +27,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
 $ptitle = '';
-if($this->version == 'dev') {
+if ($this->version == 'dev') 
+{
 	$ptitle .= $this->last_idx > $this->current_idx && $this->row->metadata
 			? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_EDIT_METADATA')) 
 			: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_ADD_METADATA')) ;
 }
-else {
+else 
+{
 	$ptitle .= ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_METADATA'));	
 }
 
-// Publication title
-$pubtitle = $this->row->title;
-$this->row->title = $this->row->title == JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE') ? '' : $this->row->title;
-
-$fields = array();
-if (trim($this->customFields) != '') {
-	$fs = explode("\n", trim($this->customFields));
-	foreach ($fs as $f) 
+// Parse data
+$data = array();
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->metadata, $matches, PREG_SET_ORDER);
+if (count($matches) > 0) 
+{
+	foreach ($matches as $match)
 	{
-		$fields[] = explode('=', $f);
-	}
-} 
-
-// Filter meta data
-if (!empty($fields)) {
-	for ($i=0, $n=count( $fields ); $i < $n; $i++) 
-	{
-		preg_match("#<nb:".$fields[$i][0].">(.*?)</nb:".$fields[$i][0].">#s", $this->row->metadata, $matches);
-		if (count($matches) > 0) {
-			$match = $matches[0];
-			$match = str_replace('<nb:'.$fields[$i][0].'>','',$match);
-			$match = str_replace('</nb:'.$fields[$i][0].'>','',$match);
-		} else {
-			$match = '';
-		}
-		
-		// Explore the text and pull out all matches
-		array_push($fields[$i], $match);
+		$data[$match[1]] = $this->htmlHelper->_txtUnpee($match[2]);
 	}
 }
+
+$customFields = $this->customFields && $this->customFields != '{"fields":[]}' ? $this->customFields : '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
+
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+
+$elements 	= new PublicationsElements($data, $customFields);
+$fields 	= $elements->render();
+$schema 	= $elements->getSchema();
 
 ximport('Hubzero_Wiki_Editor');
 $editor = Hubzero_Wiki_Editor::getInstance();
@@ -80,8 +70,8 @@ $canedit = (
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form">	
 	<?php echo $this->project->provisioned == 1 
-				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
+				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 		<fieldset>	
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -102,7 +92,7 @@ $canedit = (
 		</fieldset>
 <?php
 	// Draw status bar
-	PublicationContribHelper::drawStatusBar($this, 'metadata', $this->pubconfig->get('show_metadata', 0));
+	$this->contribHelper->drawStatusBar($this, 'metadata', $this->typeParams->get('show_metadata', 0));
 
 	if ($this->move) {
 		$panel_number = 1;
@@ -121,65 +111,27 @@ $canedit = (
 			<?php if ($canedit) { ?>
 			<span class="c-submit"><input type="submit" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->checked['description']) == 0) { echo 'class="disabled"'; } ?> class="c-continue" id="c-continue" /></span>
 			<?php } ?>
-		<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
+		<h4><?php echo $ptitle; ?></h4>
 		
 		<?php if ($canedit) { ?>
 					<?php 
-					if(count($fields) > 1) {
-					$i= 0; ?> 
+					if ($fields) { ?> 
 						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA_WRITE'); ?></p>
-					<table class="tbl-panel">
-						<tbody>
-							<tr class="tbl-instruct">
-								<td><span class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" rel="external" class="popup"><?php echo JText::_('WIKI_FORMATTING'); ?></a>. <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NOTICE_NO_HTML_ALLOWED'); ?></span></td>
-								<td><span class="prominent"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PREVIEW'); ?></span></td>
-							</tr>
-					<?php
-					foreach ($fields as $field)
-					{ 
-						$tagcontent = preg_replace('/<br\\s*?\/??>/i', "", end($field));
-						$tiplabel = preg_replace('/ /', "", strtoupper($field[1]));
-					?>
-							<tr>
-								<td>
-									<label>
-										<?php echo stripslashes($field[1]); ?>: <?php echo ($field[3] == 1) ? '<span class="required">'.JText::_('COM_CONTRIBUTE_REQUIRED').'</span>': ''; ?>
-										<span class="pub-info-pop tooltips" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_'.$tiplabel).' :: '.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_'.$tiplabel.'_ABOUT'); ?>">&nbsp;</span>
-										<?php if ($field[2] == 'text') { ?>
-										<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" value="<?php echo htmlentities(stripslashes($tagcontent), ENT_QUOTES, ENT_COMPAT,'UTF-8'); ?>" />
-										<?php } else { ?>
-										<textarea name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" rows="10" id="pub_<?php echo $field[0]; ?>" class="pubwiki"><?php echo htmlentities(stripslashes($tagcontent)); ?></textarea>
-										<?php } ?>
-									</label>
-								</td>
-								<td class="preview-wiki-pane">
-									<div id="preview-<?php echo $field[0]; ?>" class="wikipreview">
-										<?php if($tagcontent) {
-											$html = $this->parser->parse( $tagcontent, $this->wikiconfig );
-											echo $html;
-										} else {
-											echo ProjectsHtml::showNoPreviewMessage();
-										} ?>
-									</div>
-								</td>
-							</tr>
-					<?php $i++;
-					} ?> 
-					 </tbody>
-					</table>
+						<p class="hint rightfloat"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" rel="external" class="popup"><?php echo JText::_('WIKI_FORMATTING'); ?></a>. <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NOTICE_NO_HTML_ALLOWED'); ?></p>
+						<div class="metadata-compose">
+						<?php echo $fields; ?>
+						</div>
 					<?php } else { ?>
 						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NO_METADATA_COLLECTED'); ?></p>
 					<?php } ?>
 			<?php } else { 
 				
-				$metadata = PublicationsHtml::processMetadata(
+				$metadata = $this->htmlHelper->processMetadata(
 					$this->row->metadata, 
-					$this->_category, 
-					0, 
-					$this->pub->id, 
-					$this->option, 
+					$this->_category,  
 					$this->parser, 
-					$this->wikiconfig
+					$this->wikiconfig,
+					0
 				);					
 			?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>

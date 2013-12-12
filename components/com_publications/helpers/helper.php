@@ -298,7 +298,7 @@ class PublicationHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function showContributors( $contributors = '', $showorgs = false, $showaslist = false )
+	public function showContributors( $contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false)
 	{
 		if (!$contributors) 
 		{
@@ -318,6 +318,11 @@ class PublicationHelper extends JObject
 			
 			foreach ($contributors as $contributor) 
 			{
+				if ($incSubmitter == false && $contributor->role == 'submitter') 
+				{
+					continue;
+				}
+				
 				// Build the user's name and link to their profile
 				if ($contributor->name) 
 				{

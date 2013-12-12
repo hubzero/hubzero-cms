@@ -224,6 +224,15 @@ class PublicationUtilities
 			return false;
 		}
 		
+		// Check that this is hub-created DOI
+		$shoulder   = $config->get('doi_shoulder');
+		$rShoulder = substr($doi, 0, strlen($shoulder));
+		if ($rShoulder != $shoulder)
+		{
+			// We are not updating DOIs issued by others
+			return true;
+		}
+		
 		// Get configs
 		$juri = JURI::getInstance();
 		

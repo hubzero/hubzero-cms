@@ -43,13 +43,10 @@ $multi  		 = $this->_pubTypeHelper->_multiSelect;
 // Determine pane title
 $ptitle = '';
 if ($this->version == 'dev') 
-{
+{	
 	$ptitle .= $this->last_idx > $this->current_idx  
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')).' ' 
-		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT')).' ' ;
-
-	$ptitle .= $multi ? ' ' : ' a ';
-	$ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_'.strtoupper($this->base));	
+		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_EDIT_'.strtoupper($this->base))).' ' 
+		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_SELECT_'.strtoupper($this->base))).' ' ;	
 }
 else
 {
@@ -60,8 +57,8 @@ else
 
 <?php if($this->pub->id && $this->row->title) { ?>
 	<?php echo $this->project->provisioned == 1 
-				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
+				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 <?php } else if($this->project->provisioned == 1 ) { ?>
 	<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
@@ -73,7 +70,7 @@ else
 <?php
 	
 	// Draw status bar
-	PublicationContribHelper::drawStatusBar($this, 'primary');
+	$this->contribHelper->drawStatusBar($this, 'primary');
 	
 	// Information text
 	$infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->base));

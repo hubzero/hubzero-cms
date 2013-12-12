@@ -26,10 +26,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
-if($this->version == 'dev') {
-	$ptitle = $this->last_idx > $this->current_idx  ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_ACCESS')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SPECIFY_ACCESS')) ;
+if ($this->version == 'dev') 
+{
+	$ptitle = $this->last_idx > $this->current_idx  
+		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_ACCESS')) 
+		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SPECIFY_ACCESS')) ;
 }
-else {
+else 
+{
 	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_ACCESS'));	
 }
 
@@ -37,7 +41,8 @@ else {
 $access = $this->row->access;
 // 0 - public; 1 - registered; 2 - restricted; 3 - private
 
-switch ($access) {
+switch ($access) 
+{
 	case 0: default: 	$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC'); 		break;
 	case 1: 			$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED'); 	break;
 	case 2: case 3:		$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED'); 	break;
@@ -45,9 +50,11 @@ switch ($access) {
 
 // Restricted to group?
 $groups = '';
-if($this->access_groups) {
+if ($this->access_groups) 
+{
 	$i = 1;
-	foreach($this->access_groups as $gr) {
+	foreach ($this->access_groups as $gr) 
+	{
 		$groups .= $gr->cn;
 		$i++;
 		$groups .= ', ';
@@ -64,8 +71,8 @@ $canedit = (
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
 	<?php echo $this->project->provisioned == 1 
-				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
+				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 	<fieldset>	
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -79,6 +86,7 @@ $canedit = (
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 		<input type="hidden" name="vid" id="vid" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="access" id="access" value="<?php echo $access; ?>" />
+		<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 		<?php if($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
@@ -86,7 +94,7 @@ $canedit = (
 	</fieldset>
 <?php
 	// Draw status bar
-	PublicationContribHelper::drawStatusBar($this);
+	$this->contribHelper->drawStatusBar($this);
 
 // Section body starts:
 $row = $this->row;
@@ -95,7 +103,7 @@ $row = $this->row;
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-			<h4><?php echo $ptitle; ?></h4>
+			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if ($canedit) { ?>
 			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT'); ?></p>				
 			<div id="c-show">

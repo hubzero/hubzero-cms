@@ -188,6 +188,9 @@ class typeDatabases extends JObject
 			case 'publishAttachments': 								
 				$output = $this->_publishAttachments(); 		
 				break;
+			
+			case 'getPubTitle':
+				$output = $this->_getPubTitle();
 		
 			default:
 				break;
@@ -206,6 +209,27 @@ class typeDatabases extends JObject
 		$result = array('serveas' => $this->_serveas, 'choices' => $this->_serveChoices);
 
 		return $result;
+	}
+	
+	/**
+	 * Get publication title for newly created draft
+	 * 
+	 * @return     void
+	 */	
+	protected function _getPubTitle($title = '')
+	{
+		// Incoming data
+		$item = $this->__get('item');
+		
+		// Get project database object
+		$objPD = new ProjectDatabase($this->_database);
+		if ($objPD->loadRecord($item))
+		{
+			$title = $objPD->title;
+		}
+				
+		return $title;
+		
 	}
 	
 	/**
@@ -276,7 +300,8 @@ class typeDatabases extends JObject
 		
 		$html = '<span class="' . $this->_base . '">' . $title . '</span>';
 		if ($data->source_file) {
-		$html.= '<span class="c-iteminfo">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SOURCE_FILE') . ': ' . ProjectsHtml::shortenFileName($data->source_file, 40) . '</span>';
+		$html.= '<span class="c-iteminfo">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SOURCE_FILE') 
+			. ': ' . ProjectsHtml::shortenFileName($data->source_file, 40) . '</span>';
 		}
 
 		return $html;

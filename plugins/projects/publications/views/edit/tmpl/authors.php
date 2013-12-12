@@ -26,12 +26,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
-if($this->version == 'dev') {
+if ($this->version == 'dev') 
+{
 	$ptitle = $this->last_idx > $this->current_idx  
 			? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS')) 
 			: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT_AUTHORS')) ;
 }
-else {
+else 
+{
 	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_AUTHORS'));	
 }
 $ptitle   = $this->project->provisioned == 1 ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_AUTHORS'))  : $ptitle;
@@ -40,20 +42,14 @@ $instruct = $this->project->provisioned == 1
 			: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SELECT_AUTHORS');
 
 // Get image path
-$mconfig = JComponentHelper::getParams( 'com_members' );
-$path  = $mconfig->get('webpath');
-if (substr($path, 0, 1) != DS) {
-	$path = DS.$path;
-}
-if (substr($path, -1, 1) == DS) {
-	$path = substr($path, 0, (strlen($path) - 1));
-}
+$mconfig =& JComponentHelper::getParams( 'com_members' );
+$path  = DS . trim($mconfig->get('webpath'), DS);
 
 // Get image handler
 $ih = new ProjectsImgHandler();
 
 // Keep count of authors deleted from team / unconfirmed
-$missing = 0;
+$missing 	 = 0;
 $unconfirmed = 0;
 
 // Are we allowed to edit?
@@ -61,12 +57,12 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 
 ?>
 	<?php echo $this->project->provisioned == 1 
-				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route, $this->title)
-				: PublicationHelper::showPubTitle( $this->pub, $this->route); ?>
+				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route, $this->title)
+				: $this->helper->showPubTitle( $this->pub, $this->route); ?>
 
 <?php
 	// Draw status bar
-	PublicationContribHelper::drawStatusBar($this);
+	$this->contribHelper->drawStatusBar($this);
 
 // Section body starts:
 ?>
@@ -74,7 +70,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-			<h4><?php echo $ptitle; ?></h4>
+			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if($canedit) { ?>	
 			<p><?php echo $instruct; ?></p>	
 			<!-- Load content selection browser //-->				
@@ -145,6 +141,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 				<input type="hidden" name="review" value="<?php echo $this->inreview; ?>" />
 				<input type="hidden" name="vid" id="vid" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="selections" id="selections" value="" />
+				<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 				<?php if($this->project->provisioned == 1 ) { ?>
 				<input type="hidden" name="task" value="submit" />
@@ -188,6 +185,17 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 					</li>	
 				<?php $o++; } }  ?>
 			</ul>
+			<?php
+				// Showing submitter?
+				if ($this->typeParams->get('show_submitter') && $this->submitter)
+				{ ?>
+					
+				<p class="submitter"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
+					<?php echo $this->submitter->name; ?><?php echo $this->submitter->organization ? ', ' . $this->submitter->organization : ''; ?>
+					<span class="block hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?></span>
+				</p>					
+			<?php }
+			?>
 			<?php if($canedit) { ?>
 			<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
 			<?php } ?>

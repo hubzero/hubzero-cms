@@ -37,14 +37,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 // Version status
-$status = PublicationHelper::getPubStateProperty($this->pub, 'status');
-$class = PublicationHelper::getPubStateProperty($this->pub, 'class');
+$status = $this->helper->getPubStateProperty($this->pub, 'status');
+$class 	= $this->helper->getPubStateProperty($this->pub, 'class');
 
 $v = $this->version == 'default' ? '' : '?v='.$this->version;
 
 // Get hub config
+$juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
-$site = $jconfig->getValue('config.live_site');
+$site 	 = $jconfig->getValue('config.live_site') 
+	? $jconfig->getValue('config.live_site') 
+	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 $now = JFactory::getDate()->toSql();
 
@@ -54,12 +57,11 @@ if ($this->pub->doi)
 {
 	include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 
-	$cite = new stdClass();
-	$cite->title = $this->pub->title;
-	$cite->year = JHTML::_('date', $this->pub->published_up, $yearFormat, $tz);
-
+	$cite 		 	= new stdClass();
+	$cite->title 	= $this->pub->title;
+	$cite->year  	= JHTML::_('date', $this->pub->published_up, $yearFormat, $tz);
 	$cite->location = '';
-	$cite->date = '';
+	$cite->date 	= '';
 	
 	// Get version authors
 	$pa = new PublicationAuthor( $this->database );
@@ -67,8 +69,7 @@ if ($this->pub->doi)
 
 	$cite->url = $site . DS . 'publications' . DS . $this->pub->id.'?v='.$this->pub->version_number;
 	$cite->type = '';
-	$helper = new PublicationHelper($this->database, $this->pub->version_id, $this->pub->id);
-	$cite->author = $helper->getUnlinkedContributors( $this->authors);
+	$cite->author = $this->helper->getUnlinkedContributors( $this->authors);
 	$cite->doi = $this->pub->doi;
 	$citation = CitationFormat::formatReference($cite);
 }
@@ -80,8 +81,8 @@ $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
 	<?php echo $this->project->provisioned == 1 
-				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
+				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 	<fieldset>	
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -100,7 +101,7 @@ $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 <?php
 	// Draw status bar
-	PublicationContribHelper::drawStatusBar($this);
+	$this->contribHelper->drawStatusBar($this);
 
 // Section body starts:
 ?>
@@ -306,7 +307,7 @@ $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 			<?php if ($this->row->state == 0) { // unpublished				
 					// Check who unpublished this
 					$objAA = new ProjectActivity( $this->database );
-					$pubtitle = Hubzero_View_Helper_Html::shortenText($this->row->title, 100, 0);
+					$pubtitle = $this->projectsHelper->shortenText($this->row->title, 100, 0);
 					$activity = JText::_('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED'); 
 					$activity .= ' '.strtolower(JText::_('version')).' '.$this->row->version_label.' '
 					.JText::_('PLG_PROJECTS_PUBLICATIONS_OF').' '.strtolower(JText::_('publication')).' "'

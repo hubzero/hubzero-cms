@@ -26,7 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $version_label = $this->row->version_label ? $this->row->version_label : '1.0';
 
-$status = PublicationHelper::getPubStateProperty($this->row, 'status');
+$publicationHelper 	= new PublicationHelper($this->database, $this->row->id, $this->row->publication_id);
+
+$status = $publicationHelper->getPubStateProperty($this->row, 'status');
 
 $move = $this->move ? a.'move='.$this->move : '';
 $version = a.'version='.$this->version;

@@ -237,7 +237,7 @@ else if ($this->authorized == 3)
 		}
 		
 		// Process metadata
-		$metadata = PublicationsHtml::processMetadata($this->pub->metadata, $this->_category, 0, $this->pub->id, $this->option, $this->parser, $this->wikiconfig);
+		$metadata = PublicationsHtml::processMetadata($this->pub->metadata, $this->_category, $this->parser, $this->wikiconfig, 0);
 	
 		?>
 		<div class="two columns first">

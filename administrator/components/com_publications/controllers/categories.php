@@ -159,6 +159,8 @@ class PublicationsControllerCategories extends Hubzero_Controller
 			$this->view->setError($this->getError());
 		}
 		
+		$this->view->config = $this->config;
+		
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
@@ -177,47 +179,94 @@ class PublicationsControllerCategories extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
-		$fields = array_map('trim', $fields);
+		$prop = JRequest::getVar('prop', array(), 'post');
+		
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $prop['id'];
 		
 		// Initiate extended database class
 		$row = new PublicationCategory($this->database);
-		if (!$row->bind($fields))
+		if (!$row->bind($prop))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			);
+			$this->setRedirect($url);
 			return;
 		}
-		
-		$row->contributable = JRequest::getInt('contributable', 0, 'post');
-		$row->state 		= JRequest::getInt('state', 0, 'post');
 				
+		// Get the custom fields
+		$fields = JRequest::getVar('fields', array(), 'post');
+		if (is_array($fields))
+		{
+			$elements = new stdClass();
+			$elements->fields = array();
+
+			foreach ($fields as $val)
+			{
+				if ($val['title'])
+				{
+					$element = new stdClass();
+					$element->default  = (isset($val['default'])) ? $val['default'] : '';
+					$element->name     = (isset($val['name']) && trim($val['name']) != '') ? $val['name'] : $this->_normalize(trim($val['title']));
+					$element->label    = $val['title'];
+					$element->type     = (isset($val['type']) && trim($val['type']) != '')     ? $val['type']     : 'text';
+					$element->required = (isset($val['required'])) ? $val['required'] : '0';
+					foreach ($val as $key => $v)
+					{
+						if (!in_array($key, array('default', 'type', 'title', 'name', 'required', 'options')))
+						{
+							$element->$key = $v;
+						}
+					}
+					if (isset($val['options']))
+					{
+						$element->options = array();
+						foreach ($val['options'] as $option)
+						{
+							if (trim($option['label']))
+							{
+								$opt = new stdClass();
+								$opt->label = $option['label'];
+								$opt->value = $option['label'];
+								$element->options[] = $opt;
+							}
+						}
+					}
+					$elements->fields[] = $element;
+				}
+			}
+
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+			$re = new PublicationsElements($elements);
+			$row->customFields = $re->toString();
+		}
+		
+		// Get parameters
+		$params = JRequest::getVar('params', '', 'post');
+		if (is_array($params))
+		{
+			$txt = array();
+			foreach ($params as $k => $v)
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode("\n", $txt);
+		}
+						
 		// Check content
 		if (!$row->check())
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $fields['id'],
-				$row->getError(), 'error'
-			);
+			$this->setRedirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$row->getError(), 'error'
-			);
+			$this->setRedirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Publication Category successfully saved')
+		$this->setRedirect($url, JText::_('Publication Category successfully saved')
 		);
 	}
 	
@@ -273,5 +322,53 @@ class PublicationsControllerCategories extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+	}
+	
+	/**
+	 * Strip any non-alphanumeric characters and make lowercase
+	 * 
+	 * @param      string  $txt    String to normalize
+	 * @param      boolean $dashes Allow dashes and underscores
+	 * @return     string
+	 */
+	private function _normalize($txt, $dashes=false)
+	{
+		$allowed = "a-zA-Z0-9";
+		if ($dashes)
+		{
+			$allowed = "a-zA-Z0-9\-_";
+		}
+		return strtolower(preg_replace("/[^$allowed]/", '', $txt));
+	}
+	
+	/**
+	 * Retrieve an element's options (typically called via AJAX)
+	 *
+	 * @return	void
+	 */
+	public function elementTask()
+	{
+		$ctrl = JRequest::getVar('ctrl', 'fields');
+
+		$option = new stdClass;
+		$option->label = '';
+		$option->value = '';
+
+		$field = new stdClass;
+		$field->label       = JRequest::getVar('name', 0);
+		$field->element     = '';
+		$field->description = '';
+		$field->text        = $field->label;
+		$field->name        = $field->label;
+		$field->default     = '';
+		$field->type        = JRequest::getVar('type', '');
+		$field->options     = array(
+			$option,
+			$option
+		);
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+		$elements = new PublicationsElements();
+		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}
 }

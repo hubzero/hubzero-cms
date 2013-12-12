@@ -89,8 +89,8 @@ if($this->docs) {
 		: '<span class="'.$child->type.'"></span> ';
 		
 		$url = JRoute::_('index.php?option=com_publications&id=' 
-			 . $this->publication->id . '&task=serve') . '?a='
-			 . $child->id . a . 'v=' . $this->version;
+			 . $this->publication->id . '&task=serve&v=' . $this->version . '&a='
+			 . $child->id);
 			
 		$extra = '';
 		
@@ -104,7 +104,7 @@ if($this->docs) {
 				break;
 			case 'inlineview': 				
 				$extra = ' class="play"';
-				$url  .= a . 'render=inline';		
+				$url  .= '?render=inline';		
 				break;
 		}
 		

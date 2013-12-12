@@ -27,14 +27,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
 $ptitle = '';
-if($this->version == 'dev') {
-	$ptitle .= $this->last_idx > $this->current_idx  ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_DESCRIPTION')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIBE_YOUR_PUBLICATION')) ;
+if ($this->version == 'dev') 
+{
+	$ptitle .= $this->last_idx > $this->current_idx  
+			? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_DESCRIPTION')) 
+			: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIBE_YOUR_PUBLICATION')) ;
 }
-else {
+else 
+{
 	$ptitle .= ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_DESCRIPTION'));	
 }
 
-$pubtitle = $this->row->title;
+// Set title
 $this->row->title = $this->row->title == JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE') ? '' : $this->row->title;
 
 $fields = array();
@@ -47,26 +51,8 @@ if (trim($this->customFields) != '') {
 } 
 
 // Filter meta data (old resources)
-if (!empty($fields)) {
-	for ($i=0, $n=count( $fields ); $i < $n; $i++) 
-	{
-		preg_match("#<nb:".$fields[$i][0].">(.*?)</nb:".$fields[$i][0].">#s", $this->row->abstract, $matches);
-		if (count($matches) > 0) {
-			$match = $matches[0];
-			$match = str_replace('<nb:'.$fields[$i][0].'>','',$match);
-			$match = str_replace('</nb:'.$fields[$i][0].'>','',$match);
-		} else {
-			$match = '';
-		}
-		
-		// Explore the text and pull out all matches
-		array_push($fields[$i], $match);
-		
-		// Clean the original text of any matches
-		$this->row->abstract = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$this->row->abstract);
-	}
-	$this->row->abstract = trim($this->row->abstract);
-}
+$this->row->description = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->description);
+$this->row->description = trim($this->row->description);
 
 // Are we allowed to edit?
 $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->state == 6) ? 0 : 1;
@@ -76,8 +62,8 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form">	
 	<?php echo $this->project->provisioned == 1 
-				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
+				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 		<fieldset>	
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -90,7 +76,8 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 			<input type="hidden" name="review" value="<?php echo $this->inreview; ?>" />
 			<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 			<input type="hidden" name="vid" id="vid" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="add_metadata" value="<?php echo ($this->pubconfig->get('show_metadata', 0)) ? 1 : 0; ?>" />
+			<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
+			<input type="hidden" name="add_metadata" value="<?php echo ($this->typeParams->get('show_metadata', 0)) ? 1 : 0; ?>" />
 			<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 			<?php if($this->project->provisioned == 1 ) { ?>
 			<input type="hidden" name="task" value="submit" />
@@ -99,18 +86,19 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 
 <?php
 
-// Draw status bar
-PublicationContribHelper::drawStatusBar($this, 'abstract', $this->pubconfig->get('show_metadata', 0));
+	// Draw status bar
+	$this->contribHelper->drawStatusBar($this, 'abstract', $this->typeParams->get('show_metadata', 0));
 
-if ($this->move) {
-	$panel_number = 1;
-	while ($panel = current($this->panels)) {
-	    if ($panel == $this->active) {
-	        $panel_number = key($this->panels) + 1;
-	    }
-	    next($this->panels);
+	if ($this->move) 
+	{
+		$panel_number = 1;
+		while ($panel = current($this->panels)) {
+		    if ($panel == $this->active) {
+		        $panel_number = key($this->panels) + 1;
+		    }
+		    next($this->panels);
+		}
 	}
-}
 // Section body starts:
 ?>
 	<div id="pub-editor" class="pane-desc">

@@ -422,6 +422,29 @@
 	.crumbs a {
 		border-bottom: 1px dotted #333;
 	}
+	.clr {
+		float: none;
+	}
+	.metadata input[type="text"], .metadata textarea {
+		width: 100%;
+	}
+	.metadata textarea {
+		height: 100px;
+	}
+	.handle {
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		cursor: move;
+		font-size: 1.5em;
+	}
+	.handle:before {
+		font-family: "Fontcons";
+		content: "\f039";
+		margin-right: 5em;
+		color: #ccc;
+	}
 	
 	
 

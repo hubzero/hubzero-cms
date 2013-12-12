@@ -380,6 +380,8 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	 */	
 	protected function _intro() 
 	{
+		$this->_task = 'intro';
+		
 		// Push some styles to the template
 		$this->_getStyles();
 		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
@@ -623,7 +625,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				}
 			}
 		}
-		
+				
 		// Get groups user has access to
 		ximport('Hubzero_User_Helper');
 		$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
@@ -691,11 +693,16 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		JPluginHelper::importPlugin( 'publications' );
 		$dispatcher = JDispatcher::getInstance();
 		
-		// Get type info
+		// Get category info
 		$publication->_category = new PublicationCategory( $this->database );
 		$publication->_category->load($publication->category);
 		$publication->_category->_params = new JParameter( $publication->_category->params );
 		
+		// Get master type info
+		$publication->_mastertype = new PublicationMasterType( $this->database );
+		$publication->_mastertype->load($publication->master_type);
+		$publication->_mastertype->_params = new JParameter( $publication->_mastertype->params );
+				
 		// Load publication project
 		$publication->project = new Project($this->database);
 		$publication->project->load($publication->project_id);
@@ -744,6 +751,9 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Get parameters and merge with the component params
 		$rparams = new JParameter( $publication->params );
 		$params = $this->config;
+		
+		// Merge params
+		$params->merge( $publication->_mastertype->_params );
 		$params->merge( $rparams );
 		
 		// Get content
@@ -1048,6 +1058,14 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			return;
 		}
 		
+		// Unpublished
+		if ($publication->state == 0 || $publication->state == 2)
+		{
+			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
+			$this->_intro();
+			return;
+		}
+		
 		// For breadcrumbs
 		$this->publication = $publication;
 		$this->version     = $version;
@@ -1077,7 +1095,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		// Check if user has access to content
-		$this->_checkResctrictions($publication, $version);
+		$this->_checkRestrictions($publication, $version);
 		
 		// Get publication helper
 		$helper = new PublicationHelper($this->database);
@@ -1389,7 +1407,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			$this->publication 	= $objP->getPublication($this->_id, $version, NULL, $this->_alias);
 			
 			// Check if user has access to content
-			$this->_checkResctrictions($this->publication, $version);
+			$this->_checkRestrictions($this->publication, $version);
 			
 			// Get primary attachment(s)
 			$objPA = new PublicationAttachment( $this->database );
@@ -2224,7 +2242,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		// Check if user has access to content
-		$this->_checkResctrictions($publication, $version);
+		$this->_checkRestrictions($publication, $version);
 		
 		// Incoming
 		$filters = array();
@@ -2664,7 +2682,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	 * @param      string $version
 	 * @return     mixed False if no access, string if has access
 	 */	
-	protected function _checkResctrictions ($publication, $version)
+	protected function _checkRestrictions ($publication, $version)
 	{
 		// Make sure we got a result from the database
 		if (!$publication) 

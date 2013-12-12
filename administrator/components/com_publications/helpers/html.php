@@ -688,6 +688,23 @@ class PublicationsHtml
 				return $task;
 				break;
 		}
+	}
+	
+	/**
+	 * Remove paragraph tags and break tags
+	 * 
+	 * @param      string $pee Text to unparagraph
+	 * @return     string
+	 */
+	public function _txtUnpee($pee)
+	{
+		$pee = str_replace("\t", '', $pee);
+		$pee = str_replace('</p><p>', '', $pee);
+		$pee = str_replace('<p>', '', $pee);
+		$pee = str_replace('</p>', "\n", $pee);
+		$pee = str_replace('<br />', '', $pee);
+		$pee = trim($pee);
+		return $pee;
 	}	
 }
 

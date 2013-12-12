@@ -37,6 +37,24 @@
 	}
 	#plg-form h3 .restype span {
 		background-position: 0 2px;
+		font-weight: normal;
+	}
+
+/* Metadata panel
+--------------------------------------------- */
+	
+	.metadata-compose {
+		margin: 1em 0;
+	}
+	.metadata-compose label {
+		display: block;
+		margin: 1em 0 0 0;
+	}
+	.metadata-compose input[type="text"], .metadata-compose textarea {
+		width: 100%;
+	}
+	.metadata-compose textarea {
+		height: 100px !important;
 	}
 	
 /* Publication categories
@@ -1196,6 +1214,13 @@
 		margin-bottom: 1em;
 		border: 1px solid #d4eeed;
 	}
+	.submitter {
+		padding: 0.5em 1em;
+		border: 1px solid #d8d5b2;
+		background: #fff7db;
+		margin-right: 1em;
+		margin-top: 2em;
+	}
 	
 /* Edit content item
 --------------------------------------------- */	
@@ -1611,66 +1636,6 @@
 	}
 	ul.next-options .btncancel {
 		padding: 0.5em 1em !important;
-	}
-
-/* Link
---------------------------------------------- */
-	#link-preview {
-		margin: 1em 0;
-		border: 1px solid #CCC;
-		padding: 1em;
-	}
-	#link-preview h4 {
-		margin: 0 !important;
-		padding-bottom: 0 !important;
-		font-size: 90% !important;
-		font-weight: bold;
-		line-height: 1.1em;
-	}
-	#link-preview p {
-		margin: 0;
-		padding: 0;
-	}
-	#link-image {
-		float: left;
-		display: block;
-		width: 100px;
-		height: 100px;
-		border: 1px solid #F7F7F7;
-		background: #F7F7F7;
-		margin-right: 1em;
-		text-align: center;
-		vertical-align: middle;
-	}
-	#link-image.noimage: {
-		background: #F7F7F7;
-	}
-	#link-image img {
-		max-width: 100px;
-		max-height: 100px;
-	}
-	#link-preview p#link-url {
-		line-height: 1em;
-		margin-bottom: 0.5em;
-	}
-	#link-preview p#link-desc {
-		color: #999;
-		line-height: 1em;
-	}
-	#link-submit {
-		clear: both;
-	}
-	#link-submit .submitarea {
-		margin: 1em 0;
-	}
-	input#parse-url {
-		width: 100%;
-	}
-	#link-loading {
-		text-align: center;
-		padding: 1em;
-		font-size: 85%;
-		color: #e08d2b;
 	}
 	
 /* Misc

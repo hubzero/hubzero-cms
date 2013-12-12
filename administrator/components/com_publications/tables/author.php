@@ -265,7 +265,7 @@ class PublicationAuthor extends JTable
 	 * @param      boolean $return_uid_array 	Return array
 	 * @return     mixed, Object or array
 	 */	
-	public function getAuthors( $vid = NULL, $get_uids = 0, $active = 1, $return_uid_array = false ) 
+	public function getAuthors( $vid = NULL, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false ) 
 	{
 		if (!$vid) 
 		{
@@ -295,6 +295,12 @@ class PublicationAuthor extends JTable
 
 		$query .= " WHERE A.publication_version_id=".$vid;
 		$query .= $active ? " AND A.status=1" : "";
+		
+		if ($incSubmitter == false)
+		{
+			$query .= " AND A.role != 'submitter'";
+		}
+		
 		$query .= " ORDER BY A.ordering ASC ";
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
@@ -322,6 +328,38 @@ class PublicationAuthor extends JTable
 			return $uids;
 		}
 		return $results;
+	}
+	
+	/**
+	 * Get publication submitter
+	 * 
+	 * @param      integer $vid 				Pub version ID
+	 * @param      integer $by					Publication creator
+	 * @return     mixed False if error, Object on success
+	 */	
+	public function getSubmitter ( $vid = NULL, $by = 0 ) 
+	{
+		if (!$vid) 
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid || !$by) 
+		{
+			return false;
+		}
+		
+		$query  = "SELECT A.id as owner_id, ";
+		$query .= " COALESCE( A.name , x.name ) as name, x.username, COALESCE( A.organization , x.organization ) as organization ";
+		$query .= " FROM #__xprofiles as x  ";
+		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id AND A.publication_version_id=".$vid." ";
+		$query .= " AND A.status=1 AND A.role = 'submitter' ";
+		$query .= " WHERE ( x.uidNumber=" . $by . ")";	
+		$query .= " LIMIT 1 ";
+		
+		$this->_db->setQuery( $query );
+		$result = $this->_db->loadObjectList();
+		return $result ? $result[0] : false;
+		
 	}
 	
 	/**
@@ -637,7 +675,7 @@ class PublicationAuthor extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE publication_version_id=$vid " );
+		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE publication_version_id=$vid AND status=1 " );
 		return $this->_db->loadResult();
 	}
 	

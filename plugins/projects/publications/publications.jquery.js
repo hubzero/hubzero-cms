@@ -466,7 +466,11 @@ HUB.ProjectPublications = {
 		HUB.ProjectPublications.addDrag($('#c-filelist'));
 		HUB.ProjectPublications.checkBtn();
 		HUB.ProjectPublications.addPrimaryOptions('');
-		HUB.ProjectPublications.readLink();		
+		
+		if (HUB.ProjectLinks)
+		{
+			HUB.ProjectLinks.initialize();
+		}	
 	},
 	
 	// AUTHORS
@@ -917,7 +921,8 @@ HUB.ProjectPublications = {
 					'</li>'); 
 						
 					HUB.ProjectPublications.removeTag(lastindex, tagtxt);
-					HUB.ProjectPublications.suggestTags();					
+					HUB.ProjectPublications.suggestTags();	
+					HUB.ProjectPublications.checkBtn();				
 				});	
 			});	
 		}
@@ -941,22 +946,14 @@ HUB.ProjectPublications = {
 			tdel.on('click', function(e) 
 			{
 				tdel.parent().remove();
+				HUB.ProjectPublications.checkBtn();
 			});
 		}
 	},
 	
 	changeTags: function() 
 	{		
-		var change = $('#token-input-actags');
-		
-		if (change.length > 0)
-		{
-			alert('yes');
-			$(change).on('change', function(e) 
-			{
-				HUB.ProjectPublications.getSelectedTags();
-			});	
-		}
+		alert($('.token-input-token-act p').length);
 	},
 	
 	checkLicense: function(sel) 
@@ -1091,10 +1088,12 @@ HUB.ProjectPublications = {
 	checkBtn: function() 
 	{
 		var $ = this.jQuery;
-		var con = $('#c-continue');
-		var selections = '';
-		var enable = 1;
-		var section = $('#section').length ? $('#section').val() : '';
+		var con 		= $('#c-continue');
+		var selections 	= '';
+		var enable 		= 1;
+		var section 	= $('#section').length ? $('#section').val() : '';
+		var block 		= $('#block').length ? $('#block').val() : '';
+		var required 	= $('#required').length ? $('#required').val() : 0;
 		
 		// We need to have the button on page
 		if (!con.length) 
@@ -1103,19 +1102,33 @@ HUB.ProjectPublications = {
 		}
 		con.unbind();
 		
-		// Diferent behavior for different sections
+		// Gather selections
 		if (section == 'content' || section == 'gallery')
 		{
 			selections = HUB.ProjectPublications.gatherSelections('clone-');
+		}
+		else if (section == 'authors')
+		{
+			selections = HUB.ProjectPublications.gatherSelections('clone-author::');
+		}
+		
+		// Section not required to be filled - enable save button
+		if (required == 0)
+		{
+			enable = 1;
+		}		
+		// Diferent behavior for different sections
+		else if (section == 'content' || section == 'gallery')
+		{			
 			var primary = $('#primary').length ? $('#primary').val() : 0;
 			var used 	= $('#used').length ? $('#used').val() : 0;
 						
-			if ((primary == 1 && !selections) || (primary == 1 && used == 1))
+			if ((primary == 1 && !selections) || (primary == 1 && used == 1) || block || (section == 'gallery' && !selections))
 			{
 				enable = 0;
 			}
 		}
-		if (section == 'description')
+		else if (section == 'description')
 		{
 			var required = $('.pubinput');
 			if (required.length > 0) 
@@ -1128,11 +1141,14 @@ HUB.ProjectPublications = {
 				});
 			}
 		}
-		if (section == 'authors')
+		else if (section == 'authors')
 		{
 			// Need at least one author selected
-			selections = HUB.ProjectPublications.gatherSelections('clone-author::');
-			enable = selections ? 1 : 0;
+			enable 	   = selections ? 1 : 0;
+		}
+		else if (section == 'tags')
+		{
+			enable = 1;
 		}		
 		else if (section == 'license')
 		{
@@ -1582,98 +1598,7 @@ HUB.ProjectPublications = {
 			num = 2;
 		}
 		return num;		
-	},
-	
-	readLink: function ()
-	{
-		var $ = this.jQuery;
-		
-		if (!$('#parse-url').length)
-		{
-			return false;
-		}
-		
-		$('#parse-url').unbind();
-		             
-		var doneTypingInterval = 2000;
-		var link = $('#parse-url').val();
-		
-		$('#parse-url').on('keyup', function(e) 
-		{
-			clearTimeout(HUB.ProjectPublications.typingTimer);
-			HUB.ProjectPublications.typingTimer = setTimeout(HUB.ProjectPublications.parseLink, doneTypingInterval);
-			$('#link-loading').html('');
-			if (!$('#link-preview').hasClass('hidden'))
-			{
-				$('#link-preview').addClass('hidden');
-			}
-			if (!$('#link-submit').hasClass('hidden'))
-			{
-				$('#link-submit').addClass('hidden');
-			}		
-		});
-		
-		$('#parse-url').on('keydown', function(e) {
-			clearTimeout(HUB.ProjectPublications.typingTimer);
-		});
-		
-	},
-	
-	parseLink: function ()
-	{
-		var $ = this.jQuery;
-				
-		$('#link-loading').html(HUB.ProjectPublications.loadingIma('Loading link preview...'));	
-				
-		if (!$('#link-preview').hasClass('hidden'))
-		{
-			$('#link-preview').addClass('hidden');
-		}
-		if (!$('#link-submit').hasClass('hidden'))
-		{
-			$('#link-submit').addClass('hidden');
-		}
-		
-		if (!HUB.ProjectPublications.isValidURL($('#parse-url').val()))
-	    {          
-			$('#link-loading').html('<p class="notice">Please enter a valid URL starting with http:// or https://</p>');
-			return false;
-        }
-				
-		$.post("index.php?option=com_projects&task=parseurl&no_html=1&ajax=1&url="+escape($('#parse-url').val()), {}, 
-			function (response) {
-			
-			response = $.parseJSON(response);
-			clearTimeout(HUB.ProjectPublications.typingTimer);
-						
-			if (response.error)
-			{
-				$('#link-loading').html(response.error);
-			}	
-			else
-			{				
-				$('#link-loading').html('');
-				$('#link-preview').html(response.output);
-				$('#link-preview').removeClass('hidden');	
-				$('#link-submit').removeClass('hidden');				
-			}		
-		});			
-	},
-	
-	isValidURL: function (url)
-	{
-		var $ = this.jQuery;   
-		var RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-	
-	    if (RegExp.test(url))
-		{
-	       return true;
-	    } 
-		else
-		{
-	       return false;
-	    }
-	}	
+	}
 }
 
 jQuery(document).ready(function($){

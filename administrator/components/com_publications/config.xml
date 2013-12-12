@@ -20,17 +20,17 @@
 
 <config>
 	<params>
-		<param name="enabled" type="radio" default="0" label="Component ON/OFF" description="Enable Publications component, or redirect to Resources component">
+		<param name="enabled" type="list" default="0" label="Component ON/OFF" description="Enable Publications component, or redirect to Resources component">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="autoapprove" type="radio" default="1" label="Auto-approve" description="Automatically approve new submissions">
+		<param name="autoapprove" type="list" default="1" label="Auto-approve" description="Automatically approve new submissions">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
 		<param name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
-		<param name="email" type="radio" default="0" label="Email authors" description="Email contributors when administrator make changes to status of a publication">
+		<param name="email" type="list" default="0" label="Email authors" description="Email contributors when administrator make changes to status of a publication">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
@@ -81,36 +81,6 @@
 			<option value="3">Manually Inputed</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="panels" type="text" menu="hide" default="content, description, authors, audience, gallery, tags, access, license, notes" label="Panels" description="Publication editing panels, in order" />
-		<param name="show_tags" type="list" default="1" label="Tags" description="Show/Hide publication tags on publication page  (also enables/disables tag panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide publication metadata on publication page (also enables/disables metadata panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_notes" type="list" default="1" label="Release Notes" description="Show/Hide version release notes in draft editing">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_license" type="list" default="1" label="License" description="Enable/disable license panel in draft editing">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_access" type="list" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_gallery" type="list" default="1" label="Gallery" description="Show publication image gallery on publication page (also enables/disables gallery panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level on publication page (also enables/disables audience panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="suggest_licence" type="list" default="0" label="Suggest license" description="Allow users to suggest licenses">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
@@ -132,17 +102,17 @@
 		<param name="aip_path" type="text" menu="hide" default="/srv/AIP" label="AIP path" description="AIP path (for trusted digital repos)" />
 	</params>
 	<fieldset name="basic">
-		<field name="enabled" type="radio" default="0" label="Component ON/OFF" description="Enable Publications component, or redirect to Resources component">
+		<field name="enabled" type="list" default="0" label="Component ON/OFF" description="Enable Publications component, or redirect to Resources component">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="autoapprove" type="radio" default="1" label="Auto-approve" description="Automatically approve new submissions">
+		<field name="autoapprove" type="list" default="1" label="Auto-approve" description="Automatically approve new submissions">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
 		<field name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
-		<field name="email" type="radio" default="0" label="Email authors" description="Email contributors when administrator make changes to status of a publication">
+		<field name="email" type="list" default="0" label="Email authors" description="Email contributors when administrator make changes to status of a publication">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
@@ -191,36 +161,6 @@
 			<option value="1">Manual And Auto</option>
 			<option value="2">Auto Generated</option>
 			<option value="3">Manually Inputed</option>
-		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="panels" type="text" menu="hide" default="content, description, authors, audience, gallery, tags, access, license, notes" label="Panels" description="Publication editing panels, in order" />
-		<field name="show_tags" type="list" default="1" label="Tags" description="Show/Hide publication tags on publication page  (also enables/disables tag panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide publication metadata on publication page (also enables/disables metadata panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_notes" type="list" default="1" label="Release Notes" description="Show/Hide version release notes in draft editing">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_license" type="list" default="1" label="License" description="Enable/disable license panel in draft editing">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_access" type="list" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_gallery" type="list" default="1" label="Gallery" description="Show publication image gallery on publication page (also enables/disables gallery panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level on publication page (also enables/disables audience panel in draft editing)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="suggest_licence" type="list" default="0" label="Suggest license" description="Allow users to suggest licenses">

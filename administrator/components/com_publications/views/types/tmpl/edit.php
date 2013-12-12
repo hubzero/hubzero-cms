@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 JToolBarHelper::title(JText::_('Publication Master Type') . ': [ ' . $text . ' ]', 'addedit.png');
-JToolBarHelper::save();
+JToolBarHelper::save('save', 'Save');
 JToolBarHelper::cancel();
 
 // Determine whether master type is supported in current version of hub code
@@ -46,6 +46,30 @@ if (JPluginHelper::isEnabled('projects', $this->row->alias))
 	$active  = 'on (type supported)';
 }
 
+$paramsClass = 'JParameter';
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$paramsClass = 'JRegistry';
+}
+
+$params = new $paramsClass($this->row->params);
+
+// Available panels and default config
+$panels = array(
+	'content' 		=> 2, 
+	'description' 	=> 2,
+	'authors'		=> 2,
+	'audience'		=> 0,
+	'gallery'		=> 1,
+	'tags'			=> 1,
+	'access'		=> 0,
+	'license'		=> 2,
+	'notes'			=> 1
+);
+
+// Sections that cannot be hidden, ever
+$required = array('content', 'description', 'authors');
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -56,7 +80,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" id="item-form" name="adminForm">
-	<div class="col width-50 fltrt">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Master Type Information'); ?></span></legend>
 
@@ -79,15 +103,40 @@ function submitbutton(pressbutton)
 						<td>
 							<input type="text" name="fields[description]" id="field-description" size="55" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
 						</td>
-					</tr>
+					</tr>				
+				</tbody>
+			</table>
+			</fieldset>
+			<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Draft Panels / Sections'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<?php
+					foreach ($panels as $panel => $val)
+					{
+						?>
+						<tr>
+							<td class="key"><label><?php echo ucfirst($panel); ?>:</label></td>
+							<td><label><input type="radio" name="params[show_<?php echo $panel; ?>]" value="0"<?php echo ($params->get('show_'.$panel, $val) == 0) ? ' checked="checked"':''; ?> <?php if (in_array($panel, $required)) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_HIDE'); ?></label></td>
+							<td><label><input type="radio" name="params[show_<?php echo $panel; ?>]" value="1"<?php echo ($params->get('show_'.$panel, $val) == 1) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_SHOW'); ?></label></td>
+							<td><label><input type="radio" name="params[show_<?php echo $panel; ?>]" value="2"<?php echo ($params->get('show_'.$panel, $val) == 2) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_SHOW_AND_REQUIRE'); ?></label></td>
+						</tr>
+						<?php
+					}
+					?>	
 					<tr>
-						<td class="key"><label><?php echo JText::_('Params'); ?>:</label></td>
-						<td><?php 
-							$editor = JFactory::getEditor();
-							echo $editor->display('fields[params]', stripslashes($this->row->params), '', '', '50', '3', false);
-						?></td>
+						<td class="key"><label><?php echo JText::_('Metadata'); ?>:</label></td>
+						<td><label><input type="radio" name="params[show_metadata]" value="0"<?php echo ($params->get('show_metadata', 0) == 0) ? ' checked="checked"' : ''; ?> /> hide</label></td>
+						<td><label><input type="radio" name="params[show_metadata]" value="1"<?php echo ($params->get('show_metadata', 0) == 1) ? ' checked="checked"' : ''; ?> /> show</label></td>
+						<td></td>
+					</tr>		
+					<tr>
+						<td class="key"><label><?php echo JText::_('Submitter'); ?>:</label></td>
+						<td><label><input type="radio" name="params[show_submitter]" value="0"<?php echo ($params->get('show_submitter', 0) == 0) ? ' checked="checked"' : ''; ?> /> hide</label></td>
+						<td><label><input type="radio" name="params[show_submitter]" value="1"<?php echo ($params->get('show_submitter', 0) == 1) ? ' checked="checked"' : ''; ?> /> show</label></td>
+						<td></td>
 					</tr>
-				
 				</tbody>
 			</table>
 
@@ -118,9 +167,9 @@ function submitbutton(pressbutton)
 					<td class="key"><?php echo JText::_('Contributable'); ?></td>
 					<td>
 						<span class="hint"><?php echo JText::_('Offered as choice for primary content?'); ?></span>
-						<label class="block"><input class="option" name="contributable" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Yes'); ?>
+						<label class="block"><input class="option" name="fields[contributable]" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Yes'); ?>
 						</label>
-						<label class="block"><input class="option" name="contributable" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('No'); ?>
+						<label class="block"><input class="option" name="fields[contributable]" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('No'); ?>
 						</label>
 					</td>
 				</tr>
@@ -128,11 +177,23 @@ function submitbutton(pressbutton)
 					<td class="key"><?php echo JText::_('Supporting'); ?></td>
 					<td>
 						<span class="hint"><?php echo JText::_('Offered as choice for supporting content?'); ?></span>
-						<label class="block"><input class="option" name="supporting" type="radio" value="1" <?php echo $this->row->supporting == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Yes*'); ?>
+						<label class="block"><input class="option" name="fields[supporting]" type="radio" value="1" <?php echo $this->row->supporting == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Yes*'); ?>
 						</label>
-						<label class="block"><input class="option" name="supporting" type="radio" value="0" <?php echo $this->row->supporting == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('No'); ?>
+						<label class="block"><input class="option" name="fields[supporting]" type="radio" value="0" <?php echo $this->row->supporting == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('No'); ?>
 						</label>
 						<span class="hint"><?php echo JText::_('*May be unsupported in the current version of hub code'); ?></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="key"><?php echo JText::_('Issue DOI'); ?></td>
+					<td>
+						<span class="hint"><?php echo JText::_('Is DOI required/optional/inapplicable for this type?'); ?></span>
+						<label class="block"><input class="option" name="params[issue_doi]" type="radio" value="1" <?php echo ($params->get('issue_doi', 1) == 1) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('Required'); ?>
+						</label>
+						<label class="block"><input class="option" name="params[issue_doi]" type="radio" value="2" <?php echo ($params->get('issue_doi', 1) == 2) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('Optional (submitter may decide)'); ?>
+						</label>
+						<label class="block"><input class="option" name="params[issue_doi]" type="radio" value="0" <?php echo ($params->get('issue_doi', 1) == 0) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('No DOI (inapplicable)'); ?>
+						</label>
 					</td>
 				</tr>
 			</tbody>

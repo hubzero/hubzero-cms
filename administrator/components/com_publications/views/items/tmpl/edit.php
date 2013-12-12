@@ -30,6 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$htmlHelper	  = new PublicationsHtml();
+
+// Get hub config
+$juri 	 = JURI::getInstance();
+$jconfig = JFactory::getConfig();
+$site 	 = $jconfig->getValue('config.live_site') 
+	? $jconfig->getValue('config.live_site') 
+	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+
 $dateFormat = '%d %b %Y';
 $tz = null;
 
@@ -53,52 +62,44 @@ $database = JFactory::getDBO();
 // Get pub category
 $rt = new PublicationCategory( $database );
 $rt->load( $this->pub->category );
-$customFields = $rt->customFields;
 
-//$canedit = $this->row->state == 3 ? 1 : 0;
-$canedit = 1;
-$editor = JFactory::getEditor();
-
-// Get metadata fields
-$fields = array();
-if (trim($customFields) != '') {
-	$fs = explode("\n", trim($customFields));
-	foreach ($fs as $f) 
+// Parse data
+$data = array();
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->metadata, $matches, PREG_SET_ORDER);
+if (count($matches) > 0) 
+{
+	foreach ($matches as $match)
 	{
-		$fields[] = explode('=', $f);
+		$data[$match[1]] = $htmlHelper->_txtUnpee($match[2]);
 	}
 }
 
-$now = JFactory::getDate()->toSql();
+$customFields = $rt->customFields && $rt->customFields != '{"fields":[]}' ? $rt->customFields : '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
 
-// Filter meta data
-if (!empty($fields)) {
-	for ($i=0, $n=count( $fields ); $i < $n; $i++) 
-	{
-		preg_match("#<nb:".$fields[$i][0].">(.*?)</nb:".$fields[$i][0].">#s", $this->row->metadata, $matches);
-		if (count($matches) > 0) {
-			$match = $matches[0];
-			$match = str_replace('<nb:'.$fields[$i][0].'>','',$match);
-			$match = str_replace('</nb:'.$fields[$i][0].'>','',$match);
-		} else {
-			$match = '';
-		}
-		
-		// Explore the text and pull out all matches
-		array_push($fields[$i], $match);
-	}
-}
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
-$status = PublicationsHtml::getPubStateProperty($this->row, 'status');
-$class 	= PublicationsHtml::getPubStateProperty($this->row, 'class');
+$elements 	= new PublicationsElements($data, $customFields);
+$fields 	= $elements->render();
+$schema 	= $elements->getSchema();
+
+// Admins can always edit
+$canedit 	= 1;
+$editor 	= JFactory::getEditor();
+
+$now 		= JFactory::getDate()->toSql();
+
+$status 	= $htmlHelper->getPubStateProperty($this->row, 'status');
+$class 		= $htmlHelper->getPubStateProperty($this->row, 'class');
+
+$v = $this->version == 'default' ? '' : '?v=' . $this->version;
 
 // Build the path for publication attachments
-$base_path = $this->config->get('webpath');
-$path = PublicationsHtml::buildPath($this->pub->id, $this->pub->version_id, $base_path, $this->pub->secret);	
+$base_path 	= $this->config->get('webpath');
+$path 		= $htmlHelper->buildPath($this->pub->id, $this->pub->version_id, $base_path, $this->pub->secret);	
 
 // Instantiate the sliders object
 jimport('joomla.html.pane');
-$tabs = JPane::getInstance('sliders');
+$tabs =& JPane::getInstance('sliders');
 
 $rating = $this->pub->rating == 9.9 ? 0.0 : $this->pub->rating;
 
@@ -116,6 +117,26 @@ switch ($this->row->state)
 		$date_label = JText::_('Archived');         
 		break;
 }
+
+$paramsClass = 'JParameter';
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$paramsClass = 'JRegistry';
+}
+
+$params = new $paramsClass($this->row->params);
+
+// Available panels and default config
+$panels = array(
+	'authors'		=> $this->typeParams->get('show_authors', 2),
+	'audience'		=> $this->typeParams->get('show_audience', 0),
+	'gallery'		=> $this->typeParams->get('show_gallery', 1),
+	'tags'			=> $this->typeParams->get('show_tags', 1),
+	'license'		=> $this->typeParams->get('show_license', 2),
+	'notes'			=> $this->typeParams->get('show_notes', 1),
+	'metadata'		=> $this->typeParams->get('show_metadata', 1),
+	'submitter'		=> $this->typeParams->get('show_submitter', 0)
+);
 
 ?>
 
@@ -184,7 +205,9 @@ function popratings()
 }
 </script>
 <form action="index.php" method="post" name="adminForm" id="resourceForm" class="editform">
-	<table>
+	<div class="col width-50 fltlft">
+		<fieldset class="adminform">
+	<table class="admintable">
 		<tr>
 			<th>
 				Publications &raquo;
@@ -209,17 +232,16 @@ function popratings()
 					</td>
 				</tr>
 				<tr>
-					<td class="key"><label>Tags</label></td>
-					<td><input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="80" />
-					</td>
-				</tr>
-				<tr>
 					<td class="key"><label for="alias">Alias:</label></td>
 					<td><input type="text" name="alias" id="alias" size="80" maxlength="250" value="<?php echo htmlentities(stripslashes($this->pub->alias), ENT_COMPAT, 'UTF-8', ENT_QUOTES); ?>" /></td>
 				</tr>
 				<tr>
 					<td class="key"><label>Project:</label></td>
 					<td><?php echo $this->pub->project_title; ?></td>
+				</tr>
+				<tr>
+					<td class="key"><label>URL:</label></td>
+					<td><a href="<?php echo trim($site, DS) .'/publications/' . $this->pub->id . $v; ?>" target="_blank"><?php echo trim($site, DS) .'/publications/' . $this->pub->id . $v; ?></a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -255,41 +277,14 @@ function popratings()
 			</tbody>
 		</table>
 		
-		<table class="statustable">
+		<table class="statustable metadata">
 			<caption><?php echo JText::_('Metadata'); ?></caption>
 			<tbody>
-<?php
-$i = 3;
-
-foreach ($fields as $field)
-{
-$i++;
-/*
-$tagcontent = preg_replace('/<br\\s*?\/??>/i', "", end($field));
-*/
-$tagcontent = end($field);
-?>
-			<tr>
-				<td>
-					<label><?php echo stripslashes($field[1]); ?>: <?php echo ($field[3] == 1) ? '<span class="required">'.JText::_('REQUIRED').'</span>': ''; ?></label>
-					<?php 
-					if($canedit) {
-						if ($field[2] == 'text') { ?>
-							<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" rows="6"><?php echo stripslashes($tagcontent); ?></textarea>
-						<?php
-						} else {
-							echo $editor->display('nbtag['.$field[0].']', htmlentities(stripslashes($tagcontent), ENT_COMPAT, 'UTF-8'), '100%', '100px', '45', '10', false);
-						}
-					} else {
-						echo $tagcontent ? $this->parser->parse( $tagcontent, $this->wikiconfig ) : 'None';
-					}
-					?>
-				</td>
-			</tr>
-			
-<?php 
-}
-?>
+				<tr>
+					<td>
+						<?php echo $fields; ?>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<table class="statustable">
@@ -305,8 +300,11 @@ $tagcontent = end($field);
 			</tbody>
 		</table>
 	</td>
-	<td>
-
+	</tr>
+	</table>
+	</fieldset>
+</div>
+<div class="col width-50 fltrt">
 <?php 
 		echo $tabs->startPane("content-pane");
 		echo $tabs->startPanel('Publication Management','publish-page');
@@ -355,7 +353,7 @@ $tagcontent = end($field);
 					</td>
 				</tr>
 				<tr>
-					<td class="paramlist_key">Options:</td>
+					<td class="paramlist_key"><?php echo JText::_('Options'); ?>:</td>
 					<td class="puboptions">
 						<input type="hidden" name="admin_action" value="" />
 						<input type="submit" value="<?php echo JText::_('Send message'); ?>" class="btn" id="do-message" onclick="javascript: submitbutton('message')" /> 
@@ -464,17 +462,61 @@ $tagcontent = end($field);
 		echo $tabs->endPanel();
 		echo $tabs->endPane();
 ?>	
-	<fieldset>
+	<fieldset class="adminform">
 		<legend>Content</legend>
-		<?php echo $this->lists['content']; ?>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td><?php echo $this->lists['content']; ?></td>
+					</tr>
+				</tbody>
+			</table>
 	</fieldset>
-	<fieldset>
+	<fieldset class="adminform">
 		<legend>Authors</legend>
-		<?php echo $this->lists['authors']; ?>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td><?php echo $this->lists['authors']; ?></td>
+					</tr>
+				</tbody>
+			</table>
 	</fieldset>
-			</td>
-		</tr>
-	</table>
+	<fieldset class="adminform">
+		<legend>Tags</legend>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td><input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="80" /></td>
+					</tr>
+				</tbody>
+			</table>
+	</fieldset>
+	<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_PUBLICATIONS_SHOW_HIDE'); ?></legend>
+		<p class="hint"><?php echo JText::_('COM_PUBLICATIONS_SHOW_HIDE_HINT'); ?></p>
+			<table class="admintable showhide">				
+				<tbody>
+					<?php
+						foreach ($panels as $panel => $val)
+						{
+							?>
+							<tr>
+								<td class="key"><?php echo ucfirst($panel); ?>:</td>
+								<td>
+									<select name="params[show_<?php echo $panel; ?>]">
+										<option value="0" <?php echo ($params->get('show_'.$panel, $val) == 0) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_HIDE'); ?></option>
+										<option value="1" <?php echo ($params->get('show_'.$panel, $val) > 0) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_SHOW'); ?></option>
+									</select>
+								</td>
+							</tr>
+							<?php
+						}
+					?>
+				</tbody>
+			</table>
+	</fieldset>
+	</div>
 	
 	<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
 	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />

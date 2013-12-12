@@ -148,7 +148,7 @@ class PublicationsControllerLicenses extends Hubzero_Controller
 
 			// Load the object
 			$this->view->row = new PublicationLicense($this->database);
-			$this->view->row->load($id);
+			$this->view->row->loadLicense($id);
 		}
 
 		// Set any errors
@@ -251,7 +251,7 @@ class PublicationsControllerLicenses extends Hubzero_Controller
 
 		// Load row
 		$row = new PublicationLicense($this->database);
-		$row->load( (int) $id[0]);
+		$row->loadLicense( (int) $id[0]);
 		
 		// Update order
 		$row->changeOrder($dir);
@@ -290,7 +290,7 @@ class PublicationsControllerLicenses extends Hubzero_Controller
 		$id = intval($id[0]);
 				
 		// Load row
-		$row->load( $id );
+		$row->loadLicense( $id );
 		
 		// Make default
 		$row->main = 1;
@@ -337,7 +337,7 @@ class PublicationsControllerLicenses extends Hubzero_Controller
 			if (intval($id))
 			{
 				// Load row
-				$row->load( $id );
+				$row->loadLicense( $id );
 				$row->active = $row->active == 1 ? 0 : 1;
 				
 				// Save

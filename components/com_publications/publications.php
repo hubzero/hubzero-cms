@@ -43,7 +43,6 @@ else
 	$option = JRequest::getCmd('option','');
 }
 
-
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'publication.php');
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'version.php');
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'access.php');

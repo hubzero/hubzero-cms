@@ -35,12 +35,12 @@ else {
 }
 ?>
 	<?php echo $this->project->provisioned == 1 
-				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
+				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 <?php
 	// Draw status bar
-	PublicationContribHelper::drawStatusBar($this);
+	$this->contribHelper->drawStatusBar($this);
 
 	$canedit = (
 	$this->pub->state == 3 
@@ -55,7 +55,7 @@ else {
 	<div id="pub-editor" class="pane-tags">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-			<h4><?php echo $ptitle; ?></h4>
+			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if ($canedit) { ?>
 			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_SELECT'); ?></p>
 			<!-- Load content selection browser //-->				
@@ -88,6 +88,7 @@ else {
 					<input type="hidden" name="review" value="<?php echo $this->inreview; ?>" />
 					<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 					<input type="hidden" name="selections" id="selections" value="" />
+					<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 					<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 					<?php if($this->project->provisioned == 1 ) { ?>
 					<input type="hidden" name="task" value="submit" />

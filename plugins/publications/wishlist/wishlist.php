@@ -112,7 +112,14 @@ class plgPublicationsWishlist extends JPlugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
 			{
-				$rtrn = 'metadata';
+				if ($publication->_category->_params->get('plg_wishlist')) 
+				{
+					$rtrn == 'metadata';
+				}
+				else
+				{
+					return $arr;
+				}
 			}
 		}
 				

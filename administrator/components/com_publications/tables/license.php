@@ -143,7 +143,7 @@ class PublicationLicense extends JTable
 	 * @param      mixed $oid Integer or string (alias)
 	 * @return     mixed False if error, Object on success
 	 */
-	public function load($oid = NULL)
+	public function loadLicense($oid = NULL)
 	{
 		if ($oid === NULL) 
 		{

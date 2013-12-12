@@ -191,7 +191,10 @@ class typeFiles extends JObject
 			case 'cleanupAttachments':
 				$output = $this->_cleanupAttachments(); 		
 				break;
-								
+			
+			case 'getPubTitle':
+				$output = $this->_getPubTitle();
+										
 			default:
 				break;
 		}
@@ -284,6 +287,21 @@ class typeFiles extends JObject
 		$result = array('serveas' => $serveas, 'choices' => $choices);
 		
 		return $result;
+	}
+	
+	/**
+	 * Get publication title for newly created draft
+	 * 
+	 * @return     void
+	 */	
+	protected function _getPubTitle()
+	{
+		// Incoming data
+		$item = $this->__get('item');
+		
+		// File name is the title
+		return $item;
+		
 	}
 	
 	/**

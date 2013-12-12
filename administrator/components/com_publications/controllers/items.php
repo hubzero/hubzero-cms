@@ -271,8 +271,10 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$rt->getContribCategories(), 'category', $this->view->pub->category, '', '', '', ''
 		);
 	
-		// Build the <select> of admin users
-		//$this->view->lists['created_by'] = $this->userSelect('created_by', 0, 1);
+		// Get master type info
+		$mtObj = new PublicationMasterType( $this->database );
+		$mtObj->load($this->view->pub->master_type);
+		$this->view->typeParams = new JParameter( $mtObj->params );
 		
 		// Get attachments
 		$pContent = new PublicationAttachment( $this->database );
@@ -446,7 +448,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$authors = $pAuthor->getAuthors($pAuthor->publication_version_id);
 			
 			// Collect DOI metadata
-			$metadata = $this->_collectMetadata($row, $objP);
+			$metadata = $this->_collectMetadata($row, $objP, $authors);
 			
 			if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
 			{
@@ -586,15 +588,29 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$row->release_notes	= $release_notes;
 						
 		// Update DOI with latest information
-		if (($row->doi && ($row != $old )) && !$action)
+		if ($row->doi && !$action 
+			&& ($row->title != $old->title
+			|| $row->abstract != $old->abstract))
 		{
 			// Collect DOI metadata
-			$metadata = $this->_collectMetadata($row, $objP);
+			$metadata = $this->_collectMetadata($row, $objP, $authors);
 			
 			if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
 			{
 				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
 			}
+		}
+		
+		// Get parameters
+		$params = JRequest::getVar('params', '', 'post');
+		if (is_array($params))
+		{
+			$txt = array();
+			foreach ($params as $k => $v)
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode("\n", $txt);
 		}
 		
 		// Email config
@@ -631,7 +647,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 					}
 					
 					// Collect DOI metadata
-					$metadata = $this->_collectMetadata($row, $objP);
+					$metadata = $this->_collectMetadata($row, $objP, $authors);
 																								
 					// Issue a DOI
 					if ($this->config->get('doi_service') && $this->config->get('doi_shoulder'))
@@ -813,7 +829,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 	 * @param      object $row      Publication
 	 * @return     void
 	 */
-	private function _collectMetadata($row, $objP)
+	private function _collectMetadata($row, $objP, $authors)
 	{
 		// Get type
 		$objT = new PublicationCategory($this->database);
@@ -845,7 +861,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 							
 		// Get license type
 		$objL = new PublicationLicense( $this->database);
-		if ($objL->load($row->license_type))
+		if ($objL->loadLicense($row->license_type))
 		{
 			$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
 			$metadata['license'] = $objL->title;
