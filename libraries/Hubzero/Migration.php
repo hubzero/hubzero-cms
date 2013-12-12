@@ -572,7 +572,7 @@ class Hubzero_Migration
 			{
 				if ($dryrun)
 				{
-					$this->log("Would run {$direction}() {$file}");
+					$this->log("Would run {$direction}() {$file}", true, "1;32");
 				}
 				elseif ($logOnly)
 				{
@@ -619,14 +619,14 @@ class Hubzero_Migration
 							{
 								// Completely failed...stop immediately
 								$message = (isset($result->error->message) && !empty($result->error->message)) ? $result->error->message : '[no message provided]';
-								$this->log("Error: running {$direction}() resulted in a fatal error in {$file}: {$message}");
+								$this->log("Error: running {$direction}() resulted in a fatal error in {$file}: {$message}", true);
 								return false;
 							}
 							else if (isset($result->error->type) && $result->error->type == 'warning')
 							{
 								// Just a warning...display message and carry on (my wayward son)
 								$message = (isset($result->error->message) && !empty($result->error->message)) ? $result->error->message : '[no message provided]';
-								$this->log("Warning: running {$direction}() resulted in a non-fatal error in {$file}: {$message}");
+								$this->log("Warning: running {$direction}() resulted in a non-fatal error in {$file}: {$message}", true);
 								// Continue...i.e. don't log that this migration was run, so it shows up again on the next run
 								continue;
 							}
@@ -706,10 +706,14 @@ class Hubzero_Migration
 	 * @param $message - message to log
 	 * @return log messages
 	 **/
-	public function log($message)
+	public function log($message, $emphasize=false, $style="1;31")
 	{
 		if (in_array('stdout', $this->log_type))
 		{
+			if ($emphasize)
+			{
+				$message = chr(27) . "[" . $style . "m" . $message . chr(27) . "[0m";
+			}
 			fwrite(STDOUT, $message . "\n");
 		}
 		if (in_array('internal_log', $this->log_type))
