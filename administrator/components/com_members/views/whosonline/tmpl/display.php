@@ -109,7 +109,7 @@ foreach ($this->rows as $row)
 					<td><?php echo $row->usertype;?></td>
 					<td>
 						<?php
-							$clientInfo =& JApplicationHelper::getClientInfo( $row->client_id );
+							$clientInfo = JApplicationHelper::getClientInfo( $row->client_id );
 							echo ucfirst( $clientInfo->name );
 						?>
 					</td>
