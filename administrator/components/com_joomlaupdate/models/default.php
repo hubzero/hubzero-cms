@@ -328,7 +328,7 @@ ENDDATA;
 				jimport('joomla.filesystem.folder');
 
 				$FTPOptions = JClientHelper::getCredentials('ftp');
-				$ftp = & JFTP::getInstance($FTPOptions['host'], $FTPOptions['port'], null, $FTPOptions['user'], $FTPOptions['pass']);
+				$ftp =  JFTP::getInstance($FTPOptions['host'], $FTPOptions['port'], null, $FTPOptions['user'], $FTPOptions['pass']);
 				$dest = JPath::clean(str_replace(JPATH_ROOT, $FTPOptions['root'], $tempdir.'/admintools'), '/');
 				if(!@mkdir($tempdir.'/admintools')) $ftp->mkdir($dest);
 				if(!@chmod($tempdir.'/admintools', 511)) $ftp->chmod($dest, 511);
@@ -356,7 +356,7 @@ ENDDATA;
 					jimport('joomla.filesystem.folder');
 
 					$FTPOptions = JClientHelper::getCredentials('ftp');
-					$ftp = & JFTP::getInstance($FTPOptions['host'], $FTPOptions['port'], null, $FTPOptions['user'], $FTPOptions['pass']);
+					$ftp =  JFTP::getInstance($FTPOptions['host'], $FTPOptions['port'], null, $FTPOptions['user'], $FTPOptions['pass']);
 					$dest = JPath::clean(str_replace(JPATH_ROOT, $FTPOptions['root'], $tempdir.'/admintools'), '/');
 					if(!@mkdir($tempdir.'/admintools')) $ftp->mkdir($dest);
 					if(!@chmod($tempdir.'/admintools', 511)) $ftp->chmod($dest, 511);
