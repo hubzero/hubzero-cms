@@ -268,9 +268,14 @@ class NewsletterNewsletter extends JTable
 	 * @param 	$id		Newsletter Id
 	 * @return 	array
 	 */
-	public function getNewsletters( $id = null )
+	public function getNewsletters( $id = null, $publishedOnly = false )
 	{
 		$sql = "SELECT * FROM {$this->_tbl} WHERE deleted=0";
+		
+		if ($publishedOnly)
+		{
+			$sql .= " AND published=1";
+		}
 		
 		if($id)
 		{

@@ -50,7 +50,7 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		$newsletterNewsletter = new NewsletterNewsletter( $database );
 		
 		//get newsletters
-		$newsletters = $newsletterNewsletter->getNewsletters();
+		$newsletters = $newsletterNewsletter->getNewsletters(null, true);
 		
 		//output
 		$obj = new stdClass();

@@ -242,6 +242,6 @@ var ImageManager = this.ImageManager = {
 };
 })(document.id);
 
-window.addEvent('domready', function(){
+window.addEvent('load', function(){
 	ImageManager.initialize();
 });
