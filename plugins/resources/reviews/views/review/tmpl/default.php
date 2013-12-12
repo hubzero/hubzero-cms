@@ -146,7 +146,7 @@ if ($this->review->id) {
 		?>
 					<?php
 					ximport('Hubzero_Wiki_Editor');
-					$editor =& Hubzero_Wiki_Editor::getInstance();
+					$editor = Hubzero_Wiki_Editor::getInstance();
 					echo $editor->display('comment', 'review_comments', $this->review->comment, 'no-image-macro no-file-macro', '35', '10');
 					?>
 				</label>

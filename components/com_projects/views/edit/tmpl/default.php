@@ -117,7 +117,7 @@ $goto  = 'alias=' . $this->project->alias;
 											<span class="clear"></span>	
 											<?php
 												ximport('Hubzero_Wiki_Editor');
-												$editor =& Hubzero_Wiki_Editor::getInstance();
+												$editor = Hubzero_Wiki_Editor::getInstance();
 												echo $editor->display('about', 'about', $this->project->about, '', '10', '25');
 											?>
 											<?php if(!JPluginHelper::isEnabled('projects', 'apps') && !$this->publishing) { ?>

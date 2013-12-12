@@ -125,7 +125,7 @@ $levels = array(
 					<strong>Custom Content</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
 					<?php
 						ximport('Hubzero_Wiki_Editor');
-						$editor =& Hubzero_Wiki_Editor::getInstance();
+						$editor = Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('group[overview_content]', 'group[overview_content]', stripslashes($this->group->get('overview_content')), '', '50', '15');
 					?>
 					<span class="hint"><a class="popup" href="/wiki/Help:WikiFormatting">Wiki formatting</a> is allowed.</span>

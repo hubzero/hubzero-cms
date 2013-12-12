@@ -185,7 +185,7 @@ if ($templates) {
 			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
 			<?php
 			ximport('Hubzero_Wiki_Editor');
-			$editor =& Hubzero_Wiki_Editor::getInstance();
+			$editor = Hubzero_Wiki_Editor::getInstance();
 			echo $editor->display('revision[pagetext]', 'pagetext', $this->revision->pagetext, '', '35', '40');
 			?>
 			<!-- <span id="pagetext-overlay"><span>Drop file here to include in page</span></span> -->

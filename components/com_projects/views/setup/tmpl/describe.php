@@ -117,7 +117,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	if($this->project->id) {
 		//$html .= t.t.t.'<p id="previewit" class="previewit showaslink">'.JText::_('COM_PROJECTS_PREVIEW').'</p>'.n;
 		ximport('Hubzero_Wiki_Editor');
-		$editor =& Hubzero_Wiki_Editor::getInstance();
+		$editor = Hubzero_Wiki_Editor::getInstance();
 		$html .= $editor->display('about', 'about', $this->project->about, '', '10', '25');
 	}
 	else {

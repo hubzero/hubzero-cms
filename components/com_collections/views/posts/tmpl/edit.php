@@ -59,7 +59,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 $site = rtrim(JURI::getInstance()->base(true), '/');
 
 ximport('Hubzero_Wiki_Editor');
-$editor =& Hubzero_Wiki_Editor::getInstance();
+$editor = Hubzero_Wiki_Editor::getInstance();
 
 $dir = $item->get('id');
 if (!$dir)

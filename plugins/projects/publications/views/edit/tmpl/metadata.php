@@ -68,7 +68,7 @@ if (!empty($fields)) {
 }
 
 ximport('Hubzero_Wiki_Editor');
-$editor =& Hubzero_Wiki_Editor::getInstance();
+$editor = Hubzero_Wiki_Editor::getInstance();
 
 $canedit = (
 	$this->pub->state == 3 

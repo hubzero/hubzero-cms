@@ -51,7 +51,7 @@ $asset = new CoursesModelAsset($id);
 		<label for="content">Content: </label>
 <?php
 		ximport('Hubzero_Wiki_Editor');
-		$editor =& Hubzero_Wiki_Editor::getInstance();
+		$editor = Hubzero_Wiki_Editor::getInstance();
 
 		echo $editor->display('content', 'content', $asset->get('content'), '', '35', '10');
 ?>

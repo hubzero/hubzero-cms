@@ -709,7 +709,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						);
 					
 						ximport('Hubzero_Wiki_Editor');
-						$editor =& Hubzero_Wiki_Editor::getInstance();
+						$editor = Hubzero_Wiki_Editor::getInstance();
 					
 						$bio = $editor->display('profile[bio]', 'profile_bio', stripslashes($this->profile->get('bio')), '', '100', '15'); 
 					

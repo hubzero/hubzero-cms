@@ -173,7 +173,7 @@ defined('_JEXEC') or die('Restricted access');
 							if (!$this->juser->get('guest')) 
 							{
 								ximport('Hubzero_Wiki_Editor');
-								$editor =& Hubzero_Wiki_Editor::getInstance();
+								$editor = Hubzero_Wiki_Editor::getInstance();
 								echo $editor->display('comment[content]', 'commentcontent', $comment->content, 'minimal no-footer', '40', '15');
 							/*} else {
 								$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');

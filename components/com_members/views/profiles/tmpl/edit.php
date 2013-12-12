@@ -356,7 +356,7 @@ if ($this->registration->Interests != REG_HIDE) {
 }
 
 ximport('Hubzero_Wiki_Editor');
-$editor =& Hubzero_Wiki_Editor::getInstance();
+$editor = Hubzero_Wiki_Editor::getInstance();
 
 $html .= "\t\t".'<label for="profilebio">'."\n";
 $html .= "\t\t\t".JText::_('BIO').':'."\n";

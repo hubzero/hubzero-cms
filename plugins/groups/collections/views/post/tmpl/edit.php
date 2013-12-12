@@ -57,7 +57,7 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
 ximport('Hubzero_Wiki_Editor');
-$editor =& Hubzero_Wiki_Editor::getInstance();
+$editor = Hubzero_Wiki_Editor::getInstance();
 
 $dir = $item->get('id');
 if (!$dir)

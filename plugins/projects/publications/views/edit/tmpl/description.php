@@ -172,7 +172,7 @@ if ($this->move) {
 							?>
 							<?php } else { 
 								ximport('Hubzero_Wiki_Editor');
-								$editor =& Hubzero_Wiki_Editor::getInstance();
+								$editor = Hubzero_Wiki_Editor::getInstance();
 								echo $editor->display('description', 'description', $this->row->description, '', '35', '20'); 
 							} ?>
 						</td>

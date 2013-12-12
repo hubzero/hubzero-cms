@@ -39,7 +39,7 @@ if ($this->collection_id)
 }
 
 ximport('Hubzero_Wiki_Editor');
-$editor =& Hubzero_Wiki_Editor::getInstance();
+$editor = Hubzero_Wiki_Editor::getInstance();
 ?>
 
 <?php if ($this->getError()) { ?>

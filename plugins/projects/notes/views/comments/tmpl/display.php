@@ -222,7 +222,7 @@ if ($this->comments) {
 					<?php echo JText::_('WIKI_FIELD_COMMENTS'); ?>:
 					<?php
 					ximport('Hubzero_Wiki_Editor');
-					$editor =& Hubzero_Wiki_Editor::getInstance();
+					$editor = Hubzero_Wiki_Editor::getInstance();
 					echo $editor->display('comment[ctext]', 'ctext', $this->mycomment->ctext, '', '35', '15');
 					?>
 				</label>

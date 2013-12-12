@@ -383,7 +383,7 @@ if (!$this->question->get('anonymous'))
 						<?php echo JText::_('COM_ANSWERS_YOUR_RESPONSE'); ?>:
 						<?php
 						ximport('Hubzero_Wiki_Editor');
-						$editor =& Hubzero_Wiki_Editor::getInstance();
+						$editor = Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('response[answer]', 'responseanswer', '', 'minimal', '50', '10');
 						?>
 					</label>

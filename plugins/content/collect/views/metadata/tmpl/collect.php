@@ -42,7 +42,7 @@ if ($url == '/?action=collect&nohtml=1')
 	$url = '/home' . $url;
 }
 ximport('Hubzero_Wiki_Editor');
-$editor =& Hubzero_Wiki_Editor::getInstance();
+$editor = Hubzero_Wiki_Editor::getInstance();
 ?>
 
 <?php if ($this->getError()) { ?>
