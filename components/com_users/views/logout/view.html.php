@@ -116,7 +116,7 @@ class UsersViewLogout extends JViewLegacy
 			$url = base64_encode($params->get($type));
 		}
 
-		$errors =& JError::getErrors();
+		$errors = JError::getErrors();
 
 		$this->assign('image' , $image);
 		$this->assign('type'  , $type);
