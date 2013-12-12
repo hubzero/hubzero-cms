@@ -80,7 +80,7 @@ class BlogModelAdapterMember extends BlogModelAdapterAbstract
 	 * @param      string $key Property to retrieve
 	 * @return     string
 	 */
-	public function item($key)
+	public function item($key='')
 	{
 		switch (strtolower($key))
 		{
