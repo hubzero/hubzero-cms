@@ -281,7 +281,7 @@ class ToolGroup extends  JTable
 		{
 			foreach ($members as $member) 
 			{
-				$juser =& JUser::getInstance($member);
+				$juser = JUser::getInstance($member);
 				if (is_object($juser)) 
 				{
 					if ($id) 

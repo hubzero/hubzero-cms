@@ -1474,7 +1474,7 @@ class RegisterController extends Hubzero_Controller
 						$xprofile->set('modifiedDate',$dtmodify);
 						if ($xprofile->update()) 
 						{
-							$juser =& JUser::getInstance($login);
+							$juser = JUser::getInstance($login);
 							$juser->set('email', $pemail);
 							$juser->save();
 						} 

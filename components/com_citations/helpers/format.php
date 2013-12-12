@@ -287,7 +287,7 @@ class CitationFormat
 							$id = trim($matches[1]);
 							if (is_numeric($id)) 
 							{
-								$user =& JUser::getInstance($id);
+								$user = JUser::getInstance($id);
 								if (is_object($user)) 
 								{
 									$a[] = '<a rel="external" href="' . JRoute::_('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
@@ -894,7 +894,7 @@ class CitationFormat
 					} 
 					else 
 					{
-						$zuser =& JUser::getInstance(trim($matches[0]));
+						$zuser = JUser::getInstance(trim($matches[0]));
 						if (is_object($zuser)) 
 						{
 							$aid = $zuser->get('id');

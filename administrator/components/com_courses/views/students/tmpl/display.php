@@ -162,7 +162,7 @@ $k = 0;
 $n = count($this->rows);
 foreach ($this->rows as $row)
 {
-	/*$u =& JUser::getInstance($row->get('user_id'));
+	/*$u = JUser::getInstance($row->get('user_id'));
 	if (!is_object($u)) 
 	{
 		continue;

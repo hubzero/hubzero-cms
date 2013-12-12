@@ -139,7 +139,7 @@ $database = JFactory::getDBO();
 							<?php
 							if (substr($row->type, -8) == '_message') 
 							{
-								$u =& JUser::getInstance($row->created_by);
+								$u = JUser::getInstance($row->created_by);
 								echo '<a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
 							} 
 							else 

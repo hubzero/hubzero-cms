@@ -323,7 +323,7 @@ class ForumControllerThreads extends Hubzero_Controller
 				$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0, 0);
 
 				// Get author
-				$juser =& JUser::getInstance($row['created_by']);
+				$juser = JUser::getInstance($row['created_by']);
 				$author = stripslashes($juser->get('name'));
 
 				// Get date

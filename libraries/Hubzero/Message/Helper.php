@@ -172,7 +172,7 @@ class Hubzero_Message_Helper extends JObject
 				$notify = new Hubzero_Message_Notify($database);
 				$methods = $notify->getRecords($uid, $type);
 
-				$user =& JUser::getInstance($uid);
+				$user = JUser::getInstance($uid);
 
 				// Load plugins
 				JPluginHelper::importPlugin('xmessage');

@@ -738,7 +738,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			}
 
 			// Check that the user exist
-			$zuser =& JUser::getInstance($user);
+			$zuser = JUser::getInstance($user);
 			if (!$zuser || !is_object($zuser) || !$zuser->get('id')) 
 			{
 				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);

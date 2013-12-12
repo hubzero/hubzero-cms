@@ -79,7 +79,7 @@ class UpdateWikiPageAuthor extends SystemHelperScript
 				$authors = array_map('trim', $authors);
 				foreach ($authors as $author)
 				{
-					$targetuser =& JUser::getInstance($author);
+					$targetuser = JUser::getInstance($author);
 
 					// Ensure we found an account
 					if (is_object($targetuser)) {

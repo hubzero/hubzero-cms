@@ -134,7 +134,7 @@ foreach ($this->revisions as $revision)
 	$level = ($revision->minor_edit) ? 'minor' : 'major';
 
 	$xname = JText::_('WIKI_AUTHOR_UNKNOWN');
-	$juser =& JUser::getInstance($revision->created_by);
+	$juser = JUser::getInstance($revision->created_by);
 	if (is_object($juser)) 
 	{
 		$xname = $juser->get('name');

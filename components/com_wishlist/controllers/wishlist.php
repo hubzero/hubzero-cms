@@ -1593,7 +1593,7 @@ class WishlistController extends JObject
 		$by = JRequest::getVar('by', '', 'post');
 		if ($by) 
 		{
-			$ruser =& JUser::getInstance($by);
+			$ruser = JUser::getInstance($by);
 			if (is_object($ruser)) 
 			{
 				$row->proposed_by = $ruser->get('id');
@@ -1698,7 +1698,7 @@ class WishlistController extends JObject
 			}
 			else 
 			{
-				$ruser 	=& JUser::getInstance($row->proposed_by);
+				$ruser 	= JUser::getInstance($row->proposed_by);
 				if (is_object($ruser)) 
 				{
 					$name = $ruser->get('name');
@@ -2884,7 +2884,7 @@ class WishlistController extends JObject
 				{
 					$parent = new Hubzero_Comment($database);
 					$parent->load($id);
-					$cuser =& JUser::getInstance($parent->added_by);
+					$cuser = JUser::getInstance($parent->added_by);
 
 					// send message to comment author
 					if (is_object($cuser) && $parent->added_by != $row->added_by && !in_array($parent->added_by, $contacted)) 

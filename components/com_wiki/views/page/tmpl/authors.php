@@ -37,7 +37,7 @@ if ($this->page->params->get('mode', 'wiki') == 'knol' && !$this->page->params->
 
 	$author = 'Unknown';
 	$ausername = '';
-	$auser =& JUser::getInstance($this->page->created_by);
+	$auser = JUser::getInstance($this->page->created_by);
 	if (is_object($auser)) 
 	{
 		$author = $auser->get('name');

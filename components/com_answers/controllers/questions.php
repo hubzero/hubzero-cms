@@ -858,7 +858,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		{
 			foreach ($apu as $u)
 			{
-				$user =& JUser::getInstance($u);
+				$user = JUser::getInstance($u);
 				if ($user) 
 				{
 					$receivers[] = $user->get('id');
@@ -1002,7 +1002,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				$users = array();
 				foreach ($responses as $r)
 				{
-					$user =& JUser::getInstance($r->created_by);
+					$user = JUser::getInstance($r->created_by);
 					if (!is_object($user)) 
 					{
 						continue;
@@ -1200,7 +1200,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		{
 			foreach ($apu as $u)
 			{
-				$user =& JUser::getInstance($u);
+				$user = JUser::getInstance($u);
 				if ($user) 
 				{
 					$receivers[] = $user->get('id');

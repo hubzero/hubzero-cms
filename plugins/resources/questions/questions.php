@@ -413,7 +413,7 @@ class plgResourcesQuestions extends JPlugin
 		{
 			foreach ($apu as $u)
 			{
-				$user =& JUser::getInstance($u);
+				$user = JUser::getInstance($u);
 				if ($user) 
 				{
 					$receivers[] = $user->get('id');

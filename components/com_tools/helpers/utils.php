@@ -248,7 +248,7 @@ class ToolsHelperUtils
 		{
 			foreach ($uids as $uid) 
 			{
-				$juser =& JUser::getInstance($uid);
+				$juser = JUser::getInstance($uid);
 				if ($juser) 
 				{
 					$logins[] = $juser->get('username');

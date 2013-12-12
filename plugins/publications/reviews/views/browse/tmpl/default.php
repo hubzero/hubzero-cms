@@ -115,7 +115,7 @@ if ($this->reviews)
 		$ruser->load( $review->created_by );
 		if ($review->anonymous != 1) {
 			$name = JText::_('PLG_PUBLICATION_REVIEWS_UNKNOWN');
-			//$ruser =& JUser::getInstance($review->created_by);
+			//$ruser = JUser::getInstance($review->created_by);
 			if (is_object($ruser)) {
 				$name = $ruser->get('name');
 			}

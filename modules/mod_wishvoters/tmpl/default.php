@@ -48,7 +48,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		if ($k <= intval($this->params->get('limit', 10)))
 		{
 			$name = JText::_('UNKNOWN');
-			$auser =& JUser::getInstance($row->userid);
+			$auser = JUser::getInstance($row->userid);
 			if (is_object($auser)) 
 			{
 				$name  = $auser->get('name');

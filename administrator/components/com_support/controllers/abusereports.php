@@ -347,7 +347,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Notify item owner
 		if ($email)
 		{
-			$juser =& JUser::getInstance($reported->author);
+			$juser = JUser::getInstance($reported->author);
 
 			// Email "from" info
 			$from = array();
@@ -407,7 +407,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar)
 			{
-				$ruser =& JUser::getInstance($report->created_by);
+				$ruser = JUser::getInstance($report->created_by);
 				if (is_object($ruser) && $ruser->get('id'))
 				{
 					$BTL = new Hubzero_Bank_Teller($this->database, $ruser->get('id'));

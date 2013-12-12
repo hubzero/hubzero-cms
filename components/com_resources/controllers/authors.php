@@ -197,7 +197,7 @@ class ResourcesControllerAuthors extends Hubzero_Controller
 				}
 
 				// We should only get to this part if the author is also a site member
-				$juser =& JUser::getInstance($uid);
+				$juser = JUser::getInstance($uid);
 				if (!is_object($juser)) 
 				{
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));

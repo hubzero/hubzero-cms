@@ -34,13 +34,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 $mode = $this->page->params->get('mode', 'wiki');
 
 $orauthor = JText::_('Unknown');
-$oruser =& JUser::getInstance($this->or->created_by);
+$oruser = JUser::getInstance($this->or->created_by);
 if (is_object($oruser)) {
 	$orauthor = $oruser->get('name');
 }
 
 $drauthor = JText::_('Unknown');
-$druser =& JUser::getInstance($this->dr->created_by);
+$druser = JUser::getInstance($this->dr->created_by);
 if (is_object($druser)) {
 	$drauthor = $druser->get('name');
 }

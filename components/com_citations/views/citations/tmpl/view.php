@@ -169,7 +169,7 @@ $area = JRequest::getVar('area', 'about');
 						{
 							if (is_numeric($matches[1])) 
 							{
-								$user =& JUser::getInstance($matches[1]);
+								$user = JUser::getInstance($matches[1]);
 								if (is_object($user)) 
 								{
 									$a[] = '<a rel="external" href="' . JRoute::_('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';

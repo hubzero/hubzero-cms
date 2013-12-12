@@ -1533,7 +1533,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		// Make sure certain changes make it back to the Joomla user table
 		if ($id > 0) 
 		{
-			$juser =& JUser::getInstance($id);
+			$juser = JUser::getInstance($id);
 			$jname = $juser->get('name');
 			$jemail = $juser->get('email');
 			if ($name != trim($jname)) 

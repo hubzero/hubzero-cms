@@ -472,7 +472,7 @@ class modSpotlight extends Hubzero_Module
 				$name = JText::_('Anonymous');
 				if ($row->anonymous == 0)
 				{
-					$juser =& JUser::getInstance($row->created_by);
+					$juser = JUser::getInstance($row->created_by);
 					if (is_object($juser))
 					{
 						$name = $juser->get('name');

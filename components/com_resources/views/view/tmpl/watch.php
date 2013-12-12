@@ -102,7 +102,7 @@ foreach ($lectureAuthors as $la)
 		continue;
 	}
 	//load author object
-	$author =& JUser::getInstance( $la->authorid );
+	$author = JUser::getInstance( $la->authorid );
 	if (is_object($author) && $author->id)
 	{
 		$a[] = '<a href="/members/' . $author->id . '">' . $author->name . '</a>';

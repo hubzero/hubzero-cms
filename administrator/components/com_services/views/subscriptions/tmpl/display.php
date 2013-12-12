@@ -104,7 +104,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 
 	$name = JText::_('UNKNOWN');
 	$login = JText::_('UNKNOWN');
-	$ruser =& JUser::getInstance($row->uid);
+	$ruser = JUser::getInstance($row->uid);
 	if (is_object($ruser)) {
 		$name = $ruser->get('name');
 		$login = $ruser->get('username');

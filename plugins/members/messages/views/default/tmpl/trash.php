@@ -125,7 +125,7 @@ $database = JFactory::getDBO();
 					
 						//get who the message is from
 						if (substr($row->type, -8) == '_message') {
-							$u =& JUser::getInstance($row->created_by);
+							$u = JUser::getInstance($row->created_by);
 							$from = "<a href=\"" . JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')) . "\">" . $u->get("name") . "</a>";
 						} else {
 							$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $component);

@@ -280,7 +280,7 @@ class plgSupportAnswers extends JPlugin
 					{
 						foreach ($responders as $r)
 						{
-							$zuser =& JUser::getInstance($r);
+							$zuser = JUser::getInstance($r);
 							if (is_object($zuser)) 
 							{
 								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email) 
@@ -312,7 +312,7 @@ class plgSupportAnswers extends JPlugin
 
 					if ($asker) 
 					{
-						$quser =& JUser::getInstance($asker);
+						$quser = JUser::getInstance($asker);
 						if (is_object($quser)) 
 						{
 							$asker_id = $quser->get('id');

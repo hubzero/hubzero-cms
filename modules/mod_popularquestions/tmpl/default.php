@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 		$name = JText::_('MOD_POPULARQUESTIONS_ANONYMOUS');
 		if ($row->anonymous == 0)
 		{
-			$juser =& JUser::getInstance($row->created_by);
+			$juser = JUser::getInstance($row->created_by);
 			if (is_object($juser))
 			{
 				$name = $juser->get('name');

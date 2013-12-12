@@ -61,7 +61,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					$name = JText::_('Anonymous');
 					if (!$row->anonymous)
 					{
-						$creator =& JUser::getInstance($row->created_by);
+						$creator = JUser::getInstance($row->created_by);
 						if (is_object($creator)) 
 						{
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';

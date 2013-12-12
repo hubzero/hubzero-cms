@@ -556,7 +556,7 @@ class EventsHtml
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
 		if ($userid) 
 		{
-			$juser =& JUser::getInstance($userid);
+			$juser = JUser::getInstance($userid);
 
 			if ($juser) 
 			{

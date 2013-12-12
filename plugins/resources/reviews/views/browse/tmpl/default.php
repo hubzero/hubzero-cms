@@ -125,7 +125,7 @@ if ($this->reviews) {
 		if ($review->anonymous != 1) 
 		{
 			$name = JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN');
-			//$ruser =& JUser::getInstance($review->user_id);
+			//$ruser = JUser::getInstance($review->user_id);
 			if (is_object($ruser)) 
 			{
 				$name = $this->escape(stripslashes($ruser->get('name')));

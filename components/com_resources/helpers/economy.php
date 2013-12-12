@@ -91,7 +91,7 @@ class ResourcesEconomy extends JObject
 		$points = round($con->ranking);
 
 		// Get qualifying users
-		$juser =& JUser::getInstance($con->authorid);
+		$juser = JUser::getInstance($con->authorid);
 
 		// Reward review author
 		if (is_object($juser) && $juser->get('id')) 
@@ -210,7 +210,7 @@ class ReviewsEconomy extends JObject
 		$points = $this->calculate_marketvalue($review, $type);
 
 		// Get qualifying users
-		$juser =& JUser::getInstance($review->author);
+		$juser = JUser::getInstance($review->author);
 
 		// Reward review author
 		if (is_object($juser)) 

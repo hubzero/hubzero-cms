@@ -185,7 +185,7 @@ $juser = JFactory::getUser();
 <?php } ?>
 
 <?php if ($this->config->getCfg('byview') == 'YES') {
-			$user =& JUser::getInstance($this->row->created_by);
+			$user = JUser::getInstance($this->row->created_by);
 
 			if (is_object($user)) {
 				$name = $user->get('name');

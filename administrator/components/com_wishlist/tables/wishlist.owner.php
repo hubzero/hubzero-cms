@@ -85,7 +85,7 @@ class WishlistOwner extends JTable
 
 		$nativeowners = $this->get_owners($listid, $admingroup, 1);
 
-		$quser =& JUser::getInstance($uid);
+		$quser = JUser::getInstance($uid);
 
 		// cannot delete "native" owner (e.g. resource contributor)
 		if (is_object($quser) && !in_array($quser->get('id'), $nativeowners, true)) 
@@ -117,7 +117,7 @@ class WishlistOwner extends JTable
 		{
 			foreach ($newowners as $no)
 			{
-				$quser =& JUser::getInstance($no);
+				$quser = JUser::getInstance($no);
 				if (is_object($quser) 
 				 && !in_array($quser->get('id'), $owners['individuals'], true) 
 				 && !in_array($quser->get('id'), $owners['advisory'], true)) 

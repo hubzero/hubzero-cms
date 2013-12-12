@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 			$name = JText::_('PLG_RESOURCES_QUESTIONS_ANONYMOUS');
 			if (!$row->get('anonymous')) 
 			{
-				$user =& JUser::getInstance($row->get('created_by'));
+				$user = JUser::getInstance($row->get('created_by'));
 				if (is_object($user)) 
 				{
 					$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';

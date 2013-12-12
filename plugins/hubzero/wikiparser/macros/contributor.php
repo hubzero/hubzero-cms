@@ -99,7 +99,7 @@ class ContributorMacro extends WikiMacro
 			{
 				// No, then we must have a username
 				// Get user's name
-				$cuser =& JUser::getInstance($n);
+				$cuser = JUser::getInstance($n);
 				if (is_object($cuser)) 
 				{
 					$name = $cuser->get('name');

@@ -294,7 +294,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		if (!isset($users[$row->login]))
 		{
 			//echo 'ffff';
-			$targetuser =& JUser::getInstance($row->login);
+			$targetuser = JUser::getInstance($row->login);
 			if (is_object($targetuser) && $targetuser->get('id'))
 			{
 				$users[$row->login] = $targetuser;

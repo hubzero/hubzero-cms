@@ -170,7 +170,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 					}
 				}
 
-				$juser =& JUser::getInstance($uid);
+				$juser = JUser::getInstance($uid);
 				if (!is_object($juser)) 
 				{
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));

@@ -504,7 +504,7 @@ class ContribtoolHtml
 			foreach ($members as $member) 
 			{
 				$uid = ($obj) ? $member->uidNumber : $member;
-				$juser =& JUser::getInstance($uid);
+				$juser = JUser::getInstance($uid);
 				if (is_object($juser)) 
 				{
 					$login = $juser->get('username');

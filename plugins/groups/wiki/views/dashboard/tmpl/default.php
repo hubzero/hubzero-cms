@@ -40,7 +40,7 @@ if ($this->rows) {
 	foreach ($this->rows as $row)
 	{
 		$name = JText::_('WIKI_AUTHOR_UNKNOWN');
-		$juser =& JUser::getInstance( $row->created_by );
+		$juser = JUser::getInstance( $row->created_by );
 		if (is_object($juser) && $juser->get('name')) {
 			$name = $juser->get('name');
 		}

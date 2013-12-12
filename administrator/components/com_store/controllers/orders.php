@@ -123,7 +123,7 @@ class StoreControllerOrders extends Hubzero_Controller
 				}
 				$o->itemtitles = $items;
 
-				$targetuser =& JUser::getInstance($o->uid);
+				$targetuser = JUser::getInstance($o->uid);
 				$o->author = $targetuser->get('username');
 			}
 		}
@@ -202,7 +202,7 @@ class StoreControllerOrders extends Hubzero_Controller
 				return;
 			}
 
-			$customer =& JUser::getInstance($row->uid);
+			$customer = JUser::getInstance($row->uid);
 		}
 		else
 		{
@@ -407,7 +407,7 @@ class StoreControllerOrders extends Hubzero_Controller
 				}
 			}
 
-			$this->view->customer =& JUser::getInstance($this->view->row->uid);
+			$this->view->customer = JUser::getInstance($this->view->row->uid);
 
 			// Check available user funds		
 			$BTL = new Hubzero_Bank_Teller($this->database, $this->view->row->uid);
@@ -462,7 +462,7 @@ class StoreControllerOrders extends Hubzero_Controller
 
 			// get user bank account
 			//$xprofile =& Hubzero_User_Profile::getInstance($row->uid);
-			$xprofile =& JUser::getInstance($row->uid);
+			$xprofile = JUser::getInstance($row->uid);
 			$BTL_Q = new Hubzero_Bank_Teller($this->database, $xprofile->get('id'));
 
 			// start email message

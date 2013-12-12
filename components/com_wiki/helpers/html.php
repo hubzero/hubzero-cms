@@ -115,7 +115,7 @@ class WikiHtml
 
 			$author = 'Unknown';
 			$ausername = '';
-			$auser =& JUser::getInstance($page->created_by);
+			$auser = JUser::getInstance($page->created_by);
 			if (is_object($auser)) 
 			{
 				$author = $auser->get('name');
@@ -138,7 +138,7 @@ class WikiHtml
 				{
 					if ($contributor != $page->created_by) 
 					{
-						$zuser =& JUser::getInstance($contributor);
+						$zuser = JUser::getInstance($contributor);
 						if (is_object($zuser)) 
 						{
 							if (!in_array($zuser->get('username'), $authors)) 

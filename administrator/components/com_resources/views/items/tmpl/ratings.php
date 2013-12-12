@@ -47,7 +47,7 @@ foreach ($rows as $row)
 	{
 		$thedate = JHTML::_('date', $row->created);
 	}
-	$juser =& JUser::getInstance($row->user_id);
+	$juser = JUser::getInstance($row->user_id);
 ?>
 	<tr>
 		<th>User:</th>

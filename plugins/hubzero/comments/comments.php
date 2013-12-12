@@ -639,7 +639,7 @@ class plgHubzeroComments extends JPlugin
 
 				$author = JText::_('COM_KB_ANONYMOUS');
 				if (!$row->anonymous) {
-					$cuser =& JUser::getInstance($row->created_by);
+					$cuser = JUser::getInstance($row->created_by);
 					$author = $cuser->get('name');
 				}
 				
@@ -680,7 +680,7 @@ class plgHubzeroComments extends JPlugin
 
 						$author = JText::_('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous) {
-							$cuser =& JUser::getInstance($reply->created_by);
+							$cuser = JUser::getInstance($reply->created_by);
 							$author = $cuser->get('name');
 						}
 
@@ -721,7 +721,7 @@ class plgHubzeroComments extends JPlugin
 
 								$author = JText::_('COM_KB_ANONYMOUS');
 								if (!$response->anonymous) {
-									$cuser =& JUser::getInstance($response->created_by);
+									$cuser = JUser::getInstance($response->created_by);
 									$author = $cuser->get('name');
 								}
 

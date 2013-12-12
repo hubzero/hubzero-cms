@@ -87,7 +87,7 @@ if ($this->contributors)
 		//{
 			if ($this->badges) 
 			{
-				$xuser =& JUser::getInstance($contributor->id);
+				$xuser = JUser::getInstance($contributor->id);
 				if (is_object($xuser) && $xuser->get('name')) 
 				{
 					$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');

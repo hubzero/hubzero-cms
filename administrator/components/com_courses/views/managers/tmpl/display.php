@@ -96,7 +96,7 @@ $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 			$i = 0;
 			foreach ($managers as $manager)
 			{
-				$u =& JUser::getInstance($manager->get('user_id'));
+				$u = JUser::getInstance($manager->get('user_id'));
 				if (!is_object($u)) 
 				{
 					continue;

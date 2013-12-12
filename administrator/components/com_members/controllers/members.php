@@ -440,7 +440,7 @@ class MembersControllerMembers extends Hubzero_Controller
 		$mt->tag_object($id, $id, $tags, 1, 1);
 
 		// Make sure certain changes make it back to the Joomla user table
-		$juser =& JUser::getInstance($id);
+		$juser = JUser::getInstance($id);
 		$juser->set('name', $name);
 		$juser->set('email', $profile->get('email'));
 		if (!$juser->save()) 

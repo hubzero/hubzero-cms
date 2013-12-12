@@ -293,7 +293,7 @@ if ($this->row->id) {
 				$anon = 1;
 				if ($comment->created_by) 
 				{
-					//$juseri =& JUser::getInstance($comment->created_by);
+					//$juseri = JUser::getInstance($comment->created_by);
 					if (is_object($useri)) 
 					{
 						$name = '<a rel="profile" href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $useri->get('uidNumber') . '">' . $this->escape(stripslashes($useri->get('name'))) . ' (' . $this->escape(stripslashes($useri->get('username'))) . ')</a>';

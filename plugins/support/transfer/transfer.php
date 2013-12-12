@@ -225,7 +225,7 @@ class plgSupportTransfer extends JPlugin
 		$author =& Juser::getInstance($author);
 		if (!is_object($author)) 
 		{
-			$author =& JUser::getInstance($juser->get('id'));
+			$author = JUser::getInstance($juser->get('id'));
 		}
 
 		$today = JFactory::getDate()->toSql();

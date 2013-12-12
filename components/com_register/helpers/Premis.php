@@ -664,7 +664,7 @@ class Hubzero_Register_Premis
 			return $return;
 		}
 		
-		$user =& JUser::getInstance((int)$userId);
+		$user = JUser::getInstance((int)$userId);
 		$user->delete();
 		
 		// Success

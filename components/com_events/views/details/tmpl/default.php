@@ -114,7 +114,7 @@ if ($this->row) {
 	if ($this->page->alias != '') {
 		$html .= (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">'. JText::_('EVENTS_NO_INFO_AVAILABLE') .'</p>';
 	} else {
-		$juser =& JUser::getInstance( $this->row->created_by );
+		$juser = JUser::getInstance( $this->row->created_by );
 
 		if (is_object($juser)) {
 			$name = $juser->get('name');

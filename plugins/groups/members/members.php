@@ -389,7 +389,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
+			$targetuser = JUser::getInstance($mbr);
 
 			// Ensure we found an account
 			if (is_object($targetuser)) 
@@ -489,7 +489,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
+			$targetuser = JUser::getInstance($mbr);
 
 			// Ensure we found an account
 			if (is_object($targetuser)) 
@@ -595,7 +595,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
+			$targetuser = JUser::getInstance($mbr);
 
 			// Ensure we found an account
 			if (is_object($targetuser)) 
@@ -747,7 +747,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
+			$targetuser = JUser::getInstance($mbr);
 
 			// Ensure we found an account
 			if (is_object($targetuser)) 
@@ -915,7 +915,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
+			$targetuser = JUser::getInstance($mbr);
 
 			// Ensure we found an account
 			if (is_object($targetuser)) 
@@ -1053,7 +1053,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			else 
 			{
 				// Retrieve user's account info
-				$targetuser =& JUser::getInstance($mbr);
+				$targetuser = JUser::getInstance($mbr);
 
 				// Ensure we found an account
 				if (is_object($targetuser)) 

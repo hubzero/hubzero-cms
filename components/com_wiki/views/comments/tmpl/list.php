@@ -57,7 +57,7 @@ if (count($this->comments) > 0) {
 
 		if ($comment->anonymous != 1) {
 			$author = JText::_('COM_WIKI_AUTHOR_UNKNOWN');
-			//$cuser =& JUser::getInstance($comment->created_by);
+			//$cuser = JUser::getInstance($comment->created_by);
 			if (is_object($cuser)) {
 				$author = $cuser->get('name');
 			}

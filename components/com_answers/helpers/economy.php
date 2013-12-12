@@ -220,7 +220,7 @@ class AnswersEconomy extends JObject
 		}
 
 		// Reward asker
-		$q_user =& JUser::getInstance($Q_owner);
+		$q_user = JUser::getInstance($Q_owner);
 		if (is_object($q_user) && $q_user->get('id')) 
 		{
 			$BTL_Q = new Hubzero_Bank_Teller($this->_db , $q_user->get('id'));
@@ -244,7 +244,7 @@ class AnswersEconomy extends JObject
 		}
 
 		// Reward others
-		//$ba_user =& JUser::getInstance($BA_owner);
+		//$ba_user = JUser::getInstance($BA_owner);
 		ximport('Hubzero_User_Profile');
 		$ba_user = Hubzero_User_Profile::getInstance($BA_owner);
 		if (is_object($ba_user) && $ba_user->get('id')) 

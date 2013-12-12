@@ -173,7 +173,7 @@ class WishlistEconomy extends JObject
 			{
 				foreach ($owners as $owner)
 				{
-					$o =& JUser::getInstance($owner);
+					$o = JUser::getInstance($owner);
 					if (!is_object($o) || !$o->get('id')) 
 					{
 						continue;
@@ -198,7 +198,7 @@ class WishlistEconomy extends JObject
 			// give main share
 			if ($wish->assigned && $mainshare) 
 			{
-				$o =& JUser::getInstance($wish->assigned);
+				$o = JUser::getInstance($wish->assigned);
 				if (is_object($o) && $o->get('id')) 
 				{
 					$BTLM = new Hubzero_Bank_Teller($this->_db , $wish->assigned);
@@ -212,7 +212,7 @@ class WishlistEconomy extends JObject
 			{
 				foreach ($payees as $p)
 				{
-					$o =& JUser::getInstance($p->uid);
+					$o = JUser::getInstance($p->uid);
 					if (!is_object($o) || !$o->get('id')) 
 					{
 						continue;
@@ -244,7 +244,7 @@ class WishlistEconomy extends JObject
 		$juser = JFactory::getUser();
 		if ($wish->ranking > 0 && $wish->proposed_by != $juser->get('id') && $wish->proposed_by) 
 		{
-			$o =& JUser::getInstance($wish->proposed_by);
+			$o = JUser::getInstance($wish->proposed_by);
 			if (is_object($o) && $o->get('id')) 
 			{
 				$BTLA = new Hubzero_Bank_Teller($this->_db , $wish->proposed_by);

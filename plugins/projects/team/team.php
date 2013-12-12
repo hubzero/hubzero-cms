@@ -506,7 +506,7 @@ class plgProjectsTeam extends JPlugin
 						}
 						else 
 						{
-							$juser =& JUser::getInstance( $uid );
+							$juser = JUser::getInstance( $uid );
 							if (!is_object($juser)) 
 							{
 								$invalid[] = $uid;
@@ -559,7 +559,7 @@ class plgProjectsTeam extends JPlugin
 					$uu = $uids[$i];
 					if ($uu && is_numeric($uu) ) 
 					{
-						$xuser =& JUser::getInstance( $uids[$i] );	
+						$xuser = JUser::getInstance( $uids[$i] );	
 						$note  .= is_numeric($uids[$i]) && is_object($xuser) ? $xuser->get('name') : $uids[$i];
 					}
 					else 
@@ -927,7 +927,7 @@ class plgProjectsTeam extends JPlugin
 	{		
 		if ($uid && !$email) 
 		{
-			$user =& JUser::getInstance( $uid );
+			$user = JUser::getInstance( $uid );
 			$email = is_object($user) ? $user->get('email') : '';
 		}
 		
@@ -993,7 +993,7 @@ class plgProjectsTeam extends JPlugin
 		$eview->option 			= $this->_option;
 		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
 		$eview->by 				= $this->_uid;
-		$actor 					=& JUser::getInstance( $this->_uid );
+		$actor 					= JUser::getInstance( $this->_uid );
 		$eview->actor 			= $actor;
 		$eview->uid 			= $uid;		
 		$eview->project 		= $this->_project;

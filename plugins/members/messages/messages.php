@@ -629,7 +629,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$mbrs = JRequest::getVar('to', array());
 		foreach($mbrs as $mbr)
 		{
-			$mem =& JUser::getInstance($mbr);
+			$mem = JUser::getInstance($mbr);
 			$tos[] = $mem->get('name') . ' (' . $mem->get('id') . ')';
 		}
 
@@ -692,7 +692,7 @@ class plgMembersMessages extends Hubzero_Plugin
 
 		if (substr($xmessage->type, -8) == '_message') 
 		{
-			$u =& JUser::getInstance($xmessage->created_by);
+			$u = JUser::getInstance($xmessage->created_by);
 			$from = '<a href="'.JRoute::_('index.php?option=' . $option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
 		} 
 		else 

@@ -136,7 +136,7 @@ if (!$contributions) {
 
 			// get author login
 			$author_login = JText::_('MOD_MYCONTRIBUTIONS_UNKNOWN');
-			$author =& JUser::getInstance($contributions[$i]->created_by);
+			$author = JUser::getInstance($contributions[$i]->created_by);
 			if (is_object($author)) {
 				$author_login = '<a href="'.JRoute::_('index.php?option=com_members&id='.$author->get('id')).'">'.stripslashes($author->get('name')).'</a>';
 			}

@@ -152,7 +152,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 			}
 
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr['user_id']);
+			$targetuser = JUser::getInstance($mbr['user_id']);
 
 			// Ensure we found an account
 			if (is_object($targetuser))

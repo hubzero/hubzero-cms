@@ -34,12 +34,12 @@ JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'REPORT_ABUSE' ), 's
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-$reporter =& JUser::getInstance($this->report->created_by);
+$reporter = JUser::getInstance($this->report->created_by);
 
 $link = '';
 
 if (is_object($this->reported)) {
-	$author =& JUser::getInstance($this->reported->author);
+	$author = JUser::getInstance($this->reported->author);
 
 	if (is_object($author) && $author->get('username')) {
 		$this->title .= ' by '.$author->get('username');

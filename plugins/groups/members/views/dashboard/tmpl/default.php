@@ -40,7 +40,7 @@ if ($this->logs) {
 		$name = JText::_('PLG_GROUPS_MEMBERS_UNKNOWN');
 		//$username = JText::_('PLG_GROUPS_MEMBERS_UNKNOWN');
 
-		$juser =& JUser::getInstance( $log->actorid );
+		$juser = JUser::getInstance( $log->actorid );
 		if (is_object($juser) && $juser->get('name')) {
 			$name = $juser->get('name');
 			//$username = $juser->get('username');
@@ -53,7 +53,7 @@ if ($this->logs) {
 			//$target_username = JText::_('PLG_GROUPS_MEMBERS_UNKNOWN');
 
 			if(is_numeric($log->uid)) {
-				$target_user =& JUser::getInstance( $log->uid );
+				$target_user = JUser::getInstance( $log->uid );
 				if (is_object($target_user) && $target_user->get('name')) {
 					$target_name = $target_user->get('name');
 					//$target_username = $target_user->get('username');

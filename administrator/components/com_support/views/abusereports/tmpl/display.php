@@ -97,7 +97,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			break;
 	}
 
-	$juser =& JUser::getInstance($row->created_by);
+	$juser = JUser::getInstance($row->created_by);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $row->id;  ?></td>

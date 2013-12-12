@@ -40,7 +40,7 @@ if ($this->getError()) { ?>
 		$name = JText::_('MOD_FEATUREDQUESTION_ANONYMOUS');
 		if ($this->row->anonymous == 0) 
 		{
-			$juser =& JUser::getInstance($this->row->created_by);
+			$juser = JUser::getInstance($this->row->created_by);
 			if (is_object($juser)) 
 			{
 				$name = $juser->get('name');

@@ -272,7 +272,7 @@ class WikiPageAuthor extends JTable
 			foreach ($authArray as $author)
 			{
 				// Attempt to load each user
-				$targetuser =& JUser::getInstance($author);
+				$targetuser = JUser::getInstance($author);
 
 				// Ensure we found an account
 				if (!is_object($targetuser)) 
@@ -345,7 +345,7 @@ class WikiPageAuthor extends JTable
 				$authors = array_map('trim', $authors);
 				foreach ($authors as $author)
 				{
-					$targetuser =& JUser::getInstance($author);
+					$targetuser = JUser::getInstance($author);
 
 					// Ensure we found an account
 					if (is_object($targetuser)) 

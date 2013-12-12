@@ -56,7 +56,7 @@ $name = JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS');
 $juseri = new Hubzero_User_Profile();
 if ($this->reply->anonymous != 1) {
 	$name = JText::_('PLG_PUBLICATION_REVIEWS_UNKNOWN');
-	/*$ruser =& JUser::getInstance($this->reply->added_by);
+	/*$ruser = JUser::getInstance($this->reply->added_by);
 	if (is_object($ruser)) {
 		$name = $ruser->get('name');
 	}*/

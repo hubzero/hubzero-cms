@@ -210,7 +210,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 			return;
 		}
 
-		$author 	=& JUser::getInstance($subscription->uid);
+		$author 	= JUser::getInstance($subscription->uid);
 		$subscription->notes = rtrim(stripslashes(JRequest::getVar('notes', '')));
 		$action	 	= JRequest::getVar('action', '');
 		$message	= JRequest::getVar('message', '');

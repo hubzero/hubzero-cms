@@ -1436,7 +1436,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Send e-mail to ticket owner?
-			$juser =& JUser::getInstance($row->owner);
+			$juser = JUser::getInstance($row->owner);
 
 			// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
@@ -2377,7 +2377,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						// submitter regardless of the above setting
 						if ($rowc->access != 1) 
 						{
-							$zuser =& JUser::getInstance($row->login);
+							$zuser = JUser::getInstance($row->login);
 							// Make sure there even IS an e-mail and it's valid
 							if (is_object($zuser) && $zuser->get('id')) 
 							{
@@ -2451,7 +2451,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					{
 						if ($row->owner) 
 						{
-							$juser =& JUser::getInstance($row->owner);
+							$juser = JUser::getInstance($row->owner);
 
 							// Track everyone already messaged so we don't message them twice
 							if (in_array($juser->get('id'), $watcher_ids))
@@ -2497,7 +2497,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							{
 								// Username or user ID - load the user
 								$acc = (is_string($acc)) ? strtolower($acc) : $acc;
-								$juser =& JUser::getInstance($acc);
+								$juser = JUser::getInstance($acc);
 								// Did we find an account?
 								if (is_object($juser)) 
 								{
@@ -2761,7 +2761,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				}
 
 				// get user's infor from login
-				$juser =& JUser::getInstance($row->login);
+				$juser = JUser::getInstance($row->login);
 				$row->name  = $juser->get('name');
 				$row->email = $juser->get('email');
 			}
@@ -3393,7 +3393,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						$users[] = JHTML::_('select.optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
-							$u =& JUser::getInstance($member);
+							$u = JUser::getInstance($member);
 							if (!is_object($u)) 
 							{
 								continue;
@@ -3421,7 +3421,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 				foreach ($members as $member)
 				{
-					$u =& JUser::getInstance($member);
+					$u = JUser::getInstance($member);
 					if (!is_object($u)) 
 					{
 						continue;

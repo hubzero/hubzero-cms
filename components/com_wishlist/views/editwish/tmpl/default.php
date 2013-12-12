@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		if ($task=='editwish') 
 		{
 			$login = JText::_('COM_WISHLIST_UNKNOWN');
-			$ruser =& JUser::getInstance($wish->proposed_by);
+			$ruser = JUser::getInstance($wish->proposed_by);
 			if (is_object($ruser)) 
 			{
 				$login = $ruser->get('username');

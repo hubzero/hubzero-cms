@@ -99,7 +99,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					$name = JText::_('Anonymous');
 					if (!$row->anonymous)
 					{
-						$creator =& JUser::getInstance($row->created_by);
+						$creator = JUser::getInstance($row->created_by);
 						if (is_object($creator)) 
 						{
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
@@ -144,7 +144,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 									if (is_object($lastpost)) 
 									{
 										$lname = JText::_('Anonymous');
-										$lastposter =& JUser::getInstance($lastpost->created_by);
+										$lastposter = JUser::getInstance($lastpost->created_by);
 										if (is_object($lastposter)) 
 										{
 											$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';

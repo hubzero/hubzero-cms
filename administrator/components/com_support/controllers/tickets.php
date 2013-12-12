@@ -729,7 +729,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							jimport('joomla.user.helper');
 							if (($zid = JUserHelper::getUserId($row->login)))
 							{
-								$zuser =& JUser::getInstance($row->login);
+								$zuser = JUser::getInstance($row->login);
 							}
 							// Make sure there even IS an e-mail and it's valid
 							if (is_object($zuser) && $zuser->get('id'))
@@ -793,7 +793,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					{
 						if ($row->owner)
 						{
-							$juser =& JUser::getInstance($row->owner);
+							$juser = JUser::getInstance($row->owner);
 
 							// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 							if ($allowEmailResponses)
@@ -836,7 +836,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							if (!strstr($acc, '@'))
 							{
 								// Username or user ID - load the user
-								$juser =& JUser::getInstance($acc);
+								$juser = JUser::getInstance($acc);
 
 								// Did we find an account?
 								if (!is_object($juser))
@@ -1138,7 +1138,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						$users[] = JHTML::_('select.optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
-							$u =& JUser::getInstance($member);
+							$u = JUser::getInstance($member);
 							if (!is_object($u))
 							{
 								continue;
@@ -1167,7 +1167,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 				foreach ($members as $member)
 				{
-					$u =& JUser::getInstance($member);
+					$u = JUser::getInstance($member);
 					if (!is_object($u))
 					{
 						continue;

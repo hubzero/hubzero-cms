@@ -249,7 +249,7 @@ if (count($this->rows) > 0)
 					$name = JText::_('COM_FEATURES_ANONYMOUS');
 					if ($row->anonymous == 0) 
 					{
-						$juser =& JUser::getInstance($row->created_by);
+						$juser = JUser::getInstance($row->created_by);
 						if (is_object($juser)) 
 						{
 							$name = $juser->get('name');

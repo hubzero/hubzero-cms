@@ -45,7 +45,7 @@ $usertype = JText::_('Unknown');
 $submitter = new Hubzero_User_Profile();
 if ($this->row->login) 
 {
-	//$juseri =& JUser::getInstance($comment->created_by);
+	//$juseri = JUser::getInstance($comment->created_by);
 	$submitter->load($this->row->login);
 	if (is_object($submitter) && $submitter->get('name')) 
 	{
