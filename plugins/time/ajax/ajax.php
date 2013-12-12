@@ -281,6 +281,7 @@ class plgTimeAjax extends Hubzero_Plugin
 		$startdate = JRequest::getVar('startdate', '2000-01-01');
 		$enddate   = JRequest::getVar('enddate', '2100-01-01');
 		$token     = JRequest::getVar('token');
+		$limit     = JRequest::getInt('limit', 1000);
 
 		// Make sure they are authenticated to save records
 		if(!empty($token) && !$this->authenticate())
@@ -297,7 +298,7 @@ class plgTimeAjax extends Hubzero_Plugin
 		}
 
 		// Filters for query
-		$filters = array('limit'=>'1000', 'start'=>'0', 'pid'=>$pid, 'startdate'=>$startdate, 'enddate'=>$enddate);
+		$filters = array('limit'=>$limit, 'start'=>'0', 'pid'=>$pid, 'startdate'=>$startdate, 'enddate'=>$enddate);
 
 		// Create object and get records
 		$record  = new TimeRecords($this->db);
