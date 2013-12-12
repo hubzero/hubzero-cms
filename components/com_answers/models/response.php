@@ -92,7 +92,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 		}
 		if (!isset($filters['category']))
 		{
-			$filters['category'] = 'answercomment';
+			$filters['category'] = 'answer';
 		}
 
 		switch (strtolower($rtrn))

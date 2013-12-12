@@ -259,12 +259,10 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		{
 			$filters['filterby'] = 'rejected';
 		}
-		/*
 		if (!isset($filters['replies']))
 		{
 			$filters['replies'] = true;
 		}
-		*/
 		$filters['sort']     = 'created';
 		$filters['sort_Dir'] = 'DESC';
 

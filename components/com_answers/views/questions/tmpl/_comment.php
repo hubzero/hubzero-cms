@@ -35,9 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 		$comment  = $this->comment->content('parsed');
 	}
 
-	$this->comment->set('category', 'answercomment');
-	
-	$category = $this->depth == 1 ? 'answer' : 'answercomment';
+	$this->comment->set('category', ($this->depth == 1 ? 'answer' : 'answercomment'));
 
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
@@ -129,7 +127,7 @@ defined('_JEXEC') or die('Restricted access');
 						<legend><span><?php echo JText::sprintf('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
-						<input type="hidden" name="comment[category]" value="<?php echo $category; ?>" />
+						<input type="hidden" name="comment[category]" value="<?php echo $this->comment->get('category') ?>" />
 						<input type="hidden" name="comment[referenceid]" value="<?php echo $this->comment->get('id'); ?>" />
 						<input type="hidden" name="comment[added]" value="" />
 						<input type="hidden" name="comment[added_by]" value="<?php echo $juser->get('id'); ?>" />
@@ -176,7 +174,7 @@ defined('_JEXEC') or die('Restricted access');
 			$view->parent     = $this->comment->get('id');
 			$view->question   = $this->question;
 			$view->option     = $this->option;
-			$view->comments   = $this->comment->replies('list', $filters = array('category' => $category, 'id' => $this->comment->get('id')));
+			$view->comments   = $this->comment->replies('list');
 			$view->config     = $this->config;
 			$view->depth      = $this->depth;
 			$view->cls        = $cls;
