@@ -61,7 +61,7 @@ $pubQuota = $this->params->get('pubQuota');
 $pubQuota = $pubQuota ? $pubQuota : ProjectsHtml::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 
 ?>
 <script type="text/javascript">

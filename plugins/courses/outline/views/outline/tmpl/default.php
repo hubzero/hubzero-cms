@@ -68,7 +68,7 @@ if (!$this->course->offering()->access('view')) { ?>
 		<div class="outline-head">
 			<?php
 				// Trigger event
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$results = $dispatcher->trigger('onCourseBeforeOutline', array(
 					$this->course,
 					$this->course->offering()

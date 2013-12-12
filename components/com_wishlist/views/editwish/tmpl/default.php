@@ -130,7 +130,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php 
 			// Tag editor plug-in
 			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $wish->tags)) );
 			if (count($tf) > 0) {
 				echo $tf[0];

@@ -1116,7 +1116,7 @@ class Hubzero_Registration
 				$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
 			}
 			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$validcaptchas = $dispatcher->trigger( 'onValidateCaptcha' );
 			if (count($validcaptchas) > 0) {
 				foreach ($validcaptchas as $validcaptcha) {

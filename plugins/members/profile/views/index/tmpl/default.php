@@ -777,7 +777,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							);
 						
 							JPluginHelper::importPlugin( 'hubzero' );
-							$dispatcher =& JDispatcher::getInstance();
+							$dispatcher = JDispatcher::getInstance();
 							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($tag_string))) );
 						
 							if (count($tf) > 0) 

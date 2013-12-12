@@ -1372,7 +1372,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			}
 
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Email each group member separately, each needs a user specific token
 			ximport('Hubzero_EmailToken');

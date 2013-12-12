@@ -319,7 +319,7 @@ class typeDatabases extends JObject
 			
 			// Get databases plugin
 			JPluginHelper::importPlugin( 'projects', 'databases');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			
 			// Get publications helper
 			$helper = new PublicationHelper($this->_database, $vid, $pid);
@@ -636,7 +636,7 @@ class typeDatabases extends JObject
 			{
 				// Get databases plugin
 				JPluginHelper::importPlugin( 'projects', 'databases');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				
 				// New database instance - need to clone again and get a new version number
 				$result 	= $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );

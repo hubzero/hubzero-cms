@@ -303,7 +303,7 @@ class RecommendedTags
 				<?php echo JText::_('COM_CONTRIBUTE_TAGS_ASSIGNED'); ?>:
 				<?php
 				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$recommended->get_existing_tags_value_list())) );
 

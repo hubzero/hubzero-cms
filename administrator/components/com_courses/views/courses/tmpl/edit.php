@@ -184,7 +184,7 @@ function submitbutton(pressbutton)
 		<?php
 
 			JPluginHelper::importPlugin('courses');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			if ($plugins = $dispatcher->trigger('onCourseEdit'))
 			{

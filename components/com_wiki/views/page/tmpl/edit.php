@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 JPluginHelper::importPlugin('hubzero');
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 
 if ($this->page->id) {
 	$lid = $this->page->id;

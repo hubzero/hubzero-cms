@@ -728,7 +728,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		// for every user added to this course
 		JPluginHelper::importPlugin('courses');
 
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onCourseSave', array($this));
 
 		if ($affected > 0)
@@ -876,7 +876,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		if (!isset($this->_plugins[$event]))
 		{
 			JPluginHelper::importPlugin('courses');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			$this->_plugins[$event] = $dispatcher->trigger($event, array(
 					$this

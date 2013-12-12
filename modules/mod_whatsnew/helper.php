@@ -52,7 +52,7 @@ class modWhatsNew extends Hubzero_Module
 
 			// Load the whatsnew plugins
 			JPluginHelper::importPlugin('whatsnew');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Trigger the functions that return the areas we'll be searching
 			$searchareas = $dispatcher->trigger('onWhatsNewAreas');
@@ -196,7 +196,7 @@ class modWhatsNew extends Hubzero_Module
 
 		// Load plugins
 		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Process the keyword for exact time period
 		$p = new WhatsnewPeriod($this->period);

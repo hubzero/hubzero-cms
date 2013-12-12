@@ -222,7 +222,7 @@ class plgXMessageHandler extends JPlugin
 		if (count($to) > 0) 
 		{
 			// Load plugins
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			ximport('Hubzero_User_Profile');
 
 			$mconfig = JComponentHelper::getParams('com_members');

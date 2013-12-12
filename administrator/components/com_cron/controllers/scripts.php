@@ -93,7 +93,7 @@ class CronControllerScripts extends JObject
 				$model->store();
 
 				JPluginHelper::importPlugin('cron');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 
 				// Show related content
 				$results = $dispatcher->trigger($row->event);

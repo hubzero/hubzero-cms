@@ -363,7 +363,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		//get before group content
 		$this->view->beforeGroupContent = $dispatcher->trigger('onBeforeGroup', 
@@ -740,7 +740,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 			// Get plugins
 			JPluginHelper::importPlugin('groups');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
@@ -770,7 +770,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Get plugins
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		//only email managers if updating group
 		if($type == 'groups_changed')
@@ -871,7 +871,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		// then add overview to array
@@ -1053,7 +1053,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		//start log
 		$this->view->log = JText::sprintf('COM_GROUPS_DELETE_MEMBER_LOG',count($this->view->group->get('members')));
@@ -1172,7 +1172,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that delete associated content
 		// Should return logs of what was deleted
@@ -1229,7 +1229,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('groups_deleted', $subject, $message, $from, $members, $this->_option))) 
 		{
 			$this->setNotification(JText::_('COM_GROUPS_DELETE_MESSAGE_SEND_FAILURE'), 'error');

@@ -1184,7 +1184,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 			// Send message
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('resources_submission_approved', $subject, $message, $from, $contributors, $this->_option)))
 			{
 				$this->setError(JText::_('Failed to message users.'));

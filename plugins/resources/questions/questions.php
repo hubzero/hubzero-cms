@@ -474,7 +474,7 @@ class plgResourcesQuestions extends JPlugin
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers'))) 
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));

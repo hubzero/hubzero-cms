@@ -367,7 +367,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Load the plugins
 		//JPluginHelper::importPlugin('xmessage');
-		//$dispatcher =& JDispatcher::getInstance();
+		//$dispatcher = JDispatcher::getInstance();
 
 		foreach ($ids as $id)
 		{

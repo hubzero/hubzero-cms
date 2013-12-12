@@ -193,7 +193,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Incoming paging vars
 		$sort = JRequest::getVar('sort', 'date');

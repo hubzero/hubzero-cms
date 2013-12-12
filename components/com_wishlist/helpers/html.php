@@ -309,7 +309,7 @@ class WishlistHtml
 		$html .= "\t" . '<label class="tagdisplay">' . JText::_('WISH_FIND_BY_TAGS') . ': ' . "\n";
 
 		JPluginHelper::importPlugin('hubzero');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $filters['tag'])));
 
 		if (count($tf) > 0) 

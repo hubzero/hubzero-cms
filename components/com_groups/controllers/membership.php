@@ -379,7 +379,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('groups_invite', $subject, $message, $from, $invitees, $this->_option))) 
 		{
 			$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED'), 'error');
@@ -601,7 +601,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		
 		// E-mail the administrator
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('groups_accepts_membership', $subject, $message, $from, $this->view->group->get('managers'), $this->_option))) 
 		{
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
@@ -723,7 +723,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		// E-mail the administrator
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option)))
 		{
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
@@ -987,7 +987,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// E-mail the administrator
 		$url = 'index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn') . '&active=members';
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('groups_requests_membership', $subject, $message, $from, $this->view->group->get('managers'), $this->_option, $this->view->group->get('gidNumber'), $url))) 
 		{
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);

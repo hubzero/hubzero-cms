@@ -916,7 +916,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, $this->_option))) 
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
@@ -1056,7 +1056,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 				// Send the message
 				JPluginHelper::importPlugin('xmessage');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				if (!$dispatcher->trigger('onSendMessage', array('answers_question_deleted', $subject, $message, $from, $users, $this->_option))) 
 				{
 					$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
@@ -1211,7 +1211,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		if (!in_array($authorid, $receivers)) 
 		{
@@ -1266,7 +1266,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Load the plugins
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Call the plugin
 		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($this->juser->get('id')), $this->_option, $rid))) 

@@ -176,7 +176,7 @@ class Hubzero_Message_Helper extends JObject
 
 				// Load plugins
 				JPluginHelper::importPlugin('xmessage');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 
 				// Do we have any methods?
 				if ($methods) 

@@ -1008,7 +1008,7 @@ class plgProjectsTeam extends JPlugin
 		{
 			// Send HUB message
 			JPluginHelper::importPlugin( 'xmessage' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if ($dispatcher->trigger( 'onSendMessage', array( 'projects_member_added', 
 				$subject, $message, $from, 
 				array($uid), $this->_option ))) {

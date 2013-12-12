@@ -111,7 +111,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		// profile info
 		if($seeker) {
 			JPluginHelper::importPlugin( 'members','resume' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			// show seeker info
 			$out   = $dispatcher->trigger( 'showSeeker', array($seeker, $this->emp, $this->admin, 'com_members', $list=0) );
 			if (count($out) > 0) {

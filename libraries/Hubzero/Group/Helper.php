@@ -593,7 +593,7 @@ class Hubzero_Group_Helper
 	{
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher =  JDispatcher::getInstance();
 		
 		// Trigger the functions that return the areas we'll be using
 		//then add overview to array

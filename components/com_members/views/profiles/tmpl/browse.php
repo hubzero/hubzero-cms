@@ -206,7 +206,7 @@ if (count($this->rows) > 0)
 {
 	// Get plugins
 	JPluginHelper::importPlugin('members');
-	$dispatcher =& JDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 
 	$areas = array();
 	$activeareas = $dispatcher->trigger('onMembersContributionsAreas', array($this->authorized));

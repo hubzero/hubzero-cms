@@ -156,7 +156,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 <?php
 	JPluginHelper::importPlugin('courses');
-	$dispatcher =& JDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 
 	$after = $dispatcher->trigger('onCourseDashboard', array($this->course, $this->offering));
 	echo implode("\n", $after);

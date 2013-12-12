@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 
 JPluginHelper::importPlugin('hubzero');
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 
 $status = SupportHtml::getStatus($this->row->open, $this->row->status);
 

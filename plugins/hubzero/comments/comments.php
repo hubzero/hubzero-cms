@@ -618,7 +618,7 @@ class plgHubzeroComments extends JPlugin
 		// Start outputing results if any found
 		if (count($rows) > 0) {
 			JPluginHelper::importPlugin('hubzero');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			
 			$wikiconfig = array(
 				'option'   => $this->_option,

@@ -98,7 +98,7 @@ class plgMembersContributions extends JPlugin
 		);
 
 		$database = JFactory::getDBO();
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Incoming paging vars
 		$limit = JRequest::getInt('limit', 25);

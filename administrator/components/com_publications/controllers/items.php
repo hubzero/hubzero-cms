@@ -917,7 +917,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 
 			// Send message
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('publication_status_changed', $subject, $body, $from, $authors, $this->_option)))
 			{
 				$this->setError(JText::_('Failed to message authors.'));
@@ -1155,7 +1155,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		if ($pid)
 		{
 			JPluginHelper::importPlugin( 'projects', 'publications' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
 
 			$this->_message = JText::_('Archival package produced');

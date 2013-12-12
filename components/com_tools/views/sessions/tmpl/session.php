@@ -49,7 +49,7 @@ foreach($this->shares as $share)
 $venue = false;
 
 JPluginHelper::importPlugin('mw');
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 ?>
 <div id="session">
 <?php

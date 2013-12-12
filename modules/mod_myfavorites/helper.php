@@ -53,7 +53,7 @@ class modMyFavorites extends Hubzero_Module
 		$authorized = true;
 
 		JPluginHelper::importPlugin('members');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();

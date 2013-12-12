@@ -672,7 +672,7 @@ if ($this->wishlist && $this->wish) {
 						?>
 							<?php 
 							/*JPluginHelper::importPlugin('hubzero');
-							$dispatcher =& JDispatcher::getInstance();
+							$dispatcher = JDispatcher::getInstance();
 						$gc = $dispatcher->trigger('onGetMultiEntry', array(array('groups', 'ticket[group]', 'acgroup', '', ($this->wishlist->category=='group' ? $this->wishlist->cn : ''), '', 'ticketowner')));
 						if (count($gc) > 0) {
 							echo $gc[0];

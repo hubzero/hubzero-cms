@@ -93,7 +93,7 @@ class plgCitationDefault extends JPlugin
 		{
 			//load citation import plugins
 			JPluginHelper::importPlugin('citation');
-	        $dispatcher =& JDispatcher::getInstance();
+	        $dispatcher = JDispatcher::getInstance();
 
 			//make new file to pass to dispatcher
 			$new_file = array(

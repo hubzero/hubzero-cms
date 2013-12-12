@@ -95,7 +95,7 @@ class UsageControllerResults extends Hubzero_Controller
 
 		// Get plugins
 		JPluginHelper::importPlugin('usage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$this->view->cats = $dispatcher->trigger('onUsageAreas', array());

@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->entry->tags('string'))) );
 
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00')

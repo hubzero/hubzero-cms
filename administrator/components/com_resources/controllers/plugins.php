@@ -213,7 +213,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 
 		// Get related plugins
 		JPluginHelper::importPlugin('members');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Show related content
 		$this->view->manage = $dispatcher->trigger('onCanManage');
@@ -256,7 +256,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 
 		// Get related plugins
 		JPluginHelper::importPlugin('members', $plugin);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Show related content
 		$out = $dispatcher->trigger(

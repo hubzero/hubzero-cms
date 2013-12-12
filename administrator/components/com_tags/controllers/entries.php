@@ -255,7 +255,7 @@ class TagsControllerEntries extends Hubzero_Controller
 
 		// Get Tags plugins
 		JPluginHelper::importPlugin('tags');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		foreach ($ids as $id)
 		{

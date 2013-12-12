@@ -196,7 +196,7 @@ $group = JRequest::getVar("group", "");
 				<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
 				<?php 
 				JPluginHelper::importPlugin('hubzero');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 			$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
 
 			if (count($tf) > 0) {

@@ -554,7 +554,7 @@ class Project extends JTable
 		{
 			// Compute
 			JPluginHelper::importPlugin( 'projects', 'files');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$fTotal 	= $dispatcher->trigger( 'getStats', array($validProjects) );
 			$fTotal 	= $fTotal[0];
 			$fAverage 	= number_format($fTotal/count($validProjects), 0);

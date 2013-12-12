@@ -104,7 +104,7 @@ if ($this->row->owner)
 ximport('Hubzero_User_Profile');
 
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 
 $cc = array();
 ?>

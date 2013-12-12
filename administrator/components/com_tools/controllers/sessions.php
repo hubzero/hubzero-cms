@@ -144,7 +144,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 
 			// Get plugins
 			JPluginHelper::importPlugin('mw');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Loop through each ID
 			foreach ($ids as $id) 

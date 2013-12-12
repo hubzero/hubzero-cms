@@ -99,7 +99,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 					<label>
 					<?php 	
 						JPluginHelper::importPlugin( 'hubzero');
-						$dispatcher =& JDispatcher::getInstance();
+						$dispatcher = JDispatcher::getInstance();
 
 						$mc = $dispatcher->trigger( 'onGetSingleEntry', array(array('members', 'newmember', 'newmember', '', '')) );
 												

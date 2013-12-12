@@ -576,7 +576,7 @@ class StoreControllerShop extends Hubzero_Controller
 
 			// Send confirmation
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('store_notifications', $subject, $message, $hub, array($this->juser->get('id')), $this->_option))) 
 			{
 				$this->setError(JText::_('COM_STORE_ERROR_MESSAGE_FAILED'));

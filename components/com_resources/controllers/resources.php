@@ -635,7 +635,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 				// Get Resources plugins
 				JPluginHelper::importPlugin('resources');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 
 				// Get the sections
 				$bits['sections'] = $dispatcher->trigger('onResources', array($model, $this->_option, array('about'), 'metadata'));
@@ -1364,7 +1364,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// Get Resources plugins
 		JPluginHelper::importPlugin('resources');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		$sections = array();
 		$cats = array();
@@ -2074,7 +2074,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// Get Resources plugins
 		JPluginHelper::importPlugin('resources');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Call the trigger
 		$results = $dispatcher->trigger($trigger, array($this->_option));

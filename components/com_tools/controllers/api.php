@@ -443,7 +443,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		
 		// Get plugins
 		JPluginHelper::importPlugin('mw', $app->toolname);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Trigger any events that need to be called before session invoke
 		$dispatcher->trigger('onBeforeSessionInvoke', array($app->toolname, $app->version));
@@ -577,7 +577,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		
 		// Get plugins
 		JPluginHelper::importPlugin('mw', $app->name);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger any events that need to be called before session start
 		$dispatcher->trigger('onBeforeSessionStart', array($toolname, $tv->revision));
@@ -653,7 +653,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		
 		//get middleware plugins
 		JPluginHelper::importPlugin('mw', $ms->appname);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onBeforeSessionStop', array($ms->appname));

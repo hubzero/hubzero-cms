@@ -488,7 +488,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			// Get plugins
 			JPluginHelper::importPlugin('groups');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			foreach ($ids as $id)
 			{

@@ -166,7 +166,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->view->active = JRequest::getVar('active', 'overview');
 
 		JPluginHelper::importPlugin('courses');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		$this->view->cats = $dispatcher->trigger('onCourseViewAreas', array(
 				$this->course
@@ -379,7 +379,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 			// Get plugins
 			JPluginHelper::importPlugin('courses');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
@@ -478,7 +478,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Get plugins
 		JPluginHelper::importPlugin('courses');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Incoming
 		$process = JRequest::getVar('process', '');
@@ -559,7 +559,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('courses_deleted', $subject, $message, $from, $members, $this->_option))) 
 		{
 			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'), 'error');

@@ -4399,7 +4399,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Get files plugin
 		JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Get screenshot path
 		$webpath = $this->_pubconfig->get('webpath');

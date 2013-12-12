@@ -209,7 +209,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html.= '<ul id="candidates">'."\n";
 
 		JPluginHelper::importPlugin( 'members','resume' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$k = 1;
 		for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {
 			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {

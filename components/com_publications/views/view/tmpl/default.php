@@ -170,7 +170,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		// Get Related Resources plugin
 		JPluginHelper::importPlugin( 'resources', 'related' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Show related content
 		$out = $dispatcher->trigger( 'onPublicationSub', array($publication, $option, 1) );

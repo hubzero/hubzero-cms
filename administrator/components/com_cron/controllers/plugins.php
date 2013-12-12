@@ -212,7 +212,7 @@ class CronControllerPlugins extends Hubzero_Controller
 
 		// Get related plugins
 		JPluginHelper::importPlugin($this->_folder);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Show related content
 		$this->view->manage = $dispatcher->trigger('onCanManage');
@@ -252,7 +252,7 @@ class CronControllerPlugins extends Hubzero_Controller
 
 		// Get related plugins
 		JPluginHelper::importPlugin($this->_folder, $plugin);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Show related content
 		$out = $dispatcher->trigger(

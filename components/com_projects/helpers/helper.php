@@ -510,7 +510,7 @@ class ProjectsHelper extends JObject {
 
 		// Send HUB message
 		JPluginHelper::importPlugin( 'xmessage' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger( 'onSendMessage', 
 			array( 
 				$component, 

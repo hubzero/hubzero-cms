@@ -789,7 +789,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Generate a CAPTCHA
 		JPluginHelper::importPlugin('support');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$this->view->captchas = $dispatcher->trigger('onGetComponentCaptcha');
 
 		// Set page title
@@ -909,7 +909,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Get plugins
 		JPluginHelper::importPlugin('support');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onPreTicketSubmission', array());
@@ -1433,7 +1433,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 			// Send e-mail to admin?
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Send e-mail to ticket owner?
 			$juser = JUser::getInstance($row->owner);
@@ -2353,7 +2353,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 					// Send e-mail to admin?
 					JPluginHelper::importPlugin('xmessage');
-					$dispatcher =& JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 
 					// Find a list of everyone watching this ticket
 					$watching = new SupportTableWatching($this->database);

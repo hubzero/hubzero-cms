@@ -339,7 +339,7 @@ class CronControllerJobs extends Hubzero_Controller
 		}
 
 		JPluginHelper::importPlugin('cron');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		$output = new stdClass;
 		$output->jobs = array();

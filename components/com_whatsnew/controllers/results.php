@@ -140,7 +140,7 @@ class WhatsnewControllerResults extends Hubzero_Controller
 
 		// Load plugins
 		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Process the keyword for exact phrase matches, etc.
 		$p = new WhatsnewPeriod($this->view->period);
@@ -363,7 +363,7 @@ class WhatsnewControllerResults extends Hubzero_Controller
 
 		// Load plugins
 		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Process the keyword for exact phrase matches, etc.
 		$p = new WhatsnewPeriod($period);
@@ -528,7 +528,7 @@ class WhatsnewControllerResults extends Hubzero_Controller
 
 			// Load the whatsnew plugins
 			JPluginHelper::importPlugin('whatsnew');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Trigger the functions that return the areas we'll be searching
 			$searchareas = $dispatcher->trigger('onWhatsNewAreas');

@@ -226,7 +226,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 
 		// Get plugins
 		JPluginHelper::importPlugin('courses');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$plugins = $dispatcher->trigger('onCourseAreas', array());

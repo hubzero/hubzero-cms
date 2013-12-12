@@ -689,7 +689,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 
 		// Get publication plugins
 		JPluginHelper::importPlugin( 'publications' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Get type info
 		$publication->_category = new PublicationCategory( $this->database );
@@ -896,7 +896,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		
 		// Get publication plugins
 		JPluginHelper::importPlugin( 'publications' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Get type info
 		$this->publication->_category = new PublicationCategory( $this->database );
@@ -1839,7 +1839,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
 		
 		JPluginHelper::importPlugin( 'projects', 'publications' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
 		
 		return $archive;		
@@ -2083,7 +2083,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		
 		// Get Publications plugins
 		JPluginHelper::importPlugin( 'publications' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Call the trigger
 		$results = $dispatcher->trigger( $trigger, array($this->_option) );
@@ -2498,7 +2498,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		
 		// Get output from plugin
 		JPluginHelper::importPlugin( 'projects', $plugin);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 				
 		if ($this->juser->get('guest') && ($action == 'login' || $this->_task == 'start')) 
 		{

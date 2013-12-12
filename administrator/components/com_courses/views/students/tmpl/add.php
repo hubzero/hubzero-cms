@@ -108,7 +108,7 @@ function submitbutton(pressbutton)
 							<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/templates/hubbasic2013/html/plg_hubzero_autocompleter/autocompleter.css?v=1373657749";</script>
 							<?php 
 							/*JPluginHelper::importPlugin('hubzero');
-							$dispatcher =& JDispatcher::getInstance();
+							$dispatcher = JDispatcher::getInstance();
 
 							$mc = $dispatcher->trigger('onGetMultiEntry', array(
 								array(

@@ -52,7 +52,7 @@ class modResourceMenu extends Hubzero_Module
 		$obj->text = $this->_xHubTags($this->params->get('content'));
 
 		JPluginHelper::importPlugin('content', 'xhubtags');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Get the search result totals
 		$results = $dispatcher->trigger(

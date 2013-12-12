@@ -791,7 +791,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		
 		// Send message
 		JPluginHelper::importPlugin( 'xmessage' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 
 				'publications_new_comment', 
 				$subject, 

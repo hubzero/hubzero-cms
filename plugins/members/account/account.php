@@ -576,7 +576,7 @@ class plgMembersAccount extends Hubzero_Plugin
 
 		// Fire the onBeforeStoreUser trigger
 		JPluginHelper::importPlugin('user');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onBeforeStoreUser', array($this->user->getProperties(), false));
 
 		// Validate the password against password rules

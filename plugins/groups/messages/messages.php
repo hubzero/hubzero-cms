@@ -460,7 +460,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $message, $from, $mbrs, $this->_option, null, '', $group_id))) 
 		{
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));

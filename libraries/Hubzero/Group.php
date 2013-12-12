@@ -391,7 +391,7 @@ class Hubzero_Group
 		JPluginHelper::importPlugin('user');
 
 		//trigger the onAfterStoreGroup event
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher =  JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterStoreGroup', array($this));
 
 		return $this->gidNumber;
@@ -665,7 +665,7 @@ class Hubzero_Group
 		// After SQL is done and has no errors, fire off onGroupUserEnrolledEvents 
 		// for every user added to this group
 		JPluginHelper::importPlugin('groups');
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher =  JDispatcher::getInstance();
 
 		foreach ($aNewUserGroupEnrollments as $userid)
 		{
@@ -677,7 +677,7 @@ class Hubzero_Group
 			JPluginHelper::importPlugin('user');
 			
 			//trigger the onAfterStoreGroup event
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher =  JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterStoreGroup', array($this));
 		}
 
@@ -735,7 +735,7 @@ class Hubzero_Group
 		JPluginHelper::importPlugin('user');
 
 		//trigger the onAfterStoreGroup event
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher =  JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterStoreGroup', array($this));
 
 		return true;

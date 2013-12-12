@@ -260,7 +260,7 @@ class TimeController extends Hubzero_Controller
 
 		// Get time plugins
 		JPluginHelper::importPlugin('time');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$time_plugins = $dispatcher->trigger('onTimeAreas', array());
@@ -294,7 +294,7 @@ class TimeController extends Hubzero_Controller
 	{
 		// Get time plugins
 		JPluginHelper::importPlugin('time');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$time_plugins = $dispatcher->trigger('onTimeAreas', array());

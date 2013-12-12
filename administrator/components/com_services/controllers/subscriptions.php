@@ -321,7 +321,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 			}
 
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('subscriptions_message', $subject, $emailbody, $from, array($subscription->uid), $this->_option))) 
 			{
 				$this->addComponentMessage(JText::_('Failed to message users.'), 'error');

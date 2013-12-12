@@ -178,7 +178,7 @@ class plgCronProjects extends JPlugin
 		
 		// Get plugin
 		JPluginHelper::importPlugin( 'projects', 'files');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		JRequest::setVar('auto', 1);
 				

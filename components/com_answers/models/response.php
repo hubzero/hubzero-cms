@@ -395,7 +395,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 
 					// Load the plugins
 					JPluginHelper::importPlugin('xmessage');
-					$dispatcher =& JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 
 					// Call the plugin
 					if (

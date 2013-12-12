@@ -88,7 +88,7 @@ class CronControllerJobs extends Hubzero_Controller
 		if (($results = $model->jobs('list', $filters)))
 		{
 			JPluginHelper::importPlugin('cron');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			foreach ($results as $job)
 			{

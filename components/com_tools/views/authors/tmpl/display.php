@@ -45,7 +45,7 @@ if ($this->version == 'dev') {
 				<?php echo JText::_('COM_TOOLS_AUTHORS_ENTER_LOGINS'); ?>
 				<?php 
 				JPluginHelper::importPlugin('hubzero');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
 				if (count($mc) > 0) {
 					echo $mc[0];

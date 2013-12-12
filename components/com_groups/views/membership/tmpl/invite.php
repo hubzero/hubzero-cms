@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

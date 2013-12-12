@@ -1345,7 +1345,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 	{
 		// Load needed plugins
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Build the message based upon the action chosen
 		switch (strtolower($this->action))
@@ -1522,7 +1522,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, array($targetuser->get('id')), $this->_option))) 
 		{
 			$this->setError(JText::_('PLG_GROUPS_MESSAGES_ERROR_MSG_MEMBERS_FAILED'));

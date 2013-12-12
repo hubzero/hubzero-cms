@@ -579,7 +579,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		JPluginHelper::importPlugin('courses');
 
-		//$dispatcher =& JDispatcher::getInstance();
+		//$dispatcher = JDispatcher::getInstance();
 		JDispatcher::getInstance()->trigger('onAfterSaveSection', array($this, $isNew));
 
 		if ($isNew)

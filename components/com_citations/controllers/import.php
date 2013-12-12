@@ -116,7 +116,7 @@ class CitationsControllerImport extends Hubzero_Controller
 
 		//import the plugins
 		JPluginHelper::importPlugin('citation');
-        $dispatcher =& JDispatcher::getInstance();
+        $dispatcher = JDispatcher::getInstance();
 
 		//call the plugins
 		$this->view->accepted_files = $dispatcher->trigger('onImportAcceptedFiles' , array());
@@ -168,7 +168,7 @@ class CitationsControllerImport extends Hubzero_Controller
 
 		// load citation import plugins
 		JPluginHelper::importPlugin('citation');
-        $dispatcher =& JDispatcher::getInstance();
+        $dispatcher = JDispatcher::getInstance();
 
 		// call the plugins
 		$citations = $dispatcher->trigger('onImport' , array($file));

@@ -340,7 +340,7 @@ if ($this->registration->Interests != REG_HIDE) {
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	JPluginHelper::importPlugin( 'hubzero' );
-	$dispatcher =& JDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 	$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($this->tags))) );
 
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";

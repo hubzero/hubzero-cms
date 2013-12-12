@@ -46,7 +46,7 @@ $urlbit = $this->task == 'edit' ? 'edit=team' : 'step=1';
 $goto  = 'alias='.$this->project->alias;
 
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 
 ximport('Hubzero_User_Profile_Helper');
 

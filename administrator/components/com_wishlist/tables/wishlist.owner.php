@@ -151,7 +151,7 @@ class WishlistOwner extends JTable
 				    $message .= JText::_('Please go to') . ' ' . $url . ' ' . JText::_('to view the wish list and rank new wishes.');
 
 					JPluginHelper::importPlugin('xmessage');
-					$dispatcher =& JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist'))) 
 					{
 						$this->setError(JText::_('Failed to message new wish list owner.'));

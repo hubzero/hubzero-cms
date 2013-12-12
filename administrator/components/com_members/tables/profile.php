@@ -332,7 +332,7 @@ class MembersProfile extends JTable
 	{
 		// Get plugins
 		JPluginHelper::importPlugin('members');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$select = "";

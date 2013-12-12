@@ -1375,7 +1375,7 @@ class WishlistController extends JObject
 			$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_ASSIGNED_WISH').'.';
 
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			if (!$dispatcher->trigger('onSendMessage', array('wishlist_wish_assigned', $subject, $message, $from, array($objWish->assigned), $this->_option))) 
 			{
@@ -1733,7 +1733,7 @@ class WishlistController extends JObject
 			$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
 
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option))) 
 			{
@@ -1943,7 +1943,7 @@ class WishlistController extends JObject
 				else if ($this->_task == 'editwish') 
 				{
 					JPluginHelper::importPlugin('xmessage');
-					$dispatcher =& JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_status_changed', $subject1, $message, $from, array($objWish->proposed_by), $this->_option))) 
 					{
@@ -2018,7 +2018,7 @@ class WishlistController extends JObject
 		{
 			// move to a question or a ticket
 			JPluginHelper::importPlugin('support' , 'transfer');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			$dispatcher->trigger('transferItem', array(
 					'wish',
@@ -2202,7 +2202,7 @@ class WishlistController extends JObject
 					$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
 
 					JPluginHelper::importPlugin('xmessage');
-					$dispatcher =& JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->_option))) 
 					{
@@ -2852,7 +2852,7 @@ class WishlistController extends JObject
 				$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
 
 				JPluginHelper::importPlugin('xmessage');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 
 				// collect ids of people who were already emailed
 				$contacted = array();

@@ -40,7 +40,7 @@ class Hubzero_Whatsnew
 		
 		//load whats new plugins
 		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		//get the search areas
 		$areas = array();

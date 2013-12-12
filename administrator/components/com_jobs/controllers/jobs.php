@@ -378,7 +378,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			$emailbody  .= "\r\n".JText::_('View job ad:').' '.$jconfig->getValue('config.sitename') . DS . 'jobs' . DS . $id;
 
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option))) 
 			{
 				$this->setError(JText::_('Failed to message users.'));

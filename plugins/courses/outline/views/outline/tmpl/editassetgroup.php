@@ -53,7 +53,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 <?php
 
 	JPluginHelper::importPlugin('courses');
-	$dispatcher =& JDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 
 	if ($plugins = $dispatcher->trigger('onAssetgroupEdit'))
 	{

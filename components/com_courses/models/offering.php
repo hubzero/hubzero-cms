@@ -989,7 +989,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		if (!isset($this->_plugins) || !is_array($this->_plugins))
 		{
 			JPluginHelper::importPlugin('courses');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			$plugins = $dispatcher->trigger('onCourseAreas', array());
 
@@ -1217,7 +1217,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	{
 		// Get plugins
 		JPluginHelper::importPlugin('courses');
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher =  JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		//then add overview to array

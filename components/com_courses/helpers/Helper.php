@@ -540,7 +540,7 @@ class Hubzero_Course_Helper
 	{
 		// Get plugins
 		JPluginHelper::importPlugin('courses');
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher =  JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		//then add overview to array

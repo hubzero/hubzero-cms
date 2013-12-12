@@ -251,7 +251,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		{
 			// Get plugins
 			JPluginHelper::importPlugin('courses');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			foreach ($ids as $id)
 			{

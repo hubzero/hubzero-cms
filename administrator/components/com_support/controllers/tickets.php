@@ -716,7 +716,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 					// Send e-mail to admin?
 					JPluginHelper::importPlugin('xmessage');
-					$dispatcher =& JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 
 					// Send e-mail to ticket submitter?
 					$email_submitter = JRequest::getInt('email_submitter', 0);

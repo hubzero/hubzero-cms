@@ -47,7 +47,7 @@ class WhatsnewControllerApi extends Hubzero_Api_Controller
 		
 		// Load plugins
 		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		//get the search areas
 		$areas = array();

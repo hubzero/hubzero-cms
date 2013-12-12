@@ -618,7 +618,7 @@ $area = JRequest::getVar('area', 'about');
 		<h3>Reviews</h3>
 		<?php
 			JPluginHelper::importPlugin('hubzero');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			
 			$params = array(
 				$citation,

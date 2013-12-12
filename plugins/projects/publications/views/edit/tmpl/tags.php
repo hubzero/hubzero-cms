@@ -102,7 +102,7 @@ else {
 					<label>
 						<?php
 						JPluginHelper::importPlugin( 'hubzero' );
-						$dispatcher =& JDispatcher::getInstance();
+						$dispatcher = JDispatcher::getInstance();
 
 						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 

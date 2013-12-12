@@ -1883,7 +1883,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if ($summary or $comment) 
 		{
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option))) 
 			{
 				$this->addComponentMessage(JText::_('COM_TOOLS_FAILED_TO_MESSAGE'), 'error');

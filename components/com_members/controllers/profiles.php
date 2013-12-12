@@ -479,7 +479,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 
 		// Get plugins
 		JPluginHelper::importPlugin('members');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Ensure we have an ID
 		if (!$id) 

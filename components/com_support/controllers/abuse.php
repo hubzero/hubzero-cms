@@ -115,7 +115,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 
 		// Load plugins
 		JPluginHelper::importPlugin('support');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Get the search result totals
 		$results = $dispatcher->trigger('getReportedItem', array(
@@ -222,7 +222,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 
 		// Get the search result totals
 		JPluginHelper::importPlugin('support');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$results = $dispatcher->trigger('onReportItem', array(
 			$this->view->refid,
 			$this->view->cat

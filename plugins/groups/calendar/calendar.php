@@ -269,7 +269,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			
 			// Send the message
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $message, $from, $this->group->get('managers'), 'com_groups'))) 
 			{
 				$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));

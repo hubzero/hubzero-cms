@@ -206,7 +206,7 @@ class CartMessenger
 		
 		// Get message plugin
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$jconfig = JFactory::getConfig();
 		
 		// "from" info
@@ -239,7 +239,7 @@ class CartMessenger
 
 		// Get message plugin
 		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// "from" info
 		$from = array();

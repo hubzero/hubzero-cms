@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //instantiate autocompleter
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 
 //is the autocompleter disabled
 $disabled = ($this->tos) ? true : false; 

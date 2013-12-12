@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //tag editor
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 
 //are we using the email gateway for group forum

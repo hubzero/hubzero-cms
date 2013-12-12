@@ -129,7 +129,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Load plugins
 		JPluginHelper::importPlugin('support');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Get the parent ID
 		$results = $dispatcher->trigger('getParentId', array(
@@ -240,7 +240,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		}
 
 		JPluginHelper::importPlugin('support');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Remove the reported item and any other related processes that need be performed
 		$results = $dispatcher->trigger('releaseReportedItem', array(
@@ -293,7 +293,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Load plugins
 		JPluginHelper::importPlugin('support');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Get the reported item
 		$results = $dispatcher->trigger('getReportedItem', array(

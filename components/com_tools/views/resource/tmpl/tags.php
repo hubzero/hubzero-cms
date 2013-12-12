@@ -60,7 +60,7 @@ $showwarning = ($this->version=='current' or !$this->status['published']) ? 0 : 
 			<?php echo JText::_('COM_TOOLS_TAGS_ASSIGNED'); ?>:
 			<?php
 			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
 

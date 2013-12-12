@@ -1045,7 +1045,7 @@ defined('_JEXEC') or die('Restricted access');
 		$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? RegistrationHelperHtml::error($this->xregistration->_invalid['captcha']) : '';
 
 		JPluginHelper::importPlugin( 'hubzero' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$captchas = $dispatcher->trigger( 'onGetCaptcha' );
 
 		if (count($captchas) > 0) {

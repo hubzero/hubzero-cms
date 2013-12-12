@@ -40,7 +40,7 @@ if (!$this->entry->exists())
 
 //tag editor
 JPluginHelper::importPlugin('hubzero');
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 
 $tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
 
