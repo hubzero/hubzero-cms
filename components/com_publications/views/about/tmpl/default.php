@@ -55,15 +55,15 @@ $html .= "\t".'<table class="resource">'."\n";
 $html .= "\t\t".'<tbody>'."\n";
 $html .= PublicationsHtml::tableRow( JText::_('COM_PUBLICATIONS_ABSTRACT'), $description );
 
+$citations = NULL;
 if ($this->params->get('show_metadata')) 
 {
 	// Process metadata
 	$metadata = PublicationsHtml::processMetadata($this->publication->metadata, 
 		$this->publication->_category, $this->parser, $this->wikiconfig);
 	$html .= $metadata['html'] ? $metadata['html'] : '';
+	$citations = $metadata['citations'];
 }
-
-$citations = $metadata['citations'];
 
 // Show citations
 if ($this->params->get('show_citation') && $this->publication->state == 1) 
