@@ -699,7 +699,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		//build newsletter for sending
 		$newsletterNewsletterContent = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
 		
-		//ximport('Hubzer_Image_MozifyHelper');
+		//ximport('Hubzero_Image_MozifyHelper');
 		//$newsletterNewsletterContent = Hubzero_Image_MozifyHelper::mozifyHtml( $newsletterNewsletterContent, 5 );
 		
 		//send campaign
