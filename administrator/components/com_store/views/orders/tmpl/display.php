@@ -133,13 +133,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->author)); ?>
 				</td>
 				<td>
+<<<<<<< HEAD
 					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1')); ?></time>
+=======
+					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered); ?></time>
+>>>>>>> [COM_STORE][NANOHUB][#265710] Fixed email notification on order starus update.
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
 						<?php echo JText::_('COM_STORE_DETAILS'); ?>
 					</a>
-					<?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=receipt&amp;id=' . $row->id . '">' . JText::_('COM_STORE_Receipt') . '</a>'; } ?>
+					<?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=receipt&amp;id=' . $row->id . '">' . JText::_('COM_STORE_RECEIPT') . '</a>'; } ?>
 				</td>
 			</tr>
 <?php

@@ -48,8 +48,8 @@ class StoreControllerOrders extends Hubzero_Controller
 		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 		ximport('Hubzero_Bank');
-
-		parent::execute();
+		
+		parent::execute();		
 	}
 
 	/**
@@ -473,7 +473,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			$emailbody .= "\t".JText::_('COM_STORE_ORDER').' '.JText::_('COM_STORE_TOTAL').': '. $cost ."\r\n";
 			$emailbody .= "\t\t".JText::_('COM_STORE_PLACED').': '. JHTML::_('date', $row->ordered, JText::_('COM_STORE_DATE_FORMAT_HZ1'))."\r\n";
 			$emailbody .= "\t\t".JText::_('COM_STORE_STATUS').': ';
-
+			
 			switch ($action)
 			{
 				case 'complete_order':
@@ -561,7 +561,7 @@ class StoreControllerOrders extends Hubzero_Controller
 					$emailbody .= JText::_('COM_STORE_EMAIL_CANCELLED').'.'."\r\n";
 					break;
 			}
-
+			
 			if ($data['message'])
 			{ // add custom message			
 				$emailbody .= $data['message']."\r\n";
@@ -572,6 +572,24 @@ class StoreControllerOrders extends Hubzero_Controller
 			{
 				if ($email)
 				{
+					$admin_email = $jconfig->getValue('config.mailfrom');
+					$subject     = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE') . ': ' . JText::_('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
+					$from        = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE');
+					
+					$message = new \Hubzero\Mail\Message();
+					$message->setSubject($subject)
+					->addTo($row->email)
+					->addFrom($admin_email, $from)
+					->setPriority('normal');
+					
+					$message->addPart($emailbody, 'text/plain');
+					
+					$message->addHeader('X-Mailer', 'PHP/' . phpversion())
+					->addHeader('X-Component', $this->_option);
+					
+					$message->send();
+
+					/*
 					ximport('Hubzero_Toolbox');
 					$admin_email = $jconfig->getValue('config.mailfrom');
 					$subject     = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE') . ': ' . JText::_('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
@@ -579,6 +597,7 @@ class StoreControllerOrders extends Hubzero_Controller
 					$hub         = array('email' => $admin_email, 'name' => $from);
 
 					Hubzero_Toolbox::send_email($hub, $row->email, $subject, $emailbody);
+					*/
 				}
 			}
 		}
