@@ -84,7 +84,7 @@ class UsageControllerResults extends Hubzero_Controller
 		$this->_getScripts();
 
 		// Establish a connection to the usage database
-		$udb =& UsageHelper::getUDBO();
+		$udb = UsageHelper::getUDBO();
 		if (!is_object($udb)) 
 		{
 			JError::raiseError(500, JText::_('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'));

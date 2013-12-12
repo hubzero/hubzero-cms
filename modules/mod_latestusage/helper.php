@@ -94,7 +94,7 @@ class modLatestusage extends Hubzero_Module
 		$database = JFactory::getDBO();
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_usage' . DS . 'helpers' . DS . 'helper.php');
-		$udb =& UsageHelper::getUDBO();
+		$udb = UsageHelper::getUDBO();
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 
