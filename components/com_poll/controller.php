@@ -65,7 +65,7 @@ class PollController extends JController
 		$poll_id   = JRequest::getVar('id', 0, '', 'int');
 		$option_id = JRequest::getVar('voteid', 0, 'post', 'int');
 
-		$poll =& JTable::getInstance('poll','Table');
+		$poll = JTable::getInstance('poll','Table');
 		if (!$poll->load($poll_id) || $poll->published != 1) 
 		{
 			JError::raiseWarning(404, JText::_('ALERTNOTAUTH'));

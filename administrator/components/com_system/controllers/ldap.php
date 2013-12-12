@@ -72,7 +72,7 @@ class SystemControllerLdap extends Hubzero_Controller
 
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$table =& JTable::getInstance('component');
+			$table = JTable::getInstance('component');
 			$table->loadByOption($this->_option);
 		}
 		else

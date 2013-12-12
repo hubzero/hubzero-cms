@@ -653,7 +653,7 @@ class RegisterController extends Hubzero_Controller
 				$jsession->set('user', $sjuser);
 
 				// Get the session object
-				$table = & JTable::getInstance('session');
+				$table =  JTable::getInstance('session');
 				$table->load($jsession->getId());
 				$table->username = $xprofile->get('username');
 				$table->update();

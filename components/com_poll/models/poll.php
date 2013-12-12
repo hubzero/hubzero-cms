@@ -76,7 +76,7 @@ class PollModelPoll extends JModel
 			JError::raiseWarning( 500, $db->stderr() );
 		}
 		
-		$poll =& JTable::getInstance('poll', 'Table');
+		$poll = JTable::getInstance('poll', 'Table');
 		$poll->load($result);
 
 		return $poll;

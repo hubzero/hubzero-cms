@@ -39,7 +39,7 @@ class PollViewPoll extends JView
 		$uid 	= (int) @$cid[0];
 		$edit=JRequest::getVar( 'edit', true );
 
-		$poll =& JTable::getInstance('poll', 'Table');
+		$poll = JTable::getInstance('poll', 'Table');
 		// load the row from the db table
 		if($edit)
 		$poll->load( $uid );

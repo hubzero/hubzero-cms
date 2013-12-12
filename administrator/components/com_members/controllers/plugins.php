@@ -449,11 +449,11 @@ class MembersControllerPlugins extends Hubzero_Controller
 		// Bind data
 		if (version_compare(JVERSION, '1.6', 'lt')) 
 		{
-			$row =& JTable::getInstance('plugin');
+			$row = JTable::getInstance('plugin');
 		}
 		else
 		{
-			$row =& JTable::getInstance('extension');
+			$row = JTable::getInstance('extension');
 		}
 		if (!$row->bind(JRequest::get('post'))) 
 		{
@@ -585,11 +585,11 @@ class MembersControllerPlugins extends Hubzero_Controller
 		{
 			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
-				$row =& JTable::getInstance('plugin');
+				$row = JTable::getInstance('plugin');
 			}
 			else
 			{
-				$row =& JTable::getInstance('extension');
+				$row = JTable::getInstance('extension');
 			}
 			$row->checkin($id[0]);
 		}
@@ -649,11 +649,11 @@ class MembersControllerPlugins extends Hubzero_Controller
 		
 		if (version_compare(JVERSION, '1.6', 'lt')) 
 		{
-			$row =& JTable::getInstance('plugin');
+			$row = JTable::getInstance('plugin');
 		}
 		else
 		{
-			$row =& JTable::getInstance('extension');
+			$row = JTable::getInstance('extension');
 		}
 		$row->load($uid);
 		$row->move($inc, 'folder='.$this->database->Quote($row->folder).' AND ordering > -10000 AND ordering < 10000 AND ('.$where.')');
@@ -711,11 +711,11 @@ class MembersControllerPlugins extends Hubzero_Controller
 		// Load the object
 		if (version_compare(JVERSION, '1.6', 'lt')) 
 		{
-			$row =& JTable::getInstance('plugin');
+			$row = JTable::getInstance('plugin');
 		}
 		else
 		{
-			$row =& JTable::getInstance('extension');
+			$row = JTable::getInstance('extension');
 		}
 		$row->load($cid[0]);
 
@@ -769,11 +769,11 @@ class MembersControllerPlugins extends Hubzero_Controller
 
 		if (version_compare(JVERSION, '1.6', 'lt')) 
 		{
-			$row =& JTable::getInstance('plugin');
+			$row = JTable::getInstance('plugin');
 		}
 		else
 		{
-			$row =& JTable::getInstance('extension');
+			$row = JTable::getInstance('extension');
 		}
 		$conditions = array();
 
