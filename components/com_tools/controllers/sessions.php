@@ -267,7 +267,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		);
 
 		// Get the middleware database
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Get the user's sessions
 		$ms = new MwSession($mwdb);
@@ -530,7 +530,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$this->_recordUsage($app->toolname, $this->juser->get('id'));
 
 		// Get the middleware database
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Find out how many sessions the user is running.
 		$ms = new MwSession($mwdb);
@@ -656,7 +656,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			return;
 		}
 
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Incoming
 		$sess     = JRequest::getVar('sess', '');
@@ -802,7 +802,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		}
 
 		// Needed objects
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Incoming
 		$sess = JRequest::getVar('sess', '');
@@ -883,7 +883,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$app->ip = Hubzero_Environment::ipAddress(); //JRequest::getVar('REMOTE_ADDR', '', 'server');
 
 		// Double-check that the user can view this session.
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$ms = new MwSession($mwdb);
 		$row = $ms->loadSession($app->sess, $this->config->get('access-manage-session'));
@@ -1038,7 +1038,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		if ($app->sess) 
 		{
 			// Get the middleware database
-			$mwdb =& ToolsHelperUtils::getMWDBO();
+			$mwdb = ToolsHelperUtils::getMWDBO();
 
 			// Load the viewperm
 			$ms = new MwViewperm($mwdb);
@@ -1088,7 +1088,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		}
 
 		// Double-check that the user owns this session.
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$ms = new MwSession($mwdb);
 		if ($this->config->get('access-admin-session')) 
@@ -1212,7 +1212,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 	 */
 	public function renameTask()
 	{
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$id = JRequest::getInt('id', 0);
 		$name = trim(JRequest::getVar('name', ''));

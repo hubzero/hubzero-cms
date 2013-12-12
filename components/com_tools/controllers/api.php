@@ -240,7 +240,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		ximport('Hubzero_Image');
 		
 		//instantiate middleware database object
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 		
 		//get any request vars
 		$type 		= JRequest::getVar('type', 'png');
@@ -422,7 +422,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		ToolsHelperUtils::recordToolUsage( $app->toolname, $result->get('id') );
 
 		// Get the middleware database
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Find out how many sessions the user is running.
 		$ms = new MwSession($mwdb);
@@ -520,7 +520,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		
 		//instantiate db objects
 		$database = JFactory::getDBO();
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 		
 		//get request vars
 		$sessionid 	= JRequest::getVar('sessionid', '');
@@ -624,7 +624,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php' );
 		
 		//instantiate middleware database object
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 		
 		//get request vars
 		$sessionid 	= JRequest::getVar('sessionid', '');
@@ -693,7 +693,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php' );
 		
 		//instantiate middleware database object
-		$mwdb =& ToolsHelperUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 		
 		//get request vars
 		$sessionid 	= JRequest::getVar('sessionid', '');
