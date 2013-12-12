@@ -65,7 +65,7 @@ class Hubzero_Geo
 
 			try
 			{
-				$instance =& JDatabase::getInstance($options);
+				$instance = JDatabase::getInstance($options);
 			}
 			catch (Exception $e)
 			{

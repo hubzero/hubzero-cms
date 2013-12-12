@@ -41,7 +41,7 @@ class PHPUnitTestHelper
 		);
 
 		// Get db instance
-		$db =& JDatabase::getInstance($options);
+		$db = JDatabase::getInstance($options);
 
 		// Get the application environment
 		$config = JFactory::getConfig();

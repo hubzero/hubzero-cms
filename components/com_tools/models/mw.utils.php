@@ -71,7 +71,7 @@ class MwUtils
 			}
 			else 
 			{
-				$instance =& JDatabase::getInstance($options);
+				$instance = JDatabase::getInstance($options);
 				if (JError::isError($instance)) 
 				{
 					$instance = JFactory::getDBO();

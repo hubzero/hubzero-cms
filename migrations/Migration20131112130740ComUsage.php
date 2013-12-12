@@ -49,7 +49,7 @@ class Migration20131112130740ComUsage extends Hubzero_Migration
 
 		try
 		{
-			$statsDb =& JDatabase::getInstance($options);
+			$statsDb = JDatabase::getInstance($options);
 		}
 		catch (Exception $e)
 		{

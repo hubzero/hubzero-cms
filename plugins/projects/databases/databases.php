@@ -158,14 +158,14 @@ class plgProjectsDatabases extends JPlugin
 		$db_opt_rw['user'] 		= $this->_params->get('db_user');
 		$db_opt_rw['password'] 	= $this->_params->get('db_password');
 		$db_opt_rw['prefix'] 		= '';
-		$db_rw = &JDatabase::getInstance($db_opt_rw);
+		$db_rw =  JDatabase::getInstance($db_opt_rw);
 
 		$db_opt_ro['driver'] 		= 'mysqli';
 		$db_opt_ro['host'] 		= $this->_params->get('db_host');
 		$db_opt_ro['user'] 		= $this->_params->get('db_ro_user');
 		$db_opt_ro['password'] 	= $this->_params->get('db_ro_password');
 		$db_opt_ro['prefix'] 		= '';
-		$db_ro = &JDatabase::getInstance($db_opt_ro);
+		$db_ro =  JDatabase::getInstance($db_opt_ro);
 
 		if (get_class($db_rw) == 'JException' || get_class($db_ro) == 'JException')
 		{
@@ -1333,14 +1333,14 @@ class plgProjectsDatabases extends JPlugin
 		$opt['password'] 	= $this->_params->get('db_password');
 		$opt['prefix'] 		= '';
 
-		$db = &JDatabase::getInstance($opt);
+		$db =  JDatabase::getInstance($opt);
 
 		$db->setQuery($sql);
 		$db->query();
 
 		$opt['database'] = 'prj_db_' . $id;
 
-		$db = &JDatabase::getInstance($opt);
+		$db =  JDatabase::getInstance($opt);
 
 		return $db;
 	}

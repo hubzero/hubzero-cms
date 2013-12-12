@@ -122,7 +122,7 @@ function dv_dataview_list()
 
 <?php
 
-	$jdb = &JDatabase::getInstance($db_conf['database_ro']);
+	$jdb =  JDatabase::getInstance($db_conf['database_ro']);
 
 	if (get_class($jdb) === 'JException') {
 		print "<h3>Invalid Database connection information</h3>";
