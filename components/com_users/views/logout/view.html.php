@@ -63,7 +63,8 @@ class UsersViewLogout extends JViewLegacy
 		$user		= JFactory::getUser();
 		$image		= '';
 
-		$menu   =& JSite::getMenu();
+		$menu = JFactory::getApplication()->getMenu();
+
 		$item   = $menu->getActive();
 		if($item)
 			$params	=& $menu->getParams($item->id);

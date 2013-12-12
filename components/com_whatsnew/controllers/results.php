@@ -57,7 +57,7 @@ class WhatsnewControllerResults extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		$menu = JSite::getMenu()->getActive();
+		$menu = JFactory::getApplication()->getMenu()->getActive();
 		if (!$menu)
 		{
 			$menu = new stdClass;

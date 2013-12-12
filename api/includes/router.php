@@ -323,7 +323,7 @@ class JRouterApi extends JRouter
 
 		}
 
-		$menu  =& JSite::getMenu(true);
+		$menu  = JFactory::getApplication()->getMenu();
 		$route = $uri->getPath();
 
 		//Get the variables from the uri

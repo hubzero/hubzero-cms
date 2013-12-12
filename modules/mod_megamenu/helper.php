@@ -31,7 +31,7 @@ class modMegaMenuHelper
 	function buildXML($params)
 	{
 		$menu = new MegaMenuTree($params);
-		$items = &JSite::getMenu();
+		$items = JFactory::getApplication()->getMenu();
 
 		// Get Menu Items
 		$rows = $items->getItems('menutype', $params->get('menutype'));
@@ -82,7 +82,7 @@ class modMegaMenuHelper
 		$xml->loadString($xmls[$type]);
 		$doc = &$xml->document;
 
-		$menu	= &JSite::getMenu();
+		$menu	= JFactory::getApplication()->getMenu();
 		$active	= $menu->getActive();
 		$start	= $params->get('startLevel');
 		$end	= $params->get('endLevel');
@@ -280,7 +280,7 @@ class MegaMenuTree extends JTree
 		// Menu Link is a special type that is a link to another item
 		if ($item->type == 'menulink')
 		{
-			$menu = &JSite::getMenu();
+			$menu = JFactory::getApplication()->getMenu();
 			if ($tmp = clone($menu->getItem($item->query['Itemid']))) {
 				$tmp->name	 = '<span><![CDATA['.$item->name.']]></span>';
 				$tmp->mid	 = $item->id;

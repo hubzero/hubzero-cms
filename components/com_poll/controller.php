@@ -100,7 +100,7 @@ class PollController extends JController
 		}
 
 		// set Itemid id for links
-		$menu = &JSite::getMenu();
+		$menu = JFactory::getApplication()->getMenu();
 		$items = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';

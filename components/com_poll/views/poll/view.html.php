@@ -50,7 +50,7 @@ class PollViewPoll extends JView
 		$params = $mainframe->getParams();
 
 		//Set page title information
-		$menus	= &JSite::getMenu();
+		$menus	= JFactory::getApplication()->getMenu();
 		$menu	= $menus->getActive();
 
 		// because the application sets a default page title, we need to get it
