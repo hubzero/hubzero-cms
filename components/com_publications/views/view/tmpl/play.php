@@ -104,7 +104,7 @@ if (is_file(JPATH_ROOT.$firstattach->url))
 			$crypter = new JSimpleCrypt();
 			$token = base64_encode($crypter->encrypt($session_id));
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve&aid='.basename($firstattach->id).'&render=download&token='.$token);
 		if (substr($sef,0,1) == '/') {
 			$sef = substr($sef,1,strlen($sef));

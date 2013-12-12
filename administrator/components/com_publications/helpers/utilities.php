@@ -79,7 +79,7 @@ class PublicationUtilities
 			$metadata['publisher'] = $jconfig->getValue('config.sitename');
 		}
 		
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 	
 		// Get config
 		$livesite = $jconfig->getValue('config.live_site') 
@@ -225,7 +225,7 @@ class PublicationUtilities
 		}
 		
 		// Get configs
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		
 		$jconfig 	= JFactory::getConfig();
 		$service    = trim($config->get('doi_service'), DS);

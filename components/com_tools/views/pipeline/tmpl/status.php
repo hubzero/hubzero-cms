@@ -305,7 +305,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			<?php 
 			$juser = JFactory::getUser();
 			$jconfig = JFactory::getConfig();
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			//$juri->base();
 
 			$jconfig = JFactory::getConfig();

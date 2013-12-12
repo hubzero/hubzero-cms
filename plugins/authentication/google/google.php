@@ -142,7 +142,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$options['return'] = $b64dreturn;
 
 		// Get the hub url
-		$juri    =& JURI::getInstance();
+		$juri    = JURI::getInstance();
 		$service = trim($juri->base(), DS);
 
 		// If someone is logged in already, then we're linking an account
@@ -200,7 +200,7 @@ class plgAuthenticationGoogle extends JPlugin
 		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'contrib'.DS.'Google_Oauth2Service.php');
 
 		// Get the hub url
-		$juri    =& JURI::getInstance();
+		$juri    = JURI::getInstance();
 		$service = trim($juri->base(), DS);
 
 		// If someone is logged in already, then we're linking an account
@@ -344,7 +344,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$juser = JFactory::getUser();
 
 		// Get the hub url
-		$juri    =& JURI::getInstance();
+		$juri    = JURI::getInstance();
 		$service = trim($juri->base(), DS);
 
 		if (version_compare(JVERSION, '2.5', 'ge'))

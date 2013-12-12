@@ -119,7 +119,7 @@ class BlogControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			foreach ($model->entries('list', $filters) as $i => $entry)
 			{

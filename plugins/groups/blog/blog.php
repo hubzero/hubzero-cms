@@ -247,7 +247,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		if (!$path)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$path = $juri->getPath();
 
 			$path = str_replace($juri->base(true), '', $path);
@@ -333,7 +333,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		);
 
 		// See what information we can get from the path
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
 		{

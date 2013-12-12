@@ -120,7 +120,7 @@ class AnswersControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			foreach ($model->questions('list', $filters) as $i => $question)
 			{

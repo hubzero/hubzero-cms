@@ -346,7 +346,7 @@ class SupportControllerApi extends Hubzero_Api_Controller
 		{
 			$response->tickets = $obj->getTickets($filters);
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			foreach ($response->tickets as $i => $ticket)
 			{

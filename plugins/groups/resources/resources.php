@@ -701,7 +701,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		{
 			$row->href = JRoute::_($row->href);
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$html  = "\t" . '<li class="';
 		switch ($row->access)

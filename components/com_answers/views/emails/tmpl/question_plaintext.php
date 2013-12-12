@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!isset($this->link))
 {
-	$juri =& JURI::getInstance();
+	$juri = JURI::getInstance();
 	$this->link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link()), '/');
 }
 

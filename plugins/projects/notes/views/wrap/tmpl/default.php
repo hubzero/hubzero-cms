@@ -210,7 +210,7 @@ $parentScope = $this->scope . DS . $this->pagename;
 		<?php echo ($this->notes or $this->task == 'new' or $this->preview) ? $content : '<p class="s-notes"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new">'.JText::_('COM_PROJECTS_NOTES_START_A_NOTE').'</a></p>'; ?>
 		</div>
 		<?php if ($pubstamp) { 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 		?>
 			<p class="publink"><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK') . ' <a href="' . trim($juri->base(), DS) . JRoute::_('index.php?option=' . $this->option . a . 'action=get') . '?s=' . $pubstamp .'">' . trim($juri->base(), DS) . JRoute::_('index.php?option=' . $this->option . a . 'action=get') . '?s=' . $pubstamp . '</a>'; ?>
 			<?php if ($this->project->private == 0) { 

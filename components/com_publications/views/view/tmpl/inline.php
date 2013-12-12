@@ -93,7 +93,7 @@ if (!$juser->get('guest'))
 	$token = base64_encode($crypter->encrypt($session_id));
 }
 
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 $downloadUrl = JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' 
 	  . $this->aid . '&render=download&token=' . $token);
 

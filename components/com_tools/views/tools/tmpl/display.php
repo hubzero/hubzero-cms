@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig = JFactory::getConfig();
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 ?>
 
 <div class="full" id="content-header">

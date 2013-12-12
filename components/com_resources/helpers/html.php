@@ -1445,7 +1445,7 @@ class ResourcesHtml
 					} 
 					else 
 					{
-						$juri =& JURI::getInstance();
+						$juri = JURI::getInstance();
 
 						$cite->location = $juri->base() . ltrim($sef, DS);
 						$cite->date = JFactory::getDate()->toSql();

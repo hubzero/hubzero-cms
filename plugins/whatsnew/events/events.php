@@ -158,7 +158,7 @@ class plgWhatsnewEvents extends JPlugin
 	 */
 	public function out($row, $period)
 	{
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="event">' . "\n";

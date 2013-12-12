@@ -48,7 +48,7 @@ class RegisterController extends Hubzero_Controller
 		$app = JFactory::getApplication();
 		$this->jconfig = JFactory::getConfig();
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$this->baseURL = rtrim($juri->base(), DS);
 
 		// Make sure we're using a secure connection

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 $ih = new MembersImgHandler();
 

@@ -195,7 +195,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		}
 
 		// Set up the redirect URL
-		$juri        =& JURI::getInstance();
+		$juri        = JURI::getInstance();
 		$service     = trim($juri->base(), DS);
 		$return      = isset($view->return) ? "&return=".$view->return : '';
 		$redirect_to = "{$service}/index.php?option={$com_user}&task={$task}&authenticator=linkedin{$return}";

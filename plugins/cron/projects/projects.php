@@ -79,7 +79,7 @@ class plgCronProjects extends JPlugin
 	public function computeStats($params=null)
 	{
 		$database = JFactory::getDBO();
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		
 		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
@@ -137,7 +137,7 @@ class plgCronProjects extends JPlugin
 	public function googleSync($params=null)
 	{
 		$database = JFactory::getDBO();
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		
 		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
@@ -228,7 +228,7 @@ class plgCronProjects extends JPlugin
 	public function gitGc($params=null)
 	{
 		$database = JFactory::getDBO();
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		
 		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');

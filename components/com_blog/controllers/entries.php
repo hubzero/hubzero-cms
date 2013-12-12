@@ -702,7 +702,7 @@ class BlogControllerEntries extends Hubzero_Controller
 			$subject = JText::_('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
 
 			// Build the SEF referenced in the message
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->member->get('uidNumber').'&active=blog&task='.JHTML::_('date',$this->entry->publish_up, $yearFormat, $tz).'/'.JHTML::_('date',$this->entry->publish_up, $monthFormat, $tz).'/'.$this->entry->alias.'#comments);
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));

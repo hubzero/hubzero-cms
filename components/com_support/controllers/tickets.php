@@ -1230,7 +1230,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$message['plaintext'] .= ($problem['tool']) ? JText::_('COM_SUPPORT_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
 		$message['plaintext'] .= JText::_('COM_SUPPORT_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n\r\n";
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
 		if (substr($sef,0,1) == '/') 
 		{
@@ -1401,7 +1401,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				$message['plaintext'] = $prependtext . "\r\n\r\n" . $message['plaintext'];
 			}
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
 
 			$message['plaintext'] .= $juri->base() . ltrim($sef, DS) . "\r\n";
@@ -1947,7 +1947,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->view->comments = $sc->getComments($this->acl->check('read', 'private_comments'), $this->view->row->id);
 
 		// Parse comment text for attachment tags
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$webpath = str_replace('//', '/', $juri->base() . $this->config->get('webpath') . DS . $id);
 		if (isset($_SERVER['HTTPS'])) 
@@ -2318,7 +2318,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						$message['plaintext'] = $prependtext . "\r\n\r\n" . $message['plaintext'];
 					}
 
-					$juri =& JURI::getInstance();
+					$juri = JURI::getInstance();
 					$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
 
 					$message['plaintext'] .= $juri->base() . ltrim($sef, DS) . "\r\n";

@@ -99,7 +99,7 @@ class plgPublicationsShare extends JPlugin
 			return $arr;
 		}
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$option.'&id='.$publication->id);
 		if (substr($sef,0,1) == '/') 
 		{

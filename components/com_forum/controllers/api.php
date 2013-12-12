@@ -86,7 +86,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
 
 			foreach ($model->sections('list', array('state' => 1)) as $section)
@@ -163,7 +163,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
 
 			foreach ($section->categories('list', array('state' => 1)) as $category)
@@ -261,7 +261,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
 
 			foreach ($category->threads('list', array('state' => 1)) as $thread)

@@ -86,7 +86,7 @@ class plgResourcesShare extends JPlugin
 			'metadata' => ''
 		);
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id);
 		$url = $juri->base() . ltrim($sef, DS);
 

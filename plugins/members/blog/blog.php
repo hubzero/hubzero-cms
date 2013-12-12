@@ -207,7 +207,7 @@ class plgMembersBlog extends JPlugin
 
 		if (!$path)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$path = $juri->getPath();
 
 			$path = str_replace($juri->base(true), '', $path);
@@ -290,7 +290,7 @@ class plgMembersBlog extends JPlugin
 		);
 
 		// See what information we can get from the path
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
 		{

@@ -220,7 +220,7 @@ class StoreControllerOrders extends Hubzero_Controller
 		$jconfig = JFactory::getConfig();
 
 		// Build the link displayed
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $this->_option);
 		if (substr($sef, 0, 1) == '/')
 		{

@@ -126,7 +126,7 @@ class TagsControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			foreach ($cloud->tags('list', $filters) as $i => $tag)
 			{
@@ -171,7 +171,7 @@ class TagsControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$response->id    = $tag->get('id');
 		$response->tag   = $tag->get('raw_tag');

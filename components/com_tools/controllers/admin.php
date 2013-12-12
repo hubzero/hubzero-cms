@@ -475,7 +475,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		{
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			// Collect metadata
 			$url = $juri->base() . ltrim(JRoute::_('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);

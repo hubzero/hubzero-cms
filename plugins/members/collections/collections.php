@@ -129,7 +129,7 @@ class plgMembersCollections extends JPlugin
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', $this->_name);
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 
 			{

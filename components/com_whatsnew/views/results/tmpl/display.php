@@ -156,7 +156,7 @@ if (count($links) > 0) { ?>
 			<div class="container">
 <?php
 $jconfig = JFactory::getConfig();
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 $foundresults = false;
 $dopaging = false;
 $html = '';

@@ -417,7 +417,7 @@ class plgGroupsBulletinboard extends JPlugin
 		} 
 		else 
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 
 			{

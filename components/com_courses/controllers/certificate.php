@@ -101,7 +101,7 @@ class CoursesControllerCertificate extends Hubzero_Controller
 			}
 
 			// Build the render URL
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$url  = rtrim(str_replace('http:', 'https:', $juri->base()), DS) . DS;
 			$url .= 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=render&no_html=1';
 			// Course / Offering / Student

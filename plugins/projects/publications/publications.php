@@ -1257,7 +1257,7 @@ class plgProjectsPublications extends JPlugin
 					
 					if ($ticketid)
 					{						
-						$juri =& JURI::getInstance();
+						$juri = JURI::getInstance();
 												
 						$message .= JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_TICKET_PATH') ."\n";
 						$message .= $juri->base() . 'support/ticket/' . $ticketid . "\n\n";
@@ -2441,7 +2441,7 @@ class plgProjectsPublications extends JPlugin
 			{
 				$profile =& Hubzero_Factory::getProfile();
 				$profile->load( $this->_uid );
-				$juri =& JURI::getInstance();
+				$juri = JURI::getInstance();
 				
 				$sef = JRoute::_('index.php?option=' . $this->_option . a 
 					. 'alias=' . $this->_project->alias . a . 'active=publications' 
@@ -2875,7 +2875,7 @@ class plgProjectsPublications extends JPlugin
 				// Notify administrator of a new publication
 				$profile =& Hubzero_Factory::getProfile();
 				$profile->load( $this->_uid );
-				$juri =& JURI::getInstance();
+				$juri = JURI::getInstance();
 				
 				$sef = JRoute::_('index.php?option=com_publications' . a . 'id=' . $pid );
 				if (substr($sef,0,1) == '/') 

@@ -891,7 +891,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 			
 			$subject = $subject ? $subject : JText::_('COM_PUBLICATIONS_STATUS_UPDATE');
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->publication_id).'?v='.$row->version_number;
 			if (substr($sef, 0, 1) == '/')
 			{

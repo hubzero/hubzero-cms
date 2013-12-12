@@ -122,7 +122,7 @@ class plgAuthenticationTwitter extends JPlugin
 		$app = JFactory::getApplication();
 
 		// Get the hub url
-		$juri    =& JURI::getInstance();
+		$juri    = JURI::getInstance();
 		$service = trim($juri->base(), DS);
 
 		if (empty($service))

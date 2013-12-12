@@ -309,7 +309,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		if (!$path)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$path = $juri->getPath();
 
 			$path = str_replace($juri->base(true), '', $path);
@@ -1310,7 +1310,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$prependtext .= $juser->name . " (". $juser->username . ") wrote:";
 		$forum_message = $prependtext . "\r\n\r\n" . $model->comment;
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id);
 		$forum_message .= "\r\n\r\n" . rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
 

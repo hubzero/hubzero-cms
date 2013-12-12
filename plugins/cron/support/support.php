@@ -87,7 +87,7 @@ class plgCronSupport extends JPlugin
 		$lang->load('com_support');
 
 		$database = JFactory::getDBO();
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$jconfig = JFactory::getConfig();
 		//$jconfig->getValue('config.sitename')

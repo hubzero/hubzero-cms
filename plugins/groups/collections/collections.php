@@ -186,7 +186,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			$controller = 'board';
 			$id = 0;
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 
 			{

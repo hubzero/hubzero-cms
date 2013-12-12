@@ -244,7 +244,7 @@ if ($this->resource->type == 4) {
 				$crypter = new JSimpleCrypt();
 				$token = base64_encode($crypter->encrypt($session_id));
 			}
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$sef = JRoute::_('index.php?option=com_resources&id='.$this->activechild->id.'&task=download&file='.basename($this->activechild->path).'&token='.$token);
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));

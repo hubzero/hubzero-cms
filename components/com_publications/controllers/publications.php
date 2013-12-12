@@ -1970,7 +1970,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		{
 			$sef = substr($sef,1,strlen($sef));
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$url = $juri->base().$sef;
 
 		// Choose the format
@@ -2248,7 +2248,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Get HUB configuration
 		$jconfig = JFactory::getConfig();
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
 		
 		$title = $publication->title;
@@ -2426,7 +2426,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			return '';
 		}
 		
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$base = $juri->base();
 		
 		// Ensure the base has format of http://base (no trailing slash)

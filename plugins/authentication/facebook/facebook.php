@@ -70,7 +70,7 @@ class plgAuthenticationFacebook extends JPlugin
 	public function status()
 	{
 		// Get the hub url
-		$juri       =& JURI::getInstance();
+		$juri       = JURI::getInstance();
 		$service    = trim($juri->base(), DS);
 		$channelUrl = $service . DS . 'channel.phtml';
 
@@ -158,7 +158,7 @@ class plgAuthenticationFacebook extends JPlugin
 		$app = JFactory::getApplication();
 
 		// Get the hub url
-		$juri    =& JURI::getInstance();
+		$juri    = JURI::getInstance();
 		$service = trim($juri->base(), DS);
 
 		if (empty($service))

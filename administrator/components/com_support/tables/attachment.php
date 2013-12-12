@@ -142,7 +142,7 @@ class SupportAttachment extends JTable
 
 		if (is_file($this->uppath . DS . $a[0])) 
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$sef = JRoute::_('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
 			$url = $juri->base() . trim($sef, DS);
 

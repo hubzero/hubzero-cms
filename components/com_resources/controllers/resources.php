@@ -1534,7 +1534,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		{
 			if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $canonical))
 			{
-				$juri =& JURI::getInstance();
+				$juri = JURI::getInstance();
 				$canonical = rtrim($juri->base(), DS) . DS . ltrim($canonical, DS);
 			}
 			$document->addHeadLink($canonical, 'canonical');
@@ -1691,7 +1691,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Get HUB configuration
 		$jconfig = JFactory::getConfig();
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
 
 		$title = $resource->title;
@@ -2048,7 +2048,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			return '';
 		}
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		// http://base/upath/path/img
 		return rtrim($juri->base(), DS) . $upath . $path . DS . $img;
@@ -2489,7 +2489,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Build the URL for this resource
 		$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id);
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$url = $juri->base() . ltrim($sef, DS);
 
 		// Choose the format
@@ -2909,7 +2909,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			}
 		}
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		return rtrim($juri->base(), DS) . $path;
 	}

@@ -358,7 +358,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('Jobs');
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			$sef = JRoute::_('index.php?option='.$this->_option.'&id='. $job->id);
 			if (substr($sef,0,1) == '/') {

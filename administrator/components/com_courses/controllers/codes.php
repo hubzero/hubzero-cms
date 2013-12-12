@@ -347,7 +347,7 @@ class CoursesControllerCodes extends Hubzero_Controller
 		}
 		$offering = CoursesModelOffering::getInstance($section->get('offering_id'));
 		$course   = CoursesModelCourse::getInstance($offering->get('course_id'));*/
-		//$juri =& JURI::getInstance();
+		//$juri = JURI::getInstance();
 
 		$url = rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
 

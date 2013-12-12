@@ -362,7 +362,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		$objDoi = new ResourcesDoi($this->database);
 		$doi = $objDoi->getDoi($resource->id, $tv->revision, '', 1);
 		
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$url = $juri->base() . ltrim(JRoute::_('index.php?option=com_publications&id=' . $pid . '&v=1'), DS);
 		
 		// Collect metadata

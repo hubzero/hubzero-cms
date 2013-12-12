@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 
 $sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews');
 

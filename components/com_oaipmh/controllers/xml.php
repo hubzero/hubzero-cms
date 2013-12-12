@@ -102,7 +102,7 @@ class OaipmhControllerXml extends Hubzero_Controller
 		}
 
 		// set constants
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$max_records     = $this->config->get('max');
 		$repository_name = $this->config->get('repository_name');

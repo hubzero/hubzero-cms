@@ -257,7 +257,7 @@ class ProjectsConnectHelper extends JObject {
 	public function setConfigs() 
 	{
 		// Make up redirection URL for Google service
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$redirectUri = trim($juri->base(), DS) . DS . 'projects' . DS . 'auth';
 		
 		// Scope for Google service

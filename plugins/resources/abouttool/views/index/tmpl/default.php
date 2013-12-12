@@ -214,7 +214,7 @@ if ($shots) {
 			//$this->helper->getUnlinkedContributors();
 
 			// Build our citation object
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			
 			$cite = new stdClass();
 			$cite->title = $this->model->resource->title;

@@ -1395,7 +1395,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$jconfig = JFactory::getConfig();
 
 		// Build the URL to attach to the message
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
 		$sef = ltrim($sef, DS);
 
@@ -1430,7 +1430,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$group = $this->group;
 
 		// Build the SEF referenced in the message
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
 		$sef = ltrim($sef, DS);
 
@@ -1541,7 +1541,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$group = $this->group;
 
 		// Build the SEF referenced in the message
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
 		$sef = ltrim($sef, DS);
 

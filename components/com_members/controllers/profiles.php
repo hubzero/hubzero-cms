@@ -1041,7 +1041,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		// Do we need to email admin?
 		if ($request !== null && !empty($resourcemessage)) 
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$jconfig = JFactory::getConfig();
 			$sitename = $jconfig->getValue('config.sitename');
 			$live_site = rtrim(JURI::base(),'/');

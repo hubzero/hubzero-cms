@@ -1168,7 +1168,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			// Message subject
 			$subject = JText::_('EMAIL_SUBJECT');
 
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			$base = $juri->base();
 			$base = trim($base, '/');

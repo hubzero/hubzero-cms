@@ -34,7 +34,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
         $tz = false;
 }
 
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 
 $sef = JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias);
 if (substr($sef,0,1) == '/') 

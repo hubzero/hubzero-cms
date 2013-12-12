@@ -262,7 +262,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$comments = $sc->getComments('admin', $row->id);
 
 			// Parse comment text for attachment tags
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$webpath = str_replace('/administrator/', '/', $juri->base() . $this->config->get('webpath', '/site/tickets') . DS . $id);
 			$webpath = str_replace('//','/',$webpath);
 			if (isset($_SERVER['HTTPS']))
@@ -612,7 +612,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				// otherwise, we're only recording a changelog
 				if ($comment || $row->owner != $old->owner)
 				{
-					$juri =& JURI::getInstance();
+					$juri = JURI::getInstance();
 					$jconfig = JFactory::getConfig();
 
 					$base = $juri->base();

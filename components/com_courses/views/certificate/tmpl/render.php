@@ -43,7 +43,7 @@ if ($cert != 'default')
 else
 {
 $path = '/components/com_courses/views/certificate/tmpl/';
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 ?>
 <!DOCTYPE html>
 <html>

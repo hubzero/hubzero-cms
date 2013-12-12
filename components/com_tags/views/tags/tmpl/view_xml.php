@@ -53,7 +53,7 @@ if (count($this->tags) == 1) {
 }
 
 // Output the data.
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 $foundresults = false;
 $dopaging = false;
 $cats = $this->cats;

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 ?>
 This is a reminder, sent out once a month, about your <?php echo $this->sitename; ?>
 support tickets.  It includes a list of tickets, highest to 

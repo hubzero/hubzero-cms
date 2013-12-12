@@ -34,7 +34,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 
 // Build url
 $url = $this->project->provisioned 

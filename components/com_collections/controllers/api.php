@@ -132,7 +132,7 @@ class CollectionsControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 
 			$href = 'index.php?option=com_collections&controller=media&post=';
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
@@ -210,7 +210,7 @@ class CollectionsControllerApi extends Hubzero_Api_Controller
 
 		if ($response->total)
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
 
 			$filters['count'] = false;

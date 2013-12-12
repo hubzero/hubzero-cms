@@ -328,7 +328,7 @@ class plgWhatsnewResources extends JPlugin
 			case 3: $thedate = JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
 		}
 
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		// Start building HTML
 		$html  = "\t" . '<li class="resource">' . "\n";
