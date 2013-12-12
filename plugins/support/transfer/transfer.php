@@ -222,7 +222,7 @@ class plgSupportTransfer extends JPlugin
 		}
 
 		// if no author can be found, use current administrator
-		$author =& Juser::getInstance($author);
+		$author = JUser::getInstance($author);
 		if (!is_object($author)) 
 		{
 			$author = JUser::getInstance($juser->get('id'));
