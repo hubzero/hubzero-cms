@@ -85,7 +85,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		$model = new MwHosttype($mwdb);
 
@@ -149,7 +149,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		// Incoming
 		$item = JRequest::getVar('item', '', 'get');
 
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		if (is_object($row))
 		{
@@ -198,7 +198,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		$refs = 0;
 		
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 		$mwdb->setQuery("SELECT count(*) AS count FROM host WHERE provisions & " . $mwdb->Quote($value) . " != 0");
 		$elts = $mwdb->loadObjectList();
 		if ($elts)
@@ -221,7 +221,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		$fields = JRequest::getVar('fields', array(), 'post');
 
@@ -296,7 +296,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		if (count($ids) > 0) 
 		{

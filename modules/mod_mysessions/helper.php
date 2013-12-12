@@ -45,7 +45,7 @@ class modMySessions extends Hubzero_Module
 	 */
 	private function _setTimeout($sess)
 	{
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		$ms = new MwSession($mwdb);
 		$ms->load($sess);
@@ -61,7 +61,7 @@ class modMySessions extends Hubzero_Module
 	 */
 	private function _getTimeout($sess)
 	{
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		$ms = new MwSession($mwdb);
 		$remaining = $ms->getTimeout();
@@ -102,7 +102,7 @@ class modMySessions extends Hubzero_Module
 		$this->database = JFactory::getDBO();
 		
 		//Get a connection to the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 		
 		//get tool paras
 		$this->toolsConfig = JComponentHelper::getParams('com_tools');

@@ -94,7 +94,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		$model = new MwSession($mwdb);
 
@@ -136,7 +136,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		if (count($ids) > 0) 
 		{

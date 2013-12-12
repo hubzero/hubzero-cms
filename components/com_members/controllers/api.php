@@ -140,7 +140,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 		$db = JFactory::getDBO();
 
 		//get Middleware DB connection
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		//get com_tools params
 		$mconfig = JComponentHelper::getParams( 'com_tools' );

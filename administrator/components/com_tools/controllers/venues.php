@@ -92,7 +92,7 @@ class ToolsControllerVenues extends Hubzero_Controller
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		$model = new MwVenue($mwdb);
 
@@ -150,7 +150,7 @@ class ToolsControllerVenues extends Hubzero_Controller
 		$this->view->setLayout('edit');
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		if (is_object($row))
 		{
@@ -208,7 +208,7 @@ class ToolsControllerVenues extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
@@ -314,7 +314,7 @@ class ToolsControllerVenues extends Hubzero_Controller
 		}
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		$row = new MwVenue($mwdb);
 		if ($row->load($id))
@@ -349,7 +349,7 @@ class ToolsControllerVenues extends Hubzero_Controller
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		$mwdb =& MwUtils::getMWDBO();
+		$mwdb = MwUtils::getMWDBO();
 
 		if (count($ids) > 0) 
 		{
