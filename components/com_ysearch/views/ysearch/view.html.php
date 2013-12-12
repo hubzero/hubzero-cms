@@ -73,10 +73,10 @@ class YSearchViewYSearch extends JView
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown &$app Parameter description (if any) ...
+	 * @param      unknown  $app Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function set_application(&$app) { $this->app =& $app; }
+	public function set_application( $app) { $this->app =& $app; }
 
 	/**
 	 * Short description for 'display'

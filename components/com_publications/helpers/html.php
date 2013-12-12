@@ -546,7 +546,7 @@ class PublicationsHtml
 				if (strtolower($name) == $active) 
 				{
 					$app = JFactory::getApplication();
-					$pathway =& $app->getPathway();
+					$pathway = $app->getPathway();
 					$pathway->addItem($cat[$name],$url);
 					
 					if ($active != 'about') {

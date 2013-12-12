@@ -351,7 +351,7 @@ class WishlistController extends JObject
 	private function _buildPathway($wishlist)
 	{
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 
 		$comtitle  = JText::_(strtoupper($this->_option));
 		$comtitle .= $this->_list_title ? ' - ' . $this->_list_title : '';

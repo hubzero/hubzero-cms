@@ -580,7 +580,7 @@ class plgHubzeroComments extends JPlugin
 
 		//$params =& $mainframe->getParams();
 		$app = JFactory::getApplication();
-		$params =& $app->getParams();
+		$params = $app->getParams();
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;

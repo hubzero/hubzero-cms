@@ -1652,7 +1652,7 @@ class EventsControllerEvents extends Hubzero_Controller
 
 		// Set the pathway
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(

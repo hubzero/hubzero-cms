@@ -67,7 +67,7 @@ class YSearchController extends JController
 	public function display()
 	{
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$pathway->addItem('Search', '/search');
 
 		$terms = new YSearchModelTerms(JRequest::getString('terms'));

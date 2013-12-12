@@ -49,7 +49,7 @@ class StorefrontControllerBrowse extends ComponentController
 		$this->warehouse = new StorefrontModelWarehouse();
 		
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 				
 		$this->pathway = $pathway;
 		

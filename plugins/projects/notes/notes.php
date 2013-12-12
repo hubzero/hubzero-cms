@@ -771,7 +771,7 @@ class plgProjectsNotes extends JPlugin
 	public function fixupPathway()
 	{		
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$pathway->setPathway(array());
 		
 		$group = NULL;

@@ -166,7 +166,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	protected function _buildPathway() 
 	{
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -2189,7 +2189,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		ximport('Hubzero_Document_Feed');
 		$doc = new Hubzero_Document_Feed;
 		$app = JFactory::getApplication();
-		$params =& $app->getParams();
+		$params = $app->getParams();
 
 		// Incoming
 		$id 		= JRequest::getInt( 'id', 0 );

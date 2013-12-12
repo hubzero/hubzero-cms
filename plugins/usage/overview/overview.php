@@ -443,7 +443,7 @@ class plgUsageOverview extends JPlugin
 
 		// Set the pathway
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$pathway->addItem(JText::_('PLG_USAGE_PERIOD_' . strtoupper($period)), 'index.php?option=' . $option . '&task=' . $task . '&period=' . $period);
 
 		// Build the HTML

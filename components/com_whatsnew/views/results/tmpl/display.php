@@ -82,7 +82,7 @@ foreach ($this->cats as $cat)
 			$a = ' class="active"';
 
 			$app = JFactory::getApplication();
-			$pathway =& $app->getPathway();
+			$pathway = $app->getPathway();
 			$pathway->addItem($cat['title'],'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)));
 		}
 

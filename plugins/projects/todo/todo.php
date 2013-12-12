@@ -378,7 +378,7 @@ class plgProjectsTodo extends JPlugin
 								
 			// Append breadcrumbs
 			$app = JFactory::getApplication();
-			$pathway =& $app->getPathway();
+			$pathway = $app->getPathway();
 			$pathway->addItem(
 					stripslashes($objTD->content),
 					JRoute::_('index.php?option=' . $this->_option . a 

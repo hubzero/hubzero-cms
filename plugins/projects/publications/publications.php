@@ -557,7 +557,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$pathway->addItem(
 			stripslashes(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
 			$view->url . '?action=start'	
@@ -649,7 +649,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$pathway->addItem(
 			stripslashes(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')),
 			$view->url
@@ -942,7 +942,7 @@ class plgProjectsPublications extends JPlugin
 			
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$url = $version != 'default' ? $view->url.a.'version='.$version : $view->url;
 		$pathway->addItem(
 			stripslashes($row->title),
@@ -1698,7 +1698,7 @@ class plgProjectsPublications extends JPlugin
 			
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$url =  $view->url . '?version='.$version;
 		$pathway->addItem(
 			stripslashes($row->title),
@@ -2999,7 +2999,7 @@ class plgProjectsPublications extends JPlugin
 		if (!$ajax) 
 		{
 			$app = JFactory::getApplication();
-			$pathway =& $app->getPathway();
+			$pathway = $app->getPathway();
 			$pathway->addItem(
 				stripslashes($pub->title),
 				$url	
@@ -5120,7 +5120,7 @@ class plgProjectsPublications extends JPlugin
 			
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		$pathway->addItem(
 			stripslashes($view->pub->title),
 			$view->url	

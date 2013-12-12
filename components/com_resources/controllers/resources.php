@@ -1267,7 +1267,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// Build the pathway
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 		if ($this->model->inGroup()) 
 		{
 			// Alter the pathway to reflect a group owned resource
@@ -1617,7 +1617,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		ximport('Hubzero_Document_Feed');
 		$doc = new Hubzero_Document_Feed;
 		$app = JFactory::getApplication();
-		$params =& $app->getParams();
+		$params = $app->getParams();
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);

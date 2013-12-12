@@ -180,7 +180,7 @@ class TimeController extends Hubzero_Controller
 	{
 		//$option = substr($this->_option,4);
 		$app = JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway = $app->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
