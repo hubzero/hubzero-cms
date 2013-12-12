@@ -45,7 +45,7 @@ class ResourcesHtml
 	 * @param      integer $quotes Include quotes?
 	 * @return     string
 	 */
-	public function encode_html($str, $quotes=1)
+	public static function encode_html($str, $quotes=1)
 	{
 		$str = stripslashes($str);
 		$a = array(
@@ -69,7 +69,7 @@ class ResourcesHtml
 	 * @param      integer $desclen Length to shorten to
 	 * @return     string
 	 */
-	public function cleanText($text, $desclen=300)
+	public static function cleanText($text, $desclen=300)
 	{
 		$elipse = false;
 
@@ -102,7 +102,7 @@ class ResourcesHtml
 	 * @param      string $tag HTML element
 	 * @return     string HTML
 	 */
-	public function warning($msg, $tag='p')
+	public static function warning($msg, $tag='p')
 	{
 		return '<' . $tag . ' class="warning">' . $msg . '</' . $tag . '>' . "\n";
 	}
@@ -114,7 +114,7 @@ class ResourcesHtml
 	 * @param      string $tag HTML element
 	 * @return     string HTML
 	 */
-	public function archive($msg, $tag='p')
+	public static function archive($msg, $tag='p')
 	{
 		return '<' . $tag . ' class="archive">' . $msg . '</' . $tag . '>' . "\n";
 	}
@@ -125,7 +125,7 @@ class ResourcesHtml
 	 * @param      string $msg Message to display
 	 * @return     string HTML
 	 */
-	public function alert($msg)
+	public static function alert($msg)
 	{
 		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
@@ -137,7 +137,7 @@ class ResourcesHtml
 	 * @param      string $txt   Header text
 	 * @return     string HTML
 	 */
-	public function hed($level, $txt)
+	public static function hed($level, $txt)
 	{
 		return '<h' . $level . '>' . $txt . '</h' . $level . '>';
 	}
@@ -151,7 +151,7 @@ class ResourcesHtml
 	 * @param      string $class Class to add
 	 * @return     string HTML
 	 */
-	public function formSelect($name, $array, $value, $class='')
+	public static function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="' . $name . '" id="' . $name . '"';
 		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
@@ -174,7 +174,7 @@ class ResourcesHtml
 	 * @param      string $s Secondary cell content
 	 * @return     string HTML
 	 */
-	public function tableRow($h, $c='', $s='')
+	public static function tableRow($h, $c='', $s='')
 	{
 		$html  = '  <tr>' . "\n";
 		$html .= '   <th>' . $h . '</th>' . "\n";
@@ -203,7 +203,7 @@ class ResourcesHtml
 	 * @param      string  $r_type     Resource type ID
 	 * @return     string HTML
 	 */
-	public function adminIcon($id, $published, $show_edit, $created_by=0, $type, $r_type)
+	public static function adminIcon($id, $published, $show_edit, $created_by=0, $type, $r_type)
 	{
 		$juser = JFactory::getUser();
 
@@ -249,7 +249,7 @@ class ResourcesHtml
 	 * @param      string $tag  Tag to extract <nb:tag></nb:tag>
 	 * @return     string 
 	 */
-	public function parseTag($text, $tag)
+	public static function parseTag($text, $tag)
 	{
 		preg_match("#<nb:" . $tag . ">(.*?)</nb:" . $tag . ">#s", $text, $matches);
 		if (count($matches) > 0) 
@@ -272,7 +272,7 @@ class ResourcesHtml
 	 * @param      integer $someid ID to format
 	 * @return     string
 	 */
-	public function niceidformat($someid)
+	public static function niceidformat($someid)
 	{
 		ximport('Hubzero_View_Helper_Html');
 		return Hubzero_View_Helper_Html::niceidformat($someid);
@@ -286,7 +286,7 @@ class ResourcesHtml
 	 * @param      string  $base Base path to prepend
 	 * @return     string
 	 */
-	public function build_path($date='', $id, $base)
+	public static function build_path($date='', $id, $base)
 	{
 		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
 		{
@@ -320,7 +320,7 @@ class ResourcesHtml
 	 * @param      string  $path      Path
 	 * @return     string HTML
 	 */
-	public function screenshots($id, $created, $upath, $wpath, $versionid=0, $sinfo=array(), $slidebar=0, $path='')
+	public static function screenshots($id, $created, $upath, $wpath, $versionid=0, $sinfo=array(), $slidebar=0, $path='')
 	{
 		$path = self::build_path($created, $id, '');
 
@@ -461,7 +461,7 @@ class ResourcesHtml
 	 * @param      string $pic File name
 	 * @return     string
 	 */
-	public function thumbnail($pic)
+	public static function thumbnail($pic)
 	{
 		jimport('joomla.filesystem.file');
 		return JFile::stripExt($pic) . '-tn.gif';
@@ -474,7 +474,7 @@ class ResourcesHtml
 	 * @param      integer $sel    Selected level
 	 * @return     string HTML
 	 */
-	public function skillLevelCircle($levels = array(), $sel = 0)
+	public static function skillLevelCircle($levels = array(), $sel = 0)
 	{
 		$html = '<ul class="audiencelevel">' . "\n";
 		foreach ($levels as $key => $value)
@@ -494,7 +494,7 @@ class ResourcesHtml
 	 * @param      string $audiencelink Link to learn more about skill levels
 	 * @return     string HTML
 	 */
-	public function skillLevelTable($labels = array(), $audiencelink)
+	public static function skillLevelTable($labels = array(), $audiencelink)
 	{
 		$html  = '<table class="skillset" summary="' . JText::_('Resource Audience Skill Rating Table') . '">' . "\n";
 		$html .= "\t".'<thead>' . "\n";
@@ -524,7 +524,7 @@ class ResourcesHtml
 	 * @param      string  $audiencelink Link to learn more about skill levels
 	 * @return     string HTML
 	 */
-	public function showSkillLevel($audience, $showtips = 1, $numlevels = 4, $audiencelink = '')
+	public static function showSkillLevel($audience, $showtips = 1, $numlevels = 4, $audiencelink = '')
 	{
 		$html     = '';
 		$levels   = array();
@@ -614,7 +614,7 @@ class ResourcesHtml
 	 * @param      string  $xtra      Extra content to append
 	 * @return     string HTML
 	 */
-	public function metadata($params, $ranking, $statshtml, $id, $sections, $xtra='')
+	public static function metadata($params, $ranking, $statshtml, $id, $sections, $xtra='')
 	{
 		/*$html = '';
 		if ($params->get('show_ranking')) 
@@ -665,7 +665,7 @@ class ResourcesHtml
 	 * @param      string $content Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function supportingDocuments($content)
+	public static function supportingDocuments($content)
 	{
 		$html  = self::hed(3,JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS')) . "\n";
 		$html .= $content;
@@ -679,7 +679,7 @@ class ResourcesHtml
 	 * @param      array $license License name
 	 * @return     string HTML
 	 */
-	public function license($license)
+	public static function license($license)
 	{
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
 
@@ -724,7 +724,7 @@ class ResourcesHtml
 	 * @param      string $c        Extra classes
 	 * @return     string HTML
 	 */
-	public function sections($sections, $cats, $active='about', $h, $c)
+	public static function sections($sections, $cats, $active='about', $h, $c)
 	{
 		$html = '';
 
@@ -766,7 +766,7 @@ class ResourcesHtml
 	 * @param      string $alias  Resource alias
 	 * @return     string HTML
 	 */
-	public function tabs($option, $id, $cats, $active='about', $alias='')
+	public static function tabs($option, $id, $cats, $active='about', $alias='')
 	{
 		$html  = "\t" . '<ul id="sub-menu" class="sub-menu">' . "\n";
 		$i = 1;
@@ -818,7 +818,7 @@ class ResourcesHtml
 	 * @param      integer $show_posted Show published date
 	 * @return     string HTML
 	 */
-	public function title($option, $resource, $params, $show_edit, $config=null, $show_posted=1)
+	public static function title($option, $resource, $params, $show_edit, $config=null, $show_posted=1)
 	{
 		$mode = JRequest::getWord('mode', '');
 
@@ -876,8 +876,8 @@ class ResourcesHtml
 	 * @param      object $helper   ResourcesHelper
 	 * @return     string HTML
 	 */
-	//public function citationCOins($cite, $resource, $config, $helper)
-	public function citationCOins($cite, $model)
+	//public static function citationCOins($cite, $resource, $config, $helper)
+	public static function citationCOins($cite, $model)
 	{
 		if (!$cite) 
 		{
@@ -971,7 +971,7 @@ class ResourcesHtml
 	 * @param      unknown $fsize Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function about($database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $option, $fsize)
+	public static function about($database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $option, $fsize)
 	{
 		$exp1Format = '%B %d, %Y';
 		$exp2Format = '%I:%M %p, %B %d, %Y';
@@ -1524,7 +1524,7 @@ class ResourcesHtml
 	 * @param      string  $rev       Tool revision
 	 * @return     string HTML
 	 */
-	public function citation($option, $cite, $id, $citations, $type, $rev='')
+	public static function citation($option, $cite, $id, $citations, $type, $rev='')
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
@@ -1572,7 +1572,7 @@ class ResourcesHtml
 	 * @param      integer $rating Rating (out of 5 total)
 	 * @return     string 
 	 */
-	public function getRatingClass($rating=0)
+	public static function getRatingClass($rating=0)
 	{
 		switch ($rating)
 		{
@@ -1609,7 +1609,7 @@ class ResourcesHtml
 	 * @param      integer $fsize Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function writeChildren($config, $option, $database, $resource, $children, $live_site, $id=0, $active=0, $pid=0, $fsize=0)
+	public static function writeChildren($config, $option, $database, $resource, $children, $live_site, $id=0, $active=0, $pid=0, $fsize=0)
 	{
 	    $juser = JFactory::getUser();
 		$out   = '';
@@ -1788,7 +1788,7 @@ class ResourcesHtml
 	 * @param      string $url File path/name
 	 * @return     string
 	 */
-	public function getFileExtension($url)
+	public static function getFileExtension($url)
 	{
 		jimport('joomla.filesystem.file');
 		return JFile::getExt($url);
@@ -1803,7 +1803,7 @@ class ResourcesHtml
 	 * @param      integer $action Action
 	 * @return     string
 	 */
-	public function processPath($option, $item, $pid=0, $action=0)
+	public static function processPath($option, $item, $pid=0, $action=0)
 	{
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
@@ -1900,7 +1900,7 @@ class ResourcesHtml
 				}
 				else
 				{
-					$authorized = $juser->authorise('core.manage', 'com_tools.' . $this->get('id'));
+					$authorized = $juser->authorise('core.manage', 'com_tools.' . $resource->id);
 				}
 
 				$juser = JFactory::getUser();
@@ -1908,7 +1908,6 @@ class ResourcesHtml
 				$mconfig = JComponentHelper::getParams('com_tools');
 
 				// Ensure we have a connection to the middleware
-				$this->can_launch = true;
 				if (!$mconfig->get('mw_on')
 				 || ($mconfig->get('mw_on') > 1 && !$authorized)) 
 				{
@@ -2254,7 +2253,7 @@ class ResourcesHtml
 	 * @param      string  $pop      Pop-up content
 	 * @return     string
 	 */
-	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
+	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
 		$out = '';
 
@@ -2296,7 +2295,7 @@ class ResourcesHtml
 	 * @param      integer $fsize     Format the filesize?
 	 * @return     string
 	 */
-	public function getFileAttribs($path, $base_path='', $fsize=0)
+	public static function getFileAttribs($path, $base_path='', $fsize=0)
 	{
 		// Return nothing if no path provided
 		if (!$path) 
@@ -2379,7 +2378,7 @@ class ResourcesHtml
 	 * @param      integer $fileSize File size to format
 	 * @return     string
 	 */
-	public function formatsize($file_size)
+	public static function formatsize($file_size)
 	{
 		ximport('Hubzero_View_Helper_Html');
 		return Hubzero_View_Helper_Html::formatSize($file_size);
@@ -2394,7 +2393,7 @@ class ResourcesHtml
 	 * @param      integer $show_date Date to display
 	 * @return     string HTML
 	 */
-	public function writeResults(&$database, &$lines, $show_edit=0, $show_date=3)
+	public static function writeResults(&$database, &$lines, $show_edit=0, $show_date=3)
 	{
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
