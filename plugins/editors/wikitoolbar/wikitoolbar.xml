@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/editors/wikitoolbar/wikitoolbar.xml
+@copyright      Copyright 2005-2013 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2013 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.5" type="plugin" group="editors">
+	<name>plg_editors_wikitoolbar</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>PLG_EDITORS_WIKITOOLBAR_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="wikitoolbar">wikitoolbar.php</filename>
+		<filename>wikitoolbar.css</filename>
+		<filename>wikitoolbar.js</filename>
+		<filename>wikitoolbar.jquery.js</filename>
+		<filename>images/header-bg.png</filename>
+		<filename>images/help_purple.png</filename>
+		<filename>images/html.png</filename>
+		<filename>images/link.png</filename>
+		<filename>images/page_white.png</filename>
+		<filename>images/page.png</filename>
+		<filename>images/picture.png</filename>
+		<filename>images/table.png</filename>
+		<filename>images/tag.png</filename>
+		<filename>images/text_bold.png</filename>
+		<filename>images/text_formula.png</filename>
+		<filename>images/text_heading_2.png</filename>
+		<filename>images/text_horizontalrule.png</filename>
+		<filename>images/text_italic.png</filename>
+		<filename>images/text_list_bullets.png</filename>
+		<filename>images/text_list_numbers.png</filename>
+		<filename>images/text_strikethrough.png</filename>
+		<filename>images/text_subscript.png</filename>
+		<filename>images/text_superscript.png</filename>
+		<filename>images/text_underline.png</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_editors_wikitoolbar.ini</language>
+		<language tag="en-GB">en-GB.plg_editors_wikitoolbar.sys.ini</language>
+	</languages>
+</extension>
