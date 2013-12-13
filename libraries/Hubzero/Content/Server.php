@@ -112,7 +112,7 @@ class Hubzero_Content_Server extends \Hubzero\Object
 	 * @param      string  $filename File to serve up
 	 * @return     boolean True if path is allowable, False if not
 	 */
-	public function valid($filename = null)
+	public static function valid($filename = null)
 	{
 		if (!$filename)
 		{
