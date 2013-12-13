@@ -114,7 +114,7 @@ class plgTagsGroups extends JPlugin
 			$juser = JFactory::getUser();
 			if (!$juser->authorise('core.view', 'com_groups'))
 			{
-				$from = " JOIN jos_xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . $juser->get('id');
+				$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . $juser->get('id');
 			}
 		}
 
