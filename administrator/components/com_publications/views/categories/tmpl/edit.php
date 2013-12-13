@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tbody>
 		<?php 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$database->setQuery( "SELECT * FROM #__extensions WHERE `type`='plugin' AND `folder`='publications'" );

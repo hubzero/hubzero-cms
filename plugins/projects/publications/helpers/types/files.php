@@ -121,7 +121,7 @@ class typeFiles extends JObject
 	 */	
 	public function __construct( &$db, $project = NULL, $data = array() )
 	{
-		$this->_database =& $db;
+		$this->_database = $db;
 		$this->_project  = $project;
 		$this->_data 	 = $data;
 	}

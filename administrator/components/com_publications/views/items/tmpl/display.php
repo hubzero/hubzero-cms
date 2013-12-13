@@ -111,7 +111,7 @@ $filterstring .= ($this->filters['category'])   ? '&amp;category='.$this->filter
 
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
-	$row =& $this->rows[$i];
+	$row = $this->rows[$i];
 
 	// Build some publishing info
 	$info  = JText::_('Created') . ': ' . $row->created . '<br />';

@@ -91,7 +91,7 @@ class PublicationsElementGeo extends PublicationsElement
 			{
 				$script .= '.jquery';
 			}
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript('//maps.google.com/maps/api/js?sensor=false');
 			$document->addScript('/components/com_publications/models/element/' . $script . '.js');
 			$this->_script = true;

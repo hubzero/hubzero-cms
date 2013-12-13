@@ -133,16 +133,16 @@ class plgProjectsBlog extends JPlugin
 			$this->loadLanguage();
 			
 			// Load component configs
-			$this->_config =& JComponentHelper::getParams( 'com_projects' );
+			$this->_config = JComponentHelper::getParams( 'com_projects' );
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');
 			ximport('Hubzero_Plugin_View');
 						
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			
 			// Add CSS and JS
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginScript('projects', 'blog');
 			Hubzero_Document::addPluginStylesheet('projects', 'blog');
@@ -160,7 +160,7 @@ class plgProjectsBlog extends JPlugin
 			$this->_uid = $uid;
 			if (!$this->_uid) 
 			{
-				$juser =& JFactory::getUser();
+				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
 							

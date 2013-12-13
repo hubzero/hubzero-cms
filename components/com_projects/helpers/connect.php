@@ -118,7 +118,7 @@ class ProjectsConnectHelper extends JObject {
 	 */	
 	public function __construct( &$db, $project = NULL, $userid = 0, $zone = 'UTC' )
 	{
-		$this->_db 		=& $db;
+		$this->_db 		= $db;
 		$this->_project = $project;
 		$this->_uid 	= $userid;
 		

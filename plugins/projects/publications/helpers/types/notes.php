@@ -121,7 +121,7 @@ class typeNotes extends JObject
 	 */	
 	public function __construct( &$db, $project = NULL, $data = array() )
 	{
-		$this->_database =& $db;
+		$this->_database = $db;
 		$this->_project  = $project;
 		$this->_data 	 = $data;
 	}
@@ -295,7 +295,7 @@ class typeNotes extends JObject
 		$item   	= $this->__get('item');
 		
 		// Load component configs
-		$config =& JComponentHelper::getParams( 'com_projects' );
+		$config = JComponentHelper::getParams( 'com_projects' );
 		
 		$pageid 		= $att->id ? $att->object_id : $item;		
 		$masterscope 	= 'projects' . DS . $this->_project->alias . DS . 'notes';
@@ -346,8 +346,8 @@ class typeNotes extends JObject
 			$projectsHelper = new ProjectsHelper( $this->_database );
 			
 			// Load component configs
-			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
-			$config =& JComponentHelper::getParams( 'com_projects' );
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
+			$config    = JComponentHelper::getParams( 'com_projects' );
 					
 			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 			$group 		 = $config->get('group_prefix', 'pr-') . $this->_project->alias;

@@ -511,7 +511,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function deletereply()
 	{
 		$database = JFactory::getDBO();
-		$publication =& $this->publication;
+		$publication = $this->publication;
 		
 		// Incoming
 		$replyid = JRequest::getInt( 'refid', 0 );
@@ -649,7 +649,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			return;
 		}
 		
-		$publication =& $this->publication;
+		$publication = $this->publication;
 		
 		// Do we have an ID?
 		if (!$publication->id) 
@@ -750,7 +750,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		
 		// Calculate the new average rating for the parent publication
 		$pub = new Publication( $database );
-		$publication =& $this->publication;
+		$publication = $this->publication;
 		$pub->load($publication_id);
 		$pub->calculateRating();
 		$pub->updateRating();
@@ -821,7 +821,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function deletereview()
 	{
 		$database = JFactory::getDBO();
-		$publication =& $this->publication;
+		$publication = $this->publication;
 		
 		// Incoming
 		$reviewid = JRequest::getInt( 'reviewid', 0 );
@@ -876,7 +876,7 @@ class PlgPublicationsReviewsHelper extends JObject
 
 		// Recalculate the average rating for the parent publication
 		$pub = new Publication( $database );
-		$publication =& $this->publication;
+		$publication = $this->publication;
 		$pub->load($publication->id);
 		$pub->calculateRating();
 		$pub->updateRating();

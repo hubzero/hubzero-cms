@@ -65,7 +65,7 @@ class ProjectsHelper extends JObject {
 	 */	
 	public function __construct( &$db )
 	{
-		$this->_db =& $db;
+		$this->_db = $db;
 	}
 		
 	/**

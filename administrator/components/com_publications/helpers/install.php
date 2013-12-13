@@ -58,7 +58,7 @@ class PubInstall extends JObject {
 	 */	
 	public function __construct( &$db, $tables = array() )
 	{
-		$this->_db =& $db;
+		$this->_db = $db;
 		$this->tables = $tables;
 	}
 	

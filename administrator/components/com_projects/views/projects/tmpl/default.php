@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 			
 			for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
 			{
-				$row =& $this->rows[$i];
+				$row = $this->rows[$i];
 				
 				$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 				

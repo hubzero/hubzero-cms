@@ -72,7 +72,7 @@ class PublicationTypesHelper extends JObject
 	 */	
 	public function __construct( &$db, $project = NULL )
 	{
-		$this->_database =& $db;
+		$this->_database = $db;
 		$this->_project  = $project;
 	}
 	

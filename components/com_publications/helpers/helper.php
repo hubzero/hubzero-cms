@@ -67,14 +67,14 @@ class PublicationHelper extends JObject
 	/**
 	 * Constructor
 	 * 
-	 * @param      object  &$db      	 JDatabase
+	 * @param      object  $db      	 JDatabase
 	 * @param      integer $versionid    Publication Version ID
 	 * @param      integer $pubid    	 Publication ID
 	 * @return     void
 	 */	
 	public function __construct( &$db, $versionid = 0, $pubid = 0 )
 	{
-		$this->_db 			=& $db;
+		$this->_db 			= $db;
 		$this->_version_id 	= $versionid;
 		$this->_pub_id 		= $pubid;
 		

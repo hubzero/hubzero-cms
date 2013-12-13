@@ -99,7 +99,7 @@ $path 		= $htmlHelper->buildPath($this->pub->id, $this->pub->version_id, $base_p
 
 // Instantiate the sliders object
 jimport('joomla.html.pane');
-$tabs =& JPane::getInstance('sliders');
+$tabs = JPane::getInstance('sliders');
 
 $rating = $this->pub->rating == 9.9 ? 0.0 : $this->pub->rating;
 

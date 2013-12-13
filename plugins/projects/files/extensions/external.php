@@ -79,12 +79,12 @@ class plgProjectsFilesExternal extends plgProjectsFiles
 		// Load language file
 		$this->loadLanguage();
 			
-		$this->_database =& JFactory::getDBO();		
+		$this->_database = JFactory::getDBO();		
 		$this->_uid = $uid;
 		
 		if (!$this->_uid) 
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$this->_uid = $juser->get('id');
 		}
 		
