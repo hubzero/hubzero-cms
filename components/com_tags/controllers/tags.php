@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-
 /**
  * Controller class for tags
  */
@@ -139,8 +137,6 @@ class TagsControllerTags extends Hubzero_Controller
 		}
 
 		// Sanitize the tag
-		//$t = new TagsHandler($this->database);
-
 		$tags  = array();
 		$added = array();
 		$rt    = array();
@@ -439,19 +435,22 @@ class TagsControllerTags extends Hubzero_Controller
 		$tgs = explode(' ', $tagstring);
 
 		// Sanitize the tag
-		$t = new TagsHandler($this->database);
-
-		$tags = array();
+		$tags  = array();
+		$added = array();
 		foreach ($tgs as $tag)
 		{
-			$tag = $t->normalize_tag($tag);
-
 			// Load the tag
-			$tagobj = new TagsTableTag($this->database);
-			$tagobj->loadTag($tag);
+			$tagobj = TagsModelTag::getInstance($tag);
+
+			if (in_array($tagobj->get('tag'), $added)) 
+			{
+				continue;
+			}
+
+			$added[] = $tagobj->get('tag');
 
 			// Ensure we loaded the tag's info from the database
-			if ($tagobj->id) 
+			if ($tagobj->exists()) 
 			{
 				$tags[] = $tagobj;
 			}
@@ -562,7 +561,7 @@ class TagsControllerTags extends Hubzero_Controller
 			{
 				$title .= '+ ';
 			}
-			$title .= $tags[$i]->raw_tag . ' ';
+			$title .= $tags[$i]->get('raw_tag') . ' ';
 		}
 		$title = trim($title);
 		$title .= ': ' . $area;
