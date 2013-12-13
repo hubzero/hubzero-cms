@@ -1586,7 +1586,7 @@ class Hubzero_Tool_Version
 	 * @param      string $instance Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getVersionInfo($id, $version=null, $toolname=null, $instance=null)
+	public static function getVersionInfo($id, $version=null, $toolname=null, $instance=null)
     {
 		$db =  JFactory::getDBO();
         // data comes from mysql
