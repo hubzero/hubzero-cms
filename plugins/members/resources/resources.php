@@ -320,7 +320,7 @@ class plgMembersResources extends JPlugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
 		$authorized = false;
 		$juser = JFactory::getUser();
@@ -465,7 +465,7 @@ class plgMembersResources extends JPlugin
 	 * 
 	 * @return     void
 	 */
-	public function documents()
+	public static function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 		ximport('Hubzero_Document');
