@@ -50,7 +50,7 @@ class Hubzero_ToolHelper
 	 * @param	  unknown $func Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	static public function iterate($func)
+	public static function iterate($func)
 	{
 		$db =  JFactory::getDBO();
 
@@ -1410,7 +1410,7 @@ class Hubzero_Tool
 	 * @param	  unknown $userid Parameter description (if any) ...
 	 * @return    mixed False on error, array on success
 	 */
-	static public function getToolContributions($userid = null)
+	public static function getToolContributions($userid = null)
 	{
 		if (empty($userid))
 		{
@@ -1437,22 +1437,14 @@ class Hubzero_Tool
 	 * @param	  unknown $id Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
-	public function getResourceId($toolname = null, $id = null)
+	public static function getResourceId($toolname = null, $id = null)
 	{
 		$db =  JFactory::getDBO();
 
-		if (isset($this) && is_a($this,'Hubzero_Tool'))
+		if (is_numeric($toolname) && empty($id))
 		{
-			$toolname = $this->toolname;
-			$id = $this->id;
-		}
-		else
-		{
-			if (is_numeric($toolname) && empty($id))
-			{
-				$id = $toolname;
-				$toolname = null;
-			}
+			$id = $toolname;
+			$toolname = null;
 		}
 
 		if (!is_null($toolname))
@@ -1508,7 +1500,7 @@ class Hubzero_Tool
 	 * @param	  unknown $id Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	static public function validate(&$tool, &$err, $id)
+	public static function validate(&$tool, &$err, $id)
 	{
 		$db =  JFactory::getDBO();
 		$xlog =  Hubzero_Factory::getLogger();
@@ -1651,7 +1643,7 @@ class Hubzero_Tool
 	 * @param	  unknown $id Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
-	static public function validateVersion($newversion, &$err, $id)
+	public static function validateVersion($newversion, &$err, $id)
 	{
 		$db =  JFactory::getDBO();
 		$xlog =  Hubzero_Factory::getLogger();
@@ -1692,7 +1684,7 @@ class Hubzero_Tool
 	 * @param	  unknown &$err Parameter description (if any) ...
 	 * @return	 integer Return description (if any) ...
 	 */
-	static public function validateLicense($license, $code, &$err)
+	public static function validateLicense($license, $code, &$err)
 	{
 		preg_replace('/\[([^]]+)\]/', ' ', $license['text'], -1, $bingo);
 
@@ -1725,7 +1717,7 @@ class Hubzero_Tool
 	 * 
 	 * @return	 object Return description (if any) ...
 	 */
-	static public function getMyTools()
+	public static function getMyTools()
 	{
 		$db =  JFactory::getDBO();
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
@@ -1750,7 +1742,7 @@ class Hubzero_Tool
 	 * @param	  unknown $toolname Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
-	static public function getToolId($toolname=NULL)
+	public static function getToolId($toolname=NULL)
 	{
 		$db =  JFactory::getDBO();
 		if ($toolname=== NULL) 
@@ -1769,7 +1761,7 @@ class Hubzero_Tool
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
 	 */
-	static public function getToolDevelopers($toolid)
+	public static function getToolDevelopers($toolid)
 	{
 		$db =  JFactory::getDBO();
 
@@ -1791,7 +1783,7 @@ class Hubzero_Tool
 	 * @param	  array $groups Parameter description (if any) ...
 	 * @return	 array Return description (if any) ...
 	 */
-	static public function getToolGroups($toolid, $groups = array())
+	public static function getToolGroups($toolid, $groups = array())
 	{
 		$db =  JFactory::getDBO();
 
@@ -1816,7 +1808,7 @@ class Hubzero_Tool
 	 * @param	  string $instance is the tool version instance
 	 * @return	 array Return list of groups
 	 */
-	static public function getToolGroupsRestriction($toolid, $instance)
+	public static function getToolGroupsRestriction($toolid, $instance)
 	{
 		$db =  JFactory::getDBO();
 
@@ -1837,7 +1829,7 @@ class Hubzero_Tool
 	 * @param	  string $ticketid Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	static public function saveTicketId($toolid=NULL, $ticketid=NULL)
+	public static function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
 		$db =  JFactory::getDBO();
 		if ($toolid=== NULL or $ticketid=== NULL) 
@@ -1861,7 +1853,7 @@ class Hubzero_Tool
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
- 	static public function getTicketId($toolid=NULL)
+ 	public static function getTicketId($toolid=NULL)
 	{
 		$db =  JFactory::getDBO();
 		if ($toolid=== NULL) 
@@ -1881,7 +1873,7 @@ class Hubzero_Tool
 	 * @param	  unknown $admin Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
-	static public function xbuildQuery($filters, $admin)
+	public static function xbuildQuery($filters, $admin)
 	{
 		$juser = JFactory::getUser();
 

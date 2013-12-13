@@ -1247,7 +1247,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		}
 
 		// create resource page
-		$rid = $hzt->getResourceId();
+		$rid = Hubzero_Tool::getResourceId($hzt->toolname,$hzt->id);
 
 		if (empty($rid))
 		{
@@ -1647,7 +1647,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 				$xlog->logDebug(__FUNCTION__ . "() state changing away from  published");
 				// Get version ids
-				$rid = $hzt->getResourceId();
+				$rid = Hubzero_Tool::getResourceId($hzt->toolname,$hzt->id);
 
 				$to   = $objV->getVersionIdFromResource($rid, 'dev');
 				$from = $objV->getVersionIdFromResource($rid, 'current');
