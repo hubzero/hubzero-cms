@@ -154,7 +154,7 @@ class WikiPage extends JTable
 	 * @param 	object 		$db JDatabase object
 	 * @return     void
 	 */
-	public function __construct(&$db)
+	public function __construct($db)
 	{
 		parent::__construct('#__wiki_page', 'id', $db);
 	}
