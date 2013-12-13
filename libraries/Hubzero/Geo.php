@@ -282,7 +282,7 @@ class Hubzero_Geo
 	 * @param      string $location Location to check in
 	 * @return     boolean True if IP is in the location
 	 */
-	public function is_iplocation($ip, $location)
+	public static function is_iplocation($ip, $location)
 	{
 		$iplocation = false;
 		if ($ip && $location) 
