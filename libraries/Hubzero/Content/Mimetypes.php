@@ -834,7 +834,8 @@ class Hubzero_Content_Mimetypes
 	{
 		if (!is_null($file)) 
 		{
-			$ext = strtolower(array_pop(explode('.', $file)));
+			$parts = explode('.', $file);
+			$ext = strtolower(array_pop($parts));
 			return $ext;
 		} 
 		else 
