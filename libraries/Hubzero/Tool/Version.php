@@ -620,7 +620,7 @@ class Hubzero_Tool_Version
 	 * @param      unknown $instance Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-    public function getInstance($instance)
+    public static function getInstance($instance)
     {
         $hztv = new Hubzero_Tool_Version();
 
