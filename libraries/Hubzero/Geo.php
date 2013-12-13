@@ -41,7 +41,7 @@ class Hubzero_Geo
 	 * 
 	 * @return     mixed JDatabase object upon success, null if error
 	 */
-	public function getGeoDBO()
+	public static function getGeoDBO()
 	{
 		static $instance;
 
@@ -139,7 +139,7 @@ class Hubzero_Geo
 	 * @param      array $names Parameter description (if any) ...
 	 * @return     array
 	 */
-	public function getCodesByNames($names=array())
+	public static function getCodesByNames($names=array())
 	{
 		if (!($gdb = Hubzero_Geo::getGeoDBO())) 
 		{
