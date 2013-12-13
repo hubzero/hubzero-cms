@@ -77,7 +77,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $login Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validlogin($login)
+	public static function validlogin($login)
 	{
 		if (preg_match("/^[a-z][_.a-z0-9]{1,31}$/", $login)) {
 			if (Hubzero_Registration_Helper::is_positiveint($login)) {
@@ -98,7 +98,7 @@ class Hubzero_Registration_Helper
 	 * @param      integer $x Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function is_positiveint($x)
+	public static function is_positiveint($x)
 	{
 		if (is_numeric($x) && intval($x) == $x && $x >= 0) {
 			return(true);
@@ -132,7 +132,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $email Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function validemail($email)
+	public static function validemail($email)
 	{
 		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/", $email)) {
 			return true;
@@ -184,7 +184,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $text Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validtext($text)
+	public static function validtext($text)
 	{
 		if (!strchr($text, "	")) {
 			return(1);
