@@ -262,7 +262,7 @@ class plgResourcesReviews extends JPlugin
 	 * @param      boolean $abuse    Abuse flag
 	 * @return     array
 	 */
-	public function getComments($item, $category, $level, $abuse=false)
+	public static function getComments($item, $category, $level, $abuse=false)
 	{
 		$database = JFactory::getDBO();
 
@@ -295,7 +295,7 @@ class plgResourcesReviews extends JPlugin
 	 * @param      string  $category Item type
 	 * @return     integer
 	 */
-	public function getAbuseReports($item, $category)
+	public static function getAbuseReports($item, $category)
 	{
 		$database = JFactory::getDBO();
 
