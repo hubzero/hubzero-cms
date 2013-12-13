@@ -52,7 +52,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 	 * @access public
 	 * @return	string
 	 */
-	public function render()
+	public function render($name, $params = NULL, $content = NULL)
 	{
 		$now  = JFactory::getDate();
 		$data =& $this->_doc;
