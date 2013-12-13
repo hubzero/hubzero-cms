@@ -1878,7 +1878,7 @@ class ResourcesHtml
 	 * @param      string $xact       Extra parameters to add
 	 * @return     string 
 	 */
-	public function primary_child($option, $resource, $firstChild, $xact='')
+	public static function primary_child($option, $resource, $firstChild, $xact='')
 	{
 	    $juser = JFactory::getUser();
 
