@@ -77,7 +77,7 @@ class MembersAddress extends JTable
 	 * 
 	 * @return     void
 	 */
-	public function canDelete()
+	public function canDelete($pk = NULL, $joins = NULL)
 	{
 		return true;
 	}
