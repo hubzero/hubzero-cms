@@ -192,7 +192,7 @@ class plgTagsMembers extends JPlugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
 		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_User_Profile_Helper');
