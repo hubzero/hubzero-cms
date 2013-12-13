@@ -1930,7 +1930,7 @@ class Hubzero_Tool
 	 * @param     boolean $admin   Admin access?
 	 * @return    array
 	 */
-	public function getTools($filters=array(), $admin=false)
+	public static function getTools($filters=array(), $admin=false)
 	{
 		$db =  JFactory::getDBO();
 		$filter = self::xbuildQuery($filters, $admin);
