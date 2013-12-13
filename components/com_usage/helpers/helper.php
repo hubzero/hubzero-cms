@@ -41,7 +41,7 @@ class UsageHelper
 	 * 
 	 * @return     mixed
 	 */
-	public function getUDBO()
+	public static function getUDBO()
 	{
 		static $instance;
 
