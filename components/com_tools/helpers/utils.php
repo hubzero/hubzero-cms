@@ -41,7 +41,7 @@ class ToolsHelperUtils
 	 * 
 	 * @return     mixed
 	 */
-	public function getMWDBO()
+	public static function getMWDBO()
 	{
 		static $instance;
 
@@ -93,7 +93,7 @@ class ToolsHelperUtils
 	 * @param      string $username User to look up disk space for
 	 * @return     array
 	 */
-	public function getDiskUsage($username)
+	public static function getDiskUsage($username)
 	{
 		$info = array();
 
@@ -138,7 +138,7 @@ class ToolsHelperUtils
 	 * @param      string $string Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function makeArray($string='') 
+	public static function makeArray($string='') 
 	{
 		$string = preg_replace('/ /', ',', $string);
 		$arr    = explode(',', $string);
@@ -156,7 +156,7 @@ class ToolsHelperUtils
 	 * @param      array $array Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function cleanArray($array) 
+	public static function cleanArray($array) 
 	{
 		foreach ($array as $key => $value) 
 		{
@@ -177,7 +177,7 @@ class ToolsHelperUtils
 	 * @param      string $field Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function check_validInput($field)
+	public static function check_validInput($field)
 	{
 		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='') 
 		{
@@ -197,7 +197,7 @@ class ToolsHelperUtils
 	 * @param      object $database Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getLicenses($database)
+	public static function getLicenses($database)
 	{
 		$database->setQuery("SELECT text, name, title FROM #__tool_licenses ORDER BY ordering ASC");
 		return $database->loadObjectList();
@@ -213,7 +213,7 @@ class ToolsHelperUtils
 	 * @param      array $newarray Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function transform($array, $label, $newarray=array()) 
+	public static function transform($array, $label, $newarray=array()) 
 	{
 		if (count($array) > 0) 
 		{
@@ -242,7 +242,7 @@ class ToolsHelperUtils
 	 * @param      array $logins Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function getLogins($uids, $logins = array()) 
+	public static function getLogins($uids, $logins = array()) 
 	{
 		if (is_array($uids)) 
 		{
@@ -267,7 +267,7 @@ class ToolsHelperUtils
 	 * 
 	 * @return     path
 	 */
-	public function getResourcePath( $createdDate, $resourceId, $versionId )
+	public static function getResourcePath( $createdDate, $resourceId, $versionId )
 	{
 		//include the resources html helper file
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
@@ -463,7 +463,7 @@ class ToolsHelperUtils
 	 * 
 	 * @return     BOOL
 	 */
-	public function getToolExportAccess( $export_control )
+	public static function getToolExportAccess( $export_control )
 	{
 		//include needed HUBzero libraries
 		ximport('Hubzero_Factory');
@@ -545,7 +545,7 @@ class ToolsHelperUtils
 	 * 
 	 * @return 		BOOL
 	 */
-	public function recordToolUsage( $tool, $userid = '' )
+	public static function recordToolUsage( $tool, $userid = '' )
 	{
 		//include needed files
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
@@ -632,7 +632,7 @@ class ToolsHelperUtils
 	 * 
 	 * @return     mixed
 	 */
-	public function middleware($comm, &$output)
+	public static function middleware($comm, &$output)
 	{
 		$retval = true; // Assume success.
 		$output = new stdClass();
@@ -645,7 +645,6 @@ class ToolsHelperUtils
 		{
 			// Uh-oh. Something went wrong...
 			$retval = false;
-			//$this->setError($results[0]);
 		}
 
 		if (is_array($results))
