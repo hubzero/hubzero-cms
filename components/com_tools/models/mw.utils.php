@@ -41,7 +41,7 @@ class MwUtils
 	 * 
 	 * @return     mixed
 	 */
-	public function getMWDBO()
+	public static function getMWDBO()
 	{
 		static $instance;
 
@@ -93,7 +93,7 @@ class MwUtils
 	 * @param      string $username User to look up disk space for
 	 * @return     array
 	 */
-	public function getDiskUsage($username)
+	public static function getDiskUsage($username)
 	{
 		$info = array();
 
@@ -136,7 +136,7 @@ class MwUtils
 	 * @param      string $username User for which to create home directory
 	 * @return     array
 	 */
-	public function createHomeDirectory($username)
+	public static function createHomeDirectory($username)
 	{
 		$command = "update_quota '{$username}' '1000000' '3000000'";
 		$cmd = "/bin/sh components/com_tools/scripts/mw {$command} 2>&1 </dev/null";

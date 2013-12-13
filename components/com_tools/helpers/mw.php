@@ -41,7 +41,7 @@ class ToolsHelperMw
 	 * 
 	 * @return     mixed
 	 */
-	public function getMWDBO()
+	public static function getMWDBO()
 	{
 		static $instance;
 
@@ -93,7 +93,7 @@ class ToolsHelperMw
 	 * @param      string $username User to look up disk space for
 	 * @return     array
 	 */
-	public function getDiskUsage($username)
+	public static function getDiskUsage($username)
 	{
 		$info = array();
 
