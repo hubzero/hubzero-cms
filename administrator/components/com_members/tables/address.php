@@ -49,7 +49,7 @@ class MembersAddress extends JTable
 	var $addressLongitude = null;
 	
 	
-	public function __construct( &$db )
+	public function __construct( $db )
 	{
 		parent::__construct('#__xprofiles_address', 'id', $db);
 	}

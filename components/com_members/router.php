@@ -172,7 +172,8 @@ function membersParseRoute($segments)
 		}
 	}
 
-	$file = array_pop(explode('/', $_SERVER['REQUEST_URI']));
+	$parts = explode('/', $_SERVER['REQUEST_URI']);
+	$file = array_pop($parts);
 
 	if (substr(strtolower($file), 0, 5) == 'image' 
 	 || substr(strtolower($file), 0, 4) == 'file') 

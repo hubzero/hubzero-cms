@@ -73,7 +73,7 @@ class MembersHtml
 	 * @param      string  $id    Select ID
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectAccess($name, $value, $class='', $id='')
+	public static function selectAccess($name, $value, $class='', $id='')
 	{
 		$arr = array(
 			0 => JText::_('Public') . JText::_(' (anyone can see)'),
@@ -102,7 +102,7 @@ class MembersHtml
 	 * @param      string $response Normalized response code
 	 * @return     string 
 	 */
-	public function propercase_singleresponse($response)
+	public static function propercase_singleresponse($response)
 	{
 		$html = '';
 		switch ($response)
@@ -121,7 +121,7 @@ class MembersHtml
 	 * @param      array $response_array Response codes
 	 * @return     string
 	 */
-	public function propercase_multiresponse($response_array)
+	public static function propercase_multiresponse($response_array)
 	{
 		$html = '';
 		if (count($response_array) == 0) 
@@ -159,7 +159,7 @@ class MembersHtml
 	 * @param      string $email Email address
 	 * @return     string 
 	 */
-	public function obfuscate($email)
+	public static function obfuscate($email)
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
@@ -177,7 +177,7 @@ class MembersHtml
 	 * @param      string $datestr Datetime (0000-00-00 00:00:00)
 	 * @return     integer
 	 */
-	public function date2epoch($datestr)
+	public static function date2epoch($datestr)
 	{
 		if (empty($datestr)) 
 		{
@@ -196,7 +196,7 @@ class MembersHtml
 	 * @param      integer $format Format to apply
 	 * @return     mixed
 	 */
-	public function valformat($value, $format)
+	public static function valformat($value, $format)
 	{
 		if ($format == 1) 
 		{
