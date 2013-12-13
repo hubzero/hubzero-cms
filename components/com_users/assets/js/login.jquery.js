@@ -86,7 +86,7 @@ HUB.User = {
 						attempts++;
 
 						if (attempts >= 3) {
-							window.location.reload();
+							HUB.User.clearCookies();
 						}
 					}
 
@@ -102,7 +102,6 @@ HUB.User = {
 						password.focus();
 						error.html(response.error);
 						error.slideDown('fast', function(){});
-						attempts++;
 					}
 				},
 				error: function(xhr, status, error)
@@ -112,6 +111,22 @@ HUB.User = {
 				complete: function(xhr, status) {}
 			});
 		});
+	},
+
+	clearCookies: function() {
+		var $       = this.jQuery;
+		var cookies = document.cookie.split(";");
+
+		for (i=0; i < cookies.length; i++) {
+			var cookie = cookies[i];
+			var eqPos  = cookie.indexOf("=");
+			var name   = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+			if (name.length == 33) {
+				document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+			}
+		}
+
+		window.location.reload();
 	}
 };
 
