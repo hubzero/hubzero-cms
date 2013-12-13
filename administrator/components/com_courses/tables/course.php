@@ -274,19 +274,19 @@ class CoursesTableCourse extends JTable
 	 * @param      mixed $oid Unique ID or alias of object to retrieve
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL)
+	public function load($keys = NULL, $reset = true)
 	{
-		if (empty($oid)) 
+		if (empty($keys)) 
 		{
 			return false;
 		}
 
-		if (is_numeric($oid)) 
+		if (is_numeric($keys)) 
 		{
-			return parent::load($oid);
+			return parent::load($keys);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid) . " LIMIT 1";
+		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($keys) . " LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{
