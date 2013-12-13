@@ -36,7 +36,10 @@ $database = JFactory::getDBO();
 <?php
 if ($this->model->params->get('show_ranking', 0)) 
 {
-	$lastCitation = end($this->model->citations());
+	$citations = $this->model->citations();
+
+	$lastCitation = end($citations);
+
 	if ($this->model->isTool())
 	{
 		$stats = new ToolStats($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
