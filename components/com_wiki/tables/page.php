@@ -238,7 +238,7 @@ class WikiPage extends JTable
 			$res = $this->bind($result);
 			if ($res)
 			{
-				$this->title = ($this->title) ? $this->title : $this->_splitPagename($this->pagename);
+				$this->title = ($this->title) ? $this->title : $this->splitPagename($this->pagename);
 			}
 			$this->_tbl_key = 'id';
 			return $res;
@@ -282,7 +282,7 @@ class WikiPage extends JTable
 			$res = $this->bind($result);
 			if ($res)
 			{
-				$this->title = ($this->title) ? $this->title : $this->_splitPagename($this->pagename);
+				$this->title = ($this->title) ? $this->title : $this->splitPagename($this->pagename);
 			}
 			return $res;
 		} 
