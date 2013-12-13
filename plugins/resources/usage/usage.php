@@ -224,7 +224,7 @@ class plgResourcesUsage extends JPlugin
 	 * @param      integer $time Time
 	 * @return     string
 	 */
-	public function timeUnits($time) 
+	public static function timeUnits($time) 
 	{
 		if ($time < 60) 
 		{
