@@ -173,7 +173,7 @@ class Hubzero_Group_Helper
 	}
 	
 	
-	public function listGroups( $name="", $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
+	public static function listGroups( $name="", $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
 	{
 		//user object
 		$user = JFactory::getUser();
@@ -201,7 +201,6 @@ class Hubzero_Group_Helper
 		//loop through each group
 		foreach($groups as $group)
 		{
-			
 			//get the Hubzero Group Object
 			$hg = Hubzero_Group::getInstance( $group->gidNumber );
 			
@@ -213,7 +212,7 @@ class Hubzero_Group_Helper
 			
 			//build the wiki config
 			$wikiconfig = array(
-				'option'   => $this->option,
+				'option'   => 'com_groups',
 				'scope'    => $hg->cn.DS.'wiki',
 				'pagename' => 'group',
 				'pageid'   => $hg->gidNumber,
