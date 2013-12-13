@@ -125,11 +125,11 @@ if($label == "none") {
 							<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
 						
 							<?php if($this->config->get("citation_show_badges","no") == "yes") : ?>
-								<?php echo $formatter->citationBadges($cite, $this->database); ?>
+								<?php echo CitationFormat::citationBadges($cite, $this->database); ?>
 							<?php endif; ?>
 							
 							<?php if($this->config->get("citation_show_tags","no") == "yes") : ?>
-								<?php echo $formatter->citationTags($cite, $this->database); ?>
+								<?php echo CitationFormat::citationTags($cite, $this->database); ?>
 							<?php endif; ?>
 						</td>
 					</tr>

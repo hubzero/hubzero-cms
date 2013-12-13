@@ -711,7 +711,7 @@ class CitationFormat
 	 * @param      object $database JDatabase
 	 * @return     string HTML
 	 */
-	public function citationBadges($citation, $database, $includeHtml = true)
+	public static function citationBadges($citation, $database, $includeHtml = true)
 	{
 		$html = "";
 		$badges = array();
@@ -755,7 +755,7 @@ class CitationFormat
 	 * @param      object $database JDatabase
 	 * @return     string HTML
 	 */
-	public function citationTags($citation, $database, $includeHtml = true)
+	public static function citationTags($citation, $database, $includeHtml = true)
 	{
 		$html = '';
 		$tags = array();
