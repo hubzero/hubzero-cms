@@ -126,9 +126,9 @@ class plgMembersUsage extends Hubzero_Plugin
 
 			$view->total_tool_users    = $this->get_total_stats($member->get('uidNumber'), 'tool_users',14);
 			$view->total_andmore_users = $this->get_total_stats($member->get('uidNumber'), 'andmore_users',14);
-			$view->citation_count      = $this->get_citationcount(null, $member->get('uidNumber'));
+			$view->citation_count      = self::get_citationcount(null, $member->get('uidNumber'));
 
-			$cluster = $this->get_classroom_usage($member->get('uidNumber'));
+			$cluster = self::get_classroom_usage($member->get('uidNumber'));
 			$view->cluster_classes = $cluster['classes'];
 			$view->cluster_users   = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
@@ -216,7 +216,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 * @param      string  $period Time period to find data for
 	 * @return     integer
 	 */
-	public function get_simcount($resid, $period)
+	public static function get_simcount($resid, $period)
 	{
 		$database = JFactory::getDBO();
 
@@ -240,7 +240,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 * @param      string $restype Resource type
 	 * @return     string
 	 */
-	public function get_usercount($resid, $period, $restype='0')
+	public static function get_usercount($resid, $period, $restype='0')
 	{
 		$database = JFactory::getDBO();
 
@@ -317,7 +317,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	 * @param      mixed  $authorid User ID
 	 * @return     string
 	 */
-	public function get_citationcount($resid, $authorid=0)
+	public static function get_citationcount($resid, $authorid=0)
 	{
 		$database = JFactory::getDBO();
 
