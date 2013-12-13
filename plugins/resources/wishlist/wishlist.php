@@ -131,11 +131,12 @@ class plgResourcesWishlist extends JPlugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php');
 
 		// Configure controller
-		WishlistController::setVar('_option', $option);
-		WishlistController::setVar('banking', $this->config->get('banking'));
+		$controller = new WishlistController();
+		$controller->setVar('_option', $option);
+		$controller->setVar('banking', $this->config->get('banking'));
 
 		// Get filters
-		$filters = WishlistController::getFilters(0);
+		$filters = $controller->getFilters(0);
 		$filters['limit'] = $this->params->get('limit');
 
 		// Load some objects
@@ -198,10 +199,10 @@ class plgResourcesWishlist extends JPlugin
 			if ($rtrn != 'metadata') 
 			{
 				// Add the CSS to the template
-				WishlistController::_getStyles();
+				$controller->_getStyles();
 
 				// Thumbs voting CSS & JS
-				WishlistController::_getStyles('com_answers', 'vote.css');
+				$controller->_getStyles('com_answers', 'vote.css');
 
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);

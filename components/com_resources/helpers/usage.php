@@ -227,7 +227,7 @@ class ResourcesUsage
 	 * @param      array &$result Database records
 	 * @return     boolean False if errors, true on success
 	 */
-	public function process($results)
+	public function process($result)
 	{
 		return true;
 	}
@@ -426,7 +426,7 @@ class ToolStats extends ResourcesUsage
 	 * @param      array &$result Database records
 	 * @return     boolean False if errors, true on success
 	 */
-	public function process(&$result)
+	public function process($result)
 	{
 		if ($result) 
 		{
@@ -580,7 +580,7 @@ class AndmoreStats extends ResourcesUsage
 	 * @param      array &$result Database results
 	 * @return     void
 	 */
-	public function process(&$result)
+	public function process($result)
 	{
 		if ($result) 
 		{

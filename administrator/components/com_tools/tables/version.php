@@ -562,7 +562,7 @@ class ToolVersion extends  JTable
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function store()
+	public function store($updateNulls = false)
 	{
 		if (empty($this->id))
 		{

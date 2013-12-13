@@ -174,17 +174,17 @@ class WishlistPlan extends JTable
 	/**
 	 * Get a record and bind to $this
 	 * 
-	 * @param      integer $oid Record ID
+	 * @param      integer $keys Record ID
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL)
+	public function load($keys = NULL, $reset = true)
 	{
-		if ($oid == NULL or !is_numeric($oid)) 
+		if ($keys == NULL or !is_numeric($keys)) 
 		{
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($keys));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);

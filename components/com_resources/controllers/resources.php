@@ -1704,7 +1704,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$dtitle = Hubzero_View_Helper_Html::purifyText(stripslashes($title));
 
 		$doc->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle), 250, 0));
-		$doc->description = $this->view->escape(html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($resource->introtext))));
+		$doc->description = htmlspecialchars(html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
 		$doc->copyright = JText::sprintf('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category = JText::_('COM_RESOURCES_RSS_CATEGORY');
 		$doc->link = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id);

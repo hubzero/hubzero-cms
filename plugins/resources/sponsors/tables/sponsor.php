@@ -153,20 +153,20 @@ class ResourcesSponsor extends JTable
 	 * @param      string  $oid Alias
 	 * @return     boolean True on success, False on error
 	 */
-	public function load($oid=NULL)
+	public function load($keys = NULL, $reset = true)
 	{
-		if ($oid === NULL) 
+		if ($keys === NULL) 
 		{
 			return false;
 		}
 		
-		if (is_numeric($oid))
+		if (is_numeric($keys))
 		{
-			return parent::load($oid);
+			return parent::load($keys);
 		}
-		
-		$oid = trim($oid);
-		
+
+		$oid = trim($keys);
+
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
