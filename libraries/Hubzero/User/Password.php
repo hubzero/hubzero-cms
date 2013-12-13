@@ -147,7 +147,7 @@ class Hubzero_User_Password
 	 * @param unknown $storage Parameter description (if any) ...
 	 * @return mixed Return description (if any) ...
 	 */
-	public function getInstance($instance, $storage = null)
+	public static function getInstance($instance, $storage = null)
 	{
 		$hzup = new Hubzero_User_Password();
 		
@@ -556,7 +556,7 @@ class Hubzero_User_Password
 		return $this->__set($key, $value);
 	}
 
-	public function isPasswordExpired($user = null)
+	public static function isPasswordExpired($user = null)
 	{
 		$hzup = self::getInstance($user);
 		
@@ -640,7 +640,7 @@ class Hubzero_User_Password
 		return true;
 	}
 
-	public function comparePasswords($passhash, $password)
+	public static function comparePasswords($passhash, $password)
 	{
 		if (empty($passhash) || empty($password))
 		{
@@ -691,7 +691,7 @@ class Hubzero_User_Password
 		return ($crypt == $hashed);
 	}
 
-	public function passwordMatches($user = null, $password, $alltables = false)
+	public static function passwordMatches($user = null, $password, $alltables = false)
 	{
 		$passhash = null;
 		
