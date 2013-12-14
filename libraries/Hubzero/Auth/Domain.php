@@ -601,7 +601,7 @@ class Hubzero_Auth_Domain
 	 * @param      unknown $domain Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function find_or_create($type,$authenticator,$domain=null)
+	public static function find_or_create($type,$authenticator,$domain=null)
 	{
 		$hzad = new Hubzero_Auth_Domain();
 		$hzad->type = $type;

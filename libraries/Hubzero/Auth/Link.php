@@ -739,7 +739,7 @@ class Hubzero_Auth_Link
 	 * @param      unknown $username Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-    public function find_or_create($type,$authenticator,$domain,$username)
+    public static function find_or_create($type,$authenticator,$domain,$username)
     {
     	$hzad = Hubzero_Auth_Domain::find_or_create($type,$authenticator,$domain);
 
