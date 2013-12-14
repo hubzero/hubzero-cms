@@ -48,7 +48,7 @@ class RegistrationHelperHtml
 	 * @param	string	$tag		HTML tag to use
 	 * @return	string
 	 */
-	public sttic function error($msg, $tag = 'p')
+	public static function error($msg, $tag = 'p')
 	{
 		if (empty($msg)) {
 			return '';
