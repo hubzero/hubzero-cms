@@ -665,7 +665,7 @@ class plgGroupsResources extends Hubzero_Plugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row, $authorized=false)
+	public static function out($row, $authorized=false)
 	{
 		$database = JFactory::getDBO();
 
