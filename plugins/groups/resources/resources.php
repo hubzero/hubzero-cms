@@ -646,7 +646,7 @@ class plgGroupsResources extends Hubzero_Plugin
 	 * 
 	 * @return     void
 	 */
-	public function documents()
+	public static function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 		$document = JFactory::getDocument();
