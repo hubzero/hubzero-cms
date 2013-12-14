@@ -92,7 +92,7 @@ class SupportQuery extends JTable
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct(&$db) 
+	public function __construct($db) 
 	{
 		parent::__construct('#__support_queries', 'id', $db);
 	}

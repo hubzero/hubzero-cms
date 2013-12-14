@@ -42,7 +42,7 @@ class SupportHtml
 	 * @param      integer $int Status number
 	 * @return     string 
 	 */
-	public function getStatus($open=0, $status=0)
+	public static function getStatus($open=0, $status=0)
 	{
 		/* Old values
 		switch ($int)

@@ -42,7 +42,7 @@ class SupportHtml
 	 * @param      string $msg Message to display
 	 * @return     string Javascript
 	 */
-	public function alert($msg)
+	public static function alert($msg)
 	{
 		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
@@ -53,7 +53,7 @@ class SupportHtml
 	 * @param      integer $int Status number
 	 * @return     string 
 	 */
-	public function getStatus($open=0, $status=0)
+	public static function getStatus($open=0, $status=0)
 	{
 		/* Old values
 		switch ($int)
@@ -97,7 +97,7 @@ class SupportHtml
 	 * @param      string $js    Extra attributes to add to element
 	 * @return     string HTML <select>
 	 */
-	public function selectArray($name, $array, $value, $class='', $js='')
+	public static function selectArray($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
@@ -122,7 +122,7 @@ class SupportHtml
 	 * @param      string $js    Extra attributes to add to element
 	 * @return     string HTML <select>
 	 */
-	public function selectObj($name, $array, $value, $class='', $js='')
+	public static function selectObj($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
@@ -143,7 +143,7 @@ class SupportHtml
 	 * @param      array $filters Filters to collapse
 	 * @return     string
 	 */
-	public function collapseFilters($filters)
+	public static function collapseFilters($filters)
 	{
 		$fstring = array();
 		foreach ($filters as $key => $val)
