@@ -277,7 +277,7 @@ class plgWhatsnewResources extends JPlugin
 	 * 
 	 * @return     void
 	 */
-	public function documents()
+	public static function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 	 	$document = JFactory::getDocument();
@@ -298,7 +298,7 @@ class plgWhatsnewResources extends JPlugin
 	 * @param      string $period Time period
 	 * @return     string
 	 */
-	public function out($row, $period)
+	public static function out($row, $period)
 	{
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
