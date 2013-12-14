@@ -86,7 +86,7 @@ class Hubzero_Geo
 	 * 
 	 * @return     array
 	 */
-	public function getcountries()
+	public static function getcountries()
 	{
 		$countries = array();
 
@@ -122,7 +122,7 @@ class Hubzero_Geo
 	 * @param      string $continent Parameter description (if any) ...
 	 * @return     array
 	 */
-	public function getCountriesByContinent($continent='')
+	public static function getCountriesByContinent($continent='')
 	{
 		if (!$continent || !($gdb = Hubzero_Geo::getGeoDBO())) 
 		{
@@ -162,7 +162,7 @@ class Hubzero_Geo
 	 * @param      string $code Short code (ex: us, de, fr, jp)
 	 * @return     string 
 	 */
-	public function getCodeByName($name='')
+	public static function getCodeByName($name='')
 	{
 		$code = '';
 		if ($name) 
@@ -184,7 +184,7 @@ class Hubzero_Geo
 	 * @param      string $code Short code (ex: us, de, fr, jp)
 	 * @return     string 
 	 */
-	public function getcountry($code='')
+	public static function getcountry($code='')
 	{
 		$name = '';
 		if ($code) 
@@ -206,7 +206,7 @@ class Hubzero_Geo
 	 * @param      string $ip IP address to look up
 	 * @return     string 
 	 */
-	public function ipcountry($ip='')
+	public static function ipcountry($ip='')
 	{
 		$country = '';
 		if ($ip) 
@@ -229,7 +229,7 @@ class Hubzero_Geo
 	 * @param      string $country Country to check
 	 * @return     boolean True if D1
 	 */
-	public function is_d1nation($country)
+	public static function is_d1nation($country)
 	{
 		$d1nation = false;
 		if ($country) 
@@ -255,7 +255,7 @@ class Hubzero_Geo
 	 * @param      string $country Country to check
 	 * @return     boolean True if E1
 	 */
-	public function is_e1nation($country)
+	public static function is_e1nation($country)
 	{
 		$e1nation = false;
 		if ($country) 
