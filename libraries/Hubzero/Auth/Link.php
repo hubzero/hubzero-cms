@@ -162,20 +162,21 @@ class Hubzero_Auth_Link
 	 * @param      unknown $username Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-    public function getInstance($auth_domain_id, $username)
-    {
-        $hzal = new Hubzero_Auth_Link();
+	public static function getInstance($auth_domain_id, $username)
+	{
+		$hzal = new Hubzero_Auth_Link();
 		$hzal->auth_domain_id = $auth_domain_id;
 		$hzal->username = $username;
 
-        $hzal->read();
- 		if (!$hzal->id)
-        {
-            return false;
-        }
+		$hzal->read();
+ 
+		if (!$hzal->id)
+		{
+			return false;
+		}
 
-        return $hzal;
-    }
+		return $hzal;
+	}
 
 	/**
 	 * Short description for 'find_by_id'
@@ -185,15 +186,15 @@ class Hubzero_Auth_Link
 	 * @param      unknown $id Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-    public function find_by_id($id)
+    public static function find_by_id($id)
     {
-		$hzal = new Hubzero_Auth_Link();
-		$hzal->id = $id;
+	$hzal = new Hubzero_Auth_Link();
+	$hzal->id = $id;
 
         $hzal->read();
 
         if (empty($hzal->auth_domain_id))
-			return false;
+		return false;
 
         return $hzal;
 
@@ -626,7 +627,7 @@ class Hubzero_Auth_Link
 	 * @param      int $user_id - id of user to return accounts for
 	 * @return     array Return - array of auth link entries for the given user_id
 	 */
-	public function find_by_user_id($user_id = null)
+	public static function find_by_user_id($user_id = null)
 	{
 		if(empty($user_id))
 		{
@@ -662,7 +663,7 @@ class Hubzero_Auth_Link
 	 * @param      string $email - email address to match accounts against
 	 * @return     array Return - array of auth link entries for the given user_id
 	 */
-	public function find_by_email($email = null, $exclude = array())
+	public static function find_by_email($email = null, $exclude = array())
 	{
 		if(empty($email))
 		{
@@ -678,6 +679,7 @@ class Hubzero_Auth_Link
 
 		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
 		$sql .= " WHERE l.auth_domain_id = d.id AND l.email = " . $db->Quote($email);
+
 		if(!empty($exclude[0]))
 		{
 			foreach($exclude as $e)
@@ -706,27 +708,27 @@ class Hubzero_Auth_Link
 	 * @param      unknown $uid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function delete_by_user_id($uid = null)
-    {
-    	if (empty($uid))
-    		return true;
+	public static function delete_by_user_id($uid = null)
+    	{
+    		if (empty($uid))
+    			return true;
 
 		$db = JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+        	if (empty($db))
+        	{
+            		return false;
+        	}
 
-    	$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->Quote($uid) . ";");
+	    	$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->Quote($uid) . ";");
 
-        if (!$db->query())
-        {
-            return false;
-        }
+        	if (!$db->query())
+        	{
+   	        	return false;
+        	}
 
-        return true;
-    }
+	        return true;
+    	}
 
 	/**
 	 * Short description for 'find_or_create'
@@ -740,18 +742,19 @@ class Hubzero_Auth_Link
 	 * @return     mixed Return description (if any) ...
 	 */
     public static function find_or_create($type,$authenticator,$domain,$username)
-    {
-    	$hzad = Hubzero_Auth_Domain::find_or_create($type,$authenticator,$domain);
+	{
+    		$hzad = Hubzero_Auth_Domain::find_or_create($type,$authenticator,$domain);
 
-    	if (!is_object($hzad))
-    		return false;
+ 	   	if (!is_object($hzad))
+    			return false;
 
-    	if (empty($username))
-    		return false;
+	    	if (empty($username))
+    			return false;
 
-    	$hzal = new Hubzero_Auth_Link();
-    	$hzal->username = $username;
-    	$hzal->auth_domain_id = $hzad->id;
+	    	$hzal = new Hubzero_Auth_Link();
+    		$hzal->username = $username;
+	    	$hzal->auth_domain_id = $hzad->id;
+
 		$hzal->read();
 
 		if (empty($hzal->id) && !$hzal->create())
