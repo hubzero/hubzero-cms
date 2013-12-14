@@ -100,7 +100,7 @@ class ToolGroup extends  JTable
 	 * @param      string $role Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function save($cn, $toolid, $role)
+	public function save($cn, $toolid = '', $role = '')
 	{
 		$query = "INSERT INTO $this->_tbl (cn, toolid, role) VALUES (" . $this->_db->Quote($cn) . "," . $this->_db->Quote($toolid) . "," . $this->_db->Quote($role) . ")";
 		$this->_db->setQuery($query);
