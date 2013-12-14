@@ -98,7 +98,7 @@ class SupportACL extends JObject
 	 * 
 	 * @return     object SupportACL
 	 */
-	public function &getACL()
+	public static function &getACL()
 	{
 		static $instance;
 
