@@ -187,11 +187,11 @@ class plgGroupsWishlist extends Hubzero_Plugin
 
 			// Configure controller
 			$controller = new WishlistController();
-			$controller::setVar('_option', 'com_wishlist');
-			$controller::setVar('banking', $this->config->get('banking'));
+			$controller->setVar('_option', 'com_wishlist');
+			$controller->setVar('banking', $this->config->get('banking'));
 
 			// Get filters
-			$filters = $controller::getFilters(0);
+			$filters = $controller->getFilters(0);
 			$filters['limit'] = $this->params->get('limit');
 
 			// Load some objects
