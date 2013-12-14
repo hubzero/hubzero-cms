@@ -847,7 +847,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$ext = array();
 			foreach ($media as $m) 
 			{
-				$ext[] = array_pop(explode('.', $m));
+				$parts = explode('.', $m);
+				$ext[] = array_pop($parts);
 			}
 			
 			//if we dont have all the necessary media formats
