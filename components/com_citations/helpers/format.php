@@ -515,7 +515,7 @@ class CitationFormat
 		//if we have an open url link and we want to use open urls
 		if ($openurl['link'] && $openurls) 
 		{
-			$html .= '<span> | </span>' . $this->citationOpenUrl( $openurl, $citation );
+			$html .= '<span> | </span>' . self::citationOpenUrl( $openurl, $citation );
 		}
 		
 		//citation association - to HUB resources
@@ -524,7 +524,7 @@ class CitationFormat
 		return $html;
 	}
 	
-	public function citationOpenUrl( $openurl, $citation )
+	public static function citationOpenUrl( $openurl, $citation )
 	{
 		$html = "";
 		
