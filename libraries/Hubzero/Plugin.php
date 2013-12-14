@@ -179,7 +179,7 @@ class Hubzero_Plugin extends JPlugin
 	 *
 	 * @return	array
 	 */
-	public function getParams( $name, $folder )
+	public static function getParams( $name, $folder )
 	{
 		//vars
 		$database = JFactory::getDBO();

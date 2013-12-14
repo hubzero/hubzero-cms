@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Hubzero_Password_Rule
 {
-	public function getRules($group = null, $all = false)
+	public static function getRules($group = null, $all = false)
 	{
 		$db =  JFactory::getDBO();
 
@@ -67,7 +67,7 @@ class Hubzero_Password_Rule
 		return $result;
 	}
 
-	public function analyze($password)
+	public static function analyze($password)
 	{
 		ximport('Hubzero_Password_CharacterClass');
 
@@ -109,7 +109,7 @@ class Hubzero_Password_Rule
 		return $stats;
 	}
 
-	public function validate($password, $rules, $user, $name=null)
+	public static function validate($password, $rules, $user, $name=null)
 	{
 		if (empty($rules)) {
 			return array();
@@ -273,7 +273,7 @@ class Hubzero_Password_Rule
 		}
 	}
 
-	private function normalize_word($word)
+	private static function normalize_word($word)
 	{
 		$nword = '';
 
@@ -296,7 +296,7 @@ class Hubzero_Password_Rule
 		return $nword;
 	}
 
-	public function isBasedOnName($word,$name)
+	public static function isBasedOnName($word,$name)
 	{
 		$word = self::normalize_word($word);
 
@@ -337,7 +337,7 @@ class Hubzero_Password_Rule
 		return false;
 	}
 
-	public function isBasedOnUsername($word,$username)
+	public static function isBasedOnUsername($word,$username)
 	{
 		$word = self::normalize_word($word);
 		$username = self::normalize_word($username);

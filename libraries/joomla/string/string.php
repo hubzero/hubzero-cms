@@ -967,10 +967,14 @@ abstract class JString
 		// Parse the encoded URL
 		$encodedParts = parse_url($encodedURL);
 		// Now, decode each value of the resulting array
-		foreach ($encodedParts as $key => $value)
+		if (!empty($encodedParts))
 		{
-			$result[$key] = urldecode($value);
+			foreach ($encodedParts as $key => $value)
+			{
+				$result[$key] = urldecode($value);
+			}
 		}
+
 		return $result;
 	}
 }
