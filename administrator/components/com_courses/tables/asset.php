@@ -114,7 +114,7 @@ class CoursesTableAsset extends JTable
 	 * @param  database object
 	 * @return void
 	 */
-	public function __construct(&$db)
+	public function __construct($db)
 	{
 		parent::__construct('#__courses_assets', 'id', $db);
 	}
