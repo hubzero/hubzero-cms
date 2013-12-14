@@ -47,7 +47,7 @@ class StoreHtml
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function alert( $msg )
+	public static function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}

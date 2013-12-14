@@ -47,7 +47,7 @@ class StoreHtml
 	 * @param      string $category Item category
 	 * @return     string HTML
 	 */
-	public function productimage($option, $item, $root, $wpath, $alt, $category)
+	public static function productimage($option, $item, $root, $wpath, $alt, $category)
 	{
 		if ($wpath) 
 		{
