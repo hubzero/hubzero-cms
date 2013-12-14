@@ -197,7 +197,7 @@ class EventsCategory extends JTable
 	 * @param      integer $oid Category ID
 	 * @return     void
 	 */
-	public function publish($oid=NULL)
+	public function publish($oid = NULL, $state = 1, $userId = 0)
 	{
 		if (!$oid) 
 		{

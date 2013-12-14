@@ -380,7 +380,7 @@ class EventsEvent extends JTable
 	 * @param      integer $oid Event ID
 	 * @return     void
 	 */
-	public function publish($oid=NULL)
+	public function publish($oid = NULL, $state = 1, $userId = 0)
 	{
 		if (!$oid) 
 		{
