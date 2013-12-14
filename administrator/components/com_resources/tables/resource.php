@@ -525,7 +525,8 @@ class ResourcesResource extends JTable
 			$xgroups = (is_object($profile)) ? $profile->getGroups('all') : array();
 			if ($xgroups != '') 
 			{
-				$usersgroups = $this->getUsersGroups($xgroups);
+				$usersgroups = self::getUsersGroups($xgroups);
+
 				if (count($usersgroups) > 1) 
 				{
 					$groups = implode("','", $usersgroups);
@@ -604,9 +605,10 @@ class ResourcesResource extends JTable
 	 * @param      array $groups User's groups
 	 * @return     array
 	 */
-	public function getUsersGroups($groups)
+	public static function getUsersGroups($groups)
 	{
 		$arr = array();
+
 		if (!empty($groups)) 
 		{
 			foreach ($groups as $group)
@@ -617,6 +619,7 @@ class ResourcesResource extends JTable
 				}
 			}
 		}
+
 		return $arr;
 	}
 
@@ -848,7 +851,7 @@ class ResourcesResource extends JTable
 				} 
 				else if ($xgroups != '') 
 				{
-					$usersgroups = $this->getUsersGroups($xgroups);
+					$usersgroups = self::getUsersGroups($xgroups);
 					if (count($usersgroups) > 1) 
 					{
 						$groups = implode("','", $usersgroups);

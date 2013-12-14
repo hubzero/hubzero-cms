@@ -134,7 +134,7 @@ class ResourcesTags extends TagsHandler
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 			if ($xgroups != '') 
 			{
-				$usersgroups = $this->getUsersGroups($xgroups);
+				$usersgroups = self::getUsersGroups($xgroups);
 				if (count($usersgroups) > 1) 
 				{
 					$groups = implode("','", $usersgroups);
@@ -198,9 +198,10 @@ class ResourcesTags extends TagsHandler
 	 * @param      array $groups User's gorups
 	 * @return     array
 	 */
-	public function getUsersGroups($groups)
+	public static function getUsersGroups($groups)
 	{
 		$arr = array();
+
 		if (!empty($groups)) 
 		{
 			foreach ($groups as $group)
@@ -211,6 +212,7 @@ class ResourcesTags extends TagsHandler
 				}
 			}
 		}
+
 		return $arr;
 	}
 
@@ -335,7 +337,7 @@ class ResourcesTags extends TagsHandler
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 			if ($xgroups != '') 
 			{
-				$usersgroups = $this->getUsersGroups($xgroups);
+				$usersgroups = self::getUsersGroups($xgroups);
 				if (count($usersgroups) > 1) 
 				{
 					$groups = implode("','", $usersgroups);

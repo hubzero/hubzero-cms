@@ -2791,7 +2791,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			ximport('Hubzero_User_Helper');
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
-			$usersgroups = $this->getUsersGroups($xgroups);
+			$usersgroups = self::getUsersGroups($xgroups);
 		} 
 		else 
 		{
@@ -2860,9 +2860,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 * @param      array $groups Users' groups
 	 * @return     array
 	 */
-	public function getUsersGroups($groups)
+	public static function getUsersGroups($groups)
 	{
 		$arr = array();
+
 		if (!empty($groups)) 
 		{
 			foreach ($groups as $group)
@@ -2873,6 +2874,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				}
 			}
 		}
+
 		return $arr;
 	}
 
