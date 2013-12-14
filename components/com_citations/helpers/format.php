@@ -807,7 +807,7 @@ class CitationFormat
 	 * @param      string $url URL to encode
 	 * @return     string
 	 */
-	public function cleanUrl($url)
+	public static function cleanUrl($url)
 	{
 		$url = stripslashes($url);
 		$url = str_replace('&amp;', '&', $url);
