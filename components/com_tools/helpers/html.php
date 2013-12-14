@@ -45,7 +45,7 @@ class ToolsHelperHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function error( $msg, $tag='p' )
+	public static function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -56,7 +56,7 @@ class ToolsHelperHtml
 	 * @param      string $stime Datetime to convert
 	 * @return     number
 	 */
-	public function mkt($stime)
+	public static function mkt($stime)
 	{
 		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
 		{
@@ -71,7 +71,7 @@ class ToolsHelperHtml
 	 * @param      number $timestamp Date to convert
 	 * @return     string
 	 */
-	public function timeAgoo($timestamp)
+	public static function timeAgoo($timestamp)
 	{
 		// Store the current time
 		$current_time = strtotime(JFactory::getDate());
@@ -153,7 +153,7 @@ class ToolsHelperHtml
 	 * @param      number $timestamp Date to convert
 	 * @return     string
 	 */
-	public function timeAgo($timestamp)
+	public static function timeAgo($timestamp)
 	{
 		if (strstr($timestamp, '-'))
 		{
@@ -181,7 +181,7 @@ class ToolsHelperHtml
 	 * @param      string $jscall Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function formSelect($name, $idname, $array, $value, $class='', $jscall='')
+	public static function formSelect($name, $idname, $array, $value, $class='', $jscall='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$idname.'"';
 		$out .= ($class)  ? ' class="'.$class.'"'           : ''."";
@@ -210,7 +210,7 @@ class ToolsHelperHtml
 	 * @param      string $action Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='')
+	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='')
 	{
 		//$title = str_replace('"', '&quot;', $title);
 		$html  = '<span id="test-document"><a class="'.$class.'" style="padding:0.1em 1em 0 1em;"  href="'.$href.'" title="'.htmlentities($title).'" '.$action.'>'.$msg.'</a>';
@@ -228,7 +228,7 @@ class ToolsHelperHtml
 	 * @param      string $toolnum Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getNumofTools($status, $toolnum='')
+	public static function getNumofTools($status, $toolnum='')
 	{
         // get hub parameters
         $jconfig = JFactory::getConfig();
@@ -259,7 +259,7 @@ class ToolsHelperHtml
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function toolActive($stateNum) 
+	public static function toolActive($stateNum) 
 	{
 		if ($stateNum == 8 || $stateNum == 9) 
 		{
@@ -276,7 +276,7 @@ class ToolsHelperHtml
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function toolWIP($stateNum) 
+	public static function toolWIP($stateNum) 
 	{
 		if ($stateNum == 2 || $stateNum == 9 || $stateNum == 1) 
 		{
@@ -293,7 +293,7 @@ class ToolsHelperHtml
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function toolEstablished($stateNum) 
+	public static function toolEstablished($stateNum) 
 	{
 		if ($stateNum == 1 || $stateNum == 9) 
 		{
@@ -311,7 +311,7 @@ class ToolsHelperHtml
 	 * @param      string &$statusClass Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getStatusClass($statusNum, &$statusClass) 
+	public static function getStatusClass($statusNum, &$statusClass) 
 	{
 		switch ($statusNum)
 		{
@@ -333,7 +333,7 @@ class ToolsHelperHtml
 	 * @param      unknown &$statusName Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function getStatusName($statusNum, &$statusName) 
+	public static function getStatusName($statusNum, &$statusName) 
 	{
 		switch ($statusNum)
 		{
@@ -360,7 +360,7 @@ class ToolsHelperHtml
 	 * @param      integer $statusNum Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function getStatusNum($statusName, $statusNum=1)
+	public static function getStatusNum($statusName, $statusNum=1)
 	{
 		switch (strtolower($statusName))
 		{
@@ -386,7 +386,7 @@ class ToolsHelperHtml
 	 * @param      string $priority Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getPriority($int, $priority='')
+	public static function getPriority($int, $priority='')
 	{
 		switch ($int)
 		{
@@ -410,7 +410,7 @@ class ToolsHelperHtml
 	 * @param      string $team Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getDevTeam($members, $obj = 1, $team='') 
+	public static function getDevTeam($members, $obj = 1, $team='') 
 	{
 		if ($members && count($members) > 0) 
 		{
@@ -446,7 +446,7 @@ class ToolsHelperHtml
 	 * @param      string $list Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getGroups($groups, $obj = 1, $list='') 
+	public static function getGroups($groups, $obj = 1, $list='') 
 	{
 		if ($groups && count($groups) > 0) 
 		{
@@ -469,7 +469,7 @@ class ToolsHelperHtml
 	 * @param      string $toolaccess Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getToolAccess($access, $groups, $toolaccess='')
+	public static function getToolAccess($access, $groups, $toolaccess='')
 	{
 		switch ($access)
 		{
@@ -506,7 +506,7 @@ class ToolsHelperHtml
 	 * @param      string $codeaccess Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getCodeAccess($access, $codeaccess = '')
+	public static function getCodeAccess($access, $codeaccess = '')
 	{
 		switch ($access)
 		{
@@ -527,7 +527,7 @@ class ToolsHelperHtml
 	 * @param      string $wikiaccess Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getWikiAccess($access, $wikiaccess = '')
+	public static function getWikiAccess($access, $wikiaccess = '')
 	{
 		switch ($access)
 		{
@@ -547,7 +547,7 @@ class ToolsHelperHtml
 	 * @param      unknown $active_stage Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function writeApproval($active_stage)
+	public static function writeApproval($active_stage)
 	{
 		//$stages = array(JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
 		$stages = array(JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
@@ -588,7 +588,7 @@ class ToolsHelperHtml
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectAccess($as, $value)
+	public static function selectAccess($as, $value)
 	{
 		$html  = '<select name="access">';
 		for ($i=0, $n=count($as); $i < $n; $i++)
@@ -616,7 +616,7 @@ class ToolsHelperHtml
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectGroup($groups, $value)
+	public static function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner">'."\n";
 		$html .= '<option value="">'.JText::_('COM_TOOLS_SELECT_GROUP').'</option>'."\n";
@@ -645,7 +645,7 @@ class ToolsHelperHtml
 	 * @param      integer $addnew Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function writeNotesArea($notes, $option, $type='', $edititem = 0, $addnew = 1)
+	public static function writeNotesArea($notes, $option, $type='', $edititem = 0, $addnew = 1)
 	{
 
 		$out ='';
@@ -682,7 +682,7 @@ class ToolsHelperHtml
 	 * @param      string $type Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function addNoteArea($i, $option, $type = 'item')
+	public static function addNoteArea($i, $option, $type = 'item')
 	{
 		$out  = '';
 	 	$out .= '<label>'."\n";
@@ -704,7 +704,7 @@ class ToolsHelperHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	/*public function parseTag($text, $tag)
+	/*public static function parseTag($text, $tag)
 	{
 		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
 		if (count($matches) > 0) {
@@ -725,7 +725,7 @@ class ToolsHelperHtml
 	 * @param      unknown $pee Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function txt_unpee($pee)
+	public static function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);
@@ -744,7 +744,7 @@ class ToolsHelperHtml
 	 * @param      integer $someid Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	/*public function niceidformat($someid)
+	/*public static function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
 		{
@@ -760,7 +760,7 @@ class ToolsHelperHtml
 	 * @param      string $base_path Base path to prepend to $path
 	 * @return     string 
 	 */
-	public function getFileAttribs($path, $base_path='')
+	public static function getFileAttribs($path, $base_path='')
 	{
 		// Return nothing if no path provided
 		if (!$path) 
