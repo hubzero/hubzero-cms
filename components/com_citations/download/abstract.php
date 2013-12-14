@@ -97,7 +97,7 @@ abstract class CitationsDownloadAbstract
 	 * 
 	 * @return     string
 	 */
-	public function format($row = NULL)
+	public function format($row)
 	{
 		return '';
 	}
