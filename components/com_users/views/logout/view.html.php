@@ -67,7 +67,7 @@ class UsersViewLogout extends JViewLegacy
 
 		$item   = $menu->getActive();
 		if($item)
-			$params	=& $menu->getParams($item->id);
+			$params	= $menu->getParams($item->id);
 		else {
 			$params = new JParameter( '' );
 			$template = JFactory::getApplication()->getTemplate();
