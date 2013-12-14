@@ -47,7 +47,7 @@ class SupportUtilities
 	 * @param      array  $additionalHeaders More headers to apply
 	 * @return     integer 1 = success, 0 = failure
 	 */
-	public function sendEmail($email, $subject, $message, $from, $replyto = '', $additionalHeaders = null)
+	public static function sendEmail($email, $subject, $message, $from, $replyto = '', $additionalHeaders = null)
 	{
 		if ($from) 
 		{
