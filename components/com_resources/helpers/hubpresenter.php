@@ -44,7 +44,7 @@ class HUBpresenterHelper extends JObject
 	 * @param 	array 	Array of error messages
 	 * @return 	string	Html data for errors
 	 */
-	public function errorMessage( $errors = array() )
+	public static function errorMessage( $errors = array() )
 	{
 		//if we have errors
 		if(!empty($errors)) {
