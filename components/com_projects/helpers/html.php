@@ -79,7 +79,7 @@ class ProjectsHtml
 	 * @param      string $format
 	 * @return     string
 	 */
-	public function valformat($value, $format) 
+	public static function valformat($value, $format) 
 	{
 		if ($format == 1) 
 		{
@@ -133,7 +133,7 @@ class ProjectsHtml
 	 * @param      boolean 	$full	Return detailed date/time?
 	 * @return     string
 	 */
-	public function formatTime($time, $full = false, $utc = false) 
+	public static function formatTime($time, $full = false, $utc = false) 
 	{
 		$parsed 	= date_parse($time);
 		$timestamp	= strtotime($time);
@@ -170,7 +170,7 @@ class ProjectsHtml
 	 * @param      string $timestamp
 	 * @return     string
 	 */
-	public function timeAgo($timestamp, $utc = true) 
+	public static function timeAgo($timestamp, $utc = true) 
 	{
 		$timestamp = Hubzero_View_Helper_Html::mkt($timestamp);
 		
@@ -188,7 +188,7 @@ class ProjectsHtml
 	 * @param      string $difference
 	 * @return     string
 	 */
-	public function timeDifference ($difference)
+	public static function timeDifference ($difference)
 	{
 		// Set the periods of time
 		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
@@ -236,7 +236,7 @@ class ProjectsHtml
 	 * @param      string $timestamp
 	 * @return     string
 	 */
-	public function timeFromNow ($timestamp)
+	public static function timeFromNow ($timestamp)
 	{
 		// Get current UTC time
 		$current_time = strtotime(JFactory::getDate());
@@ -260,7 +260,7 @@ class ProjectsHtml
 	 * @param      string $prefix
 	 * @return     string
 	 */
-	public function getFileAttribs( $path = '', $base_path = '', $get = '', $prefix = JPATH_ROOT )
+	public static function getFileAttribs( $path = '', $base_path = '', $get = '', $prefix = JPATH_ROOT )
 	{
 		if (!$path) 
 		{
@@ -316,7 +316,7 @@ class ProjectsHtml
 	 * @param      string $directory
 	 * @return     string
 	 */
-	public function getDirSize ($directory = '') 
+	public static function getDirSize ($directory = '') 
 	{
 		if(!$directory) 
 		{
@@ -359,7 +359,7 @@ class ProjectsHtml
 	 * @param      int $round
 	 * @return     string
 	 */
-	public function formatSize($file_size, $round = 0) 
+	public static function formatSize($file_size, $round = 0) 
 	{
 		if ($file_size >= 1073741824) 
 	//	if ($file_size >= 107374182) 
@@ -391,7 +391,7 @@ class ProjectsHtml
 	 * @param      string $round
 	 * @return     string
 	 */
-	public function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0) 
+	public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0) 
 	{
 		$file_size = str_replace(' ', '', $file_size);
 
@@ -437,7 +437,7 @@ class ProjectsHtml
 	 * @param      string $icon
 	 * @return     string
 	 */
-	public function getGoogleIcon ($mimeType, $include_dir = 1, $icon = '') 
+	public static function getGoogleIcon ($mimeType, $include_dir = 1, $icon = '') 
 	{
 		switch (strtolower($mimeType)) 
 		{
@@ -485,7 +485,7 @@ class ProjectsHtml
 	 * @param      string $mimeType
 	 * @return     string
 	 */
-	public function fixUpMimeType ($file = NULL, $mimeType = NULL) 
+	public static function fixUpMimeType ($file = NULL, $mimeType = NULL) 
 	{
 		if ($file)
 		{
@@ -525,7 +525,7 @@ class ProjectsHtml
 	 * @param      string $icon
 	 * @return     string
 	 */
-	public function getFileIcon ($ext, $include_dir = 1, $icon = '') 
+	public static function getFileIcon ($ext, $include_dir = 1, $icon = '') 
 	{
 		switch (strtolower($ext)) 
 		{
@@ -646,7 +646,7 @@ class ProjectsHtml
 	 * @param      object $view
 	 * @return     string HTML
 	 */
-	public function embedProjectImage( $view )
+	public static function embedProjectImage( $view )
 	{ 
 		$path = DS . trim($view->config->get('imagepath', '/site/projects'), DS) . DS . $view->project->alias . DS . 'images';
 		$image  = $view->project->picture 
@@ -670,7 +670,7 @@ class ProjectsHtml
 	 * @param      object $view
 	 * @return     string HTML
 	 */
-	public function writeMemberOptions ( $view ) 
+	public static function writeMemberOptions ( $view ) 
 	{ 
 		$dateFormat = '%b %d, %Y';
 		$tz = null;
@@ -744,7 +744,7 @@ class ProjectsHtml
 	 * @param      boolean $show_pic
 	 * @return     string HTML
 	 */
-	public function writeProjectHeader ($view, $back = 0, $underline = 0, $show_privacy = 0, $show_pic = 1) 
+	public static function writeProjectHeader ($view, $back = 0, $underline = 0, $show_privacy = 0, $show_pic = 1) 
 	{
 		// Use alias or id in urls?
 		$goto  = 'alias=' . $view->project->alias;
@@ -813,7 +813,7 @@ class ProjectsHtml
 	 * @param      array $config
 	 * @return     string HTML
 	 */
-	public function getThumbSrc( $id, $alias, $picname = '', $config )
+	public static function getThumbSrc( $id, $alias, $picname = '', $config )
 	{		
 		$src  = '';
 		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
@@ -846,7 +846,7 @@ class ProjectsHtml
 	 * 
 	 * @return     string HTML
 	 */
-	public function toolDevHeader( $option, $config, $project, $tool, $active, $bcrumb = '')
+	public static function toolDevHeader( $option, $config, $project, $tool, $active, $bcrumb = '')
 	{
 		// tool-only tab menu 
 		$view = new Hubzero_Plugin_View(
@@ -882,7 +882,7 @@ class ProjectsHtml
 	 * @param      string $msg
 	 * @return     string HTML
 	 */
-	public function showNoPreviewMessage( $msg = '' ) 
+	public static function showNoPreviewMessage( $msg = '' ) 
 	{
 		$msg = $msg ? $msg : JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PREVIEW_NO_CONTENT');
 		return '<p class="pale">'.$msg.'</p>';
@@ -898,7 +898,7 @@ class ProjectsHtml
 	 * @param      boolean $useletters
 	 * @return     string HTML
 	 */	
-	public function generateCode( $minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1, $mixedcaps = false )
+	public static function generateCode( $minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1, $mixedcaps = false )
 	{	
 		$key = '';
 		$charset = '';
@@ -918,7 +918,7 @@ class ProjectsHtml
 	 * @param      string $in
 	 * @return     string
 	 */		
-	public function cleanText ($in = '') 
+	public static function cleanText ($in = '') 
 	{	
 		$in = stripslashes($in);
 		$in = str_replace('&quote;','&quot;',$in);
@@ -938,7 +938,7 @@ class ProjectsHtml
 	 * @param      string $rel
 	 * @return     string HTML
 	 */		
-	public function replaceUrls($string, $rel = 'nofollow') 
+	public static function replaceUrls($string, $rel = 'nofollow') 
 	{
 	    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
 	    $port = "(:\d{1,})?";
@@ -954,7 +954,7 @@ class ProjectsHtml
 	 * @param      string $haystack
 	 * @return     boolean
 	 */	
-	public function myArraySearch( $needle, $haystack ) 
+	public static function myArraySearch( $needle, $haystack ) 
 	{
 	    if (empty($needle) || empty($haystack)) 
 		{
@@ -988,7 +988,7 @@ class ProjectsHtml
 	 * 
 	 * @return     string
 	 */
-	public function getAppendedNumber ( $path = null )
+	public static function getAppendedNumber ( $path = null )
 	{
 		$append = '';
 		
@@ -1024,7 +1024,7 @@ class ProjectsHtml
 	 * @param      string $delim
 	 * @return     string
 	 */
-	public function cleanFileNum ( $path = null, $end = '', $delim = '-' )
+	public static function cleanFileNum ( $path = null, $end = '', $delim = '-' )
 	{
 		$newpath = $path;
 		
@@ -1068,13 +1068,14 @@ class ProjectsHtml
 	 * @param      string $ext
 	 * @return     string
 	 */
-	public function fixFileName ( $path = null, $append = '', $ext = '' )
+	public static function fixFileName ( $path = null, $append = '', $ext = '' )
 	{
 		if (!$path) 
 		{
-			$this->setError( JText::_('No path set.') );
+			// $this->setError( JText::_('No path set.') );
 			return false;
 		}
+
 		if (!$append) 
 		{
 			return $path;
@@ -1115,7 +1116,7 @@ class ProjectsHtml
 	 * @param      string  $file      String to shorten
 	 * @return     string 
 	 */
-	public function takeOutExt($file = '')
+	public static function takeOutExt($file = '')
 	{
 		// Take out extention
 		if ($file)
@@ -1165,7 +1166,7 @@ class ProjectsHtml
 	 * @param      int $chars
 	 * @return     string
 	 */	
-	public function shortenName( $name, $chars = 12 ) 
+	public static function shortenName( $name, $chars = 12 ) 
 	{
 		$name = trim($name);
 
@@ -1195,7 +1196,7 @@ class ProjectsHtml
 	 * @param      int $chars
 	 * @return     string
 	 */	
-	public function shortenUrl( $name, $chars = 40 ) 
+	public static function shortenUrl( $name, $chars = 40 ) 
 	{
 		$name = trim($name);
 
@@ -1215,7 +1216,7 @@ class ProjectsHtml
 	 * @param      int $chars
 	 * @return     string
 	 */
-	public function shortenFileName( $name, $chars = 30 ) 
+	public static function shortenFileName( $name, $chars = 30 ) 
 	{
 		$name = trim($name);
 		$original = $name;
@@ -1248,7 +1249,7 @@ class ProjectsHtml
 	 * @param      string $reviewer
 	 * @return     string
 	 */
-	public function getAdminNotes($notes = '', $reviewer = '')
+	public static function getAdminNotes($notes = '', $reviewer = '')
 	{
 		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
 		$ntext = '';
@@ -1275,7 +1276,7 @@ class ProjectsHtml
 	 * @param      string $reviewer
 	 * @return     string
 	 */
-	public function getAdminNoteCount($notes = '', $reviewer = '')
+	public static function getAdminNoteCount($notes = '', $reviewer = '')
 	{
 
 		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
@@ -1298,7 +1299,7 @@ class ProjectsHtml
 	 * @param      int $shorten
 	 * @return     string
 	 */
-	public function parseAdminNote($note = '', $reviewer = '', $showmeta = 1, $shorten = 0)
+	public static function parseAdminNote($note = '', $reviewer = '', $showmeta = 1, $shorten = 0)
 	{
 		$note = str_replace('<nb:'.$reviewer.'>','', $note);
 		$note = str_replace('</nb:'.$reviewer.'>','', $note);
@@ -1333,7 +1334,7 @@ class ProjectsHtml
 	 * @param      string $reviewer
 	 * @return     string
 	 */
-	public function getLastAdminNote($notes = '', $reviewer = '')
+	public static function getLastAdminNote($notes = '', $reviewer = '')
 	{
 		$match = '';
 		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
@@ -1363,7 +1364,7 @@ class ProjectsHtml
 	 * @param      array $from
 	 * @return     void
 	 */	
-	public function email($email, $subject, $message, $from) 
+	public static function email($email, $subject, $message, $from) 
 	{
 		if ($from) 
 		{
