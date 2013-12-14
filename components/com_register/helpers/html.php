@@ -48,7 +48,7 @@ class RegistrationHelperHtml
 	 * @param	string	$tag		HTML tag to use
 	 * @return	string
 	 */
-	public function error($msg, $tag = 'p')
+	public sttic function error($msg, $tag = 'p')
 	{
 		if (empty($msg)) {
 			return '';
@@ -62,7 +62,7 @@ class RegistrationHelperHtml
 	 * @param	string	$email	Address to be obfuscated
 	 * @return	string
 	 */
-	public function obfuscate($email)
+	public static function obfuscate($email)
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
@@ -79,7 +79,7 @@ class RegistrationHelperHtml
 	 * @param	string	$tag		HTML tag to use
 	 * @return	string
 	 */
-	public function warning($msg, $tag = 'p')
+	public static function warning($msg, $tag = 'p')
 	{
 		return '<' . $tag . ' class="warning">' . $msg . '</' . $tag . '>' . "\n";
 	}
@@ -94,7 +94,7 @@ class RegistrationHelperHtml
 	 * @param	string	$id			ID of the input field
 	 * @return	string
 	 */
-	public function radio($name, $value, $class = '', $checked = '', $id = '')
+	public static function radio($name, $value, $class = '', $checked = '', $id = '')
 	{
 		$o  = '<input type="radio" name="' . $name . '" value="' . $value . '"';
 		$o .= ($id) ? ' id="' . $id . '"' : '';
