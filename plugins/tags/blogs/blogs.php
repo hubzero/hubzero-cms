@@ -194,7 +194,7 @@ class plgTagsBlogs extends JPlugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
 		$juri = JURI::getInstance();
 
