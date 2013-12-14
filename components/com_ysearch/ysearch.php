@@ -79,7 +79,7 @@ class YSearchController extends JController
 		$results->set_offset(JRequest::getInt('limitstart', 0));
 		$results->collect(JRequest::getBool('force-generic'));
 
-		$view =& $this->getView('', JRequest::getCmd('format', 'html'), '');
+		$view = $this->getView('', JRequest::getCmd('format', 'html'), '');
 		$view->set_application($app);
 		$view->set_terms($terms);
 		$view->set_results($results);
