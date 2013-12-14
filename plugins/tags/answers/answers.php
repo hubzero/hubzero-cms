@@ -175,7 +175,7 @@ class plgTagsAnswers extends JPlugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
 		if (strstr($row->href, 'index.php')) 
 		{
