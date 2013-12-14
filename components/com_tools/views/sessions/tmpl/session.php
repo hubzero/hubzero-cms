@@ -216,9 +216,9 @@ if (!$this->app->sess) {
 						<?php echo JText::_('Share with one of your Groups:'); ?>
 						<select name="group" id="group">
 							<option value=""><?php echo JText::_('- Select Group &mdash;'); ?></option>
-							<?php foreach ($this->mygroups as $group) : ?>
+							<?php if (!empty($this->mygroups)) { foreach ($this->mygroups as $group) : ?>
 								<option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
-							<?php endforeach; ?>
+							<?php endforeach; } ?>
 						</select>
 					</label>
 					<label for="field-readonly" id="readonly-label">
