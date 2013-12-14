@@ -298,11 +298,15 @@ class ModIncrementalRegistrationController
 						$dbh->setQuery('SELECT '.implode(', ', array_keys($row)).' FROM #__profile_completion_awards WHERE user_id = ' . $uid);
 						$award = 0;
 						$awarded = $dbh->loadAssoc();
-						foreach ($awarded as $v) 
+
+						if (!empty($awarded))
 						{
-							if (!$v) 
+							foreach ($awarded as $v) 
 							{
-								$award += 15;
+								if (!$v) 
+								{
+									$award += 15;
+								}
 							}
 						}
 
