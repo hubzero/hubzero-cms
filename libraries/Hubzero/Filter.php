@@ -42,7 +42,7 @@ class Hubzero_Filter
 	 * @param      unknown $string Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public public function cleanXss($string)
+	public static function cleanXss($string)
 	{
 		if (get_magic_quotes_gpc()) 
 		{
