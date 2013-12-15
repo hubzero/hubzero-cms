@@ -391,7 +391,7 @@ class Hubzero_Item_Comment extends JTable
 	 * 
 	 * @return     void
 	 */
-	public function store()
+	public function store($updateNulls = false)
 	{
 		parent::store();
 		

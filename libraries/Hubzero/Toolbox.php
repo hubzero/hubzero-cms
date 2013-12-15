@@ -44,7 +44,7 @@ class Hubzero_Toolbox
 	 * @param      string $message Message contents
 	 * @return     integer 1 on success, 0 on failure
 	 */
-	public function send_email($email, $subject, $message)
+	public static function send_email($email, $subject, $message)
 	{
 		$jconfig = JFactory::getConfig();
 
@@ -75,7 +75,7 @@ class Hubzero_Toolbox
 	 * @param      boolean $quotesOnly Only clean quotes (single and double)
 	 * @return     string
 	 */
-	public function cleanMsChar($text, $quotesOnly=false)
+	public static function cleanMsChar($text, $quotesOnly=false)
 	{
 		$y = array(
 			"\x7f"=>'', 

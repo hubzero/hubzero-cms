@@ -115,7 +115,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $password Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function validpassword($password)
+	public static function validpassword($password)
 	{
 		if (preg_match("/^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$/", $password)) {
 			return true;
@@ -149,7 +149,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $url Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validurl($url)
+	public static function validurl($url)
 	{
 		$ptrn = '/([a-z0-9_\-]{1,5}:\/\/)?(([a-z0-9_\-]{1,}):([a-z0-9_\-]{1,})\@)?((www\.)|([a-z0-9_\-]{1,}\.)+)?([a-z0-9_\-]{3,})(\.[a-z]{2,4})(\/([a-z0-9_\-]{1,}\/)+)?([a-z0-9_\-]{1,})?(\.[a-z]{2,})?(\?)?(((\&)?[a-z0-9_\-]{1,}(\=[a-z0-9_\-]{1,})?)+)?/';
 		if (preg_match($ptrn, $url)) {
