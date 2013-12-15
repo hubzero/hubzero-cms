@@ -356,7 +356,7 @@ class plgAuthenticationFacebook extends JPlugin
 	 * @param	object	$params	 Plugin params
 	 * @return	void
 	 */
-	public function getInfo($params)
+	public static function getInfo($params)
 	{
 		// Set up the config for the sdk instance
 		$params = explode("\n", trim($params));
