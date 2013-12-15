@@ -701,7 +701,7 @@ class FormHelper {
 	 * 
 	 * @return     string
 	 */
-	public function timeDiff($secs)
+	public static function timeDiff($secs)
 	{
 		$seconds = array(1, 'second');
 		$minutes = array(60 * $seconds[0], 'minute');
@@ -739,7 +739,7 @@ class FormHelper {
 	 * 
 	 * @return     string
 	 */
-	public function toOrdinal($int)
+	public static function toOrdinal($int)
 	{
 		$ends = array('th','st','nd','rd','th','th','th','th','th','th');
 
