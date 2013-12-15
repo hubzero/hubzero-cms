@@ -41,7 +41,7 @@ class Hubzero_User_Password_History
 		$xlog->logDebug($msg);
 	}
 
-	public function getInstance($instance)
+	public static function getInstance($instance)
 	{
 		$db =  JFactory::getDBO();
 
@@ -164,7 +164,7 @@ class Hubzero_User_Password_History
 		return true;
 	}
 
-	public function addPassword($passhash, $user = null)
+	public static function addPassword($passhash, $user = null)
 	{
 		$hzuph = self::getInstance($user);
 

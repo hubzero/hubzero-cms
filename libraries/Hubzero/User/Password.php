@@ -591,14 +591,14 @@ class Hubzero_User_Password
 		return true;
 	}
 
-	public function changePassword($user = null, $password)
+	public static function changePassword($user = null, $password)
 	{
 		$passhash = "{MD5}" . base64_encode(pack('H*', md5($password)));
 
 		return self::changePasshash($user, $passhash);
 	}
 
-	public function changePasshash($user = null, $passhash)
+	public static function changePasshash($user = null, $passhash)
 	{
 		ximport('Hubzero_User_Password_History');
 		
