@@ -85,7 +85,7 @@ class YSearchViewYSearch extends JView
 	 * 
 	 * @return     void
 	 */
-	public function display()
+	public function display($tpl = NULL)
 	{
 		$this->url_terms = urlencode($this->terms->get_raw_without_section());
 		@list($this->plugin, $this->section) = $this->terms->get_section();

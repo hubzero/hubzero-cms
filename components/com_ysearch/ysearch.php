@@ -64,7 +64,7 @@ class YSearchController extends JController
 	 * 
 	 * @return     void
 	 */
-	public function display()
+	public function display($cachable = false, $urlparams = false)
 	{
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
