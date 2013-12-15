@@ -47,7 +47,7 @@ class FeaturesHtml
 	 * @param      mixed $someid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function niceidformat($someid)
+	public static function niceidformat($someid)
 	{
 		$pre = '';
 		if ($someid < 0) 
@@ -70,7 +70,7 @@ class FeaturesHtml
 	 * @param      unknown $thumb Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function thumb($thumb)
+	public static function thumb($thumb)
 	{
 		$image = explode('.', $thumb);
 		$n = count($image);
@@ -90,7 +90,7 @@ class FeaturesHtml
 	 * @param      string $path Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function getImage($path)
+	public static function getImage($path)
 	{
 		$d = @dir(JPATH_ROOT . $path);
 
@@ -139,7 +139,7 @@ class FeaturesHtml
 	 * @param      integer $versionid Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function getToolImage($path, $versionid=0)
+	public static function getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
 		$tconfig = JComponentHelper::getParams('com_tools');
@@ -201,7 +201,7 @@ class FeaturesHtml
 	 * @param      array $pic Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function thumbnail($pic)
+	public static function thumbnail($pic)
 	{
 		$pic = explode('.', $pic);
 		$n = count($pic);
@@ -223,7 +223,7 @@ class FeaturesHtml
 	 * @param      string $base Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function build_path($date, $id, $base='')
+	public static function build_path($date, $id, $base='')
 	{
 		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
 		{
@@ -252,7 +252,7 @@ class FeaturesHtml
 	 * @param      unknown $stime Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function mkt($stime)
+	public static function mkt($stime)
 	{
 		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
 		{
@@ -269,7 +269,7 @@ class FeaturesHtml
 	 * @param      number $timestamp Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function timeAgoo($timestamp)
+	public static function timeAgoo($timestamp)
 	{
 		// Store the current time
 		$current_time = time();
@@ -326,7 +326,7 @@ class FeaturesHtml
 	 * @param      unknown $timestamp Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function timeAgo($timestamp)
+	public static function timeAgo($timestamp)
 	{
 		$text = FeaturesHtml::timeAgoo($timestamp);
 
@@ -346,7 +346,7 @@ class FeaturesHtml
 	 * @param      unknown $database Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getContributorImage($id, $database)
+	public static function getContributorImage($id, $database)
 	{
 		$thumb = '';
 
