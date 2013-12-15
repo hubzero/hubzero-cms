@@ -235,7 +235,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
-	public function getResourcesCount($gid=NULL, $authorized)
+	public static function getResourcesCount($gid=NULL, $authorized)
 	{
 		if (!$gid) 
 		{
@@ -257,7 +257,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
-	public function getWikipageCount($gid=NULL, $authorized)
+	public static function getWikipageCount($gid=NULL, $authorized)
 	{
 		if (!$gid) 
 		{
@@ -276,7 +276,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
-	public function getWikifileCount($gid=NULL, $authorized)
+	public static function getWikifileCount($gid=NULL, $authorized)
 	{
 		if (!$gid) 
 		{
@@ -311,7 +311,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string  $state      State of threads
 	 * @return     integer
 	 */
-	public function getForumCount($gid=NULL, $authorized, $state='')
+	public static function getForumCount($gid=NULL, $authorized, $state='')
 	{
 		if (!$gid) 
 		{
@@ -349,7 +349,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */
-	public function getGroupPagesCount($gid)
+	public static function getGroupPagesCount($gid)
 	{
 		if (!$gid) 
 		{
@@ -500,7 +500,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */
-	public function getGroupBlogCount($gid)
+	public static function getGroupBlogCount($gid)
 	{
 		if (!$gid) 
 		{
@@ -528,7 +528,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */
-	public function getGroupBlogCommentCount($gid)
+	public static function getGroupBlogCommentCount($gid)
 	{
 		if (!$gid) 
 		{
@@ -550,7 +550,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */
-	public function getGroupCalendarCount($gid)
+	public static function getGroupCalendarCount($gid)
 	{
 		$database = JFactory::getDBO();
 
