@@ -133,48 +133,54 @@ $juser = JFactory::getUser();
 		$notes = 0;
 
 		$children = $this->model->children('standalone');
-		foreach ($children as $child)
+
+		if (!empty($children))
 		{
-			$rhelper = new ResourcesHelper($child->id, $this->database);
-			$rhelper->getChildren();
-			if ($rhelper->children && count($rhelper->children) > 0) 
+			foreach ($children as $child)
 			{
-				foreach ($rhelper->children as $grandchild)
+				$rhelper = new ResourcesHelper($child->id, $this->database);
+
+				$rhelper->getChildren();
+
+				if ($rhelper->children && count($rhelper->children) > 0) 
 				{
-					switch (ResourcesHtml::getFileExtension($grandchild->path))
+					foreach ($rhelper->children as $grandchild)
 					{
-						case 'm4v':
-						case 'mp4':
-						case 'wmv':
-						case 'mov':
-						case 'qt':
-						case 'mpg':
-						case 'mpeg':
-						case 'mpe':
-						case 'mp2':
-						case 'mpv2':
-							$videos++;
-						break;
+						switch (ResourcesHtml::getFileExtension($grandchild->path))
+						{
+							case 'm4v':
+							case 'mp4':
+							case 'wmv':
+							case 'mov':
+							case 'qt':
+							case 'mpg':
+							case 'mpeg':
+							case 'mpe':
+							case 'mp2':
+							case 'mpv2':
+								$videos++;
+							break;
 
-						case 'mp3':
-						case 'm4a':
-						case 'aiff':
-						case 'aif':
-						case 'wav':
-						case 'ra':
-						case 'ram':
-							$audio++;
-						break;
+							case 'mp3':
+							case 'm4a':
+							case 'aiff':
+							case 'aif':
+							case 'wav':
+							case 'ra':
+							case 'ram':
+								$audio++;
+							break;
 
-						case 'ppt':
-						case 'pps':
-						case 'pdf':
-						case 'doc':
-						case 'txt':
-						case 'html':
-						case 'htm':
-							$notes++;
-						break;
+							case 'ppt':
+							case 'pps':
+							case 'pdf':
+							case 'doc':
+							case 'txt':
+							case 'html':
+							case 'htm':
+								$notes++;
+							break;
+						}
 					}
 				}
 			}

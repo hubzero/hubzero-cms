@@ -94,22 +94,26 @@ $lectureAuthors = $this->database->loadObjectList();
 
 //get the author names from ids
 $a = array();
-foreach ($lectureAuthors as $la)
+
+if (!empty($lectureAuthors))
 {
-	//if this is a submitter lets continue
-	if ($la->role == 'submitter')
+	foreach ($lectureAuthors as $la)
 	{
-		continue;
-	}
-	//load author object
-	$author = JUser::getInstance( $la->authorid );
-	if (is_object($author) && $author->id)
-	{
-		$a[] = '<a href="/members/' . $author->id . '">' . $author->name . '</a>';
-	}
-	else
-	{
-		$a[] = $la->name;
+		//if this is a submitter lets continue
+		if ($la->role == 'submitter')
+		{
+			continue;
+		}
+		//load author object
+		$author = JUser::getInstance( $la->authorid );
+		if (is_object($author) && $author->id)
+		{
+			$a[] = '<a href="/members/' . $author->id . '">' . $author->name . '</a>';
+		}
+		else
+		{
+			$a[] = $la->name;
+		}
 	}
 }
 
