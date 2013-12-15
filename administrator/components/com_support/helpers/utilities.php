@@ -133,7 +133,7 @@ class SupportUtilities
 	 * @param      string $severities Comma-separated list
 	 * @return     array 
 	 */
-	public function getSeverities($severities)
+	public static function getSeverities($severities)
 	{
 		if ($severities) 
 		{
