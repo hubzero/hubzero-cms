@@ -322,7 +322,7 @@ class ProjectsHelper extends JObject {
 	 * @param      array $params
 	 * @return     void
 	 */	
-	public function getSuggestions( $project, $option, $uid = 0, $config, $params ) 
+	public static function getSuggestions( $project, $option, $uid = 0, $config, $params ) 
 	{	
 		$suggestions = array();
 		$creator = $project->created_by_user == $uid ? 1 : 0;
