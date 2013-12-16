@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="section">
 
-	<div class="grid">
+	<div class="grid find-tagged">
 		<div class="col span3">
 			<h2><?php echo JText::_('COM_TAGS_FIND_CONTENT_WITH_TAG'); ?></h2>
 		</div><!-- / .col span3 -->
@@ -94,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 
-	<div class="grid">
+	<div class="grid recent-tags">
 		<div class="col span3">
 			<h2><?php echo JText::_('COM_TAGS_RECENTLY_USED'); ?></h2>
 		</div><!-- / .col span3 -->
@@ -121,7 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 
-	<div class="grid">
+	<div class="grid top-tags">
 		<div class="col span3">
 			<h2><?php echo JText::_('COM_TAGS_TOP_100'); ?></h2>
 		</div><!-- / .col span3 -->
@@ -148,7 +148,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 
-	<div class="grid">
+	<div class="grid find-tags">
 		<div class="col span3">
 			<h2><?php echo JText::_('COM_TAGS_FIND_A_TAG'); ?></h2>
 		</div><!-- / .col span3 -->
