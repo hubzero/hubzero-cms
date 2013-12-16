@@ -83,7 +83,7 @@ class modGroups extends Hubzero_Module
 		$this->pending = $this->database->loadResult();
 
 		// Last 24 hours
-		$lastDay = date('Y-m-d', (mktime() - 24*3600)) . ' 00:00:00';
+		$lastDay = date('Y-m-d', (time() - 24*3600)) . ' 00:00:00';
 
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE created >= '$lastDay' AND type='$type'");
 		$this->pastDay = $this->database->loadResult();

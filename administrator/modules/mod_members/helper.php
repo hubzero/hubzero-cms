@@ -51,7 +51,7 @@ class modMembers extends Hubzero_Module
 		$this->database->setQuery("SELECT count(u.id) FROM #__users AS u, #__xprofiles AS m WHERE m.uidNumber=u.id AND m.emailConfirmed >= 1");
 		$this->confirmed = $this->database->loadResult();
 
-		$lastDay = date('Y-m-d', (mktime() - 24*3600)) . ' 00:00:00';
+		$lastDay = date('Y-m-d', (time() - 24*3600)) . ' 00:00:00';
 
 		$this->database->setQuery("SELECT count(*) FROM #__users WHERE registerDate >= '$lastDay'");
 		$this->pastDay = $this->database->loadResult();

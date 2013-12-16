@@ -54,7 +54,7 @@ class modAnswers extends Hubzero_Module
 		$this->open = $this->database->loadResult();
 
 		// Last 24 hours
-		$lastDay = date('Y-m-d', (mktime() - 24*3600)) . ' 00:00:00';
+		$lastDay = date('Y-m-d', (time() - 24*3600)) . ' 00:00:00';
 
 		$this->database->setQuery("SELECT count(*) FROM #__answers_questions WHERE created >= '$lastDay'");
 		$this->pastDay = $this->database->loadResult();
