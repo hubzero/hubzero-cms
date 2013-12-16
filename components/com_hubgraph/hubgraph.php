@@ -24,6 +24,17 @@ private static $parser = NULL;
 	}
 }
 
+/*
+[!] - (zooley) Added NotFoundError class because PHP was throwing 
+	fatal error that the class was not found (irony?).
+*/
+if (!class_exists('NotFoundError'))
+{
+	class NotFoundError extends InvalidArgumentException
+	{
+	}
+}
+
 $base = isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['REDIRECT_SCRIPT_URL']; 
 $basePath = preg_replace('#^'.preg_quote(JPATH_BASE).'#', '', dirname(__FILE__));
 
