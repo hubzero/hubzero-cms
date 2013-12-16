@@ -658,7 +658,7 @@ class JView extends JObject
 			$this->_output = ob_get_contents();
 			ob_end_clean();
 
-			if ($override)
+			if ($override && JDEBUG)
 			{
 				$this->_output = '<!-- [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->' . $this->_output . '<!-- / [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->';
 			}
