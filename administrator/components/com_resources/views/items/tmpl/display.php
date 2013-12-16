@@ -237,7 +237,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	// See if it's checked out or not
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
-		$checked = JHTMLGrid::_checkedOut($row);
+		//$checked = JHTMLGrid::_checkedOut($row);
+		$date = JHtml::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_LC1'));
+		$time = JHtml::_('date', $row->checked_out_time, 'H:i');
+
+		$checked  = '<span class="editlinktip hasTip" title="' . JText::_('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
+		$checked .= JHtml::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
+
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')).'<br />'
 				 : '';
