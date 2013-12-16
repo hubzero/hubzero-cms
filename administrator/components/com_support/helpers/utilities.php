@@ -103,7 +103,7 @@ class SupportUtilities
 	 * @param      string $login Username to check
 	 * @return     boolean True if valid
 	 */
-	public function checkValidLogin($login)
+	public static function checkValidLogin($login)
 	{
 		if (preg_match("#^[_0-9a-zA-Z]+$#i", $login)) 
 		{
@@ -118,7 +118,7 @@ class SupportUtilities
 	 * @param      string $email Address to check
 	 * @return     boolean True if valid
 	 */
-	public function checkValidEmail($email)
+	public static function checkValidEmail($email)
 	{
 		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) 
 		{
@@ -171,16 +171,16 @@ class SupportUtilities
 		$filters['severity']   = 'normal';
 		$filters['severity']   = '';
 
-		$filters['sort']       = trim($app->getUserStateFromRequest($this->_option . '.tickets.sort', 'filter_order', 'created'));
-		$filters['sortdir']    = trim($app->getUserStateFromRequest($this->_option . '.tickets.sortdir', 'filter_order_Dir', 'DESC'));
+		$filters['sort']       = trim($app->getUserStateFromRequest('com_support.tickets.sort', 'filter_order', 'created'));
+		$filters['sortdir']    = trim($app->getUserStateFromRequest('com_support.tickets.sortdir', 'filter_order_Dir', 'DESC'));
 
 		// Paging vars
-		$filters['limit']      = $app->getUserStateFromRequest($this->_option . '.tickets.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start']      = $app->getUserStateFromRequest($this->_option . '.tickets.limitstart', 'limitstart', 0, 'int');
+		$filters['limit']      = $app->getUserStateFromRequest('com_support.tickets.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$filters['start']      = $app->getUserStateFromRequest('com_support.tickets.limitstart', 'limitstart', 0, 'int');
 
 		// Incoming
-		$filters['_find']      = urldecode(trim($app->getUserStateFromRequest($this->_option . '.tickets.find', 'find', '')));
-		$filters['_show']      = urldecode(trim($app->getUserStateFromRequest($this->_option . '.tickets.show', 'show', '')));
+		$filters['_find']      = urldecode(trim($app->getUserStateFromRequest('com_support.tickets.find', 'find', '')));
+		$filters['_show']      = urldecode(trim($app->getUserStateFromRequest('com_support.tickets.show', 'show', '')));
 
 		// Break it apart so we can get our filters
 		// Starting string hsould look like "filter:option filter:option"
@@ -284,7 +284,7 @@ class SupportUtilities
 	 * @param      array $data A list of ticket's opened and closed dates
 	 * @return     array [days, hours, minutes]
 	 */
-	public function calculateAverageLife($data=null)
+	public static function calculateAverageLife($data=null)
 	{
 		$lifetime = array();
 
