@@ -1854,7 +1854,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 * @param      string $pee Text to unparagraph
 	 * @return     string
 	 */
-	public function _txtUnpee($pee)
+	public static function _txtUnpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);
