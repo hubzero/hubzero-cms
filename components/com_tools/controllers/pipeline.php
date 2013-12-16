@@ -262,7 +262,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				$listid = $objWishlist->get_wishlistID($status['resourceid'], 'resource');
 				if ($listid) 
 				{
-					$filters = WishlistController::getFilters(1);
+					$controller = new WishlistController();
+					$filters = $controller->getFilters(1);
 					$wishes = $objWish->get_wishes($listid, $filters, 1, $this->juser);
 					$status['wishes'] = count($wishes);
 				}
