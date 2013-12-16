@@ -359,10 +359,11 @@ class PublicationsHtml
 	 * @param      array   $sections  		Active plugins' names
 	 * @param      string  $version     	Version name
 	 * @param      string  $xtra      		Extra content to append
-	 * @param      object $lastPubRelease   Publication latest public version 
+	 * @param      object  $lastPubRelease  Publication latest public version 
 	 * @return     string HTML
 	 */
-	public static function metadata($option, $params, $publication, $statshtml, $sections, $version = 'default', $xtra='', $lastPubRelease = '')
+	public static function metadata($option, $params, $publication, $statshtml, 
+		$sections, $version = 'default', $xtra='', $lastPubRelease = '')
 	{
 		$html = '';
 		$id = $publication->id;
@@ -372,7 +373,7 @@ class PublicationsHtml
 			$text = $version == 'dev' ? JText::_('COM_PUBLICATIONS_METADATA_DEV') : JText::_('COM_PUBLICATIONS_METADATA_UNAVAILABLE'); 
 			return '<div class="metaplaceholder"><p>' . $text . '</p></div>' . "\n";
 		}
-		else if($publication->main == 1) 
+		elseif ($publication->main == 1) 
 		{
 			if ($params->get('show_ranking')) 
 			{
@@ -404,7 +405,8 @@ class PublicationsHtml
 			$html .= '<div class="clear"></div>';
 			return '<div class="metadata">' . $html . '</div>';
 		}
-		else {
+		else 
+		{
 			if ($lastPubRelease && $lastPubRelease->id != $publication->version_id) 
 			{
 				$html .= '<p>'.JText::_('COM_PUBLICATIONS_METADATA_ARCHIVE');
@@ -545,7 +547,8 @@ class PublicationsHtml
 					$pathway = $app->getPathway();
 					$pathway->addItem($cat[$name],$url);
 					
-					if ($active != 'about') {
+					if ($active != 'about') 
+					{
 						$document = JFactory::getDocument();
 						$title = $document->getTitle();
 						$document->setTitle( $title.': '.$cat[$name] );
@@ -626,8 +629,10 @@ class PublicationsHtml
 	 */	
 	public static function citation( $option, $cite, $pub, $citations, $version = 'default') 
 	{
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS 
+			. 'helpers' . DS . 'format.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'type.php' );
 		
 		$cconfig  = JComponentHelper::getParams( 'com_citations' );
 		
@@ -663,6 +668,10 @@ class PublicationsHtml
 	 * Process metadata for a publication
 	 * 
 	 * @param      string  $metadata  	Pub metadata
+	 * @param      object  $category  	Category
+	 * @param      object  $parser  	Wiki parser instance
+	 * @param      array   $wikiconfig 	Array with wiki config
+	 * @param      int     $table 		Show in html table?
 	 * @return     array
 	 */	
 	public static function processMetadata( $metadata, $category, $parser, $wikiconfig, $table = 1 ) 
@@ -792,9 +801,11 @@ class PublicationsHtml
 					case 'download': 
 					default:				
 						break;
+						
 					case 'external':
 						$extra = ' rel="external"'; 						
 						break;
+						
 					case 'inlineview': 				
 						$class = 'play';
 						$url  .= a . 'render=inline';		
@@ -803,7 +814,8 @@ class PublicationsHtml
 				
 				if (in_array($doctitle, $toShow)) 
 				{
-					$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' . $extra . '>'.$doctitle.'</a></li>'."\n";				
+					$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' 
+						. $extra . '>'.$doctitle.'</a></li>'."\n";				
 				}
 			}
 		}	
@@ -821,12 +833,17 @@ class PublicationsHtml
 		// View more link?			
 		if ($docs > 0 && $otherdocs > 0) 
 		{
-			$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$publication->id.a.'active=supportingdocs').'" title="'.JText::_('View All').' '.$docs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
+			$supln .= ' <li class="otherdocs"><a href="' . JRoute::_('index.php?option=' . $option 
+				. '&id=' . $publication->id . a . 'active=supportingdocs')
+				.'" title="' . JText::_('View All') . ' ' . $docs.' ' . JText::_('Supporting Documents').' ">' 
+				. $otherdocs . ' ' . JText::_('more') . ' &rsaquo;</a></li>' . "\n";
 		}
 		 
 		if (!$sdocs && $docs > 0) 
 		{
-			$html .= "\t\t".'<p class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$publication->id.a.'active=supportingdocs').'">'.JText::_('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL').' ('.$docs.')</a></p>'."\n";
+			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option=' 
+				. $option . '&id=' . $publication->id . a . 'active=supportingdocs') . '">' 
+				. JText::_('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL') . ' (' . $docs .')</a></p>'."\n";
 		}
 		
 		$supln .= '</ul>'."\n";
@@ -834,8 +851,16 @@ class PublicationsHtml
 		return $html;			
 	}
 	
-	//-------------
-	
+	/**
+	 * Show version info
+	 * 
+	 * @param      object  $publication   	Publication object
+	 * @param      string  $version     	Version name
+	 * @param      string  $option 			Component name
+	 * @param      array   $config 		
+	 * @param      object $lastPubRelease 		
+	 * @return     string HTML
+	 */
 	public static function showVersionInfo ( $publication, $version, $option, $config, $lastPubRelease ) 
 	{
 		$dateFormat = '%b %d, %Y';
@@ -848,7 +873,7 @@ class PublicationsHtml
 		}
 
 		$text = '';
-		if($version == 'dev') 
+		if ($version == 'dev') 
 		{
 			// Dev version
 			$class = 'devversion';
@@ -860,7 +885,8 @@ class PublicationsHtml
 		else
 		{
 			$class = 'curversion';
-			$text .= ($publication->main == 1 || $publication->state == 1) ? '' : '<strong>'.JText::_('COM_PUBLICATIONS_ARCHIVE').'</strong> ';
+			$text .= ($publication->main == 1 || $publication->state == 1) ? '' 
+				: '<strong>'.JText::_('COM_PUBLICATIONS_ARCHIVE').'</strong> ';
 			$text .= JText::_('COM_PUBLICATIONS_VERSION').' <strong>'.$publication->version_label.'</strong>';
 			$now = JFactory::getDate()->toSql();
 			
@@ -871,7 +897,8 @@ class PublicationsHtml
 					$text .= ($publication->published_up > $now) 
 						? JText::_('COM_PUBLICATIONS_TO_BE_RELEASED') 
 						: strtolower(JText::_('COM_PUBLICATIONS_PUBLISHED'));
-					$text .= ' ' . JText::_('COM_PUBLICATIONS_ON').' '.JHTML::_('date', $publication->published_up, $dateFormat, $tz).' ';          
+					$text .= ' ' . JText::_('COM_PUBLICATIONS_ON').' '
+						  .JHTML::_('date', $publication->published_up, $dateFormat, $tz).' ';          
 					break;
 				case 4:  
 					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_READY')).')';  
@@ -918,14 +945,16 @@ class PublicationsHtml
 		}
 
 		// Show DOI if available
-		if ($version != 'dev' && $publication->doi) {
+		if ($version != 'dev' && $publication->doi) 
+		{
 			$text .= "\t\t".'<span class="doi">'.'doi:'.$publication->doi;
 			$text .= ' - <span><a href="'. JRoute::_('index.php?option='.$option.'&id='.
 			$publication->id.'&active=about'). '#citethis">'.JText::_('cite this').'</a></span></span>'."\n";
 		}
 		
 		// Show current release information
-		if($lastPubRelease && $lastPubRelease->id != $publication->version_id) {
+		if ($lastPubRelease && $lastPubRelease->id != $publication->version_id) 
+		{
 			$text .= "\t\t" . '<span class="block">' . JText::_('COM_PUBLICATIONS_LAST_PUB_RELEASE') 
 			. ' <a href="'. JRoute::_('index.php?option='.$option.'&id='.
 			$publication->id.'&v='.$lastPubRelease->version_number).'">'.$lastPubRelease->version_label.'</a></span>';
@@ -939,8 +968,16 @@ class PublicationsHtml
 		return false;
 	}
 	
-	//-----------
-	
+	/**
+	 * Show access message
+	 * 
+	 * @param      object  $publication   	Publication object
+	 * @param      string  $option 			Component name
+	 * @param      boolean $authorized 
+	 * @param      boolean $restricted 
+	 * @param      string  $editlink 			
+	 * @return     string HTML
+	 */
 	public static function showAccessMessage( $publication, $option, $authorized, $restricted, $editlink = '' ) 
 	{
 		$dateFormat = '%b %d, %Y';
@@ -959,8 +996,10 @@ class PublicationsHtml
 		if ($publication->project_provisioned == 0)
 		{
 			$project.= JText::_('COM_PUBLICATIONS_FROM_PROJECT');
-			$project.= $authorized == 1 ?
-			' <a href="' . JRoute::_('index.php?option=com_projects&alias=' . $publication->project_alias) .'">' : ' <strong>';
+			$project.= $authorized == 1 
+				? ' <a href="' . JRoute::_('index.php?option=com_projects&alias=' 
+				. $publication->project_alias) .'">' 
+				: ' <strong>';
 			$project.= Hubzero_View_Helper_Html::shortenText($publication->project_title, 50, 0);
 			$project.= $authorized == 1 ? '</a>' : '</strong>';			
 		}
@@ -1035,25 +1074,30 @@ class PublicationsHtml
 					$msg = JText::_('COM_PUBLICATIONS_STATUS_MSG_DARK_ARCHIVE');          
 					break;
 			}
-			if($authorized == 3)
+			if ($authorized == 3)
 			{
 				$msg .= ' '.JText::_('COM_PUBLICATIONS_PREVIEW_ACCESS'); 
 			}
-			if($editlink && ($authorized == 1 || $authorized == 2 || $authorized == 4)) {
+			if ($editlink && ($authorized == 1 || $authorized == 2 || $authorized == 4)) {
 				$msg .= ' <a href="'.$editlink.'">'.JText::_('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION').'</a>.';
 			}
-			if($project && $publication->project_status != 3) {
+			if ($project && $publication->project_status != 3) {
 				$msg .= ' <span class="fromproject">'.$project.'</span>';
 			}
 		}
-		if($msg) {
+		if ($msg) 
+		{
 			return '<p class="'.$class.' statusmsg">'.$msg.'</p>';
 		}
 		return false;
 	}
 	
-	//-----------
-	
+	/**
+	 * Get status
+	 * 
+	 * @param      int  $state 			
+	 * @return     string HTML
+	 */	
 	public static function getState( $state ) 
 	{	
 		switch ($state) 
@@ -1061,15 +1105,19 @@ class PublicationsHtml
 			case 0: 
 				return strtolower(JText::_('COM_PUBLICATIONS_UNPUBLISHED'));  
 				break;
+				
 			case 4:  
 				return strtolower(JText::_('COM_PUBLICATIONS_POSTED'));       
 				break;
+				
 			case 5:  
 				return strtolower(JText::_('COM_PUBLICATIONS_PENDING'));       
 				break;
+				
 			case 6:  
 				return strtolower(JText::_('COM_PUBLICATIONS_ARCHIVE'));       
 				break;
+				
 			case 1: 
 			default: 
 				return strtolower(JText::_('COM_PUBLICATIONS_PUBLISHED'));         
@@ -1077,15 +1125,21 @@ class PublicationsHtml
 		}           
 	}
 	
-	//-----------
-	
+	/**
+	 * Show supplementary info
+	 * 
+	 * @param      object  $publication   	Publication object
+	 * @param      string  $option 			Component name			
+	 * @return     string HTML
+	 */
 	public static function showSubInfo( $publication, $option ) 
 	{	
 		$action = $publication->state == 1 ? JText::_('COM_PUBLICATIONS_LISTED_IN') : JText::_('COM_PUBLICATIONS_IN');
-		$html = '<p class="pubinfo">'.$action.' '.' <a href="'.JRoute::_('index.php?option='.$option.'&category='.$publication->cat_url).'">'.$publication->cat_name.'</a>';
+		$html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . JRoute::_('index.php?option=' 
+			. $option . '&category=' . $publication->cat_url).'">' . $publication->cat_name . '</a>';
 		
 		// Show group if group project
-		if($publication->project_group) 
+		if ($publication->project_group) 
 		{
 			ximport('Hubzero_Group');
 			$group = new Hubzero_Group();
@@ -1100,9 +1154,14 @@ class PublicationsHtml
 		return $html;
 	}
 	
-	//-----------
-	
-	public static function title( $option, $publication, $params, $show_edit, $config=null, $show_posted=1 ) 
+	/**
+	 * Show title
+	 * 
+	 * @param      string  $option 			Component name	
+	 * @param      object  $publication   	Publication object		
+	 * @return     string HTML
+	 */	
+	public static function title( $option, $publication ) 
 	{
 		$txt = '';
 		$txt .= stripslashes($publication->title);	
@@ -1112,10 +1171,23 @@ class PublicationsHtml
 		return $html;
 	}
 	
-	//-----------
-
-	public static function drawPrimaryButton( $option, $publication, $version, 
-	$content, $path, $serveas = 'download', $restricted = 0, $authorized = 0 )
+	/**
+	 * Draw black button
+	 * 
+	 * @param      string  $option 			Component name
+	 * @param      object  $publication   	Publication object
+	 * @param      string  $version     	Version name
+	 * @param      array   $content 		Publication attachments
+	 * @param      string  $path
+	 * @param      string  $serveas
+	 * @param      boolean $restricted 		
+	 * @param      boolean $authorized		
+	 * @return     string HTML
+	 */	
+	public static function drawPrimaryButton( 
+		$option, $publication, $version, 
+		$content, $path, $serveas = 'download', 
+		$restricted = 0, $authorized = 0 )
 	{
 		
 		$task 		= 'serve';		
@@ -1160,7 +1232,9 @@ class PublicationsHtml
 			case 'tardownload':
 			default:
 				$msg   = JText::_('COM_PUBLICATIONS_DOWNLOAD_PUBLICATION');
-				$xtra  = count($content['primary']) == 1 ? strtoupper(PublicationsHtml::getFileExtension($content['primary'][0]->path)) : NULL;
+				$xtra  = count($content['primary']) == 1 
+					? strtoupper(PublicationsHtml::getFileExtension($content['primary'][0]->path)) 
+					: NULL;
 				$extra = (count($content['primary']) > 1 || $serveas == 'tardownload') ? 'ZIP' : NULL;				
 				break;
 
@@ -1193,26 +1267,39 @@ class PublicationsHtml
 				
 				break;
 		}
-		
-		
+				
 		$title = $title ? $title : $msg;
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
 		
 		return PublicationsHtml::primaryButton($class, $url, $msg, $xtra, $title, $action, $disabled, $pop);		
 	}
 	
-	//-----------
-
+	/**
+	 * Generate the primary resources button
+	 * 
+	 * @param      string  $class    Class to add
+	 * @param      string  $href     Link url
+	 * @param      string  $msg      Link text
+	 * @param      string  $xtra     Extra parameters to add (deprecated)
+	 * @param      string  $title    Link title
+	 * @param      string  $action   Link action
+	 * @param      boolean $disabled Is the button disable?
+	 * @param      string  $pop      Pop-up content
+	 * @return     string
+	 */
 	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
-		$title = htmlentities($title, ENT_QUOTES);
 		$out = '';
 		
-		if ($disabled) {
+		if ($disabled) 
+		{
 			$out .= "\t".'<p id="primary-document"><span ';
 			$out .= $class ? 'class="'.$class.'"' : '';
 			$out .= ' >'.$msg.'</span></p>'."\n";
-		} else {
+		} 
+		else 
+		{
+			$title = htmlentities($title, ENT_QUOTES);
 			$out .= "\t".'<p id="primary-document"><a ';
 			$out .= $class ? 'class="'.$class.'"' : '';
 			$out .= ' href="'.$href.'" title="'.$title.'" '.$action.'>'.$msg;
@@ -1220,17 +1307,25 @@ class PublicationsHtml
 			$out .= '</a></p>'."\n";
 		}
 		
-		if ($pop) {
-			$out .= "\t".'<div id="primary-document_pop"><div>'.$pop.'</div></div>'."\n";
+		if ($pop) 
+		{
+			$out .= "\t" . '<div id="primary-document_pop">' . "\n";
+			$out .= "\t\t" . '<div>' . $pop . '</div>' . "\n";
+			$out .= "\t" . '</div>' . "\n";
 		}
 		
 		return $out;
 	}
 
-	//-------------------------------------------------------------
-	// Browse
-	//-------------------------------------------------------------
-
+	/**
+	 * Write a list of database results
+	 * 
+	 * @param      object &$database  JDatabase
+	 * @param      array  &$lines     Database results
+	 * @param      integer $show_edit Show edit controls?
+	 * @param      integer $show_date Date to display
+	 * @return     string HTML
+	 */	
 	public static function writeResults( &$database, &$lines, $filters = array(), $show_date = 3 ) 
 	{
 		$dateFormat = '%b %d, %Y';
@@ -1298,10 +1393,12 @@ class PublicationsHtml
 		return $html;
 	}
 	
-	//-------------------------------------------------------------
-	// Misc
-	//-------------------------------------------------------------
-
+	/**
+	 * Get the classname for a rating value
+	 * 
+	 * @param      integer $rating Rating (out of 5 total)
+	 * @return     string 
+	 */
 	public static function getRatingClass($rating=0)
 	{
 		switch ($rating) 
@@ -1322,9 +1419,14 @@ class PublicationsHtml
 		return $class;
 	}
 
-	//-----------
-	
-	public static function encode_html($str, $quotes=1)
+	/**
+	 * Encode some basic characters
+	 * 
+	 * @param      string  $str    Text to convert
+	 * @param      integer $quotes Include quotes?
+	 * @return     string
+	 */
+	public static function encode_html($str, $quotes = 1)
 	{
 		$str = stripslashes($str);
 		$a = array(
@@ -1340,207 +1442,192 @@ class PublicationsHtml
 		return strtr($str, $a);
 	}
 	
-	//-----------
-
-	public static function getFileAttribs( $path, $base_path='', $fsize=0 )
+	/**
+	 * Display the file type and size for a file
+	 * 
+	 * @param      string  $path      File path
+	 * @param      string  $base_path Path to prepend
+	 * @param      integer $fsize     Format the filesize?
+	 * @return     string
+	 */
+	public static function getFileAttribs($path, $base_path='', $fsize=0)
 	{
 		// Return nothing if no path provided
-		if (!$path) {
+		if (!$path) 
+		{
 			return '';
 		}
-		
-		if ($base_path) {
-			// Strip any trailing slash
-			if (substr($base_path, -1) == DS) { 
-				$base_path = substr($base_path, 0, strlen($base_path) - 1);
-			}
-			// Ensure a starting slash
-			if (substr($base_path, 0, 1) != DS) { 
-				$base_path = DS.$base_path;
-			}
-		}
-		
-		// Ensure a starting slash
-		if (substr($path, 0, 1) != DS) { 
-			$path = DS.$path;
-			if (substr($path, 0, strlen($base_path)) == $base_path) {
-				// Do nothing
-			} else {
-				$path = $base_path.$path;
-			}
-		}
-		
-		$path = JPATH_ROOT.$path;
 
-		$file_name_arr = explode('.',$path);
-	    $type = end($file_name_arr);
-		if (strlen($type) > 4) {
-			$type = 'HTML';
+		if ($base_path) 
+		{
+			$base_path = DS . trim($base_path, DS);
 		}
-		$type = strtoupper($type);
-		
-		$fs = '';
-		
-		// Get the file size if the file exist
-		if (file_exists( $path )) {
-			$fs = filesize( $path );
+
+		if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
+		{
+			$type = 'HTM';
+			$fs = '';
 		}
-		
-		$html  = '<span class="caption">('.$type;
-		if ($fs) {
+		else
+		{
+			$path = DS . trim($path, DS);
+			// Ensure a starting slash
+			if (substr($path, 0, strlen($base_path)) == $base_path) 
+			{
+				// Do nothing
+			} 
+			else 
+			{
+				$path = $base_path . $path;
+			}
+
+			$path = JPATH_ROOT . $path;
+
+			jimport('joomla.filesystem.file');
+			$type = strtoupper(JFile::getExt($path));
+
+			//check to see if we have a json file (HUBpresenter)
+			if ($type == 'JSON') 
+			{
+				$type = 'HTML5';
+			}
+			if (!$type)
+			{
+				$type = 'HTM';
+			}
+
+			// Get the file size if the file exist
+			$fs = (file_exists($path)) ? filesize($path) : '';
+		}
+
+		$html  = '<span class="caption">(' . $type;
+		if ($fs) 
+		{
 			switch ($type)
 			{
 				case 'HTM':
 				case 'HTML':
 				case 'PHP':
 				case 'ASF':
-				case 'SWF': $fs = ''; break;
-				default: 
-					$fs = ($fsize) ? $fs : PublicationsHtml::formatsize($fs); 
-					break;
+				case 'SWF':
+				case 'HTML5':
+					$fs = '';
+				break;
+
+				default:
+					ximport('Hubzero_View_Helper_Html');
+					$fs = ($fsize) ? $fs : PublicationsHtml::formatSize($fs);
+				break;
 			}
-		
-			$html .= ($fs) ? ', '.$fs : '';
+
+			$html .= ($fs) ? ', ' . $fs : '';
 		}
 		$html .= ')</span>';
-		
+
 		return $html;
 	}
-	
-	//-----------
 
-	public static function formatsize($file_size) 
+	/**
+	 * Format a filesize to more understandable Gb/Mb/Kb/b
+	 * 
+	 * @param      integer $fileSize File size to format
+	 * @return     string
+	 */
+	public static function formatsize($file_size)
 	{
-		if ($file_size >= 1073741824) {
-			$file_size = round($file_size / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
-		} elseif ($file_size >= 1048576) {
-			$file_size = round($file_size / 1048576 * 100) / 100 . ' <abbr title="megabytes">Mb</abbr>';
-		} elseif ($file_size >= 1024) {
-			$file_size = round($file_size / 1024 * 100) / 100 . ' <abbr title="kilobytes">Kb</abbr>';
-		} else {
-			$file_size = $file_size . ' <abbr title="bytes">b</abbr>';
-		}
-		return $file_size;
+		ximport('Hubzero_View_Helper_Html');
+		return Hubzero_View_Helper_Html::formatSize($file_size);
 	}
 	
-	//-----------
-	
+	/**
+	 * Clean text of potential XSS and other unwanted items such as
+	 * HTML comments and javascript. Also shortens text.
+	 * 
+	 * @param      string  $text    Text to clean
+	 * @param      integer $desclen Length to shorten to
+	 * @return     string
+	 */
 	public static function cleanText($text, $desclen=300)
 	{
 		$elipse = false;
 
-		$text = preg_replace( "'<script[^>]*>.*?</script>'si", "", $text );
-		$text = str_replace( '{mosimage}', '', $text );
-		$text = str_replace( "\n", ' ', $text );
-		$text = str_replace( "\r", ' ', $text );
-		$text = preg_replace( '/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i','\\2', $text );
-		$text = preg_replace( '/<!--.+?-->/', '', $text);
-		$text = preg_replace( '/{.+?}/', '', $text);
-		$text = strip_tags( $text );
-		if (strlen($text) > $desclen) $elipse = true;
-		$text = substr( $text, 0, $desclen );
-		if ($elipse) $text .= '&#8230;';
+		$text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
+		$text = str_replace('{mosimage}', '', $text);
+		$text = str_replace("\n", ' ', $text);
+		$text = str_replace("\r", ' ', $text);
+		$text = preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i', '\\2', $text);
+		$text = preg_replace('/<!--.+?-->/', '', $text);
+		$text = preg_replace('/{.+?}/', '', $text);
+		$text = strip_tags($text);
+		if (strlen($text) > $desclen) 
+		{
+			$elipse = true;
+		}
+		$text = substr($text, 0, $desclen);
+		if ($elipse) 
+		{
+			$text .= '&#8230;';
+		}
 		$text = trim($text);
-		
+
 		return $text;
 	}
 
-	//-----------
-
-	public static function passed( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'."\n";
-	}
-
-	//-----------
-
-	public static function archive( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="archive">'.$msg.'</'.$tag.'>'."\n";
-	}
-	
-	//-----------
-	
-	public static function alert( $msg )
-	{
-		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
-	}
-
-	//-----------
-	
-	public static function aside($txt, $id='')
-	{
-		return '<div class="aside" id="' . $id . '">' . $txt . '</div>';
-	}
-	
-	//-----------
-	
-	public static function subject($txt, $id='')
-	{
-		return '<div class="subject" id="' . $id . '">' . $txt . '</div>';
-	}
-
-	//-----------
-
-	public static function formSelect($name, $array, $value, $class='')
-	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
-		foreach ($array as $avalue => $alabel) 
-		{
-			$selected = ($avalue == $value || $alabel == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$out .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'."\n";
-		}
-		$out .= '</select>'."\n";
-		return $out;
-	}
-
-	//-----------
-
+	/**
+	 * Draw a table row
+	 * 
+	 * @param      string $h Header cell
+	 * @param      string $c Cell content
+	 * @param      string $s Secondary cell content
+	 * @return     string HTML
+	 */
 	public static function tableRow($h, $c='', $s='')
 	{
-		$html  = t.'  <tr>'.n;
-		$html .= t.'   <th>'.$h.'</th>'.n;
-		$html .= t.'   <td>';
+		$html  = '  <tr>' . "\n";
+		$html .= '   <th>' . $h . '</th>' . "\n";
+		$html .= '   <td>';
 		$html .= ($c) ? $c : '&nbsp;';
-		$html .= '</td>'.n;
-		if($s) {
-			$html .= t.'   <td class="secondcol">';
+		$html .= '</td>' . "\n";
+		if ($s) 
+		{
+			$html .= '   <td class="secondcol">';
 			$html .= $s;
-			$html .= '</td>'.n;
+			$html .= '</td>' . "\n";
 		}
-		$html .= t.'  </tr>'.n;
-		
+		$html .= '  </tr>' . "\n";
+
 		return $html;
 	}
-	
-	//-----------
-	
+
+	/**
+	 * Get the extension of a file
+	 * 
+	 * @param      string $url File path/name
+	 * @return     string
+	 */
 	public static function getFileExtension($url)
 	{
-		$type = '';
-		$arr  = explode('.',$url);
-		$type = count($arr) > 1 ? end($arr) : '';
-		$type = (strlen($type) > 4) ? 'html' : $type;
-		$type = (strlen($type) > 3) 
-			  ? substr($type, 0, 3)
-			  : $type;
-		return $type;
+		jimport('joomla.filesystem.file');
+		return JFile::getExt($url);
 	}
 	
-	//-----------
-	
+	/**
+	 * Extract content wrapped in <nb: tags
+	 * 
+	 * @param      string $text Text t extract from
+	 * @param      string $tag  Tag to extract <nb:tag></nb:tag>
+	 * @return     string 
+	 */
 	public static function parseTag($text, $tag)
 	{
-		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
+		preg_match("#<nb:" . $tag . ">(.*?)</nb:" . $tag . ">#s", $text, $matches);
 		if (count($matches) > 0) 
 		{
 			$match = $matches[0];
-			$match = str_replace('<nb:'.$tag.'>','',$match);
-			$match = str_replace('</nb:'.$tag.'>','',$match);
-		} else 
+			$match = str_replace('<nb:' . $tag . '>', '', $match);
+			$match = str_replace('</nb:' . $tag . '>', '', $match);
+		} 
+		else 
 		{
 			$match = '';
 		}

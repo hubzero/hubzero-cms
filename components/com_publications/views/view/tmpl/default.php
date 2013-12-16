@@ -91,7 +91,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= ' </div><!-- / .aside -->'."\n";	
 	$html .= '<div class="subject">'."\n";	
 	$html .= ' <div class="overviewcontainer">'."\n";
-	$html .= PublicationsHtml::title( $option, $publication, $params, $authorized, $config, 0 );
+	$html .= PublicationsHtml::title( $option, $publication );
 
 	// Display authors
 	if ($params->get('show_authors')) {			

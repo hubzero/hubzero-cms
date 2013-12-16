@@ -74,13 +74,13 @@ class PublicationHelper extends JObject
 	 */	
 	public function __construct( &$db, $versionid = 0, $pubid = 0 )
 	{
-		$this->_db 			= $db;
-		$this->_version_id 	= $versionid;
-		$this->_pub_id 		= $pubid;
+		$this->_db 					= $db;
+		$this->_version_id 			= $versionid;
+		$this->_pub_id 				= $pubid;
 		
-		$this->contributors = null;
-		$this->primary_content = null;
-		$this->supporting_content = null;
+		$this->contributors 		= null;
+		$this->primary_content	 	= null;
+		$this->supporting_content 	= null;
 	}
 	
 	/**
@@ -295,6 +295,7 @@ class PublicationHelper extends JObject
 	 * @param      array 	$contributors
 	 * @param      boolean 	$showorgs
 	 * @param      boolean 	$showaslist
+	 * @param      boolean 	$incSubmitter
 	 *
 	 * @return     string
 	 */
@@ -497,7 +498,8 @@ class PublicationHelper extends JObject
 				// Make publication thumbnail
 				if (is_file(JPATH_ROOT.$image)) 
 				{
-					include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );
+					include_once( JPATH_ROOT . DS . 'components' . DS 
+						. 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );
 					
 					$image_ext = array('jpg', 'jpeg', 'gif', 'png');
 					$ext = explode('.', $shots[0]->srcfile);
@@ -554,7 +556,8 @@ class PublicationHelper extends JObject
 		}
 		else
 		{
-			$date = $publication->accepted && $publication->accepted != '0000-00-00 00:00:00' ? $publication->accepted : $publication->submitted;
+			$date = $publication->accepted && $publication->accepted != '0000-00-00 00:00:00' 
+				? $publication->accepted : $publication->submitted;
 			$date = (!$date || $date == '0000-00-00 00:00:00') ? $publication->published_up : $date;
 						
 			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id AND ";
@@ -588,10 +591,14 @@ class PublicationHelper extends JObject
 			return false;
 		}
 		
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'association.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'author.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
 		$database = JFactory::getDBO();
 		
 		$cc = new CitationsCitation( $database );
@@ -629,10 +636,14 @@ class PublicationHelper extends JObject
 			return false;
 		}
 		
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'association.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'author.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
 		$database = JFactory::getDBO();
 		
 		$cc = new CitationsCitation( $database );
@@ -653,14 +664,15 @@ class PublicationHelper extends JObject
 	 * 
 	 * @return     string HTML
 	 */
-	public function getTags($tagger_id=0, $strength=0, $admin=0)
+	public function getTags($tagger_id = 0, $strength = 0, $admin = 0)
 	{
 		if ($this->_pub_id == 0) 
 		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+			. DS . 'helpers' . DS . 'tags.php' );
 		
 		$rt = new PublicationTags( $this->_db );
 		$this->tags = $rt->get_tags_on_object($this->_pub_id, 0, 0, $tagger_id, $strength, $admin);
@@ -674,14 +686,15 @@ class PublicationHelper extends JObject
 	 * 
 	 * @return     string HTML
 	 */
-	public function getTagsForEditing( $tagger_id=0, $strength=0 )
+	public function getTagsForEditing( $tagger_id = 0, $strength = 0 )
 	{
 		if ($this->_pub_id == 0) 
 		{
 			return false;
 		}
 		
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+			. DS . 'helpers' . DS . 'tags.php' );
 		
 		$rt = new PublicationTags( $this->_db );
 		$this->tagsForEditing = $rt->get_tag_string( $this->_pub_id, 0, 0, $tagger_id, $strength, 0 );
@@ -696,11 +709,13 @@ class PublicationHelper extends JObject
 	 */
 	public function getTagCloud( $admin=0 )
 	{
-		if ($this->_pub_id == 0) {
+		if ($this->_pub_id == 0) 
+		{
 			return false;
 		}
 		
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+			. DS . 'helpers' . DS . 'tags.php' );
 		$database = JFactory::getDBO();
 		
 		$rt = new PublicationTags( $database );
