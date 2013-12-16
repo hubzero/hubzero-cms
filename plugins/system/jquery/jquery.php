@@ -169,6 +169,11 @@ class plgSystemJquery extends JPlugin
 			return;
 		}
 
+		if (!method_exists($document, 'getHeadData'))
+		{
+			return;
+		}
+
 		$no_html = JRequest::getInt('no_html', 0);
 		$format  = JRequest::getVar('format', '');
 
