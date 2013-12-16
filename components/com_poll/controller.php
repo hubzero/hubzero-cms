@@ -33,7 +33,7 @@ class PollController extends JController
 	 * @access	public
 	 * @since	1.5
 	 */
-	public function display()
+	public function display($cachable = false, $urlparams = false)
 	{
 		//JRequest::setVar('view', 'poll'); // force it to be the polls view
 		parent::display();
