@@ -70,22 +70,29 @@ class Hubzero_Registration_Helper
     }
 
 	/**
-	 * Short description for 'validlogin'
+	 * Check validity of login
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $login Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $login                      - login name to check
+	 * @param      bool   $allowNumericFirstCharacter - whether or not to allow first character as number (used for grandfathered accounts)
+	 * @return     integer Return
 	 */
-	public static function validlogin($login)
+	public static function validlogin($login, $allowNumericFirstCharacter=false)
 	{
-		if (preg_match("/^[a-z][_.a-z0-9]{1,31}$/", $login)) {
-			if (Hubzero_Registration_Helper::is_positiveint($login)) {
+		$firstCharClass = ($allowNumericFirstCharacter) ? 'a-z0-9' : 'a-z';
+
+		if (preg_match("/^[".$firstCharClass."][_.a-z0-9]{1,31}$/", $login))
+		{
+			if (Hubzero_Registration_Helper::is_positiveint($login))
+			{
 				return(0);
-			} else {
+			}
+			else
+			{
 				return(1);
 			}
-		} else {
+		}
+		else
+		{
 			return(0);
 		}
 	}

@@ -717,7 +717,8 @@ class Hubzero_Registration
 
 		if ($registrationUsername != REG_HIDE)
 		{
-			if (!empty($login) && !Hubzero_Registration_Helper::validlogin($login) )
+			$allowNumericFirstCharacter = ($task == 'update') ? true : false;
+			if (!empty($login) && !Hubzero_Registration_Helper::validlogin($login, $allowNumericFirstCharacter) )
 				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';
 		}
 
