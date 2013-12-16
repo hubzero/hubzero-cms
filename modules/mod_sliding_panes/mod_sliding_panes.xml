@@ -69,7 +69,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="catid" type="category" default="0" label="Category" description="A content category" />
+				<field name="catid" type="category" default="0" label="Category" description="A content category" extension="com_content" />
 				<field name="container" type="text" default="" label="Content Container" description="A CSS ID for a content container" />
 				<field name="rotate" type="radio" default="1" label="Auto-Rotate" description="Select whether to have pane rotation automatically animated">
 					<option value="0">No</option>
