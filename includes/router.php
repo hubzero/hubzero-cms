@@ -509,7 +509,7 @@ class JRouterSite extends JRouter
 
 		/* START: HUBzero Extension to parse com_content component specially */
 		if (empty($vars['option'])) {
-			$vits = explode('/',ltrim($route,"/"));
+			$bits = explode('/',ltrim($route,"/"));
 			$vars = $this->_parseContentRoute($bits);
 			if (!empty($vars['option'])) {
 				$route = false;
