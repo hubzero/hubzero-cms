@@ -42,7 +42,7 @@ class ResourcesHtml
 	 * @param      string $msg Message
 	 * @return     string Javascript
 	 */
-	public function alert($msg)
+	public static function alert($msg)
 	{
 		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
@@ -52,7 +52,7 @@ class ResourcesHtml
 	 * 
 	 * @return     void
 	 */
-	public function statusKey()
+	public static function statusKey()
 	{
 		?>
 			<p><?php echo JText::_('Published status: (click icon above to toggle state)'); ?></p>
@@ -75,7 +75,7 @@ class ResourcesHtml
 	 * @param      integer $someid ID to format
 	 * @return     integer
 	 */
-	public function niceidformat($someid)
+	public static function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
 		{
@@ -92,7 +92,7 @@ class ResourcesHtml
 	 * @param      string  $base Base path to prepend
 	 * @return     string
 	 */
-	public function build_path($date, $id, $base='')
+	public static function build_path($date, $id, $base='')
 	{
 		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
 		{
@@ -124,7 +124,7 @@ class ResourcesHtml
 	 * @param      string $rating Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function writeRating($rating)
+	public static function writeRating($rating)
 	{
 		switch ($rating)
 		{
@@ -152,7 +152,7 @@ class ResourcesHtml
 	 * @param      string $value Value to select
 	 * @return     string HTML
 	 */
-	public function selectAccess($as, $value)
+	public static function selectAccess($as, $value)
 	{
 		$as = explode(',',$as);
 		$html  = '<select name="access">' . "\n";
@@ -176,7 +176,7 @@ class ResourcesHtml
 	 * @param      string $value  Value to select
 	 * @return     string HTML
 	 */
-	public function selectGroup($groups, $value)
+	public static function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner"';
 		if (!$groups) 
@@ -211,7 +211,7 @@ class ResourcesHtml
 	 * @param      string  $id    ID of field
 	 * @return     string HTML
 	 */
-	public function selectSection($name, $array, $value, $class='', $id)
+	public static function selectSection($name, $array, $value, $class='', $id)
 	{
 		$html  = '<select name="' . $name . '" id="' . $name . '" onchange="return listItemTask(\'cb' . $id . '\',\'regroup\')"';
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
@@ -241,7 +241,7 @@ class ResourcesHtml
 	 * @param      string $skip     ITems to skip
 	 * @return     string HTML
 	 */
-	public function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
+	public static function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
 	{
 		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
@@ -279,7 +279,7 @@ class ResourcesHtml
 	 * @param      string $date Date to convert (0000-00-00 00:00:00)
 	 * @return     string
 	 */
-	public function dateToPath($date)
+	public static function dateToPath($date)
 	{
 		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
 		{
