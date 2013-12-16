@@ -410,7 +410,7 @@ class AndmoreStats extends PublicationUsage
 	 * @param      array &$result Database results
 	 * @return     void
 	 */
-	public function process(&$result)
+	public function process($result)
 	{
 		if ($result) 
 		{
