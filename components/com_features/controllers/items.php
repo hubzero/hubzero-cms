@@ -345,5 +345,46 @@ class FeaturesControllerItems extends Hubzero_Controller
 			}
 		}
 	}
+
+	/**
+	 * Method to set the document path
+	 *
+	 * @return	void
+	 */
+	protected function _buildPathway()
+	{
+		$pathway = JFactory::getApplication()->getPathway();
+
+		if (count($pathway->getPathWay()) <= 0)
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+		if ($this->_task)
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				'index.php?option=' . $this->_option . '&task=' . $this->_task
+			);
+		}
+	}
+
+	/**
+	 * Method to build and set the document title
+	 *
+	 * @return	void
+	 */
+	protected function _buildTitle()
+	{
+		$this->_title = JText::_(strtoupper($this->_option));
+		if ($this->_task)
+		{
+			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+		}
+		$document = JFactory::getDocument();
+		$document->setTitle($this->_title);
+	}
 }
 
