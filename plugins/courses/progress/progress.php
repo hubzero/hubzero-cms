@@ -217,7 +217,9 @@ class plgCoursesProgress extends JPlugin
 				'name'      => JFactory::getUser($m->get('user_id'))->get('name'),
 				'thumb'     => ltrim(Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, true), DS),
 				'full'      => ltrim(Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, false), DS),
-				'enrolled'  => JFactory::getDate(strtotime($m->get('enrolled')))->format('M j, Y'),
+				'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
+									? JFactory::getDate(strtotime($m->get('enrolled')))->format('M j, Y')
+									: 'unknown'),
 				'lastvisit' => ((JFactory::getUser($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
 									? JFactory::getDate(strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate')))->format('M j, Y')
 									: 'never')
