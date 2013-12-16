@@ -139,58 +139,78 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
-	<div class="col width-100">
+	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
-	<legend><span><?php echo JText::_('Plugins'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_CATS_MASTER_TYPE_CONFIG'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<?php foreach ($this->types as $mt) { ?>
+					<tr>
+						<td class="key"><?php echo $mt; ?></td>
+						<td>
+							<label class="block"><input class="option" name="params[type_<?php echo $mt; ?>]" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> /> <?php echo 'include as choice'; ?></label>
+						</td>
+						<td>
+							<label class="block"><input class="option" name="params[type_<?php echo $mt; ?>]" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> /> <?php echo 'not applicable'; ?></label>
+						</td>
+					</tr>
+				<?php } ?>	
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="col width-50 ltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Plugins'); ?></span></legend>
 
-	<table class="admintable">
-		<thead>
-			<tr>
-				<th><?php echo JText::_('Plugin'); ?></th>
-				<th colspan="2"><?php echo JText::_('Active'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php 
-		$database = JFactory::getDBO();
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$database->setQuery( "SELECT * FROM #__extensions WHERE `type`='plugin' AND `folder`='publications'" );
-		}
-		else
-		{
-			$database->setQuery( "SELECT * FROM #__plugins WHERE `folder`='publications'" );
-		}
-		$plugins = $database->loadObjectList();
-		if ($plugins)
-		{
-			$found = array();
-			foreach ($plugins as $plugin)
-			{
-				if (in_array('plg_' . $plugin->element, $found))
+			<table class="admintable">
+				<thead>
+					<tr>
+						<th><?php echo JText::_('Plugin'); ?></th>
+						<th colspan="2"><?php echo JText::_('Active'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php 
+				$database = JFactory::getDBO();
+				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
-					continue;
+					$database->setQuery( "SELECT * FROM #__extensions WHERE `type`='plugin' AND `folder`='publications'" );
 				}
-				$found[] = 'plg_' . $plugin->element;
-				if (strstr($plugin->name, '_'))
+				else
 				{
-					$lang = JFactory::getLanguage();
-					$lang->load($plugin->name);
+					$database->setQuery( "SELECT * FROM #__plugins WHERE `folder`='publications'" );
 				}
+				$plugins = $database->loadObjectList();
+				if ($plugins)
+				{
+					$found = array();
+					foreach ($plugins as $plugin)
+					{
+						if (in_array('plg_' . $plugin->element, $found))
+						{
+							continue;
+						}
+						$found[] = 'plg_' . $plugin->element;
+						if (strstr($plugin->name, '_'))
+						{
+							$lang = JFactory::getLanguage();
+							$lang->load($plugin->name);
+						}
+						?>
+						<tr>
+							<td><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></td>
+							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
+							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+						</tr>
+						<?php
+					}
+				}		
 				?>
-				<tr>
-					<td><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></td>
-					<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
-					<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
-				</tr>
-				<?php
-			}
-		}		
-		?>
-		</tbody>
-	</table>
-	</fieldset>
+				</tbody>
+			</table>
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 		<div class="col width-100">

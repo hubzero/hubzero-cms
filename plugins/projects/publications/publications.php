@@ -414,7 +414,7 @@ class plgProjectsPublications extends JPlugin
 				'name'=>'browse'
 			)
 		);
-		
+				
 		// Instantiate project publication
 		$objP = new Publication( $this->_database );
 		
@@ -1878,7 +1878,7 @@ class plgProjectsPublications extends JPlugin
 		$newpub 	= 0;
 		$newversion = 0;
 		$now = JFactory::getDate()->toSql();
-
+		
 		// Check that version exists
 		$row = new PublicationVersion( $this->_database );
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
@@ -1903,7 +1903,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Instantiate project publication
 		$objP = new Publication( $this->_database );
-		$mt = new PublicationMasterType( $this->_database );
+		$mt   = new PublicationMasterType( $this->_database );
 						
 		// If publication not found, raise error
 		if (!$objP->load($pid) && $section != 'content') 
@@ -1925,7 +1925,7 @@ class plgProjectsPublications extends JPlugin
 				// Check what choices apply to a particular project
 				$choices = $this->_getAllowedTypes($choices);
 				
-				$mastertype = in_array($base, $choices) ? $base : 'files';
+				$mastertype = in_array($base, $choices) ? $base : 'files';				
 								
 				// Need to provision a project
 				if (!is_object($this->_project) or !$this->_project->id) 
@@ -1963,12 +1963,12 @@ class plgProjectsPublications extends JPlugin
 				
 				// Determine publication type
 				$objT = new PublicationCategory( $this->_database );
-				$defaultCat = $this->_pubconfig->get('default_category', '');
 				
-				$cat = $defaultCat 
-						? $objT->getCatId($defaultCat) 
-						: $objT->getCatId($objT->suggestCat($arr));
-
+				// Get type params
+				$mType 		= $mt->getType($mastertype);
+				$typeParams = new JParameter( $mType->params );
+				$cat 		= $typeParams->get('default_category', $this->_pubconfig->get('default_category', 'dataset'));
+				
 				// Determine title
 				$title = $this->_pubTypeHelper->dispatch($base, 'getPubTitle', 
 						$data = array('item' => $first_item)
@@ -1992,7 +1992,7 @@ class plgProjectsPublications extends JPlugin
 				{
 					$objP->checkin();
 				}
-				$pid = $objP->id;
+				$pid 		= $objP->id;
 				$this->_pid = $pid;
 								
 				// Initizalize Git repo and transfer files from member dir

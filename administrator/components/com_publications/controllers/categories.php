@@ -161,6 +161,10 @@ class PublicationsControllerCategories extends Hubzero_Controller
 		
 		$this->view->config = $this->config;
 		
+		// Get all contributable master types
+		$objMT = new PublicationMasterType($this->database);
+		$this->view->types = $objMT->getTypes('alias', 1);
+		
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');

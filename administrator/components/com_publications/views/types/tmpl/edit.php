@@ -196,6 +196,17 @@ function submitbutton(pressbutton)
 						</label>
 					</td>
 				</tr>
+				<tr>
+					<td class="key"><?php echo JText::_('Default Category'); ?></td>
+					<td>
+						<span class="hint"><?php echo JText::_('Choose a default category assigned for this type'); ?></span>
+						<select name="params[default_category]">
+						<?php foreach ($this->cats as $cat) { ?>
+							<option value="<?php echo $cat->id; ?>" <?php echo ($params->get('default_category', 1) == $cat->id) ? ' selected="selected"' : ''; ?>><?php echo $cat->name; ?></option>
+						<?php } ?>
+						</select>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		</fieldset>

@@ -35,7 +35,7 @@
 			<option value="1">Yes</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="default_category" type="text" menu="hide" default="dataset" label="Default type (category)" description="Optionally set the type (category) of newly created publications to the specified value if exists" />
+		<param name="default_category" type="text" menu="hide" default="dataset" label="Default category" description="Optionally set the category of newly created publications to the specified value if exists" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
 		<param name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
@@ -117,7 +117,7 @@
 			<option value="1">Yes</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="default_category" type="text" menu="hide" default="dataset" label="Default type (category)" description="Optionally set the type (category) of newly created publications to the specified value if exists" />
+		<field name="default_category" type="text" menu="hide" default="dataset" label="Default category" description="Optionally set the category of newly created publications to the specified value if exists" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
 		<field name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />

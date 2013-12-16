@@ -181,7 +181,8 @@ class PublicationCategory extends JTable
 		}
 		else
 		{
-			$query .= isset($filters['state']) && intval($filters['state']) > 0 ? 'WHERE C.state=' . $filters['state'] : " WHERE C.state=1 ";			
+			$query .= isset($filters['state']) && intval($filters['state']) > 0 
+					? 'WHERE C.state=' . $filters['state'] : " WHERE C.state=1 ";			
 		}
 		
 		$orderby = isset($filters['sort']) ? $filters['sort'] : "name";
@@ -265,42 +266,5 @@ class PublicationCategory extends JTable
 		
 		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE category=" . $id);
 		return $this->_db->loadResult();
-	}
-	
-	/**
-	 * Suggest category
-	 * 
-	 * @param      array		$primary
-	 * @param      integer		$picked
-	 * @param      integer		$multiple
-	 * @return     object
-	 */	
-	public function suggestCat( $primary = array(), $picked = 0, $multiple = 0 ) 
-	{
-		$cat = 'download'; // 'download' as default type
-		if (empty($primary)) 
-		{
-			return 0;
-		}
-		if ($primary[0] == 'app') 
-		{
-			return 'tool'; // tool type
-		}
-		elseif ($primary[0] == 'file' && isset($primary[1])) 
-		{
-			// Consider file extention
-			$ext = explode('.',$primary[1]);
-			$ext = end($ext);
-			$ext = strtolower($ext);
-			switch ( $ext ) 
-			{
-				default:
-				case 'pdf': 
-					$cat = $multiple ? array('download') : 'download'; 
-					break;				
-			}
-		}
-		
-		return $cat; 
 	}
 }
