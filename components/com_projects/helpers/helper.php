@@ -413,7 +413,7 @@ class ProjectsHelper extends JObject {
 	 * @param      string $case
 	 * @return     string
 	 */	
-	public function getProjectPath( $projectAlias = '', $webdir = '', $offroot = 0, $case = 'files' ) 
+	public static function getProjectPath( $projectAlias = '', $webdir = '', $offroot = 0, $case = 'files' ) 
 	{		
 		if (!$projectAlias || ! $webdir)
 		{
