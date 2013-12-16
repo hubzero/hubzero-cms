@@ -168,18 +168,9 @@ class JCacheController
 	 *
 	 * @since   11.1
 	 */
-	public function get()
+	public function get($id, $group = null)
 	{
-		$numargs = func_num_args();
-
-		if ($numargs <= 0)
-		{
-			return false;
-		}
-
-		$id = func_get_arg(1);
-		$group = ($numargs > 1) ? func_get_arg(2) : null;
-
+		$data = false;
 		$data = $this->cache->get($id, $group);
 
 		if ($data === false)

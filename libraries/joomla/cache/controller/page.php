@@ -47,14 +47,8 @@ class JCacheControllerPage extends JCacheController
 	 *
 	 * @since   11.1
 	 */
-	public function get()
+	public function get($id = false, $group = 'page', $wrkarounds = true)
 	{
-		$numargs = func_num_args();
-
-		$id = ($numargs > 0) ? func_get_arg(1) : false;
-		$group = ($numargs > 1) ? func_get_arg(2) : 'page';
-		$wrkarounds = ($numargs > 2) ? func_get_arg(3) : true;
-
 		// Initialise variables.
 		$data = false;
 
