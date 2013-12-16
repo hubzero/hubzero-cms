@@ -769,6 +769,10 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a,endColorstr=#f47a20);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a, endColorstr=#f47a20)";
 	}
+	#whatsnext #primary-document a {
+		width: auto;
+		white-space: nowrap;
+	}
 	/*#primary-document a:before {
 		content: "\f003";
 		font-family: "Fontcons";
