@@ -621,12 +621,17 @@ class JView extends JObject
 		jimport('joomla.filesystem.path');
 		$filetofind = $this->_createFileName('template', array('name' => $file));
 		$this->_template = JPath::find($this->_path['template'], $filetofind);
+		$override = null;
 
 		// If alternate layout can't be found, fall back to default layout
 		if ($this->_template == false)
 		{
 			$filetofind = $this->_createFileName('', array('name' => 'default' . (isset($tpl) ? '_' . $tpl : $tpl)));
 			$this->_template = JPath::find($this->_path['template'], $filetofind);
+		}
+		else
+		{
+			$override = $file;
 		}
 
 		if ($this->_template != false)
@@ -652,6 +657,11 @@ class JView extends JObject
 			// clear it.
 			$this->_output = ob_get_contents();
 			ob_end_clean();
+
+			if ($override)
+			{
+				$this->_output = '<!-- [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->' . $this->_output . '<!-- / [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->';
+			}
 
 			return $this->_output;
 		}
