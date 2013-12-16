@@ -152,7 +152,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Check logged in status
 		if ($this->view->thread->get('access') > 0 && $this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent']), false, true);
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent'], false, true));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
