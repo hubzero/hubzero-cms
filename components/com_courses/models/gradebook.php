@@ -679,8 +679,12 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badge->set('criteria_id', $sb->get('criteria_id'));
 						$badge->store();
 
+						// Get courses config
+						$cconfig = JComponentHelper::getParams('com_courses');
+
 						// Tell the badge provider that they've earned the badge
-						$badgesHandler  = new Hubzero_Badges(strtoupper($sb->get('provider_name')));
+						$request_type   = $cconfig->get('badges_request_type', 'oauth');
+						$badgesHandler  = new Hubzero_Badges(strtoupper($sb->get('provider_name')), $request_type);
 						$badgesProvider = $badgesHandler->getProvider();
 
 						$credentials->consumer_key    = $this->config()->get($sb->get('provider_name').'_consumer_key');
@@ -693,7 +697,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$user_id = $memberTbl->get('user_id');
 
 						$data->id           = $sb->get('provider_badge_id');
-						$data->evidenceUrl  = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $sb->get('id') . DS . 'validation' . DS . $badge->get('validation_token');;
+						$data->evidenceUrl  = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $sb->get('id') . DS . 'validation' . DS . $badge->get('validation_token');
 						$users              = array();
 						$users[]            = JFactory::getUser($user_id)->get('email');
 

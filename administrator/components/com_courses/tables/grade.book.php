@@ -269,7 +269,7 @@ class CoursesTableGradeBook extends JTable
 			}
 		}
 
-		if (count($members) == 0)
+		if (count($member_id) == 0)
 		{
 			return;
 		}

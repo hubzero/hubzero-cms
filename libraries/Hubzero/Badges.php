@@ -31,9 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'PaymentGateway'
- * 
- * Long description (if any) ...
+ * Hubzero badges class
  */
 class Hubzero_Badges
 {
@@ -43,14 +41,15 @@ class Hubzero_Badges
 	 * Constructor
 	 * 
 	 * @param	string 		badgesProivder
+	 * @param	string 		requestType
 	 * @return  void
 	 */
-	public function __construct($badgesProivder)
+	public function __construct($badgesProivder, $requestType='oauth')
 	{
 		switch ($badgesProivder)
 		{
 			case "PASSPORT":
-				$this->badgesHandler = new Hubzero_Badges_Passport_BadgesProvider();
+				$this->badgesHandler = new Hubzero_Badges_Passport_BadgesProvider($requestType);
 			break;
 
 			/*

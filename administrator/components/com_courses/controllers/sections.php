@@ -509,7 +509,8 @@ class CoursesControllerSections extends Hubzero_Controller
 			// If we don't already have a provider badge id set, then we're processing our initial badge creation
 			if ($badgeObj->get('provider_name') && !$badgeObj->get('provider_badge_id') && $badgeObj->get('img_url'))
 			{
-				$badgesHandler  = new Hubzero_Badges(strtoupper($badgeObj->get('provider_name')));
+				$request_type   = $cconfig->get('badges_request_type', 'oauth');
+				$badgesHandler  = new Hubzero_Badges(strtoupper($badgeObj->get('provider_name')), $request_type);
 				$badgesProvider = $badgesHandler->getProvider();
 
 				if (is_object($badgesProvider))

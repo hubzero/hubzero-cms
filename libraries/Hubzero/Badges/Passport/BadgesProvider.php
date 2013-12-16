@@ -36,8 +36,9 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class Hubzero_Badges_Passport_BadgesProvider
 {
-	private $credentials = false;
-	private $oauth;
+	private $credentials  = false;
+	private $request      = NULL;
+	private $request_type = 'oauth';
 
 	const passportApiEndpoint = 'https://api.openpassport.org/1.0.0/';
 	const passportBadgesUrl   = 'https://www.openpassport.org/MyBadges';
@@ -47,36 +48,67 @@ class Hubzero_Badges_Passport_BadgesProvider
 	/**
 	 * Constructor
 	 * 
-	 * @param 	void
+	 * @param 	string - request type
 	 * @return  void
 	 */
-	public function __construct()
+	public function __construct($request_type='oauth')
 	{
+		$this->request_type = $request_type;
 	}
 
 	/**
 	 * Set credentials
 	 * 
-	 * @param 	object passportCredentials
+	 * @param 	object - passportCredentials
 	 * @return  void
 	 */
 	public function setCredentials($passportCredentials)
 	{
 		$this->credentials = $passportCredentials;
 
-		$this->oauth = new OAuth($this->credentials->consumer_key, $this->credentials->consumer_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+		// Setup request, based on type
+		if ($this->request_type == 'oauth')
+		{
+			$this->request = new OAuth($this->credentials->consumer_key, $this->credentials->consumer_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
 
-		/*
-		$params['x_auth_username'] = $this->credentials->username;
-		$params['x_auth_password'] = $this->credentials->password;
-		$params['x_auth_mode']     = 'client_auth';
+			/*$params['x_auth_username'] = $this->credentials->username;
+			$params['x_auth_password'] = $this->credentials->password;
+			$params['x_auth_mode']     = 'client_auth';
 
-		$this->oauth->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "access_token", $params,  OAUTH_HTTP_METHOD_POST);
+			$this->request->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "access_token", $params,  OAUTH_HTTP_METHOD_POST);
 
-		// get token and secret and set them for future requests
-		parse_str($oauth->getLastResponse(), $access);
-		$this->oauth->setToken($access['oauth_token'], $access['oauth_token_secret']);
-		*/
+			// Get token and secret and set them for future requests
+			parse_str($this->request->getLastResponse(), $access);
+			$this->request->setToken($access['oauth_token'], $access['oauth_token_secret']);*/
+		}
+		else if ($this->request_type == 'curl')
+		{
+			// Use curl as fallback/alternative to oauth
+			$this->request = curl_init();
+			curl_setopt($this->request, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+			curl_setopt($this->request, CURLOPT_USERPWD, $this->credentials->consumer_key . ":" . $this->credentials->consumer_secret);
+			curl_setopt($this->request, CURLOPT_TIMEOUT, 30);
+			curl_setopt($this->request, CURLOPT_POST, 1);
+		}
+		else
+		{
+			throw new Exception('Unsupported request type');
+		}
+	}
+
+	/**
+	 * Close connection
+	 */
+	public function destroy()
+	{
+		if ($this->request_type == 'oauth')
+		{
+			// Do nothing?
+		}
+		else
+		{
+			curl_close($this->request);
+		}
 	}
 
 	/**
@@ -101,17 +133,34 @@ class Hubzero_Badges_Passport_BadgesProvider
 
 		$data = json_encode($data);
 
-		$this->oauth->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
-
-		try
+		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
 		{
-			$this->oauth->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . 'badges/', $data, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
-		}
-		catch (Exception $e) 
-		{
-		}
+			$this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
 
-		$badge = json_decode($this->oauth->getLastResponse());
+			try
+			{
+				$this->request->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . 'badges/', $data, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
+			}
+			catch (Exception $e)
+			{
+				throw new Exception('Badge creation request failed.');
+			}
+
+			$badge = json_decode($this->request->getLastResponse());
+		}
+		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
+		{
+			curl_setopt($this->request, CURLOPT_URL, Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . 'badges/');
+			curl_setopt($this->request, CURLOPT_POSTFIELDS, $data);
+			curl_setopt($this->request, CURLOPT_RETURNTRANSFER, TRUE);
+
+			$response = curl_exec($this->request);
+			$badge    = json_decode($response);
+		}
+		else
+		{
+			throw new Exception('Unsupported request type');
+		}
 
 		if (empty($badge->Id) || !$badge->Id)
 		{
@@ -157,17 +206,33 @@ class Hubzero_Badges_Passport_BadgesProvider
 
 		$assertionsData = json_encode($assertions);
 
-		$this->oauth->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
-		try
+		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
 		{
-			$this->oauth->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
-		}
-		catch (Exception $e)
-		{
-			error_log($e->getCode());
-		}
+			$this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
+			try
+			{
+				$this->request->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
+			}
+			catch (Exception $e)
+			{
+				error_log($e->getCode());
+			}
 
-		$assertion = json_decode($this->oauth->getLastResponse());
+			$assertion = json_decode($this->request->getLastResponse());
+		}
+		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
+		{
+			curl_setopt($this->request, CURLOPT_URL, Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions/");
+			curl_setopt($this->request, CURLOPT_POSTFIELDS, $assertionsData);
+			curl_setopt($this->request, CURLOPT_RETURNTRANSFER, TRUE);
+
+			$response  = curl_exec($this->request);
+			$assertion = json_decode($response);
+		}
+		else
+		{
+			throw new Exception('Unsupported request type');
+		}
 
 		foreach ($assertion as $ass)
 		{
