@@ -75,7 +75,7 @@ class WishlistHtml
 	 * @param      string $pee Text to unparagraph
 	 * @return     string
 	 */
-	public function txt_unpee($pee)
+	public static function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);
@@ -94,7 +94,7 @@ class WishlistHtml
 	 * @param      integer $desclen Length to shorten to
 	 * @return     string
 	 */
-	public function cleanText($text, $desclen=300)
+	public static function cleanText($text, $desclen=300)
 	{
 		$elipse = false;
 
@@ -129,7 +129,7 @@ class WishlistHtml
 	 * @param      string $class Class to add
 	 * @return     string HTML
 	 */
-	public function formSelect($name, $array, $value, $class='')
+	public static function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="' . $name . '" id="' . $name . '"';
 		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
@@ -151,7 +151,7 @@ class WishlistHtml
 	 * @param      string $c Cell content
 	 * @return     string HTML
 	 */
-	public function tableRow($h,$c='')
+	public static function tableRow($h,$c='')
 	{
 		$html  = '  <tr>' . "\n";
 		$html .= '   <th>' . $h . '</th>' . "\n";
@@ -171,7 +171,7 @@ class WishlistHtml
 	 * @param      string  $output   Value to append to
 	 * @return     string 
 	 */
-	public function convertVote($rawnum, $category, $output='')
+	public static function convertVote($rawnum, $category, $output='')
 	{
 		$rawnum = round($rawnum);
 		if ($category == 'importance') 
@@ -214,7 +214,7 @@ class WishlistHtml
 	 * @param      integer $admin    User is admin?
 	 * @return     string HTML
 	 */
-	public function rankingForm($option, $wishlist, $task, $myvote, $admin)
+	public static function rankingForm($option, $wishlist, $task, $myvote, $admin)
 	{
 		$importance = array(
 			''    => JText::_('SELECT_IMP'),
@@ -274,7 +274,7 @@ class WishlistHtml
 	 * @param      object  $pageNav  Pagination
 	 * @return     string HTML
 	 */
-	public function browseForm($option, $filters, $admin, $id, $total, $wishlist, $pageNav)
+	public static function browseForm($option, $filters, $admin, $id, $total, $wishlist, $pageNav)
 	{
 		$sortbys = array();
 		if ($admin) 
@@ -340,7 +340,7 @@ class WishlistHtml
 	 * @param      string $date Timestamp
 	 * @return     string
 	 */
-	public function nicetime($date)
+	public static function nicetime($date)
 	{
 		if (empty($date)) 
 		{
