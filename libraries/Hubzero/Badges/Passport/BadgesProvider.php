@@ -304,7 +304,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 			$emailAddresses = array($emailAddresses);
 		}
 
-		$query_params = implode('%s', $emailAddresses);
+		$query_params = implode('%20', $emailAddresses);
 		$url = Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions?emailAddresses=" . $query_params;
 
 		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
