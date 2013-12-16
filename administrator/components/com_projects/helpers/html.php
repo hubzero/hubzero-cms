@@ -35,28 +35,28 @@ if (!defined("n")) {
 
 class ProjectsHtml 
 {
-	public function error( $msg, $tag='p' )
+	public static function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 	
 	//-----------
 	
-	public function warning( $msg, $tag='p' )
+	public static function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 
 	//-----------
 	
-	public function alert( $msg )
+	public static function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 	
 	//-----------
 	
-	public function getThumbSrc( $id, $alias, $picname = '', $config ) {
+	public static function getThumbSrc( $id, $alias, $picname = '', $config ) {
 			
 		$src = '';
 		$dir = $alias;	
@@ -83,7 +83,7 @@ class ProjectsHtml
 	
 	//-----------
 
-	public function createThumbName( $image=null, $tn='_thumb' )
+	public static function createThumbName( $image=null, $tn='_thumb' )
 	{
 		if (!$image) {
 			$image = $this->image;
@@ -113,7 +113,7 @@ class ProjectsHtml
 	// Date/time management
 	//----------------------------------------------------------
 	
-	public function timeAgo($timestamp) 
+	public static function timeAgo($timestamp) 
 	{
 		$timestamp = Hubzero_View_Helper_Html::mkt($timestamp);
 		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
@@ -132,7 +132,7 @@ class ProjectsHtml
 	// File management
 	//----------------------------------------------------------
 	
-	public function getFileAttribs( $path, $base_path = '', $get = '', $prefix = JPATH_ROOT )
+	public static function getFileAttribs( $path, $base_path = '', $get = '', $prefix = JPATH_ROOT )
 	{
 		// Return nothing if no path provided
 		if (!$path) {
@@ -184,7 +184,7 @@ class ProjectsHtml
 	
 	//-----------
 
-	public function formatSize($file_size, $round = 0) 
+	public static function formatSize($file_size, $round = 0) 
 	{
 		if ($file_size >= 1073741824) {
 			$file_size = round(($file_size / 1073741824 * 100), $round) / 100 . 'GB';
@@ -201,7 +201,7 @@ class ProjectsHtml
 
 	//-----------
 
-	public function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0) 
+	public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0) 
 	{
 		$file_size = str_replace(' ', '', $file_size);
 
@@ -228,14 +228,4 @@ class ProjectsHtml
 
 		return $file_size;
 	}
-	
-	//----------------------------------------------------------
-	// Form <select> builders
-	//----------------------------------------------------------
-
-	//-------------------------------------------------------------
-	// Media manager functions
-	//-------------------------------------------------------------
-
-	//-----------
 }
