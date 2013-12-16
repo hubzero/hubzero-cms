@@ -1542,7 +1542,7 @@ class ResourcesHtml
 			$html .= '<ul class="citations results">' . "\n";
 			$html .= "\t" . '<li>' . "\n";
 			$html .= CitationFormat::formatReference($cite);
-			if ($rev != 'dev') 
+			if (is_numeric($rev) || (is_string($rev) && $rev != 'dev')) 
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
 				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
