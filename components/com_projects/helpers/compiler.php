@@ -50,7 +50,7 @@ class ProjectsCompiler extends JObject
 	 *
 	 * @return     array to be parsed
 	 */
-	public function isTexFile ($file = '', $mimeType = '') 
+	public static function isTexFile ($file = '', $mimeType = '') 
 	{
 		$tex = 0;
 		
@@ -77,7 +77,7 @@ class ProjectsCompiler extends JObject
 	 *
 	 * @return     array
 	 */
-	public function getFormatsArray() 
+	public static function getFormatsArray() 
 	{		
 		$formats = array (
 		    'application' => array (

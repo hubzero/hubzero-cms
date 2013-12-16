@@ -322,7 +322,7 @@ class ProjectsHelper extends JObject {
 	 * @param      array $params
 	 * @return     void
 	 */	
-	public function getSuggestions( $project, $option, $uid = 0, $config, $params ) 
+	public static function getSuggestions( $project, $option, $uid = 0, $config, $params ) 
 	{	
 		$suggestions = array();
 		$creator = $project->created_by_user == $uid ? 1 : 0;
@@ -853,7 +853,7 @@ class ProjectsHelper extends JObject {
 	 *
 	 * @return     string
 	 */
-	public function getWikiPath( $id = 0)
+	public static function getWikiPath( $id = 0)
 	{				
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('lid', 0);
@@ -887,7 +887,7 @@ class ProjectsHelper extends JObject {
 	 *
 	 * @return     mixed
 	 */
-	public function wikiFixImages( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = true ) 
+	public static function wikiFixImages( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = true ) 
 	{
 		if (!$page || !$pagetext)
 		{
@@ -1050,7 +1050,7 @@ class ProjectsHelper extends JObject {
 	 *
 	 * @return     mixed
 	 */
-	public function parseNoteRefs( $page, $projectid, $masterscope = '', $publication = NULL, $html = '') 
+	public static function parseNoteRefs( $page, $projectid, $masterscope = '', $publication = NULL, $html = '') 
 	{
 		if (!$page)
 		{
@@ -1128,7 +1128,7 @@ class ProjectsHelper extends JObject {
 	 *
 	 * @return     mixed
 	 */
-	public function parseProjectFileRefs( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = false) 
+	public static function parseProjectFileRefs( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = false) 
 	{
 		if (!$page || !$pagetext || !$projectid || !$alias)
 		{
