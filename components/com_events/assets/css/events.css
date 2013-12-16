@@ -250,8 +250,8 @@
 		letter-spacing: -0.1em;
 	}
 	
-	table#event-info td,
-	ul.events p.description {
+	table#event-info td a,
+	ul.events p.description a {
 		word-break: break-all;
 	}
 
