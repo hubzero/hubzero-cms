@@ -687,6 +687,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badgesHandler  = new Hubzero_Badges(strtoupper($sb->get('provider_name')), $request_type);
 						$badgesProvider = $badgesHandler->getProvider();
 
+						$credentials = new stdClass();
 						$credentials->consumer_key    = $this->config()->get($sb->get('provider_name').'_consumer_key');
 						$credentials->consumer_secret = $this->config()->get($sb->get('provider_name').'_consumer_secret');
 						$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
