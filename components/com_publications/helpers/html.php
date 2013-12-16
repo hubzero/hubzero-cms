@@ -155,12 +155,8 @@ class PublicationsHtml
 	 *
 	 * @return     string
 	 */
-	public static function createThumbName( $image=null, $tn='_thumb', $ext = '' )
+	public function createThumbName( $image=null, $tn='_thumb', $ext = '' )
 	{
-		if (!$image) 
-		{
-			$image = $this->image;
-		}
 		if (!$image) 
 		{
 			$this->setError( JText::_('No image set.') );
@@ -757,7 +753,7 @@ class PublicationsHtml
 		// Archival package?
 		if (file_exists($archive) && $publication->base == 'databases')
 		{
-			$url = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve&v=' . $version . '&render=archive');
+			$url = JRoute::_('index.php?option=com_publications&id='.$publication->id.'&task=serve&v=' . $version . '&render=archive');
 			$supli[] = ' <li class="archival-package"><a href="'.$url.'" title="'. JText::_('COM_PUBLICATIONS_DOWNLOAD_ARCHIVE_PACKAGE') .'">' . JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE') . '</a></li>'."\n";
 			$docs++;
 		}
@@ -787,7 +783,7 @@ class PublicationsHtml
 				// Things we want to highlight
 				$toShow = array('iTunes', 'iTunes U', 'Syllabus', 'Audio', 'Video', 'Slides');
 
-				$url   = JRoute::_('index.php?option=com_publications&id='.$this->publication->id 
+				$url   = JRoute::_('index.php?option=com_publications&id='.$publication->id 
 						. '&task=serve&v=' . $version . '&a=' . $child->id);
 				$extra = '';
 				
@@ -825,12 +821,12 @@ class PublicationsHtml
 		// View more link?			
 		if ($docs > 0 && $otherdocs > 0) 
 		{
-			$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$publication->id.a.'active=supportingdocs').'" title="'.JText::_('View All').' '.$docs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
+			$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$publication->id.a.'active=supportingdocs').'" title="'.JText::_('View All').' '.$docs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
 		}
 		 
 		if (!$sdocs && $docs > 0) 
 		{
-			$html .= "\t\t".'<p class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$publication->id.a.'active=supportingdocs').'">'.JText::_('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL').' ('.$docs.')</a></p>'."\n";
+			$html .= "\t\t".'<p class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$publication->id.a.'active=supportingdocs').'">'.JText::_('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL').' ('.$docs.')</a></p>'."\n";
 		}
 		
 		$supln .= '</ul>'."\n";
