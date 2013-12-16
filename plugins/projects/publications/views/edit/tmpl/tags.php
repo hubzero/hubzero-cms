@@ -114,9 +114,23 @@ else {
 						}
 						?>
 					</label>
-					<?php if($this->categories) { ?>
+					<?php if($this->categories) { 
+						
+						$paramsClass = 'JParameter';
+						if (version_compare(JVERSION, '1.6', 'ge'))
+						{
+							$paramsClass = 'JRegistry';
+						}
+						?>
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_CATEGORY'); ?></h5>
-					<?php foreach($this->categories as $cat) { ?>
+					<?php foreach($this->categories as $cat) { 
+						$params = new $paramsClass($cat->params);
+						// Skip inaplicable category
+						if (!$params->get('type_' . $this->pub->base, 1)) 
+						{
+							continue;
+						}
+						?>
 						<label class="pubtype-block">
 						 <input type="radio" name ="pubtype" value="<?php echo $cat->id; ?>"
 						<?php if($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> />	<?php echo $cat->name; ?>
