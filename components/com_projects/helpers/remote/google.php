@@ -44,7 +44,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   array or false
 	 */
-	public function loadFile ($apiService, $id = '') 
+	public static function loadFile ($apiService, $id = '') 
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -75,7 +75,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   string (id) or false
 	 */
-	public function patchFile ($apiService, $id = '', $title = '', $parentId = '', &$metadata) 
+	public static function patchFile ($apiService, $id = '', $title = '', $parentId = '', &$metadata) 
 	{
 		// Check for what we need
 		if (!$apiService || !$id || (!$title && !$parentId && !$convert))
@@ -124,7 +124,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   string (id) or false
 	 */
-	public function insertFile ($apiService, $title = '', $data = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false) 
+	public static function insertFile ($apiService, $title = '', $data = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false) 
 	{
 		// Check for what we need
 		if (!$apiService || !$title || !$parentId || !$data || !$mimeType)
@@ -185,7 +185,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   string (id) or false
 	 */
-	public function updateFile ($apiService, $id = 0, $title = '', $data = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false) 
+	public static function updateFile ($apiService, $id = 0, $title = '', $data = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false) 
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -235,7 +235,7 @@ class ProjectsGoogleHelper extends JObject
 	 * @param    string					$id				Remote id
 	 * @return   boolean
 	 */
-	public function untrashItem ($apiService, $id = 0) 
+	public static function untrashItem ($apiService, $id = 0) 
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -263,7 +263,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   void
 	 */
-	public function deleteItem ($apiService, $id = 0, $permanent = false) 
+	public static function deleteItem ($apiService, $id = 0, $permanent = false) 
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -299,7 +299,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   string (new folder id) or false
 	 */
-	public function createFolder ($apiService, $title = '', $parentId = 0, &$metadata) 
+	public static function createFolder ($apiService, $title = '', $parentId = 0, &$metadata) 
 	{				
 		// Check for what we need
 		if (!$apiService || !$title || !$parentId)
@@ -347,7 +347,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   int (new change ID) or false
 	 */
-	public function collectChanges ($apiService, $folderID = 0, &$remotes, &$deletes, $path = '', $startChangeId = NULL, $connections = array()) 
+	public static function collectChanges ($apiService, $folderID = 0, &$remotes, &$deletes, $path = '', $startChangeId = NULL, $connections = array()) 
 	{				
 		// Check for what we need
 		if (!$apiService || !$folderID)
@@ -381,7 +381,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			$this->setError('Failed to retrieve remote content');
+			ProjectsGoogleHelper::setError('Failed to retrieve remote content');
 		}
 		
 		return $newChangeID;
@@ -400,7 +400,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   void
 	 */
-	public function getFolderChange ($items, $folderID = 0, &$remotes, &$deletes, $path = '', $connections, &$duplicates)
+	public static function getFolderChange ($items, $folderID = 0, &$remotes, &$deletes, $path = '', $connections, &$duplicates)
 	{
 		$lpath = $path ? $path : '';
 		
@@ -538,7 +538,7 @@ class ProjectsGoogleHelper extends JObject
 	 * @param      string		$ext		Export ext
 	 * @return     url string
 	 */
-	public function getDownloadUrl($resource = array(), $ext = 'pdf') 
+	public static function getDownloadUrl($resource = array(), $ext = 'pdf') 
 	{
 		$url = '';
 		if (empty($resource))
@@ -577,7 +577,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   void
 	 */
-	public function buildDuplicatePath ($id = 0, $fpath, $format = '', $connections, &$remotes, &$duplicates) 
+	public static function buildDuplicatePath ($id = 0, $fpath, $format = '', $connections, &$remotes, &$duplicates) 
 	{
 		// Do we have a record with another ID linked to the same path?
 		$pathTaken = isset($connections['paths'][$fpath]) 
@@ -628,7 +628,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   void
 	 */
-	public function getFolders ($apiService, $folderID = 0, &$remoteFolders, $path = '') 
+	public static function getFolders ($apiService, $folderID = 0, &$remoteFolders, $path = '') 
 	{
 		// Check for what we need
 		if (!$apiService || !$folderID)
@@ -677,7 +677,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			$this->setError('Failed to retrieve remote content');
+			ProjectsGoogleHelper::setError('Failed to retrieve remote content');
 			return false;
 		}
 		
@@ -691,7 +691,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   string or false
 	 */
-	public function getParentID ($parents = array()) 
+	public static function getParentID ($parents = array()) 
 	{
 		if (!empty($parents))
 		{
@@ -712,7 +712,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   void
 	 */
-	public function getFolderContent ($apiService, $folderID = 0, $remotes, $path = '', $since, $connections, &$duplicates) 
+	public static function getFolderContent ($apiService, $folderID = 0, $remotes, $path = '', $since, $connections, &$duplicates) 
 	{		
 		// Check for what we need
 		if (!$apiService || !$folderID)
@@ -862,7 +862,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			$this->setError('Failed to retrieve remote content');
+			ProjectsGoogleHelper::setError('Failed to retrieve remote content');
 			return $remotes;
 			return false;
 		}
@@ -881,7 +881,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return     mixed, string or array
 	 */
-	public function getGoogleConversionFormat ($mimeType = '', $getAll = false, $getExt = false, $getPaired = 0, $original_ext = '') 
+	public static function getGoogleConversionFormat ($mimeType = '', $getAll = false, $getExt = false, $getPaired = 0, $original_ext = '') 
 	{
 		$formats = array();
 		$ext = '';
@@ -965,7 +965,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function getImportFilename ($remote = array(), $importExt = '') 
+	public static function getImportFilename ($remote = array(), $importExt = '') 
 	{
 		if (empty($remote))
 		{
@@ -994,7 +994,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function getImportExt ($file = '') 
+	public static function getImportExt ($file = '') 
 	{
 		$ext = '';
 		
@@ -1027,7 +1027,7 @@ class ProjectsGoogleHelper extends JObject
 	 * 
 	 * @return     array
 	 */
-	public function getGoogleConversionExts() 
+	public static function getGoogleConversionExts() 
 	{
 		$formats = array('doc', 'docx', 'html', 'txt', 'rtf',
 			'xls', 'xlsx', 'ods', 'csv', 'tsv', 'tab', 
@@ -1042,7 +1042,7 @@ class ProjectsGoogleHelper extends JObject
 	 * 
 	 * @return     array
 	 */
-	public function getGoogleNativeExts() 
+	public static function getGoogleNativeExts() 
 	{
 		$formats = array('gdoc', 'gsheet', 'gslides', 
 			'gdraw', 'gform', 'gtable', 'gvi', 'glink', 'gvp'
@@ -1058,7 +1058,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function getGoogleImportExt ($mimeType = '') 
+	public static function getGoogleImportExt ($mimeType = '') 
 	{
 		$ext = 'pdf';
 		
@@ -1093,7 +1093,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function getGoogleExportType ($ext = 'pdf', $type = '') 
+	public static function getGoogleExportType ($ext = 'pdf', $type = '') 
 	{
 		switch ( strtolower($ext) ) 
 		{				
