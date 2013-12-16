@@ -156,7 +156,7 @@ class SupportUtilities
 	 * 
 	 * @return     array
 	 */
-	public function getFilters()
+	public static function getFilters()
 	{
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
