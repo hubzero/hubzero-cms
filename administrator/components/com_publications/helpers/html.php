@@ -48,7 +48,7 @@ class PublicationsHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function error( $msg, $tag='p' )
+	public static function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -62,7 +62,7 @@ class PublicationsHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function warning( $msg, $tag='p' )
+	public static function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -75,7 +75,7 @@ class PublicationsHtml
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function alert( $msg )
+	public static function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
@@ -87,7 +87,7 @@ class PublicationsHtml
 	 * 
 	 * @return     void
 	 */
-	public function statusKey()
+	public static function statusKey()
 	{
 		?>
 			<p><?php echo JText::_('Default version status:'); ?></p>
@@ -115,7 +115,7 @@ class PublicationsHtml
 	 * @param      integer $p Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function shortenText($text, $chars=300, $p=1)
+	public static function shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
 		$text = trim($text);
@@ -148,7 +148,7 @@ class PublicationsHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function parseTag($text, $tag)
+	public static function parseTag($text, $tag)
 	{
 		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
 		if (count($matches) > 0) 
@@ -172,7 +172,7 @@ class PublicationsHtml
 	 * @param      integer $someid Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function niceidformat($someid)
+	public static function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
 		{
@@ -195,7 +195,7 @@ class PublicationsHtml
 	 * @return     unknown Return description (if any) ...
 	 */
 	
-	public function buildPath( $pid = NULL, $vid = NULL, $base = '', $filedir = '', $root = 0 )
+	public static function buildPath( $pid = NULL, $vid = NULL, $base = '', $filedir = '', $root = 0 )
 	{
 		if ($vid === NULL or $pid === NULL ) {
 			return false;
@@ -232,7 +232,7 @@ class PublicationsHtml
 	 * @param      string $rating Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function writeRating( $rating )
+	public static function writeRating( $rating )
 	{
 		switch ($rating)
 		{
@@ -266,7 +266,7 @@ class PublicationsHtml
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectAccess($as, $value)
+	public static function selectAccess($as, $value)
 	{
 		$as = explode(',',$as);
 		$html  = '<select name="access">'."\n";
@@ -292,7 +292,7 @@ class PublicationsHtml
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectGroup($groups, $value)
+	public static function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner"';
 		if (!$groups) {
@@ -328,7 +328,7 @@ class PublicationsHtml
 	 * @param      string $id Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectSection($name, $array, $value, $class='', $id)
+	public static function selectSection($name, $array, $value, $class='', $id)
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'" onchange="return listItemTask(\'cb'. $id .'\',\'regroup\')"';
 		$html .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
@@ -360,7 +360,7 @@ class PublicationsHtml
 	 * @param      string $skip Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectCategory($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
+	public static function selectCategory($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
 		$html .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
