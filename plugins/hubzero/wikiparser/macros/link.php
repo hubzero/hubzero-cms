@@ -50,7 +50,8 @@ class LinkMacro extends WikiMacro
 	 */
 	public function description()
 	{
-		$txt = "Embed a link.
+		$txt = array();
+		$txt['wiki'] = "Embed a link.
 
 Examples:
 
@@ -58,7 +59,7 @@ Examples:
 [[Link(/SomePage SomePage)]]
 }}}
 ";
-$txt['html'] = '<p>Embed a link.</p>
+		$txt['html'] = '<p>Embed a link.</p>
 <p>Examples:</p>
 <ul>
 <li><code>[[Link(/SomePage SomePage)]]</code></li>
