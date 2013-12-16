@@ -69,7 +69,7 @@ class PublicationsHtml
 	 *
 	 * @return     string
 	 */	
-	public function showGallery( $shots = array(), $path = '')
+	public static function showGallery( $shots = array(), $path = '')
 	{
 		if (empty($shots) || !$path) 
 		{
@@ -155,7 +155,7 @@ class PublicationsHtml
 	 *
 	 * @return     string
 	 */
-	public function createThumbName( $image=null, $tn='_thumb', $ext = '' )
+	public static function createThumbName( $image=null, $tn='_thumb', $ext = '' )
 	{
 		if (!$image) 
 		{
@@ -204,7 +204,7 @@ class PublicationsHtml
 	 * @param      integer $sel    Selected level
 	 * @return     string HTML
 	 */
-	public function skillLevelCircle( $levels = array(), $sel = 0 )
+	public static function skillLevelCircle( $levels = array(), $sel = 0 )
 	{
 		$html = '';
 		
@@ -230,7 +230,7 @@ class PublicationsHtml
 	 * @param      string $audiencelink Link to learn more about skill levels
 	 * @return     string HTML
 	 */
-	public function skillLevelPopup( $labels = array(), $audiencelink)
+	public static function skillLevelPopup( $labels = array(), $audiencelink)
 	{
 		$html  = t.t.'<div class="explainscale">'.n;
 		$html .= PublicationsHtml::skillLevelTable($labels, $audiencelink);	
@@ -245,7 +245,7 @@ class PublicationsHtml
 	 * @param      string $audiencelink Link to learn more about skill levels
 	 * @return     string HTML
 	 */
-	public function skillLevelTable( $labels = array(), $audiencelink)
+	public static function skillLevelTable( $labels = array(), $audiencelink)
 	{	
 		$html  = '';
 		$html .= t.'<table class="skillset">'.n;
@@ -276,7 +276,7 @@ class PublicationsHtml
 	 * @param      string  $pop 		 Pop-up content
 	 * @return     string HTML
 	 */	
-	public function showSkillLevel( $audience, $numlevels = 4, $pop = '' )
+	public static function showSkillLevel( $audience, $numlevels = 4, $pop = '' )
 	{
 		$html 		= '';
 		$levels 	= array();
@@ -366,7 +366,7 @@ class PublicationsHtml
 	 * @param      object $lastPubRelease   Publication latest public version 
 	 * @return     string HTML
 	 */
-	public function metadata($option, $params, $publication, $statshtml, $sections, $version = 'default', $xtra='', $lastPubRelease = '')
+	public static function metadata($option, $params, $publication, $statshtml, $sections, $version = 'default', $xtra='', $lastPubRelease = '')
 	{
 		$html = '';
 		$id = $publication->id;
@@ -437,7 +437,7 @@ class PublicationsHtml
 	 * @param      string  $class  			CSS class for the license hyperlink 
 	 * @return     string HTML
 	 */
-	public function showLicense( $publication, $version, $option, $license = '', $class = "showinbox" )
+	public static function showLicense( $publication, $version, $option, $license = '', $class = "showinbox" )
 	{
 		if (!$license) 
 		{
@@ -483,7 +483,7 @@ class PublicationsHtml
 	 * @param      string $c        Extra classes
 	 * @return     string HTML
 	 */	
-	public function sections( $sections, $cats, $active='about', $h, $c ) 
+	public static function sections( $sections, $cats, $active='about', $h, $c ) 
 	{
 		$html = '';
 		
@@ -521,7 +521,7 @@ class PublicationsHtml
 	 * @param      string $version  Publication version
 	 * @return     string HTML
 	 */
-	public function tabs( $option, $id, $cats, $active = 'about', $alias = '', $version = '' ) 
+	public static function tabs( $option, $id, $cats, $active = 'about', $alias = '', $version = '' ) 
 	{
 		$html  = '';
 		$html .= "\t".'<ul class="sub-menu">'."\n";
@@ -575,7 +575,7 @@ class PublicationsHtml
 	 * @param      object $helper   	Publication Helper
 	 * @return     string HTML
 	 */	
-	public function citationCOins($cite, $publication, $config, $helper)
+	public static function citationCOins($cite, $publication, $config, $helper)
 	{
 		if (!$cite) 
 		{
@@ -628,7 +628,7 @@ class PublicationsHtml
 	 * @param      string  $version   Version name
 	 * @return     string HTML
 	 */	
-	public function citation( $option, $cite, $pub, $citations, $version = 'default') 
+	public static function citation( $option, $cite, $pub, $citations, $version = 'default') 
 	{
 		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
@@ -669,7 +669,7 @@ class PublicationsHtml
 	 * @param      string  $metadata  	Pub metadata
 	 * @return     array
 	 */	
-	public function processMetadata( $metadata, $category, $parser, $config, $table = 1 ) 
+	public static function processMetadata( $metadata, $category, $parser, $wikiconfig, $table = 1 ) 
 	{	
 		$html 		= '';
 		$citations 	= '';
@@ -740,7 +740,7 @@ class PublicationsHtml
 	 * @param      boolean $restricted 		
 	 * @return     string HTML
 	 */
-	public function sortSupportingDocs( $publication, $version, $option, $children, $restricted, $archive = '' ) 
+	public static function sortSupportingDocs( $publication, $version, $option, $children, $restricted, $archive = '' ) 
 	{
 		if ($restricted) 
 		{
@@ -840,7 +840,7 @@ class PublicationsHtml
 	
 	//-------------
 	
-	public function showVersionInfo ( $publication, $version, $option, $config, $lastPubRelease ) 
+	public static function showVersionInfo ( $publication, $version, $option, $config, $lastPubRelease ) 
 	{
 		$dateFormat = '%b %d, %Y';
 		$tz = null;
@@ -945,7 +945,7 @@ class PublicationsHtml
 	
 	//-----------
 	
-	public function showAccessMessage( $publication, $option, $authorized, $restricted, $editlink = '' ) 
+	public static function showAccessMessage( $publication, $option, $authorized, $restricted, $editlink = '' ) 
 	{
 		$dateFormat = '%b %d, %Y';
 		$tz = null;
@@ -1058,7 +1058,7 @@ class PublicationsHtml
 	
 	//-----------
 	
-	public function getState( $state ) 
+	public static function getState( $state ) 
 	{	
 		switch ($state) 
 		{
@@ -1083,7 +1083,7 @@ class PublicationsHtml
 	
 	//-----------
 	
-	public function showSubInfo( $publication, $option ) 
+	public static function showSubInfo( $publication, $option ) 
 	{	
 		$action = $publication->state == 1 ? JText::_('COM_PUBLICATIONS_LISTED_IN') : JText::_('COM_PUBLICATIONS_IN');
 		$html = '<p class="pubinfo">'.$action.' '.' <a href="'.JRoute::_('index.php?option='.$option.'&category='.$publication->cat_url).'">'.$publication->cat_name.'</a>';
@@ -1106,7 +1106,7 @@ class PublicationsHtml
 	
 	//-----------
 	
-	public function title( $option, $publication, $params, $show_edit, $config=null, $show_posted=1 ) 
+	public static function title( $option, $publication, $params, $show_edit, $config=null, $show_posted=1 ) 
 	{
 		$txt = '';
 		$txt .= stripslashes($publication->title);	
@@ -1118,7 +1118,7 @@ class PublicationsHtml
 	
 	//-----------
 
-	public function drawPrimaryButton( $option, $publication, $version, 
+	public static function drawPrimaryButton( $option, $publication, $version, 
 	$content, $path, $serveas = 'download', $restricted = 0, $authorized = 0 )
 	{
 		
@@ -1207,7 +1207,7 @@ class PublicationsHtml
 	
 	//-----------
 
-	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
+	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
 		$title = htmlentities($title, ENT_QUOTES);
 		$out = '';
@@ -1235,7 +1235,7 @@ class PublicationsHtml
 	// Browse
 	//-------------------------------------------------------------
 
-	public function writeResults( &$database, &$lines, $filters = array(), $show_date = 3 ) 
+	public static function writeResults( &$database, &$lines, $filters = array(), $show_date = 3 ) 
 	{
 		$dateFormat = '%b %d, %Y';
 		$tz = null;
@@ -1306,7 +1306,7 @@ class PublicationsHtml
 	// Misc
 	//-------------------------------------------------------------
 
-	public function getRatingClass($rating=0)
+	public static function getRatingClass($rating=0)
 	{
 		switch ($rating) 
 		{
@@ -1328,7 +1328,7 @@ class PublicationsHtml
 
 	//-----------
 	
-	public function encode_html($str, $quotes=1)
+	public static function encode_html($str, $quotes=1)
 	{
 		$str = stripslashes($str);
 		$a = array(
@@ -1346,7 +1346,7 @@ class PublicationsHtml
 	
 	//-----------
 
-	public function getFileAttribs( $path, $base_path='', $fsize=0 )
+	public static function getFileAttribs( $path, $base_path='', $fsize=0 )
 	{
 		// Return nothing if no path provided
 		if (!$path) {
@@ -1413,7 +1413,7 @@ class PublicationsHtml
 	
 	//-----------
 
-	public function formatsize($file_size) 
+	public static function formatsize($file_size) 
 	{
 		if ($file_size >= 1073741824) {
 			$file_size = round($file_size / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
@@ -1429,7 +1429,7 @@ class PublicationsHtml
 	
 	//-----------
 	
-	public function cleanText($text, $desclen=300)
+	public static function cleanText($text, $desclen=300)
 	{
 		$elipse = false;
 
@@ -1451,42 +1451,42 @@ class PublicationsHtml
 
 	//-----------
 
-	public function passed( $msg, $tag='p' )
+	public static function passed( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'."\n";
 	}
 
 	//-----------
 
-	public function archive( $msg, $tag='p' )
+	public static function archive( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="archive">'.$msg.'</'.$tag.'>'."\n";
 	}
 	
 	//-----------
 	
-	public function alert( $msg )
+	public static function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
 	//-----------
 	
-	public function aside($txt, $id='')
+	public static function aside($txt, $id='')
 	{
 		return '<div class="aside" id="' . $id . '">' . $txt . '</div>';
 	}
 	
 	//-----------
 	
-	public function subject($txt, $id='')
+	public static function subject($txt, $id='')
 	{
 		return '<div class="subject" id="' . $id . '">' . $txt . '</div>';
 	}
 
 	//-----------
 
-	public function formSelect($name, $array, $value, $class='')
+	public static function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
 		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
@@ -1503,7 +1503,7 @@ class PublicationsHtml
 
 	//-----------
 
-	public function tableRow($h, $c='', $s='')
+	public static function tableRow($h, $c='', $s='')
 	{
 		$html  = t.'  <tr>'.n;
 		$html .= t.'   <th>'.$h.'</th>'.n;
@@ -1522,7 +1522,7 @@ class PublicationsHtml
 	
 	//-----------
 	
-	public function getFileExtension($url)
+	public static function getFileExtension($url)
 	{
 		$type = '';
 		$arr  = explode('.',$url);
@@ -1536,7 +1536,7 @@ class PublicationsHtml
 	
 	//-----------
 	
-	public function parseTag($text, $tag)
+	public static function parseTag($text, $tag)
 	{
 		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
 		if (count($matches) > 0) 
@@ -1557,7 +1557,7 @@ class PublicationsHtml
 	 * @param      string $pee Text to unparagraph
 	 * @return     string
 	 */
-	public function _txtUnpee($pee)
+	public static function _txtUnpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);

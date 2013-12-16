@@ -119,7 +119,7 @@ class PublicationHelper extends JObject
 	 * @param      boolean 	$root
 	 * @return     string	
 	 */	
-	public function buildPath( $pid = NULL, $vid = NULL, $base = '', $filedir = '', $root = 0 )
+	public static function buildPath( $pid = NULL, $vid = NULL, $base = '', $filedir = '', $root = 0 )
 	{
 		if ($vid === NULL or $pid === NULL ) 
 		{
@@ -150,7 +150,7 @@ class PublicationHelper extends JObject
 	 *
 	 * @return     boolean False in valid, or error
 	 */	
-	public function checkValidPath( $path, $error = '' )
+	public static function checkValidPath( $path, $error = '' )
 	{
 		// Ensure we have a path
 		if (empty($path)) 
@@ -192,7 +192,7 @@ class PublicationHelper extends JObject
 	 * @param      string 	$case
 	 * @return     string	
 	 */
-	public function buildDevPath( $project_alias = '', $base = '', $root = '', $case = 'files'  ) 
+	public static function buildDevPath( $project_alias = '', $base = '', $root = '', $case = 'files'  ) 
 	{		
 		if (!$project_alias) 
 		{
@@ -231,7 +231,7 @@ class PublicationHelper extends JObject
 	 *
 	 * @return     integer
 	 */
-	public function getDiskUsage( $project = NULL, $rows = array() )
+	public static function getDiskUsage( $project = NULL, $rows = array() )
 	{
 		if ($project === NULL)
 		{
@@ -248,7 +248,7 @@ class PublicationHelper extends JObject
 			foreach ($rows as $row)
 			{
 				$path = DS . $base . DS . Hubzero_View_Helper_Html::niceidformat( $row->id );
-				$used = $used + $this->computeDiskUsage($path, JPATH_ROOT, false);
+				$used = $used + PublicationHelper::computeDiskUsage($path, JPATH_ROOT, false);
 			}
 		}
 		
@@ -264,7 +264,7 @@ class PublicationHelper extends JObject
 	 *
 	 * @return     integer
 	 */
-	public function computeDiskUsage($path = '', $prefix = '', $git = true) 
+	public static function computeDiskUsage($path = '', $prefix = '', $git = true) 
 	{
 		$used = 0;
 		if ($path && is_dir($prefix . $path))
@@ -719,7 +719,7 @@ class PublicationHelper extends JObject
 	 * @param      boolean $version
 	 * @return     string HTML
 	 */
-	public function getPubStateProperty($row, $get = 'class', $version = 1) 
+	public static function getPubStateProperty($row, $get = 'class', $version = 1) 
 	{
 		$dateFormat = '%b %d, %Y';
 		$tz = null;
@@ -808,7 +808,7 @@ class PublicationHelper extends JObject
 	 * @param      string $typetitle
 	 * @return     string HTML
 	 */
-	public function writePubCategory( $cat_alias = '', $typetitle = '' ) 
+	public static function writePubCategory( $cat_alias = '', $typetitle = '' ) 
 	{	
 		$html = '';
 		
@@ -853,7 +853,7 @@ class PublicationHelper extends JObject
 	 * @param      string $append
 	 * @return     string HTML
 	 */
-	public function showPubTitle( $pub, $url, $tabtitle = '', $append = '' )
+	public static function showPubTitle( $pub, $url, $tabtitle = '', $append = '' )
 	{
 		$typetitle = PublicationHelper::writePubCategory($pub->cat_alias, $pub->cat_name);
 		$tabtitle  = $tabtitle ? $tabtitle : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS'));
@@ -875,7 +875,7 @@ class PublicationHelper extends JObject
 	 * @param      string $append
 	 * @return     string HTML
 	 */	
-	public function showPubTitleProvisioned( $pub, $url, $append = '' )
+	public static function showPubTitleProvisioned( $pub, $url, $append = '' )
 	{
 	?>
 		<h3 class="prov-header">
