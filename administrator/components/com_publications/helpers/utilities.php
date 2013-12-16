@@ -47,7 +47,7 @@ class PublicationUtilities
 	 * @param      int 		$reserve 	Reserving DOI? (no extended XML metadata)
 	 * @return     true on success or false on error
 	 */
-	public function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $reserve = 0 )
+	public static function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $reserve = 0 )
 	{
 		// Get configs
 		$jconfig 	= JFactory::getConfig();
@@ -216,7 +216,7 @@ class PublicationUtilities
 	 * @param      boolean 	$sendXML 	Send XML metadata or not
 	 * @return     true on success or false on error
 	 */
-	public function updateDoi( $doi, $row, $authors, $config, $metadata = array(), &$doierr = '', $sendXML = true)
+	public static function updateDoi( $doi, $row, $authors, $config, $metadata = array(), &$doierr = '', $sendXML = true)
 	{		
 		if (!$doi)
 		{

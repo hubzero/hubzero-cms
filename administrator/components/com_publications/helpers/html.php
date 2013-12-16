@@ -401,7 +401,7 @@ class PublicationsHtml
 	 * @param      string $option Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectAuthorsNoEdit($authnames, $option)
+	public static function selectAuthorsNoEdit($authnames, $option)
 	{
 		$authIDs = array();
 		$html = '';
@@ -447,7 +447,7 @@ class PublicationsHtml
 	 * @param      string $option Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function selectContent($primary, $secondary, $option)
+	public static function selectContent($primary, $secondary, $option)
 	{		
 		$serveas = 'download';
 			
@@ -515,7 +515,7 @@ class PublicationsHtml
 	 * @param      unknown $date Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function dateToPath( $date )
+	public static function dateToPath( $date )
 	{
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) 
 		{
@@ -538,7 +538,7 @@ class PublicationsHtml
 	 * @param      unknown $dir Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function dir_name($dir)
+	public static function dir_name($dir)
 	{
 		$lastSlash = intval(strrpos($dir, '/'));
 		if ($lastSlash == strlen($dir)-1) 
@@ -559,7 +559,7 @@ class PublicationsHtml
 	 * @param      mixed $size Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function parse_size($size)
+	public static function parse_size($size)
 	{
 		if ($size < 1024) 
 		{
@@ -583,7 +583,7 @@ class PublicationsHtml
 	 * @param      unknown $dir Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function num_files($dir)
+	public static function num_files($dir)
 	{
 		$total = 0;
 
@@ -611,7 +611,7 @@ class PublicationsHtml
 	 * @param      unknown $row Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */	
-	public function getPubStateProperty($row, $get = 'class') 
+	public static function getPubStateProperty($row, $get = 'class') 
 	{	
 		$status 	= '';
 		$class 		= '';
@@ -696,7 +696,7 @@ class PublicationsHtml
 	 * @param      string $pee Text to unparagraph
 	 * @return     string
 	 */
-	public function _txtUnpee($pee)
+	public static function _txtUnpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);
