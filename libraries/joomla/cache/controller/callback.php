@@ -60,7 +60,7 @@ class JCacheControllerCallback extends JCacheController
 	{
 		$numargs = func_num_args();
 
-		if ($num_args <= 0)
+		if ($numargs <= 0)
 		{
 			return false;
 		}
