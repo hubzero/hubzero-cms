@@ -101,13 +101,17 @@ class Hubzero_Badges_Passport_BadgesProvider
 	 */
 	public function destroy()
 	{
-		if ($this->request_type == 'oauth')
+		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
 		{
 			// Do nothing?
 		}
-		else
+		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
 		{
 			curl_close($this->request);
+		}
+		else
+		{
+			throw new Exception('Unsupported request type');
 		}
 	}
 
@@ -173,8 +177,8 @@ class Hubzero_Badges_Passport_BadgesProvider
 	/**
 	 * Grant badges to users
 	 * 
-	 * @param 	object		Badge info: ID, Evidence URL
-	 * @param 	mixed		string (for single user) or array (for multiple users) of user email addresses
+	 * @param 	object - Badge info: ID, Evidence URL
+	 * @param 	mixed  - string (for single user) or array (for multiple users) of user email addresses
 	 * @return  void
 	 */
 	public function grantBadge($badge, $users)
@@ -280,5 +284,57 @@ class Hubzero_Badges_Passport_BadgesProvider
 				return Hubzero_Badges_Passport_BadgesProvider::passportClaimUrl;
 			break;
 		}
+	}
+
+	/**
+	 * Get assertions by email address
+	 * 
+	 * @param 	mixed - string (for single user) or array (for multiple users) of user email addresses
+	 * @return  array
+	 */
+	public function getAssertionsByEmailAddress($emailAddresses)
+	{
+		if (!$this->credentialsSet())
+		{
+			throw new Exception('You need to set the credentials first.');
+		}
+
+		if (!is_array($emailAddresses))
+		{
+			$emailAddresses = array($emailAddresses);
+		}
+
+		$query_params = implode('%s', $emailAddresses);
+		$url = Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions?emailAddresses=" . $query_params;
+
+		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
+		{
+			$this->request->setAuthType(OAUTH_AUTH_TYPE_URI);
+			try
+			{
+				$this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, array('Content-Type'=>'application/json'));
+			}
+			catch (Exception $e)
+			{
+				error_log($e->getCode());
+			}
+
+			$response = json_decode($this->request->getLastResponse());
+		}
+		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
+		{
+			curl_setopt($this->request, CURLOPT_POST, false);
+			curl_setopt($this->request, CURLOPT_URL, $url);
+			curl_setopt($this->request, CURLOPT_RETURNTRANSFER, TRUE);
+
+			$response = curl_exec($this->request);
+			$response = json_decode($response);
+		}
+		else
+		{
+			throw new Exception('Unsupported request type');
+		}
+
+		return $response;
 	}
 }
