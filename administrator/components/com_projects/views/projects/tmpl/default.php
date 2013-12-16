@@ -68,7 +68,7 @@ function submitbutton(pressbutton)
 			$filterstring  = ($this->filters['sortby'])   ? '&amp;sort='.$this->filters['sortby']     : '';
 
 			$database = JFactory::getDBO();
-			$now = date( "Y-m-d H:i:s" );
+			$now = JFactory::getDate()->toSql();
 			
 			$database = JFactory::getDBO();
 			$pt = new ProjectTags($database);
