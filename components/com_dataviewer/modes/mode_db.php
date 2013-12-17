@@ -183,7 +183,7 @@ function pathway($dd)
 	$document =  JFactory::getDocument();
 	$document->setTitle($dd['title']);
 	$mainframe =  JFactory::getApplication();
-	$pathway =& $mainframe->getPathway();
+	$pathway = $mainframe->getPathway();
 
 	if(isset($_SERVER['HTTP_REFERER'])) {
 		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
