@@ -716,7 +716,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 					// Set the type and build the invoke url with file param
 					$asset->set('type',    'url');
 					$asset->set('subtype', 'tool');
-					$asset->set('url',     '/tools/'.$tool_alias.'/invoke/current?params=file:'.$param_path);
+					$asset->set('url',     '/tools/'.$tool_alias.'/invoke?params=file:'.$param_path);
 				}
 			}
 		}
