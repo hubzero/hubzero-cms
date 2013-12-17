@@ -46,7 +46,7 @@ class Hubzero_Registration_Helper
 	 * 
 	 * @return     integer Return description (if any) ...
 	 */
-	public function genemailconfirm()
+	public static function genemailconfirm()
 	{
 	    return(-rand(1, pow(2, 31)-1)); // php5 in debian etch returns negative values if i don't subtract 1 from this max 
 	}
@@ -59,7 +59,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $org Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function validateOrgType($org)
+	public static function validateOrgType($org)
     {
         $orgtypes = array('university','precollege','nationallab','industry','government','military','unemployed');
 
@@ -174,7 +174,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $phone Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validphone($phone)
+	public static function validphone($phone)
 	{
 		if (preg_match("/^[\ \#\*\+\:\,\.0-9-]*$/", $phone)) {
 			return(1);
@@ -208,7 +208,7 @@ class Hubzero_Registration_Helper
 	 * @param      integer $length Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function userpassgen($length = 8)
+	public static function userpassgen($length = 8)
 	{
 	    $genpass = '';
 		$salt = "abchefghjkmnpqrstuvwxyz0123456789";
@@ -230,7 +230,7 @@ class Hubzero_Registration_Helper
 	 * @param      $code - (int) email confirmation code
 	 * @return     bool
 	 */
-	public function isActiveCode($code)
+	public static function isActiveCode($code)
 	{
 		$db = JFactory::getDBO();
 
@@ -253,7 +253,7 @@ class Hubzero_Registration_Helper
 	 * @param      array $errors Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function select_form($formdata = array(), $errors = array())
+	public static function select_form($formdata = array(), $errors = array())
 	{
 		$result = include 'components/com_myaccount/select.html.php';
 	}
@@ -267,7 +267,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown &$xregistration Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function registration_form($task, &$xregistration)
+	public static function registration_form($task, &$xregistration)
 	{
 		$result = include 'components/com_myaccount/registration.html.php';
 	}
@@ -281,7 +281,7 @@ class Hubzero_Registration_Helper
 	 * @param      array $errors Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function recovery_form($email, $errors = array())
+	public static function recovery_form($email, $errors = array())
 	{
 		$result = include 'components/com_myaccount/recovery.html.php';
 	}
@@ -296,7 +296,7 @@ class Hubzero_Registration_Helper
 	 * @param      unknown $target_xprofile Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function raiselimits_form($resource, $admin, $target_xprofile)
+	public static function raiselimits_form($resource, $admin, $target_xprofile)
 	{
 		$result = include 'components/com_myaccount/raiselimits.html.php';
 	}
@@ -311,7 +311,7 @@ class Hubzero_Registration_Helper
 	 * @param      boolean $confirmSingleParent Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function delete_form(&$HTTP_POST_VARS, $uid, $confirmSingleParent = false)
+	public static function delete_form(&$HTTP_POST_VARS, $uid, $confirmSingleParent = false)
 	{
 		$result = include 'components/com_myaccount/delete.html.php';
 	}
