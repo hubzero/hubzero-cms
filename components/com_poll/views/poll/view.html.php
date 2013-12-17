@@ -29,11 +29,11 @@ class PollViewPoll extends JView
 {
 	public function display($tpl = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$db 	  = JFactory::getDBO();
 		$document = JFactory::getDocument();
-		$pathway  =& $mainframe->getPathway();
+		$pathway  = $app->getPathway();
 
 		$poll_id = JRequest::getVar('id', 0, '', 'int');
 
@@ -47,7 +47,7 @@ class PollViewPoll extends JView
 		}
 
 		// Adds parameter handling
-		$params = $mainframe->getParams();
+		$params = $app->getParams();
 
 		//Set page title information
 		$menus	= JFactory::getApplication()->getMenu();

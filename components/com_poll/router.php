@@ -134,7 +134,7 @@ function PollParseRoute( $segments )
 
 	//Get the active menu item
 	$menu	= JFactory::getApplication()->getMenu();
-	$item	=& $menu->getActive();
+	$item	= $menu->getActive();
 
 	$count	= count( $segments );
 
