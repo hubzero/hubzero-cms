@@ -751,8 +751,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		// Mark the question as answered
 		$this->set('state', 1);
 
-		// If this question has a reward...
-		if ($this->get('reward'))
+		// If banking is enabled
+		if ($this->config('banking'))
 		{
 			// Accepted answer is same person as question submitter?
 			if ($this->get('created_by') == $answer->get('created_by'))

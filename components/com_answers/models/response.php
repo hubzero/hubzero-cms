@@ -385,8 +385,9 @@ class AnswersModelResponse extends AnswersModelAbstract
 			if ($aq->exists() && $aq->get('state') != 1)
 			{
 				$aq->set('state', 1);
-				$aq->set('reward', 0);
-
+				//$aq->set('reward', 0);
+				// This was giving out points twice for one closed question
+				/*
 				if ($aq->config('banking'))
 				{
 					// Calculate and distribute earned points
@@ -410,6 +411,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 						$this->setError(JText::_('Failed to remove alert.'));
 					}
 				}
+				*/
 
 				if (!$aq->store())
 				{
