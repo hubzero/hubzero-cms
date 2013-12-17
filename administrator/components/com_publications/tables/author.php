@@ -348,7 +348,16 @@ class PublicationAuthor extends JTable
 			return false;
 		}
 		
-		$query  = "SELECT A.id as owner_id, ";
+		$query = "SELECT * FROM $this->_tbl WHERE role = 'submitter' AND publication_version_id=" . $vid . " LIMIT 1";
+		$this->_db->setQuery( $query );
+		
+		$result = $this->_db->loadObjectList();
+		if ($result)
+		{
+			return $result[0];
+		}
+		
+		$query  = "SELECT A.id as owner_id, x.uidNumber as uid, ";
 		$query .= " COALESCE( A.name , x.name ) as name, x.username, COALESCE( A.organization , x.organization ) as organization ";
 		$query .= " FROM #__xprofiles as x  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id AND A.publication_version_id=".$vid." ";
@@ -358,8 +367,71 @@ class PublicationAuthor extends JTable
 		
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
-		return $result ? $result[0] : false;
+		return $result ? $result[0] : false;		
+	}
+	
+	/**
+	 * Save publication submitter
+	 * 
+	 * @param      integer $vid 				Pub version ID
+	 * @param      integer $by					Publication creator
+	 * @return     mixed False if error, Object on success
+	 */	
+	public function saveSubmitter ( $vid = NULL, $by = 0, $projectid = 0 ) 
+	{
+		if (!$vid) 
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid || !$by) 
+		{
+			return false;
+		}
 		
+		$juser = JFactory::getUser();
+				
+		// Get name/org
+		$author = $this->getAuthorByUid( $vid, $by );
+		
+		if (!$author)
+		{
+			return false;
+		}
+		
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+					. 'com_projects' . DS . 'tables' . DS . 'project.owner.php' );
+
+		// Get project owner info
+		$objO = new ProjectOwner( $this->_db );
+		$owner_id = $objO->getOwnerId( $projectid, $by);
+		
+		// Load submitter record if exists
+		$query = "SELECT * FROM $this->_tbl WHERE role = 'submitter' AND publication_version_id=" . $vid;
+		$this->_db->setQuery( $query );
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			$this->bind( $result );
+			$this->modified 	= JFactory::getDate()->toSql();
+			$this->modified_by 	= $juser->get('id');
+		}
+		else
+		{
+			$this->publication_version_id 	= $vid;
+			$this->role 					= 'submitter';
+			$this->created 					= JFactory::getDate()->toSql();
+			$this->created_by 				= $juser->get('id');
+			$this->ordering 				= 1;
+		}
+		
+		$this->project_owner_id = $owner_id;
+		$this->user_id 			= $by;
+		$this->status			= 1;
+		$this->name				= $author->name ? $author->name : $author->p_name;
+		$this->organization		= $author->organization ? $author->organization : $author->p_organization;
+		$this->firstName		= $author->firstName ? $author->firstName : NULL;
+		$this->lastName			= $author->lastName ? $author->lastName : NULL;
+		$this->credit			= 'Submitter';
+		$this->store();		
 	}
 	
 	/**
@@ -372,7 +444,6 @@ class PublicationAuthor extends JTable
 	 */	
 	public function getAuthorByUid ( $vid = NULL, $uid = 0, $active = 0 ) 
 	{
-
 		if (!$vid) 
 		{
 			$vid = $this->publication_version_id;
@@ -386,9 +457,13 @@ class PublicationAuthor extends JTable
 			return false;
 		}
 				
-		$query  = "SELECT ";
-		$query .= " x.name as p_name, x.username, x.organization as p_organization, 
-					x.picture, A.*, NULL as invited_email, NULL as invited_name ";
+		$query  = "SELECT A.*, x.username, x.organization as p_organization, ";
+		$query .= " x.name as p_name, x.givenName, x.surname, x.username, 
+					x.picture, NULL as invited_email, NULL as invited_name, ";
+		$query .= " COALESCE( A.name , x.name ) as name,
+					COALESCE( A.organization , x.organization ) as organization, ";		
+		$query .= " COALESCE( A.firstName, x.givenName) firstName, ";
+		$query .= " COALESCE( A.lastName, x.surname ) lastName ";
 		$query .= " FROM #__xprofiles as x  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id AND A.publication_version_id=".$vid." ";
 		$query .= $active ? " AND A.status=1" : "";
@@ -409,7 +484,6 @@ class PublicationAuthor extends JTable
 	 */	
 	public function getAuthorByOwnerId ( $vid = NULL, $owner_id = 0 ) 
 	{
-
 		if (!$vid) 
 		{
 			$vid = $this->publication_version_id;
@@ -423,9 +497,13 @@ class PublicationAuthor extends JTable
 			return false;
 		}
 				
-		$query  = "SELECT po.invited_email as invited_email, po.invited_name as invited_name,  ";
+		$query  = "SELECT  A.*, po.invited_email as invited_email, po.invited_name as invited_name,  ";
 		$query .= "x.name as p_name, x.username, x.organization as p_organization, 
-				   x.picture, x.surname, x.givenName, A.* ";
+				   x.picture, x.surname, x.givenName, ";
+		$query .= " COALESCE( A.name , x.name ) as name, x.username, 
+					COALESCE( A.organization , x.organization ) as organization, ";		
+		$query .= " COALESCE( A.firstName, x.givenName) firstName, ";
+		$query .= " COALESCE( A.lastName, x.surname ) lastName ";		
 		$query .= " FROM #__project_owners as po  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON po.id=A.project_owner_id AND A.publication_version_id=".$vid." ";
 		$query .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=po.userid ";

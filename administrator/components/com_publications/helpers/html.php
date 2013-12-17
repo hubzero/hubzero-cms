@@ -616,7 +616,7 @@ class PublicationsHtml
 		$status 	= '';
 		$class 		= '';
 		$task       = '';
-		$now 		= date( "Y-m-d H:i:s" );
+		$now 		= JFactory::getDate()->toSql();
 		
 		switch ($row->state) 
 		{

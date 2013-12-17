@@ -294,6 +294,9 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$checked['authors'] = 1;
 		}
 		
+		// Get submitter
+		$this->view->submitter = $pa->getSubmitter($this->view->row->id, $this->view->row->created_by);
+		
 		// Build <select> of project owners		
 		$this->view->lists['authors'] = PublicationsHtml::selectAuthorsNoEdit($authors, $this->_option);
 		

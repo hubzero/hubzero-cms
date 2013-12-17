@@ -123,14 +123,6 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				$this->_license();    
 				break;
 			
-			// Feed
-			case 'feed.rss':   
-				$this->_feed();       
-				break;
-			case 'feed':       
-				$this->_feed();       
-				break;	
-			
 			// Publication discovery
 			case 'browse':   
 				$this->_browse();     
@@ -688,6 +680,9 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$pa = new PublicationAuthor( $this->database );
 		$authors = $pa->getAuthors($publication->version_id);
 		$publication->_authors = $authors;
+		
+		// Get submitter
+		$publication->submitter = $pa->getSubmitter($publication->version_id, $publication->created_by);
 
 		// Get publication plugins
 		JPluginHelper::importPlugin( 'publications' );
@@ -1058,7 +1053,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			return;
 		}
 		
-		// Unpublished
+		// Unpublished / deleted
 		if ($publication->state == 0 || $publication->state == 2)
 		{
 			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
@@ -1122,10 +1117,17 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Build log path (access logs)
 		$logPath = $helper->buildPath($this->_id, $publication->version_id, $base_path, 'logs');
 		
-		// First attachment
+		// First/requested attachment
 		$primary = $attachments[0];
 		$pType	 = $primary->type;
 		$pPath 	 = $primary->path;
+		
+		// Load publication project
+		$publication->project = new Project($this->database);
+		$publication->project->load($publication->project_id);
+		
+		// Get pub type helper
+		$pubTypeHelper = new PublicationTypesHelper($this->database, $publication->project);		
 		
 		// Get user choice for serving content
 		$pParams = new JParameter( $primary->params );
@@ -2188,211 +2190,6 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			return $cnt; // Return num. bytes delivered like readfile() does.
 		}
 		return $status;
-	}
-	
-	/**
-	 * Display an RSS feed
-	 * 
-	 * @return     void
-	 */	
-	protected function _feed() 
-	{
-		include_once( JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-		
-		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
-
-		// Start a new feed object
-		ximport('Hubzero_Document_Feed');
-		$doc = new Hubzero_Document_Feed;
-		$app = JFactory::getApplication();
-		$params = $app->getParams();
-
-		// Incoming
-		$id 		= JRequest::getInt( 'id', 0 );
-		$alias 		= JRequest::getVar( 'alias', '' );
-		$version  	= JRequest::getVar( 'v', '' );    // Get version number of a publication
-	
-		// Check that version number exists
-		$objV 	 	= new PublicationVersion( $this->database );
-		$version 	= $objV->checkVersion($id, $version) ? $version : 'default';
-
-		// Get publication
-		$objP 		 = new Publication( $this->database );
-		$publication = $objP->getPublication($id, $version, NULL, $alias);
-
-		// Make sure we got a result from the database
-		if (!$publication) 
-		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->_intro();
-			return;
-		}
-		else 
-		{
-			$id = $publication->id;
-			$alias = $publication->alias;
-
-			// Default version?
-			$version = $publication->main == 1 ? 'default' : $version;
-
-			// No published version yet? Default to dev
-			$version = $publication->state == 3 ? 'dev' : $version;
-		}
-		
-		// Check if user has access to content
-		$this->_checkRestrictions($publication, $version);
-		
-		// Incoming
-		$filters = array();
-		$filters['type'] = 'publication';
-		$filters['limit'] = JRequest::getInt( 'limit', 100 );
-		$filters['start'] = JRequest::getInt( 'limitstart', 0 );
-		
-		$feedtype = JRequest::getVar( 'format', 'audio' );
-				
-		// Get attachments of 'publication' type
-		$pContent = new PublicationAttachment( $this->database );
-		$rows = $pContent->getAttachments( $publication->version_id, $filters);
-		
-		// We do need attachments!
-		if (count($rows) == 0)
-		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
-			return;
-		}
-		
-		// Get HUB configuration
-		$jconfig = JFactory::getConfig();
-
-		$juri = JURI::getInstance();
-		$base = rtrim($juri->base(), DS);
-		
-		$title = $publication->title;
-		$feedtypes_abr = array(" ", "slides", "audio", "video", "sd_video", "hd_video");
-		$feedtypes_full = array(" & ", "Slides", "Audio", "Video", "SD full", "HD");
-		$type = str_replace($feedtypes_abr, $feedtypes_full, $feedtype);
-		$title = '[' . $type . '] ' . $title;
-
-		// Build some basic RSS document information
-		$dtitle = Hubzero_View_Helper_Html::purifyText(stripslashes($title));
-		$doc->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle), 250, 0));
-		$doc->description = htmlentities(html_entity_decode( Hubzero_View_Helper_Html::purifyText(stripslashes($publication->abstract))));
-		$doc->copyright = JText::sprintf('COM_PUBLICATIONS_RSS_COPYRIGHT', JFactory::getDate()->format("Y"), $jconfig->getValue('config.sitename'));
-		$doc->type = JText::_('COM_PUBLICATIONS_RSS_CATEGORY');
-		$doc->link = JRoute::_('index.php?option='.$this->_option.'&id='.$publication->id);
-		
-		$tagsHelper = new PublicationTags( $this->database);
-		$rtags = $tagsHelper->get_tags_on_object($publication->id, 0, 0, null, 0, 1);
-		$tagarray = array();
-		$categories = array();
-		$subcategories = array();
-		if ($rtags) 
-		{
-			foreach ($rtags as $tag)
-			{
-				if (substr($tag['tag'], 0, 6) == 'itunes') 
-				{
-					$tbits = explode(':', $tag['raw_tag']);
-					if (count($tbits) > 2) 
-					{
-						$subcategories[] = end($tbits);
-					} 
-					else 
-					{
-						$categories[] = str_replace('itunes:', '', $tag['raw_tag']);
-					}
-				} 
-				elseif ($tag['admin'] == 0) 
-				{
-					$tagarray[] = $tag['raw_tag'];
-				}
-			}
-		}
-		$tags = implode(', ', $tagarray);
-		$tags = trim(Hubzero_View_Helper_Html::shortenText($tags, 250, 0));
-		$tags = rtrim($tags, ',');
-		
-		// Get authors
-		// Get version authors
-		$pa = new PublicationAuthor( $this->database );
-		$authors = $pa->getAuthors($publication->version_id);
-		
-		$author = '';
-		if (count($authors) > 0)
-		{
-			if ($authors[0]->name) 
-			{
-				$author = $authors[0]->name;
-			} 
-			else 
-			{
-				$author = $authors[0]->p_name;
-			}
-		}
-
-		$doc->itunes_summary = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($publication->abstract)));
-		if (count($categories) > 0) 
-		{
-			$doc->itunes_category = $categories[0];
-			if (count($subcategories) > 0) 
-			{
-				$doc->itunes_subcategories = $subcategories;
-			}
-		}
-		$doc->itunes_explicit = 'no';
-		$doc->itunes_keywords = $tags;
-		$doc->itunes_author = $author;
-		
-		// Get publications helper
-		$helper = new PublicationHelper($this->database);
-		
-		// Build publication path 
-		$base_path = $this->config->get('webpath');
-		$path = $helper->buildPath($id, $publication->version_id, $base_path, $publication->secret, $root = 1);		
-		
-		$dimg = $this->_checkForImage('itunes_artwork', $path);
-		if ($dimg) 
-		{
-			$dimage = new Hubzero_Document_Feed_Image();
-			$dimage->url = $dimg;
-			$dimage->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle . ' ' . JText::_('COM_RESOURCES_RSS_ARTWORK')), 250, 0));
-			$dimage->link = $base.$doc->link;
-			$doc->itunes_image = $dimage;
-		}
-
-		$owner = new Hubzero_Document_Feed_ItunesOwner;
-		$owner->email = $jconfig->getValue('config.mailfrom');
-		$owner->name  = $jconfig->getValue('config.sitename');
-
-		$doc->itunes_owner = $owner;
-
-		// Start outputing results if any found
-		// TBD
-		/*
-		if (count($rows) > 0) 
-		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-			
-			foreach ($rows as $row)
-			{
-				// Get attached publication
-				//$child = $objP->getChildPublication($row->path);
-				
-				// Prepare the title
-				$title = strip_tags($row->title);
-				$title = html_entity_decode($title);
-			}
-		} */
-
-		// Output the feed
-		echo $doc->render();
-
 	}
 	
 	/**

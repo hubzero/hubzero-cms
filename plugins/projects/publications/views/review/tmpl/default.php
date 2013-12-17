@@ -193,11 +193,32 @@ $append .= '</span>';
 			. $sitename . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT') . '</a>.'; ?>
 		</p>
 		<?php if ($this->task == 'publish') { ?>
+			
 		<p class="pubdate">
-			<label>	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:
-				<input type="text" id="publish_date" name="publish_date" value="<?php echo $this->pubdate; ?>" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
-				<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
+			<?php if (isset($this->submitter)) { 
+				// Do we have a submitter choice?
+				$submitter = $this->submitter->name;
+				$submitter.= $this->submitter->organization ? ', ' . $this->submitter->organization : '';
+				$submitter.= '<input type="hidden" name="submitter" value="' . $this->submitter->uid. '" />';
+				if ($this->submitter->uid != $this->uid)
+				{
+					$submitter  = '<select name="submitter">' . "\n";
+					$submitter .= '<option value="' . $this->uid . '" selected="selected">' . $this->juser->get('name') 
+						. '</option>' . "\n";
+					$submitter .= '<option value="' . $this->submitter->uid . '">' . $this->submitter->name . '</option>' . "\n";
+					$submitter .= '</select>';
+				}
+				
+			?>
+			<label class="block">
+				<span class="review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
 			</label>
+			<label>
+				<span class="review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
+				<input type="text" id="publish_date" name="publish_date" value="<?php echo $this->pubdate; ?>" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
+				<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>				
+			</label>
+			<?php } ?>
 		</p>
 		<?php } ?>
 	</div>

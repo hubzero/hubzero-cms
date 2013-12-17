@@ -1396,6 +1396,15 @@
 	.pubdate {
 		padding: 1em 2em;
 	}
+	.pubdate label {
+		display: block;
+		margin: 1em;
+	}
+	.pubdate .review-label {
+		width: 120px;
+		display: inline-block;
+		float: left;
+	}
 		
 /* Publications review  - authors list
 --------------------------------------------- */

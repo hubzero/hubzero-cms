@@ -65,6 +65,14 @@ if ($this->params->get('show_metadata'))
 	$citations = $metadata['citations'];
 }
 
+if ($this->params->get('show_submitter') && $this->publication->submitter) 
+{
+	$submitter  = $this->publication->submitter->name;
+	$submitter .= $this->publication->submitter->organization ? ', ' . $this->publication->submitter->organization : '';
+
+	$html .= PublicationsHtml::tableRow( '<a name="submitter"></a>' . JText::_('COM_PUBLICATIONS_SUBMITTER'), $submitter );
+}
+
 // Show citations
 if ($this->params->get('show_citation') && $this->publication->state == 1) 
 {

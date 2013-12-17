@@ -367,9 +367,13 @@ function popratings()
 					<?php } ?>
 					</td>
 				</tr>
+				<tr>
+					<td class="paramlist_key">Submitter:</td>
+					<td><?php echo $this->submitter->name; ?></td>
+				</tr>
 		<?php if($this->row->state == 5) { ?>
 				<tr>
-					<td class="paramlist_key"><strong>Submitted:</strong></td>
+					<td class="paramlist_key">Submitted:</td>
 					<td><?php echo $this->row->submitted; ?></td>
 				</tr>
 		<?php } else if($this->row->state == 1 || $this->row->state == 0)  { ?>
@@ -429,16 +433,16 @@ function popratings()
 				</tr>
 		<?php } ?>
 				<tr>
-					<td class="paramlist_key"><strong>Created:</strong></td>
-					<td><input type="hidden" name="created_by_id" value="<?php echo $this->row->created_by; ?>" /><?php echo ($this->row->created != '0000-00-00 00:00:00') ? $this->row->created.'</td></tr><tr><td class="paramlist_key"><strong>Created By:</strong></td><td>'.$this->row->created_by_name : 'New resource'; ?></td>
+					<td class="paramlist_key">Created:</td>
+					<td><input type="hidden" name="created_by_id" value="<?php echo $this->row->created_by; ?>" /><?php echo ($this->row->created != '0000-00-00 00:00:00') ? $this->row->created.'</td></tr><tr><td class="paramlist_key">Created By:</td><td>'.$this->row->created_by_name : 'New resource'; ?></td>
 				</tr>
 				<tr>
-					<td class="paramlist_key"><strong>Modified:</strong></td>
-					<td><input type="hidden" name="modified_by_id" value="<?php echo $this->row->modified_by; ?>" /><?php echo ($this->row->modified != '0000-00-00 00:00:00') ? $this->row->modified.'</td></tr><tr><td class="paramlist_key"><strong>Modified By:</strong></td><td>'.$this->row->modified_by_name : 'Not modified';?></td>
+					<td class="paramlist_key">Modified:</td>
+					<td><input type="hidden" name="modified_by_id" value="<?php echo $this->row->modified_by; ?>" /><?php echo ($this->row->modified != '0000-00-00 00:00:00') ? $this->row->modified.'</td></tr><tr><td class="paramlist_key">Modified By:</td><td>'.$this->row->modified_by_name : 'Not modified';?></td>
 				</tr>
 				<?php if($this->row->state == 1 || $this->row->state == 0) { ?>
 				<tr>
-					<td class="paramlist_key"><strong>Ranking:</strong></td>
+					<td class="paramlist_key">Ranking:</td>
 					<td>
 						<?php echo $this->pub->ranking; ?>/10
 						<?php if ($this->pub->ranking != '0') { ?>
@@ -447,7 +451,7 @@ function popratings()
 					</td>
 				</tr>
 				<tr>
-					<td class="paramlist_key"><strong>Rating:</strong></td>
+					<td class="paramlist_key">Rating:</td>
 					<td>
 						<?php echo $rating.'/5.0 ('.$this->pub->times_rated.' reviews)'; ?>
 						<?php if ( $rating != '0.0' ) { ?>

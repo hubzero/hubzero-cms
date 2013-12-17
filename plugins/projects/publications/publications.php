@@ -1117,7 +1117,7 @@ class plgProjectsPublications extends JPlugin
 			'filepath' => '',
 			'domain'   => ''
 		);
-				
+						
 		// Get type info
 		$view->_category = new PublicationCategory( $this->_database );
 		$view->_category->load($pub->category);
@@ -1752,7 +1752,7 @@ class plgProjectsPublications extends JPlugin
 		// Get authors
 		$pa = new PublicationAuthor( $this->_database );
 		$view->authors = $pa->getAuthors($row->id);
-		
+				
 		// Get attachments
 		$pContent = new PublicationAttachment( $this->_database );
 		$view->primary = $pContent->getAttachments( $row->id, $filters = array('role' => '1') );
@@ -1823,6 +1823,7 @@ class plgProjectsPublications extends JPlugin
 		$view->project 		= $this->_project;
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
+		$view->juser		= JFactory::getUser();
 		$view->pid 			= $pid;
 		$view->version 		= $version;
 		$view->pub 			= $pub;
@@ -1838,6 +1839,12 @@ class plgProjectsPublications extends JPlugin
 		// Master type params (determines management options)
 		$mType = $mt->getType($this->_base);
 		$typeParams = new JParameter( $mType->params );
+		
+		// Showing submitter?
+		if ($typeParams->get('show_submitter'))
+		{
+			$view->submitter = $pa->getSubmitter($row->id, $row->created_by);
+		}
 		
 		// Merge with publication master type params
 		$view->pubconfig->merge( $typeParams );
@@ -2515,6 +2522,7 @@ class plgProjectsPublications extends JPlugin
 		$republish  = $this->_task == 'republish' ? 1 : 0; 
 		$agree   	= JRequest::getInt('agree', 0);
 		$pubdate 	= JRequest::getVar('publish_date', '', 'post');
+		$submitter 	= JRequest::getInt('submitter', $this->_uid, 'post');
 		
 		$notify 	= 1;
 				
@@ -2606,6 +2614,10 @@ class plgProjectsPublications extends JPlugin
 		else 
 		{
 			$row->submitted = JFactory::getDate()->toSql();
+			
+			// Save submitter
+			$pa = new PublicationAuthor( $this->_database );
+			$pa->saveSubmitter($row->id, $submitter, $this->_project->id);
 
 			if ($this->_pubconfig->get('autoapprove') == 1 )  
 			{
