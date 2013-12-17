@@ -469,19 +469,12 @@ class plgGroupsMessages extends Hubzero_Plugin
 		// Log the action
 		if ($action) 
 		{
-			$database = JFactory::getDBO();
-			$log = new XGroupLog($database);
-			$log->gid = $this->group->get('gidNumber');
-			$log->timestamp = JFactory::getDate()->toSql();
-			$log->action = $action;
-			$log->actorid = $juser->get('id');
-			if (!$log->store()) 
-			{
-				foreach ($log->getErrors() as $error)
-				{
-					$this->setError($error);
-				}
-			}
+			// log invites
+			GroupsModelLog::log(array(
+				'gidNumber' => $this->group->get('gidNumber'),
+				'action'    => $action,
+				'comments'  => array($juser->get('id'))
+			));
 		}
 
 		// Determine if we're returning HTML or not

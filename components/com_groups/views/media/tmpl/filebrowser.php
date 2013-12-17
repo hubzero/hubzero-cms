@@ -31,36 +31,51 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app = JFactory::getApplication();
+//get request vars
+$type          = JRequest::getWord('type', '', 'get');
+$ckeditor      = JRequest::getVar('CKEditor', '', 'get');
+$ckeditorFunc  = JRequest::getInt('CKEditorFuncNum', 0, 'get');
+$ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' . $ckeditorFunc;
 ?>
-<?php if (JPluginHelper::isEnabled('system', 'jquery')) : ?>
-	<script src="/media/system/js/jquery.js"></script>
-	<script src="/media/system/js/jquery.fileuploader.js"></script>
-	<script src="/components/com_groups/assets/js/groups.fileupload.jquery.js"></script>
-<?php endif; ?>
-	<div id="file_browser">
-		<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">
+
+<div class="upload-browser cf">
+	<?php
+		foreach($this->notifications as $notification)
+		{
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+		}
+	?>
+	
+	<div class="upload-browser-col left">
+		<div class="toolbar cf">
+			<div class="title"><?php echo JText::_('Group Files'); ?></div>
+			<div class="buttons">
+				<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=addfolder&tmpl=component'); ?>" class="icon-add action-addfolder"></a>
+			</div>
+		</div>
+		<div class="foldertree" data-activefolder="<?php echo $this->activeFolder; ?>">
+			<?php echo $this->folderTree; ?>
+		</div>
+		<div class="foldertree-list">
+			<?php echo $this->folderList; ?>
+		</div>
+		<form action="index.php" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
 			<fieldset>
-				<div id="themanager" class="manager">
-					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=listfiles&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" name="imgManager" id="imgManager" width="99%" height="180"></iframe>
+				<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ajaxupload&no_html=1'); ?>">
+					<noscript>
+						<p><input type="file" name="upload" id="upload" /></p>
+						<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
+					</noscript>
 				</div>
-			</fieldset>
-			<fieldset>
-				<?php if (JPluginHelper::isEnabled('system', 'jquery')) : ?>
-					<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=ajaxupload&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1">
-						<noscript>
-							<p><input type="file" name="upload" id="upload" /></p>
-							<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
-						</noscript>
-					</div>
-				<?php else : ?>
-					<p><input type="file" name="upload" id="upload" /></p>
-					<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
-				<?php endif; ?>
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->listdir; ?>" />
+				<input type="hidden" name="controller" value="media" />
 				<input type="hidden" name="task" value="upload" />
+				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->group->get('gidNumber'); ?>" />
 				<input type="hidden" name="tmpl" value="component" />
 			</fieldset>
 		</form>
 	</div>
+	<div class="upload-browser-col right">
+		<iframe class="upload-browser-filelist-iframe" src="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=listfiles&tmpl=component&type=' . $ckeditorQuery); ?>"></iframe>
+	</div>
+</div>

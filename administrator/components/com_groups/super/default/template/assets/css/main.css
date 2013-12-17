@@ -1,0 +1,263 @@
+/**
+ * Basic Template - Main Styles
+ *
+ * Template used for Special Groups. Will now be auto-created 
+ * when admin switches group from type HUB to type Special.
+ *
+ * @author 		Christopher Smoak
+ * @copyright	December 2013
+*/
+
+#group-body {
+	background: #666;
+}
+.super-group-body-wrap {
+	font-family: 'Helvetica Neue';
+}
+.super-group-body {
+	background: #FFF;
+}
+
+/* Header */
+.super-group-header-wrap {
+	background: #444;
+	border-top: 1px solid #555;
+	height: 75px;
+}
+.super-group-header {
+	margin: 0 auto;
+	width: 1024px;
+	position: relative;
+}
+.super-group-header h1 {
+	position: absolute;
+	top: 18px;
+	left: 0;
+	margin: 0;
+	padding: 0;
+}
+.super-group-header h1 a {
+	display: block;
+	font-weight: 100;
+	font-size: 30px;
+	line-height: 36px;
+	color: #FFF;
+	font-family: 'Helvetica Neue';
+}
+.super-group-header h1 a span {
+	color: #777;
+}
+.super-group-header h1 a:hover {
+	border: none !important;
+}
+
+/* Toolbar */
+.super-group-toolbar {
+	position: absolute;
+	top: 18px;
+	right: 0;
+}
+.super-group-toolbar > ul {
+	margin: 0 !important;
+}
+.super-group-toolbar .btn-group > a,
+.super-group-toolbar .btn-group > .dropdown-toggle {
+	border-color: #555 !important;
+	-webkit-transition: border-color 0.6s ease-in-out;
+	-moz-transition: border-color 0.6s ease-in-out;
+	-o-transition: border-color 0.6s ease-in-out;
+	-ms-transition: border-color 0.6s ease-in-out;
+	transition: border-color 0.6s ease-in-out;
+}
+.super-group-toolbar:hover .btn-group > a,
+.super-group-toolbar:hover .btn-group > .dropdown-toggle {
+	border-color: #000 !important;
+}
+
+/* Menu */
+.super-group-menu-wrap {
+	background: #0397A7;
+}
+.super-group-menu {
+	margin: 0 auto;
+	width: 1024px;
+}
+.super-group-menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.super-group-menu a {
+	-webkit-transition: background 0.1s ease-in-out;
+	-moz-transition: background 0.1s ease-in-out;
+	-o-transition: background 0.1s ease-in-out;
+	-ms-transition: background 0.1s ease-in-out;
+	transition: background 0.1s ease-in-out;
+}
+.super-group-menu > ul li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+.super-group-menu > ul li.hasmeta a {
+	padding-right: 35px !important;
+}
+.super-group-menu > ul li .meta {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: rgba(255,255,255,0.5);
+	background: rgba(0,0,0,0.15);
+	padding: 0 4px;
+	font-size: 10px;
+	border-radius: 2px;
+}
+.super-group-menu > ul li .alrt {
+	display: none;
+}
+.super-group-menu > ul li a,
+.super-group-menu > ul li.protected span {
+	display: block;
+	padding: 10px 15px;
+	color: #fff;
+	border: none;
+}
+.super-group-menu > ul li.protected span {
+	color: rgba(255,255,255,0.5);
+}
+.super-group-menu > ul li.protected span:hover {
+	cursor: not-allowed;
+}
+.super-group-menu > ul > li >  a:hover {
+	background: rgba(0,0,0,0.15);
+}
+.super-group-menu > ul > li.active > a {
+	background: rgba(0,0,0,0.3);
+}
+.super-group-menu > ul li.active .meta {
+	color: rgba(255,255,255,0.8);
+}
+.super-group-menu ul ul {
+	position: absolute;
+	top: 100%;
+	left: -9999px;
+	min-width: 150px;
+	max-width: 250px;
+	z-index: 555;
+	background: #0397A7;
+	padding: 10px 0;
+}
+.super-group-menu li:hover ul {
+	left: 0px;
+}
+.super-group-menu ul ul li {
+	float: none;
+}
+.super-group-menu ul ul li a {
+	padding: 5px 15px;
+	font-size: 12px;
+	color: #efefef;
+}
+.super-group-menu ul ul li a:before {
+	content: '\203A';
+	font-family: 'Fontcons';
+	margin-right: 5px;
+	font-size: 10px;
+}
+.super-group-menu ul ul li a:hover {
+	background: rgba(0,0,0,0.4);
+}
+
+
+/* Content */
+.super-group-content-wrap {
+	margin: 0;
+	padding: 0;
+	min-height: 300px;
+}
+.super-group-content {
+	margin: 0 auto !important;
+	padding: 0;
+	width: 1024px;
+	position: relative;
+}
+.super-group-content > h2 {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: -50px 0 0 0;
+	padding: 0;
+}
+.super-group-content #page_options {
+	right: 0;
+	top: -50px;
+}
+.super-group-content h3.heading,
+.super-group-content .section-header {
+	display: none;
+}
+.super-group-content .section {
+	padding: 0 !important;
+	margin: 70px 0 !important;
+}
+
+/* Footer */
+.super-group-footer-wrap {
+	background: #666;
+}
+.super-group-footer {
+	margin: 0 auto;
+	width: 1024px;
+	padding: 20px 0 40px 0;
+	font-size: 11px;
+	color: #999;
+}
+
+
+/* All Plugin Adjustments */
+.super-group-content .aside:before {
+	right: 239px;
+	top: 0;
+	bottom: 0;
+}
+/* Overview Adjustments */
+.super-group-content .group-page {
+	margin: 30px 0 !important;
+}
+/* Member Adjustments */
+.super-group-content.group_members > #hubForm {
+	margin: 70px 0 !important;
+}
+/* Blog Adjustments */
+.super-group-content.group_blog #blogentries,
+.super-group-content.group_blog .entry-container,
+.super-group-content.group_blog > #hubForm {
+	margin: 70px 0 !important;
+}
+/* Wiki Adjustments */
+.super-group-content.group_wiki #sub-content-header {
+	margin-top: 70px !important;
+}
+.super-group-content.group_wiki .section {
+	margin-top: 0px !important;
+}
+/* Calendar Adjustments */
+.super-group-content.group_calendar #calendar-box,
+.super-group-content.group_calendar .group-calendars,
+.super-group-content.group_calendar > #hubForm,
+.super-group-content.group_calendar > .grid {
+	margin: 70px 0 !important;
+}
+.super-group-content.group_calendar > .event-title-bar {
+	margin-top: 70px !important;
+}
+.super-group-content.group_calendar > .group-event-details {
+	margin-bottom: 70px !important;
+}
+
+/* Login Adjustments */
+.super-group-content.group_login #authentication {
+	margin-top: 70px !important;
+	margin-bottom: 70px !important;
+}

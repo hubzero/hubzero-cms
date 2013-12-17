@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</li>
 </ul>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=savecalendar'); ?>" id="hubForm" method="post">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=savecalendar'); ?>" id="hubForm" method="post" class="full">
 	
 	<fieldset>
 		<legend><?php echo JText::_('Group Calendar'); ?></legend>

@@ -31,27 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
+// get base url
+$JURI       =& JURI::getInstance();
+$groupLink  = rtrim($JURI->base(), DS) . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn'));
+$acceptLink = rtrim($JURI->base(), DS) . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept');
 
-$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->group->get('cn'));
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
-
+// tell who just invited them on which hub
 $message  = JText::sprintf('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->juser->get('name'), $this->sitename)."\n\n";
-$message .= JText::_('COM_GROUPS_GROUP').': '.$this->group->get('description')."\n";
-$message .= $juri->base().$sef."\n\n";
-if ($this->msg) {
+
+// what group
+$message .= $this->group->get('description')."\n\n";
+
+// extra message
+if ($this->msg) 
+{
 	$message .= '====================='."\n";
 	$message .= stripslashes($this->msg)."\n";
 	$message .= '====================='."\n\n";
 }
-$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&task=accept');
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
-$message .= $juri->base().$sef."\n\n";
-$message .= JText::_('COM_GROUPS_INVITE_EMAIL_JOIN_MESSAGE')."\n\n";
+
+// accept link
+$message .= JText::_('To ACCEPT this invitation, please click here:') . "\n";
+$message .= $acceptLink . "\n\n";
+
+// learn more
+$message .= JText::_('To learn more or access the group after joining, please go to:') . "\n";
+$message .= $groupLink . "\n\n";
+
+// if questions email the invitor
 $message .= JText::sprintf('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
 
 echo $message;

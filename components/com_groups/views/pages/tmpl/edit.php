@@ -31,44 +31,46 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// define base link
 $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages';
 
-//default some form vars
-$form_btn = "Add Page";
-$form_title = "Add a New Group Page";
+// default some form vars
+$pageHeading = JText::_("Add Page");
 
-//default group page vars
-$id = '';
-$gid = '';
-$title = '';
-$content = '';
-$url = '';
-$order = '';
-$active = '';
-$privacy = '';
+// default group page vars
+$id        = '';
+$gidNumber = '';
+$category  = '';
+$title     = '';
+$alias     = '';
+$content   = '';
+$ordering  = null;
+$state     = 1;
+$privacy   = 'default';
+$home      = 0;
+$version   = 0;
 
-//if we are in edit mode
+// if we are in edit mode
 if ($this->page) 
 {
-	$form_btn = "Update Page";
-	$form_title = "Update the Group Page";
-
-	$id = $this->page['id'];
-	$gid = $this->page['gid'];
-	$title = $this->page['title'];
-	$content = $this->page['content'];
-	$url = $this->page['url'];
-	$order = $this->page['porder'];
-	$active = $this->page['active'];
-	$privacy = $this->page['privacy'];
+	$id        = $this->page->get('id');
+	$gidNumber = $this->page->get('gidNumber');
+	$category  = $this->page->get('category');
+	$alias     = $this->page->get('alias');
+	$title     = $this->page->get('title');
+	$content   = $this->version->get('content');
+	$version   = $this->version->get('version');
+	$ordering  = $this->page->get('ordering');
+	$state     = $this->page->get('state');
+	$privacy   = $this->page->get('privacy');
+	$home      = $this->page->get('home');
+	
+	$pageHeading = JText::sprintf("Edit Page: %s", $title);
 }
-
-//set var for asset browser
-$lid = $this->group->get('gidNumber');
 ?>
 
 <div id="content-header" class="full">
-	<h2><?php echo $form_title; ?></h2>
+	<h2><?php echo $pageHeading; ?></h2>
 </div>
 <div id="content-header-extra">
 	<ul id="useroptions">
@@ -76,70 +78,269 @@ $lid = $this->group->get('gidNumber');
 	</ul>
 </div>
 
-<div class="main section">
+<div class="main section edit-group-page">
 	<?php foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
 	<?php } ?>
-
-	<form action="<?php echo JRoute::_($base_link); ?>" method="POST" id="hubForm">
-		<div class="explaination asset-browser-parent">
-			<div id="asset_browser">
-				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
-				<iframe 
-					width="100%" 
-					height="310" 
-					name="filer" 
-					id="filer" 
-					src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=filebrowser&amp;listdir=<?php echo $this->group->get('gidNumber'); ?>&amp;tmpl=component"></iframe>
-			</div><!-- / .asset_browser -->
+	
+	<form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=save'); ?>" method="POST" id="hubForm" class="full">
+		
+		<div class="grid">
+			<div class="col span9">
+				<fieldset>
+					<legend><?php echo JText::_('Details')?></legend>
+					<label for="field-title">
+						<strong>Title:</strong> <span class="required">Required</span>
+						<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($title)); ?>" />
+					</label>
+					<label for="field-url">
+						<strong>URL:</strong> <span class="optional">Optional</span>
+						<input type="text" name="page[alias]" id="field-url" value="<?php echo $this->escape($alias); ?>" />
+						<span class="hint">Page URL's can only contain alphanumeric characters and underscores. Spaces will be removed.</span>
+					</label>
+					<label for="pagecontent">
+						<strong>Content:</strong> <span class="required">Required</span>
+						<?php
+							$allowPhp      = true;
+							$allowScripts  = true;
+							$startupMode   = 'wysiwyg';
+							$showSourceBtn = true;
+					
+							// only allow super groups to use php & scrips
+							// strip out php and scripts if somehow it made it through
+							if (!$this->group->isSuperGroup())
+							{
+								$allowPhp     = false;
+								$allowScripts = false;
+								$content      = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+								$content      = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+							}
+					
+							// open in source mode if contains php or scripts
+							if (strstr(stripslashes($content), '<script>') ||
+								strstr(stripslashes($content), '<?php'))
+							{
+								$startupMode  = 'source';
+								//$showSourceBtn = false;
+							}
+				
+							//build config
+							$config = array(
+								'startupMode'                 => $startupMode,
+								'sourceViewButton'            => $showSourceBtn,
+								'contentCss'                  => $this->stylesheets,
+								'autoGrowMinHeight'           => 500,
+								'fileBrowserWindowWidth'      => 1200,
+								'fileBrowserBrowseUrl'        => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component'),
+								'fileBrowserImageBrowseUrl'   => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component'),
+								'fileBrowserUploadUrl'        => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ckeditorupload&tmpl=component'),
+								'allowPhpTags'                => $allowPhp,
+								'allowScriptTags'             => $allowScripts
+							);
+					
+							// if super group add to templates
+							if ($this->group->isSuperGroup())
+							{
+								$config['templates_replace'] = false;
+								$config['templates_files']   = array('pagelayouts' => '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
+							}
+					
+							// display with ckeditor
+							jimport( 'joomla.html.editor' );
+							$editor = new JEditor( 'ckeditor' );
+							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '100px', 0, 0, false, 'pagecontent', null, null, $config);
+						?>
+						<input type="hidden" name="pageversion[version]" value="<?php echo $version; ?>" />
+					</label>
+				</fieldset>
+			</div>
+			<div class="col span3 omega">
+				<fieldset>
+					<legend><?php echo JText::_('Publish'); ?></legend>
+					<label>
+						<strong>Status:</strong> <span class="required">Required</span>
+						<select name="page[state]" class="fancy-select">
+							<option value="1" <?php if($state == 1) { echo "selected"; } ?>>Published</option>
+							<option value="0" <?php if($state == 0) { echo "selected"; } ?>>Unpublished</option>
+						</select>
+					</label>
+					<label>
+						<strong>Privacy:</strong> <span class="required">Required</span>
+						<?php
+							ximport("Hubzero_Group_Helper");
+							$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
+							switch($access)
+							{
+								case 'anyone':		$name = "Any HUB Visitor";		break;
+								case 'registered':	$name = "Registered HUB Users";	break;
+								case 'members':		$name = "Group Members Only";	break;
+							}
+						?>
+						<select name="page[privacy]" class="fancy-select">
+							<option value="default" <?php if($privacy == "default") { echo 'selected="selected"'; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
+							<option value="members" <?php if($privacy == "members") { echo 'selected="selected"'; } ?>>Private Page (Accessible to members only)</option>
+						</select>
+					</label>
+				</fieldset>
+				
+				<div class="form-controls cf">
+					<a href="<?php echo $base_link; ?>" class="cancel"><?php echo JText::_('Cancel'); ?></a>
+					<button type="submit" class="btn btn-info opposite save icon-save"><?php echo JText::_('Save Page'); ?></button>
+				</div>
+				
+				<fieldset>
+					<legend><?php echo JText::_('Settings'); ?></legend>
+					<?php if ($this->page->get('id')) : ?>
+						<label for="page-ordering">
+							<strong>Order:</strong> <span class="optional">Optional</span>
+							<select name="page[ordering]" class="fancy-select">
+								<?php foreach ($this->order as $order) : ?>
+									<?php $sel = ($order->get('title') == $title) ? 'selected="selected"' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $order->get('ordering'); ?>">
+										<?php echo ($order->get('ordering') + 0) . '. '; ?><?php echo $order->get('title'); ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+						</label>
+					<?php endif; ?>
+			
+					<label for="page-category" class="page-category-label">
+						<strong>Category:</strong> <span class="optional">Optional</span>
+						<select name="page[category]" class="page-category" data-url="<?php echo JRoute::_('index.php?option=com_groups&cn='. $this->group->get('gidNumber').'&controller=categories&task=add&no_html=1'); ?>">
+							<option value="">- Select Page Category &mdash;</option>
+							<?php foreach ($this->categories as $pageCategory) : ?>
+								<?php $sel = ($category == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
+								<option <?php echo $sel; ?> data-color="#<?php echo $pageCategory->get('color'); ?>" value="<?php echo $pageCategory->get('id'); ?>"><?php echo $pageCategory->get('title'); ?></option>
+							<?php endforeach; ?>
+							<option value="other">Other</a>
+						</select>
+						<span class="hint">Organize your content pages.</span>
+					</label>
+			
+					<?php if ($this->group->isSuperGroup() && count($this->pageTemplates) > 0) : ?>
+						<label for="page-template">
+							<strong>Template:</strong> <span class="optional">Optional</span>
+							<select name="page[template]" class="fancy-select">
+								<option value="">- Default</option>
+								<?php foreach ($this->pageTemplates as $name => $file) : ?>
+									<?php
+										$tmpl = str_replace('.php', '', $file);
+										$sel  = ($this->page->get('template') == $tmpl) ? 'selected="selected"' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $tmpl; ?>"><?php echo $name; ?></option>
+								<?php endforeach;?>
+							</select>
+						</label>
+					<?php endif; ?>
+			
+					<label>
+						<strong>Home Page:</strong> <span class="optional">Optional</span>
+						<select name="page[home]" class="fancy-select">
+							<option value="0" <?php if($home == 0) { echo "selected"; } ?>>Use current home page</option>
+							<option value="1" <?php if($home == 1) { echo "selected"; } ?>>Set as home page</option>
+						</select>
+						<span class="hint">Override the group home page.</span>
+					</label>
+				</fieldset>
+		
+			</div>
 		</div>
-		<fieldset>
-			<legend><?php echo $form_title; ?></legend>
-			<label for="field-title">
-				Page Title: <span class="required">Required</span>
-				<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($title)); ?>" />
-			</label>
-			<label for="field-url">
-				Page URL: <span class="optional">Optional</span>
-				<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape($url); ?>" />
-				<span class="hint">Page URL's can only contain alphanumeric characters and underscores. Spaces will be removed.</span>
-			</label>
-			<label for="pagecontent">
-				Page Content: <span class="required">Required</span>
-				<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('page[content]', 'pagecontent', stripslashes($content), '', '50', '15');
-				?>
-				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
-			</label>
-			<label>Page Privacy: <span class="required">Required</span>
-				<?php
-					ximport("Hubzero_Group_Helper");
-					$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
-					switch($access)
-					{
-						case 'anyone':		$name = "Any HUB Visitor";		break;
-						case 'registered':	$name = "Registered HUB Users";	break;
-						case 'members':		$name = "Group Members Only";	break;
-					}
-				?>
-				<select name="page[privacy]">
-					<option value="default" <?php if($privacy == "default") { echo "selected"; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
-					<option value="members" <?php if($privacy == "members") { echo "selected"; } ?>>Private Page (Accessible to members only)</option>
-				</select>
-			</label>
-			<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
-			<input type="hidden" name="page[gid]" value="<?php echo $gid; ?>" />
-			<input type="hidden" name="page[porder]" value="<?php echo $order; ?>" />
-			<input type="hidden" name="page[active]" value="<?php echo $active; ?>" />
-			<input type="hidden" name="option" value="com_groups" />
-			<input type="hidden" name="controller" value="pages" />
-			<input type="hidden" name="task" value="savepage" />
-		</fieldset>
-		<div class="clear"></div>
-		<p class="submit">
-			<input type="submit" name="page_submit" value="<?php echo $form_btn; ?>" />
-		</p>
+		
+		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
+		<input type="hidden" name="option" value="com_groups" />
+		<input type="hidden" name="controller" value="pages" />
+		<input type="hidden" name="return" value="<?php echo JRequest::getVar('return', '','get'); ?>" />
+		<input type="hidden" name="task" value="save" />
 	</form>
+		
+		
+		
+		
+		<?php if ($this->page->get('id')) : ?>
+			<fieldset id="versions">
+				<legend><?php echo JText::_('Page Versions'); ?></legend>
+				
+				<div class="group-page-versions">
+					<table>
+						<thead>
+							<tr>
+								<th>Version</th>
+								<th>Content</th>
+								<th>Created</th>
+								<th>Created By</th>
+								<th>Approved</th>
+								<th>Approved By</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($this->page->versions() as $pageVersion) : ?>
+								<tr>
+									<td><?php echo $pageVersion->get('version'); ?></td>
+									<td>
+										<a target="_blank" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=raw&pageid='.$id.'&version='.$pageVersion->get('version')); ?>">
+											View Raw
+										</a>
+									</td>
+									<td>
+										<?php
+											$created = 'n/a';
+											if ($pageVersion->get('created') != null)
+											{
+												$created = date("F d, Y @ g:ia", strtotime($pageVersion->get('created'))); 
+											}
+											echo $created;
+										?>
+									</td>
+									<td>
+										<?php
+											$created_by = 'n/a';
+											if ($pageVersion->get('created_by') == 1000)
+											{
+												$created_by = 'System';
+											}
+											else if ($pageVersion->get('created_by') != null && is_numeric($pageVersion->get('created_by')))
+											{
+												ximport('Hubzero_User_Profile');
+												$profile = Hubzero_User_Profile::getInstance( $pageVersion->get('created_by') );
+												$created_by = '<a href="/members/'.$profile->get('uidNumber').'">'.$profile->get('name').'</a>';
+											}
+											echo $created_by;
+										?>
+									</td>
+									<td>
+										<?php
+											$approved_on = 'n/a';
+											if ($pageVersion->get('approved_on') != null)
+											{
+												$approved_on = date("F d, Y @ g:ia", strtotime($pageVersion->get('approved_on'))); 
+											}
+											echo $approved_on;
+										?>
+									</td>
+									<td>
+										<?php
+											$approved_by = 'n/a';
+											if ($pageVersion->get('approved_by') == 1000)
+											{
+												$approved_by = 'System';
+											}
+											else if ($pageVersion->get('approved_by') != null && is_numeric($pageVersion->get('approved_by')))
+											{
+												ximport('Hubzero_User_Profile');
+												$profile = Hubzero_User_Profile::getInstance( $pageVersion->get('approved_by') );
+												$approved_by = '<a href="/members/'.$profile->get('uidNumber').'">'.$profile->get('name').'</a>';
+											}
+											echo $approved_by;
+										?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+		<?php endif; ?>
+		
+		
+		
+	
 </div>

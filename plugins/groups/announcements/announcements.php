@@ -71,7 +71,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 	 *
 	 * @return     string
 	 */
-	public function onBeforeGroup( $group, $option, $authorized )
+	public function onBeforeGroup( $group, $authorized )
 	{
 		//creat view object
 		ximport('Hubzero_Plugin_View');
@@ -86,7 +86,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		
 		//vars for view
 		$view->authorized = $authorized;
-		$view->option     = $option;
+		$view->option     = 'com_groups';
 		$view->group      = $group;
 		$view->name       = $this->_name;
 		$view->juser      = JFactory::getUser();

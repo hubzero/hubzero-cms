@@ -39,17 +39,17 @@ ximport('Hubzero_Controller');
 class GroupsControllerPages extends Hubzero_Controller
 {
 	/**
-	 * Manage group pages
+	 * Overload exec method to load group object
 	 *
 	 * @return void
 	 */
-	public function displayTask()
+	public function execute()
 	{
 		// Incoming
-		$gid = JRequest::getVar('gid', '');
-
+		$this->gid = JRequest::getVar('gid', '');
+	
 		// Ensure we have a group ID
-		if (!$gid)
+		if (!$this->gid)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=manage',
@@ -58,66 +58,51 @@ class GroupsControllerPages extends Hubzero_Controller
 			);
 			return;
 		}
-
-		// Load the group page
-		$this->view->group = new Hubzero_Group();
-		$this->view->group->read($gid);
-
-		//$this->gid = $gid;
-		//$this->group = $group;
-
-		$action = JRequest::getVar('action','');
-
-		$this->action = $action;
-		$this->authorized = 'admin';
-
-		// Do we need to perform any actions?
-		$out = '';
-		if ($action)
+		
+		// load group object
+		$this->group = Hubzero_Group::getInstance( $this->gid );
+		
+		// run parent execute
+		parent::execute();
+	}
+	
+	/**
+	 * Manage group pages
+	 *
+	 * @return void
+	 */
+	public function displayTask()
+	{
+		// get group pages
+		$pageArchive = GroupsModelPageArchive::getInstance();
+		$this->view->pages = $pageArchive->pages('list', array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'state'     => array(0,1,2),
+			'orderby'   => 'ordering'
+		));
+		
+		// get page approvers
+		$approvers = $this->config->get('approvers', '');
+		$approvers = array_map("trim", explode(',', $approvers));
+		
+		// are we in the approvers
+		$this->view->needsAttention = new \Hubzero\ItemList();
+		if (in_array($this->juser->get('username'), $approvers))
 		{
-			$action = strtolower(trim($action));
-			$action = str_replace(' ', '', $action);
-
-			// Perform the action
-			if (in_array($action, $this->_taskMap))
-			{
-				$action .= 'Task';
-				$this->$action();
-			}
-
-			// Did the action return anything? (HTML)
-			if ($this->output != '')
-			{
-				$out = $this->output;
-			}
+			// get group pages
+			$pageArchive = GroupsModelPageArchive::getInstance();
+			$this->view->needsAttention = $pageArchive->pages('unapproved', array(
+				'gidNumber' => $this->group->get('gidNumber'),
+				'state'     => array(0,1),
+				'orderby'   => 'ordering'
+			));
 		}
-
-		//get the group pages
-		$gp = new GroupPages($this->database);
-		$this->view->pages = $gp->getPages($this->view->group->get('gidNumber'), false);
-
-		// Output HTML
-		/*if ($out == '')
-		{
-			$this->view->group      = $group;
-			//$this->view->authorized = 'admin';
-			$this->view->pages      = $pages;
-			// Set any errors
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-
-			// Output the HTML
-			$this->view->display();
-		}
-		else
-		{
-			echo $out;
-		}*/
+		
+		// pass vars to view
+		$this->view->group = $this->group;
+		
+		// add styles
+		$this->_getStyles();
 
 		// Set any errors
 		if ($this->getError())
@@ -147,42 +132,41 @@ class GroupsControllerPages extends Hubzero_Controller
 	 *
 	 * @return void
 	 */
-	public function editTask($page = null)
+	public function editTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
-
+		// force layout
 		$this->view->setLayout('edit');
-
-		// Incoming
-		$gid = JRequest::getVar('gid', '');
-		$p   = JRequest::getVar('page', '');
-
-		// Check to make sure we have an id if we're editing
-		if (!$p && $this->task == 'edit')
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid,
-				JText::_('Missing page ID'),
-				'error'
-			);
-			return;
-		}
-
-		// load group page data
-		if (is_object($page))
-		{
-			$this->view->page = $page;
-		}
-		else 
-		{
-			$this->view->page = new GroupPages($this->database);
-			$this->view->page->load($p);
-		}
-
-		// Load the group page
-		$this->view->group = new Hubzero_Group();
-		$this->view->group->read($gid);
-
+		
+		// get request vars
+		$ids = JRequest::getVar('id', array());
+		$id  = (isset($ids[0])) ? $ids[0] : null;
+		
+		// get the page & version objects
+		$this->view->page   = new GroupsModelPage( $id );
+		$this->view->version = $this->view->page->version();
+		$this->view->firstversion = $this->view->page->version(1);
+		
+		// get a list of all pages for creating module menu
+		$pageArchive = GroupsModelPageArchive::getInstance();
+		$this->view->order = $pageArchive->pages('list', array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'state'     => array(0,1,2),
+			'orderby'   => 'ordering'
+		));
+		
+		// get page categories
+		$categoryArchive = new GroupsModelPageCategoryArchive();
+		$this->view->categories = $categoryArchive->categories('list', array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'orderby'   => 'title'
+		));
+		
+		// pass vars to view
+		$this->view->group = $this->group;
+		
+		// get page templates
+		$this->view->pageTemplates = GroupsHelperView::getPageTemplates($this->group);
+		
 		// Set any errors
 		if ($this->getError())
 		{
@@ -191,7 +175,7 @@ class GroupsControllerPages extends Hubzero_Controller
 				$this->view->setError($error);
 			}
 		}
-
+		
 		// Output the HTML
 		$this->view->display();
 	}
@@ -203,52 +187,664 @@ class GroupsControllerPages extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
-		// load the request vars
-		$page = JRequest::getVar('page', array(), 'post', 'none', 2);
-
-		// instatiate group page object for saving
-		$db = JFactory::getDBO();
-		$Gpage = new GroupPages($db);
-
-		// Load the group page
-		$gid = JRequest::getVar('gid','');
-		$group = new Hubzero_Group();
-		$group->read($gid);
-
-		// new page
-		if (!$page['id'])
+		// Get the page vars being posted
+		$page    = JRequest::getVar('page', array(), 'post');
+		$version = JRequest::getVar('pageversion', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		
+		// are we updating or creating a new page
+		$task = ($page['id']) ? 'update' : 'create';
+		
+		// load page and version objects
+		$this->page    = new GroupsModelPage( $page['id'] );
+		$this->version = new GroupsModelPageVersion();
+		
+		// ordering change
+		$ordering = null;
+		if (isset($page['ordering']) && $page['ordering'] != $this->page->get('ordering'))
 		{
-			$high = $Gpage->getHighestPageOrder($group->get('gidNumber'));
-			$page['porder'] = ($high + 1);
+			$ordering = $page['ordering'];
+			unset($page['ordering']);
 		}
-
-		// check to see if user supplied url
-		if (isset($page['url']) && $page['url'] != '')
+		
+		// if this is new page, get next order possible for position
+		if (!isset($page['id']) || $page['id'] == '')
 		{
-			$page['url'] = strtolower(str_replace(' ', '_', trim($page['url'])));
+			$ordering = null;
+			$page['ordering'] = $this->page->getNextOrder();
+		}
+		
+		// bind new page properties
+		if (!$this->page->bind($page))
+		{
+			$this->setNotification($this->page->getError(), 'error');
+			$this->editTask();
+			return;
+		}
+		
+		// bind new page version properties
+		if (!$this->version->bind($version))
+		{
+			$this->setNotification($this->version->getError(), 'error');
+			$this->editTask();
+			return;
+		}
+		
+		// make sure page belongs to group
+		if ($task == 'update' && !$this->page->belongsToGroup($this->group))
+		{
+			JError::raiseError(403, 'You are not authorized to modify this page.');
+		}
+		
+		// set page vars
+		$this->page->set('gidNumber', $this->group->get('gidNumber'));
+		$this->page->set('alias', $this->page->uniqueAlias());
+		
+		// save page settings
+		if (!$this->page->store(true))
+		{
+			$this->setNotification($this->page->getError(), 'error');
+			$this->editTask();
+			return;
+		}
+		
+		// do we need to reorder
+		if ($ordering !== null)
+		{
+			$move = (int) $ordering - (int) $this->page->get('ordering');
+			$this->page->move($move);
+		}
+		
+		// set page version vars
+		$this->version->set('pageid', $this->page->get('id'));
+		$this->version->set('version', $this->version->get('version') + 1);
+		$this->version->set('created', JFactory::getDate()->toSql());
+		$this->version->set('created_by', $this->juser->get('id'));
+		$this->version->set('approved', 1);
+		$this->version->set('approved_on', JFactory::getDate()->toSql());
+		$this->version->set('approved_by', $this->juser->get('id'));
+		
+		// if we have php or script tags we must get page approved by admin
+		if (strpos($this->version->get('content'), '<?') !== false ||
+			strpos($this->version->get('content'), '<?php') !== false ||
+			strpos($this->version->get('content'), '<script') !== false)
+		{
+			$this->version->set('approved', 0);
+			$this->version->set('approved_on', NULL);
+			$this->version->set('approved_by', NULL);
+		}
+		
+		// save version settings
+		if (!$this->version->store(true, $this->group->isSuperGroup()))
+		{
+			$this->setNotification($this->version->getError(), 'error');
+			$this->editTask();
+			return;
+		}
+		
+		// log edit
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_page_saved',
+			'comments'  => array('page' => $page, 'version' => $version)
+		));
+		
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+			JText::_('The group page was successfully saved.'),
+			'passed'
+		);
+	}
+	
+	/**
+	 * Delete Page Module
+	 *
+	 * @return void
+	 */
+	public function deleteTask()
+	{
+		// get request vars
+		$ids = JRequest::getVar('id', array());
+		
+		// delete each module
+		foreach ($ids as $pageid)
+		{
+			// load modules
+			$page = new GroupsModelPage( $pageid );
+			
+			//set to deleted state
+			$page->set('state', $page::APP_STATE_DELETED);
+			
+			// save module
+			if (!$page->store(true))
+			{
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+					$page->getError(),
+					'error'
+				);
+				return;
+			}
+		}
+		
+		// log change
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_page_deleted',
+			'comments'  => $ids
+		));
+		
+		//inform user & redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+			JText::_('The page modules were successfully deleted.'),
+			'passed'
+		);
+	}
+	
+	
+	public function scanTask()
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
+			return;
+		}
+		
+		// get request vars
+		$id = JRequest::getInt('id', 0);
+		
+		// load page
+		$page = new GroupsModelPage( $id );
+		
+		// load current version
+		$currentVersion = $page->version();
+		
+		// make sure version is unapproved
+		if ($currentVersion->get('approved') == 1)
+		{
+			//inform user & redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('The page is already approved'),
+				'warning'
+			);
+			return;
+		}
+		
+		// get flags
+		$flags = GroupsHelperPages::getCodeFlags();
+		
+		// get current versions content by lines
+		$content = explode("\n", $currentVersion->get('content'));
+		
+		// get any issues
+		$issues->count = 0;
+		foreach ($flags as $lang => $flag)
+		{
+			// define level patterns
+			$severe   = implode('|', $flag['severe']);
+			$elevated = implode('|', $flag['elevated']);
+			$minor    = implode('|', $flag['minor']);
+			
+			// do case insensitive search for any flags
+			$issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : array();
+			$issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : array();
+			$issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : array();
+			
+			// add to issues count
+			$issues->count += count($issues->$lang->severe) + count($issues->$lang->elevated) + count($issues->$lang->minor);
+		}
+		
+		// handle issues
+		if ($issues->count != 0)
+		{
+			$view = new JView(array(
+				'name' => 'pages',
+				'layout' => 'scan'
+			));
+			$view->issues = $issues;
+			$view->page = $page;
+			$view->option = $this->_option;
+			$view->controller = $this->_controller;
+			$view->group = $this->group;
+			$this->_getStyles();
+			$view->display();
+			return;
+		}
+		
+		// marked as scanned for potential issues!
+		$currentVersion->set('scanned', 1);
+		$currentVersion->store(true, $this->group->isSuperGroup());
+		
+		// were all set
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+			JText::_('The page content contained no potential XSS issues!'),
+			'passed'
+		);
+	}
+	
+	
+	/**
+	 * Check for PHP Errors
+	 *
+	 * @return void
+	 */
+	public function errorsTask()
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
+			return;
+		}
+		
+		// get request vars
+		$id = JRequest::getInt('id', 0);
+		
+		// load page
+		$page = new GroupsModelPage( $id );
+		
+		// load current version
+		$currentVersion = $page->version();
+		
+		// make sure version is unapproved
+		if ($currentVersion->get('approved') == 1)
+		{
+			//inform user & redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('The page is already approved'),
+				'warning'
+			);
+			return;
+		}
+		
+		// create file for page
+		$file    = JPATH_ROOT . DS . 'tmp' . DS . 'group_page_' . $page->get('id') . '.php';
+		$content = $currentVersion->get('content');
+		file_put_contents($file, $content);
+		
+		// basic php lint command
+		$cmd = 'php -l ' . escapeshellarg($file) . ' 2>&1';
+		
+		// run lint
+		exec($cmd, $output, $return);
+		
+		// do we get errors?
+		if ($return != 0)
+		{
+			$view = new JView(array(
+				'name' => 'pages',
+				'layout' => 'errors'
+			));
+			$view->error = (isset($output[0])) ? $output[0] : '';
+			$view->error = str_replace($file, '"' . $page->get('title') . '"', $view->error);
+			$view->page = $page;
+			$view->option = $this->_option;
+			$view->controller = $this->_controller;
+			$view->group = $this->group;
+			$this->_getStyles();
+			$view->display();
+			return;
+		}
+		
+		// marked as checked for errors!
+		$currentVersion->set('checked_errors', 1);
+		$currentVersion->store(true, $this->group->isSuperGroup());
+		
+		// delete temp file
+		register_shutdown_function(function($file){
+			unlink($file);
+		}, $file);
+		
+		// were all set
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+			JText::_('The page content contained no PHP errors!'),
+			'passed'
+		);
+	}
+	
+	
+	public function markScannedTask()
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
+			return;
+		}
+		
+		//get request vars
+		$page = JRequest::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		
+		// load page
+		$groupPage = new GroupsModelPage( $page['id'] );
+		
+		// load current version
+		$currentVersion = $groupPage->version();
+		
+		// set the new content 
+		$currentVersion->set('content', $page['content']);
+		$currentVersion->set('scanned', 1);
+		$currentVersion->store(true, $this->group->isSuperGroup());
+		
+		// inform user and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+			JText::_('The page was successfully scanned!'),
+			'passed'
+		);
+	}
+	
+	public function scanAgainTask()
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
+			return;
+		}
+		
+		//get request vars
+		$page = JRequest::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		
+		// load page
+		$groupPage = new GroupsModelPage( $page['id'] );
+		
+		// load current version
+		$currentVersion = $groupPage->version();
+		
+		// set the new content 
+		$currentVersion->set('content', $page['content']);
+		$currentVersion->store(true, $this->group->isSuperGroup());
+		
+		//go back to error checker
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id')
+		);
+	}
+	
+	
+	/**
+	 * Check for Errors again
+	 *
+	 * @return void
+	 */
+	public function errorsCheckAgainTask()
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
+			return;
+		}
+		
+		//get request vars
+		$page = JRequest::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		
+		// load page
+		$groupPage = new GroupsModelPage( $page['id'] );
+		
+		// load current version
+		$currentVersion = $groupPage->version();
+		
+		// set the new content 
+		$currentVersion->set('content', $page['content']);
+		$currentVersion->store(true, $this->group->isSuperGroup());
+		
+		//go back to error checker
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id')
+		);
+	}
+	
+	
+	/**
+	 * Approve a group page
+	 *
+	 * @return void
+	 */
+	public function approveTask()
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
+			return;
+		}
+		
+		// get request vars
+		$id = JRequest::getInt('id', 0);
+		
+		// load page
+		$page = new GroupsModelPage( $id );
+		
+		// load current version
+		$currentVersion = $page->version();
+		
+		// make sure version is unapproved
+		if ($currentVersion->get('approved') == 1)
+		{
+			//inform user & redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('The page is already approved'),
+				'warning'
+			);
+			return;
+		}
+		
+		// set approved and approved date and approver
+		$currentVersion->set('approved', 1);
+		$currentVersion->set('approved_on', JFactory::getDate()->toSql());
+		$currentVersion->set('approved_by', $this->juser->get('id'));
+		
+		// save version with approved status
+		if (!$currentVersion->store(true, $this->group->isSuperGroup()))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				$currentVersion->getError(),
+				'error'
+			);
+			return;
+		}
+		
+		// log edit
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_page_approved',
+			'comments'  => array($page->get('id'))
+		));
+		
+		// inform user and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+			JText::_('The page was successfully approved!'),
+			'passed'
+		);
+	}
+	
+	/**
+	 * Output raw content 
+	 * 
+	 * @param     $escape    Escape outputted content
+	 * @return    string     HTML content
+	 */
+	public function rawTask( $escape = true )
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
+			return;
+		}
+		
+		// get reqest vars
+		$pageid  = JRequest::getInt('pageid', 0, 'get');
+		$version = JRequest::getInt('version', null, 'get');
+		
+		// page object
+		$page = new GroupsModelPage( $pageid );
+		
+		// make sure page belongs to this group
+		if (!$page->belongsToGroup($this->group))
+		{
+			JError::raiseError(403, 'You are not authorized to view this page.');
+		}
+		
+		// load page version
+		$pageVersion = $page->version($version);
+		
+		// do we have a page version
+		if ($pageVersion === null)
+		{
+			JError::raiseError(404, 'Page Version Not Found');
+		}
+		
+		// output page version
+		if ($escape)
+		{
+			echo '<pre>' . $this->view->escape($pageVersion->get('content')) . '</pre>';
 		}
 		else
 		{
-			$page['url'] = strtolower(str_replace(' ', '_', trim($page['title'])));
+			echo $pageVersion->get('content');
 		}
-
-		// remove unwanted chars
-		$invalid_chrs = array("?","!",">","<",",",".",";",":","`","~","@","#","$","%","^","&","*","(",")","-","=","+","/","\/","|","{","}","[","]");
-		$page['url'] = str_replace("'", "", $page['url']);
-		$page['url'] = str_replace('"', '', $page['url']);
-		$page['url'] = str_replace($invalid_chrs, '', $page['url']);
-
-		// save page
-		if (!$Gpage->save($page))
+		exit();
+	}
+	
+	
+	/**
+	 * Preview Group Page
+	 *
+	 * @return void
+	 */
+	public function previewTask()
+	{
+		// make sure we are approvers
+		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->addComponentMessage(JText::_('Error occurred'), 'error');
-			$this->editTask($Gpage);
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+				JText::_('Pages can only be approved by authorized approvers.'),
+				'error'
+			);
 			return;
 		}
-
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid
-		);
+		
+		// get reqest vars
+		$pageid  = JRequest::getInt('pageid', 0, 'get');
+		
+		// page object
+		$page = new GroupsModelPage( $pageid );
+		
+		// make sure page belongs to this group
+		if (!$page->belongsToGroup($this->group))
+		{
+			JError::raiseError(403, 'You are not authorized to view this page.');
+		}
+		
+		// load page version
+		$content = $page->version()->get('content');
+		
+		// create new group document helper
+		$groupDocument = new GroupsHelperDocument();
+		
+		// strip out scripts & php tags if not super group
+		if (!$this->group->isSuperGroup())
+		{
+			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+		}
+		
+		// are we allowed to display group modules
+		if(!$this->group->isSuperGroup() && !$this->config->get('page_modules', 0))
+		{
+			$groupDocument->set('allowed_tags', array());
+		}
+		
+		// set group doc needed props
+		// parse and render content
+		$groupDocument->set('group', $this->group)
+			          ->set('page', $page)
+			          ->set('document', $content)
+			          ->parse()
+			          ->render();
+		
+		// get doc content
+		$content = $groupDocument->output();
+		
+		// only parse php if Super Group
+		if ($this->group->isSuperGroup())
+		{
+			// run as closure to ensure no $this scope
+			$eval = function() use ($content)
+			{
+				ob_start();
+				unset($this);
+				eval("?> $content <?php ");
+				$content = ob_get_clean();
+				return $content;
+			};
+			$content = $eval();
+		}
+		
+		// get group css 
+		$pageCss = GroupsHelperView::GetPageCss($this->group);
+		
+		$css = '';
+		foreach($pageCss as $p)
+		{
+			$css .= '<link rel="stylesheet" href="'.$p.'" />';
+		}
+		
+		// output html
+		$html = '<!DOCTYPE html>
+				<html>
+					<head>
+						<title>'.$this->group->get('description').'</title>
+						'.$css.'
+					</head>
+					<body>
+						'. $content .'
+					</body>
+				</html>';
+				
+		//echo content and exit
+		echo $html;
+		exit();
 	}
 
 	/**
@@ -260,6 +856,18 @@ class GroupsControllerPages extends Hubzero_Controller
 	{
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . JRequest::getVar('gid', '')
+		);
+	}
+	
+	/**
+	 * Manage group
+	 *
+	 * @return void
+	 */
+	public function manageTask()
+	{
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=manage&task=edit&id[]=' . JRequest::getVar('gid', '')
 		);
 	}
 }

@@ -31,8 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Get Option and Defautl to com_groups
 $option = JRequest::getCmd('option', 'com_groups');
 
+// Groups ACL
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -60,28 +62,32 @@ else
 	require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'group.php');
 }
 
-// Include scripts
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'groups.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reason.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'pages.php');
-
-//Hubzero Libraries
+// Hubzero Libraries
 ximport('Hubzero_Group');
 ximport('Hubzero_Group_Helper');
 ximport('Hubzero_User_Helper');
 
+// Include tables
+require_once JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php';
+require_once JPATH_COMPONENT . DS . 'tables' . DS . 'reason.php';
+
+// include models
+require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'log' . DS . 'archive.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'page' . DS . 'archive.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'module' . DS . 'archive.php';
+
+// Include Helpers
+require_once JPATH_COMPONENT . DS . 'helpers' . DS . 'groups.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'view.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'document.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'pages.php';
+
+// build controller path
 $controllerName = JRequest::getCmd('controller', 'manage');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'manage';
 }
-
-JSubMenuHelper::addEntry(
-	JText::_('Manage'), 
-	'index.php?option=' .  $option . '&controller=manage', 
-	$controllerName == 'manage'
-);
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'GroupsController' . ucfirst($controllerName);

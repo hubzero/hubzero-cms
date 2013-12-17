@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for logging group actions
  */
-class XGroupLog extends JTable
+class GroupsTableLog extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -48,7 +48,7 @@ class XGroupLog extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $gid       = NULL;
+	var $gidNumber = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
@@ -62,7 +62,7 @@ class XGroupLog extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $uid       = NULL;
+	var $userid    = NULL;
 
 	/**
 	 * varchar(50)
@@ -103,141 +103,65 @@ class XGroupLog extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->gid) == '') 
+		if (trim($this->gidNumber) == '') 
 		{
 			$this->setError(JText::_('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
 			return false;
 		}
-
-		if (trim($this->uid) == '') 
-		{
-			$this->setError(JText::_('GROUPS_LOGS_MUST_HAVE_USER_ID'));
-			return false;
-		}
-
+		
 		return true;
 	}
-
+	
 	/**
-	 * Get logs for a group
+	 * Find all logs matching filters
 	 * 
-	 * @param      integer $gid   Group ID
-	 * @param      integer $limit Number of records to return
+	 * @param      array   $filters
 	 * @return     array
 	 */
-	public function getLogs($gid=null, $limit=5)
+	public function find( $filters = array() )
 	{
-		if (!$gid) 
-		{
-			$gid = $this->gid;
-		}
-		if (!$gid) 
-		{
-			return null;
-		}
-
-		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ORDER BY `timestamp` DESC";
-		if ($limit) 
-		{
-			$query .= " LIMIT " . $limit;
-		}
-
-		$this->_db->setQuery($query);
+		$sql  = "SELECT * FROM {$this->_tbl}";
+		$sql .= $this->_buildQuery( $filters );
+		
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-
+	
 	/**
-	 * Get a log for a group and bind to $this
+	 * Build query string for getting list or count of pages
 	 * 
-	 * @param      integer $gid   Group ID
-	 * @param      string  $which Log to get [first or last (default)]
-	 * @return     boolean True on success
+	 * @param      array   $filters
+	 * @return     string
 	 */
-	public function getLog($gid=null, $which='first')
+	private function _buildQuery( $filters = array() )
 	{
-		if (!$gid) 
+		// var to hold conditions
+		$where = array();
+		$sql   = '';
+		
+		// gidnumber
+		if (isset($filters['gidNumber']))
 		{
-			$gid = $this->gid;
+			$where[] = "gidNumber=" . $this->_db->quote( $filters['gidNumber'] );
 		}
-		if (!$gid) 
+		
+		// action
+		if (isset($filters['action']))
 		{
-			return null;
+			$where[] = "action=" . $this->_db->quote( $filters['action'] );
 		}
-
-		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ";
-		if ($which == 'first') 
+		
+		// if we have and conditions
+		if (count($where) > 0)
 		{
-			$query .= "ORDER BY `timestamp` ASC LIMIT 1";
-		} 
-		else 
-		{
-			$query .= "ORDER BY `timestamp` DESC LIMIT 1";
+			$sql = " WHERE " . implode(" AND ", $where);
 		}
-
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		
+		if (isset($filters['orderby']))
 		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
+			$sql .= " ORDER BY " . $filters['orderby'];
 		}
-	}
-
-	/**
-	 * Delete logs for a group
-	 * 
-	 * @param      integer $gid    Group ID
-	 * @return     boolean True on success
-	 */
-	public function deleteLogs($gid=null)
-	{
-		if (!$gid) 
-		{
-			$gid = $this->gid;
-		}
-		if (!$gid) 
-		{
-			return false;
-		}
-
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE gid=" . $gid);
-		if (!$this->_db->query()) 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Get a record count of logs for a group
-	 * 
-	 * @param      integer $gid    Group ID
-	 * @param      string  $action Action to filters results by
-	 * @return     integer
-	 */
-	public function logCount($gid=null, $action='')
-	{
-		if (!$gid) 
-		{
-			$gid = $this->gid;
-		}
-		if (!$gid) 
-		{
-			return null;
-		}
-
-		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE gid=$gid";
-		if ($action) 
-		{
-			$query .= " AND action='$action'";
-		}
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		
+		return $sql;
 	}
 }
-

@@ -28,7 +28,7 @@ class JRouterSite extends JRouter
 	public function parse(&$uri)
 	{
 		$vars = array();
-
+		
 		// Get the application
 		$app = JApplication::getInstance('site');
 
@@ -337,6 +337,9 @@ class JRouterSite extends JRouter
 	{
 		$vars	= array();
 		$app	= JApplication::getInstance('site');
+		
+		// Call System plugin to before parsing sef route
+		JDispatcher::getInstance()->trigger('onBeforeParseSefRoute', array($uri));
 
 		/* START: HUBzero Extension for SEF Groups */
 		$app = JFactory::getApplication();
@@ -631,6 +634,9 @@ class JRouterSite extends JRouter
 				$vars = $item->query;
 			}
 		}
+		
+		// Call System plugin to before parsing sef route
+		JDispatcher::getInstance()->trigger('onAfterParseSefRoute', array($vars));
 
 		/* START: HUBzero Extension to pass common query parameters to apache (for logging) */
 		if (!empty($vars['option']))
@@ -644,7 +650,7 @@ class JRouterSite extends JRouter
 		if (!empty($vars['id']))
 			apache_note('action',$vars['id']);
 		/* END: HUBzero Extension to pass common query parameters to apache (for logging) */
-
+		
 		return $vars;
 	}
 
@@ -654,6 +660,9 @@ class JRouterSite extends JRouter
 
 	protected function _buildSefRoute(&$uri)
 	{
+		// Call System plugin to before parsing sef route
+		JDispatcher::getInstance()->trigger('onBeforeBuildSefRoute', array($uri));
+		
 		// Get the route
 		$route = $uri->getPath();
 
@@ -776,6 +785,9 @@ class JRouterSite extends JRouter
 		//Set query again in the URI
 		$uri->setQuery($query);
 		$uri->setPath($route);
+		
+		// Call System plugin to before parsing sef route
+		JDispatcher::getInstance()->trigger('onAfterBuildSefRoute', array($uri));
 	}
 
 	protected function _processParseRules(&$uri)

@@ -55,7 +55,7 @@ if ($this->role_filter)
 		if ($role['id'] == $this->role_filter) 
 		{
 			$role_id   = $role['id'];
-			$role_name = $role['role'];
+			$role_name = $role['name'];
 			break;
 		}
 	}
@@ -69,6 +69,11 @@ $option = 'com_groups';
 				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
 					<?php echo JText::_('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
 				</a>
+				<?php if ($this->membership_control == 1 && $this->authorized == 'manager') : ?>
+					<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=addrole'); ?>">
+						<?php echo JText::_('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
+					</a>
+				<?php endif; ?>
 			</li>
 		</ul>
 	<?php } ?>
@@ -87,15 +92,16 @@ $option = 'com_groups';
 					<?php foreach ($this->member_roles as $role) { ?>
 						<?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
 						<li>
-							<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-								<?php if ($this->membership_control == 1) { ?>
-									<span class="remove-role">
-										<a href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=removerole&role='.$role['id']); ?>">x</a>
-									</span>
-								<?php } ?>	
-							<?php } ?>
+							<?php if ($this->authorized == 'manager' && $this->membership_control == 1) : ?>
+								<a class="remove-role" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=removerole&role='.$role['id']); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>">
+									<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>
+								</a>
+								<a class="edit-role" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=editrole&role='.$role['id']); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>">
+									<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>
+								</a>
+							<?php endif; ?>
 							<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>">
-								<?php echo $this->escape($role['role']); ?>
+								<?php echo $this->escape($role['name']); ?>
 							</a>
 						</li>
 					<?php } ?>
@@ -104,19 +110,6 @@ $option = 'com_groups';
 				<p class="starter"><?php echo JText::_('PLG_GROUPS_MEMBERS_NO_ROLES_FOUND'); ?></p>
 			<?php }?>
 		</div><!-- / .container -->
-		
-		<?php if ($this->membership_control == 1) { ?>
-			<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-				<div class="container" id="addrole">
-					<form name="add-role" action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=addrole'); ?>" method="post">
-						<h4><?php echo JText::_('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?></h4>
-						<input type="text" name="role">
-						<input type="submit" name="submit-role" value="Add">
-						<input type="hidden" name="gid" value="<?php echo $this->group->gidNumber; ?>" />
-					</form>
-				</div>
-			<?php } ?>
-		<?php } ?>
 	</div>
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter); ?>" method="post">
@@ -307,9 +300,9 @@ $option = 'com_groups';
 									if ($roles) {
 										$html .= '<strong>' . JText::_('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
 										foreach ($roles as $role) {
-											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['role'].'</a>';
+											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['name'].'</a>';
 
-											if ($this->authorized == 'manager' || $this->authorized == 'admin') {
+											if ($this->authorized == 'manager') {
 												if ($this->membership_control == 1) {
 													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
 												}
@@ -320,7 +313,7 @@ $option = 'com_groups';
 
 										$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'">'.substr($all_roles,2).'</span>';
 
-										if ($this->authorized == 'manager' || $this->authorized == 'admin') {
+										if ($this->authorized == 'manager') {
 											if ($this->membership_control == 1) {
 												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 											}

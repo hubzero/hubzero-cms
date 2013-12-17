@@ -134,20 +134,6 @@ class Hubzero_Group
 	private $logo = null;
 	
 	/**
-	 * Description for 'overview_type'
-	 *
-	 * @var unknown
-	 */
-	private $overview_type = null;
-	
-	/**
-	 * Description for 'overview_content'
-	 *
-	 * @var unknown
-	 */
-	private $overview_content = null;
-	
-	/**
 	 * Description for 'plugins'
 	 *
 	 * @var unknown
@@ -1161,7 +1147,7 @@ class Hubzero_Group
 		// Type 2 - Project Group
 		// Type 3 - Partner "Special" Group
 		// Type 4 - Course group
-		$gTypes = array('all', 'system', 'hub', 'project', 'partner', 'course', '0', '1', '2', '3', '4');
+		$gTypes = array('all', 'system', 'hub', 'project', 'super', 'course', '0', '1', '2', '3', '4');
 
 		$types = !empty($filters['type']) ? $filters['type'] : array('all');
 
@@ -1184,7 +1170,7 @@ class Hubzero_Group
 			//replace group type names with group type id
 			$t = str_replace('hub', 1, $t);
 			$t = str_replace('project', 2, $t);
-			$t = str_replace('partner', 3, $t);
+			$t = str_replace('super', 3, $t);
 			$t = str_replace('course', 4, $t);
 			$t = str_replace('system', 0, $t);
 			
@@ -1515,5 +1501,16 @@ class Hubzero_Group
 					AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
 		$db->setQuery($query);
 		return $db->loadResultArray();
+	}
+	
+	
+	/**
+	 * Is a group a super group?
+	 *
+	 * @return BOOL
+	 */
+	public function isSuperGroup()
+	{
+		return ($this->get('type') == 3) ? true : false;
 	}
 }

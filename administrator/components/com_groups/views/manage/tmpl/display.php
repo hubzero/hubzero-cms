@@ -74,11 +74,11 @@ function submitbutton(pressbutton)
 		<select name="type" id="filter-type">
 			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Type...'); ?></option>
 			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
+			<option value="super"<?php echo ($this->filters['type'][0] == 'super') ? ' selected="selected"' : ''; ?>>Super</option>
 <?php if ($canDo->get('core.admin')) { ?>
 			<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>System</option>
 <?php } ?>
 			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
-			<option value="partner"<?php echo ($this->filters['type'][0] == 'partner') ? ' selected="selected"' : ''; ?>>Partner</option>
 			<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
 		</select>
 		
@@ -141,7 +141,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '0': $type = 'System';  break;
 		case '1': $type = 'Hub';     break;
 		case '2': $type = 'Project'; break;
-		case '3': $type = 'Partner'; break;
+		case '3': $type = 'Super';   break;
 		case '4': $type = 'Course';  break;
 	}
 	

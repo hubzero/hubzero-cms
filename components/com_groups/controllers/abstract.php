@@ -144,7 +144,7 @@ class GroupsControllerAbstract extends Hubzero_Controller
 		}
 		
 		//add task to pathway
-		if ($this->_task && $this->_task != 'view')
+		if ($this->_task && $this->_task != 'view' && !in_array($this->_controller, array('pages', 'modules', 'categories')))
 		{
 			// if we browsing or creating a new group
 			if (in_array($this->_task, array('new', 'browse')))
@@ -167,10 +167,17 @@ class GroupsControllerAbstract extends Hubzero_Controller
 		//add active
 		if ($this->active)
 		{
-			if (in_array($this->active, array_keys($pages)))
+			// fetch the active page
+			$page = null;
+			if ($pages)
+			{
+				$page = $pages->fetch('alias', $this->active);
+			}
+			
+			if ($page !== null)
 			{
 				$pathway->addItem(
-					JText::_($pages[$this->active]['title']),
+					JText::_($page->get('title')),
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
 				);
 			}
@@ -179,6 +186,22 @@ class GroupsControllerAbstract extends Hubzero_Controller
 				$pathway->addItem(
 					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->active)),
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
+				);
+			}
+		}
+		
+		if (in_array($this->_controller, array('pages', 'modules', 'categories')))
+		{
+			$pathway->addItem(
+				JText::_('COM_GROUPS_PAGES'),
+				'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller
+			);
+			
+			if ($this->_task && $this->_task != 'view')
+			{
+				$pathway->addItem(
+					JText::_('COM_GROUPS_PAGES_'.strtoupper($this->_task)),
+					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller . '&task=' . $this->_task
 				);
 			}
 		}
@@ -211,9 +234,16 @@ class GroupsControllerAbstract extends Hubzero_Controller
 		
 		if ($this->active)
 		{
-			if (in_array($this->active, array_keys($pages)))
+			// fetch the active page
+			$page = null;
+			if ($pages)
 			{
-				$this->_title .= ' ~ ' . JText::_($pages[$this->active]['title']);
+				$page = $pages->fetch('alias', $this->active);
+			}
+			
+			if ($page !== null)
+			{
+				$this->_title .= ' ~ ' . JText::_($page->get('title'));
 			}
 			else if ($this->active != 'overview')
 			{
@@ -266,36 +296,26 @@ class GroupsControllerAbstract extends Hubzero_Controller
 		{
 			return false;
 		}
-
-		//check to see if they are a site admin
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		
+		return GroupsHelperView::authorize( $group, $checkOnlyMembership );
+	}
+	
+	/**
+	 * Check if user has role with permission to perform task
+	 * 
+	 * @param     $task    Task to be performed
+	 * @return    boolean
+	 */
+	public function _authorizedForTask( $task )
+	{
+		//load the group
+		$group = Hubzero_Group::getInstance( $this->cn );
+		if (!is_object($group))
 		{
-			if (!$checkOnlyMembership && $this->juser->authorise('core.admin', $this->_option))
-			{
-				return 'admin';
-			}
+			return false;
 		}
-		else 
-		{
-			if (!$checkOnlyMembership && $this->juser->get('usertype') == 'Super Administrator')
-			{
-				return 'admin';
-			}
-		}
-
-		//check to see if they are a group manager
-		if (in_array($this->juser->get('id'), $group->get('managers')))
-		{
-			return 'manager';
-		}
-
-		//check to see if they are a group member
-		if (in_array($this->juser->get('id'), $group->get('members')))
-		{
-			return 'member';
-		}
-
-		//return false if they are none of the above
-		return false;
+		
+		// check if user has permissions
+		return Hubzero_User_Profile::userHasPermissionForGroupAction($group, $task);
 	}
 }

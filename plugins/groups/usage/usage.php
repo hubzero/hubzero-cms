@@ -201,7 +201,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 			);
 
 			//get the group pages
-			$query = "SELECT id, title FROM #__xgroups_pages WHERE gid=" . $group->get('gidNumber');
+			$query = "SELECT id, title FROM #__xgroups_pages WHERE state=1 AND gidNumber=" . $group->get('gidNumber');
 			$database->setQuery($query);
 			$view->pages = $database->loadAssocList();
 
@@ -355,14 +355,13 @@ class plgGroupsUsage extends Hubzero_Plugin
 		{
 			return 0;
 		}
-
-		$database = JFactory::getDBO();
-
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'pages.php');
-
-		$gp = new GroupPages($database);
-
-		$pages = $gp->getPages($gid);
+		
+		// get group pages if any
+		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pages = $pageArchive->pages('list', array(
+			'gidNumber' => $gid,
+			'state'     => array(0,1),
+		));
 
 		return count($pages);
 	}
@@ -382,11 +381,11 @@ class plgGroupsUsage extends Hubzero_Plugin
 
 		if ($pageid != '') 
 		{
-			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gid=" . $gid . " AND datetime > '{$start}' AND datetime < '{$end}' AND pid={$pageid} ORDER BY datetime ASC";
+			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gidNumber=" . $gid . " AND date > '{$start}' AND date < '{$end}' AND pageid={$pageid} ORDER BY date ASC";
 		} 
 		else 
 		{
-			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gid=" . $gid . " AND datetime > '{$start}' AND datetime < '{$end}' ORDER BY datetime ASC";
+			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gidNumber=" . $gid . " AND date > '{$start}' AND date < '{$end}' ORDER BY date ASC";
 		}
 		$database->setQuery($query);
 		$views = $database->loadAssocList();
@@ -407,7 +406,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 
 			foreach ($views as $view) 
 			{
-				$t = $view['datetime'];
+				$t = $view['date'];
 
 				if ($t >= $day_s && $t <= $day_e) 
 				{

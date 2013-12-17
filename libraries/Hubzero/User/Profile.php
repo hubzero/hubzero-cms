@@ -1456,18 +1456,38 @@ class Hubzero_User_Profile extends JObject
 	 */
 	public function getGroupMemberRoles($uid, $gid)
 	{
-		$user_roles = '';
-		
-		$db =  JFactory::getDBO();
-		$sql = "SELECT r.id, r.role FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.role AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
+		$db = & JFactory::getDBO();
+		$sql = "SELECT r.id, r.name, r.permissions FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.roleid AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
 		$db->setQuery($sql);
 		
-		$roles = $db->loadAssocList();
+		return $db->loadAssocList();
+	}
+	
+	/**
+	 * Check to see if user has permission to perform task
+	 *
+	 * @param     $group     Hubzero_Group Object
+	 * @param     $action    Group Action to perform
+	 * @return    bool
+	 */
+	public function userHasPermissionForGroupAction( $group, $action )
+	{
+		//get user roles
+		$roles = self::getGroupMemberRoles( 
+			JFactory::getUser()->get('id'), 
+			$group->get('gidNumber')
+		);
 		
-		if ($roles)
+		// check to see if any of our roles for user has permission for action
+		foreach ($roles as $role)
 		{
-			return $roles;
+			$permissions = json_decode($role['permissions']);
+			if (array_key_exists($action, $permissions) && $permissions->$action == 1)
+			{
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**

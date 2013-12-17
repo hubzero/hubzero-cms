@@ -30,70 +30,271 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = GroupsHelper::getActions('group');
+// define base links
+$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn;
 
+// define title
 $text = ($this->task == 'edit' ? JText::_('Edit Page') : JText::_('New Page'));
 
+// create toolbar
+$canDo = GroupsHelper::getActions('group');
 JToolBarHelper::title(JText::_('COM_GROUPS').': <small><small>[ ' . $text . ' ]</small></small>', 'groups.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
+
+// include modal for raw version links
+JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>true));
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-100">
+<form action="<?php echo $base; ?>" method="post" name="adminForm" id="item-form">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Group Page'); ?></span></legend>
-
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="page[id]" value="<?php echo $this->page->id; ?>" />
-			<input type="hidden" name="page[gid]" value="<?php echo $this->group->get('gidNumber'); ?>" />
-
+			<legend><span><?php echo JText::_('Page Details'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
 						<td>
-							<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" />
+							<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
+						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
 						<td>
-							<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->page->url)); ?>" />
+							<input type="text" name="page[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
 						</td>
 					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Page Settings'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<?php if ($this->page->get('id')) : ?>
+						<tr>
+							<td class="key"><label for="field-order"><?php echo JText::_('Order'); ?>:</label></td>
+							<td>
+								<select name="page[ordering]">
+									<?php foreach($this->order as $k => $order) : ?>
+										<?php $sel = ($order->get('title') == $this->page->get('title')) ? 'selected="selected"' : ''; ?>
+										<option <?php echo $sel ;?> value="<?php echo $order->get('ordering'); ?>"><?php echo ($order->get('ordering') + 0) . '. '; ?><?php echo $order->get('title'); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+					<?php endif; ?>
 					<tr>
-						<td class="key"><label for="field-content"><?php echo JText::_('Content'); ?>:</label></td>
+						<td class="key"><label for="field-order"><?php echo JText::_('Category'); ?>:</label></td>
 						<td>
-							<textarea name="page[content]" id="field-content" rows="40" columns="10"><?php echo $this->escape(stripslashes($this->page->content)); ?></textarea>
+							<select name="page[category]">
+								<option value="">- Select Page Category &mdash;</option>
+								<?php foreach ($this->categories as $pageCategory) : ?>
+									<?php $sel = ($this->page->get('category') == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $pageCategory->get('id'); ?>"><?php echo $pageCategory->get('title'); ?></option>
+								<?php endforeach; ?>
+							</select>
 						</td>
 					</tr>
+					<?php if ($this->group->isSuperGroup()) : ?>
+						<tr>
+							<td class="key"><label for="field-order"><?php echo JText::_('Template'); ?>:</label></td>
+							<td>
+								<select name="page[template]">
+									<option value="">- Default</option>
+									<?php foreach ($this->pageTemplates as $name => $file) : ?>
+										<?php
+											$tmpl = str_replace('.php', '', $file);
+											$sel  = ($this->page->get('template') == $tmpl) ? 'selected="selected"' : ''; ?>
+										<option <?php echo $sel; ?> value="<?php echo $tmpl; ?>"><?php echo $name; ?></option>
+									<?php endforeach;?>
+								</select>
+							</td>
+						</tr>
+					<?php endif; ?>
 					<tr>
-						<td class="key"><label for="content"><?php echo JText::_('Active'); ?>:</label></td>
+						<td class="key"><label for="field-order"><?php echo JText::_('Home'); ?>:</label></td>
 						<td>
-							<input type="radio" name="page[active]" id="field-active_yes" value="1" <?php if ($this->page->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_yes"><?php echo JText::_('Yes'); ?></label>
-							<input type="radio" name="page[active]" id="field-active_no" value="0" <?php if (!$this->page->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_no"><?php echo JText::_('No'); ?></label>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-privacy"><?php echo JText::_('Privacy'); ?>:</label></td>
-						<td>
-							<select name="page[privacy]" id="field-privacy">
-								<option value="default" <?php if ($this->page->privacy == 'default') { echo 'selected="selected"'; } ?>><?php echo JText::_('Inherit Overview Tabs Privacy'); ?></option>
-								<option value="members" <?php if ($this->page->privacy == 'members') { echo 'selected="selected"'; } ?>><?php echo JText::_('Members Only'); ?></option>
+							<select name="page[home]">
+								<option value="0" <?php if($this->page->get('home') == 0) { echo "selected"; } ?>>Use current home page</option>
+								<option value="1" <?php if($this->page->get('home') == 1) { echo "selected"; } ?>>Set as home page</option>
 							</select>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Page Access'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key"><label for="field-state"><?php echo JText::_('Status'); ?>:</label></td>
+						<td>
+							<select name="page[state]">
+								<?php
+								$states = array(
+									1 => JText::_('Published'),
+									0 => JText::_('Unpublished'),
+									2 => JText::_('Trashed')
+								);
+								
+								foreach ($states as $k => $v)
+								{
+									$sel = ($this->page->get('state') == $k) ? 'selected="selected"' : '';
+									echo '<option '.$sel.' value="'.$k.'">'.$v.'</option>';
+								}
+								?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><label for="field-privacy"><?php echo JText::_('Privacy'); ?>:</label></td>
+						<td>
+							<?php
+								ximport("Hubzero_Group_Helper");
+								$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
+								switch($access)
+								{
+									case 'anyone':		$name = "Any HUB Visitor";		break;
+									case 'registered':	$name = "Registered HUB Users";	break;
+									case 'members':		$name = "Group Members Only";	break;
+								}
+							?>
+							<select name="page[privacy]">
+								<option value="default" <?php if($this->page->get('privacy') == "default") { echo 'selected="selected"'; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
+								<option value="members" <?php if($this->page->get('privacy') == "members") { echo 'selected="selected"'; } ?>>Private Page (Accessible to members only)</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Page Content'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td>
+							<label for="field-content"><?php echo JText::_('Content'); ?>:</label>
+							<textarea name="pageversion[content]" rows="30"><?php echo $this->escape(stripslashes($this->version->get('content'))); ?></textarea>
+							<input type="hidden" name="pageversion[version]" value="<?php echo $this->version->get('version'); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
 	</div>
-
+	
+	<div class="col width-50 fltrt">
+		<?php if ($this->page->get('id')) : ?>
+			<table class="meta" summary="Metadata">
+				<tbody>
+					<tr>
+						<th><?php echo JText::_('Owner'); ?></th>
+						<td><?php echo $this->group->get('description'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('ID'); ?></th>
+						<td><?php echo $this->page->get('id'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('Current Version'); ?></th>
+						<td><?php echo $this->version->get('version'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('Created'); ?></th>
+						<td><?php echo JHTML::_('date', $this->firstversion->get('created'), 'F j, Y @ g:ia'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('Created By'); ?></th>
+						<td>
+							<?php
+								$profile = Hubzero_User_Profile::getInstance($this->firstversion->get('created_by'));
+								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
+							?>
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('Last Modified'); ?></th>
+						<td><?php echo JHTML::_('date', $this->version->get('created'), 'F j, Y @ g:ia'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('Last Modified By'); ?></th>
+						<td>
+							<?php
+								$profile = Hubzero_User_Profile::getInstance($this->version->get('created_by'));
+								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
+							?>
+						</td>
+					</tr>
+				
+				</tbody>
+			</table>
+			
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('Page Versions'); ?></span></legend>
+			
+				<table class="admintable">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Created</th>
+							<th>Approved</th>
+							<th>View</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($this->page->versions() as $version) : ?>
+							<tr>
+								<td><?php echo $version->get('version'); ?></td>
+								<td>
+									<?php
+										$profile = Hubzero_User_Profile::getInstance($version->get('created_by'));
+										echo 'by: ' . ((is_object($profile)) ? $profile->get('name') : JText::_('System'));
+										echo '<br /> on: ' . JHTML::_('date', $version->get('created'));
+									?>
+								</td>
+								<td>
+									<?php
+										if ($version->get('approved'))
+										{
+											$profile = Hubzero_User_Profile::getInstance($version->get('approved_by'));
+											echo 'by: ' . ((is_object($profile)) ? $profile->get('name') : JText::_('System'));
+											echo '<br /> on: ' . JHTML::_('date', $version->get('approved_on'));
+										}
+										else
+										{
+											echo 'Not approved';
+										}
+									?>
+								</td>
+								<td>
+									<a class="version" href="<?php echo $base; ?>&amp;task=raw&amp;pageid=<?php echo $this->page->get('id'); ?>&amp;version=<?php echo $version->get('version'); ?>">
+										<?php echo JText::_('View Raw'); ?>
+									</a>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</fieldset>
+		<?php endif; ?>
+	</div>
+	
+	<input type="hidden" name="page[id]" value="<?php echo $this->page->get('id'); ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="task" value="save" />
 	<?php echo JHTML::_('form.token'); ?>
 </form>

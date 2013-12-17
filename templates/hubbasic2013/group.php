@@ -9,7 +9,17 @@ $v = $browser->getBrowserMajorVersion();
 
 $config = JFactory::getConfig();
 
-$template = 'hubbasic2012';
+//do we want to include jQuery
+if (JPluginHelper::isEnabled('system', 'jquery')) 
+{
+	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.jquery.js');
+} 
+else 
+{
+	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
+}
+
+$template = 'hubbasic2013';
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
@@ -36,13 +46,6 @@ $template = 'hubbasic2012';
 	<body class="contentpane" id="group-body">
 		<jdoc:include type="modules" name="notices" />
 		<jdoc:include type="modules" name="helppane" />
-		<?php if ($this->countModules('helppane')) : ?>
-					<p id="tab">
-						<a href="/support" title="<?php echo JText::_('Need help? Send a trouble report to our support team.'); ?>">
-							<span><?php echo JText::_('Need Help?'); ?></span>
-						</a>
-					</p>
-		<?php endif; ?>
 		
 		<div id="special-bar">	
 			<a href="/" id="powered">powered by <span><?php echo $config->getValue('sitename'); ?></span></a>		

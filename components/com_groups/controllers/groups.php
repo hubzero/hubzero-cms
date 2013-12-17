@@ -253,7 +253,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Ensure it's an allowable group type to display
-		if (!in_array( $this->view->group->get('type'), array(1,3) )) 
+		if (!in_array($this->view->group->get('type'), array(1,3))) 
 		{
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
@@ -291,149 +291,68 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->setNotification( JText::_('COM_GROUPS_PENDING_APPROVAL_WARNING'), 'warning' );
 		}
 		
-		//determine params parsing class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		
 		// Get the group params
-		$this->view->gparams = new $paramsClass( $this->view->group->get('params') );
+		$this->view->gparams = new JParameter( $this->view->group->get('params') );
 		
 		// Check authorization
-		$authorized = $this->_authorize();
+		$this->view->authorized = GroupsHelperView::authorize( $this->view->group );
 		
-		// Get the active tab (section)
-		$this->view->tab = JRequest::getVar('active', 'overview');
+		// get active tab
+		$this->view->tab     = GroupsHelperView::getTab( $this->view->group );
+		$this->view->trueTab = JRequest::getVar('active', 'overview');
 		
-		//create path
-		$path = $this->config->get('uploadpath');
-		if ($this->view->tab == 'wiki')
-		{
-			$path = '';
-		}
-		
-		//build wiki config
-		$wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => '',
-			'pagename' => $this->view->group->get('cn'),
-			'pageid'   => $this->view->group->get('gidNumber'),
-			'filepath' => $path,
-			'domain'   => $this->view->group->get('cn')
-		);
-		
-		//create wiki parse
-		ximport('Hubzero_Wiki_Parser');
-		$p = Hubzero_Wiki_Parser::getInstance();
-
-		// Get the group pages if any
-		$GPages = new GroupPages( $this->database );
-		$this->view->pages = $GPages->getPages( $this->view->group->get('gidNumber'), true );
-
-		if (in_array($this->view->tab, array_keys($this->view->pages)))
-		{
-			$wikiconfig['pagename'] .= DS . $this->view->tab;
-		}
-
-		// Push some vars to the group pages
-		$GPages->parser 	= $p;
-		$GPages->config 	= $wikiconfig;
-		$GPages->group 		= $this->view->group;
-		$GPages->authorized = $authorized;
-		$GPages->tab 		= $this->view->tab;
-		$GPages->pages 		= $this->view->pages;
-
-		// Get the content to display group pages
-		$group_overview = $GPages->displayPage();
-		
-		// Incoming paging for plugins
-		$jconfig = JFactory::getConfig();
-		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$start = JRequest::getInt('limitstart', 0);
-
-		// These need to happen before plugins call as
-		// plugins push things to the title and pathway
-		// build the title
-		$this->_buildTitle( $this->view->pages );
-
-		// build pathway
-		$this->_buildPathway( $this->view->pages );
-
-		// Get plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-		
-		//get before group content
-		$this->view->beforeGroupContent = $dispatcher->trigger('onBeforeGroup', 
-			array(
-				$this->view->group,
-				$this->_option,
-				$authorized,
-			)
-		);
-		
-		// Trigger the functions that return the areas we'll be using
-		// then add overview to array
-		$this->view->hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());
-		array_unshift($this->view->hub_group_plugins, array(
-			'name'             => 'overview',
-			'title'            => 'Overview',
-			'default_access'   => 'anyone',
-			'display_menu_tab' => true
+		// get group pages if any
+		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pages = $pageArchive->pages('list', array(
+			'gidNumber' => $this->view->group->get('gidNumber'),
+			'state'     => array(0,1),
+			'orderby'   => 'ordering ASC'
 		));
-
-		// Get plugin access
-		$this->view->group_plugin_access = Hubzero_Group_Helper::getPluginAccess( $this->view->group );
-
-		// If active tab not overview and an not one of available tabs
-		if ($this->view->tab != 'overview' && !in_array($this->view->tab, array_keys($this->view->group_plugin_access))) 
-		{
-			$this->view->tab = 'overview';
-		}
-
-		// Limit the records if we're on the overview page
-		if ($this->view->tab == 'overview') 
-		{
-			$limit = 5;
-		}
-		$limit = ($limit == 0) ? 'all' : $limit;
-
-		// Get the sections
-		$this->view->sections = $dispatcher->trigger('onGroup', array(
-				$this->view->group,
-				$this->_option,
-				$authorized,
-				$limit,
-				$start,
-				$this->action,
-				$this->view->group_plugin_access,
-				array($this->view->tab)
-			)
-		);
 		
-		//only include overview if we are on that tab
-		$overviewSection = '';
+		// custom error handling for super groups
+		$this->attachCustomErrorHandler($this->view->group);
+		
+		// add the overview content
+		$overviewContent = '';
+		$activePage      = null;
 		if ($this->view->tab == 'overview')
 		{
-			$overviewSection = $group_overview;
-		}
-		// Push the overview content to the array of sections we're going to output
-		array_unshift($this->view->sections, array('html' => $overviewSection, 'metadata' => ''));
-		
-		//is this a super group?
-		if($this->view->group->get('type') == 3)
-		{
-			//use the super layout
-			$this->view->setLayout('supergroup');
+			// add home page to pages list
+			$this->addHomePage($this->view->group, $pages);
 			
-			//use group template file if we have it
-			if (is_file(JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'group.php'))
+			// fetch the active page
+			$activePage = $pages->fetch('alias', $this->view->trueTab);
+			
+			// are we on the login
+			if ($this->view->trueTab == 'login')
 			{
-				JRequest::setVar('tmpl', 'group');
+				$overviewContent = $this->superGroupLogin($this->view->group);
+			}
+			
+			// check to see if we have super group component or php page
+			if ($overviewContent == null)
+			{
+				$overviewContent = $this->superGroupComponents($this->view->group, $this->view->trueTab);
+			}
+			
+			// do we have component content
+			if ($overviewContent == null)
+			{
+				$overviewContent = $this->superGroupPhpPages($this->view->group);
+			}
+			
+			//set overview content
+			if ($overviewContent == null)
+			{
+				$overviewContent = $this->displayPage( $this->view->group, $activePage );
 			}
 		}
+		
+		// build the title
+		$this->_buildTitle( $pages );
+
+		// build pathway
+		$this->_buildPathway( $pages );
 		
 		// Push some styles to the template
 		$this->_getStyles();
@@ -442,14 +361,373 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->_getScripts('assets/js/' . $this->_name);
 		
 		//set some vars for view
-		$this->view->title = $this->_title;
-		$this->view->juser = $this->juser;
-		
-		// get view notifications
+		$this->view->title         = $this->_title;
+		$this->view->juser         = $this->juser;
+		$this->view->content       = GroupsHelperView::displaySectionsContent( $this->view->group, $overviewContent );
+		$this->view->activePage    = $activePage;
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		
+		//is this a super group?
+		if ($this->view->group->isSuperGroup())
+		{
+			//use group template file if we have it
+			if (is_file(JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'group.php'))
+			{
+				JRequest::setVar('tmpl', 'group');
+			}
+			
+			// load super group template
+			// parse & render
+			$superGroupTemplate = new GroupsHelperTemplate();
+			$superGroupTemplate->set('group', $this->view->group)
+				               ->set('tab', $this->view->trueTab)
+				               ->set('content', $this->view->content)
+				               ->set('page', $this->view->activePage)
+				               ->parse()
+				               ->render();
+			
+			// echo content & stop execution
+			return $superGroupTemplate->output(true);
+		}
 		
 		//display view
 		$this->view->display();
+	}
+	
+	/**
+	 * Display Super Group Login
+	 * 
+	 * @return     array
+	 */
+	private function superGroupLogin( $group )
+	{
+		//get user and application objects
+		$juser = JFactory::getUser();
+		$app   = JFactory::getApplication();
+		
+		// if user is already logged in go to 
+		if (!$juser->get('guest'))
+		{
+			$app->redirect(
+					JRoute::_('index.php?option=com_groups&cn='.$group->get('cn')),
+					JText::sprintf('You are already logged in as "%s" (%s).', $juser->get('name'), $juser->get('email')),
+					'warning'
+				);
+		}
+		
+		// build html to return
+		$html  = '<h2>'.JText::_('Login').'</h2>';
+		$html .= Hubzero_Module_Helper::renderModule('mod_login');
+		return $html;
+	}
+	
+	/**
+	 * Display Super Group Components
+	 * 
+	 * @return     array
+	 */
+	private function superGroupComponents( $group, $tab = '' )
+	{
+		// var to hold component content
+		$componentContent = null;
+		
+		// make sure this is a super group
+		if (!$group->isSuperGroup())
+		{
+			return $componentContent;
+		}
+		
+		// get group upload path
+		$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+		
+		// build path to group component
+		$templateComponentFolder = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'components' . DS . 'com_' . $tab;
+		$templateComponentFile   = $templateComponentFolder . DS . $tab . '.php';
+		
+		// do we have a group component?
+		if (!is_dir($templateComponentFolder) || !file_exists($templateComponentFile))
+		{
+			return $componentContent;
+		}
+		
+		// Call plugin to capture super group component route segments
+		JDispatcher::getInstance()->trigger('onBeforeRenderSuperGroupComponent', array());
+		
+		// include and render component
+		ob_start();
+		include $templateComponentFile;
+		$componentContent = ob_get_contents();
+		ob_end_clean();
+		
+		// create view object
+		$view = new JView(array(
+			'name'   => 'pages',
+			'layout' => '_view_component'
+		));
+		$view->content = $componentContent;
+		return $view->loadTemplate();
+	}
+	
+	/**
+	 * Display Super Group Pages
+	 * 
+	 * @return     array
+	 */
+	private function superGroupPhpPages( $group )
+	{
+		// var to hold content
+		$phpPageContent = null;
+		
+		// make sure this is a super group
+		if (!$group->isSuperGroup())
+		{
+			return $phpPageContent;
+		}
+		
+		// get URI path
+		$path = JURI::getInstance()->getPath();
+		$path = trim(str_replace('groups'.DS.$group->get('cn'), '', $path), DS);
+		
+		// get group upload path
+		$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+		
+		// build path to php page in template
+		$templatePhpPagePath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'pages' . DS . $path . '.php';
+		
+		// if the file is not a valid path
+		if (!is_file($templatePhpPagePath))
+		{
+			return $phpPageContent;
+		}
+		
+		// include & render php file 
+		ob_start();
+		include $templatePhpPagePath;
+		$phpPageContent = ob_get_contents();
+		ob_end_clean();
+		
+		// create view object
+		$view = new JView(array(
+			'name'   => 'pages',
+			'layout' => '_view_php'
+		));
+		$view->content = $phpPageContent;
+		return $view->loadTemplate();
+	}
+	
+	/**
+	 * Attach Custom Error Handler/Page if we can
+	 * 
+	 * @return     array
+	 */
+	public function attachCustomErrorHandler( $group )
+	{
+		// are we a super group?
+		// and do we have an error template?
+		if (!$group->isSuperGroup() || !GroupsHelperTemplate::hasTemplate($group, 'error'))
+		{
+			return;
+		}
+		
+		// attach custom error handler
+		JError::setErrorHandling(E_ERROR, 'callback', array($this, 'handleCustomError'));
+	}
+	
+	
+	/**
+	 * Custom Error Callback, Builds custom error page for super groups
+	 * 
+	 * @return     array
+	 */
+	public function handleCustomError( JException $error )
+	{
+		// get error template
+		// must wrap in output buffer to capture contents since returning content through output method returns to the 
+		// method that called handleSuperGroupError with call_user_func
+		ob_start();
+		$template = new GroupsHelperTemplate();
+		$template->set('group', Hubzero_Group::getInstance(JRequest::getVar('cn', '')))
+			     ->set('tab', JRequest::getVar('active','overview'))
+			     ->set('error', $error )
+			     ->parse()
+			     ->render();
+		
+		// output content
+		$template->output(true); 
+		$errorTemplate = ob_get_clean();
+		
+		// bootstrap Jdocument
+		// add custom error template as component buffer
+		$document = JFactory::getDocument();
+		$document->addStylesheet('/components/com_groups/assets/css/groups.css');
+		$document->setBuffer($errorTemplate, array('type'=>'component', 'name' => ''));
+		$fullTemplate = $document->render(false, array('template' => 'hubbasic2013', 'file'=>'group.php'));
+		
+		// echo to screen
+		$app = JFactory::getApplication();
+		JResponse::allowCache(false);
+		JResponse::setHeader('Content-Type', 'text/html');
+		JResponse::setHeader('status', $error->getCode() . ' ' . str_replace("\n", ' ', $error->getMessage()));
+		JResponse::setBody($fullTemplate);
+		echo JResponse::toString();
+		$app->close(0);
+	}
+	
+	/**
+	 * Build default home page object,
+	 * Check to see if group have a home page override
+	 * 
+	 * @param    object    $group    Hubzero_Group Object
+	 * @param    array     $pages    \Hubzero\ItemList
+	 * @return   object
+	 */
+	private function addHomePage( $group, $pages = null )
+	{
+		// check to see if we have a home page override
+		if ($pages->fetch('home', 1) !== null)
+		{
+			$home = $pages->fetch('home', 1);
+			$home->set('alias', 'overview');
+			return;
+		}
+		
+		// create page object
+		$home = new GroupsModelPage(0);
+		$home->set('id', 0)
+			 ->set('gidNumber', $group->get('gidNumber'))
+			 ->set('title', 'Home')
+			 ->set('alias', 'overview')
+			 ->set('ordering', 0)
+			 ->set('state', 1)
+			 ->set('privacy', 'default')
+			 ->set('home', 1);
+		
+		// create page version object
+		$homeVersion = new GroupsModelPageVersion(0);
+		$homeVersion->set('pageid', 0)
+					->set('version', 1)
+					->set('approved', 1)
+					->set('content', $this->getDefaultHomePage($group));
+						
+		// add the version to home page object
+		$home->versions()->add($homeVersion);
+		
+		// add default home page to view
+		$pages->add($home);
+	}
+	
+	/**
+	 * Get Default Home Page
+	 *
+	 * @param    Object    $group    Hubzero_Group Object
+	 * @return   String
+	 */
+	public function getDefaultHomePage( $group )
+	{
+		// create view object
+		$view = new JView(array(
+			'name'   => 'pages',
+			'layout' => '_default'
+		));
+		
+		// pass vars to view
+		$view->juser = $this->juser;
+		$view->group = $group;
+		
+		// get group desc
+		$publicDesc  = $view->group->get('public_desc');
+		$privateDesc = $view->group->get('private_desc');
+		
+		// make sure we have a public desc
+		if ($publicDesc == '')
+		{
+			$publicDesc = $view->group->get('description');
+		}
+		
+		// parse descriptions
+		$view->publicDesc  = $this->_parseWiki($view->group, $publicDesc, false);
+		$view->privateDesc = $this->_parseWiki($view->group, $privateDesc, false);
+		
+		// return template
+		return $view->loadTemplate();
+	}
+	
+	
+	/**
+	 * Display Group Page
+	 *
+	 * @param    Object    $group    Hubzero_Group Object
+	 * @param    Object    $page     GroupsModelPage Object
+	 * @return   String
+	 */
+	public function displayPage( $group, $page )
+	{
+		// create view object
+		$view = new JView(array(
+			'name'   => 'pages',
+			'layout' => '_view'
+		));
+		
+		// get needed vars
+		$database    = $this->database;
+		$juser       = $this->juser;
+		$authorized  = GroupsHelperView::authorize($group);
+		$version     = ($page) ? $page->approvedVersion() : null;
+		
+		// stops from displaying pages that dont exist
+		if ($page === null)
+		{
+			JError::raiseError(404, 'Group Page Not Found');
+			return;
+		}
+		
+		// stops from displaying unpublished pages
+		// make sure we have approved version to display
+		if ($page->get('state') == $page::APP_STATE_UNPUBLISHED || $version === null)
+		{
+			// show unpublished or no version layout
+			if ($authorized == 'manager')
+			{
+				$view->setLayout('_unpublished');
+				$view->group   = $group;
+				$view->page    = $page;
+				$view->version = $version;
+				return $view->loadTemplate();
+			}
+			
+			// show 404
+			JError::raiseError(404, 'Group Page Not Found');
+			return;
+		}
+		
+		// build page hit object
+		// mark page hit
+		$groupsTablePageHit = new GroupsTablePageHit( $database );
+		$pageHit->gidNumber = $group->get('gidNumber');
+		$pageHit->pageid    = $page->get('id');
+		$pageHit->userid    = $juser->get('id');
+		$pageHit->date      = date('Y-m-d H:i:s');
+		$pageHit->ip        = $_SERVER['REMOTE_ADDR'];
+		$groupsTablePageHit->save( $pageHit );
+		
+		// parse old wiki content
+		$content = $this->_parseWiki($group, $version->get('content'), false);
+		
+		// parse php tags and modules
+		$content = $this->_parse($group, $page, $content);
+			
+		// set content
+		$version->set('content', $content);
+		
+		// set vars to view
+		$view->juser      = $juser;
+		$view->group      = $group;
+		$view->page       = $page;
+		$view->version    = $version;
+		$view->authorized = $authorized;
+		
+		// return rendered template
+		return $view->loadTemplate();
 	}
 	
 	
@@ -513,9 +791,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			{
 				$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 			}
-
+			
 			// Check authorization
-			if ($this->_authorize() != 'manager') 
+			if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.edit'))
 			{
 				$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 			}
@@ -546,6 +824,34 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->view->tags  = $this->tags;
 		}
 		
+		// Path to group assets
+		$asset_path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->view->lid . DS . 'uploads';
+		
+		// If path is a directory then load images
+		$this->view->logos = array();
+		if (is_dir($asset_path)) 
+		{
+			// Get all images that are in group asset folder and could be a possible group logo
+			$this->view->logos = JFolder::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', false, true);
+		}
+		
+		// Get plugins
+		JPluginHelper::importPlugin('groups');
+		$dispatcher =& JDispatcher::getInstance();
+
+		// Trigger the functions that return the areas we'll be using
+		// then add overview to array
+		$this->view->hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());
+		array_unshift($this->view->hub_group_plugins, array(
+			'name'             => 'overview',
+			'title'            => 'Overview',
+			'default_access'   => 'anyone', 
+			'display_menu_tab' => true
+		));
+
+		// Get plugin access
+		$this->view->group_plugin_access = Hubzero_Group_Helper::getPluginAccess($this->view->group);
+		
 		// build the title
 		$this->_buildTitle();
 
@@ -557,6 +863,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		//push scripts
 		$this->_getScripts('assets/js/' . $this->_name);
+		Hubzero_Document::addSystemScript('jquery.cycle2');
 		
 		$this->view->task = $this->_task;
 		
@@ -593,10 +900,13 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$g_join_policy  	= JRequest::getInt('join_policy', 0, 'post');
 		$tags 				= trim(JRequest::getVar('tags', ''));
 		$lid 				= JRequest::getInt('lid', 0, 'post');
+		$customization      = JRequest::getVar('group', '', 'POST', 'none', 2);
+		$plugins            = JRequest::getVar('group_plugin', '', 'POST');
+		
 		$g_discussion_email_autosubscribe = JRequest::getInt('discussion_email_autosubscribe', 0, 'post');
 		
 		//Check authorization
-		if ($this->_authorize() != 'manager' && $g_gidNumber != 0) 
+		if ($this->_authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit')) 
 		{
 			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 		}
@@ -637,6 +947,17 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->setNotification(JText::_('COM_GROUPS_SAVE_ERROR_ID_TAKEN'), 'error');
 		}
 		
+		// Get the logo
+		$logo_parts = explode("/",$customization['logo']);
+		$logo = array_pop($logo_parts);
+
+		// Plugin settings
+		$plugin_access = '';
+		foreach ($plugins as $plugin)
+		{
+			$plugin_access .= $plugin['name'] . '=' . $plugin['access'] . ',' . "\n";
+		}
+		
 		// Push back into edit mode if any errors
 		if ($this->getNotifications()) 
 		{
@@ -648,6 +969,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$group->set('restrict_msg', $g_restrict_msg);
 			$group->set('discoverability', $g_discoverability);
 			$group->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
+			$group->set('logo', $logo);
+			$ggroup->set('plugins', $plugin_access);
 			
 			$this->lid = $lid;
 			$this->group = $group;
@@ -709,19 +1032,14 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$group->set('join_policy', $g_join_policy);
 		$group->set('restrict_msg', $g_restrict_msg);
 		$group->set('discoverability', $g_discoverability);
+		$group->set('logo', $logo);
+		$group->set('plugins', $plugin_access);
 		$group->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
 		$group->update();
 		
 		// Process tags
 		$gt = new GroupsTags($this->database);
 		$gt->tag_object($this->juser->get('id'), $group->get('gidNumber'), $tags, 1, 1);
-		
-		// Log the group save
-		$log = new XGroupLog($this->database);
-		$log->gid = $group->get('gidNumber');
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate()->toSql();
-		$log->actorid = $this->juser->get('id');
 
 		// Rename the temporary upload directory if it exist
 		if ($this->_task == 'new') 
@@ -736,7 +1054,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 				}
 			}
 
-			$log->action = 'group_created';
+			$log_action = 'group_created';
 
 			// Get plugins
 			JPluginHelper::importPlugin('groups');
@@ -747,18 +1065,20 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$logs = $dispatcher->trigger('onGroupNew', array($group));
 			if (count($logs) > 0) 
 			{
-				$log->comments .= implode('', $logs);
+				$log_comments .= implode('', $logs);
 			}
 		} 
 		else 
 		{
-			$log->action = 'group_edited';
+			$log_action = 'group_edited';
 		}
 
-		if (!$log->store()) 
-		{
-			$this->setNotification($log->getError(), 'error');
-		}
+		// log invites
+		GroupsModelLog::log(array(
+			'gidNumber' => $group->get('gidNumber'),
+			'action'    => $log_action,
+			'comments'  => $log_comments
+		));
 
 		// Get the administrator e-mail
 		$emailadmin = $jconfig->getValue('config.mailfrom');
@@ -827,171 +1147,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 */
 	public function customizeTask()
 	{
-		// set the neeced layout
-		$this->view->setLayout('customize');
-		
-		// Check if they're logged in
-		if ($this->juser->get('guest')) 
-		{
-			$this->loginTask('You must be logged in to customize a group.');
-			return;
-		}
-		
-		//check to make sure we have  cname
-		if(!$this->cn)
-		{
-			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
-		}
-		
-		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
-		
-		// Ensure we found the group info
-		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
-		{
-			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
-		}
-		
-		// Check authorization
-		if ($this->_authorize() != 'manager') 
-		{
-			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
-		}
-		
-		// Path to group assets
-		$asset_path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->view->group->get('gidNumber');
-		
-		// If path is a directory then load images
-		$this->view->logos = array();
-		if (is_dir($asset_path)) 
-		{
-			// Get all images that are in group asset folder and could be a possible group logo
-			$this->view->logos = JFolder::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', false, true);
-		}
-		
-		// Get plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-
-		// Trigger the functions that return the areas we'll be using
-		// then add overview to array
-		$this->view->hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());
-		array_unshift($this->view->hub_group_plugins, array(
-			'name'             => 'overview',
-			'title'            => 'Overview',
-			'default_access'   => 'anyone', 
-			'display_menu_tab' => true
-		));
-
-		// Get plugin access
-		$this->view->group_plugin_access = Hubzero_Group_Helper::getPluginAccess($this->view->group);
-		
-		// build the title
-		$this->_buildTitle();
-		
-		// build pathway
-		$this->_buildPathway();
-		
-		// Push some styles to the template
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		
-		//set some vars for view
-		$this->view->title = 'Customize Group: ' . $this->view->group->get('description');
-		
-		// get view notifications
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
-		
-		//display view
-		$this->view->display();
-	}
-	
-	
-	/**
-	 *  Save customizations
-	 * 
-	 * @return 		void
-	 */
-	public function doCustomizeTask()
-	{
-		// Check if they're logged in
-		if ($this->juser->get('guest')) 
-		{
-			$this->loginTask('You must be logged in to customize a group.');
-			return;
-		}
-		
-		//check to make sure we have  cname
-		if(!$this->cn)
-		{
-			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
-		}
-		
-		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
-		
-		// Ensure we found the group info
-		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
-		{
-			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
-		}
-		
-		// Check authorization
-		if ($this->_authorize() != 'manager') 
-		{
-			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
-		}
-		
-		//get reqquest vars
-		$customization = JRequest::getVar('group', '', 'POST', 'none', 2);
-		$plugins = JRequest::getVar('group_plugin', '', 'POST');
-
-		// Get the logo
-		$logo_parts = explode("/",$customization['logo']);
-		$logo = array_pop($logo_parts);
-
-		// Overview type and content
-		$overview_type = (!is_numeric($customization['overview_type'])) ? 0 : $customization['overview_type'];
-		$overview_content = $customization['overview_content'];
-
-		// Plugin settings
-		$plugin_access = '';
-		foreach ($plugins as $plugin)
-		{
-			$plugin_access .= $plugin['name'] . '=' . $plugin['access'] . ',' . "\n";
-		}
-		
-		//update group
-		$this->view->group->set('logo', $logo);
-		$this->view->group->set('overview_type', $overview_type);
-		$this->view->group->set('overview_content', $overview_content);
-		$this->view->group->set('plugins', $plugin_access);
-		if (!$this->view->group->update()) 
-		{
-			$this->setNotification(JText::_('An error occurred when trying to save changes to this group.'), 'error');
-			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')) );
-			return;
-		}
-		
-		// Log the group save
-		$log = new XGroupLog($this->database);
-		$log->gid = $this->view->group->get('gidNumber');
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate();
-		$log->actorid = $this->juser->get('id');
-		$log->action = 'group_customized';
-		if (!$log->store()) 
-		{
-			$this->setNotification($log->getError(), 'error');
-		}
-		
-		// Push a success message
-		$this->setNotification(JText::sprintf('You have successfully customized the %s group.', $this->view->group->get('description')), 'passed');
-		
-		// Redirect back to the group page
-		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')) );
+		$this->setRedirect( JRoute::_('index.php?option=com_groups&cn='.$this->cn.'&task=edit') );
+		return;
 	}
 	
 	
@@ -1234,19 +1391,13 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		{
 			$this->setNotification(JText::_('COM_GROUPS_DELETE_MESSAGE_SEND_FAILURE'), 'error');
 		}
-
-		// Log the deletion
-		$xlog = new XGroupLog($this->database);
-		$xlog->gid 			= $deletedgroup->get('gidNumber');
-		$xlog->uid 			= $this->juser->get('id');
-		$xlog->timestamp 	= JFactory::getDate();
-		$xlog->action 		= 'group_deleted';
-		$xlog->comments 	= $log;
-		$xlog->actorid 		= $this->juser->get('id');
-		if (!$xlog->store()) 
-		{
-			$this->setNotification($xlog->getError(), 'error');
-		}
+		
+		// log invites
+		GroupsModelLog::log(array(
+			'gidNumber' => $deletedgroup->get('gidNumber'),
+			'action'    => 'group_deleted',
+			'comments'  => $log
+		));
 		
 		// Redirect back to the groups page
 		$this->setNotification("You successfully deleted the \"{$deletedgroup->get('description')}\" group", 'passed');
@@ -1547,16 +1698,24 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			
 			// Build the path
 			$base_path = $this->config->get('uploadpath');
-			$base_path .= DS . $group->get('gidNumber');
+			$base_path .= DS . $group->get('gidNumber') . DS . 'uploads';
 		}
 		
 		// Final path of file
 		$file_path = $base_path . DS . $file;
+		$alt_file_path = str_replace('/uploads', '', $base_path) . $file;
 		
 		// Ensure the file exist
 		if (!file_exists(JPATH_ROOT . DS . $file_path)) 
 		{
-			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_FILE_NOT_FOUND') . ' ' . $file);
+			if (!file_exists(JPATH_ROOT . DS . $alt_file_path))
+			{
+				$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_FILE_NOT_FOUND') . ' ' . $file);
+			}
+			else
+			{
+				$file_path = $alt_file_path;
+			}
 		}
 		
 		// Get some needed libraries
@@ -1576,6 +1735,99 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			exit;
 		}
 		return;
+	}
+	
+	
+	/**
+	 * Parse Wiki content
+	 *
+	 * @param    Object    $group        Hubzero_Group Object
+	 * @param    String    $content      Content to parse
+	 * @param    BOOL      $fullparse    Fully parse wiki content
+	 * @return   String
+	 */
+	private function _parseWiki( $group, $content, $fullparse = true )
+	{
+		// do we have wiki content that needs parsing?
+		if (!preg_match("/<[^<]+>/", $content, $matches))
+		{
+			// create path
+			$path = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+			
+			// build wiki config
+			$wikiConfig = array(
+				'option'   => 'com_groups',
+				'scope'    => '',
+				'pagename' => $group->get('cn'),
+				'pageid'   => $group->get('gidNumber').DS.'uploads',
+				'filepath' => $path,
+				'domain'   => $group->get('cn')
+			);
+			
+			// create wiki parser
+			ximport('Hubzero_Wiki_Parser');
+			$wikiParser =& Hubzero_Wiki_Parser::getInstance();
+			
+			// parse content
+			$content = $wikiParser->parse($content, $wikiConfig, $fullparse);
+		}
+		
+		//return content
+		return $content;
+	}
+	
+	
+	/**
+	 *  Parse Page Includes & php
+	 * 
+	 * @return 		void
+	 */
+	private function _parse( $group, $page, $document )
+	{
+		// create new group document helper
+		$groupDocument = new GroupsHelperDocument();
+	
+		// strip out scripts & php tags if not super group
+		if (!$group->isSuperGroup())
+		{
+			$document = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $document);
+			$document = preg_replace('/<\?[\s\S]*?\?>/', '', $document);
+		}
+	
+		// are we allowed to display group modules
+		if(!$group->isSuperGroup() && !$this->config->get('page_modules', 0))
+		{
+			$groupDocument->set('allowed_tags', array());
+		}
+	
+		// set group doc needed props
+		// parse and render content
+		$groupDocument->set('group', $group)
+			          ->set('page', $page)
+			          ->set('document', $document)
+			          ->parse()
+			          ->render();
+	
+		// get doc content
+		$document = $groupDocument->output();
+	
+		// only parse php if Super Group
+		if ($group->isSuperGroup())
+		{
+			// run as closure to ensure no $this scope
+			$eval = function() use ($document)
+			{
+				ob_start();
+				unset($this);
+				eval("?> $document <?php ");
+				$document = ob_get_clean();
+				return $document;
+			};
+			$document = $eval();
+		}
+	
+		// return content
+		return $document;
 	}
 	
 	

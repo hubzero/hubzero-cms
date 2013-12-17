@@ -65,11 +65,11 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
-	
+	console.log(form.getElementById('field-description').value);
 	// form field validation
-	if (form.description.value == '') {
+	if (form.getElementById('field-description').value == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
-	} else if (form.cn.value == '') {
+	} else if (form.getElementById('field-cn').value == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -96,11 +96,11 @@ function submitbutton(pressbutton)
 						<td>
 							<select name="group[type]">
 								<option value="1"<?php echo ($this->group->type == '1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('hub'); ?></option>
+								<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo JText::_('super'); ?></option>
 <?php if ($canDo->get('core.admin')) { ?>
 								<option value="0"<?php echo ($this->group->type == '0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('system'); ?></option>
 <?php } ?>
 								<option value="2"<?php echo ($this->group->type == '2') ? ' selected="selected"' : ''; ?>><?php echo JText::_('project'); ?></option>
-								<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo JText::_('special (partner group)'); ?></option>
 								<option value="4"<?php echo ($this->group->type == '4') ? ' selected="selected"' : ''; ?>><?php echo JText::_('course'); ?></option>
 							</select>
 						</td>
@@ -136,30 +136,6 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Overview Page'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="overview_type"><?php echo JText::_('COM_GROUPS_OVERVIEW_TYPE'); ?>:</label></td>
-						<td>
-							<select name="group[overview_type]" id="field-overview_type">
-								<option value="0"<?php echo ($this->group->overview_type == '0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_DEFAULT_CONTENT'); ?></option>
-								<option value="1"<?php echo ($this->group->overview_type == '1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_CUSTOM_CONTENT'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key" valign="top"><label for="overview_content"><?php echo JText::_('COM_GROUPS_OVERVIEW_CONTENT'); ?>:</label></td>
-						<td>
-							<?php echo $editor->display('group[overview_content]', $this->escape(stripslashes($this->group->overview_content)), '360px', '200px', '40', '10'); ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
-		
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta" summary="<?php echo JText::_('COM_GROUPS_META_SUMMARY'); ?>">

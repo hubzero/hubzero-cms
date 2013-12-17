@@ -41,27 +41,28 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL('com_groups', 'manage', 'users', 'manager');
 }
 
-//import needed joomla libs
-jimport('joomla.filesystem.folder');
-jimport('joomla.application.component.view');
-
-//import needed HUBzero libs
+// import needed HUBzero libs
 ximport('Hubzero_Group');
 ximport('Hubzero_Group_Helper');
 ximport('Hubzero_Group_InviteEmail');
-ximport('Hubzero_User_Helper');
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Plugin_Params');
 
-//require needed files
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'pages.php');
+// include tables
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php';
+
+// include models
+require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'log' . DS . 'archive.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'page' . DS . 'archive.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'module' . DS . 'archive.php';
+
+// include helpers
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'view.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'pages.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'document.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'template.php';
 
 //include abstract controller
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'abstract.php');
+require_once JPATH_COMPONENT . DS . 'controllers' . DS . 'abstract.php';
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'groups'));
@@ -76,4 +77,3 @@ $controllerName = 'GroupsController' . ucfirst(strtolower($controllerName));
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

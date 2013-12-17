@@ -55,7 +55,13 @@ class Hubzero_Group_Helper
 		}
 		return $group_id;
 	}
-
+	
+	
+	/**
+	 * Get popular groups
+	 *
+	 * @return    array
+	 */
 	public static function getPopularGroups($limit=0)
 	{
 		//database object
@@ -85,6 +91,12 @@ class Hubzero_Group_Helper
 		}
 	}
 	
+	
+	/**
+	 * Gets featured groups
+	 *
+	 * @return    array
+	 */
 	public static function getFeaturedGroups( $groupList )
 	{
 		//database object
@@ -116,6 +128,11 @@ class Hubzero_Group_Helper
 	}
 	
 	
+	/**
+	 * Gets groups matching tag string
+	 *
+	 * @return    string
+	 */
 	public static function getGroupsMatchingTagString( $usertags, $usergroups )
 	{
 		//database object
@@ -173,7 +190,12 @@ class Hubzero_Group_Helper
 	}
 	
 	
-	public static function listGroups( $name="", $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
+	/**
+	 * List groups in common format
+	 *
+	 * @return    string
+	 */
+	public function listGroups( $name="", $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
 	{
 		//user object
 		$user = JFactory::getUser();
@@ -343,6 +365,12 @@ class Hubzero_Group_Helper
 		return $html;
 	}
 	
+	
+	/**
+	 * Converts invite emails to true group
+	 *
+	 * @return    void
+	 */
 	public function convertInviteEmails($email, $user_id)
 	{
 		// @FIXME: Should wrap this up in a nice transaction to handle partial failures and
@@ -406,148 +434,6 @@ class Hubzero_Group_Helper
 	}
 	
 	
-	//-----
-	
-	public static function displayGroupContent($sections, $cats, $active_tab)
-	{
-		//echo "<pre>";
-		//print_r($sections);
-		//echo "</pre>";
-		for($i=0,$n=count($cats); $i < $n; $i++)
-		{
-			if($active_tab == $cats[$i]['name'])
-			{
-				return $sections[$i]['html'];
-			}
-		}
-	}
-	
-	//-----
-	
-	public static function displayGroupMenu($group, $sections, $cats, $access_levels, $group_pages, $active_tab)
-	{
-		//instantiate objects
-		$juser = JFactory::getUser();
-		
-		//variable to hold group menu html
-		$group_menu = "";
-		
-		//loop through each category and build menu item
-		foreach($cats as $k => $cat)
-		{
-			//do we want to show category in menu?
-			if($cat['display_menu_tab'])
-			{
-				//active menu item
-				$li_cls = ($active_tab == $cat['name']) ? 'active' : '';
-				
-				//menu name & title
-				$active = $cat['name'];
-				$title = $cat['title'];
-				$cls = $cat['name'];
-				
-				//get the menu items access level
-				$access = $access_levels[$cat['name']];
-				
-				//menu link
-				$link = JRoute::_('index.php?option=com_groups&cn='.$group->get("cn").'&active='.$active);
-				
-				//Are we on the overview tab with sub group pages?
-				if($cat['name'] == 'overview' && count($group_pages) > 0)
-				{
-					$true_active_tab = JRequest::getVar('active', 'overview');
-					$li_cls = ($true_active_tab != $active_tab) ? '' : $li_cls;
-					
-					if(($access == 'registered' && $juser->get('guest')) || ($access == 'members' && !in_array($juser->get("id"), $group->get('members'))))
-					{
-						$menu_item  = "<li class=\"protected group-overview-tab\"><span class=\"overview\">Overview</span>";
-					}
-					else
-					{
-						$menu_item  = "<li class=\"{$li_cls} group-overview-tab\">";
-						$menu_item .= "<a class=\"overview\" title=\"{$group->get('description')}'s Overview Page\" href=\"{$link}\">Overview</a>";
-					} 
-					
-					$menu_item .= "<ul class=\"\">";
-					
-					foreach($group_pages as $page)
-					{
-						//page access settings
-						$page_access = ($page['privacy'] == 'default') ? $access : $page['privacy'];
-						
-						//page vars
-						$title = $page['title'];
-						$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-						$link = JRoute::_('index.php?option=com_groups&cn='.$group->get("cn").'&active='.$page['url']);
-						
-						//page menu item
-						if(($page_access == 'registered' && $juser->get('guest')) || ($page_access == 'members' && !in_array($juser->get("id"), $group->get('members'))))
-						{
-							$menu_item .= "<li class=\"protected\"><span class=\"page\">{$title}</span></li>";
-						}
-						else
-						{
-							$menu_item .= "<li class=\"{$cls}\">";
-							$menu_item .= "<a href=\"{$link}\" class=\"page\" title=\"{$group->get('description')}'s {$title} Page\">{$title}</a>";
-							$menu_item .= "</li>";
-						}
-					}
-					
-					$menu_item .= "</ul>";
-					$menu_item .= "</li>";
-				}
-				else
-				{
-					if($access == 'nobody')
-					{
-						$menu_item = '';
-					}
-					elseif($access == 'members' && !in_array($juser->get("id"), $group->get('members'))) 
-					{
-						$menu_item  = "<li class=\"protected members-only group-{$cls}-tab\" title=\"This page is restricted to group members only!\">";
-						$menu_item .= "<span class=\"{$cls}\">{$title}</span>";
-						$menu_item .= "</li>";
-					}
-					elseif($access == 'registered' && $juser->get('guest'))
-					{
-						$menu_item  = "<li class=\"protected registered-only group-{$cls}-tab\" title=\"This page is restricted to registered hub users only!\">";
-						$menu_item .= "<span class=\"{$cls}\">{$title}</span>";
-						$menu_item .= "</li>";
-					}
-					else
-					{
-						//menu item meta data vars
-						$metadata = (isset($sections[$k]['metadata'])) ? $sections[$k]['metadata'] : array();
-						$meta_count = (isset($metadata['count']) && $metadata['count'] != '') ? $metadata['count'] : '';
-						$meta_alert = (isset($metadata['alert']) && $metadata['alert'] != '') ? $metadata['alert'] : '';
-
-						//create menu item
-						$menu_item  = "<li class=\"{$li_cls} group-{$cls}-tab\">";
-						$menu_item .= "<a class=\"{$cls}\" title=\"{$group->get('description')}'s {$title} Page\" href=\"{$link}\">{$title}</a>";
-						$menu_item .= "<span class=\"meta\">";
-						if($meta_count)
-						{
-							$menu_item .= "<span class=\"count\">" . $meta_count . "</span>";
-						}
-						$menu_item .= "</span>";
-						$menu_item .= $meta_alert;
-						$menu_item .= "</li>";
-					}
-				} 
-			
-				//add menu item to variable holding entire menu
-				$group_menu .= $menu_item;
-			}
-		}
-		
-		return $group_menu;
-	}
-	
-	//----
-	// New function for new groups (Chris)
-	//----
-	
-
 	/**
 	 * Short description for 'search_roles'
 	 * Long description (if any) ...
@@ -562,7 +448,7 @@ class Hubzero_Group_Helper
 		
 		$db =  JFactory::getDBO();
 		
-		$query = "SELECT uidNumber FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.gidNumber='" . $group->gidNumber . "'";
+		$query = "SELECT uidNumber FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.roleid AND r.gidNumber='" . $group->gidNumber . "'";
 		
 		$db->setQuery($query);
 		
@@ -576,11 +462,7 @@ class Hubzero_Group_Helper
 		}
 	}
 	
-	//----
-	// New function with new groups (Chris)
-	//----
 	
-
 	/**
 	 * Short description for 'getPluginAccess'
 	 * Long description (if any) ...
@@ -674,5 +556,51 @@ class Hubzero_Group_Helper
 		{
 			return $group_plugin_access;
 		}
+	}
+	
+	/**
+	 * Get Instance of Super Group Database
+	 * 
+	 * Always returns the same instance whenever this method is called
+	 * 
+	 * @param      array     Array of database options
+	 * @return     object    JDatabase Object
+	 */
+	public static function getDbo( $config = array() )
+	{
+		// 
+		$db = JDatabase::getInstance();
+		
+		// make sure we have a group object
+		if (!$group = Hubzero_Group::getInstance(JRequest::getVar('cn', '')))
+		{
+			return $db;
+		}
+		
+		// make sure we are a super group
+		if (!$group->isSuperGroup())
+		{
+			return $db;
+		}
+		
+		// load super group db config if not passed in
+		if (empty($config))
+		{
+			// build path to config file
+			$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+			$configPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'config' . DS . 'db.php';
+			
+			// make sure file exists
+			if (!file_exists($configPath))
+			{
+				return $db;
+			}
+			 
+			// include config
+			$config = include $configPath;
+		}
+		
+		// return instance of db
+		return JDatabase::getInstance($config);
 	}
 }

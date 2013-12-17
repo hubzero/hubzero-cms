@@ -30,8 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages';
 ?>
 
 <div id="content-header" class="full">
@@ -40,106 +38,76 @@ $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pa
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
+		<li class="last">
+			<a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
+				<?php echo JText::_('Back to Group'); ?>
+			</a>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<?php foreach ($this->notifications as $notification) { ?>
-		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
-	<?php } ?>
-<form name="groupPages" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
-	<div class="explaination">
-		<p>This is where you can manage any of your groups custom content pages. There is no limit to the number of custom pages and pages can contain text, images, links to files. The pages support wiki syntax that is used throughout the hub.</p>
-		<p><a class="icon-add add btn" href="<?php echo JRoute::_($base_link.'&task=addpage'); ?>">Add a New Group Page</a></p>
+	
+	<?php foreach ($this->notifications as $notification) : ?>
+		<p class="<?php echo $notification['type']; ?>">
+			<?php echo $notification['message']; ?>
+		</p>
+	<?php endforeach; ?>
+	
+	<div class="group-page-manager">
+		
+		<ul class="tabs clearfix">
+			<li><a href="#pages"><?php echo JText::_('Manage Pages'); ?></a></li>
+			<li><a href="#categories"><?php echo JText::_('Manage Page Categories'); ?></a></li>
+			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
+				<li><a href="#modules"><?php echo JText::_('Manage Modules'); ?></a></li>
+			<?php endif ;?>
+		</ul>
+		
+		<form action="index.php" method="post" id="hubForm" class="full">
+			<fieldset>
+				<!-- <legend><?php echo JText::_('Manage Pages'); ?></legend> -->
+				<?php
+					$view = new JView(array(
+						'name'   => 'pages',
+						'layout' => 'list'
+					));
+					$view->group      = $this->group;
+					$view->categories = $this->categories;
+					$view->pages      = $this->pages;
+					$view->display();
+				?>
+			</fieldset>
+
+			<fieldset>
+				<!-- <legend><?php echo JText::_('Manage Page Categories'); ?></legend> -->
+				<?php
+					$view = new JView(array(
+						'name'   => 'categories',
+						'layout' => 'list'
+					));
+					$view->group      = $this->group;
+					$view->categories = $this->categories;
+					$view->display();
+				?>
+			</fieldset>
+			
+			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
+				<fieldset>
+					<!-- <legend><?php echo JText::_('Manage Modules'); ?></legend> -->
+					<?php
+						$view = new JView(array(
+							'name'   => 'modules',
+							'layout' => 'list'
+						));
+						$view->group   = $this->group;
+						$view->modules = $this->modules;
+						$view->display();
+					?>
+				</fieldset>
+			<?php endif; ?>
+		</form>
+		
 	</div>
-	<fieldset>
-		<legend>Manage Pages</legend>
-		
-		<fieldset class="group-pages">
-			<legend>Your Active Pages</legend>
-			<table>
-				<?php if(count($this->active_pages) > 0) { ?>
-					<?php $counter = 0; ?>
-					<?php foreach($this->active_pages as $page) { ?>
-						<?php $counter++; $cls = ($counter % 2 ==0) ? 'odd' : 'even'; ?>
-						<tr class="<?php echo $cls; ?>">
-							<td class="quick">
-								<a title="Preview :: Preview this page" href="#active-page-<?php echo $counter; ?>-preview" class="quick-view tooltips" rel="">Quick View</a>
-								<div id="active-page-<?php echo $counter; ?>-preview" class="group-page-preview">
-									<h3 class="header">Page Preview: <?php echo $page['title']; ?></h3>
-									<div class="parsed">
-										<?php echo $this->parser->parse( "\n".stripslashes($page['content']), $this->wikiconfig ); ?>
-									</div>
-								</div>
-							</td>
-							<td class="title">
-								<?php echo $page['title']; ?>
-							</td>
-							<td class="order"><input type="text" disabled="disabled" value="<?php echo $page['order']; ?>" /></td>
-							<td class="up">
-								<?php if($page['order'] > 1) {?>
-									<a class="tooltips" title="Move Page Up :: Move '<?php echo $page['title']; ?>' up" href="<?php echo JRoute::_($base_link.'&task=uppage&page='.$page['id']); ?>">Up</a>
-								<?php } ?>
-							</td>
-							<td class="down">
-								<?php if($page['order'] < $this->high_order_pages) { ?>
-									<a class="tooltips" title="Move Page Down :: Move '<?php echo $page['title']; ?>' down"  href="<?php echo JRoute::_($base_link.'&task=downpage&page='.$page['id']); ?>">Down</a>
-								<?php } ?>
-							</td>
-							<td class="editpage"><a class="tooltips" title="Edit :: Edit '<?php echo $page['title']; ?>'" href="<?php echo JRoute::_($base_link.'&task=editpage&page='.$page['id']); ?>">Edit</a></td>
-							<td class="deactivate"><a class="tooltips" title="Deactivate :: Turn off '<?php echo $page['title']; ?>'" href="<?php echo JRoute::_($base_link.'&task=deactivatepage&page='.$page['id']); ?>">Deactivate</a></td>
-						</tr>
-					<?php } ?>
-				<?php } else { ?>
-					<tr>
-						<td colspan="7">Currently this group does not have an active pages.</td>
-					</tr>
-				<?php } ?>
-			</table>
-		</fieldset>
-		
-		<fieldset class="group-pages">
-			<legend>Your Inactive Pages</legend>
-			<table>
-				<?php if(count($this->inactive_pages) > 0) { ?>
-					<?php $counter = 0; ?>
-					<?php foreach($this->inactive_pages as $page) { ?>
-						<?php $counter++; $cls = ($counter % 2 ==0) ? 'odd' : 'even'; ?>
-						<tr class="<?php echo $cls; ?>">
-							<td class="quick">
-								<a title="Preview :: Preview this page" href="#inactive-page-<?php echo $counter; ?>-preview" class="quick-view tooltips" rel="">Quick View</a>
-								<div id="inactive-page-<?php echo $counter; ?>-preview" class="group-page-preview">
-									<h3 class="header">Page Preview: <?php echo $page['title']; ?></h3>
-									<div class="parsed">
-										<?php echo $this->parser->parse( "\n".stripslashes($page['content']), $this->wikiconfig ); ?>
-									</div>
-								</div>
-							</td>
-							<td class="title"><?php echo $page['title']; ?></td>
-							<td class="order"><input type="text" disabled="disabled" value="<?php echo $page['order']; ?>" /></td>
-							<td class="up">
-								<?php if($page['order'] > 1) {?>
-									<a class="tooltips" title="Move Page Up :: Move '<?php echo $page['title']; ?>' up" href="<?php echo JRoute::_($base_link.'&task=uppage&page='.$page['id']); ?>">Up</a>
-								<?php } ?>
-							</td>
-							<td class="down">
-								<?php if($page['order'] < $this->high_order_pages) { ?>
-									<a class="tooltips" title="Move Page Down :: Move '<?php echo $page['title']; ?>' down"  href="<?php echo JRoute::_($base_link.'&task=downpage&page='.$page['id']); ?>">Down</a>
-								<?php } ?>
-							</td>
-							<td class="editpage"><a class="tooltips" title="Edit :: Edit '<?php echo $page['title']; ?>'" href="<?php echo JRoute::_($base_link.'&task=editpage&page='.$page['id']); ?>">Edit</a></td>
-							<td class="activate"><a class="tooltips" title="Activate :: Turn on '<?php echo $page['title']; ?>'" href="<?php echo JRoute::_($base_link.'&task=activatepage&page='.$page['id']); ?>">Activate</a></td>
-						</tr>
-					<?php } ?>
-				<?php } else { ?>
-					<tr>
-						<td colspan="7">Currently this group does not have an inactive pages.</td>
-					</tr>
-				<?php } ?>
-			</table>
-		</fieldset>
-	</fieldset>
-	<br class="clear" />
-</form>
+	
 </div>

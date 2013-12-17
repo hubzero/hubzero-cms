@@ -41,6 +41,18 @@ $params =  JComponentHelper::getParams('com_groups');
 $allowEmailResponses = $params->get('email_comment_processing');
 $autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup');
 
+//default logo
+$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
+
+//access levels
+$levels = array(
+	//'anyone' => 'Enabled/On',
+	'anyone' => 'Any HUB Visitor',
+	'registered' => 'Only Registered User of the HUB',
+	'members' => 'Only Group Members',
+	'nobody' => 'Disabled/Off'
+);
+
 //build back link
 $host = JRequest::getVar("HTTP_HOST", "", "SERVER");
 $referrer = JRequest::getVar("HTTP_REFERER", "", "SERVER");
@@ -74,7 +86,7 @@ else
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="icon-group group btn" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+			<a class="btn icon-group" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
 		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
@@ -92,151 +104,201 @@ else
 		</p>
 	<?php endif; ?>
 	
-	<form action="index.php" method="post" id="hubForm">
-		<div class="explaination asset-browser-parent">
-			<div id="asset_browser">
-				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
-				<iframe 
-					width="100%" 
-					height="310" 
-					name="filer" 
-					id="filer" 
-					src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=filebrowser&amp;listdir=<?php echo $this->lid; ?>&amp;tmpl=component"></iframe>
-			</div><!-- / .asset_browser -->
-		</div>
-		<fieldset id="top_box">
-			<legend><?php echo JText::_('COM_GROUPS_DETAILS_FIELD_TITLE'); ?></legend>
-			
-			<?php if ($this->task != 'new') : ?>
-				<input name="cn" type="hidden" value="<?php echo $this->group->get('cn'); ?>" />
-			<?php else : ?>
-				<label class="group_cn_label">
-					<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_CN'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span>
-					<input name="cn" id="group_cn_field" type="text" size="35" value="<?php echo $this->group->get('cn'); ?>" autocomplete="off" /> 
-					<span class="hint"><?php echo JText::_('COM_GROUPS_DETAILS_FIELD_CN_HINT'); ?></span>
-				</label>
-			<?php endif; ?>
-			
-			<label>
-				<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span>
-				<input type="text" name="description" size="35" value="<?php echo stripslashes($this->group->get('description')); ?>" />
-			</label>
-			<label>
-				<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_TAGS'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
-				
-				<?php if (count($tf) > 0) {
-					echo $tf[0];
-				} else { ?>
-					<input type="text" name="tags" value="<?php echo $this->tags; ?>" />
-				<?php } ?>
-
-				<span class="hint"><?php echo JText::_('COM_GROUPS_DETAILS_FIELD_TAGS_HINT'); ?></span>
-			</label>
-
-			<label for="public_desc">
-				<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PUBLIC'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
-				
-				<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('public_desc', 'public_desc', stripslashes($this->group->get('public_desc')), '', '50', '15');
-				?>
-				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
-			</label>
-			<label for="private_desc">
-				<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PRIVATE'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
-				<?php
-					echo $editor->display('private_desc', 'private_desc', stripslashes($this->group->get('private_desc')), '', '50', '15');
-				?>
-				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
-			</label>
-		</fieldset>
-		<div class="clear"></div>
-
-		<div class="explaination asset-browser-parent">&nbsp;</div>
-		<fieldset>
-			<legend><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_TITLE'); ?></legend>
-			<p><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_DESC'); ?></p>
-			<fieldset>
-				<legend><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_LEGEND'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span></legend>
-				<label>
-					<input type="radio" class="option" name="join_policy" value="0"<?php if ($this->group->get('join_policy') == 0) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING'); ?></strong>
-					<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING_DESC'); ?></span>
-				</label>
-				<label>
-					<input type="radio" class="option" name="join_policy" value="1"<?php if ($this->group->get('join_policy') == 1) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); ?></strong>
-					<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_DESC'); ?></span>
-				</label>
-				<label class="indent">
-					<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS'); ?></strong>
-					(<?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC'); ?>) <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
-					<textarea name="restrict_msg" rows="5" cols="50"><?php echo htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></textarea>
-				</label>
-				<label>
-					<input type="radio" class="option" name="join_policy" value="2"<?php if ($this->group->get('join_policy') == 2) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING'); ?></strong>
-					<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING_DESC'); ?></span>
-				</label>
-				<label>
-					<input type="radio" class="option" name="join_policy" value="3"<?php if ($this->group->get('join_policy') == 3) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING'); ?></strong>
-					<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING_DESC'); ?></span>
-				</label>
-			</fieldset>
-		</fieldset>
-		<div class="clear"></div>
-		
-		<div class="explaination asset-browser-parent">&nbsp;</div>
-		<fieldset <?php if(!$allowEmailResponses) { echo 'id="bottom_box"'; } ?>>
-			<legend><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_TITLE'); ?></legend>
-			<p>
-				<?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_DESC'); ?>
-			</p>
-			<fieldset>
-				<legend><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_LEGEND'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span></legend>
-				<label>
-					<input type="radio" class="option" name="discoverability" value="0"<?php if ($this->group->get('discoverability') == 0) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING'); ?></strong>
-					<br /><span class="indent"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC'); ?></span>
-				</label>
-				<label>
-					<input type="radio" class="option" name="discoverability" value="1"<?php if ($this->group->get('discoverability') == 1) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING'); ?></strong>
-					<br /><span class="indent"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC'); ?></span>
-				</label>
-			</fieldset>
-		</fieldset>
-
-		<?php if ($allowEmailResponses) : ?>
-			<div class="explaination asset-browser-parent">&nbsp;</div>
-			<fieldset id="bottom_box">
-			<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_TITLE'); ?></legend>
-			<p><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_DESC'); ?></p>
+	<form action="index.php" method="post" id="hubForm" class="full stepper">
+		<div class="grid">
+			<div class="col span8">
 				<fieldset>
-					<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_SECTION_LEGEND'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span></legend>
+					<legend><?php echo JText::_('COM_GROUPS_DETAILS_FIELD_TITLE'); ?></legend>
+
+					<?php if ($this->task != 'new') : ?>
+						<input name="cn" type="hidden" value="<?php echo $this->group->get('cn'); ?>" />
+					<?php else : ?>
+						<label class="group_cn_label">
+							<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_CN'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span>
+							<input name="cn" id="group_cn_field" type="text" size="35" value="<?php echo $this->group->get('cn'); ?>" autocomplete="off" /> 
+							<span class="hint"><?php echo JText::_('COM_GROUPS_DETAILS_FIELD_CN_HINT'); ?></span>
+						</label>
+					<?php endif; ?>
 					<label>
-						<input type="checkbox" class="option" name="discussion_email_autosubscribe" value="1"
-							<?php if ($this->group->get('discussion_email_autosubscribe') == 1 || $autoEmailResponses) { echo ' checked="checked"'; } ?> /> 
-						<strong><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE'); ?></strong> <br />
-						<span class="indent">
-							<?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_FORUM_AUTO_SUBSCRIBE_NOTE'); ?>
-						</span>
+						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span>
+						<input type="text" name="description" size="35" value="<?php echo stripslashes($this->group->get('description')); ?>" />
+					</label>
+					<label>
+						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_TAGS'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
+						<?php if (count($tf) > 0) {
+							echo $tf[0];
+						} else { ?>
+							<input type="text" name="tags" value="<?php echo $this->tags; ?>" />
+						<?php } ?>
+
+						<span class="hint"><?php echo JText::_('COM_GROUPS_DETAILS_FIELD_TAGS_HINT'); ?></span>
+					</label>
+
+					<label for="public_desc">
+						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PUBLIC'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
+
+						<?php
+							ximport('Hubzero_Wiki_Editor');
+							$editor =& Hubzero_Wiki_Editor::getInstance();
+							echo $editor->display('public_desc', 'public_desc', stripslashes($this->group->get('public_desc')), '', '50', '8');
+						?>
+						<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+					</label>
+					<label for="private_desc">
+						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PRIVATE'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
+						<?php
+							echo $editor->display('private_desc', 'private_desc', stripslashes($this->group->get('private_desc')), '', '50', '8');
+						?>
+						<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 					</label>
 				</fieldset>
-			</fieldset>
-		<?php endif; ?>
-		
-		<div class="clear"></div>
-		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
-		<input type="hidden" name="lid" value="<?php echo $this->lid; ?>" />
-		<input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber'); ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="task" value="save" />
+				
+				<?php if ($this->task != 'new' && !$this->group->isSuperGroup()) : ?>
+					<fieldset>
+						<legend>Logo</legend>
+						<p>Upload your logo using the file upload browser to the right then select it in the drop down below.</p>
+						<label id="group-logo-label">
+							<select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>">
+								<option value="">Select a group logo...</option>
+								<?php foreach($this->logos as $logo) { ?>
+									<?php 
+										$remove = JPATH_SITE . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
+										$sel = (str_replace($remove,"",$logo) == $this->group->get('logo')) ? 'selected' : '';
+									?>
+									<option <?php echo $sel; ?> value="<?php echo str_replace(JPATH_SITE,"",$logo); ?>"><?php echo str_replace($remove,"",$logo); ?></option>
+								<?php } ?>
+							</select>
+						</label>
+						<label>
+							<div class="preview" id="logo">
+								<div id="logo_picked">
+									<?php if($this->group->get('logo')) { ?>
+										<img src="/site/groups/<?php echo $this->group->get('gidNumber'); ?>/uploads/<?php echo $this->group->get('logo'); ?>" alt="<?php echo $this->group->get('cn') ?>" />
+									<?php } else { ?>
+										<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
+									<?php } ?>
+								</div>
+							</div>
+						</label>
+					</fieldset>
+				<?php endif; ?>
+				
+				<fieldset>
+					<legend><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_TITLE'); ?></legend>
+					<p><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_DESC'); ?></p>
+					<fieldset>
+						<legend><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_LEGEND'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span></legend>
+						<label>
+							<input type="radio" class="option" name="join_policy" value="0"<?php if ($this->group->get('join_policy') == 0) { echo ' checked="checked"'; } ?> /> 
+							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING'); ?></strong>
+							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING_DESC'); ?></span>
+						</label>
+						<label>
+							<input type="radio" class="option" name="join_policy" value="1"<?php if ($this->group->get('join_policy') == 1) { echo ' checked="checked"'; } ?> /> 
+							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); ?></strong>
+							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_DESC'); ?></span>
+						</label>
+						<label class="indent">
+							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS'); ?></strong>
+							(<?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC'); ?>) <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
+							<textarea name="restrict_msg" rows="5" cols="50"><?php echo htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></textarea>
+						</label>
+						<label>
+							<input type="radio" class="option" name="join_policy" value="2"<?php if ($this->group->get('join_policy') == 2) { echo ' checked="checked"'; } ?> /> 
+							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING'); ?></strong>
+							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING_DESC'); ?></span>
+						</label>
+						<label>
+							<input type="radio" class="option" name="join_policy" value="3"<?php if ($this->group->get('join_policy') == 3) { echo ' checked="checked"'; } ?> /> 
+							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING'); ?></strong>
+							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING_DESC'); ?></span>
+						</label>
+					</fieldset>
+				</fieldset>
+				
+				<fieldset>
+					<legend><?php echo JText::_('COM_GROUPS_PRIVACY_SETTINGS_TITLE'); ?></legend>
+					<p><?php echo JText::_('COM_GROUPS_PRIVACY_SETTINGS_DESC'); ?></p>
+					<fieldset>
+						<legend><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_LEGEND'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span></legend>
+						<label>
+							<input type="radio" class="option" name="discoverability" value="0"<?php if ($this->group->get('discoverability') == 0) { echo ' checked="checked"'; } ?> /> 
+							<strong><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING'); ?></strong>
+							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC'); ?></span>
+						</label>
+						<label>
+							<input type="radio" class="option" name="discoverability" value="1"<?php if ($this->group->get('discoverability') == 1) { echo ' checked="checked"'; } ?> /> 
+							<strong><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING'); ?></strong>
+							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC'); ?></span>
+						</label>
+					</fieldset>
+					
+					<fieldset>
+						<legend><?php echo JText::_('COM_GROUPS_ACCESS_SETTINGS_TITLE'); ?></legend>
+						<p><?php echo JText::_('COM_GROUPS_ACCESS_SETTINGS_DESC'); ?></p>
+
+						<fieldset class="preview">
+							<legend>Set Permissions for each Tab</legend>
+							<ul id="access">
+								<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
+								<?php for($i=0; $i<count($this->hub_group_plugins); $i++) { ?>
+									<?php if ($this->hub_group_plugins[$i]['display_menu_tab']) { ?>
+										<li class="group_access_control_<?php echo strtolower($this->hub_group_plugins[$i]['title']); ?>">
+											<input type="hidden" name="group_plugin[<?php echo $i; ?>][name]" value="<?php echo $this->hub_group_plugins[$i]['name']; ?>">
+											<span class="menu_item_title"><?php echo $this->hub_group_plugins[$i]['title']; ?></span>
+											<select name="group_plugin[<?php echo $i; ?>][access]">
+												<?php foreach($levels as $level => $name) { ?>
+													<?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
+													<?php if(($this->hub_group_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_group_plugins[$i]['name'] != 'overview') { ?>
+														<option <?php echo $sel; ?> value="<?php echo $level; ?>"><?php echo $name; ?></option>
+													<?php } ?>
+												<?php } ?>
+											</select>
+										</li>
+									<?php } ?>
+								<?php } ?>
+							</ul>
+						</fieldset>
+					</fieldset>
+				</fieldset>
+				
+				<?php if ($allowEmailResponses) : ?>
+					<fieldset>
+					<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_TITLE'); ?></legend>
+					<p><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_DESC'); ?></p>
+						<fieldset>
+							<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_SECTION_LEGEND'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span></legend>
+							<label>
+								<input type="checkbox" class="option" name="discussion_email_autosubscribe" value="1"
+									<?php if ($this->group->get('discussion_email_autosubscribe') == 1 || $autoEmailResponses) { echo ' checked="checked"'; } ?> /> 
+								<strong><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE'); ?></strong> <br />
+								<span class="indent">
+									<?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_FORUM_AUTO_SUBSCRIBE_NOTE'); ?>
+								</span>
+							</label>
+						</fieldset>
+					</fieldset>
+				<?php endif; ?>
+			</div>
+			
+			<div class="col span4 omega floating-iframe-col">
+				<?php if ($this->group->get('gidNumber')) : ?>
+					<div class="floating-iframe-container">
+						<iframe class="floating-iframe" src="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('gidNumber').'&controller=media&task=filebrowser&tmpl=component'); ?>"></iframe>
+					</div>
+				<?php else : ?>
+					<p><em>Images &amp; files can be uploaded here once the group has been created.</em></p>
+				<?php endif; ?>
+			</div>
+		</div>
 		
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('COM_GROUPS_EDIT_SUBMIT_BTN_TEXT'); ?>" />
 		</p>
+		
+		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
+		<input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber'); ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="task" value="save" />
 	</form>
 </div><!-- / .section -->

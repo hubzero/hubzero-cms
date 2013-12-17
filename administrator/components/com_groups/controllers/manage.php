@@ -102,7 +102,7 @@ class GroupsControllerManage extends Hubzero_Controller
 					//0,  No system groups 
 					1,  // hub
 					2,  // project 
-					3   // partner
+					3   // super
 				);
 			}
 		}
@@ -312,9 +312,14 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_INVALID_ID'));
 		}
-		if (Hubzero_Group::exists($g['cn'], true))
+		
+		//only check if cn exists if we are creating or have changed the cn
+		if ($this->_task == 'new' || $group->get('cn') != $g['cn'])
 		{
-			$this->setError(JText::_('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
+			if (Hubzero_Group::exists($g['cn'], true))
+			{
+				$this->setError(JText::_('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
+			}
 		}
 		
 		// Push back into edit mode if any errors
@@ -383,19 +388,23 @@ class GroupsControllerManage extends Hubzero_Controller
 		$group->set('private_desc', $g['private_desc']);
 		$group->set('restrict_msg', $g['restrict_msg']);
 		$group->set('logo', $g['logo']);
-		$group->set('overview_type', $g['overview_type']);
-		$group->set('overview_content', $g['overview_content']);
 		$group->set('plugins', $g['plugins']);
 		$group->set('params', $params);
-
 		$group->update();
-
+		
+		// log edit
+		GroupsModelLog::log(array(
+			'gidNumber' => $group->get('gidNumber'),
+			'action'    => 'group_edited',
+			'comments'  => 'edited by administrator'
+		));
+		
 		// handle special groups
-		if ($this->_isSpecial($group))
+		if ($group->isSuperGroup())
 		{
-			$this->_handleSpecialGroup($group);
+			$this->_handleSuperGroup($group);
 		}
-
+		
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -404,64 +413,59 @@ class GroupsControllerManage extends Hubzero_Controller
 	}
 
 	/**
-	 * Check if a group is special or not
-	 *
-	 * @param     object $group Hubzero_Group
-	 * @return    void
-	 */
-	private function _isSpecial($group)
-	{
-		return ($group->get('type') == 3) ? true : false;
-	}
-
-	/**
 	 * Generate default template files for special groups
 	 *
 	 * @param     object $group Hubzero_Group
 	 * @return    void
 	 */
-	private function _handleSpecialGroup($group)
+	private function _handleSuperGroup($group)
 	{
 		//get the upload path for groups
-		$upload_path = trim($this->config->get('uploadpath', '/site/groups'), DS);
-
-		//path to the template
-		$template_path = JPATH_ROOT . DS . $upload_path . DS . $group->get('gidNumber') . DS . 'template';
-
-		//paths to default php & css files
-		$php_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.php.txt';
-		$css_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.css.txt';
-		$js_file  = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.js.txt';
-
-		//check tempalte folder already exists then do nothing
-		if (is_dir($template_path))
+		$uploadPath = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+		
+		// get the source path
+		$srcPath = JPATH_COMPONENT . DS . 'super' . DS . 'default' . DS . '.';
+		
+		// copy over default template recursively
+		// must have  /. at the end of source path to get all items in that directory
+		// also doesnt overwrite already existing files/folders
+		shell_exec("cp -rn $srcPath $uploadPath");
+		
+		// make sure files are all owned by www-data
+		// make sure files are group read and writable
+		shell_exec("chown -R www-data.www-data $uploadPath");
+		shell_exec("chmod -R 774 $uploadPath");
+		
+		// create super group DB if doesnt already exist
+		$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
+		if (!$this->database->query())
 		{
-			return;
+			die('unable to create super group database');
 		}
-
-		//create template directory and add basic special group template
-		if (!mkdir($template_path, 0770, true))
+		
+		$user     = 'myhub';
+		$password = 'h.Z2^4eq16!';
+		$database = 'sg_' . $group->get('cn');
+				
+		//write db config in super group
+		$dbConfigFile     = $uploadPath . DS . 'config' . DS . 'db.php';
+		$dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => '',\n\t\t'username' => '{$user}',\n\t\t'password' => '{$password}',\n\t\t'database' => '{$database}',\n\t\t'prefix'   => ''\n\t);\n?>";
+		
+		// write db config file
+		if (!file_exists($dbConfigFile))
 		{
-			die('Failed to make template directory.');
+			if (!file_put_contents($dbConfigFile, $dbConfigContents))
+			{
+				die('unable to write config');
+			}
 		}
-
-		//copy over basic PHP
-		if (!copy($php_file, $template_path . DS . 'default.php'))
-		{
-			die('Failed to copy the default PHP template file.');
-		}
-
-		//copy over basic CSS
-		if (!copy($css_file, $template_path . DS . 'default.css'))
-		{
-			die('Failed to copy the default CSS template file.');
-		}
-
-		//copy over basic JS
-		if (!copy($js_file, $template_path . DS . 'default.js'))
-		{
-			die('Failed to copy the default Javascript template file.');
-		}
+		
+		// log super group change
+		GroupsModelLog::log(array(
+			'gidNumber' => $group->get('gidNumber'),
+			'action'    => 'super_group_created',
+			'comments'  => ''
+		));
 	}
 
 	/**
@@ -542,13 +546,20 @@ class GroupsControllerManage extends Hubzero_Controller
 				{
 					$log .= implode('', $logs);
 				}
-
+				
 				// Delete group
 				if (!$group->delete())
 				{
 					JError::raiseError(500, 'Unable to delete group');
 					return;
 				}
+				
+				// log publishing
+				GroupsModelLog::log(array(
+					'gidNumber' => $group->get('gidNumber'),
+					'action'    => 'group_deleted',
+					'comments'  => $log
+				));
 			}
 		}
 
@@ -609,18 +620,13 @@ class GroupsControllerManage extends Hubzero_Controller
 				//set the group to be published and update
 				$group->set('published', 1);
 				$group->update();
-
-				// Log the group approval
-				$log = new XGroupLog($this->database);
-				$log->gid       = $group->get('gidNumber');
-				$log->uid       = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'group_published';
-				$log->actorid   = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
-				}
+				
+				// log publishing
+				GroupsModelLog::log(array(
+					'gidNumber' => $group->get('gidNumber'),
+					'action'    => 'group_published',
+					'comments'  => 'published by administrator'
+				));
 
 				// Output messsage and redirect
 				$this->setRedirect(
@@ -670,17 +676,12 @@ class GroupsControllerManage extends Hubzero_Controller
 				$group->set('published', 0);
 				$group->update();
 
-				// Log the group approval
-				$log = new XGroupLog($this->database);
-				$log->gid       = $group->get('gidNumber');
-				$log->uid       = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'group_unpublished';
-				$log->actorid   = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
-				}
+				// log unpublishing
+				GroupsModelLog::log(array(
+					'gidNumber' => $group->get('gidNumber'),
+					'action'    => 'group_unpublished',
+					'comments'  => 'unpublished by administrator'
+				));
 
 				// Output messsage and redirect
 				$this->setRedirect(
@@ -727,17 +728,12 @@ class GroupsControllerManage extends Hubzero_Controller
 				$group->set('approved', 1);
 				$group->update();
 				
-				// Log the group approval
-				$log = new XGroupLog($this->database);
-				$log->gid       = $group->get('gidNumber');
-				$log->uid       = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'group_approved';
-				$log->actorid   = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
-				}
+				// log publishing
+				GroupsModelLog::log(array(
+					'gidNumber' => $group->get('gidNumber'),
+					'action'    => 'group_approved',
+					'comments'  => 'approved by administrator'
+				));
 			}
 			
 			// Output messsage and redirect

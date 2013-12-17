@@ -53,39 +53,17 @@ function GroupsBuildRoute(&$query)
 	
 	if(!empty($query['gid']))
 	{
-		//get site config
-		$debug = JFactory::getConfig()->getValue('debug');
-		
-		//if debug is on
-		if ($debug)
-		{
-			//get the application object
-			$application = JFactory::getApplication();
-		
-			//check to see if we were already warned
-			$alreadyWarned = JRequest::getBOOL('warned', 0);
-		
-			//if we were already warned dont redirect again.
-			if (!$alreadyWarned)
-			{
-				//enqueue warning message of depreciated gid=
-				$application->enqueueMessage('The component you are viewing is using depreciated methods to build group URL\'s. If you are the developer please fix or contact a system administrator with help resolving the issue.', 'warning');
-			
-				//redirect back to where user was going - needeed to do this to get message to show
-				$redirect = $_SERVER['REQUEST_URI'];
-				$redirect .= (strstr($redirect, "?") === false) ? '?warned=1' : '&warned=1';
-			
-				//redirect user
-				$application->redirect( $redirect );
-				return;
-			}
-		}
-		
 		//log regardless
 		Hubzero_Factory::getLogger()->logDebug("Group JRoute Build Path sending gid instead of cn: " . $_SERVER['REQUEST_URI'] );
 		
 		$segments[] = $query['gid'];
 		unset($query['gid']);
+	}
+	
+	if (!empty($query['controller'])) 
+	{
+		$segments[] = $query['controller'];
+		unset($query['controller']);
 	}
 	
 	if (!empty($query['active'])) 
@@ -193,15 +171,10 @@ function GroupsParseRoute($segments)
 				$vars['controller'] = 'membership';
 				break;
 			case 'pages':
-			case 'addpage':
-			case 'editpage':
-			case 'savepage':
-			case 'activatepage':
-			case 'deactivatepage':
-			case 'uppage':
-			case 'downpage':
-				$vars['task'] = $segments[1];
-				$vars['controller'] = 'pages';
+			case 'modules':
+			case 'categories':
+			case 'media':
+				$vars['controller'] = $segments[1];
 				break;
 			default:
 				$vars['active'] = $segments[1];
@@ -210,7 +183,11 @@ function GroupsParseRoute($segments)
 	
 	if (isset($segments[2])) 
 	{
-		if ($segments[1] == 'wiki') 
+		if (isset($vars['controller']) && in_array($vars['controller'], array('pages', 'media', 'categories', 'modules')))
+		{
+			$vars['task'] = $segments[2];
+		}
+		else if ($segments[1] == 'wiki') 
 		{
 			if (isset($segments[3]) && preg_match('/File:|Image:/', $segments[3])) 
 			{

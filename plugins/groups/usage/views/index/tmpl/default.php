@@ -25,20 +25,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//get group logs
-$xlog = new XGroupLog( $this->database );
+// get group logger to get created log entry
+$logger     = GroupsModelLogArchive::getInstance();
 
 //parse the logs
-$group_edits          = $xlog->logCount($this->group->get('gidNumber'), 'group_edited');
-$group_customize      = $xlog->logCount($this->group->get('gidNumber'), 'group_customized');
-$membership_requests  = $xlog->logCount($this->group->get('gidNumber'), 'membership_requested');
-$membership_accepted  = $xlog->logCount($this->group->get('gidNumber'), 'membership_approved');
-$membership_denied    = $xlog->logCount($this->group->get('gidNumber'), 'membership_denied');
-$membership_cancelled = $xlog->logCount($this->group->get('gidNumber'), 'membership_cancelled');
-$invites_sent         = $xlog->logCount($this->group->get('gidNumber'), 'membership_invites_sent');
-$invites_accepted     = $xlog->logCount($this->group->get('gidNumber'), 'membership_invite_accepted');
-$promotions           = $xlog->logCount($this->group->get('gidNumber'), 'membership_promoted');
-$demotions            = $xlog->logCount($this->group->get('gidNumber'), 'membership_demoted');
+$group_edits          = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'group_edited'), true)->count();
+$membership_requests  = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_requested'), true)->count();
+$membership_accepted  = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_approved'), true)->count();
+$membership_denied    = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_denied'), true)->count();
+$membership_cancelled = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_cancelled'), true)->count();
+$invites_sent         = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_invites_sent'), true)->count();
+$invites_accepted     = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_invite_accepted'), true)->count();
+$promotions           = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_promoted'), true)->count();
+$demotions            = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_demoted'), true)->count();
 ?>
 <a name="usage"></a>
 <h3 class="heading"><?php echo JText::_('USAGE'); ?></h3>
@@ -83,7 +82,7 @@ $demotions            = $xlog->logCount($this->group->get('gidNumber'), 'members
 		<tbody>
 			<tr class="even">
 				<th scope="row"><?php echo JText::_('TBL_TH_PAGES'); ?>:</th>
-				<td><?php echo plgGroupsUsage::getGroupPagesCount($this->group->get('gidNumber')); ?></td>
+				<td><?php echo plgGroupsUsage::getGroupPagesCount($this->group); ?></td>
 			</tr>
 			<tr class="odd">
 				<th scope="row"><?php echo JText::_('TBL_TH_MEMBERS'); ?>:</th>
@@ -142,38 +141,34 @@ $demotions            = $xlog->logCount($this->group->get('gidNumber'), 'members
 				<td><?php echo $group_edits; ?></td>
 			</tr>
 			<tr class="odd">
-				<th scope="row"><?php echo JText::_('TBL_GROUP_CUSTOMIZE'); ?>:</th>
-				<td><?php echo $group_customize; ?></td>
-			</tr>
-			<tr class="even">
 				<th scope="row"><?php echo JText::_('TBL_MEMBERSHIP_REQUESTS'); ?>:</th>
 				<td><?php echo $membership_requests; ?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th scope="row"><?php echo JText::_('TBL_MEMBERSHIP_ACCEPTED'); ?>:</th>
 				<td><?php echo $membership_accepted; ?></td>
 			</tr>
-			<tr class="even">
+			<tr class="odd">
 				<th scope="row"><?php echo JText::_('TBL_MEMBERSHIP_DENIED'); ?>:</th>
 				<td><?php echo $membership_denied; ?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th scope="row"><?php echo JText::_('TBL_MEMBERSHIP_CANCELLED'); ?>:</th>
 				<td><?php echo $membership_cancelled; ?></td>
 			</tr>
-			<tr class="even">
+			<tr class="odd">
 				<th scope="row"><?php echo JText::_('TBL_INVITES_SENT'); ?>:</th>
 				<td><?php echo $invites_sent; ?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th scope="row"><?php echo JText::_('TBL_INVITES_ACCEPTED'); ?>:</th>
 				<td><?php echo $invites_accepted; ?></td>
 			</tr>
-			<tr class="even">
+			<tr class="odd">
 				<th scope="row"><?php echo JText::_('TBL_PROMOTIONS'); ?>:</th>
 				<td><?php echo $promotions; ?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th scope="row"><?php echo JText::_('TBL_DEMOTIONS'); ?>:</th>
 				<td><?php echo $demotions; ?></td>
 			</tr>

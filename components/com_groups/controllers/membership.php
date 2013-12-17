@@ -88,7 +88,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Check authorization
-		if ($this->_authorize() != 'manager') 
+		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite')) 
 		{
 			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 		}
@@ -116,7 +116,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		
 		//set some vars for view
-		$this->view->title = $this->_title;
+		$this->view->title = JText::_('Invite Members: ' . $this->view->group->get('description'));
 		$this->view->juser = $this->juser;
 		$this->view->msg = trim(JRequest::getVar('msg',''));
 		$this->view->return = trim(JRequest::getVar('return',''));
@@ -156,7 +156,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Check authorization
-		if ($this->_authorize() != 'manager') 
+		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite')) 
 		{
 			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 		}
@@ -297,43 +297,14 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$group_inviteemails = new Hubzero_Group_InviteEmail($this->database);
 			$group_inviteemails->save($ie);
 		}
-
-		// Log the sending of invites
-		foreach ($invitees as $invite)
-		{
-			if (!in_array($invite,$current_invitees)) 
-			{
-				$log = new XGroupLog($this->database);
-				$log->gid = $this->view->group->get('gidNumber');
-				$log->uid = $invite;
-				$log->timestamp = JFactory::getDate();
-				$log->action = 'membership_invites_sent';
-				$log->actorid = $this->juser->get('id');
-				if (!$log->store()) 
-				{
-					$this->setNotification($log->getError(), 'error');
-				}
-			}
-		}
-
-		// Sending of invites to emails
-		foreach ($inviteemails as $invite)
-		{
-			if (!in_array($invite,$current_inviteemails)) 
-			{
-				$log = new XGroupLog($this->database);
-				$log->gid = $this->view->group->get('gidNumber');
-				$log->uid = $invite;
-				$log->timestamp = JFactory::getDate();
-				$log->action = 'membership_email_sent';
-				$log->actorid = $this->juser->get('id');
-				if (!$log->store()) 
-				{
-					$this->setNotification($log->getError(), 'error');
-				}
-			}
-		}
-
+		
+		// log invites
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->view->group->get('gidNumber'),
+			'action'    => 'membership_invites_sent',
+			'comments'  => array_merge($invitees, $inviteemails)
+		));
+		
 		// Get and set some vars
 		$jconfig = JFactory::getConfig();
 
@@ -523,9 +494,6 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		
 		//get request vars
 		$return = strtolower(trim(JRequest::getVar('return', '', 'get')));
-		
-		//group log comment
-		$log_comments = '';
 
 		//check to make sure weve been invited
 		if ($token)
@@ -562,19 +530,13 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		{
 			$this->_errorHandler(404, JText::_('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
 		}
-
-		// Log the invite acceptance
-		$log = new XGroupLog($this->database);
-		$log->gid = $this->view->group->get('gidNumber');
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate();
-		$log->comments = $log_comments;
-		$log->action = 'membership_invite_accepted';
-		$log->actorid = $this->juser->get('id');
-		if (!$log->store()) 
-		{
-			$this->setError($log->getError());
-		}
+		
+		// log invites
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->view->group->get('gidNumber'),
+			'action'    => 'membership_invite_accepted',
+			'comments'  => array($this->juser->get('id'))
+		));
 		
 		//get site config
 		$jconfig = JFactory::getConfig();
@@ -683,16 +645,11 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Log the membership cancellation
-		$log = new XGroupLog($this->database);
-		$log->gid = $this->view->group->get('gidNumber');
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate();
-		$log->action = 'membership_cancelled';
-		$log->actorid = $this->juser->get('id');
-		if (!$log->store())
-		{
-			$this->setNotification($log->getError(), 'error');
-		}
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->view->group->get('gidNumber'),
+			'action'    => 'membership_cancelled',
+			'comments'  => array($this->juser->get('id'))
+		));
 
 		// Remove record of reason wanting to join group
 		$reason = new GroupsReason($this->database);
@@ -833,16 +790,11 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->view->group->update();
 			
 			// Log the membership approval
-			$log = new XGroupLog($this->database);
-			$log->gid = $this->view->group->get('gidNumber');
-			$log->uid = $this->juser->get('id');
-			$log->timestamp = JFactory::getDate();
-			$log->action = 'membership_approved';
-			$log->actorid = $this->juser->get('id');
-			if (!$log->store())
-			{
-				$this->setError($log->getError());
-			}
+			GroupsModelLog::log(array(
+				'gidNumber' => $this->view->group->get('gidNumber'),
+				'action'    => 'membership_approved',
+				'comments'  => array($this->juser->get('id'))
+			));
 			
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn='.$this->view->group->get('cn')) );
 			return;
@@ -949,16 +901,11 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Log the membership request
-		$log = new XGroupLog($this->database);
-		$log->gid = $this->view->group->get('gidNumber');
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate();
-		$log->action = 'membership_requested';
-		$log->actorid = $this->juser->get('id');
-		if (!$log->store())
-		{
-			$this->setError($log->getError());
-		}
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->view->group->get('gidNumber'),
+			'action'    => 'membership_requested',
+			'comments'  => array($this->juser->get('id'))
+		));
 		
 		//get site config
 		$jconfig = JFactory::getConfig();

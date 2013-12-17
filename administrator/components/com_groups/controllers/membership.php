@@ -286,6 +286,13 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
+		
+		// log
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_members_added',
+			'comments'  => $users
+		));
 
 		if (!JRequest::getInt('no_html', 0))
 		{
@@ -301,6 +308,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 	 *
 	 * @return void
 	 */
+	/*
 	public function acceptTask()
 	{
 		// Check for request forgeries
@@ -368,17 +376,18 @@ class GroupsControllerMembership extends Hubzero_Controller
 			);
 		}
 	}
+	*/
 
 	/**
 	 * Approves requested membership for user(s)
 	 *
 	 * @return void
 	 */
-	private function approveTask()
+	public function approveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
-
+		
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
@@ -432,6 +441,13 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
+		
+		// log
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_members_approved',
+			'comments'  => $users
+		));
 
 		if (!JRequest::getInt('no_html', 0))
 		{
@@ -497,6 +513,12 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
+		
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_members_promoted',
+			'comments'  => $users
+		));
 
 		if (!JRequest::getInt('no_html', 0))
 		{
@@ -578,6 +600,13 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
+		
+		// log
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_members_demoted',
+			'comments'  => $users
+		));
 
 		if (!JRequest::getInt('no_html', 0))
 		{
@@ -651,6 +680,13 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
+		
+		// log
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_members_deleted',
+			'comments'  => $users_mem
+		));
 
 		if ($this->getError())
 		{
@@ -735,6 +771,13 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
+		
+		// log
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_members_uninvited',
+			'comments'  => array_merge($users, $useremails)
+		));
 
 		if (!JRequest::getInt('no_html', 0))
 		{
@@ -793,6 +836,13 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
+		
+		// log
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->group->get('gidNumber'),
+			'action'    => 'group_members_denied',
+			'comments'  => $users
+		));
 
 		if (!JRequest::getInt('no_html', 0))
 		{

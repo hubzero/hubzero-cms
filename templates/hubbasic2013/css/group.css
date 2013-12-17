@@ -8,6 +8,7 @@
 
 	body {
 		background: #FFF;
+		min-width: 500px;
 	}
 
 	#special-bar {

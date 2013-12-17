@@ -31,159 +31,163 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app = JFactory::getApplication();
+// define base URI
+$baseURI  = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
+$baseURI .= $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn');
 
-ximport('Hubzero_Group');
-$group = Hubzero_Group::getInstance($this->listdir);
+//get request vars
+$type          = JRequest::getWord('type', '', 'get');
+$ckeditor      = JRequest::getVar('CKEditor', '', 'get');
+$ckeditorFunc  = JRequest::getInt('CKEditorFuncNum', 0, 'get');
+$ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' . $ckeditorFunc;
 ?>
-		
-	<div id="file_list">
-		<form action="index.php" method="post" id="filelist">
-<?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('COM_GROUPS_MEDIA_NO_FILES'); ?></p>
-<?php } else { ?>
-			<table summary="Files for this group">
-				<tbody>
-<?php
-$folders = $this->folders;
-for ($i=0; $i<count($folders); $i++)
-{
-	$folder_name = key($folders);
 
-	$num_files = 0;
-	if (is_dir(JPATH_ROOT.DS.$folders[$folder_name])) {
-		$d = @dir(JPATH_ROOT.DS.$folders[$folder_name]);
-
-		while (false !== ($entry = $d->read()))
-		{
-			if (substr($entry,0,1) != '.') {
-				$num_files++;
-			}
-		}
-		$d->close();
-	}
-
-	if ($this->listdir == '/') {
-		$this->listdir = '';
-	}
-?>
-					<tr>
-						<td><img src="<?php echo $this->config->get('iconpath'); ?>/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" /></td>
-						<td width="100%"><?php echo $folder_name; ?></td>
-						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
-					</tr>
-<?php
-	next($folders);
-}
-$docs = $this->docs;
-for ($i=0; $i<count($docs); $i++)
-{
-	$doc_name = key($docs);
-	$iconfile = $this->config->get('iconpath').DS.substr($doc_name,-3).'.png';
-
-	if (file_exists(JPATH_ROOT.$iconfile))	{
-		$icon = $iconfile;
-	} else {
-		$icon = $this->config->get('iconpath').DS.'unknown.png';
-	}
-?>
-					<tr>
-						<td class="file-icon">
-							<img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" />
-						</td>
-						<td class="file-delete">
-							<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-								<img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
-							</a>
-						</td>
-						<td class="file-name">
-							<?php echo $docs[$doc_name]; ?>
-						</td>
-						<td class="file-path">
-							<?php if(is_object($group)) : ?>
-								<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'groups'.DS.$group->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="Show File Path">
-									<img src="/components/com_groups/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" />
-								</a>
-							<?php endif; ?>
-						</td>
-					</tr>
-<?php
-	next($docs);
-}
-$images = $this->images;
-for ($i=0; $i<count($images); $i++)
-{
-	$image_name = key($images);
-	$iconfile = $this->config->get('iconpath').DS.substr($image_name,-3).'.png';
-	if (file_exists(JPATH_ROOT.$iconfile))	{
-		$icon = $iconfile;
-	} else {
-		$icon = $this->config->get('iconpath').DS.'unknown.png';
-	}
-?>
-					<tr>
-						<td class="file-icon">
-							<img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" />
-						</td>
-						<td class="file-delete">
-							<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a>
-						</td>
-						<td class="file-name">
-							<?php echo $images[$image_name]; ?>
-						</td>
-						<td class="file-path">
-							<?php if(is_object($group)) : ?>
-							<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'groups'.DS.$group->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path"><img src="/components/com_groups/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" /></a>
-							<?php endif; ?>
-						</td>
-					</tr>
-<?php
-	next($images);
-}
-?>
-				</tbody>
-			</table>
-<?php } ?>
-		</form>
-	</div>
-	
 <script type="text/javascript">
-	function updateDir()
+	function ckeditorInsertFile( file )
 	{
-		var allPaths = window.top.document.forms[0].dirPath.options;
-		for (i=0; i<allPaths.length; i++)
-		{
-			allPaths.item(i).selected = false;
-			if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
-				allPaths.item(i).selected = true;
-			}
-		}
+		var opener = window.parent;
+		HUB.GroupsMediaList.ckeditorInsert( file, opener );
 	}
-	function deleteFile(file)
-	{
-		if (confirm("Delete file \""+file+"\"?")) {
-			return true;
-		}
-
-		return false;
-	}
-	function deleteFolder(folder, numFiles)
-	{
-		if (numFiles > 0) {
-			alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
-			return false;
-		}
-
-		if (confirm('Delete folder "'+folder+'"?')) {
-			return true;
-		}
-
-		return false;
-	}
-	
-	function showFilePath(file) {
-		var path = prompt('The file path is:', file);
-		return false;
-	}
-	
 </script>
+
+
+<div class="upload-filelist-toolbar">
+	<div class="toolbar cf">
+		<?php
+			$folder   = '';
+			$segments = explode('/', ltrim($this->relpath, DS));
+		?>
+		<ul class="path">
+			<?php if ($this->group->get('type') == 3) : ?>
+				<li><a data-folder="/" href="javascript:(void);">/ (root)</a></li>
+			<?php endif; ?>
+			<?php foreach ($segments as $segment) : ?>
+				<?php $folder .= DS . $segment; ?>
+				<li class="divider">/</li>
+				<li><a data-folder="<?php echo $folder; ?>" href="javascript:(void);"><?php echo $segment; ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+		<div class="buttons"></div>
+	</div>
+	<div class="filelist-headers">
+		<ul>
+			<li>
+				<div class="name"><?php echo JText::_('Name'); ?></div>
+				<div class="modified"><?php echo JText::_('Modified'); ?></div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="upload-filelist">
+	<ul>
+		<?php foreach ($this->folders as $folder) : ?>
+			<li class="folder">
+				<div class="name">
+					<?php
+						$dataFolder = $this->relpath . $folder;
+						if ($this->relpath != '/')
+						{
+							$dataFolder = $this->relpath . DS . $folder;
+						}
+						
+						$moveFolderPath     = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=movefolder&folder=' .  $dataFolder . '&tmpl=component');
+						$renameFolderPath   = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=renamefolder&folder=' .  $dataFolder . '&tmpl=component');
+						$deleteFolderPath   = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component');
+					?>
+					<a href="javascript:void(0);" data-action-delete="<?php echo $deleteFolderPath; ?>" data-action-rename="<?php echo $renameFolderPath; ?>" data-action-move="<?php echo $moveFolderPath; ?>" data-folder="<?php echo $dataFolder; ?>"><?php echo $folder; ?></a>
+				</div>
+				<div class="modified">
+					--
+				</div>
+			</li>
+		<?php endforeach; ?>
+		
+		<?php foreach ($this->files as $file) : ?>
+			<?php
+				// build file path
+				$filePath    = $this->path . DS . $file;
+				$relFilePath = $this->relpath . DS . $file;
+				
+				// get file info & stats
+				$fileInfo   = @pathInfo($filePath);
+				$filesize   = @filesize($filePath);
+				$dimensions = @getimagesize( $filePath );
+				$modified   = @filemtime($filePath);
+				
+				
+				// formatted results
+				$extension           = $fileInfo['extension'];
+				$formattedFilesize   = Hubzero_View_Helper_Html::formatSize( $filesize );
+				$formattedDimensions = $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px';
+				$formattedModified   = date('m/d/Y g:ia', $modified);
+				
+				// is this file an image
+				$isImage   = (in_array($extension, array('jpg','jpeg','png','gif','bmp','tiff'))) ? true : false;
+				$isArchive = (in_array($extension, array('zip', 'tar', 'gz'))) ? true : false;
+				
+				// build paths
+				$downloadPath = $baseURI . DS . 'File:' . $relFilePath;
+				$movePath     = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=movefile&file=' .  $relFilePath . '&tmpl=component');
+				$renamePath   = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=renamefile&file=' .  $relFilePath . '&tmpl=component');
+				$extractPath  = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=extractfile&file=' . $relFilePath . '&tmpl=component');
+				$deletePath   = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=deletefile&file=' . $relFilePath . '&tmpl=component');
+				//$rawPath  = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=rawfile&file=' . $relFilePath . '&tmpl=component');
+			?>
+			<li class="file file-<?php echo strtolower($extension); ?>">
+				<div class="name">
+					<a href="javascript:void(0);"><?php echo $file; ?></a>
+				</div>
+				<div class="modified">
+					<?php echo ($modified) ? $formattedModified : '--'; ?>
+				</div>
+			</li>
+			<li class="file-details cf">
+				<div class="right">
+					<div class="title">File Preview</div>
+					<div class="preview">
+						<?php if ($isImage) : ?>
+							<img src="/components/com_groups/assets/img/loading.gif" data-src="<?php echo $downloadPath; ?>" />
+						<?php else : ?>
+							<p><strong>Preview Not Available</strong></p>
+						<?php endif; ?>
+					</div>
+				</div>
+				<div class="left">
+					<div class="title">File Details</div>
+					<ul>
+						<li>
+							<strong>Name: </strong> <?php echo $file; ?>
+						</li>
+						<li>
+							<strong>Size: </strong> <?php echo $formattedFilesize; ?>
+						</li>
+						<?php if ($isImage) : ?>
+							<li>
+								<strong>Dimensions: </strong> <?php echo $formattedDimensions; ?>
+							</li>
+						<?php endif; ?>
+						<li class="path">
+							<strong>Path: </strong> <span><?php echo $downloadPath; ?></span>
+						</li>
+						<li>
+							<?php if (isset($ckeditor) && $ckeditor != '') : ?>
+								<a href="javascript:void(0);" class="btn icon-add" onclick="return ckeditorInsertFile('<?php echo $downloadPath; ?>');">Insert File</a>
+							<?php endif; ?>
+							<a href="<?php echo $downloadPath; ?>" class="btn icon-download action-download">Download</a>
+							<a href="<?php echo $renamePath; ?>" class="btn icon-edit action-rename">Rename</a>
+							<a href="<?php echo $movePath; ?>" class="btn icon-move action-move">Move</a>
+							<?php if ($isArchive) : ?>
+								<a href="<?php echo $extractPath; ?>" class="btn icon-extract action-extract">Extract</a>
+							<?php endif; ?>
+							<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn icon-delete action-delete">Delete</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+		<?php endforeach; ?>
+		<?php if (count($this->folders) == 0 && count($this->files) == 0) : ?>
+			<li><em>No files or folders found.</em></li>
+		<?php endif;?>
+	</ul>
+</div>
