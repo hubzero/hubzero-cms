@@ -690,7 +690,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			// Make sure the tool path parameter is set
 			if ($config->get('tool_path'))
 			{
-				$tool_alias = JRequest::getWord('tool_alias');
+				$tool_alias = JRequest::getCmd('tool_alias');
 				$tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
 				$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
 				$file       = JFolder::files(JPATH_ROOT . $asset_path);
