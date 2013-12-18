@@ -43,7 +43,7 @@ class WikiSetup
 	 * @param      string $option Component name
 	 * @return     string 
 	 */
-	public function initialize($option, $group_cn=null)
+	public static function initialize($option, $group_cn=null)
 	{
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
@@ -155,7 +155,7 @@ class WikiSetup
 	 * 
 	 * @return     array
 	 */
-	public function defaultPages($group_cn=null)
+	public static function defaultPages($group_cn=null)
 	{
 		$path = dirname(dirname(__FILE__)) . DS . 'default';
 		if ($group_cn)
