@@ -290,10 +290,9 @@ input[type=number] {
 }
 .answer-marker {
 	position: absolute;
-	width: 15px;
-	height: 15px;
-	font-size: xx-large;
-	font-weight: bold;
+	width: 25px;
+	height: 25px;
+	font-size: 25px;
 }
 .answer-marker.incorrect {
 	color: #a00;

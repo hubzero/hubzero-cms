@@ -33,7 +33,7 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 		<? endif; ?>
 	<? endif; ?>
 
-	<ol id="pages" class="complete">	
+	<ol id="pages" class="complete">
 	<? $pdf->eachPage(function($url, $idx) use($layout, $record) { ?>
 		<li>
 			<img src="<?= $url ?>" />
@@ -43,9 +43,9 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 				foreach ($layout[$idx - 1] as $qid=>$group):
 					foreach ($group['answers'] as $aidx=>$ans):
 						if ($record['detail'][$qid]['correct_answer_id'] == $ans['id']):
-							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker correct" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10003;</div>';
-						elseif ($record['detail'][$qid]['answer_id'] == $ans['id']):	
-							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker incorrect" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10003;</div>';
+							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker correct" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10004;</div>';
+						elseif ($record['detail'][$qid]['answer_id'] == $ans['id']):
+							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker incorrect" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10008;</div>';
 						endif;
 					endforeach;
 					++$qidx;
