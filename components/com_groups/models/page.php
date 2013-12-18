@@ -242,9 +242,10 @@ class GroupsModelPage extends \Hubzero\Model
 	 * 
 	 * @return     string
 	 */
-	public function getNextOrder()
+	public function getNextOrder( $gidNumber )
 	{
-		$order = $this->_tbl->getNextOrder();
+		$where = "gidNumber=" . $this->_db->quote($gidNumber);
+		$order = $this->_tbl->getNextOrder($where);
 		return $order;
 	}
 	
@@ -254,8 +255,11 @@ class GroupsModelPage extends \Hubzero\Model
 	 * @param     $move         Direction and Magnitude
 	 * @return    INT
 	 */
-	public function move($move)
+	public function move($move, $gidNumber)
 	{
+		// build where statement
+		$where = "gidNumber=" . $this->_db->quote($gidNumber);
+		
 		// determine if we need to move up or down
 		$dir = '';
 		if ($move < 0)
@@ -267,7 +271,7 @@ class GroupsModelPage extends \Hubzero\Model
 		// move the number of times different
 		for ($i=0; $i < $move; $i++)
 		{
-			$this->_tbl->move($dir.'1');
+			$this->_tbl->move($dir.'1', $where);
 		}
 	}
 }

@@ -280,7 +280,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		if (!isset($page['id']) || $page['id'] == '')
 		{
 			$ordering = null;
-			$page['ordering'] = $this->page->getNextOrder();
+			$page['ordering'] = $this->page->getNextOrder($this->group->get('gidNumber'));
 		}
 		
 		// bind new page properties
@@ -330,7 +330,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		if ($ordering !== null)
 		{
 			$move = (int) $ordering - (int) $this->page->get('ordering');
-			$this->page->move($move);
+			$this->page->move($move, $this->group->get('gidNumber'));
 		}
 		
 		// set page version vars
@@ -467,6 +467,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// update each page accordingly
 		foreach ($pagesOrder as $order => $page)
 		{
+			$order = (int) $order + 1;
 			$sql = "UPDATE `#__xgroups_pages` SET `ordering`=".$this->database->quote($order)." WHERE `id`=".$this->database->quote($page);
 			$this->database->setQuery( $sql );
 			$this->database->query();
