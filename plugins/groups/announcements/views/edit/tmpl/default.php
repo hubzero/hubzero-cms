@@ -118,6 +118,7 @@ Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 								$publish_up = $this->announcement->get('publish_up');
 								if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 								{
+									$publish_up = JHTML::_('date', $publish_up, 'Y-m-d H:i:s');
 									$publish_up = date("m/d/Y @ g:i a", strtotime($publish_up));
 								}
 							?>
@@ -132,6 +133,7 @@ Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 								$publish_down = $this->announcement->get('publish_down');
 								if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 								{
+									$publish_down = JHTML::_('date', $publish_down, 'Y-m-d H:i:s');
 									$publish_down = date("m/d/Y @ g:i a", strtotime($publish_down));
 								}
 							?>
