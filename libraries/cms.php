@@ -37,7 +37,7 @@ if (!defined('HVERSION')) {
 
 // Define the HUBzero branch if not already defined.
 if (!defined('HBRANCH')) {
-	define('HBRANCH', "master");
+	define('HBRANCH', "stable");
 }
 
 // Register the location of renamed classes so they can be autoloaded
