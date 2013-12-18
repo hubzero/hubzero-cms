@@ -122,7 +122,7 @@ class ContribtoolHelper
 	 * @param      array $newarray Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function transform($array, $label, $newarray=array()) 
+	public static function transform($array, $label, $newarray=array()) 
 	{
 		if (count($array) > 0) 
 		{
