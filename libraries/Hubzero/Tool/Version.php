@@ -118,7 +118,7 @@ class Hubzero_Tool_VersionHelper
 	 * @param      unknown $toolid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function getDevelopmentToolVersion($toolid)
+    public static function getDevelopmentToolVersion($toolid)
     {
         $db =  JFactory::getDBO();
 
@@ -154,7 +154,7 @@ class Hubzero_Tool_VersionHelper
 	 * @param      string $revision Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function getToolRevision($toolid, $revision)
+	public static function getToolRevision($toolid, $revision)
 	{
 		$db =  JFactory::getDBO();
 
