@@ -163,7 +163,8 @@ class MembersControllerProfiles extends Hubzero_Controller
 				FROM #__xprofiles AS xp 
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
 				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed>0 $restrict 
-				ORDER BY xp.name ASC";
+				ORDER BY xp.name ASC
+				LIMIT " . $filters['start'] . "," . $filters['limit'];
 
 		$this->database->setQuery($query);
 		$rows = $this->database->loadObjectList();
