@@ -414,7 +414,7 @@ class plgProjectsPublications extends JPlugin
 				'name'=>'browse'
 			)
 		);
-				
+						
 		// Instantiate project publication
 		$objP = new Publication( $this->_database );
 		
@@ -1974,10 +1974,11 @@ class plgProjectsPublications extends JPlugin
 				// Get type params
 				$mType 		= $mt->getType($mastertype);
 				$typeParams = new JParameter( $mType->params );
-				$cat 		= $typeParams->get('default_category', $this->_pubconfig->get('default_category', 'dataset'));
+				$cat 		= $typeParams->get('default_category');
+				$cat		= $cat ? $cat : $objT->getCatId($this->_pubconfig->get('default_category', 'dataset'));
 				
 				// Determine title
-				$title = $this->_pubTypeHelper->dispatch($base, 'getPubTitle', 
+				$title = $this->_pubTypeHelper->dispatch($mastertype, 'getPubTitle', 
 						$data = array('item' => $first_item)
 				);
 				
@@ -3072,7 +3073,8 @@ class plgProjectsPublications extends JPlugin
 					$path = $helper->buildPath($pid, $vid, $base_path, '', 1);
 					
 					// Delete all files
-					if (is_dir($path)) {
+					if (is_dir($path)) 
+					{
 						JFolder::delete($path);
 					}
 					
