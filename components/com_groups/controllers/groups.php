@@ -627,7 +627,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// create view object
 		$view = new JView(array(
 			'name'   => 'pages',
-			'layout' => '_default'
+			'layout' => '_view_default'
 		));
 		
 		// pass vars to view
@@ -685,10 +685,13 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// make sure we have approved version to display
 		if ($page->get('state') == $page::APP_STATE_UNPUBLISHED || $version === null)
 		{
+			// determine which layout to use
+			$layout = ($version === null) ? '_view_notapproved' : '_view_unpublished';
+			
 			// show unpublished or no version layout
 			if ($authorized == 'manager')
 			{
-				$view->setLayout('_unpublished');
+				$view->setLayout($layout);
 				$view->group   = $group;
 				$view->page    = $page;
 				$view->version = $version;

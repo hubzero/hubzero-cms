@@ -30,21 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$page    = $this->page;
-$version = $this->version;
 ?>
-<?php if ($version === null) : ?>
-	<div class="group-page-notice notice-warning">
-		<h4>Page Is Pending Approval From Site Administrator</h4>
-		<p>The page does not have an approved version to display. Approvals are made during normal business hours Monday - Friday 8am to 5pm <abbr title="Eastern Standard Time">EST</abbr>.</p>
-	</div>
-<?php elseif ($page->get('state') == $page::APP_STATE_UNPUBLISHED) : ?>
-	<div class="group-page-notice notice-info">
-		<h4>Group Page is Currently Not Published</h4>
-		<p>This page has been marked <strong>unpublished</strong> by one of the group managers. If you would like to publish this page click the link below: </p>
-		<?php 
-			$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); 
-		?>
-		<p><a href="<?php echo $link . '&return=' . base64_encode(JURI::getInstance()->toString()); ?>"><?php echo rtrim(JURI::getInstance()->base(), DS) . $link; ?></a></p>
-	</div>
-<?php endif; ?>
+
+<div class="group-page group-page-notice notice-warning">
+	<h4>Page Is Pending Approval From Site Administrator</h4>
+	<p>The page does not have an approved version to display. Approvals are made during normal business hours Monday - Friday 8am to 5pm <abbr title="Eastern Standard Time">EST</abbr>.</p>
+</div>
