@@ -328,61 +328,58 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						}
 					}
 
-					$hasScores = false;
-
 					if ($scores[$member_id]['units'][$unit_id]['exam_count'] > 0)
 					{
-						$scores[$member_id]['units'][$unit_id]['exam_score']    = round(($scores[$member_id]['units'][$unit_id]['exam_sum'] / $scores[$member_id]['units'][$unit_id]['exam_count']), 2);
-						$scores[$member_id]['units'][$unit_id]['exam_weighted'] = round($scores[$member_id]['units'][$unit_id]['exam_score'] * $gradePolicy->get('exam_weight'), 2);
-
-						if ($gradePolicy->get('exam_weight') > 0)
-						{
-							$hasScores = true;
-						}
+						$scores[$member_id]['units'][$unit_id]['exam_score']  = $scores[$member_id]['units'][$unit_id]['exam_sum'] / $scores[$member_id]['units'][$unit_id]['exam_count'];
+						$scores[$member_id]['units'][$unit_id]['exam_weight'] = ($gradePolicy->get('exam_weight') > 0) ? $gradePolicy->get('exam_weight') : 0;
 					}
 					else
 					{
-						$scores[$member_id]['units'][$unit_id]['exam_score']    = null;
-						$scores[$member_id]['units'][$unit_id]['exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
+						$scores[$member_id]['units'][$unit_id]['exam_score']  = null;
+						$scores[$member_id]['units'][$unit_id]['exam_weight'] = null;
 					}
+
 					if ($scores[$member_id]['units'][$unit_id]['quiz_count'] > 0)
 					{
-						$scores[$member_id]['units'][$unit_id]['quiz_score']    = round(($scores[$member_id]['units'][$unit_id]['quiz_sum'] / $scores[$member_id]['units'][$unit_id]['quiz_count']), 2);
-						$scores[$member_id]['units'][$unit_id]['quiz_weighted'] = round($scores[$member_id]['units'][$unit_id]['quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
-
-						if ($gradePolicy->get('quiz_weight') > 0)
-						{
-							$hasScores = true;
-						}
+						$scores[$member_id]['units'][$unit_id]['quiz_score']  = $scores[$member_id]['units'][$unit_id]['quiz_sum'] / $scores[$member_id]['units'][$unit_id]['quiz_count'];
+						$scores[$member_id]['units'][$unit_id]['quiz_weight'] = ($gradePolicy->get('quiz_weight') > 0) ? $gradePolicy->get('quiz_weight') : 0;
 					}
 					else
 					{
-						$scores[$member_id]['units'][$unit_id]['quiz_score']    = null;
-						$scores[$member_id]['units'][$unit_id]['quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
+						$scores[$member_id]['units'][$unit_id]['quiz_score']  = null;
+						$scores[$member_id]['units'][$unit_id]['quiz_weight'] = null;
 					}
+
 					if ($scores[$member_id]['units'][$unit_id]['homework_count'] > 0)
 					{
-						$scores[$member_id]['units'][$unit_id]['homework_score']    = round(($scores[$member_id]['units'][$unit_id]['homework_sum'] / $scores[$member_id]['units'][$unit_id]['homework_count']), 2);
-						$scores[$member_id]['units'][$unit_id]['homework_weighted'] = round($scores[$member_id]['units'][$unit_id]['homework_score'] * $gradePolicy->get('homework_weight'), 2);
-
-						if ($gradePolicy->get('homework_weight') > 0)
-						{
-							$hasScores = true;
-						}
+						$scores[$member_id]['units'][$unit_id]['homework_score']  = $scores[$member_id]['units'][$unit_id]['homework_sum'] / $scores[$member_id]['units'][$unit_id]['homework_count'];
+						$scores[$member_id]['units'][$unit_id]['homework_weight'] = ($gradePolicy->get('homework_weight') > 0) ? $gradePolicy->get('homework_weight') : 0;
 					}
 					else
 					{
-						$scores[$member_id]['units'][$unit_id]['homework_score']    = null;
-						$scores[$member_id]['units'][$unit_id]['homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
+						$scores[$member_id]['units'][$unit_id]['homework_score']  = null;
+						$scores[$member_id]['units'][$unit_id]['homework_weight'] = null;
 					}
 
-					if ($hasScores)
+					$numerator = array_sum(
+									array(
+										$scores[$member_id]['units'][$unit_id]['exam_score']     * $gradePolicy->get('exam_weight'),
+										$scores[$member_id]['units'][$unit_id]['quiz_score']     * $gradePolicy->get('quiz_weight'),
+										$scores[$member_id]['units'][$unit_id]['homework_score'] * $gradePolicy->get('homework_weight')
+									)
+								);
+
+					$denominator = array_sum(
+									array(
+										$scores[$member_id]['units'][$unit_id]['exam_weight'],
+										$scores[$member_id]['units'][$unit_id]['quiz_weight'],
+										$scores[$member_id]['units'][$unit_id]['homework_weight']
+									)
+								);
+
+					if ($denominator)
 					{
-						// Finally, compute unit weighted score
-						$scores[$member_id]['units'][$unit_id]['unit_weighted']     =
-							$scores[$member_id]['units'][$unit_id]['exam_weighted'] +
-							$scores[$member_id]['units'][$unit_id]['quiz_weighted'] +
-							$scores[$member_id]['units'][$unit_id]['homework_weighted'];
+						$scores[$member_id]['units'][$unit_id]['unit_weighted'] = $numerator / $denominator;
 					}
 					else
 					{
@@ -390,62 +387,59 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					}
 				}
 
-				$hasScores = false;
-
 				// Now calculate overall course scores
 				if ($scores[$member_id]['course_exam_count'] > 0)
 				{
-					$scores[$member_id]['course_exam_score']    = round(($scores[$member_id]['course_exam_sum'] / $scores[$member_id]['course_exam_count']), 2);
-					$scores[$member_id]['course_exam_weighted'] = round($scores[$member_id]['course_exam_score'] * $gradePolicy->get('exam_weight'), 2);
-
-					if ($gradePolicy->get('exam_weight') > 0)
-					{
-						$hasScores = true;
-					}
+					$scores[$member_id]['course_exam_score']  = $scores[$member_id]['course_exam_sum'] / $scores[$member_id]['course_exam_count'];
+					$scores[$member_id]['course_exam_weight'] = ($gradePolicy->get('exam_weight') > 0) ? $gradePolicy->get('exam_weight') : 0;
 				}
 				else
 				{
-					$scores[$member_id]['course_exam_score']    = null;
-					$scores[$member_id]['course_exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
+					$scores[$member_id]['course_exam_score']  = null;
+					$scores[$member_id]['course_exam_weight'] = null;
 				}
+
 				if ($scores[$member_id]['course_quiz_count'] > 0)
 				{
-					$scores[$member_id]['course_quiz_score']    = round(($scores[$member_id]['course_quiz_sum'] / $scores[$member_id]['course_quiz_count']), 2);
-					$scores[$member_id]['course_quiz_weighted'] = round($scores[$member_id]['course_quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
-
-					if ($gradePolicy->get('quiz_weight') > 0)
-					{
-						$hasScores = true;
-					}
+					$scores[$member_id]['course_quiz_score']  = $scores[$member_id]['course_quiz_sum'] / $scores[$member_id]['course_quiz_count'];
+					$scores[$member_id]['course_quiz_weight'] = ($gradePolicy->get('quiz_weight') > 0) ? $gradePolicy->get('quiz_weight') : 0;
 				}
 				else
 				{
-					$scores[$member_id]['course_quiz_score']    = null;
-					$scores[$member_id]['course_quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
+					$scores[$member_id]['course_quiz_score']  = null;
+					$scores[$member_id]['course_quiz_weight'] = null;
 				}
+
 				if ($scores[$member_id]['course_homework_count'] > 0)
 				{
-					$scores[$member_id]['course_homework_score']    = round(($scores[$member_id]['course_homework_sum'] / $scores[$member_id]['course_homework_count']), 2);
-					$scores[$member_id]['course_homework_weighted'] = round($scores[$member_id]['course_homework_score'] * $gradePolicy->get('homework_weight'), 2);
-
-					if ($gradePolicy->get('homework_weight') > 0)
-					{
-						$hasScores = true;
-					}
+					$scores[$member_id]['course_homework_score']  = $scores[$member_id]['course_homework_sum'] / $scores[$member_id]['course_homework_count'];
+					$scores[$member_id]['course_homework_weight'] = ($gradePolicy->get('homework_weight') > 0) ? $gradePolicy->get('homework_weight') : 0;
 				}
 				else
 				{
-					$scores[$member_id]['course_homework_score']    = null;
-					$scores[$member_id]['course_homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
+					$scores[$member_id]['course_homework_score']  = null;
+					$scores[$member_id]['course_homework_weight'] = null;
 				}
 
-				if ($hasScores)
+				$numerator = array_sum(
+								array(
+									$scores[$member_id]['course_exam_score']     * $gradePolicy->get('exam_weight'),
+									$scores[$member_id]['course_quiz_score']     * $gradePolicy->get('quiz_weight'),
+									$scores[$member_id]['course_homework_score'] * $gradePolicy->get('homework_weight')
+								)
+							);
+
+				$denominator = array_sum(
+								array(
+									$scores[$member_id]['course_exam_weight'],
+									$scores[$member_id]['course_quiz_weight'],
+									$scores[$member_id]['course_homework_weight']
+								)
+							);
+
+				if ($denominator)
 				{
-					// Get course weighted average
-					$scores[$member_id]['course_weighted']          =
-						$scores[$member_id]['course_exam_weighted'] +
-						$scores[$member_id]['course_quiz_weighted'] +
-						$scores[$member_id]['course_homework_weighted'];
+					$scores[$member_id]['course_weighted'] = $numerator / $denominator;
 				}
 				else
 				{
@@ -697,6 +691,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$memberTbl->loadByMemberId($m);
 						$user_id = $memberTbl->get('user_id');
 
+						$data               = new stdClass();
 						$data->id           = $sb->get('provider_badge_id');
 						$data->evidenceUrl  = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $sb->get('id') . DS . 'validation' . DS . $badge->get('validation_token');
 						$users              = array();
