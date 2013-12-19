@@ -1936,7 +1936,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 							$podcastp = trim($this->config->get('uploadpath'), DS) . DS . ltrim($podcastp, DS);
 						}
 						$podcastp = JPATH_ROOT . DS . ltrim($podcastp, DS);
-						if (true /* file_exists($podcastp) */) 
+						if (file_exists($podcastp)) 
 						{
 							$fs = filesize($podcastp);
 
