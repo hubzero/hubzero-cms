@@ -1157,7 +1157,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		if (substr($name, 0, 7) == 'mailto:') 
 		{
 			$name = substr($name, 7, strlen($name));
-			$name = plgGroupsMessages::obfuscate($name);
+			$name = self::obfuscate($name);
 
 			$href = 'mailto:' . $name;
 		}
@@ -1173,7 +1173,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 * @param      string $email Address to obfuscate
 	 * @return     string
 	 */
-	public function obfuscate($email)
+	public static function obfuscate($email)
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
@@ -1194,7 +1194,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 * @param      array  $ids         Option IDs
 	 * @return     string
 	 */
-	public function selectMethod($notimethods, $name, $values=array(), $ids=array())
+	public static function selectMethod($notimethods, $name, $values=array(), $ids=array())
 	{
 		$out = '';
 		$i = 0;
