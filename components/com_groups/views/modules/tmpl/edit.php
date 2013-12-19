@@ -124,7 +124,7 @@ foreach ($menus as $menu)
 					<legend><?php echo JText::_('Menu Assignment')?></legend>
 					<label for="field-assignment">
 						<strong>Module Assignment:</strong> <span class="required">Required</span>
-						<select name="menu[assignment]" id="field-assignment">
+						<select name="menu[assignment]" id="field-assignment" class="fancy-select">
 							<option value="0"><?php echo JText::_('On all pages'); ?></option>
 							<option <?php if (!in_array(0, $activeMenu)) { echo 'selected="selected"'; } ?> value=""><?php echo JText::_('Only on pages selected'); ?></option>
 						</select>
@@ -151,7 +151,7 @@ foreach ($menus as $menu)
 					
 					<label for="field-state">
 						<strong>Status:</strong> <span class="optional">Optional</span>
-						<select name="module[state]" id="field-state">
+						<select name="module[state]" id="field-state" class="fancy-select">
 							<option value="1">Published</option>
 							<option value="0">Unpublished</option>
 						</select>
@@ -171,7 +171,7 @@ foreach ($menus as $menu)
 					<?php if ($this->module->get('id')) : ?>
 						<label for="field-ordering">
 							<strong>Ordering:</strong> <span class="optional">Optional</span>
-							<select name="module[ordering]" id="field-ordering">
+							<select name="module[ordering]" id="field-ordering" class="fancy-select">
 								<?php foreach($this->order as $k => $order) : ?>
 									<?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
 									<option <?php echo $sel ;?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>

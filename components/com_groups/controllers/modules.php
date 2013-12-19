@@ -157,6 +157,10 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		//push scripts
 		$this->_getScripts('assets/js/' . $this->_name);
 		
+		// add fancy select for page categories
+		Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
+		Hubzero_Document::addSystemScript('jquery.fancyselect');
+		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group = $this->group;

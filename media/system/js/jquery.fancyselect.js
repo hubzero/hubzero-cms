@@ -249,7 +249,7 @@
 				dropdown.find('.fs-dropdown-selected-item').prepend(optionImgOrColor(selected));
 			
 				//find original select and set value
-				dropdown.next('select').val( value );
+				dropdown.next('select').val( value ).trigger('change');
 			
 				//run on open function
 				if (typeof data.settings.onSelected == 'function' && runOnSelected)

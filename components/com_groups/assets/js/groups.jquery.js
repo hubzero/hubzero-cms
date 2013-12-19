@@ -31,6 +31,12 @@ HUB.Groups = {
 		HUB.Groups.pages();
 		HUB.Groups.modules();
 		HUB.Groups.categories();
+		
+		var $ = this.jQuery;
+		if ($('.fancy-select').length)
+		{
+			$('.fancy-select').HUBfancyselect();
+		}
 	},
 	
 	general: function()
@@ -329,11 +335,6 @@ HUB.Groups = {
 		
 		// page category
 		HUB.Groups.pagesEditPageCategory();
-		
-		if ($('.fancy-select').length)
-		{
-			$('.fancy-select').HUBfancyselect();
-		}
 		
 		// Page & module Search
 		$('.group-page-manager').on('keyup', '.toolbar .search input', function(event) {

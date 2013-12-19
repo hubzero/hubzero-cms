@@ -239,7 +239,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		//push scripts
 		$this->_getScripts('assets/js/' . $this->_name);
 		
-		// add fancy select for page categories
+		// add fancy select for select boxes
 		Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
 		Hubzero_Document::addSystemScript('jquery.fancyselect');
 		
