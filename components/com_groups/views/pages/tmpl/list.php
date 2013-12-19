@@ -67,6 +67,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					$class .= ' not-approved';
 				}
+				
+				//get file check outs
+				$checkout = GroupsHelperPages::getCheckout($page->get('id'));
 			?>
 			<li id="<?php echo $page->get('id'); ?>" class="<?php echo $class; ?>">
 				<div class="item-container" <?php if($category) : ?>style="border-color: #<?php echo $category->get('color'); ?>"<?php endif; ?>>
@@ -80,6 +83,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<div class="item-sub" >
 						<span tabindex="-1"><?php echo DS . 'groups' . DS . $this->group->get('cn') . DS .$page->get('alias'); ?></span>
 					</div>
+					
+					<?php if ($checkout) : ?>
+						<div class="item-checkout">
+							<img width="15" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($checkout->userid); ?>" />
+							<?php
+								$user = Hubzero_User_Profile::getInstance($checkout->userid);
+								echo JText::sprintf('<a href="/members/%s">%s</a> is currently editing', $user->get('uidNumber'), $user->get('name'));
+							?>
+						</div>
+					<?php endif; ?>
 					
 					<?php if ($version->get('approved') == 0) : ?>
 						<div class="item-approved">

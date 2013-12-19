@@ -56,6 +56,7 @@ class GroupsHelperPages
 		return array_map("trim", explode(',', $approvers));
 	}
 	
+	
 	/**
 	 * Get page approvers Emails and names
 	 * (used for emailing purposes)
@@ -79,7 +80,13 @@ class GroupsHelperPages
 		return $emails;
 	}
 	
-	
+	/**
+	 * Send mail to page approvers
+	 *
+	 * @param     $type      type of object needing approval
+	 * @param     $object    object needing approval
+	 * @return    void
+	 */
 	public static function sendApproveNotification( $type, $object )
 	{
 		// build title
@@ -212,5 +219,80 @@ class GroupsHelperPages
 				)
 			)
 		);
+	}
+	
+	/**
+	 * Get page checkout details
+	 *
+	 * @param    $pageid    Id of page to get info
+	 * @return   object
+	 */
+	public static function getCheckout($pageid)
+	{
+		// get joomla objects
+		$db   = JFactory::getDBO();
+		$user = JFactory::getUser();
+		
+		// get person who has page checkedout
+		$sql = "SELECT * FROM `#__xgroups_pages_checkout` 
+			    WHERE `userid`<>" . $user->get('id') . " AND `pageid`=" . $db->quote($pageid) . " ORDER BY `when` LIMIT 1";
+		$db->setQuery($sql);
+		return $db->loadObject();
+	}
+	
+	/**
+	 * Checkout Page
+	 *
+	 * @param    $pageid    Id of page to get info
+	 * @return   object
+	 */
+	public static function checkout($pageid)
+	{
+		// get needed joomla objects
+		$db   = JFactory::getDBO();
+		$user = JFactory::getUser();
+		
+		// check in other pages
+		self::checkinForUser();
+		
+		// mark page as checked out
+		$sql = "INSERT INTO `#__xgroups_pages_checkout` (`pageid`,`userid`,`when`) 
+			    VALUES(".$db->quote($pageid).",".$db->quote($user->get('id')).", '".JFactory::getDate()->toSql()."');";
+		$db->setQuery($sql);
+		$db->query();
+	}
+	
+	/**
+	 * Checkin Page
+	 *
+	 * @param    $pageid    Id of page to get info
+	 * @return   object
+	 */
+	public static function checkin($pageid)
+	{
+		// get joomla objects
+		$db = JFactory::getDBO();
+		
+		// check in page
+		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `pageid`=" . $db->quote($pageid);
+		$db->setQuery($sql);
+		$db->query();
+	}
+	
+	/**
+	 * Checkin all pages for user
+	 *
+	 * @return   object
+	 */
+	public static function checkinForUser()
+	{
+		// get joomla objects
+		$user = JFactory::getUser();
+		$db   = JFactory::getDBO();
+		
+		// check in all pages for this user
+		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote($user->get('id'));
+		$db->setQuery($sql);
+		$db->query();
 	}
 }

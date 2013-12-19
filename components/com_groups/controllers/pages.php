@@ -91,6 +91,9 @@ class GroupsControllerPages extends GroupsControllerAbstract
 	 */
 	public function displayTask()
 	{
+		// check in for user
+		GroupsHelperPages::checkinForUser();
+		
 		// get group pages
 		$pageArchive = new GroupsModelPageArchive();
 		$this->view->pages = $pageArchive->pages('list', array(
@@ -199,6 +202,9 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		{
 			$this->view->version = $this->version;
 		}
+		
+		// checkout page
+		GroupsHelperPages::checkout($this->view->page->get('id'));
 		
 		// get a list of all pages for page ordering
 		$pageArchive = GroupsModelPageArchive::getInstance();
@@ -365,6 +371,9 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		{
 			GroupsHelperPages::sendApproveNotification('page', $this->page);
 		}
+		
+		// check page back in
+		GroupsHelperPages::checkin($this->page->get('id'));
 		
 		// Push success message and redirect
 		$this->setNotification("You have successfully {$task}d the page.", 'passed');

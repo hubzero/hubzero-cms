@@ -67,6 +67,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			return $this->downloadTask( $file ); 
 		}
 		
+		// check in for user
+		GroupsHelperPages::checkinForUser();
+		
 		//continue with parent execute method
 		parent::execute();
 	}
