@@ -1712,7 +1712,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Get tag/group associations
 		//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-		$tt = new TagsGroup($this->database);
+		$tt = new TagsTableGroup($this->database);
 		$tgas = $tt->getRecords();
 
 		if (!$tgas) 
