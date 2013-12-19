@@ -53,7 +53,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			JRequest::setVar('task', 'manage');
 		}
 
-		$this->_folder = 'members';
+		$this->_folder = 'resources';
 
 		parent::execute();
 	}
@@ -212,7 +212,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		}
 
 		// Get related plugins
-		JPluginHelper::importPlugin('members');
+		JPluginHelper::importPlugin('resources');
 		$dispatcher = JDispatcher::getInstance();
 
 		// Show related content
@@ -255,7 +255,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		}
 
 		// Get related plugins
-		JPluginHelper::importPlugin('members', $plugin);
+		JPluginHelper::importPlugin('resources', $plugin);
 		$dispatcher = JDispatcher::getInstance();
 		
 		// Show related content
