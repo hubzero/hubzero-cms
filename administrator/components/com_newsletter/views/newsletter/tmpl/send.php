@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_('Send Newsletter') . ': <small><small>[ ' . $this->newsletter->name . ' ]</small></small>', 'newsletter.png');
+JToolBarHelper::title(JText::_('Send Newsletter') . ': ' . $this->newsletter->name, 'newsletter.png');
 
 //add buttons to toolbar
 JToolBarHelper::custom('dosendnewsletter', 'send', '', 'Send Newsletter', false);
