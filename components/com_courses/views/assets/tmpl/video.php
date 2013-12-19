@@ -375,7 +375,19 @@ if ($type == 'hubpresenter' || $type == 'html5')
 						<?php foreach ($presentation->slides as $slide) : ?>
 							<?php if ((int)$slide->slide != $last_slide_id) : ?>
 								<li id="list_<?php echo $counter; ?>">
-									<img src="<?php echo $content_folder . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+									<?php
+										// Use thumb if possible
+										$thumb = '';
+										if(isset($slide->thumb) && $slide->thumb && file_exists(JPATH_ROOT.DS.$content_folder.DS.$slide->thumb))
+										{
+											$thumb = $content_folder.DS.$slide->thumb;
+										}
+										else if (!is_array($slide->media) && file_exists(JPATH_ROOT.DS.$content_folder.DS.$slide->media))
+										{
+											$thumb = $content_folder.DS.$slide->media;
+										}
+									?>
+									<img src="<?php echo $thumb; ?>" alt="<?php echo $slide->title; ?>" />
 									<span>
 										<?php 
 											$num++;
