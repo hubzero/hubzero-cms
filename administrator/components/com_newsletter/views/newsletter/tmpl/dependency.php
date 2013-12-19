@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletters' ) . '</a>', 'newsletter.png');
+JToolBarHelper::title(JText::_( 'Newsletters' ), 'newsletter.png');
 ?>
 
 <p class="warning">
