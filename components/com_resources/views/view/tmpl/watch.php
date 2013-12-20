@@ -40,6 +40,14 @@ $content_folder = $this->content_folder;
 //decode the json formatted manifest so we can use the information
 $presentation = json_decode( $contents );
 $presentation = $presentation->presentation;
+if (!is_object($presentation))
+{
+	$presentation = new stdClass;
+	$presentation->slides = array();
+	$presentation->media = array();
+	$presentation->placeholder = null;
+	$presentation->duration = null;
+}
 
 //get this resource
 $rr = new ResourcesResource( $this->database );
