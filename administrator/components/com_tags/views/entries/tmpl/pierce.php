@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS') . ': <small><small>[ ' . JText::_('PIERCE') . ' ]</small></small>', 'tags.png');
+JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('PIERCE'), 'tags.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save('pierce');
