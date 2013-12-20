@@ -181,7 +181,7 @@ class Hubzero_Trac_Project
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function find_or_create($name)
+	public static function find_or_create($name)
 	{
 		$hztp = new Hubzero_Trac_Project();
 
