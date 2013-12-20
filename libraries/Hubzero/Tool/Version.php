@@ -641,7 +641,7 @@ class Hubzero_Tool_Version
 	 * @param      unknown $instance Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-    public function createInstance($toolname,$instance)
+    public static function createInstance($toolname,$instance)
     {
         if (empty($toolname))
         {
