@@ -104,7 +104,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 		?>
 		
 		
-		<div class="page-meta col span6">
+		<div class="page-meta col span10">
 			<?php if ($this->page->get('id') != 0) : ?>
 				<span class="created" title="<?php echo JText::sprintf('Created on %s by %s', $createdDate, $createdBy); ?>">
 					<?php echo JText::sprintf('Created by %s', $createdLink); ?>
@@ -116,7 +116,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 		</div> 
 		
 		<?php if ($this->authorized == 'manager') : ?>
-			<div class="page-controls col span6 omega">
+			<div class="page-controls col span2 omega">
 				<ul class="page-controls">
 				<?php if ($this->page->get('id') != 0) : ?>
 					<li>

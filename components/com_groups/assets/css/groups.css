@@ -1623,25 +1623,6 @@ background:url("/components/com_groups/assets/img/menu-active.png") no-repeat 0 
 }
 
 /* Edit Page Styles */
-.page-category-label .fs-dropdown {
-	width: 100%;
-}
-#hubForm .group-page-versions {
-	padding: 0 20px;
-}
-#hubForm .group-page-versions table {
-	border: 1px solid #ccc;
-	font-size: 12px;
-}
-#hubForm .group-page-versions table thead th {
-	background: #efefef;
-	
-}
-#hubForm .group-page-versions table th,
-#hubForm .group-page-versions table td {
-	border-bottom: 1px solid #CCC;
-}
-
 .ckeditor-body {
 	padding: 10px;
 	min-width: inherit;
@@ -1681,19 +1662,19 @@ background:url("/components/com_groups/assets/img/menu-active.png") no-repeat 0 
 .group-page-versions table .current td {
 	background: #ddeaff;
 }
-.created,
-.approved {
+.group-page-versions .created,
+.group-page-versions .approved {
 	display: block;
 }
-.created img,
-.approved img {
+.group-page-versions .created img,
+.group-page-versions .approved img {
 	float: left;
 	margin-right: 10px;
 }
-.created .created-date,
-.created .created-by a,
-.approved .approved-date,
-.approved .approved-by a  {
+.group-page-versions .created .created-date,
+.group-page-versions .created .created-by a,
+.group-page-versions .approved .approved-date,
+.group-page-versions .approved .approved-by a  {
 	display: block;
 	border: none;
 }
