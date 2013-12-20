@@ -1,5 +1,5 @@
 ;(function($, window, document, undefined) {
-	
+	var idNumber = 0;
 	$.fn.HUBfancyselect = function( method ) {
 		if ( methods[method] ) 
 		{
@@ -38,9 +38,11 @@
 				return 'Must be <select> element';
 			}
 			
+			idNumber++;
+			
 			//set random #id
 			$this.data('fancyselect', {
-				id: Math.floor((Math.random()*1000)+1),
+				id: idNumber,
 				settings: settings
 			});
 			
