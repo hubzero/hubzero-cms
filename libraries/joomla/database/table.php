@@ -81,12 +81,12 @@ abstract class JTable extends JObject
 	 *
 	 * @since   11.1
 	 */
-	public function __construct($table, $key, &$db)
+	public function __construct($table, $key, $db)
 	{
 		// Set internal variables.
 		$this->_tbl = $table;
 		$this->_tbl_key = $key;
-		$this->_db = &$db;
+		$this->_db = $db;
 
 		// Initialise the table properties.
 		if ($fields = $this->getFields())
