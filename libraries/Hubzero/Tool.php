@@ -310,7 +310,7 @@ class Hubzero_Tool
 	 * @param	  unknown $name Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
-	public function createInstance($name)
+	public static function createInstance($name)
 	{
 		if (empty($name))
 		{
