@@ -31,12 +31,6 @@ HUB.Groups = {
 		HUB.Groups.pages();
 		HUB.Groups.modules();
 		HUB.Groups.categories();
-		
-		var $ = this.jQuery;
-		if ($('.fancy-select').length)
-		{
-			$('.fancy-select').HUBfancyselect();
-		}
 	},
 	
 	general: function()
@@ -61,6 +55,21 @@ HUB.Groups = {
 		
 		//scrolling asset browser
 		HUB.Groups.scrollingAssetBrowser();
+		
+		// add fancyselect to places
+		HUB.Groups.fancyselect();
+	},
+	
+	//-----
+	
+	fancyselect: function()
+	{
+		var $ = this.jQuery;
+		
+		if ($('.fancy-select').length)
+		{
+			$('.fancy-select').HUBfancyselect();
+		}
 	},
 	
 	//-----
@@ -336,6 +345,9 @@ HUB.Groups = {
 		// page category
 		HUB.Groups.pagesEditPageCategory();
 		
+		// handle multiple editors
+		//HUB.Groups.pagesMultipleEditors();
+		
 		// Page & module Search
 		$('.group-page-manager').on('keyup', '.toolbar .search input', function(event) {
 			var term = $(this).val(),
@@ -382,6 +394,13 @@ HUB.Groups = {
 		jQuery.expr[':'].caseInsensitiveContains = function(a,i,m) {
 			return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0; 
 		};
+	},
+	
+	//-----
+	
+	pagesPageVersions: function()
+	{
+		
 	},
 	
 	//-----
@@ -501,6 +520,8 @@ HUB.Groups = {
 		}
 	},
 	
+	//-----
+	
 	pagesFilterClear: function()
 	{
 		if ($('.toolbar:visible .filter select').val() != '')
@@ -579,39 +600,6 @@ HUB.Groups = {
 	
 	//-----
 	
-	pagesPageVersions: function()
-	{
-		var $ = this.jQuery;
-		
-		// page history lightbox
-		$('.item-list').on('click', '.page-history', function(event) {
-			event.preventDefault();
-			$.fancybox.showLoading()
-			var url = $(this).attr('href') + '&tmpl=component';
-			$.get(url, function(result) {
-				var content = $(result).find('#versions');
-				
-				if (content.length)
-				{
-					content = '<form id="hubForm" class="full">' + content.get(0).innerHTML + '</form>';
-					$.fancybox({
-						content: content,
-						width: 1024,
-						autoSize: false,
-						autoHeight: true
-					});
-				}
-				else
-				{
-					alert('Unable to load page history.');
-					$.fancybox.hideLoading()
-				}
-			});
-		});
-	},
-	
-	//-----
-	
 	modules: function()
 	{
 		var $ = this.jQuery;
@@ -641,6 +629,8 @@ HUB.Groups = {
 			HUB.Groups.moduleMenuClearSelection();
 		});
 	},
+	
+	//-----
 	
 	moduleMenuSelectAll: function()
 	{

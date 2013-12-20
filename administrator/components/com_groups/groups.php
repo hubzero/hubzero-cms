@@ -79,8 +79,9 @@ require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'module' . DS . 'archiv
 // Include Helpers
 require_once JPATH_COMPONENT . DS . 'helpers' . DS . 'groups.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'view.php';
-require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'document.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'pages.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'document.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'template.php';
 
 // build controller path
 $controllerName = JRequest::getCmd('controller', 'manage');

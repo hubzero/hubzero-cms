@@ -766,6 +766,7 @@ class GroupsControllerPages extends Hubzero_Controller
 		
 		// get reqest vars
 		$pageid  = JRequest::getInt('pageid', 0, 'get');
+		$version = JRequest::getInt('version', 0, 'get');
 		
 		// page object
 		$page = new GroupsModelPage( $pageid );
@@ -776,74 +777,8 @@ class GroupsControllerPages extends Hubzero_Controller
 			JError::raiseError(403, 'You are not authorized to view this page.');
 		}
 		
-		// load page version
-		$content = $page->version()->get('content');
-		
-		// create new group document helper
-		$groupDocument = new GroupsHelperDocument();
-		
-		// strip out scripts & php tags if not super group
-		if (!$this->group->isSuperGroup())
-		{
-			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
-		}
-		
-		// are we allowed to display group modules
-		if(!$this->group->isSuperGroup() && !$this->config->get('page_modules', 0))
-		{
-			$groupDocument->set('allowed_tags', array());
-		}
-		
-		// set group doc needed props
-		// parse and render content
-		$groupDocument->set('group', $this->group)
-			          ->set('page', $page)
-			          ->set('document', $content)
-			          ->parse()
-			          ->render();
-		
-		// get doc content
-		$content = $groupDocument->output();
-		
-		// only parse php if Super Group
-		if ($this->group->isSuperGroup())
-		{
-			// run as closure to ensure no $this scope
-			$eval = function() use ($content)
-			{
-				ob_start();
-				unset($this);
-				eval("?> $content <?php ");
-				$content = ob_get_clean();
-				return $content;
-			};
-			$content = $eval();
-		}
-		
-		// get group css 
-		$pageCss = GroupsHelperView::GetPageCss($this->group);
-		
-		$css = '';
-		foreach($pageCss as $p)
-		{
-			$css .= '<link rel="stylesheet" href="'.$p.'" />';
-		}
-		
-		// output html
-		$html = '<!DOCTYPE html>
-				<html>
-					<head>
-						<title>'.$this->group->get('description').'</title>
-						'.$css.'
-					</head>
-					<body>
-						'. $content .'
-					</body>
-				</html>';
-				
-		//echo content and exit
-		echo $html;
+		// get preview
+		echo GroupsHelperPages::generatePreview($page, $version);
 		exit();
 	}
 

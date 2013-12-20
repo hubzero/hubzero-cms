@@ -295,4 +295,108 @@ class GroupsHelperPages
 		$db->setQuery($sql);
 		$db->query();
 	}
+	
+	
+	/**
+	 * Checkin in all abondoned checkouts
+	 *
+	 * @return   object
+	 */
+	public static function checkinAbandoned()
+	{
+		// get joomla objects
+		$db   = JFactory::getDBO();
+		
+		// check in all pages for this user
+		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `when` < NOW() - INTERVAL 12 HOUR";
+		$db->setQuery($sql);
+		$db->query();
+	}
+	
+	
+	/**
+	 * Generate Group Page Preview
+	 *
+	 * @param    $page   Group page object
+	 * @return   void
+	 */
+	public static function generatePreview( $page, $version = 0 )
+	{
+		// get groups
+		$gidNumber = $page->get('gidNumber');
+		$group     = Hubzero_Group::getInstance($gidNumber);
+		
+		//get config
+		$config = JComponentHelper::getParams('com_groups');
+		
+		// load page version
+		$content = $page->version($version)->get('content');
+		
+		// create new group document helper
+		$groupDocument = new GroupsHelperDocument();
+		
+		// strip out scripts & php tags if not super group
+		if (!$group->isSuperGroup())
+		{
+			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+		}
+		
+		// are we allowed to display group modules
+		if(!$group->isSuperGroup() && !$config->get('page_modules', 0))
+		{
+			$groupDocument->set('allowed_tags', array());
+		}
+		
+		// set group doc needed props
+		// parse and render content
+		$groupDocument->set('group', $group)
+			          ->set('page', $page)
+			          ->set('document', $content)
+			          ->parse()
+			          ->render();
+		
+		// get doc content
+		$content = $groupDocument->output();
+		
+		// only parse php if Super Group
+		if ($group->isSuperGroup())
+		{
+			// run as closure to ensure no $this scope
+			$eval = function() use ($content)
+			{
+				ob_start();
+				unset($this);
+				eval("?> $content <?php ");
+				$content = ob_get_clean();
+				return $content;
+			};
+			$content = $eval();
+		}
+		
+		// get group css 
+		$pageCss = GroupsHelperView::GetPageCss($group);
+		
+		$css = '';
+		foreach($pageCss as $p)
+		{
+			$p = rtrim(JURI::root(), DS) . DS . ltrim($p, DS);
+			$css .= '<link rel="stylesheet" href="'.$p.'" />';
+		}
+		
+		// output html
+		$html = '<!DOCTYPE html>
+				<html>
+					<head>
+						<title>'.$group->get('description').'</title>
+						'.$css.'
+					</head>
+					<body>
+						'. $content .'
+					</body>
+				</html>';
+				
+		// return html
+		return $html;
+	}
 }

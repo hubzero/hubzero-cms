@@ -164,6 +164,16 @@ if ($this->page)
 							<option value="0" <?php if($state == 0) { echo "selected"; } ?>>Unpublished</option>
 						</select>
 					</label>
+					
+					<?php if ($this->page->get('id')) : ?>
+						<label>
+							<strong>Versions:</strong> <br />
+							<a class="btn icon-history" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=versions&pageid=' . $this->page->get('id')); ?>">
+								Browse Versions (<?php echo $this->page->versions()->count(); ?>)
+							</a>
+						</label>
+					<?php endif; ?>
+					
 					<label>
 						<strong>Privacy:</strong> <span class="required">Required</span>
 						<?php
@@ -251,96 +261,4 @@ if ($this->page)
 		<input type="hidden" name="return" value="<?php echo JRequest::getVar('return', '','get'); ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
-		
-		
-		
-		
-		<?php if ($this->page->get('id')) : ?>
-			<fieldset id="versions">
-				<legend><?php echo JText::_('Page Versions'); ?></legend>
-				
-				<div class="group-page-versions">
-					<table>
-						<thead>
-							<tr>
-								<th>Version</th>
-								<th>Content</th>
-								<th>Created</th>
-								<th>Created By</th>
-								<th>Approved</th>
-								<th>Approved By</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($this->page->versions() as $pageVersion) : ?>
-								<tr>
-									<td><?php echo $pageVersion->get('version'); ?></td>
-									<td>
-										<a target="_blank" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=raw&pageid='.$id.'&version='.$pageVersion->get('version')); ?>">
-											View Raw
-										</a>
-									</td>
-									<td>
-										<?php
-											$created = 'n/a';
-											if ($pageVersion->get('created') != null)
-											{
-												$created = date("F d, Y @ g:ia", strtotime($pageVersion->get('created'))); 
-											}
-											echo $created;
-										?>
-									</td>
-									<td>
-										<?php
-											$created_by = 'n/a';
-											if ($pageVersion->get('created_by') == 1000)
-											{
-												$created_by = 'System';
-											}
-											else if ($pageVersion->get('created_by') != null && is_numeric($pageVersion->get('created_by')))
-											{
-												ximport('Hubzero_User_Profile');
-												$profile = Hubzero_User_Profile::getInstance( $pageVersion->get('created_by') );
-												$created_by = '<a href="/members/'.$profile->get('uidNumber').'">'.$profile->get('name').'</a>';
-											}
-											echo $created_by;
-										?>
-									</td>
-									<td>
-										<?php
-											$approved_on = 'n/a';
-											if ($pageVersion->get('approved_on') != null)
-											{
-												$approved_on = date("F d, Y @ g:ia", strtotime($pageVersion->get('approved_on'))); 
-											}
-											echo $approved_on;
-										?>
-									</td>
-									<td>
-										<?php
-											$approved_by = 'n/a';
-											if ($pageVersion->get('approved_by') == 1000)
-											{
-												$approved_by = 'System';
-											}
-											else if ($pageVersion->get('approved_by') != null && is_numeric($pageVersion->get('approved_by')))
-											{
-												ximport('Hubzero_User_Profile');
-												$profile = Hubzero_User_Profile::getInstance( $pageVersion->get('approved_by') );
-												$approved_by = '<a href="/members/'.$profile->get('uidNumber').'">'.$profile->get('name').'</a>';
-											}
-											echo $approved_by;
-										?>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-			</fieldset>
-		<?php endif; ?>
-		
-		
-		
-	
 </div>

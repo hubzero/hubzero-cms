@@ -247,6 +247,10 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		Hubzero_Document::addSystemScript('jquery.colpick');
 		Hubzero_Document::addSystemStylesheet('jquery.colpick.css');
 		
+		// add together js
+		//$jdocument = JFactory::getDocument();
+		//$jdocument->addScript('https://togetherjs.com/togetherjs-min.js');
+		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group         = $this->group;
@@ -255,6 +259,18 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$this->view->display();
 	}
 	
+	public function pollTask()
+	{
+		// get page id
+		$pageid = JRequest::getInt('pageid', 0);
+		
+		// get page checkout
+		$checkout = GroupsHelperPages::getCheckout($pageid);
+		
+		
+		echo json_encode($checkout);
+		exit();
+	}
 	
 	/**
 	 * Save Group page
@@ -382,6 +398,49 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		{
 			$this->setRedirect(base64_decode($return));
 		}
+	}
+	
+	public function versionsTask()
+	{
+		//set to edit layout
+		$this->view->setLayout('versions');
+		
+		//get request vars
+		$pageid = JRequest::getInt('pageid', 0,'get');
+		
+		// load page object
+		$this->view->page = new GroupsModelPage( $pageid );
+		
+		// make sure page exists
+		if (!$this->view->page->exists())
+		{
+			JError::raiseError(404, 'Page not found.');
+		}
+		
+		// make sure page belongs to group - if editing
+		if (!$this->view->page->belongsToGroup($this->group))
+		{
+			JError::raiseError(403, 'You are not authorized to edit this page.');
+		}
+		
+		// build the title
+		$this->_buildTitle();
+
+		// build pathway
+		$this->_buildPathway();
+		
+		//push styles
+		$this->_getStyles();
+		
+		//push scripts
+		$this->_getScripts('assets/js/' . $this->_name);
+		
+		// get view notifications
+		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$this->view->group         = $this->group;
+		
+		//display layout
+		$this->view->display();
 	}
 	
 	/**

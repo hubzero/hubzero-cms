@@ -127,7 +127,7 @@ class GroupsModelPage extends \Hubzero\Model
 		if ($this->_versions->count() > 0)
 		{
 			// return version object
-			if ($vid == null || $vid == 'current')
+			if ($vid == null || $vid == 0 || $vid == 'current')
 			{
 				$version = $this->_versions->first();
 			}

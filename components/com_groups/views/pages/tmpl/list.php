@@ -141,7 +141,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 								<li><a class="icon-success" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Un-publish Page'); ?></a></li>
 							<?php endif; ?>
 							<li class="divider"></li>
-							<li><a class="icon-history page-history" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id').'#versions'); ?>"> <?php echo JText::_('Version History'); ?></a></li>
+							<li><a class="icon-history page-history" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=versions&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Version History'); ?></a></li>
 							<li class="divider"></li>
 							<li><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=delete&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Delete Page'); ?></a></li>
 						</ul>

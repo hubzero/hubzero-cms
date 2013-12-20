@@ -1665,6 +1665,38 @@ background:url("/components/com_groups/assets/img/menu-active.png") no-repeat 0 
 	float: right;
 }
 
+/* Page Versions */
+.group-page-versions table {
+	border: 1px solid #ccc;
+}
+.group-page-versions table th {
+	background: #F0f0f0;
+	padding: 10px;
+	font-size: 14px;
+}
+.group-page-versions table th,
+.group-page-versions table td {
+	border-right: 1px solid #CCC;
+}
+.group-page-versions table .current td {
+	background: #ddeaff;
+}
+.created,
+.approved {
+	display: block;
+}
+.created img,
+.approved img {
+	float: left;
+	margin-right: 10px;
+}
+.created .created-date,
+.created .created-by a,
+.approved .approved-date,
+.approved .approved-by a  {
+	display: block;
+	border: none;
+}
 
 /* Page Categories */
 #field-category-color {
