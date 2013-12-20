@@ -108,6 +108,7 @@ $tool_path = $config->get('tool_path');
 			<p>
 				<label for="tool_param">Launch a tool with this file?</label>
 				<input name="tool_param" class="tool-param" type="checkbox" value="1" <?php echo ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool') ? 'checked="checked"' : ''; ?>/>
+				<input type="hidden" name="edit_tool_param" value="1" />
 
 				<select class="tool-list" name="tool_alias">
 					<? foreach ($tools as $tool) : ?>
