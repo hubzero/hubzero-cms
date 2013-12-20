@@ -137,7 +137,7 @@ class GroupsGroup extends JTable
 	 * 
 	 * @return     boolean
 	 */
-	public function save()
+	public function save($src, $orderingFilter ='', $ignore = '')
 	{
 		$this->setError('You\'re doing it wrong!');
 		return false;
@@ -148,7 +148,7 @@ class GroupsGroup extends JTable
 	 * 
 	 * @return     boolean
 	 */
-	public function store()
+	public function store($updateNulls = false)
 	{
 		$this->setError('You\'re doing it wrong!');
 		return false;
@@ -161,7 +161,7 @@ class GroupsGroup extends JTable
 	 * @param      mixed $oid Unique ID or alias of object to retrieve
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL)
+	public function load($oid = NULL, $reset = true)
 	{
 		if (empty($oid)) 
 		{
