@@ -1288,6 +1288,7 @@ class Hubzero_Registration
 	public function generateUsername($email)
 	{
 		$loginMaxLen = 32;
+		$email = strtolower($email);
 		
 		ximport('Hubzero_Registration_Helper');
 		$email = explode('@', $email);
