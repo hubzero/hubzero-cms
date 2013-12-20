@@ -611,7 +611,8 @@ class MembersControllerMedia extends Hubzero_Controller
 			return;
 		}
 
-		$filename = array_pop(explode('/', $_SERVER['REQUEST_URI']));
+		$parts = explode('/', $_SERVER['REQUEST_URI']);
+		$filename = array_pop($parts);
 
 		//get the file name
 		if (substr(strtolower($filename), 0, 5) == 'image') 
