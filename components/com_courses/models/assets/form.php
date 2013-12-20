@@ -138,7 +138,7 @@ class FormAssetHandler extends ContentAssetHandler
 						preload : false
 					},
 					href: '/courses/".$gid."/".$oid."/form.layout?formId=".$id."&tmpl=component',
-					afterShow: function() {
+					afterLoad: function() {
 						var iframe = $('.fancybox-iframe');
 						iframe.load(function() {
 							var frameContents = $('.fancybox-iframe').contents();
@@ -225,7 +225,7 @@ class FormAssetHandler extends ContentAssetHandler
 					preload : false
 				},
 				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&tmpl=component',
-				afterShow: function() {
+				afterLoad: function() {
 					// Highjack the 'done' button to close the iframe
 					var iframe = $('.fancybox-iframe');
 					iframe.load(function() {
