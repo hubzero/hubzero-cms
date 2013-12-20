@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS') . ': <small><small>[ ' . JText::_('MERGE') . ' ]</small></small>', 'tags.png');
+JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('MERGE'), 'tags.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save('merge');
