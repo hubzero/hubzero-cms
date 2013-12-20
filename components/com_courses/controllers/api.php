@@ -720,7 +720,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 				}
 			}
 		}
-		else if ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool')
+		else if ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool' && JRequest::getInt('edit_tool_param', false))
 		{
 			// This is the scenario where it was a tool launch link, but the box was unchecked
 			$config     = JComponentHelper::getParams('com_courses');
