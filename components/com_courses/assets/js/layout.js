@@ -2,9 +2,6 @@ jQuery(function($) {
 	var pages = $('#pages li'),
 		tabs = $('#page-tabs li a'),
 		currentPage = $('#page-1');
-		// @FIXME: offset hack for iframe (i think), although could be browser-specific issue (chrome?)
-		//         offset().top not getting set correctly within iframe in chrome
-		var iframeHack = 0;
 
 	// Register some changes based on whether we're in an iframe or not
 	if(window.location != window.parent.location) {
@@ -17,8 +14,6 @@ jQuery(function($) {
 			'background': '#222'
 		});
 		$('.navbar .question-info').css('color', '#FFF');
-
-		iframeHack = 20;
 	}
 
 	$('.main.section.courses-form').submit(function ( e ) {
@@ -49,12 +44,12 @@ jQuery(function($) {
 		currentPage.css('display', 'block');
 		return false;
 	});
+
 	$(pages[0]).css('display', 'block');
 
 	var place = $('#place-inputs'),
 		group = $('#group-inputs'),
 		basePos = currentPage.offset();
-		basePos.top -= iframeHack;
 
 	var groupBox = null, groupOrigin = {}, x, y;
 	// start drawing the box, and save one of its corners

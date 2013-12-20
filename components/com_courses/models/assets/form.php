@@ -134,31 +134,37 @@ class FormAssetHandler extends ContentAssetHandler
 					closeBtn: false,
 					modal: true,
 					type: 'iframe',
+					iframe: {
+						preload : false
+					},
 					href: '/courses/".$gid."/".$oid."/form.layout?formId=".$id."&tmpl=component',
 					afterShow: function() {
-						var frameContents = $('.fancybox-iframe').contents();
+						var iframe = $('.fancybox-iframe');
+						iframe.load(function() {
+							var frameContents = $('.fancybox-iframe').contents();
 
-						var navHeight = frameContents.find('.navbar').height();
-						frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
+							var navHeight = frameContents.find('.navbar').height();
+							frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
 
-						// Highjack the 'done' button to close the iframe
-						frameContents.find('#done').bind('click', function(e) {
-							e.preventDefault();
+							// Highjack the 'done' button to close the iframe
+							frameContents.find('#done').bind('click', function(e) {
+								e.preventDefault();
 
-							$.fancybox.close();
+								$.fancybox.close();
 
-							// Remove progress bar
-							HUB.CoursesOutline.asset.resetProgresBar(progressBarId, 0);
+								// Remove progress bar
+								HUB.CoursesOutline.asset.resetProgresBar(progressBarId, 0);
 
-							// Get the form data and set the published value to 2 for deleted
-							var formData = form.serializeArray();
-							formData.push({'name':'published', 'value':'2'});
-							formData.push({'name':'id', 'value':'" . $this->assoc['asset_id'] . "'});
+								// Get the form data and set the published value to 2 for deleted
+								var formData = form.serializeArray();
+								formData.push({'name':'published', 'value':'2'});
+								formData.push({'name':'id', 'value':'" . $this->assoc['asset_id'] . "'});
 
-							// We've already saved the asset, so we need to mark asset as deleted
-							$.ajax({
-								url: '/api/courses/asset/save',
-								data: formData
+								// We've already saved the asset, so we need to mark asset as deleted
+								$.ajax({
+									url: '/api/courses/asset/save',
+									data: formData
+								});
 							});
 						});
 
@@ -215,18 +221,24 @@ class FormAssetHandler extends ContentAssetHandler
 				closeBtn: false,
 				modal: true,
 				type: 'iframe',
+				iframe: {
+					preload : false
+				},
 				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&tmpl=component',
 				afterShow: function() {
 					// Highjack the 'done' button to close the iframe
-					var frameContents = $('.fancybox-iframe').contents();
-					frameContents.find('#done').bind('click', function(e) {
-						e.preventDefault();
+					var iframe = $('.fancybox-iframe');
+					iframe.load(function() {
+						var frameContents = $('.fancybox-iframe').contents();
+						frameContents.find('#done').bind('click', function(e) {
+							e.preventDefault();
 
-						$.fancybox.close();
+							$.fancybox.close();
+						});
+
+						var navHeight = frameContents.find('.navbar').height();
+						frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
 					});
-
-					var navHeight = frameContents.find('.navbar').height();
-					frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
 
 					// Listen for savesuccessful call from iframe
 					$('body').on('savesuccessful', function() {
