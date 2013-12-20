@@ -185,17 +185,20 @@ class plgSystemHubzero extends JPlugin
 		
 		// all page loads set apache log data
 		
-		apache_note('jsession', $session->getId());
+		if (php_sapi_name() == 'apache')
+		{
+			apache_note('jsession', $session->getId());
 		
-		if ($user->get('id') != 0)
-		{
-			apache_note('auth','session');
-			apache_note('userid', $user->get('id'));
-		}
-		else if (!empty($tracker['user_id']))
-		{
-			apache_note('auth','cookie');
-			apache_note('userid', $tracker['user_id']);
+			if ($user->get('id') != 0)
+			{
+				apache_note('auth','session');
+				apache_note('userid', $user->get('id'));
+			}
+			else if (!empty($tracker['user_id']))
+			{
+				apache_note('auth','cookie');
+				apache_note('userid', $tracker['user_id']);
+			}
 		}
 	}
 
