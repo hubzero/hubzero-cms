@@ -67,7 +67,7 @@ class RegisterOrganizationType extends JTable
 	 *
 	 * @param object $db JDatabase object
 	 */
-	public function __construct(&$db)
+	public function __construct($db)
 	{
 		parent::__construct('#__xorganization_types', 'id', $db);
 	}
