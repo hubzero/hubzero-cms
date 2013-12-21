@@ -626,7 +626,7 @@ class JDatabaseImporterMySQL
 	 *
 	 * @since   11.1
 	 */
-	public function setDbo(JDatabaseMySQL $db)
+	public function setDbo($db)
 	{
 		$this->db = $db;
 
