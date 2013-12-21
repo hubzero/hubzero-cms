@@ -77,6 +77,7 @@ if ($type == 'hubpresenter')
 	{
 		// Get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
 		$media = JFolder::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
+		$ext = array();
 		foreach ($media as $m) 
 		{
 			$pieces = explode('.', $m);
