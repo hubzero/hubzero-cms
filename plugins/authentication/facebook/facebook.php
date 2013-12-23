@@ -123,6 +123,8 @@ class plgAuthenticationFacebook extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
+		$return = '';
+		$b64dreturn = '';
 		if($return = JRequest::getVar('return', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
@@ -167,6 +169,7 @@ class plgAuthenticationFacebook extends JPlugin
 		}
 
 		// Check if a return is specified
+		$return = '';
 		if ($view->return)
 		{
 			$return = "&return=" . $view->return;
