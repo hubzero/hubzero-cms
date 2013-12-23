@@ -299,7 +299,7 @@ class KbTableArticle extends JTable
 		{
 			$this->modified = $this->created;
 		}
-		$row->version++;
+		$this->version++;
 
 		return parent::store($updateNulls);
 	}
