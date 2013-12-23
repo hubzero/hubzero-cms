@@ -91,7 +91,7 @@ class WikiLink extends JTable
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct(&$db)
+	public function __construct($db)
 	{
 		parent::__construct('#__wiki_page_links', 'id', $db);
 	}
