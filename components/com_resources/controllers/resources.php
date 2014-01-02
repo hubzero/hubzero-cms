@@ -373,12 +373,14 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$view->tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(JRequest::getVar('with', '')));
 		$view->type = strtolower(JRequest::getVar('type', 'tools'));
 
+		// default tag in tag browser is config var
 		$view->supportedtag = $this->config->get('supportedtag');
-		if (!$view->tag && $view->supportedtag && $view->type == 'tools') 
+		$view->supportedtag_default = $this->config->get('browsetags_defaulttag', '');
+		if (!$view->tag && $view->supportedtag_default != '' && $view->type == 'tools') 
 		{
-			$view->tag = $view->supportedtag;
+			$view->tag = $view->supportedtag_default;
 		}
-
+		
 		// Get major types
 		$t = new ResourcesType($this->database);
 		$view->types = $t->getMajorTypes();
