@@ -590,6 +590,12 @@ class Hubzero_Group_Helper
 	 */
 	public static function getPluginAccess($group, $get_plugin = '')
 	{
+		// make sure we have a Hubzero group
+		if (!is_a($group, 'Hubzero_Group'))
+		{
+			return;
+		}
+		
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
 		$dispatcher =  JDispatcher::getInstance();
