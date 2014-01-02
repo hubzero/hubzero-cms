@@ -606,6 +606,60 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		}
 	}
 	
+	public function previewTask()
+	{
+		// get reqest vars
+		$pageid  = JRequest::getInt('pageid', 0, 'get');
+		$version = JRequest::getInt('version', 0, 'get');
+		
+		// page object
+		$page = new GroupsModelPage( $pageid );
+		
+		// make sure page belongs to this group
+		if (!$page->belongsToGroup($this->group))
+		{
+			JError::raiseError(403, 'You are not authorized to view this page.');
+		}
+		
+		// load page version
+		$pageVersion = $page->version($version);
+		
+		// do we have a page version
+		if ($pageVersion === null)
+		{
+			JError::raiseError(404, 'Page Version Not Found');
+		}
+		
+		// set content var
+		$content = $pageVersion->get('content');
+		$content = GroupsHelperPages::displayPage($this->group, $page, false);
+		
+		//use group template file if we have it
+		if (is_file(JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'group.php'))
+		{
+			JRequest::setVar('tmpl', 'group');
+		}
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		//push scripts
+		$this->_getScripts('assets/js/' . $this->_name);
+		
+		// load super group template
+		// parse & render
+		$superGroupTemplate = new GroupsHelperTemplate();
+		$superGroupTemplate->set('group', $this->group)
+			               ->set('tab', $page->get('alias'))
+			               ->set('content', $content)
+			               ->set('page', $page)
+			               ->parse()
+			               ->render();
+		
+		// echo content & stop execution
+		return $superGroupTemplate->output(true);
+	}
+	
 	
 	/**
 	 * Output raw content 

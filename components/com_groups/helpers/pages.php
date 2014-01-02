@@ -313,6 +313,181 @@ class GroupsHelperPages
 		$db->query();
 	}
 	
+	/**
+	 * Display Group Page
+	 *
+	 * @param    Object    $group    Hubzero_Group Object
+	 * @param    Object    $page     GroupsModelPage Object
+	 * @return   String
+	 */
+	public static function displayPage( $group, $page, $markHit = true )
+	{
+		// create view object
+		$view = new JView(array(
+			'name'   => 'pages',
+			'layout' => '_view'
+		));
+		
+		// get needed vars
+		$database    = JFactory::getDBO();
+		$juser       = JFactory::getUser();
+		$authorized  = GroupsHelperView::authorize($group);
+		$version     = ($page) ? $page->approvedVersion() : null;
+		
+		// stops from displaying pages that dont exist
+		if ($page === null)
+		{
+			JError::raiseError(404, 'Group Page Not Found');
+			return;
+		}
+		
+		// stops from displaying unpublished pages
+		// make sure we have approved version to display
+		if ($page->get('state') == $page::APP_STATE_UNPUBLISHED || $version === null)
+		{
+			// determine which layout to use
+			$layout = ($version === null) ? '_view_notapproved' : '_view_unpublished';
+			
+			// show unpublished or no version layout
+			if ($authorized == 'manager')
+			{
+				$view->setLayout($layout);
+				$view->group   = $group;
+				$view->page    = $page;
+				$view->version = $version;
+				return $view->loadTemplate();
+			}
+			
+			// show 404
+			JError::raiseError(404, 'Group Page Not Found');
+			return;
+		}
+		
+		// build page hit object
+		// mark page hit
+		if ($markHit)
+		{
+			$groupsTablePageHit = new GroupsTablePageHit( $database );
+			$pageHit->gidNumber = $group->get('gidNumber');
+			$pageHit->pageid    = $page->get('id');
+			$pageHit->userid    = $juser->get('id');
+			$pageHit->date      = date('Y-m-d H:i:s');
+			$pageHit->ip        = $_SERVER['REMOTE_ADDR'];
+			$groupsTablePageHit->save( $pageHit );
+		}
+		
+		// parse old wiki content
+		$content = self::_parseWiki($group, $version->get('content'), false);
+		
+		// parse php tags and modules
+		$content = self::_parse($group, $page, $content);
+			
+		// set content
+		$version->set('content', $content);
+		
+		// set vars to view
+		$view->juser      = $juser;
+		$view->group      = $group;
+		$view->page       = $page;
+		$view->version    = $version;
+		$view->authorized = $authorized;
+		
+		// return rendered template
+		return $view->loadTemplate();
+	}
+	
+	/**
+	 * Parse Wiki content
+	 *
+	 * @param    Object    $group        Hubzero_Group Object
+	 * @param    String    $content      Content to parse
+	 * @param    BOOL      $fullparse    Fully parse wiki content
+	 * @return   String
+	 */
+	private static function _parseWiki( $group, $content, $fullparse = true )
+	{
+		// do we have wiki content that needs parsing?
+		if (!preg_match("/<[^<]+>/", $content, $matches))
+		{
+			// create path
+			$path = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+			
+			// build wiki config
+			$wikiConfig = array(
+				'option'   => 'com_groups',
+				'scope'    => '',
+				'pagename' => $group->get('cn'),
+				'pageid'   => $group->get('gidNumber').DS.'uploads',
+				'filepath' => $path,
+				'domain'   => $group->get('cn')
+			);
+			
+			// create wiki parser
+			ximport('Hubzero_Wiki_Parser');
+			$wikiParser =& Hubzero_Wiki_Parser::getInstance();
+			
+			// parse content
+			$content = $wikiParser->parse($content, $wikiConfig, $fullparse);
+		}
+		
+		//return content
+		return $content;
+	}
+	
+	
+	/**
+	 *  Parse Page Includes & php
+	 * 
+	 * @return 		void
+	 */
+	private static function _parse( $group, $page, $document )
+	{
+		// create new group document helper
+		$groupDocument = new GroupsHelperDocument();
+	
+		// strip out scripts & php tags if not super group
+		if (!$group->isSuperGroup())
+		{
+			$document = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $document);
+			$document = preg_replace('/<\?[\s\S]*?\?>/', '', $document);
+		}
+	
+		// are we allowed to display group modules
+		if(!$group->isSuperGroup() && !$this->config->get('page_modules', 0))
+		{
+			$groupDocument->set('allowed_tags', array());
+		}
+	
+		// set group doc needed props
+		// parse and render content
+		$groupDocument->set('group', $group)
+			          ->set('page', $page)
+			          ->set('document', $document)
+			          ->parse()
+			          ->render();
+	
+		// get doc content
+		$document = $groupDocument->output();
+	
+		// only parse php if Super Group
+		if ($group->isSuperGroup())
+		{
+			// run as closure to ensure no $this scope
+			$eval = function() use ($document)
+			{
+				ob_start();
+				unset($this);
+				eval("?> $document <?php ");
+				$document = ob_get_clean();
+				return $document;
+			};
+			$document = $eval();
+		}
+	
+		// return content
+		return $document;
+	}
+	
 	
 	/**
 	 * Generate Group Page Preview
