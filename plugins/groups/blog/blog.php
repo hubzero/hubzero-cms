@@ -685,8 +685,15 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
-			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
-			return $this->_login();
+			$blog = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+	
+			$application = JFactory::getApplication();
+			$application->redirect(
+				'/login?return=' . base64_encode($blog),
+				JText::_('GROUPS_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
 		}
 
 		if (!$this->authorized) 
@@ -838,8 +845,15 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
-			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
-			return $this->_login();
+			$blog = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+	
+			$application = JFactory::getApplication();
+			$application->redirect(
+				'/login?return=' . base64_encode($blog),
+				JText::_('GROUPS_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
 		}
 
 		// Incoming
