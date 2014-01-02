@@ -339,14 +339,8 @@ HUB.Groups = {
 		// Page Preview
 		HUB.Groups.pagesPagePreview();
 		
-		// Page Versions
-		HUB.Groups.pagesPageVersions();
-		
 		// page category
 		HUB.Groups.pagesEditPageCategory();
-		
-		// handle multiple editors
-		//HUB.Groups.pagesMultipleEditors();
 		
 		// Page & module Search
 		$('.group-page-manager').on('keyup', '.toolbar .search input', function(event) {
@@ -398,15 +392,10 @@ HUB.Groups = {
 	
 	//-----
 	
-	pagesPageVersions: function()
-	{
-		
-	},
-	
-	//-----
-	
 	pagesEditPageCategory: function()
 	{
+		var $ = this.jQuery;
+		
 		if ($('.page-category').length)
 		{
 			$('.page-category').HUBfancyselect({
@@ -489,6 +478,8 @@ HUB.Groups = {
 	
 	pagesSearchClear: function()
 	{
+		var $ = this.jQuery;
+		
 		if ($('.toolbar:visible .filter select').val() != '')
 		{
 			$('.toolbar:visible .search input').val('');
@@ -524,6 +515,8 @@ HUB.Groups = {
 	
 	pagesFilterClear: function()
 	{
+		var $ = this.jQuery;
+		
 		if ($('.toolbar:visible .filter select').val() != '')
 		{
 			$('.toolbar:visible .filter select').HUBfancyselect('clear');

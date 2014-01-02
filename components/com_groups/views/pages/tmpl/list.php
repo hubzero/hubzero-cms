@@ -57,6 +57,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php
 				$class    = '';
 				$category = $this->categories->fetch('id', $page->get('category'));
+				if ($page->versions()->count() < 1)
+				{
+					continue;
+				}
 				$version  = $page->versions()->first();
 				
 				if ($category !== null)

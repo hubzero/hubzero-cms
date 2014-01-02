@@ -150,7 +150,7 @@ if ($this->page)
 							$editor = new JEditor( 'ckeditor' );
 							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '100px', 0, 0, false, 'pagecontent', null, null, $config);
 						?>
-						<input type="hidden" name="pageversion[version]" value="<?php echo $version; ?>" />
+						
 					</label>
 				</fieldset>
 			</div>

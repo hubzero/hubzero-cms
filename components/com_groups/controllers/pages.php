@@ -259,19 +259,6 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$this->view->display();
 	}
 	
-	public function pollTask()
-	{
-		// get page id
-		$pageid = JRequest::getInt('pageid', 0);
-		
-		// get page checkout
-		$checkout = GroupsHelperPages::getCheckout($pageid);
-		
-		
-		echo json_encode($checkout);
-		exit();
-	}
-	
 	/**
 	 * Save Group page
 	 * 
@@ -355,9 +342,12 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			$this->page->move($move, $this->group->get('gidNumber'));
 		}
 		
+		// get currrent version #
+		$currentVersion = ($this->page->version()) ? $this->page->version()->get('version') : 0;
+		
 		// set page version vars
 		$this->version->set('pageid', $this->page->get('id'));
-		$this->version->set('version', $this->version->get('version') + 1);
+		$this->version->set('version', $currentVersion + 1);
 		$this->version->set('created', JFactory::getDate()->toSql());
 		$this->version->set('created_by', $this->juser->get('id'));
 		$this->version->set('approved', 1);
