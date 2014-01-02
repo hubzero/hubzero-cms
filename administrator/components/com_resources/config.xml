@@ -124,6 +124,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="on">On</option>
 			<option value="off">Off</option>
 		</field>
+		<field name="browsetags_defaulttag" type="text" default="" label="Default Tag in Tag Browser" description="Default tag in Tag Browser" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
 	</fieldset>
