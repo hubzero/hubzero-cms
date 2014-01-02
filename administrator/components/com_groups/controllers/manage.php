@@ -440,23 +440,37 @@ class GroupsControllerManage extends Hubzero_Controller
 		$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
 		if (!$this->database->query())
 		{
-			die('unable to create super group database');
+			JFactory::getApplication()
+				->enqueueMessage('Unable to create super group database. Please try again later.', 'error');
 		}
 		
-		$user     = 'myhub';
-		$password = 'h.Z2^4eq16!';
+		// check to see if we have a super group db config
+		$supergroupDbConfigFile = DS . 'etc' . DS . 'supergroup.conf';
+		if (!file_exists($supergroupDbConfigFile))
+		{
+			JFactory::getApplication()
+				->enqueueMessage('Unable to load super group config. Please try again later.', 'error');
+		}
+		
+		// get hub super group database config file
+		$supergroupDbConfig = include $supergroupDbConfigFile;
+		
+		// define username, password, and database to be written in config
+		$username = (isset($supergroupDbConfig['username'])) ? $supergroupDbConfig['username'] : '';
+		$password = (isset($supergroupDbConfig['password'])) ? $supergroupDbConfig['password'] : '';
 		$database = 'sg_' . $group->get('cn');
 				
 		//write db config in super group
 		$dbConfigFile     = $uploadPath . DS . 'config' . DS . 'db.php';
-		$dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => '',\n\t\t'username' => '{$user}',\n\t\t'password' => '{$password}',\n\t\t'database' => '{$database}',\n\t\t'prefix'   => ''\n\t);\n?>";
+		$dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => '',\n\t\t'user' => '{$username}',\n\t\t'password' => '{$password}',\n\t\t'database' => '{$database}',\n\t\t'prefix'   => ''\n\t);";
 		
 		// write db config file
 		if (!file_exists($dbConfigFile))
 		{
 			if (!file_put_contents($dbConfigFile, $dbConfigContents))
 			{
-				die('unable to write config');
+				JFactory::getApplication()
+					->enqueueMessage('Unable to write super group database config file. Please try again later.', 'error');
 			}
 		}
 		

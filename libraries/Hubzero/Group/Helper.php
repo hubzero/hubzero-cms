@@ -568,7 +568,7 @@ class Hubzero_Group_Helper
 	 */
 	public static function getDbo( $config = array() )
 	{
-		// 
+		// empty instance of db
 		$db = JDatabase::getInstance();
 		
 		// make sure we have a group object

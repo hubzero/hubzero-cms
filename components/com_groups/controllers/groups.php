@@ -347,7 +347,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			//set overview content
 			if ($overviewContent == null)
 			{
-				$overviewContent = $this->displayPage( $this->view->group, $activePage );
+				$overviewContent = GroupsHelperPages::displayPage( $this->view->group, $activePage );
 			}
 		}
 		
@@ -648,8 +648,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// parse descriptions
-		$view->publicDesc  = $this->_parseWiki($view->group, $publicDesc, false);
-		$view->privateDesc = $this->_parseWiki($view->group, $privateDesc, false);
+		$view->publicDesc  = GroupsHelperPages::parseWiki($view->group, $publicDesc, false);
+		$view->privateDesc = GroupsHelperPages::parseWiki($view->group, $privateDesc, false);
 		
 		// return template
 		return $view->loadTemplate();

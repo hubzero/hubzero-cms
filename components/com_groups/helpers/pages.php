@@ -377,10 +377,10 @@ class GroupsHelperPages
 		}
 		
 		// parse old wiki content
-		$content = self::_parseWiki($group, $version->get('content'), false);
+		$content = self::parseWiki($group, $version->get('content'), false);
 		
 		// parse php tags and modules
-		$content = self::_parse($group, $page, $content);
+		$content = self::parse($group, $page, $content);
 			
 		// set content
 		$version->set('content', $content);
@@ -404,7 +404,7 @@ class GroupsHelperPages
 	 * @param    BOOL      $fullparse    Fully parse wiki content
 	 * @return   String
 	 */
-	private static function _parseWiki( $group, $content, $fullparse = true )
+	public static function parseWiki( $group, $content, $fullparse = true )
 	{
 		// do we have wiki content that needs parsing?
 		if (!preg_match("/<[^<]+>/", $content, $matches))
@@ -440,7 +440,7 @@ class GroupsHelperPages
 	 * 
 	 * @return 		void
 	 */
-	private static function _parse( $group, $page, $document )
+	private static function parse( $group, $page, $document )
 	{
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();
@@ -451,9 +451,12 @@ class GroupsHelperPages
 			$document = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $document);
 			$document = preg_replace('/<\?[\s\S]*?\?>/', '', $document);
 		}
+		
+		//get config
+		$config = JComponentHelper::getParams('com_groups');
 	
 		// are we allowed to display group modules
-		if(!$group->isSuperGroup() && !$this->config->get('page_modules', 0))
+		if(!$group->isSuperGroup() && !$config->get('page_modules', 0))
 		{
 			$groupDocument->set('allowed_tags', array());
 		}
