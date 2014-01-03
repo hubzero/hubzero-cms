@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module">
+	<name>Group Pages Pending Approval</name>
+	<author>Christopher Smoak</author>
+	<creationDate>January 2014</creationDate>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<authorUrl>https://hubzero.org</authorUrl>
+	<version>1.0.0</version>
+	<description>This module lists group pages pending approval.</description>
+	<files>
+		<filename module="mod_grouppages">mod_grouppages.php</filename>
+	</files>
+	<params>
+	</params>
+</install>
+

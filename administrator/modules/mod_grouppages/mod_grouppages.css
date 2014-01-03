@@ -1,0 +1,8 @@
+.page:after {
+	content: '\f0f6';
+	font-family: 'Fontcons';
+}
+.module:after {
+	content: '\f02f';
+	font-family: 'Fontcons';
+}
