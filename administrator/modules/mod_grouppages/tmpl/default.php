@@ -41,7 +41,6 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 	$gidNumber = $unapprovedModule->get('gidNumber');
 	$rows[$gidNumber]['modules']++;
 }
-$rows = array();
 ?>
 <!--
 <table class="whosonline-summary">
