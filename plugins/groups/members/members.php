@@ -1175,7 +1175,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		$db = JFactory::getDBO();
-		$sql = "DELETE FROM #__xgroups_member_roles WHERE role=".$db->Quote($role);
+		$sql = "DELETE FROM #__xgroups_member_roles WHERE roleid=".$db->Quote($role);
 		$db->setQuery($sql);
 		$db->query();
 
