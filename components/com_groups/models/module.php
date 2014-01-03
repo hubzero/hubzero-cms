@@ -253,7 +253,7 @@ class GroupsModelModule extends \Hubzero\Model
 	 * @param     bool      $trustedContent    Is the content trusted?
 	 * @return    string
 	 */
-	private function purify( $content, $trustedContent = false )
+	public static function purify( $content, $trustedContent = false )
 	{
 		// load html purifier
 		require_once JPATH_ROOT . DS . 'vendor' . DS .'ezyang' . DS . 'htmlpurifier' . DS . 'library' . DS . 'HTMLPurifier.auto.php';

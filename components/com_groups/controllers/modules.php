@@ -207,6 +207,18 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			$module['ordering'] = $this->module->getNextOrder($module['position']);
 		}
 		
+		// did the module content change?
+		$contentChanged = false;
+		$oldContent = trim($this->module->get('content'));
+		$newContent = (isset($module['content'])) ? trim($module['content']) : '';
+		$newContent = GroupsModelModule::purify($newContent, $this->group->isSuperGroup());
+		
+		// is the new and old content different?
+		if ($oldContent != $newContent)
+		{
+			$contentChanged = true;
+		}
+		
 		// bind request vars to module model
 		if (!$this->module->bind( $module ))
 		{
@@ -222,11 +234,15 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			strpos($this->module->get('content'), '<?php') !== false ||
 			strpos($this->module->get('content'), '<script') !== false)
 		{
-			$this->module->set('approved', 0);
-			$this->module->set('approved_on', NULL);
-			$this->module->set('approved_by', NULL);
-			$this->module->set('checked_errors', 0);
-			$this->module->set('scanned', 0);
+			// only change approve status if content changed
+			if ($contentChanged)
+			{
+				$this->module->set('approved', 0);
+				$this->module->set('approved_on', NULL);
+				$this->module->set('approved_by', NULL);
+				$this->module->set('checked_errors', 0);
+				$this->module->set('scanned', 0);
+			}
 		}
 		
 		// set created if new module
