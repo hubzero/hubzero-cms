@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed tables
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'module.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'module.menu.php';
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'module.php';
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'module.menu.php';
 
 class GroupsModelModule extends \Hubzero\Model
 {

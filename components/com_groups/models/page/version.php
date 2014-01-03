@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed jtables
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'page.version.php';
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
 
 class GroupsModelPageVersion extends \Hubzero\Model
 {

@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed models
-require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'page.php';
-require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'page' . DS . 'category' . DS . 'archive.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category' . DS . 'archive.php';
 
 class GroupsModelPageArchive extends JObject
 {

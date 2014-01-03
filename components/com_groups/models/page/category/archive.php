@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed modelss
-require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'page' . DS . 'category.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category.php';
 
 class GroupsModelPageCategoryArchive extends \Hubzero\Model
 {
