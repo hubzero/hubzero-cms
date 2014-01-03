@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $positions = array();
 foreach ($this->modules as $module)
 {
-	if (!in_array($module->get('position'), $positions))
+	if (!in_array($module->get('position'), $positions) && $module->get('position') != '')
 	{
 		$positions[] = $module->get('position');
 	}
