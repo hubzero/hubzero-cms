@@ -106,17 +106,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 					
 					<div class="item-state">
 						<?php if ($page->get('state') == 0) : ?>
-							<a class="unpublished" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Publish Page'); ?></a>
+							<a class="unpublished tooltips" title="<?php echo JText::_('Publish Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); ?>"><?php echo JText::_('Publish Page'); ?></a>
 						<?php else : ?>
-							<a class="published" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Un-publish Page'); ?></a>
+							<a class="published tooltips" title="<?php echo JText::_('Unpublish Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"><?php echo JText::_('Unpublish Page'); ?></a>
 						<?php endif; ?>
 					</div>
 					
 					<div class="item-home">
 						<?php if (!$page->get('home')) : ?>
-							<a class="" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Make Home Page'); ?></a>
+							<a class="tooltips" title="<?php echo JText::_('Make Home Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('Make Home Page'); ?></a>
 						<?php else : ?>
-							<a class="homepage" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Remove as Home Page'); ?></a>
+							<a class="homepage tooltips" title="<?php echo JText::_('Remove as Home Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('Remove as Home Page'); ?></a>
 						<?php endif; ?>
 					</div>
 			
@@ -132,7 +132,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<span class="btn dropdown-toggle"></span>
 						<ul class="dropdown-menu">
 							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Edit Page'); ?></a></li>
-							<li><a class="icon-search page-preview" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active='.$page->get('alias')); ?>"> <?php echo JText::_('Preview Page'); ?></a></li>
+							<li><a class="icon-search page-preview" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=preview&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Preview Page'); ?></a></li>
 							<?php if (!$page->get('home')) : ?>
 								<li><a class="icon-home" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Make Home Page'); ?></a></li>
 							<?php else : ?>

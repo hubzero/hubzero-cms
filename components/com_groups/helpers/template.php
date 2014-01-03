@@ -143,6 +143,12 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 		return $this;
 	}
 	
+	
+	/**
+	 * Does the group have a specified template
+	 * 
+	 * @return    void
+	 */
 	public function hasTemplate($group, $template)
 	{
 		// define base path
