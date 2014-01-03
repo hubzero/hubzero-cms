@@ -336,11 +336,23 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		}
 		
 		// get currrent version #
-		$currentVersion = ($this->page->version()) ? $this->page->version()->get('version') : 0;
+		$currentVersionNumber = ($this->page->version()) ? $this->page->version()->get('version') : 0;
+		
+		// did the module content change?
+		$contentChanged = false;
+		$oldContent = ($this->page->version()) ? trim($this->page->version()->get('content')) : '';
+		$newContent = (isset($version['content'])) ? trim($version['content']) : '';
+		$newContent = GroupsModelPageVersion::purify($newContent, $this->group->isSuperGroup());
+		
+		// is the new and old content different?
+		if ($oldContent != $newContent)
+		{
+			$contentChanged = true;
+		}
 		
 		// set page version vars
 		$this->version->set('pageid', $this->page->get('id'));
-		$this->version->set('version', $currentVersion + 1);
+		$this->version->set('version', $currentVersionNumber + 1);
 		$this->version->set('created', JFactory::getDate()->toSql());
 		$this->version->set('created_by', $this->juser->get('id'));
 		$this->version->set('approved', 1);
@@ -357,19 +369,24 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			$this->version->set('approved_by', NULL);
 		}
 		
-		// save version settings
-		if (!$this->version->store(true, $this->group->isSuperGroup()))
+		// only create a new version and send approve notif if content has changed
+		if ($contentChanged)
 		{
-			$this->setNotification($this->version->getError(), 'error');
-			$this->editTask();
-			return;
+			// save version settings
+			if (!$this->version->store(true, $this->group->isSuperGroup()))
+			{
+				$this->setNotification($this->version->getError(), 'error');
+				$this->editTask();
+				return;
+			}
+		
+			// send to approvers
+			if ($this->version->get('approved', 0) == 0)
+			{
+				GroupsHelperPages::sendApproveNotification('page', $this->page);
+			}
 		}
 		
-		// send to approvers
-		if ($this->version->get('approved', 0) == 0)
-		{
-			GroupsHelperPages::sendApproveNotification('page', $this->page);
-		}
 		
 		// check page back in
 		GroupsHelperPages::checkin($this->page->get('id'));
