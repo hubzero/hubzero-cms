@@ -103,9 +103,9 @@ foreach ($this->modules as $module)
 					
 					<div class="item-state">
 						<?php if ($module->get('state') == 0) : ?>
-							<a class="unpublished" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Publish Module'); ?></a>
+							<a class="unpublished tooltips" title="<?php echo JText::_('Publish Module'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Publish Module'); ?></a>
 						<?php else : ?>
-							<a class="published" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Un-publish Module'); ?></a>
+							<a class="published tooltips" title="<?php echo JText::_('Un-publish Module'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Un-publish Module'); ?></a>
 						<?php endif; ?>
 					</div>
 

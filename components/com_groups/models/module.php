@@ -73,6 +73,14 @@ class GroupsModelModule extends \Hubzero\Model
 		}
 	}
 	
+	/**
+	 * Get module menu
+	 *
+	 * @param     $rtrn       What do we want back
+	 * @param     $filters    Array of filters to use when getting menu
+	 * @param     $clear      Fetch an updated list
+	 * @return    \Hubzero\ItemList
+	 */
 	public function menu( $rtrn = 'list', $filters = array(), $clear = false )
 	{
 		$tbl = new GroupsTableModuleMenu($this->_db);
@@ -108,6 +116,11 @@ class GroupsModelModule extends \Hubzero\Model
 		}
 	}
 	
+	/**
+	 * BUild module menu
+	 *
+	 * @return    BOOL
+	 */
 	public function buildMenu( $modulesMenu = array() )
 	{
 		// create module menu object
@@ -135,7 +148,6 @@ class GroupsModelModule extends \Hubzero\Model
 		// everything went smoothly
 		return true;
 	}
-	
 	
 	/**
 	 * Should we display module on this page?
@@ -267,9 +279,7 @@ class GroupsModelModule extends \Hubzero\Model
 		$config->set('Output.TidyFormat', true);
 		
 		//create array of custom filters
-		$filters = array(
-			//new HTMLPurifier_Filter_GroupInclude()
-		);
+		$filters = array();
 		
 		// is this trusted content
 		if ($trustedContent)
