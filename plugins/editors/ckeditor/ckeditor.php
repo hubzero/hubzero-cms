@@ -161,17 +161,12 @@ class plgEditorCkeditor extends JPlugin
 		$config->filebrowserWindowWidth        = 400;
 		$config->filebrowserWindowHeight       = 600;
 		$config->toolbar                       = array(
-			array('Save', 'Templates'),
-			array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'),
-			array('Find', 'Replace', '-', 'Scayt'),
-			'/',
-			array('Format', 'FontSize'),
-			array('Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
-			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
-			'/',
-			array('Image','Table','HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'HubzeroEquation', 'HubzeroGrid'),
+			array('Find', 'Replace', '-', 'Scayt', 'Maximize', 'ShowBlocks'),
+			array('Image','Table','HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'HubzeroEquation', 'HubzeroGrid', 'Templates'),
 			array('Link', 'Unlink', 'Anchor'),
-			array('Maximize', 'ShowBlocks'),
+			'/',
+			array('Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
+			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
 			array('HubzeroAutoGrow')
 		);
 		
