@@ -145,6 +145,7 @@ class SupportAttachment extends JTable
 			$juri = JURI::getInstance();
 			$sef = JRoute::_('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
 			$url = $juri->base() . trim($sef, DS);
+			$url = str_replace('/administrator/administrator', '/administrator', $url);
 
 			if ($this->output != 'email' && preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $a[0])) 
 			{
