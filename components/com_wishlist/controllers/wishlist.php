@@ -3233,10 +3233,10 @@ class WishlistController extends JObject
 	{
 		// Query filters defaults
 		$filters = array();
-		$filters['sortby']   = trim(JRequest::getVar('sortby', ''));
-		$filters['filterby'] = trim(JRequest::getVar('filterby', 'all'));
-		$filters['search']   = trim(JRequest::getVar('search', ''));
-		$filters['tag']      = trim(JRequest::getVar('tags', ''));
+		$filters['sortby']   = JRequest::getVar('sortby', '');
+		$filters['filterby'] = JRequest::getVar('filterby', 'all');
+		$filters['search']   = JRequest::getVar('search', '');
+		$filters['tag']      = JRequest::getVar('tags', '');
 
 		if ($admin) 
 		{
