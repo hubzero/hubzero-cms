@@ -42,23 +42,6 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 	$rows[$gidNumber]['modules']++;
 }
 ?>
-<!--
-<table class="whosonline-summary">
-	<thead>
-		<tr>
-			<th width="50%" scope="col"><?php echo JText::_( 'Unapproved Pages' ); ?></th>
-			<th scope="col"><?php echo JText::_( 'Unapproved Modules' ); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="front-end"><?php echo $this->unapprovedPages->count(); ?></td>
-			<td class="back-end"><?php echo $this->unapprovedModules->count(); ?></td>
-		</tr>
-	</tbody>
-</table>
--->
-
 <table class="adminlist whosonline-list">
 	<thead>
 		<tr>
