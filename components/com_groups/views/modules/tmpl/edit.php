@@ -44,11 +44,11 @@ foreach ($menus as $menu)
 ?>
 
 <div id="content-header" class="full">
-	<h2><?php echo 'Add Module'; ?></h2>
+	<h2><?php echo ($this->module->get('id')) ? 'Edit Module' : 'Add Module'; ?></h2>
 </div>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a class="icon-prev prev btn" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
+		<li><a class="icon-prev prev btn" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Modules</a></li>
 	</ul>
 </div>
 
