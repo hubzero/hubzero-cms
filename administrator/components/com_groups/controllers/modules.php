@@ -818,6 +818,9 @@ class GroupsControllerModules extends Hubzero_Controller
 		$module->set('approved_by', $this->juser->get('id'));
 		$module->store(true, $this->group->isSuperGroup());
 		
+		// send approved notifcation
+		GroupsHelperPages::sendApprovedNotification('module', $module);
+		
 		// log change
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),

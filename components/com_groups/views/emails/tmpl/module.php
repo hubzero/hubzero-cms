@@ -34,10 +34,10 @@ defined('_JEXEC') or die('Restricted access');
 $juri    =& JURI::getInstance();
 $jconfig =& JFactory::getConfig();
 
-// get the group
-//$group = Hubzero_Group::getInstance( $this->announcement->scope_id );
-$groupLink = rtrim($juri->base(), DS) . DS . 'groups' . DS . $this->group->get('cn');
-$adminLink = rtrim($juri->base(), DS) . '/administrator/index.php?option=com_groups&gid=' . $this->group->get('cn') . '&controller=modules';
+//build urls
+$base      = rtrim(str_replace('administrator', '', $juri->base()), DS);
+$groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
+$adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->group->get('cn') . '&controller=modules';
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -159,7 +159,7 @@ $adminLink = rtrim($juri->base(), DS) . '/administrator/index.php?option=com_gro
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-															<a href="<?php echo $juri->base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $juri->base(); ?></a>
+															<a href="<?php echo $base; ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $base; ?></a>
 														</span>
 														<br />
 														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
@@ -241,7 +241,9 @@ $adminLink = rtrim($juri->base(), DS) . '/administrator/index.php?option=com_gro
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Status:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo JText::_('Unapproved'); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">
+																		<?php echo ($this->object->get('approved') == 1) ? JText::_('Approved') : JText::_('Unapproved'); ?>
+																	</td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Approve Link:</th>
@@ -297,7 +299,7 @@ $adminLink = rtrim($juri->base(), DS) . '/administrator/index.php?option=com_gro
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you are listed as a group page approver for this hub. Visit our <a href="<?php echo rtrim($juri->base(), DS); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim($juri->base(), DS); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you are listed as a group page approver for this hub. Visit our <a href="<?php echo rtrim($base, DS); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim($base, DS); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

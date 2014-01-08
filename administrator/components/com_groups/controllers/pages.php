@@ -677,7 +677,10 @@ class GroupsControllerPages extends Hubzero_Controller
 			return;
 		}
 		
-		// log edit
+		// send approved notifcation
+		GroupsHelperPages::sendApprovedNotification('page', $page);
+		
+		// log approval
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_page_approved',

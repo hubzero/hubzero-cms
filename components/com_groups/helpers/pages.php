@@ -118,7 +118,7 @@ class GroupsHelperPages
 		));
 		$eview->option     = JRequest::getCmd('option', 'com_groups');;
 		$eview->controller = JRequest::getCmd('controller', 'groups');
-		$eview->group      = Hubzero_Group::getInstance(JRequest::getCmd('cn', ''));
+		$eview->group      = Hubzero_Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
 		$eview->object     = $object;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
@@ -133,7 +133,78 @@ class GroupsHelperPages
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', $type . '_approval')
-				->addPart('Neat, huh?', 'text/plain')
+				->addPart($html, 'text/html')
+				->send();
+	}
+	
+	/**
+	 * Send mail that page has been approved
+	 *
+	 * @param     $type      type of object just approved
+	 * @param     $object    object approved
+	 * @return    void
+	 */
+	public static function sendApprovedNotification( $type, $object )
+	{
+		// build title
+		$title = JText::sprintf('Page "%s" Approved', $object->get('title'));
+		if ($type == 'module')
+		{
+			$title = JText::sprintf('Module "%s" Approved', $object->get('title'));
+		}
+		
+		// get Hubzero_Group object
+		$group = Hubzero_Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
+		
+		// array to hold manager emails
+		$managers = array();
+		
+		// get all manager email addresses
+		foreach ($group->get('managers') as $m)
+		{
+			$profile = Hubzero_User_Profile::getInstance( $m );
+			if ($profile)
+			{
+				$managers[$profile->get('email')] = $profile->get('name');
+			}
+		}
+		
+		// get site config
+		$jconfig =& JFactory::getConfig();
+		
+		// subject details
+		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups') . ', ' . $title;
+		
+		// from details
+		$from = array(
+			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups'),
+			'email' => $jconfig->getValue('config.mailfrom')
+		);
+		
+		// build html email
+		$eview = new JView(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_groups',
+			'name'   => 'emails', 
+			'layout' => $type
+		));
+		
+		$eview->option     = JRequest::getCmd('option', 'com_groups');;
+		$eview->controller = JRequest::getCmd('controller', 'groups');
+		$eview->group      = $group;
+		$eview->object     = $object;
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
+		
+		// create new message
+		$message = new \Hubzero\Mail\Message();
+		
+		// build message object and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($managers)
+				->addHeader('X-Mailer', 'PHP/' . phpversion())
+				->addHeader('X-Component', 'com_groups')
+				->addHeader('X-Component-Object', $type . '_approved')
 				->addPart($html, 'text/html')
 				->send();
 	}
