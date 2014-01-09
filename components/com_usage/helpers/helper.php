@@ -84,14 +84,14 @@ class UsageHelper
 	/**
 	 * Print Top X List from Database
 	 * 
-	 * @param      object &$db Parameter description (if any) ...
+	 * @param      object $db Parameter description (if any) ...
 	 * @param      unknown $top Parameter description (if any) ...
 	 * @param      mixed $t Parameter description (if any) ...
 	 * @param      mixed $enddate Parameter description (if any) ...
 	 * @param      integer $raw Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function toplist(&$db, $top, $t=0, $enddate=0, $raw=0)
+	public static function toplist($db, $top, $t=0, $enddate=0, $raw=0)
 	{
 		// Set top list parameters...
 		$hub = 1;
@@ -287,7 +287,7 @@ class UsageHelper
 	 * @param      array $somearray
 	 * @return     array
 	 */
-	public function array_unique_reindex($somearray)
+	public static function array_unique_reindex($somearray)
 	{
 		$tmparr = array_unique($somearray);
 		$i = 0;
@@ -302,12 +302,12 @@ class UsageHelper
 	/**
 	 * Check for data for a date
 	 * 
-	 * @param      object &$db       JDatabase
+	 * @param      object $db       JDatabase
 	 * @param      string $yearmonth YYYY-MM
 	 * @param      string $period    Time period to check for
 	 * @return     boolean True if data is found
 	 */
-	public function check_for_data(&$db, $yearmonth, $period)
+	public static function check_for_data($db, $yearmonth, $period)
 	{
 		$sql = "SELECT COUNT(datetime) 
 				FROM totalvals 
@@ -325,11 +325,11 @@ class UsageHelper
 	/**
 	 * Check for domain class data
 	 * 
-	 * @param      object &$db       JDatabase
+	 * @param      object $db       JDatabase
 	 * @param      string $yearmonth YYYY-MM
 	 * @return     boolean True if data is found
 	 */
-	public function check_for_classdata(&$db, $yearmonth)
+	public static function check_for_classdata($db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime) 
 				FROM classvals 
@@ -346,11 +346,11 @@ class UsageHelper
 	/**
 	 * Check for region data for a date
 	 * 
-	 * @param      object &$db       JDatabase
+	 * @param      object $db       JDatabase
 	 * @param      string $yearmonth YYYY-MM
 	 * @return     boolean True if data is found
 	 */
-	public function check_for_regiondata(&$db, $yearmonth)
+	public static function check_for_regiondata($db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime)
 				FROM regionvals 
@@ -373,7 +373,7 @@ class UsageHelper
 	 * @param      string $period Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function dateformat($seldate, $period='month')
+	public static function dateformat($seldate, $period='month')
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -433,7 +433,7 @@ class UsageHelper
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function dateformat_plot($seldate)
+	public static function dateformat_plot($seldate)
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -458,7 +458,7 @@ class UsageHelper
 	 * @param      string $valkey Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function seldate_value($valarray, $seldate, $valkey='value')
+	public static function seldate_value($valarray, $seldate, $valkey='value')
 	{
 		if ($valarray) 
 		{
@@ -482,7 +482,7 @@ class UsageHelper
 	 * @param      unknown $period Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function seldate_next($seldate, $period)
+	public static function seldate_next($seldate, $period)
 	{
 		return(UsageHelper::seldate_shift($seldate, $period, 1));
 	}
@@ -509,7 +509,7 @@ class UsageHelper
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function seldate_nextyear($seldate)
+	public static function seldate_nextyear($seldate)
 	{
 		$date = $seldate;
 		for ($i = 0; $i < 12; $i++)
@@ -527,7 +527,7 @@ class UsageHelper
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function seldate_prevyear($seldate)
+	public static function seldate_prevyear($seldate)
 	{
 		$date = $seldate;
 		for ($i = 0; $i < 12; $i++)
@@ -546,7 +546,7 @@ class UsageHelper
 	 * @param      string $period Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function seldate_fix($seldate, $period)
+	public static function seldate_fix($seldate, $period)
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -602,7 +602,7 @@ class UsageHelper
 	 * @param      unknown $right Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function seldate_shift($seldate, $period, $right)
+	public static function seldate_shift($seldate, $period, $right)
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -675,7 +675,7 @@ class UsageHelper
 	 * @param      unknown $date Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function seldate_valuedescsortkey(&$arr, $date)
+	public static function seldate_valuedescsortkey(&$arr, $date)
 	{
 		$reversealpha = array(
 			',' => '',  '.' => '',  'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
@@ -721,7 +721,7 @@ class UsageHelper
 	 * @param      unknown &$arr Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function seldate_valuedescsort(&$arr)
+	public static function seldate_valuedescsort(&$arr)
 	{
 		return(usort($arr, "arraykeyeddesccmp"));
 	}
@@ -735,7 +735,7 @@ class UsageHelper
 	 * @param      integer $format Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function valformat($value, $format)
+	public static function valformat($value, $format)
 	{
 		if ($format == 1) 
 		{
@@ -786,7 +786,7 @@ class UsageHelper
 	/**
 	 * Build a list of select options
 	 * 
-	 * @param      object  &$db           JDatabase
+	 * @param      object  $db           JDatabase
 	 * @param      string  $enddate       Parameter description (if any) ...
 	 * @param      integer $thisyear      Current year
 	 * @param      array   $monthsReverse List of months (Dec -> Jan)
