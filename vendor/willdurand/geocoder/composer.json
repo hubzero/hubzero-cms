@@ -1,0 +1,39 @@
+{
+    "name": "willdurand/geocoder",
+    "type": "library",
+    "description": "The almost missing Geocoder PHP 5.3 library.",
+    "keywords": ["geocoder", "geocoding", "abstraction", "geoip"],
+    "homepage": "http://geocoder-php.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "William Durand",
+            "email": "william.durand1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "kriswallsmith/buzz": "@stable",
+        "guzzle/guzzle": "@stable",
+        "zendframework/zend-http": "~2.1",
+        "geoip/geoip": "~1.13"
+    },
+    "suggest": {
+        "kriswallsmith/buzz": "Enabling Buzz allows you to use the BuzzHttpAdapter.",
+        "ext-curl": "Enabling the curl extension allows you to use the CurlHttpAdapter.",
+        "ext-geoip": "Enabling the geoip extension allows you to use the MaxMindProvider.",
+        "guzzle/guzzle": "Enabling Guzzle allows you to use the GuzzleHttpAdapter.",
+        "zendframework/zend-http": "Enabling Zend Http allows you to use the ZendHttpAdapter.",
+        "geoip/geoip": "If you are going to use the MaxMindBinaryProvider (conflict with geoip extension)."
+    },
+    "autoload": {
+        "psr-0": { "Geocoder": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.4-dev"
+        }
+    }
+}

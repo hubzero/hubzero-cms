@@ -231,6 +231,7 @@ return array(
     'JHtmlTel' => $baseDir . '/libraries/joomla/html/html/tel.php',
     'JHtmlUser' => $baseDir . '/libraries/joomla/html/html/user.php',
     'JHttp' => $baseDir . '/libraries/joomla/http/http.php',
+    'JHttpFactory' => $baseDir . '/libraries/joomla/http/factory.php',
     'JHttpResponse' => $baseDir . '/libraries/joomla/http/response.php',
     'JHttpTransport' => $baseDir . '/libraries/joomla/http/transport.php',
     'JHttpTransportCurl' => $baseDir . '/libraries/joomla/http/transport/curl.php',
