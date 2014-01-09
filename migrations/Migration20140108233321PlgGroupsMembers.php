@@ -24,13 +24,13 @@ class Migration20140108233321PlgGroupsMembers extends Hubzero_Migration
 		// add permissions field
 		if (!$db->tableHasField('#__xgroups_roles', 'permissions'))
 		{
-			$query = "ALTER TABLE `#__xgroups_roles` ADD COLUMN `permissions` TEXT;";
+			$query .= "ALTER TABLE `#__xgroups_roles` ADD COLUMN `permissions` TEXT;";
 		}
 		
 		// add role to roleid
 		if (!$db->tableHasField('#__xgroups_member_roles', 'roleid'))
 		{
-			$query = "ALTER TABLE `#__xgroups_member_roles` CHANGE `role` `roleid` INT(11);";
+			$query .= "ALTER TABLE `#__xgroups_member_roles` CHANGE `role` `roleid` INT(11);";
 		}
 		
 		if (!empty($query))
@@ -56,13 +56,13 @@ class Migration20140108233321PlgGroupsMembers extends Hubzero_Migration
 		// add permissions field
 		if ($db->tableHasField('#__xgroups_roles', 'permissions'))
 		{
-			$query = "ALTER TABLE `#__xgroups_roles` DROP COLUMN `permissions`;";
+			$query .= "ALTER TABLE `#__xgroups_roles` DROP COLUMN `permissions`;";
 		}
 		
 		// add role to roleid
 		if ($db->tableHasField('#__xgroups_member_roles', 'roleid'))
 		{
-			$query = "ALTER TABLE `#__xgroups_member_roles` CHANGE `roleid` `role` INT(11);";
+			$query .= "ALTER TABLE `#__xgroups_member_roles` CHANGE `roleid` `role` INT(11);";
 		}
 		
 		if (!empty($query))
