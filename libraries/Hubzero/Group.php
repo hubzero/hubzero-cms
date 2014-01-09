@@ -1513,4 +1513,37 @@ class Hubzero_Group
 	{
 		return ($this->get('type') == 3) ? true : false;
 	}
+	
+	
+	/**
+	 * Return a groups logo
+	 *
+	 * @return BOOL
+	 */
+	public function getLogo()
+	{
+		// get user
+		$juser = JFactory::getUser();
+		
+		//default logo
+		$default_logo = DS.'components'.DS.'com_groups'.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
+
+		//logo link - links to group overview page
+		$link = JRoute::_('index.php?option=com_groups&cn='.$this->get('cn'));
+
+		//path to group uploaded logo
+		$path = '/site/groups/'.$this->get('gidNumber').DS.'uploads'.DS.$this->get('logo');
+
+		//if logo exists and file is uploaded use that logo instead of default
+		$src = ($this->get('logo') != '' && is_file(JPATH_ROOT.$path)) ? $path : $default_logo;
+		
+		//check to make sure were a member to show logo for hidden group
+		$members_and_invitees = array_merge($this->get('members'), $this->get('invitees'));
+		if( $this->get('discoverability') == 1 && !in_array($juser->get("id"), $members_and_invitees) )
+		{
+			$src = $default_logo;
+		}
+		
+		return $src;
+	}
 }

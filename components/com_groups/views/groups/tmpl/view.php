@@ -47,28 +47,12 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 		<div id="page_container">
 			<div id="page_sidebar">
 				<?php
-					//default logo
-					$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
-
 					//logo link - links to group overview page
 					$link = JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn'));
-
-					//path to group uploaded logo
-					$path = '/site/groups/'.$this->group->get('gidNumber').DS.'uploads'.DS.$this->group->get('logo');
-
-					//if logo exists and file is uploaded use that logo instead of default
-					$src = ($this->group->get('logo') != '' && is_file(JPATH_ROOT.$path)) ? $path : $default_logo;
-					
-					//check to make sure were a member to show logo for hidden group
-					$members_and_invitees = array_merge($this->group->get('members'), $this->group->get('invitees'));
-					if( $this->group->get('discoverability') == 1 && !in_array($this->juser->get("id"), $members_and_invitees) )
-					{
-						$src = $default_logo;
-					}
 				?>
 				<div id="page_identity">
 					<a href="<?php echo $link; ?>" title="<?php echo $this->group->get('description'); ?> Home">
-						<img src="<?php echo $src; ?>" alt="<?php echo $this->group->get('description'); ?> Logo" />
+						<img src="<?php echo $this->group->getLogo(); ?>" alt="<?php echo $this->group->get('description'); ?> Logo" />
 					</a>
 				</div><!-- /#page_identity -->
 				
