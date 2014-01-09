@@ -434,7 +434,7 @@ class Ldap
 	 * @param   mixed   $group
 	 * @return  boolean
 	 */
-	static function syncGroup($group)
+	public static function syncGroup($group)
 	{
 		$db = \JFactory::getDBO();
 
@@ -627,7 +627,7 @@ class Ldap
 	 * @param   array   $members
 	 * @return  boolean
 	 */
-	static function addGroupMemberships($group, $members)
+	public static function addGroupMemberships($group, $members)
 	{
 		self::changeGroupMemberships($group, $members, array());
 	}
@@ -639,7 +639,7 @@ class Ldap
 	 * @param   array   $members
 	 * @return  boolean
 	 */
-	static function removeGroupMemberships($group, $members)
+	public static function removeGroupMemberships($group, $members)
 	{
 		self::changeGroupMemberships($group, array(), $members);
 	}
@@ -651,7 +651,7 @@ class Ldap
 	 * @param   array   $members
 	 * @return  boolean
 	 */
-	static function changeGroupMemberships($group,$add,$delete)
+	public static function changeGroupMemberships($group,$add,$delete)
 	{
 		$db = \JFactory::getDBO();
 
@@ -788,7 +788,7 @@ class Ldap
 	 *
 	 * @return  boolean
 	 */
-	public function syncAllGroups()
+	public static function syncAllGroups()
 	{
 		// @TODO: chunk this to 1000 groups at a time
 		
@@ -831,7 +831,7 @@ class Ldap
 	 *
 	 * @return  boolean
 	 */
-	public function syncAllUsers()
+	public static function syncAllUsers()
 	{
 		// @TODO: chunk this to 1000 users at a time
 
