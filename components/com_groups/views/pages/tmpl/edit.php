@@ -51,7 +51,7 @@ $home      = 0;
 $version   = 0;
 
 // if we are in edit mode
-if ($this->page) 
+if ($this->page->get('id')) 
 {
 	$id        = $this->page->get('id');
 	$gidNumber = $this->page->get('gidNumber');
