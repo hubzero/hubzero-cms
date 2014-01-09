@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Abstract adapter class for a blog entry link
  */
-abstract class BlogModelAdapterAbstract extends \Hubzero\Object
+abstract class BlogModelAdapterAbstract extends \Hubzero\Base\Object
 {
 	/**
 	 * The object the referenceid references

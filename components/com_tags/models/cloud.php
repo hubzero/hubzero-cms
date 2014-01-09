@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * Courses model class for a forum
  */
-class TagsModelCloud extends JObject
+class TagsModelCloud extends \Hubzero\Base\Object
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -207,7 +207,7 @@ class TagsModelCloud extends JObject
 		 )
 		{
 			$this->_cache['tag'] = null;
-			if (isset($this->_cache['tags']) && $this->_cache['tags'] instanceof \Hubzero\ItemList)
+			if (isset($this->_cache['tags']) && $this->_cache['tags'] instanceof \Hubzero\Base\ItemList)
 			{
 				foreach ($this->_cache['tags'] as $key => $tag)
 				{
@@ -262,7 +262,7 @@ class TagsModelCloud extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['tags']) || !($this->_cache['tags'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['tags']) || !($this->_cache['tags'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $this->_tbl->getRecords($filters))
 					{
@@ -275,7 +275,7 @@ class TagsModelCloud extends JObject
 					{
 						$results = array();
 					}
-					$this->_cache['tags'] = new \Hubzero\ItemList($results);
+					$this->_cache['tags'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['tags'];
 			break;

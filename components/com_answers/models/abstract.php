@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Base class for Answers models to extend
  */
-class AnswersModelAbstract extends \Hubzero\Model
+class AnswersModelAbstract extends \Hubzero\Base\Model
 {
 	/**
 	 * Item scope

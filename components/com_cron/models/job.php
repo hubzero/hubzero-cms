@@ -47,7 +47,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 /**
  * Table class for a cron job model
  */
-class CronModelJob extends \Hubzero\Model
+class CronModelJob extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name

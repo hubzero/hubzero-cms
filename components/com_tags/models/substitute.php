@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
 /**
  * Courses model class for a forum
  */
-class TagsModelSubstitute extends \Hubzero\Model
+class TagsModelSubstitute extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name

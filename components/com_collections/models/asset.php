@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tab
 /**
  * Collections model class for an Asset
  */
-class CollectionsModelAsset extends \Hubzero\Model
+class CollectionsModelAsset extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name

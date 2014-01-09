@@ -37,7 +37,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Table class for forum posts
  */
-class CollectionsModelCollection extends \Hubzero\Model
+class CollectionsModelCollection extends \Hubzero\Base\Model
 {
 	/**
 	 * Resource ID
@@ -291,7 +291,7 @@ class CollectionsModelCollection extends \Hubzero\Model
 			$this->_post = null;
 
 			// If the list of all posts is available ...
-			if (isset($this->_posts) && $this->_posts instanceof \Hubzero\ItemList)
+			if (isset($this->_posts) && $this->_posts instanceof \Hubzero\Base\ItemList)
 			{
 				// Find a post in the list that matches the ID passed
 				foreach ($this->posts() as $key => $post)
@@ -336,7 +336,7 @@ class CollectionsModelCollection extends \Hubzero\Model
 			return $tbl->getCount($filters);
 		}
 
-		if (!isset($this->_posts) || !($this->_posts instanceof \Hubzero\ItemList))
+		if (!isset($this->_posts) || !($this->_posts instanceof \Hubzero\Base\ItemList))
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
 
@@ -402,7 +402,7 @@ class CollectionsModelCollection extends \Hubzero\Model
 				$results = array();
 			}
 
-			$this->_posts = new \Hubzero\ItemList($results);
+			$this->_posts = new \Hubzero\Base\ItemList($results);
 		}
 
 		return $this->_posts;

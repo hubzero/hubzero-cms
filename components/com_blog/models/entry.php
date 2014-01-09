@@ -38,7 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . 
 /**
  * Courses model class for a forum
  */
-class BlogModelEntry extends \Hubzero\Model
+class BlogModelEntry extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
@@ -270,7 +270,7 @@ class BlogModelEntry extends \Hubzero\Model
 		 || ($id !== null && (int) $this->_comment->get('id') != $id))
 		{
 			$this->_comment = null;
-			if (isset($this->_comments) && is_a($this->_comments, 'BlogModelIterator'))
+			if (isset($this->_comments) && ($this->_comments instanceof \Hubzero\Base\ItemList))
 			{
 				foreach ($this->_comments as $key => $comment)
 				{
@@ -343,7 +343,7 @@ class BlogModelEntry extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->getAllComments($this->get('id')))
 					{
@@ -360,7 +360,7 @@ class BlogModelEntry extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\ItemList($results);
+					$this->_comments = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -493,7 +493,7 @@ class BlogModelEntry extends \Hubzero\Model
 
 			if (!class_exists($cls))
 			{
-				$path = dirname(__FILE__) . '/adapters/' . $scope . '.php';
+				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
 					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
@@ -551,11 +551,7 @@ class BlogModelEntry extends \Hubzero\Model
 				{
 					if ($shorten)
 					{
-						$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 0);
-						if (substr($content, -7) == '&#8230;') 
-						{
-							$content .= '</p>';
-						}
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
 					}
 					return $content;
 				}
@@ -588,7 +584,7 @@ class BlogModelEntry extends \Hubzero\Model
 				$content = strip_tags($this->content('content_parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -598,7 +594,7 @@ class BlogModelEntry extends \Hubzero\Model
 				$content = stripslashes($this->get('content'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

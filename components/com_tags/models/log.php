@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
 /**
  * Model class for a tag
  */
-class TagsModelLog extends \Hubzero\Model
+class TagsModelLog extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name

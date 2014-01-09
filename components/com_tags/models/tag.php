@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * Model class for a tag
  */
-class TagsModelTag extends \Hubzero\Model
+class TagsModelTag extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
@@ -343,7 +343,7 @@ class TagsModelTag extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['subs']) || !($this->_cache['subs'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['subs']) || !($this->_cache['subs'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$results = array();
 
@@ -356,7 +356,7 @@ class TagsModelTag extends \Hubzero\Model
 						}
 					}
 
-					$this->_cache['subs'] = new \Hubzero\ItemList($results);
+					$this->_cache['subs'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['subs'];
 			break;
@@ -396,7 +396,7 @@ class TagsModelTag extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['objects']) || !($this->_cache['objects'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['objects']) || !($this->_cache['objects'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new TagsTableObject($this->_db);
 					if ($results = $tbl->find($filters))
@@ -410,7 +410,7 @@ class TagsModelTag extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_cache['objects'] = new \Hubzero\ItemList($results);
+					$this->_cache['objects'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['objects'];
 			break;
@@ -450,7 +450,7 @@ class TagsModelTag extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['logs']) || !($this->_cache['logs'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['logs']) || !($this->_cache['logs'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new TagsTableLog($this->_db);
 					if ($results = $tbl->find($filters))
@@ -464,7 +464,7 @@ class TagsModelTag extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_cache['logs'] = new \Hubzero\ItemList($results);
+					$this->_cache['logs'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['logs'];
 			break;

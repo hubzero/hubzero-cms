@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+require_once(__DIR__ . '/entry.php');
 
 /**
  * Blog model class
  */
-class BlogModel extends JObject
+class BlogModel extends \Hubzero\Base\Object
 {
 	/**
 	 * BlogTableEntry
@@ -125,7 +125,7 @@ class BlogModel extends JObject
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new BlogModel($scope, $scope_id);
+			$instances[$key] = new self($scope, $scope_id);
 		}
 
 		return $instances[$key];
@@ -244,7 +244,7 @@ class BlogModel extends JObject
 				{
 					$results = array();
 				}
-				return new \Hubzero\ItemList($results);
+				return new \Hubzero\Base\ItemList($results);
 			break;
 
 			case 'recent':
@@ -259,13 +259,13 @@ class BlogModel extends JObject
 				{
 					$results = array();
 				}
-				return new \Hubzero\ItemList($results);
+				return new \Hubzero\Base\ItemList($results);
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				//if (!($this->_entries instanceof \Hubzero\ItemList))
+				//if (!($this->_entries instanceof \Hubzero\Base\ItemList))
 				//{
 					if ($results = $this->_tbl->getRecords($filters))
 					{
@@ -278,9 +278,9 @@ class BlogModel extends JObject
 					{
 						$results = array();
 					}
-					//$this->_entries = new \Hubzero\ItemList($results);
+					//$this->_entries = new \Hubzero\Base\ItemList($results);
 				//}
-				return new \Hubzero\ItemList($results);
+				return new \Hubzero\Base\ItemList($results);
 			break;
 		}
 		return null;

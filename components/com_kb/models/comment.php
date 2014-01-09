@@ -37,7 +37,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_k
 /**
  * Knowledgebase model for a comment
  */
-class KbModelComment extends \Hubzero\Model
+class KbModelComment extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
@@ -218,7 +218,7 @@ class KbModelComment extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_comments instanceof \Hubzero\ItemList || $clear)
+				if (!$this->_comments instanceof \Hubzero\Base\ItemList || $clear)
 				{
 					if ($this->get('replies', null) !== null)
 					{
@@ -243,7 +243,7 @@ class KbModelComment extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\ItemList($results);
+					$this->_comments = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -284,11 +284,8 @@ class KbModelComment extends \Hubzero\Model
 
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('content_parsed'), $shorten, 0, 0);
-					if (substr($content, -7) == '&#8230;') 
-					{
-						$content .= '</p>';
-					}
+					$content = \Hubzero\Utility\String::truncate($this->get('content_parsed'), $shorten, array('html' => true));
+
 					return $content;
 				}
 
@@ -299,7 +296,7 @@ class KbModelComment extends \Hubzero\Model
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

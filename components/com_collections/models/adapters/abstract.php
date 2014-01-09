@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Abstract adapter class for a blog entry link
  */
-abstract class CollectionsModelAdapterAbstract extends \Hubzero\Object
+abstract class CollectionsModelAdapterAbstract extends \Hubzero\Base\Object
 {
 	/**
 	 * Script name

@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'comment.php');
+require_once(__DIR__ . '/abstract.php');
+require_once(__DIR__ . '/comment.php');
 
 /**
  * Answers model for a question response
@@ -128,7 +128,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new Hubzero_Comment($this->_db);
 
@@ -152,7 +152,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\ItemList($results);
+					$this->_comments = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -193,7 +193,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('answer_parsed'), $shorten, 0, 0);
+					$content = \Hubzero\Utility\String::truncate($this->get('answer_parsed'), $shorten, array('html' => true));
 					if (substr($content, -7) == '&#8230;') 
 					{
 						$content .= '</p>';
@@ -208,7 +208,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -218,7 +218,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 				$content = $this->get('answer');
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

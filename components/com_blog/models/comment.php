@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . 
 /**
  * Courses model class for a forum
  */
-class BlogModelComment extends \Hubzero\Model
+class BlogModelComment extends \Hubzero\Base\Model
 {
 	/**
 	 * ForumTablePost
@@ -227,7 +227,7 @@ class BlogModelComment extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($this->get('replies', null) !== null)
 					{
@@ -253,7 +253,7 @@ class BlogModelComment extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\ItemList($results);
+					$this->_comments = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -278,12 +278,7 @@ class BlogModelComment extends \Hubzero\Model
 				{
 					if ($shorten)
 					{
-						$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 0);
-						if (substr($content, -7) == '&#8230;') 
-						{
-							$content .= '</p>';
-						}
-						
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
 					}
 					return $content;
 				}
@@ -313,7 +308,7 @@ class BlogModelComment extends \Hubzero\Model
 				$content = strip_tags($this->content('content_parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -323,7 +318,7 @@ class BlogModelComment extends \Hubzero\Model
 				$content = stripslashes($this->get('content'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

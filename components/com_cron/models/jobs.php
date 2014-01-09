@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cron' . DS . 'models' . DS . 'job.php');
+require_once(__DIR__ . '/job.php');
 
 /**
  * Table class for cron jobs
  */
-class CronModelJobs extends \Hubzero\Model
+class CronModelJobs extends \Hubzero\Base\Model
 {
 	/**
 	 * CronModelJob
@@ -101,7 +101,7 @@ class CronModelJobs extends \Hubzero\Model
 			$this->_job = null;
 
 			// If the list of all jobs is available ...
-			if ($this->_jobs instanceof \Hubzero\ItemList)
+			if ($this->_jobs instanceof \Hubzero\Base\ItemList)
 			{
 				// Find a job in the list that matches the ID passed
 				foreach ($this->jobs() as $job)
@@ -147,7 +147,7 @@ class CronModelJobs extends \Hubzero\Model
 			case 'list':
 			case 'all':
 			default:
-				if (!($this->_jobs instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_jobs instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if (($results = $this->_tbl->find($filters)))
 					{
@@ -162,7 +162,7 @@ class CronModelJobs extends \Hubzero\Model
 						$results = array();
 					}
 
-					$this->_jobs = new \Hubzero\ItemList($results);
+					$this->_jobs = new \Hubzero\Base\ItemList($results);
 				}
 
 				return $this->_jobs;

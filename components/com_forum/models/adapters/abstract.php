@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Abstract adapter class for a forum post link
  */
-abstract class ForumModelAdapterAbstract extends \Hubzero\Object
+abstract class ForumModelAdapterAbstract extends \Hubzero\Base\Object
 {
 	/**
 	 * Script name

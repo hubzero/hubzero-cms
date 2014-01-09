@@ -32,12 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'article.php');
+require_once(__DIR__ . '/article.php');
 
 /**
  * Knowledgebase model for a category
  */
-class KbModelCategory extends \Hubzero\Model
+class KbModelCategory extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
@@ -171,7 +171,7 @@ class KbModelCategory extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_articles instanceof \Hubzero\ItemList || $clear)
+				if (!$this->_articles instanceof \Hubzero\Base\ItemList || $clear)
 				{
 					if ($results = $tbl->find($filters))
 					{
@@ -184,7 +184,7 @@ class KbModelCategory extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_articles = new \Hubzero\ItemList($results);
+					$this->_articles = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_articles;
 			break;
@@ -240,7 +240,7 @@ class KbModelCategory extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_children instanceof \Hubzero\ItemList || $clear)
+				if (!$this->_children instanceof \Hubzero\Base\ItemList || $clear)
 				{
 					if ($results = $this->_tbl->find($filters))
 					{
@@ -253,7 +253,7 @@ class KbModelCategory extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_children = new \Hubzero\ItemList($results);
+					$this->_children = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_children;
 			break;

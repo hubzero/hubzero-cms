@@ -33,17 +33,17 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'article.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'vote.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
+require_once(__DIR__ . '/tags.php');
+require_once(__DIR__ . '/comment.php');
 if (!class_exists('KbModelCategory'))
 {
-	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'category.php');
+	require_once(__DIR__ . '/category.php');
 }
 
 /**
  * Courses model class for a forum
  */
-class KbModelArticle extends \Hubzero\Model
+class KbModelArticle extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
@@ -349,7 +349,7 @@ class KbModelArticle extends \Hubzero\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_comments instanceof \Hubzero\ItemList || $clear)
+				if (!$this->_comments instanceof \Hubzero\Base\ItemList || $clear)
 				{
 					if ($results = $tbl->getAllComments($filters['entry_id']))
 					{
@@ -365,7 +365,7 @@ class KbModelArticle extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\ItemList($results);
+					$this->_comments = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -510,11 +510,8 @@ class KbModelArticle extends \Hubzero\Model
 			case 'parsed':
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('fulltxt'), $shorten, 0, 0);
-					if (substr($content, -7) == '&#8230;') 
-					{
-						$content .= '</p>';
-					}
+					$content = \Hubzero\Utility\String::truncate($this->get('fulltxt'), $shorten, array('html' => true));
+
 					return $content;
 				}
 
@@ -525,7 +522,7 @@ class KbModelArticle extends \Hubzero\Model
 				$content = strip_tags($this->get('fulltxt'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

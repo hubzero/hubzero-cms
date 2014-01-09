@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Abstract model class for following
  */
-abstract class CollectionsModelFollowingAbstract extends JObject
+abstract class CollectionsModelFollowingAbstract extends \Hubzero\Base\Object
 {
 	/**
 	 * Varies

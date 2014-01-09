@@ -37,7 +37,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Courses model class for a course
  */
-class CollectionsModelPost extends \Hubzero\Model
+class CollectionsModelPost extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name

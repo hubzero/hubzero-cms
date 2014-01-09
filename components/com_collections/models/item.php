@@ -37,7 +37,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Courses model class for a course
  */
-class CollectionsModelItem extends \Hubzero\Model
+class CollectionsModelItem extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
@@ -340,7 +340,7 @@ class CollectionsModelItem extends \Hubzero\Model
 	 */
 	public function assets($filters=array())
 	{
-		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\ItemList))
+		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\Base\ItemList))
 		{
 			$tbl = new CollectionsTableAsset($this->_db);
 
@@ -361,7 +361,7 @@ class CollectionsModelItem extends \Hubzero\Model
 				$results = array();
 			}
 
-			$this->_assets = new \Hubzero\ItemList($results);
+			$this->_assets = new \Hubzero\Base\ItemList($results);
 		}
 		return $this->_assets;
 	}
@@ -374,9 +374,9 @@ class CollectionsModelItem extends \Hubzero\Model
 	 */
 	public function addAsset($asset=null)
 	{
-		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\ItemList))
+		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\Base\ItemList))
 		{
-			$this->_assets = new \Hubzero\ItemList(array());
+			$this->_assets = new \Hubzero\Base\ItemList(array());
 		}
 		if ($asset)
 		{

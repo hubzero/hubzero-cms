@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Abstract model for forums
  */
-class ForumModelAbstract extends \Hubzero\Model
+class ForumModelAbstract extends \Hubzero\Base\Model
 {
 	/**
 	 * JUser

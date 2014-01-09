@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tab
 /**
  * Table class for forum posts
  */
-class CollectionsModelFollowing extends \Hubzero\Model
+class CollectionsModelFollowing extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name

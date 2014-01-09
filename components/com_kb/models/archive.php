@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'category.php');
+require_once(__DIR__ . '/category.php');
 
 /**
  * Knowledgebase archive model class
  */
-class KbModelArchive extends JObject
+class KbModelArchive extends \Hubzero\Base\Object
 {
 	/**
 	 * KbModelCategory
@@ -138,7 +138,7 @@ class KbModelArchive extends JObject
 		{
 			$this->_category = null;
 
-			if ($this->_categories instanceof \Hubzero\ItemList)
+			if ($this->_categories instanceof \Hubzero\Base\ItemList)
 			{
 				foreach ($this->_categories as $key => $entry)
 				{
@@ -170,7 +170,7 @@ class KbModelArchive extends JObject
 	{
 		if (!isset($filters['state']))
 		{
-			$filters['state']   = \Hubzero\Model::APP_STATE_PUBLISHED;
+			$filters['state']   = \Hubzero\Base\Model::APP_STATE_PUBLISHED;
 		}
 		if (!isset($filters['access']))
 		{
@@ -213,7 +213,7 @@ class KbModelArchive extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_categories instanceof \Hubzero\ItemList || $clear)
+				if (!$this->_categories instanceof \Hubzero\Base\ItemList || $clear)
 				{
 					$tbl = new KbTableCategory($this->_db);
 					if ($results = $tbl->find($filters))
@@ -227,7 +227,7 @@ class KbModelArchive extends JObject
 					{
 						$results = array();
 					}
-					$this->_categories = new \Hubzero\ItemList($results);
+					$this->_categories = new \Hubzero\Base\ItemList($results);
 					return $this->_categories;
 				}
 			break;
@@ -285,7 +285,7 @@ class KbModelArchive extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_articles instanceof \Hubzero\ItemList || $clear)
+				if (!$this->_articles instanceof \Hubzero\Base\ItemList || $clear)
 				{
 					if (isset($filters['sort']))
 					{
@@ -303,7 +303,7 @@ class KbModelArchive extends JObject
 					{
 						$results = array();
 					}
-					$this->_articles = new \Hubzero\ItemList($results);
+					$this->_articles = new \Hubzero\Base\ItemList($results);
 					return $this->_articles;
 				}
 			break;

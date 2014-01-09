@@ -195,7 +195,7 @@ class CollectionsModel extends JObject
 			$this->_collection = null;
 
 			// If the list of all offerings is available ...
-			if (isset($this->_collections) && $this->_collections instanceof \Hubzero\ItemList)
+			if (isset($this->_collections) && $this->_collections instanceof \Hubzero\Base\ItemList)
 			{
 				// Find an offering in the list that matches the ID passed
 				foreach ($this->collections() as $key => $collection)
@@ -243,7 +243,7 @@ class CollectionsModel extends JObject
 			return $tbl->getCount($filters);
 		}
 
-		if (!($this->_collections instanceof \Hubzero\ItemList))
+		if (!($this->_collections instanceof \Hubzero\Base\ItemList))
 		{
 			$tbl = new CollectionsTableCollection($this->_db);
 
@@ -256,7 +256,7 @@ class CollectionsModel extends JObject
 				}
 			}
 
-			$this->_collections = new \Hubzero\ItemList($results);
+			$this->_collections = new \Hubzero\Base\ItemList($results);
 		}
 
 		return $this->_collections;
@@ -282,7 +282,7 @@ class CollectionsModel extends JObject
 
 			return $tbl->count($filters);
 		}
-		if (!($this->_followers instanceof \Hubzero\ItemList))
+		if (!($this->_followers instanceof \Hubzero\Base\ItemList))
 		{
 			$tbl = new CollectionsTableFollowing($this->_db);
 
@@ -295,7 +295,7 @@ class CollectionsModel extends JObject
 				}
 			}
 
-			$this->_followers = new \Hubzero\ItemList($results);
+			$this->_followers = new \Hubzero\Base\ItemList($results);
 		}
 
 		return $this->_followers;
@@ -327,7 +327,7 @@ class CollectionsModel extends JObject
 			$filters['limit'] = 1;
 		}
 
-		if (!($this->_following instanceof \Hubzero\ItemList))
+		if (!($this->_following instanceof \Hubzero\Base\ItemList))
 		{
 			$tbl = new CollectionsTableFollowing($this->_db);
 
@@ -340,7 +340,7 @@ class CollectionsModel extends JObject
 				}
 			}
 
-			$this->_following = new \Hubzero\ItemList($results);
+			$this->_following = new \Hubzero\Base\ItemList($results);
 		}
 
 		if ($what == 'collections')

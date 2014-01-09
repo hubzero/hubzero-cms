@@ -177,7 +177,7 @@ class ForumModelThread extends ForumModelPost
 			break;
 
 			case 'tree':
-				if (!isset($this->_cache['tree']) || !($this->_cache['tree'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['tree']) || !($this->_cache['tree'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($rows = $this->_tbl->getTree($filters['thread']))
 					{
@@ -200,7 +200,7 @@ class ForumModelThread extends ForumModelPost
 						$results = $this->_treeRecurse($children[$this->get('parent')], $children);
 					}
 
-					$this->_cache['tree'] = new \Hubzero\ItemList($results);
+					$this->_cache['tree'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['tree'];
 			break;
@@ -208,7 +208,7 @@ class ForumModelThread extends ForumModelPost
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['posts']) || !($this->_cache['posts'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['posts']) || !($this->_cache['posts'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if (($results = $this->_tbl->getRecords($filters)))
 					{
@@ -221,7 +221,7 @@ class ForumModelThread extends ForumModelPost
 					{
 						$results = array();
 					}
-					$this->_cache['posts'] = new \Hubzero\ItemList($results);
+					$this->_cache['posts'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['posts'];
 			break;
@@ -245,11 +245,11 @@ class ForumModelThread extends ForumModelPost
 			{
 				if (isset($list[$child->get('id')]))
 				{
-					$children[$v]->set('replies', new \Hubzero\ItemList($this->_treeRecurse($list[$child->get('id')], $list, $maxlevel, $level+1)));
+					$children[$v]->set('replies', new \Hubzero\Base\ItemList($this->_treeRecurse($list[$child->get('id')], $list, $maxlevel, $level+1)));
 				}
 				else
 				{
-					$children[$v]->set('replies', new \Hubzero\ItemList(array()));
+					$children[$v]->set('replies', new \Hubzero\Base\ItemList(array()));
 				}
 			}
 		}
@@ -269,13 +269,13 @@ class ForumModelThread extends ForumModelPost
 		$filters['parent'] = isset($filters['parent']) ? $filters['parent'] : $this->get('id');
 		$filters['state']  = isset($filters['state'])  ? $filters['state']  : self::APP_STATE_PUBLISHED;
 
-		if (!isset($this->_cache['participants']) || !($this->_cache['participants'] instanceof \Hubzero\ItemList) || $clear)
+		if (!isset($this->_cache['participants']) || !($this->_cache['participants'] instanceof \Hubzero\Base\ItemList) || $clear)
 		{
 			if (!($results = $this->_tbl->getParticipants($filters)))
 			{
 				$results = array();
 			}
-			$this->_cache['participants'] = new \Hubzero\ItemList($results);
+			$this->_cache['participants'] = new \Hubzero\Base\ItemList($results);
 		}
 
 		return $this->_cache['participants'];
@@ -302,7 +302,7 @@ class ForumModelThread extends ForumModelPost
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['attachments']) || !($this->_cache['attachments'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['attachments']) || !($this->_cache['attachments'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new ForumTableAttachment($this->_db);
 
@@ -317,7 +317,7 @@ class ForumModelThread extends ForumModelPost
 					{
 						$results = array();
 					}
-					$this->_cache['attachments'] = new \Hubzero\ItemList($results);
+					$this->_cache['attachments'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['attachments'];
 			break;

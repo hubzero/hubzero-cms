@@ -155,7 +155,7 @@ class ForumModel extends ForumModelAbstract
 			return false;
 		}
 
-		$this->_cache['sections'] = new \Hubzero\ItemList(array($section));
+		$this->_cache['sections'] = new \Hubzero\Base\ItemList(array($section));
 
 		return true;
 	}
@@ -172,7 +172,7 @@ class ForumModel extends ForumModelAbstract
 		{
 			$this->_cache['section'] = null;
 
-			if (isset($this->_cache['sections']) && ($this->_cache['sections'] instanceof \Hubzero\ItemList))
+			if (isset($this->_cache['sections']) && ($this->_cache['sections'] instanceof \Hubzero\Base\ItemList))
 			{
 				foreach ($this->_cache['sections'] as $key => $section)
 				{
@@ -247,7 +247,7 @@ class ForumModel extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['sections']) || !($this->_cache['sections'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['sections']) || !($this->_cache['sections'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->getRecords($filters))
 					{
@@ -260,7 +260,7 @@ class ForumModel extends ForumModelAbstract
 					{
 						$results = array();
 					}
-					$this->_cache['sections'] = new \Hubzero\ItemList($results);
+					$this->_cache['sections'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['sections'];
 			break;
@@ -300,7 +300,7 @@ class ForumModel extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['posts.list']) || !($this->_cache['posts.list'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['posts.list']) || !($this->_cache['posts.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new ForumTablePost($this->_db);
 
@@ -316,7 +316,7 @@ class ForumModel extends ForumModelAbstract
 						$results = array();
 					}
 
-					$this->_cache['posts.list'] = new \Hubzero\ItemList($results);
+					$this->_cache['posts.list'] = new \Hubzero\Base\ItemList($results);
 				}
 
 				return $this->_cache['posts.list'];

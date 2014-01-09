@@ -321,7 +321,7 @@ class ForumModelPost extends ForumModelAbstract
 
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('content_parsed'), $shorten, 0, 0);
+					$content = \Hubzero\Utility\String::truncate($this->get('content_parsed'), $shorten, array('html' => true));
 					if (substr($content, -7) == '&#8230;') 
 					{
 						$content .= '</p>';
@@ -336,7 +336,7 @@ class ForumModelPost extends ForumModelAbstract
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -346,7 +346,7 @@ class ForumModelPost extends ForumModelAbstract
 				$content = $this->get('comment');
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

@@ -36,9 +36,9 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_a
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'response.php');
+require_once(__DIR__ . '/tags.php');
+require_once(__DIR__ . '/abstract.php');
+require_once(__DIR__ . '/response.php');
 
 /**
  * Answers mdoel class for a question
@@ -213,7 +213,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			$this->_comment = null;
 
 			// See if we already have a list of comments that we can look through
-			if ($this->_comments instanceof \Hubzero\ItemList)
+			if ($this->_comments instanceof \Hubzero\Base\ItemList)
 			{
 				foreach ($this->_comments as $key => $comment)
 				{
@@ -301,7 +301,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear) 
+				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear) 
 				{
 					if ($results = $tbl->getResults($filters))
 					{
@@ -314,7 +314,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\ItemList($results);
+					$this->_comments = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -354,7 +354,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if ($this->get('chosen', null) === null || !($this->get('chosen') instanceof \Hubzero\ItemList))
+				if ($this->get('chosen', null) === null || !($this->get('chosen') instanceof \Hubzero\Base\ItemList))
 				{
 					if ($results = $tbl->getResults($filters))
 					{
@@ -367,7 +367,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->set('chosen', new \Hubzero\ItemList($results));
+					$this->set('chosen', new \Hubzero\Base\ItemList($results));
 				}
 				return $this->get('chosen');
 			break;
@@ -545,7 +545,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('question_parsed'), $shorten, 0, 0);
+					$content = \Hubzero\Utility\String::truncate($this->get('question_parsed'), $shorten, array('html' => true));
 					if (substr($content, -7) == '&#8230;') 
 					{
 						$content .= '</p>';
@@ -560,7 +560,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -606,7 +606,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('subject_parsed'), $shorten, 0, 0);
+					$content = \Hubzero\Utility\String::truncate($this->get('subject_parsed'), $shorten, array('html' => true));
 					if (substr($content, -7) == '&#8230;') 
 					{
 						$content .= '</p>';
@@ -621,7 +621,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				$content = strip_tags($this->subject('parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

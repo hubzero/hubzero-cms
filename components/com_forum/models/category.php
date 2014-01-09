@@ -163,7 +163,7 @@ class ForumModelCategory extends ForumModelAbstract
 		{
 			$this->_cache['thread'] = null;
 
-			if (isset($this->_cache['threads']) && ($this->_cache['threads'] instanceof \Hubzero\ItemList))
+			if (isset($this->_cache['threads']) && ($this->_cache['threads'] instanceof \Hubzero\Base\ItemList))
 			{
 				foreach ($this->_cache['threads'] as $key => $thread)
 				{
@@ -221,7 +221,7 @@ class ForumModelCategory extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['threads']) || !($this->_cache['threads'] instanceof \Hubzero\ItemList) || $clear)
+				if (!isset($this->_cache['threads']) || !($this->_cache['threads'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new ForumTablePost($this->_db);
 
@@ -237,7 +237,7 @@ class ForumModelCategory extends ForumModelAbstract
 						$results = array();
 					}
 
-					$this->_cache['threads'] = new \Hubzero\ItemList($results);
+					$this->_cache['threads'] = new \Hubzero\Base\ItemList($results);
 				}
 
 				return $this->_cache['threads'];
@@ -341,7 +341,7 @@ class ForumModelCategory extends ForumModelAbstract
 	 */
 	public function lastActivity()
 	{
-		if (!isset($this->_cache['last']) || !is_a($this->_cache['last'], 'ForumModelPost'))
+		if (!isset($this->_cache['last']) || !($this->_cache['last'] instanceof ForumModelPost))
 		{
 			$post = new ForumTablePost($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'), $this->get('id'))))
