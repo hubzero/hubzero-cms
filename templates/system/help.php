@@ -35,7 +35,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <html>
 	<head>
 		<jdoc:include type="head" />
-		<link rel="stylesheet" href="/media/system/css/reset.css" type="text/css" />
+		<link rel="stylesheet" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications','icons', 'buttons')); ?>" type="text/css" />
 		<link rel="stylesheet" href="/templates/system/css/help.css" type="text/css" />
 	</head>
 	<body>

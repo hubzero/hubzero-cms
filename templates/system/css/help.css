@@ -111,12 +111,12 @@ pre {
 pre, 
 code, 
 tt {
-	font: 1em 'andale mono', 'lucida console', monospace;
+	font-size: 12px;
+	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
 	line-height: 1.5;
 	background: #efefef;
 	border: 1px solid #CCC;
-	padding: 2px;
-	border-radius: 4px;
+	padding: 5px;
 }
 li ul, 
 li ol {
@@ -186,11 +186,13 @@ figure {
 	border: 1px solid #ccc;
 	padding: 4px;
 	background: #FFF;
-	margin: 10px;
+	margin: 10px 0;
 }
 figcaption {
-	font-weight: bold;
-	font-size: 0.9em;
+	font-size: 1em;
+	padding: 5px 0 2px 0;
+	color: #777;
+	text-align: center;
 }
 
 /* Added By Chris */
