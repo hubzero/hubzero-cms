@@ -63,7 +63,7 @@ class ProjectsHelper extends JObject {
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */	
-	public function __construct( &$db )
+	public function __construct( $db )
 	{
 		$this->_db = $db;
 	}
@@ -715,7 +715,7 @@ class ProjectsHelper extends JObject {
 	 *
 	 * @return     mixed
 	 */
-	public function virusCheck( $fpath = '' ) 
+	public static function virusCheck( $fpath = '' ) 
 	{
 		exec("clamscan -i --no-summary --block-encrypted " . escapeshellarg($fpath), $output, $status);
 
