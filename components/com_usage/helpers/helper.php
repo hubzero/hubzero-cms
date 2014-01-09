@@ -793,7 +793,7 @@ class UsageHelper
 	 * @param      string  $func          Function to perform
 	 * @return     string HTML
 	 */
-	public function options(&$db, $enddate, $thisyear, $monthsReverse, $func='')
+	public static function options($db, $enddate, $thisyear, $monthsReverse, $func='')
 	{
 		$o = '';
 		for ($i = $thisyear; $i >= 2004; $i--)
