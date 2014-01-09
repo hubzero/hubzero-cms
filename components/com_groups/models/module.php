@@ -277,6 +277,7 @@ class GroupsModelModule extends \Hubzero\Model
 		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', true);
 		$config->set('Output.CommentScriptContents', false);
 		$config->set('Output.TidyFormat', true);
+		$config->set('Cache.SerializerPath', JPATH_ROOT . DS . 'cache' . DS . 'htmlpurifier');
 		
 		//create array of custom filters
 		$filters = array();
