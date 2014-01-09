@@ -918,24 +918,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$type = 'groups_changed';
 		}
 		
-		// Build the e-mail message
-		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
-		$eview = new JView(array('name' => 'emails', 'layout' => 'saved'));
-		$eview->option = $this->_option;
-		$eview->sitename = $jconfig->getValue('config.sitename');
-		$eview->juser = $this->juser;
-		$eview->group = $group;
-		$eview->isNew = ($this->_task == 'new') ? true : false;
-		$eview->g_description = $g_description;
-		$eview->g_discoverability = $g_discoverability;
-		$eview->g_public_desc = $g_public_desc;
-		$eview->g_private_desc = $g_private_desc;
-		$eview->g_restrict_msg = $g_restrict_msg;
-		$eview->g_join_policy = $g_join_policy;
-		$eview->g_cn = $g_cn;
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
-		
 		if($this->_task == 'new')
 		{
 			$group->set('cn', $g_cn);
@@ -964,6 +946,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Process tags
 		$gt = new GroupsTags($this->database);
 		$gt->tag_object($this->juser->get('id'), $group->get('gidNumber'), $tags, 1, 1);
+		
+		// Build the e-mail message
+		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
+		$eview = new JView(array('name' => 'emails', 'layout' => 'saved'));
+		$eview->option = $this->_option;
+		$eview->juser  = $this->juser;
+		$eview->group  = $group;
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
 
 		// Rename the temporary upload directory if it exist
 		if ($this->_task == 'new') 
