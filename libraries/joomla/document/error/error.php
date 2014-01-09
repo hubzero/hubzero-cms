@@ -155,39 +155,43 @@ class JDocumentError extends JDocument
 		{
 			ob_start();
 			$j = 1;
-			echo '<table cellpadding="0" cellspacing="0" class="Table">';
-			echo '	<tr>';
-			echo '		<td colspan="3" class="TD"><strong>Call stack</strong></td>';
-			echo '	</tr>';
-			echo '	<tr>';
-			echo '		<td class="TD"><strong>#</strong></td>';
-			echo '		<td class="TD"><strong>Function</strong></td>';
-			echo '		<td class="TD"><strong>Location</strong></td>';
-			echo '	</tr>';
+			$html = array();
+			$html[] = '<table class="backtrace">';
+			$html[] = '	<caption>Call stack</caption>';
+			$html[] = '	<thead>';
+			$html[] = '		<tr>';
+			$html[] = '			<th scope="col">#</th>';
+			$html[] = '			<th scope="col">Function</th>';
+			$html[] = '			<th scope="col">Location</th>';
+			$html[] = '		</tr>';
+			$html[] = '	</thead>';
+			$html[] = '	<tbody>';
 			for ($i = count($backtrace) - 1; $i >= 0; $i--)
 			{
-				echo '	<tr>';
-				echo '		<td class="TD">' . $j . '</td>';
+				$html[] = '		<tr>';
+				$html[] = '			<th scope="row">' . $j . '</th>';
 				if (isset($backtrace[$i]['class']))
 				{
-					echo '	<td class="TD">' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '()</td>';
+					$html[] = '			<td><span class="cls">' . $backtrace[$i]['class'] . '</span><span class="opn">' . $backtrace[$i]['type'] . '</span><span class="mtd">' . $backtrace[$i]['function'] . '</span>()</td>';
 				}
 				else
 				{
-					echo '	<td class="TD">' . $backtrace[$i]['function'] . '()</td>';
+					$html[] = '			<td><span class="fnc">' . $backtrace[$i]['function'] . '</span>()</td>';
 				}
 				if (isset($backtrace[$i]['file']))
 				{
-					echo '		<td class="TD">' . $backtrace[$i]['file'] . ':' . $backtrace[$i]['line'] . '</td>';
+					$html[] = '			<td><span class="fl">' . $backtrace[$i]['file'] . '</span>:<span class="ln">' . $backtrace[$i]['line'] . '</span></td>';
 				}
 				else
 				{
-					echo '		<td class="TD">&#160;</td>';
+					$html[] = '			<td>&#160;</td>';
 				}
-				echo '	</tr>';
+				$html[] = '		</tr>';
 				$j++;
 			}
-			echo '</table>';
+			$html[] = '	</tbody>';
+			$html[] = '</table>';
+			echo "\n" . implode("\n", $html) . "\n";
 			$contents = ob_get_contents();
 			ob_end_clean();
 		}
