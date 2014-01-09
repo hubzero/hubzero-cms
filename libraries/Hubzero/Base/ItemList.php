@@ -314,5 +314,24 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 		unset($this->_data[$offset]);
 		$this->_total = count($this->_data);
 	}
+	
+	/**
+	 * Fetch Item with key equal to value
+	 *
+	 * @param  $key    Object Key
+	 * @param  $value  Object Value
+	 * @return mixed 
+	 */
+	public function fetch($key, $value)
+	{
+		foreach ($this->_data as $data)
+		{
+			if ($data->get($key) == $value)
+			{
+				return $data;
+			}
+		}
+		return null;
+	}
 }
 
