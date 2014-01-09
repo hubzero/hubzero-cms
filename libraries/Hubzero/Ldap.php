@@ -378,7 +378,7 @@ class Hubzero_Ldap
 		}
 	}
 	
-	static function syncGroup($group)
+	public static function syncGroup($group)
 	{
 		$db = JFactory::getDBO();
 	
@@ -568,17 +568,17 @@ class Hubzero_Ldap
 		}
 	}
 	
-	static function addGroupMemberships($group, $members)
+	public static function addGroupMemberships($group, $members)
 	{
 		self::changeGroupMemberships($group, $members, array());
 	}
 	
-	static function removeGroupMemberships($group, $members)
+	public static function removeGroupMemberships($group, $members)
 	{
 		self::changeGroupMemberships($group, array(), $members);
 	}
 	
-	static function changeGroupMemberships($group,$add,$delete)
+	public static function changeGroupMemberships($group,$add,$delete)
 	{
 		$db = JFactory::getDBO();
 		
@@ -718,7 +718,7 @@ class Hubzero_Ldap
 	 *
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function syncAllGroups()
+	public static function syncAllGroups()
 	{
 		// @TODO: chunk this to 1000 groups at a time
 		
@@ -763,7 +763,7 @@ class Hubzero_Ldap
 	 *
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function syncAllUsers()
+	public static function syncAllUsers()
 	{
 		// @TODO: chunk this to 1000 users at a time
 		
