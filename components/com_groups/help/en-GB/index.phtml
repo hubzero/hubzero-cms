@@ -30,6 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+// get super groups
+$super = Hubzero_Group::find(array(
+	'fields' => array('COUNT(*)'),
+	'type' => array('super')
+));
 ?>
 
 <h1>Group Help</h1>
@@ -41,6 +47,20 @@ defined('_JEXEC') or die('Restricted access');
 	<li>
 		<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=membership'); ?>">Group Membership</a>
 	</li>
+	<li>
+		<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=pages'); ?>">Group Pages</a>
+	</li>
+	<li>
+		<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=categories'); ?>">Group Page Categories</a>
+	</li>
+	<?php if ($super) : ?>
+		<li>
+			<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=modules'); ?>">Group Page Modules</a>
+		</li>
+		<li>
+			<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=supergroup'); ?>">Super Groups</a>
+		</li>
+	<?php endif; ?>
 	<li>
 		<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=guidelines'); ?>">Guidelines &amp; Tips</a>
 	</li>
