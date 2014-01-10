@@ -53,6 +53,9 @@ if ($this->app->params->get('noPopoutMaximize', 0)) {
 if ($this->app->params->get('noRefresh', 0)) { 
 	$cls[] = 'no-refresh';
 }
+if ($this->app->params->get('vncEncoding',0)) {
+	$this->output->encoding = $this->app->params->get('vncEncoding','');
+}
 ?>
 			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="<?php echo $base; ?>/components/com_tools/scripts/VncViewer-20110822-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
 				<param name="PORT" value="<?php echo $this->output->port; ?>" />
