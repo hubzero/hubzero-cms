@@ -49,7 +49,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="nobody">Disabled/Off</option>
 				</field>
 				<field type="spacer" />
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+				<field name="uploadpath" type="text" menu="hide" default="/site/courses/{{gid}}/pages" label="Upload path" description="File path for uploads" />
 			</fieldset>
 		</fields>
 	</config>

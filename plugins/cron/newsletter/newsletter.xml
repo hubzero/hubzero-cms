@@ -41,6 +41,9 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
+			<fieldset group="processmailings">
+				<field type="text" name="newsletter_queue_limit" default="25" label="Queued Emails Limit:" description="Number of queued emails to send out each time the cron process is run." />
+			</fieldset>
 		</fields>
 	</config>
 </extension>
