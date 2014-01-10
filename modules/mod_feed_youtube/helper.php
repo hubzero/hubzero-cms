@@ -70,6 +70,7 @@ class modFeedYoutubeHelper extends Hubzero_Module
 			$this->feed->description  = $rssDoc->get_description();
 
 			// channel image if exists
+			$this->feed->image        = new stdClass();
 			$this->feed->image->url   = $rssDoc->get_image_url();
 			$this->feed->image->title = $rssDoc->get_image_title();
 
