@@ -206,12 +206,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Get a list of all groups
 		$this->view->groups = Hubzero_Group::find( $this->view->filters );
-		
 		$this->view->authorized = $this->_authorize();
-		if ($this->view->authorized && $this->view->groups) 
-		{
-			$this->view->groups = $this->getGroups($this->view->groups);
-		}
+		
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');

@@ -159,7 +159,7 @@ foreach ($letters as $letter)
 					</caption>
 					<thead>
 						<tr>
-							<th colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
+							<th colspan="4">
 								<span class="index-wrap">
 									<span class="index">
 										<?php echo $html; ?>
@@ -230,21 +230,19 @@ if ($this->groups) {
 								}
 ?>
 							</td>
-<?php if ($this->authorized) { ?>
 							<td>
 								<span class="<?php echo $status; ?> status"><?php
 									switch ($status)
 									{
-										case 'manager': echo JText::_('GROUPS_STATUS_MANAGER'); break;
-										case 'new': echo JText::_('GROUPS_STATUS_NEW_GROUP'); break;
-										case 'member': echo JText::_('GROUPS_STATUS_APPROVED'); break;
-										case 'pending': echo JText::_('GROUPS_STATUS_PENDING'); break;
-										case 'invitee': echo JText::_('GROUPS_STATUS_INVITED'); break;
+										case 'manager': echo JText::_('Manager'); break;
+										case 'new': echo JText::_('New'); break;
+										case 'member': echo JText::_('Member'); break;
+										case 'pending': echo JText::_('Pending Approval'); break;
+										case 'invitee': echo JText::_('Invited'); break;
 										default: break;
 									}
 								?></span>
 							</td>
-<?php } ?>
 						</tr>
 <?php 
 	} // for loop 
