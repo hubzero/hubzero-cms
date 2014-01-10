@@ -350,7 +350,9 @@ class MembersProfile extends JTable
 		}
 
 		if (isset($filters['contributions']))
+		{
 			$sqlsearch .= ($sqlsearch ? ' AND ' : ' ') . 'cv.resource_count + cv.wiki_count >= '. $this->_db->Quote($filters['contributions']);
+		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
@@ -418,7 +420,7 @@ class MembersProfile extends JTable
 		}
 
 		$query  = $select."FROM $this->_tbl AS m ";
-		if ((!isset($filters['count']) || !$filters['count']) && isset($filters['contributions']))
+		if (isset($filters['contributions'])) //(!isset($filters['count']) || !$filters['count']) && 
 		{
 			$query .= ($filters['show'] == 'contributors' ? 'INNER' : 'LEFT') . ' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
 		}
@@ -519,6 +521,15 @@ class MembersProfile extends JTable
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 
 		{
 			$query .= " ORDER BY ";
+
+			if ($filters['sortby'] == 'contributions')
+			{
+				if (!isset($filters['contributions'])) 
+				{
+					$filters['sortby'] = '';
+				}
+			}
+
 			switch ($filters['sortby'])
 			{
 				case 'organization':
