@@ -1240,8 +1240,10 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		}
 
 		//make sure registration is open
-		$now = time();
-		if (strtotime($view->event->registerby) >= $now)
+		$now        = JFactory::getDate()->toUnix();
+		$registerby = JFactory::getDate($view->event->registerby)->toUnix();
+		
+		if ($registerby >= $now)
 		{
 			//get the password
 			$password = JRequest::getVar('passwrd', '', 'post');
