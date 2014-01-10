@@ -117,7 +117,9 @@ class ContentModelArticle extends JModelItem
 					$subQuery->where('(contact.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR contact.language IS NULL)');
 				}
 
-				$query->select('(' . $subQuery . ') as contactid');
+				// [!] Hubzero - Removed contact_details table
+				//$query->select('(' . $subQuery . ') as contactid');
+				$query->select('(0) as contactid');
 
 				// Filter by language
 				if ($this->getState('filter.language'))

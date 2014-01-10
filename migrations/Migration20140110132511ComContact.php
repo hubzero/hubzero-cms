@@ -22,6 +22,7 @@ class Migration20140110132511ComContact extends Hubzero_Migration
 			self::deleteComponentEntry('contact');
 
 			self::deletePluginEntry('search', 'contacts');
+			self::deletePluginEntry('user', 'contactcreator');
 
 			$query = "DROP TABLE IF EXISTS `#__contact_details`;";
 			$db->setQuery($query);
@@ -43,6 +44,7 @@ class Migration20140110132511ComContact extends Hubzero_Migration
 			self::addComponentEntry('contact');
 
 			self::addPluginEntry('search', 'contacts', 0);
+			self::addPluginEntry('user', 'contactcreator');
 
 			if (!$db->tableExists('#__contact_details'))
 			{

@@ -214,7 +214,9 @@ class ContentModelArticles extends JModelList
 			$subQuery->where('(contact.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR contact.language IS NULL)');
 		}
 
-		$query->select('(' . $subQuery . ') as contactid');
+		// [!] Hubzero - Removed contact_details table
+		//$query->select('(' . $subQuery . ') as contactid');
+		$query->select('(0) as contactid');
 
 		// Join over the categories to get parent category titles
 		$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias');
