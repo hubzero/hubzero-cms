@@ -43,6 +43,12 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
+			<fieldset name="basic">
+				<field name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Projects' in group menu.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+			</field>
 		</fields>
 	</config>
 </extension>

@@ -45,6 +45,17 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the 'Collections' plugin.">
+					<option value="anyone">Any HUB Visitor</option>
+					<option value="registered">Only Registered HUB Users</option>
+					<option value="members">Only Group Members</option>
+					<option value="nobody">Disabled/Off</option>
+				</field>
+				<field name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Collections' in group menu.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field type="spacer" />
 				<field name="maxWidth" type="text" menu="hide" default="290" label="Max Image Width" description="Max Image Width for tile listing" />
 				<field name="posting" type="list" default="0" label="Article Posting" description="The default setting for who can post to the blog.">
 					<option value="0">All members</option>

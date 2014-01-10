@@ -48,6 +48,11 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="members">Only Group Members</option>
 					<option value="nobody">Disabled/Off</option>
 				</field>
+				<field name="display_tab" type="list" default="0" label="Display in Menu" description="Display 'Messages' in group menu.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field type="spacer" />
 				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/> 
 				<field name="stamp_logo" type="text" size="5" default="/plugins/groups/messages/mail-send.png" label="Message Stamp Image" description="" />
 			</fieldset>

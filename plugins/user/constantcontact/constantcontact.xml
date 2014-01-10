@@ -33,5 +33,19 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename plugin="constantcontact">constantcontact.php</filename>
 	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="list" name="ccManageEmailPreference" label="Send Member Email Preferences:" default="0">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field type="spacer" />
+				<field name="ccUsername" type="text" default="" label="Constant Contact Username:" description="Username from Constant Contact" />
+				<field name="ccPassword" type="password" default="" label="Constant Contact Password:" description="Password from Constant Contact" />
+				<field name="ccApiKey" type="text" default="" label="Constant Contact Api Key:" description="API Key from Constant Contact" />
+			</fieldset>
+		</fields>
+	</config>
 </extension>
 

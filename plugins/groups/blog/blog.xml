@@ -51,6 +51,10 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="members">Only Group Members</option>
 					<option value="nobody">Disabled/Off</option>
 				</field>
+				<field name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Blog' in group menu.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 				<field type="spacer" />
 				<field name="uploadpath" type="text" menu="hide" default="/site/groups/{{gid}}/blog" label="Upload path" description="File path for uploads" />
 				<field name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
