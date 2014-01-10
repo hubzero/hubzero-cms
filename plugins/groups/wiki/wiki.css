@@ -110,7 +110,7 @@
 	}
 	.page-search-form {
 		position: absolute;
-		right: -9999px;
+		right: 9999px;
 		top: 99%;
 		margin: 0;
 		width: 220px;
