@@ -211,7 +211,7 @@ class Object
 	 *
 	 * @param   string  $error  Error message.
 	 * @param   string  $key    Specific key to set the value to
-	 * @return  void
+	 * @return  object
 	 */
 	public function setError($error, $key=null)
 	{
@@ -223,5 +223,6 @@ class Object
 		{
 			array_push($this->_errors, $error);
 		}
+		return $this;
 	}
 }
