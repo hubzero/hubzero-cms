@@ -624,7 +624,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		if ($appcount > 1) 
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . JFactory::getDate()->format("g:i a") . ')';
+			$app->caption .= ' (' . JHTML::_('date', JFactory::getDate()->toSql(), 'g:i a') . ')';
 		}
 
 		// Save the changed caption
