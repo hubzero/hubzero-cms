@@ -987,7 +987,7 @@ class WikiParser
 				else
 				{
 					// Strip indention
-					$txt = substr($txt, $indent);
+					//$txt = substr($txt, $indent);
 				}
 
 				$output[] = $txt;
