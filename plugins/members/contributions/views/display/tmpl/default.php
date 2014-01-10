@@ -213,9 +213,9 @@ foreach ($this->results as $category)
 			$html .= '<a href="'.JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area='. urlencode(stripslashes($this->cats[$k]['category']))).'">';
 		}
 		$html .= $name.' <span>('.$num.$total.')</span>';
-		if (!$dopaging) 
+		if (!$dopaging && $total > 5) 
 		{
-			$html .= '<span class="more">&raquo;</span></a> ';
+			$html .= '<span class="more">see more &raquo;</span></a> ';
 		}
 		$html .= '</h4>'."\n";
 		$html .= '<div class="category-wrap" id="' . $divid . '">'."\n";
