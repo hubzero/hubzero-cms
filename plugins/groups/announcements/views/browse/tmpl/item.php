@@ -44,10 +44,12 @@ ximport('Hubzero_Wiki_Parser');
 $p = Hubzero_Wiki_Parser::getInstance();
 
 //class of announcement 
-$class = 'unpublished';
-$now = time();
-if (($now >= strtotime($this->announcement->publish_up) || $this->announcement->publish_up == '0000-00-00 00:00:00') 
- && ($now <= strtotime($this->announcement->publish_down) || $this->announcement->publish_down == '0000-00-00 00:00:00'))
+$class        = 'unpublished';
+$now          = JFactory::getDate()->toUnix();
+$publish_up   = JFactory::getDate($this->announcement->publish_up)->toUnix();
+$publish_down = JFactory::getDate($this->announcement->publish_down)->toUnix();
+if (($now >= $publish_up || $this->announcement->publish_up == '0000-00-00 00:00:00') 
+ && ($now <= $publish_down || $this->announcement->publish_down == '0000-00-00 00:00:00'))
 {
 	$class = 'published';
 }

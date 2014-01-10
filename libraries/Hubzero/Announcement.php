@@ -324,11 +324,11 @@ class Hubzero_Announcement extends JTable
 		$up = $down = null;
 		if ($announcement->publish_up != '' && $announcement->publish_up != $this->_db->getNullDate())
 		{
-			$up = strtotime($announcement->publish_up);
+			$up = JFactory::getDate($announcement->publish_up)->toUnix();
 		}
 		if ($announcement->publish_down != '' && $announcement->publish_down != $this->_db->getNullDate())
 		{
-			$down = strtotime($announcement->publish_down);
+			$down = JFactory::getDate($announcement->publish_down)->toUnix();
 		}
 
 		// if we have a null uptime or uptime less then our date
