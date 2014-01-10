@@ -99,20 +99,22 @@ $month = date("m", strtotime($this->event->publish_up));
 				<th class="date"></th>
 				<td colspan="3">
 					<?php $tz = Hubzero_Event_Helper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
-					<?php echo date("l, F d, Y @ g:i a", strtotime($this->event->publish_up)); ?>
+					<?php echo JHTML::_('date', $this->event->publish_up, 'l, F d, Y @ g:i a'); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 					&mdash;
-					<?php echo date("l, F d, Y @ g:i a", strtotime($this->event->publish_down)); ?>
+					<?php echo JHTML::_('date', $this->event->publish_down, 'l, F d, Y @ g:i a'); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 				</td>
 			</tr>
 		<?php else : ?>
 			<tr>
 				<th class="date"></th>
-				<td width="50%"><?php echo date("l, F d, Y", strtotime($this->event->publish_up)); ?></td>
+				<td width="50%">
+					<?php echo JHTML::_('date', $this->event->publish_up, 'l, F d, Y'); ?>
+				</td>
 				<th class="time"></th>
 				<td>
-					<?php echo date("g:i a", strtotime($this->event->publish_up)); ?>
+					<?php echo JHTML::_('date', $this->event->publish_up, JText::_('TIME_FORMAT_HZ1')); ?>
 					<?php $tz = Hubzero_Event_Helper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 				</td>

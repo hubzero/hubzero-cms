@@ -86,7 +86,7 @@ $month = date("m", strtotime($this->event->publish_up));
 	<div class="clear"></div>
 </div>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->id); ?>" id="hubForm" method="post">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->id); ?>" id="hubForm" method="post" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Name &amp; Title'); ?></legend>
 		
