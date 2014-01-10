@@ -156,7 +156,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 
 			<label for="field-publish_down">
 				<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_DOWN'); ?>
-				<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+				<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
 				<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 			</label>
 		</div>
