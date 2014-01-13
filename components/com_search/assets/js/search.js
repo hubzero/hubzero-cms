@@ -17,10 +17,29 @@ jQuery(document).ready(function($){
 				list = list.nextSibling;
 			if ($(list).css('display') == 'block')
 			{
-				$(list).hide();
-				$(this).css('background', 'url(\'/components/com_search/assets/img/expand.gif\') no-repeat 0 0');
-			}
-			else
+				var list = el.parentNode.nextSibling;
+				while(list.tagName != 'UL')
+					list = list.nextSibling;
+				if (list.style.display == 'block')
+				{
+					list.style.display = 'none';
+					el.style.background = 'url(\'/components/com_search/assets/img/expand.gif\') no-repeat 0 0';
+				}
+				else
+				{
+					list.style.display = 'block';
+					el.style.background = 'url(\'/components/com_search/assets/img/expand.gif\') no-repeat -20px 0';
+				}
+			});
+		});
+
+		// Enable auto-submit of per-page setting form by ...
+		//  ... hiding the submit button
+		document.body.getElements('.search-per-page-submitter').each(function(el) { el.style.display = 'none'; });
+		//  ... and making the select element submit its parent form on change
+		document.body.getElements('.search-per-page-selector').each(function(el) 
+		{
+			el.addEvent('change', function()
 			{
 				$(list).show();
 				$(this).css('background', 'url(\'/components/com_search/assets/img/expand.gif\') no-repeat -20px 0');
