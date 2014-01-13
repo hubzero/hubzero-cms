@@ -139,7 +139,7 @@ function submitbutton(pressbutton)
 									<font color="green">
 										<strong><?php echo JText::_('Yes'); ?></strong>
 									</font>-
-									<?php echo JHTML::('date', $lastDateSent, "l, F d, Y @ g:ia"); ?>
+									<?php echo JHTML::_('date', $lastDateSent, "l, F d, Y @ g:ia"); ?>
 								<?php else : ?>
 									<strong>
 										<font color="red"><?php echo JText::_('No'); ?></font>
