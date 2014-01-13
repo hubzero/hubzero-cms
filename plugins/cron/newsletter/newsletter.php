@@ -129,8 +129,23 @@ class plgCronNewsletter extends JPlugin
 			//add mailing id to header
 			$queuedEmail->headers  = str_replace("{{CAMPAIGN_MAILING_ID}}", $queuedEmail->mailingid, $queuedEmail->headers);
 			
+			// create new message
+			$message = new \Hubzero\Mail\Message();
+			
+			// add headers
+			foreach (explode("\r\n", $queuedEmail->headers) as $header)
+			{
+				$parts = array_map("trim", explode(':', $header));
+				$message->addHeader($parts[0], $parts[1]);
+			}
+	
+			// build message object and send
+			$message->setSubject($queuedEmail->subject)
+					->setTo($queuedEmail->email)
+					->addPart($queuedEmail->body, 'text/html');
+			
 			//mail message
-			if (mail($queuedEmail->email, $queuedEmail->subject, $queuedEmail->body, $queuedEmail->headers, $queuedEmail->args))
+			if ($message->send())
 			{
 				//add to process email array
 				$processed[] = $queuedEmail->email;

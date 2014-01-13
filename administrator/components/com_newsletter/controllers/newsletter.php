@@ -782,8 +782,23 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			foreach ($newsletterContacts as $contact)
 			{
 				$mailSubject = '[SENDING TEST] - ' . $mailSubject;
-				mail($contact, $mailSubject, $mailBody, $mailHeaders, $mailArgs);
+				
+				// create new message
+				$message = new \Hubzero\Mail\Message();
+				
+				foreach (explode("\r\n", $mailHeaders) as $header)
+				{
+					$parts = array_map("trim", explode(':', $header));
+					$message->addHeader($parts[0], $parts[1]);
+				}
+		
+				// build message object and send
+				$message->setSubject($mailSubject)
+						->setTo($contact)
+						->addPart($mailBody, 'text/html')
+						->send();
 			}
+			
 			return true;
 		}
 		

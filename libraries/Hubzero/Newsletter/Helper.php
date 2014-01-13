@@ -236,29 +236,17 @@ class Hubzero_Newsletter_Helper
 		//get site config
 		$hubConfig = JFactory::getConfig();
 		
-		//setup from and replyto
-		$from = '"'.$hubConfig->getValue('sitename').' Mailing Lists" <hubmail-mailinglists@'.$_SERVER['HTTP_HOST'].'>';
-		$replyto = '"DO NOT REPLY" <do-not-reply@'.$_SERVER['HTTP_HOST'].'>';
+		// create from details
+		$from = array(
+			'name'  => $hubConfig->getValue('sitename') . ' Mailing Lists',
+			'email' => 'hubmail-mailinglists@' . $_SERVER['HTTP_HOST']
+		);
 		
-		//set mail headers
-		$headers  = "MIME-Version: 1.0" . "\r\n";
-		$headers .= "Content-type: text/plain; charset=iso-8859-1" . "\r\n";
-		$headers .= "From: {$from}" . "\r\n";
-		$headers .= "Reply-To: {$replyto}" . "\r\n";
-		
-		//set mail priority
-		$headers .= "X-Priority: 3" . "\r\n";
-		$headers .= "X-MSMail-Priority: Normal" . "\r\n";
-		$headers .= "Importance: Normal\n";
-		
-		//set extra headers
-		$headers .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
-		$headers .= "X-Component: com_newsletter" . "\r\n";
-		$headers .= "X-Component-Object: Mailinglist" . "\r\n";
-		$headers .= "X-Component-ObjectId: " . $mailinglistObject->id . "\r\n";
-		
-		//set extra args
-		$args = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
+		// create replyto details
+		$replyto = array(
+			'name'  => 'DO NOT REPLY',
+			'email' => 'do-not-reply@' . $_SERVER['HTTP_HOST']
+		);
 		
 		//build subject
 		$subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . $hubConfig->getValue('sitename');
@@ -286,8 +274,22 @@ class Hubzero_Newsletter_Helper
 		$body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/remove?e=' . $emailAddress . '&t=' . $token . PHP_EOL . PHP_EOL;
 		$body .= "========================================================================";
 		
-		//send email
-		return mail($emailAddress, $subject, $body, $headers, $args);
+		// create new message
+		$message = new \Hubzero\Mail\Message();
+		
+		// build message object and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setReplyTo($replyto['email'], $replyto['name'])
+				->setTo($emailAddress)
+				->addHeader('X-Mailer', 'PHP/' . phpversion())
+				->addHeader('X-Component', 'como_newsletter')
+				->addHeader('X-Component-Object', 'Mailinglist')
+				->addHeader('X-Component-ObjectId', $mailinglistObject->id)
+				->addPart($body, 'text/plain')
+				->send();
+		
+		return true;
 	}
 	
 	
