@@ -528,9 +528,9 @@ class JRouterSite extends JRouter
 			if ($segments[0] == 'search') {   // @FIXME: search component should probably be configurable
 				$plugin = JPluginHelper::getPlugin( 'system', 'hubzero' );
 				$param = new JParameter( $plugin->params );
-				$search = $param->get('search','ysearch');
+				$search = $param->get('search','search');
 				if (empty($search)) {
-					$search = 'ysearch';
+					$search = 'search';
 				}
 				$segments[0] = $search;
 			}
