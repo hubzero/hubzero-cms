@@ -280,4 +280,47 @@ class Sanitize
 
 		return $text;
 	}
+
+	/**
+	 * Run HTML through a purifier
+	 * 
+	 * @param      string  $text    Text to clean
+	 * @param      array   $options Array of key => value pairs
+	 * @return     string
+	 */
+	public static function html($text, $options=array())
+	{
+		$config = \HTMLPurifier_Config::createDefault();
+		$config->set('AutoFormat.Linkify', true);
+		$config->set('AutoFormat.RemoveEmpty', true);
+		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', true);
+		$config->set('Output.CommentScriptContents', false);
+		$config->set('Output.TidyFormat', true);
+
+		$path = JPATH_ROOT . DS . 'cache' . DS . 'htmlpurifier';
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!\JFolder::create($path, 0777)) 
+			{
+				$path = '';
+			}
+		}
+
+		if ($path)
+		{
+			$config->set('Cache.SerializerPath', $path);
+		}
+
+		if (!empty($options))
+		{
+			foreach ($options as $key => $val)
+			{
+				$config->set($key, $val);
+			}
+		}
+
+		$purifier = new \HTMLPurifier($config);
+		return $purifier->purify($text);
+	}
 }
