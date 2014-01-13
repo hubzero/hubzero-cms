@@ -67,9 +67,9 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if (form.description.value == '') {
+	if (form.getElementById('field-description').value == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
-	} else if (form.cn.value == '') {
+	} else if (form.getElementById('field-cn').value == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);

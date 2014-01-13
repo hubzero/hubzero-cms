@@ -272,7 +272,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			// Load the group
 			$group->read($g['gidNumber']);
 		}
-
+		
 		if (!$this->_authorize($group)) 
 		{
 			return;
@@ -308,11 +308,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		$g['cn'] = strtolower($g['cn']);
 
 		// Ensure the data passed is valid
-		if (!$this->_validCn($g['cn']))
+		if (!$this->_validCn($g['cn'], true))
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_INVALID_ID'));
 		}
-		if (Hubzero_Group::exists($g['cn'], true))
+		if ($isNew && Hubzero_Group::exists($g['cn'], true))
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
 		}
