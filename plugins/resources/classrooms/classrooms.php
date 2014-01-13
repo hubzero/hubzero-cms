@@ -198,10 +198,12 @@ class plgResourcesClassrooms extends JPlugin
 				$this->getValues($model->resource->id, JRequest::getInt('period', 13));
 				return;
 			}
-			\Hubzero\Document\Assets::addComponentStylesheet('com_usage');
-
+			ximport('Hubzero_Document');
+			Hubzero_Document::addComponentStylesheet('com_usage');
+	
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'usage',

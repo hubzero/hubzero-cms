@@ -1,24 +1,17 @@
 jQuery(function() {
-
 	var dataSrc = $('#cluster-data'),
-	       prnt = dataSrc.parent(),
-	       info = $('<div class="info"></div>'),
+	      prnt = dataSrc.parent(),
+	      info = $('<div class="info"></div>'),
 	      nodes = dataSrc.data('seed'),
-	   coreTool = dataSrc.data('tool');
-
-	var threshold = $('<select></select>');
-	for (var idx = 0; idx <= 100; idx += 5) {
-		threshold.append($('<option value=' + idx + '>' + idx + '%</option>'));
-	}
-
-	var render = function(nodes) {
+	   coreTool = dataSrc.data('tool'),
+		  render = function(nodes) {
 		var    margin = { 'top': 0, 'right': 0, 'bottom': 0, 'left': 0 },
 		           ex = $('.cluster'),
 		     cellDims = { 'x': 6, 'y': 6 },
 		          min = Infinity,
 		          max = -Infinity,
-		   clusterMin = {},
-		   clusterIds = {}
+		clusterMin = {},
+		clusterIds = {}
 		         days = [],
 		       dayMap = {},
 		      userMap = {},
@@ -26,29 +19,9 @@ jQuery(function() {
 		lastInCluster = {},
 		        tools = [],
 		       matrix = [],
-			 clusterId = 0,
-		       ratios = {}
-			;
+			 clusterId = 0;
 		ex.remove();
 
-		nodes.forEach(function(node) {
-			if (!ratios[node.cluster]) {
-				ratios[node.cluster] = {
-					'hit': 0,
-					'total': 0
-				};
-			}
-			if (node.tool == coreTool) {
-				++ratios[node.cluster].hit;
-			}
-			++ratios[node.cluster].total;
-		});
-		var th = threshold.val()/100;
-		nodes = nodes.filter(function(node) {
-			return ratios[node.cluster].hit/ratios[node.cluster].total >= th;
-		});
-
-		console.log(nodes);
 		nodes.forEach(function(node) {
 			// track min and max dates so we know what range to generate for columns
 			node.first_use = new Date(node.first_use);
@@ -107,7 +80,6 @@ jQuery(function() {
 			days.push(name);
 		}
 
-		var used = {};
 		nodes.forEach(function(node, i) {
 			// generate row for this user
 			if (userMap[node.uid] === undefined) {
@@ -120,21 +92,9 @@ jQuery(function() {
 			}
 			lastInCluster[clusterIds[node.cluster]] = Math.min(lastInCluster[clusterIds[node.cluster]], userMap[node.uid]);
 
-			var      x = dayMap[node.first_use.toLocaleDateString()], 
-				      y = userMap[node.uid]
-			shouldDraw = !used[x+':'+y]
-				 ;
-			if (shouldDraw) {
-				used[x+':'+y] = [node.tool];
-			}
-			else {
-				used[x+':'+y].push(node.tool);
-				return;
-			}
-
 			matrix[userMap[node.uid]].push({
-				'x': x,
-				'y': y, 
+				'x': dayMap[node.first_use.toLocaleDateString()], // column offset
+				'y': userMap[node.uid], // row offset
 				'toolId': toolMap[node.tool],
 				'toolName': node.tool,
 				'clusterId': clusterIds[node.cluster],
@@ -158,7 +118,7 @@ jQuery(function() {
 			toolLegend.append($('<li></li>').css('backgroundColor', c(idx)).text(tool));
 		});
 		prnt.append(toolLegend);
-
+		
 		// background
 		var svg = d3.select(dataSrc.parent()[0]).append("svg")
 			.attr('class', 'cluster')
@@ -187,14 +147,11 @@ jQuery(function() {
 			// NB: addClass doesn't work on svg elements without including some more libraries
 			$('.cluster-' + d.clusterId).attr('class', 'cell cluster-' + d.clusterId + ' highlight');
 			info
-				.css('left', mouse.x)
-				.css('top', mouse.y)
 				.empty()
 				.append($('<h4></h4>').text(d.clusterName.replace(/[|]/g, ', ').replace(', UNKNOWN', '')))
 				.append($('<p><strong>Date: </strong>' + d.date + '</p>'))
-				.append($('<p><strong>Tool: </strong>' + used[d.x+':'+d.y].join(', ') + '</p>'))
-				.show('fast')
-				;
+				.append($('<p><strong>Tool: </strong>' + d.toolName + '</p>'))
+				.show('fast');
 			isIn = true;
 		},
 		mouseout = function(d) {
@@ -238,11 +195,11 @@ jQuery(function() {
 			});
 		
 		// move info box around to an appropriate location for hover
-		var svgPrnt = $('svg.cluster').parent(), mouse = {'x': 0, 'y': 0};
-		svgPrnt.mousemove(function(evt) {
-			var offset = svgPrnt.offset();
-			mouse.x = evt.pageX - offset.left + 'px';
-			mouse.y = evt.pageY - offset.top + 'px';
+		var $svg = $('svg.cluster'), offset = $svg.offset();
+		$svg.mousemove(function(evt) {
+			var offset = $svg.offset();
+			info.css('left', evt.pageX - offset.left + 10 + 'px');
+			info.css('top', evt.pageY - offset.top + 10 + 'px');
 		});
 		$('.cluster').show('fast');
 	};
@@ -276,18 +233,9 @@ jQuery(function() {
 	getCurrentSemester = function() {
 		return $('#semester-list').children('.selected').text();
 	};
-	var ma = document.cookie.toString().match(/classroomthreshold=(\d+)/);
-	if (ma) {
-		threshold.val(ma[1]);
-	}
-	else {
-		threshold.val(5);
-	}
 	prnt
 		.append(yearList)
-		.append(semesterList)
-		.append($('<p>Show clusters with at least </p>').append(threshold).append(document.createTextNode(' usage of this tool')))
-		;
+		.append(semesterList);
 	for (var year in byYear) {	
 		var yearLi = $('<li>/li>').text(year);
 		if (year == lastYear) {
@@ -332,9 +280,5 @@ jQuery(function() {
 	dataSrc.parent().append(info);
 	listSemesters();
 	var throbber = $('<img src="/components/com_hubgraph/resources/throbber.gif" class="throbber" />').insertAfter(semesterList);
-	threshold.change(function(evt) {
-		document.cookie = 'classroomthreshold=' + threshold.val();
-		draw();
-	});
 	draw();
 });
