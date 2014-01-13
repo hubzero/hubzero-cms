@@ -23,6 +23,7 @@ function UsersBuildRoute(&$query)
 	static $registration;
 	static $profile;
 	static $login;
+	static $logout;
 	static $remind;
 	static $resend;
 	static $reset;
@@ -57,6 +58,11 @@ function UsersBuildRoute(&$query)
 			// Check to see if we have found the login menu item.
 			if (empty($login) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'login')) {
 				$login = $items[$i]->id;
+			}
+
+			// Check to see if we have found the logout menu item.
+			if (empty($logout) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'logout')) {
+				$logout = $items[$i]->id;
 			}
 
 			// Check to see if we have found the registration menu item.
@@ -107,6 +113,14 @@ function UsersBuildRoute(&$query)
 				break;
 
 			case 'endsinglesignon':
+				break;
+
+			case 'logout':
+				if ($query['Itemid'] = $logout) {
+					unset ($query['view']);
+				} else {
+					$query['Itemid'] = $default;
+				}
 				break;
 
 			default:
