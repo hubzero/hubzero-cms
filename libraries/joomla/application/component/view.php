@@ -660,7 +660,8 @@ class JView extends JObject
 
 			if ($override && JDEBUG)
 			{
-				$this->_output = '<!-- [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->' . $this->_output . '<!-- / [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->';
+				// @TODO: Adjust this. It current appends on layouts that aren't view overrides. Need to figure out why.
+				//$this->_output = '<!-- [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->' . $this->_output . '<!-- / [override: ' . JRequest::getCmd('option') . '.' . $override . '] -->';
 			}
 
 			return $this->_output;
