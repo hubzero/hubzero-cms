@@ -84,11 +84,32 @@ class Message extends \Swift_Message
 	 *
 	 * @return object
 	 */
-	public function send($transporter='mail', $options=array())
+	public function send($transporter='', $options=array())
 	{
+		$config = \JFactory::getConfig();
+
+		$transporter = $transporter ? $transporter : $config->getValue('config.mailer');
+
 		switch (strtolower($transporter))
 		{
 			case 'smtp':
+				if (!isset($options['host']))
+				{
+					$options['host'] = $config->getValue('config.smtphost');
+				}
+				if (!isset($options['port']))
+				{
+					$options['port'] = $config->getValue('config.smtpport');
+				}
+				if (!isset($options['username']))
+				{
+					$options['username'] = $config->getValue('config.smtpuser');
+				}
+				if (!isset($options['password']))
+				{
+					$options['password'] = $config->getValue('config.smtppass');
+				}
+
 				if (!empty($options))
 				{
 					$transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port']);

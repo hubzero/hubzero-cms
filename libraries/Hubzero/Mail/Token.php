@@ -30,6 +30,9 @@
 
 namespace Hubzero\Mail;
 
+use RuntimeException;
+use HubmailConfig;
+
 /**
  * Hubzero library class for creating a unique token to 
  * include in emails
@@ -81,7 +84,12 @@ class Token
 	 */
 	public function __construct()
 	{
-		$config = JFactory::getConfig();
+		$config = \JFactory::getConfig();
+
+		if (empty($config))
+		{
+			throw new RuntimeException(__CLASS__ . '::__construct(); failed JFactory::getConfig() call');
+		}
 
 		$file = '/etc/hubmail_gw.conf';
 
@@ -91,49 +99,44 @@ class Token
 		}
 		else
 		{
-			throw new \RuntimeException("/etc/hubmail_gw.conf file does not exist");
+			throw new RuntimeException(sprintf('File "%s" does not exist', $file));
 		}
 	
 		// HubmailConfig is defined here
 		include_once('/etc/hubmail_gw.conf');
 
-		if (empty($config))
-		{
-			throw new \RuntimeException('Class Hubzero_EmailToken: failed JFactory::getConfig() call');
-		}
-
 		if (!class_exists('HubmailConfig'))
 		{
-			throw new \RuntimeException('Class HubmailConfig not loaded');
+			throw new RuntimeException('Class HubmailConfig not loaded');
 		}
 		else
 		{
 			$HubmailConfig1 = new HubmailConfig();
 		}
 
-		//**** Get current token version
+		// Get current token version
 		$this->_currentVersion = $HubmailConfig1->email_token_current_version;
 
 		if (empty($this->_currentVersion))
 		{
-			throw new \RuntimeException('Class HubmailConfig->email_token_current_version not found in config file');
+			throw new RuntimeException('Class HubmailConfig->email_token_current_version not found in config file');
 		}
 
-		//**** Grab the encryption info for that version
+		// Grab the encryption info for that version
 		$prop = 'email_token_encryption_info_v' . $this->_currentVersion;
 		$encryption_info = $HubmailConfig1->$prop;
 
 		if (empty($encryption_info))
 		{
-			throw new \RuntimeException('Class HubmailConfig->email_token_encryption_info_vX not found for version: ' . $this->_currentVersion);
+			throw new RuntimeException('Class HubmailConfig->email_token_encryption_info_vX not found for version: ' . $this->_currentVersion);
 		}
 
-		//**** Encryption info is comma delimited (key, iv) in this configuraiton value
+		// Encryption info is comma delimited (key, iv) in this configuraiton value
 		$keyArray = explode(',', $encryption_info);
 
 		if (count($keyArray) <> 2)
 		{
-			throw new \RuntimeException('Class Hubzero_EmailToken: config.email_token_encryption_info_v' . $tokenVersion . ' cannot be split');
+			throw new RuntimeException(__CLASS__ . '::__construct(); config.email_token_encryption_info_v' . $tokenVersion . ' cannot be split');
 		}
 
 		$this->_key = $keyArray[0];
@@ -166,17 +169,17 @@ class Token
 		// Append hash to end of binary string, two hex digits stuffed into a single unsigned byte
 		$binaryString .= pack("n", hexdec($hashsub));
 
-		//**** Add PKCS7 style padding before encryption
+		// Add PKCS7 style padding before encryption
 		$pad = $this->_blocksize - (strlen($binaryString) % $this->_blocksize);
 		$binaryString .= str_repeat(chr($pad), $pad);
 
-		//**** Do the encryption
+		// Do the encryption
 		$cipher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'cbc', '');
 		mcrypt_generic_init($cipher, $this->_key, $this->_iv);
 		$encrypted = mcrypt_generic($cipher, $binaryString);
 		mcrypt_generic_deinit($cipher);
 
-		//**** Prepend an unencrypted version byte and action byte (in base16) 
+		// Prepend an unencrypted version byte and action byte (in base16) 
 		$rv = bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted);
 
 		return $rv;
