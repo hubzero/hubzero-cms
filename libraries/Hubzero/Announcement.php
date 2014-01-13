@@ -367,32 +367,40 @@ class Hubzero_Announcement extends JTable
 				'folder'  => 'groups',
 				'element' => 'announcements',
 				'name'    => 'email',
-				'layout'  => 'announcement'
+				'layout'  => 'announcement_plain'
 			)
 		);
 		$eview->announcement = $announcement;
-		$eview->boundary     = md5(date('U'));
-		$message             = $eview->loadTemplate();
-		$message             = str_replace("\n", "\r\n", $message);
+
+		$plain = $eview->loadTemplate();
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		// HTML
+		$eview->setLayout('announcement_html');
+
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
 
 		$jconfig = JFactory::getConfig();
 
-		// define headers
-		$headers  = 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-Type: multipart/alternative; boundary=' . $eview->boundary . "\r\n";
-		$headers .= 'From: ' . $jconfig->getValue('config.sitename') . ' Groups' .' <'. $jconfig->getValue('config.mailfrom') . ">\n";
-		$headers .= "X-Priority: 3\n";
-		$headers .= "X-MSMail-Priority: High\n";
-		$headers .= 'X-Mailer: '. $jconfig->getValue('config.sitename') ."\n";
-
 		// define subject
 		$subject = $group->get('description') . ' Group Announcement';
+
+		$message = new \Hubzero\Mail\Message();
+		$message->setSubject($subject)
+		        ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Groups');
+
+		$message->addPart($plain, 'text/plain');
+
+		$message->addPart($html, 'text/html');
 
 		// send to all group members
 		foreach ($group->get('members') as $member)
 		{
 			$profile = Hubzero_User_Profile::getInstance($member);
-			mail($profile->get('email'), $subject, $message, $headers);
+			//mail($profile->get('email'), $subject, $message, $headers);
+			$message->setTo(array($profile->get('email')));
+			$message->send();
 		}
 
 		return true; 
