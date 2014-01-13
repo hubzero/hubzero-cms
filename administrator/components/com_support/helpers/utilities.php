@@ -39,62 +39,57 @@ class SupportUtilities
 	/**
 	 * Send an email
 	 * 
-	 * @param      string $email             Address to send to
-	 * @param      string $subject           Message subject
-	 * @param      string $message           Message to send
-	 * @param      array  $from              Who the message is from
-	 * @param      array  $replyto           Reply to information
-	 * @param      array  $additionalHeaders More headers to apply
-	 * @return     integer 1 = success, 0 = failure
+	 * @param      string  $email             Address to send to
+	 * @param      string  $subject           Message subject
+	 * @param      mixed   $contents          Message to send
+	 * @param      array   $from              Who the message is from
+	 * @param      array   $replyto           Reply to information
+	 * @param      array   $additionalHeaders More headers to apply
+	 * @return     boolean
 	 */
-	public static function sendEmail($email, $subject, $message, $from, $replyto = '', $additionalHeaders = null)
+	public static function sendEmail($email, $subject, $contents, $from, $replyto = '', $additionalHeaders = null)
 	{
 		if ($from) 
 		{
-			$args = "-f '" . $from['email'] . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			if (array_key_exists('multipart', $from))
-			{
-				$headers .= "Content-Type: multipart/alternative;boundary=" . chr(34) . $from['multipart'] . chr(34) . "\r\n";
-			}
-			else
-			{
-				$headers .= "Content-type: text/plain; charset=utf-8\n";
-			}
-			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
+			$message = new \Hubzero\Mail\Message();
+			$message->setSubject($subject)
+			        ->addFrom($from['email'], $from['name'])
+			        ->addTo($email);
 
 			if ($replyto)
 			{
-				$headers .= 'Reply-To: ' . $from['name'] .' <'. $replyto . ">\n";
+				$message->setSubject($replayto, $from['name']);
 			}
 			else
 			{
-				$headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
+				$message->addReplyTo($from['email'], $from['name']);
 			}
 
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $from['name'] ."\n";
-
-			if (!is_null($additionalHeaders))
+			if (is_array($additionalHeaders))
 			{
+				// The xheaders array has name and value pairs
 				foreach ($additionalHeaders as $header)
 				{
-					$headers .= $header['name'] . ': ' . $header['value'] . "\n";
+					$message->addHeader($header['name'], $header['value']);
 				}
 			}
 
-			if (is_array($message))
+			if (is_array($contents))
 			{
-				$message = isset($message['multipart']) ? $message['multipart'] : current($message);
+				$message->addPart($contents['plaintext'], 'text/plain')
+				        ->addPart($contents['multipart'], 'text/html');
+			}
+			else
+			{
+				$message->setBody($contents);
 			}
 
-			if (mail($email, $subject, $message, $headers, $args)) 
+			if ($message->send()) 
 			{
-				return(1);
+				return true;
 			}
 		}
-		return(0);
+		return false;
 	}
 
 	/**

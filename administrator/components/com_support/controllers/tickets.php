@@ -642,7 +642,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					$from['name']  = $jconfig->getValue('config.sitename') . ' ' . ucfirst($this->_name);
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 
-					$message = array();
+					/*$message = array();
 					$message['plaintext']  = '----------------------------'."\r\n";
 					$message['plaintext'] .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
 					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
@@ -686,7 +686,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					//   and it would return only the script name and querystring (index.php?option=...)
 					//   We need nice URLs that can be clicked.
 					$sef = $this->_name . '/ticket/' . $row->id;
-					$message['plaintext'] .= rtrim($base, DS) . DS . ltrim($sef, DS) . "\r\n";
+					$message['plaintext'] .= rtrim($base, DS) . DS . ltrim($sef, DS) . "\r\n";*/
 
 					// Html email
 					$from['multipart'] = md5(date('U'));
@@ -694,7 +694,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					//$rowc->comment   = $attach->parse($rowc->comment);
 					$rowc->changelog = $log;
 
-					$eview = new JView(array(
+					/*$eview = new JView(array(
 						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
 						'name'      => 'emails',
 						'layout'    => 'comment'
@@ -706,6 +706,31 @@ class SupportControllerTickets extends Hubzero_Controller
 					$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
 					$eview->boundary   = $from['multipart'];
 					$eview->attach     = $attach;
+
+					$message['multipart'] = $eview->loadTemplate();
+					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);*/
+					// Plain text email
+					$eview = new JView(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
+						'name'      => 'emails', 
+						'layout'    => 'comment_plain'
+					));
+					$eview->option     = $this->_option;
+					$eview->controller = $this->_controller;
+					$eview->comment    = $rowc;
+					$eview->ticket     = $row;
+					$eview->delimiter  = '';
+					if ($allowEmailResponses)
+					{
+						$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+					}
+					$eview->attach     = $attach;
+
+					$message['plaintext'] = $eview->loadTemplate();
+					$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+					// HTML email
+					$eview->setLayout('comment_html');
 
 					$message['multipart'] = $eview->loadTemplate();
 					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
@@ -755,7 +780,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// The reply-to address contains the token 
 									$token = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
-									$from['replytoemail'] = 'htc-' . $token;
+									$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 								}
 
 								if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, array($zuser->get('id')), $this->_option)))
@@ -777,7 +802,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// Build a temporary token for this user, userid will not be valid, but the token will
 									$token = $encryptor->buildEmailToken(1, 1, 1, $id);
-									$emails[] = array($row->email, 'htc-' . $token);
+									$emails[] = array($row->email, 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@'));
 								}
 								else
 								{
@@ -800,7 +825,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							{
 								// The reply-to address contains the token 
 								$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);
-								$from['replytoemail'] = 'htc-' . $token;									
+								$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 							}
 
 							if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option)))
@@ -849,7 +874,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// The reply-to address contains the token 
 									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-									$from['replytoemail'] = 'htc-' . $token;
+									$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 								}
 
 								// Is this the same account as the submitter? If so, ignore
@@ -888,7 +913,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// The reply-to address contains the token
 									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-									$emails[] = array($acc, 'htc-' . $token);
+									$emails[] = array($acc, 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@'));
 								}
 								else
 								{

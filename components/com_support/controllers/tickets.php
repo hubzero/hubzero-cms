@@ -1197,14 +1197,15 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Get some email settings
 		$jconfig = JFactory::getConfig();
-		//$admin   = $jconfig->getValue('config.mailfrom');
-		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_SUPPORT') . ', ' . JText::sprintf('COM_SUPPORT_TICKET_NUMBER', $row->id);
-		
-		//$from    = $jconfig->getValue('config.sitename') . ' web-robot';
-		//$hub     = array('email' => $reporter['email'], 'name' => $from);
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+
+		$message = new \Hubzero\Mail\Message();
+
+		$message->setSubject($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_SUPPORT') . ', ' . JText::sprintf('COM_SUPPORT_TICKET_NUMBER', $row->id));
+
+		$message->addFrom(
+			$jconfig->getValue('config.mailfrom'), 
+			$jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name))
+		);
 
 		// Parse comments for attachments
 		$attach = new SupportAttachment($this->database);
@@ -1213,55 +1214,31 @@ class SupportControllerTickets extends Hubzero_Controller
 		$attach->output  = 'email';
 
 		// Generate e-mail message
-		$message = array();
-		$message['plaintext']  = (!$this->juser->get('guest')) ? JText::_('COM_SUPPORT_VERIFIED_USER')."\r\n\r\n" : '';
-		$message['plaintext'] .= ($reporter['login']) ? JText::_('COM_SUPPORT_USERNAME').': '. $reporter['login'] ."\r\n" : '';
-		$message['plaintext'] .= JText::_('COM_SUPPORT_NAME').': '. $reporter['name'] ."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_AFFILIATION').': '. $reporter['org'] ."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_EMAIL').': '. $reporter['email'] ."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_IP_HOSTNAME').': '. $ip .' ('.$hostname.')' ."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_REGION').': '.$source_city.', '.$source_region.', '.$source_country ."\r\n\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_OS').': '. $problem['os'] .' '. $problem['osver'] ."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_BROWSER').': '. $problem['browser'] .' '. $problem['browserver'] ."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_UAS').': '. JRequest::getVar('HTTP_USER_AGENT','','server') ."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_COOKIES').': ';
-		$message['plaintext'] .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_SUPPORT_COOKIES_ENABLED')."\r\n" : JText::_('COM_SUPPORT_COOKIES_DISABLED')."\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_REFERRER').': '. $problem['referer'] ."\r\n";
-		$message['plaintext'] .= ($problem['tool']) ? JText::_('COM_SUPPORT_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n\r\n";
-
-		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
-		if (substr($sef,0,1) == '/') 
-		{
-			$sef = substr($sef, 1, strlen($sef));
-		}
-		$message['plaintext'] .= $juri->base() . $sef . "\r\n";
-
-
-		// Html email
 		$from['multipart'] = md5(date('U'));
 
+		// Plain text email
 		$eview = new JView(array(
 			'name'   => 'emails', 
-			'layout' => 'ticket'
+			'layout' => 'ticket_plain'
 		));
 		$eview->option     = $this->_option;
 		$eview->controller = $this->_controller;
 		$eview->ticket     = $row;
 		$eview->delimiter  = '';
-		/*if ($allowEmailResponses)
-		{
-			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
-		}*/
-		$eview->boundary   = $from['multipart'];
 		$eview->attach     = $attach;
 
-		$message['multipart'] = $eview->loadTemplate();
-		$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+		$plain = $eview->loadTemplate();
+		$plain = str_replace("\n", "\r\n", $plain);
 
-		// Load the support config
-		//$params = JComponentHelper::getParams('com_support');
+		$message->addPart($plain, 'text/plain');
+
+		// HTML email
+		$eview->setLayout('ticket_html');
+
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
+
+		$message->addPart($html, 'text/html');
 
 		// Get any set emails that should be notified of ticket submission
 		$defs = str_replace("\r", '', $this->config->get('emails', '{config.mailfrom}'));
@@ -1269,9 +1246,6 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		if ($defs)
 		{
-			// Import our mailer
-			ximport('Hubzero_Toolbox');
-
 			// Loop through the addresses
 			foreach ($defs As $def)
 			{
@@ -1286,8 +1260,8 @@ class SupportControllerTickets extends Hubzero_Controller
 				if ($this->_isValidEmail($def))
 				{
 					// Send e-mail
-					SupportUtilities::sendEmail($def, $subject, $message, $from);
-					//Hubzero_Toolbox::send_email($def, $subject, $message);
+					$message->setTo(array($def));
+					$message->send();
 				}
 			}
 		}
@@ -1296,13 +1270,6 @@ class SupportControllerTickets extends Hubzero_Controller
 		// otherwise, we're only recording a changelog
 		if ($row->owner) 
 		{
-			$jconfig = JFactory::getConfig();
-
-			// Parse comments for attachments
-			/*$attach = new SupportAttachment($this->database);
-			$attach->webpath = $live_site . $this->config->get('webpath') . DS . $id;
-			$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $id;
-			$attach->output  = 'email';*/
 			$live_site = rtrim(JURI::base(), '/');
 
 			// Build e-mail components
@@ -1372,48 +1339,22 @@ class SupportControllerTickets extends Hubzero_Controller
 				'after'  => SupportHtml::getStatus($row->open, $row->status)
 			);
 
-			$message = array();
-			$message['plaintext']  = '----------------------------'."\r\n";
-			$message['plaintext'] .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
-			$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
-			$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
-			$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
-			$message['plaintext'] .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
-			$message['plaintext'] .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
-			$message['plaintext'] .= '----------------------------'."\r\n\r\n";
-			$message['plaintext'] .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
-			$message['plaintext'] .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
-			$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
-			//$message .= $attach->parse($comment)."\r\n\r\n";
-
-			// Prepare message to allow email responses to be parsed and added to the ticket
 			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
 			{
 				$allowEmailResponses = true;
-
-				$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
-
-				$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
-				$prependtext .= "You can reply to this message, just include your reply text above this area\r\n" ;
-				$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
-				$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
-
-				$message['plaintext'] = $prependtext . "\r\n\r\n" . $message['plaintext'];
 			}
 
-			$juri = JURI::getInstance();
-			$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
-
-			$message['plaintext'] .= $juri->base() . ltrim($sef, DS) . "\r\n";
+			$message = array();
 
 			//-------
 			$from['multipart'] = md5(date('U'));
 
 			$rowc->changelog = $log;
 
+			// Plain text email
 			$eview = new JView(array(
 				'name'   => 'emails', 
-				'layout' => 'comment'
+				'layout' => 'comment_plain'
 			));
 			$eview->option     = $this->_option;
 			$eview->controller = $this->_controller;
@@ -1424,8 +1365,13 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
 			}
-			$eview->boundary   = $from['multipart'];
 			$eview->attach     = $attach;
+
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+			// HTML email
+			$eview->setLayout('comment_html');
 
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
@@ -1441,7 +1387,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
 			{
-				$encryptor = new Hubzero_EmailToken();
+				$encryptor = new \Hubzero\Mail\Token();
 				// The reply-to address contains the token 
 				$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
 				$from['replytoemail'] = 'htc-' . $token;
@@ -1712,7 +1658,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Get tag/group associations
 		//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-		$tt = new TagsTableGroup($this->database);
+		$tt = new TagsGroup($this->database);
 		$tgas = $tt->getRecords();
 
 		if (!$tgas) 
@@ -2084,7 +2030,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		if ($allowEmailResponses and file_exists("/etc/hubmail_gw.conf"))
 		{
-			$encryptor = new Hubzero_EmailToken();
+			$encryptor = new \Hubzero\Mail\Token(); //Hubzero_EmailToken();
 		}
 
 		// Incoming
@@ -2283,45 +2229,6 @@ class SupportControllerTickets extends Hubzero_Controller
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 
 					$message = array();
-					$message['plaintext']  = '----------------------------'."\r\n";
-					$message['plaintext'] .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
-					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
-					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
-					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name . ($row->login ? ' ('.$row->login.')' : '') . "\r\n";
-					$message['plaintext'] .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
-					$message['plaintext'] .= '----------------------------'."\r\n\r\n";
-					$message['plaintext'] .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
-					$message['plaintext'] .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
-					if ($row->owner != $old->owner) 
-					{
-						if ($old->owner == '') 
-						{
-							$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
-						} 
-						else 
-						{
-							$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'."\r\n\r\n";
-						}
-					}
-					$message['plaintext'] .= $attach->parse($comment)."\r\n\r\n";
-
-					// Prepare message to allow email responses to be parsed and added to the ticket
-					if ($allowEmailResponses)
-					{
-						$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
-						
-						$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
-						$prependtext .= "You can reply to this message, just include your reply text above this area\r\n" ;
-						$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
-						$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
-
-						$message['plaintext'] = $prependtext . "\r\n\r\n" . $message['plaintext'];
-					}
-
-					$juri = JURI::getInstance();
-					$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
-
-					$message['plaintext'] .= $juri->base() . ltrim($sef, DS) . "\r\n";
 
 					// Html email
 					$from['multipart'] = md5(date('U'));
@@ -2329,9 +2236,10 @@ class SupportControllerTickets extends Hubzero_Controller
 					//$rowc->comment   = $attach->parse($rowc->comment);
 					$rowc->changelog = $log;
 
+					// Plain text email
 					$eview = new JView(array(
 						'name'   => 'emails', 
-						'layout' => 'comment'
+						'layout' => 'comment_plain'
 					));
 					$eview->option     = $this->_option;
 					$eview->controller = $this->_controller;
@@ -2342,8 +2250,13 @@ class SupportControllerTickets extends Hubzero_Controller
 					{
 						$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
 					}
-					$eview->boundary   = $from['multipart'];
 					$eview->attach     = $attach;
+
+					$message['plaintext'] = $eview->loadTemplate();
+					$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+					// HTML email
+					$eview->setLayout('comment_html');
 
 					$message['multipart'] = $eview->loadTemplate();
 					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
@@ -2407,9 +2320,9 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// The reply-to address contains the token 
 									$token = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
-									$from['replytoemail'] = 'htc-' . $token;
+									$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 								}
-								
+
 								if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, array($zuser->get('id')), $this->_option))) 
 								{
 									$this->setError(JText::_('Failed to message ticket submitter.'));
@@ -2429,7 +2342,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// Build a temporary token for this user, userid will not be valid, but the token will
 									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-									$emails[] = array($row->email, 'htc-' . $token);
+									$emails[] = array($row->email, 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@'));
 								}
 								else
 								{
@@ -2464,7 +2377,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							{
 								// The reply-to address contains the token 
 								$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);
-								$from['replytoemail'] = 'htc-' . $token;
+								$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 							}
 
 							if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
@@ -2482,7 +2395,6 @@ class SupportControllerTickets extends Hubzero_Controller
 						}
 					}
 
-	
 					// Add any CCs to the e-mail list
 					$cc = JRequest::getVar('cc', '');
 					if (trim($cc)) 
@@ -2511,7 +2423,7 @@ class SupportControllerTickets extends Hubzero_Controller
 									{
 										// The reply-to address contains the token 
 										$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);
-										$from['replytoemail'] = 'htc-' . $token;
+										$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 									}
 
 									// Get the user's email address
@@ -2535,12 +2447,11 @@ class SupportControllerTickets extends Hubzero_Controller
 							} 
 							else if (SupportUtilities::checkValidEmail($acc)) 
 							{
-								
 								if ($allowEmailResponses)
 								{
 									// The reply-to address contains the token
 									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-									$emails[] = array($acc, 'htc-' . $token);
+									$emails[] = array($acc, 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@'));
 								}
 								else
 								{
@@ -2585,7 +2496,6 @@ class SupportControllerTickets extends Hubzero_Controller
 					}
 
 					// Message people watching this ticket, but ONLY if the ticket was NOT marked private
-	
 					if ($rowc->access != 1)
 					{
 						$watch = array_diff($watcher_ids, $watcher_found);
@@ -2595,14 +2505,14 @@ class SupportControllerTickets extends Hubzero_Controller
 						{
 							// when allowing email responses to tickets, we have to loop through recipients individually, each
 							// reply-to address contains encrypted information that is user specific
-			                	        foreach ($watch as $uid)
-        				                {
+							foreach ($watch as $uid)
+							{
 								$user = Hubzero_User_Profile::getInstance($uid);
 								$uidNumber = $user->get('uidNumber');
-								
+
 								// The reply-to address contains the reply token
 								$token = $encryptor->buildEmailToken(1, 1, $uidNumber , $id);
-								$from['replytoemail'] = 'htc-' . $token;
+								$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 
 								// send email
 								if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($uid), $this->_option))) 
@@ -2610,7 +2520,6 @@ class SupportControllerTickets extends Hubzero_Controller
 									$this->setError(JText::_('Failed to message watchers.'));
 								}
 							}
-	
 						}
 						else
 						{
@@ -2620,9 +2529,6 @@ class SupportControllerTickets extends Hubzero_Controller
 							}
 						}
 					}
-
-
-
 				}
 			}
 		}
@@ -2640,7 +2546,6 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id)
 		);
-
 	}
 
 	/**

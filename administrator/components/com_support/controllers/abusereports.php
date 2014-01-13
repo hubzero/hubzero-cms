@@ -353,44 +353,47 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$from = array();
 			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('SUPPORT');
 			$from['email'] = $jconfig->getValue('config.mailfrom');
+			$from['multipart'] = md5(date('U'));
 
 			// Email subject
 			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
 
-			$from['multipart'] = md5(date('U'));
-			
+			// Plain text
 			$eview = new JView(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails', 
-				'layout'    => 'abuse'
+				'layout'    => 'abuse_plain'
 			));
 			$eview->option     = $this->_option;
 			$eview->controller = $this->_controller;
 			$eview->reported   = $reported;
 			$eview->report     = $report;
-			$eview->boundary   = $from['multipart'];
-			
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
-			
-			
-			// Build the email message
-			/*if ($note)
-			{
-				$message .= "\r\n" . '---------------------------' . "\r\n";
-				$message .= $note;
-				$message .= "\r\n" . '---------------------------' . "\r\n";
-			}
-			$message .= "\r\n";
-			$message .= JText::_('YOUR_POSTING') . ': ' . "\r\n";
-			$message .= $reported->text . "\r\n";
-			$message .= '---------------------------' . "\r\n";
-			$message .= JText::_('PLEASE_CONTACT_SUPPORT');*/
+
+			$plain = $eview->loadTemplate();
+			$plain = str_replace("\n", "\r\n", $plain);
+
+			// HTML
+			$eview->setLayout('abuse_html');
+
+			$html = $eview->loadTemplate();
+			$html = str_replace("\n", "\r\n", $html);
+
+			// Build message
+			$message = new \Hubzero\Mail\Message();
+			$message->setSubject($subject)
+			        ->addFrom($from['email'], $from['name'])
+			        ->addTo($juser->get('email'), $juser->get('name'))
+			        ->addHeader('X-Component', 'com_support')
+			        ->addHeader('X-Component-Object', 'abuse_item_removal');
+
+			$message->addPart($plain, 'text/plain');
+
+			$message->addPart($html, 'text/html');
 
 			// Send the email
 			if (SupportUtilities::checkValidEmail($juser->get('email')))
 			{
-				SupportUtilities::sendEmail($juser->get('email'), $subject, $message, $from);							
+				$message->send();
 			}
 		}
 

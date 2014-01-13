@@ -167,31 +167,6 @@ class plgCronSupport extends JPlugin
 		$from['email']     = $jconfig->getValue('config.mailfrom');
 		$from['multipart'] = md5(date('U'));
 
-		//set mail headers
-		$headers  = "MIME-Version: 1.0 \n";
-		if (array_key_exists('multipart', $from))
-		{
-			$headers .= "Content-Type: multipart/alternative;boundary=" . chr(34) . $from['multipart'] . chr(34) . "\r\n";
-		}
-		else
-		{
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-		}
-		$headers .= "X-Priority: 3\n";
-		$headers .= "X-MSMail-Priority: Normal\n";
-		$headers .= "Importance: Normal\n";
-		$headers .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
-		$headers .= "X-Component: com_support\r\n";
-		$headers .= "X-Component-Object: support_ticket_reminder\r\n";
-		$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
-		$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
-
-		//set mail additional args (mail return path - used for bounces)
-		if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
-		{
-			$args = '-f hubmail-bounces@' . $host;
-		}
-
 		$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_OPEN_TICKETS');
 
 		$mailed = array();
@@ -210,38 +185,45 @@ class plgCronSupport extends JPlugin
 				continue;
 			}
 
+			// Plain text
 			$eview = new JView(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails', 
-				'layout'    => 'tickets'
+				'layout'    => 'tickets_plain'
 			));
 			$eview->option     = 'com_support';
 			$eview->controller = 'tickets';
 			$eview->tickets    = $tickets;
 			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
-			$eview->boundary   = $from['multipart'];
 			$eview->tickets    = $usertickets;
 
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
+			$plain = $eview->loadTemplate();
+			$plain = str_replace("\n", "\r\n", $plain);
 
-			// email
-			if (strpos($juser->get('name'), ','))
-			{
-				$fullEmailAddress = "\"" . $juser->get('name') . "\" <" . $juser->get('email') . ">";
-			}
-			else
-			{
-				$fullEmailAddress = $juser->get('name') . " <" . $juser->get('email') . ">";
-			}
+			// HTML
+			$eview->setLayout('tickets_html');
 
-			//set mail
-			if (!mail($fullEmailAddress, $jconfig->getValue('config.sitename') . ' ' . $subject, $message, $headers, $args))
+			$html = $eview->loadTemplate();
+			$html = str_replace("\n", "\r\n", $html);
+
+			// Build message
+			$message = new \Hubzero\Mail\Message();
+			$message->setSubject($subject)
+			        ->addFrom($from['email'], $from['name'])
+			        ->addTo($juser->get('email'), $juser->get('name'))
+			        ->addHeader('X-Component', 'com_support')
+			        ->addHeader('X-Component-Object', 'support_ticket_reminder');
+
+			$message->addPart($plain, 'text/plain');
+
+			$message->addPart($html, 'text/html');
+
+			// Send mail
+			if (!$message->send())
 			{
-				$this->setError('Failed to mail %s', $fullEmailAddress);
+				$this->setError('Failed to mail %s', $juser->get('email'));
 			}
 			$mailed[] = $juser->get('username');
-			//echo $message;
 		}
 
 		return true;
