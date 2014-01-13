@@ -31,13 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-ximport('Hubzero_Environment');
-
 /**
  * Answers controller class for questions
  */
-class AnswersControllerQuestions extends Hubzero_Controller
+class AnswersControllerQuestions extends \Hubzero\Component\Controller
 {
 	/**
 	 * Execute a task
@@ -86,7 +83,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		if (is_object($question) && $question->get('subject')) 
 		{
 			$pathway->addItem(
-				Hubzero_View_Helper_Html::shortenText(stripslashes($question->get('subject')), 50, 0),
+				\Hubzero\Utility\String::truncate(stripslashes($question->get('subject')), 50),
 				$question->link()
 			);
 		}
@@ -107,7 +104,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 		if (is_object($question) && $question->get('subject')) 
 		{
-			$this->view->title .= ': ' . Hubzero_View_Helper_Html::shortenText(stripslashes($question->get('subject')), 50, 0);
+			$this->view->title .= ': ' . \Hubzero\Utility\String::truncate(stripslashes($question->get('subject')), 50);
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
@@ -134,7 +131,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 		);
 	}
 
@@ -175,7 +172,6 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			}
 
 			// Perform some text cleaning, etc.
-			//$row->set('comment', Hubzero_View_Helper_Html::purifyText($row->get('comment')));
 			$row->set('comment', nl2br($row->get('comment')));
 			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
 			$row->set('added', JFactory::getDate()->toSql());
@@ -883,6 +879,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 			$message = array();
 
+			// Plain text message
 			$eview = new JView(array(
 				'name'   => 'emails',
 				'layout' => 'question_plaintext'
@@ -898,19 +895,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$message['plaintext'] = $eview->loadTemplate();
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
-			// Build the message	
-			$eview = new JView(array(
-				'name'   => 'emails',
-				'layout' => 'question'
-			));
-			$eview->option    = $this->_option;
-			$eview->jconfig   = $jconfig;
-			$eview->sitename  = $jconfig->getValue('config.sitename');
-			$eview->juser     = $this->juser;
-			$eview->question  = $row;
-			$eview->id        = $row->get('id', 0);
-			$eview->boundary  = $from['multipart'];
-			$eview->plaintext = $message['plaintext'];
+			// HTML message
+			$eview->setLayout('question_html');
 
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
@@ -1022,6 +1008,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 				$message = array();
 
+				// Plain text message
 				$eview = new JView(array(
 					'name'   => 'emails',
 					'layout' => 'removed_plaintext'
@@ -1037,19 +1024,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				$message['plaintext'] = $eview->loadTemplate();
 				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
-				// Build the message	
-				$eview = new JView(array(
-					'name'   => 'emails',
-					'layout' => 'removed'
-				));
-				$eview->option    = $this->_option;
-				$eview->jconfig  = $jconfig;
-				$eview->sitename  = $jconfig->getValue('config.sitename');
-				$eview->juser     = $this->juser;
-				$eview->question  = new AnswersModelQuestion($question);
-				$eview->id        = $id;
-				$eview->boundary  = $from['multipart'];
-				$eview->plaintext = $message['plaintext'];
+				// HTML message
+				$eview->setLayout('removed_html');
 
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
@@ -1151,7 +1127,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		$message = array();
 
-		// Build the message	
+		// Plain text message
 		$eview = new JView(array(
 			'name'   => 'emails',
 			'layout' => 'response_plaintext'
@@ -1168,20 +1144,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$message['plaintext'] = $eview->loadTemplate();
 		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
-		// Build the message
-		$eview = new JView(array(
-			'name'   => 'emails',
-			'layout' => 'response'
-		));
-		$eview->option    = $this->_option;
-		$eview->jconfig  = $jconfig;
-		$eview->sitename  = $jconfig->getValue('config.sitename');
-		$eview->juser     = $this->juser;
-		$eview->question  = $question;
-		$eview->row       = $row;
-		$eview->id        = $response['qid'];
-		$eview->boundary  = $from['multipart'];
-		$eview->plaintext = $message['plaintext'];
+		// HTML message
+		$eview->setLayout('response_html');
 
 		$message['multipart'] = $eview->loadTemplate();
 		$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);

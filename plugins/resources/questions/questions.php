@@ -455,20 +455,8 @@ class plgResourcesQuestions extends JPlugin
 			$message['plaintext'] = $eview->loadTemplate();
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
-			// Build the message	
-			$eview = new JView(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
-				'name'   => 'emails',
-				'layout' => 'question'
-			));
-			$eview->option    = 'com_answers';
-			$eview->jconfig   = $jconfig;
-			$eview->sitename  = $jconfig->getValue('config.sitename');
-			$eview->juser     = $juser;
-			$eview->question  = $row;
-			$eview->id        = $row->get('id', 0);
-			$eview->boundary  = $from['multipart'];
-			$eview->plaintext = $message['plaintext'];
+			// HTML message
+			$eview->setLayout('question_html');
 
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
