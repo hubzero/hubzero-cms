@@ -39,33 +39,29 @@ class Hubzero_Toolbox
 	/**
 	 * Send an email
 	 * 
-	 * @param      string $email   Address to email
-	 * @param      string $subject Message subject
-	 * @param      string $message Message contents
-	 * @return     integer 1 on success, 0 on failure
+	 * @param      string $email    Address to email
+	 * @param      string $subject  Message subject
+	 * @param      string $contents Message contents
+	 * @return     boolean
 	 */
-	public static function send_email($email, $subject, $message)
+	public static function send_email($email, $subject, $contents)
 	{
 		$jconfig = JFactory::getConfig();
 
-		$contact_email = $jconfig->getValue('config.mailfrom');
-		$contact_name  = $jconfig->getValue('config.sitename') . ' Administrator';
+		$message = new \Hubzero\Mail\Message();
+		$message->setSubject($subject)
+		        ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+		        ->addReplyTo($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+		        ->addTo($email);
 
-		$args = "-f '" . $contact_email . "'";
-		$headers = "MIME-Version: 1.0\n";
-		$headers .= "Content-type: text/plain; charset=utf-8\n";
-		$headers .= "From: " . $contact_name . " <" . $contact_email . ">\n";
-		$headers .= "Reply-To: " . $contact_name . " <" . $contact_email . ">\n";
-		$headers .= "X-Priority: 3\n";
-		$headers .= "X-MSMail-Priority: High\n";
-		$headers .= "X-Mailer: " . $jconfig->getValue('config.sitename') . "\n";
+		$message->setBody($contents);
 
-		if (mail($email, $subject, $message, $headers, $args)) 
+		if ($message->send()) 
 		{
-			return(1);
+			return true;
 		}
 
-		return(0);
+		return false;
 	}
 
 	/**
