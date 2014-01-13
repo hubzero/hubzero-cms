@@ -313,7 +313,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		$g['cn'] = strtolower($g['cn']);
 
 		// Ensure the data passed is valid
-		if (!$this->_validCn($g['cn']))
+		if (!$this->_validCn($g['cn'], true))
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_INVALID_ID'));
 		}
