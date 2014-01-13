@@ -197,11 +197,15 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			$id = '';
 		}
+		
+		// determine task
+		$task = ($id == '') ? 'create' : 'edit';
 
 		$this->view->group = new Hubzero_Group();
 		$this->view->group->read($id);
-
-		if (!$this->_authorize($this->view->group)) 
+		
+		// make sure we are organized
+		if (!$this->_authorize($task, $this->view->group)) 
 		{
 			return;
 		}
@@ -273,7 +277,8 @@ class GroupsControllerManage extends Hubzero_Controller
 			$group->read($g['gidNumber']);
 		}
 		
-		if (!$this->_authorize($group)) 
+		$task = ($this->_task == 'edit') ? 'edit' : 'create';
+		if (!$this->_authorize($task, $group))
 		{
 			return;
 		}
@@ -500,7 +505,7 @@ class GroupsControllerManage extends Hubzero_Controller
 				{
 					continue;
 				}
-				if (!$this->_authorize($group)) 
+				if (!$this->_authorize('delete', $group)) 
 				{
 					continue;
 				}
@@ -792,20 +797,26 @@ class GroupsControllerManage extends Hubzero_Controller
 	 * @param     object $group Hubzero_Group
 	 * @return    boolean True if authorized, false if not.
 	 */
-	protected function _authorize($group=null)
+	protected function _authorize($task, $group=null)
 	{
-		// Check if the group is a system group and the user has super admin access
+		// get users actions
 		$canDo = GroupsHelper::getActions('group');
-		if (!$canDo->get('core.admin') && $group->get('type') == 0) 
+		
+		// build task name
+		$taskName = 'core.' . $task;
+		
+		// can user perform task
+		if (!$canDo->get($taskName) || (!$canDo->get('core.admin') && $group->get('type') == 0))
 		{
 			// No access - redirect to main listing
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_GROUPS_ALERTNOTAUTH'),
+				JText::_('Not Authorized'),
 				'error'
 			);
 			return false;
 		}
+		
 		return true;
 	}
 }
