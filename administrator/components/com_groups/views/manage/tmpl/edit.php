@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
-	console.log(form.getElementById('field-description').value);
+	
 	// form field validation
 	if (form.getElementById('field-description').value == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
