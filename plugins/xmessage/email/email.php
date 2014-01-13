@@ -85,19 +85,16 @@ class plgXMessageEmail extends JPlugin
 			return false;
 		}
 
-		//get users email
-		$email = $user->get('email');
-
 		//if we dont have an email stop
-		if (!$email) 
+		if (!$user->get('email')) 
 		{
 			return false;
 		}
 
-		//get site config
+		// get site config
 		$jconfig = JFactory::getConfig();
 
-		//if we dont have a from set the use site from name and email
+		// if we dont have a from set the use site from name and email
 		if (!isset($from['name']) || $from['name'] == '') 
 		{
 			$from['name'] = $jconfig->getValue('config.sitename') . ' Administrator';
@@ -107,72 +104,50 @@ class plgXMessageEmail extends JPlugin
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 		}
 
-		//set mail headers
-		$headers  = "MIME-Version: 1.0 \n";
-		if (array_key_exists('multipart', $from))
-		{
-			$headers .= "Content-Type: multipart/alternative;boundary=" . chr(34) . $from['multipart'] . chr(34) . "\r\n";
-		}
-		else
-		{
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-		}
-		$headers .= "X-Priority: 3\n";
-		$headers .= "X-MSMail-Priority: Normal\n";
-		$headers .= "Importance: Normal\n";
-		$headers .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
-		$headers .= "X-Component: " . $xmessage->component . "\r\n";
-		$headers .= "X-Component-Object: " . $xmessage->type . "\r\n";
-		$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
+		$message = new \Hubzero\Mail\Message();
+		$message->setSubject($jconfig->getValue('config.sitename') . ' ' . $xmessage->subject)
+		        ->addFrom($from['email'], $from['name'])
+		        ->addTo($user->get('email'), $user->get('name'));
 
 		// In case a different reply to email address is specified
 		if (array_key_exists('replytoemail', $from))
 		{
 			$replytoname = (isset($from['replytoname']) && $from['replytoname'] != '') ? $from['replytoname'] : $from['name'];
-			$headers .= "Reply-To: " . $replytoname . " <" . $from['replytoemail'] . ">\n";
+
+			$message->addReplyTo($from['replytoemail'], $replytoname);
 		}
 		else
 		{
-			$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
+			$message->addReplyTo($from['email'], $from['name']);
 		}
 
 		//set mail additional args (mail return path - used for bounces)
-		$args = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
-
-		//fancy email
-		if (strpos($user->get('name'), ','))
-		{
-			$fullEmailAddress = "\"" . $user->get('name') . "\" <" . $user->get('email') . ">";
-		}
-		else
-		{
-			$fullEmailAddress = $user->get('name') . " <" . $user->get('email') . ">";
-		}
+		$message->addHeader('X-Component', $xmessage->component)
+		        ->addHeader('X-Component-Object', $xmessage->type);
 
 		// Want to add some extra headers? We put them into the from array 
 		// If none are there, this breaks nothing
-        if (array_key_exists('xheaders', $from))
+		if (array_key_exists('xheaders', $from))
 		{
-			$hs = $from['xheaders'];
-
 			// The xheaders array has name and value pairs
-			foreach ($hs as $n => $v)
+			foreach ($from['xheaders'] as $n => $v)
 			{
-				$headers .= $n . ": " . $v . "\n";
+				$message->addHeader($n, $v);
 			}
 		}
 
 		if (is_array($xmessage->message))
 		{
-			$message = isset($xmessage->message['multipart']) ? $xmessage->message['multipart'] : current($xmessage->message);
+			$message->addPart($xmessage->message['plaintext'], 'text/plain')
+			        ->addPart($xmessage->message['multipart'], 'text/html');
 		}
 		else
 		{
-			$message = $xmessage->message;
+			$message->setBody($xmessage->message);
 		}
 
-		//set mail
-		if (mail($fullEmailAddress, $jconfig->getValue('config.sitename') . ' ' . $xmessage->subject, $message, $headers, $args))
+		// send mail
+		if ($message->send())
 		{
 			return true;
 		}
