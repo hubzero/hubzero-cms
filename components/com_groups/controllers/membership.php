@@ -323,11 +323,33 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$eview->juser = $this->juser;
 		$eview->group = $this->view->group;
 		$eview->msg = $msg;
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
-
-		$juri = JURI::getInstance();
-
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
+		
+		// build array of group invites to send
+		$groupInvitees = array();
+		foreach ($invitees as $invitee)
+		{
+			if ($profile = Hubzero_User_Profile::getInstance($invitee))
+			{
+				$groupInvitees[$profile->get('email')] = $profile->get('name');
+			}
+		}
+		
+		// create new message
+		$message = new \Hubzero\Mail\Message();
+	
+		// build message object and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($groupInvitees)
+				->addHeader('X-Mailer', 'PHP/' . phpversion())
+				->addHeader('X-Component', 'com_groups')
+				->addHeader('X-Component-Object', 'group_invite')
+				->addPart($html, 'text/plain')
+				->send();
+		
+		// send message to users invited via email
 		foreach ($inviteemails as $mbr)
 		{
 			// Message body for HUB user
@@ -338,22 +360,21 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$eview2->group = $this->view->group;
 			$eview2->msg = $msg;
 			$eview2->token = $mbr['token'];
-			$message2 = $eview2->loadTemplate();
-			$message2 = str_replace("\n", "\r\n", $message2);
-
-			// Send the e-mail
-			if (!$this->_email($mbr['email'], $jconfig->getValue('config.sitename') . ' ' . $subject, $message2, $from)) 
-			{
-				$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED') . ' ' . $mbr['email'], 'error');
-			}
-		}
-
-		// Send the message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('groups_invite', $subject, $message, $from, $invitees, $this->_option))) 
-		{
-			$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED'), 'error');
+			$html = $eview2->loadTemplate();
+			$html = str_replace("\n", "\r\n", $html);
+			
+			// create new message
+			$message = new \Hubzero\Mail\Message();
+	
+			// build message object and send
+			$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->setTo($mbr['email'])
+					->addHeader('X-Mailer', 'PHP/' . phpversion())
+					->addHeader('X-Component', 'com_groups')
+					->addHeader('X-Component-Object', 'group_inviteemail')
+					->addPart($html, 'text/plain')
+					->send();
 		}
 
 		// Push all invitees together
@@ -550,8 +571,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->group = $this->view->group;
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
+		$body = $eview->loadTemplate();
+		$body = str_replace("\n", "\r\n", $body);
 		
 		// Build the "from" portion of the e-mail
 		$from = array();
@@ -561,13 +582,29 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Get the system administrator e-mail
 		$emailadmin = $jconfig->getValue('config.mailfrom');
 		
-		// E-mail the administrator
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('groups_accepts_membership', $subject, $message, $from, $this->view->group->get('managers'), $this->_option))) 
+		// build array of managers
+		$managers = array();
+		foreach ($this->view->group->get('managers') as $m)
 		{
-			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
+			$profile = Hubzero_User_Profile::getInstance( $m );
+			if ($profile)
+			{
+				$managers[$profile->get('email')] = $profile->get('name');
+			}
 		}
+		
+		// create new message
+		$message = new \Hubzero\Mail\Message();
+	
+		// build message object and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($managers)
+				->addHeader('X-Mailer', 'PHP/' . phpversion())
+				->addHeader('X-Component', 'com_groups')
+				->addHeader('X-Component-Object', 'group_invite_accepted')
+				->addPart($body, 'text/plain')
+				->send();
 		
 		//set notification fro user
 		$this->setNotification('You have successfully accepted your group invite.', 'passed');
@@ -581,121 +618,6 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		{
 			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn')) );
 		}
-	}
-	
-	
-	/**
-	 *  Cancel Membership Task
-	 * 
-	 * @return     
-	 */
-	public function cancelTask()
-	{
-		// Check if they're logged in
-		if ($this->juser->get('guest')) 
-		{
-			$this->loginTask('You must be logged in to cancel group memberships.');
-			return;
-		}
-		
-		//check to make sure we have  cname
-		if(!$this->cn)
-		{
-			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
-		}
-		
-		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
-		
-		// Ensure we found the group info
-		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
-		{
-			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
-		}
-		
-		//determine params class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		// Get the group params
-		$gparams = new $paramsClass($this->view->group->get('params'));
-
-		// If membership is managed in seperate place disallow action
-		if ($gparams->get('membership_control', 1) == 0) 
-		{
-			$this->setNotification('Group membership is not managed in the group interface.', 'error');
-			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
-			return;
-		}
-		
-		//get request vars
-		$return = strtolower(trim(JRequest::getVar('return', '', 'get')));
-		
-		// Remove the user from the group
-		$this->view->group->remove('managers', $this->juser->get('id'));
-		$this->view->group->remove('members', $this->juser->get('id'));
-		$this->view->group->remove('applicants', $this->juser->get('id'));
-		$this->view->group->remove('invitees', $this->juser->get('id'));
-		if ($this->view->group->update() === false) 
-		{
-			$this->setNotification(JText::_('GROUPS_ERROR_CANCEL_MEMBERSHIP_FAILED'), 'error');
-		}
-
-		// Log the membership cancellation
-		GroupsModelLog::log(array(
-			'gidNumber' => $this->view->group->get('gidNumber'),
-			'action'    => 'membership_cancelled',
-			'comments'  => array($this->juser->get('id'))
-		));
-
-		// Remove record of reason wanting to join group
-		$reason = new GroupsReason($this->database);
-		$reason->deleteReason($this->juser->get('id'), $this->view->group->get('gidNumber'));
-
-		//get site config
-		$jconfig = JFactory::getConfig();
-
-		// Email subject
-		$subject = JText::sprintf('COM_GROUPS_EMAIL_MEMBERSHIP_CANCELLED_SUBJECT', $this->view->group->get('cn'));
-
-		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails', 'layout' => 'cancelled'));
-		$eview->option = $this->_option;
-		$eview->sitename = $jconfig->getValue('config.sitename');
-		$eview->juser = $this->juser;
-		$eview->group = $this->view->group;
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
-
-		// Get the system administrator e-mail
-		$emailadmin = $jconfig->getValue('config.mailfrom');
-
-		// Build the "from" portion of the e-mail
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
-
-		// E-mail the administrator
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option)))
-		{
-			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
-		}
-		
-		//if group isnt approved or not published
-		if(!$this->view->group->get('approved') || !$this->view->group->get('published'))
-		{
-			$this->setNotification('You have successfully canceled your group membership.', 'passed');
-			$this->setRedirect( JRoute::_('/members/myaccount/groups') );
-			return;
-		}
-		
-		// Action Complete. Redirect to appropriate page
-		$this->setRedirect( '/members/myaccount/groups' );
 	}
 	
 	
@@ -920,8 +842,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$eview->juser = $this->juser;
 		$eview->group = $this->view->group;
 		$eview->row = $row;
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
 
 		// Get the system administrator e-mail
 		$emailadmin = $jconfig->getValue('config.mailfrom');
@@ -930,15 +852,30 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-
-		// E-mail the administrator
-		$url = 'index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn') . '&active=members';
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('groups_requests_membership', $subject, $message, $from, $this->view->group->get('managers'), $this->_option, $this->view->group->get('gidNumber'), $url))) 
+		
+		// build array of managers
+		$managers = array();
+		foreach ($this->view->group->get('managers') as $m)
 		{
-			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
+			$profile = Hubzero_User_Profile::getInstance( $m );
+			if ($profile)
+			{
+				$managers[$profile->get('email')] = $profile->get('name');
+			}
 		}
+		
+		// create new message
+		$message = new \Hubzero\Mail\Message();
+	
+		// build message object and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($managers)
+				->addHeader('X-Mailer', 'PHP/' . phpversion())
+				->addHeader('X-Component', 'com_groups')
+				->addHeader('X-Component-Object', 'group_membership_requested')
+				->addPart($html, 'text/plain')
+				->send();
 		
 		//tell the user they just did good
 		$this->setNotification('Your membership request has been forwarded to the group managers for approval.', 'passed');
@@ -963,35 +900,5 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		    $str .= $d ? chr(rand(65,90)) : chr(rand(48,57));
 		}
 		return strtoupper($str);
-	}
-	
-	
-	/**
-	 * Send an email
-	 * 
-	 * @param      string $email   Address to send message to
-	 * @param      string $subject Message subject
-	 * @param      string $message Message to send
-	 * @param      array  $from    Who the email is from (name and address)
-	 * @return     boolean Return description (if any) ...
-	 */
-	private function _email($email, $subject, $message, $from)
-	{
-		if ($from) 
-		{
-			$args = "-f '" . $from['email'] . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-			$headers .= 'From: ' . $from['name'] . ' <' . $from['email'] . ">\n";
-			$headers .= 'Reply-To: ' . $from['name'] .' <' . $from['email'] . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: ' . $from['name'] . "\n";
-			if (mail($email, $subject, $message, $headers, $args)) 
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 }

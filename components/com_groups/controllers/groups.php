@@ -942,15 +942,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Process tags
 		$gt = new GroupsTags($this->database);
 		$gt->tag_object($this->juser->get('id'), $group->get('gidNumber'), $tags, 1, 1);
-		
-		// Build the e-mail message
-		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
-		$eview = new JView(array('name' => 'emails', 'layout' => 'saved'));
-		$eview->option = $this->_option;
-		$eview->juser  = $this->juser;
-		$eview->group  = $group;
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
 
 		// Rename the temporary upload directory if it exist
 		if ($this->_task == 'new') 
@@ -990,49 +981,77 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			'action'    => $log_action,
 			'comments'  => $log_comments
 		));
+		
+		// Build the e-mail message
+		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
+		$eview = new JView(array('name' => 'emails', 'layout' => 'saved'));
+		$eview->option = $this->_option;
+		$eview->juser  = $this->juser;
+		$eview->group  = $group;
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
 
 		// Get the administrator e-mail
 		$emailadmin = $jconfig->getValue('config.mailfrom');
 		
 		// Get the "from" info
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
-
-		// Get plugins
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
+		$from = array(
+			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+			'email' => $jconfig->getValue('config.mailfrom')
+		);
 		
 		//only email managers if updating group
-		if($type == 'groups_changed')
+		if ($type == 'groups_changed')
 		{
-			if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, $group->get('managers'), $this->_option))) 
+			// build array of managers
+			$managers = array();
+			foreach ($group->get('managers') as $m)
 			{
-				$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
+				$profile = Hubzero_User_Profile::getInstance( $m );
+				if ($profile)
+				{
+					$managers[$profile->get('email')] = $profile->get('name');
+				}
 			}
+			
+			// create new message
+			$message = new \Hubzero\Mail\Message();
+		
+			// build message object and send
+			$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->setTo($managers)
+					->addHeader('X-Mailer', 'PHP/' . phpversion())
+					->addHeader('X-Component', 'com_groups')
+					->addHeader('X-Component-Object', 'group_saved')
+					->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
+					->addPart($html, 'text/html')
+					->send();
 		}
-		else
+		
+		//only inform site admin if the group wasnt auto-approved
+		if (!$this->config->get('auto_approve', 1))
 		{
-			//only inform site admin if the group wasnt auto-approved
-			if(!$this->config->get('auto_approve', 1))
-			{
-				$to = $emailadmin;
-				$subject = $jconfig->getValue('config.sitename') . ' Group Waiting Approval';
-				$message  = 'Group "' . $group->get('description') . '" (' . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'groups' . DS . $group->get('cn') . ') is waiting for approval by HUB administrator.';
-				$message .= "\n\n" . 'Please log into the administrator back-end of HUB to approve group: ' . "\n" . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'administrator';
-				
-				$headers  = "MIME-Version: 1.0\n";
-				$headers .= "Content-type: text/plain; charset=utf-8\n";
-				$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
-				$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
-				$headers .= "X-Priority: 3\n";
-				$headers .= "X-MSMail-Priority: High\n";
-				$headers .= "X-Mailer: " . $from['name'] . "\n";
-				
-				$args = "-f '" . $from['email'] . "'";
-				
-				mail($to, $subject, $message, $headers, $args);
-			}
+			// create approval subject
+			$subject = $jconfig->getValue('config.sitename') . ' Group Waiting Approval';
+			
+			// build approval message
+			$html  = 'Group "' . $group->get('description') . '" (' . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'groups' . DS . $group->get('cn') . ') is waiting for approval by HUB administrator.';
+			$html .= "\n\n" . 'Please log into the administrator back-end of HUB to approve group: ' . "\n" . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'administrator';
+			
+			// create new message
+			$message = new \Hubzero\Mail\Message();
+		
+			// build message object and send
+			$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->setTo($emailadmin)
+					->addHeader('X-Mailer', 'PHP/' . phpversion())
+					->addHeader('X-Component', 'com_groups')
+					->addHeader('X-Component-Object', 'group_pending_approval')
+					->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
+					->addPart($html, 'text/html')
+					->send();
 		}
 		
 		// Show success message to user
@@ -1208,7 +1227,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// Start log
 		$log  = JText::sprintf('COM_GROUPS_DELETE_MESSAGE_SUBJECT', $this->view->group->get('cn')) . "\n";
-		
 		$log .= JText::_('COM_GROUPS_GROUP_ID') . ': ' . $this->view->group->get('gidNumber') . "\n";
 		$log .= JText::_('COM_GROUPS_GROUP_CNAME') . ': ' . $this->view->group->get('cn') . "\n";
 		$log .= JText::_('COM_GROUPS_GROUP_TITLE') . ': ' . $this->view->group->get('description') . "\n";
@@ -1292,18 +1310,35 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$eview->gcn 		= $deletedgroup->get('cn');
 		$eview->msg 		= $message;
 		$eview->group 		= $deletedgroup;
-		$message 			= $eview->loadTemplate();
-		$message 			= str_replace("\n", "\r\n", $message);
-
-		// Send the message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('groups_deleted', $subject, $message, $from, $members, $this->_option))) 
+		$html 			    = $eview->loadTemplate();
+		$html  			    = str_replace("\n", "\r\n", $html);
+		
+		// build array of email recipients
+		$groupMembers = array();
+		foreach ($members as $member)
 		{
-			$this->setNotification(JText::_('COM_GROUPS_DELETE_MESSAGE_SEND_FAILURE'), 'error');
+			$profile = Hubzero_User_Profile::getInstance( $member );
+			if ($profile)
+			{
+				$groupMembers[$profile->get('email')] = $profile->get('name');
+			}
 		}
 		
-		// log invites
+		// create new message
+		$message = new \Hubzero\Mail\Message();
+	
+		// build message object and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($groupMembers)
+				->addHeader('X-Mailer', 'PHP/' . phpversion())
+				->addHeader('X-Component', 'com_groups')
+				->addHeader('X-Component-Object', 'group_deleted')
+				->addHeader('X-Component-ObjectId', $deletedgroup->get('gidNumber'))
+				->addPart($html, 'text/html')
+				->send();
+		
+		// log deleted group
 		GroupsModelLog::log(array(
 			'gidNumber' => $deletedgroup->get('gidNumber'),
 			'action'    => 'group_deleted',
