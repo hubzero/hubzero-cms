@@ -47,14 +47,13 @@ abstract class modArticlesNewsHelper
 		// Filter by language
 		$model->setState('filter.language', $app->getLanguageFilter());
 
-		// Set ordering
-		$ordering = $params->get('ordering', 'a.publish_up');
+		// Get ordering &  direction params
+		$ordering  = $params->get('ordering', 'a.publish_up');
+		$direction = $params->get('direction', 'ASC');
+		
+		// Set ordering &  direction
 		$model->setState('list.ordering', $ordering);
-		if (trim($ordering) == 'rand()') {
-			$model->setState('list.direction', '');
-		} else {
-			$model->setState('list.direction', 'ASC');
-		}
+		$model->setState('list.direction', $direction);
 
 		//	Retrieve Content
 		$items = $model->getItems();
