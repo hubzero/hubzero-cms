@@ -70,36 +70,6 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo
 include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php' );
 include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php' );
 
-include_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'install.php' );
-
-// Check to make sure component is installed
-$database = JFactory::getDBO();
-$tables = $database->getTableList();
-$installHelper = new ProjectsInstall($database, $tables);
-
-if (!in_array($database->getPrefix() . 'projects', $tables)) 
-{
-	$installHelper->runInstall();
-}
-
-// Enable project logs
-if (!in_array($database->getPrefix() . 'project_logs', $tables)) 
-{
-	$installHelper->installLogs();
-}
-
-// Enable project stats
-if (!in_array($database->getPrefix() . 'project_stats', $tables)) 
-{
-	$installHelper->installStats();
-}
-
-// Enable project files remote connections
-if (!in_array($database->getPrefix() . 'project_remote_files', $tables)) 
-{
-	$installHelper->installRemotes();
-}
-
 // Database development on?
 if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
 		.'com_projects' . DS . 'tables' . DS . 'project.database.php'))
