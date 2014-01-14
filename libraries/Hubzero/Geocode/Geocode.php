@@ -92,7 +92,7 @@ class Geocode
 			{
 				foreach ($data as $item)
 				{
-					$country = new stdClass();
+					$country = new \stdClass();
 					$country->code      = $item->getCountryCode();
 					$country->name      = $item->getCountry();
 					$country->continent = $item->getRegion();
@@ -216,7 +216,7 @@ class Geocode
 	/**
 	 * Get the address (reverse locate)
 	 * 
-	 * @param  array $coordinates array(longitude, latitude)
+	 * @param  array $coordinates array(latitude, longitude)
 	 * @return array
 	 */
 	public static function address($coordinates)
@@ -228,7 +228,7 @@ class Geocode
 		\JPluginHelper::importPlugin('geocode');
 
 		// Get a list of providers
-		if ($providers = \JDispatcher::getInstance()->trigger('onGeocodeProvider', array('geocode.reverse', $adapter)))
+		if ($providers = \JDispatcher::getInstance()->trigger('onGeocodeProvider', array('geocode.address', $adapter)))
 		{
 			foreach ($providers as $provider)
 			{
@@ -239,6 +239,9 @@ class Geocode
 			}
 		}
 
+		$latitude =  isset($coordinates['latitude'])  ? $coordinates['latitude']  : $coordinates[0];
+		$longitude = isset($coordinates['longitude']) ? $coordinates['longitude'] : $coordinates[1];
+
 		// Instantiate the Geocoder service and pass it the list of providers
 		$geocoder = new \Geocoder\Geocoder();
 		$geocoder->registerProvider(new \Geocoder\Provider\ChainProvider($p));
@@ -246,7 +249,7 @@ class Geocode
 		// Try to get some data...
 		try 
 		{
-			return $geocoder->geocode($address);
+			return $geocoder->reverse($latitude, $longitude);
 		} 
 		catch (\Exception $e) 
 		{
