@@ -175,18 +175,8 @@ class plgCronNewsletter extends JPlugin
 		//load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
 		
-		//import geo db
-		ximport('Hubzero_Geo');
-		
-		//get deo db
-		$geodatabase = Hubzero_Geo::getGeoDBO();
-		$database    = JFactory::getDBO();
-		
-		//make sure we have a database
-		if (!is_object($geodatabase))
-		{
-			return false;
-		}
+		//get db
+		$database = JFactory::getDBO();
 		
 		//get actions
 		$newsletterMailingRecipientAction = new NewsletterMailingRecipientAction( $database );
@@ -195,27 +185,25 @@ class plgCronNewsletter extends JPlugin
 		//convert all unconverted actions
 		foreach ($unconvertedActions as $action)
 		{
-			//get geo information
-			$geodatabase->setQuery("SELECT * FROM ipcitylatlong WHERE INET_ATON('{$action->ip}') BETWEEN ipFROM and ipTO");
-			$result = $geodatabase->loadObject();
+			// attempt to locate
+			$location = Hubzero\Geocode\Geocode::locate($action->ip);
 			
 			//if we got a valid result lets update our action with location info
-			if (is_object($result) && $result->countrySHORT != '' && $result->countrySHORT != '-')
+			if (is_object($location) && $location['latitude'] != '' && $location['longitude'] != '-')
 			{
 				$sql = "UPDATE `#__newsletter_mailing_recipient_actions`
 						SET 
-							countrySHORT=" . $database->quote( $result->countrySHORT ) . ",
-							countryLONG=" . $database->quote( $result->countryLONG ) . ",
-							ipREGION=" . $database->quote( $result->ipREGION ) . ",
-							ipCITY=" . $database->quote( $result->ipCITY ) . ",
-							ipLATITUDE=" . $database->quote( $result->ipLATITUDE ) . ",
-							ipLONGITUDE=" . $database->quote( $result->ipLONGITUDE ) . "
+							countrySHORT=" . $database->quote( $location['countryCode'] ) . ",
+							countryLONG=" . $database->quote( $location['country'] ) . ",
+							ipREGION=" . $database->quote( $location['region'] ) . ",
+							ipCITY=" . $database->quote( $location['city'] ) . ",
+							ipLATITUDE=" . $database->quote( $location['latitude'] ) . ",
+							ipLONGITUDE=" . $database->quote( $location['longitude'] ) . "
 						WHERE id=" . $database->quote( $action->id );
 				$database->setQuery( $sql );
 				$database->query();
 			}
 		}
-		
 		return true;
 	}
 }
