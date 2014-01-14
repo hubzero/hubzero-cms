@@ -359,7 +359,7 @@ class TagsTableTag extends JTable
 		} 
 		else 
 		{
-			$query = "SELECT " . (isset($filters['search']) && $filters['search'] != '' ? "DISTINCT " : "") . "t.id, t.tag, t.raw_tag, t.admin, 
+			$query = "SELECT DISTINCT t.id, t.tag, t.raw_tag, t.admin, 
 						(SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total, 
 						(SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
