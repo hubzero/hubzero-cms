@@ -342,32 +342,21 @@ abstract class Model extends Object
 			return;
 		}
 
-		$trace = false;
+		//$trace = false;
 		if (JDEBUG)
 		{
 			$message = '[' . \JRequest::getVar('REQUEST_URI', '', 'server') . '] [' . $message . ']';
-			$trace = true;
+			//$trace = true;
 		}
 
 		$type = strtolower($type);
-		if (!in_array($type, array('error', 'debug', 'crit', 'warning', 'notice', 'auth', 'alert', 'emergency', 'info')))
+		if (!in_array($type, array('error', 'debug', 'critical', 'warning', 'notice', 'alert', 'emergency', 'info')))
 		{
 			return;
 		}
-		$func = 'log' . ucfirst($type);
 
-		$file = '/var/log/hubzero/cmsdebug.log'; //JFactory::getConfig();->getValue('config.log_path');
-
-		$handler = new \Hubzero_Log_FileHandler($file);
-
-		$logger = new \Hubzero_Log();
-
-		$logger->attach(HUBZERO_LOG_INFO, $handler);
-		$logger->attach(HUBZERO_LOG_ERR, $handler);
-		$logger->attach(HUBZERO_LOG_NOTICE, $handler);
-		$logger->attach(HUBZERO_LOG_DEBUG, $handler);
-
-		$logger->$func($message, $trace);
+		$logger = \Hubzero_Factory::getLogger();
+		$logger->$type($message);
 	}
 
 	/**
@@ -559,6 +548,18 @@ abstract class Model extends Object
 			$str .= $subject . "\n";
 		}
 		return $str;
+	}
+
+	/**
+	 * Dynamically handle error additions.
+	 *
+	 * @param  string  $method
+	 * @param  array   $parameters
+	 * @return mixed
+	 */
+	public function __call($method, $parameters)
+	{
+		throw new \BadMethodCallException(\JText::sprintf('Method [%s] does not exist.', $method));
 	}
 }
 

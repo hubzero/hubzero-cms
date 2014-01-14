@@ -169,7 +169,7 @@ class plgSystemHubzero extends JPlugin
 			
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
 			$user_id = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
-			Hubzero_Factory::getAuthLogger()->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+			Hubzero_Factory::getAuthLogger()->info( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 	
 			// set new tracking cookie with current data
 			$tracker = array();
@@ -207,7 +207,7 @@ class plgSystemHubzero extends JPlugin
 	 */
 	public function onLoginFailure($response)
 	{
-		Hubzero_Factory::getAuthLogger()->logAuth($_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
+		Hubzero_Factory::getAuthLogger()->info($_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
 		apache_note('auth','invalid');
 
 		return true;

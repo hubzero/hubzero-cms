@@ -319,7 +319,7 @@ class ToolsHelperUtils
 		{
 			$access->valid = 0;
 			$access->error->message = 'No tool provided.';
-			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null tool check");
+			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return $access;
 		}
 		
@@ -331,7 +331,7 @@ class ToolsHelperUtils
 			{
 				$access->valid = 0;
 				$access->error->message = 'Unable to grant tool access to user, no user was found.';
-				$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null user check");
+				$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null user check");
 				return $access;
 			}
 		}
@@ -343,7 +343,7 @@ class ToolsHelperUtils
 		{
 			$access->valid = 0;
 			$access->error->message = 'Unable to load the tool';
-			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
+			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
 			return $access;
 		}
 		
@@ -404,7 +404,7 @@ class ToolsHelperUtils
 			{
 				$access->valid = 0;
 				$access->error->message = 'The development version of this tool may only be accessed by members of it\'s development group.';
-				$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
+				$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
 			}
 			else
 			{
@@ -422,7 +422,7 @@ class ToolsHelperUtils
 				{
 					$access->valid = 0;
 					$access->error->message = 'This tool may only be accessed by members of it\'s access control groups.';
-					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
+					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
 				}
 				else
 				{
@@ -435,7 +435,7 @@ class ToolsHelperUtils
 				{
 					$access->valid = 0;
 					$access->error->message = 'Export Access Denied';
-					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
+					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
 				}
 				else
 				{
@@ -448,7 +448,7 @@ class ToolsHelperUtils
 		{
 			$access->valid = 0;
 			$access->error->message = 'This tool version is not published.';
-			$xlog->logDebug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
+			$xlog->debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
 		}
 		
 		//return access
@@ -485,7 +485,7 @@ class ToolsHelperUtils
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = 'This tool may not be accessed from your unknown current location due to export/license restrictions.';
-			$xlog->logDebug("mw::_getToolExportControl($export_control) FAILED location export control check");
+			$xlog->debug("mw::_getToolExportControl($export_control) FAILED location export control check");
 			return $export_access;
 		}
 		
@@ -494,7 +494,7 @@ class ToolsHelperUtils
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = 'This tool may not be accessed from your current location due to E1 export/license restrictions.';
-			$xlog->logDebug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
+			$xlog->debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
 			return $export_access;
 		}
 		
@@ -506,7 +506,7 @@ class ToolsHelperUtils
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed from within the U.S. due to export/licensing restrictions.';
-					$xlog->logDebug("mw::_getToolExportControl($export_control) FAILED US export control check");
+					$xlog->debug("mw::_getToolExportControl($export_control) FAILED US export control check");
 					return $export_access;
 				}
 			break;
@@ -516,7 +516,7 @@ class ToolsHelperUtils
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';
-					$xlog->logDebug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
+					$xlog->debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
 					return $export_access;
 				}
 			break;
@@ -526,7 +526,7 @@ class ToolsHelperUtils
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.';
-					$xlog->logDebug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
+					$xlog->debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
 					return $export_access;
 				}
 			break;

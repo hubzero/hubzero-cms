@@ -248,7 +248,7 @@ class plgGroupsMemberOptions extends JPlugin
 		$discussion_email_autosubscribe = $group->get('discussion_email_autosubscribe');
 		
 		//log variable
-		$logger->logDebug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);
+		$logger->debug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);
 		
 		//if were not auto-subscribed then stop
 		if (!$discussion_email_autosubscribe)

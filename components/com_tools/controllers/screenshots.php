@@ -718,7 +718,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 	public function transfer($sourceid, $destid, $rid)
 	{
 		$xlog = Hubzero_Factory::getLogger();
-		$xlog->logDebug(__FUNCTION__ . '()');
+		$xlog->debug(__FUNCTION__ . '()');
 
 		// Get resource information
 		$resource = new ResourcesResource($this->database);
@@ -748,15 +748,15 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 				return false;
 			}
 		}
-		$xlog->logDebug(__FUNCTION__ . "() $src");
+		$xlog->debug(__FUNCTION__ . "() $src");
 
 		// do we have files to transfer?
 		$files = JFolder::files($src, '.', false, true, array());
-		$xlog->logDebug(__FUNCTION__ . "() $files");
+		$xlog->debug(__FUNCTION__ . "() $files");
 		if (!empty($files)) 
 		{
 			// Copy directory
-			$xlog->logDebug(__FUNCTION__ . "() copying $src to $dest");
+			$xlog->debug(__FUNCTION__ . "() copying $src to $dest");
 			if (!JFolder::copy($src, $dest, '', true)) 
 			{
 				return false;
@@ -766,12 +766,12 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 				// Update screenshot information for this resource
 				$ss->updateFiles($rid, $sourceid, $destid, $copy=1);
 
-				$xlog->logDebug(__FUNCTION__ . '() updated files');
+				$xlog->debug(__FUNCTION__ . '() updated files');
 				return true;
 			}
 		}
 
-		$xlog->logDebug(__FUNCTION__ . '() done');
+		$xlog->debug(__FUNCTION__ . '() done');
 
 		return true;
 	}

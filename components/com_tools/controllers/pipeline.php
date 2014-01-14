@@ -1114,7 +1114,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		{
 			if ($hztv === false)
 			{
-				$xlog->logDebug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
+				$xlog->debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
 				$hztv = Hubzero_Tool_Version::createInstance($tool['toolname'], $tool['toolname'] . $dev_suffix);
 
 				$oldstatus = $hztv->toArray();
@@ -1613,12 +1613,12 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if (intval($newstate) && $newstate != $oldstatus['toolstate']) 
 		{
-			$xlog->logDebug(__FUNCTION__ . "() state changing");
+			$xlog->debug(__FUNCTION__ . "() state changing");
 
 			if ($newstate == ToolsHelperHtml::getStatusNum('Approved') && Hubzero_Tool::validateVersion($oldstatus['version'], $error, $hzt->id))
 			{
 				$this->_error = $error;
-				$xlog->logDebug(__FUNCTION__ . "() state changing to approved, action confirm");
+				$xlog->debug(__FUNCTION__ . "() state changing to approved, action confirm");
 				$this->_action = 'confirm';
 				$this->_task = JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 				$this->versionsTask();
@@ -1627,7 +1627,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			else if ($newstate == ToolsHelperHtml::getStatusNum('Approved')) 
 			{
 				$this->_error = $error;
-				$xlog->logDebug(__FUNCTION__ . "() state changing to approved, action new");
+				$xlog->debug(__FUNCTION__ . "() state changing to approved, action new");
 				$this->_action = 'new';
 				$this->_task = JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 				$this->versionsTask();
@@ -1635,7 +1635,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			}
 			else if ($newstate == ToolsHelperHtml::getStatusNum('Published')) 
 			{
-				$xlog->logDebug(__FUNCTION__ . "() state changing to published");
+				$xlog->debug(__FUNCTION__ . "() state changing to published");
 				$hzt->published = '1';
 			}
 			$this->_error = $error;
@@ -1646,7 +1646,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				// Create a Tool Version object
 				$objV = new ToolVersion($this->database);
 
-				$xlog->logDebug(__FUNCTION__ . "() state changing away from  published");
+				$xlog->debug(__FUNCTION__ . "() state changing away from  published");
 				// Get version ids
 				$rid = Hubzero_Tool::getResourceId($hzt->toolname,$hzt->id);
 
@@ -1656,7 +1656,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				$dev_hztv = $hzt->getRevision('dev');
 				$current_hztv = $hzt->getRevision('current');
 
-				$xlog->logDebug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
+				$xlog->debug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
 				if ($to && $from) 
 				{
 					require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'screenshots.php');
@@ -1666,7 +1666,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				}
 			}
 
-			$xlog->logDebug(__FUNCTION__ . "() state changing to $newstate");
+			$xlog->debug(__FUNCTION__ . "() state changing to $newstate");
 			$hzt->state = $newstate;
 			$hzt->state_changed = JFactory::getDate()->toSql();
 		}
@@ -1684,12 +1684,12 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$status = $hztv->toArray();
 		$status['toolstate'] = $hzt->state;
 		// update history ticket
-		$xlog->logDebug(__FUNCTION__ . "() before newUpdateTicket test");
+		$xlog->debug(__FUNCTION__ . "() before newUpdateTicket test");
 		if ($oldstatus != $status || !empty($comment))
 		{
-			$xlog->logDebug(__FUNCTION__ . "() before newUpdateTicket");
+			$xlog->debug(__FUNCTION__ . "() before newUpdateTicket");
 			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, $access, 1);
-			$xlog->logDebug(__FUNCTION__ . "() after newUpdateTicket");
+			$xlog->debug(__FUNCTION__ . "() after newUpdateTicket");
 		}
 
 		//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_STATUS_CHANGED'));
@@ -1908,7 +1908,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	protected function _newUpdateTicket($toolid, $ticketid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1)
 	{
 		$xlog = Hubzero_Factory::getLogger();
-		$xlog->logDebug(__FUNCTION__ . '() started');
+		$xlog->debug(__FUNCTION__ . '() started');
 
 		$summary = '';
 
@@ -2079,7 +2079,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$rowc->created_by = $this->juser->get('username');
 			$rowc->changelog  = json_encode($log);
 			$rowc->access     = $access;
-			$xlog->logDebug(__FUNCTION__ . '() storing ticket');
+			$xlog->debug(__FUNCTION__ . '() storing ticket');
 			if (!$rowc->store()) 
 			{
 				$this->_error = $rowc->getError();
@@ -2088,7 +2088,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 			if ($email) 
 			{
-				$xlog->logDebug(__FUNCTION__ . '() emailing notifications');
+				$xlog->debug(__FUNCTION__ . '() emailing notifications');
 				// send notification emails
 				$this->_email($toolid, $summary, $comment, $access, $action);
 			}

@@ -529,7 +529,7 @@ class Hubzero_Tool_Version
     private function logDebug($msg)
     {
         $xlog =  Hubzero_Factory::getLogger();
-        $xlog->logDebug($msg);
+        $xlog->debug($msg);
     }
 
 	/**
@@ -878,7 +878,7 @@ class Hubzero_Tool_Version
         $db =  JFactory::getDBO();
         $xlog =  Hubzero_Factory::getLogger();
 
-    	$xlog->logDebug('_mysql_update() start');
+    	$xlog->debug('_mysql_update() start');
         $query = "UPDATE #__tool_version SET ";
 
         $classvars = get_class_vars(__CLASS__);
@@ -1108,7 +1108,7 @@ class Hubzero_Tool_Version
 
             if (!$db->query())
             {
-        		$xlog->logDebug('_mysql_update_failed');
+        		$xlog->debug('_mysql_update_failed');
                 return false;
             }
         }
@@ -1140,7 +1140,7 @@ class Hubzero_Tool_Version
     {
 		$xlog =  Hubzero_Factory::getLogger();
 
-		$xlog->logDebug("update");
+		$xlog->debug("update");
 
         $result = true;
 

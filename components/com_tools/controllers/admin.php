@@ -401,7 +401,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		$result = true;
 
 		$xlog = Hubzero_Factory::getLogger();
-		$xlog->logDebug("publish(): checkpoint 1:$result");
+		$xlog->debug("publish(): checkpoint 1:$result");
 
 		// get config
 
@@ -442,7 +442,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		}
 
 		// Log checkpoint
-		$xlog->logDebug("publish(): checkpoint 2:$result, check revision");
+		$xlog->debug("publish(): checkpoint 2:$result, check revision");
 
 		// check if version is valid
 		if (!Hubzero_Tool::validateVersion($status['version'], $error_v, $this->_toolid))
@@ -452,7 +452,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		}
 
 		// Log checkpoint
-		$xlog->logDebug("publish(): checkpoint 3:$result, running finalize tool");
+		$xlog->debug("publish(): checkpoint 3:$result, running finalize tool");
 
 		// Run finalizetool
 		if (!$this->getError()) 
@@ -468,7 +468,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			}
 		}
 
-		$xlog->logDebug("publish(): checkpoint 4:$result, running doi stuff");
+		$xlog->debug("publish(): checkpoint 4:$result, running doi stuff");
 
 		// Register DOI handle
 		if ($result && $this->config->get('new_doi', 0)) 
@@ -547,7 +547,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$hztv_cur = $hzt->getCurrentVersion();
 			$hztv_dev = $hzt->getDevelopmentVersion();
 
-			$xlog->logDebug("publish(): checkpoint 6:$result, running database stuff");
+			$xlog->debug("publish(): checkpoint 6:$result, running database stuff");
 
 			// create tool instance in the database
 			$newtool = $status['toolname'] . '_r' . $status['revision'];
@@ -669,7 +669,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			}
 		}
 
-		$xlog->logDebug("publish(): checkpoint 7:$result, gather output");
+		$xlog->debug("publish(): checkpoint 7:$result, gather output");
 
 		// Set errors to view
 		if ($this->getError())
@@ -704,7 +704,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 	{
 		$xlog = Hubzero_Factory::getLogger();
 
-		$xlog->logDebug("finalizeTool(): checkpoint 1");
+		$xlog->debug("finalizeTool(): checkpoint 1");
 
 		if (!$this->_toolid) 
 		{
@@ -717,7 +717,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
 		}
 
-		$xlog->logDebug("finalizeTool(): checkpoint 2");
+		$xlog->debug("finalizeTool(): checkpoint 2");
 
 		// Create a Tool object
 		$obj = new Tool($this->database);
@@ -743,7 +743,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			chmod($fname, 0664);
 
 			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . JPATH_ROOT . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
-			$xlog->logDebug("finalizeTool(): checkpoint 3: $command");
+			$xlog->debug("finalizeTool(): checkpoint 3: $command");
 
 			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_VERSION_FINALIZED'))) 
 			{
@@ -768,21 +768,21 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::create($file_path, 0777)) 
 				{
-					$xlog->logDebug("findalizeTool(): failed to create tarball path $file_path");
+					$xlog->debug("findalizeTool(): failed to create tarball path $file_path");
 					$out .= JText::_('COM_TOOLS_ERR_UNABLE_TO_CREATE_TAR_PATH');
 					return false;
 				}
 			}
-			$xlog->logDebug("finalizeTool(): checkpoint 4: " . DS . 'tmp' . DS . $tar . " to " . $file_path . '/' . $tar);
+			$xlog->debug("finalizeTool(): checkpoint 4: " . DS . 'tmp' . DS . $tar . " to " . $file_path . '/' . $tar);
 			if (!@copy(DS . 'tmp' . DS . $tar, $file_path . '/' . $tar)) 
 			{
 				$out .= " failed to copy $tar to $file_path";
-				$xlog->logDebug("findalizeTool(): failed tarball copy");
+				$xlog->debug("findalizeTool(): failed tarball copy");
 				return false;
 			} 
 			else 
 			{
-				$xlog->logDebug("findalizeTool(): deleting tmp files");
+				$xlog->debug("findalizeTool(): deleting tmp files");
 				exec ('sudo -u apps rm -f /tmp/' . $tar, $out, $result);
 			}
 			return true;

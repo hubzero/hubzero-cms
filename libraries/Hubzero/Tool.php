@@ -239,7 +239,7 @@ class Hubzero_Tool
 	private function logDebug($msg)
 	{
 		$xlog =  Hubzero_Factory::getLogger();
-		$xlog->logDebug($msg);
+		$xlog->debug($msg);
 	}
 
 	/**
@@ -636,7 +636,7 @@ class Hubzero_Tool
 
 					$order ++;
 				}
-				$xlog->logDebug($query);
+				$xlog->debug($query);
 				$db->setQuery($query);
 
 				if (!$db->query())
@@ -1665,7 +1665,7 @@ class Hubzero_Tool
 			$db->setQuery($query);
 
 			$result = $db->loadResult();
-			$xlog->logDebug("validateVersion($newversion,$id) = $result");
+			$xlog->debug("validateVersion($newversion,$id) = $result");
 			if (!empty($result))
 			{
 				$err = JText::_('COM_TOOLS_ERR_VERSION_EXISTS');

@@ -485,7 +485,7 @@ class ToolVersion extends  JTable
 
 		$this->_db->setQuery($query);
 
-		$xlog->logDebug(__FUNCTION__ . "()  $query");
+		$xlog->debug(__FUNCTION__ . "()  $query");
 
 		if ($this->_db->query()) 
 		{ 
@@ -541,7 +541,7 @@ class ToolVersion extends  JTable
 
 		$this->id = $result ? $result : 0;
 
-		$xlog->logDebug(__FUNCTION__ . " $toolid $version $create_new ");
+		$xlog->debug(__FUNCTION__ . " $toolid $version $create_new ");
 
 		if ((!$result && $create_new) or $this->id)
 		{
@@ -574,7 +574,7 @@ class ToolVersion extends  JTable
 
 			if ($result)
 			{
-				$xlog->logDebug(__FUNCTION__ . " someone created this before me. Fixed");
+				$xlog->debug(__FUNCTION__ . " someone created this before me. Fixed");
 			}
 
 			$this->id = $result ? $result : 0;

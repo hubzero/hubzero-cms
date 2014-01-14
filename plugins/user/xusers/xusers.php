@@ -102,7 +102,7 @@ class plgUserXusers extends JPlugin
 		}
 
 		// log login to auth log
-		Hubzero_Factory::getAuthLogger()->logAuth($juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
+		Hubzero_Factory::getAuthLogger()->info($juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
 		
 		// correct apache log data
 		apache_note('auth','login');
@@ -474,7 +474,7 @@ class plgUserXusers extends JPlugin
 	{
 		$authlog = Hubzero_Factory::getAuthLogger();
 		
-		$authlog->logAuth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
+		$authlog->info($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 		
 		apache_note('auth','logout');
 

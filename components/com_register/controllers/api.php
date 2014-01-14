@@ -378,26 +378,20 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 		$message .= "\n";
 		
 		//echo $this->logFile; die;
-		
-		ximport('Hubzero_Log');
 
-		$hzl = new Hubzero_Log();
-		$handler = new Hubzero_Log_FileHandler($this->logFile);
-		
-		$hzl->attach(HUBZERO_LOG_INFO, $handler);
-		$hzl->attach(HUBZERO_LOG_ERR, $handler);
-		$hzl->attach(HUBZERO_LOG_NOTICE, $handler);
-		
+		$hzl = new \Hubzero\Log\Writer(
+			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+			\JDispatcher::getInstance()
+		);
+		$hzl->useFiles($this->logFile);
+
 		if ($type == 'error')
 		{
-			$log = $hzl->logError($message);			
+			$log = $hzl->rrror($message);
 		}
 		else 
 		{
-			$log = $hzl->logInfo($message);
+			$log = $hzl->info($message);
 		}
-		
-		
 	}
-											 
 }

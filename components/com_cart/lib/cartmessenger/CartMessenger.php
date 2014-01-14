@@ -81,26 +81,24 @@ class CartMessenger
 		
 		$message .= "\n";
 
-		ximport('Hubzero_Log');
-
-		$hzl = new Hubzero_Log();
-		$handler = new Hubzero_Log_FileHandler($this->logFile);
-		$hzl->attach(HUBZERO_LOG_INFO, $handler);
-		$hzl->attach(HUBZERO_LOG_ERR, $handler);
-		$hzl->attach(HUBZERO_LOG_NOTICE, $handler);
+		$hzl = new \Hubzero\Log\Writer(
+			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+			\JDispatcher::getInstance()
+		);
+		$hzl->useFiles($this->logFile);
 		
 		if ($loggingLevel == 0)
 		{
-			$hzl->logError($this->caller . ': ' . $message);			
+			$hzl->error($this->caller . ': ' . $message);			
 		}
 		elseif ($loggingLevel == 1)
 		{
-			$log = $hzl->logWarning($this->caller . ': ' . $message);	
+			$log = $hzl->warning($this->caller . ': ' . $message);	
 			return $log;
 		}
 		elseif ($loggingLevel == 2) 
 		{
-			$log = $hzl->logInfo($this->caller . ': ' . $message);	
+			$log = $hzl->info($this->caller . ': ' . $message);	
 			return $log;
 		}
 		

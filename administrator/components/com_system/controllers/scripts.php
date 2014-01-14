@@ -128,12 +128,6 @@ class SystemControllerScripts extends Hubzero_Controller
 					$job->run();
 					$this->view->content = ob_get_contents();
 					ob_end_clean();
-
-					// Log the script run
-					ximport('Hubzero_Log_FileHandler');
-
-					$logger = new Hubzero_Log_FileHandler($this->_log);
-					$logger->log(64, $this->view->script);
 				}
 			}
 		}

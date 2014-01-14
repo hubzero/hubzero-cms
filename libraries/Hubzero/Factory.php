@@ -67,18 +67,21 @@ class Hubzero_Factory
 	 */
 	public static function &getLogger()
 	{
-		static $instances;
+		static $instance;
 
-		if (!is_object($instances[0]))
+		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
-			ximport('Hubzero_Log');
+			$instance = new \Hubzero\Log\Writer(
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+				\JDispatcher::getInstance()
+			);
 
-			$instances[0] = new Hubzero_Log();
-			$handler = new Hubzero_Log_FileHandler("/var/log/hubzero/cmsdebug.log");
-			$instances[0]->attach(HUBZERO_LOG_DEBUG, $handler);
+			//$logFile = JPATH_ROOT . '/logs/cms-' . php_sapi_name() . '.log';
+
+			$instance->useDailyFiles('/var/log/hubzero/cmsdebug.log');
 		}
 
-		return $instances[0];
+		return $instance;
 	}
 
 	/**
@@ -88,18 +91,19 @@ class Hubzero_Factory
 	 */
 	public static function &getAuthLogger()
 	{
-		static $instances;
+		static $instance;
 
-		if (!is_object($instances[0]))
+		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
-			ximport('Hubzero_Log');
+			$instance = new \Hubzero\Log\Writer(
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+				\JDispatcher::getInstance()
+			);
 
-			$instances[] = new Hubzero_Log();
-			$handler = new Hubzero_Log_FileHandler("/var/log/hubzero/cmsauth.log");
-			$instances[0]->attach(HUBZERO_LOG_AUTH, $handler);
+			$instance->useDailyFiles('/var/log/hubzero/cmsauth.log', 0, 'info');
 		}
 
-		return $instances[0];
+		return $instance;
 	}
 }
 

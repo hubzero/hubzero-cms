@@ -38,7 +38,7 @@ class Hubzero_User_Password_History
 	private function logDebug($msg)
 	{
 		$xlog = &HUbzero_Factory::getLogger();
-		$xlog->logDebug($msg);
+		$xlog->debug($msg);
 	}
 
 	public static function getInstance($instance)

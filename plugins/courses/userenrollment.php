@@ -62,7 +62,7 @@ class plgCoursesUserEnrollment extends Hubzero_Plugin
 		$course->read( $gidNumber );
 		$discussion_email_autosubscribe = $course->get('discussion_email_autosubscribe');
 
-$xlog->logDebug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);	
+		$xlog->debug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);	
 		if (!$discussion_email_autosubscribe) 
 			return;
 		
