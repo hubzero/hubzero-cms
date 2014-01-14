@@ -271,7 +271,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<tr>
-																	<td style="text-align:left;" align="left">
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php echo $this->group->get('description'); ?>
 																	</td>
 																</tr>
@@ -285,7 +285,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<tr>
-																	<td style="text-align:left;" align="left">
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php
 																			$gt = new GroupsTags( JFactory::getDBO() );
 																			$tags = $gt->get_tag_string($this->group->get('gidNumber'));
@@ -307,7 +307,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<tr>
-																	<td style="text-align:left;" align="left">
+																	<td style="text-align:left;padding: 1em; line-height:18px;" align="left">
 																		<?php if ($this->group->get('public_desc')) : ?>
 																			<?php echo $this->group->get('public_desc'); ?>
 																		<?php else : ?>
@@ -325,7 +325,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<tr>
-																	<td style="text-align:left;" align="left">
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php if ($this->group->get('private_desc')) : ?>
 																			<?php echo $this->group->get('private_desc'); ?>
 																		<?php else : ?>
@@ -344,7 +344,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		</td>
 																	</tr>
 																	<tr>
-																		<td style="text-align:left;" align="left">
+																		<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																			<?php if ($this->group->get('logo')) : ?>
 																				<img src="<?php echo $base . DS . ltrim($this->group->getLogo(), DS); ?>" width="50px" />
 																			<?php else : ?>
@@ -363,7 +363,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<tr>
-																	<td style="text-align:left;" align="left">
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php
 																		// Determine the join policy
 																		switch ($this->group->get('join_policy'))
@@ -394,7 +394,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<tr>
-																	<td style="text-align:left;" align="left">
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php
 																		// Determine the discoverability
 																		switch ($this->group->get('discoverability'))
@@ -417,7 +417,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<tr>
-																	<td style="text-align:left;" align="left">
+																	<td style="text-align:left; padding:1em; line-height:18px;" align="left">
 																		<?php
 																		//access levels
 																		$levels = array(
