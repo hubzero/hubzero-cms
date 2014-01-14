@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $app = JFactory::getApplication();
-$src = $this->thumb && file_exists( $this->file_path.DS.$this->thumb ) ? $this->path.DS.$this->thumb :  $this->default_picture;
+$src = $this->thumb && file_exists( $this->file_path . DS . $this->thumb ) ? $this->path . DS . $this->thumb :  $this->default_picture;
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -46,13 +46,14 @@ $src = $this->thumb && file_exists( $this->file_path.DS.$this->thumb ) ? $this->
 			<div id="project-thumb" class="project-thumb">
 				<img src="<?php echo $src; ?>" alt="<?php echo JText::_('COM_PROJECTS_THUMB'); ?>" />
 				<?php if ($this->thumb && file_exists( $this->file_path.DS.$this->thumb )) { ?>
-				<p class="actionlink"><a href="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=deleteimg&amp;file=<?php echo $this->file; ?>&amp;imaid=<?php echo $this->id; ?>&amp;tempid=<?php echo $this->tempid; ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></p>
+				<p class="actionlink"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=deleteimg' . a . 'alias=' . $this->id).'/?no_html=1&file='.stripslashes($this->file) . '&tempid=' . $this->tempid; ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></p>
 				<?php } ?>
 			</div>
 			<div>
 				<h4><?php echo JText::_('COM_PROJECTS_UPLOAD_NEW_IMAGE'); ?> <span class="hint"><?php echo JText::_('COM_PROJECTS_WILL_REPLACE_EXISTING_IMAGE'); ?></span></h4>
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="media" />
 				<input type="hidden" name="no_html" value="1" />
 				<input type="hidden" name="task" value="upload" />
 				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />

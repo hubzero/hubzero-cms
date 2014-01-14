@@ -128,7 +128,7 @@ $goto  = 'alias=' . $this->project->alias;
 
 									<tr>
 										<td class="htd"><?php echo JText::_('COM_PROJECTS_THUMB'); ?></td>
-										<td><iframe class="filer filerMini" src="<?php echo 'index.php?option='.$this->option.'&amp;no_html=1&amp;task=img&amp;file='.stripslashes($this->project->picture).'&amp;id='.$this->project->id; ?>"></iframe></td>
+										<td><iframe class="filer filerMini" src="<?php echo JRoute::_('index.php?option='.$this->option. a . $goto . a . 'task=img').'/?no_html=1&file='.stripslashes($this->project->picture); ?>"></iframe></td>
 									</tr>
 			
 								</tbody>
