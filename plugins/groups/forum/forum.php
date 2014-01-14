@@ -1390,8 +1390,8 @@ class plgGroupsForum extends Hubzero_Plugin
 				$from = array();
 				$from['name']  = $jconfig->getValue('config.sitename') . ' ';
 				$from['email'] = $jconfig->getValue('config.mailfrom');
-				$from['replytoemail'] = 'hgm-' . $token;
-
+				$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
+				
 				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $forum_message, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber')))) 
 				{
 					$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));

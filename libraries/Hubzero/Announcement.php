@@ -353,14 +353,21 @@ class Hubzero_Announcement extends JTable
 		{
 			$announcement = $this;
 		}
-
-		ini_set('display_errors', 1);
-		error_reporting(E_ALL);
-
+		
 		// load group
 		$group = Hubzero_Group::getInstance($announcement->scope_id);
-
-		//create view object
+		
+		// get all group members
+		$groupMembers = array();
+		foreach ($group->get('members') as $member)
+		{
+			if ($profile = Hubzero_User_Profile::getInstance($member))
+			{
+				$groupMembers[$profile->get('email')] = $profile->get('name');
+			}
+		}
+		
+		// create view object
 		ximport('Hubzero_Plugin_View');
 		$eview = new Hubzero_Plugin_View(
 			array(
@@ -370,39 +377,39 @@ class Hubzero_Announcement extends JTable
 				'layout'  => 'announcement_plain'
 			)
 		);
+		
+		// plain text
 		$eview->announcement = $announcement;
-
 		$plain = $eview->loadTemplate();
 		$plain = str_replace("\n", "\r\n", $plain);
 
 		// HTML
 		$eview->setLayout('announcement_html');
-
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
-
+		
+		// set from address
 		$jconfig = JFactory::getConfig();
-
+		$from = array(
+			'name' => $jconfig->getValue('config.sitename') . ' Groups',
+			'email' => $jconfig->getValue('config.mailfrom')
+		);
+		
 		// define subject
 		$subject = $group->get('description') . ' Group Announcement';
-
+		
+		// create message object
 		$message = new \Hubzero\Mail\Message();
+		
+		// set message details and send
 		$message->setSubject($subject)
-		        ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Groups');
-
-		$message->addPart($plain, 'text/plain');
-
-		$message->addPart($html, 'text/html');
-
-		// send to all group members
-		foreach ($group->get('members') as $member)
-		{
-			$profile = Hubzero_User_Profile::getInstance($member);
-			//mail($profile->get('email'), $subject, $message, $headers);
-			$message->setTo(array($profile->get('email')));
-			$message->send();
-		}
-
+				->addFrom($from['email'], $from['name'])
+				->setTo($groupMembers)
+				->addPart($plain, 'text/plain')
+				->addPart($html, 'text/html')
+				->send();
+		
+		// all good
 		return true; 
 	}
 }

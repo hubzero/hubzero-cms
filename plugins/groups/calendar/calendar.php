@@ -260,20 +260,34 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			
 			//build message sent to managers
 			$subject  = JText::_('Group Calendar Subscription Sync Issue');
-			$message  = 'There is an issue with the following group calendar subscriptions:' . "\n";
-			$message .= '---------------------------------------------------------------------------------------------------' . "\n\n";
-			$message .= " - " . implode( "\n - ", $syncErrors);
+			$plain    = 'There is an issue with the following group calendar subscriptions:' . "\n";
+			$plain   .= '---------------------------------------------------------------------------------------------------' . "\n\n";
+			$plain   .= " - " . implode( "\n - ", $syncErrors);
+			
+			// build from details
 			$config = JFactory::getConfig();
 			$from['name'] = $this->group->get('description') . " Group on " . $config->getValue("fromname");
 			$from['email'] = $config->getValue("mailfrom");
 			
-			// Send the message
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $message, $from, $this->group->get('managers'), 'com_groups'))) 
+			// get all group members
+			$groupManagers = array();
+			foreach ($this->group->get('managers') as $manager)
 			{
-				$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
+				if ($profile = Hubzero_User_Profile::getInstance($manager))
+				{
+					$groupManagers[$profile->get('email')] = $profile->get('name');
+				}
 			}
+			
+			// create message object
+			$message = new \Hubzero\Mail\Message();
+		
+			// set message details and send
+			$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->setTo($groupManagers)
+					->addPart($plain, 'text/plain')
+					->send();
 		}
 		
 		// An array of the names of the days of the week
@@ -1929,25 +1943,21 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	 * @param      unknown $message Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	private function _sendEmail($to, $from, $subject, $message)
+	private function _sendEmail($to, $from, $subject, $body)
 	{
-		$contact_email = $from['email'];
-		$contact_name  = $from['name'];
-
-		$args     = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
-		$headers  = "MIME-Version: 1.0\n";
-		$headers .= "Content-type: text/plain; charset=iso-8859-1\n";
-		$headers .= 'From: ' . $contact_name .' <' . $contact_email . ">\n";
-		$headers .= 'Reply-To: ' . $contact_name .' <' . $contact_email . ">\n";
-		$headers .= "X-Priority: 3\n";
-		$headers .= "X-MSMail-Priority: Normal\n";
-		$headers .= 'X-Mailer: PHP/' . phpversion() ."\n";
-		$headers .= "X-Component: com_groups \n";
-		$headers .= "X-Component-Object: Group Calendar Event Registration \n";
-		if (mail($to, $subject, $message, $headers, $args)) 
-		{
-			return(1);
-		}
-		return(0);
+		// create message object
+		$message = new \Hubzero\Mail\Message();
+		
+		// set message details and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($to)
+				->addPart($body, 'text/plain')
+				->addHeader('X-Component', 'com_groups')
+				->addHeader('X-Component-Object', 'Group Calendar Event Registration')
+				->send();
+		
+		// add good
+		return true;
 	}
 }

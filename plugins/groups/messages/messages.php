@@ -426,45 +426,60 @@ class plgGroupsMessages extends Hubzero_Plugin
 			break;
 		}
 
-		$message .= "\r\n------------------------------------------------\r\n\r\n";
-
 		// Incoming message and subject
-		$subject = JRequest::getVar('subject', JText::_('PLG_GROUPS_MESSAGES_SUBJECT'));
-		$message .= JRequest::getVar('message', '');
+		$s = JRequest::getVar('subject', JText::_('PLG_GROUPS_MESSAGES_SUBJECT'));
+		$m = JRequest::getVar('message', '');
 
 		// Ensure we have a message
-		if (!$subject || !$message) 
+		if (!$s || !$m) 
 		{
 			$html  = '<p class="error">You must enter all required fields</p>';
 			$html .= $this->_create();
 			return $html;
 		}
-
-		// Add a link to the group page to the bottom of the message
+		
+		// get all group members
+		$recipients = array();
+		foreach ($mbrs as $mbr)
+		{
+			if ($profile = Hubzero_User_Profile::getInstance($mbr))
+			{
+				$recipients[$profile->get('email')] = $profile->get('name');
+			}
+		}
+		
+		// define from details
+		$config = JFactory::getConfig();
+		$from = array(
+			'name'  => $this->group->get('description') . " Group on " . $config->getValue("fromname"),
+			'email' => $config->getValue("mailfrom")
+		);
+		
+		// create url
 		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
 		$sef = ltrim($sef, DS);
-
-		$message .= "\r\n\r\n------------------------------------------------\r\n". $juri->base().$sef . "\r\n";
-
-		// Build the "from" data for the e-mail
-		$from = array();
-		$config = JFactory::getConfig();
-		$from['name'] = $this->group->get('description') . " Group on " . $config->getValue("fromname");
-		$from['email'] = $config->getValue("mailfrom");
-		$from['replytoname'] = 'DO NOT REPLY TO THIS MESSAGE';
-		$from['replytoemail'] = 'do-not-reply@' . $_SERVER['HTTP_HOST'];
 		
-		//append "on behalf..." to subject
-		$subject .= " [Email sent on Behalf of " . $juser->get('name') . "]";
+		// create subject
+		$subject = $s . " [Email sent on Behalf of " . $juser->get('name') . "]";
 		
-		// Send the message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $message, $from, $mbrs, $this->_option, null, '', $group_id))) 
-		{
-			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
-		}
+		//message
+		$plain  = JText::sprintf('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn')); 
+		$plain .= "\r\n------------------------------------------------\r\n\r\n";
+		$plain .= $m;
+		
+		// create message
+		$plain .= "\r\n\r\n------------------------------------------------\r\n". $juri->base().$sef . "\r\n";
+		
+		// create message object
+		$message = new \Hubzero\Mail\Message();
+		
+		// set message details and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($recipients)
+				->addPart($plain, 'text/plain')
+				->send();
 		
 		// Log the action
 		if ($action) 

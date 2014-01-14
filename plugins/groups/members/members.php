@@ -444,12 +444,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 			'action'    => 'membership_approved',
 			'comments'  => $users
 		));
-
-		// Notify the site administrator?
-		if ($admchange) 
-		{
-			$this->notifyAdmin($admchange);
-		}
 	}
 
 	/**
@@ -521,12 +515,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 			'action'    => 'membership_promoted',
 			'comments'  => $users
 		));
-
-		// Notify the site administrator?
-		if ($admchange) 
-		{
-			$this->notifyAdmin($admchange);
-		}
 
 		$start = JRequest::getVar("limitstart", 0);
 		$limit = JRequest::getVar("limit", 25);
@@ -611,12 +599,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 			'action'    => 'membership_demoted',
 			'comments'  => $users
 		));
-		
-		// Notify the site administrator?
-		if ($admchange) 
-		{
-			$this->notifyAdmin($admchange);
-		}
 
 		$start = JRequest::getVar("limitstart", 0);
 		$limit = JRequest::getVar("limit", 25);
@@ -766,12 +748,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 			'action'    => 'membership_removed',
 			'comments'  => $users_mem
 		));
-
-		// Notify the site administrator?
-		if ($admchange) 
-		{
-			$this->notifyAdmin($admchange);
-		}
 	}
 
 	/**
@@ -906,12 +882,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 			'action'    => 'membership_denied',
 			'comments'  => $users
 		));
-
-		// Notify the site administrator?
-		if (count($users) > 0) 
-		{
-			$this->notifyAdmin($admchange);
-		}
 	}
 
 	/**
@@ -1038,12 +1008,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 			'action'    => 'membership_invite_cancelled',
 			'comments'  => array_merge($users, $user_emails)
 		));
-
-		// Notify the site administrator?
-		if (count($users) > 0) 
-		{
-			$this->notifyAdmin($admchange);
-		}
 	}
 	
 	public function addRole()
@@ -1324,89 +1288,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 	}
 
 	/**
-	 * Notify administrator(s) of changes
-	 * 
-	 * @param      string $admchange Log of changes made
-	 * @return     void
-	 */
-	private function notifyAdmin($admchange='')
-	{
-		// Load needed plugins
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-
-		// Build the message based upon the action chosen
-		switch (strtolower($this->action))
-		{
-			case 'approve':
-				$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_APPROVED');
-				$type = 'groups_requests_status';
-
-				if (!$dispatcher->trigger('onTakeAction', array('groups_requests_membership', $this->group->get('managers'), $this->_option, $this->group->get('gidNumber')))) 
-				{
-					$this->setError(JText::_('PLG_GROUPS_MESSAGES_ERROR_TAKE_ACTION_FAILED'));
-				}
-			break;
-
-			case 'confirmdeny':
-				$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_DENIED');
-				$type = 'groups_requests_status';
-
-				if (!$dispatcher->trigger('onTakeAction', array('groups_requests_membership', $this->group->get('managers'), $this->_option, $this->group->get('gidNumber')))) 
-				{
-					$this->setError(JText::_('PLG_GROUPS_MESSAGES_ERROR_TAKE_ACTION_FAILED'));
-				}
-			break;
-
-			case 'confirmremove':
-				$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_CANCELLED');
-				$type = 'groups_cancelled_me';
-			break;
-
-			case 'confirmcancel':
-				$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT_INVITATION_CANCELLED');
-				$type = 'groups_cancelled_me';
-			break;
-
-			case 'promote':
-				$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT_NEW_MANAGER');
-				$type = 'groups_membership_status';
-			break;
-
-			case 'demote':
-				$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT_REMOVED_MANAGER');
-				$type = 'groups_membership_status';
-			break;
-		}
-
-		// Get the site configuration
-		$jconfig = JFactory::getConfig();
-
-		// Build the URL to attach to the message
-		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
-		$sef = ltrim($sef, DS);
-
-		// Message
-		$message  = "You are receiving this message because you belong to a group on ".$jconfig->getValue('config.sitename').", and that group has been modified. Here are some details:\r\n\r\n";
-		$message .= "\t GROUP: ". $this->group->get('description') ." (".$this->group->get('cn').") \r\n";
-		$message .= "\t ".strtoupper($subject).": \r\n";
-		$message .= $admchange." \r\n\r\n";
-		$message .= "Questions? Click on the following link to manage the users in this group:\r\n";
-		$message .= $juri->base() . $sef . "\r\n";
-
-		// Build the "from" data for the e-mail
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
-
-		// Send the message
-		//if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, $this->group->get('managers'), $this->_option))) {
-		//	$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'));
-		//}
-	}
-
-	/**
 	 * Notify user of changes
 	 * 
 	 * @param      object $targetuser User to message
@@ -1416,18 +1297,19 @@ class plgGroupsMembers extends Hubzero_Plugin
 	{
 		// Get the group information
 		$group = $this->group;
-
+		
 		// Build the SEF referenced in the message
 		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
-		$sef = ltrim($sef, DS);
-
+		$sef  = JRoute::_('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
+		$sef  = ltrim($sef, DS);
+		
 		// Get the site configuration
 		$jconfig = JFactory::getConfig();
-
+		
 		// Start building the subject
 		$subject = '';
-
+		$plain   = '';
+		
 		// Build the e-mail based upon the action chosen
 		switch (strtolower($this->action))
 		{
@@ -1436,11 +1318,9 @@ class plgGroupsMembers extends Hubzero_Plugin
 				$subject .= JText::_('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_APPROVED');
 
 				// Message
-				$message  = "Your request for membership in the " . $group->get('description') . " group has been approved.\r\n";
-				$message .= "To view this group go to: \r\n";
-				$message .= $juri->base() . $sef . "\r\n";
-
-				$type = 'groups_approved_denied';
+				$plain  = "Your request for membership in the " . $group->get('description') . " group has been approved.\r\n";
+				$plain .= "To view this group go to: \r\n";
+				$plain .= $juri->base() . $sef . "\r\n";
 			break;
 
 			case 'confirmdeny':
@@ -1451,17 +1331,15 @@ class plgGroupsMembers extends Hubzero_Plugin
 				$subject .= JText::_('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_DENIED');
 
 				// Message
-				$message  = "Your request for membership in the " . $group->get('description') . " group has been denied.\r\n\r\n";
+				$plain  = "Your request for membership in the " . $group->get('description') . " group has been denied.\r\n\r\n";
 				if ($reason) 
 				{
-					$message .= stripslashes($reason)."\r\n\r\n";
+					$plain .= stripslashes($reason)."\r\n\r\n";
 				}
-				$message .= "If you feel this is in error, you may try to join the group again, \r\n";
-				$message .= "this time better explaining your credentials and reasons why you should be accepted.\r\n\r\n";
-				$message .= "To join the group go to: \r\n";
-				$message .= $juri->base() . $sef . "\r\n";
-
-				$type = 'groups_approved_denied';
+				$plain .= "If you feel this is in error, you may try to join the group again, \r\n";
+				$plain .= "this time better explaining your credentials and reasons why you should be accepted.\r\n\r\n";
+				$plain .= "To join the group go to: \r\n";
+				$plain .= $juri->base() . $sef . "\r\n";
 			break;
 
 			case 'confirmremove':
@@ -1472,15 +1350,13 @@ class plgGroupsMembers extends Hubzero_Plugin
 				$subject .= JText::_('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_CANCELLED');
 
 				// Message
-				$message  = "Your membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
+				$plain  = "Your membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
 				if ($reason) 
 				{
-					$message .= stripslashes($reason)."\r\n\r\n";
+					$plain .= stripslashes($reason)."\r\n\r\n";
 				}
-				$message .= "If you feel this is in error, you may try to join the group again by going to:\r\n";
-				$message .= $juri->base() . $sef . "\r\n";
-
-				$type = 'groups_cancelled_me';
+				$plain .= "If you feel this is in error, you may try to join the group again by going to:\r\n";
+				$plain .= $juri->base() . $sef . "\r\n";
 			break;
 
 			case 'confirmcancel':
@@ -1491,30 +1367,31 @@ class plgGroupsMembers extends Hubzero_Plugin
 				$subject .= JText::_('PLG_GROUPS_MESSAGES_SUBJECT_INVITATION_CANCELLED');
 
 				// Message
-				$message  = "Your invitation for membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
+				$plain  = "Your invitation for membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
 				if ($reason) 
 				{
-					$message .= stripslashes($reason)."\r\n\r\n";
+					$plain .= stripslashes($reason)."\r\n\r\n";
 				}
-				$message .= "If you feel this is in error, you may try to join the group by going to:\r\n";
-				$message .= $juri->base() . $sef . "\r\n";
-
-				$type = 'groups_cancelled_me';
+				$plain .= "If you feel this is in error, you may try to join the group by going to:\r\n";
+				$plain .= $juri->base() . $sef . "\r\n";
 			break;
 		}
-
+		
 		// Build the "from" data for the e-mail
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
-
-		// Send the message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, array($targetuser->get('id')), $this->_option))) 
-		{
-			$this->setError(JText::_('PLG_GROUPS_MESSAGES_ERROR_MSG_MEMBERS_FAILED'));
-		}
+		$from = array(
+			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+			'email' => $jconfig->getValue('config.mailfrom')
+		);
+		
+		// create message object
+		$message = new \Hubzero\Mail\Message();
+		
+		// set message details and send
+		$message->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->setTo($targetuser->get('email'))
+				->addPart($plain, 'text/plain')
+				->send();
 	}
 
 	/**
@@ -1540,39 +1417,39 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$reason = JRequest::getVar('reason', '', 'post');
 
 		// Build the "from" info for e-mails
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from = array(
+			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+			'email' => $jconfig->getValue('config.mailfrom')
+		);
 
 		//create the subject
 		$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT_INVITATION_CANCELLED');
 
 		//create the message body
-		$message  = "Your invitation for membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
+		$plain  = "Your invitation for membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
 		if ($reason) 
 		{
-			$message .= stripslashes($reason)."\r\n\r\n";
+			$plain .= stripslashes($reason)."\r\n\r\n";
 		}
-		$message .= "If you feel this is in error, you may try to join the group by going to:\r\n";
-		$message .= $juri->base() . $sef . "\r\n";
+		$plain .= "If you feel this is in error, you may try to join the group by going to:\r\n";
+		$plain .= $juri->base() . $sef . "\r\n";
 
 		//send the message
 		if ($email) 
 		{
-			$args = "-f '" . $from['email'] . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			$headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $from['name'] ."\n";
-			if (mail($email, $subject, $message, $headers, $args)) 
-			{
-				return true;
-			}
+			// create message object
+			$message = new \Hubzero\Mail\Message();
+		
+			// set message details and send
+			$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->setTo($email)
+					->addPart($plain, 'text/plain')
+					->send();
 		}
-		return false;
+		
+		// all good
+		return true;
 	}
 }
 
