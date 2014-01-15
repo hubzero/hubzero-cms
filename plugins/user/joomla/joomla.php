@@ -252,7 +252,7 @@ class plgUserJoomla extends JPlugin
 		$instance->set('id'			, 0);
 		$instance->set('name'			, $user['fullname']);
 		$instance->set('username'		, $user['username']);
-		$instance->set('password_clear'	, $user['password_clear']);
+		$instance->set('password_clear'	, ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
 		$instance->set('email'			, $user['email']);	// Result should contain an email (check)
 		$instance->set('usertype'		, 'deprecated');
 		$instance->set('groups'		, array($defaultUserGroup));
