@@ -101,9 +101,11 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$app = JFactory::getApplication();
+		$app  = JFactory::getApplication();
+		$juri = JURI::getInstance();
 
-		$jsession = JFactory::getSession();
+		$jsession   = JFactory::getSession();
+		$b64dreturn = '';
 
 		// Check to see if a return parameter was specified
 		if($return = JRequest::getVar('return', '', 'method', 'base64'))
@@ -120,8 +122,9 @@ class plgAuthenticationLinkedIn extends JPlugin
 		$com_user = (version_compare(JVERSION, '2.5', 'ge')) ? 'com_users' : 'com_user';
 
 		// Set up linkedin configuration
-		$linkedin_config['appKey']    = $this->params->get('api_key');
-		$linkedin_config['appSecret'] = $this->params->get('app_secret');
+		$linkedin_config['appKey']      = $this->params->get('api_key');
+		$linkedin_config['appSecret']   = $this->params->get('app_secret');
+		$linkedin_config['callbackUrl'] = trim($juri->base(), DS) . DS . "index.php?option={$com_user}&view=login";
 
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
@@ -243,11 +246,14 @@ class plgAuthenticationLinkedIn extends JPlugin
 	{
 		// Make sure we have authorization
 		$jsession = JFactory::getSession();
+		$juri     = JURI::getInstance();
+
 		if($jsession->get('linkedin.oauth.authorized') == TRUE)
 		{
 			// User initiated LinkedIn connection, set up config
-			$linkedin_config['appKey']    = $this->params->get('api_key');
-			$linkedin_config['appSecret'] = $this->params->get('app_secret');
+			$linkedin_config['appKey']      = $this->params->get('api_key');
+			$linkedin_config['appSecret']   = $this->params->get('app_secret');
+			$linkedin_config['callbackUrl'] = trim($juri->base(), DS) . DS . "index.php?option=com_users&view=login";
 
 			// Create the object
 			$linkedin_client = new LinkedIn($linkedin_config);
