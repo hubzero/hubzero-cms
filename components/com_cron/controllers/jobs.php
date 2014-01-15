@@ -97,7 +97,7 @@ class CronControllerJobs extends Hubzero_Controller
 					continue;
 				}
 
-				$job->set('last_run', JFactory::getDate()->toSql());
+				$job->set('last_run', JHTML::_('date', JFactory::getDate(), 'Y-m-d H:i:s')); //JFactory::getDate()->toSql());
 				$job->set('next_run', $job->nextRun());
 				$job->store();
 

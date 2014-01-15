@@ -86,7 +86,7 @@ class CronControllerScripts extends JObject
 
 				$cron = Cron\CronExpression::factory($row->recurrence);
 
-				$json['last_run'] = $model->last_run = JFactory::getDate()->toSql();
+				$json['last_run'] = $model->last_run = JHTML::_('date', JFactory::getDate(), 'Y-m-d H:i:s'); //JFactory::getDate()->toSql();
 				$json['next_run'] = $model->next_run = $cron->getNextRunDate()->format('Y-m-d H:i:s');
 				$json['active']   = $model->active   = 1;
 
