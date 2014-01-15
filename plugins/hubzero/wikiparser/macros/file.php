@@ -507,27 +507,26 @@ class FileMacro extends WikiMacro
 				$juri = JURI::getInstance();
 				$rand = rand(0, 100000);
 
-				$html  = '<script type="text/javascript" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>' . "\n";
-				$html .= '<script type="text/javascript">' . "\n";
-				$html .= '<!--
-							function GetUnity() {
-								if (typeof unityObject!= "undefined") {
-									return unityObject.getObjectById("unityPlayer' . $rand . '");
-								}
-								return null;
-							}
-							if (typeof unityObject!= "undefined") {
-								unityObject.embedUnity("unityPlayer' . $rand . '", "' . $attr['href'] . '", ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');
-							}
-							-->' . "\n";
-				$html .= '</script>' . "\n";
-				$html .= '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><div id="unityPlayer' . $rand . '">
-							<div class="missing-plugin">
-								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+				$html  = '<script type="text/javascript" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js"></script>' . "\n";
+				$html .= '<div id="unityPlayer' . $rand . '">
+							<div class="missing">
+								<a href="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'unity3d.com/webplayer/" title="Unity Web Player. Install now!">
 									<img alt="Unity Web Player. Install now!" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
-						</div></div>' . "\n";
+						</div>' . "\n";
+				$html .= '<script type="text/javascript">' . "\n";
+				$html .= '<!--
+							var config = {
+								width: '.intval($attr['width']).', 
+								height: '.intval($attr['height']).',
+								params: { enableDebugging:"0" }
+							}
+							var u = new UnityObject2(config);
+							var unityObject = $("#unityPlayer'.$rand.'");
+							u.initPlugin(unityObject, "'.$attr['href'].'");
+							-->' . "\n";
+				$html .= '</script>' . "\n";
 			break;
 
 			case 'cdf':
