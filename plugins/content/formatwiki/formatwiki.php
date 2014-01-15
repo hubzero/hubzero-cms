@@ -60,8 +60,9 @@ class plgContentFormatwiki extends JPlugin
 			return;
 		}
 
-		if (!strstr('</', $content))
+		if (!strstr($content, '</'))
 		{
+			
 			if ($this->params->get('applyFormat'))
 			{
 				$content = '<!-- {FORMAT:WIKI} -->' . $content;
@@ -91,11 +92,6 @@ class plgContentFormatwiki extends JPlugin
 
 		$content = $article->get($key);
 
-		/*if (substr($content, 0, strlen('<!-- {FORMAT:WIKI} -->')) != '<!-- {FORMAT:WIKI} -->')
-		{
-			return;
-		}*/
-
 		// Is there a format already applied?
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
 		{
@@ -123,7 +119,6 @@ class plgContentFormatwiki extends JPlugin
 			}
 		}
 
-		//$content = substr($content, strlen('<!-- {FORMAT:WIKI} -->'));
 		$content = preg_replace('/^(<!-- \{FORMAT:WIKI\} -->)/i', '', $content);
 
 		$dispatcher = JDispatcher::getInstance();

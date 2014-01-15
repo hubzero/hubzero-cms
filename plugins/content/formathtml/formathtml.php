@@ -64,20 +64,27 @@ class plgContentFormathtml extends JPlugin
 			}
 		}
 		// No format applied
-		elseif (strstr('</', $content))
+		elseif (strstr($content, '</'))
 		{
 			// Force apply a format?
-			if ($this->params->get('applyFormat'))
+			/*if ($this->params->get('applyFormat'))
 			{
 				$content = '<!-- {FORMAT:HTML} -->' . $content;
 			}
-			else
+			else*/
+			if (!$this->params->get('applyFormat'))
 			{
 				return;
 			}
 		}
 
 		//$content = \Hubzero\Utility\Sanitize::html($content);
+
+		if ($this->params->get('applyFormat'))
+		{
+			$content = preg_replace('/^(<!-- \{FORMAT:HTML\} -->)/i', '', $content);
+			$content = '<!-- {FORMAT:HTML} -->' . $content;
+		}
 
 		$article->set($key, $content);
 	}
@@ -99,7 +106,7 @@ class plgContentFormathtml extends JPlugin
 
 		$key = $this->_key($context);
 
-		$content = $article->get($key);
+		$content = ltrim($article->get($key));
 
 		// Is there a format already applied?
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
