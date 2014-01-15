@@ -261,7 +261,7 @@ class ForumModelThread extends ForumModelPost
 	 * 
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Clear cached data?
-	 * @return     object \Hubzero\ItemList
+	 * @return     object \Hubzero\Base\ItemList
 	 */
 	public function participants($filters=array(), $clear=false)
 	{
@@ -285,7 +285,7 @@ class ForumModelThread extends ForumModelPost
 	 * Get a list of attachments in this thread
 	 * 
 	 * @param      array $filters Filters to build query from
-	 * @return     object \Hubzero\ItemList
+	 * @return     object \Hubzero\Base\ItemList
 	 */
 	public function attachments($rtrn='list', $clear=false)
 	{

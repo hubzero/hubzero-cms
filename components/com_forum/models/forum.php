@@ -273,7 +273,7 @@ class ForumModel extends ForumModelAbstract
 	 * @param      string  $rtrn    Data to return
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear cached results?
-	 * @return     object \Hubzero\ItemList
+	 * @return     object \Hubzero\Base\ItemList
 	 */
 	public function posts($rtrn='list', $filters=array(), $clear=false)
 	{
