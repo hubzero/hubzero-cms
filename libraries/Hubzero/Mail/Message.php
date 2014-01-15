@@ -142,6 +142,9 @@ class Message extends \Swift_Message
 		$mailer = \Swift_Mailer::newInstance($transport);
 		$result = $mailer->send($this, $this->_failures);
 
+		$log = \Hubzero_Factory::getLogger();
+		$log->info(\JText::sprintf('Mail sent to %s', json_encode($this->getTo())));
+
 		return $result;
 	}
 
