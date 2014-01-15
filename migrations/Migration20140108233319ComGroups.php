@@ -22,6 +22,12 @@ class Migration20140108233319ComGroups extends Hubzero_Migration
 		// get group folders
 		$groupFolders = JFolder::folders( $base, '.', false, true );
 		
+		// make sure we have one!
+		if (count($groupFolders) < 1)
+		{
+			return;
+		}
+		
 		// loop through group folders
 		foreach ($groupFolders as $groupFolder)
 		{
