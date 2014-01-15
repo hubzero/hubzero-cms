@@ -34,10 +34,10 @@ defined('_JEXEC') or die('Restricted access');
 // include needed modelss
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'version.php';
 
-class GroupsModelPageVersionArchive extends \Hubzero\Model
+class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 {
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
@@ -82,7 +82,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_versions instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_versions instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					// make sure we have page id
 					if (!isset($filters['pageid']))
@@ -97,7 +97,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Model
 							$results[$key] = new GroupsModelPageVersion($result);
 						}
 					}
-					$this->_versions = new \Hubzero\ItemList($results);
+					$this->_versions = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_versions;
 			break;

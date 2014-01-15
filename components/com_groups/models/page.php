@@ -39,7 +39,7 @@ require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_g
 // include models 
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'version' . DS . 'archive.php';
 
-class GroupsModelPage extends \Hubzero\Model
+class GroupsModelPage extends \Hubzero\Base\Model
 {
 	/**
 	 * JTable
@@ -58,7 +58,7 @@ class GroupsModelPage extends \Hubzero\Model
 	/**
 	 * Versions List
 	 * 
-	 * @var \Hubzero\ItemList
+	 * @var \Hubzero\Base\ItemList
 	 */
 	protected $_versions = null;
 	
@@ -116,7 +116,7 @@ class GroupsModelPage extends \Hubzero\Model
 	 * Load Page Version
 	 *
 	 * @param     mixed            Version Id
-	 * @return    Hubzero\Model    Page Version Object
+	 * @return    Hubzero\Base\Model    Page Version Object
 	 */
 	public function version( $vid = null )
 	{
@@ -144,7 +144,7 @@ class GroupsModelPage extends \Hubzero\Model
 	/**
 	 * Load Page Category
 	 *
-	 * @return    Hubzero\Model    Page Category Object
+	 * @return    Hubzero\Base\Model    Page Category Object
 	 */
 	public function category()
 	{
@@ -159,7 +159,7 @@ class GroupsModelPage extends \Hubzero\Model
 	/**
 	 * Load Approved Page version
 	 *
-	 * @return    Hubzero\Model    Page Version Object
+	 * @return    Hubzero\Base\Model    Page Version Object
 	 */
 	public function approvedVersion()
 	{

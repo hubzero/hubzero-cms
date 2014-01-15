@@ -34,10 +34,10 @@ defined('_JEXEC') or die('Restricted access');
 // include needed modelss
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category.php';
 
-class GroupsModelPageCategoryArchive extends \Hubzero\Model
+class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 {
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
@@ -72,7 +72,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_categories instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_categories instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new GroupsTablePageCategory($this->_db);
 					if ($results = $tbl->find( $filters ))
@@ -82,7 +82,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Model
 							$results[$key] = new GroupsModelPageCategory($result);
 						}
 					}
-					$this->_categories = new \Hubzero\ItemList($results);
+					$this->_categories = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_categories;
 			break;

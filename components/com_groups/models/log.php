@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 // include needed jtables
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'log.php';
 
-class GroupsModelLog extends \Hubzero\Model
+class GroupsModelLog extends \Hubzero\Base\Model
 {
 	/**
 	 * GroupsTablePageCategory

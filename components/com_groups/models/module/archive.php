@@ -38,7 +38,7 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' 
 class GroupsModelModuleArchive extends JObject
 {
 	/**
-	 * \Hubzero\Model
+	 * \Hubzero\Base\Model
 	 * 
 	 * @var object
 	 */
@@ -125,7 +125,7 @@ class GroupsModelModuleArchive extends JObject
 						}
 					}
 				}
-				return new \Hubzero\ItemList($unapproved);
+				return new \Hubzero\Base\ItemList($unapproved);
 			break;
 			case 'list':
 			default:
@@ -137,7 +137,7 @@ class GroupsModelModuleArchive extends JObject
 						$results[$key] = new GroupsModelModule($result);
 					}
 				}
-				$this->_modules = new \Hubzero\ItemList($results);
+				$this->_modules = new \Hubzero\Base\ItemList($results);
 				return $this->_modules;
 			break;
 		}

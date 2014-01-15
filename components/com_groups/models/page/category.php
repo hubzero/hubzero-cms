@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 // include needed jtables
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . DS . 'tables' . DS . 'page.category.php';
 
-class GroupsModelPageCategory extends \Hubzero\Model
+class GroupsModelPageCategory extends \Hubzero\Base\Model
 {
 	/**
 	 * GroupsTablePageCategory
@@ -51,7 +51,7 @@ class GroupsModelPageCategory extends \Hubzero\Model
 	protected $_tbl_name = 'GroupsTablePageCategory';
 	
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
@@ -103,7 +103,7 @@ class GroupsModelPageCategory extends \Hubzero\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_pages instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_pages instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->find($filters))
 					{
@@ -112,7 +112,7 @@ class GroupsModelPageCategory extends \Hubzero\Model
 							$results[$key] = new GroupsModelPage($result);
 						}
 					}
-					$this->_pages = new \Hubzero\ItemList($results);
+					$this->_pages = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_pages;
 			break;

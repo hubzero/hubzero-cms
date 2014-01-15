@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class GroupsModelModuleMenu extends \Hubzero\Model
+class GroupsModelModuleMenu extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name

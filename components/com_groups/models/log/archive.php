@@ -34,10 +34,10 @@ defined('_JEXEC') or die('Restricted access');
 // include needed models
 require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'log.php';
 
-class GroupsModelLogArchive extends \Hubzero\Model
+class GroupsModelLogArchive extends \Hubzero\Base\Model
 {
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
@@ -88,7 +88,7 @@ class GroupsModelLogArchive extends \Hubzero\Model
 		{
 			case 'list':
 			default:
-				if (!($this->_logs instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_logs instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new GroupsTableLog($this->_db);
 					if ($results = $tbl->find( $filters ))
@@ -98,7 +98,7 @@ class GroupsModelLogArchive extends \Hubzero\Model
 							$results[$key] = new GroupsModelLog($result);
 						}
 					}
-					$this->_logs = new \Hubzero\ItemList($results);
+					$this->_logs = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_logs;
 			break;

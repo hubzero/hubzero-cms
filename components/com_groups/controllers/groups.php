@@ -577,7 +577,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 * Check to see if group have a home page override
 	 * 
 	 * @param    object    $group    Hubzero_Group Object
-	 * @param    array     $pages    \Hubzero\ItemList
+	 * @param    array     $pages    \Hubzero\Base\ItemList
 	 * @return   object
 	 */
 	private function addHomePage( $group, $pages = null )

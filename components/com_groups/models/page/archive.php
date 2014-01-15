@@ -38,7 +38,7 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' 
 class GroupsModelPageArchive extends JObject
 {
 	/**
-	 * \Hubzero\Model
+	 * \Hubzero\Base\Model
 	 * 
 	 * @var object
 	 */
@@ -137,11 +137,11 @@ class GroupsModelPageArchive extends JObject
 						}
 					}
 				}
-				return new \Hubzero\ItemList($unapproved);
+				return new \Hubzero\Base\ItemList($unapproved);
 			break;
 			case 'list':
 			default:
-				if (!($this->_pages instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_pages instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new GroupsTablePage($this->_db);
 					if ($results = $tbl->find( $filters ))
@@ -151,7 +151,7 @@ class GroupsModelPageArchive extends JObject
 							$results[$key] = new GroupsModelPage($result);
 						}
 					}
-					$this->_pages = new \Hubzero\ItemList($results);
+					$this->_pages = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_pages;
 			break;

@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'module.php';
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'module.menu.php';
 
-class GroupsModelModule extends \Hubzero\Model
+class GroupsModelModule extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
@@ -79,7 +79,7 @@ class GroupsModelModule extends \Hubzero\Model
 	 * @param     $rtrn       What do we want back
 	 * @param     $filters    Array of filters to use when getting menu
 	 * @param     $clear      Fetch an updated list
-	 * @return    \Hubzero\ItemList
+	 * @return    \Hubzero\Base\ItemList
 	 */
 	public function menu( $rtrn = 'list', $filters = array(), $clear = false )
 	{
@@ -96,7 +96,7 @@ class GroupsModelModule extends \Hubzero\Model
 		{
 			case 'list':
 			default:
-				if (!($this->_menu_items instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_menu_items instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->getMenu( $filters ))
 					{
@@ -109,7 +109,7 @@ class GroupsModelModule extends \Hubzero\Model
 					{
 						$results = array();
 					}
-					$this->_menu_items = new \Hubzero\ItemList($results);
+					$this->_menu_items = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_menu_items;
 			break;
