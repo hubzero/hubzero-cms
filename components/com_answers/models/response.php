@@ -56,7 +56,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	protected $_scope = 'answer';
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */

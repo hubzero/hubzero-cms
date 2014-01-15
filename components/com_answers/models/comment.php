@@ -53,7 +53,7 @@ class AnswersModelComment extends AnswersModelAbstract
 	protected $_scope = 'answercomment';
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */

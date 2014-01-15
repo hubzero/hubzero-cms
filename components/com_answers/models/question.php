@@ -88,7 +88,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	private $_comment = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
