@@ -29,12 +29,13 @@ class UsersControllerUser extends UsersController
 		$app = JFactory::getApplication();
 
 		// Populate the data array:
-		$data = array();
-		$data['return'] = base64_decode(JRequest::getVar('return', '', 'POST', 'BASE64'));
+		$data             = array();
+		$options          = array();
+		$data['return']   = base64_decode(JRequest::getVar('return', '', 'POST', 'BASE64'));
 		$data['username'] = JRequest::getVar('username', '', 'method', 'username');
 		$data['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
-		$authenticator = JRequest::getVar('authenticator', '', 'method');
+		$authenticator    = JRequest::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the login method for that plugin
 		if (!empty($authenticator)) {
@@ -56,11 +57,13 @@ class UsersControllerUser extends UsersController
 						$myplugin = new $className($this,(array)$plugin);
 
 						$myplugin->login($credentials, $options);
-						
+
 						if (isset($options['return'])) {
 								$data['return'] = $options['return'];
 						}
 					}
+
+					$options['authenticator'] = $authenticator;
 
 					break;
 				}
@@ -204,8 +207,14 @@ class UsersControllerUser extends UsersController
 			{
 				ximport('Hubzero_Auth_Link');
 				ximport('Hubzero_Auth_Domain');
-				$auth_domain_id   = Hubzero_Auth_Link::find_by_id($juser->auth_link_id)->auth_domain_id;
-				$auth_domain_name = Hubzero_Auth_Domain::find_by_id($auth_domain_id)->authenticator;
+				$auth_domain_name = '';
+				$auth_domain      = Hubzero_Auth_Link::find_by_id($juser->auth_link_id);
+
+				if (is_object($auth_domain))
+				{
+					$auth_domain_id   = $auth_domain->auth_domain_id;
+					$auth_domain_name = Hubzero_Auth_Domain::find_by_id($auth_domain_id)->authenticator;
+				}
 
 				// Redirect to user third party signout view
 				// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
@@ -405,7 +414,7 @@ class UsersControllerUser extends UsersController
 
 					$myplugin = new $className($this,(array)$plugin);
 
-					$myplugin->link($credentials, $options);
+					$myplugin->link();
 				} else {
 					// No Link method is availble
 					$app->redirect(JRoute::_('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
