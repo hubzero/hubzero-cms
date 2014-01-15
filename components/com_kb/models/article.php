@@ -67,7 +67,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	private $_section = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */

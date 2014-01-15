@@ -54,7 +54,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	private $_parent = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
@@ -68,7 +68,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	private $_children_count = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */

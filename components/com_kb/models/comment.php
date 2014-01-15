@@ -47,7 +47,7 @@ class KbModelComment extends \Hubzero\Base\Model
 	protected $_tbl_name = 'KbTableComment';
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */

@@ -46,7 +46,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 	private $_category = null;
 
 	/**
-	 * \Hubzero\Model
+	 * \Hubzero\Base\Model
 	 * 
 	 * @var object
 	 */
@@ -60,7 +60,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 	private $_categories_count = null;
 
 	/**
-	 * \Hubzero\Model
+	 * \Hubzero\Base\Model
 	 * 
 	 * @var object
 	 */
@@ -246,7 +246,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 	{
 		if (!isset($filters['state']))
 		{
-			$filters['state']  = \Hubzero\Model::APP_STATE_PUBLISHED;
+			$filters['state']  = \Hubzero\Base\Model::APP_STATE_PUBLISHED;
 		}
 		if (!isset($filters['access']))
 		{
