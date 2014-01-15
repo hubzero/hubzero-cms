@@ -12,12 +12,16 @@
 // define base path (without doc root)
 $base = rtrim(str_replace(JPATH_ROOT, '', __DIR__), DS);
 
+// check to see if were supposed to no display html (template frame)
+$no_html = JRequest::getInt('no_html', 0);
+
 // add stylesheets and scripts
 JFactory::getDocument()
 	->addStyleSheet( $base . DS . 'assets/css/main.css' )
 	->addScript( $base . DS . 'assets/js/main.js' );
 ?>
 
+<?php if (!$no_html) : ?>
 <group:include type="content" scope="before" />
 
 <div class="super-group-body-wrap group-<?php echo $this->group->get('cn'); ?>">
@@ -26,16 +30,16 @@ JFactory::getDocument()
 		
 		<div class="super-group-content-wrap">
 			<div class="super-group-content group_<?php echo $this->tab; ?>">
-				
 				<?php 
 					$show = array('members', 'resources', 'wiki', 'forum', 'blog', 'calendar', 'usage', 'wishlist', 'announcements');
 					if (in_array($this->tab, $show)) : ?>
 					<h2><?php echo ($this->tab == 'forum') ? 'Discussions' : ucfirst($this->tab); ?></h2>
 				<?php endif; ?>
-				
+<?php endif; ?>
 				<!-- ###  Start Content Include  ### -->
 					<group:include type="content" />
 				<!-- ###  End Content Include  ### -->
+<?php if (!$no_html) : ?>
 			</div>
 		</div>
 		
@@ -44,3 +48,4 @@ JFactory::getDocument()
 </div>
 
 <group:include type="googleanalytics" account="" />
+<?php endif; ?>
