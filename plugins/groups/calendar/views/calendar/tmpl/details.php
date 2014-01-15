@@ -98,7 +98,7 @@ $month = date("m", strtotime($this->event->publish_up));
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php $tz = Hubzero_Event_Helper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
+					<?php $tz = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
 					<?php echo JHTML::_('date', $this->event->publish_up, 'l, F d, Y @ g:i a'); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 					&mdash;
@@ -115,7 +115,7 @@ $month = date("m", strtotime($this->event->publish_up));
 				<th class="time"></th>
 				<td>
 					<?php echo JHTML::_('date', $this->event->publish_up, JText::_('TIME_FORMAT_HZ1')); ?>
-					<?php $tz = Hubzero_Event_Helper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
+					<?php $tz = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 				</td>
 			</tr>
@@ -131,14 +131,14 @@ $month = date("m", strtotime($this->event->publish_up));
 		<?php if (isset($this->event->contact_info) && $this->event->contact_info != '') : ?>
 			<tr>
 				<th class="author"></th>
-				<td colspan="3"><?php echo Hubzero_Event_Helper::autoLinkText( $this->event->contact_info ); ?></td>
+				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->contact_info ); ?></td>
 			</tr>
 		<?php endif; ?>
 		
 		<?php if (isset($this->event->extra_info) && $this->event->extra_info != '') : ?>
 			<tr>
 				<th class="url"></th>
-				<td colspan="3"><?php echo Hubzero_Event_Helper::autoLinkText( $this->event->extra_info ); ?></td>
+				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->extra_info ); ?></td>
 			</tr>
 		<?php endif; ?>
 		

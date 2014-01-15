@@ -32,12 +32,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Hubzero_Event_Helper Class
+ * Helper Class
  */
-class Hubzero_Event_Helper
+class plgGroupsCalendarHelper
 {
-	
-	public static function autoLinkText( $text )
+	/**
+	 * Link string patterns that ook like URLs or email addresses
+	 * 
+	 * @param      string $text Text to autolink
+	 * @return     string
+	 */
+	public static function autoLinkText($text)
 	{
 		//replace email links
 		$text = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $text);
@@ -48,9 +53,15 @@ class Hubzero_Event_Helper
 		//return auto-linked text
 		return $text;
 	}
-	
-	
-	public static function getTimezoneNameAndAbbreviation( $timezone )
+
+	/**
+	 * Gets an array of timezone abbreviation and name
+	 * based on supplied offset (to UTC) value
+	 * 
+	 * @param      string $timezone Timezone offset
+	 * @return     array
+	 */
+	public static function getTimezoneNameAndAbbreviation($timezone)
 	{
 		$abbreviations = array(
 			'-12'   => array('abbreviation' => 'IDLW',  'name' => 'International Date Line West'),
@@ -94,7 +105,7 @@ class Hubzero_Event_Helper
 			'13'    => array('abbreviation' => 'TOT',   'name' => 'Tonga Time'),
 			'14'    => array('abbreviation' => 'LINT',  'name' => 'Line Islands Time')
 		);
-		
+
 		return $abbreviations[$timezone];
 	}
 }

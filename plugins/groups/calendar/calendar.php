@@ -177,7 +177,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			$this->database = JFactory::getDBO();
 			
 			//include needed event libs
-			ximport('Hubzero_Event_Helper');
+			require __DIR__ . '/helper.php';
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'event.php' );
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'calendar.php' );
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'respondent.php' );
