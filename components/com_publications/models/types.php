@@ -83,8 +83,7 @@ class PublicationTypesHelper extends JObject
 	 */	
 	public function getTypes()
 	{
-		$dir  = JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS
-			. 'publications' . DS . 'helpers' . DS . 'types';
+		$dir  = JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
 			
 		$types = scandir($dir);
 		$bases = array();
@@ -112,8 +111,7 @@ class PublicationTypesHelper extends JObject
 			return false;
 		}
 		
-		$dir  = JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS
-			. 'publications' . DS . 'helpers' . DS . 'types';
+		$dir  = JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
 			
 		$types = scandir($dir);
 		
@@ -153,11 +151,11 @@ class PublicationTypesHelper extends JObject
 			return false;
 		}
 		
-		if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS
-			. 'publications' . DS . 'helpers' . DS . 'types' . DS . $base . '.php'))
+		if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS 
+			. 'models' . DS . 'types' . DS . $base . '.php'))
 		{
-			require_once(JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS
-				. 'publications' . DS . 'helpers' . DS . 'types' . DS . $base . '.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+				. DS . 'models' . DS . 'types' . DS . $base . '.php');
 				
 			$helperName = 'type' . ucfirst($base);
 			

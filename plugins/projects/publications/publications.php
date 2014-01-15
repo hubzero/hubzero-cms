@@ -196,8 +196,11 @@ class plgProjectsPublications extends JPlugin
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php' );
-		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'types.php' );
-		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'contrib.php' );
+		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' 
+			. DS . 'helpers' . DS . 'contrib.php' );
+			
+		// Import required models
+		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
 				
 		// Get task									
 		$this->_task = JRequest::getVar('action','');

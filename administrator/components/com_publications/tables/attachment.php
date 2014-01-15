@@ -332,7 +332,8 @@ class PublicationAttachment extends JTable
 		
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $vid . " AND type='" . $type . "'";
 		
-		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'contrib.php' );
+		// Import required models
+		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
 		
 		// Get types helper
 		$typeHelper = new PublicationTypesHelper($this->_db);		
@@ -374,7 +375,9 @@ class PublicationAttachment extends JTable
 		{
 			return false;
 		}
-		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'contrib.php' );
+		
+		// Import required models
+		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
 		
 		// Get types helper
 		$typeHelper = new PublicationTypesHelper($this->_db);		
