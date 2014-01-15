@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Base class for a plugin View
  */
-class Hubzero_Plugin_View extends \Hubzero\Object
+class Hubzero_Plugin_View extends \Hubzero\Base\Object
 {
 	/**
 	 * The name of the view

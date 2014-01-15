@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Serve up a file
  */
-class Hubzero_Content_Server extends \Hubzero\Object
+class Hubzero_Content_Server extends \Hubzero\Base\Object
 {
 	/**
 	 * File to serve up

@@ -30,7 +30,7 @@
 
 namespace Hubzero\Antispam\Adapter;
 
-use Hubzero\Object;
+use Hubzero\Base\Object;
 
 /**
  * Abstract Antispam adapter
