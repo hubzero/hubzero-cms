@@ -1,18 +1,38 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2014 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
 defined('_JEXEC') or die;
 
 /**
- * Plain Textarea Editor Plugin
- *
- * @package		Joomla.Plugin
- * @subpackage	Editors.none
- * @since		1.5
+ * CKEditor Plugin
  */
 class plgEditorCkeditor extends JPlugin
 {
@@ -20,20 +40,19 @@ class plgEditorCkeditor extends JPlugin
 	 * Base path for editor files
 	 */
 	protected $_basePath = 'media/editors/ckeditor/';
-	
+
 	/**
 	 * Method to handle the onInitEditor event.
 	 *  - Initialises the Editor
 	 *
-	 * @return	string	JavaScript Initialization string
-	 * @since 1.5
+	 * @return  string JavaScript Initialization string
 	 */
 	public function onInit()
 	{
 		// add ckeditor
 		$document = JFactory::getDocument();
-		$document->addScript( $this->_basePath . 'ckeditor.js' );
-		$document->addScript( $this->_basePath . '/adapters/jquery.js' );
+		$document->addScript(JURI::base(true) . '/' . $this->_basePath . 'ckeditor.js' );
+		$document->addScript(JURI::base(true) . '/' . $this->_basePath . 'adapters/jquery.js' );
 	}
 
 	/**
@@ -41,9 +60,9 @@ class plgEditorCkeditor extends JPlugin
 	 *
 	 * Not applicable in this editor.
 	 *
-	 * @return	void
+	 * @return  void
 	 */
-	function onSave()
+	public function onSave()
 	{
 		return;
 	}
@@ -51,11 +70,10 @@ class plgEditorCkeditor extends JPlugin
 	/**
 	 * Get the editor content.
 	 *
-	 * @param	string	$id		The id of the editor field.
-	 *
-	 * @return	string
+	 * @param   string $id The id of the editor field.
+	 * @return  string
 	 */
-	function onGetContent($id)
+	public function onGetContent($id)
 	{
 		return "document.getElementById('$id').value;\n";
 	}
@@ -63,22 +81,20 @@ class plgEditorCkeditor extends JPlugin
 	/**
 	 * Set the editor content.
 	 *
-	 * @param	string	$id		The id of the editor field.
-	 * @param	string	$html	The content to set.
-	 *
-	 * @return	string
+	 * @param   string $id   The id of the editor field.
+	 * @param   string $html The content to set.
+	 * @return  string
 	 */
-	function onSetContent($id, $html)
+	public function onSetContent($id, $html)
 	{
 		return "document.getElementById('$id').value = $html;\n";
 	}
 
 	/**
 	 * @param	string	$id
-	 *
 	 * @return	string
 	 */
-	function onGetInsertMethod($id)
+	public function onGetInsertMethod($id)
 	{
 		return true;
 	}
@@ -86,51 +102,55 @@ class plgEditorCkeditor extends JPlugin
 	/**
 	 * Display the editor area.
 	 *
-	 * @param	string	$name		The control name.
-	 * @param	string	$html		The contents of the text area.
-	 * @param	string	$width		The width of the text area (px or %).
-	 * @param	string	$height		The height of the text area (px or %).
-	 * @param	int		$col		The number of columns for the textarea.
-	 * @param	int		$row		The number of rows for the textarea.
-	 * @param	boolean	$buttons	True and the editor buttons will be displayed.
-	 * @param	string	$id			An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
-	 * @param	string	$asset
-	 * @param	object	$author
-	 * @param	array	$params		Associative array of editor parameters.
-	 *
-	 * @return	string
+	 * @param   string  $name    The control name.
+	 * @param   string  $html    The contents of the text area.
+	 * @param   string  $width   The width of the text area (px or %).
+	 * @param   string  $height  The height of the text area (px or %).
+	 * @param   int     $col     The number of columns for the textarea.
+	 * @param   int     $row     The number of rows for the textarea.
+	 * @param   boolean $buttons True and the editor buttons will be displayed.
+	 * @param   string  $id      An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
+	 * @param   string  $asset
+	 * @param   object  $author
+	 * @param   array   $params  Associative array of editor parameters.
+	 * @return  string
 	 */
-	function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
+	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{
-		//make sure we have an id too
+		// make sure we have an id too
 		if (empty($id)) 
 		{
 			$id = $name;
 		}
-		
+
 		// build config & json encode
 		$config = json_encode($this->_buildConfig());
-		
+
 		// fix script and php protected source
-		
+
 		//$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
 		$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
 		$config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
 		$config = str_replace('"\/<group:include([^\\\\\/]*)\\\\\/>\/g"', '/<group:include([^\\/]*)\\/>/g', $config);
-		
+
 		// script to actually make ckeditor
 		$script = '<script>$(document).ready(function(){ $("#'.$id.'").ckeditor(function(){}, '.$config.'); });</script>';
-		
+
 		// output html and script
-		$editor  = "<textarea name=\"$name\" id=\"$id\">$content</textarea>" . $script;
+		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . '>' . $content . '</textarea>' . $script;
 		return $editor;
 	}
-	
+
+	/**
+	 * Build a config object
+	 *
+	 * @return  object stdClass
+	 */
 	private function _buildConfig()
 	{
 		// store params in local var for easier accessing
 		$params = $this->params;
-		
+
 		// object to hold our final config
 		$config                                = new stdClass;
 		$config->startupMode                   = 'wysiwyg';
@@ -169,87 +189,88 @@ class plgEditorCkeditor extends JPlugin
 			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
 			array('HubzeroAutoGrow')
 		);
-		
+
+		$config->codemirror = new stdClass;
 		$config->codemirror->autoFormatOnModeChange = false;
-		
+
 		// startup mode
 		if (in_array($params->get('startupMode'), array('wysiwyg','source')))
 		{
 			$config->startupMode = $params->get('startupMode');
 		}
-		
+
 		// show source button
 		if ($params->get('sourceViewButton'))
 		{
 			array_unshift($config->toolbar[0], 'Source', '-');
 		}
-		
+
 		// source syntax highlighting - using codemirror
 		if ($params->get('sourceViewSyntaxHighlighing') === false)
 		{
 			$config->extraPlugins = str_replace(',codemirror', '', $config->extraPlugins);
 		}
-		
+
 		// autogrow auto-start
 		if (is_bool($params->get('autoGrowAutoStart')))
 		{
 			$config->hubzeroAutogrow_autoStart = $params->get('autoGrowAutoStart');
 		}
-		
+
 		// auto grow min height
 		if (is_numeric($params->get('autoGrowMinHeight')))
 		{
 			$config->hubzeroAutogrow_minHeight = $params->get('autoGrowMinHeight');
 		}
-		
+
 		// autogrow max height
 		if (is_numeric($params->get('autoGrowMaxHeight')))
 		{
 			$config->hubzeroAutogrow_maxHeight = $params->get('autoGrowMaxHeight');
 		}
-		
+
 		// auto start spell check
 		if (is_bool($params->get('spellCheckAutoStart')))
 		{
 			$config->scayt_autoStartup = $params->get('spellCheckAutoStart');
 		}
-		
+
 		// spell check max suggesstions 
 		if (is_numeric($params->get('spellCheckMaxSuggesstions')))
 		{
 			$config->scayt_maxSuggestions = $params->get('spellCheckMaxSuggesstions');
 		}
-		
+
 		// class to add to ckeditor body
 		if ($params->get('contentBodyClass'))
 		{
 			$config->bodyClass = $params->get('contentBodyClass');
 		}
-		
+
 		// add stylesheets to ckeditor content
 		if (is_array($params->get('contentCss')) && count($params->get('contentCss')))
 		{
 			$config->contentsCss = $params->get('contentCss');
 		}
-		
+
 		// file browsing
 		if ($params->get('fileBrowserBrowseUrl'))
 		{
 			$config->filebrowserBrowseUrl = $params->get('fileBrowserBrowseUrl');
 		}
-		
+
 		// image browsing
 		if ($params->get('fileBrowserImageBrowseUrl'))
 		{
 			$config->filebrowserImageBrowseUrl = $params->get('fileBrowserImageBrowseUrl');
 		}
-		
+
 		// file upload
 		if ($params->get('fileBrowserUploadUrl'))
 		{
 			$config->filebrowserUploadUrl = $params->get('fileBrowserUploadUrl');
 		}
-		
+
 		// file browse popup size
 		if ($params->get('fileBrowserWindowWidth'))
 		{
@@ -259,7 +280,7 @@ class plgEditorCkeditor extends JPlugin
 		{
 			$config->filebrowserWindowHeight = $params->get('fileBrowserWindowHeight');
 		}
-		
+
 		// page templates
 		if ($params->get('templates_files') && is_object($params->get('templates_files')))
 		{
@@ -274,7 +295,7 @@ class plgEditorCkeditor extends JPlugin
 						$config->templates = array();
 						$config->templates_files = array();
 					}
-					
+
 					array_push($config->templates, $name);
 					array_push($config->templates_files, $template);
 				}
@@ -282,20 +303,20 @@ class plgEditorCkeditor extends JPlugin
 		}
 		// make template definition a string
 		$config->templates = implode(',', $config->templates);
-		
+
 		// allow scripts
 		if ($params->get('allowScriptTags'))
 		{
 			$config->protectedSource[] = '/<script[^>]*>(.|\n)*<\/script>/ig';
 		}
-		
+
 		// allow php
 		if ($params->get('allowPhpTags'))
 		{
 			$config->protectedSource[] = '/<\?[\s\S]*?\?>/g';
 			$config->codemirror->mode = 'application/x-httpd-php';
 		}
-		
+
 		return $config;
 	}
 }
