@@ -53,7 +53,7 @@ class CronModelJobs extends \Hubzero\Base\Model
 	private $_jobs_count = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
