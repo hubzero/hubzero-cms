@@ -39,6 +39,19 @@ $this->project->title = ProjectsHtml::cleanText($this->project->title);
 
 // Use id or alias in urls?
 $goto  = 'alias=' . $this->project->alias;
+
+$assets = array('files', 'databases', 'tools');
+$assetTabs = array();
+
+// Sort tabs so that asset tabs are together
+foreach ($this->tabs as $tab) 
+{
+	if (in_array($tab['name'], $assets))
+	{
+		$assetTabs[] = $tab;
+	}	
+}
+$a = 0;
 ?>
 <div id="project-wrap">	
 	<div id="project-innerwrap">
@@ -53,11 +66,44 @@ $goto  = 'alias=' . $this->project->alias;
 					<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
 				</li>					
 <?php if ($this->tabs) {
-	foreach($this->tabs as $tab) { 
-		if($tab['name'] == 'blog')
+	foreach ($this->tabs as $tab) 
+	{ 
+		if ($tab['name'] == 'blog')
 		{
 			continue;
 		}
+		
+		if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
+		{
+			$a++; // counter for asset tabs
+			
+			// Header tab
+			if ($a == 1)
+			{
+				?>
+			<li class="assets">
+				<span><?php echo JText::_('COM_PROJECTS_TAB_ASSETS'); ?></span>
+			</li>
+		</ul>
+		<ul class="projecttools assetlist">
+		<?php
+			foreach ($assetTabs as $aTab)
+			{
+				?>
+				<li<?php if($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
+					<a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=' . $aTab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
+						<span><?php echo $aTab['title']; ?></span> 
+<?php if (isset($this->project->counts[$aTab['name']]) 
+&& $this->project->counts[$aTab['name']] != 0) { ?>
+						<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $this->project->counts[$aTab['name']]; ?></span></span>
+<?php } ?>
+					</a>
+				</li>
+	<?php 	} ?>
+		</ul>
+		<ul class="projecttools">
+	<?php } continue; }
+		
 ?>
 				<li<?php if($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
 					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">

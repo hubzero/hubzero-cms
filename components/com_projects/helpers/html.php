@@ -652,17 +652,23 @@ class ProjectsHtml
 		$image  = $view->project->picture 
 			&& file_exists( JPATH_ROOT . $path . DS . $view->project->picture ) 
 			? $path . DS . $view->project->picture 
-			: ProjectsHtml::getThumbSrc($view->project->id, 
-				$view->project->alias, $view->project->picture, $view->config);
-		?>
-	<div id="pimage">
-		<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'alias='
-		.$view->project->alias); ?>" title="<?php echo $view->project->title . ' - ' 
-		. JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>">
-			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" /></a>
-	</div>	
+			: NULL; ?>
+		<div id="pimage">
+			<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'alias='
+			.$view->project->alias); ?>" title="<?php echo $view->project->title . ' - ' 
+			. JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>">
+	<?php
+		if ($image) {
+		?>		
+			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" /></a>	
 	<?php 
-	}
+ 		}
+		else
+		{ ?>
+			<span class="defaultimage">&nbsp;</span>
+	<?php } ?>
+		</a></div>
+	<?php }
 	
 	/**
 	 * Write member options

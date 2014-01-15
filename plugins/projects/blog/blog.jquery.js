@@ -37,16 +37,7 @@ HUB.ProjectMicroblog = {
 	initialize: function() 
 	{			
 		var $ = this.jQuery;
-		
-		// Infofeed - Comments
-		$('.addcomment').each(function(i, el) 
-		{
-			if (!$(el).hasClass('hidden')) 
-			{
-				$(el).addClass('hidden');
-			}
-		});
-		
+				
 		// Showing comment area
 		$('.showc').each(function(i, item) 
 		{
@@ -71,13 +62,51 @@ HUB.ProjectMicroblog = {
 			});	
 		});
 		
+		// Show more
+		$('.more-content').each(function(i, el)
+		{
+			$(el).on('click', function(e) 
+			{
+				e.preventDefault();
+				var shortBody = $(el).parent().parent().find("span.body");
+				var longBody  = $(el).parent().parent().find("span.fullbody");
+								
+				$(shortBody).addClass('hidden');
+				$(longBody).removeClass('hidden');
+			});
+		});
+		
 		// Comment form
 		$('.commentarea').each(function(i, item) 
 		{
-			$(item).on('keyup', function(e) 
-			{
-				HUB.Projects.setCounter($(this));
+			// Submit comments on enter
+			$(item).bind("enterKey",function(e)
+			{   
+				var form = $(item).parent().parent().parent().parent().find("form");
+				
+				// Submit if not empty
+				if ($(item).val() != '')
+				{
+					$(form).submit();
+				}
 			});
+			
+			$(item).on('keypress', function(e) 
+			{
+				if (e.keyCode == 13)
+			    {
+			        e.preventDefault(); 
+			    }
+			});
+			
+			$(item).on('keyup', function(e) 
+			{				
+				if (e.keyCode == 13)
+			    {
+			        $(this).trigger("enterKey");
+			    }
+			});
+			
 			if ($(item).val() == '') 
 			{
 				$(item)
@@ -88,8 +117,8 @@ HUB.ProjectMicroblog = {
 			$(item).on('focus', function(e) 
 			{
 				$(this).css('color', '#000')
-					   .css('height', '70px');
-			});	
+					   .css('height', '100px');
+			});
 		});
 		
 		// Blog entry form
@@ -114,9 +143,11 @@ HUB.ProjectMicroblog = {
 				$('#blog-submitarea').css('height', '20px');
 			});	
 			
+			/*
 			$('#blogentry').on('keyup', function(e) {
 				HUB.Projects.setCounter('#blogentry', '#counter_number_blog');
 			});	
+			*/
 			
 			// On click outside
 			if ($('#blog-submitarea')) {
@@ -131,7 +162,7 @@ HUB.ProjectMicroblog = {
 			}
 		}
 		
-		// Do not allow to post default values
+		// Do not allow to post empty values
 		if ($('#blog-submit')) {
 			$('#blog-submit').on('click', function(e){
 				if ($('#blogentry').val() == '') {

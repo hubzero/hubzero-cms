@@ -39,6 +39,7 @@
 		width: 98%;
 		padding: 0.2em;	
 		display: block;
+		overflow: hidden;
 	}
 	#blab input, .content-feed .addcomment input {
 		width: auto;
@@ -135,11 +136,10 @@
 		padding-left: 0.5em;
 		border-bottom: 1px solid #ececec;
 	}
-	.infofeed span.body {
-		font-style: italic;
-		color: #444;
+	.infofeed span.body, .infofeed span.fullbody {
+		color: #666;
 		margin: 0;
-		padding: 0 100px 0 0;
+		padding: 0 3em 0 0;
 		display: inline-block;
 	}
 	.infofeed li {
@@ -148,8 +148,11 @@
 	.infofeed span.comment {
 		margin: 0;
 		padding: 0;
-		padding-left: 20px;
-		font-size: 85%;
+		margin-left: 5em;
+		margin-top: 0.5em;
+		display: block;
+		font-size: 80%;
+		width: 90%;
 	}
 	.infofeed span.actor {
 		font-weight: bold;
@@ -170,7 +173,7 @@
 		margin-left: -20px;
 	}
 	.infofeed .activity {
-		padding-left: 20px;	
+		padding-left: 5.5em;	
 	}
 	.mline:hover .m_options, .quote:hover .m_options {
 		display: block;
@@ -184,7 +187,83 @@
 	.admin-action:before {
 		color: #fce48a !important;
 	}
-
+	.infofeed .blog-item img {
+		float: left;
+		margin-right: 1.3em;
+		width: 40px;
+	}	
+	
+/* Comment Form
+--------------------------------------------- */
+	#plg-content .addcomment fieldset {
+		border: none;
+		float: none !important;
+		width: auto;
+		margin: 0;
+		color: #777;
+		background: #f7f3ed;
+		padding: 0.5em;
+	}
+	#plg-content .addcomment textarea {
+		margin: 0;
+		height: 30px;
+		width: 100%;
+		padding: 0.2em;	
+		display: block;
+		overflow: hidden;
+	}	
+	#plg-content .addcomment label {
+		padding: 0;
+		margin: 0;
+	}
+	#plg-content .comments {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 0 0;
+		border: none;
+		width: 90%;
+		display: block;
+	}
+	#plg-content .comments li {		
+		margin: 0;
+		border: none;
+		padding: 0.5em 2em 0.5em 0.5em;
+		background: #f7f3ed;		
+		color: #777;
+		border-bottom: 1px solid #FFF;
+		margin-right: 0;
+		clear: none;
+	}
+	#plg-content .comments .body {
+		font-size: 90%;
+	}
+	#plg-content .comments .delit-container {
+		float: right;
+		margin-right: -5px;
+	}
+	#plg-content .comments, #plg-content .addcomment {
+		margin-left: 4em;
+		width: 90%;
+	}
+	#plg-content .comments li:before,
+	#plg-content .addcomment fieldset:before
+	{
+		position: absolute;
+		width: 1em;
+		height: 1em;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		margin-right: 0.3em;
+		vertical-align: middle;
+		content: "\275D";
+		margin-left: -1.5em;
+	}
+	#plg-content .comments li,
+	#plg-content .addcomment fieldset {
+		padding-left: 2em;
+	}
+	
 /* Misc
 --------------------------------------------- */
 	

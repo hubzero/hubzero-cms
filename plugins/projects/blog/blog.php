@@ -259,7 +259,7 @@ class plgProjectsBlog extends JPlugin
 		$entry = trim(JRequest::getVar( 'blogentry', '' ));
 		
 		// Text clean-up
-		$entry = Hubzero_View_Helper_Html::shortenText($entry, 250, 0);
+	//	$entry = Hubzero_View_Helper_Html::shortenText($entry, 250, 0);
 		$entry = Hubzero_View_Helper_Html::purifyText($entry);	
 				
 		// Instantiate project microblog entry
@@ -520,10 +520,10 @@ class plgProjectsBlog extends JPlugin
 					}
 
 					// Set vars
-					$body = '';
-					$eid = $a->id;
-					$etbl = 'activity';
-					$deletable = 0;
+					$body 		= '';
+					$eid 		= $a->id;
+					$etbl 		= 'activity';
+					$deletable 	= 0;
 
 					// Get blog entry
 					if ($class == 'blog') 
@@ -533,10 +533,10 @@ class plgProjectsBlog extends JPlugin
 						{
 							continue;
 						}
-						$body = $blog ? $blog[0]->blogentry : '';
-						$eid = $blog[0]->id;
-						$etbl = 'blog';
-						$deletable = 1;
+						$body 		= $blog ? $blog[0]->blogentry : '';
+						$eid 		= $blog[0]->id;
+						$etbl 		= 'blog';
+						$deletable 	= 1;
 					}
 
 					// Get todo item
@@ -547,10 +547,10 @@ class plgProjectsBlog extends JPlugin
 						{
 							continue;						
 						}
-						$body = $todo ? $todo[0]->content : '';
-						$eid = $todo[0]->id;
-						$etbl = 'todo';
-						$deletable = 0; // Cannot delete to-do related activity
+						$body 		= $todo ? $todo[0]->content : '';
+						$eid 		= $todo[0]->id;
+						$etbl 		= 'todo';
+						$deletable 	= 0; // Cannot delete to-do related activity
 					}
 					
 					// Get app log
@@ -567,21 +567,36 @@ class plgProjectsBlog extends JPlugin
 						{
 							$aLog = rtrim(stripslashes($aLog));
 							$aLog = Hubzero_View_Helper_Html::purifyText($aLog);
-							$body = Hubzero_View_Helper_Html::shortenText($aLog, 200, 0);
+							$body = $aLog;
 						}
 					}
 
-					// Embed links
+					$ebody = '';
 					if ($body) 
-					{
-						$body = ProjectsHtml::replaceUrls($body, 'external');
+					{						
+						$shorten = ($body && strlen($body) > 250) ? 1 : 0;
+						$shortBody = $shorten ? Hubzero_View_Helper_Html::shortenText($body, 250, 0) : $body;
+						
+						// Embed links
+						$body 	   = ProjectsHtml::replaceUrls($body, 'external');
+						$shortBody = ProjectsHtml::replaceUrls($shortBody, 'external');
+						
+						// Style body text
+						$ebody = '<span class="body';
+						$ebody.= strlen($shortBody) > 50 ? ' newline' : '';
+						$ebody.= '">' . $shortBody;
+						if ($shorten)
+						{
+							$ebody .= ' <a href="#" class="more-content">' . JText::_('COM_PROJECTS_MORE') . '</a>';
+						}
+						$ebody.= '</span>';	
+						
+						if ($shorten)
+						{
+							$ebody .= '<span class="fullbody hidden">' . $body . '</span>' ;
+						}					
 					}
-
-					// Style body text
-					$ebody = $body ? '&#58; <span class="body' : '';
-					$ebody.= $body && strlen($body) > 50 ? ' newline' : '';
-					$ebody.= $body ? '">'.$body.'</span>' : '';
-
+					
 					// Get comments
 					$comments = $objC->getComments($eid, $etbl );
 
@@ -613,7 +628,7 @@ class plgProjectsBlog extends JPlugin
 		$parent_activity = JRequest::getInt( 'parent_activity', 0, 'post' );
 				
 		// Clean-up
-		$comment = Hubzero_View_Helper_Html::shortenText($comment, 250, 0);
+	//	$comment = Hubzero_View_Helper_Html::shortenText($comment, 250, 0); // now allow longer comments
 		$comment = Hubzero_View_Helper_Html::purifyText($comment);
 						
 		// Instantiate comment
