@@ -147,4 +147,33 @@ class ResourcesElementGeo extends ResourcesElement
 	{
 		return trim($this->_getValue('value', $value));
 	}
+
+	/**
+	 * Create html tag for element.
+	 * 
+	 * @param  string $tag    Tag Name
+	 * @param  sting  $value  Tag Value
+	 * @param  string $prefix Tag prefix
+	 * @return string HTML
+	 */
+	public function toHtmlTag($tag, $value, $prefix = 'nb:')
+	{
+		// array to hold date parts
+		$parts = array();
+
+		// case value to array (in case object)
+		$value = array_filter((array) $value);
+		
+		// loop through each value prop
+		foreach ($value as $k => $v)
+		{
+			array_push($parts, "<{$k}>{$v}</{$k}>");
+		}
+		
+		// build and return tag
+		$html  = "<{$prefix}{$tag}>";
+		$html .= implode("\n", $parts);
+		$html .= "</{$prefix}{$tag}>";
+		return $html;
+	}
 }

@@ -966,7 +966,6 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 
 			$nbtag = $_POST['nbtag'];
 			$found = array();
-
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
 				$f = '';

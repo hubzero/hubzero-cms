@@ -140,4 +140,19 @@ class ResourcesElementHidden extends ResourcesElement
 	{
 		return '';
 	}
+
+	/**
+	 * Create html tag for element.
+	 * 
+	 * @param  string $tag    Tag Name
+	 * @param  sting  $value  Tag Value
+	 * @param  string $prefix Tag prefix
+	 * @return string HTML
+	 */
+	public function toHtmlTag($tag, $value, $prefix = 'nb:')
+	{
+		// build and return tag
+		return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
+	}
+
 }

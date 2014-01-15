@@ -443,6 +443,46 @@ class ResourcesElements
 	}
 
 	/**
+	 * Method to convert fields to html content
+	 * @return [type] [description]
+	 */
+	public function toDatabaseHtml()
+	{
+		// get fields
+		$schema = $this->getSchema();
+
+		// var to hold html nodes
+		$html = array();
+
+		// if we have schema
+		if (isset($schema->fields) && is_array($schema->fields))
+		{
+			// loop through each field
+			foreach ($schema->fields as $index => $field)
+			{
+				// load resource element by type
+				$resourceElement = $this->loadElement($field->type);
+
+				// if this is hidden lets use option value as default
+				if ($field->type == 'hidden')
+				{
+					$field->default = (isset($field->options[0])) ? $field->options[0]->value : null;
+				}
+				
+				// Get key and value
+				$key   = $field->name;
+				$value = $this->get($field->name, $field->default);
+				
+				// convert element to html tag
+				array_push($html, $resourceElement->toHtmlTag($key, $value));
+			}
+		}
+
+		// return html 
+		return implode("\n", $html);
+	}
+
+	/**
 	 * Method to recursively bind data to a parent object.
 	 *
 	 * @param   object  &$parent  The parent object on which to attach the data values.

@@ -194,5 +194,8 @@ HUBzero is a registered trademark of Purdue University.
 		</field>
 		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
 	</fieldset>
+	<fieldset name="import">
+		<field name="import_uploadpath" type="text" menu="hide" default="/site/resources/import" label="Upload Path" description="Path where resource import files are uploaded to." />
+	</fieldset>
 </config>
 

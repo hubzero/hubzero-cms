@@ -152,10 +152,10 @@ class ResourcesHtml
 	 * @param      string $value Value to select
 	 * @return     string HTML
 	 */
-	public static function selectAccess($as, $value)
+	public static function selectAccess($as, $value, $name = 'access')
 	{
 		$as = explode(',',$as);
-		$html  = '<select name="access">' . "\n";
+		$html  = '<select name="' . $name . '">' . "\n";
 		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
 			$html .= "\t" . '<option value="' . $i . '"';
@@ -176,9 +176,9 @@ class ResourcesHtml
 	 * @param      string $value  Value to select
 	 * @return     string HTML
 	 */
-	public static function selectGroup($groups, $value)
+	public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
 	{
-		$html  = '<select name="group_owner"';
+		$html  = '<select class="'.$class.'" name="'.$name.'"';
 		if (!$groups) 
 		{
 			$html .= ' disabled="disabled"';

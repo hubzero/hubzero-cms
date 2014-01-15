@@ -59,17 +59,27 @@ else
 
 jimport('joomla.application.component.helper');
 
-// Include scripts
+// Include jtables
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'resource.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'assoc.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'review.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'doi.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'license.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.type.php');
+
+// include helpers
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'resources.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utilities.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 
+// include importer
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'import' . DS . 'importer.php';
+
+// get controller name
 $controllerName = JRequest::getCmd('controller', 'items');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
@@ -110,6 +120,16 @@ JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
 	'index.php?option=' . $option . '&controller=plugins',
 	$controllerName == 'plugins'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Import'),
+	'index.php?option=' . $option . '&controller=import',
+	$controllerName == 'import'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Import Hooks'),
+	'index.php?option=' . $option . '&controller=importhooks',
+	$controllerName == 'importhooks'
 );
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

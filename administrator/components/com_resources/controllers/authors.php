@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
-
 /**
  * Manage resource authors
  */
