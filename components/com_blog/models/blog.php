@@ -53,7 +53,7 @@ class BlogModel extends \Hubzero\Base\Object
 	private $_entry = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
@@ -172,7 +172,7 @@ class BlogModel extends \Hubzero\Base\Object
 		 || ($id !== null && (int) $this->_entry->get('id') != $id && (string) $this->_entry->get('alias') != $id))
 		{
 			/*$this->_entry = null;
-			if (isset($this->_entries) && ($this->_entries instanceof \Hubzero\ItemList))
+			if (isset($this->_entries) && ($this->_entries instanceof \Hubzero\Base\ItemList))
 			{
 				foreach ($this->_entries as $key => $entry)
 				{

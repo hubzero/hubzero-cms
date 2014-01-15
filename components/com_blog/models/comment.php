@@ -53,7 +53,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 	private $_creator = NULL;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */

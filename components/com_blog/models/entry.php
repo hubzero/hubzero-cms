@@ -55,7 +55,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	private $_comment = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
