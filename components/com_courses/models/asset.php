@@ -99,8 +99,8 @@ class CoursesModelAsset extends CoursesModelAbstract
 			$tbl = new CoursesTableSectionDate($this->_db);
 			$tbl->load($this->get('id'), 'asset', $this->get('section_id'));
 
-			$this->set('publish_up', $tbl->get('publish_up'));
-			$this->set('publish_down', $tbl->get('publish_down'));
+			$this->set('publish_up', $tbl->get('publish_up', ''));
+			$this->set('publish_down', $tbl->get('publish_down', ''));
 
 			return $tbl->get($property, $default);
 		}
