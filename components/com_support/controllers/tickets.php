@@ -2030,7 +2030,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		if ($allowEmailResponses and file_exists("/etc/hubmail_gw.conf"))
 		{
-			$encryptor = new \Hubzero\Mail\Token(); //Hubzero_EmailToken();
+			$encryptor = new \Hubzero\Mail\Token();
 		}
 
 		// Incoming

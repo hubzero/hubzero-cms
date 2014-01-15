@@ -443,7 +443,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		if ($allowEmailResponses)
 		{
-			$encryptor = new Hubzero_EmailToken();
+			$encryptor = new \Hubzero\Mail\Token();
 		}
 
 		// Instantiate the tagging class - we'll need this a few times
