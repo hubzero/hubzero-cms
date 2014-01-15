@@ -231,11 +231,19 @@ class plgMembersAccount extends Hubzero_Plugin
 		$view->domain_names = array();
 		if($view->hzalaccounts)
 		{
+			$i = 0;
 			foreach($view->hzalaccounts as $authenticators)
 			{
 				JPluginHelper::importPlugin('authentication');
 
 				$plugin = JPluginHelper::getPlugin('authentication', $authenticators['auth_domain_name']);
+
+				// Make sure we got the plugin
+				if (!is_object($plugin))
+				{
+					unset($view->hzalaccounts[$i]);
+					continue;
+				}
 
 				$className = 'plg'.$plugin->type.$plugin->name;
 
@@ -251,6 +259,9 @@ class plgMembersAccount extends Hubzero_Plugin
 
 				$view->domains_used[] = array('name' => $authenticators['auth_domain_name'], 'details' => $details);
 				$view->domain_names[] = $authenticators['auth_domain_name'];
+
+				// Increment index
+				$i++;
 			}
 		}
 
