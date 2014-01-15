@@ -114,6 +114,8 @@ class plgAuthenticationGoogle extends JPlugin
 		// Included needed google api class
 		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
 
+		$b64dreturn = '';
+
 		// Check the state for our return variable
 		if($return = JRequest::getVar('state', '', 'method', 'base64'))
 		{
