@@ -33,14 +33,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = rtrim(JURI::getInstance()->base(true), '/');
 
-if ($this->quote) { ?>
+if ($this->quote) { 	
+	?>
 	<h3 class="notable_quote">
 		<?php echo JText::_('MOD_RANDOMQUOTE_NOTABLE'); ?>
 	</h3>
 	<div class="frontquote">
 		<blockquote cite="<?php echo $this->escape(stripslashes($this->quote->fullname)); ?>">
 			<p>
-				<?php echo $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->quote_to_show), $this->charlimit, 0)); ?>
+				<?php 
+				$text = stripslashes($this->escape($this->quote->quote)) . ' ';
+				$text = substr($text, 0, $this->charlimit);
+				$text = substr($text, 0, strrpos($text, ' '));
+				
+				echo $text;	 ?>
 				<?php if (strlen($this->quote->quote) > $this->charlimit) { ?>
 					<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $this->quote->id; ?>" title="<?php echo JText::sprintf('MOD_RANDOMQUOTE_VIEW_FULL', $this->escape(stripslashes($this->quote->fullname))); ?>" class="showfullquote">
 						<?php echo JText::_('MOD_RANDOMQUOTE_VIEW'); ?>
