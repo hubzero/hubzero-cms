@@ -62,7 +62,7 @@ class CollectionsModel extends JObject
 	private $_db = NULL;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
@@ -76,14 +76,14 @@ class CollectionsModel extends JObject
 	private $_collection = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
 	private $_followers = null;
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
