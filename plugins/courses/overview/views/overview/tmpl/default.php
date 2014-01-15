@@ -31,16 +31,73 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => '',
-	'pagename' => $this->course->get('alias'),
-	'pageid'   => $this->course->get('id'),
-	'filepath' => DS . ltrim($this->course->config()->get('uploadpath', '/site/courses'), DS),
-	'domain'   => $this->course->get('alias')
-);
+$field = strtolower(JRequest::getWord('field', ''));
+$task  = strtolower(JRequest::getWord('task', ''));
 
-ximport('Hubzero_Wiki_Parser');
-$parser = Hubzero_Wiki_Parser::getInstance();
+if ($this->course->access('edit', 'course') && $field == 'description')
+{
+	?>
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
+		<label for="field_description">
+			<?php
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('course[description]', 'field_description', stripslashes($this->course->get('description')), '', '50', '50');
+			?>
+			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+		</label>
 
-echo $parser->parse(stripslashes($this->course->get('description')), $wikiconfig);
+		<p class="submit">
+			<input type="submit" class="btn btn-success" value="<?php echo JText::_('Save'); ?>" />
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
+				<?php echo JText::_('Cancel'); ?>
+			</a>
+		</p>
+
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="course" />
+		<input type="hidden" name="task" value="save" />
+
+		<?php echo JHTML::_('form.token'); ?>
+
+		<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+		<input type="hidden" name="course[id]" value="<?php echo $this->escape($this->course->get('id')); ?>" />
+		<input type="hidden" name="course[alias]" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+	</form>
+	<?php 
+}
+else
+{
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => '',
+		'pagename' => $this->course->get('alias'),
+		'pageid'   => $this->course->get('id'),
+		'filepath' => DS . ltrim($this->course->config()->get('uploadpath', '/site/courses'), DS),
+		'domain'   => $this->course->get('alias')
+	);
+
+	ximport('Hubzero_Wiki_Parser');
+	$parser = Hubzero_Wiki_Parser::getInstance();
+
+	if ($this->course->access('edit', 'course')) 
+	{
+		?>
+		<div class="manager-options">
+			<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=description'); ?>">
+				<?php echo JText::_('Edit'); ?>
+			</a>
+			<span><strong>Long description</strong></span>
+		</div>
+		<?php 
+	}
+
+	if (!$this->course->get('description'))
+	{
+		echo '<p><em>' . JText::_('No overview has been provided for this course yet.') . '</em></p>';
+	}
+	else
+	{
+		echo $parser->parse(stripslashes($this->course->get('description')), $wikiconfig);
+	}
+}

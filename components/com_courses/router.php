@@ -214,6 +214,16 @@ function CoursesParseRoute($segments)
 			break;
 
 			case 'edit':
+			case 'newoffering':
+			case 'saveoffering':
+			case 'deletepage':
+				$vars['task'] = $segments[1];
+			break;
+
+			case 'instructors':
+				$vars['controller'] = 'managers';
+			break;
+
 			case 'delete':
 			case 'join':
 			case 'accept':

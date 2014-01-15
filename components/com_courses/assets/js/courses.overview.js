@@ -8,7 +8,7 @@
 //-----------------------------------------------------------
 //  Ensure we have our namespace
 //-----------------------------------------------------------
-if (!HUB) {
+if (typeof HUB === 'undefined') {
 	var HUB = {};
 }
 
@@ -19,12 +19,103 @@ if (!jq) {
 	var jq = $;
 }
 
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+};
+
+var _DEBUG = true;
+
 jQuery(document).ready(function(jq) {
 	var $ = jq,
 		ellipsestext = "...",
 		moretext = "more",
 		lesstext = "less",
 		container = $("div.course-instructors");
+
+	$('#add-offering').fancybox({
+		type: 'ajax',
+		width: 600,
+		height: 300,
+		autoSize: true,
+		fitToView: false,
+		titleShow: false,
+		arrows: false,
+		closeBtn: true,
+		beforeLoad: function() {
+			$(this).attr('href', $(this).attr('href').nohtml());
+		},
+		afterShow: function() {
+			if ($('#hubForm').length > 0) {
+				$('#hubForm').on('submit', function (e) {
+					e.preventDefault();
+
+					if (!$('#field-title').val()) {
+						alert('Please provide a title.');
+						return false;
+					}
+
+					$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
+						if (_DEBUG) {
+							window.console && console.log(data);
+						}
+console.log(data);
+						var response = jQuery.parseJSON(data);
+						if (!response.success) {
+							alert(response.message);
+							return;
+						}
+
+						$.fancybox.close();
+						window.location.reload();
+					});
+				});
+			}
+		}
+	});
+
+	$('#manage-instructors').fancybox({
+		type: 'ajax',
+		width: 600,
+		height: 500,
+		autoSize: false,
+		fitToView: false,
+		titleShow: false,
+		arrows: false,
+		closeBtn: true,
+		beforeLoad: function() {
+			$(this).attr('href', $(this).attr('href').nohtml());
+		},
+		afterShow: function() {
+			HUB.Plugins.Autocomplete.initialize();
+
+			var fbox = $('div.fancybox-inner');
+
+			if (fbox.find('form.course-managers-form').length > 0) {
+				fbox
+					.on('submit', 'form.course-managers-form', function (e) {
+						e.preventDefault();
+
+						$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
+							fbox.html(data);
+							HUB.Plugins.Autocomplete.initialize();
+
+							$('#notifier').text('Changes saved').hide().fadeIn().delay(1000).fadeOut();
+						});
+					})
+					.on('change', 'td>select', function (e) {
+						$('#task').val('update');
+						$(this).closest('form').submit();
+					});
+			}
+		},
+		afterClose: function() {
+			window.location.reload();
+		}
+	});
 
 	if (!container.length) {
 		return;

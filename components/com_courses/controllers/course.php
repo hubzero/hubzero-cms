@@ -50,6 +50,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Load the course page
 		$this->course = CoursesModelCourse::getInstance(JRequest::getVar('gid', ''));
 
+		$this->registerTask('edit', 'display');
+
 		parent::execute();
 	}
 
@@ -179,30 +181,24 @@ class CoursesControllerCourse extends Hubzero_Controller
 			)
 		);
 
+		$this->view->isPage = false;
+
 		if ($pages = $this->course->pages(array('active' => 1)))
 		{
 			foreach ($pages as $page)
 			{
-				$this->view->cats[] = array($page->get('url') => $page->get('title'));
+				$this->view->cats[] = array(
+					$page->get('url') => $page->get('title')
+				);
+
 				if ($page->get('url') == $this->view->active)
 				{
-					/*$wikiconfig = array(
-						'option'   => $this->_option,
-						'scope'    => '',
-						'pagename' => $this->course->get('alias'),
-						'pageid'   => $this->course->get('id'),
-						'filepath' => DS . ltrim($this->course->config()->get('uploadpath', '/site/courses'), DS),
-						'domain'   => $this->course->get('alias')
-					);
-
-					ximport('Hubzero_Wiki_Parser');
-					$parser = Hubzero_Wiki_Parser::getInstance();*/
-
 					$this->view->sections[] = array(
 						'name' => $page->get('url'),
-						'html' => $page->content('parsed'), //$parser->parse(stripslashes($page->get('content')), $wikiconfig),
+						'html' => $page->content('parsed'),
 						'metadata' => ''
 					);
+					$this->view->isPage = true;
 				}
 			}
 		}
@@ -333,13 +329,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 			return;
 		}
 
-		//Check authorization
-		if (!$this->config->get('access-create-course')) 
-		{
-			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
-			return;
-		}
-
 		// Incoming
 		$data = JRequest::getVar('course', array(), 'post', 'none', 2);
 		$tags = trim(JRequest::getVar('tags', ''));
@@ -353,53 +342,221 @@ class CoursesControllerCourse extends Hubzero_Controller
 			$isNew = true;
 		}
 
-		$course->bind($data);
-
-		// Push back into edit mode if any errors
-		if ($this->course->store(true)) 
+		// Check authorization
+		if (!$isNew && !$course->access('edit', 'course')) 
 		{
-			$this->tags = $tags;
-			$this->addComponentMessage($this->course->getError(), 'error');
-			$this->editTask($this->course);
+			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
 			return;
 		}
+
+		// Push back into edit mode if any errors
+		if (!$course->bind($data)) 
+		{
+			$this->tags = $tags;
+			$this->addComponentMessage($course->getError(), 'error');
+			$this->newTask($course);
+			return;
+		}
+
+		// Force into draft state
+		if ($isNew) 
+		{
+			$course->set('state', 3);
+		}
+
+		// Push back into edit mode if any errors
+		if (!$course->store(true)) 
+		{
+			$this->tags = $tags;
+			$this->addComponentMessage($course->getError(), 'error');
+			$this->editTask($course);
+			return;
+		}
+
+		$tagger = new CoursesTags($this->database);
+		$tagger->tag_object($this->juser->get('id'), $course->get('id'), $tags, 1);
 
 		// Rename the temporary upload directory if it exist
 		if ($isNew) 
 		{
-			if ($lid != $this->course->get('gidNumber')) 
+			/*if ($lid != $course->get('id')) 
 			{
 				$config = $this->config;
 				$bp = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
 				if (is_dir($bp . DS . $lid)) 
 				{
-					rename($bp . DS . $lid, $bp . DS . $this->course->get('gidNumber'));
+					rename($bp . DS . $lid, $bp . DS . $course->get('id'));
+				}
+			}*/
+
+			// Set the creator as a manager
+			$role_id = 0;
+			if ($roles = $course->roles())
+			{
+				foreach ($roles as $role)
+				{
+					if ($role->alias == 'manager')
+					{
+						$role_id = $role->id;
+						break;
+					}
 				}
 			}
-
-			// Get plugins
-			JPluginHelper::importPlugin('courses');
-			$dispatcher = JDispatcher::getInstance();
-
-			// Trigger the functions that delete associated content
-			// Should return logs of what was deleted
-			$dispatcher->trigger('onCourseNew', array($course));
+			$course->add($this->juser->get('id'), $role_id);
 		}
 
 		// Show success message to user
 		if ($isNew) 
 		{
-			$this->addComponentMessage("You have successfully created the \"{$this->course->get('title')}\" course" , 'passed');
+			$msg = JText::sprintf('You have successfully created the "%s" course.', $course->get('title'));
 		} 
 		else 
 		{
-			$this->addComponentMessage("You have successfully updated the \"{$this->course->get('title')}\" course" , 'passed');
+			$msg = JText::sprintf('You have successfully updated the "%s" course.', $course->get('title'));
 		}
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')) // . '&task=edit&step=2')
+			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
+			$msg
 		);
+	}
+
+	/**
+	 * Show a form for editing a course
+	 * 
+	 * @return     void
+	 */
+	public function instructorsTask()
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask(JText::_('You must be logged in to perform this action.'));
+			return;
+		}
+
+		$this->view->no_tml = JRequest::getInt('no_html', 0);
+
+		$this->view->course = $this->course;
+		$this->view->juser  = $this->juser;
+
+		$this->view->display();
+	}
+
+	/**
+	 * Show a form for editing a course
+	 * 
+	 * @return     void
+	 */
+	public function newofferingTask($offering=null)
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask(JText::_('You must be logged in to perform this action.'));
+			return;
+		}
+
+		$this->view->no_html = JRequest::getInt('no_html', 0);
+
+		if ($offering instanceof CoursesModelOffering)
+		{
+			$this->view->offering = $offering;
+		}
+		else
+		{
+			$this->view->offering = new CoursesModelOffering(0);
+		}
+
+		$this->view->course = $this->course;
+		$this->view->juser  = $this->juser;
+
+		$this->view->title = JText::_('Create Course Offering');
+		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+
+		$this->view->display();
+	}
+
+	/**
+	 * Show a form for editing a course
+	 * 
+	 * @return     void
+	 */
+	public function saveofferingTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask(JText::_('You must be logged in to perform this action.'));
+			return;
+		}
+
+		$data = JRequest::getVar('offering', array(), 'post', 'none', 2);
+		$no_html = JRequest::getInt('no_html', 0);
+
+		$course = CoursesModelCourse::getInstance($data['course_id']);
+		$offering = CoursesModelOffering::getInstance($data['id']);
+
+		// Is this a new entry or updating?
+		$isNew = false;
+		if (!$offering->exists()) 
+		{
+			$isNew = true;
+		}
+
+		$response = new stdClass;
+		$response->success = true;
+
+		// Push back into edit mode if any errors
+		if (!$offering->bind($data)) 
+		{
+			if ($no_html)
+			{
+				$response->message = $offering->getError();
+
+				echo json_encode($response);
+			}
+			else
+			{
+				$this->addComponentMessage($offering->getError(), 'error');
+				$this->newofferingTask($offering);
+			}
+			return;
+		}
+
+		// Push back into edit mode if any errors
+		if (!$offering->store(true)) 
+		{
+			if ($no_html)
+			{
+				$response->message = $offering->getError();
+			}
+			else
+			{
+				$this->addComponentMessage($offering->getError(), 'error');
+				$this->newTask($offering);
+			}
+			return;
+		}
+
+		if ($no_html)
+		{
+			$response->message = JText::_('Offering successfully saved.');
+
+			echo json_encode($response);
+		}
+		else
+		{
+			// Redirect back to the course page
+			$this->setRedirect(
+				JRoute::_($course->link()),
+				JText::_('Offering successfully saved.')
+			);
+		}
 	}
 
 	/**
@@ -594,168 +751,109 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * @param      string $id     Item ID
 	 * @return     void
 	 */
-	/*public function change_state($type, $status, $id)
+	public function savepageTask()
 	{
-		// Based on passed in status either activate or deactivate
-		if ($status == 'deactivate') 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
 		{
-			$active = 0;
-		} 
-		else 
-		{
-			$active = 1;
+			$this->loginTask(JText::_('You must be logged in to perform this action.'));
+			return;
 		}
 
-		// Create and set query
-		$sql = "UPDATE #__courses_" . $type . "s SET active='" . $active . "' WHERE id='" . $id . "'";
-		$this->database->setQuery($sql);
+		// Incoming
+		$page = JRequest::getVar('page', array(), 'post', 'none', 2);
 
-		// Run query and set message
-		if (!$this->database->Query()) 
+		$course = CoursesModelCourse::getInstance($page['course_id']);
+		if (!$course->exists())
 		{
-			$this->addComponentMessage('An error occurred while trying to ' . $status . ' the ' . $type . '. Please try again', 'error');
-		} 
-		else 
-		{
-			$this->addComponentMessage('The ' . $type . ' was successfully ' . $status . 'd.', 'passed');
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option)
+			);
 		}
 
-		// Redirect back to manage pages area
+		$model = new CoursesModelPage($page['id']);
+
+		if (!$model->bind($page))
+		{
+			// Redirect back to the course page
+			$this->setRedirect(
+				JRoute::_($course->link()),
+				$model->getError(),
+				'error'
+			);
+			return;
+		}
+
+		if (!$model->store(true))
+		{
+			// Redirect back to the course page
+			$this->setRedirect(
+				JRoute::_($course->link()),
+				$model->getError(),
+				'error'
+			);
+			return;
+		}
+
+		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->_course->get('cn') . '&task=managepages')
+			JRoute::_($course->link()),
+			JText::_('Page successfully saved.')
 		);
-	}*/
-
-	/**
-	 * Set access permissions for a user
-	 * 
-	 * @return     void
-	 */
-	/*protected function _authorize($assetType='component', $assetId=null)
-	{
-		$this->config->set('access-view-' . $assetType, false);
-		if (!$this->juser->get('guest')) 
-		{
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$asset  = $this->_option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				$at = '';
-				if ($assetType != 'component')
-				{
-					$at .= '.' . $assetType;
-				}
-
-				// Admin
-				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
-			}
-			else 
-			{
-				if (in_array($this->juser->get('id'), $this->course->get('managers')))
-				{
-					$this->config->set('access-manage-' . $assetType, true);
-					$this->config->set('access-admin-' . $assetType, true);
-					$this->config->set('access-create-' . $assetType, true);
-					$this->config->set('access-delete-' . $assetType, true);
-					$this->config->set('access-edit-' . $assetType, true);
-				}
-				if (in_array($this->juser->get('id'), $this->course->get('members')))
-				{
-					$this->config->set('access-view-' . $assetType, true);
-				}
-			}
-		}
-	}*/
-
-	/**
-	 * Send an email
-	 * 
-	 * @param      string $email   Address to send message to
-	 * @param      string $subject Message subject
-	 * @param      string $message Message to send
-	 * @param      array  $from    Who the email is from (name and address)
-	 * @return     boolean Return description (if any) ...
-	 */
-	public function email($email, $subject, $message, $from)
-	{
-		if ($from) 
-		{
-			$args = "-f '" . $from['email'] . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-			$headers .= 'From: ' . $from['name'] . ' <' . $from['email'] . ">\n";
-			$headers .= 'Reply-To: ' . $from['name'] .' <' . $from['email'] . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: ' . $from['name'] . "\n";
-			if (mail($email, $subject, $message, $headers, $args)) 
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
-	 * Get a list of members
+	 * Change the status of an item
 	 * 
 	 * @return     void
 	 */
-	/*public function memberslist()
+	public function deletepageTask()
 	{
-		// Fetch results
-		$filters = array();
-		$filters['cn'] = trim(JRequest::getString('course', ''));
-
-		if ($filters['cn']) 
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
 		{
-			$query = "SELECT u.username, u.name 
-						FROM #__users AS u, #__courses_members AS m, #__courses AS g
-						WHERE g.cn='" . $filters['cn'] . "' AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id
-						ORDER BY u.name ASC";
-		} 
-		else 
-		{
-			$query = "SELECT a.username, a.name"
-				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-				. "\n INNER JOIN #__core_acl_courses_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to course
-				. "\n INNER JOIN #__core_acl_aro_courses AS g ON g.id = gm.course_id"
-				. "\n WHERE a.block = '0' AND g.id=25"
-				. "\n ORDER BY a.name";
+			$this->loginTask('You must be logged in to perform this action.');
+			return;
 		}
 
-		$this->database->setQuery($query);
-		$rows = $this->database->loadObjectList();
-
-		// Output search results in JSON format
-		$json = array();
-		if ($filters['cn'] == '') 
+		if (!$this->course->exists())
 		{
-			$json[] = '{"username":"","name":"No User"}';
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option)
+			);
+			return;
 		}
-		if (count($rows) > 0) 
+
+		if (!$this->course->access('edit', 'course'))
 		{
-			foreach ($rows as $row)
+			$this->setRedirect(
+				JRoute::_($this->course->link())
+			);
+			return;
+		}
+
+		$model = $this->course->page(JRequest::getVar('active', ''));
+
+		if ($model->exists())
+		{
+			$model->set('active', 0);
+
+			if (!$model->store(true))
 			{
-				$json[] = '{"username":"' . $row->username . '","name":"' . htmlentities(stripslashes($row->name), ENT_COMPAT, 'UTF-8') . '"}';
+				$msg = $model->getError();
 			}
 		}
 
-		echo '{"members":[' . implode(',', $json) . ']}';
-	}*/
+		// Redirect back to the course page
+		$this->setRedirect(
+			JRoute::_($this->course->link()),
+			($msg ? $msg : JText::_('Page successfully removed.')),
+			($msg ? 'error' : null)
+		);
+	}
 
 	/**
 	 * Check if a course alias is valid
