@@ -510,7 +510,7 @@ class CoursesControllerSections extends Hubzero_Controller
 			if ($badgeObj->get('provider_name') && !$badgeObj->get('provider_badge_id') && $badgeObj->get('img_url'))
 			{
 				$request_type   = $cconfig->get('badges_request_type', 'oauth');
-				$badgesHandler  = new Hubzero_Badges(strtoupper($badgeObj->get('provider_name')), $request_type);
+				$badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($badgeObj->get('provider_name')), $request_type);
 				$badgesProvider = $badgesHandler->getProvider();
 
 				if (is_object($badgesProvider))

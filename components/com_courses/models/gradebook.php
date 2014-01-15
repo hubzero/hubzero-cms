@@ -678,7 +678,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 						// Tell the badge provider that they've earned the badge
 						$request_type   = $cconfig->get('badges_request_type', 'oauth');
-						$badgesHandler  = new Hubzero_Badges(strtoupper($sb->get('provider_name')), $request_type);
+						$badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($sb->get('provider_name')), $request_type);
 						$badgesProvider = $badgesHandler->getProvider();
 
 						$credentials = new stdClass();

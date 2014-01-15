@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,18 +23,16 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Badges\Provider;
 
 /**
  * Passport badges provider
- * 
  */
-class Hubzero_Badges_Passport_BadgesProvider
+class Passport implements ProviderInterface
 {
 	private $credentials  = false;
 	private $request      = NULL;
@@ -69,13 +67,13 @@ class Hubzero_Badges_Passport_BadgesProvider
 		// Setup request, based on type
 		if ($this->request_type == 'oauth')
 		{
-			$this->request = new OAuth($this->credentials->consumer_key, $this->credentials->consumer_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+			$this->request = new \OAuth($this->credentials->consumer_key, $this->credentials->consumer_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
 
 			/*$params['x_auth_username'] = $this->credentials->username;
 			$params['x_auth_password'] = $this->credentials->password;
 			$params['x_auth_mode']     = 'client_auth';
 
-			$this->request->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "access_token", $params,  OAUTH_HTTP_METHOD_POST);
+			$this->request->fetch(self::passportApiEndpoint . "access_token", $params,  OAUTH_HTTP_METHOD_POST);
 
 			// Get token and secret and set them for future requests
 			parse_str($this->request->getLastResponse(), $access);
@@ -92,7 +90,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 		}
 		else
 		{
-			throw new Exception('Unsupported request type');
+			throw new \Exception('Unsupported request type');
 		}
 	}
 
@@ -111,7 +109,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 		}
 		else
 		{
-			throw new Exception('Unsupported request type');
+			throw new \Exception('Unsupported request type');
 		}
 	}
 
@@ -130,7 +128,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 	{
 		if (!$this->credentialsSet())
 		{
-			throw new Exception('You need to set the credentials first.');
+			throw new \Exception('You need to set the credentials first.');
 		}
 
 		$data['IssuerId'] = $this->credentials->issuerId;
@@ -143,18 +141,18 @@ class Hubzero_Badges_Passport_BadgesProvider
 
 			try
 			{
-				$this->request->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . 'badges/', $data, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
+				$this->request->fetch(self::passportApiEndpoint . 'badges/', $data, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				throw new Exception('Badge creation request failed.');
+				throw new \Exception('Badge creation request failed.');
 			}
 
 			$badge = json_decode($this->request->getLastResponse());
 		}
 		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
 		{
-			curl_setopt($this->request, CURLOPT_URL, Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . 'badges/');
+			curl_setopt($this->request, CURLOPT_URL, self::passportApiEndpoint . 'badges/');
 			curl_setopt($this->request, CURLOPT_POSTFIELDS, $data);
 			curl_setopt($this->request, CURLOPT_RETURNTRANSFER, TRUE);
 
@@ -163,12 +161,12 @@ class Hubzero_Badges_Passport_BadgesProvider
 		}
 		else
 		{
-			throw new Exception('Unsupported request type');
+			throw new \Exception('Unsupported request type');
 		}
 
 		if (empty($badge->Id) || !$badge->Id)
 		{
-			throw new Exception($badge->message);
+			throw new \Exception($badge->message);
 		}
 
 		return($badge->Id);
@@ -185,7 +183,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 	{
 		if (!$this->credentialsSet())
 		{
-			throw new Exception('You need to set the credentials first.');
+			throw new \Exception('You need to set the credentials first.');
 		}
 
 		if (!is_array($users))
@@ -215,9 +213,9 @@ class Hubzero_Badges_Passport_BadgesProvider
 			$this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
 			try
 			{
-				$this->request->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
+				$this->request->fetch(self::passportApiEndpoint . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				error_log($e->getCode());
 			}
@@ -226,7 +224,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 		}
 		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
 		{
-			curl_setopt($this->request, CURLOPT_URL, Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions/");
+			curl_setopt($this->request, CURLOPT_URL, self::passportApiEndpoint . "assertions/");
 			curl_setopt($this->request, CURLOPT_POSTFIELDS, $assertionsData);
 			curl_setopt($this->request, CURLOPT_RETURNTRANSFER, TRUE);
 
@@ -235,14 +233,14 @@ class Hubzero_Badges_Passport_BadgesProvider
 		}
 		else
 		{
-			throw new Exception('Unsupported request type');
+			throw new \Exception('Unsupported request type');
 		}
 
 		foreach ($assertion as $ass)
 		{
 			if (empty($ass->Id) || !$ass->Id)
 			{
-				throw new Exception($ass->message);
+				throw new \Exception($ass->message);
 			}
 		}
 	}
@@ -273,15 +271,15 @@ class Hubzero_Badges_Passport_BadgesProvider
 	{
 		switch ($type) {
 			case 'Denied':
-				return Hubzero_Badges_Passport_BadgesProvider::passportDeniedUrl;
+				return self::passportDeniedUrl;
 			break;
 
 			case 'Badges':
-				return Hubzero_Badges_Passport_BadgesProvider::passportBadgesUrl;
+				return self::passportBadgesUrl;
 			break;
 
 			default:
-				return Hubzero_Badges_Passport_BadgesProvider::passportClaimUrl;
+				return self::passportClaimUrl;
 			break;
 		}
 	}
@@ -296,7 +294,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 	{
 		if (!$this->credentialsSet())
 		{
-			throw new Exception('You need to set the credentials first.');
+			throw new \Exception('You need to set the credentials first.');
 		}
 
 		if (!is_array($emailAddresses))
@@ -305,7 +303,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 		}
 
 		$query_params = implode('%20', $emailAddresses);
-		$url = Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions?emailAddresses=" . $query_params;
+		$url = self::passportApiEndpoint . "assertions?emailAddresses=" . $query_params;
 
 		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
 		{
@@ -314,7 +312,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 			{
 				$this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, array('Content-Type'=>'application/json'));
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				error_log($e->getCode());
 			}
@@ -332,7 +330,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 		}
 		else
 		{
-			throw new Exception('Unsupported request type');
+			throw new \Exception('Unsupported request type');
 		}
 
 		return $response;

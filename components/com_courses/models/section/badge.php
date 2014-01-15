@@ -192,7 +192,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 	{
 		$cconfig        = JComponentHelper::getParams('com_courses');
 		$request_type   = $cconfig->get('badges_request_type', 'oauth');
-		$badgesHandler  = new Hubzero_Badges(strtoupper($this->get('provider_name')), $request_type);
+		$badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($this->get('provider_name')), $request_type);
 		$badgesProvider = $badgesHandler->getProvider();
 
 		return $badgesProvider->getUrl($type);
