@@ -1,0 +1,21 @@
+table.find th {
+	text-align: right;
+	color: #999;
+	white-space: nowrap;
+	border-bottom: none;
+	font-weight: normal;
+	width: 150px;
+}
+table.find td {
+	border-bottom: none;
+	padding-right: 1.5em;
+	padding-bottom: 15px;
+}
+table.find ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+table.find ul li {
+	margin: 0;
+}
