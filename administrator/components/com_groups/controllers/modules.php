@@ -97,7 +97,7 @@ class GroupsControllerModules extends Hubzero_Controller
 		));
 		
 		// are we in the approvers
-		$this->view->needsAttention = new \Hubzero\ItemList();
+		$this->view->needsAttention = new \Hubzero\Base\ItemList();
 		if (in_array($this->juser->get('username'), $approvers))
 		{
 			// get group pages
