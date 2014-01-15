@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2011-2012 Purdue University. All rights reserved.
+ * Copyright 2011-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,39 +24,38 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2011-2012 Purdue University. All rights reserved.
+ * @copyright Copyright 2011-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
-
-/**
- * Error message type for depth
- */
-define('XML_ERROR_DEPTH', 1);
-
-/**
- * Error message type for state mismatch
- */
-define('XML_ERROR_STATE_MISMATCH', 2);
-
-/**
- * Error message type for ctrl char
- */
-define('XML_ERROR_CTRL_CHAR', 3);
-//define('XML_ERROR_SYNTAX', 4);
-
-/**
- * Error message type for UTF8
- */
-define('XML_ERROR_UTF8', 5);
+namespace Hubzero\Api\Response;
 
 /**
  * Hubzero class for encoding and decoding XML
  */
-class Hubzero_Xml
+class Xml
 {
+	/**
+	 * Error message type for depth
+	 */
+	const XML_ERROR_DEPTH = 1;
+
+	/**
+	 * Error message type for state mismatch
+	 */
+	const XML_ERROR_STATE_MISMATCH = 2;
+
+	/**
+	 * Error message type for ctrl char
+	 */
+	const XML_ERROR_CTRL_CHAR = 3;
+	//const XML_ERROR_SYNTAX = 4;
+
+	/**
+	 * Error message type for UTF8
+	 */
+	const XML_ERROR_UTF8 = 5;
+
 	/**
 	 * Encode a variable into XML
 	 * 
@@ -81,7 +80,7 @@ class Hubzero_Xml
 		{
 			$i = 0;
 
-			foreach($mixed as $key=>$value)
+			foreach ($mixed as $key => $value)
 			{
 				if ($key !== $i)
 				{
@@ -127,7 +126,7 @@ class Hubzero_Xml
 
 		if (is_array($mixed) || is_object($mixed))
 		{
-	        foreach ($mixed as $key=>$value)
+			foreach ($mixed as $key=>$value)
 			{
 				if (!isset($first))
 				{
@@ -141,7 +140,7 @@ class Hubzero_Xml
 				{
 					$i = 0;
 
-					foreach($value as $vkey=>$vvalue)
+					foreach ($value as $vkey => $vvalue)
 					{
 						if ($vkey !== $i)
 						{
@@ -197,7 +196,7 @@ class Hubzero_Xml
 			$xml .= "\n";
 		}
 
-		self::last_error(XML_ERROR_NONE);
+		self::last_error(self::XML_ERROR_NONE);
 	    return $xml;
 	}
 
@@ -229,8 +228,8 @@ class Hubzero_Xml
 	{
 		$p = xml_parser_create();
 
-		xml_parser_set_option($p, XML_OPTION_CASE_FOLDING, 0);
-		xml_parser_set_option($p, XML_OPTION_SKIP_WHITE,   1);
+		xml_parser_set_option($p, self::XML_OPTION_CASE_FOLDING, 0);
+		xml_parser_set_option($p, self::XML_OPTION_SKIP_WHITE,   1);
 		xml_parse_into_struct($p, $xml, $vals, $index);
 		xml_parser_free($p);
 
@@ -268,7 +267,7 @@ class Hubzero_Xml
 						}
 					}
 
-					$obj = new stdClass();
+					$obj = new \stdClass();
 				}
 				else if ($v['attributes']['type'] == 'array')
 				{
@@ -323,7 +322,7 @@ class Hubzero_Xml
 				}
 				else if ($v['attributes']['type'] == 'object')
 				{
-					$value = new stdClass();
+					$value = new \stdClass();
 				}
 				else
 				{
@@ -384,7 +383,7 @@ class Hubzero_Xml
 
 		}
 
-		self::last_error(XML_ERROR_NONE);
+		self::last_error(self::XML_ERROR_NONE);
 		return $obj;
 	}
 }

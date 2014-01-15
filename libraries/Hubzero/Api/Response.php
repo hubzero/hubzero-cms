@@ -1218,7 +1218,7 @@ class Hubzero_API_Response
 		}
 		else if ($content_type == "application/xml")
 		{
-			echo Hubzero_Xml::encode($response);
+			echo \Hubzero\Api\Response\Xml::encode($response);
 		}
 		else if ($content_type == 'application/json')
 		{
