@@ -1368,7 +1368,15 @@ class ToolsControllerSessions extends Hubzero_Controller
 					}
 					if (preg_match("/^<param name=\"ShowLocalCursor\" value=\"?(.+)\"?>/i", $line, $param))
 					{
-						$output->showlocalcursor = trim($param[1], '"');
+						$output->show_local_cursor = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"Show Controls\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->show_controls = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"Debug\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->debug = trim($param[1], '"');
 					}
 				}
 			}
