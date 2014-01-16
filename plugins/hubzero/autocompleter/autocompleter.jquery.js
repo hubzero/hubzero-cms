@@ -981,7 +981,7 @@ HUB.Plugins.Autocomplete = {
 			{
 				case 'members': 
 					cls = 'acm'; 
-					hint = 'Type in a name or ID';
+					hint = 'Type in a name';
 					showid = true;
 				break; 
 				case 'groups':
