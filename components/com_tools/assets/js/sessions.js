@@ -161,73 +161,6 @@ if (!HUB) {
 // we use document.getElementById instead.
 //-------------------------------------------------------------
 HUB.Mw = {
-	addParam: function(obj,name,value) {
-		var p = document.createElement("param");
-		p.name = name;
-		p.value = value;
-		obj.appendChild(p);
-	},
-	
-	loadApplet: function(jar, w, h, port, pass, connect_value, ro, msie) {
-		var app = document.getElementById("theapp");
-		var par = app.parentNode;
-		
-		if (!par) {
-			return;
-		}
-		par.removeChild(app);
-		
-		if (msie) {
-			var newapp = document.createElement("applet");
-			newapp.id = "theapp";
-			newapp.code = "VncViewer.class";
-			newapp.archive = jar;
-			newapp.width = w;
-			newapp.height = h;
-			newapp.mayscript = "mayscript";
-
-			HUB.Mw.addParam(newapp, "PORT", port);
-			HUB.Mw.addParam(newapp, "ENCPASSWORD", pass);
-			HUB.Mw.addParam(newapp, "CONNECT", connect_value);
-			HUB.Mw.addParam(newapp, "ENCODING", "ZRLE");
-			HUB.Mw.addParam(newapp, "View Only", ro);
-			HUB.Mw.addParam(newapp, "trustAllVncCerts", "Yes");
-			HUB.Mw.addParam(newapp, "Offer relogin", "Yes");
-			HUB.Mw.addParam(newapp, "DisableSSL", "No");
-			HUB.Mw.addParam(newapp, "Show controls", "No");
-			HUB.Mw.addParam(newapp, "ShowLocalCursor", "Yes");
-
-			if (jar.indexOf('Signed') >= 0) {
-				HUB.Mw.addParam(newapp, "signed", "yes");
-				HUB.Mw.addParam(newapp, "forceProxy", "yes");
-			}
-		} else {
-			var newapp = document.createElement("div");
-			var signed;
-			if (jar.indexOf('Signed') >= 0) {
-				signed = 'Yes';
-			} else {
-				signed = 'No';
-			}
-			newapp.innerHTML = '<applet id="theapp" code="VncViewer.class" archive="'+jar+'" width="'+w+'" height="'+h+'" MAYSCRIPT>' +
-				'<param name="PORT" value="'+port+'"> ' +
-				'<param name="ENCPASSWORD" value="'+pass+'"> ' +
-				'<param name="CONNECT" value="'+connect_value+'"> ' +
-				'<param name="View Only" value="'+ro+'"> ' +
-				'<param name="trustAllVncCerts" value="Yes"> ' +
-				'<param name="Offer relogin" value="Yes"> ' +
-				'<param name="DisableSSL" value="No"> ' +
-				'<param name="Show controls" value="No"> ' +
-				'<param name="ShowLocalCursor" value="Yes"> ' +
-				'<param name="ENCODING" value="<?php echo $this->output->encoding; ?>"> ' +
-				'<param name="signed" value="'+signed+'"> ' +
-				'<param name="forceProxy" value="'+signed+'"> ' +
-			'</applet>';
-		}
-		
-		par.appendChild(newapp);
-	},
-
 	// Inform Mambo whether session needs signed applet.
 	sessionUsesSignedApplet: function(value) {
 		// Value should be either true or false.
@@ -601,11 +534,6 @@ function connectingTool()
 function forceSize(w,h)
 {
 	HUB.Mw.forceSize(w,h);
-}
-
-function loadApplet(jar, w, h, port, pass, connect_value, ro, msie)
-{
-	HUB.Mw.loadApplet(jar, w, h, port, pass, connect_value, ro, msie);
 }
 
 //-------------------------------------------------------------
