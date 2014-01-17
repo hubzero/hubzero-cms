@@ -31,12 +31,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Document');
-
-ximport('Hubzero_Browser');
-$browser = new Hubzero_Browser();
-$b = $browser->getBrowser();
-$v = $browser->getBrowserMajorVersion();
+$browser = new \Hubzero\Browser\Detector();
+$b = $browser->name();
+$v = $browser->major();
 
 $template = 'hubbasic';
 ?>
