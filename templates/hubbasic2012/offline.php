@@ -16,9 +16,9 @@ $config = JFactory::getConfig();
 
 $this->template = 'hubbasic2012';
 
-$browser = new Hubzero_Browser();
-$b = $browser->getBrowser();
-$v = $browser->getBrowserMajorVersion();
+$browser = new \Hubzero\Browser\Detector();
+$b = $browser->name();
+$v = $browser->major();
 
 $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down for maintenance'));
 ?>

@@ -2,24 +2,20 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//import need HUBzero libraries
-ximport('Hubzero_Document');
-ximport('Hubzero_Device');
-
 $config = JFactory::getConfig();
 
 //define tempate
 $this->template = 'hubbasic2012';
 
 //get device info
-$hd = new Hubzero_Device();
+$hd = new \Hubzero\Browser\Detector();
 
 //get joomla version
 $joomlaVersion = new JVersion();
 $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 ?>
 <!DOCTYPE html>
-<html class="<?php echo strtolower($hd->getDeviceFamily() . ' ' . $hd->getDeviceOS() . ' ' . $hd->getDeviceOSVersion()); ?> <?php echo $joomlaRelease; ?>">
+<html class="<?php echo strtolower($hd->device() . ' ' . $hd->platform() . ' ' . $hd->platformVersion()); ?> <?php echo $joomlaRelease; ?>">
 	<head>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'tooltip', 'comments', 'voting', 'icons', 'buttons', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
