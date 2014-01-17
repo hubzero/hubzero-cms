@@ -838,16 +838,30 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$cls = str_replace(" hide", '', $cls);
 							$cls .= " missing";
 						}
+						
+						// get countries list
+						$co = Hubzero\Geocode\Geocode::countries();
 					?>
 				<li class="profile-countryorigin section <?php echo $cls; ?>">
 					<div class="section-content">
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_CITIZENSHIP'); ?></div>
 						<?php
 							$img = '';
+							$citizenship = '';
 							if (is_file(JPATH_ROOT.DS.'components'.DS.$this->option.DS.'images'.DS.'flags'.DS.strtolower($this->profile->get('countryorigin')).'.gif')) {
 								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/'.$this->option.'/images/flags/'.strtolower($this->profile->get('countryorigin')).'.gif" alt="'.$this->escape($this->profile->get('countryorigin')).' '.JText::_('PLG_MEMBERS_PROFILE_FLAG').'" /> ';
 							}
-							$citizenship = $img . strtoupper($this->escape($this->profile->get('countryorigin')));
+							
+							// get the country name
+							foreach($co as $c)
+							{
+								if ($c->code == strtoupper($this->profile->get('countryorigin')))
+								{
+									$citizenship = $c->name;
+								}
+							}
+							// prepend image if we have them
+							$citizenship = $img . $citizenship;
 						?>
 						<div class="value">
 							<?php echo ($citizenship) ? $citizenship : JText::_('PLG_MEMBERS_PROFILE_CITIZENSHIP_ENTER'); ?>
@@ -864,22 +878,16 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								)
 							);
 
-							ximport('Hubzero_Geo');
-							$co = Hubzero_Geo::getcountries();
-
 							$countries  = '<select name="corigin" id="corigin" class="input-select">';
 							$countries .= '<option value="">'.JText::_('PLG_MEMBERS_PROFILE_SELECT').'</option>';
 							foreach ($co as $c)
 							{
-								if ($c['code'] != 'US') 
+								$countries .= '<option value="' . $c->code . '"';
+								if ($this->profile->get('countryorigin') == $c->code) 
 								{
-									$countries .= '<option value="' . $c['code'] . '"';
-									if ($this->profile->get('countryorigin') == $c['code']) 
-									{
-										$countries .= ' selected="selected"';
-									}
-									$countries .= '>' . $this->escape($c['name']) . '</option>';
+									$countries .= ' selected="selected"';
 								}
+								$countries .= '>' . $this->escape($c->name) . '</option>';
 							}
 							$countries .= '</select>';
 
@@ -939,16 +947,29 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$cls = str_replace(" hide", "", $cls);
 							$cls .= " missing";
 						}
+						// get countries list
+						$co = Hubzero\Geocode\Geocode::countries();
 					?>
 				<li class="profile-countryresident section <?php echo $cls; ?>">
 					<div class="section-content">
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_RESIDENCE'); ?></div>
 						<?php
 							$img = '';
+							$residence = '';
 							if (is_file(JPATH_ROOT.DS.'components'.DS.$this->option.DS.'images'.DS.'flags'.DS.strtolower($this->profile->get('countryresident')).'.gif')) {
 								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/'.$this->option.'/images/flags/'.strtolower($this->profile->get('countryresident')).'.gif" alt="'.$this->profile->get('countryresident').' '.JText::_('PLG_MEMBERS_PROFILE_FLAG').'" /> ';
 							}
-							$residence = $img . strtoupper($this->escape($this->profile->get('countryresident')));
+							
+							// get the country name
+							foreach($co as $c)
+							{
+								if ($c->code == strtoupper($this->profile->get('countryresident')))
+								{
+									$residence = $c->name;
+								}
+							}
+							// prepend image if we have them
+							$residence = $img . $residence;
 						?>
 						<div class="value">
 							<?php echo ($residence) ? $residence : JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_ENTER'); ?>
@@ -963,23 +984,17 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-						
-							ximport('Hubzero_Geo');
-							$co = Hubzero_Geo::getcountries();
-						
+							
 							$countries = '<select name="cresident" id="cresident" class="input-select">';
 							$countries .= '<option value="">'.JText::_('PLG_MEMBERS_PROFILE_SELECT').'</option>';
 							foreach ($co as $c)
 							{
-								if ($c['code'] != 'US') 
+								$countries .= '<option value="' . $c->code . '"';
+								if ($this->profile->get('countryresident') == $c->code) 
 								{
-									$countries .= '<option value="' . $c['code'] . '"';
-									if ($this->profile->get('countryresident') == $c['code']) 
-									{
-										$countries .= ' selected="selected"';
-									}
-									$countries .= '>' . $this->escape($c['name']) . '</option>';
+									$countries .= ' selected="selected"';
 								}
+								$countries .= '>' . $this->escape($c->name) . '</option>';
 							}
 							$countries .= '</select>';
 						
