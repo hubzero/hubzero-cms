@@ -239,6 +239,14 @@ class CoursesTableSection extends JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
 
+		$this->_db->setQuery("SELECT id FROM `#__courses_offering_sections` WHERE `offering_id`=" . $this->_db->Quote($this->offering_id) . " AND `alias`=" . $this->_db->Quote($this->alias));
+		$id = $this->_db->loadResult();
+		if ($id && $id != $this->id)
+		{
+			$this->setError(JText::sprintf('A section with the alias "%s" already exists for the specified offering.', $this->alias));
+			return false;
+		}
+
 		if (!$this->id)
 		{
 			$juser = JFactory::getUser();
