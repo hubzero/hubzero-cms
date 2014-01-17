@@ -31,81 +31,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Hubzero_Device
+class Hubzero_Device extends \Hubzero\Browser\Detector
 {
-	private $_user_agent;
-	private $_device_family;
-	private $_device_os;
-	private $_device_os_version;
-	
-	public function __construct( $ua = null )
-	{
-		if(!$ua)
-		{
-			$ua = JRequest::getVar('HTTP_USER_AGENT', '', 'server');
-			$this->_user_agent = $ua;
-		}
-		
-		//unset all method vars
-		unset($device_family);
-		unset($device_os);
-		unset($device_os_version);
-		
-		//list of Mobile OS's
-		$os = array(
-			'ios', 'android', 'blackberry os', 'windows', 'symbian os', 'web os'
-		);
-		
-		//default all class vars
-		$device_family = null;
-		$device_os = null;
-		$device_os_version = null;
-		
-		//if were an iPad
-		if(preg_match('/ipad/i', strtolower($ua)))
-		{
-			$device_family = 'iPad';
-			$device_os = 'iOS';
-		}
-		//if we are an iPhone
-		elseif(preg_match('/iphone/i', strtolower($ua)))
-		{
-			$device_family = 'iPhone';
-			$device_os = 'iOS';
-		}
-		
-		//if were on iOS
-		if($device_os == 'iOS')
-		{
-			preg_match('/OS (\d\w\d)/i', strtolower($ua), $matches);
-			$v = explode("_", $matches[1]);
-			$device_os_version = $v[0].".".$v[1];
-		}
-		
-		
-		//set all the class vars
-		$this->_device_family 		= $device_family;
-		$this->_device_os 			= $device_os;
-		$this->_device_os_version 	= $device_os_version;
-	}
-	
 	public function getUserAgent()
 	{
-		return $this->_user_agent;
+		return $this->agent();
 	}
 	
 	public function getDeviceFamily()
 	{
-		return $this->_device_family;
+		return $this->device();
 	}
 	
 	public function getDeviceOs()
 	{
-		return $this->_device_os;
+		return $this->platform();
 	}
 	
 	public function getDeviceOsVersion()
 	{
-		return $this->_device_os_version;
+		return $this->platformVersion();
 	}
 }
