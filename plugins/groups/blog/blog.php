@@ -439,7 +439,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		// Build some basic RSS document information
 		$jconfig = JFactory::getConfig();
 		$doc->title       = $jconfig->getValue('config.sitename') . ': ' . JText::_('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . JText::_('Blog');
-		$doc->description = JText::sprintf('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->description = JText::sprintf('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $this->group->get('cn'), $jconfig->getValue('config.sitename'));
 		$doc->copyright   = JText::sprintf('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category    = JText::_('PLG_GROUPS_BLOG_RSS_CATEGORY');
 
