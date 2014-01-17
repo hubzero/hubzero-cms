@@ -1,36 +1,82 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2009-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-class Hubzero_Ldap
+namespace Hubzero\Utility;
+
+class Ldap
 {
+	/**
+	 * Error messages
+	 *
+	 * @var array
+	 */
 	private static $errors  = array(
 		'errors'   => true,
-		'fatal'    => array(),
+		'fatal'	=> array(),
 		'warnings' => array()
-		);
+	);
+
+	/**
+	 * Success messages
+	 *
+	 * @var array
+	 */
 	private static $success = array(
 		'success'  => true,
-		'added'    => 0,
+		'added'	=> 0,
 		'deleted'  => 0,
 		'modified' => 0
-		);
+	);
 
+	/**
+	 * Get the LDAP connection
+	 *
+	 * @param   integer $debug
+	 * @return  mixed
+	 */
 	public static function getLDO($debug = 0)
 	{
 		static $conn = false;
-		
+
 		if ($conn !== false)
 		{
 			return $conn;
 		}
-	
-		$ldap_params = JComponentHelper::getParams('com_system');
+
+		$ldap_params = \JComponentHelper::getParams('com_system');
 
 		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
 		$acctmanPW = $ldap_params->get('ldap_managerpw','');
-		$pldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
-	
+		$pldap	 = $ldap_params->get('ldap_primary', 'ldap://localhost');
+
 		$negotiate_tls = $ldap_params->get('ldap_tls', 0);
-		$port          = '389';
+		$port		  = '389';
 
 		if (!is_numeric($port))
 		{
@@ -60,63 +106,63 @@ class Hubzero_Ldap
 		{
 			if ($debug)
 			{
-				Hubzero_Factory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($conn));
+				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($conn));
 			}
-			
+
 			return false;
 		}
 
 		if ($debug)
 		{
-			Hubzero_Factory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) success. ");
+			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) success. ");
 		}
 
 		if (@ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3) == false)
 		{
 			if ($debug)
 			{
-				Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
+				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
 			}
-				
+
 			$conn = false;
 			return false;
 		}
 
 		if ($debug)
 		{
-			Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
+			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
 		}
 
 		if (@ldap_set_option($conn, LDAP_OPT_RESTART, 1) == false)
 		{
 			if ($debug)
 			{
-				Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
+				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
 			}
-			
+
 			$conn = false;
 			return false;
 		}
 
 		if ($debug)
 		{
-			Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
+			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
 		}
 
 		if (!@ldap_set_option($conn, LDAP_OPT_REFERRALS, false))
 		{
 			if ($debug)
 			{
-				Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
+				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
 			}
-			
-			$conn = false;	
+
+			$conn = false;
 			return false;
 		}
 
 		if ($debug)
 		{
-			Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
+			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
 		}
 
 		if ($negotiate_tls)
@@ -125,54 +171,60 @@ class Hubzero_Ldap
 			{
 				if ($debug)
 				{
-					Hubzero_Factory::getLogger()->debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
+					\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
 				}
-				
-				$conn = false;	
+
+				$conn = false;
 				return false;
 			}
 
 			if ($debug)
 			{
-				Hubzero_Factory::getLogger()->debug("getLDO(): ldap_start_tls() success.");
+				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_start_tls() success.");
 			}
 		}
 
 		if (@ldap_bind($conn, $acctman, $acctmanPW) == false)
 		{
-			$err     = ldap_errno($conn);
+			$err	 = ldap_errno($conn);
 			$errstr  = ldap_error($conn);
 			$errstr2 = ldap_err2str($err);
-			
+
 			if ($debug)
 			{
-				Hubzero_Factory::getLogger()->debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
+				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
 			}
-			
-			$conn = false;	
+
+			$conn = false;
 			return false;
 		}
 
 		if ($debug)
 		{
-			Hubzero_Factory::getLogger()->debug("getLDO(): ldap_bind() success.");
+			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_bind() success.");
 		}
-		
+
 		return $conn;
 	}
-	
+
+	/**
+	 * Sync a user's info to LDAP
+	 *
+	 * @param   mixed   $user 
+	 * @return  boolean
+	 */
 	public static function syncUser($user)
 	{
-		$db = JFactory::getDBO();
-	
+		$db = \JFactory::getDBO();
+
 		if (empty($db))
 		{
 			self::$errors['fatal'][] = 'Error connecting to the database';
 			return false;
 		}
-		
+
 		$conn = self::getLDO();
-	
+
 		if (empty($conn))
 		{
 			self::$errors['fatal'][] = 'LDAP connection failed';
@@ -186,7 +238,7 @@ class Hubzero_Ldap
 				" FROM #__users AS u " .
 				" LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id " .
 				" LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber ";
-	
+
 		if (is_numeric($user) && $user >= 0)
 		{
 			$query .= " WHERE u.id = " . $db->Quote($user) . " LIMIT 1;";
@@ -200,11 +252,11 @@ class Hubzero_Ldap
 		$dbinfo = $db->loadAssoc();
 
 		// Don't sync usernames that are negative numbers (these are auth_link temp accounts)
-		if(is_numeric($dbinfo['uid']) && $dbinfo['uid'] <= 0)
+		if (is_numeric($dbinfo['uid']) && $dbinfo['uid'] <= 0)
 		{
 			return false;
 		}
-		
+
 		if (!empty($dbinfo))
 		{
 			$query = "SELECT host FROM #__xprofiles_host WHERE uidNumber = " . $db->Quote($dbinfo['uidNumber']) . ";";
@@ -212,9 +264,9 @@ class Hubzero_Ldap
 			$dbinfo['host'] = $db->loadResultArray();
 		}
 
-		$ldap_params = JComponentHelper::getParams('com_system');
+		$ldap_params = \JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
-	
+
 		if (is_numeric($user) && $user >= 0)
 		{
 			$dn = 'ou=users,' . $hubLDAPBaseDN;
@@ -225,26 +277,27 @@ class Hubzero_Ldap
 			$dn = "uid=$user,ou=users," . $hubLDAPBaseDN;
 			$filter = '(objectclass=*)';
 		}
-	
-		$reqattr = array('uidNumber','uid','cn','gidNumber','homeDirectory','loginShell','userPassword','shadowLastChange',
-				'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host');
-	
+
+		$reqattr = array(
+			'uidNumber','uid','cn','gidNumber','homeDirectory','loginShell','userPassword','shadowLastChange',
+			'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host'
+		);
+
 		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
-		
+
 		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
-			
-		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
-	
+
+		// If there was a database entry, but there was no ldap entry, create the ldap entry
 		if (!empty($dbinfo) && ($count <= 0))
 		{
 			$dn = "uid=" . $dbinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
-			
+
 			$entry = array();
 			$entry['objectclass'][] = 'top';
 			$entry['objectclass'][] = 'account';  // MUST uid
 			$entry['objectclass'][] = 'posixAccount'; // MUST cn,gidNumber,homeDirectory,uidNumber
 			$entry['objectclass'][] = 'shadowAccount';
-	
+
 			foreach($dbinfo as $key=>$value)
 			{
 				if (is_array($value) && $value != array())
@@ -262,16 +315,16 @@ class Hubzero_Ldap
 				self::$errors['warning'][] = "User {$dbinfo['uid']} missing one of uid, cn, or gidNumber";
 				return false;
 			}
-				
+
 			if (empty($entry['homeDirectory']) || empty($entry['uidNumber']))
 			{
 				self::$errors['warning'][] = "User {$dbinfo['uid']} missing one of homeDirectory or uidNumber";
 				return false;
 			}
-			
+
 			$result = @ldap_add($conn, $dn, $entry);
 
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 				return false;
@@ -282,13 +335,13 @@ class Hubzero_Ldap
 				return true;
 			}
 		}
-	
+
 		$ldapinfo = null;
-			
+
 		if ($count > 0)
 		{
 			$firstentry = @ldap_first_entry($conn, $entry);
-	
+
 			$attr = @ldap_get_attributes($conn, $firstentry);
 
 			if (!empty($attr))
@@ -296,7 +349,7 @@ class Hubzero_Ldap
 				foreach ($reqattr as $key)
 				{
 					unset($attr[$key]['count']);
-						
+
 					if (isset($attr[$key][0]))
 					{
 						if (count($attr[$key]) <= 2)
@@ -315,23 +368,21 @@ class Hubzero_Ldap
 				}
 			}
 		}
-		
-		/* If there was no database entry, and there was no ldap entry, nothing to do */
-	
+
+		// If there was no database entry, and there was no ldap entry, nothing to do
 		if (empty($dbinfo) && empty($ldapinfo))
 		{
 			return true;
 		}
-	
-		/* If there was no database entry, but there was an ldap entry, delete the ldap entry */
-	
+
+		// If there was no database entry, but there was an ldap entry, delete the ldap entry
 		if (!empty($ldapinfo) && empty($dbinfo))
 		{
 			$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
-	
+
 			$result = @ldap_delete($conn, $dn);
 
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 				return false;
@@ -342,11 +393,10 @@ class Hubzero_Ldap
 				return true;
 			}
 		}
-	
-		/* Otherwise update the ldap entry */
-	
+
+		// Otherwise update the ldap entry
 		$entry = array();
-	
+
 		foreach ($dbinfo as $key=>$value)
 		{
 			if ($ldapinfo[$key] != $dbinfo[$key])
@@ -361,12 +411,12 @@ class Hubzero_Ldap
 				}
 			}
 		}
-	
+
 		$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
-		
+
 		$result = @ldap_modify($conn, $dn, $entry);
 
-		if($result !== true)
+		if ($result !== true)
 		{
 			self::$errors['warning'][] = @ldap_error($conn);
 			return false;
@@ -377,27 +427,33 @@ class Hubzero_Ldap
 			return true;
 		}
 	}
-	
+
+	/**
+	 * Sync a group's info to LDAP
+	 *
+	 * @param   mixed   $group
+	 * @return  boolean
+	 */
 	static function syncGroup($group)
 	{
-		$db = JFactory::getDBO();
-	
+		$db = \JFactory::getDBO();
+
 		if (empty($db))
 		{
 			self::$errors['fatal'][] = 'Error connecting to the database';
 			return false;
 		}
-	
+
 		$conn = self::getLDO();
-	
+
 		if (empty($conn))
 		{
 			self::$errors['fatal'][] = 'LDAP connection failed';
 			return false;
 		}
-	
+
 		$query = "SELECT g.gidNumber, g.cn, g.description FROM #__xgroups AS g ";
-	
+
 		if (is_numeric($group) && ($group >= 0))
 		{
 			$query .= " WHERE g.gidNumber = " . $db->Quote($group) . " LIMIT 1;";
@@ -417,7 +473,7 @@ class Hubzero_Ldap
 			$dbinfo['memberUid'] = $db->loadResultArray();
 		}
 
-		$ldap_params = JComponentHelper::getParams('com_system');
+		$ldap_params = \JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		if (is_numeric($group) && $group >= 0)
@@ -437,8 +493,7 @@ class Hubzero_Ldap
 		
 		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
 
-		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
-
+		// If there was a database entry, but there was no ldap entry, create the ldap entry
 		if (!empty($dbinfo) && ($count <= 0))
 		{
 			$dn = "cn=" . $dbinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
@@ -461,7 +516,7 @@ class Hubzero_Ldap
 
 			$result = @ldap_add($conn, $dn, $entry);
 
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 				return false;
@@ -474,7 +529,7 @@ class Hubzero_Ldap
 		}
 
 		$ldapinfo = null;
-			
+
 		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
 
 		if ($count > 0)
@@ -508,22 +563,20 @@ class Hubzero_Ldap
 			}
 		}
 
-		/* If there was no database entry, and there was no ldap entry, nothing to do */
-
+		// If there was no database entry, and there was no ldap entry, nothing to do
 		if (empty($dbinfo) && empty($ldapinfo))
 		{
 			return true;
 		}
 
-		/* If there was no database entry, but there was an ldap entry, delete the ldap entry */
-
+		// If there was no database entry, but there was an ldap entry, delete the ldap entry
 		if (!empty($ldapinfo) && empty($dbinfo))
 		{
 			$dn = "cn=" . $ldapinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
 
 			$result = @ldap_delete($conn, $dn);
 
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 				return false;
@@ -535,8 +588,7 @@ class Hubzero_Ldap
 			}
 		}
 
-		/* Otherwise update the ldap entry */
-
+		// Otherwise update the ldap entry
 		$entry = array();
 
 		foreach ($dbinfo as $key=>$value)
@@ -556,7 +608,7 @@ class Hubzero_Ldap
 
 		$result = @ldap_modify($conn, $dn, $entry);
 
-		if($result !== true)
+		if ($result !== true)
 		{
 			self::$errors['warning'][] = @ldap_error($conn);
 			return false;
@@ -567,36 +619,57 @@ class Hubzero_Ldap
 			return true;
 		}
 	}
-	
+
+	/**
+	 * Add members to a group
+	 *
+	 * @param   mixed   $group
+	 * @param   array   $members
+	 * @return  boolean
+	 */
 	static function addGroupMemberships($group, $members)
 	{
 		self::changeGroupMemberships($group, $members, array());
 	}
-	
+
+	/**
+	 * Remove members from a group
+	 *
+	 * @param   mixed   $group
+	 * @param   array   $members
+	 * @return  boolean
+	 */
 	static function removeGroupMemberships($group, $members)
 	{
 		self::changeGroupMemberships($group, array(), $members);
 	}
-	
+
+	/**
+	 * Makes changes to a group
+	 *
+	 * @param   mixed   $group
+	 * @param   array   $members
+	 * @return  boolean
+	 */
 	static function changeGroupMemberships($group,$add,$delete)
 	{
-		$db = JFactory::getDBO();
-		
+		$db = \JFactory::getDBO();
+
 		if (empty($db))
 		{
 			return false;
 		}
-		
+
 		$conn = self::getLDO();
-	
+
 		if (empty($conn))
 		{
 			return false;
 		}
-		
-		$ldap_params = JComponentHelper::getParams('com_system');
+
+		$ldap_params = \JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
-	
+
 		if (is_numeric($group) && $group >= 0)
 		{
 			$dn = 'ou=groups,' . $hubLDAPBaseDN;
@@ -607,34 +680,33 @@ class Hubzero_Ldap
 			$dn = "cn=$group,ou=groups," . $hubLDAPBaseDN;
 			$filter = '(objectclass=*)';
 		}
-	
+
 		$reqattr = array('gidNumber','cn');
-	
+
 		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
 		
 		$count = @ldap_count_entries($conn, $entry);
-		
-		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
-	
+
+		// If there was a database entry, but there was no ldap entry, create the ldap entry
 		if ($count <= 0)
 		{
 			return false;
 		}
-	
+
 		$ldapinfo = null;
-			
+
 		if ($count > 0)
 		{
 			$firstentry = @ldap_first_entry($conn, $entry);
-	
+
 			$attr = @ldap_get_attributes($conn, $firstentry);
-	
+
 			if (!empty($attr) && $attr['count'] > 0)
 			{
 				foreach ($reqattr as $key)
 				{
 					unset($attr[$key]['count']);
-	
+
 					if (isset($attr[$key][0]))
 					{
 						if (count($attr[$key]) <= 2)
@@ -653,31 +725,31 @@ class Hubzero_Ldap
 				}
 			}
 		}
-	
+
 		if (empty($ldapinfo))
 		{
 			return false;
 		}
-	
+
 		if (!empty($add))
 		{
 			$add = array_map( array($db, "Quote"), $add);
 			$addin = implode(",", $add);
-			
+
 			if (!empty($addin))
 			{
 				$query = "SELECT username FROM #__users WHERE id IN ($addin) OR username IN ($addin);";
 				$db->setQuery($query);
 				$add = $db->loadResultArray();
 			}
-			
+
 			$adds = array();
-			
-			foreach($add as $memberUid)
+
+			foreach ($add as $memberUid)
 			{
 				$adds['memberUid'][] = $memberUid;
 			}
-			
+
 			if (@ldap_mod_add($conn, $dn, $adds) == false)
 			{
 				// if bulk add fails, try individual
@@ -687,49 +759,47 @@ class Hubzero_Ldap
 				}
 			}
 		}
-		
+
 		if (!empty($delete))
 		{
 			$delete = array_map( array($db, "Quote"), $delete);
 			$deletein = implode(",", $delete);
-			
+
 			if (!empty($deletein))
 			{
 				$query = "SELECT username FROM #__users WHERE id IN ($deletein) OR username IN ($deletein);";
 				$db->setQuery($query);
 				$delete = $db->loadResultArray();
 			}
-			
+
 			$deletes = array();
-			
-			foreach($delete as $memberUid)
+
+			foreach ($delete as $memberUid)
 			{
 				$deletes['memberUid'][] = $memberUid;
 			}
-	
+
 			@ldap_mod_del($conn, $dn, $deletes);
 		}
 	}
-	
+
 	/**
-	 * Short description for 'syncAllGroups'
+	 * Sync all groups
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function syncAllGroups()
 	{
 		// @TODO: chunk this to 1000 groups at a time
 		
-		$db = JFactory::getDBO();
-	
+		$db = \JFactory::getDBO();
+
 		$query = "SELECT gidNumber FROM #__xgroups;";
-	
+
 		$db->setQuery($query);
-	
+
 		$result = $db->loadResultArray();
-	
+
 		if ($result === false) 
 		{
 			return false;
@@ -739,14 +809,14 @@ class Hubzero_Ldap
 		{
 			self::syncGroup($row);
 
-			if(is_array(self::$errors['fatal']) && !empty(self::$errors['fatal'][0]))
+			if (is_array(self::$errors['fatal']) && !empty(self::$errors['fatal'][0]))
 			{
 				// If there's a fatal error, go ahead and stop
 				return self::$errors;
 			}
 		}
 
-		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		if (!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
 		{
 			return self::$errors;
 		}
@@ -757,41 +827,39 @@ class Hubzero_Ldap
 	}
 
 	/**
-	 * Short description for 'syncAllGroups'
+	 * Sync all users
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function syncAllUsers()
 	{
 		// @TODO: chunk this to 1000 users at a time
-		
-		$db = JFactory::getDBO();
-	
+
+		$db = \JFactory::getDBO();
+
 		$query = "SELECT id FROM #__users;";
-	
+
 		$db->setQuery($query);
-	
+
 		$result = $db->loadResultArray();
-	
+
 		if ($result === false)
 		{
 			return false;
 		}
-	
-		foreach($result as $row)
+
+		foreach ($result as $row)
 		{
 			self::syncUser($row);
 
-			if(is_array(self::$errors['fatal']) && !empty(self::$errors['fatal'][0]))
+			if (is_array(self::$errors['fatal']) && !empty(self::$errors['fatal'][0]))
 			{
 				// If there's a fatal error, go ahead and stop
 				return self::$errors;
 			}
 		}
 
-		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		if (!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
 		{
 			return self::$errors;
 		}
@@ -800,39 +868,43 @@ class Hubzero_Ldap
 			return self::$success;
 		}
 	}
-	
+
+	/**
+	 * Remove all groups
+	 *
+	 * @return  array
+	 */
 	public static function deleteAllGroups()
 	{
-	    $conn = self::getLDO();
-	    
-	    if (empty($conn))
-	    {
+		$conn = self::getLDO();
+
+		if (empty($conn))
+		{
 			self::$errors['fatal'][] = 'LDAP connection failed';
 			return self::$errors;
-	    }
-	    
-	    /* delete all old hubGroup schema based group entries */
-	    
-	    $ldap_params = JComponentHelper::getParams('com_system');
-	    $hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
-	    
-    	$dn = "ou=groups," . $hubLDAPBaseDN;
-	    $filter = '(objectclass=hubGroup)';
+		}
 
-        $sr = @ldap_search($conn, $dn, $filter, array('gid','cn'), 0, 0, 0);
+		// delete all old hubGroup schema based group entries
+		$ldap_params = \JComponentHelper::getParams('com_system');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
-        $gids = array();
-        
-        if ($sr !== false) 
-        {
-	        if (@ldap_count_entries($conn, $sr) !== false) 
-        	{
-		        $entry = @ldap_first_entry($conn, $sr);
+		$dn = "ou=groups," . $hubLDAPBaseDN;
+		$filter = '(objectclass=hubGroup)';
 
-        		while ($entry !== false) 
-        		{
-        			$attr = @ldap_get_attributes($conn, $entry);
-        			
+		$sr = @ldap_search($conn, $dn, $filter, array('gid','cn'), 0, 0, 0);
+
+		$gids = array();
+
+		if ($sr !== false) 
+		{
+			if (@ldap_count_entries($conn, $sr) !== false) 
+			{
+				$entry = @ldap_first_entry($conn, $sr);
+
+				while ($entry !== false) 
+				{
+					$attr = @ldap_get_attributes($conn, $entry);
+
 					if (array_key_exists('gid', $attr))
 					{
 						$gids[] = "gid=" . $attr['gid'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
@@ -842,89 +914,16 @@ class Hubzero_Ldap
 						$gids[] = "cn=" . $attr['cn'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
 					}
 
-        			$entry = @ldap_next_entry($conn, $entry);
-            	}
-        	}
-        }
-        
-        foreach($gids as $giddn)
-        {
+					$entry = @ldap_next_entry($conn, $entry);
+				}
+			}
+		}
+
+		foreach ($gids as $giddn)
+		{
 			$result = @ldap_delete($conn, $giddn);
 
-			if($result !== true)
-			{
-				self::$errors['warning'][] = @ldap_error($conn);
-			}
-			else
-			{
-				++self::$success['deleted'];
-			}
-        }
-        
-        /* delete all entries that have mysql counterparts */
-        
-        // @TODO: chunk this to 1000 groups at a time
-        
-        $db = JFactory::getDBO();
-        
-        $query = "SELECT cn FROM #__xgroups;";
-        
-        $db->setQuery($query);
-        
-        $result = $db->loadResultArray();
-        
-        if ($result === false)
-        {
-        	return false;
-        }
-        
-        foreach($result as $row)
-        {
-        	$dn = "cn=$row," .  "ou=groups," . $hubLDAPBaseDN;
-			$result = @ldap_delete($conn, $dn);
-
-			if($result !== true)
-			{
-				self::$errors['warning'][] = @ldap_error($conn);
-			}
-			else
-			{
-				++self::$success['deleted'];
-			}
-        }
-        
-        /* delete any remaining items with gid > 1000 */
-        
-	    $dn = "ou=groups," . $hubLDAPBaseDN;
-	    $filter = '(&(objectclass=posixGroup)(gidNumber>=1000))';
-
-        $sr = @ldap_search($conn, $dn, $filter, array('gid'), 0, 0, 0);
-        
-        $gids = array();
-        
-        if ($sr !== false) 
-        {
-	        if (@ldap_count_entries($conn, $sr) !== false) 
-        	{
-		        $entry = @ldap_first_entry($conn, $sr);
-
-        		while ($entry !== false) 
-        		{
-        			$attr = @ldap_get_attributes($conn, $firstentry);
-        			
-        			$gids[] = $attr['gid'][0];
-        			
-        			$entry = @ldap_next_entry($conn, $entry);
-        		}
-        	}
-        }
-        
-        foreach($gids as $gid)
-        {
-        	$dn = "gid=$gid," . "ou=groups," . $hubLDAPBaseDN;
-			$result = @ldap_delete($conn, $dn);
-
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 			}
@@ -934,7 +933,78 @@ class Hubzero_Ldap
 			}
 		}
 
-		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		// delete all entries that have mysql counterparts
+		// @TODO: chunk this to 1000 groups at a time
+
+		$db = \JFactory::getDBO();
+
+		$query = "SELECT cn FROM #__xgroups;";
+
+		$db->setQuery($query);
+
+		$result = $db->loadResultArray();
+
+		if ($result === false)
+		{
+			return false;
+		}
+
+		foreach ($result as $row)
+		{
+			$dn = "cn=$row," .  "ou=groups," . $hubLDAPBaseDN;
+			$result = @ldap_delete($conn, $dn);
+
+			if ($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
+		}
+
+		// delete any remaining items with gid > 1000
+		$dn = "ou=groups," . $hubLDAPBaseDN;
+		$filter = '(&(objectclass=posixGroup)(gidNumber>=1000))';
+
+		$sr = @ldap_search($conn, $dn, $filter, array('gid'), 0, 0, 0);
+
+		$gids = array();
+
+		if ($sr !== false) 
+		{
+			if (@ldap_count_entries($conn, $sr) !== false) 
+			{
+				$entry = @ldap_first_entry($conn, $sr);
+
+				while ($entry !== false) 
+				{
+					$attr = @ldap_get_attributes($conn, $firstentry);
+
+					$gids[] = $attr['gid'][0];
+
+					$entry = @ldap_next_entry($conn, $entry);
+				}
+			}
+		}
+
+		foreach ($gids as $gid)
+		{
+			$dn = "gid=$gid," . "ou=groups," . $hubLDAPBaseDN;
+			$result = @ldap_delete($conn, $dn);
+
+			if ($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
+		}
+
+		if (!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
 		{
 			return self::$errors;
 		}
@@ -942,53 +1012,57 @@ class Hubzero_Ldap
 		{
 			return self::$success;
 		}
-   	}
-	
+	}
+
+	/**
+	 * Remove all users
+	 *
+	 * @return  array
+	 */
 	public static function deleteAllUsers()
 	{
 		$conn = self::getLDO();
-	    
-	    if (empty($conn))
-	    {
+
+		if (empty($conn))
+		{
 			self::$errors['fatal'][] = 'LDAP connection failed';
 			return self::$errors;
-	    }
-	    
-	    /* delete all old hubAccount schema based user entries */
-	    
-	    $ldap_params = JComponentHelper::getParams('com_system');
-	    $hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
-	    
-    	$dn = "ou=users," . $hubLDAPBaseDN;
-	    $filter = '(objectclass=hubAccount)';
+		}
 
-        $sr = @ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
+		// delete all old hubAccount schema based user entries
+		$ldap_params = \JComponentHelper::getParams('com_system');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
-        $uids = array();
-        
-        if ($sr !== false) 
-        {
-	        if (@ldap_count_entries($conn, $sr) !== false) 
-        	{
-		        $entry = @ldap_first_entry($conn, $sr);
+		$dn = "ou=users," . $hubLDAPBaseDN;
+		$filter = '(objectclass=hubAccount)';
 
-        		while ($entry !== false) 
-        		{
-        			$attr = @ldap_get_attributes($conn, $entry);
-        			
-        			$uids[] = $attr['uid'][0];
-        			
-        			$entry = @ldap_next_entry($conn, $entry);
-        		}
-        	}
-        }
-        
-        foreach($uids as $uid)
-        {
-        	$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
+		$sr = @ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
+
+		$uids = array();
+
+		if ($sr !== false) 
+		{
+			if (@ldap_count_entries($conn, $sr) !== false) 
+			{
+				$entry = @ldap_first_entry($conn, $sr);
+
+				while ($entry !== false) 
+				{
+					$attr = @ldap_get_attributes($conn, $entry);
+
+					$uids[] = $attr['uid'][0];
+
+					$entry = @ldap_next_entry($conn, $entry);
+				}
+			}
+		}
+
+		foreach ($uids as $uid)
+		{
+			$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
 			$result = @ldap_delete($conn, $dn);
 
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 			}
@@ -996,31 +1070,29 @@ class Hubzero_Ldap
 			{
 				++self::$success['deleted'];
 			}
-        }
-        
-        /* delete all entries that have mysql counterparts */
-        
-        // @TODO: chunk this to 1000 groups at a time
-        
-        $db = JFactory::getDBO();
-        
-        $query = "SELECT username FROM #__users;";
-        
-        $db->setQuery($query);
-        
-        $result = $db->loadResultArray();
-        
-        if ($result === false)
-        {
-        	return false;
-        }
-        
-        foreach($result as $row)
-        {
-        	$dn = "uid=$row," .  "ou=users," . $hubLDAPBaseDN;
+		}
+
+		// delete all entries that have mysql counterparts
+		// @TODO: chunk this to 1000 groups at a time
+		$db = \JFactory::getDBO();
+
+		$query = "SELECT username FROM #__users;";
+
+		$db->setQuery($query);
+
+		$result = $db->loadResultArray();
+
+		if ($result === false)
+		{
+			return false;
+		}
+
+		foreach($result as $row)
+		{
+			$dn = "uid=$row," .  "ou=users," . $hubLDAPBaseDN;
 			$result = @ldap_delete($conn, $dn);
 
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 			}
@@ -1028,40 +1100,39 @@ class Hubzero_Ldap
 			{
 				++self::$success['deleted'];
 			}
-        }
-        
-        /* delete any remaining items with gid > 1000 */
-        
-	    $dn = "ou=users," . $hubLDAPBaseDN;
-	    $filter = '(&(objectclass=posixAccoiunt)(uidNumber>=1000))';
+		}
 
-        $sr = @ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
-        
-        $uids = array();
-        
-        if ($sr !== false) 
-        {
-	        if (@ldap_count_entries($conn, $sr) !== false) 
-        	{
-		        $entry = ldap_first_entry($conn, $sr);
+		// delete any remaining items with gid > 1000
+		$dn = "ou=users," . $hubLDAPBaseDN;
+		$filter = '(&(objectclass=posixAccoiunt)(uidNumber>=1000))';
 
-        		while ($entry !== false) 
-        		{
-        			$attr = @ldap_get_attributes($conn, $firstentry);
-        			
-        			$uids[] = $attr['uid'][0];
-        			
-        			$entry = @ldap_next_entry($conn, $entry);
-            	}
-        	}
-        }
-        
-        foreach($uids as $uid)
-        {
-        	$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
+		$sr = @ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
+
+		$uids = array();
+
+		if ($sr !== false) 
+		{
+			if (@ldap_count_entries($conn, $sr) !== false) 
+			{
+				$entry = ldap_first_entry($conn, $sr);
+
+				while ($entry !== false) 
+				{
+					$attr = @ldap_get_attributes($conn, $firstentry);
+
+					$uids[] = $attr['uid'][0];
+
+					$entry = @ldap_next_entry($conn, $entry);
+				}
+			}
+		}
+
+		foreach ($uids as $uid)
+		{
+			$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
 			$result = @ldap_delete($conn, $dn);
 
-			if($result !== true)
+			if ($result !== true)
 			{
 				self::$errors['warning'][] = @ldap_error($conn);
 			}
@@ -1069,9 +1140,9 @@ class Hubzero_Ldap
 			{
 				++self::$success['deleted'];
 			}
-        }
+		}
 
-		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		if (!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
 		{
 			return self::$errors;
 		}

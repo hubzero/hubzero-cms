@@ -112,9 +112,7 @@ class SystemControllerLdap extends Hubzero_Controller
 	 */
 	public function deleteGroupsTask()
 	{
-		ximport('Hubzero_Ldap');
-
-		$result = Hubzero_Ldap::deleteAllGroups();
+		$result = \Hubzero\Utility\Ldap::deleteAllGroups();
 
 		$messageType = 'info';
 		$message     = 'We are unable to decisivly say the result of the previous request';
@@ -149,9 +147,7 @@ class SystemControllerLdap extends Hubzero_Controller
 	 */
 	public function deleteUsersTask()
 	{
-		ximport('Hubzero_Ldap');
-
-		$result = Hubzero_Ldap::deleteAllUsers();
+		$result = \Hubzero\Utility\Ldap::deleteAllUsers();
 
 		$messageType = 'info';
 		$message     = 'We are unable to decisivly say the result of the previous request';
@@ -186,9 +182,7 @@ class SystemControllerLdap extends Hubzero_Controller
 	 */
 	public function exportGroupsTask()
 	{
-		ximport('Hubzero_Ldap');
-
-		$result = Hubzero_Ldap::syncAllGroups();
+		$result = \Hubzero\Utility\Ldap::syncAllGroups();
 
 		$messageType = 'info';
 		$message     = 'We are unable to decisivly say the result of the previous request';
@@ -223,9 +217,7 @@ class SystemControllerLdap extends Hubzero_Controller
 	 */
 	public function exportUsersTask()
 	{
-		ximport('Hubzero_Ldap');
-
-		$result = Hubzero_Ldap::syncAllUsers();
+		$result = \Hubzero\Utility\Ldap::syncAllUsers();
 
 		$messageType = 'info';
 		$message     = 'We are unable to decisivly say the result of the previous request';
