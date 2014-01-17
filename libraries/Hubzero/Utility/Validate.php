@@ -179,6 +179,61 @@ class Validate
 	}
 
 	/**
+	 * Is value an integer?
+	 * 
+	 * @param      unknown $x Value to check
+	 * @return     boolean True if valid, false if invalid
+	 */
+	static public function integer($x)
+	{
+		return (self::numeric($x) && intval($x) == $x);
+	}
+
+	/**
+	 * Is value a positive integer?
+	 * 
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
+	 */
+	static public function positiveInteger($x)
+	{
+		return (self::integer($x) && $x > 0);
+	}
+
+	/**
+	 * Is value a non-negative integer?
+	 * 
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
+	 */
+	static public function nonNegativeInteger($x)
+	{
+		return (self::integer($x) && $x >= 0);
+	}
+
+	/**
+	 * Is value a non-positive integer?
+	 * 
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
+	 */
+	static public function nonPositiveInteger($x)
+	{
+		return (self::integer($x) && $x <= 0);
+	}
+
+	/**
+	 * Is value a negative integer?
+	 * 
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
+	 */
+	static public function negativeInteger($x)
+	{
+		return (self::integer($x) && $x < 0);
+	}
+
+	/**
 	 * Check if a username is valid.
 	 * 
 	 * - Check if the username contains any invalid characters
@@ -197,79 +252,13 @@ class Validate
 		}
 
 		// Is it a positive integer?
-		if (is_numeric($x) && intval($x) == $x && $x > 0)
+		if (self::nonNegativeInteger($x))
 		{
 			return false;
 		}
 
 		// Is it a reserved username?
-		$reserved = array(
-			'adm',
-			'alfred',
-			'apache',
-			'backup',
-			'bin',
-			'canna',
-			'condor',
-			'condor-util',
-			'daemon',
-			'debian-exim',
-			'exim',
-			'ftp',
-			'games',
-			'ganglia',
-			'gnats',
-			'gopher',
-			'gridman',
-			'halt',
-			'httpd',
-			'ibrix',
-			'invigosh',
-			'irc',
-			'ldap',
-			'list',
-			'lp',
-			'mail',
-			'mailnull',
-			'man',
-			'mysql',
-			'nagios',
-			'netdump',
-			'news',
-			'nfsnobody',
-			'noaccess',
-			'nobody',
-			'nscd',
-			'ntp',
-			'operator',
-			'openldap',
-			'pcap',
-			'postgres',
-			'proxy',
-			'pvm',
-			'root',
-			'rpc',
-			'rpcuser',
-			'rpm',
-			'sag',
-			'shutdown',
-			'smmsp',
-			'sshd',
-			'statd',
-			'sync',
-			'sys',
-			'submit',
-			'uucp',
-			'vncproxy',
-			'vncproxyd',
-			'vcsa',
-			'wheel',
-			'www',
-			'www-data',
-			'xfs'
-		);
-
-		if (in_array(strtolower($x), $reserved))
+		if (self::reserved('username', $cn))
 		{
 			return false;
 		}
@@ -297,130 +286,225 @@ class Validate
 			return false;
 		}
 
-		if (is_numeric($cn) && intval($cn) == $cn && $cn >= 0) 
+		if (self::nonNegativeInteger($cn))
 		{
 			return false;
 		}
 
-		$reserved = array(
-			'abrt',
-			'adm',
-			'apache',
-			'apps',
-			'audio',
-			'avahi',
-			'avahi-autoipd',
-			'backup',
-			'bin',
-			'boinc',
-			'cdrom',
-			'cgred',
-			'cl-builder',
-			'clamav',
-			'condor',
-			'crontab',
-			'ctapiusers'
-			'daemon',
-			'dbus',
-			'debian-exim',
-			'desktop_admin_r',
-			'desktop_user_r',
-			'dialout',
-			'dip',
-			'disk',
-			'fax',
-			'floppy',
-			'ftp',
-			'fuse',
-			'games',
-			'gdm',
-			'gnats',
-			'gopher',
-			'gridman',
-			'haldaemon',
-			'hsqldb',
-			'irc',
-			'jackuser',
-			'kmem',
-			'kvm',
-			'ldap',
-			'libuuid',
-			'list',
-			'lock',
-			'lp',
-			'mail',
-			'man',
-			'mem',
-			'messagebus',
-			'mysql',
-			'netdev',
-			'news',
-			'nfsnobody',
-			'nobody',
-			'nogroup',
-			'nscd',
-			'nslcd',
-			'ntp',
-			'openldap',
-			'operator',
-			'oprofile',
-			'plugdev',
-			'postdrop',
-			'postfix',
-			'powerdev',
-			'proxy',
-			'pulse',
-			'pulse-access',
-			'qemu',
-			'qpidd',
-			'radvd',
-			'rdma',
-			'root',
-			'rpc',
-			'rpcuser',
-			'rtkit',
-			'sasl',
-			'saslauth',
-			'shadow',
-			'slocate',
-			'src',
-			'ssh',
-			'sshd',
-			'ssl-cert',
-			'staff',
-			'stapdev',
-			'stapusr',
-			'stap-server',
-			'stapsys',
-			'stunnel4',
-			'sudo',
-			'sys',
-			'tape',
-			'tcpdump',
-			'tomcat',
-			'tty',
-			'tunnelers',
-			'usbmuxd',
-			'users',
-			'utmp',
-			'utempter',
-			'uucp',
-			'video',
-			'vcsa',
-			'voice',
-			'wbpriv',
-			'webalizer',
-			'wheel',
-			'www-data',
-			'zookeeper',
-		);
-
-		if (in_array(strtolower($cn), $reserved))
+		// Is it a reserved group name?
+		if (self::reserved('group', $cn))
 		{
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if $val is reserved
+	 *
+	 * Type [username, group] must be specified.
+	 * 
+	 * @param  string  $type List to check against
+	 * @param  string  $val  Value to check
+	 * @return boolean True if reserved, False if not
+	 * @throws InvalidArgumentException
+	 */
+	static public function reserved($type, $val)
+	{
+		static $reserved = array(
+			'username'  => array(
+				'adm',
+				'alfred',
+				'apache',
+				'backup',
+				'bin',
+				'canna',
+				'condor',
+				'condor-util',
+				'daemon',
+				'debian-exim',
+				'exim',
+				'ftp',
+				'games',
+				'ganglia',
+				'gnats',
+				'gopher',
+				'gridman',
+				'halt',
+				'httpd',
+				'ibrix',
+				'invigosh',
+				'irc',
+				'ldap',
+				'list',
+				'lp',
+				'mail',
+				'mailnull',
+				'man',
+				'mysql',
+				'nagios',
+				'netdump',
+				'news',
+				'nfsnobody',
+				'noaccess',
+				'nobody',
+				'nscd',
+				'ntp',
+				'operator',
+				'openldap',
+				'pcap',
+				'postgres',
+				'proxy',
+				'pvm',
+				'root',
+				'rpc',
+				'rpcuser',
+				'rpm',
+				'sag',
+				'shutdown',
+				'smmsp',
+				'sshd',
+				'statd',
+				'sync',
+				'sys',
+				'submit',
+				'uucp',
+				'vncproxy',
+				'vncproxyd',
+				'vcsa',
+				'wheel',
+				'www',
+				'www-data',
+				'xfs',
+			),
+			'group' => array(
+				'abrt',
+				'adm',
+				'apache',
+				'apps',
+				'audio',
+				'avahi',
+				'avahi-autoipd',
+				'backup',
+				'bin',
+				'boinc',
+				'cdrom',
+				'cgred',
+				'cl-builder',
+				'clamav',
+				'condor',
+				'crontab',
+				'ctapiusers',
+				'daemon',
+				'dbus',
+				'debian-exim',
+				'desktop_admin_r',
+				'desktop_user_r',
+				'dialout',
+				'dip',
+				'disk',
+				'fax',
+				'floppy',
+				'ftp',
+				'fuse',
+				'games',
+				'gdm',
+				'gnats',
+				'gopher',
+				'gridman',
+				'haldaemon',
+				'hsqldb',
+				'irc',
+				'jackuser',
+				'kmem',
+				'kvm',
+				'ldap',
+				'libuuid',
+				'list',
+				'lock',
+				'lp',
+				'mail',
+				'man',
+				'mem',
+				'messagebus',
+				'mysql',
+				'netdev',
+				'news',
+				'nfsnobody',
+				'nobody',
+				'nogroup',
+				'nscd',
+				'nslcd',
+				'ntp',
+				'openldap',
+				'operator',
+				'oprofile',
+				'plugdev',
+				'postdrop',
+				'postfix',
+				'powerdev',
+				'proxy',
+				'pulse',
+				'pulse-access',
+				'qemu',
+				'qpidd',
+				'radvd',
+				'rdma',
+				'root',
+				'rpc',
+				'rpcuser',
+				'rtkit',
+				'sasl',
+				'saslauth',
+				'shadow',
+				'slocate',
+				'src',
+				'ssh',
+				'sshd',
+				'ssl-cert',
+				'staff',
+				'stapdev',
+				'stapusr',
+				'stap-server',
+				'stapsys',
+				'stunnel4',
+				'sudo',
+				'sys',
+				'tape',
+				'tcpdump',
+				'tomcat',
+				'tty',
+				'tunnelers',
+				'usbmuxd',
+				'users',
+				'utmp',
+				'utempter',
+				'uucp',
+				'video',
+				'vcsa',
+				'voice',
+				'wbpriv',
+				'webalizer',
+				'wheel',
+				'www-data',
+				'zookeeper',
+			)
+		);
+
+		$type = strtolower(trim($type));
+
+		if (!isset($reserved[$type]))
+		{
+			throw new \InvalidArgumentException(\JText::sprintf('Type must be "username" or "group". Type of "%s" provided.', $type));
+		}
+
+		if (in_array(strtolower($val), $reserved[$type]))
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

@@ -631,7 +631,6 @@ class Hubzero_Registration
 	{
 		ximport('Hubzero_User_Helper');
 		ximport('Hubzero_Registration_Helper');
-		ximport('Hubzero_Validate');
 		
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
@@ -731,7 +730,7 @@ class Hubzero_Registration
 			if ($uid && $uid != $id)
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
 
-			if (Hubzero_Validate::is_reserved_username($login))
+			if (\Hubzero\Utility\Validate::reserved('username', $login))
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
 
 			$puser = posix_getpwnam($login);

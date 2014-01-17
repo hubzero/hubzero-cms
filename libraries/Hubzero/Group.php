@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.helper');
 jimport('joomla.plugin.helper');
-ximport('Hubzero_Validate');
 
 /**
  * Short description for 'Hubzero_Group'
@@ -404,7 +403,7 @@ class Hubzero_Group
 
 		if (!is_null($name))
 		{
-			if (Hubzero_Validate::is_positive_integer($name))
+			if (\Hubzero\Utility\Validate::positiveInteger($name))
 			{
 				$this->gidNumber = $name;
 			}
@@ -1102,7 +1101,7 @@ class Hubzero_Group
 		}
 		
 		// check reserved
-		if (Hubzero_Validate::is_reserved_group($group))
+		if (\Hubzero\Utility\Validate::reserved('group', $group))
 		{
 			return true;
 		}
