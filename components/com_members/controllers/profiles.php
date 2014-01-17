@@ -1084,11 +1084,15 @@ class MembersControllerProfiles extends Hubzero_Controller
 
 			$message .= $url . "\r\n";
 
-			// Get the administrator's email address
-			$emailadmin = $jconfig->getValue('config.mailfrom');
+			$msg = new \Hubzero\Mail\Message();
+			$msg->setSubject($subject)
+			    ->addTo($jconfig->getValue('config.mailfrom'))
+			    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addHeader('X-Component', $this->_option)
+			    ->setBody($message);
 
 			// Send an e-mail to admin
-			if (!Hubzero_Toolbox::send_email($emailadmin, $subject, $message)) 
+			if (!$msg->send())
 			{
 				return JError::raiseError(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
 			}
@@ -1217,7 +1221,6 @@ class MembersControllerProfiles extends Hubzero_Controller
 		);
 
 		// Load some needed libraries
-		ximport('Hubzero_Toolbox');
 		ximport('Hubzero_Registration');
 		ximport('Hubzero_Registration_Helper');
 
@@ -1334,7 +1337,6 @@ class MembersControllerProfiles extends Hubzero_Controller
 			return false;
 		} 
 
-		ximport('Hubzero_Toolbox');
 		ximport('Hubzero_Registration');
 		ximport('Hubzero_Registration_Helper');
 
@@ -1616,8 +1618,15 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
+		$msg = new \Hubzero\Mail\Message();
+		$msg->setSubject($subject)
+		    ->addTo($email)
+		    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+		    ->addHeader('X-Component', $this->_option)
+		    ->setBody($message);
+
 		// Send the email
-		if (Hubzero_Toolbox::send_email($email, $subject, $message)) 
+		if ($msg->send()) 
 		{
 			$msg = 'A confirmation email has been sent to "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'". You must click the link in that email to re-activate your account.';
 		} 

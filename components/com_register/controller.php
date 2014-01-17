@@ -226,7 +226,15 @@ class RegisterController extends Hubzero_Controller
 				$eview->baseURL = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
-				if (!Hubzero_Toolbox::send_email($target_xprofile->get('email'), $subject, $message)) 
+
+				$msg = new \Hubzero\Mail\Message();
+				$msg->setSubject($subject)
+				    ->addTo($target_xprofile->get('email'))
+				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addHeader('X-Component', $this->_option)
+				    ->setBody($message);
+
+				if (!$msg->send()) 
 				{
 					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
 					// @FIXME: LOG ERROR CONDITION SOMEWHERE
@@ -244,7 +252,13 @@ class RegisterController extends Hubzero_Controller
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+			/*$msg = new \Hubzero\Mail\Message();
+			$msg->setSubject($subject)
+			    ->addTo($hubMonitorEmail)
+			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addHeader('X-Component', $this->_option)
+			    ->setBody($message)
+			    ->send();*/
 			// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 
 			// Determine action based on if the user chaged their email or not
@@ -269,7 +283,14 @@ class RegisterController extends Hubzero_Controller
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
-				if (!Hubzero_Toolbox::send_email($target_xprofile->get('email'), $subject, $message)) 
+				$msg = new \Hubzero\Mail\Message();
+				$msg->setSubject($subject)
+				    ->addTo($target_xprofile->get('email'))
+				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addHeader('X-Component', $this->_option)
+				    ->setBody($message);
+
+				if (!$msg->send()) 
 				{
 					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
 					// @FIXME: LOG ERROR CONDITION SOMEWHERE
@@ -287,7 +308,13 @@ class RegisterController extends Hubzero_Controller
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+			/*$msg = new \Hubzero\Mail\Message();
+			$msg->setSubject($subject)
+			    ->addTo($hubMonitorEmail)
+			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addHeader('X-Component', $this->_option)
+			    ->setBody($message)
+			    ->send();*/
 			// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 
 			// Determine action based on if the user chaged their email or not
@@ -674,7 +701,14 @@ class RegisterController extends Hubzero_Controller
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
-				if (!Hubzero_Toolbox::send_email($xprofile->get('email'), $subject, $message)) 
+				$msg = new \Hubzero\Mail\Message();
+				$msg->setSubject($subject)
+				    ->addTo($xprofile->get('email'))
+				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addHeader('X-Component', $this->_option)
+				    ->setBody($message);
+
+				if (!$msg->send()) 
 				{
 					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*,$hubMonitorEmail*/));
 					// @FIXME: LOG ERROR SOMEWHERE
@@ -694,7 +728,13 @@ class RegisterController extends Hubzero_Controller
 				$message = $eaview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
-				// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+				/*$msg = new \Hubzero\Mail\Message();
+				$msg->setSubject($subject)
+				    ->addTo($hubMonitorEmail)
+				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addHeader('X-Component', $this->_option)
+				    ->setBody($message)
+				    ->send();*/
 				// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 			}
 
@@ -945,9 +985,14 @@ class RegisterController extends Hubzero_Controller
 						$message = $eview->loadTemplate();
 						$message = str_replace("\n", "\r\n", $message);
 
-						$fullEmailAddress = $xprofile->get('name') . " <" . $xprofile->get('email') . ">";
+						$msg = new \Hubzero\Mail\Message();
+						$msg->setSubject($subject)
+						    ->addTo($xprofile->get('email'), $xprofile->get('name'))
+						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+						    ->addHeader('X-Component', $this->_option)
+						    ->setBody($message);
 
-						if (!Hubzero_Toolbox::send_email($fullEmailAddress, $subject, $message)) 
+						if (!$msg->send()) 
 						{
 							$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
 							// @FIXME: LOG ERROR SOMEWHERE
@@ -965,7 +1010,13 @@ class RegisterController extends Hubzero_Controller
 					$message = $eaview->loadTemplate();
 					$message = str_replace("\n", "\r\n", $message);
 
-					// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+					/*$msg = new \Hubzero\Mail\Message();
+					$msg->setSubject($subject)
+					    ->addTo($hubMonitorEmail)
+					    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+					    ->addHeader('X-Component', $this->_option)
+					    ->setBody($message)
+					    ->send();*/
 					// @FIXME: LOG ACCOUNT CREATION ACTIVITY SOMEWHERE
 
 					// Instantiate a new view
@@ -1367,7 +1418,14 @@ class RegisterController extends Hubzero_Controller
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			if (!Hubzero_Toolbox::send_email($email, $subject, $message)) 
+			$msg = new \Hubzero\Mail\Message();
+			$msg->setSubject($subject)
+			    ->addTo($email)
+			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addHeader('X-Component', $this->_option)
+			    ->setBody($message);
+
+			if (!$msg->send()) 
 			{
 				$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $email));
 			}
@@ -1512,7 +1570,14 @@ class RegisterController extends Hubzero_Controller
 						$message = $eview->loadTemplate();
 						$message = str_replace("\n", "\r\n", $message);
 
-						if (!Hubzero_Toolbox::send_email($pemail, $subject, $message)) 
+						$msg = new \Hubzero\Mail\Message();
+						$msg->setSubject($subject)
+						    ->addTo($pemail)
+						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+						    ->addHeader('X-Component', $this->_option)
+						    ->setBody($message);
+
+						if (!$msg->send()) 
 						{
 							$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $pemail));
 						}

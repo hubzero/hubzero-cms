@@ -959,7 +959,7 @@ class plgMembersAccount extends Hubzero_Plugin
 	 */
 	private function sendEmail($token)
 	{
-		ximport('Hubzero_Toolbox');
+		$jconfig = JFactory::getConfig();
 
 		// Create the email with the new token
 		$url      = rtrim(JURI::base(),'/');
@@ -968,8 +968,14 @@ class plgMembersAccount extends Hubzero_Plugin
 		$message  = 'You have requested to set your local password at ' . $url . "\n\n";
 		$message .= 'Your reset token is: ' . $token;
 
+		$msg = new \Hubzero\Mail\Message();
+		$msg->setSubject($subject)
+		    ->addTo($this->user->get('email'))
+		    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+		    ->setBody($message);
+
 		// Send the email
-		if (!Hubzero_Toolbox::send_email($this->user->get('email'), $subject, $message))
+		if (!$msg->send())
 		{
 			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_CONFIRMATION_EMAIL_NOT_SENT'));
 			return;

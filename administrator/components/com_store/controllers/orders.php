@@ -575,29 +575,18 @@ class StoreControllerOrders extends Hubzero_Controller
 					$admin_email = $jconfig->getValue('config.mailfrom');
 					$subject     = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE') . ': ' . JText::_('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
 					$from        = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE');
-					
+
 					$message = new \Hubzero\Mail\Message();
 					$message->setSubject($subject)
-					->addTo($row->email)
-					->addFrom($admin_email, $from)
-					->setPriority('normal');
-					
-					$message->addPart($emailbody, 'text/plain');
-					
+					        ->addTo($row->email)
+					        ->addFrom($admin_email, $from)
+					        ->setPriority('normal')
+					        ->setBody($emailbody);
+
 					$message->addHeader('X-Mailer', 'PHP/' . phpversion())
-					->addHeader('X-Component', $this->_option);
-					
+					        ->addHeader('X-Component', $this->_option);
+
 					$message->send();
-
-					/*
-					ximport('Hubzero_Toolbox');
-					$admin_email = $jconfig->getValue('config.mailfrom');
-					$subject     = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE') . ': ' . JText::_('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
-					$from        = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE');
-					$hub         = array('email' => $admin_email, 'name' => $from);
-
-					Hubzero_Toolbox::send_email($hub, $row->email, $subject, $emailbody);
-					*/
 				}
 			}
 		}
