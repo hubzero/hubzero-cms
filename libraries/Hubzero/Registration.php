@@ -140,7 +140,7 @@ class Hubzero_Registration
 	 */
 	public function __construct($login = null)
 	{
-		//$this->logDebug("Hubzero_Registration::__construct()");
+		//$this->logDebug("self::__construct()");
 
 		$this->clear();
 	}
@@ -523,10 +523,10 @@ class Hubzero_Registration
 	 */
 	public function get($key)
 	{
-		//$this->logDebug("Hubzero_Registration::get($key)");
+		//$this->logDebug("self:get($key)");
 
 		if (!array_key_exists($key, $this->_registration))
-			die("Hubzero_Registration::get() Unknown key: $key \n");
+			die(__CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
 
 		return $this->_registration[$key];
 	}
@@ -542,12 +542,12 @@ class Hubzero_Registration
 	 */
 	public function set($key,$value)
 	{
-		//$this->logDebug("Hubzero_Registration::set($key,$value)");
+		//$this->logDebug("self:set($key,$value)");
 
 		$this->_checked = false;
 
 		if (!array_key_exists($key, $this->_registration))
-			die("Hubzero_Registration::set() Unknown key: $key \n");
+			die(__CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
 
 		$this->_registration[$key] = $value;
 
@@ -1306,7 +1306,7 @@ class Hubzero_Registration
 		$login = $local;
 		// Make sure login username is no longer than max allowed by DB
 		$login = substr($login, 0, $loginMaxLen);
-		$logincheck = Hubzero_Registration::checkusername($login);
+		$logincheck = self::checkusername($login);
 		if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
 		{
 			return $login;
@@ -1319,7 +1319,7 @@ class Hubzero_Registration
 		}
 		// Make sure login username is no longer than max allowed by DB
 		$login = substr($login, 0, $loginMaxLen);
-		$logincheck = Hubzero_Registration::checkusername($login);
+		$logincheck = self::checkusername($login);
 		if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
 		{
 			return $login;
@@ -1332,7 +1332,7 @@ class Hubzero_Registration
 			$numberLen = strlen($i);
 			
 			$login = substr($local, 0, $loginMaxLen - $numberLen) . $i;
-			$logincheck = Hubzero_Registration::checkusername($login);
+			$logincheck = self::checkusername($login);
 			if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
 			{
 				return $login;
