@@ -258,7 +258,7 @@ class Validate
 		}
 
 		// Is it a reserved username?
-		if (self::reserved('username', $cn))
+		if (self::reserved('username', $x))
 		{
 			return false;
 		}
