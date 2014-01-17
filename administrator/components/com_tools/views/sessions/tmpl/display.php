@@ -25,7 +25,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filters-bar">
-		<a class="refresh" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=&amp;appname=&amp;start=0">
+		<a class="refresh" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=&amp;appname=&amp;exechost=&amp;start=0">
 			<span><?php echo JText::_('Clear filters'); ?></span>
 		</a>
 	</fieldset>
@@ -40,6 +40,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Started', 'start', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Last accessed', 'accesstime', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Tool', 'appname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Exec Host', 'exechost', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('Stop'); ?></th>
 			</tr>
 		</thead>
@@ -83,6 +84,11 @@ if ($this->rows)
 				<td>
 					<a class="tool" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;appname=<?php echo $row->appname; ?>">
 						<span><?php echo $this->escape($row->appname); ?></span>
+					</a>
+				</td>
+				<td>
+					<a class="tool" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;exechost=<?php echo $row->exechost; ?>">
+						<span><?php echo $this->escape($row->exechost); ?></span>
 					</a>
 				</td>
 				<td>

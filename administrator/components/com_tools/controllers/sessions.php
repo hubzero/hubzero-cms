@@ -66,6 +66,11 @@ class ToolsControllerSessions extends Hubzero_Controller
 			'appname', 
 			''
 		));
+		$this->view->filters['exechost']     = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.exechost', 
+			'exechost', 
+			''
+		));
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
@@ -92,7 +97,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		);
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
-
+		
 		// Get the middleware database
 		$mwdb = MwUtils::getMWDBO();
 

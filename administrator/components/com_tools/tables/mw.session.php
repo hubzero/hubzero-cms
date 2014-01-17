@@ -383,6 +383,10 @@ class MwSession extends JTable
 		{
 			$where[] = "s.appname=" . $this->_db->Quote($filters['appname']);
 		}
+		if (isset($filters['exechost']) && $filters['exechost'] != '') 
+		{
+			$where[] = "s.exechost=" . $this->_db->Quote($filters['exechost']);
+		}
 		if (count($where) > 0) 
 		{
 			$query .= " WHERE " . implode(" AND ", $where);
