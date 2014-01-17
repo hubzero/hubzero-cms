@@ -740,7 +740,14 @@ class YSearchResultAssocScalar extends YSearchResult
 		$this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : preg_split("#\n#", $row['contributors'])) : array();
 		$this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : preg_split("#\n#", $row['contributor_ids'])) : array();
 
-		if ($this->date) $this->date = strtotime($row['date']);
+		if ($this->date && $this->date != '0000-00-00 00:00:00')
+		{
+			$this->date = strtotime($row['date']);
+		}
+		else
+		{
+			$this->date = null;
+		}
 	}
 
 	/**
