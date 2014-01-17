@@ -86,6 +86,9 @@
 		border: 1px solid #CCC;
 		overflow: hidden;
 	}
+	#profile .section-edit-container .notice {
+		margin: 10px 0 10px 25%;
+	}
 	#profile .section-edit-content label {
 		font-weight: bold;
 		display: block;

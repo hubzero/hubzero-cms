@@ -56,10 +56,10 @@ function submitbutton(pressbutton)
 			<thead>
 				<tr>
 					<th><?php echo JText::_('Field/Area'); ?></th>
-					<th><?php echo JText::_('Create'); ?></th>
-					<th><?php echo JText::_('Proxy'); ?></th>
-					<th><?php echo JText::_('Update'); ?></th>
-					<th><?php echo JText::_('Edit'); ?></th>
+					<th><?php echo JText::_('Create Account'); ?></th>
+					<th><?php echo JText::_('Proxy Create Account'); ?></th>
+					<th><?php echo JText::_('Update on Next Login'); ?></th>
+					<th><?php echo JText::_('Edit Profile'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
