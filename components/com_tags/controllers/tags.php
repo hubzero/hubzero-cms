@@ -432,7 +432,7 @@ class TagsControllerTags extends Hubzero_Controller
 		}
 
 		// Break the string into individual tags
-		$tgs = explode(' ', $tagstring);
+		$tgs = explode(',', $tagstring);
 
 		// Sanitize the tag
 		$tags  = array();
