@@ -64,6 +64,7 @@ class NewsletterControllerStory extends Hubzero_Controller
 		$this->view->newsletter->load( $this->view->id );
 		
 		//default object
+		$this->view->story                  = new stdClass;
 		$this->view->story->id 				= null;
 		$this->view->story->order			= null;
 		$this->view->story->title 			= null;

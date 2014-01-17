@@ -136,6 +136,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		$this->view->setLayout('edit');
 		
 		//instantiate newsletter object
+		$this->view->newsletter                 = new stdClass;
 		$this->view->newsletter->id 			= null;
 		$this->view->newsletter->alias 			= null;
 		$this->view->newsletter->name 			= null;
