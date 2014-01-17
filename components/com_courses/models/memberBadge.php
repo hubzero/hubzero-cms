@@ -80,7 +80,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	 * @param      integer $id  Resource ID or alias
 	 * @return     void
 	 */
-	public function loadByMemberId($id)
+	public static function loadByMemberId($id)
 	{
 		if (is_numeric($id))
 		{
