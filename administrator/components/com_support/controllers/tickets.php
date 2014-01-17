@@ -496,7 +496,6 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			// Incoming comment
 			$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
-			//$comment = Hubzero_Filter::cleanXss($comment);
 			if ($comment)
 			{
 				// If a comment was posted to a closed ticket, re-open it.

@@ -2780,9 +2780,8 @@ class SupportControllerTickets extends Hubzero_Controller
 			}
 
 			// clean any cross-site scripting from report
-			ximport('Hubzero_Filter');
-			$row->summary = Hubzero_Filter::cleanXss($row->summary);
-			$row->report  = Hubzero_Filter::cleanXss($row->report);
+			$row->summary = \Hubzero\Utility\Sanitize::clean($row->summary);
+			$row->report  = \Hubzero\Utility\Sanitize::clean($row->report);
 			$row->report  = str_replace('<br>', '<br />', $row->report);
 			$row->report  = '' . $row->report;
 

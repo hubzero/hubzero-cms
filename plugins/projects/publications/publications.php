@@ -2177,7 +2177,7 @@ class plgProjectsPublications extends JPlugin
 						$title 			= trim(JRequest::getVar( 'title', '', 'post' )); 
 						$title 			= htmlspecialchars($title);
 						$abstract 		= trim(JRequest::getVar( 'abstract', '', 'post' )); 
-						$abstract 		= Hubzero_Filter::cleanXss(htmlspecialchars($abstract));
+						$abstract 		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
 						$description 	= trim(JRequest::getVar( 'description', '', 'post' ));	
 						$description 	= stripslashes($description);
 

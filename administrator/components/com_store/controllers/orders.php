@@ -456,7 +456,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			// initiate extended database class
 			$row = new Order($this->database);
 			$row->load($id);
-			$row->notes = Hubzero_Filter::cleanXss($data['notes']);
+			$row->notes = \Hubzero\Utility\Sanitize::clean($data['notes']);
 			$hold = $row->total;
 			$row->total = $cost;
 

@@ -296,7 +296,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$formdata 	= $_POST;
 		$id 		= JRequest::getVar( 'id', 0 );
 		$action 	= JRequest::getVar( 'admin_action', '' );
-		$message 	= rtrim(Hubzero_Filter::cleanXss(JRequest::getVar( 'message', '' )));
+		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'message', '' )));
 		
 		// Initiate extended database class
 		$obj = new Project( $this->database );
@@ -307,7 +307,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		$obj->title 		= $formdata['title'] ? rtrim($formdata['title']) : $obj->title;
-		$obj->about 		= rtrim(Hubzero_Filter::cleanXss($formdata['about']));
+		$obj->about 		= rtrim(\Hubzero\Utility\Sanitize::clean($formdata['about']));
 		$obj->type 			= isset($formdata['type']) ? $formdata['type'] : 1;
 		$obj->modified 		= JFactory::getDate()->toSql();
 		$obj->modified_by 	= $this->juser->get('id');

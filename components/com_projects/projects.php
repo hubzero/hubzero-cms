@@ -42,7 +42,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 jimport('joomla.application.component.helper');
 jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Filter');
 ximport('Hubzero_Group');
 ximport('Hubzero_User_Helper');
 ximport('Hubzero_User_Profile');

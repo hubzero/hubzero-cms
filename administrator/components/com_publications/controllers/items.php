@@ -539,7 +539,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$title 			= trim(JRequest::getVar( 'title', '', 'post' )); 
 		$title 			= htmlspecialchars($title);
 		$abstract 		= trim(JRequest::getVar( 'abstract', '', 'post' )); 
-		$abstract 		= Hubzero_Filter::cleanXss(htmlspecialchars($abstract));
+		$abstract 		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
 		$description 	= trim(JRequest::getVar( 'description', '', 'post' ));	
 		$description 	= stripslashes($description);
 		$release_notes 	= stripslashes(trim(JRequest::getVar( 'release_notes', '', 'post' )));
@@ -621,7 +621,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$subject 	= JText::_('Version') . ' ' . $row->version_label . ' ' 
 					. JText::_('COM_PUBLICATIONS_OF') . ' ' . JText::_('publication') . ' "' . $pubtitle . '" ';
 		$sendmail 	= 0;
-		$message 	= rtrim(Hubzero_Filter::cleanXss(JRequest::getVar( 'message', '' )));
+		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'message', '' )));
 		$output 	= JText::_('Item successfully saved.');			
 		
 		// Admin actions

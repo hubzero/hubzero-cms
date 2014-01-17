@@ -1060,7 +1060,7 @@ class WishlistController extends JObject
 			return;
 		}
 		$obj->description  = rtrim(stripslashes($obj->description));
-		$obj->description  = Hubzero_Filter::cleanXss($obj->description);
+		$obj->description  = \Hubzero\Utility\Sanitize::clean($obj->description);
 		$obj->description  = nl2br($obj->description);
 
 		// check content
@@ -1654,7 +1654,7 @@ class WishlistController extends JObject
 
 		$row->anonymous 	= JRequest::getInt('anonymous', 0);
 		$row->private	    = JRequest::getInt('private', 0);
-		$row->about     	= Hubzero_Filter::cleanXss($row->about);
+		$row->about     	= \Hubzero\Utility\Sanitize::clean($row->about);
 		$row->proposed    	= ($wishid) ? $row->proposed : JFactory::getDate()->toSql();
 
 		// check content

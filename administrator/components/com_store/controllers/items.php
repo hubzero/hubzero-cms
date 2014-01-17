@@ -230,7 +230,7 @@ class StoreControllerItems extends Hubzero_Controller
 		}
 
 		// code cleaner
-		$row->description = Hubzero_Filter::cleanXss($row->description);
+		$row->description = \Hubzero\Utility\Sanitize::clean($row->description);
 		if (!$id)
 		{
 			$row->created = $row->created ? $row->created : JFactory::getDate()->toSql();

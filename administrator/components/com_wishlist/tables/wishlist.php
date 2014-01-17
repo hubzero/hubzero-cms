@@ -125,7 +125,7 @@ class Wishlist extends JTable
 		}
 
 		$this->description  = rtrim(stripslashes($this->description));
-		$this->description  = Hubzero_Filter::cleanXss($this->description);
+		$this->description  = \Hubzero\Utility\Sanitize::clean($this->description);
 		$this->description  = nl2br($this->description);
 
 		return true;

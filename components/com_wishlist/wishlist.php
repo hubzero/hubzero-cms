@@ -40,7 +40,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 ximport('Hubzero_User_Profile');
-ximport('Hubzero_Filter');
 ximport('Hubzero_User_Helper');
 ximport('Hubzero_Module_Helper');
 ximport('Hubzero_View_Helper_Html');

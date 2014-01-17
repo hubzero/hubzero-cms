@@ -798,7 +798,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$obj->id 			= 0;
 			$obj->alias 		= JRequest::getVar( 'name', '', 'post' );
 			$obj->title 		= JRequest::getVar( 'title', '', 'post' );
-			$obj->about 		= rtrim(Hubzero_Filter::cleanXss(JRequest::getVar( 'about', '', 'post' )));
+			$obj->about 		= rtrim(\Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'about', '', 'post' )));
 			$obj->type 			= JRequest::getInt( 'type', 1, 'post' );
 			$obj->setup_stage 	= 0;
 			$obj->private 		= 1;
@@ -2031,7 +2031,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					}
 				}
 				$obj->title = Hubzero_View_Helper_Html::shortenText($title, 250, 0);
-				$obj->about = rtrim(Hubzero_Filter::cleanXss($about));
+				$obj->about = rtrim(\Hubzero\Utility\Sanitize::clean($about));
 				$obj->type 	= $type;
 				
 				// save advanced permissions

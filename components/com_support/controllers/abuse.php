@@ -195,8 +195,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 			return;
 		}
 
-		ximport('Hubzero_Filter');
-		$row->report     = Hubzero_Filter::cleanXss($row->report);
+		$row->report     = \Hubzero\Utility\Sanitize::clean($row->report);
 		$row->report     = nl2br($row->report);
 		$row->created_by = $this->juser->get('id');
 		$row->created    = JFactory::getDate()->toSql();

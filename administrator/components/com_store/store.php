@@ -64,8 +64,6 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'cart.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'store.php');
 
-ximport('Hubzero_Filter');
-
 $controllerName = JRequest::getCmd('controller', 'orders');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {

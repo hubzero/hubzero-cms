@@ -71,7 +71,6 @@ require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 jimport('joomla.application.component.helper');
 jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Filter');
 ximport('Hubzero_Group');
 ximport('Hubzero_User_Helper');
 ximport('Hubzero_Document');

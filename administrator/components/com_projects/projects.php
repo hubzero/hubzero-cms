@@ -81,7 +81,6 @@ if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
 }
 
 ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Filter');
 ximport('Hubzero_Plugin_View');
 ximport('Hubzero_Group');
 
