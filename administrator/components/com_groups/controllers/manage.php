@@ -205,7 +205,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		$this->view->group->read($id);
 		
 		// make sure we are organized
-		if (!$this->_authorize($task, $this->view->group)) 
+		if (!$this->authorize($task, $this->view->group)) 
 		{
 			return;
 		}
@@ -278,7 +278,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		}
 		
 		$task = ($this->_task == 'edit') ? 'edit' : 'create';
-		if (!$this->_authorize($task, $group))
+		if (!$this->authorize($task, $group))
 		{
 			return;
 		}
@@ -505,7 +505,7 @@ class GroupsControllerManage extends Hubzero_Controller
 				{
 					continue;
 				}
-				if (!$this->_authorize('delete', $group)) 
+				if (!$this->authorize('delete', $group)) 
 				{
 					continue;
 				}
@@ -797,7 +797,7 @@ class GroupsControllerManage extends Hubzero_Controller
 	 * @param     object $group Hubzero_Group
 	 * @return    boolean True if authorized, false if not.
 	 */
-	protected function _authorize($task, $group=null)
+	protected function authorize($task, $group=null)
 	{
 		// get users actions
 		$canDo = GroupsHelper::getActions('group');
