@@ -41,14 +41,14 @@ $config = JFactory::getConfig();
 $this->template = 'hubbasic2013';
 
 //get device info
-$hd = new Hubzero_Device();
+$browser = new \Hubzero\Browser\Detector();
 
 //get joomla version
 $joomlaVersion = new JVersion();
 $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 ?>
 <!DOCTYPE html>
-<html class="<?php echo strtolower($hd->getDeviceFamily() . ' ' . $hd->getDeviceOS() . ' ' . $hd->getDeviceOSVersion()); ?> <?php echo $joomlaRelease; ?>">
+<html class="<?php echo strtolower($browser->device() . ' ' . $browser->platform() . ' ' . $browser->platformVersion()); ?> <?php echo $joomlaRelease; ?>">
 	<head>
 		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> Doesn't validate... -->
 

@@ -46,14 +46,9 @@ else
 	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
 }
 
-$browser = new Hubzero_Browser();
-$b = $browser->getBrowser();
-$v = $browser->getBrowserMajorVersion();
-
-if (md5($juser->get('username')) == '579499ed6b89886e17fcf374c81b47a2' || md5(Hubzero_Environment::ipAddress()) == '77c399b44f89766bf48ecb61aa2762cf')
-{
-	$v .= ' rwun';
-}
+$browser = new \Hubzero\Browser\Detector();
+$b = $browser->name();
+$v = $browser->major();
 
 $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
 ?>

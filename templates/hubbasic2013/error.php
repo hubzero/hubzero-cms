@@ -9,9 +9,9 @@ $this->template = 'hubbasic2013';
 $lang = JFactory::getLanguage();
 $lang->load('tpl_' . $this->template);
 
-$browser = new Hubzero_Browser();
-$b = $browser->getBrowser();
-$v = $browser->getBrowserMajorVersion();
+$browser = new \Hubzero\Browser\Detector();
+$b = $browser->name();
+$v = $browser->major();
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
