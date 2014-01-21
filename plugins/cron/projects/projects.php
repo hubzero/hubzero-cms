@@ -149,21 +149,17 @@ class plgCronProjects extends JPlugin
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );	
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );		
-			
-				
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );						
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
 		require_once( JPATH_SITE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'attachment.php');
-			
+			.'com_publications' . DS . 'tables' . DS . 'attachment.php');			
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_publications' . DS . 'tables' . DS . 'publication.php');
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_publications' . DS . 'tables' . DS . 'version.php');
-			
-		
+					
 		// Get all projects
 		$obj = new Project( $database );
 		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias' );
@@ -212,8 +208,6 @@ class plgCronProjects extends JPlugin
 			);
 			
 			$sections = $dispatcher->trigger( 'onProject', $plugin_params);
-			
-			//echo 'synced ' . $alias . ' <br />';
 		}
 		
 		return true;
@@ -267,7 +261,6 @@ class plgCronProjects extends JPlugin
 			
 			$command = 'gc --aggressive';
 			$git->callGit($path, $command);
-			//echo 'optimized ' . $project . ' repo <br />';
 		}
 
 		return true;
