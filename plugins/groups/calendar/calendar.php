@@ -311,7 +311,8 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		// Fix to fill in end days out of month correctly
 		$running_day = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->format('w');
 		$days_in_month = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->format('t');
-		$today = JFactory::getDate()->format("Y-m-d");
+		$today = JHTML::_('date', JFactory::getDate(),'Y-m-d');
+		
 		$days_in_this_week = 1;
 		$day_counter = 0;
 		$dates_array = array();
