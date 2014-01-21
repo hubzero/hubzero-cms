@@ -307,7 +307,7 @@ JHTML::_('behavior.tooltip');
 									</span>
 			<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 									<span class="ticket-activity">
-										<time datetime="<?php echo $lastcomment; ?>"><?php echo Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt($lastcomment)); ?></time>
+										<time datetime="<?php echo $lastcomment; ?>"><?php echo Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt(JHTML::_('date', $lastcomment, JFactory::getDBO()->getDateFormat()))); ?></time>
 									</span>
 			<?php } ?>
 								</p>
