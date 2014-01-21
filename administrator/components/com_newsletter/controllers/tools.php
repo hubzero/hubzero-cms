@@ -128,9 +128,6 @@ class NewsletterControllerTools extends Hubzero_Controller
 			$image = $imageUrl;
 		}
 		
-		//import mozify lib
-		ximport('Hubzero_Image_Mozify');
-		
 		//config for mozify
 		$config = array(
 			'imageUrl'   => $image,
@@ -138,7 +135,7 @@ class NewsletterControllerTools extends Hubzero_Controller
 		);
 		
 		//instantiate new hubzero image mozify object
-		$hubzeroImageMozify = new Hubzero_Image_Mozify( $config );
+		$hubzeroImageMozify = new \Hubzero\Image\Mozify( $config );
 		
 		//return
 		$this->code     = $hubzeroImageMozify->mozify();

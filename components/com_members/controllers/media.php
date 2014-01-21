@@ -201,8 +201,7 @@ class MembersControllerMedia extends Hubzero_Controller
 		}
 		
 		//resize image to max 400px and rotate in case user didnt before uploading
-		ximport('Hubzero_Image');
-		$hi = new Hubzero_Image($file);
+		$hi = new \Hubzero\Image\Processor($file);
 		if (count($hi->getErrors()) == 0)
 		{
 			$hi->autoRotate();
@@ -217,7 +216,7 @@ class MembersControllerMedia extends Hubzero_Controller
 		}
 
 		// create thumb
-		$hi = new Hubzero_Image($final_file);
+		$hi = new \Hubzero\Image\Processor($final_file);
 		if (count($hi->getErrors()) == 0)
 		{
 			$hi->resize(50, false, true, true);

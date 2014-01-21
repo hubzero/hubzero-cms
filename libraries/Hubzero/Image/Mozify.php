@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Image;
 
 /**
  * Helper class for Converting Image to Table Mosaic
  */
-class Hubzero_Image_Mozify
+class Mozify
 {
 	private $imageAlt        = null;
 	private $imageUrl        = null;
@@ -43,32 +42,32 @@ class Hubzero_Image_Mozify
 	private $mosaicSize      = 5;
 	private $cssClassName    = 'hz_mozify_';
 	private $counter         = 1;
-	
+
 	/**
 	 * Image Mozifyier Constructor
 	 *
 	 * @param    $config    Array of config values
 	 */
-	public function __construct( $config = array() )
+	public function __construct($config = array())
 	{
 		//we must have image url to do anything
 		if (isset($config['imageUrl']) && $config['imageUrl'] != '')
 		{
 			//set image url
 			$this->setImageUrl( $config['imageUrl'] );
-			
+
 			//set alt text if we have it
 			if (isset($config['imageAlt']))
 			{
 				$this->setImageAlt( $config['imageAlt'] );
 			}
-			
+
 			//set mosaic size if we have it
 			if (isset($config['mosaicSize']))
 			{
 				$this->setMosaicSize( $config['mosaicSize'] );
 			}
-			
+
 			//set mosaic size if we have it
 			if (isset($config['cssClassName']))
 			{
@@ -76,14 +75,19 @@ class Hubzero_Image_Mozify
 			}
 		}
 	}
-	
+
+	/**
+	 * Mozify!
+	 *
+	 * @return  string
+	 */
 	public function mozify()
 	{
 		if ($this->imageUrl == '')
 		{
 			return;
 		}
-		
+
 		//build return html
 		$html  = $this->_mozifyCss() . PHP_EOL;
 		$html .= $this->_mozifyStartMsoHack() . PHP_EOL;
@@ -91,20 +95,27 @@ class Hubzero_Image_Mozify
 		$html .= $this->_mozifyMosaic() . PHP_EOL;
 		$html .= $this->_mozifyEndWrapper() . PHP_EOL;
 		$html .= $this->_mozifyEndMsoHack() . PHP_EOL;
+
 		$this->counter++;
+
 		return $html;
 	}
-	
+
+	/**
+	 * Convert an image to a mosaic
+	 *
+	 * @return  string
+	 */
 	public function mosaic()
 	{
 		if ($this->imageUrl == '')
 		{
 			return;
 		}
-		
+
 		return $this->_mozifyMosaic();
 	}
-	
+
 	/**
 	 * Accessor Method to get Image Url
 	 */
@@ -112,16 +123,16 @@ class Hubzero_Image_Mozify
 	{
 		return $this->imageUrl;
 	}
-	
+
 	/**
 	 * Mutator Method to set Image Url
 	 */
-	public function setImageUrl( $imageUrl = '' )
+	public function setImageUrl($imageUrl = '')
 	{
 		$this->imageUrl = $imageUrl;
-		list($this->imageWidth, $this->imageHeight) = getimagesize( $this->imageUrl );
+		list($this->imageWidth, $this->imageHeight) = getimagesize($this->imageUrl);
 	}
-	
+
 	/**
 	 * Accessor Method to get Image Alt Text
 	 */
@@ -129,15 +140,15 @@ class Hubzero_Image_Mozify
 	{
 		return $this->imageAlt;
 	}
-	
+
 	/**
 	 * Mutator Method to set Image Alt Text
 	 */
-	public function setImageAlt( $imageAlt = '' )
+	public function setImageAlt($imageAlt = '')
 	{
 		$this->imageAlt = $imageAlt;
 	}
-	
+
 	/**
 	 * Accessor Method to get Mosaic Size
 	 */
@@ -145,15 +156,15 @@ class Hubzero_Image_Mozify
 	{
 		return $this->mosaicSize;
 	}
-	
+
 	/**
 	 * Mutator Method to set Mosaic Size
 	 */
-	public function setMosaicSize( $mosaicSize = '' )
+	public function setMosaicSize($mosaicSize = '')
 	{
 		$this->mosaicSize = $mosaicSize;
 	}
-	
+
 	/**
 	 * Accessor Method to get CSS Class Name
 	 */
@@ -161,20 +172,28 @@ class Hubzero_Image_Mozify
 	{
 		return $this->cssClassName . $this->counter;
 	}
-	
+
 	/**
 	 * Mutator Method to set CSS Class Name
+	 *
+	 * @param  string $cssClassName
+	 * @return void
 	 */
-	public function setCssClassName( $cssClassName = '' )
+	public function setCssClassName($cssClassName = '')
 	{
 		$this->cssClassName = $cssClassName;
 	}
-	
+
+	/**
+	 * Generate CSS needed for mozify
+	 *
+	 * @return  string
+	 */
 	private function _mozifyCss()
 	{
 		//get the class
 		$class = $this->getCssClassName();
-		
+
 		//build css needed for mozify
 		$css  = '<style type="text/css">';
 		$css .= '.ExternalClass .ecxhm1_3 { width:' . $this->imageWidth . 'px !important; height:' . $this->imageHeight . 'px !important; float:none !important }';
@@ -184,29 +203,44 @@ class Hubzero_Image_Mozify
 		$css .= '</style>';
 		return $css;
 	}
-	
+
+	/**
+	 * Output the start of the MSO hack
+	 *
+	 * @return  string
+	 */
 	private function _mozifyStartMsoHack()
 	{
 		//get the class
 		$class = $this->getCssClassName();
-		
+
 		//build mso hack
-	    $mosHack = '<!--[if mso]><style>.' . $class . '{ display:none !important }</style><table cellpadding="0" cellspacing="0" style="display:block;float:none;" align=""><tr><td>';
-	    $mosHack .= '<img src="' . $this->imageUrl . '" alt="'.$this->imageAlt.'" style="display:block;" moz="3" valid="true" height="' . $this->imageHeight . '" width="' . $this->imageWidth . '"></td></tr></table><style type="text/css">/*<![endif]-->';
-	    return $mosHack;
+		$mosHack = '<!--[if mso]><style>.' . $class . '{ display:none !important }</style><table cellpadding="0" cellspacing="0" style="display:block;float:none;" align=""><tr><td>';
+		$mosHack .= '<img src="' . $this->imageUrl . '" alt="'.$this->imageAlt.'" style="display:block;" moz="3" valid="true" height="' . $this->imageHeight . '" width="' . $this->imageWidth . '"></td></tr></table><style type="text/css">/*<![endif]-->';
+		return $mosHack;
 	}
-	
+
+	/**
+	 * Output the end of the MSO hack
+	 *
+	 * @return  string
+	 */
 	private function _mozifyEndMsoHack()
 	{
 		$msoHack = '<!--[if mso]>*/</style><![endif]-->';
-	    return $msoHack;
+		return $msoHack;
 	}
-	
+
+	/**
+	 * Image replacement
+	 *
+	 * @return  string
+	 */
 	private function _mozifyImageReplacement()
 	{
 		//get the class
 		$class = $this->getCssClassName();
-		
+
 		//build replacement html
 		$replacement = '<table width="' . $this->imageWidth . '" cellspacing="0" cellpadding="0" border="0" align="" moz="3" style="display:block;float:none" class="' . $class . '">';
 		$replacement .= '<tbody>';
@@ -223,15 +257,20 @@ class Hubzero_Image_Mozify
 		$replacement .= '</div>';
 		return $replacement;
 	}
-	
+
+	/**
+	 * Create a mosaic
+	 *
+	 * @return  string
+	 */
 	private function _mozifyMosaic()
 	{
 		//get image resource
 		$resource = imagecreatefromstring(file_get_contents($this->imageUrl));
-		
+
 		//get the class
 		$class = $this->getCssClassName();
-		
+
 		//build mosaic html
 		$mosaic  = '<table width="' . $this->imageWidth . '" height="' . $this->imageHeight . '" cellspacing="0" cellpadding="0" border="0" bgcolor="#fefefe" class="' . $class . '">';
 		$mosaic .= '<tbody>';
@@ -240,8 +279,8 @@ class Hubzero_Image_Mozify
 			$mosaic .= '<tr>';
 			for ($x = 0; $x < $this->imageWidth; $x+=$this->mosaicSize)
 			{
-				$color = imagecolorat( $resource, $x, $y );
-				$rgba = imagecolorsforindex( $resource, $color );
+				$color = imagecolorat($resource, $x, $y);
+				$rgba = imagecolorsforindex($resource, $color);
 				//$rgba['alpha'] = $rgba['alpha'];
 				$color_string = $this->_rgb2hex( $rgba );
 				$mosaic .= '<td width="' . $this->mosaicSize . '" bgcolor="' . $color_string . '"><b></b></td>' . PHP_EOL;
@@ -252,8 +291,14 @@ class Hubzero_Image_Mozify
 		$mosaic .= '</table>';
 		return $mosaic;
 	}
-	
-	private function _rgb2hex(array $rgb) {
+
+	/**
+	 * Cinvert an RGB value to hex
+	 *
+	 * @return  string
+	 */
+	private function _rgb2hex(array $rgb) 
+	{
 		if (isset($rgb['alpha']))
 		{
 			unset($rgb['alpha']);
@@ -266,7 +311,12 @@ class Hubzero_Image_Mozify
 		}
 		return '#' . strtoupper($out);
 	}
-	
+
+	/**
+	 * Output the end of the wrapper
+	 *
+	 * @return  string
+	 */
 	private function _mozifyEndWrapper()
 	{
 		$wrapper  = '</td>';

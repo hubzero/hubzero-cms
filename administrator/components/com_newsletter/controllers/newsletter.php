@@ -700,8 +700,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		//build newsletter for sending
 		$newsletterNewsletterContent = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
 		
-		//ximport('Hubzero_Image_MozifyHelper');
-		//$newsletterNewsletterContent = Hubzero_Image_MozifyHelper::mozifyHtml( $newsletterNewsletterContent, 5 );
+		//$newsletterNewsletterContent = \Hubzero\Image\MozifyHelper::mozifyHtml( $newsletterNewsletterContent, 5 );
 		
 		//send campaign
 		$this->_send( $newsletterNewsletter, $newsletterNewsletterContent, $emails, $mailinglistId, $sendingTest = false );

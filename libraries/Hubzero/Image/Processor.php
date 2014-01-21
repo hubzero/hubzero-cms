@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Image;
+
+use Hubzero\Base\Object;
+use Exception;
 
 /**
  * Helper class for image manipulation
  */
-class Hubzero_Image extends JObject
+class Processor extends Object
 {
 	/**
 	 * Path to image
@@ -78,7 +80,7 @@ class Hubzero_Image extends JObject
 	 * @param      array  $config       Optional configurations
 	 * @return     void
 	 */
-	public function __construct($image_source = null, $config = array(), $isRemoteImage = false )
+	public function __construct($image_source = null, $config = array(), $isRemoteImage = false)
 	{
 		$this->source = $image_source;
 		$this->config = $config;
@@ -91,14 +93,14 @@ class Hubzero_Image extends JObject
 		//check to see if we have an image to work with
 		if (is_null($this->source))//&& is_file($this->source))
 		{
-			$this->setError(JText::_('[ERROR] Image Source not set.'));
+			$this->setError(\JText::_('[ERROR] Image Source not set.'));
 			return;
 		}
 
 		//check to make sure its a file if not remote
 		if (!$isRemoteImage && !is_file($this->source))
 		{
-			$this->setError(JText::_('[ERROR] Image doesn\'t exist on the server.'));
+			$this->setError(\JText::_('[ERROR] Image doesn\'t exist on the server.'));
 			return;
 		}
 
@@ -145,7 +147,7 @@ class Hubzero_Image extends JObject
 		$installed_exts = get_loaded_extensions();
 		if (!in_array($package, $installed_exts))
 		{
-			$this->setError(JText::sprintf('[ERROR] You are missing the required PHP package %s.', $package));
+			$this->setError(\JText::sprintf('[ERROR] You are missing the required PHP package %s.', $package));
 			return false;
 		}
 
@@ -210,7 +212,7 @@ class Hubzero_Image extends JObject
 	{
 		if (!$this->checkPackageRequirements('exif'))
 		{
-			$this->setError(JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+			$this->setError(\JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
 			return false;
 		}
 
@@ -421,7 +423,7 @@ class Hubzero_Image extends JObject
 	{
 		if (!$this->checkPackageRequirements('exif'))
 		{
-			$this->setError(JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+			$this->setError(\JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
 			return false;
 		}
 
@@ -533,12 +535,12 @@ class Hubzero_Image extends JObject
 
 			if ($make_paths)
 			{
-				JFolder::create($info['dirname'], 0770);
+				\JFolder::create($info['dirname'], 0770);
 			}
 
 			if (!is_dir($info['dirname']) && $make_paths == false)
 			{
-				$this->setError(JText::_('You must supply a valid path or allow save function to create recursive path'));
+				$this->setError(\JText::_('You must supply a valid path or allow save function to create recursive path'));
 				return;
 			}
 
