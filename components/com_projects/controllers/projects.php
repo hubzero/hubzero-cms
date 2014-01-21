@@ -3418,7 +3418,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if (!is_dir( $path )) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create( $path, 0777 )) 
+			if (!JFolder::create( $path, 0775 )) 
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				$this->_img( '', $id, $tempid );
@@ -3572,7 +3572,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Make sure the path exist
 		if (!is_dir( $to_path )) 
 		{
-			if (!JFolder::create( $to_path, 0777 )) 
+			if (!JFolder::create( $to_path, 0775 )) 
 			{
 				return false;
 			}

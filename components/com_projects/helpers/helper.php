@@ -872,7 +872,7 @@ class ProjectsHelper extends JObject {
 		if (!is_dir(JPATH_ROOT . $path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $path, 0777)) 
+			if (!JFolder::create(JPATH_ROOT . $path, 0775)) 
 			{
 				return false;
 			}
@@ -940,7 +940,7 @@ class ProjectsHelper extends JObject {
 			
 			if (!is_dir(JPATH_ROOT . $pubPath))
 			{
-				if (!JFolder::create( JPATH_ROOT . $pubPath, 0777 )) 
+				if (!JFolder::create( JPATH_ROOT . $pubPath, 0775 )) 
 				{
 					return $html;
 				}
@@ -976,7 +976,7 @@ class ProjectsHelper extends JObject {
 				{											
 					if (!is_dir(JPATH_ROOT . $previewPath . DS . dirname($file)))
 					{
-						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file), 0777 )) 
+						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file), 0775 )) 
 						{
 							return $html;
 						}
@@ -1180,7 +1180,7 @@ class ProjectsHelper extends JObject {
 			
 			if (!is_dir(JPATH_ROOT . $pubPath))
 			{
-				if (!JFolder::create( JPATH_ROOT . $pubPath, 0777 )) 
+				if (!JFolder::create( JPATH_ROOT . $pubPath, 0775 )) 
 				{
 					return $html;
 				}
@@ -1211,7 +1211,7 @@ class ProjectsHelper extends JObject {
 					// Copy if not there
 					if (!is_dir(JPATH_ROOT . $previewPath . DS . dirname($file)))
 					{
-						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file), 0777 )) 
+						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file), 0775 )) 
 						{
 							return $html;
 						}
