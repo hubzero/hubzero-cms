@@ -133,7 +133,7 @@ class SupportComment extends JTable
 		{
 			$sqladmin = "AND access=0";
 		}
-		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY created ASC";
+		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY id ASC";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
