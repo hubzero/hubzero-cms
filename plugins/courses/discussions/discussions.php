@@ -144,6 +144,12 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$category->section_id = $section->id;
 		}
 
+		// Don't change "Deleted" items
+		if ($category->state == 2)
+		{
+			return $category->id;
+		}
+
 		// Assign asset group data to category to keep them in sync
 		$category->state = $assetgroup->get('state');
 		if ($assetgroup->get('title') == '--')
@@ -173,6 +179,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$category->store();
 		}
 
+
 		return $category->id;
 	}
 
@@ -199,7 +206,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
 
 		// Was a category found?
-		if ($category->id)
+		if ($category->id && $category->state != 2)
 		{
 			// Mark as deleted
 			$category->state = 2;
@@ -242,7 +249,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		$section = new ForumTableSection(JFactory::getDBO());
 		$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
-		if ($section->id)
+		if ($section->id && $section->state != 2)
 		{
 			$section->state    = $unit->get('state');
 			$section->title    = $unit->get('title');
