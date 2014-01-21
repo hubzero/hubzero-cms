@@ -215,10 +215,6 @@ class modMyQuestions extends Hubzero_Module
 	{
 		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
-		if ($this->banking) 
-		{
-			ximport('Hubzero_Bank');
-		}
 
 		//$juser = JFactory::getUser();
 		// Push the module CSS to the template

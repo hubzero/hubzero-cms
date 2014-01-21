@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 ximport('Hubzero_User_Profile');
-ximport('Hubzero_Bank');
 
 /**
  * Members controller class for user points

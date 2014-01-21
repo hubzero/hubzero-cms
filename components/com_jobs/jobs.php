@@ -41,7 +41,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Geo');
-ximport('Hubzero_Bank');
 ximport('Hubzero_User_Profile');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'service.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');

@@ -40,7 +40,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Bank');
 ximport('Hubzero_Geo');
 ximport('Hubzero_User_Profile');
 

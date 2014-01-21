@@ -47,10 +47,6 @@ class StoreControllerItems extends Hubzero_Controller
 	{
 		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
-		if ($this->banking)
-		{
-			ximport('Hubzero_Bank');
-		}
 
 		parent::execute();
 	}

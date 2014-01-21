@@ -57,7 +57,6 @@ else
 }
 
 jimport('joomla.application.component.helper');
-ximport('Hubzero_Bank');
 
 // Include scripts
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'service.php');

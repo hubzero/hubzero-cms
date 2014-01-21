@@ -53,10 +53,6 @@ class plgSupportTransfer extends JPlugin
 
 		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
-		if ($this->banking) 
-		{
-			ximport('Hubzero_Bank');
-		}
 	}
 
 	/**

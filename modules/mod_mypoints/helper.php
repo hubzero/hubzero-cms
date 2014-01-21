@@ -63,9 +63,7 @@ class modMyPoints extends Hubzero_Module
 		} 
 		else 
 		{
-			// Find the user's most recent support tickets
-			ximport('Hubzero_Bank');
-
+			// Get the user's point summary and history
 			$BTL  = new Hubzero_Bank_Teller($database, $juser->get('id'));
 			$this->summary = $BTL->summary();
 			$this->history = $BTL->history($this->limit);

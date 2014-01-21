@@ -242,19 +242,19 @@ class ModIncrementalRegistrationAwards
 				$eligible[$k == 'url' ? 'web' : $k] = 1;
 			}
 		}
-	        self::$dbh->setQuery('SELECT SUM(amount) AS amount FROM #__users_transactions WHERE type = \'deposit\' AND category = \'registration\' AND uid = '.$this->uid);		
+		self::$dbh->setQuery('SELECT SUM(amount) AS amount FROM #__users_transactions WHERE type = \'deposit\' AND category = \'registration\' AND uid = '.$this->uid);
 		$prior = self::$dbh->loadResult();
 		self::$dbh->setQuery($completeSql.' WHERE user_id = '.$this->uid);
 		self::$dbh->execute();
 
-		if ($alreadyComplete) {
+		if ($alreadyComplete) 
+		{
 			self::$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$this->uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$this->uid.')), 0)');
 			$newAmount = self::$dbh->loadResult() + $alreadyComplete;
 
-                       ximport('Hubzero_Bank');                                                                                                                                                                                            
-                       $BTL = new Hubzero_Bank_Teller( self::$dbh, $this->uid );                                                                                                                                                           
-                       $BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0); 
 
+			$BTL = new Hubzero_Bank_Teller( self::$dbh, $this->uid );
+			$BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0); 
 		}
 		return array(
 			'prior'     => $prior,

@@ -75,8 +75,6 @@ class plgCronMembers extends JPlugin
 
 		$this->database = JFactory::getDBO();
 
-		ximport('Hubzero_Bank');
-
 		$action = 'royalty';
 
 		// What month/year is it now?

@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Bank');
-
 /**
  * Publications Economy class:
  * Stores economy functions for publication

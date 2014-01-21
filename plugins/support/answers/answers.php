@@ -273,8 +273,6 @@ class plgSupportAnswers extends JPlugin
 
 				if ($banking && $reward) 
 				{
-					ximport('Hubzero_Bank');
-
 					// Send email to people who answered question with reward
 					if ($responders) 
 					{

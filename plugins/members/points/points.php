@@ -112,8 +112,6 @@ class plgMembersPoints extends Hubzero_Plugin
 			return $arr;
 		}
 
-		ximport('Hubzero_Bank');
-
 		$BTL = new Hubzero_Bank_Teller($database, $member->get('uidNumber'));
 
 		// Build the final HTML

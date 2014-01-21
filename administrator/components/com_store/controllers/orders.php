@@ -47,9 +47,8 @@ class StoreControllerOrders extends Hubzero_Controller
 	{
 		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
-		ximport('Hubzero_Bank');
-		
-		parent::execute();		
+
+		parent::execute();
 	}
 
 	/**
@@ -444,7 +443,6 @@ class StoreControllerOrders extends Hubzero_Controller
 		$statusmsg = '';
 		$email = 1; // turn emailing on/off
 		$emailbody = '';
-		ximport('Hubzero_Bank');
 
 		$data = array_map('trim', $_POST);
 		$action = (isset($data['action'])) ? $data['action'] : '';

@@ -404,8 +404,6 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Give some points to whoever reported abuse
 		if ($banking && $gratitude)
 		{
-			ximport('Hubzero_Bank');
-
 			$BC = new Hubzero_Bank_Config($this->database);
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar)

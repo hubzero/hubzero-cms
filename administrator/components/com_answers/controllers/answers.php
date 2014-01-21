@@ -47,11 +47,6 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	{
 		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
 
-		if ($this->banking)
-		{
-			ximport('Hubzero_Bank');
-		}
-
 		parent::execute();
 	}
 

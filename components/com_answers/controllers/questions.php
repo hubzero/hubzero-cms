@@ -45,11 +45,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 	{
 		$this->config->set('banking', JComponentHelper::getParams('com_members')->get('bankAccounts'));
 
-		if ($this->config->get('banking')) 
-		{
-			ximport('Hubzero_Bank');
-		}
-
 		$this->registerTask('__default', 'search');
 		$this->registerTask('latest', 'latest.rss');
 

@@ -211,11 +211,6 @@ class WishlistController extends JObject
 		$banking = $upconfig->get('bankAccounts');
 		$this->banking = $this->config->get('banking') && $banking ? $this->config->get('banking') : 0;
 
-		if ($banking) 
-		{
-			ximport('Hubzero_Bank');
-		}
-
 		switch($this->getTask())
 		{
 			case 'wishlist':    $this->wishlist();      break;

@@ -58,7 +58,6 @@ else
 
 jimport('joomla.application.component.helper');
 ximport('Hubzero_User');
-ximport('Hubzero_Bank');
 
 // Include scripts
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'admin.php');
