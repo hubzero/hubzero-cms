@@ -173,6 +173,17 @@ if ($offerings->total())
 				}
 				else
 				{
+					if ($offering->section()->get('enrollment') == 2)
+					{
+						foreach ($offering->sections() as $sect)
+						{
+							if ($sect->get('alias') != '__default' && $sect->get('enrollment') != 2)
+							{
+								$offering->section($sect->get('alias'));
+								break;
+							}
+						}
+					}
 					?>
 			<div class="offering-info">
 				<table>
