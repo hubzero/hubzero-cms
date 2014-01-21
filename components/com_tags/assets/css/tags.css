@@ -177,3 +177,40 @@
 	#introduction {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf02c;</small>');
 	}
+
+/* Related tags */
+#related h3 {
+	display: block;
+	font-size: small;
+	margin: 0;
+}
+#related {
+	background: #e8e8e9;
+	margin-top: -15px;
+	padding: 10px;
+	padding-bottom: 6px;
+	-webkit-border-bottom-right-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-border-radius-bottomright: 15px;
+	-moz-border-radius-bottomleft: 15px;
+	border-bottom-right-radius: 15px;
+	border-bottom-left-radius: 15px;
+}
+#related .clear {
+	clear: left;
+	margin: 0;
+	height: 0;
+}
+#parents, #children, #co-tagged {
+	width: 33%;
+	float: left;
+}
+#co-tagged {
+	text-align: center;
+}
+#children {
+	text-align: right;
+}
+#children li {
+	float: right;
+}
