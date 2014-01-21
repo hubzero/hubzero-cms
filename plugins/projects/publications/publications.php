@@ -4732,7 +4732,7 @@ class plgProjectsPublications extends JPlugin
 			if (!is_dir( JPATH_ROOT.$gallery_path )) 
 			{
 				jimport('joomla.filesystem.folder');
-				JFolder::create( JPATH_ROOT . $gallery_path, 0777 );
+				JFolder::create( JPATH_ROOT . $gallery_path, 0775 );
 			}
 			jimport('joomla.filesystem.file');
 			if (!JFile::copy($from_path. DS .$ima, JPATH_ROOT.$gallery_path. DS .$hashed)) 
@@ -5475,7 +5475,7 @@ class plgProjectsPublications extends JPlugin
 		if (!is_dir( $path )) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create( $path, 0777 )) 
+			if (!JFolder::create( $path, 0775 )) 
 			{
 				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -5507,7 +5507,7 @@ class plgProjectsPublications extends JPlugin
 					
 		if (!is_dir( $prefix . $path )) 
 		{
-			if (!JFolder::create( $prefix . $path, 0777 )) 
+			if (!JFolder::create( $prefix . $path, 0775 )) 
 			{
 				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
