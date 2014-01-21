@@ -563,6 +563,9 @@
 	.i-delete:before {
 		content: "\f014";
 	}
+	.com_projects .delete:before {
+		margin-right: 0.3em;
+	}
 	.fmanage {
 		color: #000;
 	}
@@ -600,6 +603,18 @@
 		position: absolute;
 		margin-left: -16px;
 		margin-top: 1px;
+	}
+	.icon-image:before, .icon-folder:before {
+		content: "\f0f5";
+		color: #CCC;
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		margin-right: 2px;
+	}
+	.icon-folder:before {
+		content: "\f07b";
 	}
 	#manage_assets a#a-folder:hover:after {
 		color: #FFF;

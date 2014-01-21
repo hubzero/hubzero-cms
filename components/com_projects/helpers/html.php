@@ -1244,6 +1244,33 @@ class ProjectsHtml
 		return $name;
 	}
 	
+	/**
+	 * Makes file name safe to use
+	 *
+	 * @param string $file The name of the file [not full path]
+	 * @return string The sanitized string
+	 */
+	public static function makeSafeFile($file) 
+	{
+	//	$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
+		$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#');
+		return preg_replace($regex, '', $file);
+	}
+	
+	/**
+	 * Makes path name safe to use.
+	 *
+	 * @access	public
+	 * @param	string The full path to sanitise.
+	 * @return	string The sanitised string.
+	 */
+	public static function makeSafeDir($path)
+	{
+		$ds = (DS == '\\') ? '\\' . DS : DS;
+		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
+		return preg_replace($regex, '', $path);
+	}
+	
 	//----------------------------------------------------------
 	// Reviewers
 	//----------------------------------------------------------

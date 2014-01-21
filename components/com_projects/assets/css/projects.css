@@ -1923,6 +1923,10 @@
 	#plg-content #abox-content h4 {
 		margin: 1em 0;
 	}
+	#abox-content .wrapper {
+		overflow: scroll;
+		max-height: 300px;
+	}
 	
 /* Squezebox 
 --------------------------------------------- */

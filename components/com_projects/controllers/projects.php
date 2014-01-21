@@ -3371,7 +3371,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Make sure the path exist
 		if (!is_dir( $to_path )) 
 		{
-			if (!JFolder::create( $to_path, 0777 )) 
+			if (!JFolder::create( $to_path, 0775 )) 
 			{
 				return false;
 			}

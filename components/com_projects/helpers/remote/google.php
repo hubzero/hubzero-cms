@@ -447,7 +447,7 @@ class ProjectsGoogleHelper extends JObject
 				
 					if (!preg_match("/.folder/", $doc['mimeType']))
 					{
-						$title = JFile::makeSafe($doc['title']);
+						$title = ProjectsHtml::makeSafeFile($doc['title']);
 						
 						// Get file extention
 						$ext = explode('.', $title);
@@ -466,7 +466,7 @@ class ProjectsGoogleHelper extends JObject
 					}
 					else
 					{
-						$title = JFolder::makeSafe($doc['title']);
+						$title = ProjectsHtml::makeSafeDir($doc['title']);
 						$type = 'folder';
 					}
 
@@ -660,7 +660,7 @@ class ProjectsGoogleHelper extends JObject
 						continue;
 					}
 					
-					$title = JFolder::makeSafe($item['title']);
+					$title = ProjectsHtml::makeSafeDir($item['title']);
 					$fpath = $lpath ? $lpath . DS . $title : $title;
 					$status = $item['labels']['trashed'] ? 'D' : 'A';
 										
@@ -763,7 +763,7 @@ class ProjectsGoogleHelper extends JObject
 					
 					if (!preg_match("/.folder/", $item['mimeType']))
 					{
-						$title = JFile::makeSafe($item['title']);
+						$title = ProjectsHtml::makeSafeFile($item['title']);
 						
 						if ($converted)
 						{
@@ -778,7 +778,7 @@ class ProjectsGoogleHelper extends JObject
 					}
 					else
 					{
-						$title = JFolder::makeSafe($item['title']);
+						$title = ProjectsHtml::makeSafeDir($item['title']);
 						$type = 'folder';
 					}
 
@@ -789,7 +789,8 @@ class ProjectsGoogleHelper extends JObject
 					$fileSize	 = isset($item['fileSize']) ? $item['fileSize'] : NULL;
 					
 					/// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = ProjectsGoogleHelper::buildDuplicatePath($item['id'], $fpath, $item['mimeType'], $connections, $remotes, $duplicates);
+					$fpath = ProjectsGoogleHelper::buildDuplicatePath($item['id'], $fpath, $item['mimeType'], 
+						$connections, $remotes, $duplicates);
 					
 					// Detect a rename or move
 					$rename = '';
