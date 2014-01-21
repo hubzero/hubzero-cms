@@ -32,12 +32,35 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <a name="help-top"></a>
+<div class="help-header">
+	<?php if ($this->page != 'index') : ?>
+		<button class="back" onclick="window.history.back();" title="Go Back!">Go Back</button>
+	<?php endif; ?>
+</div>
 
 <?php echo $this->content; ?>
 
 <div class="help-footer">
 	<a class="top" href="#help-top">Back to Top</a>
+	<?php if ($this->page != 'index') : ?>
+		<a class="index" href="<?php echo JRoute::_('index.php?option=com_help&component=' . str_replace('com_', '', $this->component) . '&page=index'); ?>">
+			Index
+		</a>
+	<?php endif; ?>
 	<p class="modified">
 		Last Modified: <?php echo date('l, F d, Y @ g:ia', $this->modified); ?>
 	</p>
 </div>
+
+<script>
+
+$(document).ready(function(){
+	var history = window.history;
+	console.log(history);
+	
+	if (history.length > 1)
+	{
+		$('.back').show();
+	}
+});
+</script>

@@ -159,8 +159,11 @@ class HelpControllerHelp extends Hubzero_Controller
 			JError::raiseError( 404, JText::_('Help page not found.') );
 		}
 		
-		//get file modified time
-		$this->view->modified = filemtime($finalHelpPage);
+		// set vars for views
+		$this->view->modified  = filemtime($finalHelpPage);
+		$this->view->component = $component;
+		$this->view->extension = $extension;
+		$this->view->page      = $page;
 		
 		//display
 		$this->view->display();
