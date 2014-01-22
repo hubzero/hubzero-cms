@@ -183,6 +183,10 @@ class plgCronCourses extends JPlugin
 										{
 											$latest[] = $post;
 										}
+										else
+										{
+											break;
+										}
 									}
 
 									$latest_cnt = count($latest);
