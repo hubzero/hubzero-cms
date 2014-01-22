@@ -387,7 +387,7 @@ class ResourcesHtml
 		if ($docs > 0 && $otherdocs > 0) 
 		{
 			$supln .= ' <li class="otherdocs"><a href="' . JRoute::_('index.php?option=' . $option 
-				. '&id=' . $publication->id . a . 'active=supportingdocs')
+				. '&id=' . $publication->id . '&active=supportingdocs')
 				.'" title="' . JText::_('View All') . ' ' . $docs.' ' . JText::_('Supporting Documents').' ">' 
 				. $otherdocs . ' ' . JText::_('more') . ' &rsaquo;</a></li>' . "\n";
 		}
@@ -395,7 +395,7 @@ class ResourcesHtml
 		if (!$sdocs && $docs > 0) 
 		{
 			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option=' 
-				. $option . '&id=' . $publication->id . a . 'active=supportingdocs') . '">' 
+				. $option . '&id=' . $publication->id . '&active=supportingdocs') . '">' 
 				. JText::_('Additional materials available') . ' (' . $docs .')</a></p>'."\n";
 		}
 		
