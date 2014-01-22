@@ -687,7 +687,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
 						$badgesProvider->setCredentials($credentials);
 
-						$memberTbl = new CoursesTableMember(JFactory::getDBO());
+						$dbo = JFactory::getDBO();
+						$memberTbl = new CoursesTableMember($dbo);
 						$memberTbl->loadByMemberId($m);
 						$user_id = $memberTbl->get('user_id');
 
