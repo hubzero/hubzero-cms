@@ -109,7 +109,7 @@ $html .= "\t\t".'</label>'."\n";
 if ($this->registration->Fullname != REG_HIDE) {
 	$required = ($this->registration->Fullname == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
 	$message = (!empty($this->xregistration->_invalid['name'])) ? '<p class="error">' . $this->xregistration->_invalid['name'] . '</p>' : '';
-	$fieldclass = ($message) ? ' class="fieldWithErrors"' : ''
+	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	$html .= "\t\t".'<div class="threeup group">'."\n";
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
