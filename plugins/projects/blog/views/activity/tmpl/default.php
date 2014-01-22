@@ -128,7 +128,7 @@ if (count($this->activities) > 0 ) {
 							<input type="hidden" name="tbl" value="<?php echo $etbl; ?>" />
 							<input type="hidden" name="parent_activity" value="<?php echo $a->id; ?>" />
 							<label>
-								<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="Enter your comment..." id="ca_<?php echo $a->id; ?>"></textarea>
+								<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo JText::_('PLG_PROJECTS_BLOG_ENTER_COMMENT'); ?>" id="ca_<?php echo $a->id; ?>"></textarea>
 							</label>
 							<p class="blog-submit"><input type="submit" class="c-submit nojs" id="cs_<?php echo $a->id; ?>" value="<?php echo JText::_('COM_PROJECTS_COMMENT'); ?>" /></p>
 						</fieldset>

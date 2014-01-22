@@ -117,7 +117,7 @@ HUB.ProjectMicroblog = {
 			$(item).on('focus', function(e) 
 			{
 				$(this).css('color', '#000')
-					   .css('height', '100px');
+					   .css('height', '50px');
 			});
 		});
 		
