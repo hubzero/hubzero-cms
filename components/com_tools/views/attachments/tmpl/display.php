@@ -36,6 +36,8 @@ if (!$this->allowupload) { ?>
 		<?php echo JText::_('COM_TOOLS_SUPPORTING_DOCS_ONLY_CURRENT'); ?>
 	</p>
 <?php } ?>
+
+<?php $this->allowupload = true; ?>
 	<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 		<fieldset>
 			<label for="upload">
