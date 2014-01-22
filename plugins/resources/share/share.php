@@ -61,6 +61,12 @@ class plgResourcesShare extends JPlugin
 	public function &onResourcesAreas($model)
 	{
 		static $area = array();
+
+		if (!$model->type->params->get('plg_share')) 
+		{
+			return;
+		}
+
 		return $area;
 	}
 
