@@ -450,12 +450,22 @@ class Hubzero_Document
 
 		$url = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
 		$urlAlt = '';
+		$tmpl = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.js';
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
+			$tmplAlt = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.jquery.js';
 			$urlAlt = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
 		}
 
-		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		if ($tmplAlt && file_exists(JPATH_SITE . $tmplAlt)) 
+		{
+			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $tmplAlt . '?v=' . filemtime(JPATH_SITE . $tmplAlt), $type, $defer, $async);
+		} 
+		else if ($tmpl && file_exists(JPATH_SITE . $tmpl)) 
+		{
+			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $tmpl . '?v=' . filemtime(JPATH_SITE . $tmpl), $type, $defer, $async);
+		} 
+		else if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
 		{
 			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
 		} 
