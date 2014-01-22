@@ -194,12 +194,12 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 					<div class="form-type">
 						{{#if ../canManage}}
 							<select name="type">
-								<option value="exam"{{ifAreEqual subtype "exam"}}>Exam</option>
-								<option value="quiz"{{ifAreEqual subtype "quiz"}}>Quiz</option>
-								<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>
+								<option value="exam"{{ifAreEqual grade_weight "exam"}}>Exam</option>
+								<option value="quiz"{{ifAreEqual grade_weight "quiz"}}>Quiz</option>
+								<option value="homework"{{ifAreEqual grade_weight "homework"}}>Homework</option>
 							</select>
 						{{else}}
-							<small>*{{subtype}}</small>
+							<small>*{{grade_weight}}</small>
 						{{/if}}
 					</div>
 					{{#if ../canManage}}

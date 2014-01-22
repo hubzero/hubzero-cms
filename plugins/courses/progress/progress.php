@@ -330,7 +330,7 @@ class plgCoursesProgress extends JPlugin
 				'w' => array(
 					'course_id'  => $this->course->get('id'),
 					'section_id' => $this->course->offering()->section()->get('id'),
-					'asset_type' => 'form',
+					'graded'     => true,
 					'state'      => 1
 				),
 				'order_by'  => 'title',
@@ -379,7 +379,7 @@ class plgCoursesProgress extends JPlugin
 				'w' => array(
 					'course_id'  => $this->course->get('id'),
 					'section_id' => $this->course->offering()->section()->get('id'),
-					'asset_type' => 'form',
+					'graded'     => true,
 					'state'      => 1
 				),
 				'order_by'  => 'title',
@@ -449,17 +449,24 @@ class plgCoursesProgress extends JPlugin
 		{
 			$asset->load($asset_id);
 			$asset->set('title', JRequest::getVar('title', $asset->get('title')));
-			$asset->set('subtype', JRequest::getWord('type', $asset->get('subtype')));
+			$asset->set('grade_weight', JRequest::getWord('type', $asset->get('grade_weight')));
+
+			if ($asset->get('type') == 'form')
+			{
+				$asset->set('subtype', JRequest::getWord('type', $asset->get('grade_weight')));
+			}
 		}
 		else
 		{
 			$asset->set('title', 'New Item');
-			$asset->set('type', 'form');
-			$asset->set('subtype', 'exam');
+			$asset->set('type', 'gradebook');
+			$asset->set('subtype', 'auxiliary');
 			$asset->set('created', JFactory::getDate()->toSql());
 			$asset->set('created_by', JFactory::getUser()->get('id'));
 			$asset->set('state', 1);
 			$asset->set('course_id', $this->course->get('id'));
+			$asset->set('graded', 1);
+			$asset->set('grade_weight', 'exam');
 		}
 
 		if (!$asset->store())
@@ -499,7 +506,12 @@ class plgCoursesProgress extends JPlugin
 		if ($asset_id = JRequest::getInt('asset_id', false))
 		{
 			$asset->load($asset_id);
-			$asset->set('state', 2);
+			$asset->set('graded', 0);
+
+			if ($asset->get('type') == 'gradebook')
+			{
+				$asset->set('state', 2);
+			}
 		}
 		else
 		{

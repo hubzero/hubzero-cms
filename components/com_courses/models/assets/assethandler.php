@@ -56,14 +56,16 @@ class AssetHandler
 	 * @var array
 	 **/
 	protected $asset = array(
-			'title'      => '',
-			'url'        => '',
-			'type'       => '',
-			'subtype'    => '',
-			'created'    => '',
-			'created_by' => '',
-			'state'      => 0, // upublished
-			'course_id'  => ''
+			'title'        => '',
+			'url'          => '',
+			'type'         => '',
+			'subtype'      => '',
+			'created'      => '',
+			'created_by'   => '',
+			'state'        => 0, // upublished
+			'course_id'    => '',
+			'graded'       => 0,
+			'grade_weight' => ''
 		);
 
 	/**

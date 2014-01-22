@@ -98,6 +98,9 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			// Passport
 			case 'passport':                $this->passport();             break;
 
+			// Unity
+			case 'unityscoresave':          $this->unityScoreSave();       break;
+
 			default:                       	$this->method_not_found();     break;
 		}
 	}
@@ -644,6 +647,22 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		if($state = JRequest::getInt('state', false))
 		{
 			$asset->set('state', $state);
+		}
+
+		// If we have a state coming in as an int
+		if ($graded = JRequest::getInt('graded', false))
+		{
+			$asset->set('graded', $graded);
+			// By default, weight asset as a 'homework' type
+			$grade_weight = $asset->get('grade_weight');
+			if (empty($grade_weight))
+			{
+				$asset->set('grade_weight', 'homework');
+			}
+		}
+		elseif ($graded = JRequest::getInt('edit_graded', false))
+		{
+			$asset->set('graded', 0);
 		}
 
 		// If we have content
@@ -1237,6 +1256,22 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		// Return message
 		$this->setMessage(array('form_id' => $formId, 'deployment_id' => $depId), 200, 'OK');
+	}
+
+	/**
+	 * Process grade save from unity app
+	 * 
+	 * @return 200 OK on success
+	 */
+	private function unityScoreSave()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		$user_id = JFactory::getApplication()->getAuthn('user_id');
+
+		// Return message
+		$this->setMessage(array('user'=>$user_id), 200, 'OK');
 	}
 
 	//--------------------------

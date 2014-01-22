@@ -176,7 +176,7 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function find($filters=array(), $key=null)
 	{
-		$query = "SELECT gb.*, cag.unit_id, ca.subtype" . $this->_buildQuery($filters);
+		$query = "SELECT gb.*, cag.unit_id, ca.grade_weight" . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList($key);
@@ -241,7 +241,7 @@ class CoursesTableGradeBook extends JTable
 	}
 
 	/**
-	 * Query to sync exam scores with gradebook
+	 * Query to sync form scores with gradebook
 	 * 
 	 * @param      obj   $course
 	 * @param      array $member_id
@@ -606,23 +606,23 @@ class CoursesTableGradeBook extends JTable
 	}
 
 	/**
-	 * Get asset completion count
+	 * Get graded asset completion count
 	 * 
 	 * @param      int $course_id
 	 * @param      int $member_id
 	 * @return     void
 	 */
-	public function getFormCompletionCount($course_id, $member_id=null)
+	public function getGradedItemsCompletionCount($course_id, $member_id=null)
 	{
 		$user = (!is_null($member_id)) ? "AND gb.member_id = {$member_id}" : '';
-		$query   = "SELECT gb.member_id, ca.subtype, count(*) as count
+		$query   = "SELECT gb.member_id, ca.grade_weight, count(*) as count
 					FROM $this->_tbl AS gb
 					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
 					WHERE scope='asset'
 					AND ca.course_id = '{$course_id}'
 					AND (score IS NOT NULL OR override IS NOT NULL)
 					{$user}
-					GROUP BY member_id, subtype";
+					GROUP BY member_id, grade_weight";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -631,11 +631,13 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Get asset completion count
 	 * 
+	 * @FIXME: combine with function above
+	 *
 	 * @param      int $course_id
 	 * @param      int $member_id
 	 * @return     void
 	 */
-	public function getFormCompletions($course_id, $member_id=null)
+	public function getGradedItemCompletions($course_id, $member_id=null)
 	{
 		$user = '';
 		if (!is_null($member_id))
@@ -648,7 +650,7 @@ class CoursesTableGradeBook extends JTable
 			$user = "AND gb.member_id IN (" . implode(",", $member_id) . ")";
 		}
 
-		$query   = "SELECT gb.member_id, ca.subtype, cag.unit_id, ca.id as asset_id
+		$query   = "SELECT gb.member_id, ca.grade_weight, cag.unit_id, ca.id as asset_id
 					FROM $this->_tbl AS gb
 					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
 					LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id
@@ -663,21 +665,21 @@ class CoursesTableGradeBook extends JTable
 	}
 
 	/**
-	 * Get asset count
+	 * Get graded asset count
 	 * 
 	 * @param      int $course_id
 	 * @return     void
 	 */
-	public function getFormCount($course_id)
+	public function getGradedItemsCount($course_id)
 	{
-		$query   = "SELECT subtype, count(*) as count
+		$query   = "SELECT grade_weight, count(*) as count
 					FROM `#__courses_assets`
-					WHERE type = 'form'
+					WHERE graded = 1
 					AND state = 1
 					AND course_id = '{$course_id}'
-					GROUP BY subtype;";
+					GROUP BY grade_weight;";
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList('subtype');
+		return $this->_db->loadObjectList('grade_weight');
 	}
 }

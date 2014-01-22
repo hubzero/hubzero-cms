@@ -161,8 +161,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 		switch ($progress_calculation)
 		{
+			// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
 			case 'forms':
-				$views = $this->_tbl->getFormCompletions($this->course->get('id'), $member_id);
+			case 'graded':
+				$views = $this->_tbl->getGradedItemCompletions($this->course->get('id'), $member_id);
 			break;
 
 			default:
@@ -188,7 +190,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$counts = array();
 
 		// Calculate unit completion percentage for each student
-		// Note: this is not their score, but rather, simply how many items within the unit they have viewed
+		// Note: this is not their score, but rather, simply how many items within the unit they have viewed/completed
 		foreach ($progress as $member_id=>$m)
 		{
 			foreach ($m as $unit_id=>$unit)
@@ -204,9 +206,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 							'state'      => 1
 						)
 					);
-					if ($progress_calculation == 'forms')
+					// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
+					if ($progress_calculation == 'forms' || $progress_calculation == 'graded')
 					{
-						$filters['w']['asset_type'] = 'form';
+						$filters['w']['graded'] = true;
 					}
 					$counts[$unit_id] = $asset->count($filters);
 				}
@@ -274,11 +277,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			// Check for overrides
 			if ($grade->override)
 			{
-				$grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->override, 'type'=>$grade->subtype);
+				$grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->override, 'weighting'=>$grade->grade_weight);
 			}
 			else
 			{
-				$grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->score, 'type'=>$grade->subtype);
+				$grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->score, 'weighting'=>$grade->grade_weight);
 			}
 		}
 
@@ -305,7 +308,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 					foreach ($val as $grade)
 					{
-						switch ($grade['type'])
+						switch ($grade['weighting'])
 						{
 							case 'exam':
 								$scores[$member_id]['course_exam_count']++;
@@ -589,13 +592,13 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		// Get a grade policy object
 		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
 
-		// Get count of forms take
-		$results = $this->_tbl->getFormCompletionCount($this->course->get('id'), $member_id);
+		// Get count of graded items taken
+		$results = $this->_tbl->getGradedItemsCompletionCount($this->course->get('id'), $member_id);
 
 		// Restructure data
 		foreach ($results as $r)
 		{
-			$counts[$r->member_id][$r->subtype] = $r->count;
+			$counts[$r->member_id][$r->grade_weight] = $r->count;
 		}
 
 		// Get weights to determine what counts toward the final grade
@@ -603,8 +606,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$quiz_weight     = $gradePolicy->get('quiz_weight');
 		$homework_weight = $gradePolicy->get('homework_weight');
 
-		// Get count of total forms
-		$totals = $this->_tbl->getFormCount($this->course->get('id'));
+		// Get count of total graded items
+		$totals = $this->_tbl->getGradedItemsCount($this->course->get('id'));
 		$return = false;
 
 		if (isset($counts))
@@ -687,7 +690,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
 						$badgesProvider->setCredentials($credentials);
 
-						$memberTbl = new CoursesTableMember(JFactory::getDBO());
+						$dbo = JFactory::getDBO();
+						$memberTbl = new CoursesTableMember($dbo);
 						$memberTbl->loadByMemberId($m);
 						$user_id = $memberTbl->get('user_id');
 

@@ -100,6 +100,12 @@ $tool_path = $config->get('tool_path');
 			</select>
 		</p>
 
+		<p>
+			<label for="graded">Create a gradebook entry for this item?</label>
+			<input name="graded" type="checkbox" value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
+			<input type="hidden" name="edit_graded" value="1" />
+		</p>
+
 		<?php if ($tool_path
 				&& $tools
 				&& count($tools) > 0

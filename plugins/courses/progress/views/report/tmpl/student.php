@@ -59,7 +59,7 @@ $assets = $asset->find(
 		'w' => array(
 			'course_id'  => $this->course->get('id'),
 			'section_id' => $this->course->offering()->section()->get('id'),
-			'asset_type' => 'form',
+			'graded'     => true,
 			'state'      => 1
 		)
 	)
@@ -69,119 +69,138 @@ foreach($assets as $asset)
 {
 	$increment_count_taken = false;
 	$crumb                 = false;
+	$isValidForm           = true;
 
 	// Check for result for given student on form
 	$crumb = $asset->url;
-
-	if(!$crumb || strlen($crumb) != 20 || $asset->state != 1)
-	{
-		// Try seeing if there's an override grade in the gradebook...
-		if (isset($grades[$this->member->get('id')]['assets'][$asset->id]['score']) && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
-		{
-			$details['aux'][] = array('title'=>$asset->title, 'score'=>$grades[$this->member->get('id')]['assets'][$asset->id]['score']);
-		}
-
-		// Break foreach, this is not a valid form!
-		continue;
-	}
-
-	$dep   = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
 	$title = $asset->title;
 	$url   = JRoute::_($this->base . '&asset=' . $asset->id);
 	$unit  = $this->course->offering()->unit($asset->unit_id);
 
-	switch ($dep->getState())
+	if (!$crumb || strlen($crumb) != 20)
 	{
-		// Form isn't available yet
-		case 'pending':
-			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>'Not yet open', 'date'=>'N/A', 'url'=>$url);
-		break;
+		$score = (isset($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
+			? $grades[$this->member->get('id')]['assets'][$asset->id]['score']
+			: '--';
 
-		// Form availability has expired
-		case 'expired':
-			// Get whether or not we should show scores at this point
-			$results_closed = $dep->getResultsClosed();
-
-			$resp = $dep->getRespondent($this->member->get('id'));
-
-			// Form is still active and they are allowed to see their score
-			if($results_closed == 'score' || $results_closed == 'details')
-			{
-				$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
-			}
-			else
-			{
-				// Score has been withheld by form creator
-				$score = 'Withheld';
-			}
-
-			// Get the date of the completion
-			if (!is_null($resp->getEndTime()))
-			{
-				$date = date('r', strtotime($resp->getEndTime()));
-			}
-			else
-			{
-				$date = "N/A";
-			}
-
-			// They have completed this form, therefore set increment_count_taken equal to true
+		if (is_numeric($score))
+		{
 			$increment_count_taken = true;
+		}
+		else
+		{
+			$score = '--';
+		}
 
-			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>$date, 'url'=>$url);
-		break;
+		if ($asset->unit_id)
+		{
+			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>'N/A', 'url'=>$url);
+		}
+		else
+		{
+			$details['aux'][] = array('title'=>$asset->title, 'score'=>$score);
+		}
 
-		// Form is still active
-		case 'active':
-			$resp = $dep->getRespondent($this->member->get('id'));
+		$isValidForm = false;
+	}
 
-			// Form is active and they have completed it!
-			if($resp->getEndTime() && $resp->getEndTime() != '')
-			{
+	if ($isValidForm)
+	{
+		$dep = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
+
+		switch ($dep->getState())
+		{
+			// Form isn't available yet
+			case 'pending':
+				$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>'Not yet open', 'date'=>'N/A', 'url'=>$url);
+			break;
+
+			// Form availability has expired
+			case 'expired':
 				// Get whether or not we should show scores at this point
-				$results_open = $dep->getResultsOpen();
+				$results_closed = $dep->getResultsClosed();
+
+				$resp = $dep->getRespondent($this->member->get('id'));
 
 				// Form is still active and they are allowed to see their score
-				if($results_open == 'score' || $results_open == 'details')
+				if($results_closed == 'score' || $results_closed == 'details')
 				{
 					$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
 				}
 				else
 				{
-					// Score is not yet available at this point
-					$score = 'Not yet available';
+					// Score has been withheld by form creator
+					$score = 'Withheld';
 				}
 
 				// Get the date of the completion
-				$date = date('r', strtotime($resp->getEndTime()));
-
-				// They have completed this form, therefor set increment_count_taken equal to true
-				$increment_count_taken = true;
-			}
-			// Form is active and they haven't finished it yet!
-			else
-			{
-				$score = 'Not taken';
-				$date  = 'N/A';
-
-				// For sanities sake - they have NOT completed the form yet!
-				$increment_count_taken = false;
-
-				// If there's an override in the gradebook, go ahead and use that, whether or not they've even taken the form yet
-				if ($grades[$this->member->get('id')]['assets'][$asset->id]['override']
-					&& !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
+				if (!is_null($resp->getEndTime()))
 				{
-					$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
+					$date = date('r', strtotime($resp->getEndTime()));
+				}
+				else
+				{
+					$date = "N/A";
+				}
+
+				// They have completed this form, therefore set increment_count_taken equal to true
+				$increment_count_taken = true;
+
+				$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>$date, 'url'=>$url);
+			break;
+
+			// Form is still active
+			case 'active':
+				$resp = $dep->getRespondent($this->member->get('id'));
+
+				// Form is active and they have completed it!
+				if($resp->getEndTime() && $resp->getEndTime() != '')
+				{
+					// Get whether or not we should show scores at this point
+					$results_open = $dep->getResultsOpen();
+
+					// Form is still active and they are allowed to see their score
+					if($results_open == 'score' || $results_open == 'details')
+					{
+						$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
+					}
+					else
+					{
+						// Score is not yet available at this point
+						$score = 'Not yet available';
+					}
+
+					// Get the date of the completion
+					$date = date('r', strtotime($resp->getEndTime()));
+
+					// They have completed this form, therefor set increment_count_taken equal to true
 					$increment_count_taken = true;
 				}
-			}
+				// Form is active and they haven't finished it yet!
+				else
+				{
+					$score = 'Not taken';
+					$date  = 'N/A';
 
-			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>$date, 'url'=>$url);
-		break;
+					// For sanities sake - they have NOT completed the form yet!
+					$increment_count_taken = false;
+
+					// If there's an override in the gradebook, go ahead and use that, whether or not they've even taken the form yet
+					if ($grades[$this->member->get('id')]['assets'][$asset->id]['override']
+						&& !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
+					{
+						$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
+						$increment_count_taken = true;
+					}
+				}
+
+				$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>$date, 'url'=>$url);
+			break;
+		}
 	}
 
 	// Increment total count for this type
-	if($asset->subtype == 'quiz')
+	if($asset->grade_weight == 'quiz')
 	{
 		++$details['quizzes_total'];
 
@@ -191,7 +210,7 @@ foreach($assets as $asset)
 			++$details['quizzes_taken'];
 		}
 	}
-	elseif($asset->subtype == 'homework')
+	elseif($asset->grade_weight == 'homework')
 	{
 		++$details['homeworks_total'];
 
@@ -201,7 +220,7 @@ foreach($assets as $asset)
 			++$details['homeworks_submitted'];
 		}
 	}
-	elseif($asset->subtype == 'exam')
+	elseif($asset->grade_weight == 'exam')
 	{
 		++$details['exams_total'];
 

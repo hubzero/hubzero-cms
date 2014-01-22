@@ -109,6 +109,20 @@ class CoursesTableAsset extends JTable
 	var $course_id = NULL;
 
 	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $graded = NULL;
+
+	/**
+	 * Asset weighting classification for grading purposes
+	 * 
+	 * @var varchar(255)
+	 */
+	var $grade_weight = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object
@@ -210,6 +224,10 @@ class CoursesTableAsset extends JTable
 		if (!empty($filters['unit_id']))
 		{
 			$where[] = "cag.unit_id=" . $this->_db->Quote((int) $filters['unit_id']);
+		}
+		if (!empty($filters['graded']))
+		{
+			$where[] = "ca.graded=1";
 		}
 		if (isset($filters['search']) && $filters['search']) 
 		{

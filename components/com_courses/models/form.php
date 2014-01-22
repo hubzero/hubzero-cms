@@ -494,7 +494,11 @@ class PdfForm
 	public function setAssetType()
 	{
 		$dbh = self::getDbh();
-		$dbh->setQuery('UPDATE `#__courses_assets` SET `subtype` = ' . $dbh->Quote(JRequest::getWord('type', 'quiz')) . ' WHERE id = ' . $this->getAssetId());
+		$query  = 'UPDATE `#__courses_assets`';
+		$query .= ' SET `subtype` = ' . $dbh->Quote(JRequest::getWord('type', 'quiz'));
+		$query .= ', `grade_weight` = ' . $dbh->Quote(JRequest::getWord('type', 'quiz'));
+		$query .= ' WHERE id = ' . $this->getAssetId();
+		$dbh->setQuery($query);
 
 		$dbh->query();
 	}

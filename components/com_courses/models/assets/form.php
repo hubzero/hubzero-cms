@@ -102,10 +102,12 @@ class FormAssetHandler extends ContentAssetHandler
 		}
 
 		// Save the actual asset
-		$this->asset['title']   = $filename;
-		$this->asset['type']    = 'form';
-		$this->asset['subtype'] = $subtype;
-		$this->asset['url']     = $id;
+		$this->asset['title']        = $filename;
+		$this->asset['type']         = 'form';
+		$this->asset['subtype']      = $subtype;
+		$this->asset['url']          = $id;
+		$this->asset['graded']       = 1;
+		$this->asset['grade_weight'] = $subtype;
 
 		// Call the primary create method on the file asset handler
 		$return = parent::create();
