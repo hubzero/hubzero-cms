@@ -434,7 +434,7 @@ class ResourcesModelResource extends JObject
 				$this->params->set('access-edit-own-resource', true);
 			}
 			// Check group access
-			else if ($this->resource->group_owner) // && ($this->resource->access == 3 || $this->resource->access == 4))
+			/*else if ($this->resource->group_owner) // && ($this->resource->access == 3 || $this->resource->access == 4))
 			{
 				// For protected resources, make sure users can see abstract
 				if ($this->resource->access < 3)
@@ -489,7 +489,7 @@ class ResourcesModelResource extends JObject
 						}
 					}
 				}
-			}
+			}*/
 			else
 			{
 				$this->params->set('access-view-resource', true);
