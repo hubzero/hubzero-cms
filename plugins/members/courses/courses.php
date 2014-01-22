@@ -263,8 +263,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1 AND s.id=m.section_id
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
+						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1 AND s.id=m.section_id");
 					$results = $this->database->loadResult();
 				}
 				else
@@ -291,8 +290,7 @@ class plgMembersCourses extends JPlugin
 							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-							WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager'
-							ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
+							WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager'");
 					$results = $this->database->loadResult();
 				}
 				else
@@ -335,8 +333,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor') . "
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
+						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor'));
 					$results = $this->database->loadResult();
 				}
 				else
@@ -363,8 +360,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta') . "
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
+						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta'));
 					$results = $this->database->loadResult();
 				}
 				else
@@ -383,5 +379,126 @@ class plgMembersCourses extends JPlugin
 			break;
 		}
 		return $results;
+	}
+
+	/**
+	 * Return a list of categories
+	 * 
+	 * @return     array
+	 */
+	public function onMembersContributionsAreas()
+	{
+		return array(
+			'courses' => JText::_('PLG_MEMBERS_COURSES')
+		);
+	}
+
+	/**
+	 * Build SQL for returning the count of the number of contributions
+	 * 
+	 * @param      string $user_id  Field to join on user ID
+	 * @param      string $username Field to join on username
+	 * @return     string
+	 */
+	public function onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')
+	{
+		$query = "SELECT COUNT(*)  
+				FROM `#__courses` AS c 
+				JOIN `#__courses_members` AS m ON m.course_id=c.id
+				LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
+				LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
+				LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
+				WHERE m.user_id=" . (int) $user_id . " AND m.student=0 AND r.alias='instructor' AND c.state=1";
+
+		return $query;
+	}
+
+	/**
+	 * Return either a count or an array of the member's contributions
+	 * 
+	 * @param      object  $member     Current member
+	 * @param      string  $option     Component name
+	 * @param      string  $authorized Authorization level
+	 * @param      integer $limit      Number of record to return
+	 * @param      integer $limitstart Record return start
+	 * @param      string  $sort       Field to sort records on
+	 * @param      array   $areas      Areas to return data for
+	 * @return     array
+	 */
+	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
+	{
+		$database = JFactory::getDBO();
+
+		if (is_array($areas) && $limit) 
+		{
+			if (!array_intersect($areas, $this->onMembersContributionsAreas()) 
+			 && !array_intersect($areas, array_keys($this->onMembersContributionsAreas()))) 
+			{
+				return array();
+			}
+		}
+
+		// Do we have a member ID?
+		if ($member instanceof Hubzero_User_Profile) 
+		{
+			if (!$member->get('uidNumber')) 
+			{
+				return array();
+			} 
+			else 
+			{
+				$uidNumber = $member->get('uidNumber');
+				$username  = $member->get('username');
+			}
+		} 
+		else 
+		{
+			if (!$member->uidNumber) 
+			{
+				return array();
+			} 
+			else 
+			{
+				$uidNumber = $member->uidNumber;
+				$username  = $member->username;
+			}
+		}
+
+		include_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+
+		// Instantiate some needed objects
+		$tbl = new CoursesTableCourse($database);
+
+		// Build query
+		if (!$limit) 
+		{
+			$database->setQuery($this->onMembersContributionsCount($uidNumber));
+			return $database->loadResult();
+		} 
+		else 
+		{
+			//$rows = $tbl->getUserCourses($uidNumber, $type='instructor', $limit, $limitstart);
+			$query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM `#__courses` AS c 
+					JOIN `#__courses_members` AS m ON m.course_id=c.id
+					LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
+					LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
+					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $database->Quote($uidNumber) . " AND m.student=0 AND r.alias='instructor' AND c.state=1";
+			$database->setQuery($query);
+			$rows = $database->loadObjectList();
+
+			if ($rows) 
+			{
+				foreach ($rows as $key => $row)
+				{
+					$rows[$key]->href = JRoute::_('index.php?option=com_courses&gid=' . $row->alias);
+					$rows[$key]->text = $row->blurb;
+					$rows[$key]->section = 'courses';
+				}
+			}
+
+			return $rows;
+		}
 	}
 }
