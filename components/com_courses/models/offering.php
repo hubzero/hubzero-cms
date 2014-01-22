@@ -207,13 +207,9 @@ class CoursesModelOffering extends CoursesModelAbstract
 			}
 			$this->_tbl->load($oid, $course_id);
 		}
-		else if (is_object($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
+			$this->bind($oid);
 		}
 
 		if ($this->exists() && $section)
@@ -272,14 +268,9 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function params($key='', $default=null)
 	{
-		if (!$this->_params)
+		if (!($this->_params instanceof JRegistry))
 		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-			$this->_params = new $paramsClass($this->get('params'));
+			$this->_params = new JRegistry($this->get('params'));
 		}
 		if ($key)
 		{
@@ -345,7 +336,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!isset($this->_sections) || !is_a($this->_sections, 'CoursesModelIterator'))
+		if (!($this->_sections instanceof CoursesModelIterator))
 		{
 			$tbl = new CoursesTableSection($this->_db);
 
@@ -988,10 +979,9 @@ class CoursesModelOffering extends CoursesModelAbstract
 	{
 		if (!isset($this->_plugins) || !is_array($this->_plugins))
 		{
-			JPluginHelper::importPlugin('courses');
-			$dispatcher = JDispatcher::getInstance();
+			$this->importPlugin('courses');
 
-			$plugins = $dispatcher->trigger('onCourseAreas', array());
+			$plugins = $this->trigger('onCourseAreas', array());
 
 			array_unshift($plugins, array(
 				'name'             => 'outline',
@@ -1116,7 +1106,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			return $user;
 		}
 
-		$this->_db->setQuery("SELECT id FROM #__users WHERE username=" . $this->_db->Quote($user));
+		$this->_db->setQuery("SELECT id FROM `#__users` WHERE username=" . $this->_db->Quote($user));
 
 		if (($result = $this->_db->loadResult()))
 		{
@@ -1180,8 +1170,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 			}
 		}
 
-		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onOfferingSave', array($this));
+		$this->importPlugin('courses')
+		     ->trigger('onOfferingSave', array($this));
 
 		if ($isNew)
 		{
@@ -1200,8 +1190,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 	{
 		$value = parent::delete();
 
-		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onOfferingDelete', array($this));
+		$this->importPlugin('courses')
+		     ->trigger('onOfferingDelete', array($this));
 
 		return $value;
 	}
@@ -1216,12 +1206,11 @@ class CoursesModelOffering extends CoursesModelAbstract
 	public function getPluginAccess($get_plugin = '')
 	{
 		// Get plugins
-		JPluginHelper::importPlugin('courses');
-		$dispatcher =  JDispatcher::getInstance();
+		$this->importPlugin('courses');
 
 		// Trigger the functions that return the areas we'll be using
 		//then add overview to array
-		$hub_course_plugins = $dispatcher->trigger('onCourseAreas', array());
+		$hub_course_plugins = $this->trigger('onCourseAreas', array());
 		array_unshift($hub_course_plugins, array(
 			'name' => 'outline', 
 			'title' => 'Outline', 
@@ -1338,11 +1327,11 @@ class CoursesModelOffering extends CoursesModelAbstract
 			break;
 
 			case 'enroll':
-				JPluginHelper::importPlugin('courses');
+				$this->importPlugin('courses');
 
 				$course = CoursesModelCourse::getInstance($this->get('course_id'));
 
-				$data = JDispatcher::getInstance()->trigger('onCourseEnrollLink', array(
+				$data = $this->trigger('onCourseEnrollLink', array(
 					$course, $this, $this->section()
 				));
 				if ($data && count($data) > 0)

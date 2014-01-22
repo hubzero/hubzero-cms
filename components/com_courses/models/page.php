@@ -67,14 +67,18 @@ class CoursesModelPage extends CoursesModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('content_parsed'))
+				if ($content = $this->get('content_parsed'))
 				{
-					return $this->get('content_parsed');
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
 				}
 
 				$p = Hubzero_Wiki_Parser::getInstance();
 
-				$wikiconfig = array(
+				$config = array(
 					'option'   => JRequest::getCmd('option', 'com_courses'),
 					'scope'    => JRequest::getVar('gid', ''),
 					'pagename' => $this->get('url'),
@@ -83,26 +87,22 @@ class CoursesModelPage extends CoursesModelAbstract
 					'domain'   => $this->get('course_id')
 				);
 
-				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig));
+				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $config));
 
+				$content = $this->get('content_parsed');
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('content_parsed'), $shorten, 0, 0);
-					if (substr($content, -7) == '&#8230;') 
-					{
-						$content .= '</p>';
-					}
-					return $content;
+					$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
 				}
 
-				return $this->get('content_parsed');
+				return $content;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

@@ -100,7 +100,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid, $offering_id=null)
+	public function __construct($oid=null, $offering_id=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -111,33 +111,14 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 			if (is_numeric($oid) || is_string($oid))
 			{
-				$this->_tbl->load($oid, $offering_id);
-			}
-			else if (is_object($oid))
-			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (get_object_vars($oid) as $key => $property)
+				if ($oid)
 				{
-					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-					{
-						$this->_tbl->set('__' . $key, $property);
-					}
+					$this->_tbl->load($oid, $offering_id);
 				}
 			}
-			else if (is_array($oid))
+			else if (is_object($oid) || is_array($oid))
 			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (array_keys($oid) as $key)
-				{
-					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-					{
-						$this->_tbl->set('__' . $key, $oid[$key]);
-					}
-				}
+				$this->bind($oid);
 			}
 		}
 	}
@@ -163,7 +144,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 		if (!isset($instances[$oid . '_' . $offering_id])) 
 		{
-			$instances[$oid . '_' . $offering_id] = new CoursesModelUnit($oid, $offering_id);
+			$instances[$oid . '_' . $offering_id] = new self($oid, $offering_id);
 		}
 
 		return $instances[$oid . '_' . $offering_id];
@@ -269,7 +250,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 			$filters['section_id'] = (int) $this->get('section_id');
 		}
 
-		if (!isset($this->assetgroups) || !is_a($this->assetgroups, 'CoursesModelIterator'))
+		if (!isset($this->assetgroups) || !($this->assetgroups instanceof CoursesModelIterator))
 		{
 			$tbl = new CoursesTableAssetGroup($this->_db);
 			if (($results = $tbl->find(array('w' => $filters))))
@@ -355,7 +336,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	public function siblings(&$siblings) 
 	{
-		if (is_a($siblings, 'CoursesModelIterator'))
+		if ($siblings instanceof CoursesModelIterator)
 		{
 			$this->_siblings = $siblings;
 		}
@@ -459,11 +440,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	public function assets($filters=array())
 	{
-		if (!isset($this->_assets) || !is_a($this->_assets, 'CoursesModelIterator'))
+		if (!isset($this->_assets) || !($this->_assets instanceof CoursesModelIterator))
 		{
-			//$filters['asset_scope_id'] = (isset($filters['asset_scope_id'])) ? $filters['asset_scope_id'] : (int) $this->get('id');
-			//$filters['asset_scope']    = (isset($filters['asset_scope']))    ? $filters['asset_scope']    : 'unit';
-			//$filters['section_id']     = (isset($filters['section_id']))     ? $filters['section_id']     : (int) $this->get('section_id');
 			if (!isset($filters['asset_scope_id']))
 			{
 				$filters['asset_scope_id'] = (int) $this->get('id');
@@ -532,8 +510,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 		if ($value)
 		{
-			JPluginHelper::importPlugin('courses');
-			JDispatcher::getInstance()->trigger('onUnitSave', array($this));
+			$this->importPlugin('courses')
+			     ->trigger('onUnitSave', array($this));
 		}
 
 		return $value;
@@ -575,8 +553,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 			}
 		}
 
-		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onUnitDelete', array($this));
+		$this->importPlugin('courses')
+		     ->trigger('onUnitDelete', array($this));
 
 		// Remove this record from the database and log the event
 		return parent::delete();

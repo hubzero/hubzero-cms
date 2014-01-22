@@ -76,57 +76,11 @@ class CoursesModelStudent extends CoursesModelMember
 					$this->_tbl->load($uid);
 				}
 			}
-			else if (is_object($uid))
+			else if (is_object($uid) || is_array($uid))
 			{
-				$this->_tbl->bind($uid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (get_object_vars($uid) as $key => $property)
-				{
-					if (!array_key_exists($key, $properties))
-					{
-						$this->_tbl->set('__' . $key, $property);
-					}
-				}
-			}
-			else if (is_array($uid))
-			{
-				$this->_tbl->bind($uid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (array_keys($uid) as $key)
-				{
-					if (!array_key_exists($key, $properties))
-					{
-						$this->_tbl->set('__' . $key, $uid[$key]);
-					}
-				}
+				$this->bind($uid);
 			}
 		}
-	}
-
-	/**
-	 * Returns a reference to a CoursesModelStudent object
-	 *
-	 * @param      integer $uid User ID
-	 * @param      integer $sid Section ID
-	 * @return     object CoursesModelStudent
-	 */
-	static function &getInstance($uid=null, $cid=0, $oid=null, $sid=null)
-	{
-		static $instances;
-
-		if (!isset($instances)) 
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$sid . '_' . $uid])) 
-		{
-			$instances[$sid . '_' . $uid] = new CoursesModelStudent($uid, $cid, $oid, $sid);
-		}
-
-		return $instances[$sid . '_' . $uid];
 	}
 
 	/**

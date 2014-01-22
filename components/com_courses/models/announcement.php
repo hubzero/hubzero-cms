@@ -34,22 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
-if (!defined('ANNOUNCEMENTS_DATE_FORMAT'))
-{
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		define('ANNOUNCEMENTS_DATE_TIMEZONE', true);
-		define('ANNOUNCEMENTS_DATE_FORMAT', 'd M Y');
-		define('ANNOUNCEMENTS_TIME_FORMAT', 'g:i a');
-	}
-	else
-	{
-		define('ANNOUNCEMENTS_DATE_TIMEZONE', 0);
-		define('ANNOUNCEMENTS_DATE_FORMAT', '%d %b %Y');
-		define('ANNOUNCEMENTS_TIME_FORMAT', '%I:%M %p');
-	}
-}
-
 /**
  * Courses model class for a course
  */
@@ -89,7 +73,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 
 		if (!isset($instances[$oid])) 
 		{
-			$instances[$oid] = new CoursesModelAnnouncement($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -109,11 +93,11 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $dt, ANNOUNCEMENTS_DATE_FORMAT, ANNOUNCEMENTS_DATE_TIMEZONE);
+				return JHTML::_('date', $dt, JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $dt, ANNOUNCEMENTS_TIME_FORMAT, ANNOUNCEMENTS_DATE_TIMEZONE);
+				return JHTML::_('date', $dt, JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -141,12 +125,6 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 					return $this->get('content_parsed');
 				}
 
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
 				$p = Hubzero_Wiki_Parser::getInstance();
 
 				$wikiconfig = array(
@@ -162,11 +140,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('content_parsed'), $shorten, 0, 0);
-					if (substr($content, -7) == '&#8230;') 
-					{
-						$content .= '</p>';
-					}
+					$content = \Hubzero\Utility\String::truncate($this->get('content_parsed'), $shorten, array('html' => true));
 					return $content;
 				}
 
@@ -177,7 +151,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

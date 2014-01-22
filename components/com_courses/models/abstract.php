@@ -31,24 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-define('COURSES_STATE_UNPUBLISHED', 0);
-define('COURSES_STATE_PUBLISHED',   1);
-define('COURSES_STATE_DELETED',     2);
-define('COURSES_STATE_DRAFT',       3);
-
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 
 /**
  * Courses model class for a course
  */
-abstract class CoursesModelAbstract extends JObject
+abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 {
 	/**
-	 * CoursesTableAsset
+	 * Draft state
 	 * 
-	 * @var object
+	 * @var integer
 	 */
-	protected $_tbl_name = null;
+	const APP_STATE_DRAFT     = 3;
 
 	/**
 	 * CoursesTableAsset
@@ -58,25 +53,12 @@ abstract class CoursesModelAbstract extends JObject
 	protected $_scope = NULL;
 
 	/**
-	 * CoursesTableAsset
-	 * 
-	 * @var object
-	 */
-	protected $_tbl = NULL;
-
-	/**
 	 * CoursesTableInstance
 	 * 
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	protected $_db = NULL;
 
 	/**
 	 * Date keys coming from 
@@ -98,162 +80,6 @@ abstract class CoursesModelAbstract extends JObject
 	protected $_config = NULL;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
-	 */
-	public function __construct($oid)
-	{
-		$this->_db = JFactory::getDBO();
-
-		if ($this->_tbl_name)
-		{
-			$cls = $this->_tbl_name;
-			$this->_tbl = new $cls($this->_db);
-
-			if (is_numeric($oid) || is_string($oid))
-			{
-				$this->_tbl->load($oid);
-			}
-			else if (is_object($oid))
-			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (get_object_vars($oid) as $key => $property)
-				{
-					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-					{
-						$this->_tbl->set('__' . $key, $property);
-					}
-				}
-			}
-			else if (is_array($oid))
-			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (array_keys($oid) as $key)
-				{
-					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-					{
-						$this->_tbl->set('__' . $key, $oid[$key]);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isPublished()
-	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
-		{
-			return true;
-		}
-		if ($this->get('state') == COURSES_STATE_PUBLISHED) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isUnpublished()
-	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
-		{
-			return false;
-		}
-		if ($this->get('state') == COURSES_STATE_UNPUBLISHED) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isDeleted()
-	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
-		{
-			return false;
-		}
-		if ($this->get('state') == COURSES_STATE_DELETED) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Has the offering started?
 	 * 
 	 * @return     boolean
@@ -264,7 +90,7 @@ abstract class CoursesModelAbstract extends JObject
 		{
 			return false;
 		}
-		if ($this->get('state') == COURSES_STATE_DRAFT) 
+		if ($this->get('state') == self::APP_STATE_DRAFT) 
 		{
 			return true;
 		}
@@ -354,61 +180,15 @@ abstract class CoursesModelAbstract extends JObject
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof JUser))
 		{
 			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
-		if ($property && is_a($this->_creator, 'JUser'))
+		if ($property)
 		{
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Store changes to this offering
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -429,18 +209,13 @@ abstract class CoursesModelAbstract extends JObject
 		// Get the scope ID
 		$scope_id = $this->get('id');
 
-		// Remove record from the database
-		if (!$this->_tbl->delete())
+		if ($res = parent::delete())
 		{
-			$this->setError($this->_tbl->getError());
-			return false;
+			// Log the event
+			$this->log($scope_id, $this->_scope, 'delete', $log);
 		}
 
-		// Log the event
-		$this->log($scope_id, $this->_scope, 'delete', $log);
-
-		// Hey, no errors!
-		return true;
+		return $res;
 	}
 
 	/**
@@ -475,11 +250,15 @@ abstract class CoursesModelAbstract extends JObject
 	 * 
 	 * @return     boolean True if authorized, false if not
 	 */
-	public function config()
+	public function config($property=null, $default=null)
 	{
 		if (!isset($this->_config))
 		{
 			$this->_config = JComponentHelper::getParams('com_courses');
+		}
+		if ($property)
+		{
+			return $this->_config->get($property, $default);
 		}
 		return $this->_config;
 	}

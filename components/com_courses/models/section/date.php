@@ -52,33 +52,5 @@ class CoursesModelSectionDate extends CoursesModelAbstract
 	 * @var string
 	 */
 	protected $_scope = 'section_date';
-
-	/**
-	 * Returns a reference to a course offering model
-	 *
-	 * This method must be invoked as:
-	 *     $offering = CoursesModelOffering::getInstance($alias);
-	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object CoursesModelOffering
-	 */
-	/*static function &getInstance($oid=null)
-	{
-		static $instances;
-
-		if (!isset($instances)) 
-		{
-			$instances = array();
-		}
-
-		$key = $oid;
-
-		if (!isset($instances[$key])) 
-		{
-			$instances[$key] = new CoursesModelSectionDate($oid);
-		}
-
-		return $instances[$key];
-	}*/
 }
 

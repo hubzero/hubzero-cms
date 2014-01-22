@@ -139,13 +139,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		parent::__construct($oid);
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$this->config()->merge(new $paramsClass($this->get('params')));
+		$this->config()->merge(new JRegistry($this->get('params')));
 
 		if (!isset($this->_permissions))
 		{
@@ -174,7 +168,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		if (!isset($instances[$oid])) 
 		{
-			$instances[$oid] = new CoursesModelCourse($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -273,7 +267,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		// Is the data is not set OR is it not the right type?
-		if (!isset($this->_offerings) || !is_a($this->_offerings, 'CoursesModelIterator'))
+		if (!($this->_offerings instanceof CoursesModelIterator))
 		{
 			$tbl = new CoursesTableOffering($this->_db);
 
@@ -574,7 +568,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			return $userids;
 		}
 
-		$this->_db->setQuery("SELECT id FROM #__users WHERE username IN (" . implode($usernames, ",") . ");");
+		$this->_db->setQuery("SELECT id FROM `#__users` WHERE username IN (" . implode($usernames, ",") . ");");
 
 		if (!($result = $this->_db->loadResultArray()))
 		{
@@ -601,11 +595,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		$isNew = ($this->get('id') ? false : true);
 
-		$first = true;
-
 		$affected = 0;
-
-		$aNewUserCourseEnrollments = array();
 
 		if ($check)
 		{
@@ -624,119 +614,15 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		$affected = $this->_db->getAffectedRows();
 
-		/*foreach (self::$_list_keys as $property)
-		{
-			$query = '';
-
-			$aux_table = "#__courses_" . $property;
-
-			$list = $this->get($property);
-
-			if (!is_null($list) && !is_array($list))
-			{
-				$list = array($list);
-			}
-
-			$ulist = null;
-			$tlist = null;
-
-			foreach ($list as $value)
-			{
-				if (!is_null($ulist))
-				{
-					$ulist .= ',';
-					$tlist .= ',';
-				}
-
-				$ulist .= $this->_db->Quote($value);
-				$tlist .= '(' . $this->_db->Quote($this->get('id')) . ',' . $this->_db->Quote($value) . ')';
-			}
-
-			// @FIXME: I don't have a better solution yet. But the next refactoring of this class
-			// should eliminate the ability to read the entire member table due to problems with
-			// scale on a large (thousands of members) courses. The add function should track the members
-			// being added to a course, but would need to be verified to handle adding members
-			// already in course. *njk*
-
-			// @FIXME: Not neat, but because all course membership is resaved every time even for single additions
-			// there is no nice way to detect only *new* additions without this check. I don't want to 
-			// fire off an 'onUserCourseEnrollment' event for users unless they are really being enrolled. *drb*
-
-			if (in_array($property, array('managers')))
-			{
-				$query = "SELECT user_id FROM #__courses_$property WHERE course_id=" . $this->get('id');
-				$this->_db->setQuery($query);
-
-				// compile current list of members in this course
-				$aExistingUserMembership = array();
-
-				if (($results = $this->_db->loadAssoc()))
-				{
-					foreach ($results as $uid)
-					{
-						$aExistingUserMembership[] = $uid;
-					}
-				}
-
-				// see who is missing
-				$aNewUserCourseEnrollments = array_diff($list, $aExistingUserMembership);
-			}
-
-			if (is_array($list) && count($list) > 0)
-			{
-				if (in_array($property, array('managers')))
-				{
-					$query = "REPLACE INTO $aux_table (course_id, user_id) VALUES $tlist;";
-
-					$this->_db->setQuery($query);
-
-					if ($this->_db->query())
-					{
-						$affected += $this->_db->getAffectedRows();
-					}
-				}
-			}
-
-			if (!is_array($list) || count($list) == 0)
-			{
-				if (in_array($property, array('managers')))
-				{
-					$query = "DELETE FROM $aux_table WHERE course_id=" . $this->_db->Quote($this->get('id')) . ";";
-				}
-			}
-			else
-			{
-				if (in_array($property, array('managers')))
-				{
-					$query = "DELETE m FROM #__courses_$property AS m WHERE " . " m.course_id=" . 
-						$this->_db->Quote($this->get('id')) . " AND m.user_id NOT IN (" . $ulist . ");";
-				}
-			}
-
-			if ($query)
-			{
-				$this->_db->setQuery($query);
-
-				if ($this->_db->query())
-				{
-					$affected += $this->_db->getAffectedRows();
-				}
-			}
-		}*/
-
 		// After SQL is done and has no errors, fire off onCourseUserEnrolledEvents 
 		// for every user added to this course
-		JPluginHelper::importPlugin('courses');
-
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onCourseSave', array($this));
+		$this->importPlugin('courses')
+		     ->trigger('onCourseSave', array($this));
 
 		if ($affected > 0)
 		{
-			JPluginHelper::importPlugin('user');
-
-			// trigger the onAfterStoreCourse event
-			$dispatcher->trigger('onAfterStoreCourse', array($this));
+			$this->importPlugin('user')
+			     ->trigger('onAfterStoreCourse', array($this));
 		}
 
 		if ($isNew)
@@ -756,8 +642,8 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		$value = parent::delete();
 
-		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onCourseDelete', array($this));
+		$this->importPlugin('courses')
+		     ->trigger('onCourseDelete', array($this));
 
 		return $value;
 	}
@@ -865,26 +751,6 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		return $tags; 
 	}
-
-	/**
-	 * Get a list of plugins available for a given event
-	 * 
-	 * @return     array
-	 */
-	/*public function plugins($event='onCourseViewAreas')
-	{
-		if (!isset($this->_plugins[$event]))
-		{
-			JPluginHelper::importPlugin('courses');
-			$dispatcher = JDispatcher::getInstance();
-
-			$this->_plugins[$event] = $dispatcher->trigger($event, array(
-					$this
-				)
-			);
-		}
-		return $this->_plugins[$event];
-	}*/
 
 	/**
 	 * Generate and return various links to the entry

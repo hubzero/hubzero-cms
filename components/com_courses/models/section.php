@@ -127,7 +127,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	 * @param      integer $id Course offering ID or alias
 	 * @return     void
 	 */
-	public function __construct($oid, $offering_id=null)
+	public function __construct($oid=null, $offering_id=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -135,15 +135,14 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->_tbl->load($oid, $offering_id);
+			if ($oid)
+			{
+				$this->_tbl->load($oid, $offering_id);
+			}
 		}
-		else if (is_object($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
+			$this->bind($oid);
 		}
 
 		if (!$this->exists() && $offering_id)
@@ -188,7 +187,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new CoursesModelSection($oid, $offering_id);
+			$instances[$key] = new self($oid, $offering_id);
 		}
 
 		return $instances[$key];
@@ -426,7 +425,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!isset($this->_dates) || !is_a($this->_dates, 'CoursesModelIterator') || $clear)
+		if (!($this->_dates instanceof CoursesModelIterator) || $clear)
 		{
 			$tbl = new CoursesTableSectionDate($this->_db);
 
@@ -577,10 +576,8 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		$value = parent::store($check);
 
-		JPluginHelper::importPlugin('courses');
-
-		//$dispatcher = JDispatcher::getInstance();
-		JDispatcher::getInstance()->trigger('onAfterSaveSection', array($this, $isNew));
+		$this->importPlugin('courses')
+		     ->trigger('onAfterSaveSection', array($this, $isNew));
 
 		if ($isNew)
 		{
@@ -616,8 +613,8 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		$value = parent::delete();
 
-		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onAfterDeleteSection', array($this));
+		$this->importPlugin('courses')
+		     ->trigger('onAfterDeleteSection', array($this));
 
 		return $value;
 	}
@@ -678,7 +675,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!isset($this->_codes) || !is_a($this->_codes, 'CoursesModelIterator') || $clear)
+		if (!($this->_codes instanceof CoursesModelIterator) || $clear)
 		{
 			$tbl = new CoursesTableSectionCode($this->_db);
 

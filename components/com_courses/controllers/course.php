@@ -132,7 +132,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	{
 		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . $return),
+			JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
 			$message,
 			'warning'
 		);
@@ -596,21 +596,14 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Check authorization
-		//if (!$this->config->get('access-delete-course', $this->course->get('gidNumber'))) 
 		if (!$this->course->access('delete'))
 		{
 			JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
 			return;
 		}
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get the course params
-		/*$gparams = new $paramsClass($this->course->get('params'));
+		/*$gparams = new JRegistry($this->course->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0) 
@@ -930,7 +923,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		if (JRequest::getVar('no_html', 0) == 1)
 		{
 			echo json_encode(array('available' => $availability));
-            return;
+			return;
 		}
 		else
 		{

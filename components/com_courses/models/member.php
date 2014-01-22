@@ -79,63 +79,22 @@ class CoursesModelMember extends CoursesModelAbstract
 		{
 			$this->_tbl->load($uid, $cid, $oid, $sid);
 		}
-		else if (is_object($uid))
+		else if (is_object($uid) || is_array($uid))
 		{
-			$this->_tbl->bind($uid);
-
-			$properties = $this->_tbl->getProperties();
-			foreach (get_object_vars($uid) as $key => $property)
-			{
-				if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-				{
-					$this->_tbl->set('__' . $key, $property);
-				}
-			}
-		}
-		else if (is_array($uid))
-		{
-			$this->_tbl->bind($uid);
-
-			$properties = $this->_tbl->getProperties();
-			foreach (array_keys($uid) as $key)
-			{
-				if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-				{
-					$this->_tbl->set('__' . $key, $uid[$key]);
-				}
-			}
+			$this->bind($uid);
 		}
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		//$permissions = clone(JComponentHelper::getParams('com_courses'));
-		//$permissions->merge(new $paramsClass($this->get('role_permissions')));
 		if (!$this->get('role_alias'))
 		{
 			$result = new CoursesTableRole($this->_db);
 			if ($result->load($this->get('role_id')))
 			{
-				$properties = $result->getProperties();
 				foreach ($result->getProperties() as $key => $property)
 				{
 					$this->_tbl->set('__role_' . $key, $property);
 				}
 			}
 		}
-
-		//$permissions = new $paramsClass($this->get('role_permissions'));
-		//$permissions->merge(new $paramsClass($this->get('permissions')));
-
-		/*if ($this->exists())
-		{
-			$permissions->set('access-view-offering', true);
-		}*/
-
-		//$this->set('permissions', $permissions);
 	}
 
 	/**
@@ -159,7 +118,7 @@ class CoursesModelMember extends CoursesModelAbstract
 
 		if (!isset($instances[$oid . '_' . $uid])) 
 		{
-			$instances[$oid . '_' . $uid] = new CoursesModelMember($uid, $cid, $oid, $sid);
+			$instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
 		}
 
 		return $instances[$oid . '_' . $uid];

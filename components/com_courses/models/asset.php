@@ -258,9 +258,9 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 */
 	public function render($course=null, $option='com_courses')
 	{
-		$type = strtolower($this->get('type'));
+		$type    = strtolower($this->get('type'));
 		$subtype = strtolower($this->get('subtype'));
-		$layout = 'default';
+		$layout  = 'default';
 
 		$this->logView($course);
 
@@ -314,41 +314,6 @@ class CoursesModelAsset extends CoursesModelAbstract
 			$filename = substr($filename, strlen('file:'));
 		}
 		$filename = urldecode($filename);
-
-		// Ensure we have a path
-		if (empty($filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
-			return;
-		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
 
 		// Get the configured upload path
 		$config = JComponentHelper::getParams('com_courses');

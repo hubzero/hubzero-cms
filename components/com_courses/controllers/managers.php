@@ -159,7 +159,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 			}
 
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr['user_id']);
+			$targetuser = JUser::getInstance($mbr['user_id']);
 
 			// Ensure we found an account
 			if (is_object($targetuser))
@@ -214,7 +214,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 
 		$entries = JRequest::getVar('entries', array(0), 'post');
 
-		require_once(JPATH_ROOT . DS . 'administrator/components/com_courses/tables' . DS . 'member.php');
+		require_once(JPATH_ROOT . '/administrator/components/com_courses/tables/member.php');
 
 		foreach ($entries as $key => $data)
 		{

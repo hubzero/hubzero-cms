@@ -66,7 +66,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	 * @param      integer $id Course offering ID or alias
 	 * @return     void
 	 */
-	public function __construct($oid, $section_id=null)
+	public function __construct($oid=null, $section_id=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -79,31 +79,9 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			{
 				$this->_tbl->load($oid, $section_id);
 			}
-			else if (is_object($oid))
+			else if (is_object($oid) || is_array($oid))
 			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (get_object_vars($oid) as $key => $property)
-				{
-					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-					{
-						$this->_tbl->set('__' . $key, $property);
-					}
-				}
-			}
-			else if (is_array($oid))
-			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (array_keys($oid) as $key)
-				{
-					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-					{
-						$this->_tbl->set('__' . $key, $oid[$key]);
-					}
-				}
+				$this->bind($oid);
 			}
 		}
 	}
@@ -143,7 +121,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new CoursesModelSectionCode($oid, $section_id);
+			$instances[$key] = new self($oid, $section_id);
 		}
 
 		return $instances[$key];
@@ -160,11 +138,11 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	 */
 	public function redeemer($property=null)
 	{
-		if (!isset($this->_redeemer) || !is_object($this->_redeemer))
+		if (!($this->_redeemer instanceof JUser))
 		{
 			$this->_redeemer = JUser::getInstance($this->get('redeemed_by'));
 		}
-		if ($property && is_a($this->_redeemer, 'JUser'))
+		if ($property)
 		{
 			return $this->_redeemer->get($property);
 		}

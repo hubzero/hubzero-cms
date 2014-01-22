@@ -115,15 +115,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
  	 */
 	public function params($key, $default=null)
 	{
-		if (!isset($this->_params))
+		if (!($this->_params instanceof JRegistry))
 		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
-			$this->_params = new $paramsClass($this->get('params'));
+			$this->_params = new JRegistry($this->get('params'));
 		}
 		return $this->_params->get($key, $default);
 	}
@@ -271,7 +265,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 */
 	public function assets($filters=array())
 	{
-		if (!isset($this->_assets) || !is_a($this->_assets, 'CoursesModelIterator'))
+		if (!($this->_assets instanceof CoursesModelIterator))
 		{
 			if (!isset($filters['asset_scope_id']))
 			{
@@ -318,14 +312,11 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 */
 	public function siblings(&$siblings) 
 	{
-		if (is_a($siblings, 'CoursesModelIterator'))
+		if (!($siblings instanceof CoursesModelIterator))
 		{
-			$this->_siblings = $siblings;
+			$siblings = new CoursesModelIterator($siblings);
 		}
-		else
-		{
-			$this->_siblings = new CoursesModelIterator($siblings);
-		}
+		$this->_siblings = $siblings;
 	}
 
 	/**
@@ -416,8 +407,8 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 
 		if ($value)
 		{
-			JPluginHelper::importPlugin('courses');
-			JDispatcher::getInstance()->trigger('onAssetgroupSave', array($this));
+			$this->importPlugin('courses')
+			     ->trigger('onAssetgroupSave', array($this));
 		}
 
 		return $value;
@@ -460,8 +451,8 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			}
 		}
 
-		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onAssetgroupDelete', array($this));
+		$this->importPlugin('courses')
+		     ->trigger('onAssetgroupDelete', array($this));
 
 		// Remove this record from the database and log the event
 		return parent::delete();
