@@ -54,7 +54,12 @@ class plgCronCourses extends JPlugin
 				'name'   => 'syncPassportBadgeStatus',
 				'label'  => JText::_('PLG_CRON_COURSES_SYNC_PASSPORT_BADGE_STATUS'),
 				'params' => ''
-			)
+			),
+			array(
+				'name'   => 'emailInstructorDigest',
+				'label'  => JText::_('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
+				'params' => ''
+			),
 		);
 
 		return $obj;
@@ -68,6 +73,172 @@ class plgCronCourses extends JPlugin
 	public function syncPassportBadgeStatus($params=null)
 	{
 		// Job is no longer active
+		return true;
+	}
+
+	/**
+	 * Email instructor course digest
+	 * 
+	 * @return     array
+	 */
+	public function emailInstructorDigest($params=null)
+	{
+		$lang     = JFactory::getLanguage();
+		$database = JFactory::getDBO();
+		$juri     = JURI::getInstance();
+		$jconfig  = JFactory::getConfig();
+		$cconfig  = JComponentHelper::getParams('com_courses');
+
+		$lang->load('com_courses');
+		$lang->load('com_courses', JPATH_ROOT);
+
+		$from = array();
+		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_COURSES');
+		$from['email']     = $jconfig->getValue('config.mailfrom');
+
+		$subject = JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_SUBJECT_EMAIL_DIGEST');
+
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
+
+		$coursesObj = new CoursesModelCourses();
+		$courses    = $coursesObj->courses();
+		$mailed     = array();
+
+		if (isset($courses) && count($courses) > 0)
+		{
+			foreach ($courses as $course)
+			{
+				if (!$course->isAvailable())
+				{
+					continue;
+				}
+
+				$managers    = $course->managers();
+				$enrollments = $course->students(array('count'=>true));
+				$offerings   = $course->offerings();
+
+				if (isset($offerings) && count($offerings) > 0)
+				{
+					foreach ($offerings as $offering)
+					{
+						if (!$offering->isAvailable())
+						{
+							continue;
+						}
+
+						$offering->gradebook()->refresh();
+						$passing = $offering->gradebook()->countPassing(false);
+						$failing = $offering->gradebook()->countFailing(false);
+
+						if (isset($managers) && count($managers) > 0)
+						{
+							foreach ($managers as $manager)
+							{
+								// Get the user's account
+								$juser = JUser::getInstance($manager->get('user_id'));
+								if (!$juser->get('id'))
+								{
+									continue;
+								}
+
+								// Try to ensure no duplicates
+								if (in_array($juser->get('username'), $mailed))
+								{
+									continue;
+								}
+
+								// Only mail instructors (i.e. not managers)
+								if ($manager->get('role_alias') != 'instructor')
+								{
+									continue;
+								}
+
+								if ($juser->get('email') != 'samwilson@purdue.edu')
+								{
+									continue;
+								}
+
+								// Get discussion stats and posts
+								require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php';
+
+								$postsTbl  = new ForumTablePost($database);
+								$filters   = array(
+									'scope'    => 'course',
+									'scope_id' => $offering->get('id'),
+									'state'    => 1,
+									'sort'     => 'created',
+									'sort_Dir' => 'DESC',
+									'limit'    => 100
+								);
+								$posts      = $postsTbl->find($filters);
+								$posts_cnt  = count($posts);
+								$latest     = array();
+								$latest_cnt = 0;
+
+								if (isset($posts) && $posts_cnt > 0)
+								{
+									foreach ($posts as $post)
+									{
+										if (strtotime($post->created) > strtotime('-1 day'))
+										{
+											$latest[] = $post;
+										}
+									}
+
+									$latest_cnt = count($latest);
+								}
+
+								$eview = new JView(array(
+									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
+									'name'      => 'emails', 
+									'layout'    => 'digest_plain'
+								));
+								$eview->option      = 'com_courses';
+								$eview->controller  = 'courses';
+								$eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
+								$eview->course      = $course;
+								$eview->enrollments = $enrollments;
+								$eview->passing     = $passing;
+								$eview->failing     = $failing;
+								$eview->offering    = $offering;
+								$eview->posts_cnt   = $posts_cnt;
+								$eview->latest      = $latest;
+								$eview->latest_cnt  = $latest_cnt;
+
+								$plain = $eview->loadTemplate();
+								$plain = str_replace("\n", "\r\n", $plain);
+
+								// HTML
+								$eview->setLayout('digest_html');
+
+								$html = $eview->loadTemplate();
+								$html = str_replace("\n", "\r\n", $html);
+
+								// Build message
+								$message = new \Hubzero\Mail\Message();
+								$message->setSubject($subject)
+								        ->addFrom($from['email'], $from['name'])
+								        ->addTo($juser->get('email'), $juser->get('name'))
+								        ->addHeader('X-Component', 'com_courses')
+								        ->addHeader('X-Component-Object', 'courses_instructor_digest');
+
+								$message->addPart($plain, 'text/plain');
+								$message->addPart($html, 'text/html');
+
+								// Send mail
+								if (!$message->send())
+								{
+									$this->setError('Failed to mail %s', $juser->get('email'));
+								}
+
+								$mailed[] = $juser->get('username');
+							}
+						}
+					}
+				}
+			}
+		}
+
 		return true;
 	}
 }
