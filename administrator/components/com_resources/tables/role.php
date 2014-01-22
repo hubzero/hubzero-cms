@@ -145,7 +145,7 @@ class ResourcesContributorRole extends JTable
 	 * @param      mixed $oid String (alias) or integer (ID)
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL)
+	public function load($oid=NULL, $reset = true)
 	{
 		if ($oid === NULL) 
 		{
