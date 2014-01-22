@@ -3015,8 +3015,7 @@ class WishlistController extends JObject
 		$page = JRequest::getVar('page', 'wishlist');
 		$cat  = 'wish';
 		$vote = JRequest::getWord('vote', ''); // assuming text only vote. Fix for sql injection ticket 1182
-		ximport('Hubzero_Environment');
-		$ip   = Hubzero_Environment::ipAddress();
+		$ip   = JRequest::ip();
 
 		if (!$id) 
 		{

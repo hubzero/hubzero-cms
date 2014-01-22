@@ -32,7 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
-ximport('Hubzero_Environment');
 
 /**
  * Primary component controller (extends Hubzero_Controller)
@@ -4001,7 +4000,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objLog->projectid 		= $pid;
 		$objLog->userid 		= $this->juser->get('id');
 		$objLog->owner 			= intval($owner);
-		$objLog->ip 			= Hubzero_Environment::ipAddress();
+		$objLog->ip 			= JRequest::ip();
 		$objLog->section 		= $section;
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';

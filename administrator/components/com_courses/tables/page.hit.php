@@ -116,8 +116,7 @@ Class CoursesTablePageHit extends JTable
 			$this->timestamp = JFactory::getDate()->toSql();
 			if (!$this->ip) 
 			{
-				ximport('Hubzero_Environment');
-				$this->ip = Hubzero_Environment::ipAddress();
+				$this->ip = JRequest::ip();
 			}
 			if (!$this->user_id)
 			{

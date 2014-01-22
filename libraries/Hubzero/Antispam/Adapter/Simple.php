@@ -135,7 +135,7 @@ class Simple extends AbstractAdapter
 		}
 
 		// Check the user's IP against the blacklist
-		$ip = \Hubzero_Environment::ipAddress();
+		$ip = \JRequest::ip();
 		if (in_array($ip, $bl)) 
 		{
 			$spam = true;

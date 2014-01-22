@@ -57,9 +57,7 @@ class CronControllerJobs extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		ximport('Hubzero_Environment');
-
-		$ip = Hubzero_Environment::ipAddress();
+		$ip = JRequest::ip();
 
 		$ips = explode(',', $this->config->get('whitelist', '127.0.0.1'));
 

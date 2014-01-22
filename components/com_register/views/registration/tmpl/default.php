@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 	ximport('Hubzero_User_Helper');
-	ximport('Hubzero_Environment');
 	ximport('Hubzero_Geo');
 
 	$html  = '<div id="content-header" class="full">'."\n";
@@ -662,7 +661,7 @@ defined('_JEXEC') or die('Restricted access');
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 			if (!$this->registration['countryorigin']) {
-				$userCountry = Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress());
+				$userCountry = Hubzero_Geo::ipcountry(JRequest::ip());
 				$this->registration['countryorigin'] = $userCountry;
 			}
 
@@ -718,7 +717,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			if (!$this->registration['countryresident']) {
 				if (!isset($userCountry) || !$userCountry) {
-					$userCountry = Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress());
+					$userCountry = Hubzero_Geo::ipcountry(JRequest::ip());
 				}
 				$this->registration['countryresident'] = $userCountry;
 			}

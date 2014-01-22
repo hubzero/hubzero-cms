@@ -234,14 +234,12 @@ class KbControllerArticles extends Hubzero_Controller
 		// Is the user logged in?
 		/*if (!$this->juser->get('guest')) 
 		{
-			ximport('Hubzero_Environment');
-			
 			// See if this person has already voted
 			$h = new KbTableVote($this->database);
 			$this->view->vote = $h->getVote(
 				$this->view->article->get('id'), 
 				$this->juser->get('id'), 
-				Hubzero_Environment::ipAddress(), 
+				JRequest::ip(), 
 				'entry'
 			);
 		} 

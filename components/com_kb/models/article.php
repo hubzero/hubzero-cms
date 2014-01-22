@@ -550,7 +550,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 			$tbl = new KbTableVote($this->_db);
 			$this->set(
 				'voted', 
-				$tbl->getVote($this->get('id'), $juser->get('id'), Hubzero_Environment::ipAddress(), 'entry')
+				$tbl->getVote($this->get('id'), $juser->get('id'), JRequest::ip(), 'entry')
 			);
 		}
 
@@ -585,7 +585,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 		$al = new KbTableVote($this->_db);
 		$al->object_id = $this->get('id');
 		$al->type      = 'entry';
-		$al->ip        = Hubzero_Environment::ipAddress();
+		$al->ip        = JRequest::ip();
 		$al->user_id   = $juser->get('id');
 		$al->vote      = $vote;
 

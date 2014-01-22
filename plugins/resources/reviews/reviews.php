@@ -519,8 +519,7 @@ class PlgResourcesReviewsHelper extends JObject
 		$ajax = JRequest::getInt('no_html', 0);
 		$cat  = JRequest::getVar('category', 'review');
 		$vote = JRequest::getVar('vote', '');
-		ximport('Hubzero_Environment');
-		$ip   = Hubzero_Environment::ipAddress();
+		$ip   = JRequest::ip();
 		$rid  = JRequest::getInt('id', 0);
 
 		if (!$id) 

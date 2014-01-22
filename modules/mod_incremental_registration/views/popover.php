@@ -1,5 +1,4 @@
 <?php 
-ximport('Hubzero_Environment');
 ximport('Hubzero_Geo');
 
 $defaultCountries = array(
@@ -390,7 +389,7 @@ $defaultCountries = array(
 				<?php endif; ?>
 				<?php if (isset($row['countryorigin'])): ?> 
 					<li>
-						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress()); ?>
+						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : Hubzero_Geo::ipcountry(JRequest::ip()); ?>
 							<label>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryorigin'])): ?>
@@ -423,7 +422,7 @@ $defaultCountries = array(
 				<?php endif; ?>
 				<?php if (isset($row['countryresident'])): ?> 
 					<li>
-						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress()); ?>
+						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : Hubzero_Geo::ipcountry(JRequest::ip()); ?>
 							<label>Do you currently live in the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryresident'])): ?>

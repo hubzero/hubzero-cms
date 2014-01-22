@@ -1015,8 +1015,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Get the user's IP
-		ximport('Hubzero_Environment');
-		$ip = Hubzero_Environment::ipAddress();
+		$ip = JRequest::ip();
 		$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 
 		if (!$verified)

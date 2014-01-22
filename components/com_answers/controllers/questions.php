@@ -257,7 +257,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		$id      = JRequest::getInt('refid', 0);
 		$cat     = JRequest::getVar('category', '');
 		$vote    = JRequest::getVar('vote', '');
-		$ip      = Hubzero_Environment::ipAddress();
+		$ip      = JRequest::ip();
 
 		// Check for reference ID
 		if (!$id) 
@@ -928,7 +928,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 
 		// Incoming
 		$id = JRequest::getInt('qid', 0);
-		$ip = (!$this->juser->get('guest')) ? Hubzero_Environment::ipAddress() : '';
+		$ip = (!$this->juser->get('guest')) ? JRequest::ip() : '';
 
 		$reward = 0;
 		if ($this->config->get('banking')) 

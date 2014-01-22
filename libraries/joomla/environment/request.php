@@ -38,6 +38,49 @@ JLog::add('JRequest is deprecated.', JLog::WARNING, 'deprecated');
 class JRequest
 {
 	/**
+	 * Get a user's IP address
+	 * 
+	 * @return     string
+	 */
+	public static function ip()
+	{
+		$address = '0.0.0.0';
+
+		if (isset($_SERVER['HTTP_CLIENT_IP']))
+		{
+			$address = self::getVar('HTTP_CLIENT_IP', '', 'server');
+		}
+		else if (isset($_SERVER['REMOTE_ADDR']))
+		{
+			$address = self::getVar('REMOTE_ADDR', '', 'server');
+		}
+		else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+		{
+			$address = self::getVar('HTTP_X_FORWARDED_FOR', '', 'server');
+		}
+		else if (isset($_SERVER['HTTP_X_FORWARDED']))
+		{
+			$address = self::getVar('HTTP_X_FORWARDED', '', 'server');
+		}
+		else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
+		{
+			$address = self::getVar('HTTP_FORWARDED_FOR', '', 'server');
+		}
+		else if (isset($_SERVER['HTTP_FORWARDED']))
+		{
+			$address = self::getVar('HTTP_FORWARDED', '', 'server');
+		}
+
+		if (strstr($address, ',')) 
+		{
+			$x = explode(',', $address);
+			$address = end($x);
+		}
+
+		return $address;
+	}
+
+	/**
 	 * Gets the full request path.
 	 *
 	 * @return  string

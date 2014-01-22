@@ -342,8 +342,6 @@ class ToolsControllerSessions extends Hubzero_Controller
 			return;
 		}
 
-		ximport('Hubzero_Environment');
-
 		$params = JRequest::getString('params','','default',JREQUEST_ALLOWRAW);
 
 		if (!empty($params))
@@ -450,7 +448,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$app->version = JRequest::getVar('version', 'default');
 
 		// Get the user's IP address
-		$app->ip      = Hubzero_Environment::ipAddress();
+		$app->ip      = JRequest::ip();
 
 		//$xlog->debug("mw::invoke URL: $url : " . $app->name . " by " . $this->juser->get('username') . " from " . $app->ip);
 		//$xlog->debug("mw::invoke REFERER:" . (array_key_exists('HTTP_REFERER',$_SERVER)) ? $_SERVER['HTTP_REFERER'] : 'none');
@@ -879,8 +877,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$this->view->rtrn = JRequest::getVar('return', '');
 
 		// Get the user's IP address
-		ximport('Hubzero_Environment');
-		$app->ip = Hubzero_Environment::ipAddress(); //JRequest::getVar('REMOTE_ADDR', '', 'server');
+		$app->ip = JRequest::ip(); //JRequest::getVar('REMOTE_ADDR', '', 'server');
 
 		// Double-check that the user can view this session.
 		$mwdb = ToolsHelperUtils::getMWDBO();
@@ -1457,8 +1454,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$xlog = Hubzero_Factory::getLogger();
 		$exportcontrol = strtolower($exportcontrol);
 
-		ximport('Hubzero_Environment');
-		$ip = Hubzero_Environment::ipAddress();
+		$ip = JRequest::ip();
 
 		$country = Hubzero_Geo::ipcountry($ip);
 

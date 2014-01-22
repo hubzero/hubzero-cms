@@ -132,8 +132,7 @@ class AnswersTableLog extends JTable
 			return false;
 		}
 
-		ximport('Hubzero_Environment');
-		if (!Hubzero_Environment::validIp($this->ip))
+		if (!\Hubzero\Utility\Validate::ip($this->ip))
 		{
 			$this->setError(JText::_('Invalid IP address'));
 			return false;

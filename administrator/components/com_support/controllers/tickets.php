@@ -297,16 +297,14 @@ class SupportControllerTickets extends Hubzero_Controller
 			$row->email    = $this->juser->get('email');
 			$row->cookies  = 1;
 
-			ximport('Hubzero_Browser');
-			$browser = new Hubzero_Browser();
+			$browser = new \Hubzero\Browser\Detector();
 
-			$row->os = $browser->getOs() . ' ' . $browser->getOsVersion();
-			$row->browser = $browser->getBrowser() . ' ' . $browser->getBrowserVersion();
+			$row->os = $browser->platform() . ' ' . $browser->platformVersion();
+			$row->browser = $browser->name() . ' ' . $browser->version();
 
 			$row->uas = JRequest::getVar('HTTP_USER_AGENT','','server');
 
-			ximport('Hubzero_Environment');
-			$row->ip = Hubzero_Environment::ipAddress();
+			$row->ip = JRequest::ip();
 			$row->hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			$row->section = 1;
 

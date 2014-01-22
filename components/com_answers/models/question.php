@@ -649,7 +649,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			$aql = new AnswersTableQuestionsLog($this->_db);
 			$this->set(
 				'voted', 
-				$aql->checkVote($this->get('id'), Hubzero_Environment::ipAddress(), $juser->get('id'))
+				$aql->checkVote($this->get('id'), JRequest::ip(), $juser->get('id'))
 			);
 		}
 
@@ -681,7 +681,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		$al = new AnswersTableQuestionsLog($this->_db);
 		$al->qid   = $this->get('id');
-		$al->ip    = Hubzero_Environment::ipAddress();
+		$al->ip    = JRequest::ip();
 		$al->voter = $juser->get('id');
 
 		if ($al->checkVote($al->qid, $al->ip, $al->voter))

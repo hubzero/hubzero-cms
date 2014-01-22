@@ -467,12 +467,11 @@ class ToolsHelperUtils
 	{
 		//include needed HUBzero libraries
 		ximport('Hubzero_Factory');
-		ximport('Hubzero_Environment');
 		
 		//instaniate objects
 		$export_access = new stdClass;
 		$xlog = Hubzero_Factory::getLogger();
-		$ip = Hubzero_Environment::ipAddress();
+		$ip = JRequest::ip();
 		
 		//get the export control level
 		$export_control = strtolower( $export_control );

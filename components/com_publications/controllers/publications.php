@@ -32,7 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
-ximport('Hubzero_Environment');
 
 /**
  * Primary component controller (extends Hubzero_Controller)

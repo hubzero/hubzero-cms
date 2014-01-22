@@ -433,8 +433,7 @@ class SupportControllerApi extends Hubzero_Api_Controller
 		$ticket->open      = 1;
 		$ticket->status    = 0;
 
-		ximport('Hubzero_Environment');
-		$ticket->ip        = Hubzero_Environment::ipAddress();
+		$ticket->ip        = JRequest::ip();
 		$ticket->hostname  = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 
 		// Check the data

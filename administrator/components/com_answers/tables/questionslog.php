@@ -107,8 +107,7 @@ class AnswersTableQuestionsLog extends JTable
 			$this->expires = JFactory::getDate(time() + (7 * 24 * 60 * 60)); // in a week
 		}
 
-		ximport('Hubzero_Environment');
-		if (!Hubzero_Environment::validIp($this->ip))
+		if (!\Hubzero\Utility\Validate::ip($this->ip))
 		{
 			$this->setError(JText::_('Invalid IP address'));
 			return false;

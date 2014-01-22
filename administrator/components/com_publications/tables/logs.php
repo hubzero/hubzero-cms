@@ -263,7 +263,7 @@ class PublicationLog extends JTable
 		}
 		
 		// Get IP
-		$ip = Hubzero_Environment::ipAddress();
+		$ip = JRequest::ip();
 		
 		// Check if bot
 		if ($this->checkBotIp( $ip ))
