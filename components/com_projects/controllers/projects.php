@@ -32,6 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
+ximport('Hubzero_Environment');
 
 /**
  * Primary component controller (extends Hubzero_Controller)
@@ -69,10 +70,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_longname = JText::_('COMPONENT_LONG_NAME');
-
-		// Load the component config
-		$config 		= JComponentHelper::getParams( $this->_option );
-		$this->_config 	= $config;
 				
 		// Publishing enabled?
 		$this->_publishing = 
@@ -85,13 +82,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_inlcudeScripts();
 		
 		// Check for necessary db setup
-		if ($this->_config->get( 'dbcheck', 1 ))
+		if ($this->config->get( 'dbcheck', 1 ))
 		{
 			$this->_checkTables();
 		}
 		
 		// Is component on?
-		if (!$this->_config->get( 'component_on', 0 ))
+		if (!$this->config->get( 'component_on', 0 ))
 		{
 			$this->_redirect = '/';
 			return;
@@ -520,7 +517,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->filters['mine']   	 = 1;
 		$view->filters['updates'] 	 = 1;
 		$view->filters['sortby'] 	 = 'myprojects';
-		$setup_complete 			 = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete 			 = $this->config->get('confirm_step', 0) ? 3 : 2;
 		
 		// Get a record count
 		$obj = new Project( $this->database );
@@ -545,7 +542,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Output HTML
 		$view->option 	= $this->_option;
-		$view->config 	= $this->_config;
+		$view->config 	= $this->config;
 		$view->database = $this->database;
 		$view->publishing = $this->_publishing;
 		$view->uid 		= $this->juser->get('id');
@@ -590,7 +587,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						
 		// Output HTML
 		$view->option = $this->_option;
-		$view->config = $this->_config;
+		$view->config = $this->config;
 		$view->guest  = $this->juser->get('guest');
 		$view->publishing	= $this->_publishing;
 		
@@ -636,7 +633,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				return;
 			}
 			
-			if ($this->checkReviewerAuth($reviewer))
+			if (ProjectsHelper::checkReviewerAuth($reviewer, $this->config))
 			{
 				$layout = $reviewer;	
 			}
@@ -657,7 +654,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']  	= JRequest::getVar( 'limit', intval($this->_config->get('limit', 25)), 'request' );
+		$view->filters['limit']  	= JRequest::getVar( 'limit', intval($this->config->get('limit', 25)), 'request' );
 		$view->filters['start']  	= JRequest::getInt( 'limitstart', 0, 'get' );
 		$view->filters['sortby'] 	= JRequest::getVar( 'sortby', 'title' );
 		$view->filters['search'] 	= JRequest::getVar( 'search', '' );
@@ -670,7 +667,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 				
 		// Get config
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		
 		// Login for private projects
 		if ($this->juser->get('guest') && $action == 'login') 
@@ -698,7 +695,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Output HTML
 		$view->option 		= $this->_option;
-		$view->config 		= $this->_config;
+		$view->config 		= $this->config;
 		$view->database 	= $this->database;
 		$view->uid 			= $this->juser->get('id');
 		$view->guest 		= $this->juser->get('guest');
@@ -773,7 +770,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		else 
 		{			
 			// Is project registration restricted to a group?
-			$creatorgroup = $this->_config->get('creatorgroup', '');
+			$creatorgroup = $this->config->get('creatorgroup', '');
 			
 			if ($creatorgroup) 
 			{	
@@ -843,7 +840,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Do we have 2 or 3 steps in the process (configurable)
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 					
 		// Is earlier setup stage requested and are we allowed to go there?
 		$stage = $requested_step != 6 && $obj->setup_stage >= $requested_step && $obj->setup_stage != $setup_complete 
@@ -910,7 +907,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				
 				// Log activity
 				$this->_logActivity($pid, 'setup', $what, 'save', $authorized);
-				if ($this->_config->get('logging', 0))
+				if ($this->config->get('logging', 0))
 				{
 					$jsession->set('projects-nolog', 1);					
 				}
@@ -955,13 +952,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Allow future logging
-		if ($this->_config->get('logging', 0))
+		if ($this->config->get('logging', 0))
 		{
 			$jsession->set('projects-nolog', 0);					
 		}
 		
 		// Do we need to ask about restricted data up front?
-		if ($this->_config->get('restricted_upfront', 0) == 1 && !$this->_identifier) 
+		if ($this->config->get('restricted_upfront', 0) == 1 && !$this->_identifier) 
 		{
 			$proceed = JRequest::getInt( 'proceed', 0, 'post');
 			if (!$proceed)
@@ -998,7 +995,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$view->uploadnow = JRequest::getInt( 'uploadnow', 0 );
 			
 			// Get project thumb
-			$view->thumb_src = ProjectsHtml::getThumbSrc($obj->id, $obj->alias, $obj->picture, $this->_config); 			
+			$view->thumb_src = ProjectsHtml::getThumbSrc($obj->id, $obj->alias, $obj->picture, $this->config); 			
 		}
 		
 		// Editing team
@@ -1061,7 +1058,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Output HTML
 		$view->title  		= $this->title;
 		$view->option 		= $this->_option;
-		$view->config 		= $this->_config;
+		$view->config 		= $this->config;
 		$view->gid 			= $this->_gid;
 		$view->group 		= $group;
 		$view->restricted 	= $restricted;
@@ -1159,7 +1156,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$view->project 	= $project;
 					$view->task 	= $this->_task;
 					$view->option 	= $this->_option;
-					$view->config 	= $this->_config;
+					$view->config 	= $this->config;
 					$view->uid 		= $this->juser->get('id');
 					$view->guest 	= $this->juser->get('guest'); 
 					$view->display();
@@ -1211,7 +1208,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 			
 		// Check if project is in setup
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if ($project->setup_stage < $setup_complete && (!$ajax && $this->active != 'team')) 
 		{	
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . a . 'task=setup'
@@ -1222,7 +1219,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Sync with system group in case of changes
 		if ($sync) 
 		{
-			$objO->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+			$objO->sysGroup($project->alias, $this->config->get('group_prefix', 'pr-'));
 		}
 				
 		// Set the pathway
@@ -1250,16 +1247,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
 			if($ugs && count($ugs) > 0)
 			{
-				$sdata_group 	= $this->_config->get('sdata_group', '');
-				$ginfo_group 	= $this->_config->get('ginfo_group', '');
+				$sdata_group 	= $this->config->get('sdata_group', '');
+				$ginfo_group 	= $this->config->get('ginfo_group', '');
 
 				foreach ($ugs as $ug)
 				{
-					if ($this->_config->get('approve_restricted') && $sdata_group && $ug->cn == $sdata_group ) 
+					if ($this->config->get('approve_restricted') && $sdata_group && $ug->cn == $sdata_group ) 
 					{
 						$reviewer = 'sensitive';
 					}
-					elseif ($this->_config->get('grantinfo') && $ginfo_group && $ug->cn == $ginfo_group )
+					elseif ($this->config->get('grantinfo') && $ginfo_group && $ug->cn == $ginfo_group )
 					{
 						$reviewer = 'sponsored';
 					}
@@ -1295,7 +1292,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					else 
 					{
 						// Sync with system group
-						$objO->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+						$objO->sysGroup($project->alias, $this->config->get('group_prefix', 'pr-'));
 						
 						// Go to project page					
 						$this->_redirect = JRoute::_('index.php?option=' . $this->_option 
@@ -1462,7 +1459,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}		
 		
 		// Allow future logging
-		if ($this->_config->get('logging', 0))
+		if ($this->config->get('logging', 0))
 		{
 			$jsession->set('projects-nolog', 0);					
 		}
@@ -1590,7 +1587,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						}
 						elseif (isset($section['referer']) && $section['referer'] != '') 
 						{
-							if ($this->_config->get('logging', 0))
+							if ($this->config->get('logging', 0))
 							{
 								$jsession->set('projects-nolog', 1);					
 							}
@@ -1652,7 +1649,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$project, 
 					$this->_option, 
 					$this->juser->get('id'),
-					$this->_config,
+					$this->config,
 					$view->params
 				);
 				
@@ -1687,7 +1684,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->task 		= $this->_task;
 		$view->authorized	= $authorized;
 		$view->option 		= $this->_option;
-		$view->config 		= $this->_config;
+		$view->config 		= $this->config;
 		$view->uid 			= $this->juser->get('id');
 		$view->guest 		= $this->juser->get('guest');
 		$view->msg 			= $this->getNotifications('success');
@@ -1758,7 +1755,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Which section are we editing?
 		$this->active =  JRequest::getVar( 'edit', 'info' );
 		$sections = array('info', 'team');
-		if ($this->_config->get('edit_settings', 0)) 
+		if ($this->config->get('edit_settings', 0)) 
 		{
 			$sections[] = 'settings';
 		}
@@ -1780,7 +1777,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 	
 		// Check if project is in setup
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if ($project->setup_stage < $setup_complete) 
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option
@@ -1829,7 +1826,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Allow future logging
-		if ($this->_config->get('logging', 0))
+		if ($this->config->get('logging', 0))
 		{
 			$jsession->set('projects-nolog', 0);					
 		}
@@ -1924,7 +1921,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					. $this->_option . a . 'alias=' . $project->alias . a . 'active=info'), 'project' );
 			}
 			
-			if ($this->_config->get('logging', 0))
+			if ($this->config->get('logging', 0))
 			{
 				$jsession->set('projects-nolog', 1);					
 			}
@@ -1941,7 +1938,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->title  		= $this->title;
 		$view->authorized 	= $authorized;
 		$view->option 		= $this->_option;
-		$view->config 		= $this->_config;
+		$view->config 		= $this->config;
 		$view->task 		= $this->_task;
 		$view->publishing	= $this->_publishing;
 	
@@ -2017,7 +2014,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				else 
 				{
 					$obj->alias = $name;
-					$obj->private = $this->_config->get('privacy', 1);
+					$obj->private = $this->config->get('privacy', 1);
 					$obj->created = JFactory::getDate()->toSql();
 					$obj->created_by_user = $this->juser->get('id');
 					$obj->owned_by_user = $this->juser->get('id');
@@ -2147,7 +2144,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 								return false;
 							}
 
-							$admingroup = $this->_config->get('ginfo_group', '');
+							$admingroup = $this->config->get('ginfo_group', '');
 
 							if (Hubzero_Group::getInstance($admingroup))
 							{
@@ -2158,7 +2155,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 								{
 									ProjectsHelper::sendHUBMessage(
 										$this->_option,
-										$this->_config,
+										$this->config,
 										$project, 
 										$admins, 
 										JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
@@ -2177,7 +2174,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			case 'finalize':
 				if ($obj->loadProject($pid)) 
 				{
-					$setup_complete 	= $this->_config->get('confirm_step', 0) ? 3 : 2;
+					$setup_complete 	= $this->config->get('confirm_step', 0) ? 3 : 2;
 					$agree 				= JRequest::getInt( 'agree', 0, 'post' );
 					$restricted 		= JRequest::getVar( 'restricted', '', 'post' );	
 					$agree_irb 			= JRequest::getInt( 'agree_irb', 0, 'post' );
@@ -2187,7 +2184,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					if ($setup_complete == 3 ) 
 					{					
 						// General restricted data question
-						if ($this->_config->get('restricted_data', 0) == 2) 
+						if ($this->config->get('restricted_data', 0) == 2) 
 						{
 							if (!$restricted)
 							{
@@ -2200,7 +2197,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						}
 						
 						// Restricted data with specific questions
-						if ($this->_config->get('restricted_data', 0) == 1) 
+						if ($this->config->get('restricted_data', 0) == 1) 
 						{
 							$restrictions = array(
 								'hipaa_data'  => JRequest::getVar( 'hipaa', 'no', 'post' ),
@@ -2263,7 +2260,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 								}
 								
 								// Stop if hipaa/export controlled, or send to extra approval screen
-								if ($this->_config->get('approve_restricted', 0)) 
+								if ($this->config->get('approve_restricted', 0)) 
 								{
 									if ($restrictions['export_data'] == 'yes' 
 										|| $restrictions['hipaa_data'] == 'yes'
@@ -2287,7 +2284,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						}
 						
 						// Collect grant information
-						if ($this->_config->get('grantinfo', 0)) 
+						if ($this->config->get('grantinfo', 0)) 
 						{
 							$grant_agency = JRequest::getVar( 'grant_agency', '' );
 							$grant_title = JRequest::getVar( 'grant_title', '' );
@@ -2305,7 +2302,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$active = $obj->state == 1 ? 1 : 0;
 						
 					// Sync with system group 
-					$objO->sysGroup($obj->alias, $this->_config->get('group_prefix', 'pr-'));						
+					$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));						
 	
 					// Activate project
 					if (!$active) 
@@ -2322,14 +2319,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						}
 						
 						// Email administrators about a new project											
-						if ($this->_config->get('messaging') == 1)
+						if ($this->config->get('messaging') == 1)
 						{
 							// Get updated project
 							$project = $obj->getProject($pid, $this->juser->get('id'));
 							
-							$admingroup 	= $this->_config->get('admingroup', '');
-							$sdata_group 	= $this->_config->get('sdata_group', '');
-							$ginfo_group 	= $this->_config->get('ginfo_group', '');
+							$admingroup 	= $this->config->get('admingroup', '');
+							$sdata_group 	= $this->config->get('sdata_group', '');
+							$ginfo_group 	= $this->config->get('ginfo_group', '');
 							$project_admins = $this->_getGroupMembers($admingroup);
 							$ginfo_admins 	= $this->_getGroupMembers($ginfo_group);
 							$sdata_admins 	= $this->_getGroupMembers($sdata_group);
@@ -2342,7 +2339,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 							{
 								ProjectsHelper::sendHUBMessage(
 									$this->_option,
-									$this->_config,
+									$this->config,
 									$project, 
 									$admins, 
 									JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
@@ -2414,7 +2411,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Redirect to setup if activation not complete
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if ($project->setup_stage < $setup_complete) 
 		{	
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . a . 'task=setup' 
@@ -2475,7 +2472,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$view->task 		= $this->_task;
 			$view->authorized 	= 1;
 			$view->option 		= $this->_option;
-			$view->config 		= $this->_config;
+			$view->config 		= $this->config;
 			$view->uid 			= $this->juser->get('id');
 			$view->guest 		= $this->juser->get('guest');
 			if ($this->getError()) 
@@ -2707,7 +2704,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objAA = new ProjectActivity ( $this->database );
 		
 		// Is user in special admin group to view advanced stats?
-		$admin = $this->checkReviewerAuth('general');
+		$admin = ProjectsHelper::checkReviewerAuth($reviewer, $this->config);
 							
 		// Get all test projects
 		$testProjects = $obj->getTestProjects();
@@ -2752,10 +2749,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->task 		= $this->_task;
 		$view->admin 		= $admin;
 		$view->option 		= $this->_option;
-		$view->config 		= $this->_config;
+		$view->config 		= $this->config;
 		$view->uid 			= $this->juser->get('id');
 		$view->guest 		= $this->juser->get('guest');
-		$view->stats		= $obj->getStats($period, $admin, $this->_config, $testProjects, $this->_publishing);
+		$view->stats		= $obj->getStats($period, $admin, $this->config, $testProjects, $this->_publishing);
 		$view->publishing	= $this->_publishing;
 		if ($this->getError()) 
 		{
@@ -2859,11 +2856,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$notify 	= JRequest::getVar( 'notify', 0, 'post' );
 		
 		// Instantiate a project and related classes
-		$obj = new Project( $this->database );
-		$objAA = new ProjectActivity ( $this->database );
+		$obj 		= new Project( $this->database );
+		$objAA 		= new ProjectActivity ( $this->database );
 		
 		// Check authorization
-		$authorized = $this->checkReviewerAuth($reviewer);
+		$authorized = ProjectsHelper::checkReviewerAuth($reviewer, $this->config);
 		if (!$authorized)
 		{
 			$this->setError( JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS') );
@@ -2936,7 +2933,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					// Bump up quota
 					$quota = $params->get('quota');
 					$premiumQuota = ProjectsHtml::convertSize( 
-						floatval($this->_config->get('premiumQuota', '30')), 'GB', 'b');
+						floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
 					$obj->saveParam($obj->id, 'quota', htmlentities($premiumQuota));
 				}
 				
@@ -3008,8 +3005,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				$project = $obj->getProject($pid, $this->juser->get('id'));
 				
 				$admingroup = $reviewer == 'sensitive' 
-					? $this->_config->get('sdata_group', '') 
-					: $this->_config->get('ginfo_group', '');
+					? $this->config->get('sdata_group', '') 
+					: $this->config->get('ginfo_group', '');
 					
 				if (Hubzero_Group::getInstance($admingroup))
 				{
@@ -3023,7 +3020,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					{
 						ProjectsHelper::sendHUBMessage(
 							$this->_option,
-							$this->_config,
+							$this->config,
 							$project, 
 							$admins, 
 							JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
@@ -3129,8 +3126,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$view->option 		= $this->_option;
 			$view->project		= $obj;
 			$view->params		= $params;
-			$view->thumb_src 	= ProjectsHtml::getThumbSrc($obj->id, $obj->alias, $obj->picture, $this->_config);
-			$view->config 		= $this->_config;
+			$view->thumb_src 	= ProjectsHtml::getThumbSrc($obj->id, $obj->alias, $obj->picture, $this->config);
+			$view->config 		= $this->config;
 			$view->database 	= $this->database;
 			$view->action		= $action;
 			$view->filterby		= $filterby;
@@ -3142,62 +3139,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			}
 			$view->display();
 		}	
-	}
-	
-	/**
-	 * Authorize reviewer
-	 * 
-	 * @return     void
-	 */
-	protected function checkReviewerAuth($reviewer)
-	{
-		if ($reviewer != 'sponsored' && $reviewer != 'sensitive' && $reviewer != 'general')
-		{
-			return false;
-		}
-		
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-		
-		$sdata_group 	= $this->_config->get('sdata_group', '');
-		$ginfo_group 	= $this->_config->get('ginfo_group', '');
-		$admingroup 	= $this->_config->get('admingroup', '');
-		$group      	= '';
-		$authorized 	= false;
-		
-		// Get authorized group	
-		if ($reviewer == 'sensitive' && $sdata_group)
-		{
-			$group = Hubzero_Group::getInstance($sdata_group);
-		}
-		elseif ($reviewer == 'sponsored' && $ginfo_group)
-		{
-			$group = Hubzero_Group::getInstance($ginfo_group);
-		}
-		elseif ($reviewer == 'general' && $admingroup)
-		{
-			$group = Hubzero_Group::getInstance($admingroup);
-		}
-			
-		if ($group)
-		{
-			// Check if they're a member of this group
-			$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0) 
-			{
-				foreach ($ugs as $ug)
-				{
-					if ($group && $ug->cn == $group->get('cn')) 
-					{
-						$authorized = true;
-					}
-				}
-			}
-		}
-		
-		return $authorized;
 	}
 	
 	//----------------------------------------------------------
@@ -3222,12 +3163,12 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$class 	= 'verify_failed';
 		
 		// Set name length
-		$min_length = $tool ? 3 : $this->_config->get('min_name_length', 3);
-		$max_length = $tool ? 20 : $this->_config->get('max_name_length', 25);
+		$min_length = $tool ? 3 : $this->config->get('min_name_length', 3);
+		$max_length = $tool ? 20 : $this->config->get('max_name_length', 25);
 		
 		// Array of reserved names (task names and default dirs)
 		$reserved = array();
-		$names = $this->_config->get('reserved_names', '');
+		$names = $this->config->get('reserved_names', '');
 		$tasks = array(	'start', 'setup', 'browse', 
 			'intro', 'features', 'deleteimg', 
 			'reports', 'stats', 'view', 'edit',
@@ -3347,7 +3288,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$prefix = JPATH_ROOT;	
 		
 		// Get web directory
-		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
+		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 		
 		$from_dir =  Hubzero_View_Helper_Html::niceidformat( $temid );
 		
@@ -3419,7 +3360,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$dir = $id;
 		}
 		
-		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
+		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 		$path   = $prefix . $webdir;
 		$path  .= $temp ? DS . 'temp' : '';
 		$path  .= DS . $dir . DS . 'images';
@@ -3802,7 +3743,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	protected function _notifyTeam($pid = '', $action = '', $managers_only = 0)
 	{
 		// Is messaging turned on?
-		if ($this->_config->get('messaging') != 1)
+		if ($this->config->get('messaging') != 1)
 		{
 			return false;
 		}
@@ -3980,7 +3921,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	protected function _logActivity ($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
 	{		
 		// Is logging enabled?
-		$enabled = $this->_config->get('logging', 0);		
+		$enabled = $this->config->get('logging', 0);		
 		if (!$enabled)
 		{
 			return false;
@@ -4000,7 +3941,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objLog->projectid 		= $pid;
 		$objLog->userid 		= $this->juser->get('id');
 		$objLog->owner 			= intval($owner);
-		$objLog->ip 			= JRequest::ip();
+		$objLog->ip 			= Hubzero_Environment::ipAddress();
 		$objLog->section 		= $section;
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
@@ -4021,7 +3962,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 */			
 	protected function _getModules( $project = '', $option = '', $uid = 0, $suggestions = array()) 
 	{
-		$limit = $this->_config->get('sidebox_limit', 3);
+		$limit = $this->config->get('sidebox_limit', 3);
 		$modules = '';
 		
 		// Show side module with suggestions
@@ -4090,7 +4031,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Get notes
 		$projectsHelper = new ProjectsHelper( $this->database );
 		$masterscope = 'projects' . DS . $project->alias . DS . 'notes';
-		$group_prefix = $this->_config->get('group_prefix', 'pr-');
+		$group_prefix = $this->config->get('group_prefix', 'pr-');
 		$group = $group_prefix . $project->alias;
 		$notes = $projectsHelper->getNotes($group, $masterscope, $limit, 'RAND()');
 		
