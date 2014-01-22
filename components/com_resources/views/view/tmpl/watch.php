@@ -187,7 +187,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 		<li><kbd>+</kbd><span>Increase Volume</span></li>
 		<li><kbd>-</kbd><span>Decrease Volume</span></li>
 		<li><kbd>M</kbd><span>Mute Presentation</span></li>
-	</dl>
+	</ul>
 </div>
 
 <?php $presenationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
