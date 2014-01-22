@@ -1924,28 +1924,20 @@ class EventsControllerEvents extends Hubzero_Controller
 		}
 
 		$rpup = $row->publish_up;
+		$publishtime = date('Y-m-d 00:00:00');
 		if ($row->publish_up) 
 		{
 			$publishtime = $row->publish_up . ' ' . $start_time . ':00';
-			$row->publish_up = strftime("%Y-%m-%d %H:%M:%S", strtotime($publishtime));
-		} 
-		else 
-		{
-			$row->publish_up = strftime("%Y-%m-%d 00:00:00", time()+($offset*60*60));
 		}
-
+		$row->publish_up = JFactory::getDate(strtotime($publishtime))->format("Y-m-d H:i:s");
+		
+		$publishtime = date('Y-m-d 00:00:00');
 		if ($row->publish_down) 
 		{
 			$publishtime = $row->publish_down . ' ' . $end_time . ':00';
-			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S", strtotime($publishtime));
-		} 
-		else 
-		{
-			$publishtime = $rpup . ' ' . $end_time . ':00';
-			//$row->publish_down = strftime("%Y-%m-%d 23:59:59", time()+($offset*60*60));
-			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S", strtotime($publishtime));
 		}
-
+		$row->publish_down = JFactory::getDate(strtotime($publishtime))->format("Y-m-d H:i:s");
+		
 		if ($row->publish_up <> $row->publish_down) 
 		{
 			$row->reccurtype = intval($row->reccurtype);
@@ -2031,7 +2023,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		
 		//set the scope to be regular events
 		$row->scope = 'event';
-
+		
 		if (!$row->check()) 
 		{
 			// Set the error message

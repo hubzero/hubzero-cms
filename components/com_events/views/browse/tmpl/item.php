@@ -69,17 +69,17 @@ if ($this->row->start_date == $this->row->stop_date) {
 	if ($this->showdate) {
 		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, JText::_('DATE_FORMAT_HZ1')).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.$tzString.'</dd>'."\n";
-	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.$tzString.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('TIME_FORMAT_HZ1')).'&nbsp;' .'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.'</dd>'."\n";
 } else {
 	if ($this->showdate) {
 		$html .= "\t\t\t".'<dt class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('DATE_FORMAT_HZ1')).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.$tzString.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.'</dd>'."\n";
 	if ($this->showdate) {
 		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, JText::_('DATE_FORMAT_HZ1')).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.$tzString.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.'</dd>'."\n";
 }
 $html .= "\t\t".'</dl><div class="ewrap">'."\n";
 $html .= "\t\t".'<p class="title"><a href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. stripslashes($this->row->title) .'</a></p>'."\n";
