@@ -181,10 +181,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				$this->_verify();    	
 				break;
 				
-			case 'autocomplete':		
-				$this->_autocomplete(); 
-				break;
-				
 			case 'showcount':			
 				$this->showCount(); 	
 				break;
@@ -3648,49 +3644,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		return false;
 	}
 		
-	/**
-	 * Autocomplete
-	 * 
-	 * @return void
-	 */
-	protected function _autocomplete() 
-	{
-		$filters 			= array();
-		$filters['limit']  	= 20;
-		$filters['start']  	= 0;
-		$filters['search'] 	= trim(JRequest::getString( 'value', '' ));
-		$which 				= JRequest::getVar('which', '');
-		
-		if (!$which) {
-			return false;
-		}
-		
-		// Fetch results
-		$rows = AutocompleteHandler::_getAutocomplete( $filters, $which, $this->database, $this->juser->get('id') );
-
-		// Output search results in JSON format
-		$json = array();
-		if (count($rows) > 0) 
-		{
-			foreach ($rows as $row) 
-			{
-				if ($which == 'user') 
-				{
-					$json[] = '["' . $row->fullname . ' (' . $row->uidNumber . ')","' 
-							. $row->fullname . ' (' . $row->uidNumber . '), "]';
-				}
-				else 
-				{
-					$json[] = '["' . $row->description . '","' . $row->cn . '"]';
-				}
-				
-			}
-		}
-		
-		echo '[' . implode(',',$json) . ']';
-		return;
-	}
-	
 	/**
 	 * Wiki preview
 	 * 
