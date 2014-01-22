@@ -235,7 +235,7 @@ class ToolAuthor extends  JTable
 			{
 				$query .= "WHERE a.version_id=" . $this->_db->Quote($version->id) . " ORDER BY a.ordering";
 			}
-			else if (is_object($version[0])) 
+			else if (isset($version[0]) && is_object($version[0])) 
 			{
 				$query .= "WHERE a.version_id=" . $this->_db->Quote($version[0]->id) . " ORDER BY a.ordering";
 			}

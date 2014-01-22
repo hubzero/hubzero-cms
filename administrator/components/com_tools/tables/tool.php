@@ -642,7 +642,8 @@ class Tool extends JTable
 		$status = array(
 			'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
 			'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
-			'resource_modified' => (isset($toolinfo[0]->rmodified) && $toolinfo[0]->rmodified !='0000-00-00 00:00:00' && $version[0]->fulltxt != '') ? 1 : 0,
+			'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified) 
+				&& $toolinfo[0]->rmodified !='0000-00-00 00:00:00' && isset($version[0]) && $version[0]->fulltxt != '') ? 1 : 0,
 			'fulltxt'      => isset($version[0]->fulltxt) ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
 			'toolname'      => isset($toolinfo[0]->toolname) ? $toolinfo[0]->toolname : '',
 			'toolid'        => isset($toolinfo[0]->id) ? $toolinfo[0]->id : 0,
