@@ -802,13 +802,24 @@ class ResourcesControllerResources extends Hubzero_Controller
 		//load resource
 		$activechild = new ResourcesResource($this->database);
 		$activechild->load($resid);
+		
+		$path = '';
+		if ($activechild->path)
+		{
+			$activechild->path = trim($activechild->path, '/');
+			// match YYYY/MM/#/something
+			if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $activechild->path, $matches))
+			{
+				$path = '/' . rtrim($matches[1], '/');
+			}
+		}
 
 		//base url for the resource
 		$base = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 		//build the rest of the resource path and combine with base
-		$path = ResourcesHtml::build_path($activechild->created, $activechild->id, '');
-		$path =  $base . $path;
+		$path = $path ? $path : ResourcesHtml::build_path($activechild->created, $activechild->id, '');
+		$path = $base . $path;
 
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
 		//$manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
@@ -1110,8 +1121,19 @@ class ResourcesControllerResources extends Hubzero_Controller
 		//base url for the resource
 		$base = DS . trim($this->config->get('uploadpath'), DS);
 		
+		$path = '';
+		if ($resource->path)
+		{
+			$resource->path = trim($resource->path, '/');
+			// match YYYY/MM/#/something
+			if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $resource->path, $matches))
+			{
+				$path = '/' . rtrim($matches[1], '/');
+			}
+		}
+
 		//build the rest of the resource path and combine with base
-		$path = ResourcesHtml::build_path($resource->created, $resource->id, '');
+		$path = $path ? $path : ResourcesHtml::build_path($resource->created, $resource->id, '');
 		
 		//get manifests
 		$manifests = JFolder::files( JPATH_ROOT . DS . $base . $path, '.json' );
