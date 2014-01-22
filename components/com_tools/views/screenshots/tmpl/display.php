@@ -219,7 +219,7 @@ echo $html;
 <?php if ($this->published && $this->version=='dev') { ?>
 	<form action="index.php" name="copySSForm"  method="post" enctype="multipart/form-data">
 		<fieldset style="border-top:1px solid #ccc;padding-top:1em;">
-			<legend><?php echo JText::_('COM_TOOLS_Copy Screenshots'); ?></legend>
+			<legend><?php echo JText::_('COM_TOOLS_COPY_SCREENSHOTS'); ?></legend>
 			
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -230,7 +230,7 @@ echo $html;
 			<label>
 				<?php 
 				$v = $this->version=='dev' ? 'current' : 'development';
-				echo JText::_('COM_TOOLS_From').' '.$v.' '.strtolower(JText::_('COM_TOOLS_VERSION'));
+				echo JText::_('COM_TOOLS_FROM').' '.$v.' '.strtolower(JText::_('COM_TOOLS_VERSION'));
 				?>
 				<input type="submit" class="upload" value="<?php echo strtolower(JText::_('COM_TOOLS_COPY')); ?>" />
 			</label>

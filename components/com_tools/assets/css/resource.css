@@ -112,9 +112,12 @@
 	.devversion {
 		background: url("/components/com_tools/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
 	}
-	p.devversion {
+	p.devversion, p.currentversion {
 	 	padding: 1em; 
 		margin: 0;
+	}
+	.currentversion {
+	 	background: #e4fefe;
 	}
 	#preview-header {
 		margin: 0;
