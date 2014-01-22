@@ -143,12 +143,20 @@ class UsersQuotas extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
+		// Use Juser, rather than JFactory::getUser, as JFactory won't get the right username if it was just updated
+		$username = Juser::getInstance($this->user_id)->get('username');
+
+		// Don't try to save quotas for auth link temp accounts (negative number usernames)
+		if (is_numeric($username) && $username < 0)
+		{
+			return false;
+		}
+
 		$action = ($this->id) ? 'modify' : 'add';
 		$result = parent::store($updateNulls);
 
 		if ($result)
 		{
-			$username = JFactory::getUser($this->user_id)->get('username');
 			$command = "update_quota '{$username}' '{$this->soft_blocks}' '{$this->hard_blocks}'";
 			$cmd = "/bin/sh ".JPATH_ROOT."/components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
 
@@ -165,7 +173,7 @@ class UsersQuotas extends JTable
 			$log = new MembersQuotasLog($this->_db);
 			$log->set('object_type', 'user');
 			$log->set('object_id'  , $this->id);
-			$log->set('name'       , JFactory::getUser($this->user_id)->get('username'));
+			$log->set('name'       , $username);
 			$log->set('action'     , $action);
 			$log->set('actor_id'   , JFactory::getUser()->get('id'));
 			$log->set('soft_blocks', $this->soft_blocks);
@@ -218,7 +226,7 @@ class UsersQuotas extends JTable
 	public function getRecord($id)
 	{
 		$query  = "SELECT uq.*, m.username, m.name, uqc.alias AS class_alias";
-		$query .= $this->buildquery($filters);
+		$query .= $this->buildquery();
 		$query .= " WHERE uq.id = " . $this->_db->quote((int) $id);
 
 		$this->_db->setQuery($query);
