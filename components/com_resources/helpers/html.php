@@ -296,6 +296,12 @@ class ResourcesHtml
 		{
 			$dir_year  = JFactory::getDate($date)->format('Y');
 			$dir_month = JFactory::getDate($date)->format('m');
+
+			if (!is_dir($base . DS . $dir_year . DS . $dir_month . DS . $dir_id) && intval($dir_year) <= 2013 && intval($dir_month) <= 11)
+			{
+				$dir_year  = JHTML::_('date', $date, 'Y');
+				$dir_month = JHTML::_('date', $date, 'm');
+			}
 		} 
 		else 
 		{
