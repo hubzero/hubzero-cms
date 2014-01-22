@@ -527,15 +527,26 @@ class TagsHandler extends JObject
 	{
 		$newwords = array();
 
-		// If the tag string is empty, return the empty set.
-		if ($tag_string == '') 
+		if (is_string($tag_string))
 		{
-			return $newwords;
-		}
+			// If the tag string is empty, return the empty set.
+			if ($tag_string == '') 
+			{
+				return $newwords;
+			}
 
-		// Perform tag parsing
-		$tag_string = trim($tag_string);
-		$raw_tags = explode(',', $tag_string);
+			// Perform tag parsing
+			$tag_string = trim($tag_string);
+			$raw_tags = explode(',', $tag_string);
+		}
+		else if (is_array($tag_string))
+		{
+			$raw_tags = $tag_string;
+		}
+		else
+		{
+			throw new \InvalidArgumentException(\JText::sprintf('Tag lsit must be an array or string. Type of "%s" passed.', gettype($tag_string)));
+		}
 
 		foreach ($raw_tags as $raw_tag)
 		{
