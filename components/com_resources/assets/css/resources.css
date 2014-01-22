@@ -300,25 +300,6 @@
 		font-size: 85%;
 		float: right;
 	}
-	.supdocs {
-		border-top: 1px dashed #ccc;
-		margin: 0;
-		padding: 0.5em 0;
-		font-size: 85%;
-		text-align: right;
-	}
-	.supdocs .guide a {
-		color: #000;
-		border-bottom: 1px solid #777;
-		padding: 0.2em 0 0.1em 0;
-	}
-	.supdocs .guide {	
-		display: inline;
-		padding-bottom: 0.5em;
-	}
-	.viewalldocs {
-		margin-top: 0em;
-	}
 	.metaplaceholder {
 		background: url("/components/com_resources/assets/img/metaplaceholder.gif") 0 0 no-repeat;
 		padding: 3em 3em 3em 3.5em;
@@ -332,32 +313,91 @@
 		margin: 0;
 		padding: 0;
 	}
-	ul.supdocln {
+/* Supporting docs */
+	.supdocs {
+		border-top: 1px dashed #ccc;
+		margin: 0;
+		padding: 0.5em 0;
+		font-size: 85%;
+		text-align: right;
+	}
+	.viewalldocs {
+		margin-top: -1em;
+		font-size: 85%;
+		padding: 0 0 0.8em 30px;
+		background: url("../img/childlink.gif") 10px 0 no-repeat;
+		}	
+	.com_resources .aside ul.supdocln {
 		list-style: none;
 		background: none;
 		font-size: 85%;
 		color: #8d7a62;
-		margin: -0.5em -0.2em 0 -0.2em;
+		margin: -0.5em -0.2em 1.5em -0.2em;
 		padding: 0 0 0.8em 30px;
-		background: url("/components/com_resources/assets/img/childlink.gif") 10px 0 no-repeat;
-		width: auto;
-	}
-	ul.supdocln li {
-		display: inline;
-	}
-	ul.supdocln li a {
+		background: url("../img/childlink.gif") 10px 0 no-repeat;
+		width: auto;		
+		}
+	.com_resources .aside ul.supdocln li a {
+		margin: 0;
 		padding-left: 20px;
 		padding-bottom: 0.5em;
 		color: #8d7a62;
 		text-decoration: underline;
+		display: inline;
 	}
-	ul.supdocln li.otherdocs a {
+	.com_resources .aside ul.supdocln li.otherdocs a {
 		padding-left: 0;
 		margin-left: 15px;
-	}
-	ul.supdocln li a:hover {
+		}
+	.com_resources .aside ul.supdocln li a:hover {
 		border: none;
 		text-decoration: none;
+		background: none;
+	}
+	.com_resources .aside ul.supdocln li {
+		border: none;
+		display: inline;
+	}	
+	.com_resources .aside ul.supdocln li a:before {
+		content: "\f0da";
+		width: 12px;
+		height: 12px;
+		font-size: 12px;
+		font-family: 'Fontcons';
+		margin: 0;
+		color: #666;
+		text-decoration: none;
+		position: absolute;
+		display: inline;
+		border: none;
+		top: auto;
+		left: auto;
+		margin-left: -20px;
+		margin-top: -2px;
+		padding: 0.3em;
+	}
+	.com_resources .aside ul.supdocln li a.video:before,
+	.com_resources .aside ul.supdocln li a.youtube:before,
+	.com_resources .aside ul.supdocln li a.vimeo:before {
+		content: "\f03d";
+	}
+	.com_resources .aside ul.supdocln li a.audio:before {
+		content: "\f025";
+	}
+	.com_resources .aside ul.supdocln li a.slides:before {
+		content: "\f040";
+	}
+	.com_resources .aside ul.supdocln li a.syllabus:before {
+		content: "\f02d";
+	}
+	.com_resources .aside ul.supdocln li a.itunes:before {
+		content: "\266B";
+	}
+	.com_resources .aside ul.supdocln li a.itunesu:before {
+		content: "\f09c";
+	}
+	.com_resources .aside ul.supdocln li a.userguide:before {
+		content: "\f083";
 	}
 
 /* Licensing */	
