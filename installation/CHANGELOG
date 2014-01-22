@@ -26,6 +26,34 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+04-Dec-2013 Jean-Marie Simonet
+ # [#32868] Trashed categories create a fatal error when creating URLs to them, URLs to contact categories are wrong. Thanks Hannes Papenberg
+
+26-Nov-2013 Jean-Marie Simonet
+ # [#32812] *Wrong JText causes double string use
+
+20-Nov-2013 Jean-Marie Simonet
+ # [#26551] Multiple instances of script and css declarations with enabled caching  Thanks Dennis Hermatski
+
+16-Nov-2013 Michael Babker
+ # [#32578] [2.5] Argument 1 passed to JHttpTransportStream::getResponse() must be an array
+
+13-Nov-2013 Jean-Marie Simonet
+ # [#32608] After update 2.5.14=>2.5.16 the com_update produces errors  Thanks David Jardin
+
+12-Nov-2013 Jean-Marie Simonet
+ # [#30648] Incorrect ID for trash toolbar button when message is added  Thanks Jurian Even
+ # [#29596] Inefficient code  Thanks Ben tasker
+
+11-Nov-2013 Jean-Marie Simonet
+ # [#31055] Smart Search does not remove search phrases from index when saving an article.  Thanks Chris Davenport
+
+08-Nov-2013 Jean-Marie Simonet
+# [#32599] Register Email multilingual Problem in Joomla! 2.5.16  Thanks Panagiotis Chatzikamaris
+
+08-Nov-2013 David Hurley
+ # [#32576] Wrong Recaptcha URLs causing broken captcha. Thanks David Jardin
+
 -------------------- 2.5.16 Stable Release 06-November-2013] ------------------
 
 06-Nov-2013 Michael Babker
