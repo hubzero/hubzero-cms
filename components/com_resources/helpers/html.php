@@ -288,6 +288,8 @@ class ResourcesHtml
 	 */
 	public static function build_path($date='', $id, $base)
 	{
+		$dir_id = self::niceidformat($id);
+		
 		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
@@ -308,7 +310,6 @@ class ResourcesHtml
 			$dir_year  = JFactory::getDate()->format('Y');
 			$dir_month = JFactory::getDate()->format('m');
 		}
-		$dir_id = self::niceidformat($id);
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
