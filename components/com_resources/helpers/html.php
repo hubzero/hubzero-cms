@@ -288,6 +288,8 @@ class ResourcesHtml
 	 */
 	public static function build_path($date='', $id, $base)
 	{
+		$dir_id = self::niceidformat($id);
+		
 		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
@@ -296,15 +298,110 @@ class ResourcesHtml
 		{
 			$dir_year  = JFactory::getDate($date)->format('Y');
 			$dir_month = JFactory::getDate($date)->format('m');
+
+			if (!is_dir($base . DS . $dir_year . DS . $dir_month . DS . $dir_id) && intval($dir_year) <= 2013 && intval($dir_month) <= 11)
+			{
+				$dir_year  = JHTML::_('date', $date, 'Y');
+				$dir_month = JHTML::_('date', $date, 'm');
+			}
 		} 
 		else 
 		{
 			$dir_year  = JFactory::getDate()->format('Y');
 			$dir_month = JFactory::getDate()->format('m');
 		}
-		$dir_id = self::niceidformat($id);
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
+	}
+	
+	/**
+	 * Display certain supporting docs and/or link to more
+	 * 
+	 * @param      object  $publication   	Publication object
+	 * @param      string  $option 			Component name
+	 * @param      object  $children 		Publication attachments	
+	 * @return     string HTML
+	 */
+	public static function sortSupportingDocs( $publication, $option, $children ) 
+	{
+		// Set counts		
+		$docs 	= 0;
+		
+		$html 	= '';
+		$supln  = '<ul class="supdocln">'."\n";
+		$supli  = array();
+		$shown 	= array();
+				
+		if ($children)
+		{
+			foreach ($children as $child) 
+			{			
+				$docs++;									
+				$child->title = $child->title ? stripslashes($child->title) : '';				
+				$child->title = str_replace( '"', '&quot;', $child->title );
+				$child->title = str_replace( '&amp;', '&', $child->title );
+				$child->title = str_replace( '&', '&amp;', $child->title );
+				$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
+				
+				$title = ($child->logicaltitle)
+						? stripslashes($child->logicaltitle)
+						: stripslashes($child->title);
+						
+				$params = new JParameter( $child->params );
+				
+				$ftype 	  = ResourcesHtml::getFileExtension($child->path);
+				//$class    = $params->get('class', $ftype);
+				$doctitle = $params->get('title', $title);
+				
+				// Things we want to highlight
+				$toShow = array('User Guide', 'Syllabus', 'iTunes', 'iTunes U', 'Audio', 'Video', 'Slides', 'YouTube', 'Vimeo');
+
+				$url = ResourcesHtml::processPath($option, $child, $publication->id);
+				$extra = '';
+				
+				foreach ($toShow as $item)
+				{
+					if (strtolower($doctitle) !=  preg_replace('/' . strtolower($item) . '/', '', strtolower($doctitle))
+						&& !in_array($item, $shown)) 
+					{
+						$class = str_replace(' ', '', strtolower($item));
+						$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' 
+							. $extra . '>'.$item.'</a></li>'."\n";	
+						$shown[] = $item;			
+					}
+				}
+			}
+		}	
+		
+		$sdocs = count( $supli ) > 2 ? 2 : count( $supli );
+		$otherdocs = $docs - $sdocs;
+		$otherdocs = ($sdocs + $otherdocs) == 3  ? 0 : $otherdocs;
+
+		for ($i=0; $i < count( $supli ); $i++) 
+		{
+			$supln .=  $i < 2 ? $supli[$i] : '';
+			$supln .=  $i == 2 && !$otherdocs ? $supli[$i] : '';
+		}	
+		
+		// View more link?			
+		if ($docs > 0 && $otherdocs > 0) 
+		{
+			$supln .= ' <li class="otherdocs"><a href="' . JRoute::_('index.php?option=' . $option 
+				. '&id=' . $publication->id . a . 'active=supportingdocs')
+				.'" title="' . JText::_('View All') . ' ' . $docs.' ' . JText::_('Supporting Documents').' ">' 
+				. $otherdocs . ' ' . JText::_('more') . ' &rsaquo;</a></li>' . "\n";
+		}
+		 
+		if (!$sdocs && $docs > 0) 
+		{
+			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option=' 
+				. $option . '&id=' . $publication->id . a . 'active=supportingdocs') . '">' 
+				. JText::_('Additional materials available') . ' (' . $docs .')</a></p>'."\n";
+		}
+		
+		$supln .= '</ul>'."\n";
+		$html .= $sdocs ? $supln : '';
+		return $html;			
 	}
 
 	/**
@@ -2406,51 +2503,54 @@ class ResourcesHtml
 		$config = JComponentHelper::getParams('com_resources');
 
 		$html  = '<ol class="resources results">' . "\n";
-		foreach ($lines as $line)
+		if (is_array($lines))
 		{
-			// Instantiate a helper object
-			$helper = new ResourcesHelper($line->id, $database);
-			$helper->getContributors();
-			$helper->getContributorIDs();
-
-			// Determine if they have access to edit
-			if (!$juser->get('guest')) 
+			foreach ($lines as $line)
 			{
-				if ((!$show_edit && $line->created_by == $juser->get('id'))
-				 || in_array($juser->get('id'), $helper->contributorIDs)) 
+				// Instantiate a helper object
+				$helper = new ResourcesHelper($line->id, $database);
+				$helper->getContributors();
+				$helper->getContributorIDs();
+
+				// Determine if they have access to edit
+				if (!$juser->get('guest')) 
 				{
-					$show_edit = 2;
+					if ((!$show_edit && $line->created_by == $juser->get('id'))
+					 || in_array($juser->get('id'), $helper->contributorIDs)) 
+					{
+						$show_edit = 2;
+					}
 				}
+
+				// Get parameters
+				$params = clone($config);
+				$rparams = new $paramsClass($line->params);
+				$params->merge($rparams);
+
+				// Instantiate a new view
+				$view = new JView(array(
+					'name'   => 'browse',
+					'layout' => 'item'
+				));
+				$view->option = 'com_resources';
+				$view->config = $config;
+				$view->params = $params;
+				$view->juser  = $juser;
+				$view->helper = $helper;
+				$view->line   = $line;
+				$view->show_edit = $show_edit;
+
+				// Set the display date
+				switch ($params->get('show_date'))
+				{
+					case 0: $view->thedate = ''; break;
+					case 1: $view->thedate = JHTML::_('date', $line->created, JText::_('DATE_FORMAT_HZ1'));    break;
+					case 2: $view->thedate = JHTML::_('date', $line->modified, JText::_('DATE_FORMAT_HZ1'));   break;
+					case 3: $view->thedate = JHTML::_('date', $line->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
+				}
+
+				$html .= $view->loadTemplate();
 			}
-
-			// Get parameters
-			$params = clone($config);
-			$rparams = new $paramsClass($line->params);
-			$params->merge($rparams);
-
-			// Instantiate a new view
-			$view = new JView(array(
-				'name'   => 'browse',
-				'layout' => 'item'
-			));
-			$view->option = 'com_resources';
-			$view->config = $config;
-			$view->params = $params;
-			$view->juser  = $juser;
-			$view->helper = $helper;
-			$view->line   = $line;
-			$view->show_edit = $show_edit;
-
-			// Set the display date
-			switch ($params->get('show_date'))
-			{
-				case 0: $view->thedate = ''; break;
-				case 1: $view->thedate = JHTML::_('date', $line->created, JText::_('DATE_FORMAT_HZ1'));    break;
-				case 2: $view->thedate = JHTML::_('date', $line->modified, JText::_('DATE_FORMAT_HZ1'));   break;
-				case 3: $view->thedate = JHTML::_('date', $line->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
-			}
-
-			$html .= $view->loadTemplate();
 		}
 		$html .= '</ol>' . "\n";
 
