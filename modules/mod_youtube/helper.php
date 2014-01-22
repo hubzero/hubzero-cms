@@ -162,38 +162,21 @@ class modYoutubeHelper extends Hubzero_Module
 		} 
 		else 
 		{
-			//get the youtube url's headers
-			$headers = get_headers($youtube_url);
-
-			//load joomla folder and file libraries
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
-
-			//cache path
-			$path = JPATH_ROOT . DS . 'cache' . DS . 'mod_youtube' . DS . $id;
-			$data = $path . DS . $type . '.txt';
-
-			//check if we have cached already
-			if ($this->params->get('cache') && is_file($data) && filemtime($data) > strtotime('-' . $this->params->get('cache_time') . ' MINUTES')) 
-			{
-				$feed = file_get_contents($data);
-			} 
-			elseif (strpos($headers[0], 'OK') !== false) 
-			{
-				$feed = file_get_contents($youtube_url);
-			} 
-			else 
+			// load feed
+			$feed = $this->_feed($youtube_url, $this->params);
+			if (!$feed)
 			{
 				$this->html = '<p class="error">' . JText::_('An Error occurred while trying to parse the Youtube Feed.') . '</p>';
+				require(JModuleHelper::getLayoutPath($this->module->module));
 				return;
 			}
-
-			$full_feed = json_decode($feed, true);
-			$feed = $full_feed['feed'];
-
+			
+			// access youtubes weird feed item
+			$feed = $feed['feed'];
+			
 			//get the entries from the feed
 			$entries = $feed['entry'];
-
+			
 			//start building the html content
 			$html = '';
 
@@ -292,24 +275,58 @@ class modYoutubeHelper extends Hubzero_Module
 					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
 				}
 			}
-
-			//if we want to use caching
-			if ($this->params->get('cache')) 
-			{
-				//write to the cache folder
-				if (!is_dir($path)) 
-				{
-					JFolder::create($path, 0777);
-				}
-
-				$full_feed = json_encode($full_feed);
-				JFile::write($data, $full_feed);
-			}
 			
 			$this->html = $html;
 		}
 		
 		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+	
+	private function _feed($url, $params)
+	{
+		// var to hold feed
+		$feed = null;
+		
+		// cache path
+		$cachePath = JPATH_ROOT . DS . 'cache' . DS . 'mod_youtube' . DS . $this->module->id;
+		$cacheFile = $cachePath . DS . $params->get('type') . '.txt';
+		
+		// do we want to load a cached version
+		if ($this->params->get('cache') 
+			&& file_exists($cacheFile) 
+			&& filemtime($cacheFile) > strtotime('-' . $this->params->get('cache_time') . ' MINUTES')) 
+		{
+			$feed = file_get_contents($cacheFile);
+			$feed = json_decode($feed);
+		}
+		else
+		{
+			// get the feed with curl
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_REFERER, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			$feed = curl_exec($ch);
+			curl_close($ch);
+		
+			//if we want to use caching
+			if ($params->get('cache')) 
+			{
+				//write to the cache folder
+				if (!is_dir($cachePath)) 
+				{
+					JFolder::create($cachePath, 0777);
+				}
+				$f = json_encode($feed);
+				JFile::write($cacheFile, $f);
+			}
+		}
+		
+		// return jsto
+		return json_decode($feed, true);
 	}
 
 	/**
