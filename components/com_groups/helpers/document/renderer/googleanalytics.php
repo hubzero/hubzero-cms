@@ -42,22 +42,22 @@ class GroupsHelperDocumentRendererGoogleAnalytics extends GroupsHelperDocumentRe
 	{
 		$js = '';
 		
-		// get the scope
+		// get the account
 		$account = (isset($this->params->account)) ? $this->params->account : null;
+		
+		// define tracker name
+		$name    = ($this->group) ? $this->group->get('cn') : 'newtracker';
 		
 		// if we have an account lets output
 		if ($account !== null)
 		{
-			$js = '
+			$js = "
 				<script>
-					setTimeout(function(){ 
-						if (_gaq) 
-						{ 
-							_gaq.push(["sg._setAccount", "' . $account . '"]); 
-							_gaq.push(["sg._trackPageview"]); 
-						}
-					}, 100);
-				</script>';
+					setTimeout(function(){
+						ga('create', '" . $account . "', 'auto', {'name': '" . $name . "'});
+						ga('" . $name . ".send', 'pageview');
+					}, 200);
+				</script>";
 		}
 		
 		return $js;
