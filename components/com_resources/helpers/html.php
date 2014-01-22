@@ -375,13 +375,12 @@ class ResourcesHtml
 		
 		$sdocs = count( $supli ) > 2 ? 2 : count( $supli );
 		$otherdocs = $docs - $sdocs;
-		$otherdocs = ($sdocs + $otherdocs) == 3  ? 0 : $otherdocs;
 
 		for ($i=0; $i < count( $supli ); $i++) 
 		{
 			$supln .=  $i < 2 ? $supli[$i] : '';
 			$supln .=  $i == 2 && !$otherdocs ? $supli[$i] : '';
-		}	
+		}
 		
 		// View more link?			
 		if ($docs > 0 && $otherdocs > 0) 
