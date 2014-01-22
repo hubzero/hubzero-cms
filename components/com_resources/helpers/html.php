@@ -2412,51 +2412,54 @@ class ResourcesHtml
 		$config = JComponentHelper::getParams('com_resources');
 
 		$html  = '<ol class="resources results">' . "\n";
-		foreach ($lines as $line)
+		if (is_array($lines))
 		{
-			// Instantiate a helper object
-			$helper = new ResourcesHelper($line->id, $database);
-			$helper->getContributors();
-			$helper->getContributorIDs();
-
-			// Determine if they have access to edit
-			if (!$juser->get('guest')) 
+			foreach ($lines as $line)
 			{
-				if ((!$show_edit && $line->created_by == $juser->get('id'))
-				 || in_array($juser->get('id'), $helper->contributorIDs)) 
+				// Instantiate a helper object
+				$helper = new ResourcesHelper($line->id, $database);
+				$helper->getContributors();
+				$helper->getContributorIDs();
+
+				// Determine if they have access to edit
+				if (!$juser->get('guest')) 
 				{
-					$show_edit = 2;
+					if ((!$show_edit && $line->created_by == $juser->get('id'))
+					 || in_array($juser->get('id'), $helper->contributorIDs)) 
+					{
+						$show_edit = 2;
+					}
 				}
+
+				// Get parameters
+				$params = clone($config);
+				$rparams = new $paramsClass($line->params);
+				$params->merge($rparams);
+
+				// Instantiate a new view
+				$view = new JView(array(
+					'name'   => 'browse',
+					'layout' => 'item'
+				));
+				$view->option = 'com_resources';
+				$view->config = $config;
+				$view->params = $params;
+				$view->juser  = $juser;
+				$view->helper = $helper;
+				$view->line   = $line;
+				$view->show_edit = $show_edit;
+
+				// Set the display date
+				switch ($params->get('show_date'))
+				{
+					case 0: $view->thedate = ''; break;
+					case 1: $view->thedate = JHTML::_('date', $line->created, JText::_('DATE_FORMAT_HZ1'));    break;
+					case 2: $view->thedate = JHTML::_('date', $line->modified, JText::_('DATE_FORMAT_HZ1'));   break;
+					case 3: $view->thedate = JHTML::_('date', $line->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
+				}
+
+				$html .= $view->loadTemplate();
 			}
-
-			// Get parameters
-			$params = clone($config);
-			$rparams = new $paramsClass($line->params);
-			$params->merge($rparams);
-
-			// Instantiate a new view
-			$view = new JView(array(
-				'name'   => 'browse',
-				'layout' => 'item'
-			));
-			$view->option = 'com_resources';
-			$view->config = $config;
-			$view->params = $params;
-			$view->juser  = $juser;
-			$view->helper = $helper;
-			$view->line   = $line;
-			$view->show_edit = $show_edit;
-
-			// Set the display date
-			switch ($params->get('show_date'))
-			{
-				case 0: $view->thedate = ''; break;
-				case 1: $view->thedate = JHTML::_('date', $line->created, JText::_('DATE_FORMAT_HZ1'));    break;
-				case 2: $view->thedate = JHTML::_('date', $line->modified, JText::_('DATE_FORMAT_HZ1'));   break;
-				case 3: $view->thedate = JHTML::_('date', $line->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
-			}
-
-			$html .= $view->loadTemplate();
 		}
 		$html .= '</ol>' . "\n";
 
