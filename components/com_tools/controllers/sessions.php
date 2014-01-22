@@ -356,74 +356,100 @@ class ToolsControllerSessions extends Hubzero_Controller
 	
 			while ($line !== false) 
 			{
-				$re = "/\s*(directory|file)\s*(?:\:|\(\s*(.*?)\s*\)\s*:)\s*(.*?)\s*$/";
+				$re = "/\s*(directory|file|int)\s*(?:\:|\(\s*(.*?)\s*\)\s*:)\s*(.*?)\s*$/";
 				
-				if (preg_match($re, $line, $matches) !== false)
+				if (preg_match($re, $line, $matches) != false)
 				{
 					$type = $matches[1];
 					$key  = $matches[2];
 					$value = $matches[3];
-	
-					// Replace ~/ prefix with user's home directory
-					if (strncmp($value,"~/",2) === 0)
+
+					if (($type == 'directory' || $type == 'file'))
 					{
-						$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+						// Replace ~/ prefix with user's home directory
+						if (strncmp($value,"~/",2) === 0)
+						{
+							$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 		
-						$homeDirectory = rtrim($xprofile->get('homeDirectory'),"/");
-		
-						if (!isset($homeDirectory[0]) || $homeDirectory[0] !== '/')
+							$homeDirectory = rtrim($xprofile->get('homeDirectory'),"/");
+	
+							if (!isset($homeDirectory[0]) || $homeDirectory[0] !== '/')
+							{
+								break;
+							}
+
+							$value = substr_replace($value,$homeDirectory,0,1);
+						}
+
+						// Fail if $value doesn't start with '/'
+						if ($value[0] != '/')
 						{
 							break;
 						}
 	
-						$value = substr_replace($value,$homeDirectory,0,1);
-					}
+						// Fail if unable to normalize $value
+						$value = $this->normalize_path($value, $type == 'file');
 	
-					// Fail if $value doesn't start with '/'
-					if ($value[0] != '/')
-					{
-						break;
-					}
-	
-					// Fail if unable to normalize $value
-					$value = $this->normalize_path($value, $type == 'file');
-	
-					if ($value === false)
-					{
-						break;
-					}
-	
-					// Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
-					if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0)
-					{
-						break;
-					}
-	
-					// Fail if $value isn't prefixed with a whitelisted directory
-					foreach($params_whitelist as $wl)
-					{
-						$wl = rtrim($wl,'/') . '/'; 	// make sure we compare against a full path element
-	
-						if (strncmp($wl,$value,strlen($wl)) === 0)
+						if ($value === false)
 						{
-							$match = $wl;
 							break;
 						}
-					}
 	
-					if (!isset($match))
-					{
-						break;
-					}
+						// Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
+						if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0)
+						{
+							break;
+						}
 	
-					// Add verified parameter to array
-					if ($key)		
-					{
-						$verified_params[] = $type . "(" . $key . "):" .$value;
+						// Fail if $value isn't prefixed with a whitelisted directory
+						foreach($params_whitelist as $wl)
+						{
+							$wl = rtrim($wl,'/') . '/'; 	// make sure we compare against a full path element
+
+							if (strncmp($wl,$value,strlen($wl)) === 0)
+							{
+								$match = $wl;
+								break;
+							}
+						}
+
+						if (!isset($match))
+						{
+							break;
+						}
+
+						// Add verified parameter to array
+						if ($key)		
+						{
+							$verified_params[] = $type . "(" . $key . "):" .$value;
+						}
+						else
+						{
+							$verified_params[] = $type . ":" . $value;
+						}
 					}
-					else
+					else if ($type == 'int')
 					{
-						$verified_params[] = $type . ":" . $value;
+						// Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
+						if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0)
+						{
+							break;
+						}
+	
+						// Fail if $value not an integer
+						if (preg_match('/^[-+]?[0-9]+$/', $value) == 0)
+						{
+							break;
+						}
+						// Add verified parameter to array
+						if ($key)		
+						{
+							$verified_params[] = $type . "(" . $key . "):" .$value;
+						}
+						else
+						{
+							$verified_params[] = $type . ":" . $value;
+						}
 					}
 				} 
 				else if (!empty($line)) // Fail if unrecognized non-empty parameter line
@@ -450,9 +476,6 @@ class ToolsControllerSessions extends Hubzero_Controller
 		// Get the user's IP address
 		$app->ip      = JRequest::ip();
 
-		//$xlog->debug("mw::invoke URL: $url : " . $app->name . " by " . $this->juser->get('username') . " from " . $app->ip);
-		//$xlog->debug("mw::invoke REFERER:" . (array_key_exists('HTTP_REFERER',$_SERVER)) ? $_SERVER['HTTP_REFERER'] : 'none');
-
 		// Make sure we have an app to invoke
 		if (!$app->name) 
 		{
@@ -469,6 +492,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		switch ($app->version)
 		{
 			case 1:
+			case 'current':
 			case 'default':
 				$app->name = $tv->getCurrentVersionProperty($app->name, 'instance');
 			break;
@@ -494,7 +518,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			$r = '';
 		}
 		// No version passed and no revision
-		if ((!$app->version || $app->version == 'default') && !$r) 
+		if ((!$app->version || $app->version == 'default' || $app->version == 'current') && !$r) 
 		{
 			// Get the latest version
 			$app->version = $tv->getCurrentVersionProperty($app->toolname, 'revision');
