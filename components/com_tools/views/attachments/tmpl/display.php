@@ -31,7 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->allowupload) { ?>
+if (!$this->allowupload) { ?>
+	<p class="warning">
+		<?php echo JText::_('COM_TOOLS_SUPPORTING_DOCS_ONLY_CURRENT'); ?>
+	</p>
+<?php } ?>
 	<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 		<fieldset>
 			<label for="upload">
@@ -47,14 +51,6 @@ if ($this->allowupload) { ?>
 			<input type="hidden" name="path" id="path" value="<?php echo $this->path; ?>" />
 		</fieldset>
 	</form>
-<?php } else { ?>
-	<p class="warning">
-		<?php echo JText::_('COM_TOOLS_SUPPORTING_DOCS_ONLY_CURRENT'); ?> <?php echo JText::_('COM_TOOLS_PLEASE'); ?> 
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=resource&step=3&app='.$this->resource->alias.'&editversion=current'); ?>'" target="_top">
-			<?php echo strtolower(JText::_('COM_TOOLS_EDIT_CURRENT_VERSION')); ?>
-		</a>, <?php echo JText::_('COM_TOOLS_IF_YOU_NEED_CHANGES'); ?>
-	</p>
-<?php } ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error">
