@@ -290,7 +290,7 @@ class EventsHtml
 	 * @param      unknown $daynb Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getLongDayName($daynb)
+	public static function getLongDayName($daynb)
 	{
 		$dayname = '';
 		switch ($daynb)

@@ -82,7 +82,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	protected function _getScripts()
+	protected function _getScripts($script = '', $option = '', $system = false)
 	{
 		$document = JFactory::getDocument();
 		if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'js' . DS . $this->_name . '.js')) 
