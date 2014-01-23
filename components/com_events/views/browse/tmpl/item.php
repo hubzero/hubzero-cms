@@ -31,9 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Get abbreviated time zone (i.e just the UTC offset)
-$tzString = explode(")", EventsHtml::getTimeZoneName($this->row->time_zone));
-$tzString = $tzString[0].")";
+// get the timezone name from offset
+$timezone = timezone_name_from_abbr('',$this->row->time_zone*3600, NULL);
 
 $this->row->content = stripslashes($this->row->content);
 $this->row->content = str_replace('<br />','',$this->row->content);
@@ -51,35 +50,23 @@ if (!empty($this->fields)) {
 	$this->row->content = trim($this->row->content);
 }
 
-$event_up = new EventsDate( $this->row->publish_up );
-$this->row->start_date = EventsHtml::getDateFormat($event_up->year,$event_up->month,$event_up->day,0);
-$this->row->start_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES')
-				 ? $event_up->get12hrTime()
-				 : $event_up->get24hrTime();
-
-$event_down = new EventsDate( $this->row->publish_down );
-$this->row->stop_date = EventsHtml::getDateFormat($event_down->year,$event_down->month,$event_down->day,0);
-$this->row->stop_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES')
-				? $event_down->get12hrTime()
-				: $event_down->get24hrTime();
-
 $html  = "\t".'<li id="event'.$this->row->id.'">'."\n";
 $html .= "\t\t".'<dl class="event-details">'."\n";
 if ($this->row->start_date == $this->row->stop_date) {
 	if ($this->showdate) {
 		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, JText::_('DATE_FORMAT_HZ1')).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('TIME_FORMAT_HZ1')).'&nbsp;' .'</dd>'."\n";
-	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, 'g:i a T', $timezone).'&nbsp;' .'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
 } else {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('DATE_FORMAT_HZ1')).'</dt>'."\n";
+		$html .= "\t\t\t".'<dt class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('DATE_FORMAT_HZ1'), $timezone).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, JText::_('DATE_FORMAT_HZ1')).'</dt>'."\n";
+		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, JText::_('DATE_FORMAT_HZ1'), $timezone).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, JText::_('TIME_FORMAT_HZ1')).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
 }
 $html .= "\t\t".'</dl><div class="ewrap">'."\n";
 $html .= "\t\t".'<p class="title"><a href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. stripslashes($this->row->title) .'</a></p>'."\n";
