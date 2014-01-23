@@ -139,7 +139,7 @@ $database = JFactory::getDBO();
 					
 						//special action
 						/*if ($row->actionid) {
-							$xma = new Hubzero_Message_Action( $database );
+							$xma = new \Hubzero\Message\Action( $database );
 							$xma->load( $row->actionid );
 							if ($xma) {
 								$url = JRoute::_(stripslashes($xma->description));

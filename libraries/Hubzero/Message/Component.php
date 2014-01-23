@@ -28,14 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Message;
 
 /**
  * Table class for message component list
  * These are action items that are message-able 
  */
-class Hubzero_Message_Component extends JTable
+class Component extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -86,13 +85,13 @@ class Hubzero_Message_Component extends JTable
 		$this->component = trim($this->component);
 		if (!$this->component) 
 		{
-			$this->setError(JText::_('Please provide a component.'));
+			$this->setError(\JText::_('Please provide a component.'));
 			return false;
 		}
 		$this->action = trim($this->action);
 		if (!$this->action) 
 		{
-			$this->setError(JText::_('Please provide an action.'));
+			$this->setError(\JText::_('Please provide an action.'));
 			return false;
 		}
 		return true;

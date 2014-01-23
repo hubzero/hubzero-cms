@@ -28,20 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Message;
 
-ximport('Hubzero_Message_Action');
-ximport('Hubzero_Message_Component');
-ximport('Hubzero_Message_Message');
-ximport('Hubzero_Message_Notify');
-ximport('Hubzero_Message_Recipient');
-ximport('Hubzero_Message_Seen');
+use Hubzero\Base\Object;
 
 /**
  * Hubzero message class for handling message routing
  */
-class Hubzero_Message_Helper extends JObject
+class Helper extends Object
 {
 	/**
 	 * Marks action items as completed
@@ -63,22 +57,22 @@ class Hubzero_Message_Helper extends JObject
 		// Do we have any user IDs?
 		if (count($uids) > 0) 
 		{
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 
 			// Loop through each ID
 			foreach ($uids as $uid)
 			{
 				// Find any actions the user needs to take for this $component and $element
-				$action = new Hubzero_Message_Action($database);
+				$action = new Action($database);
 				$mids = $action->getActionItems($component, $element, $uid, $type);
 
 				// Check if the user has any action items
 				if (count($mids) > 0) 
 				{
-					$recipient = new Hubzero_Message_Recipient($database);
+					$recipient = new Recipient($database);
 					if (!$recipient->setState(1, $mids)) 
 					{
-						$this->setError(JText::sprintf('Unable to update recipient records %s for user %s', implode(',', $mids), $uid));
+						$this->setError(\JText::sprintf('Unable to update recipient records %s for user %s', implode(',', $mids), $uid));
 					}
 				}
 			}
@@ -119,14 +113,14 @@ class Hubzero_Message_Helper extends JObject
 			}
 		}
 
-		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
+		$database = \JFactory::getDBO();
+		$juser = \JFactory::getUser();
 
 		// Create the message object and store it in the database
-		$xmessage = new Hubzero_Message_Message($database);
+		$xmessage = new Message($database);
 		$xmessage->subject    = $subject;
 		$xmessage->message    = $message;
-		$xmessage->created    = JFactory::getDate()->toSql();
+		$xmessage->created    = \JFactory::getDate()->toSql();
 		$xmessage->created_by = $juser->get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
@@ -138,7 +132,7 @@ class Hubzero_Message_Helper extends JObject
 
 		// Does this message require an action?
 		// **DEPRECATED**
-		$action = new Hubzero_Message_Action($database);
+		$action = new Action($database);
 		/*if ($element || $description) 
 		{
 			$action->class       = $component;
@@ -157,11 +151,11 @@ class Hubzero_Message_Helper extends JObject
 			foreach ($to as $uid)
 			{
 				// Create a recipient object that ties a user to a message
-				$recipient = new Hubzero_Message_Recipient($database);
+				$recipient = new Recipient($database);
 				$recipient->uid      = $uid;
 				$recipient->mid      = $xmessage->id;
-				$recipient->created  = JFactory::getDate()->toSql();
-				$recipient->expires  = JFactory::getDate(time() + (168 * 24 * 60 * 60))->toSql();
+				$recipient->created  = \JFactory::getDate()->toSql();
+				$recipient->expires  = \JFactory::getDate(time() + (168 * 24 * 60 * 60))->toSql();
 				$recipient->actionid = $action->id;
 				if (!$recipient->store()) 
 				{
@@ -169,14 +163,14 @@ class Hubzero_Message_Helper extends JObject
 				}
 
 				// Get the user's methods for being notified
-				$notify = new Hubzero_Message_Notify($database);
+				$notify = new Notify($database);
 				$methods = $notify->getRecords($uid, $type);
 
-				$user = JUser::getInstance($uid);
+				$user = \JUser::getInstance($uid);
 
 				// Load plugins
-				JPluginHelper::importPlugin('xmessage');
-				$dispatcher = JDispatcher::getInstance();
+				\JPluginHelper::importPlugin('xmessage');
+				$dispatcher = \JDispatcher::getInstance();
 
 				// Do we have any methods?
 				if ($methods) 
@@ -188,7 +182,7 @@ class Hubzero_Message_Helper extends JObject
 
 						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action))) 
 						{
-							$this->setError(JText::sprintf('Unable to message user %s with method %s', $uid, $action));
+							$this->setError(\JText::sprintf('Unable to message user %s with method %s', $uid, $action));
 						}
 					}
 				}

@@ -38,7 +38,6 @@ jimport('joomla.event.plugin');
  */
 class plgXMessageHandler extends JPlugin
 {
-
 	/**
 	 * Constructor
 	 * 
@@ -62,8 +61,6 @@ class plgXMessageHandler extends JPlugin
 	 */
 	public function onTakeAction($type, $uids=array(), $component='', $element=null)
 	{
-		ximport('Hubzero_Message_Helper');
-
 		// Do we have the proper bits?
 		if (!$element || !$component || !$type) 
 		{
@@ -79,7 +76,7 @@ class plgXMessageHandler extends JPlugin
 			foreach ($uids as $uid)
 			{
 				// Find any actions the user needs to take for this $component and $element
-				$action = new Hubzero_Message_Action($database);
+				$action = new \Hubzero\Message\Action($database);
 				$mids = $action->getActionItems($type, $component, $element, $uid);
 
 				// Check if the user has any action items
@@ -87,7 +84,7 @@ class plgXMessageHandler extends JPlugin
 				{
 					foreach ($mids as $mid)
 					{
-						$xseen = new Hubzero_Message_Seen($database);
+						$xseen = new \Hubzero\Message\Seen($database);
 						$xseen->mid = $mid;
 						$xseen->uid = $uid;
 						$xseen->loadRecord();
@@ -122,8 +119,6 @@ class plgXMessageHandler extends JPlugin
 	 */
 	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0, $bypassGroupsCheck = false)
 	{
-		ximport('Hubzero_Message_Helper');
-
 		// Do we have a message?
 		if (!$message) 
 		{
@@ -134,7 +129,7 @@ class plgXMessageHandler extends JPlugin
 		$juser = JFactory::getUser();
 
 		// Create the message object
-		$xmessage = new Hubzero_Message_Message($database);
+		$xmessage = new \Hubzero\Message\Message($database);
 
 		if ($type == 'member_message') 
 		{
@@ -205,7 +200,7 @@ class plgXMessageHandler extends JPlugin
 		}
 		// Does this message require an action?
 		/* [zooley] Phasing out action items
-		$action = new Hubzero_Message_Action($database);
+		$action = new \Hubzero\Message\Action($database);
 		if ($element || $description) 
 		{
 			$action->class   = $component;
@@ -249,7 +244,7 @@ class plgXMessageHandler extends JPlugin
 			foreach ($to as $uid)
 			{
 				// Create a recipient object that ties a user to a message
-				$recipient = new Hubzero_Message_Recipient($database);
+				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->uid      = $uid;
 				$recipient->mid      = $xmessage->id;
 				$recipient->created  = JFactory::getDate()->toSql();
@@ -257,7 +252,7 @@ class plgXMessageHandler extends JPlugin
 				$recipient->actionid = 0; //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
 				// Get the user's methods for being notified
-				$notify = new Hubzero_Message_Notify($database);
+				$notify = new \Hubzero\Message\Notify($database);
 				$methods = $notify->getRecords($uid, $type);
 
 				//$user = JUser::getInstance($uid);

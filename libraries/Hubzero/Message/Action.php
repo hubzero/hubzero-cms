@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Message;
 
 /**
  * Table class for message actions
  */
-class Hubzero_Message_Action extends JTable
+class Action extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -85,7 +84,7 @@ class Hubzero_Message_Action extends JTable
 		$this->element = intval($this->element);
 		if (!$this->element) 
 		{
-			$this->setError(JText::_('Please provide an element.'));
+			$this->setError(\JText::_('Please provide an element.'));
 			return false;
 		}
 		return true;
@@ -112,13 +111,13 @@ class Hubzero_Message_Action extends JTable
 		}
 		if (!$component || !$element || !$uid || !$type) 
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
 		$query = "SELECT m.id 
-				FROM #__xmessage_recipient AS r, $this->_tbl AS a, #__xmessage AS m
-				WHERE m.id=r.mid AND r.actionid = a.id AND m.type='$type' AND r.uid='$uid' AND a.class='$component' AND a.element='$element'";
+				FROM `#__xmessage_recipient` AS r, $this->_tbl AS a, `#__xmessage` AS m
+				WHERE m.id=r.mid AND r.actionid = a.id AND m.type=" . $this->_db->Quote($type) . " AND r.uid=" . $this->_db->Quote($uid) . " AND a.class=" . $this->_db->Quote($component) . " AND a.element=" . $this->_db->Quote($element);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();

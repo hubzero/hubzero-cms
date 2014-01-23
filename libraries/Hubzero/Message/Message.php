@@ -28,15 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Message;
 
 /**
- * Short description for 'Hubzero_Message_Message'
+ * Short description for '\Hubzero\Message\Message'
  * 
  * Long description (if any) ...
  */
-class Hubzero_Message_Message extends JTable
+class Message extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -115,7 +114,7 @@ class Hubzero_Message_Message extends JTable
 		$this->message = trim($this->message);
 		if (!$this->message) 
 		{
-			$this->setError(JText::_('Please provide a message.'));
+			$this->setError(\JText::_('Please provide a message.'));
 			return false;
 		}
 		return true;

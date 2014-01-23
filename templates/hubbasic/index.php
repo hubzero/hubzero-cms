@@ -106,9 +106,8 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <?php
 	if (!$juser->get('guest')) {
 		// Find the user's most recent support tickets
-		ximport('Hubzero_Message_Helper');
 		$database = JFactory::getDBO();
-		$recipient = new Hubzero_Message_Recipient($database);
+		$recipient = new \Hubzero\Message\Recipient($database);
 		$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
 ?>
 					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>

@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load some needed libraries
 ximport('Hubzero_Plugin');
-ximport('Hubzero_Message_Helper');
 
 /**
  * Members Plugin class for messages
@@ -196,7 +195,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$arr['metadata'] = array();
 
 		//get the number of unread messages
-		$recipient = new Hubzero_Message_Recipient($database);
+		$recipient = new \Hubzero\Message\Recipient($database);
 		$messages = $recipient->getMessages($member->get('uidNumber')); 
 		$umessages = $recipient->getUnreadMessages($member->get('uidNumber'), 0); 
 
@@ -259,7 +258,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$view->filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
 
-		$recipient = new Hubzero_Message_Recipient($database);
+		$recipient = new \Hubzero\Message\Recipient($database);
 
 		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
 
@@ -272,7 +271,7 @@ class plgMembersMessages extends Hubzero_Plugin
 			$filters['limit']
 		);
 
-		$xmc = new Hubzero_Message_Component($database);
+		$xmc = new \Hubzero\Message\Component($database);
 		$view->components = $xmc->getComponents();
 
 		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
@@ -329,7 +328,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$view->filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
 
-		$recipient = new Hubzero_Message_Recipient($database);
+		$recipient = new \Hubzero\Message\Recipient($database);
 
 		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
 
@@ -342,7 +341,7 @@ class plgMembersMessages extends Hubzero_Plugin
 			$filters['limit']
 		);
 
-		$xmc = new Hubzero_Message_Component($database);
+		$xmc = new \Hubzero\Message\Component($database);
 		$view->components = $xmc->getComponents();
 
 		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
@@ -399,7 +398,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$view->filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
 
-		$recipient = new Hubzero_Message_Recipient($database);
+		$recipient = new \Hubzero\Message\Recipient($database);
 
 		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
 
@@ -412,7 +411,7 @@ class plgMembersMessages extends Hubzero_Plugin
 			$filters['limit']
 		);
 
-		$xmc = new Hubzero_Message_Component($database);
+		$xmc = new \Hubzero\Message\Component($database);
 		$view->components = $xmc->getComponents();
 
 		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
@@ -474,7 +473,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		);
 		$filters['created_by'] = $member->get('uidNumber');
 
-		$recipient = new Hubzero_Message_Message($database);
+		$recipient = new \Hubzero\Message\Message($database);
 
 		$view->total = $recipient->getSentMessagesCount($filters);
 
@@ -518,7 +517,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
-		$xmc = new Hubzero_Message_Component($database);
+		$xmc = new \Hubzero\Message\Component($database);
 		$components = $xmc->getRecords();
 
 		ximport('Hubzero_Plugin_View');
@@ -559,7 +558,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$default_method = null;
 
 		// Instantiate our notify object
-		$notify = new Hubzero_Message_Notify($database);
+		$notify = new \Hubzero\Message\Notify($database);
 
 		// Get the user's selected methods
 		$methods = $notify->getRecords($member->get('uidNumber'));
@@ -658,11 +657,11 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function view($database, $option, $member, $mid) 
 	{
-		$xmessage = new Hubzero_Message_Message($database);
+		$xmessage = new \Hubzero\Message\Message($database);
 		$xmessage->load($mid);
 		$xmessage->message = stripslashes($xmessage->message);
 
-		$xmr = new Hubzero_Message_Recipient($database);
+		$xmr = new \Hubzero\Message\Recipient($database);
 		$xmr->loadRecord($mid, $member->get('uidNumber'));
 
 		$xmessage->message = str_replace("\n","\n ",$xmessage->message);
@@ -676,7 +675,7 @@ class plgMembersMessages extends Hubzero_Plugin
 			$xmessage->component = substr($xmessage->component, 4);
 		}
 
-		$xseen = new Hubzero_Message_Seen($database);
+		$xseen = new \Hubzero\Message\Seen($database);
 		$xseen->mid = $mid;
 		$xseen->uid = $member->get('uidNumber');
 		$xseen->loadRecord();
@@ -742,7 +741,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		{
 			foreach ($mids as $mid) 
 			{
-				$recipient = new Hubzero_Message_Recipient($database);
+				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -752,7 +751,7 @@ class plgMembersMessages extends Hubzero_Plugin
 					$this->setError($recipient->getError());
 				}
 
-				$xseen = new Hubzero_Message_Seen($database);
+				$xseen = new \Hubzero\Message\Seen($database);
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
 				$xseen->loadRecord();
@@ -786,7 +785,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		{
 			foreach ($mids as $mid) 
 			{
-				$recipient = new Hubzero_Message_Recipient($database);
+				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -819,12 +818,12 @@ class plgMembersMessages extends Hubzero_Plugin
 		{
 			foreach ($mids as $mid) 
 			{
-				$recipient = new Hubzero_Message_Recipient($database);
+				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
 
-				$xseen = new Hubzero_Message_Seen($database);
+				$xseen = new \Hubzero\Message\Seen($database);
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
 				$xseen->loadRecord();
@@ -857,7 +856,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function emptytrash($database, $option, $member) 
 	{
-		$recipient = new Hubzero_Message_Recipient($database);
+		$recipient = new \Hubzero\Message\Recipient($database);
 		$recipient->uid = $member->get('uidNumber');
 		if (!$recipient->deleteTrash()) 
 		{
@@ -885,7 +884,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		{
 			foreach ($mids as $mid) 
 			{
-				$recipient = new Hubzero_Message_Recipient($database);
+				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -918,7 +917,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		{
 			foreach ($ids as $mid) 
 			{
-				$xseen = new Hubzero_Message_Seen($database);
+				$xseen = new \Hubzero\Message\Seen($database);
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
 				$xseen->loadRecord();
@@ -986,7 +985,7 @@ class plgMembersMessages extends Hubzero_Plugin
 					if ($v) 
 					{
 						// Instantiate a Notify object and set its values
-						$notify = new Hubzero_Message_Notify($database);
+						$notify = new \Hubzero\Message\Notify($database);
 						$notify->uid = $member->get('uidNumber');
 						$notify->method = $v;
 						$notify->type = $key;
@@ -1010,7 +1009,7 @@ class plgMembersMessages extends Hubzero_Plugin
 				}
 			}
 
-			$notify = new Hubzero_Message_Notify($database);
+			$notify = new \Hubzero\Message\Notify($database);
 			foreach ($ids as $key=>$value) 
 			{
 				foreach ($value as $k=>$v) 
@@ -1036,7 +1035,7 @@ class plgMembersMessages extends Hubzero_Plugin
 			// This creates a single entry to let the system know that the user has explicitly chosen "none" for all options
 			// It ensures we can know the difference between someone who has never changed their settings (thus, no database entries) 
 			// and someone who purposely wants everything turned off.
-			$notify = new Hubzero_Message_Notify($database);
+			$notify = new \Hubzero\Message\Notify($database);
 			$notify->uid = $member->get('uidNumber');
 
 			$records = $notify->getRecords($member->get('uidNumber'), 'all');

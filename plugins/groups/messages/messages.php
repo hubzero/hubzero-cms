@@ -153,10 +153,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 			//push styles to the view
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups','messages');
-            Hubzero_Document::addPluginScript('groups','messages');
-
-			// Load some needed libraries
-			ximport('Hubzero_Message_Helper');
+			Hubzero_Document::addPluginScript('groups','messages');
 
 			$task = strtolower(trim($action));
 
@@ -193,7 +190,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 
 		// Instantiate our message object
 		$database = JFactory::getDBO();
-		$recipient = new Hubzero_Message_Message($database);
+		$recipient = new \Hubzero\Message\Message($database);
 
 		// Retrieve data
 		$total = $recipient->getSentMessagesCount($filters);
@@ -256,7 +253,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		$database = JFactory::getDBO();
 
 		// Load the message and parse it
-		$xmessage = new Hubzero_Message_Message($database);
+		$xmessage = new \Hubzero\Message\Message($database);
 		$xmessage->load($message);
 		$xmessage->message = stripslashes($xmessage->message);
 		$xmessage->message = str_replace("\n", "\n ", $xmessage->message);

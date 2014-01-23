@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Message;
 
 /**
  * Table class for message notification
  */
-class Hubzero_Message_Notify extends JTable
+class Notify extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -92,7 +91,7 @@ class Hubzero_Message_Notify extends JTable
 		$this->uid = intval($this->uid);
 		if (!$this->uid) 
 		{
-			$this->setError(JText::_('Please provide a user ID.'));
+			$this->setError(\JText::_('Please provide a user ID.'));
 			return false;
 		}
 		return true;
@@ -107,10 +106,12 @@ class Hubzero_Message_Notify extends JTable
 	 */
 	public function getRecords($uid=null, $type=null)
 	{
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			return false;
 		}
 		if (!$type) 
@@ -119,7 +120,7 @@ class Hubzero_Message_Notify extends JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE `uid`='$uid'";
-		$query .= ($type) ? " AND `type`='$type'" : "";
+		$query .= ($type) ? " AND `type`=" . $this->_db->Quote($type) : "";
 		$query .= " ORDER BY `priority` ASC";
 
 		$this->_db->setQuery($query);

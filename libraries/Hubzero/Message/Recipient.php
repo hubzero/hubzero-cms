@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Message;
 
 /**
  * Table class for recipient of message
  */
-class Hubzero_Message_Recipient extends JTable
+class Recipient extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -106,7 +105,7 @@ class Hubzero_Message_Recipient extends JTable
 		$this->mid = intval($this->mid);
 		if (!$this->mid) 
 		{
-			$this->setError(JText::_('Please provide a message ID.'));
+			$this->setError(\JText::_('Please provide a message ID.'));
 			return false;
 		}
 		return true;
