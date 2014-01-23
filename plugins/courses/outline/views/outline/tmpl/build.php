@@ -67,11 +67,11 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 <?php
 			foreach ($this->course->offering()->units() as $unit) :
-				foreach($unit->assetgroups() as $agt) :
-					foreach($agt->children() as $ag) :
+				foreach ($unit->assetgroups() as $agt) :
+					foreach ($agt->children() as $ag) :
 						if ($ag->assets()->total()) :
 							foreach ($ag->assets() as $a) :
-								if($a->get('state') == COURSES_STATE_DELETED) :
+								if ($a->isDeleted()) :
 									$view = new Hubzero_Plugin_View(
 										array(
 											'folder'  => 'courses',

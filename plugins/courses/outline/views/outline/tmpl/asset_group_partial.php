@@ -86,7 +86,7 @@ if ($this->ag->assets()->total())
 		foreach ($this->ag->assets() as $a)
 		{
 			// Don't put deleted assets here
-			if($a->get('state') != COURSES_STATE_DELETED)
+			if (!$a->isDeleted())
 			{
 				$hasPublishedAssets = true;
 
