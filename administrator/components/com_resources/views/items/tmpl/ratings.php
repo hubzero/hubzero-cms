@@ -41,7 +41,7 @@ if ($this->getError()) { ?>
 	</thead>
 	<tbody>
 <?php 
-foreach ($rows as $row)
+foreach ($this->rows as $row)
 {
 	if (intval($row->created) <> 0)
 	{
