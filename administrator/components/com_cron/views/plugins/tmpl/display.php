@@ -37,16 +37,16 @@ if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	//JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+/*if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
 }
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::editListX();
-}
+}*/
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter">
