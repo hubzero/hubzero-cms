@@ -583,7 +583,7 @@ class JDatabasePDO extends JDatabase
 	 * @param	object	An object whose properties match table fields
 	 * @param	string	The name of the primary key. If provided the object property is updated.
 	 */
-	public function insertObject( $table, $object, $keyName = NULL )
+        public function insertObject($table, &$object, $key = null)
 	{
 		$fmtsql = 'INSERT INTO '.$this->quoteName($table).' ( %s ) VALUES ( %s ) ';
 		$fields = array();
@@ -602,8 +602,8 @@ class JDatabasePDO extends JDatabase
 			return false;
 		}
 		$id = $this->insertid();
-		if ($keyName && $id) {
-			$object->$keyName = $id;
+		if ($key && $id) {
+			$object->$key = $id;
 		}
 		return true;
 	}
