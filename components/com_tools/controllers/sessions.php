@@ -1566,9 +1566,10 @@ class ToolsControllerSessions extends Hubzero_Controller
 		}
 
 		$tv = new ToolVersion($this->database);
+
 		$tv->loadFromInstance($tool);
 
-		if (empty($tv)) 
+		if (empty($tv->id)) 
 		{
 			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
 			return false;
