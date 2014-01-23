@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 $app = JFactory::getApplication();
+
+$usersConfig =  JComponentHelper::getParams('com_users');
 ?>
 
 <?php if ($this->params->get('show_page_title',1)) : ?>
@@ -104,12 +106,12 @@ if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
 					</form>
 				</div>
 			</div>
-			<?php if (!$this->multiAuth) { ?>
+			<?php if (!$this->multiAuth && $usersConfig->get('allowUserRegistration') != '0') { ?>
 				<p class="callToAction">Don't have an account? <a href="/register<?php if ($this->return) { echo '?return=' . $this->return; } ?>">Create one.</a></p>
 			<?php } ?>
 		</div>
 	</div>
-	<?php if ($this->multiAuth) { ?>
+	<?php if ($this->multiAuth && $usersConfig->get('allowUserRegistration') != '0') { ?>
 		<p class="callToAction">Or, you can <a href="/register<?php if ($this->return) { echo '?return=' . $this->return; } ?>">create a local account.</a></p>
 	<?php } ?>
 </div>
