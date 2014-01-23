@@ -305,6 +305,9 @@ input[type=number] {
 	border-radius: 3px;
 	text-transform: uppercase;
 }
+.no-answer:hover {
+	opacity: .2;
+}
 .answer-marker.incorrect {
 	color: #a00;
 }
