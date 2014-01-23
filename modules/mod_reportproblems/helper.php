@@ -71,13 +71,12 @@ class modReportProblems extends Hubzero_Module
 		$this->referrer = str_replace('&amp;', '&', $this->referrer);
 		$this->referrer = str_replace('&', '&amp;', $this->referrer);
 
-		ximport('Hubzero_Browser');
-		$browser = new Hubzero_Browser();
+		$browser = new \Hubzero\Browser\Detector();
 
-		$this->os = $browser->getOs();
-		$this->os_version = $browser->getOsVersion();
-		$this->browser = $browser->getBrowser();
-		$this->browser_ver = $browser->getBrowserVersion();
+		$this->os = $browser->platform();
+		$this->os_version = $browser->platformVersion();
+		$this->browser = $browser->name();
+		$this->browser_ver = $browser->version();
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet($this->module->module);

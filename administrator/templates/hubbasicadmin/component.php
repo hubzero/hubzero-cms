@@ -53,10 +53,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$doc->addScript('templates/' . $this->template . '/js/component.js');
 }
 
-ximport('Hubzero_Browser');
-$browser = new Hubzero_Browser();
-$b = $browser->getBrowser();
-$v = $browser->getBrowserMajorVersion();
+$browser = new \Hubzero\Browser\Detector();
+$b = $browser->name();
+$v = $browser->major();
 
 $juser = JFactory::getUser();
 ?>

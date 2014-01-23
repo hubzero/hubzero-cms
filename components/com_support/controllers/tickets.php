@@ -772,14 +772,13 @@ class SupportControllerTickets extends Hubzero_Controller
 	public function newTask()
 	{
 		// Get browser info
-		ximport('Hubzero_Browser');
-		$browser = new Hubzero_Browser();
+		$browser = new \Hubzero\Browser\Detector();
 
 		$problem = array(
-			'os'         => $browser->getOs(),
-			'osver'      => $browser->getOsVersion(),
-			'browser'    => $browser->getBrowser(),
-			'browserver' => $browser->getBrowserVersion(),
+			'os'         => $browser->platform(),
+			'osver'      => $browser->platformVersion(),
+			'browser'    => $browser->name(),
+			'browserver' => $browser->version(),
 			'topic'      => '',
 			'short'      => '',
 			'long'       => '',

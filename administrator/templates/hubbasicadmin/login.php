@@ -53,10 +53,9 @@ if (JPluginHelper::isEnabled('system', 'debug')) {
 	$doc->addStyleSheet('templates/' . $this->template . '/css/common/debug.css');
 }
 
-ximport('Hubzero_Browser');
-$browser = new Hubzero_Browser();
-$b = $browser->getBrowser();
-$v = $browser->getBrowserMajorVersion();
+$browser = new \Hubzero\Browser\Detector();
+$b = $browser->name();
+$v = $browser->major();
 
 $jv = 'j15';
 if (version_compare(JVERSION, '1.6', 'ge'))

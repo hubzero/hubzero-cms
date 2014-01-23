@@ -7,11 +7,11 @@
 
 defined('_JEXEC') or die;
 
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Browser.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Browser' . DS . 'Detector.php');
 
-$browser = new Hubzero_Browser();
-$b = $browser->getBrowser();
-$v = $browser->getBrowserMajorVersion();
+$browser = new \Hubzero\Browser\Detector();
+$b = $browser->name();
+$v = $browser->major();
 
 $doc = JFactory::getDocument();
 
