@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Item;
 
 /**
  * Table class for storing favorited items
  */
-class Hubzero_Favorite extends JTable
+class Favorite extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -97,10 +96,13 @@ class Hubzero_Favorite extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE uid='$uid' AND oid='$oid' AND tbl='$tbl' LIMIT 1");
-		$this->id = $this->_db->loadResult();
+		$fields = array(
+			'uid' => $uid,
+			'oid' => $oid,
+			'tbl' => $tbl
+		);
 
-		return $this->load($this->id);
+		return parent::load($fields);
 	}
 
 	/**
@@ -113,20 +115,27 @@ class Hubzero_Favorite extends JTable
 		$this->uid = intval($this->uid);
 		if (!$this->uid) 
 		{
-			$this->setError(JText::_('Missing user ID'));
+			$this->setError(\JText::_('Missing user ID'));
 			return false;
 		}
+
 		$this->oid = intval($this->oid);
 		if (!$this->oid) 
 		{
-			$this->setError(JText::_('Missing object ID'));
+			$this->setError(\JText::_('Missing object ID'));
 			return false;
 		}
+
 		$this->tbl = trim($this->tbl);
 		if ($this->tbl == '') 
 		{
-			$this->setError(JText::_('Missing object table'));
+			$this->setError(\JText::_('Missing object table'));
 			return false;
+		}
+
+		if (!$this->faved)
+		{
+			$this->faved = \JFactory::getDate()->toSql();
 		}
 		return true;
 	}
@@ -137,38 +146,31 @@ class Hubzero_Favorite extends JTable
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters)
+	protected function _buildQuery($filters=array())
 	{
-		$filter = '';
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		$query = "FROM $this->_tbl";
+
+		$where = array();
+
+		if (isset($filters['uid'])) 
 		{
-			$query = "SELECT t.*";
-		} 
-		else 
-		{
-			$query = "SELECT count(*)";
+			$where[] = "`uid`=" . $this->_db->Quote($filters['uid']);
 		}
-		$query .= " FROM $this->_tbl AS t";
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['oid']) && $filters['oid']) 
 		{
-			$query .= " ORDER BY t.faved ASC LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$where[] = "`oid`=" . $this->_db->Quote($filters['oid']);
+		}
+		if (isset($filters['tbl']) && $filters['tbl']) 
+		{
+			$where[] = "`tbl`=" . $this->_db->Quote($filters['tbl']);
+		}
+
+		if (count($where))
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
-	}
-
-	/**
-	 * Get a record count
-	 * 
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
-	 */
-	public function getCount($filters=array())
-	{
-		$filters['limit'] = 0;
-
-		$this->_db->setQuery($this->buildQuery($filters));
-		return $this->_db->loadResult();
 	}
 
 	/**
@@ -177,10 +179,68 @@ class Hubzero_Favorite extends JTable
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
-	public function getRecords($filters=array())
+	public function find($what='', $filters=array())
 	{
-		$this->_db->setQuery($this->buildQuery($filters));
-		return $this->_db->loadObjectList();
+		$what = strtolower($what);
+
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query  = "SELECT * " . $this->_buildQuery($filters);
+				$query .= " ORDER BY `faved` ASC";
+
+				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 }
 

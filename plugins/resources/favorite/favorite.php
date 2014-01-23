@@ -108,15 +108,9 @@ class plgResourcesFavorite extends JPlugin
 				ximport('Hubzero_Document');
 				Hubzero_Document::addPluginScript('resources', 'favorite');
 
-				ximport('Hubzero_Favorite');
-				if (!class_exists('Hubzero_Favorite')) 
-				{
-					return $arr;
-				}
-
 				$database = JFactory::getDBO();
 
-				$fav = new Hubzero_Favorite($database);
+				$fav = new \Hubzero\Item\Favorite($database);
 				$fav->loadFavorite($juser->get('id'), $model->resource->id, 'resources');
 				if (!$fav->id) 
 				{
@@ -177,11 +171,9 @@ class plgResourcesFavorite extends JPlugin
 		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
-			ximport('Hubzero_Favorite');
-
 			$database = JFactory::getDBO();
 
-			$fav = new Hubzero_Favorite($database);
+			$fav = new \Hubzero\Item\Favorite($database);
 			$fav->loadFavorite($juser->get('id'), $oid, 'resources');
 
 			if (!$fav->id) 
