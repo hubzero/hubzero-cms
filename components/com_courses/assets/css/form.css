@@ -294,6 +294,17 @@ input[type=number] {
 	height: 25px;
 	font-size: 25px;
 }
+.no-answer {
+	position: absolute;
+	color: white;
+	background: rgba(255, 0, 0, .7);
+	border: 2px solid #800000;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 5px 10px;
+	border-radius: 3px;
+	text-transform: uppercase;
+}
 .answer-marker.incorrect {
 	color: #a00;
 }

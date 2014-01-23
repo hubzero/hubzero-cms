@@ -563,9 +563,9 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 
 		$attempt = JRequest::getInt('attempt', 1);
-		$att  = ($attempt > 1) ? '&attempt='.$attempt : '';
-
-		$dep = PdfFormDeployment::fromCrumb($crumb);
+		$att     = ($attempt > 1) ? '&attempt='.$attempt : '';
+		$dep     = PdfFormDeployment::fromCrumb($crumb);
+		$ended   = false;
 
 		// Make sure they're not trying to take the form too many times
 		if($attempt > $dep->getAllowedAttempts())
@@ -573,7 +573,22 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(403, "You're not allowed this many attempts!");
 		}
 
-		list($complete, $answers) = $dep->getForm()->getQuestionAnswerMap($_POST);
+		// Check to see if the time limit has been reached
+		if ($limit = $dep->getTimeLimit())
+		{
+			$resp = $dep->getRespondent($this->member, $attempt);
+
+			$now   = strtotime(JFactory::getDate());
+			$start = strtotime($resp->getStartTime());
+			$dur   = $limit * 60;
+
+			if ($now > ($start + $dur))
+			{
+				$ended = true;
+			}
+		}
+
+		list($complete, $answers) = $dep->getForm()->getQuestionAnswerMap($_POST, $ended);
 
 		if ($complete)
 		{
@@ -589,6 +604,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		else
 		{
 			$this->setView('form', 'complete');
+			$this->_task = 'complete';
 			$this->view->incomplete = array_filter($answers, function($ans) { return is_null($ans[0]); });
 			$this->completeTask();
 		}

@@ -124,18 +124,43 @@ class PdfFormRespondent
 	{
 		$dbh = JFactory::getDBO();
 
-		foreach ($answers as $key=>$val)
-		{
-			if (!preg_match('/^question-(\d+)$/', $key, $qid))
-			{
-				continue;
-			}
+		$questions = $this->getQuestions();
 
-			$dbh->setQuery('INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) VALUES ('.$this->id.', '.$qid[1].', '.(int)$val.')');
+		foreach ($questions as $question)
+		{
+			$key    = 'question-' . $question->id;
+			$answer = (isset($answers[$key])) ? $answers[$key] : 0;
+
+			$dbh->setQuery('INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) VALUES ('.$this->id.', '.$question->id.', '.(int)$answer.')');
 			$dbh->query();
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Get questions
+	 *
+	 * @return array
+	 **/
+	public function getQuestions()
+	{
+		$dbh = JFactory::getDBO();
+
+		$version = $this->getVersionNumber();
+
+		$query  = "SELECT cfq.id";
+		$query .= " FROM `#__courses_form_questions` cfq";
+		$query .= " JOIN `#__courses_forms` cf ON cfq.form_id = cf.id";
+		$query .= " JOIN `#__courses_form_deployments` cfd ON cfd.form_id = cf.id";
+		$query .= " WHERE cfd.id = " . $dbh->quote($this->depId);
+		$query .= " AND version = " . $dbh->quote($version);
+
+		$dbh->setQuery($query);
+
+		$questions = $dbh->loadObjectList();
+
+		return $questions;
 	}
 
 	/**
@@ -251,6 +276,26 @@ class PdfFormRespondent
 	public function getAttemptNumber()
 	{
 		return $this->attempt;
+	}
+
+	/**
+	 * Get version # for which this respondent is completing the form
+	 *
+	 * @return integer
+	 **/
+	public function getVersionNumber()
+	{
+		$dbh = JFactory::getDBO();
+
+		$query  = "SELECT max(version) AS version";
+		$query .= " FROM `#__courses_form_questions` cfq";
+		$query .= " JOIN `#__courses_forms` cf ON cfq.form_id = cf.id";
+		$query .= " JOIN `#__courses_form_deployments` cfd ON cfd.form_id = cf.id";
+		$query .= " WHERE cfd.id = " . $dbh->quote($this->depId);
+
+		$dbh->setQuery($query);
+
+		return $dbh->loadResult();
 	}
 
 	/**

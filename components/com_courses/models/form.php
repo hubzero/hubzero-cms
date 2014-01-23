@@ -581,7 +581,7 @@ class PdfForm
 	 *
 	 * @return array
 	 **/
-	public function getQuestionAnswerMap($answers)
+	public function getQuestionAnswerMap($answers, $ended=FALSE)
 	{
 		$dbh = self::getDBH();
 		$fid = $this->getId();
@@ -606,6 +606,11 @@ class PdfForm
 				$rv[$row['id']] = array(NULL, $row['answer_id']);
 				$complete = FALSE;
 			}
+		}
+
+		if ($ended)
+		{
+			$complete = TRUE;
 		}
 
 		return array($complete, $rv);
