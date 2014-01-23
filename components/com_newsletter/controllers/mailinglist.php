@@ -210,7 +210,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 			$subscription->date_added = JFactory::getDate()->toSql();
 			
 			//mail confirmation email and save subscription
-			if (Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false ))
+			if (NewsletterHelper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false ))
 			{
 				$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
 				$newsletterMailinglistEmail->save( $subscription );
@@ -258,7 +258,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 					$subscription->date_added = JFactory::getDate()->toSql();
 
 					//mail confirmation email and save subscription
-					if (Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false ))
+					if (NewsletterHelper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false ))
 					{
 						$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
 						$newsletterMailinglistEmail->save( $subscription );
@@ -292,7 +292,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 				$newsletterMailinglist->load( $mylist->mailinglistid );
 				
 				//send a new confirmation
-				Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false );
+				NewsletterHelper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false );
 				
 				//delete all unsubscribes
 				$sql = "DELETE FROM #__newsletter_mailinglist_unsubscribes
@@ -328,7 +328,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$token = JRequest::getVar('t', '');
 		
 		//parse token
-		$recipient = Hubzero_Newsletter_Helper::parseMailingToken( $token );
+		$recipient = NewsletterHelper::parseMailingToken( $token );
 		
 		//make sure mailing recipient email matches email param
 		if ($email != $recipient->email)
@@ -455,7 +455,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		}
 		
 		//parse mailing token
-		$recipient = Hubzero_Newsletter_Helper::parseMailingToken( $token );
+		$recipient = NewsletterHelper::parseMailingToken( $token );
 		
 		//make sure the token is valid
 		if (!is_object($recipient) || $email != $recipient->email)
@@ -548,7 +548,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$token = JRequest::getVar('t', '');
 		
 		//make sure we have an email
-		$mailinglistEmail = Hubzero_Newsletter_Helper::parseConfirmationToken( $token );
+		$mailinglistEmail = NewsletterHelper::parseConfirmationToken( $token );
 		
 		//make sure the token is valid
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
@@ -597,7 +597,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$token = JRequest::getVar('t', '');
 		
 		//make sure we have an email
-		$mailinglistEmail = Hubzero_Newsletter_Helper::parseConfirmationToken( $token );
+		$mailinglistEmail = NewsletterHelper::parseConfirmationToken( $token );
 		
 		//make sure the token is valid
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
@@ -636,7 +636,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$newsletterMailinglist->load( $mid );
 		
 		//send confirmation email
-		Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $this->juser->get('email'), $newsletterMailinglist, false );
+		NewsletterHelper::sendMailinglistConfirmationEmail( $this->juser->get('email'), $newsletterMailinglist, false );
 		
 		//inform user and redirect
 		$this->_message 	= JText::_('You successfully resent a confirmation email to "'.$this->juser->get('email').'"');

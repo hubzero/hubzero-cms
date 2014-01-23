@@ -51,10 +51,10 @@ require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailinglist.email.php' );
 require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.php' );
 require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.recipient.php' );
 require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.recipient.action.php' );
+require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php' );
 
 //include Hubzero Libraries
 ximport('Hubzero_Controller');
-ximport('Hubzero_Newsletter_Helper');
 
 //instantiate controller
 $controllerName = JRequest::getCmd('controller', 'newsletter');

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class Hubzero_Newsletter_Helper
+class NewsletterHelper
 {
 	/**
 	 * Generate Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
@@ -252,7 +252,7 @@ class Hubzero_Newsletter_Helper
 		$subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . $hubConfig->getValue('sitename');
 		
 		//get token
-		$token = Hubzero_Newsletter_Helper::generateConfirmationToken( $emailAddress, $mailinglistObject );
+		$token = self::generateConfirmationToken( $emailAddress, $mailinglistObject );
 		
 		//build body
 		if ($addedByAdmin)

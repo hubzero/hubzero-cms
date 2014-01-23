@@ -75,6 +75,7 @@ class plgCronNewsletter extends JPlugin
 	{
 		//load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'helpers' . DS . 'helper.php';
 		
 		//needed vars
 		$limit     = 25;
@@ -109,12 +110,12 @@ class plgCronNewsletter extends JPlugin
 		foreach ($queuedEmails as $queuedEmail)
 		{
 			//get tracking & unsubscribe token
-			$emailToken = Hubzero_Newsletter_Helper::generateMailingToken( $queuedEmail );
+			$emailToken = NewsletterHelper::generateMailingToken( $queuedEmail );
 			
 			//if tracking is on add it to email
 			if ($queuedEmail->tracking)
 			{
-				$queuedEmail->body = Hubzero_Newsletter_Helper::addTrackingToEmailMessage( $queuedEmail->body, $emailToken );
+				$queuedEmail->body = NewsletterHelper::addTrackingToEmailMessage( $queuedEmail->body, $emailToken );
 			}
 			
 			//create unsubscribe link

@@ -450,7 +450,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 			foreach ($emails as $email)
 			{
 				//send confirmation email from helper
-				Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, $addedByAdmin = true );
+				NewsletterHelper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, $addedByAdmin = true );
 			}
 		}
 		
@@ -619,7 +619,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$newsletterMailinglistEmail->load( $id );
 		
 		//send confirmation email
-		Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $newsletterMailinglistEmail->email, $newsletterMailinglist, false );
+		NewsletterHelper::sendMailinglistConfirmationEmail( $newsletterMailinglistEmail->email, $newsletterMailinglist, false );
 		
 		//inform user and redirect
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $mid;

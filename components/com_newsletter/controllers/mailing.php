@@ -62,7 +62,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 		$token = JRequest::getVar('t', '');
 		
 		//parse mailing token
-		$recipient = Hubzero_Newsletter_Helper::parseMailingToken( $token );
+		$recipient = NewsletterHelper::parseMailingToken( $token );
 		
 		//if we found an object lets track it
 		if (is_object($recipient) && $recipient->id)
@@ -89,7 +89,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 		}
 		
 		//create image to ouput
-		Hubzero_Newsletter_Helper::mailingOpenTrackerGif();
+		NewsletterHelper::mailingOpenTrackerGif();
 		exit();
 	}
 	
@@ -106,7 +106,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 		$link 	= JRequest::getVar('l', '', 'get', 'STRING', JREQUEST_ALLOWRAW);
 		
 		//parse mailing token
-		$recipient = Hubzero_Newsletter_Helper::parseMailingToken( $token );
+		$recipient = NewsletterHelper::parseMailingToken( $token );
 		
 		//url decode and replace zero width spaces
 		$link = urldecode( $link );
@@ -155,7 +155,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 		$token = JRequest::getVar('t', '');
 		
 		//parse mailing token
-		$recipient = Hubzero_Newsletter_Helper::parseMailingToken( $token );
+		$recipient = NewsletterHelper::parseMailingToken( $token );
 		
 		//if we found an object lets track it
 		if (is_object($recipient) && $recipient->id)
@@ -190,7 +190,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 		$token = JRequest::getVar('t', '');
 		
 		//parse mailing token
-		$recipient = Hubzero_Newsletter_Helper::parseMailingToken( $token );
+		$recipient = NewsletterHelper::parseMailingToken( $token );
 		
 		//if we found an object lets track it
 		if (is_object($recipient) && $recipient->id)

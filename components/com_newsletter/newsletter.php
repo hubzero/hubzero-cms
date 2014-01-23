@@ -36,7 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 ximport("Hubzero_Controller");
-ximport('Hubzero_Newsletter_Helper');
 
 require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'newsletter.php' );
 require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'template.php' );
@@ -47,6 +46,7 @@ require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . 
 require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.php' );
 require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php' );
 require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php' );
+require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php' );
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', 'newsletter');
