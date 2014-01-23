@@ -696,7 +696,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		$this->view->funds = 0;
 		if ($this->config->get('banking')) 
 		{
-			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$this->view->funds = ($funds > 0) ? $funds : 0;
 		}
@@ -788,7 +788,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		// Hold the reward for this question if we're banking
 		if ($fields['reward'] && $this->config->get('banking')) 
 		{
-			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 			$BTL->hold(
 				$fields['reward'], 
 				JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 
@@ -933,7 +933,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		$reward = 0;
 		if ($this->config->get('banking')) 
 		{
-			$BT = new Hubzero_Bank_Transaction($this->database);
+			$BT = new \Hubzero\Bank\Transaction($this->database);
 			$reward = $BT->getAmount('answers', 'hold', $id);
 		}
 		$email = 0;
@@ -1038,7 +1038,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 			$BT->deleteRecords('answers', 'hold', $id);
 
 			// Make credit adjustment
-			$BTL_Q = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+			$BTL_Q = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 			$adjusted = $BTL_Q->credit_summary() - $reward;
 			$BTL_Q->credit_adjustment($adjusted);
 		}

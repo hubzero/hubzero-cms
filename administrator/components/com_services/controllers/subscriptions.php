@@ -156,7 +156,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 		$this->view->customer = JUser::getInstance($this->view->subscription->uid);
 
 		// check available user funds		
-		$BTL = new Hubzero_Bank_Teller($this->database, $this->view->subscription->uid);
+		$BTL = new \Hubzero\Bank\Teller($this->database, $this->view->subscription->uid);
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance;

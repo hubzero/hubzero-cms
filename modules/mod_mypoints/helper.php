@@ -64,7 +64,7 @@ class modMyPoints extends Hubzero_Module
 		else 
 		{
 			// Get the user's point summary and history
-			$BTL  = new Hubzero_Bank_Teller($database, $juser->get('id'));
+			$BTL  = new \Hubzero\Bank\Teller($database, $juser->get('id'));
 			$this->summary = $BTL->summary();
 			$this->history = $BTL->history($this->limit);
 

@@ -621,7 +621,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		}
 
 		// check available user funds (if paying with points)
-		$BTL = new Hubzero_Bank_Teller($this->database, $subscription->uid);
+		$BTL = new \Hubzero\Bank\Teller($this->database, $subscription->uid);
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance;

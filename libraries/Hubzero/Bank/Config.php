@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Bank;
+
+use Hubzero\Base\Object;
 
 /**
  * Class for getting and setting user point configuration
  */
-class Hubzero_Bank_Config extends JObject
+class Config extends Object
 {
 	/**
 	 * JDatabase
@@ -54,7 +55,7 @@ class Hubzero_Bank_Config extends JObject
 	{
 		$this->_db = $db;
 
-		$this->_db->setQuery("SELECT * FROM #__users_points_config");
+		$this->_db->setQuery("SELECT * FROM `#__users_points_config`");
 		$pc = $this->_db->loadObjectList();
 		foreach ($pc as $p)
 		{

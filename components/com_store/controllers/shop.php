@@ -328,7 +328,7 @@ class StoreControllerShop extends Hubzero_Controller
 		}
 
 		// Check available user funds
-		$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -393,7 +393,7 @@ class StoreControllerShop extends Hubzero_Controller
 		$this->view->cost = $item->getCartItems($this->juser->get('id'), 'cost');
 
 		// Check available user funds
-		$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -466,7 +466,7 @@ class StoreControllerShop extends Hubzero_Controller
 		$cost = $item->getCartItems($this->juser->get('id'),'cost');
 
 		// Check available user funds
-		$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds = $balance - $credit;
@@ -545,7 +545,7 @@ class StoreControllerShop extends Hubzero_Controller
 			}
 
 			// Put the purchase amount on hold
-			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 			$BTL->hold($order->total, JText::_('COM_STORE_BANKING_HOLD'), 'store', $orderid);
 
 			$jconfig = JFactory::getConfig();
@@ -644,7 +644,7 @@ class StoreControllerShop extends Hubzero_Controller
 		}
 
 		// Check available user funds
-		$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds = $balance - $credit;

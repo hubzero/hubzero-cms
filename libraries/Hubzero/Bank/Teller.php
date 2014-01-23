@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Bank;
+
+use Hubzero\Base\Object;
 
 /**
  * Teller class for controlling bank transactions
  */
-class Hubzero_Bank_Teller extends JObject
+class Teller extends Object
 {
 	/**
 	 * JDatabase
@@ -85,7 +86,7 @@ class Hubzero_Bank_Teller extends JObject
 		$this->_db = $db;
 		$this->uid = $uid;
 
-		$BA = new Hubzero_Bank_Account($this->_db);
+		$BA = new Account($this->_db);
 
 		if ($BA->load_uid($this->uid)) 
 		{
@@ -252,7 +253,7 @@ class Hubzero_Bank_Teller extends JObject
 		{
 			$lmt .= " LIMIT " . $limit;
 		}
-		$this->_db->setQuery("SELECT * FROM #__users_transactions WHERE uid=" . $this->uid . " ORDER BY created DESC, id DESC" . $lmt);
+		$this->_db->setQuery("SELECT * FROM `#__users_transactions` WHERE uid=" . $this->uid . " ORDER BY created DESC, id DESC" . $lmt);
 		return $this->_db->loadObjectList();
 	}
 
@@ -330,11 +331,11 @@ class Hubzero_Bank_Teller extends JObject
 	{
 		if ($type == 'creation') 
 		{
-			$query = "INSERT INTO #__users_points (uid, balance, earnings, credit) VALUES('" . $this->uid . "','" . $this->balance . "','" . $this->earnings . "','" . $this->credit . "')";
+			$query = "INSERT INTO `#__users_points` (uid, balance, earnings, credit) VALUES('" . $this->uid . "','" . $this->balance . "','" . $this->earnings . "','" . $this->credit . "')";
 		} 
 		else 
 		{
-			$query = "UPDATE #__users_points SET balance='" . $this->balance . "', earnings='" . $this->earnings . "', credit='" . $this->credit . "' WHERE uid=" . $this->uid;
+			$query = "UPDATE `#__users_points` SET balance='" . $this->balance . "', earnings='" . $this->earnings . "', credit='" . $this->credit . "' WHERE uid=" . $this->uid;
 		}
 		$this->_db->setQuery($query);
 		if ($this->_db->query()) 
@@ -368,10 +369,10 @@ class Hubzero_Bank_Teller extends JObject
 		$data['description'] = $desc;
 		$data['category']    = $cat;
 		$data['referenceid'] = $ref;
-		$data['created']     = JFactory::getDate()->toSql();
+		$data['created']     = \JFactory::getDate()->toSql();
 		$data['balance']     = $this->balance;
 
-		$BT = new Hubzero_Bank_Transaction($this->_db);
+		$BT = new Transaction($this->_db);
 		if (!$BT->bind($data)) 
 		{
 			$this->setError($BT->getError());

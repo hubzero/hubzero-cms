@@ -404,14 +404,14 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Give some points to whoever reported abuse
 		if ($banking && $gratitude)
 		{
-			$BC = new Hubzero_Bank_Config($this->database);
+			$BC = new \Hubzero\Bank\Config($this->database);
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar)
 			{
 				$ruser = JUser::getInstance($report->created_by);
 				if (is_object($ruser) && $ruser->get('id'))
 				{
-					$BTL = new Hubzero_Bank_Teller($this->database, $ruser->get('id'));
+					$BTL = new \Hubzero\Bank\Teller($this->database, $ruser->get('id'));
 					$BTL->deposit($ar, JText::_('ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
 				}
 			}

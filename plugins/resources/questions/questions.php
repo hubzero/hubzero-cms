@@ -273,7 +273,7 @@ class plgResourcesQuestions extends JPlugin
 		{
 			$juser = JFactory::getUser();
 
-			$BTL = new Hubzero_Bank_Teller($this->database, $juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, $juser->get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
@@ -361,7 +361,7 @@ class plgResourcesQuestions extends JPlugin
 		// Hold the reward for this question if we're banking
 		if ($reward && $this->banking) 
 		{
-			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
 		}
 

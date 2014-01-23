@@ -409,7 +409,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			$this->view->customer = JUser::getInstance($this->view->row->uid);
 
 			// Check available user funds		
-			$BTL = new Hubzero_Bank_Teller($this->database, $this->view->row->uid);
+			$BTL = new \Hubzero\Bank\Teller($this->database, $this->view->row->uid);
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$this->view->funds = $balance;
@@ -461,7 +461,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			// get user bank account
 			//$xprofile = Hubzero_User_Profile::getInstance($row->uid);
 			$xprofile = JUser::getInstance($row->uid);
-			$BTL_Q = new Hubzero_Bank_Teller($this->database, $xprofile->get('id'));
+			$BTL_Q = new \Hubzero\Bank\Teller($this->database, $xprofile->get('id'));
 
 			// start email message
 			$emailbody .= JText::_('COM_STORE_THANKYOU').' '.JText::_('COM_STORE_IN_THE').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_STORE_STORE').'!'."\r\n\r\n";

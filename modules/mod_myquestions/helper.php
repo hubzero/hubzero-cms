@@ -133,7 +133,7 @@ class modMyQuestions extends Hubzero_Module
 		if ($this->banking) 
 		{
 			$AE = new AnswersEconomy($database);
-			$BT = new Hubzero_Bank_Transaction($database);
+			$BT = new \Hubzero\Bank\Transaction($database);
 		}
 
 		$params =& $this->params;

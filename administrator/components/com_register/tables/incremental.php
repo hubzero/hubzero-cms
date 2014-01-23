@@ -253,7 +253,7 @@ class ModIncrementalRegistrationAwards
 			$newAmount = self::$dbh->loadResult() + $alreadyComplete;
 
 
-			$BTL = new Hubzero_Bank_Teller( self::$dbh, $this->uid );
+			$BTL = new \Hubzero\Bank\Teller( self::$dbh, $this->uid );
 			$BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0); 
 		}
 		return array(

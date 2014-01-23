@@ -328,7 +328,7 @@ class plgSupportAnswers extends JPlugin
 							}
 
 							// Make credit adjustment
-							$BTL_Q = new Hubzero_Bank_Teller($database, $asker_id);
+							$BTL_Q = new \Hubzero\Bank\Teller($database, $asker_id);
 							$credit = $BTL_Q->credit_summary();
 							$adjusted = $credit - $reward;
 							$BTL_Q->credit_adjustment($adjusted);

@@ -906,7 +906,7 @@ class WishlistController extends JObject
 			// check available user funds	
 			if ($action == 'addbonus' && $this->banking) 
 			{
-				$BTL 		= new Hubzero_Bank_Teller($database, $juser->get('id'));
+				$BTL 		= new \Hubzero\Bank\Teller($database, $juser->get('id'));
 				$balance 	= $BTL->summary();
 				$credit 	= $BTL->credit_summary();
 				$funds 		= $balance - $credit;
@@ -1504,7 +1504,7 @@ class WishlistController extends JObject
 		$funds = 0;
 		if ($this->banking) 
 		{
-			$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($database, $juser->get('id'));
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$funds   = $balance - $credit;
@@ -1739,7 +1739,7 @@ class WishlistController extends JObject
 		if ($reward && $this->banking) 
 		{
 			// put the  amount on hold
-			$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($database, $juser->get('id'));
 			$BTL->hold($reward, JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->id . ' ' . JText::_('COM_WISHLIST_FOR') . ' ' . $wishlist->title, 'wish', $row->id);
 		}
 
@@ -2276,7 +2276,7 @@ class WishlistController extends JObject
 		}
 
 		// check available user funds
-		$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($database, $juser->get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -2300,7 +2300,7 @@ class WishlistController extends JObject
 		}
 
 		// put the  amount on hold
-		$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($database, $juser->get('id'));
 		$BTL->hold($amount, JText::_('COM_WISHLIST_BANKING_HOLD').' #'.$wishid.' '.JText::_('COM_WISHLIST_FOR').' '.$wishlist->title, 'wish', $wishid);
 
 		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);

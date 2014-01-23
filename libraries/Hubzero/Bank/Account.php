@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Bank;
 
 /**
  * Table class for bank accounts
  */
-class Hubzero_Bank_Account extends JTable
+class Account extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -91,7 +90,7 @@ class Hubzero_Bank_Account extends JTable
 	{
 		if (trim($this->uid) == '') 
 		{
-			$this->setError(JText::_('Entry must have a user ID.'));
+			$this->setError(\JText::_('Entry must have a user ID.'));
 			return false;
 		}
 

@@ -28,14 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Bank;
 
 /**
  * Market History class:
  * Logs batch transactions, royalty distributions and other big transactions
  */
-class Hubzero_Bank_MarketHistory extends JTable
+class MarketHistory extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -107,20 +106,20 @@ class Hubzero_Bank_MarketHistory extends JTable
 		$this->itemid = intval($this->itemid);
 		if (!$this->itemid) 
 		{
-			$this->setError(JText::_('Entry must have an item ID.'));
+			$this->setError(\JText::_('Entry must have an item ID.'));
 			return false;
 		}
 
 		$this->category = trim($this->category);
 		if (!$this->category) 
 		{
-			$this->setError(JText::_('Entry must have a category.'));
+			$this->setError(\JText::_('Entry must have a category.'));
 			return false;
 		}
 
 		if (!$this->date)
 		{
-			$this->date = JFactory::getDate()->format($this->_db->getDateFormat());
+			$this->date = \JFactory::getDate()->toSql();
 		}
 
 		return true;

@@ -94,7 +94,7 @@ class ResourcesEconomy extends JObject
 		// Reward review author
 		if (is_object($juser) && $juser->get('id')) 
 		{
-			$BTL = new Hubzero_Bank_Teller($this->_db , $juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->_db , $juser->get('id'));
 
 			if (intval($points) > 0) 
 			{
@@ -175,7 +175,7 @@ class ReviewsEconomy extends JObject
 		}
 
 		// Get point values for actions
-		$BC = new Hubzero_Bank_Config($this->_db);
+		$BC = new \Hubzero\Bank\Config($this->_db);
 
 		$p_R = $BC->get('reviewvote') ? $BC->get('reviewvote') : 2;
 
@@ -213,7 +213,7 @@ class ReviewsEconomy extends JObject
 		// Reward review author
 		if (is_object($juser)) 
 		{
-			$BTL = new Hubzero_Bank_Teller($this->_db , $juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->_db , $juser->get('id'));
 
 			if (intval($points) > 0) 
 			{

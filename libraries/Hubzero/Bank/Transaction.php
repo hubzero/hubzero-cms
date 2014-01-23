@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Bank;
 
 /**
  * Table class for bak transactions
  */
-class Hubzero_Bank_Transaction extends JTable
+class Transaction extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -120,21 +119,21 @@ class Hubzero_Bank_Transaction extends JTable
 		$this->uid = intval($this->uid);
 		if (!$this->uid) 
 		{
-			$this->setError(JText::_('Entry must have a user ID.'));
+			$this->setError(\JText::_('Entry must have a user ID.'));
 			return false;
 		}
 
 		$this->type = trim($this->type);
 		if (!$this->type) 
 		{
-			$this->setError(JText::_('Entry must have a type (e.g., deposit, withdraw).'));
+			$this->setError(\JText::_('Entry must have a type (e.g., deposit, withdraw).'));
 			return false;
 		}
 
 		$this->category = trim($this->category);
 		if (!$this->category) 
 		{
-			$this->setError(JText::_('Entry must have a category.'));
+			$this->setError(\JText::_('Entry must have a category.'));
 			return false;
 		}
 
@@ -144,7 +143,7 @@ class Hubzero_Bank_Transaction extends JTable
 
 		if (!$this->created)
 		{
-			$this->created = JFactory::getDate()->format($this->_db->getDateFormat());
+			$this->created = \JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -321,7 +320,7 @@ class Hubzero_Bank_Transaction extends JTable
 
 		if ($uid == null) 
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 

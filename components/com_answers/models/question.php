@@ -183,7 +183,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		if ($this->get('reward', -1) == 1)
 		{
-			$BT = new Hubzero_Bank_Transaction($this->_db);
+			$BT = new \Hubzero\Bank\Transaction($this->_db);
 			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
 
 			$AE = new AnswersEconomy($this->_db);
@@ -757,14 +757,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			// Accepted answer is same person as question submitter?
 			if ($this->get('created_by') == $answer->get('created_by'))
 			{
-				$BT = new Hubzero_Bank_Transaction($this->_db);
+				$BT = new \Hubzero\Bank\Transaction($this->_db);
 				$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
 
 				// Remove hold
 				$BT->deleteRecords('answers', 'hold', $this->get('id'));
 
 				// Make credit adjustment
-				$BTL_Q = new Hubzero_Bank_Teller($this->_db, JFactory::getUser()->get('id'));
+				$BTL_Q = new \Hubzero\Bank\Teller($this->_db, JFactory::getUser()->get('id'));
 				$BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
 			}
 			else 
@@ -798,14 +798,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		{
 			// Adjust credits
 			// Remove hold
-			$BT = new Hubzero_Bank_Transaction($this->_db);
+			$BT = new \Hubzero\Bank\Transaction($this->_db);
 			$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
 			$BT->deleteRecords('answers', 'hold', $this->get('id'));
 
 			// Make credit adjustment
 			if (is_object($this->creator()))
 			{
-				$BTL = new Hubzero_Bank_Teller($this->_db, $this->creator('id'));
+				$BTL = new \Hubzero\Bank\Teller($this->_db, $this->creator('id'));
 				$credit = $BTL->credit_summary();
 				$adjusted = $credit - $reward;
 				$BTL->credit_adjustment($adjusted);

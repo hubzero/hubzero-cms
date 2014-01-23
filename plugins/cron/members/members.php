@@ -87,7 +87,7 @@ class plgCronMembers extends JPlugin
 		$resmsg = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_RESOURCES', $curyear);
 
 		// Make sure we distribute royalties only once/ month
-		$MH = new Hubzero_Bank_MarketHistory($this->database);
+		$MH = new \Hubzero\Bank\MarketHistory($this->database);
 		$royaltyAnswers   = $MH->getRecord('', $action, 'answers', $curyear, $this->_message);
 		$royaltyReviews   = $MH->getRecord('', $action, 'reviews', $curyear, $rmsg);
 		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
@@ -122,7 +122,7 @@ class plgCronMembers extends JPlugin
 				// make a record of royalty payment
 				if (intval($accumulated) > 0) 
 				{
-					$MH = new Hubzero_Bank_MarketHistory($this->database);
+					$MH = new \Hubzero\Bank\MarketHistory($this->database);
 					$data['itemid']       = $ref;
 					$data['date']         = JFactory::getDate()->toSql();
 					$data['market_value'] = $accumulated;
@@ -188,7 +188,7 @@ class plgCronMembers extends JPlugin
 			// make a record of royalty payment
 			if (intval($accumulated) > 0) 
 			{
-				$MH = new Hubzero_Bank_MarketHistory($this->database);
+				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
 				$data['date']         = JFactory::getDate()->toSql();
 				$data['market_value'] = $accumulated;
@@ -238,7 +238,7 @@ class plgCronMembers extends JPlugin
 			// make a record of royalty payment
 			if (intval($accumulated) > 0) 
 			{
-				$MH = new Hubzero_Bank_MarketHistory($this->database);
+				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
 				$data['date']         = JFactory::getDate()->toSql();
 				$data['market_value'] = $accumulated;
