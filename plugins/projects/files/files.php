@@ -1779,12 +1779,13 @@ class plgProjectsFiles extends JPlugin
 			return false;
 		}
 				
-		$zip = new ZipArchive;		
+		$zip = new ZipArchive;
+						
 		if ($zip->open($tmp_name) === true) 
 		{
 			$stopLoop = 0; 
-			$skipDir  = 0;    
-			
+			$skipDir  = 0; 
+						
 			for ($a = 0; $a < $zip->numFiles; $a++) 
 			{
 		        if ($stopLoop)
@@ -1804,12 +1805,13 @@ class plgProjectsFiles extends JPlugin
 				{
 					continue;
 				}
-												
+																
 				// Clean up filename
 				$safe_dir = $a_dir ? ProjectsHtml::makeSafeDir($a_dir) : '';
 				$safe_file= ProjectsHtml::makeSafeFile($a_file);
 				$safename = $safe_dir && !$skipDir ? $safe_dir . DS . $safe_file : $safe_file;
 				$afile 	  = $subdir ? $subdir . DS . $safename : $safename;
+				$adir 	  = $subdir ? $subdir . DS . $safe_dir : $safe_dir;
 																
 				if (substr( $filename, -1 ) == '/' && !is_dir($unzipto . DS . $safename))
 				{
@@ -1838,6 +1840,25 @@ class plgProjectsFiles extends JPlugin
 				}
 				else
 				{									
+					// Missing parent directory?
+					if ($safe_dir && !is_dir($unzipto . DS . $safe_dir))
+					{
+						if (JFolder::create( $unzipto . DS . $safe_dir ))
+						{
+							if ($this->_task != 'saveprov')
+							{
+								$this->_git->makeEmptyFolder($path, $adir);				
+								$commitMsgZip .= JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($adir) ."\n";
+							}
+							$z++;									
+						}
+						else
+						{
+							$stopLoop = 1;
+							continue;
+						}
+					}
+					
 					// Copy temp file into project
 					if (substr( $filename, -1 ) != '/')
 					{	
@@ -1885,7 +1906,7 @@ class plgProjectsFiles extends JPlugin
 					}
 				} 
 		    }
-			
+						
 		    $zip->close();
 			return $z;              
 		}
