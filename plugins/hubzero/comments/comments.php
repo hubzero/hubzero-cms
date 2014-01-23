@@ -82,10 +82,7 @@ class plgHubzeroComments extends JPlugin
 			return '';
 		}
 
-		ximport('Hubzero_Item_Comment');
-		ximport('Hubzero_Item_Vote');
 		ximport('Hubzero_Plugin_View');
-
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'hubzero',
@@ -308,7 +305,7 @@ class plgHubzeroComments extends JPlugin
 		$no_html = JRequest::getInt('no_html', 0);
 
 		// Get comments on this article
-		$v = new Hubzero_Item_Vote($this->database);
+		$v = new \Hubzero\Item\Vote($this->database);
 		$v->created_by = $this->juser->get('id');
 		$v->item_type  = 'comment';
 		//$v->item_id    = JRequest::getInt('comment', 0);

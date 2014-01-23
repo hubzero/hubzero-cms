@@ -22,13 +22,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Item;
 
 /**
  * Table class for comment votes
  */
-class Hubzero_Item_Vote extends JTable 
+class Vote extends \JTable 
 {
 	/**
 	 * Primary key
@@ -100,20 +99,20 @@ class Hubzero_Item_Vote extends JTable
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id) 
 		{
-			$this->setError(JText::_('Missing item ID.'));
+			$this->setError(\JText::_('Missing item ID.'));
 			return false;
 		}
 
 		$this->item_type = strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($this->item_type)));
 		if (!$this->item_type) 
 		{
-			$this->setError(JText::_('Missing item type.'));
+			$this->setError(\JText::_('Missing item type.'));
 			return false;
 		}
 
 		if (!$this->created_by) 
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$this->created_by = $juser->get('id');
 		}
 
@@ -141,7 +140,7 @@ class Hubzero_Item_Vote extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 		}
 
 		return true;

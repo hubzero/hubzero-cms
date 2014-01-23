@@ -119,7 +119,6 @@ class plgCoursesReviews extends JPlugin
 		{
 			Hubzero_Document::addPluginScript('courses', $this->_name);
 
-			ximport('Hubzero_Item_Vote');
 			ximport('Hubzero_Plugin_View');
 
 			$this->view = new Hubzero_Plugin_View(
@@ -337,7 +336,7 @@ class plgCoursesReviews extends JPlugin
 		$no_html = JRequest::getInt('no_html', 0);
 
 		// Get comments on this article
-		$v = new Hubzero_Item_Vote($this->database);
+		$v = new \Hubzero\Item\Vote($this->database);
 		$v->created_by = $this->juser->get('id');
 		$v->item_type  = 'comment';
 
