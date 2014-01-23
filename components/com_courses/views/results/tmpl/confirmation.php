@@ -27,8 +27,21 @@ $resp = $this->resp;
 		<? $attempt = $resp->getAttemptNumber(); ?>
 		You are allowed <strong><?= $this->dep->getAllowedAttempts() ?></strong> attempts.
 		This was your <strong><?= FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
-		<? if ($this->dep->getAllowedAttempts() > $attempt) : ?>
-			<a href="<?= JRoute::_($this->base . '&task=form.complete&crumb='.$this->dep->getCrumb().'&attempt='.((int)$attempt+1)) ?>">Take your <?= FormHelper::toOrdinal((int)$attempt+1) ?> attempt</a>
-		<? endif; ?>
+		<form action="<?= JRoute::_($this->base . '&task=form.complete') ?>">
+			<input type="hidden" name="crumb" value="<?= $this->dep->getCrumb() ?>" />
+			View another attempt: 
+			<select name="attempt">
+				<? for ($i = 1; $i <= $this->dep->getAllowedAttempts(); $i++) { ?>
+					<?
+						if ($i == $attempt) :
+							continue;
+						endif; 
+					?>
+					<option value="<?= $i ?>"><?= FormHelper::toOrdinal($i) ?> attempt</option>
+				<? } ?>
+				?>
+			</select>
+			<input class="btn btn-secondary" type="submit" value="GO" />
+		</form>
 	<? endif; ?>
 </div>
