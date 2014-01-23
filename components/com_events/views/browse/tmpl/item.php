@@ -50,11 +50,14 @@ if (!empty($this->fields)) {
 	$this->row->content = trim($this->row->content);
 }
 
+$start_date = JHTML::_('date',$this->row->publish_up, 'd M Y', $timezone);
+$stop_date  = JHTML::_('date',$this->row->publish_down, 'd M Y', $timezone);
+
 $html  = "\t".'<li id="event'.$this->row->id.'">'."\n";
 $html .= "\t\t".'<dl class="event-details">'."\n";
-if ($this->row->start_date == $this->row->stop_date) {
+if ($start_date == $stop_date) {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, JText::_('DATE_FORMAT_HZ1')).'</dt>'."\n";
+		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, 'd M Y', $timezone).'</dt>'."\n";
 	}
 	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, 'g:i a T', $timezone).'&nbsp;' .'</dd>'."\n";
 	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
