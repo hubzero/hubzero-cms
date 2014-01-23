@@ -127,6 +127,7 @@
 	.toolbar-box .icon-32-user:before             { content: "\f007"; }
 	.toolbar-box .icon-32-scan:before             { content: "\2622"; }
 	.toolbar-box .icon-32-csv:before             { content: "\f00c"; }
+	.toolbar-box .icon-32-script:before             { content: "\f07d"; }
 
 /* Header */
 	.toolbar-box .icon-48-generic                        { }
