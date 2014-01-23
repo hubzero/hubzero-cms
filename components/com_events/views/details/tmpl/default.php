@@ -168,19 +168,20 @@ if ($this->row) {
 			$html .= $this->row->start_date .', '.$this->row->start_time.'&nbsp;-&nbsp;'.$this->row->stop_time.'<br />';
 		}*/
 	
-		// get publish up/down
+		// get publish up/down & timezone
 		$publish_up   = $this->row->publish_up;
 		$publish_down = $this->row->publish_down;
+		$timezone     = timezone_name_from_abbr('',$this->row->time_zone*3600, NULL);
 		
 		if (date("Y-m-d", strtotime($publish_up)) == date("Y-m-d", strtotime($publish_down)))
 		{
-			$html .= JHTML::_('date', $publish_up, 'l d F, Y') . ', ';
-			$html .= JHTML::_('date', $publish_up, 'g:i A') . ' - ' . JHTML::_('date', $publish_down, 'g:i A');
+			$html .= JHTML::_('date', $publish_up, 'l d F, Y', $timezone) . ', ';
+			$html .= JHTML::_('date', $publish_up, 'g:i a T', $timezone) . ' - ' . JHTML::_('date', $publish_down, 'g:i a T', $timezone);
 		}
 		else
 		{
-			$html .= JHTML::_('date', $publish_up, 'l d F, Y g:i A') . ' - ';
-			$html .= JHTML::_('date', $publish_down, 'l d F, Y g:i A');
+			$html .= JHTML::_('date', $publish_up, 'l d F, Y g:i a T', $timezone) . ' - ';
+			$html .= JHTML::_('date', $publish_down, 'l d F, Y g:i a T', $timezone);
 		}
 			
 		$html .= '   </td>'."\n";

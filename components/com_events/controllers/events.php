@@ -735,7 +735,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		}
 
 		// Get time zone name (i.e. not just offset - ex: '-5')
-		$row->time_zone = EventsHtml::getTimeZoneName($row->time_zone);
+		//$row->time_zone = EventsHtml::getTimeZoneName($row->time_zone);
 
 		// Parse http and mailto
 		$alphadigit = "([a-z]|[A-Z]|[0-9])";
@@ -1474,20 +1474,22 @@ class EventsControllerEvents extends Hubzero_Controller
 				$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
 				return;
 			}
-
-			$event_up = new EventsDate($row->publish_up);
-			$start_publish = sprintf("%4d-%02d-%02d",$event_up->year,$event_up->month,$event_up->day);
-			$start_time = $event_up->hour . ':' . $event_up->minute;
-
-			$event_down = new EventsDate($row->publish_down);
-			$stop_publish = sprintf("%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
-			$end_time = $event_down->hour . ':' . $event_down->minute;
-
+			
+			//get timezone
+			$timezone = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
+			
+			// get start date and time
+			$start_publish = JHTML::_('date', $row->publish_up, 'Y-m-d', $timezone);
+			$start_time = JHTML::_('date', $row->publish_up, 'H:i', $timezone);
+			
+			// get end date and time
+			$stop_publish = JHTML::_('date', $row->publish_down, 'Y-m-d', $timezone);
+			$end_time = JHTML::_('date', $row->publish_down, 'H:i', $timezone);
+			
 			$time_zone = $row->time_zone;
-
-			$event_registerby = new EventsDate($row->registerby);
-			$registerby_date = sprintf("%4d-%02d-%02d",$event_registerby->year,$event_registerby->month,$event_registerby->day);
-			$registerby_time = $event_registerby->hour . ':' . $event_registerby->minute;
+			
+			$registerby_date = JHTML::_('date', $row->registerby, 'Y-m-d', $timezone);
+			$registerby_time = JHTML::_('date', $row->registerby, 'H:i', $timezone);
 
 			$row->reccurday_month = 99;
 			$row->reccurday_week = 99;
@@ -1922,21 +1924,39 @@ class EventsControllerEvents extends Hubzero_Controller
 			if ($mins < 10) $mins = '0' . $mins;
 			$end_time = $hrs . ':' . $mins;
 		}
-
+		
+		
+		// get timezone name from offset
+		$tz = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
+		
+		// create timezone objects
+		$utcTimezone   = new DateTimezone('UTC');
+		$eventTimezone = new DateTimezone($tz);
+		
+		// create publish up date time string
 		$rpup = $row->publish_up;
 		$publishtime = date('Y-m-d 00:00:00');
 		if ($row->publish_up) 
 		{
 			$publishtime = $row->publish_up . ' ' . $start_time . ':00';
 		}
-		$row->publish_up = JFactory::getDate(strtotime($publishtime))->format("Y-m-d H:i:s");
 		
+		// set publish up date/time in UTC
+		$up = new DateTime($publishtime, $eventTimezone);
+		$up->setTimezone($utcTimezone);
+		$row->publish_up = $up->format("Y-m-d H:i:s");
+		
+		// create publish down date/time string
 		$publishtime = date('Y-m-d 00:00:00');
 		if ($row->publish_down) 
 		{
 			$publishtime = $row->publish_down . ' ' . $end_time . ':00';
 		}
-		$row->publish_down = JFactory::getDate(strtotime($publishtime))->format("Y-m-d H:i:s");
+		
+		// set publish date date/time in UTC
+		$up = new DateTime($publishtime, $eventTimezone);
+		$up->setTimezone($utcTimezone);
+		$row->publish_down = $up->format("Y-m-d H:i:s");
 		
 		if ($row->publish_up <> $row->publish_down) 
 		{
