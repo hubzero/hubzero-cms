@@ -296,7 +296,7 @@ class CoursesControllerCertificates extends Hubzero_Controller
 			);
 			return;
 		}
-		//$this->view->offering = $this->view->course->offering(JRequest::getInt('offering', 0));
+		$this->view->offering = $this->view->course->offering(JRequest::getInt('offering', 0));
 
 		/*$jconfig = JFactory::getConfig();
 
