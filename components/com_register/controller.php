@@ -763,6 +763,13 @@ class RegisterController extends Hubzero_Controller
 			return;
 		}
 
+		$usersConfig =  JComponentHelper::getParams('com_users');
+		if ($usersConfig->get('allowUserRegistration') == '0') 
+		{
+			JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
+			return;
+		}
+
 		if ($this->juser->get('auth_link_id')) 
 		{
 			$hzal = Hubzero_Auth_Link::find_by_id($this->juser->get('auth_link_id'));
@@ -794,7 +801,6 @@ class RegisterController extends Hubzero_Controller
 				$document   = JFactory::getDocument();
 
 				// If user registration is not allowed, show 403 not authorized.
-				$usersConfig =  JComponentHelper::getParams('com_users');
 				if ($usersConfig->get('allowUserRegistration') == '0') 
 				{
 					JError::raiseError(403, JText::_('Access Forbidden'));
