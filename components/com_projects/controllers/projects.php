@@ -2927,10 +2927,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$approve = 1;				
 					
 					// Bump up quota
-					$quota = $params->get('quota');
 					$premiumQuota = ProjectsHtml::convertSize( 
 						floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
 					$obj->saveParam($obj->id, 'quota', htmlentities($premiumQuota));
+					
+					// Bump up publication quota
+					$premiumPubQuota = ProjectsHtml::convertSize( 
+						floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
+					$obj->saveParam($obj->id, 'pubQuota', htmlentities($premiumPubQuota));
 				}
 				
 				// Reject
