@@ -126,6 +126,7 @@ class plgEditorWikiwyg extends JPlugin
 			$atts[] = $key .'="' . $value . '"';
 		}
 
+		$content = preg_replace('/^((?:<|&lt;)!-- \{FORMAT:(?:.*)\} --(?:>|&gt;))/i', '', $content);
 		return '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" ' . implode(' ', $atts) . '>' . $content . '</textarea>' . "\n";
 	}
 }
