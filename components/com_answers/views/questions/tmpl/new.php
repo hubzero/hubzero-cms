@@ -52,7 +52,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_ANSWERS_BE_POLITE'); ?></p>
-			<p><?php echo JText::_('COM_ANSWERS_NO_HTML'); ?></p>
 		<?php if ($this->config->get('banking')) { ?>
 			<p class="help">
 				<strong><?php echo JText::_('COM_ANSWERS_WHAT_IS_REWARD'); ?></strong><br />
