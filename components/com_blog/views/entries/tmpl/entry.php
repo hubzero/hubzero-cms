@@ -197,7 +197,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<?php } ?>
 			<?php if ($juser->get('id') == $this->row->get('created_by')) { ?>
 				<dd class="state">
-					<?php echo JText::_('COM_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+					<?php echo JText::_('COM_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
 				</dd>
 				<dd class="entry-options">
 					<a class="edit" href="<?php echo JRoute::_($this->row->link('edit')); ?>" title="<?php echo JText::_('COM_BLOG_EDIT'); ?>">
