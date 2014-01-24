@@ -920,8 +920,8 @@ class Hubzero_Registration
 		{
 			if (empty($registration['orgtype']))
 			{
-				$this->_missing['orgtype'] = 'Employment Status';
-				$this->_invalid['orgtype'] = 'Please make an employment status selection';
+				$this->_missing['orgtype'] = 'Employment Type';
+				$this->_invalid['orgtype'] = 'Please make an employment type selection';
 			}
 		}
 
