@@ -66,47 +66,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<table class="wiki-reference" summary="Wiki Syntax Reference">
-				<caption>Wiki Syntax Reference</caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-					<tr>
-						<td colspan="2"><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
-					</tr>
-					<tr>
-						<td colspan="2"><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
-					</tr>
-				</tbody>
-			</table>
 			<h4 id="files-header"><?php echo JText::_('COM_BLOG_FIELD_FILES'); ?></h4>
-			<iframe width="100%" height="370" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media"></iframe>
+			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=component&controller=media'); ?>"></iframe>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></legend>
