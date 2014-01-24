@@ -33,9 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Plugins'), 'plugin.png');
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editListX();
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter">
@@ -86,7 +83,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$link = JRoute::_( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
+	$link = JRoute::_( 'index.php?option=com_plugins&task=plugin.edit&extension_id='.$row->id.'&component=resources' );
 
 	$access 	= JHTML::_('grid.access', $row, $i);
 	$checked 	= JHTML::_('grid.checkedout', $row, $i);
