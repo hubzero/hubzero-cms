@@ -50,6 +50,10 @@ function BlogBuildRoute(&$query)
 	}
 	if (!empty($query['controller'])) 
 	{
+		if ($query['controller'] == 'media')
+		{
+			$segments[] = $query['controller'];
+		}
 		unset($query['controller']);
 	}
 	if (!empty($query['year'])) 
@@ -107,6 +111,10 @@ function BlogParseRoute($segments)
 		} 
 		else 
 		{
+			if ($segments[0] == 'media')
+			{
+				$vars['controller'] = $segments[0];
+			}
 			$vars['task'] = $segments[0];
 		}
 	}
