@@ -136,8 +136,25 @@ class plgEditorCkeditor extends JPlugin
 		// script to actually make ckeditor
 		$script = '<script>$(document).ready(function(){ $("#'.$id.'").ckeditor(function(){}, '.$config.'); });</script>';
 
+		if (!isset($params['class']))
+		{
+			$params['class'] = array();
+		}
+		if (!is_array($params['class']))
+		{
+			$params['class'] = array($params['class']);
+		}
+		$params['class'][] = 'wiki-toolbar-content';
+		$params['class'] = implode(' ', $params['class']);
+
+		$atts = array();
+		foreach ($params as $key => $value)
+		{
+			$atts[] = $key .'="' . $value . '"';
+		}
+
 		// output html and script
-		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . '>' . $content . '</textarea>' . $script;
+		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
 		return $editor;
 	}
 
