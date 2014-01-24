@@ -713,6 +713,7 @@ class plgProjectsFiles extends JPlugin
 		$failed 	= $jsession->get('projects.' . $this->_project->alias . '.failed');
 		$deleted 	= $jsession->get('projects.' . $this->_project->alias . '.deleted');
 		$restored 	= $jsession->get('projects.' . $this->_project->alias . '.restored');
+		$extracted 	= $jsession->get('projects.' . $this->_project->alias . '.extracted');
 		
 		// Provisioned project?
 		if ($this->_project->provisioned == 1 && !$this->_project->id)
@@ -766,7 +767,7 @@ class plgProjectsFiles extends JPlugin
 				$jsession->set('projects.' . $this->_project->alias . '.uploaded', '');
 								
 				// Save referenced files
-				$ref = $uploaded;		
+				$ref = $extracted ? $extracted : $uploaded;		
 			}
 			if ($updated)
 			{
@@ -791,7 +792,14 @@ class plgProjectsFiles extends JPlugin
 				$jsession->set('projects.' . $this->_project->alias . '.updated', '');
 								
 				// Save referenced files
-				$ref .= $uploaded ? ', ' . $updated : $updated;
+				if ($extracted)
+				{
+					$ref .= $extracted;
+				}
+				else
+				{
+					$ref .= $uploaded ? ', ' . $updated : $updated;
+				}
 			}
 						
 			$activity  = $message . ' ' . strtolower(JText::_('COM_PROJECTS_IN_PROJECT_FILES')) ;
@@ -852,7 +860,7 @@ class plgProjectsFiles extends JPlugin
 			
 			if (strlen($ref) > 255)
 			{
-				$ref = ProjectHtml::shortenText($ref);
+				$ref = ProjectsHtml::shortenText($ref);
 			}
 							
 			$aid = $objAA->recordActivity( $this->_project->id, 
@@ -1619,6 +1627,12 @@ class plgProjectsFiles extends JPlugin
 		$extractPath = $prefix . $temp_path . DS . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 );
 		$z 			 = 0;
 		$unzipto 	 = $subdir ? $prefix . $path . DS . $subdir : $prefix . $path;
+		
+		// Get session
+		$jsession = JFactory::getSession();
+		
+		// Get values from session
+		$exVal = $jsession->get('projects.' . $this->_project->alias . '.extracted');
 
 		// Create dir to extract into					
 		if (!is_dir($extractPath))
@@ -1714,16 +1728,15 @@ class plgProjectsFiles extends JPlugin
 						
 						if ($this->_task != 'saveprov')
 						{
-							// Git add
+							// Git add & commit
 							$this->_git->gitAdd($path, $afile, $commitMsgZip);
+							$this->_git->gitCommit($path, $commitMsgZip); 
 							
-							// Commit every 10 items
-							//if ($z % 10 == 0)
-							//{
-								$this->_git->gitCommit($path, $commitMsgZip); 
-							//}	
+							// Save in session
+							$exVal = $exVal ? $exVal . ', ' . $afile : $afile;
+							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );							
 						}
-						
+												
 						$z++;																	
 					}
 				}						
@@ -1772,6 +1785,12 @@ class plgProjectsFiles extends JPlugin
 		$reserved = ProjectsHelper::getParamArray(
 			$this->_params->get('reservedNames'));
 			
+		// Get session
+		$jsession = JFactory::getSession();
+
+		// Get values from session
+		$exVal = $jsession->get('projects.' . $this->_project->alias . '.extracted');
+				
 		// Do virus check
 		if (ProjectsHelper::virusCheck($tmp_name))
 		{
@@ -1892,14 +1911,12 @@ class plgProjectsFiles extends JPlugin
 
 						if ($this->_task != 'saveprov')
 						{
-							// Git add
+							// Git add & commit
 							$this->_git->gitAdd($path, $afile, $commitMsgZip);
+							$this->_git->gitCommit($path, $commitMsgZip); 
 							
-							// Commit every 10 items
-							//if ($z % 10 == 0)
-							//{
-								$this->_git->gitCommit($path, $commitMsgZip); 
-							//}	
+							$exVal = $exVal ? $exVal . ', ' . $afile : $afile;
+							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );							
 						}
 						
 						$z++;																
