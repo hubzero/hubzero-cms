@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'EmailToken.php');
 
 
 /**
