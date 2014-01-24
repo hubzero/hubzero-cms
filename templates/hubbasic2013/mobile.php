@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 //import need HUBzero libraries
 ximport('Hubzero_Document');
-ximport('Hubzero_Device');
 
 $config = JFactory::getConfig();
 
