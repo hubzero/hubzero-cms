@@ -158,39 +158,7 @@ class JobsHtml
 	 */
 	public function wikiHelp()
 	{
-		$out  = '<table class="wiki-reference" summary="Wiki Syntax Reference">' . "\n";
-		$out .= '<caption>Wiki Syntax Reference</caption>' . "\n";
-		$out .= '	<tbody>' . "\n";
-		$out .= '		<tr>' . "\n";
-		$out .= '			<td>\'\'\'bold\'\'\'</td>' . "\n";
-		$out .= '			<td><b>bold</b></td>' . "\n";
-		$out .= '		</tr>' . "\n";
-		$out .= '		<tr>' . "\n";
-		$out .= '			<td>\'\'italic\'\'</td>' . "\n";
-		$out .= '			<td><i>italic</i></td>' . "\n";
-		$out .= '		</tr>' . "\n";
-		$out .= '		<tr>' . "\n";
-		$out .= '			<td>__underline__</td>' . "\n";
-		$out .= '			<td><span style="text-decoration:underline;">underline</span></td>' . "\n";
-		$out .= '		</tr>' . "\n";
-		$out .= '		<tr>' . "\n";
-		$out .= '			<td>{{{monospace}}}</td>' . "\n";
-		$out .= '			<td><code>monospace</code></td>' . "\n";
-		$out .= '		</tr>' . "\n";
-		$out .= '		<tr>' . "\n";
-		$out .= '			<td>~~strike-through~~</td>' . "\n";
-		$out .= '		<td><del>strike-through</del></td>' . "\n";
-		$out .= '		</tr>' . "\n";
-		$out .= '		<tr>' . "\n";
-		$out .= '			<td>^superscript^</td>' . "\n";
-		$out .= '			<td><sup>superscript</sup></td>' . "\n";
-		$out .= '		</tr>' . "\n";
-		$out .= '		<tr>' . "\n";
-		$out .= '			<td>,,subscript,,</td>' . "\n";
-		$out .= '			<td><sub>subscript</sub></td>' . "\n";
-		$out .= '		</tr>' . "\n";
-		$out .= '	</tbody>' . "\n";
-		$out .= '</table>' . "\n";
+		$out  = '';
 
 		return $out;
 	}

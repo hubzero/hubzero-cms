@@ -198,47 +198,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					<?php echo JText::_('PLG_MEMBERS_BLOG_NO_COMMENTS'); ?>
 				</p>
 			<?php } ?>
-		</div>
-		<div class="clear"></div>
 
-
-		<div class="aside aside-below">
-			<table class="wiki-reference">
-				<caption>Wiki Syntax Reference</caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-				</tbody>
-			</table>
-		</div><!-- / .aside -->
-
-		<div class="subject below">
 			<h3>
 				<a name="post-comment"></a>
 				<?php echo JText::_('Post a comment'); ?>

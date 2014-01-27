@@ -64,44 +64,6 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
 			<label for="entrycontent">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
-				<span class="syntax hint"><a class="tooltips popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
-					<tbody>
-						<tr>
-							<td>'''bold'''</td>
-							<td><b>bold</b></td>
-						</tr>
-						<tr>
-							<td>''italic''</td>
-							<td><i>italic</i></td>
-						</tr>
-						<tr>
-							<td>__underline__</td>
-							<td><span style=&quot;text-decoration:underline;&quot;>underline</span></td>
-						</tr>
-						<tr>
-							<td>{{{monospace}}}</td>
-							<td><code>monospace</code></td>
-						</tr>
-						<tr>
-							<td>~~strike-through~~</td>
-							<td><del>strike-through</del></td>
-						</tr>
-						<tr>
-							<td>^superscript^</td>
-							<td><sup>superscript</sup></td>
-						</tr>
-						<tr>
-							<td>,,subscript,,</td>
-							<td><sub>subscript</sub></td>
-						</tr>
-						<tr>
-							<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>&quot;>[[Image(filename.jpg)]]</a> includes an image</td>
-						</tr>
-						<tr>
-							<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>&quot;>[[File(filename.pdf)]]</a> includes a file</td>
-						</tr>
-					</tbody>
-				</table>">Wiki formatting</a> is allowed.</span>
 				<?php
 				ximport('Hubzero_Wiki_Editor');
 				echo Hubzero_Wiki_Editor::getInstance()->display('entry[content]', 'entrycontent', stripslashes($this->entry->get('content')), '', '50', '30');

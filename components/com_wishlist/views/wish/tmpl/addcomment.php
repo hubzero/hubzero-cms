@@ -46,43 +46,11 @@ if (!$this->juser->get('guest')) {
 			</h3>
 			<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
 				<div class="aside">
-					<table class="wiki-reference">
-						<caption>Wiki Syntax Reference</caption>
-						<tbody>
-							<tr>
-								<td>'''bold'''</td>
-								<td><b>bold</b></td>
-							</tr>
-							<tr>
-								<td>''italic''</td>
-								<td><i>italic</i></td>
-							</tr>
-							<tr>
-								<td>__underline__</td>
-								<td><span style="text-decoration:underline;">underline</span></td>
-							</tr>
-							<tr>
-								<td>{{{monospace}}}</td>
-								<td><code>monospace</code></td>
-							</tr>
-							<tr>
-								<td>~~strike-through~~</td>
-								<td><del>strike-through</del></td>
-							</tr>
-							<tr>
-								<td>^superscript^</td>
-								<td><sup>superscript</sup></td>
-							</tr>
-							<tr>
-								<td>,,subscript,,</td>
-								<td><sub>subscript</sub></td>
-							</tr>
-						</tbody>
-					</table>
+
 				</div><!-- / .aside -->
 				<div class="subject">
 					<p class="comment-member-photo">
-						<span class="comment-anchor"><a name="answerform"></a></span>
+						<span class="comment-anchor"></span>
 					<?php
 						if (!$this->juser->get('guest')) {
 							$jxuser = new Hubzero_User_Profile();
@@ -144,7 +112,7 @@ if (!$this->juser->get('guest')) {
 								<strong><?php echo JText::_('COM_WISHLIST_COMMENT_KEEP_POLITE'); ?></strong>
 							</p>
 							<p>
-								<?php echo JText::_('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?> <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+								<?php echo JText::_('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?>
 							</p>
 						</div>
 					</fieldset>

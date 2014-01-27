@@ -878,39 +878,6 @@ if ($this->wishlist && $this->wish) {
 				</p>
 			<?php } else { ?>
 				<p><?php echo JText::_('COM_WISHLIST_PLAN_DEADLINE_EXPLANATION'); ?></p>
-				<table class="wiki-reference">
-					<caption>Wiki Syntax Reference</caption>
-					<tbody>
-						<tr>
-							<td>'''bold'''</td>
-							<td><b>bold</b></td>
-						</tr>
-						<tr>
-							<td>''italic''</td>
-							<td><i>italic</i></td>
-						</tr>
-						<tr>
-							<td>__underline__</td>
-							<td><span style="text-decoration:underline;">underline</span></td>
-						</tr>
-						<tr>
-							<td>{{{monospace}}}</td>
-							<td><code>monospace</code></td>
-						</tr>
-						<tr>
-							<td>~~strike-through~~</td>
-							<td><del>strike-through</del></td>
-						</tr>
-						<tr>
-							<td>^superscript^</td>
-							<td><sup>superscript</sup></td>
-						</tr>
-						<tr>
-							<td>,,subscript,,</td>
-							<td><sub>subscript</sub></td>
-						</tr>
-					</tbody>
-				</table>
 			<?php } ?>
 			</div><!-- / .aside -->
 			<div class="subject" id="full_plan">
@@ -955,7 +922,6 @@ if ($this->wishlist && $this->wish) {
 					<?php } ?>
 					<label>
 						<?php echo JText::_('COM_WISHLIST_ACTION_INSERT_TEXT'); ?> 
-						(<?php echo JText::_('COM_WISHLIST_ACTION_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" class="popup 400x500"><?php echo JText::_('COM_WISHLIST_WIKI_FORMATTING'); ?></a>)	
 						<textarea name="pagetext" id="pagetext" rows="40" cols="35"><?php echo isset($this->wish->plan->pagetext) ? $this->escape($this->wish->plan->pagetext) : ''; ?></textarea>
 					</label>
 					
@@ -976,7 +942,7 @@ if ($this->wishlist && $this->wish) {
 					
 					<div class="sidenote">
 						<p>
-							<?php echo JText::_('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?> <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+							<?php echo JText::_('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?>
 						</p>
 					</div>
 			<?php } else if (!$this->wish->plan) { ?>
