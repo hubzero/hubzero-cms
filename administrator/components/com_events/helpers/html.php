@@ -106,7 +106,7 @@ class EventsHtml
 	 * @param      array $selected Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected )
+	public static function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected )
 	{
 		$html = '';
 		for ($i=0, $n=count( $arr ); $i < $n; $i++ )
@@ -143,7 +143,7 @@ class EventsHtml
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function buildCategorySelect($catid, $args, $gid, $option)
+	public static function buildCategorySelect($catid, $args, $gid, $option)
 	{
 		$database = JFactory::getDBO();
 
@@ -177,7 +177,7 @@ class EventsHtml
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function buildReccurDaySelect($reccurday, $tag_name, $args)
+	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('COM_EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
 							JText::_('COM_EVENTS_CAL_LANG_MONDAYSHORT'),
@@ -205,7 +205,7 @@ class EventsHtml
 	 * @param      string $args Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function buildWeekDaysCheck($reccurweekdays, $args)
+	public static function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('COM_EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
 							JText::_('COM_EVENTS_CAL_LANG_MONDAYSHORT'),
@@ -246,7 +246,7 @@ class EventsHtml
 	 * @param      string $args Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function buildWeeksCheck($reccurweeks, $args)
+	public static function buildWeeksCheck($reccurweeks, $args)
 	{
 		$week_name = array('',
 							JText::_('COM_EVENTS_CAL_LANG_REP_WEEK').' 1<br />',
@@ -315,7 +315,7 @@ class EventsHtml
 	 * @param      unknown $newcolor Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getColorBar($event_id=NULL,$newcolor)
+	public static function getColorBar($event_id=NULL,$newcolor)
 	{
 		$database = JFactory::getDBO();
 
@@ -389,7 +389,7 @@ class EventsHtml
 	 * @param      unknown $b Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function fieldSorter($a, $b)
+	public static function fieldSorter($a, $b)
 	{
 		return EventsHtml::$field_ordering[$a] < EventsHtml::$field_ordering[$b] ? -1 : 1;
 	}
@@ -402,7 +402,7 @@ class EventsHtml
 	 * @param      unknown $val Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function quoteCsv($val)
+	public static function quoteCsv($val)
 	{
 		if (!isset($val)) return '';
 		if (strpos($val, "\n") !== false || strpos($val, ',') !== false)
@@ -419,7 +419,7 @@ class EventsHtml
 	 * @param      unknown $vals Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function quoteCsvRow($vals)
+	public static function quoteCsvRow($vals)
 	{
 		return implode(',', array_map(array('EventsHtml', 'quoteCsv'), $vals))."\n";
 	}
@@ -433,7 +433,7 @@ class EventsHtml
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function downloadlist($resp, $option)
+	public static function downloadlist($resp, $option)
 	{
 		$database = JFactory::getDBO();
 		$ee = new EventsEvent( $database );
