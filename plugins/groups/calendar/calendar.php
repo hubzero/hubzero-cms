@@ -1403,6 +1403,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		
 		$r = $race;
 		unset($r['nativetribe']);
+		$r = (empty($r)) ? array() : $r;
 		$sql = "INSERT INTO #__events_respondent_race_rel(respondent_id,race,tribal_affiliation) 
 		        VALUES(".$this->database->quote( $eventsRespondent->id ).", ".$this->database->quote( implode(',', $r) ).", ".$this->database->quote( $race['nativetribe'] ).")";
 		$this->database->setQuery( $sql );
