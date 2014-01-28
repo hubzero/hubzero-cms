@@ -39,39 +39,7 @@ $juser = JFactory::getUser();
 <?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<table class="wiki-reference">
-				<caption><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_WIKI_SYNTAX_REFERENCE'); ?></caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-				</tbody>
-			</table>
+			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_HINT'); ?></p>
 		</div><!-- /.aside -->
 		<fieldset>
 			<legend>

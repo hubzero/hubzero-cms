@@ -16,39 +16,7 @@ ximport('Hubzero_User_Profile_Helper');
 <?php } ?>
 	</h3>			
 	<div class="aside">
-		<table class="wiki-reference" summary="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_WIKI_SYNTAX_REFERENCE'); ?>">
-			<caption><?php echo JText::_('PLG_COURSES_DISCUSSIONS_WIKI_SYNTAX_REFERENCE'); ?></caption>
-			<tbody>
-				<tr>
-					<td>'''bold'''</td>
-					<td><b>bold</b></td>
-				</tr>
-				<tr>
-					<td>''italic''</td>
-					<td><i>italic</i></td>
-				</tr>
-				<tr>
-					<td>__underline__</td>
-					<td><span style="text-decoration:underline;">underline</span></td>
-				</tr>
-				<tr>
-					<td>{{{monospace}}}</td>
-					<td><code>monospace</code></td>
-				</tr>
-				<tr>
-					<td>~~strike-through~~</td>
-					<td><del>strike-through</del></td>
-				</tr>
-				<tr>
-					<td>^superscript^</td>
-					<td><sup>superscript</sup></td>
-				</tr>
-				<tr>
-					<td>,,subscript,,</td>
-					<td><sub>subscript</sub></td>
-				</tr>
-			</tbody>
-		</table>
+		<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_HINT'); ?></p>
 	</div><!-- /.aside -->
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions'); ?>" method="post" id="commentform">
@@ -57,14 +25,13 @@ ximport('Hubzero_User_Profile_Helper');
 				<?php
 				$jxuser = new Hubzero_User_Profile();
 				$jxuser->load($juser->get('id'));
-				$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 				?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 			</p>
 
 			<fieldset>
 				<label for="field-section_id">
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_SECTION'); ?>
+					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_SECTION'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REQUIRED'); ?></span>
 					<select name="fields[section_id]" id="field-section_id">
 						<option value="0"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_SECTION_SELECT'); ?></option>
 					<?php foreach ($this->sections as $section) { ?>
@@ -74,7 +41,7 @@ ximport('Hubzero_User_Profile_Helper');
 				</label>
 				
 				<label for="field-title">
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_TITLE'); ?>
+					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REQUIRED'); ?></span>
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->model->title)); ?>" />
 				</label>
 				
@@ -98,7 +65,7 @@ ximport('Hubzero_User_Profile_Helper');
 
 				<div class="sidenote">
 					<p>
-						<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_WIKI_HINT'); ?>
+						<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_EDIT_HINT'); ?>
 					</p>
 				</div>
 			</fieldset>
