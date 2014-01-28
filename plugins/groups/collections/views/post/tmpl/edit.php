@@ -56,7 +56,6 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
-ximport('Hubzero_Wiki_Editor');
 $editor = Hubzero_Wiki_Editor::getInstance();
 
 $dir = $item->get('id');
@@ -175,42 +174,6 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 <?php } ?>
 				<label for="field_description">
 					<?php echo JText::_('Description'); ?> <!-- <span class="optional">optional</span> -->
-					<span class="syntax hint">limited <a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
-								<tbody>
-									<tr>
-										<td>'''bold'''</td>
-										<td><b>bold</b></td>
-									</tr>
-									<tr>
-										<td>''italic''</td>
-										<td><i>italic</i></td>
-									</tr>
-									<tr>
-										<td>__underline__</td>
-										<td><span style=&quot;text-decoration:underline;&quot;>underline</span></td>
-									</tr>
-									<tr>
-										<td>{{{monospace}}}</td>
-										<td><code>monospace</code></td>
-									</tr>
-									<tr>
-										<td>~~strike-through~~</td>
-										<td><del>strike-through</del></td>
-									</tr>
-									<tr>
-										<td>^superscript^</td>
-										<td><sup>superscript</sup></td>
-									</tr>
-									<tr>
-										<td>,,subscript,,</td>
-										<td><sub>subscript</sub></td>
-									</tr>
-									<tr>
-										<td>[http://hubzero.org A link]</td>
-										<td><a href=&quot;http://hubzero.org&quot;>A link</a></td>
-									</tr>
-								</tbody>
-							</table>">Wiki formatting</a> is allowed.</span>
 					<?php if ($this->entry->get('original')) { ?>
 						<?php echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($item->get('description'))), 'minimal no-footer', '50', '5'); ?>
 						<!-- <textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($item->get('description'))); ?></textarea> -->

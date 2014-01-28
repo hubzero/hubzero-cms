@@ -1,5 +1,35 @@
-<?php 
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2013 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 defined('_JEXEC') or die('Restricted access');
+
 $juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('thread');
@@ -8,8 +38,6 @@ $this->category->set('section_alias', $this->filters['section']);
 
 $this->thread->set('section', $this->filters['section']);
 $this->thread->set('category', $this->category->get('alias'));
-
-ximport('Hubzero_User_Profile_Helper');
 ?>
 <ul id="page_options">
 	<li>
@@ -158,39 +186,7 @@ ximport('Hubzero_User_Profile_Helper');
 		<?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?>
 	</h3>
 	<div class="aside">
-		<table class="wiki-reference">
-			<caption>Wiki Syntax Reference</caption>
-			<tbody>
-				<tr>
-					<td>'''bold'''</td>
-					<td><b>bold</b></td>
-				</tr>
-				<tr>
-					<td>''italic''</td>
-					<td><i>italic</i></td>
-				</tr>
-				<tr>
-					<td>__underline__</td>
-					<td><span style="text-decoration:underline;">underline</span></td>
-				</tr>
-				<tr>
-					<td>{{{monospace}}}</td>
-					<td><code>monospace</code></td>
-				</tr>
-				<tr>
-					<td>~~strike-through~~</td>
-					<td><del>strike-through</del></td>
-				</tr>
-				<tr>
-					<td>^superscript^</td>
-					<td><sup>superscript</sup></td>
-				</tr>
-				<tr>
-					<td>,,subscript,,</td>
-					<td><sub>subscript</sub></td>
-				</tr>
-			</tbody>
-		</table>
+		<p><?php echo JText::_('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>
 	</div><!-- /.aside -->
 	<div class="subject">
 		<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" enctype="multipart/form-data">
@@ -219,9 +215,8 @@ ximport('Hubzero_User_Profile_Helper');
 				</p>
 				
 				<label for="field_comment">
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?>
+					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
-					ximport('Hubzero_Wiki_Editor');
 					echo Hubzero_Wiki_Editor::getInstance()->display('fields[comment]', 'field_comment', '', '', '35', '15');
 					?>
 				</label>
@@ -268,9 +263,6 @@ ximport('Hubzero_User_Profile_Helper');
 				<div class="sidenote">
 					<p>
 						<strong><?php echo JText::_('PLG_GROUPS_FORUM_KEEP_POLITE'); ?></strong>
-					</p>
-					<p>
-						<?php echo JText::_('PLG_GROUPS_FORUM_WIKI_HINT'); ?>
 					</p>
 				</div>
 			</fieldset>

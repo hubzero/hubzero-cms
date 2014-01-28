@@ -59,7 +59,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 		<legend><?php echo JText::_('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
 
 		<label<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-			<?php echo JText::_('PLG_GROUPS_BLOG_TITLE'); ?>
+			<?php echo JText::_('PLG_GROUPS_BLOG_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
 			<input type="text" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
@@ -67,47 +67,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 		<?php } ?>
 		
 		<label for="entry_content">
-			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?>
-			<span class="syntax hint"><a class="tooltips popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style=&quot;text-decoration:underline;&quot;>underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-					<tr>
-						<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>&quot;>[[Image(filename.jpg)]]</a> includes an image</td>
-					</tr>
-					<tr>
-						<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>&quot;>[[File(filename.pdf)]]</a> includes a file</td>
-					</tr>
-				</tbody>
-			</table>">Wiki formatting</a> is allowed.</span>
+			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
 			<?php 
-			ximport('Hubzero_Wiki_Editor');
 			echo Hubzero_Wiki_Editor::getInstance()->display('entry[content]', 'entry_content', $this->escape(stripslashes($this->entry->get('content'))), '', '50', '30'); ?>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
@@ -130,35 +91,41 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			<?php } ?>
 			<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_TAGS_HINT'); ?></span>
 		</label>
-			
-		<div class="group">
-			<label>
-				<input type="checkbox" class="option" name="entry[allow_comments]" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
-				<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
-			</label>
 
-			<label>
-				<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PRIVACY'); ?>
-				<select name="entry[state]">
-					<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC'); ?></option>
-					<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED'); ?></option>
-					<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_STATE_PRIVATE'); ?></option>
-				</select>
-			</label>
+		<div class="grid">
+			<div class="col span6">
+				<label for="field-allow_comments">
+					<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
+					<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
+				</label>
+			</div>
+			<div class="col span6 omega">
+				<label for="field-state">
+					<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PRIVACY'); ?>
+					<select name="entry[state]" id="field-state">
+						<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC'); ?></option>
+						<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED'); ?></option>
+						<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_STATE_PRIVATE'); ?></option>
+					</select>
+				</label>
+			</div>
 		</div>
-		
-		<div class="group">
-			<label for="field-publish_up">
-				<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_UP'); ?>
-				<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
-				<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
-			</label>
 
-			<label for="field-publish_down">
-				<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_DOWN'); ?>
-				<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
-				<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
-			</label>
+		<div class="grid">
+			<div class="col span6">
+				<label for="field-publish_up">
+					<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_UP'); ?>
+					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+					<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+				</label>
+			</div>
+			<div class="col span6 omega">
+				<label for="field-publish_down">
+					<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_DOWN'); ?>
+					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
+					<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+				</label>
+			</div>
 		</div>
 	</fieldset>
 	<div class="clear"></div>

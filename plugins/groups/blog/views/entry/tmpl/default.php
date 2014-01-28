@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_Wiki_Editor');
-
 $juser = JFactory::getUser();
 $editor = Hubzero_Wiki_Editor::getInstance();
 
@@ -195,10 +192,9 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 				</a>
 			</p>
 		</div><!-- / .aside -->
-		
+
 		<div class="subject below">
 			<h3 class="below_heading">
-				<a name="comments"></a>
 				<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
@@ -226,48 +222,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 					<?php echo JText::_('PLG_GROUPS_BLOG_NO_COMMENTS'); ?>
 				</p>
 			<?php } ?>
-		</div><!-- / .subject -->
-		<div class="clear"></div>
 
-		<div class="aside aside-below">
-			<table class="wiki-reference" summary="Wiki Syntax Reference">
-				<caption>Wiki Syntax Reference</caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-				</tbody>
-			</table>
-		</div><!-- / .aside -->
-	
-		<div class="subject below">
 			<h3 class="below_heading">
-				<a name="post-comment"></a>
 				<?php echo JText::_('Post a comment'); ?>
 			</h3>
 
