@@ -96,6 +96,13 @@ class UsersViewLogin extends JViewLegacy
 			}
 		}
 
+		// Set return if is isn't already
+		if (is_null($return) && is_object($active))
+		{
+			$return = $active->params->get('login_redirect_url', '/members/myaccount');
+			$return = base64_encode($return);
+		}
+
 		// Figure out whether or not any of our third party auth plugins are turned on 
 		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
 		$multiAuth      = false;
