@@ -110,19 +110,19 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 				</label>
 			</div>
 		</div>
-
+		
 		<div class="grid">
 			<div class="col span6">
 				<label for="field-publish_up">
 					<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_UP'); ?>
-					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s'))); ?>" />
 					<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 			</div>
 			<div class="col span6 omega">
 				<label for="field-publish_down">
 					<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_DOWN'); ?>
-					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
+					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s'))); ?>" />
 					<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 			</div>

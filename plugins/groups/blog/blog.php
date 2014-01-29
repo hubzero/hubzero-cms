@@ -709,10 +709,20 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
-
+		
+		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
+		{
+			$entry['publish_up']   = JFactory::getDate($entry['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+		
+		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
+		{
+			$entry['publish_down'] = JFactory::getDate($entry['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+		
 		// Instantiate model
 		$row = $this->model->entry($entry['id']);
-
+		
 		// Bind data
 		if (!$row->bind($entry)) 
 		{
