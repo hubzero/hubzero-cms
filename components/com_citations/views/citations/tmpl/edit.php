@@ -392,15 +392,12 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 							echo ' <option value=""';
 							echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"': '';
 							echo '>'.JText::_('COM_CITATIONS_SELECT').'</option>'."\n";
-							//echo ' <option value="content"';
-							//echo ($this->assocs[$i]->tbl == 'content') ? ' selected="selected"': '';
-							//echo '>'.JText::_('CONTENT').'</option>'."\n";
 							echo ' <option value="resource"';
 							echo ($this->assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
 							echo '>'.JText::_('COM_CITATIONS_RESOURCE').'</option>'."\n";
-							//echo ' <option value="topic"';
-							//echo ($this->assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
-							//echo '>'.JText::_('TOPIC').'</option>'."\n";
+							echo ' <option value="publication"';
+							echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
+							echo '>'.JText::_('COM_CITATIONS_PUBLICATION').'</option>'."\n";
 							echo '</select></td>'."\n";
 							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" /></td>'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
