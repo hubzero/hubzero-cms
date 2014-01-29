@@ -436,7 +436,10 @@ class BlogControllerEntries extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
-
+		
+		// make sure we dont want to turn off comments
+		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
+		
 		$row = $this->model->entry(0);
 
 		if (!$row->bind($entry)) 
