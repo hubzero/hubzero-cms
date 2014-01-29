@@ -121,7 +121,7 @@ class plgCronCache extends JPlugin
 		$docs = array();
 		jimport('joomla.filesystem.file');
 
-		$dirIterator = new DirectoryIterator($this->path);
+		$dirIterator = new DirectoryIterator($this->_path);
 		foreach ($dirIterator as $file)
 		{
 			if ($file->isDot() || $file->isDir())

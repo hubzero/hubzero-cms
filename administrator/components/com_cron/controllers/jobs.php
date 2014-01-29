@@ -183,10 +183,10 @@ class CronControllerJobs extends Hubzero_Controller
 			}
 		}
 
-		$query = "SELECT p.* FROM #__extensions AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering";
+		$query = "SELECT p.* FROM `#__extensions` AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering";
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$query = "SELECT p.* FROM #__plugins AS p WHERE p.folder='cron' AND published=1 ORDER BY p.ordering";
+			$query = "SELECT p.* FROM `#__plugins` AS p WHERE p.folder='cron' AND published=1 ORDER BY p.ordering";
 		}
 		$this->database->setQuery($query);
 		$this->view->plugins = $this->database->loadObjectList();
@@ -358,7 +358,7 @@ class CronControllerJobs extends Hubzero_Controller
 				continue;
 			}
 
-			$job->set('last_run', JFactory::getDate()->toSql());
+			$job->set('last_run', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m-d H:i:s'));
 			$job->set('next_run', $job->nextRun());
 			$job->store();
 

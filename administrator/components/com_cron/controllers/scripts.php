@@ -47,7 +47,7 @@ class CronControllerScripts extends JObject
 	{
 		$this->database = JFactory::getDBO();
 
-		$model = new CronJob($this->database);
+		$model = new CronTableJob($this->database);
 
 		$this->filters = array(
 			'state'    => 1,
