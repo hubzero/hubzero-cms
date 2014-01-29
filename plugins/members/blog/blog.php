@@ -599,7 +599,10 @@ class plgMembersBlog extends JPlugin
 		}
 
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
-
+		
+		// make sure we dont want to turn off comments
+		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
+		
 		// Instantiate model
 		$row = $this->model->entry($entry['id']);
 
