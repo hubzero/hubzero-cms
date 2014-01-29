@@ -281,7 +281,7 @@ function popratings()
 			<tr>
 				<th><?php echo JText::_('Created:'); ?></th>
 				<td>
-					<?php echo $this->row->created; ?>
+					<?php echo JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_LC2')); ?>
 				</td>
 			</tr>
 			<tr>
@@ -295,7 +295,7 @@ function popratings()
 			<tr>
 				<th><?php echo JText::_('Modified:'); ?></th>
 				<td>
-					<?php echo $this->row->modified; ?>
+					<?php echo JHTML::_('date', $this->row->modified, JText::_('DATE_FORMAT_LC2')); ?>
 				</td>
 			</tr>
 			<tr>
@@ -386,13 +386,21 @@ function popratings()
 				<tr>
 					<td class="paramlist_key"><label for="publish_up">Start Publishing:</label></th>
 					<td>
-						<?php echo JHTML::_('calendar', $this->row->publish_up, 'publish_up', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+						<?php $up = JHTML::_('date', $this->row->publish_up, 'Y-m-d H:i:s'); ?>
+						<?php echo JHTML::_('calendar', $up, 'publish_up', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 					</td>
 				</tr>
 				<tr>
 					<td class="paramlist_key"><label for="publish_down">Finish Publishing:</label></th>
 					<td>
-						<?php echo JHTML::_('calendar', $this->row->publish_down, 'publish_down', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+						<?php
+							$down = 'Never';
+							if (strtolower($this->row->publish_down) != 'never')
+							{
+								$down = JHTML::_('date', $this->row->publish_down, 'Y-m-d H:i:s');
+							}
+						?>
+						<?php echo JHTML::_('calendar', $down, 'publish_down', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 					</td>
 				</tr>
 <?php } ?>
