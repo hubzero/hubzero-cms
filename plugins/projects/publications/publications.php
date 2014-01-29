@@ -3363,10 +3363,7 @@ class plgProjectsPublications extends JPlugin
 		// Get attachment info
 		$att = new PublicationAttachment( $this->_database );
 		$att->loadAttachment($vid, $item, $type );
-				
-		// Get helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
-		
+						
 		// Get project file path
 		$project_path = ProjectsHelper::getProjectPath($this->_project->alias, 
 				$this->_config->get('webpath'), $this->_config->get('offroot', 0));
