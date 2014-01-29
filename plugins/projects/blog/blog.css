@@ -76,6 +76,7 @@
 		float: right;
 		color: #999;
 		margin-left: 2em;
+		margin-right: 0.5em ;
 	}
 
 /* Side blocks
@@ -142,8 +143,11 @@
 		padding: 0 3em 0 0;
 		display: inline-block;
 	}
+	.infofeed span.newline {
+		display: block;
+	}
 	.infofeed li {
-		background-position: 0 0.8em;
+		/*background-position: 0 0.8em;*/
 	}
 	.infofeed span.comment {
 		margin: 0;
@@ -157,6 +161,9 @@
 	.infofeed span.actor {
 		font-weight: bold;
 		color: #666;
+	}
+	.infofeed .mline {
+		border-right: 5px solid #FFFFFF;
 	}
 	.infofeed .mline:hover {
 		background: none !important;
@@ -187,11 +194,122 @@
 	.admin-action:before {
 		color: #fce48a !important;
 	}
-	.infofeed .blog-item img {
+	.infofeed .blog-item img.blog-author {
 		float: left;
 		margin-right: 1.3em;
 		width: 40px;
-	}	
+	}
+	.infofeed .sameline:before {
+		content: ":";
+		width: 1em;
+		height: 1em;
+		font-size: 1em;
+		color: #aaa;
+		margin-right: 0.3em;
+		margin-top: -0.1em;
+	}
+	.infofeed .newline {
+		margin-bottom: -1.5em !important;
+	}
+	
+/* New item
+--------------------------------------------- */
+	.infofeed .newitem, #plg-content .comments li.newitem {
+		background: #fff6ef;
+		border-right: 5px solid #f5ddcc;
+	}
+	.infofeed .newitem:hover {
+		background: #fcf1e9 !important;
+	}
+	.infofeed .newitem .blog-time,
+	#plg-content .comments li.newitem .c-time {
+		color: red;
+	}
+	.infofeed .newitem .blog-item div.previewnet {
+		background: #FFFFFF;
+	}
+	
+/* On-mouseover item options (in listings)
+--------------------------------------------- */
+	.m_options {
+		display: none;
+		font-size: 85%;
+		color: #999;
+		float: right;
+		margin-top: -0.5em;
+		margin: 0;
+		padding: 0;
+	}
+	.m_options span {
+		position: absolute;
+		display: block;
+		padding: 0;
+		margin-left: 0;
+	}
+	.m_options span a {
+		border: 1px solid #CCC;
+		margin: 0;
+		padding: 0 0.3em;
+		background: #FFF;
+		color: #CCC;
+	}
+	.m_options span a:hover {
+		border: 1px solid #333;
+		padding: 0 0.3em;
+		background: #333;
+		color: #FFF;
+	}
+
+/* Preview net
+--------------------------------------------- */
+
+	.infofeed .blog-item div.previewnet {
+		display: block;
+		background: #e4ecee;
+		padding: 0;
+		margin: 0;
+		text-align: center;
+		margin-top: 1.5em;
+		overflow: hidden;
+		height: 120px;
+		line-height: 120px;
+		position: relative;
+		vertical-align: middle;
+	}
+	.infofeed ul li div.previewnet {
+		padding-right: 0;	
+	}
+	.previewnet img {
+		margin: 0;
+		padding: 0;
+		min-width: 50%;
+		margin: -50% 0;
+	}
+	.previewnet img.net-multi {
+		min-width: 33%;
+		max-width: 33%;
+		float: left;
+		margin: 0;
+	}
+	.previewnet img.net-triple {
+		min-width: 33%;
+		max-width: 33%;
+		float: left;
+		margin: 0;
+	}
+	.previewnet img.net-double {
+		min-width: 50%;
+		max-width: 50%;
+		float: left;
+		margin: 0;
+	}
+	@media all and (max-width: 1100px) {
+		.previewnet img.net-double,
+		.previewnet img.net-multi,
+		.previewnet img.net-triple {
+			min-width: 50%;
+		}
+	}
 	
 /* Comment Form
 --------------------------------------------- */
@@ -233,6 +351,7 @@
 		border-bottom: 1px solid #FFF;
 		margin-right: 0;
 		clear: none;
+		border-right: 5px solid #f7f3ed;
 	}
 	#plg-content .comments .body {
 		font-size: 90%;

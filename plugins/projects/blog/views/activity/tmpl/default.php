@@ -39,16 +39,16 @@ if (count($this->activities) > 0 ) {
 		$eid = $activity['eid'];
 		$ebody = $activity['body'];
 		$comments = $activity['comments'];
-		$timeclass = $activity['timeclass'];
+		$new = $activity['new'];
 
 		?>
 			<li id="li_<?php echo $a->id; ?>">
-			<div class="mline" id="tr_<?php echo $a->id; ?>">
+			<div class="mline <?php echo $new ? ' newitem' : ''; ?>" id="tr_<?php echo $a->id; ?>">
 				<?php if($deletable) { ?>	
 				<span class="m_options"><span class="delit" id="mo_<?php echo $a->id; ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$this->goto.a.'task=view'.a.'active=feed').'/?action=delete'.a.'tbl='.$etbl.a.'eid='.$eid;  ?>">x</a></span></span>
 				<?php } ?>
-				<span class="blog-time<?php echo $timeclass; ?>"><?php echo ProjectsHtml::timeAgo($a->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?> </span>
-				<div class="blog-item"><img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($a->userid, $a->admin); ?>" alt="" />
+				<span class="blog-time"><?php echo ProjectsHtml::timeAgo($a->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?> </span>
+				<div class="blog-item"><img class="blog-author" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($a->userid, $a->admin); ?>" alt="" />
 					<span class="actor"><?php echo $a->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $a->name; ?></span>
 					<div class="<?php echo $class; ?> activity<?php if($a->admin) { echo ' admin-action'; } ?>">
 						 <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>	
@@ -56,23 +56,23 @@ if (count($this->activities) > 0 ) {
 				</div>				
 			</div>
 
-			<?php if ($a->commentable) { ?>	
+			<?php  if ($a->commentable) { ?>	
 			<span class="comment">
-				<?php if(count($comments) == 0) { ?>
+				<?php if(count($comments) == 0 && $a->commentable) { ?>
 				<a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" class="showc"><?php echo JText::_('COM_PROJECTS_COMMENT'); ?></a>
 				<?php } ?> 
-				<?php if(count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('COM_PROJECTS_COMMENT') : count($comments).' '.JText::_('COM_PROJECTS_COMMENTS'); } ?>  <?php if(isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('COM_PROJECTS_NEW').'</span>'; } ?> 
+				<?php if(count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('COM_PROJECTS_COMMENT') : count($comments).' '.JText::_('COM_PROJECTS_COMMENTS'); } ?>  <?php /*if(isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('COM_PROJECTS_NEW').'</span>'; } */ ?> 
 			</span>
 				<?php				
-			} // end if commentable ?>
+			 } // end if commentable ?>
 			<?php 
 				if (count($comments) > 0) { 
 					// Show Comments
 				?>
 				<ol class="comments" id="comments_<?php echo $a->id; ?>">
 					<?php foreach ($comments as $comment) { 
-						$ctimeclass = $this->project->lastvisit && $this->project->lastvisit <= $comment->created 
-							? ' class="urgency"' : '';
+						$newComment = $this->project->lastvisit && $this->project->lastvisit <= $comment->created 
+							? true : false;
 						
 						// Is user allowed to delete item?
 						$deletable = ($comment->created_by == $this->uid or $this->project->role == 1) ? 1 : 0;
@@ -88,7 +88,7 @@ if (count($this->activities) > 0 ) {
 						$longComment = ProjectsHtml::replaceUrls($longComment, 'external');
 						$shortComment = ProjectsHtml::replaceUrls($shortComment, 'external');
 					?>
-					<li class="quote" id="c_<?php echo $comment->id; ?>">
+					<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
 						<?php if($deletable) { ?>
 							<span class="m_options">
 								<span class="delit" id="pu_<?php echo $comment->id; ?>">
@@ -108,8 +108,11 @@ if (count($this->activities) > 0 ) {
 								echo '<span class="fullbody hidden">' . $longComment . '</span>' ;
 								}
 						?>
-						<span class="block mini faded"><?php echo $author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo ProjectsHtml::timeAgo($comment->created).' '.JText::_('COM_PROJECTS_AGO'); ?></span></span>
-						
+						<span class="block mini faded"><?php echo $author; ?> &middot; 
+							<span class="c-time">
+								<?php echo ProjectsHtml::timeAgo($comment->created).' '.JText::_('COM_PROJECTS_AGO'); ?>
+							</span>
+						</span>						
 					</li>	
 					<?php } ?>
 				</ol>

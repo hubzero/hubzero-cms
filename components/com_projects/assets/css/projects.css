@@ -1587,49 +1587,10 @@
 		border: none;
 		border-bottom: 1px solid #E2E2E2;
 	}
-	/*
-	.com_projects #member_options #options-dock ul li:before {
-		content: "\25B6";
-		font-size: 12px;
-		margin-right: 0.3em;
-		color: #6897a4;
-	}*/
 	.com_projects #member_options #options-dock p {
 		margin: 0;
 		text-align: right;
 	}
-	
-/* On-mouseover item options (in listings)
---------------------------------------------- */
-	.m_options {
-		display: none;
-		font-size: 85%;
-		color: #999;
-		float: right;
-		margin-top: -0.5em;
-		margin: 0;
-		padding: 0;
-	}
-	.m_options span {
-		position: absolute;
-		display: block;
-		padding: 0;
-		margin-left: 0.5em;
-	}
-	.m_options span a {
-		border: 1px solid #CCC;
-		margin: 0;
-		padding: 0 0.3em;
-		background: #FFF;
-		color: #CCC;
-	}
-	.m_options span a:hover {
-		border: 1px solid #333;
-		padding: 0 0.3em;
-		background: #333;
-		color: #FFF;
-	}
-	
 	
 /* External layout 
 --------------------------------------------- */
@@ -3152,6 +3113,7 @@
 	
 /* 	Fixes for smaller screens
 --------------------------------------------- */
+	
 	@media all and (max-width: 1024px) {
 		#introduction .second {
 			background: none;

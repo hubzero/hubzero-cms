@@ -845,6 +845,12 @@ class plgProjectsFiles extends JPlugin
 			$this->_message = array('message' => JText::_('PLG_PROJECTS_FILES_SUCCESS_RESTORED') 
 				. ' ' . basename($resParts[0]), 'type' => 'success');						
 		}
+		
+		if ($extracted)
+		{
+			// Clean up session values
+			$jsession->set('projects.' . $this->_project->alias . '.extracted', '');
+		}
 				
 		// Force sync
 		if ($sync && !$prov)
@@ -1254,6 +1260,10 @@ class plgProjectsFiles extends JPlugin
 					if ($commitMsg)
 					{
 						$this->_git->gitCommit($path, $commitMsg);
+						
+						// Generate preview
+						$hash = $this->_git->gitLog($path, $fpath, '' , 'hash');
+						$this->getFilePreview($fpath, $hash, $path, $subdir);
 					}
 				}
 				
@@ -1734,7 +1744,11 @@ class plgProjectsFiles extends JPlugin
 							
 							// Save in session
 							$exVal = $exVal ? $exVal . ', ' . $afile : $afile;
-							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );							
+							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );
+							
+							// Generate preview
+							$hash = $this->_git->gitLog($path, $afile, '' , 'hash');
+							$this->getFilePreview($afile, $hash, $path, $subdir);							
 						}
 												
 						$z++;																	
@@ -1916,7 +1930,11 @@ class plgProjectsFiles extends JPlugin
 							$this->_git->gitCommit($path, $commitMsgZip); 
 							
 							$exVal = $exVal ? $exVal . ', ' . $afile : $afile;
-							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );							
+							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );
+							
+							// Generate preview
+							$hash = $this->_git->gitLog($path, $afile, '' , 'hash');
+							$this->getFilePreview($afile, $hash, $path, $subdir);							
 						}
 						
 						$z++;																
@@ -3113,7 +3131,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			$pr   = $v['remote']  ? array('id' => $v['remote'], 'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
 			$hash = $v['remote'] ? NULL : $v['hash'];
-			$preview = $this->_getFilePreview($v['file'], $hash, $path, $subdir, $pr);
+			$preview = $this->getFilePreview($v['file'], $hash, $path, $subdir, $pr);
 
 			if ($preview)
 			{
@@ -3532,7 +3550,7 @@ class plgProjectsFiles extends JPlugin
 			$hash   = ($remote && $remote['converted'] == 1) ? '' : $this->_git->gitLog($path, $fpath, '' , 'hash');
 			$medium = $render == 'medium' ? true : false;
 			$image  = ($render == 'thumb' || $render == 'medium')  
-					? $this->_getFilePreview($file, $hash, $path, $subdir, $remote, $medium)
+					? $this->getFilePreview($file, $hash, $path, $subdir, $remote, $medium)
 					: $path . DS . $fpath;
 			$image = ($render == 'thumb' || $render == 'medium') ? JPATH_ROOT . $image : $this->prefix . $image;
 			
@@ -3588,14 +3606,12 @@ class plgProjectsFiles extends JPlugin
 				// Get git object
 				$hash  	  =  $this->_git->gitLog($path, $fpath, '' , 'hash');
 				$filesize =  $this->_git->gitLog($path, $fpath, '' , 'size');
-				
-				//$filesize = ProjectsHtml::getFileAttribs( $fpath, $path, 'size', $this->prefix );
 			}
 															
 			// Get image preview
 			if (!$this->getError() && $ok == 1) 
 			{
-				$image = $this->_getFilePreview($file, $hash, $path, $subdir, $remote);	
+				$image = $this->getFilePreview($file, $hash, $path, $subdir, $remote);	
 			}
 			
 			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
@@ -4240,7 +4256,7 @@ class plgProjectsFiles extends JPlugin
 	 *
 	 * @return     array or false
 	 */
-	public function _getFilePreview( $file, $hash, $path = '', $subdir = '', $remote = NULL, $medium = false )
+	public function getFilePreview( $file, $hash, $path = '', $subdir = '', $remote = NULL, $medium = false )
 	{	
 		$image = NULL;
 		$ih = new ProjectsImgHandler();	
@@ -4256,8 +4272,9 @@ class plgProjectsFiles extends JPlugin
 		{
 			$hash .= 'med';
 		}
-			
-		$hashed = $hash ? $ih->createThumbName($file, '-' . $hash) : NULL;
+		
+		$filename = basename($file);	
+		$hashed = $hash ? $ih->createThumbName($filename, '-' . $hash) : NULL;
 		
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
@@ -4294,7 +4311,7 @@ class plgProjectsFiles extends JPlugin
 			}
 			
 			// Get file extention
-			$ext = explode('.', $file);
+			$ext = explode('.', $filename);
 			$ext = count($ext) > 1 ? end($ext) : '';
 			
 			// Image formats

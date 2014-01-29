@@ -259,7 +259,6 @@ class plgProjectsBlog extends JPlugin
 		$entry = trim(JRequest::getVar( 'blogentry', '' ));
 		
 		// Text clean-up
-	//	$entry = Hubzero_View_Helper_Html::shortenText($entry, 250, 0);
 		$entry = Hubzero_View_Helper_Html::purifyText($entry);	
 				
 		// Instantiate project microblog entry
@@ -474,11 +473,15 @@ class plgProjectsBlog extends JPlugin
 		$newc = array();
 		$skipped = array();
 		$prep = array();
+		
+		// Get project file path
+		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
+				$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 
 		// Loop through activities
 		if (count($activities) > 0 ) 
 		{
-			foreach($activities as $a) 
+			foreach ($activities as $a) 
 			{ 
 				// Is this a comment?
 				if ($a->class == 'quote') 
@@ -511,7 +514,7 @@ class plgProjectsBlog extends JPlugin
 				{
 					$shown[] = $a->id;
 					$class = $a->class ? $a->class : 'activity';
-					$timeclass = $this->_project->lastvisit && $this->_project->lastvisit <= $a->recorded ? ' urgency' : '';
+					$new = $this->_project->lastvisit && $this->_project->lastvisit <= $a->recorded ? true : false;
 
 					// Display hyperlink
 					if ($a->highlighted && $a->url) 
@@ -524,6 +527,7 @@ class plgProjectsBlog extends JPlugin
 					$eid 		= $a->id;
 					$etbl 		= 'activity';
 					$deletable 	= 0;
+					$ebody 		= '';
 
 					// Get blog entry
 					if ($class == 'blog') 
@@ -553,6 +557,38 @@ class plgProjectsBlog extends JPlugin
 						$deletable 	= 0; // Cannot delete to-do related activity
 					}
 					
+					// Get file previews
+					if ($class == 'files')
+					{
+						$files 	  = explode(',', $a->referenceid);
+						$selected = array();
+						foreach ($files as $file)
+						{
+							if (is_file( $path . DS . trim($file) ))
+							{
+								$selected[] = trim($file);
+							}
+						}
+						
+						if (!empty($selected))
+						{
+							$ebody = $this->_getFilePreviews($selected, $path);
+						}
+					}
+					
+					// Get note text
+					if ($class == 'notes')
+					{
+						// Get helper
+						$projectsHelper = new ProjectsHelper( $this->_database );
+						
+						$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
+						$group 		 = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
+						
+						// get project note						
+						$note = $projectsHelper->getSelectedNote($a->referenceid, $group, $masterscope);
+					}
+					
 					// Get app log
 					if ($class == 'tools' && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 						. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php'))
@@ -571,7 +607,6 @@ class plgProjectsBlog extends JPlugin
 						}
 					}
 
-					$ebody = '';
 					if ($body) 
 					{						
 						$shorten = ($body && strlen($body) > 250) ? 1 : 0;
@@ -583,7 +618,7 @@ class plgProjectsBlog extends JPlugin
 						
 						// Style body text
 						$ebody = '<span class="body';
-						$ebody.= strlen($shortBody) > 50 ? ' newline' : '';
+						$ebody.= strlen($shortBody) > 50 ? ' newline' : ' sameline';
 						$ebody.= '">' . $shortBody;
 						if ($shorten)
 						{
@@ -605,7 +640,7 @@ class plgProjectsBlog extends JPlugin
 
 					$prep[] = array('activity' => $a, 'eid' => $eid, 'etbl' => $etbl, 
 						'body' => $ebody, 'deletable' => $deletable, 
-						'comments' => $comments, 'class' => $class, 'timeclass' => $timeclass 
+						'comments' => $comments, 'class' => $class, 'new' => $new 
 					);
 				}
 			}
@@ -613,6 +648,95 @@ class plgProjectsBlog extends JPlugin
 
 		return $prep;
 	} 
+	
+	/**
+	 * Get File Previews
+	 * 
+	 * @param      array 	$selected    Files to display
+	 * @param      string	$path    	 Project files path
+	 * @return     void, redirect
+	 */	
+	protected function _getFilePreviews( $selected = array(), $path = '', $max = 3)
+	{		
+		if (empty($selected) || !$path)
+		{
+			return false;
+		}
+
+		$body   = '';
+		$items = array();
+		
+		// Include Git Helper
+		$this->getGitHelper();
+		
+		// Include image handler
+		$ih = new ProjectsImgHandler();	
+		
+		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
+		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
+		
+		// Collect image previews		
+		foreach ($selected as $fpath)
+		{
+			$hash   = $this->_git->gitLog($path, $fpath, '' , 'hash');
+			$hash  	= $hash ? substr($hash, 0, 10) : '';
+			$hashed = $hash ? $ih->createThumbName(basename($fpath), '-' . $hash) : NULL;
+			
+			$preview = array();
+			if ($hashed && is_file(JPATH_ROOT. $to_path . DS . $hashed)) 
+			{
+				$preview['image'] = $to_path . DS . $hashed;
+				$preview['url']   = NULL;				
+				$preview['title'] = basename($fpath);			
+				$items[] = $preview;
+			}
+		}
+		
+		// Display images if available		
+		if (count($items) > 0)
+		{
+			// Randomize
+			shuffle($items);
+			
+			$class = count($items) == 1 ? 'net-single' : 'net-multi';
+			$class = count($items) == 2 ? 'net-double' : $class;
+			$class = count($items) == 3 ? 'net-triple' : $class;
+			
+			$body  = '<div class="previewnet">';
+			$i = 1;
+			foreach ($items as $item)
+			{
+				if ($item['image'])
+				{
+					$body .= '<span class="img-container"><img class="' . $class . '" src="' . $item['image'] . '" alt="" /></span>';
+				}				
+				$i++;
+			}	
+			$body .= '</div>';		
+		}
+		
+		return $body;
+	}
+	
+	/**
+	 * Get Git helper
+	 * 
+	 *
+	 * @return     void
+	 */
+	protected function getGitHelper()
+	{
+		if (!isset($this->_git))
+		{
+			// Git helper
+			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
+			$this->_git = new ProjectsGitHelper(
+				$this->_config->get('gitpath', '/opt/local/bin/git'), 
+				0,
+				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
+			);			
+		}
+	}
 	
 	/**
 	 * Save comment
@@ -628,7 +752,6 @@ class plgProjectsBlog extends JPlugin
 		$parent_activity = JRequest::getInt( 'parent_activity', 0, 'post' );
 				
 		// Clean-up
-	//	$comment = Hubzero_View_Helper_Html::shortenText($comment, 250, 0); // now allow longer comments
 		$comment = Hubzero_View_Helper_Html::purifyText($comment);
 						
 		// Instantiate comment
