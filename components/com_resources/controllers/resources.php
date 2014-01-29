@@ -1286,6 +1286,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
+		
+		// Make sure they have access to view this resource
+		if ($this->checkGroupAccess($this->model->resource)) 
+		{
+			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			return;
+		}
 
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper($this->model->resource->id, $this->database);
