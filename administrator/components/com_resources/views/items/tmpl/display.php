@@ -147,9 +147,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$license = $rparams->get('license');
 
 	// Build some publishing info
-	$info  = JText::_('Created') . ': ' . $row->created . '<br />';
+	$info  = JText::_('Created') . ': ' . JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')) . '<br />';
 	$info .= JText::_('Created by') . ': ' . $this->escape($row->created_by) . '<br />';
-
+	
 	// Get the published status
 	$now = date( "Y-m-d H:i:s" );
 	switch ($row->published)
@@ -173,7 +173,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				$class = 'expired';
 				$task  = 'unpublish';
 			}
-			$info .= JText::_('Published').': '.$row->publish_up.'<br />';
+			
+			$info .= JText::_('Published').': '.JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')).'<br />';
 			break;
 		case 2:
 			$alt   = 'Draft (user created)';
