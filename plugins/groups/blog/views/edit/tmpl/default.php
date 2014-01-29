@@ -51,9 +51,6 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 	</li>
 </ul>
 
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
 <form action="<?php echo JRoute::_($base); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
