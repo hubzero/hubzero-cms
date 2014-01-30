@@ -35,8 +35,6 @@ if ($this->getError()) { ?>
 	<p class="error"><?php echo JText::_('MOD_FEATUREDQUESTION_MISSING_CLASS'); ?></p>
 <?php } else {
 	if ($this->row) {
-		ximport('Hubzero_View_Helper_Html');
-
 		$name = JText::_('MOD_FEATUREDQUESTION_ANONYMOUS');
 		if ($this->row->anonymous == 0) 
 		{
@@ -63,7 +61,7 @@ if ($this->getError()) { ?>
 				<?php echo $this->escape(stripslashes($this->row->subject)); ?>
 			</a>
 		<?php if ($this->row->question) { ?>
-			: <?php echo Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($this->row->question)), $this->txt_length, 0); ?>
+			: <?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>
 		<?php } ?>
 			<br />
 			<span><?php echo JText::sprintf('MOD_FEATUREDQUESTION_ASKED_BY', $name); ?></span> - 

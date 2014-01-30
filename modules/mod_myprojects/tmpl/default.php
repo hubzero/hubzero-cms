@@ -45,7 +45,7 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 			$goto  = 'alias=' . $row->alias;
 			$owned_by = JText::_('MOD_MYPROJECTS_BY').' ';
 			if($row->owned_by_group) {
-				$owned_by .= '<strong>'.Hubzero_View_Helper_Html::shortenText($row->groupname, 20, 0).'</strong>';
+				$owned_by .= '<strong>'.\Hubzero\Utility\String::truncate($row->groupname, 20).'</strong>';
 			}
 			else if($row->created_by_user == $juser->get('id')) {
 				$owned_by .= JText::_('MOD_MYPROJECTS_ME');
@@ -71,7 +71,7 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 			$i++; ?>
 			<li <?php echo $class; ?>>
 				<a href="<?php echo JRoute::_('index.php?option=com_projects'.a.'task=view'.a.$goto); ?>" title="<?php echo htmlentities(ProjectsHtml::cleanText($row->title)).' ('.$row->alias.')'; ?>"><img src="<?php echo $thumb; ?>" alt="<?php echo htmlentities(ProjectsHtml::cleanText($row->title)); ?>"  class="project-image" /></a>
-				<a href="<?php echo JRoute::_('index.php?option=com_projects'.a.'task=view'.a.$goto); ?>" title="<?php echo htmlentities(ProjectsHtml::cleanText($row->title)).' ('.$row->alias.')'; ?>"><?php echo Hubzero_View_Helper_Html::shortenText(ProjectsHtml::cleanText($row->title), 30, 0); ?></a>
+				<a href="<?php echo JRoute::_('index.php?option=com_projects'.a.'task=view'.a.$goto); ?>" title="<?php echo htmlentities(ProjectsHtml::cleanText($row->title)).' ('.$row->alias.')'; ?>"><?php echo \Hubzero\Utility\String::truncate(ProjectsHtml::cleanText($row->title), 30); ?></a>
 				<span class="sub"><?php echo $owned_by; ?> | <?php echo $role; ?> <?php if($setup) { echo ' | '.$setup; } else if($row->state == 0) { echo ' | '.JText::_('MOD_MYPROJECTS_STATUS_SUSPENDED') ; } ?><?php if($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?>	</span>
 			</li>
 <?php

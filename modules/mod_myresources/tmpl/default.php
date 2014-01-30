@@ -80,7 +80,7 @@ if (!$this->no_html) {
 			?>
 				<li class="<?php echo $class; ?>">
 					<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->contributions[$i]->id); ?>">
-						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->contributions[$i]->title), 40, 0); ?>
+						<?php echo \Hubzero\Utility\String::truncate(stripslashes($this->contributions[$i]->title), 40); ?>
 					</a>
 					<span class="under">
 						<?php echo $thedate . ' &nbsp; ' . $this->escape(stripslashes($this->contributions[$i]->typetitle)); ?>

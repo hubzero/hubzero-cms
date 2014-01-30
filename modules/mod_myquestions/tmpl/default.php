@@ -32,8 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
-
-ximport('Hubzero_View_Helper_Html');
 ?>
 	<h4>
 		<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS'); ?> 
@@ -51,7 +49,7 @@ ximport('Hubzero_View_Helper_Html');
 			?>
 			<li class="question">
 				<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->openquestions[$i]->id); ?>">
-					<?php echo $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->openquestions[$i]->subject), 60, 0)); ?>
+					<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->openquestions[$i]->subject), 60)); ?>
 				</a>
 				<span><span class="responses_<?php echo $rclass; ?>"><?php echo $rcount; ?></span></span>
 
@@ -87,7 +85,7 @@ ximport('Hubzero_View_Helper_Html');
 				?>
 				<li class="question">
 					<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->assigned[$i]->id); ?>">
-						<?php echo $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->assigned[$i]->subject), 60, 0)); ?>
+						<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->assigned[$i]->subject), 60)); ?>
 					</a>
 				<?php if ($this->banking) { ?>
 					<span ><span class="pts"><?php echo $this->escape($this->assigned[$i]->maxaward) . ' ' . strtolower(JText::_('MOD_MYQUESTIONS_PTS')); ?></span></span>
@@ -127,7 +125,7 @@ ximport('Hubzero_View_Helper_Html');
 				?>
 				<li class="question">
 					<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->otherquestions[$i]->id); ?>">
-						<?php echo $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->otherquestions[$i]->subject), 60, 0)); ?>
+						<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->otherquestions[$i]->subject), 60)); ?>
 					</a>
 				<?php if ($this->banking) { ?>
 					<span><span class="pts"><?php echo $this->escape($this->otherquestions[$i]->maxaward) . ' ' . strtolower(JText::_('MOD_MYQUESTIONS_PTS')); ?></span></span>

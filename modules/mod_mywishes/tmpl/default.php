@@ -45,8 +45,8 @@ ximport('Hubzero_View_Helper_Html');
 			$when = Hubzero_View_Helper_Html::timeAgo($row->proposed);
 		?>
 		<li class="wishlist">
-			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->about)), 160); ?>">
-				#<?php echo $row->id; ?>: <?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject), 35, 0); ?>
+			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->about)), 160); ?>">
+				#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
 			</a>
 			<span>
 				<span class="<?php 
@@ -84,8 +84,8 @@ ximport('Hubzero_View_Helper_Html');
 			$when = Hubzero_View_Helper_Html::timeAgo($row->proposed);
 		?>
 		<li class="wishlist">
-			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->about)), 160); ?>">
-				#<?php echo $row->id; ?>: <?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject), 35, 0); ?>
+			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->about)), 160); ?>">
+				#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
 			</a>
 			<span>
 				<span class="<?php 

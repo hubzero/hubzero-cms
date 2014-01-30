@@ -41,30 +41,21 @@ else if ($this->row)
 {
 	$base = rtrim(JURI::getInstance()->base(true), '/');
 
-	$yearFormat  = "%Y";
-	$monthFormat = "%m";
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$yearFormat  = "Y";
-		$monthFormat = "m";
-		$tz = true;
-	}
-
-	ximport('Hubzero_View_Helper_Html');
+	$yearFormat  = "Y";
+	$monthFormat = "m";
 	?>
 	<div class="<?php echo $this->cls; ?>">
 		<p class="featured-img">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat, $tz) . '/' . $this->row->alias); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat) . '/' . $this->row->alias); ?>">
 				<img width="50" height="50" src="<?php echo $base; ?>/modules/mod_featuredblog/images/blog_thumb.gif" alt="<?php echo htmlentities(stripslashes($this->title)); ?>" />
 			</a>
 		</p>
 		<p>
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat, $tz) . '/' . $this->row->alias); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat) . '/' . $this->row->alias); ?>">
 				<?php echo $this->escape(stripslashes($this->title)); ?>
 			</a>: 
 		<?php if ($this->txt) { ?>
-			<?php echo Hubzero_View_Helper_Html::shortenText(strip_tags($this->txt), $this->txt_length, 0); ?>
+			<?php echo \Hubzero\Utility\String::truncate(strip_tags($this->txt), $this->txt_length); ?>
 		<?php } ?>
 		</p>
 	</div>

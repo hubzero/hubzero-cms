@@ -35,7 +35,6 @@ if ($this->getError()) { ?>
 	<p class="error"><?php echo JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS'); ?></p>
 <?php } else {
 	if ($this->row) { 
-		ximport('Hubzero_View_Helper_Html');
 ?>
 	<div class="<?php echo $this->cls; ?>">
 	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
@@ -50,7 +49,7 @@ if ($this->getError()) { ?>
 				<?php echo $this->escape(stripslashes($this->row->title)); ?>
 			</a>:
 		<?php if ($this->row->introtext) { ?>
-			<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($this->row->introtext)), $this->txt_length, 0); ?>
+			<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->introtext)), $this->txt_length); ?>
 		<?php } ?>
 		</p>
 	</div>

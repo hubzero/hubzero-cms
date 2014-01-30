@@ -120,8 +120,6 @@ $contributions = $this->contributions;
 if (!$contributions) {
 	$html .= '<p>'.JText::_('MOD_MYCONTRIBUTIONS_NONE_FOUND').'</p>'."\n";
 } else {
-	ximport('Hubzero_View_Helper_Html');
-
 	$html .= '<ul class="compactlist">'."\n";
 	for ($i=0; $i < count($contributions); $i++)
 	{
@@ -143,7 +141,7 @@ if (!$contributions) {
 			$href = JRoute::_('index.php?option=com_resources&task=draft&step=1&id='.$contributions[$i]->id);
 
 			$html .= "\t".'<li class="'.$class.'">'."\n";
-			$html .= "\t\t".'<a href="'.$href.'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($contributions[$i]->title), 40, 0).'</a>'."\n";
+			$html .= "\t\t".'<a href="'.$href.'">'.\Hubzero\Utility\String::truncate(stripslashes($contributions[$i]->title), 40).'</a>'."\n";
 			$html .= "\t\t".'<span class="under">'.JText::_('MOD_MYCONTRIBUTIONS_TYPE').': '.$this->getType($contributions[$i]->type).'<br />'.JText::sprintf('MOD_MYCONTRIBUTIONS_SUBMITTED_BY',$author_login).'</span>'."\n";
 			$html .= "\t".'</li>'."\n";
 		}

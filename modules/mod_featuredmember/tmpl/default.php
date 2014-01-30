@@ -36,7 +36,6 @@ if ($this->getError()) { ?>
 <?php } else {
 
 	if ($this->row) {
-		ximport('Hubzero_View_Helper_Html');
 ?>
 	<div class="<?php echo $this->cls; ?>">
 	<?php if ($this->filters['show'] == 'contributors') { ?>
@@ -56,7 +55,7 @@ if ($this->getError()) { ?>
 				<?php echo $this->escape(stripslashes($this->title)); ?>
 			</a>: 
 	<?php if ($this->txt) { ?>
-			<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($this->txt)), $this->txt_length, 0); ?>
+			<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->txt)), $this->txt_length); ?>
 	<?php } ?>
 		</p>
 	</div>

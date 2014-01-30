@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_View_Helper_Html');
-
 $morelink = count($this->content) > 0 ? $this->content[0]->secname : 'announcements';
 $morelink = $this->params->get('show_viewall', '') ? $morelink : '';
 $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get('subscribe_path', '') ?  $this->params->get('subscribe_path', '') : '';
@@ -94,9 +92,9 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 					// get cleaned article body text
 					$desc = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>.*?<\/a>/is', '\2', $item->introtext);
 					$desc = preg_replace( '/<span([^"]+)"[^>]*>.*?<\/span>/is', '\2', $desc);
-					$desc = Hubzero_View_Helper_Html::purifyText($desc);
+					$desc = \Hubzero\Utility\Sanitize::clean($desc);
 
-					echo Hubzero_View_Helper_Html::shortenText($desc, $this->params->get('word_count', 100), 0);
+					echo \Hubzero\Utility\String::truncate($desc, $this->params->get('word_count', 100), 0);
 					?>
 				</span>
 			<?php } ?>
