@@ -1134,6 +1134,8 @@ HUB.Plugins.CoursesProgress = {
 		var $ = this.jQuery,
 			r = $('.reports-container');
 
+		$(window).unbind('resize').unbind('scroll');
+
 		//$('.checkbox input').uniform();
 
 		// Remove margins if coming from gradebook tab and margins were present
