@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 							<?php echo $mailing->newsletter_name; ?>
 						</td>
 						<td>
-							<?php echo date("F d, Y @ g:ia", strtotime($mailing->mailing_date)); ?>
+							<?php echo JHTML::_('date', $mailing->mailing_date, "F d, Y @ g:ia"); ?>
 						</td>
 						<td>
 							<?php echo ($mailing->emails_sent/$mailing->emails_total) * 100; ?>% 
