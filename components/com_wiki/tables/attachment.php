@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki table class for file attachments
  */
-class WikiPageAttachment extends JTable
+class WikiTableAttachment extends JTable
 {
 	/**
 	 * int(11) Primary key

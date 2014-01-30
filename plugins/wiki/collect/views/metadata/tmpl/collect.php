@@ -31,16 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//tag editor
-
-ximport('Hubzero_Wiki_Editor');
 $editor = Hubzero_Wiki_Editor::getInstance();
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&action=repost'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_($this->page->link() . '&action=repost'); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('PLG_WIKI_COLLECT'); ?></legend>
 
@@ -109,8 +106,8 @@ if ($this->groupboards)
 	<input type="hidden" name="item" value="<?php echo $this->escape($this->item_id); ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->escape($this->no_html); ?>" />
 
-	<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
-	<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->scope); ?>" />
+	<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+	<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 	<input type="hidden" name="task" value="display" />
 	<input type="hidden" name="action" value="collect" />

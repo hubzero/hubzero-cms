@@ -287,7 +287,7 @@ class ProjectsHelper extends JObject {
 	public function saveWikiAttachment( $page, $file, $uid = 0 )
 	{
 		// Create database entry
-		$attachment 				= new WikiPageAttachment($this->_db);
+		$attachment 				= new WikiTableAttachment($this->_db);
 		$attachment->pageid      	= $page->id;
 		$attachment->filename    	= $file;
 		$attachment->description 	= '';
@@ -791,7 +791,7 @@ class ProjectsHelper extends JObject {
 		$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 	
 		
 		// Get wiki upload path
-		$previewPath = ProjectsHelper::getWikiPath($page->id);		
+		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));		
 		
 		// Get joomla libraries
 		jimport('joomla.filesystem.folder');
@@ -917,7 +917,7 @@ class ProjectsHelper extends JObject {
 				$html = str_replace($replace, $href, $html);										
 				
 				// Replace reference
-				$replace = $page->scope. DS . $page->pagename . DS . 'Image:' . $file;
+				$replace = $page->get('scope'). DS . $page->get('pagename') . DS . 'Image:' . $file;
 				$replace = preg_quote($replace, '/');
 				$html = preg_replace("/\/projects\/$replace/", $link, $html);				
 			}
@@ -971,7 +971,7 @@ class ProjectsHelper extends JObject {
 				$objSt = new ProjectPubStamp( $database );
 
 				// Get page id
-				$page = new WikiPage( $database );		
+				$page = new WikiTablePage( $database );		
 				if ($page->load( basename($pagename), $scope)) 
 				{								
 					$pubstamp = NULL;
@@ -1031,7 +1031,7 @@ class ProjectsHelper extends JObject {
 		$database = JFactory::getDBO();
 		
 		// Get wiki upload path
-		$previewPath = ProjectsHelper::getWikiPath($page->id);
+		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));
 		
 		if ($copy == true)
 		{
@@ -1137,7 +1137,7 @@ class ProjectsHelper extends JObject {
 				
 				if ($pubstamp)
 				{
-					$link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=' . $pubstamp;
+					$link = JRoute::_('index.php?option=com_projects&task=get') . '/?s=' . $pubstamp;
 				}
 				else
 				{
@@ -1150,12 +1150,12 @@ class ProjectsHelper extends JObject {
 				$html = preg_replace("/\\(file:". $fname . " not found\\)/", $href, $html);			
 				
 				// Replace reference
-				$replace = $page->scope. DS . $page->pagename . DS . 'File:' . $file;
+				$replace = $page->get('scope'). DS . $page->get('pagename') . DS . 'File:' . $file;
 				$replace = preg_quote($replace, '/');
 				$html = preg_replace("/\/projects\/$replace/", $link, $html);
 				
 				// Replace image reference
-				$replace = $page->scope. DS . $page->pagename . DS . 'Image:' . $file;
+				$replace = $page->get('scope'). DS . $page->get('pagename') . DS . 'Image:' . $file;
 				$replace = preg_quote($replace, '/');
 				$html = preg_replace("/\/projects\/$replace/", $link, $html);
 			}

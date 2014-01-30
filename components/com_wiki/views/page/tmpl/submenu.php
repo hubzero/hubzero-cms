@@ -32,28 +32,27 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
-
-if (!JRequest::getVar('tmpl', '')) { ?>
+?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
-		<?php if (!$juser->get('guest') && $this->config->get('access-create')) { ?>
+		<?php if (!$juser->get('guest') && $this->page->access('create')) { ?>
 			<li class="page-new" data-title="<?php echo JText::_('New Page'); ?>">
-				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
+				<a class="icon-add add btn" href="<?php echo JRoute::_($this->page->link('base') . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
 					<?php echo JText::_('COM_WIKI_NEW_PAGE'); ?>
 				</a>
 			</li>
 		<?php } ?>
-			<li class="page-index" data-title="<?php echo JText::_('All Pages'); ?>">
-				<a class="icon-index index btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:AllPages'); ?>">
-					<span><?php echo JText::_('All Pages'); ?></span>
+			<li class="page-index" data-title="<?php echo JText::_('Page Index'); ?>">
+				<a class="icon-index index btn" href="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:AllPages'); ?>">
+					<span><?php echo JText::_('Index'); ?></span>
 				</a>
 			</li>
 			<li class="page-search" data-title="<?php echo JText::_('Search'); ?>">
-				<a class="icon-search search btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:Search'); ?>">
+				<a class="icon-search search btn" href="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:Search'); ?>">
 					<?php echo JText::_('Search'); ?>
 				</a>
 				<div class="page-search-form">
-					<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:Search'); ?>" method="post">
+					<form action="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:Search'); ?>" method="post">
 						<fieldset>
 							<legend><?php echo JText::_('Search pages'); ?></legend>
 							<label for="page-search-q">
@@ -70,39 +69,38 @@ if (!JRequest::getVar('tmpl', '')) { ?>
 
 	<ul class="sub-menu">
 		<li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">
+			<a href="<?php echo JRoute::_($this->page->link()); ?>">
 				<span><?php echo JText::_('COM_WIKI_TAB_ARTICLE'); ?></span>
 			</a>
 		</li>
-<?php if (strtolower($this->page->getNamespace()) != 'special') { ?>
-	<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-edit'))) { ?>
-		<li class="page-edit<?php if ($this->controller == 'page' && ($this->task == 'edit' || $this->task == 'new')) { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=edit'); ?>">
+<?php if ($this->page->get('id') && $this->page->get('namespace') != 'special') { ?>
+	<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
+		<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
+			<a href="<?php echo JRoute::_($this->page->link('edit')); ?>">
 				<span><?php echo JText::_('COM_WIKI_TAB_EDIT'); ?></span>
 			</a>
 		</li>
 	<?php } ?>
-	<?php if ($this->page->id) { ?>
-		<?php if ($this->config->get('access-comment-view')) { ?>
-			<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=comments'); ?>">
-					<span><?php echo JText::_('COM_WIKI_TAB_COMMENTS'); ?></span>
-				</a>
-			</li>
-		<?php } ?>
-			<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=history'); ?>">
-					<span><?php echo JText::_('COM_WIKI_TAB_HISTORY'); ?></span>
-				</a>
-			</li>
-		<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
-			<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=delete'); ?>">
-					<span><?php echo JText::_('COM_WIKI_DELETE_PAGE'); ?></span>
-				</a>
-			</li>
-		<?php } ?>
+	<?php if ($this->page->access('view', 'comment')) { ?>
+		<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
+			<a href="<?php echo JRoute::_($this->page->link('comments')); ?>">
+				<span><?php echo JText::_('COM_WIKI_TAB_COMMENTS'); ?></span>
+			</a>
+		</li>
+	<?php } ?>
+		<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
+			<a href="<?php echo JRoute::_($this->page->link('history')); ?>">
+				<span><?php echo JText::_('COM_WIKI_TAB_HISTORY'); ?></span>
+			</a>
+		</li>
+	<?php 
+		if (($this->page->isLocked() && $this->page->access('manage', 'page')) 
+			|| (!$this->page->isLocked() && $this->page->access('delete', 'page'))) { ?>
+		<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
+			<a href="<?php echo JRoute::_($this->page->link('delete')); ?>">
+				<span><?php echo JText::_('COM_WIKI_DELETE_PAGE'); ?></span>
+			</a>
+		</li>
 	<?php } ?>
 <?php } ?>
 	</ul>
-<?php } ?>

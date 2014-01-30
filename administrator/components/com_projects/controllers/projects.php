@@ -562,7 +562,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			foreach($notes as $note) 
 			{
-				$page = new WikiPage( $this->database );
+				$page = new WikiTablePage( $this->database );
 						
 				// Delete the page's history, tags, comments, etc.
 				$page->deleteBits( $note->id );

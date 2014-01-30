@@ -39,7 +39,7 @@ if (!is_array($this->revisions))
 }
 if (count($this->revisions) <= 0)
 {
-	$this->revisions[] = new WikiPageRevision(JFactory::getDBO());
+	$this->revisions[] = new WikiTableRevision(JFactory::getDBO());
 }
 
 $first = end($this->revisions);

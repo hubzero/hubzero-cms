@@ -191,7 +191,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new WikiPageAttachment($this->_db);
+			$attach = new WikiTableAttachment($this->_db);
 			$attach->load(intval($file));
 
 			// Check for file existence

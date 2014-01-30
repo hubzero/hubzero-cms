@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki table for associating authors to a page
  */
-class WikiPageAuthor extends JTable
+class WikiTableAuthor extends JTable
 {
 	/**
 	 * Primary key field in the table
@@ -272,7 +272,7 @@ class WikiPageAuthor extends JTable
 			foreach ($authArray as $author)
 			{
 				// Attempt to load each user
-				$targetuser = JUser::getInstance($author);
+				$targetuser =& JUser::getInstance($author);
 
 				// Ensure we found an account
 				if (!is_object($targetuser)) 
@@ -290,7 +290,7 @@ class WikiPageAuthor extends JTable
 					continue;
 				}
 				// Create a new author object and attempt to save the record
-				$wpa = new WikiPageAuthor($this->_db);
+				$wpa = new WikiTableAuthor($this->_db);
 				$wpa->page_id = $page_id;
 				$wpa->user_id = $targetuser->get('id');
 				if ($wpa->check()) 
@@ -314,7 +314,7 @@ class WikiPageAuthor extends JTable
 		{
 			if (!in_array($id, $auths)) 
 			{
-				$wpa = new WikiPageAuthor($this->_db);
+				$wpa = new WikiTableAuthor($this->_db);
 				if (!$wpa->removeAuthor($page_id, $id)) 
 				{
 					$this->setError($wpa->getError());
@@ -345,12 +345,12 @@ class WikiPageAuthor extends JTable
 				$authors = array_map('trim', $authors);
 				foreach ($authors as $author)
 				{
-					$targetuser = JUser::getInstance($author);
+					$targetuser =& JUser::getInstance($author);
 
 					// Ensure we found an account
 					if (is_object($targetuser)) 
 					{
-						$wpa = new WikiPageAuthor($this->_db);
+						$wpa = new WikiTableAuthor($this->_db);
 						$wpa->page_id = $page->id;
 						$wpa->user_id = $targetuser->get('id');
 						if ($wpa->check()) 

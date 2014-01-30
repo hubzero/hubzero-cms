@@ -145,6 +145,10 @@
 		color: #222;
 	}
 
+	ol.comments .edit {
+		float: right;
+	}
+
 @media all and (max-width: 1200px) {
 	#content-header-extra .add.btn,
 	#content-header-extra .index.btn,

@@ -171,7 +171,7 @@ class modSpotlight extends Hubzero_Module
 					case 'topics':
 						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 						// Yes - load the topic page
-						$row = new WikiPage($this->database);
+						$row = new WikiTablePage($this->database);
 						$row->load($fh->objectid);
 					break;
 
@@ -542,7 +542,7 @@ class modSpotlight extends Hubzero_Module
 				$titlecut  = ($remaining) ? 0 : $txtLength - strlen($row->typetitle);
 				if ($titlecut)
 				{
-					$title = Hubzero_View_Helper_Html::shortenText(($row->title), $titlecut, 0);
+					$title = \Hubzero\Utility\String::truncate($row->title, $titlecut);
 				}
 				else
 				{
@@ -563,11 +563,11 @@ class modSpotlight extends Hubzero_Module
 					// Show bit of description for tools
 					if ($row->introtext)
 					{
-						$out .= ': '.Hubzero_View_Helper_Html::shortenText($this->_encodeHtml(strip_tags($row->introtext)), $txtLength, 0);
+						$out .= ': '.\Hubzero\Utility\String::truncate($this->_encodeHtml(strip_tags($row->introtext)), $txtLength);
 					}
 					else
 					{
-						$out .= ': '.Hubzero_View_Helper_Html::shortenText($this->_encodeHtml(strip_tags($row->fulltxt)), $txtLength, 0);
+						$out .= ': '.\Hubzero\Utility\String::truncate($this->_encodeHtml(strip_tags($row->fulltxt)), $txtLength);
 					}
 				}
 				if ($tbl == 'itunes')

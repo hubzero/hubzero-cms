@@ -128,19 +128,17 @@ class plgWikiCollect extends JPlugin
 		$model = new CollectionsModel('member', $this->juser->get('id'));
 
 		$b = new CollectionsTableItem($this->database);
-		$b->loadType($this->page->id, 'wiki');
+		$b->loadType($this->page->get('id'), 'wiki');
 		if (!$b->id)
 		{
 			$row = new CollectionsTableCollection($this->database);
 			$row->load($collection_id);
 
-			ximport('Hubzero_View_Helper_Html');
-
-			$b->url         = JRoute::_('index.php?option=com_wiki&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename);
+			$b->url         = JRoute::_($this->page->link());
 			$b->type        = 'wiki';
 			$b->object_id   = $this->page->id;
 			$b->title       = $this->page->title;
-			$b->description = Hubzero_View_Helper_Html::shortenText(strip_tags($this->revision->pagehtml), 300, 0, 1);
+			$b->description = \Hubzero\Utility\String::truncate($this->revision->content('clean'), 300);
 			if (!$b->check()) 
 			{
 				$this->setError($b->getError());

@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for wiki page revisions
  */
@@ -100,20 +98,15 @@ class WikiControllerRevisions extends Hubzero_Controller
 			0, 
 			'int'
 		);
+		$this->view->filters['state'] = array(0, 1, 2);
 
-		$this->view->page = new WikiPage($this->database);
-		if ($this->view->filters['pageid']) 
-		{
-			$this->view->page->loadById($this->view->filters['pageid']);
-		}
-
-		$r = new WikiPageRevision($this->database);
+		$this->view->page = new WikiModelPage(intval($this->view->filters['pageid']));
 
 		// Get record count
-		$this->view->total = $r->getRecordsCount($this->view->filters);
+		$this->view->total = $this->view->page->revisions('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $r->getRecords($this->view->filters);
+		$this->view->rows = $this->view->page->revisions('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -175,8 +168,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 			return;
 		}
 
-		$this->view->page = new WikiPage($this->database);
-		$this->view->page->loadById($pageid);
+		$this->view->page = new WikiModelPage(intval($pageid));
 
 		if (is_object($row))
 		{
@@ -184,16 +176,17 @@ class WikiControllerRevisions extends Hubzero_Controller
 		}
 		else 
 		{
-			$this->view->revision = new WikiPageRevision($this->database);
-			$this->view->revision->load($id);
+			$this->view->revision = new WikiModelRevision($id);
 		}
 
 		if (!$id)
 		{
 			// Creating new
-			$this->view->revision = $this->view->page->getCurrentRevision();
-			$this->view->revision->version++;
-			$this->view->revision->created_by = $this->juser->get('id');
+			$this->view->revision = $this->view->page->revision('current');
+			$this->view->revision->set('version', $this->view->revision->get('version') + 1);
+			$this->view->revision->set('created_by', $this->juser->get('id'));
+			$this->view->revision->set('id', 0);
+			$this->view->revision->set('pageid', $this->view->page->get('id'));
 		}
 
 		// Set any errors
@@ -210,22 +203,11 @@ class WikiControllerRevisions extends Hubzero_Controller
 	}
 
 	/**
-	 * Save changes to an entry and go back to edit form
+	 * Save a revision
 	 * 
 	 * @return     void
 	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
-	 * Save changes to an entry
-	 * 
-	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
-	 * @return     void
-	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -235,7 +217,8 @@ class WikiControllerRevisions extends Hubzero_Controller
 		$revision = array_map('trim', $revision);
 
 		// Initiate extended database class
-		$row = new WikiPageRevision($this->database);
+		$row = new WikiModelRevision($revision['id']);
+		$before = $row->get('approved');
 		if (!$row->bind($revision)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -243,34 +226,25 @@ class WikiControllerRevisions extends Hubzero_Controller
 			return;
 		}
 
-		if (!$row->id) 
+		if (!$row->exists()) 
 		{
-			$row->created = JFactory::getDate()->toSql();
+			$row->set('created', JFactory::getDate()->toSql());
 		}
 
-		$page = new WikiPage($this->database);
-		$page->loadById($row->pageid);
+		$page = new WikiModelPage(intval($row->get('pageid')));
 
 		// Parse text
 		$wikiconfig = array(
 			'option'   => $this->_option,
-			'scope'    => $page->scope,
-			'pagename' => $page->pagename,
-			'pageid'   => $page->id,
+			'scope'    => $page->get('scope'),
+			'pagename' => $page->get('pagename'),
+			'pageid'   => $page->get('id'),
 			'filepath' => '',
 			'domain'   => $this->_group
 		);
-		ximport('Hubzero_Wiki_Parser');
-		$p = Hubzero_Wiki_Parser::getInstance();
-		$row->pagehtml = $p->parse($row->pagetext, $wikiconfig);
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+		$p = Hubzero_Wiki_Parser::getInstance();
+		$row->set('pagehtml', $p->parse($row->get('pagetext'), $wikiconfig));
 
 		// Store new content
 		if (!$row->store()) 
@@ -280,29 +254,40 @@ class WikiControllerRevisions extends Hubzero_Controller
 			return;
 		}
 
+		// Get the most recent revision and compare to the set "current" version
+		if ($before != 1 && $row->get('approved') == 1)
+		{
+			$page->revisions('list', array(), true)->last();
+			if ($page->revisions()->current()->get('id') == $row->get('id'))
+			{
+				// The newly approved revision is now the most current
+				// So, we need to update the page's version_id
+				$page->set('version_id', $page->revisions()->current()->get('id'));
+				$page->store(false, 'revision_approved');
+			}
+			else
+			{
+				$page->log('revision_approved');
+			}
+		}
+
 		// Log the change
-		$log = new WikiLog($this->database);
+		/*$log = new WikiTableLog($this->database);
 		$log->pid = $page->id;
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate()->toSql();
+		$log->timestamp = date('Y-m-d H:i:s', time());
 		$log->action = ($revision['id']) ? 'revision_edited' : 'revision_created';
 		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());
-		}
+		}*/
 
-		if ($redirect)
-		{
-			// Set the redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->pageid,
-				JText::_('Revision saved')
-			);
-			return;
-		}
-
-		$this->editTask($row);
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->get('pageid'),
+			JText::_('Revision saved')
+		);
 	}
 
 	/**
@@ -369,13 +354,10 @@ class WikiControllerRevisions extends Hubzero_Controller
 				$msg = '';
 				if (!empty($ids)) 
 				{
-					// Create a category object
-					$revision = new WikiPageRevision($this->database);
-
 					foreach ($ids as $id)
 					{
 						// Load the revision
-						$revision->load($id);
+						$revision = new WikiModelRevision($id);
 
 						// Get a count of all approved revisions
 						$count = $revision->getRevisionCount();
@@ -392,18 +374,18 @@ class WikiControllerRevisions extends Hubzero_Controller
 						}
 
 						// Delete it
-						$revision->delete($id);
+						$revision->delete();
 
 						// Log the action
-						$log = new WikiLog($this->database);
+						/*$log = new WikiTableLog($this->database);
 						$log->pid = $pageid;
 						$log->uid = $this->juser->get('id');
-						$log->timestamp = JFactory::getDate()->toSql();
+						$log->timestamp = date('Y-m-d H:i:s', time());
 						$log->action = 'revision_removed';
 						$log->actorid = $this->juser->get('id');
 						if (!$log->store()) {
 							$this->setError($log->getError());
-						}
+						}*/
 					}
 
 					$msg = JText::_(count($ids).' revision(s) successfully removed');
@@ -435,18 +417,9 @@ class WikiControllerRevisions extends Hubzero_Controller
 		if ($id) 
 		{
 			// Load the revision, approve it, and save
-			$revision = new WikiPageRevision($this->database);
-			$revision->load($id);
-			$revision->approved = JRequest::getInt('approve', 0);
-			if (!$revision->check()) 
-			{
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
-					$revision->getError(),
-					'error'
-				);
-				return;
-			}
+			$revision = new WikiModelRevision($id);
+			$revision->set('approved', JRequest::getInt('approve', 0));
+
 			if (!$revision->store()) 
 			{
 				$this->setRedirect(
@@ -458,16 +431,16 @@ class WikiControllerRevisions extends Hubzero_Controller
 			}
 
 			// Log the action
-			$log = new WikiLog($this->database);
+			/*$log = new WikiTableLog($this->database);
 			$log->pid = $pageid;
 			$log->uid = $this->juser->get('id');
-			$log->timestamp = JFactory::getDate()->toSql();
+			$log->timestamp = date('Y-m-d H:i:s', time());
 			$log->action = 'revision_approved';
 			$log->actorid = $this->juser->get('id');
 			if (!$log->store()) 
 			{
 				$this->setError($log->getError());
-			}
+			}*/
 		}
 
 		$this->setRedirect(
@@ -482,11 +455,8 @@ class WikiControllerRevisions extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		// Incoming
-		$pageid = JRequest::getInt('pageid', 0);
-
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . JRequest::getInt('pageid', 0)
 		);
 	}
 }

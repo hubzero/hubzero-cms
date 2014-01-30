@@ -34,15 +34,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
 
-if ($this->page->id) {
-	$lid = $this->page->id;
+if ($this->page->get('id')) {
+	$lid = $this->page->get('id');
 } else {
 	$num = time().rand(0,10000);
 	$lid = JRequest::getInt( 'lid', $num, 'post' );
 }
 
 // get templates
-$templates = $this->page->getTemplates();
+//$templates = $this->book->templates();
 
 // Incoming
 $scope   = JRequest::getVar('scope', '');
@@ -58,7 +58,7 @@ $canDelete = JRequest::getVar('candelete', 0);
 </div><!-- /#content-header -->
 
 <?php 
-if ($this->page->id) {
+if ($this->page->get('id')) {
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
 		'name'      => 'page',
@@ -68,7 +68,7 @@ if ($this->page->id) {
 	$view->controller = $this->controller;
 	$view->page   = $this->page;
 	$view->task   = $this->task;
-	$view->config = $this->config;
+	//$view->config = $this->config;
 	$view->sub    = $this->sub;
 	$view->display();
 } 
@@ -76,17 +76,17 @@ if ($this->page->id) {
 
 <div class="main section">
 <?php
-if ($this->page->id && !$this->config->get('access-modify')) {
-	if ($this->page->params->get( 'allow_changes' ) == 1) { ?>
-		<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
+if ($this->page->exists() && !$this->page->access('modify')) {
+	if ($this->page->param('allow_changes') == 1) { ?>
+		<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
 <?php } else { ?>
-		<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+		<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php }
 }
 ?>
 
-<?php if ($this->page->state == 1 && !$this->config->get('access-manage')) { ?>
-	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+<?php if ($this->page->get('state') == 1 && !$this->page->access('manage')) { ?>
+	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } ?>
 
 <?php if ($this->getError()) { ?>
@@ -99,18 +99,18 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 			<p class="warning"><?php echo JText::_('This a preview only. Changes will not take affect until saved.'); ?></p>
 
 			<div class="wikipage">
-				<?php echo $this->revision->pagehtml; ?>
+				<?php echo $this->revision->get('pagehtml'); ?>
 			</div>
 		</div><!-- / .section -->
 	</div><div class="clear"></div>
 <?php } ?>
-<?php if ($tool && $tool->id) { ?>
+<?php //if ($tool && $tool->id) { ?>
 
-<?php } ?>
+<?php //} ?>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->get('pagename')); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
 	<fieldset>
-		<?php if ($templates) { ?>
+		<?php //if ($templates) { ?>
 		<div class="group">
 
 		<label for="templates">
@@ -118,11 +118,11 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 			<select name="tplate" id="templates">
 				<option value="tc"><?php echo JText::_('Select a template...'); ?></option>
 <?php
-$hi = array();
+/*$hi = array();
 
 if ($templates) {
 	$database = JFactory::getDBO();
-	$temprev = new WikiPageRevision($database);
+	$temprev = new WikiTableRevision($database);
 
 	foreach ($templates as $template)
 	{
@@ -131,7 +131,7 @@ if ($templates) {
 		//$temprev->pagetext = str_replace('"','&quot;', $temprev->pagetext);
 		//$temprev->pagetext = str_replace('&quote;','&quot;', $temprev->pagetext);
 
-		$tplt = new WikiPage($database);
+		$tplt = new WikiTablePage($database);
 		$tplt->id = $template->id;
 		
 		$tmpltags = $tplt->getTags();
@@ -163,30 +163,55 @@ if ($templates) {
 
 		$hi[] = $j;
 	}
-}
+}*/
+					$hi = array();
+
+					foreach ($this->book->templates('list', array(), true) as $template)
+					{
+						$tmpltags = $template->tags('string');
+						if (strtolower($this->tplate) == strtolower($template->get('pagename'))) 
+						{
+							$tags = $tmpltags;
+						}
+
+						echo "\t".'<option value="t'.$template->get('id').'"';
+						if (strtolower($this->tplate) == strtolower($template->get('pagename'))
+						 || strtolower($this->tplate) == 't' . $template->get('id')) 
+						{
+							echo ' selected="selected"';
+							if (!$this->page->exists()) 
+							{
+								$this->revision->set('pagetext', stripslashes($template->revision()->get('pagetext')));
+							}
+						}
+						echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>'."\n";
+
+						$j  = '<input type="hidden" name="t'.$template->get('id').'" id="t'.$template->get('id').'" value="'.$this->escape(stripslashes($template->revision()->get('pagetext'))).'" />'."\n";
+						$j .= '<input type="hidden" name="t'.$template->get('id').'_tags" id="t'.$template->get('id').'_tags" value="'.$this->escape(stripslashes($tmpltags)).'" />'."\n";
+
+						$hi[] = $j;
+					}
 ?>			</select>
 			<?php echo implode("\n", $hi); ?>
 		</label>
 		</div>
-	<?php } ?>
+	<?php //} ?>
 		
-	<?php if ($this->config->get('access-edit')) { ?>
+	<?php if ($this->page->access('edit')) { ?>
 		<label for="title">
-			<?php echo JText::_('WIKI_FIELD_TITLE'); ?>:
-			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
-			<input type="text" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" size="38" />
+			<?php echo JText::_('COM_WIKI_FIELD_TITLE'); ?>:
+			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
+			<input type="text" name="page[title]" id="title" value="<?php echo $this->escape($this->page->get('title')); ?>" size="38" />
 		</label>
 	<?php } else { ?>
-		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" />
+		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->get('title')); ?>" />
 	<?php } ?>
 		
 		<label for="pagetext" style="position: relative;">
-			<?php echo JText::_('WIKI_FIELD_PAGETEXT'); ?>: 
-			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
+			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>: 
+			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 			<?php
-			ximport('Hubzero_Wiki_Editor');
-			$editor = Hubzero_Wiki_Editor::getInstance();
-			echo $editor->display('revision[pagetext]', 'pagetext', $this->revision->pagetext, '', '35', '40');
+			echo Hubzero_Wiki_Editor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '40');
 			?>
 			<!-- <span id="pagetext-overlay"><span>Drop file here to include in page</span></span> -->
 		</label>
@@ -203,8 +228,8 @@ if ($templates) {
 		</div>
 <?php } ?>
 <?php
-$mode = $this->page->params->get('mode', 'wiki');
-if ($this->config->get('access-edit')) {
+$mode = $this->page->param('mode', 'wiki');
+if ($this->page->access('edit')) {
 	$cls = '';
 	if ($mode && $mode != 'knol') {
 		$cls = ' class="hide"';
@@ -215,26 +240,26 @@ if ($this->config->get('access-edit')) {
 			<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
 
 <?php } else { ?>
-			<input type="hidden" name="params[mode]" value="<?php echo $mode; ?>" />
-			<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->params->get( 'allow_changes' ) == 1) ? '1' : '0'; ?>" />
-			<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->params->get( 'allow_comments' ) == 1) ? '1' : '0'; ?>" />
-			<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->authors); ?>" />
-			<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->access); ?>" />
+			<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
+			<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
+			<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
+			<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
+			<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
 <?php } ?>
 
-			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->group_cn); ?>" />
+			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
 	</fieldset>
 	<div class="clear"></div>
 
-<?php if ($this->config->get('access-edit')) { ?>
+<?php if ($this->page->access('edit')) { ?>
 	<?php if (!$this->sub) { ?>
 		<div class="explaination">
-			<p><?php echo JText::_('WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
+			<p><?php echo JText::_('COM_WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
 		</div>
 	<?php } ?>
 		<fieldset>
 			<label>
-				<?php echo JText::_('WIKI_FIELD_TAGS'); ?>:
+				<?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php 
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 				if (count($tf) > 0) {
@@ -243,35 +268,35 @@ if ($this->config->get('access-edit')) {
 					echo '<input type="text" name="tags" value="'. $this->tags .'" size="38" />';
 				}
 				?>
-				<span class="hint"><?php echo JText::_('WIKI_FIELD_TAGS_HINT'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</label>
 <?php } else { ?>
 		<input type="hidden" name="tags" value="<?php echo $this->escape($this->tags); ?>" />
 <?php } ?>
 			<label>
-				<?php echo JText::_('WIKI_FIELD_EDIT_SUMMARY'); ?>:
-				<input type="text" name="revision[summary]" value="<?php echo $this->escape($this->revision->summary); ?>" size="38" />
-				<span class="hint"><?php echo JText::_('WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
+				<?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
+				<input type="text" name="revision[summary]" value="<?php echo $this->escape($this->revision->get('summary')); ?>" size="38" />
+				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
 			</label>
 			<input type="hidden" name="revision[minor_edit]" value="1" />
 		</fieldset>
 		<div class="clear"></div>
 
-		<input type="hidden" name="page[id]" value="<?php echo $this->page->id; ?>" />
+		<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
-		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
+		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
 		
-		<input type="hidden" name="revision[id]" value="<?php echo $this->revision->id; ?>" />
-		<input type="hidden" name="revision[pageid]" value="<?php echo $this->page->id; ?>" />
-		<input type="hidden" name="revision[version]" value="<?php echo $this->revision->version; ?>" />
-		<input type="hidden" name="revision[created_by]" value="<?php echo $this->revision->created_by; ?>" />
-		<input type="hidden" name="revision[created]" value="<?php echo $this->revision->created; ?>" />
+		<input type="hidden" name="revision[id]" value="<?php echo $this->escape($this->revision->get('id')); ?>" />
+		<input type="hidden" name="revision[pageid]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
+		<input type="hidden" name="revision[version]" value="<?php echo $this->escape($this->revision->get('version')); ?>" />
+		<input type="hidden" name="revision[created_by]" value="<?php echo $this->escape($this->revision->get('created_by')); ?>" />
+		<input type="hidden" name="revision[created]" value="<?php echo $this->escape($this->revision->get('created')); ?>" />
 		
 		<?php echo JHTML::_('form.token'); ?>
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="action" value="save" />
-		<input type="hidden" name="gid" value="<?php echo $this->page->group_cn; ?>" />
+		<input type="hidden" name="gid" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
 		<input type="hidden" name="active" value="notes" />
 		<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
 
@@ -299,6 +324,6 @@ if ($this->config->get('access-edit')) {
 	</style>
 </div><!-- / .main section -->
 	
-	<?php if ($this->page->id && strtolower($this->page->getNamespace()) != 'special' && $canDelete) { ?>
-		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&task=delete'); ?>" class="btn"><?php echo JText::_('Delete this page'); ?></a></p>
+	<?php if ($this->page->exists() && strtolower($this->page->get('namespace')) != 'special' && $canDelete) { ?>
+		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->get('pagename').'&task=delete'); ?>" class="btn"><?php echo JText::_('Delete this page'); ?></a></p>
 	<?php } ?>

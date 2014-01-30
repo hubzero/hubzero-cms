@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = rtrim(JURI::getInstance()->base(true), '/');
-
 $no_html = JRequest::getVar('no_html', 0);
 
 if (!$no_html) { ?>
@@ -90,12 +88,17 @@ if ($this->docs)
 		$ext = JFile::getExt($name);
 ?>
 					<tr>
+						<!-- <td>
+							<span class="<?php echo $ext; ?> file">
+								<?php echo JText::_('File type'); ?>: <?php echo $ext; ?>
+							</span>
+						</td> -->
 						<td>
-							<span class="icon-file file"><?php echo $this->escape(stripslashes($name)); ?></span>
+							<span><?php echo $this->escape(stripslashes($name)); ?></span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('DELETE'); ?>">
-								<span><?php echo JText::_('DELETE'); ?></span>
+							<a class="delete" href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('DELETE'); ?>">
+								<img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
 							</a>
 						</td>
 					</tr>

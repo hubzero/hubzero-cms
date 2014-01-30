@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
-ximport('Hubzero_Plugin');
 
 /**
  * Groups Plugin class for wiki
@@ -104,36 +103,19 @@ class plgGroupsWiki extends Hubzero_Plugin
 			}
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
-		$page = new WikiPage(JFactory::getDBO());
-		$arr['metadata']['count'] = $page->getPagesCount(array(
-			'group' => $group->get('cn'),
-			'state' => array('0', '1')
-		));
+		$book = new WikiModelBook($group->get('cn'));
+		$arr['metadata']['count'] = $book->pages('count');
+
 		if ($arr['metadata']['count'] <= 0)
 		{
-			if (!defined('WIKI_SUBPAGE_SEPARATOR'))
-			{
-				define('WIKI_SUBPAGE_SEPARATOR', '/');
-			}
-			if (!defined('WIKI_MAX_PAGENAME_LENGTH'))
-			{
-				define('WIKI_MAX_PAGENAME_LENGTH', 100);
-			}
-
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
-
-			$result = WikiSetup::initialize('com_groups', $group->get('cn'));
-			if ($result) 
+			if ($result = $this->book->scribe($option)) 
 			{
 				$this->setError($result);
 			}
-			$arr['metadata']['count'] = $page->getPagesCount(array(
-				'group' => $group->get('cn'),
-				'state' => array('0', '1')
-			));
+
+			$arr['metadata']['count'] = $book->pages('count', array(), true);
 		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
@@ -182,17 +164,6 @@ class plgGroupsWiki extends Hubzero_Plugin
 			}
 
 			// Import some needed libraries
-			ximport('Hubzero_User_Helper');
-
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'page.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'html.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'tags.php');
-
 			switch ($action)
 			{
 				case 'upload':
@@ -239,11 +210,8 @@ class plgGroupsWiki extends Hubzero_Plugin
 
 			JRequest::setVar('task', $action);
 
-			//if (version_compare(JVERSION, '1.6', 'ge'))
-			//{
-				$lang = JFactory::getLanguage();
-				$lang->load('com_wiki');
-			//}
+			$lang = JFactory::getLanguage();
+			$lang->load('com_wiki');
 
 			//$controllerName = JRequest::getCmd('controller', 'page');
 			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -268,7 +236,6 @@ class plgGroupsWiki extends Hubzero_Plugin
 			$content = ob_get_contents();
 			ob_end_clean();
 
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', 'wiki');
 
 			// Return the content
@@ -293,7 +260,7 @@ class plgGroupsWiki extends Hubzero_Plugin
 		// Import needed libraries
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
-		// Instantiate a WikiPage object
+		// Instantiate a WikiTablePage object
 		$database = JFactory::getDBO();
 
 		// Start the log text
@@ -304,7 +271,7 @@ class plgGroupsWiki extends Hubzero_Plugin
 			// Loop through all the IDs for pages associated with this group
 			foreach ($ids as $id)
 			{
-				$wp = new WikiPage($database);
+				$wp = new WikiTablePage($database);
 				$wp->load($id->id);
 				// Delete all items linked to this page
 				//$wp->deleteBits($id->id);

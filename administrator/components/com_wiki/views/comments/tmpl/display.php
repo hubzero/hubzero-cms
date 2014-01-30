@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WikiHelper::getActions('comment');
 
-JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Comments') , 'wiki.png');
+JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page Comments'), 'wiki.png');
 
 if ($canDo->get('core.delete')) 
 {
@@ -48,8 +48,6 @@ if ($canDo->get('core.create'))
 	JToolBarHelper::addNew();
 }
 JHTML::_('behavior.tooltip');
-
-ximport('Hubzero_View_Helper_Html');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -67,7 +65,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
@@ -77,7 +75,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="7">
-					(<?php echo $this->escape(stripslashes($this->entry->pagename)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->entry->title)); ?>
+					(<?php echo $this->escape(stripslashes($this->entry->get('pagename'))); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>
 				</th>
 			</tr>
 			<tr>
@@ -159,11 +157,11 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 					<?php echo $row->treename; ?>
 <?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->ctext)), 90, 0); ?>
+						<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->ctext)), 90); ?>
 					</a>
 <?php } else { ?>
 					<span>
-						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->ctext)), 90, 0); ?>
+						<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->ctext)), 90); ?>
 					</span>
 <?php } ?>
 				</td>
@@ -172,17 +170,17 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 				</td>
 				<td>
 					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state2; ?>&amp;id[]=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $cimg2; ?>" width="16" height="16" border="0" alt="<?php echo $calt2; ?>" /><?php } else { echo $calt2; } ?></span>
+						<span><?php echo $calt2; ?></span>
 					</a>
 				</td>
 				<td>
 					<a class="state <?php echo $cls1; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $state1; ?>&amp;id[]=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $cimg1; ?>" width="16" height="16" border="0" alt="<?php echo $calt1; ?>" /><?php } else { echo $calt1; } ?></span>
+						<span><?php echo $calt1; ?></span>
 					</a>
 				</td>
 				<td>
 					<time datetime="<?php echo $row->created; ?>">
-						<?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')) ?>
+						<?php echo $row->created; ?>
 					</time>
 				</td>
 			</tr>

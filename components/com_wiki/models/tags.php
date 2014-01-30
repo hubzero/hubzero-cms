@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,17 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'page'));
-if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
+/**
+ * Answers Tagging class
+ */
+class WikiModelTags extends TagsModelCloud
 {
-	$controllerName = 'page';
+	/**
+	 * Object type, used for linking objects (such as resources) to tags
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'wiki';
 }
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'WikiController' . ucfirst($controllerName);
 
-// Instantiate controller
-$controller = new $controllerName(array('name' => 'wiki'));
-$controller->execute();
-$controller->redirect();

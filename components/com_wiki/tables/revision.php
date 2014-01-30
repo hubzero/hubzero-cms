@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki table class for page version
  */
-class WikiPageRevision extends JTable
+class WikiTableRevision extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -119,7 +119,7 @@ class WikiPageRevision extends JTable
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($db)
+	public function __construct(&$db)
 	{
 		parent::__construct('#__wiki_version', 'id', $db);
 	}

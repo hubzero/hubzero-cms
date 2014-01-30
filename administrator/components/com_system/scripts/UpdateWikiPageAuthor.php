@@ -83,7 +83,7 @@ class UpdateWikiPageAuthor extends SystemHelperScript
 
 					// Ensure we found an account
 					if (is_object($targetuser)) {
-						$wpa = new WikiPageAuthor($this->_db);
+						$wpa = new WikiTableAuthor($this->_db);
 						$wpa->page_id = $page->id;
 						$wpa->user_id = $targetuser->get('id');
 						if ($wpa->check()) {

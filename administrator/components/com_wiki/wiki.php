@@ -55,25 +55,14 @@ else
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
 
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'page.php');
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'pagePermissions.php');
 }
 
 ximport('Hubzero_User_Helper');
 
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'wiki.php');
-
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'attachment.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'author.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'comment.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'page.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'revision.php');
-
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'differenceengine.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'setup.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'book.php');
 
 // Initiate controller
 $controllerName = JRequest::getCmd('controller', 'pages');

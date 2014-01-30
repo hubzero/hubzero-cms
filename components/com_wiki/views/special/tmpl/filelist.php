@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('File List'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FileList'
+	$this->page->link()
 );
 
 $jconfig = JFactory::getConfig();
@@ -59,7 +59,7 @@ $database = JFactory::getDBO();
 $where = " AND (wp.group_cn='' OR wp.group_cn IS NULL) ";
 if ($this->sub)
 {
-	$parts = explode('/', $this->page->scope);
+	$parts = explode('/', $this->page->get('scope'));
 	$where = " AND wp.group_cn=" . $database->Quote(trim($parts[0])) . " ";
 }
 
@@ -67,7 +67,7 @@ $query = "SELECT COUNT(*)
 		FROM #__wiki_attachments AS wa 
 		INNER JOIN #__wiki_page AS wp 
 			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->scope) . "%' $where";
+		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' $where";
 
 $database->setQuery($query);
 $total = $database->loadResult();
@@ -76,7 +76,7 @@ $query = "SELECT wa.*, wp.scope, wp.pagename
 		FROM #__wiki_attachments AS wa 
 		INNER JOIN #__wiki_page AS wp 
 			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->scope) . "%'
+		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%'
 			$where
 		ORDER BY $sort $dir";
 if ($limit && $limit != 'all')
@@ -96,7 +96,7 @@ $pageNav = new JPagination(
 
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FileList'); ?>">
+<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
 		This special page shows all uploaded files of this wiki. By default the last uploaded files are shown at top of the list. A click on a column header changes the sorting. Deleted files are not shown here.
 	</p>
@@ -105,12 +105,12 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			<thead>
 				<tr>
 					<th scope="col">
-						<a<?php if ($sort == 'created') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FileList&sort=created&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'created') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created&dir=' . $altdir); ?>">
 							<?php if ($sort == 'created') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Date'); ?>
 						</a>
 					</th>
 					<th scope="col">
-						<a<?php if ($sort == 'filename') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FileList&sort=filename&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'filename') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=filename&dir=' . $altdir); ?>">
 							<?php if ($sort == 'filename') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Name'); ?>
 						</a>
 					</th>
@@ -121,12 +121,12 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 						<?php echo JText::_('Size'); ?>
 					</th>
 					<th scope="col">
-						<a<?php if ($sort == 'created_by') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FileList&sort=created_by&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'created_by') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created_by&dir=' . $altdir); ?>">
 							<?php if ($sort == 'created_by') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Uploaded by'); ?>
 						</a>
 					</th>
 					<th scope="col">
-						<a<?php if ($sort == 'description') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FileList&sort=description&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'description') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=description&dir=' . $altdir); ?>">
 							<?php if ($sort == 'description') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Description'); ?>
 						</a>
 					</th>
@@ -136,8 +136,6 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_View_Helper_Html');
-	ximport('Hubzero_User_Profile');
 	jimport('joomla.filesystem.file');
 
 	foreach ($rows as $row)
@@ -201,15 +199,14 @@ else
 ?>
 			</tbody>
 		</table>
-<?php
-//$pageNav->setAdditionalUrlParam('gid', $group);
-$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-$pageNav->setAdditionalUrlParam('pagename', $this->page->pagename);
-$pageNav->setAdditionalUrlParam('sort', $sort);
-$pageNav->setAdditionalUrlParam('dir', $dir);
+		<?php
+		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
+		$pageNav->setAdditionalUrlParam('sort', $sort);
+		$pageNav->setAdditionalUrlParam('dir', $dir);
 
-echo $pageNav->getListFooter();
-?>
+		echo $pageNav->getListFooter();
+		?>
 		<div class="clearfix"></div>
 	</div>
 </form>

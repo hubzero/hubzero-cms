@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Fix Links'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixLinks'
+	$this->page->link()
 );
 
 $jconfig = JFactory::getConfig();
@@ -71,7 +71,7 @@ $pageNav = new JPagination(
 	$limit
 );
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixLinks'); ?>">
+<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
 		This special page updates the link log for every page.
 	</p>
@@ -97,7 +97,6 @@ $pageNav = new JPagination(
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_Wiki_Parser');
 	$p = Hubzero_Wiki_Parser::getInstance();
 
 	foreach ($rows as $row)
@@ -147,8 +146,8 @@ else
 			</tbody>
 		</table>
 		<?php
-		$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-		$pageNav->setAdditionalUrlParam('pagename', 'Special:' . $this->page->pagename);
+		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+		$pageNav->setAdditionalUrlParam('pagename', 'Special:' . $this->page->get('pagename'));
 
 		echo $pageNav->getListFooter();
 		?>

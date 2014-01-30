@@ -35,26 +35,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 $scope   = JRequest::getVar('scope', '');
 $app 	 = JRequest::getVar( 'app', '', 'request', 'object' );	
 $project = JRequest::getVar( 'project', '', 'request', 'object' );	
-
-$mode = $this->page->params->get('mode', 'wiki');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
-<?php
-if ($mode != 'static') {
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'authors'
-	));
-	$view->option = $this->option;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->config = $this->config;
-	//$view->revision = $this->revision;
-	$view->display();
-}
-?>
+		<?php
+		if (!$this->page->isStatic()) 
+		{
+			$view = new JView(array(
+				'base_path' => $this->base_path, 
+				'name'      => 'page',
+				'layout'    => 'authors'
+			));
+			$view->page   = $this->page;
+			$view->display();
+		}
+		?>
 	</div><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
@@ -80,24 +75,24 @@ if ($mode != 'static') {
 ?>
 
 <div class="main section">
-<?php if ($this->page->state == 1 && !$this->config->get('access-manage')) { ?>
-	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+<?php if ($this->page->isLocked() && !$this->page->access('manage')) { ?>
+	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } else { ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope')); ?>" method="post" id="hubForm">
 		<fieldset>
-			<legend><?php echo JText::_('WIKI_DELETE_PAGE'); ?></legend>
+			<legend><?php echo JText::_('COM_WIKI_DELETE_PAGE'); ?></legend>
 			<label>
 				<input class="option" type="checkbox" name="confirm" value="1" />
-				<?php echo JText::_('WIKI_FIELD_CONFIRM_DELETE'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_CONFIRM_DELETE'); ?>
 			</label>
 			<p class="warning">
-				<?php echo JText::_('WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
 			</p>
 			<?php echo JHTML::_('form.token'); ?>
-			<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-			<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
-			<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+			<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
+			<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->get('id')); ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 			<input type="hidden" name="action" value="delete" />
 			<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
 		</fieldset>

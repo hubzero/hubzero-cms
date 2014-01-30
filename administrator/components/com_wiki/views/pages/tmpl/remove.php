@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_('Wiki').'</a>: '.JText::_('Delete page(s)'), 'wiki.png' );
+JToolBarHelper::title(JText::_('Wiki').': '.JText::_('Delete page(s)'), 'wiki.png');
 JToolBarHelper::cancel();
 
 ?>

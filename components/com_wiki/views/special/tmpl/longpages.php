@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Long Pages'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:LongPages'
+	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'
 );
 
 $jconfig = JFactory::getConfig();
@@ -50,9 +50,9 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
-				AND wp.access != 1 
+				AND wp.access != 2 
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
 
 $database->setQuery($query);
@@ -63,9 +63,9 @@ $query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
-				AND wp.access != 1 
+				AND wp.access != 2 
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY length DESC";
 if ($limit && $limit != 'all')
@@ -83,9 +83,9 @@ $pageNav = new JPagination(
 	$limit
 );
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:LongPages'); ?>">
+<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'); ?>">
 	<p>
-		This special page lists all pages in order of increasing size. Related: <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:ShortPages'); ?>">Special: Short Pages</a>
+		This special page lists all pages in order of increasing size. Related: <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:ShortPages'); ?>">Special: Short Pages</a>
 	</p>
 	<div class="container">
 		<table class="file entries">
@@ -109,8 +109,6 @@ $pageNav = new JPagination(
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_User_Profile');
-
 	foreach ($rows as $row)
 	{
 		$name = JText::_('(unknown)');
@@ -153,8 +151,8 @@ else
 			</tbody>
 		</table>
 <?php
-$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-$pageNav->setAdditionalUrlParam('pagename', $this->page->pagename);
+$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
 echo $pageNav->getListFooter();
 ?>

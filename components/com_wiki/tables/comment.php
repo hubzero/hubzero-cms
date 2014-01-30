@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki table class for comment
  */
-class WikiPageComment extends JTable
+class WikiTableComment extends JTable
 {
 	/**
 	 * int(11) Primary key

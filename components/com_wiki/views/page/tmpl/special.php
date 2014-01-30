@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->page->pagename = $this->page->stripNamespace();
+//$this->page->set('pagename', $this->page->denamespaced());
 
 $juser = JFactory::getUser();
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-		<h2><?php echo $this->page->stripNamespace($this->page->getTitle()); ?></h2>
+		<h2><?php echo $this->page->get('title'); ?></h2>
 	</div><!-- /#content-header -->
 
 	<?php /*if (!$juser->get('guest') && $this->config->get('access-create')) { ?>
@@ -88,6 +88,7 @@ $juser = JFactory::getUser();
 	$view->task   = $this->task;
 	$view->config = $this->config;
 	$view->sub    = $this->sub;
+	$view->book   = $this->book;
 	//$view->revision = $this->revision;
 	$view->display()
 ?>

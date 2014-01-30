@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Fix Version'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixVersion'
+	$this->page->link()
 );
 
 $jconfig = JFactory::getConfig();
@@ -56,7 +56,7 @@ $database->setQuery($query);
 $rows = $database->loadObjectList();
 
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixVersion'); ?>">
+<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
 		This special page updates the version ID of a page to the latest approved version for every page.
 	</p>

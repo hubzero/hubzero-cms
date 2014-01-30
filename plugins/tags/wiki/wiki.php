@@ -110,7 +110,7 @@ class plgTagsWiki extends JPlugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
 		// Instantiate some needed objects
-		$wp = new WikiPage($database);
+		$wp = new WikiTablePage($database);
 
 		// Build query
 		$filters = array();

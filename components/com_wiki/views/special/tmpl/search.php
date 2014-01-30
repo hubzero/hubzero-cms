@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Search'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:Search'
+	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'
 );
 
 $jconfig = JFactory::getConfig();
@@ -65,7 +65,7 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.group_cn = " . $database->Quote($this->page->group_cn) . " 
+				AND wp.group_cn = " . $database->Quote($this->page->get('group_cn')) . " 
 				AND $weight > 0
 				AND wp.state < 2
 				AND wv.id = wp.version_id 
@@ -80,7 +80,7 @@ $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.acc
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.group_cn = " . $database->Quote($this->page->group_cn) . " 
+				AND wp.group_cn = " . $database->Quote($this->page->get('group_cn')) . " 
 				AND $weight > 0
 				AND wp.state < 2
 				AND wv.id = wp.version_id 
@@ -138,16 +138,8 @@ $pageNav = new JPagination(
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_User_Profile');
-
 	foreach ($rows as $row)
 	{
-		/*$name = JText::_('(unknown)');
-		$xprofile = Hubzero_User_Profile::getInstance($row->created_by);
-		if (is_object($xprofile))
-		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($xprofile->get('name'))) . '</a>';
-		}*/
 ?>
 				<tr>
 					<td>
@@ -179,8 +171,8 @@ else
 			</tbody>
 		</table>
 <?php
-$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-$pageNav->setAdditionalUrlParam('pagename', $this->page->pagename);
+$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
 echo $pageNav->getListFooter();
 ?>

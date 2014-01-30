@@ -33,13 +33,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 	<div id="attachments">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="adminForm" method="post" enctype="multipart/form-data">
+		<form action="/index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
-
+	
 			<fieldset>
 				<table>
 					<tbody>
@@ -52,11 +52,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</tbody>
 				</table>
 
-				<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
-				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->escape($this->listdir); ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->listdir; ?>" />
 				<input type="hidden" name="task" value="upload" />
 				<input type="hidden" name="tmpl" value="component" />
-				<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			</fieldset>
 		</form>
 <?php if ($this->getError()) { ?>

@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for wiki pages
  */
@@ -102,16 +100,17 @@ class WikiControllerPages extends Hubzero_Controller
 			'group', 
 			''
 		));
+		$this->view->filters['state'] = array(0, 1, 2);
 
-		$p = new WikiPage($this->database);
+		$p = new WikiModelBook();
 
 		// Get record count
-		$this->view->total = $p->getPagesCount($this->view->filters);
+		$this->view->total = $p->pages('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $p->getPages($this->view->filters);
+		$this->view->rows = $p->pages('list', $this->view->filters);
 
-		$this->view->groups = $p->getGroups();
+		$this->view->groups = $p->groups();
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -169,30 +168,14 @@ class WikiControllerPages extends Hubzero_Controller
 		else 
 		{
 			// Load the article
-			$this->view->row = new WikiPage($this->database);
-			$this->view->row->loadById($id);
+			$this->view->row = new WikiModelPage(intval($id));
 		}
-		
+
 		if (!$id) 
 		{
 			// Creating new
-			$this->view->row->created_by = $this->juser->get('id');
+			$this->view->row->set('created_by', $this->juser->get('id'));
 		}
-
-		$wpa = new WikiPageAuthor($this->database);
-		$auths = $wpa->getAuthors($this->view->row->id);
-		$this->view->row->authors = '';
-		if (count($auths) > 0) 
-		{
-			$autharray = array();
-			foreach ($auths as $auth)
-			{
-				$autharray[] = $auth->username;
-			}
-			$this->view->row->authors = implode(', ', $autharray);
-		}
-
-		$this->view->creator = JUser::getInstance($this->view->row->created_by);
 
 		// Set any errors
 		if ($this->getError()) 
@@ -208,22 +191,11 @@ class WikiControllerPages extends Hubzero_Controller
 	}
 
 	/**
-	 * Save changes to an entry and go back to edit form
-	 * 
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save changes to an entry
 	 * 
-	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
 	 * @return     void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -233,7 +205,7 @@ class WikiControllerPages extends Hubzero_Controller
 		$page = array_map('trim', $page);
 
 		// Initiate extended database class
-		$row = new WikiPage($this->database);
+		$row = new WikiModelPage(intval($page['id']));
 		if (!$row->bind($page)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -241,34 +213,22 @@ class WikiControllerPages extends Hubzero_Controller
 			return;
 		}
 
-		/*if (!$row->id) 
-		{
-			$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('id');
-		}
-
-		if (!$row->pagename && $row->title) {
-			$row->pagename = preg_replace("/[^\:a-zA-Z0-9]/", "", $row->title);
-		}
-		$row->pagename = preg_replace("/[^\:a-zA-Z0-9]/", "", $row->pagename);
-		if (!$row->title && $row->pagename) {
-			$row->title = $row->pagename;
-		}*/
-		$row->access = JRequest::getInt('access', 0, 'post');
-
 		// Get parameters
 		$params = JRequest::getVar('params', array(), 'post');
 		if (is_array($params)) 
 		{
-			$paramsClass = 'JRegistry';
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$paramsClass = 'JParameter';
-			}
-
-			$pparams = new $paramsClass($row->params);
+			$pparams = new JRegistry($row->get('params'));
 			$pparams->loadArray($params);
 
-			$row->params = $pparams->toString();
+			$row->set('params', $pparams->toString());
+		}
+
+		// Store new content
+		if (!$row->store(true)) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
 		}
 
 		if (!$row->updateAuthors($page['authors'])) 
@@ -278,45 +238,13 @@ class WikiControllerPages extends Hubzero_Controller
 			return;
 		}
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+		$row->tag($page['tags']);
 
-		// Store new content
-		if (!$row->store()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-
-		// Log the change
-		$log = new WikiLog($this->database);
-		$log->pid = $page->id;
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate()->toSql();
-		$log->action = ($page['id']) ? 'page_edited' : 'page_created';
-		$log->actorid = $this->juser->get('id');
-		if (!$log->store()) 
-		{
-			$this->setError($log->getError());
-		}
-
-		if ($redirect)
-		{
-			// Set the redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Page successfully saved')
-			);
-			return;
-		}
-
-		$this->editTask($row);
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Page successfully saved')
+		);
 	}
 
 	/**
@@ -381,35 +309,13 @@ class WikiControllerPages extends Hubzero_Controller
 
 				if (!empty($ids)) 
 				{
-					// Create a category object
-					$page = new WikiPage($this->database);
-
 					foreach ($ids as $id)
 					{
-						// Delete the page's history, tags, comments, etc.
-						$page->deleteBits($id);
-
 						// Finally, delete the page itself
-						$page->delete($id);
-
-						// Delete the page's files
-						jimport('joomla.filesystem.folder');
-						$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
-						if (!JFolder::delete($path . DS . $id)) 
+						$page = new WikiModelPage(intval($id));
+						if (!$page->delete()) 
 						{
-							$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
-						}
-
-						// Log the action
-						$log = new WikiLog($this->database);
-						$log->pid = $id;
-						$log->uid = $this->juser->get('id');
-						$log->timestamp = JFactory::getDate()->toSql();
-						$log->action = 'page_removed';
-						$log->actorid = $this->juser->get('id');
-						if (!$log->store()) 
-						{
-							$this->setError($log->getError());
+							$this->setError($page->getError());
 						}
 					}
 				}
@@ -477,20 +383,10 @@ class WikiControllerPages extends Hubzero_Controller
 		}
 
 		// Load the article
-		$row = new WikiPage($this->database);
-		$row->loadById($id);
-		$row->access = $access;
+		$row = new WikiModelPage(intval($id));
+		$row->set('access', $access);
 
 		// Check and store the changes
-		if (!$row->check()) 
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
 		if (!$row->store()) 
 		{
 			$this->setRedirect(
@@ -531,19 +427,9 @@ class WikiControllerPages extends Hubzero_Controller
 		}
 
 		// Load and reset the article's hits
-		$page = new WikiPage($this->database);
-		$page->loadById($id);
-		$page->hits = 0;
+		$page = new WikiModelPage(intval($id));
+		$page->set('hits', 0);
 
-		if (!$page->check()) 
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$page->getError(),
-				'error'
-			);
-			return;
-		}
 		if (!$page->store()) 
 		{
 			$this->setRedirect(
@@ -585,19 +471,9 @@ class WikiControllerPages extends Hubzero_Controller
 		}
 
 		// Load and reset the article's hits
-		$page = new WikiPage($this->database);
-		$page->loadById($id);
-		$page->state = JRequest::getInt('state', 0);
+		$page = new WikiModelPage(intval($id));
+		$page->set('state', JRequest::getInt('state', 0));
 
-		if (!$page->check()) 
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$page->getError(),
-				'error'
-			);
-			return;
-		}
 		if (!$page->store()) 
 		{
 			$this->setRedirect(

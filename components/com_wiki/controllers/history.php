@@ -69,6 +69,8 @@ class WikiControllerHistory extends Hubzero_Controller
 			JRequest::setVar('task', JRequest::getWord('action'));
 		}
 
+		$this->book = new WikiModelBook(($this->_group ? $this->_group : '__site__'));
+
 		parent::__construct($config);
 	}
 
@@ -79,32 +81,27 @@ class WikiControllerHistory extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		if ($this->_sub || $this->_option != 'com_wiki')
+		/*if ($this->_sub || $this->_option != 'com_wiki')
 		{
 			$this->config = JComponentHelper::getParams('com_wiki');
-		}
+		}*/
 
-		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
-		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
-
-		$this->page   = WikiHelperPage::getPage($this->config);
-		$this->config = WikiHelperPage::authorize($this->config, $this->page);
-
-		$wp = new WikiPage($this->database);
-		if (!$wp->count()) 
+		if (!$this->book->pages('count'))
 		{
-			$result = WikiSetup::initialize($this->_option);
-			if ($result) 
+			if ($result = $this->book->scribe($this->_option)) 
 			{
 				$this->setError($result);
 			}
+
+			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
-		if (substr(strtolower($this->page->pagename), 0, strlen('image:')) == 'image:'
-		 || substr(strtolower($this->page->pagename), 0, strlen('file:')) == 'file:') 
+		$this->page = $this->book->page();
+
+		if (in_array($this->page->get('namespace'), array('image', 'file')))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=download'
+				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'
 			);
 			return;
 		}
@@ -123,14 +120,10 @@ class WikiControllerHistory extends Hubzero_Controller
 	{
 		$this->view->setLayout('display');
 
-		$this->view->page = $this->page;
-		$this->view->config = $this->config;
+		$this->view->page      = $this->page;
+		$this->view->config    = $this->config;
 		$this->view->base_path = $this->_base_path;
-		$this->view->sub = $this->_sub;
-
-		// Get all revisions
-		$rev = new WikiPageRevision($this->database);
-		$this->view->revisions = $rev->getRevisions($this->page->id);
+		$this->view->sub       = $this->_sub;
 
 		if (!$this->_sub)
 		{
@@ -140,14 +133,14 @@ class WikiControllerHistory extends Hubzero_Controller
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
-		$this->view->title = $this->page->getTitle();
+		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->view->title.': '.JText::_(strtoupper($this->_task)));
+		$document =& JFactory::getDocument();
+		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway =& JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -157,11 +150,11 @@ class WikiControllerHistory extends Hubzero_Controller
 		}
 		$pathway->addItem(
 			$this->view->title,
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename
+			$this->page->link()
 		);
 		$pathway->addItem(
 			JText::_(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
+			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view->message = $this->_message;
@@ -186,10 +179,10 @@ class WikiControllerHistory extends Hubzero_Controller
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'differenceengine.php');
 
-		$this->view->page = $this->page;
-		$this->view->config = $this->config;
+		$this->view->page      = $this->page;
+		$this->view->config    = $this->config;
 		$this->view->base_path = $this->_base_path;
-		$this->view->sub = $this->_sub;
+		$this->view->sub       = $this->_sub;
 
 		// Incoming
 		$oldid = JRequest::getInt('oldid', 0);
@@ -210,14 +203,14 @@ class WikiControllerHistory extends Hubzero_Controller
 		}
 
 		// If no initial page is given, compare to the current revision
-		$this->view->revision = $this->page->getRevision(0);
+		$this->view->revision = $this->page->revision('current'); //$this->page->getRevision(0);
 
-		$this->view->or = $this->page->getRevision($oldid);
-		$this->view->dr = $this->page->getRevision($diff);
+		$this->view->or = $this->page->revision($oldid);
+		$this->view->dr = $this->page->revision($diff);
 
 		// Diff the two versions
-		$ota = explode("\n", $this->view->or->pagetext);
-		$nta = explode("\n", $this->view->dr->pagetext);
+		$ota = explode("\n", $this->view->or->get('pagetext'));
+		$nta = explode("\n", $this->view->dr->get('pagetext'));
 
 		//$diffs = new Diff($ota, $nta);
 		$formatter = new TableDiffFormatter();
@@ -231,14 +224,14 @@ class WikiControllerHistory extends Hubzero_Controller
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
-		$this->view->title = $this->page->getTitle();
+		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
+		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway =& JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -248,11 +241,11 @@ class WikiControllerHistory extends Hubzero_Controller
 		}
 		$pathway->addItem(
 			$this->view->title,
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename
+			$this->page->link()
 		);
 		$pathway->addItem(
 			JText::_(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
+			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view->sub     = $this->_sub;
@@ -290,35 +283,35 @@ class WikiControllerHistory extends Hubzero_Controller
 		// Incoming
 		$id = JRequest::getInt('oldid', 0);
 
-		if (!$id || !$this->config->get('access-delete')) 
+		if (!$id || !$this->page->access('delete')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history')
+				JRoute::_($this->page->link('history'))
 			);
 			return;
 		}
 
-		$revision = new WikiPageRevision($this->database);
-		$revision->load($id);
+		$revision = new WikiModelRevision($id);
+		//$revision->load($id);
 
 		// Get a count of all approved revisions
 		if ($revision->getRevisionCount() <= 1) 
 		{
 			// Can't delete - it's the only approved version!
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history')
+				JRoute::_($this->page->link('history'))
 			);
 			return;
 		}
 
 		// Delete it
-		$revision->approved = 2;
+		$revision->set('approved', 2);
 
 		//if (!$revision->delete($id))
 		if (!$revision->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history'),
+				JRoute::_($this->page->link('history')),
 				JText::_('Error occurred while removing revision.'), 
 				'error'
 			);
@@ -329,23 +322,26 @@ class WikiControllerHistory extends Hubzero_Controller
 		// revision number to the previous available revision
 		//if ($id == $this->page->version_id)
 		//{
-			$this->page->setRevisionId();
+			//$this->page->setRevisionId();
 		//}
+		$this->page->revisions('list', array(), true)->last();
+		$this->page->set('version_id', $this->page->revisions()->current()->get('id'));
+		$this->page->store(false, 'revision_removed');
 
 		// Log the action
-		$log = new WikiLog($this->database);
+		/*$log = new WikiLog($this->database);
 		$log->pid       = $this->page->id;
 		$log->uid       = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate()->toSql();
+		$log->timestamp = date('Y-m-d H:i:s', time());
 		$log->action    = 'revision_removed';
 		$log->actorid   = $this->juser->get('id');
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());
-		}
+		}*/
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history')
+			JRoute::_($this->page->link('history'))
 		);
 	}
 
@@ -369,43 +365,51 @@ class WikiControllerHistory extends Hubzero_Controller
 		// Incoming
 		$id = JRequest::getInt('oldid', 0);
 
-		if (!$id || !$this->config->get('access-manage')) 
+		if (!$id || !$this->page->access('manage')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename)
+				JRoute::_($this->page->link())
 			);
 			return;
 		}
 
 		// Load the revision, approve it, and save
-		$revision = new WikiPageRevision($this->database);
-		$revision->load($id);
-		$revision->approved = 1;
-		if (!$revision->check()) 
-		{
-			JError::raiseWarning(500, $revision->getError());
-			return;
-		}
+		$revision = new WikiModelRevision($id);
+		$revision->set('approved', 1);
 		if (!$revision->store()) 
 		{
 			JError::raiseWarning(500, $revision->getError());
 			return;
 		}
 
+		// Get the most recent revision and compare to the set "current" version
+		$this->page->revisions('list', array(), true)->last();
+		if ($this->page->revisions()->current()->get('id') == $revision->get('id'))
+		{
+			// The newly approved revision is now the most current
+			// So, we need to update the page's version_id
+			$this->page->set('version_id', $this->page->revisions()->current()->get('id'));
+			$this->page->store(false, 'revision_approved');
+		}
+		else
+		{
+			$this->page->log('revision_approved');
+		}
+
 		// Log the action
-		$log = new WikiLog($this->database);
+		/*$log = new WikiLog($this->database);
 		$log->pid       = $this->page->id;
 		$log->uid       = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate()->toSql();
+		$log->timestamp = date('Y-m-d H:i:s', time());
 		$log->action    = 'revision_approved';
 		$log->actorid   = $this->juser->get('id');
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());
-		}
+		}*/
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename)
+			JRoute::_($this->page->link())
 		);
 	}
 }

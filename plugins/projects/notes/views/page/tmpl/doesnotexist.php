@@ -48,40 +48,27 @@ $scope   = JRequest::getVar('scope', '');
 	$view->controller = $this->controller;
 	$view->page   = $this->page;
 	$view->task   = $this->task;
-	$view->config = $this->config;
+	//$view->config = $this->config;
 	$view->sub    = $this->sub;
 	$view->display();
 ?>
 
 <div class="main section">
 	<p class="warning">
-		This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&action=new'); ?>">create it?</a>
+		This page does not exist. Would you like to <a href="<?php echo JRoute::_($this->page->link().'&action=new'); ?>">create it?</a>
 	</p>
-<?php if ($templates = $this->page->getTemplates()) { ?>
+<?php if (count($this->book->templates('list', array(), 'true'))) { ?>
 	<p>
 		<?php echo JText::_('Or choose a page template to create an already-formatted page:'); ?>
 	</p>
 	<ul>
-<?php 
-if ($templates) {
-	foreach ($templates as $template)
-	{
-?>
+	<?php foreach ($this->book->templates() as $template) { ?>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=new&tplate='.stripslashes($template->pagename)); ?>">
-				<?php echo stripslashes($template->pagename); ?>
+			<a href="<?php echo JRoute::_($this->page->link('new') . '&tplate=' . stripslashes($template->get('pagename'))); ?>">
+				<?php echo $this->escape(stripslashes($template->get('title'))); ?>
 			</a>
 		</li>
-<?php
-	}
-} else {
-?>
-		<li>
-			<?php echo JText::_('No templates available.'); ?>
-		</li>
-<?php
-}
-?>
+	<?php } ?>
 	</ul>
 <?php } ?>
 	<div class="clear"></div>

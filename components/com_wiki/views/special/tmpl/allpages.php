@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('All Pages'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages'
+	$this->page->link()
 );
 
 $jconfig = JFactory::getConfig();
@@ -60,7 +60,7 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				$where
 				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
@@ -73,7 +73,7 @@ $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !=
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				$where
 				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
@@ -82,7 +82,7 @@ $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !=
 $database->setQuery($query);
 $rows = $database->loadObjectList();
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:AllPages'); ?>">
+<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<div class="wikipage">
 	<fieldset>
 		<legend><?php echo JText::_('Filter list'); ?></legend>
@@ -98,7 +98,7 @@ $rows = $database->loadObjectList();
 		
 		<input type="submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
-	<div class="grid">
+	
 <?php
 if ($rows) 
 {
@@ -110,12 +110,12 @@ if ($rows)
 	{
 		switch ($i)
 		{
-			case 0: $cls = ''; break;
-			case 1: $cls = ''; break;
-			case 2: $cls = 'omega'; break;
+			case 0: $cls = 'first'; break;
+			case 1: $cls = 'second'; break;
+			case 2: $cls = 'third'; break;
 		}
 ?>
-		<div class="col span-third <?php echo $cls; ?>">
+		<div class="three columns <?php echo $cls; ?>">
 			<?php
 		if (count($column) > 0)
 		{
@@ -158,6 +158,26 @@ if ($rows)
 	}
 }
 ?>
-		</div>
+		<div class="clear"></div>
+		<hr />
+		<h3><?php echo JText::_('Special Pages'); ?></h3>
+		<ul>
+		<?php
+		foreach ($this->book->special() as $key => $page)
+		{
+			if ($page == strtolower($this->page->denamespaced()))
+			{
+				continue;
+			}
+			?>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&pagename=Special:' . ucfirst($page) . '&scope=' . $this->page->get('scope')); ?>">
+						<?php echo 'Special:' . ucfirst($this->escape(stripslashes($page))); ?>
+					</a>
+				</li>
+			<?php
+		}
+		?>
+		</ul>
 	</div>
 </form>

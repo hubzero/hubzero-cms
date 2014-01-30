@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki table class for logging events
  */
-class WikiLog extends JTable
+class WikiTableLog extends JTable
 {
 	/**
 	 * int(11) Primary key

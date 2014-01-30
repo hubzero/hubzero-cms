@@ -38,28 +38,28 @@ $app = JRequest::getVar( 'app', '', 'request', 'object' );
 ?>
 	<ul class="sub-menu">
 		<li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">
-				<span><?php echo JText::_('WIKI_TAB_ARTICLE'); ?></span>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename='.$this->page->get('pagename')); ?>">
+				<span><?php echo JText::_('COM_WIKI_TAB_ARTICLE'); ?></span>
 			</a>
 		</li>
-<?php if ($this->page->id && strtolower($this->page->getNamespace()) != 'special') { ?>
-	<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-edit'))) { ?>
+<?php if ($this->page->exists() && $this->page->get('namespace') != 'special') { ?>
+	<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
 		<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">
-				<span><?php echo JText::_('WIKI_TAB_EDIT'); ?></span>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename='.$this->page->get('pagename').'&task=edit'); ?>">
+				<span><?php echo JText::_('COM_WIKI_TAB_EDIT'); ?></span>
 			</a>
 		</li>
 	<?php } ?>
-	<?php if ($this->config->get('access-comment-view')) { ?>
+	<?php if ($this->page->access('view', 'comment')) { ?>
 		<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=comments'); ?>">
-				<span><?php echo JText::_('WIKI_TAB_COMMENTS'); ?></span>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename='.$this->page->get('pagename').'&task=comments'); ?>">
+				<span><?php echo JText::_('COM_WIKI_TAB_COMMENTS'); ?></span>
 			</a>
 		</li>
 	<?php } ?>
 		<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=history'); ?>">
-				<span><?php echo JText::_('WIKI_TAB_HISTORY'); ?></span>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename='.$this->page->get('pagename').'&task=history'); ?>">
+				<span><?php echo JText::_('COM_WIKI_TAB_HISTORY'); ?></span>
 			</a>
 		</li>
 <?php } ?>

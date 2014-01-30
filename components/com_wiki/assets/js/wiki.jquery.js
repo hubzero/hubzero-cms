@@ -12,6 +12,24 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	$('a.reply').on('click', function (e) {
+		e.preventDefault();
+
+		var frm = $('#' + $(this).attr('data-rel'));
+
+		if (frm.hasClass('hide')) {
+			frm.removeClass('hide');
+			$(this)
+				.addClass('active')
+				.text($(this).attr('data-txt-active'));
+		} else {
+			frm.addClass('hide');
+			$(this)
+				.removeClass('active')
+				.text($(this).attr('data-txt-inactive'));
+		}
+	});
+
 	if ($('#templates').length > 0) {
 		$('#templates').on('change', function (e){
 			var id = $(this);

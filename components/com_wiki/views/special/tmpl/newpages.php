@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('New Pages'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages'
+	$this->page->link()
 );
 
 $jconfig = JFactory::getConfig();
@@ -61,8 +61,8 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
-				AND wp.access != 1 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+				AND wp.access != 2 
 				AND wp.state < 2
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
 
@@ -74,8 +74,8 @@ $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.acc
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
-				AND wp.access != 1 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+				AND wp.access != 2 
 				AND wp.state < 2
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY $sort $dir";
@@ -96,7 +96,7 @@ $pageNav = new JPagination(
 
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages'); ?>">
+<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
 		This special page shows all the new pages of this wiki. By default the newest pages are shown at top of the list.
 	</p>
@@ -105,22 +105,22 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			<thead>
 				<tr>
 					<th scope="col">
-						<a<?php if ($sort == 'created') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages&sort=created&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'created') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created&dir=' . $altdir); ?>">
 							<?php if ($sort == 'created') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Date'); ?>
 						</a>
 					</th>
 					<th scope="col">
-						<a<?php if ($sort == 'title') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages&sort=title&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'title') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=title&dir=' . $altdir); ?>">
 							<?php if ($sort == 'title') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Title'); ?>
 						</a>
 					</th>
 					<th scope="col">
-						<a<?php if ($sort == 'created_by') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages&sort=created_by&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'created_by') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created_by&dir=' . $altdir); ?>">
 							<?php if ($sort == 'created_by') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Created by'); ?>
 						</a>
 					</th>
 					<th scope="col">
-						<a<?php if ($sort == 'summary') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages&sort=summary&dir=' . $altdir); ?>">
+						<a<?php if ($sort == 'summary') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=summary&dir=' . $altdir); ?>">
 							<?php if ($sort == 'summary') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Summary'); ?>
 						</a>
 					</th>
@@ -130,8 +130,6 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_User_Profile');
-
 	foreach ($rows as $row)
 	{
 		$name = JText::_('(unknown)');
@@ -173,12 +171,12 @@ else
 ?>
 			</tbody>
 		</table>
-<?php
-$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-$pageNav->setAdditionalUrlParam('pagename', $this->page->pagename);
+		<?php
+		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-echo $pageNav->getListFooter();
-?>
+		echo $pageNav->getListFooter();
+		?>
 		<div class="clearfix"></div>
 	</div>
 </form>

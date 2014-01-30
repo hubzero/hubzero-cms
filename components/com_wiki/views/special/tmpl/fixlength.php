@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Fix Length'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixLength'
+	$this->page->link()
 );
 
 $jconfig = JFactory::getConfig();
@@ -48,7 +48,7 @@ $database->setQuery($query);
 $rows = $database->loadObjectList();
 
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixLength'); ?>">
+<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
 		This special page updates the page length for every page revision.
 	</p>

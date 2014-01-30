@@ -69,11 +69,7 @@ class WikiControllerComments extends Hubzero_Controller
 			JRequest::setVar('task', JRequest::getWord('action'));
 		}
 
-		/*$this->_access = false;
-		if (isset($config['access'])) 
-		{
-			$this->_access = $config['access'];
-		}*/
+		$this->book = new WikiModelBook(($this->_group ? $this->_group : '__site__'));
 
 		parent::__construct($config);
 	}
@@ -85,32 +81,27 @@ class WikiControllerComments extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		if ($this->_sub || $this->_option != 'com_wiki')
+		/*if ($this->_sub || $this->_option != 'com_wiki')
 		{
 			$this->config = JComponentHelper::getParams('com_wiki');
-		}
+		}*/
 
-		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
-		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
-
-		$this->page   = WikiHelperPage::getPage($this->config);
-		$this->config = WikiHelperPage::authorize($this->config, $this->page);
-
-		$wp = new WikiPage($this->database);
-		if (!$wp->count()) 
+		if (!$this->book->pages('count'))
 		{
-			$result = WikiSetup::initialize($this->_option);
-			if ($result) 
+			if ($result = $this->book->scribe($this->_option)) 
 			{
 				$this->setError($result);
 			}
+
+			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
-		if (substr(strtolower($this->page->pagename), 0, strlen('image:')) == 'image:'
-		 || substr(strtolower($this->page->pagename), 0, strlen('file:')) == 'file:') 
+		$this->page = $this->book->page();
+
+		if (in_array($this->page->get('namespace'), array('image', 'file')))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=download'
+				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'
 			);
 			return;
 		}
@@ -133,70 +124,37 @@ class WikiControllerComments extends Hubzero_Controller
 	{
 		$this->view->setLayout('display');
 
-		$this->view->page = $this->page;
-		$this->view->config = $this->config;
+		$this->view->page      = $this->page;
+		$this->view->config    = $this->config;
 		$this->view->base_path = $this->_base_path;
-		$this->view->sub = $this->_sub;
+		$this->view->sub       = $this->_sub;
 
 		// Viewing comments for a specific version?
-		$ver = '';
 		$this->view->v = JRequest::getInt('version', 0);
-		if ($this->view->v) 
-		{
-			$ver = 'AND version=' . $this->view->v;
-		} 
 
-		// Get comments
-		$c = new WikiPageComment($this->database);
-		$this->view->comments = $c->getComments(
-			$this->page->id, 
-			0, 
-			$ver, 
-			''
-		);
-		for ($i=0,$n=count($this->view->comments);$i<$n;$i++)
+		if (!isset($this->view->mycomment) && !$this->juser->get('guest'))
 		{
-			// Get replies
-			$this->view->comments[$i]->children = $c->getComments(
-				$this->page->id, 
-				$this->view->comments[$i]->id, 
-				$ver, 
-				''
-			);
-			for ($k=0,$m=count($this->view->comments[$i]->children);$k<$m;$k++)
-			{
-				// Get replies to replies
-				$this->view->comments[$i]->children[$k]->children = $c->getComments(
-					$this->page->id, 
-					$this->view->comments[$i]->children[$k]->id, 
-					$ver, 
-					'LIMIT 4'
-				);
-			}
+			$this->view->mycomment = new WikiModelComment(0);
+			// No ID, so we're creating a new comment
+			// In that case, we'll need to set some data...
+			$revision = $this->page->revision('current');
+
+			$this->view->mycomment->set('pageid', $revision->get('pageid'));
+			$this->view->mycomment->set('version', $revision->get('version'));
+			$this->view->mycomment->set('parent', JRequest::getInt('parent', 0));
+			$this->view->mycomment->set('created_by', $this->juser->get('id'));
 		}
-
-		// Do we have a comment object? If so, then we're in edit mode
-		if (is_object($this->comment)) 
-		{
-			$this->view->mycomment = $this->comment;
-		} 
-		else 
-		{
-			$this->view->mycomment = NULL;
-		}
-
-		$revision = new WikiPageRevision($this->database);
-		$this->view->versions = $revision->getRevisionNumbers($this->page->id);
 
 		if (!$this->_sub)
 		{
 			// Include any CSS
 			$this->_getStyles();
+			$this->_getScripts('assets/js/wiki', 'com_wiki');
 		}
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
-		$this->view->title = $this->page->getTitle();
+		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
 		$document = JFactory::getDocument();
@@ -213,11 +171,11 @@ class WikiControllerComments extends Hubzero_Controller
 		}
 		$pathway->addItem(
 			$this->view->title,
-			'index.php?option=' . $this->_option . '&controller=page&scope=' . $this->page->scope . '&pagename=' . $this->pagename
+			$this->page->link()
 		);
 		$pathway->addItem(
 			JText::_(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&controller=comments&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&task=' . $this->_task
+			$this->page->link('comments')
 		);
 
 		// Output content
@@ -268,19 +226,18 @@ class WikiControllerComments extends Hubzero_Controller
 
 		// Add the comment object to our controller's registry
 		// This is how comments() knows if it needs to display a form or not
-		$this->comment = new WikiPageComment($this->database);
-		$this->comment->load($id);
+		$this->view->mycomment = new WikiModelComment($id);
 
 		if (!$id) 
 		{
 			// No ID, so we're creating a new comment
 			// In that case, we'll need to set some data...
-			$revision = $this->page->getCurrentRevision();
+			$revision = $this->page->revision('current');
 
-			$this->comment->pageid     = $revision->pageid;
-			$this->comment->version    = $revision->version;
-			$this->comment->parent     = JRequest::getInt('parent', 0);
-			$this->comment->created_by = $this->juser->get('id');
+			$this->view->mycomment->set('pageid', $revision->get('pageid'));
+			$this->view->mycomment->set('version', $revision->get('version'));
+			$this->view->mycomment->set('parent', JRequest::getInt('parent', 0));
+			$this->view->mycomment->set('created_by', $this->juser->get('id'));
 		}
 
 		$this->displayTask();
@@ -293,68 +250,47 @@ class WikiControllerComments extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
-		$pagename = JRequest::getVar('pagename', '', 'post');
-		$scope    = JRequest::getVar('scope', '', 'post');
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		$fields = JRequest::getVar('comment', array(), 'post');
 
 		// Bind the form data to our object
-		$this->comment = new WikiPageComment($this->database);
-		if (!$this->comment->bind($fields)) 
+		$this->view->mycomment = new WikiModelComment($fields['id']);
+		if (!$this->view->mycomment->bind($fields)) 
 		{
-			$this->setError($this->comment->getError());
+			$this->setError($this->view->mycomment->getError());
 			$this->displayTask();
 			return;
 		}
 
 		// Parse the wikitext and set some values
-		$wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => $scope,
-			'pagename' => $pagename,
-			'pageid'   => $this->comment->pageid,
-			'filepath' => '',
-			'domain'   => $this->_group
-		);
-		ximport('Hubzero_Wiki_Parser');
-		$p = Hubzero_Wiki_Parser::getInstance();
-		$this->comment->chtml = $p->parse($this->comment->ctext, $wikiconfig);
-
-		$this->comment->anonymous = ($this->comment->anonymous == 1 || $this->comment->anonymous == '1') ? $this->comment->anonymous : 0;
-		$this->comment->created   = ($this->comment->created) ? $this->comment->created : JFactory::getDate()->toSql();
-
-		// Check for missing (required) fields
-		if (!$this->comment->check()) 
-		{
-			$this->setError($this->comment->getError());
-			$this->displayTask();
-			return;
-		}
+		$this->view->mycomment->set('chtml', $this->view->mycomment->content('parsed'));
+		$this->view->mycomment->set('anonymous', ($this->view->mycomment->get('anonymous') ? 1 : 0));
+		$this->view->mycomment->set('created', ($this->view->mycomment->get('created') ? $this->view->mycomment->get('created') : date("Y-m-d H:i:s")));
 
 		// Save the data
-		if (!$this->comment->store()) 
+		if (!$this->view->mycomment->store(true)) 
 		{
-			$this->setError($this->comment->getError());
+			$this->setError($this->view->mycomment->getError());
 			$this->displayTask();
 			return;
 		}
 
 		// Did they rate the page? 
 		// If so, update the page with the new average rating
-		if ($this->comment->rating) 
+		if ($this->view->mycomment->get('rating')) 
 		{
-			$page = new WikiPage($this->database);
-			$page->load(intval($this->comment->pageid));
-			$page->calculateRating();
-			if (!$page->store()) 
+			$this->page->calculateRating();
+			if (!$this->page->store()) 
 			{
-				$this->setError($page->getError());
+				$this->setError($this->page->getError());
 			}
 		}
 
 		// Redirect to Comments page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&scope=' . $scope . '&pagename=' . $pagename . '&task=comments')
+			JRoute::_($this->page->link('comments'))
 		);
 	}
 
@@ -365,20 +301,17 @@ class WikiControllerComments extends Hubzero_Controller
 	 */
 	public function removeTask()
 	{
-		$id = JRequest::getInt('id', 0);
-
 		$msg = null;
 		$cls = 'message';
 
 		// Make sure we have a comment to delete
-		if ($id) 
+		if (($id = JRequest::getInt('id', 0))) 
 		{
 			// Make sure they're authorized to delete (must be an author)
-			if ($this->config->get('access-comment-delete')) 
+			if ($this->page->access('delete', 'comment')) 
 			{
-				$comment = new WikiPageComment($this->database);
-				$comment->load($id);
-				$comment->status = 2;
+				$comment = new WikiModelComment($id);
+				$comment->set('status', 2);
 				if ($comment->store())
 				{
 					$msg = JText::_('COM_WIKI_COMMENT_DELETED');
@@ -391,12 +324,9 @@ class WikiControllerComments extends Hubzero_Controller
 			}
 		}
 
-		$pagename = JRequest::getVar('pagename', '');
-		$scope    = JRequest::getVar('scope', '');
-
 		// Redirect to Comments page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&scope=' . $scope . '&pagename=' . $pagename . '&task=comments'),
+			$this->page->link('comments'),
 			$msg,
 			$cls
 		);
@@ -409,13 +339,11 @@ class WikiControllerComments extends Hubzero_Controller
 	 */
 	public function reportTask()
 	{
-		$id = JRequest::getInt('id', 0, 'request');
-
 		// Make sure we have a comment to report
-		if ($id) 
+		if (($id = JRequest::getInt('id', 0, 'request'))) 
 		{
-			$comment = new WikiPageComment($this->database);
-			$comment->report($id);
+			$comment = new WikiModelComment($id);
+			$comment->report();
 
 			$this->addComponentMessage(JText::sprintf('WIKI_COMMENT_REPORTED', $id));
 		}

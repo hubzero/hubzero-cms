@@ -31,24 +31,62 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
 
 /**
- * Wiki Tagging class
+ * Courses model class for a forum
  */
-class WikiTags extends TagsHandler
+class WikiModelAuthor extends \Hubzero\Base\Model
 {
 	/**
 	 * Constructor
 	 * 
-	 * @param      object $db     JDatabase
-	 * @param      array  $config Optional configurations
+	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
-	public function __construct($db, $config=array())
+	public function __construct($oid=null)
 	{
-		$this->_db  = $db;
-		$this->_tbl = 'wiki';
+		$this->_db = JFactory::getDBO();
+
+		$this->_tbl = new WikiTableAuthor($this->_db);
+
+		if (is_numeric($oid) || is_string($oid))
+		{
+			if ($oid)
+			{
+				$this->_tbl->load($oid);
+			}
+		}
+		else if (is_object($oid) || is_array($oid))
+		{
+			$this->bind($oid);
+		}
+	}
+
+	/**
+	 * Returns a reference to a forum model
+	 *
+	 * This method must be invoked as:
+	 *     $offering = ForumModelCourse::getInstance($alias);
+	 *
+	 * @param      mixed $oid Course ID (int) or alias (string)
+	 * @return     object ForumModelCourse
+	 */
+	static function &getInstance($oid=0)
+	{
+		static $instances;
+
+		if (!isset($instances)) 
+		{
+			$instances = array();
+		}
+
+		if (!isset($instances[$oid])) 
+		{
+			$instances[$oid] = new self($oid);
+		}
+
+		return $instances[$oid];
 	}
 }
 

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('New Pages'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:RecentChanges'
+	$this->page->link()
 );
 
 $jconfig = JFactory::getConfig();
@@ -56,9 +56,9 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
-				AND wp.access != 1";
+				AND wp.access != 2";
 
 $database->setQuery($query);
 $total = $database->loadResult();
@@ -68,9 +68,9 @@ $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.acc
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = " . $database->Quote($this->page->scope) . " 
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
-				AND wp.access != 1 
+				AND wp.access != 2 
 			ORDER BY created DESC";
 if ($limit && $limit != 'all')
 {
@@ -89,7 +89,7 @@ $pageNav = new JPagination(
 
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:RecentChanges'); ?>">
+<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
 		This special page shows all the recent changes in this wiki. The most recent changes are shown at top of the list.
 	</p>
@@ -118,8 +118,6 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_User_Profile');
-
 	foreach ($rows as $row)
 	{
 		$name = JText::_('(unknown)');
@@ -171,12 +169,12 @@ else
 ?>
 			</tbody>
 		</table>
-<?php
-$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-$pageNav->setAdditionalUrlParam('pagename', $this->page->pagename);
+		<?php
+		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-echo $pageNav->getListFooter();
-?>
+		echo $pageNav->getListFooter();
+		?>
 		<div class="clearfix"></div>
 	</div>
 </form>

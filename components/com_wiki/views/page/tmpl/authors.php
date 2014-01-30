@@ -31,28 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->page->params->get('mode', 'wiki') == 'knol' && !$this->page->params->get('hide_authors', 0)) 
+if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0)) 
 {
-	$authors = $this->page->getAuthors();
-
-	$author = 'Unknown';
-	$ausername = '';
-	$auser = JUser::getInstance($this->page->created_by);
-	if (is_object($auser)) 
-	{
-		$author = $auser->get('name');
-		$ausername = $auser->get('username');
-	}
+	$author = ($this->page->creator('name') ? $this->page->creator('name') : JText::_('Unknown'));
 
 	$auths = array();
-	$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->page->created_by).'">'.$this->escape(stripslashes($author)).'</a>';
-	foreach ($authors as $auth)
+	$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $this->page->get('created_by')) . '">' . $this->escape(stripslashes($author)) . '</a>';
+	foreach ($this->page->authors() as $auth)
 	{
-		if (stripslashes($auth->name) == stripslashes($author))
+		//if (strtolower(stripslashes($auth->get('name'))) == strtolower(stripslashes($author)))
+		if ($auth->get('user_id') == $this->page->get('created_by'))
 		{
 			continue;
 		}
-		$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$auth->user_id).'">'.$this->escape(stripslashes($auth->name)).'</a>';
+		$auths[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $auth->get('user_id')) . '">' . $this->escape(stripslashes($auth->get('name'))) . '</a>';
 	}
 	?>
 	<p class="topic-authors"><?php echo JText::_('by') .' '. implode(', ', $auths); ?></p>

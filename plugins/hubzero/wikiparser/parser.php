@@ -681,12 +681,12 @@ class WikiParser
 
 		if ($namespace == 'help')
 		{
-			$p = WikiPage::getInstance($pagename, '');
+			$p = WikiTablePage::getInstance($pagename, '');
 			$p->scope = $scope;
 		}
 		else
 		{
-			$p = WikiPage::getInstance($pagename, $scope);
+			$p = WikiTablePage::getInstance($pagename, $scope);
 		}
 
 		switch (substr($href, 0, 1))
@@ -841,7 +841,7 @@ class WikiParser
 			$scope = $this->get('scope');
 		}
 
-		$p = WikiPage::getInstance($pagename, $scope);
+		$p = WikiTablePage::getInstance($pagename, $scope);
 
 		if ((!is_object($p) || !$p->id) && substr($name, 0, 1) != '?') 
 		{
@@ -1440,7 +1440,7 @@ class WikiParser
 			}
 
 			// Load the page
-			$p = WikiPage::getInstance($pagename, $scope);
+			$p = WikiTablePage::getInstance($pagename, $scope);
 			if ($p->id) 
 			{
 				// Parse any nested includes

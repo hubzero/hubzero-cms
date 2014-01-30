@@ -42,7 +42,7 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+$editor =& JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -68,28 +68,28 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><?php echo JText::_('Page title'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->title)); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->page->get('title'))); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('Page name'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->pagename)); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->page->get('pagename'))); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('Scope'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->scope)); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->page->get('scope'))); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('Group'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->group_cn)); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->page->get('group_cn'))); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Edit summary'); ?>:</label></td>
-						<td><input type="text" name="revision[summary]" size="55" maxlength="255" value="<?php echo $this->escape(stripslashes($this->revision->summary)); ?>" /></td>
+						<td><input type="text" name="revision[summary]" size="55" maxlength="255" value="<?php echo $this->escape(stripslashes($this->revision->get('summary'))); ?>" /></td>
 					</tr>
 					<tr>
 						<td colspan="2">
 							<label><?php echo JText::_('Text'); ?>:</label><br />
-							<?php echo $editor->display('revision[pagetext]', stripslashes($this->revision->pagetext), '520px', '700px', '50', '10'); ?>
+							<?php echo $editor->display('revision[pagetext]', stripslashes($this->revision->get('pagetext')), '520px', '700px', '50', '10'); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -101,15 +101,15 @@ function submitbutton(pressbutton)
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('ID'); ?>:</th>
-					<td><?php echo $this->escape($this->revision->id); ?><input type="hidden" name="revision[id]" id="revid" value="<?php echo $this->escape($this->revision->id); ?>" /></td>
+					<td><?php echo $this->escape($this->revision->get('id')); ?><input type="hidden" name="revision[id]" id="revid" value="<?php echo $this->escape($this->revision->get('id')); ?>" /></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('Page ID'); ?>:</th>
-					<td><?php echo $this->escape($this->revision->pageid); ?><input type="hidden" name="revision[pageid]" id="pageid" value="<?php echo $this->escape($this->revision->pageid); ?>" /></td>
+					<td><?php echo $this->escape($this->revision->get('pageid')); ?><input type="hidden" name="revision[pageid]" id="pageid" value="<?php echo $this->escape($this->revision->get('pageid')); ?>" /></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('Revision #'); ?>:</th>
-					<td><?php echo $this->escape($this->revision->version); ?><input type="hidden" name="revision[version]" id-"version" value="<?php echo $this->escape($this->revision->version); ?>" /></td>
+					<td><?php echo $this->escape($this->revision->get('version')); ?><input type="hidden" name="revision[version]" id-"version" value="<?php echo $this->escape($this->revision->get('version')); ?>" /></td>
 				</tr>
 			</tbody>
 		</table>
@@ -121,25 +121,25 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="minor_edit"><?php echo JText::_('Minor edit'); ?>:</label></td>
-						<td><input type="checkbox" name="revision[minor_edit]" id="minor_edit" value="1" <?php echo $this->revision->minor_edit ? 'checked="checked"' : ''; ?> /></td>
+						<td><input type="checkbox" name="revision[minor_edit]" id="minor_edit" value="1" <?php echo $this->revision->get('minor_edit') ? 'checked="checked"' : ''; ?> /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="approved"><?php echo JText::_('State'); ?>:</label></td>
 						<td>
 							<select name="revision[approved]" id="approved">
-								<option value="0"<?php echo $this->revision->approved == 0 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Not approved'); ?></option>
-								<option value="1"<?php echo $this->revision->approved == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Approved'); ?></option>
-								<option value="2"<?php echo $this->revision->approved == 2 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+								<option value="0"<?php echo $this->revision->get('approved') == 0 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Not approved'); ?></option>
+								<option value="1"<?php echo $this->revision->get('approved') == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Approved'); ?></option>
+								<option value="2"<?php echo $this->revision->get('approved') == 2 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Creator'); ?>:</label></td>
-						<td><?php echo JHTML::_('list.users', 'created_by', $this->revision->created_by, 0, '', 'name', 1); ?></td>
+						<td><?php echo JHTML::_('list.users', 'created_by', $this->revision->get('created_by'), 0, '', 'name', 1); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created"><?php echo JText::_('Created'); ?>:</label></td>
-						<td><input type="text" name="revision[created]" id="created" size="25" maxlength="19" value="<?php echo $this->escape($this->revision->created); ?>" /></td>
+						<td><input type="text" name="revision[created]" id="created" size="25" maxlength="19" value="<?php echo $this->escape($this->revision->get('created')); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -147,7 +147,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 	
-	<input type="hidden" name="pageid" value="<?php echo $this->revision->pageid; ?>" />
+	<input type="hidden" name="pageid" value="<?php echo $this->revision->get('pageid'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

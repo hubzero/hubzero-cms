@@ -98,7 +98,6 @@ function WikiParseRoute($segments)
 		case 'history':
 		case 'compare':
 		case 'approve':
-		case 'deleterevision':
 			$vars['controller'] = 'history';
 		break;
 		
@@ -116,6 +115,7 @@ function WikiParseRoute($segments)
 		case 'rename':
 		case 'saverename':
 		case 'approve':
+		case 'deleterevision':
 		default:
 			$vars['controller'] = 'page';
 		break;

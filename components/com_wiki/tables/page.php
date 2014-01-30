@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki table class for page
  */
-class WikiPage extends JTable
+class WikiTablePage extends JTable
 {
 	/**
 	 * Primary key field in the table
@@ -163,11 +163,11 @@ class WikiPage extends JTable
 	 * Returns a reference to a wiki page object
 	 *
 	 * This method must be invoked as:
-	 *     $page = WikiPage::getInstance($pagename);
+	 *     $page = WikiTablePage::getInstance($pagename);
 	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object WikiTablePage
 	 */
 	static function &getInstance($type, $prefix = 'JTable', $config = array()) //($pagename=NULL, $scope='')
 	{
@@ -188,7 +188,7 @@ class WikiPage extends JTable
 		if (!isset($instances[$scope . '/' . $pagename])) 
 		{
 			$db = JFactory::getDBO();
-			$page = new WikiPage($db);
+			$page = new self($db);
 			// Find the page id
 			if (strstr($pagename, ' '))
 			{
@@ -391,7 +391,7 @@ class WikiPage extends JTable
 	 * Loads a specific page revision
 	 *
 	 * @param 	integer 	$version
-	 * @return 	object		WikiPageRevision
+	 * @return 	object		WikiTableRevision
 	 */
 	public function getRevision($version)
 	{
@@ -399,7 +399,7 @@ class WikiPage extends JTable
 		{
 			return $this->getCurrentRevision();
 		}
-		$obj = new WikiPageRevision($this->_db);
+		$obj = new WikiTableRevision($this->_db);
 		$obj->loadByVersion($this->id, intval($version));
 		return $obj;
 	}
@@ -411,7 +411,7 @@ class WikiPage extends JTable
 	 */
 	public function getRevisionCount()
 	{
-		$obj = new WikiPageRevision($this->_db);
+		$obj = new WikiTableRevision($this->_db);
 		$obj->pageid = $this->id;
 		return $obj->getRevisionCount();
 	}
@@ -419,11 +419,11 @@ class WikiPage extends JTable
 	/**
 	 * Loads the most current page revision
 	 *
-	 * @return 	object		WikiPageRevision
+	 * @return 	object		WikiTableRevision
 	 */
 	public function getCurrentRevision()
 	{
-		$obj = new WikiPageRevision($this->_db);
+		$obj = new WikiTableRevision($this->_db);
 		/*if ($this->version_id)
 		{
 			$obj->load($this->version_id);
@@ -555,9 +555,9 @@ class WikiPage extends JTable
 
 		if (!$this->id)
 		{
-			$g = new WikiPage($this->_db);
+			$g = new WikiTablePage($this->_db);
 			$g->loadByTitle($this->pagename, $this->scope);
-			//$g = WikiPage::getInstance($this->pagename, $this->scope);
+			//$g = WikiTablePage::getInstance($this->pagename, $this->scope);
 			if ($g->exist()) 
 			{
 				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
@@ -583,7 +583,7 @@ class WikiPage extends JTable
 	 * @param      integer $gid Group alias
 	 * @return     boolean True if valid, false if not
 	 */
-    private function _validCn($gid)
+	private function _validCn($gid)
 	{
 		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $gid))
 		{
@@ -603,7 +603,7 @@ class WikiPage extends JTable
 	 */
 	public function getAuthors()
 	{
-		$wpa = new WikiPageAuthor($this->_db);
+		$wpa = new WikiTableAuthor($this->_db);
 		return $wpa->getAuthors($this->id);
 	}
 
@@ -616,7 +616,7 @@ class WikiPage extends JTable
 	 */
 	public function updateAuthors($authors=NULL)
 	{
-		$wpa = new WikiPageAuthor($this->_db);
+		$wpa = new WikiTableAuthor($this->_db);
 		return $wpa->updateAuthors($authors, $this->id);
 	}
 
@@ -628,7 +628,7 @@ class WikiPage extends JTable
 	 */
 	public function isAuthor($user_id=NULL)
 	{
-		$wpa = new WikiPageAuthor($this->_db);
+		$wpa = new WikiTableAuthor($this->_db);
 		return $wpa->isAuthor($this->id, $user_id);
 	}
 
@@ -774,6 +774,21 @@ class WikiPage extends JTable
 		if (isset($filters['search']) && $filters['search']) 
 		{
 			$where[] = "(LOWER(t.pagename) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(t.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
+		if (isset($filters['namespace']) && $filters['namespace']) 
+		{
+			$where[] = "LOWER(t.pagename) LIKE '" . $this->_db->getEscaped(strtolower($filters['namespace'])) . "%'";
+		}
+		if (isset($filters['scope'])) 
+		{
+			if ($filters['scope'])
+			{
+				$where[] = "LOWER(t.scope)=" . $this->_db->Quote(strtolower($filters['scope']));
+			}
+			else
+			{
+				$where[] = "(t.`scope`='' OR t.`scope` IS NULL)";
+			}
 		}
 		if (isset($filters['group'])) // && $filters['group'] != '' 
 		{

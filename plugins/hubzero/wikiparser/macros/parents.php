@@ -74,9 +74,9 @@ class ParentsMacro extends WikiMacro
 					$arg = trim($arg);
 					if (substr($arg, 0, 6) == 'depth=')
 					{
-		                $bits = preg_split('#=#', $arg);
+						$bits = preg_split('#=#', $arg);
 						$depth = intval(trim(end($bits)));
-		                continue;
+						continue;
 					}
 				}
 			}
@@ -85,7 +85,7 @@ class ParentsMacro extends WikiMacro
 				$arg = trim($args);
 				if (substr($arg, 0, 6) == 'depth=')
 				{
-	                $bits = preg_split('#=#', $arg);
+					$bits = preg_split('#=#', $arg);
 					$depth = intval(trim(end($bits)));
 				}
 				else
@@ -207,7 +207,7 @@ class ParentsMacro extends WikiMacro
 			}
 		}
 		return $pages;
-    }
+	}
 
 	/**
 	 * Retrieve a wiki page by alias
@@ -218,12 +218,12 @@ class ParentsMacro extends WikiMacro
 	 */
 	private function _getPageByAlias($alias, $scope)
 	{
-		if (!class_exists('WikiPage') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php')) 
+		if (!class_exists('WikiTablePage') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php')) 
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		}
 
-		$page = new WikiPage($this->_db);
+		$page = new WikiTablePage($this->_db);
 		$page->load($alias, $scope);
 
 		// Check for a result
@@ -235,5 +235,5 @@ class ParentsMacro extends WikiMacro
 		{
 			return null;
 		}
-    }
+	}
 }

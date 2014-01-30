@@ -57,7 +57,7 @@ class plgProjectsNotes extends JPlugin
 		$this->_config = JComponentHelper::getParams( 'com_projects' );
 		
 		// Load wiki configs
-		$this->_wiki_config = JComponentHelper::getParams( 'com_wiki' ); 			
+		$this->_wiki_config = JComponentHelper::getParams( 'com_wiki' );
 				
 		$this->_task 	= '';
 		$this->_msg 	= '';
@@ -193,24 +193,13 @@ class plgProjectsNotes extends JPlugin
 			// Get JS
 			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
-			ximport('Hubzero_Document');
+
 			Hubzero_Document::addPluginScript('projects', 'notes');
 			Hubzero_Document::addPluginStylesheet('projects', 'notes');
 
 			// Import some needed libraries
-			ximport('Hubzero_User_Helper');
-			
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'page.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'html.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'tags.php');
-			
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+
 			$pagename = trim(JRequest::getVar('pagename', ''));
 			$scope = trim(JRequest::getVar( 'scope', '' ));
 			
@@ -298,6 +287,9 @@ class plgProjectsNotes extends JPlugin
 				$controllerName = 'media';
 				$this->_task = 'download';
 			}
+
+			$lang = JFactory::getLanguage();
+			$lang->load('com_wiki');
 			
 			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
 			{
@@ -397,9 +389,9 @@ class plgProjectsNotes extends JPlugin
 		$rename = $this->_task == 'saverename' ? 1 : 0;
 			
 		// Load requested page
-		$page = new WikiPage( $this->_database );		
+		$page = new WikiTablePage( $this->_database );		
 		$page->load( $pagename, $scope );
-				
+		
 		// Fix up saved page
 		if ($page->exist()) 
 		{
@@ -407,7 +399,7 @@ class plgProjectsNotes extends JPlugin
 			$_REQUEST['lid'] = $page->id;
 			
 			// Check that we have a version
-			$revision = new WikiPageRevision($this->_database);
+			$revision = new WikiTableRevision($this->_database);
 			
 			// Create version if does not exists
 			if (!$revision->loadByVersion($page->id))
@@ -488,7 +480,7 @@ class plgProjectsNotes extends JPlugin
 		$controller->redirect();
 		$content = ob_get_contents();
 		ob_end_clean();
-			
+
 		// Output HTML (wrap for notes)
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -508,7 +500,9 @@ class plgProjectsNotes extends JPlugin
 		// Get parent notes
 		$view->parent_notes = $projectsHelper->getParentNotes($this->_group, $scope, $this->_task);
 		
-		$view->templates 	= $page->getTemplates();		
+		//$book = new WikiModelBook('project');
+
+		$view->templates 	= $page->getTemplates(); //$book->templates()
 		$view->params 		= new JParameter($this->_project->params);
 		$view->task 		= $this->_task;
 		$view->option 		= $this->_option;
@@ -553,7 +547,7 @@ class plgProjectsNotes extends JPlugin
 		$url 	= JRoute::_($route . a . 'active=notes');
 		
 		// Load requested page
-		$page = new WikiPage( $this->_database );		
+		$page = new WikiTablePage( $this->_database );		
 		if (!$page->loadById( $id )) 
 		{			
 			$this->_referer = $url;
@@ -608,7 +602,7 @@ class plgProjectsNotes extends JPlugin
 		$url 	= JRoute::_($route . a . 'active=notes');
 		
 		// Load requested page
-		$page = new WikiPage( $this->_database );		
+		$page = new WikiTablePage( $this->_database );		
 		if (!$page->loadById( $id )) 
 		{			
 			$this->_referer = $url;
@@ -714,7 +708,7 @@ class plgProjectsNotes extends JPlugin
 		}
 		
 		// Create page
-		$page 					= new WikiPage($this->_database);
+		$page 					= new WikiTablePage($this->_database);
 		$page->title  			= $pagename;
 		$page->pagename 		= $pagename;
 		$page->scope    		= $scope;
@@ -733,7 +727,7 @@ class plgProjectsNotes extends JPlugin
 		}
 		
 		// Create revision
-		$revision 				= new WikiPageRevision($this->_database);
+		$revision 				= new WikiTableRevision($this->_database);
 		$revision->pageid     	= $page->id;
 		$revision->created    	= JFactory::getDate()->toSql();
 		$revision->created_by 	= $juser->get('id');
@@ -790,7 +784,7 @@ class plgProjectsNotes extends JPlugin
 				JRoute::_('index.php?option=com_groups')
 			);
 			$pathway->addItem(
-				Hubzero_View_Helper_Html::shortenText($group->get('description'), 50, 0),
+				\Hubzero\Utility\String::truncate($group->get('description'), 50),
 				JRoute::_('index.php?option=com_groups' . a . 'cn=' . $group->cn)
 			);
 			$pathway->addItem(
@@ -820,7 +814,7 @@ class plgProjectsNotes extends JPlugin
 			);
 			
 			$pathway->addItem(
-				Hubzero_View_Helper_Html::shortenText($this->_tool->title, 50, 0),
+				\Hubzero\Utility\String::truncate($this->_tool->title, 50),
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
 				. $this->_project->alias . a . 'active=tools' . a . 'tool=' . $this->_tool->id)
 			);	
@@ -950,7 +944,7 @@ class plgProjectsNotes extends JPlugin
 		$url 	= JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->_project->alias);
 		
 		// Load requested page
-		$page = new WikiPage( $database );		
+		$page = new WikiTablePage( $database );		
 		if (!$page->loadById( $data->pageid )) 
 		{			
 			return false;

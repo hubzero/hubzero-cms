@@ -31,38 +31,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$mode = $this->page->params->get('mode', 'wiki');
+$orauthor = $this->or->creator('name') ? $this->or->creator('name') : JText::_('Unknown');
 
-$orauthor = JText::_('Unknown');
-$oruser = JUser::getInstance($this->or->created_by);
-if (is_object($oruser)) {
-	$orauthor = $oruser->get('name');
-}
-
-$drauthor = JText::_('Unknown');
-$druser = JUser::getInstance($this->dr->created_by);
-if (is_object($druser)) {
-	$drauthor = $druser->get('name');
-}
+$drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('Unknown');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
-<?php
-if (!$mode || ($mode && $mode != 'static')) 
-{
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'authors'
-	));
-	$view->option   = $this->option;
-	$view->page     = $this->page;
-	$view->task     = $this->task;
-	$view->config   = $this->config;
-	$view->revision = $this->revision;
-	$view->display();
-}
-?>
+		<?php
+		if (!$this->page->isStatic()) 
+		{
+			$view = new JView(array(
+				'base_path' => $this->base_path, 
+				'name'      => 'page',
+				'layout'    => 'authors'
+			));
+			$view->page     = $this->page;
+			$view->display();
+		}
+		?>
 	</div><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
@@ -79,34 +65,32 @@ if (!$mode || ($mode && $mode != 'static'))
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));
-	$view->option = $this->option;
+	$view->option     = $this->option;
 	$view->controller = $this->controller;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->config = $this->config;
-	$view->sub    = $this->sub;
+	$view->page       = $this->page;
+	$view->task       = $this->task;
+	$view->config     = $this->config;
+	$view->sub        = $this->sub;
 	$view->display();
 ?>
 
-<div class="section">
+<div class="main section">
 	<div class="grid">
 		<div class="col span-half">
 			<dl class="diff-versions">
-				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->version; ?><dt>
-				<dd><time datetime="<?php echo $this->or->created; ?>"><?php echo $this->or->created; ?></time> by <?php echo $this->escape($orauthor); ?><dd>
-				
-				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->version; ?><dt>
-				<dd><time datetime="<?php echo $this->dr->created; ?>"><?php echo $this->dr->created; ?></time> by <?php echo $this->escape($drauthor); ?><dd>
+				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->get('version'); ?><dt>
+				<dd><time datetime="<?php echo $this->or->get('created'); ?>"><?php echo $this->or->get('created'); ?></time> by <?php echo $this->escape($orauthor); ?><dd>
+
+				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->get('version'); ?><dt>
+				<dd><time datetime="<?php echo $this->dr->get('created'); ?>"><?php echo $this->dr->get('created'); ?></time> by <?php echo $this->escape($drauthor); ?><dd>
 			</dl>
-		</div><!-- / .col span-half-->
+		</div><!-- / .aside -->
 		<div class="col span-half omega">
 			<p class="diff-deletedline"><del class="diffchange">Deletions</del> or items before changed</p>
 			<p class="diff-addedline"><ins class="diffchange">Additions</ins> or items after changed</p>
-		</div><!-- / .col span-half -->
-	</div><!-- / .grid -->
-</div><!-- / .section -->
+		</div><!-- / .subject -->
+	</div><!-- / .section -->
 
-<div class="main section">
 	<?php echo $this->content; ?>
 </div><!-- / .main section -->
 <div class="clear"></div>

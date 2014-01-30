@@ -10,13 +10,11 @@ JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page').': ' . $text, '
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
-	JToolBarHelper::apply();
-	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+$editor =& JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -56,20 +54,28 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label><?php echo JText::_('Title'); ?>:</label></td>
-						<td><input type="text" name="page[title]" id="pagetitle" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
+						<th class="key"><label for="pagetitle"><?php echo JText::_('Title'); ?>:</label></th>
+						<td><input type="text" name="page[title]" id="pagetitle" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('Pagename'); ?>:</label></td>
-						<td><input type="text" name="page[pagename]" id="pagename" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->pagename)); ?>" /></td>
+						<th class="key"><label for="pagename"><?php echo JText::_('Pagename'); ?>:</label></th>
+						<td><input type="text" name="page[pagename]" id="pagename" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('pagename'))); ?>" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('Scope'); ?>:</label></td>
-						<td><input type="text" name="page[scope]" id="pagescope" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->scope)); ?>" /></td>
+						<th class="key"><label for="pagescope"><?php echo JText::_('Scope'); ?>:</label></th>
+						<td><input type="text" name="page[scope]" id="pagescope" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('Group'); ?>:</label></td>
-						<td><input type="text" name="page[group_cn]" id="pagegroup" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->group_cn)); ?>" /></td>
+						<th class="key"><label for="pagegroup"><?php echo JText::_('Group'); ?>:</label></th>
+						<td><input type="text" name="page[group_cn]" id="pagegroup" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('group_cn'))); ?>" /></td>
+					</tr>
+					<tr>
+						<th class="key"><label for="authors"><?php echo JText::_('Authors'); ?>:</label></th>
+						<td><textarea name="page[authors]" id="pageauthors" col="35" rows="3"><?php echo $this->escape($this->row->authors('string')); ?></textarea></td>
+					</tr>
+					<tr>
+						<th class="key"><label for="field-tags"><?php echo JText::_('Tags'); ?>:</label></th>
+						<td><textarea name="page[tags]" id="field-tags" col="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea></td>
 					</tr>
 				</tbody>
 			</table>
@@ -80,67 +86,69 @@ function submitbutton(pressbutton)
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>
-					<td><?php echo $this->escape($this->row->id); ?></td>
+					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('Created by'); ?></th>
-					<td><?php echo $this->escape(stripslashes($this->creator->get('name'))); ?></td>
+					<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('Hits'); ?></th>
-					<td><?php echo $this->escape($this->row->hits); ?></td>
+					<td><?php echo $this->escape($this->row->get('hits')); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('Revisions'); ?></th>
-					<td><?php echo $this->row->getRevisionCount(); ?></td>
+					<td><?php echo $this->row->revisions('count'); ?></td>
 				</tr>
 			</tbody>
 		</table>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('PARAMETERS'); ?></span></legend>
-			
+
 			<?php 
 			//$paramsClass = 'JRegistry';
 			//if (version_compare(JVERSION, '1.6', 'lt'))
 			//{
 				$paramsClass = 'JParameter';
 			//}
-			$params = new $paramsClass($this->row->params, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
+			$params = new $paramsClass($this->row->get('params'), JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
 			echo $params->render();
 			?>
-			
+
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="authors"><?php echo JText::_('Authors'); ?>:</label></td>
-						<td><input type="text" name="page[authors]" id="pageauthors" value="<?php echo $this->escape($this->row->authors); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="state"><?php echo JText::_('State'); ?>:</label></td>
+						<th class="key"><label for="state"><?php echo JText::_('State'); ?>:</label></th>
 						<td>
 							<select name="page[state]" id="pagestate">
-								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Locked'); ?></option>
-								<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+								<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
+								<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Locked'); ?></option>
+								<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td class="key" style="vertical-align: top;"><?php echo JText::_('Access Level'); ?>:</td>
-						<td><?php echo JHTML::_('list.accesslevel', $this->row); ?></td>
+						<th class="key" style="vertical-align: top;"><label for="field-access"><?php echo JText::_('Access Level'); ?>:</label></th>
+						<td>
+							<select name="page[access]" id="field-access">
+								<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
+								<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
+								<option value="4"<?php if ($this->row->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
+							</select>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
-	<input type="hidden" name="id" value="<?php echo $this->escape($this->row->id); ?>" />
-	<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->row->id); ?>" />
+
+	<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />
+	<input type="hidden" name="page[id]" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -139,7 +139,7 @@ class FileMacro extends WikiMacro
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new WikiPageAttachment($this->_db);
+			$attach = new WikiTableAttachment($this->_db);
 			$attach->load(intval($file));
 
 			// Check for file existence
@@ -162,7 +162,7 @@ class FileMacro extends WikiMacro
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new WikiPageAttachment($this->_db);
+			$attach = new WikiTableAttachment($this->_db);
 			$attach->load($file, $this->pageid);
 			if ($attach->filename)
 			{

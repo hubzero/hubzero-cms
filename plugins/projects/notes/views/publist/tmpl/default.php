@@ -48,7 +48,7 @@ if (!$params->get('enable_publinks'))
 
 $database 	= JFactory::getDBO();
 $objSt 		= new ProjectPubStamp( $database );
-$page		= new WikiPage( $database );	
+$page		= new WikiTablePage( $database );	
 
 // Get listed public notes
 $items = $objSt->getPubList($this->project->id, 'notes');

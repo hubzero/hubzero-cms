@@ -30,26 +30,21 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$mode = $this->page->params->get('mode', 'wiki');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
-<?php
-if (!$mode || ($mode && $mode != 'static')) {
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'authors'
-	));
-	$view->option = $this->option;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->config = $this->config;
-	//$view->revision = $this->revision;
-	$view->display();
-}
-?>
+		<?php
+		if (!$this->page->isStatic()) 
+		{
+			$view = new JView(array(
+				'base_path' => $this->base_path, 
+				'name'      => 'page',
+				'layout'    => 'authors'
+			));
+			$view->page   = $this->page;
+			$view->display();
+		}
+		?>
 	</div><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
@@ -60,7 +55,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 <?php } ?>
 
 <?php
-if ($this->page->id) 
+if ($this->page->exists()) 
 {
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
@@ -78,29 +73,30 @@ if ($this->page->id)
 ?>
 
 <div class="main section">
-<?php if ($this->page->state == 1 && !$this->config->get('access-manage')) { ?>
-	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+<?php if ($this->page->isLocked() && !$this->page->access('manage')) { ?>
+	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } else { ?>
 
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope')); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<p><?php echo JText::_('WIKI_PAGENAME_EXPLANATION'); ?></p>
+			<p><?php echo JText::_('COM_WIKI_PAGENAME_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('WIKI_CHANGE_PAGENAME'); ?></h3>
+			<h3><?php echo JText::_('COM_WIKI_CHANGE_PAGENAME'); ?></h3>
 			<label>
-				<?php echo JText::_('WIKI_FIELD_PAGENAME'); ?>:
-				<input type="text" name="newpagename" value="<?php echo $this->page->pagename; ?>" size="38" />
-				<span><?php echo JText::_('WIKI_FIELD_PAGENAME_HINT'); ?></span>
+				<?php echo JText::_('COM_WIKI_FIELD_PAGENAME'); ?>:
+				<input type="text" name="newpagename" id="newpagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" size="38" />
+				<span><?php echo JText::_('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
 			</label>
 
-			<input type="hidden" name="oldpagename" value="<?php echo $this->page->pagename; ?>" />
-			<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
-			<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="oldpagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+			<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
+			<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->get('id')); ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 			<input type="hidden" name="action" value="saverename" />
 			<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
 
+			<?php echo JHTML::_('form.token'); ?>
 		</fieldset>
 		<div class="clear"></div>
 		<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" /></p>

@@ -33,12 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = WikiHelper::getActions('comment');
 
 $text = ($this->task == 'edit' ? JText::_('Edit comment') : JText::_('New comment'));
+
 JToolBarHelper::title(JText::_('Wiki') . ': ' . $text, 'Wiki.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
-	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 
@@ -70,11 +70,11 @@ function submitbutton(pressbutton)
 			<tbody>
 				<tr>
 					<td class="key"><label for="field-anonymous"><?php echo JText::_('Anonymous'); ?></label></td>
-					<td><input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->anonymous) { echo ' checked="checked"'; } ?> /></td>
+					<td><input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> /></td>
 				</tr>
 				<tr>
 					<td class="key"><label for="field-ctext"><?php echo JText::_('Content'); ?></label></td>
-					<td><textarea name="fields[ctext]" id="field-ctext" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->ctext)); ?></textarea></td>
+					<td><textarea name="fields[ctext]" id="field-ctext" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->get('ctext'))); ?></textarea></td>
 				</tr>
 			</tbody>
 		</table>
@@ -88,24 +88,24 @@ function submitbutton(pressbutton)
 						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
 						<td>
 							<?php 
-							$editor = JUser::getInstance($this->row->created_by);
+							$editor = JUser::getInstance($this->row->get('created_by'));
 							echo $this->escape($editor->get('name')); 
 							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
 						<td>
-							<?php echo $this->row->created; ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+							<?php echo $this->row->get('created'); ?>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th class="key"><?php echo JText::_('Page #'); ?>:</th>
 						<td>
-							<?php echo $this->row->pageid; ?>
-							<input type="hidden" name="fields[pageid]" id="field-pageid" value="<?php echo $this->row->pageid; ?>" />
+							<?php echo $this->row->get('pageid'); ?>
+							<input type="hidden" name="fields[pageid]" id="field-pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
 						</td>
 					</tr>
 				</tbody>
@@ -114,8 +114,8 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="fields[parent]" value="<?php echo $this->row->parent; ?>" />
-	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->row->get('parent')); ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

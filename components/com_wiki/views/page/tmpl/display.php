@@ -31,37 +31,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$mode = $this->page->params->get('mode', 'wiki');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
-<?php
-
-if (!$mode || ($mode && $mode != 'static')) {
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'authors'
-	));
-	$view->option = $this->option;
-	$view->controller = $this->controller;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->config = $this->config;
-	$view->sub    = $this->sub;
-	//$view->revision = $this->revision;
-	$view->display();
-}
-?>
+		<?php
+		if (!$this->page->isStatic()) 
+		{
+			$view = new JView(array(
+				'base_path' => $this->base_path, 
+				'name'      => 'page',
+				'layout'    => 'authors'
+			));
+			$view->page       = $this->page;
+			$view->display();
+		}
+		?>
 	</div><!-- /#content-header -->
 
 <?php echo $this->page->event->afterDisplayTitle; ?>
 
-<?php if ($mode == 'static' && $this->config->get('access-admin') && $this->controller == 'page' && $this->task == 'display') { ?>
+<?php if ($this->page->isStatic() && $this->page->access('admin') && $this->controller == 'page' && $this->task == 'display') { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
-		<ul id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>">
-			<li><a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=edit'); ?>">Edit</a></li>
-			<li class="last"><a class="icon-history history btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=history'); ?>">History</a></li>
+		<ul><!--  id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>"> -->
+			<li><a class="icon-edit edit btn" href="<?php echo JRoute::_($this->page->link('edit')); ?>">Edit</a></li>
+			<li><a class="icon-history history btn" href="<?php echo JRoute::_($this->page->link('history')); ?>">History</a></li>
 		</ul>
 	</div><!-- /#content-header-extra -->
 <?php } ?>
@@ -77,64 +70,42 @@ if (!$mode || ($mode && $mode != 'static')) {
 <?php
 echo $this->page->event->beforeDisplayContent;
 
-if (!$mode || ($mode && $mode != 'static')) {
+if (!$this->page->isStatic()) {
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));
-	$view->option = $this->option;
+	$view->option     = $this->option;
 	$view->controller = $this->controller;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->config = $this->config;
-	$view->sub    = $this->sub;
+	$view->page       = $this->page;
+	$view->task       = $this->task;
+	//$view->config     = $this->config;
+	$view->sub        = $this->sub;
 	$view->display();
-
-	$db = JFactory::getDBO();
-
-	$first = $this->page; //->getRevision(1);
-
-	$rev = new WikiPageRevision($db);
-	$revisions = $rev->getRecords(
-		array(
-			'pageid'   => $this->page->id, 
-			'approved' => array(0, 1),
-			'limit'    => 1,
-			'start'    => 0,
-			'sortby'   => 'version ASC'
-		)
-	);
-	if ($revisions)
-	{
-		$first = $revisions[0];
-	}
-
-	$obj = new WikiTags($db);
-	$tags = $obj->get_tag_cloud(0, $this->config->get('admin', 0), $this->page->id);
 ?>
-<div class="main section">
+	<div class="main section">
 		<div class="wikipage">
-			<?php echo $this->revision->pagehtml; ?>
+			<?php echo $this->revision->get('pagehtml'); ?>
 		</div>
 		<p class="timestamp">
-			<?php echo JText::_('COM_WIKI_PAGE_CREATED').' <time datetime="' . $first->created . '">'.JHTML::_('date', $first->created, JText::_('DATE_FORMAT_HZ1')).'</time>, '.JText::_('COM_WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created . '">'.JHTML::_('date', $this->revision->created, JText::_('DATE_FORMAT_HZ1')) . '</time>'; ?>
-			<?php if ($stats = $this->page->getMetrics()) { ?>
+			<?php echo JText::_('COM_WIKI_PAGE_CREATED').' <time datetime="' . $this->page->created() . '">'.$this->page->created('date') . '</time>, '.JText::_('COM_WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>'; ?>
+			<?php /*if ($stats = $this->page->getMetrics()) { ?>
 			<span class="article-usage">
 				<?php echo $stats['visitors']; ?> Visitors, <?php echo $stats['visits']; ?> Visits
 			</span>
-			<?php } ?>
+			<?php }*/ ?>
 		</p>
-<?php if ($tags) { ?>
+	<?php if ($this->page->tags('cloud')) { ?>
 		<div class="article-tags">
 			<h3><?php echo JText::_('COM_WIKI_PAGE_TAGS'); ?></h3>
-			<?php echo $tags; ?>
+			<?php echo $this->page->tags('cloud'); ?>
 		</div>
-<?php } ?>
-</div><!-- / .main section -->
+	<?php } ?>
+	</div><!-- / .main section -->
 <?php
 } else {
-	echo $this->revision->pagehtml;
+	echo $this->revision->get('pagehtml');
 }
 
 echo $this->page->event->afterDisplayContent;
