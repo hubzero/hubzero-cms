@@ -241,7 +241,7 @@ class AnswersModelComment extends AnswersModelAbstract
 	{
 		if (!isset($this->_base))
 		{
-			$this->_base = 'index.php?option=com_answers&task=question&id=' . $this->get('qid');
+			$this->_base = 'index.php?option=com_answers&task=question&id=' . $this->get('question_id');
 		}
 		$link = $this->_base;
 
@@ -261,7 +261,7 @@ class AnswersModelComment extends AnswersModelAbstract
 			break;
 
 			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->get('id') . '&parent=' . $this->get('qid');
+				$link = 'index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
 			break;
 
 			case 'permalink':

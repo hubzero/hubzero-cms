@@ -197,7 +197,7 @@ if (!$this->question->get('anonymous'))
 						<?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?>
 					</a>
 				</span>
-			<?php if ($this->question->get('created_by') == $this->juser->get('username') && $this->question->isOpen()) { ?>
+			<?php if ($this->question->get('created_by') == $this->juser->get('id') && $this->question->isOpen()) { ?>
 				<span>
 					<a class="icon-delete delete" href="<?php echo JRoute::_($this->question->link('delete')); ?>" title="<?php echo JText::_('COM_ANSWERS_DELETE_QUESTION'); ?>">
 						<?php echo JText::_('COM_ANSWERS_DELETE'); ?>
@@ -344,7 +344,7 @@ if (!$this->question->get('anonymous'))
 					<?php echo JHTML::_('form.token'); ?>
 
 					<input type="hidden" name="response[id]" value="0" />
-					<input type="hidden" name="response[qid]" value="<?php echo $this->question->get('id'); ?>" />
+					<input type="hidden" name="response[question_id]" value="<?php echo $this->question->get('id'); ?>" />
 
 					<label for="responseanswer">
 						<?php echo JText::_('COM_ANSWERS_YOUR_RESPONSE'); ?>:
@@ -429,7 +429,7 @@ if (!$this->question->get('anonymous'))
 		</h3>
 
 		<div class="aside">
-		<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != $this->juser->get('username')) { ?>
+		<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != $this->juser->get('id')) { ?>
 			<div class="container">
 			<p><a class="icon-add add btn" href="<?php 
 			$route = JRoute::_($this->question->link('answer'), false, true);
@@ -438,7 +438,7 @@ if (!$this->question->get('anonymous'))
 			</div><!-- / .container -->
 		<?php } ?>
 		
-		<?php if ($this->juser->get('username') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
+		<?php if ($this->juser->get('id') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
 			<div class="container">
 			<p class="info"><?php echo JText::_('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE'); ?></p>
 			</div><!-- / .container -->

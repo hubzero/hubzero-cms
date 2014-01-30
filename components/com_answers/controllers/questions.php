@@ -277,7 +277,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		// load answer
 		$row = new AnswersModelResponse($id);
 
-		$qid = $row->get('qid');
+		$qid = $row->get('question_id');
 
 		// Can't vote for your own comment
 		if ($row->get('created_by') == $this->juser->get('username'))
@@ -971,7 +971,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		$ar = new AnswersTableResponse($this->database);
 		$responses = $ar->getRecords(array(
 			'ip'  => $ip,
-			'qid' => $id
+			'question_id' => $id
 		));
 
 		if ($reward && $this->config->get('banking')) 
@@ -1104,7 +1104,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		}
 
 		// Load the question
-		$question = new AnswersModelQuestion($row->get('qid'));
+		$question = new AnswersModelQuestion($row->get('question_id'));
 
 		$jconfig = JFactory::getConfig();
 
@@ -1470,7 +1470,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\Controller
 		//get questions based on params
 		$sql = "SELECT 
 					a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, 
-					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount
+					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount
 				FROM #__answers_questions AS a
 				WHERE {$st} 
 				ORDER BY a.created DESC

@@ -247,9 +247,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	{
 		$tbl = new AnswersTableResponse($this->_db);
 
-		if (!isset($filters['qid']))
+		if (!isset($filters['question_id']))
 		{
-			$filters['qid'] = $this->get('id');
+			$filters['question_id'] = $this->get('id');
 		}
 		if (!isset($filters['state']))
 		{
@@ -332,9 +332,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	{
 		$tbl = new AnswersTableResponse($this->_db);
 
-		if (!isset($filters['qid']))
+		if (!isset($filters['question_id']))
 		{
-			$filters['qid'] = $this->get('id');
+			$filters['question_id'] = $this->get('id');
 		}
 		$filters['state']    = 1;
 		$filters['filterby'] = 'accepted';
@@ -680,11 +680,11 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		$juser = ($user_id) ? JUser::getInstance($user_id) : JFactory::getUser();
 
 		$al = new AnswersTableQuestionsLog($this->_db);
-		$al->qid   = $this->get('id');
-		$al->ip    = JRequest::ip();
-		$al->voter = $juser->get('id');
+		$al->question_id = $this->get('id');
+		$al->ip          = JRequest::ip();
+		$al->voter       = $juser->get('id');
 
-		if ($al->checkVote($al->qid, $al->ip, $al->voter))
+		if ($al->checkVote($al->question_id, $al->ip, $al->voter))
 		{
 			$this->setError(JText::_('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'));
 			return false;

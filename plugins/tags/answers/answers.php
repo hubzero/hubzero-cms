@@ -114,7 +114,7 @@ class plgTagsAnswers extends JPlugin
 		$f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by, 
 					NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href, 
 					'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params, 
-					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount, 
+					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount, 
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 
 		$f_from  = " FROM #__answers_questions AS a, #__tags_object AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids)";
@@ -197,7 +197,7 @@ class plgTagsAnswers extends JPlugin
 		$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
 		if ($row->ftext) 
 		{
-			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";

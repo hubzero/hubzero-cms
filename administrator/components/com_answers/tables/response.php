@@ -48,7 +48,7 @@ class AnswersTableResponse extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $qid        = NULL;
+	var $question_id        = NULL;
 
 	/**
 	 * text
@@ -117,8 +117,8 @@ class AnswersTableResponse extends JTable
 	 */
 	public function check()
 	{
-		$this->qid = intval($this->qid);
-		if (!$this->qid) 
+		$this->question_id = intval($this->question_id);
+		if (!$this->question_id) 
 		{
 			$this->setError(JText::_('Missing question ID.'));
 			return false;
@@ -143,7 +143,7 @@ class AnswersTableResponse extends JTable
 		}
 
 		$this->created    = $this->created    ? $this->created    : JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ? $this->created_by : JFactory::getUser()->get('username');
+		$this->created_by = $this->created_by ? $this->created_by : JFactory::getUser()->get('id');
 
 		return true;
 	}
@@ -161,13 +161,13 @@ class AnswersTableResponse extends JTable
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 		$ab = new ReportAbuse($this->_db);
 
-		if (isset($filters['qid'])) 
+		if (isset($filters['question_id'])) 
 		{
-			$qid = $filters['qid'];
+			$qid = $filters['question_id'];
 		} 
 		else 
 		{
-			$qid = $this->qid;
+			$qid = $this->question_id;
 		}
 		if ($qid == null) 
 		{
@@ -178,13 +178,13 @@ class AnswersTableResponse extends JTable
 		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip=" . $this->_db->Quote($filters['ip']) . " WHERE r.state!=2 AND r.qid=" . $this->_db->Quote($qid);
+			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.response_id AND ip=" . $this->_db->Quote($filters['ip']) . " WHERE r.state!=2 AND r.question_id=" . $this->_db->Quote($qid);
 		} 
 		else 
 		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.qid=" . $this->_db->Quote($qid);
+			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.question_id=" . $this->_db->Quote($qid);
 		}
 		$query .= " ORDER BY r.state DESC, r.created DESC";
 
@@ -202,14 +202,14 @@ class AnswersTableResponse extends JTable
 	{
 		if ($qid == null) 
 		{
-			$qid = $this->qid;
+			$qid = $this->question_id;
 		}
 		if ($qid == null) 
 		{
 			return false;
 		}
 
-		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE qid=" . $this->_db->Quote($qid) . " AND state!='2'";
+		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE question_id=" . $this->_db->Quote($qid) . " AND state!='2'";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -241,7 +241,7 @@ class AnswersTableResponse extends JTable
 			return false;
 		}
 
-		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip=" . $this->_db->Quote($ip) . " WHERE r.state!=2 AND r.id=" . $this->_db->Quote($id);
+		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.response_id AND ip=" . $this->_db->Quote($ip) . " WHERE r.state!=2 AND r.id=" . $this->_db->Quote($id);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -281,14 +281,14 @@ class AnswersTableResponse extends JTable
 	{
 		if ($qid == null) 
 		{
-			$qid = $this->qid;
+			$qid = $this->question_id;
 		}
 		if ($qid == null) 
 		{
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE qid=" . $this->_db->Quote($qid));
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE question_id=" . $this->_db->Quote($qid));
 		return $this->_db->loadObjectList();
 	}
 
@@ -332,7 +332,7 @@ class AnswersTableResponse extends JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$query = "FROM $this->_tbl AS m, #__users AS u WHERE m.created_by=u.username";
+		$query = "FROM $this->_tbl AS m, #__users AS u WHERE m.created_by=u.id";
 
 		switch ($filters['filterby'])
 		{
@@ -348,9 +348,9 @@ class AnswersTableResponse extends JTable
 				break;
 		}
 
-		if (isset($filters['qid']) && $filters['qid'] > 0) 
+		if (isset($filters['question_id']) && $filters['question_id'] > 0) 
 		{
-			$query .= " AND m.qid=" . $this->_db->Quote($filters['qid']);
+			$query .= " AND m.question_id=" . $this->_db->Quote($filters['question_id']);
 		}
 
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 

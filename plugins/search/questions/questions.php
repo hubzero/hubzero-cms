@@ -104,45 +104,45 @@ class plgSearchQuestions extends SearchPlugin
 				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, $qweight AS qweight, null AS rweight,
 			CASE 
 				when q.anonymous > 0 then NULL
-				else (SELECT name FROM jos_users WHERE username = q.created_by)
+				else (SELECT name FROM `#__users` WHERE id = q.created_by)
 			END AS qcontributors,
 			CASE
 				when q.anonymous > 0 then null
-				else (SELECT id FROM jos_users WHERE username = q.created_by)
+				else (SELECT id FROM `#__users` WHERE id = q.created_by)
 			END AS qcontributor_ids,
 			CASE 
 				when r.anonymous > 0 then NULL
-				else (SELECT name FROM jos_users WHERE username = r.created_by)
+				else (SELECT name FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributors,
 			CASE
 				when r.anonymous > 0 then null
-				else (SELECT id FROM jos_users WHERE username = r.created_by)
+				else (SELECT id FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributor_ids
-			FROM #__answers_questions q 
-			LEFT JOIN #__answers_responses r ON r.qid = q.id AND r.state != 2
+			FROM `#__answers_questions` q 
+			LEFT JOIN `#__answers_responses` r ON r.question_id = q.id AND r.state != 2
 			WHERE $qweight > 0 AND q.state != 2
 			UNION
 			SELECT 
 				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, null AS qweight, $rweight AS rweight,
 			CASE
 				when q.anonymous > 0 then NULL
-				else (SELECT name FROM jos_users WHERE username = q.created_by)
+				else (SELECT name FROM `#__users` WHERE id = q.created_by)
 			END AS qcontributors,
 			CASE
 				when q.anonymous > 0 then null
-				else (SELECT id FROM jos_users WHERE username = q.created_by)
+				else (SELECT id FROM `#__users` WHERE id = q.created_by)
 			END AS qcontributor_ids,
 			CASE 
 				when r.anonymous > 0 then NULL
-				else (SELECT name FROM jos_users WHERE username = r.created_by)
+				else (SELECT name FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributors,
 			CASE
 				when r.anonymous > 0 then null
-				else (SELECT id FROM jos_users WHERE username = r.created_by)
+				else (SELECT id FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributor_ids
-			FROM #__answers_responses r2 
-			INNER JOIN #__answers_questions q ON q.id = r2.qid AND q.state != 2
-			LEFT JOIN #__answers_responses r ON r.qid = q.id AND r.state != 2
+			FROM `#__answers_responses` r2 
+			INNER JOIN `#__answers_questions` q ON q.id = r2.question_id AND q.state != 2
+			LEFT JOIN `#__answers_responses` r ON r.question_id = q.id AND r.state != 2
 			WHERE $r2weight > 0 AND r2.state != 2
 			ORDER BY q_created, r_created"
 		);

@@ -48,7 +48,7 @@ class AnswersTableLog extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $rid     = NULL;
+	var $response_id     = NULL;
 
 	/**
 	 * varchar(15)
@@ -92,7 +92,7 @@ class AnswersTableLog extends JTable
 		{
 			return false;
 		}
-		$sql  = "SELECT * FROM $this->_tbl WHERE rid=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip) . " LIMIT 1";
+		$sql  = "SELECT * FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip) . " LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -112,8 +112,8 @@ class AnswersTableLog extends JTable
 	 */
 	public function check()
 	{
-		$this->rid = intval($this->rid);
-		if (!$this->rid) 
+		$this->response_id = intval($this->response_id);
+		if (!$this->response_id) 
 		{
 			$this->setError(JText::_('Missing response ID'));
 			return false;
@@ -152,14 +152,14 @@ class AnswersTableLog extends JTable
 	{
 		if ($rid == null) 
 		{
-			$rid = $this->rid;
+			$rid = $this->response_id;
 		}
 		if ($rid == null) 
 		{
 			return false;
 		}
 
-		$query = "SELECT helpful FROM $this->_tbl WHERE rid=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip);
+		$query = "SELECT helpful FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -182,7 +182,7 @@ class AnswersTableLog extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE rid=" . $this->_db->Quote($rid));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

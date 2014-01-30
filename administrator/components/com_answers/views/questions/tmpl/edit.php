@@ -134,7 +134,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="created_by">Change Creator:</label></td>
-						<td><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', JFactory::getUser()->get('username')); ?>" /></td>
+						<td><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', JFactory::getUser()->get('id')); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>

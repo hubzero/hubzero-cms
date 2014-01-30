@@ -236,7 +236,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	{
 		if (!isset($this->_base))
 		{
-			$this->_base = 'index.php?option=com_answers&task=question&id=' . $this->get('qid');
+			$this->_base = 'index.php?option=com_answers&task=question&id=' . $this->get('question_id');
 		}
 		$link = $this->_base;
 
@@ -256,12 +256,12 @@ class AnswersModelResponse extends AnswersModelAbstract
 			break;
 
 			case 'accept':
-				$link  = 'index.php?option=com_answers&task=accept&id=' . $this->get('qid') . '&rid=' . $this->get('id');
-				//$link .= '&task=accept&id' . $this->get('qid') . '&rid=' . $this->get('id');
+				$link  = 'index.php?option=com_answers&task=accept&id=' . $this->get('question_id') . '&rid=' . $this->get('id');
+				//$link .= '&task=accept&id' . $this->get('question_id') . '&rid=' . $this->get('id');
 			break;
 
 			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->get('id') . '&parent=' . $this->get('qid');
+				$link = 'index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
 			break;
 
 			case 'permalink':
@@ -381,7 +381,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
-			$aq = new AnswersModelQuestion($this->get('qid'));
+			$aq = new AnswersModelQuestion($this->get('question_id'));
 			if ($aq->exists() && $aq->get('state') != 1)
 			{
 				$aq->set('state', 1);
@@ -392,7 +392,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 				{
 					// Calculate and distribute earned points
 					$AE = new AnswersEconomy($this->_db);
-					$AE->distribute_points($this->get('qid'), $aq->get('created_by'), $this->get('created_by'), 'closure');
+					$AE->distribute_points($this->get('question_id'), $aq->get('created_by'), $this->get('created_by'), 'closure');
 
 					// Load the plugins
 					JPluginHelper::importPlugin('xmessage');
@@ -404,7 +404,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 							'answers_reply_submitted', 
 							array($aq->creator('id')), 
 							'com_answers', 
-							$this->get('qid')
+							$this->get('question_id')
 						))
 					)
 					{

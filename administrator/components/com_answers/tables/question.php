@@ -134,7 +134,7 @@ class AnswersTableQuestion extends JTable
 		// Updating entry
 		$juser = JFactory::getUser();
 		$this->created    = $this->created    ? $this->created    : JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ? $this->created_by : $juser->get('username');
+		$this->created_by = $this->created_by ? $this->created_by : $juser->get('id');
 
 		// Code cleaner
 		//$this->question = nl2br($this->question);
@@ -185,7 +185,7 @@ class AnswersTableQuestion extends JTable
 			case 'none':   $query .= "WHERE 1=2 ";        break;
 			default:       $query .= "WHERE C.state!=2 "; break;
 		}
-		$query .= "AND U.username=C.created_by ";
+		$query .= "AND U.id=C.created_by ";
 		if (isset($filters['q']) && $filters['q'] != '') 
 		{
 			$words   = explode(' ', $filters['q']);
@@ -194,16 +194,16 @@ class AnswersTableQuestion extends JTable
 				$word = $this->_db->getEscaped(strtolower($word));
 				$query .= "AND ((LOWER(C.subject) LIKE '%$word%') 
 					OR (LOWER(C.question) LIKE '%$word%') 
-					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id AND (LOWER(a.answer) LIKE '%$word%')) > 0)";
+					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.question_id=C.id AND (LOWER(a.answer) LIKE '%$word%')) > 0)";
 			}
 		}
 		if (isset($filters['mine']) && $filters['mine'] != 0) 
 		{
-			$query .= " AND C.created_by=" . $this->_db->Quote($juser->get('username')) . " ";
+			$query .= " AND C.created_by=" . $this->_db->Quote($juser->get('id')) . " ";
 		}
 		if (isset($filters['mine']) && $filters['mine'] == 0) 
 		{
-			$query .= " AND C.created_by!=" . $this->_db->Quote($juser->get('username')) . " ";
+			$query .= " AND C.created_by!=" . $this->_db->Quote($juser->get('id')) . " ";
 		}
 		if (isset($filters['created_before']) && $filters['created_before'] != '') 
 		{
@@ -283,7 +283,7 @@ class AnswersTableQuestion extends JTable
 		$ar = new AnswersTableResponse($this->_db);
 
 		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful, U.name, U.id AS userid";
-		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount";
+		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.question_id=C.id) AS rcount";
 		$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id) AS points";
 		$query .= ($filters['tag']) ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
 		$query .= $this->buildQuery($filters);
@@ -302,8 +302,8 @@ class AnswersTableQuestion extends JTable
 	 */
 	public function getQuestionsByTag($tag, $limit=100)
 	{
-		$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount";
-		//$query.= "\n FROM $this->_tbl AS a, #__answers_tags AS t, #__tags AS tg";
+		$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount";
+		//$query.= "\n FROM $this->_tbl AS a, `#__answers_tags` AS t, `#__tags` AS tg";
 		$query .= " FROM $this->_tbl AS a, #__tags_object AS RTA ";
 		$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
 		$query .= " WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag='" . $this->_db->getEscaped(strtolower($tag)) . "' OR TA.raw_tag='" . $this->_db->getEscaped($tag) . "')";

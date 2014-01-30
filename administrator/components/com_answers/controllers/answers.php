@@ -68,7 +68,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			'filterby',
 			'all'
 		);
-		$this->view->filters['qid']      = $app->getUserStateFromRequest(
+		$this->view->filters['question_id']      = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.qid',
 			'qid',
 			0,
@@ -100,7 +100,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			'DESC'
 		));
 
-		$this->view->question = new AnswersModelQuestion($this->view->filters['qid']);
+		$this->view->question = new AnswersModelQuestion($this->view->filters['question_id']);
 
 		$ar = new AnswersTableResponse($this->database);
 

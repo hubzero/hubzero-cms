@@ -244,7 +244,7 @@ class plgSupportAnswers extends JPlugin
 				$responders = array();
 
 				// Get all the answers for this question
-				$database->setQuery("SELECT r.id, r.created_by FROM #__answers_responses AS r WHERE r.qid=" . $referenceid);
+				$database->setQuery("SELECT r.id, r.created_by FROM #__answers_responses AS r WHERE r.question_id=" . $referenceid);
 				$answers = $database->loadObjectList();
 
 				if ($answers) 

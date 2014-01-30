@@ -184,7 +184,7 @@ if (!$this->filters['filterby'] == 'none')
 
 					$cls  = ($row->isclosed())   ? 'answered' : '';
 					$cls  = ($row->isReported()) ? 'flagged'  : $cls;
-					$cls .= ($row->get('created_by') == $juser->get('username')) ? ' mine' : '';
+					$cls .= ($row->get('created_by') == $juser->get('id')) ? ' mine' : '';
 				?>
 						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 							<th>

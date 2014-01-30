@@ -55,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="question[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 			<input type="hidden" name="question[email]" value="1" />
 			<input type="hidden" name="question[state]" value="0" />
-			<input type="hidden" name="question[created_by]" value="<?php echo $this->escape($this->juser->get('username')); ?>" />
+			<input type="hidden" name="question[created_by]" value="<?php echo $this->escape($this->juser->get('id')); ?>" />
 
 			<label for="field-anonymous">
 				<input class="option" type="checkbox" name="question[anonymous]" id="field-anonymous" value="1" /> 
@@ -96,7 +96,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
 			</label>
 		<?php } else { ?>
-			<input type="hidden" name="question[reward'" value="0" />
+			<input type="hidden" name="question[reward]" value="0" />
 		<?php } ?>
 		</fieldset>
 
