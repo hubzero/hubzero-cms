@@ -53,7 +53,7 @@ foreach (array('plugin', 'request', 'result_set', 'result_types', 'terms', 'auth
 /**
  * Search controller class
  */
-class SearchControllerSearch extends \Hubzero\Component\Controller
+class SearchControllerSearch extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Display search form and results (if any)

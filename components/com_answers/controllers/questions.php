@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Answers controller class for questions
  */
-class AnswersControllerQuestions extends \Hubzero\Component\Controller
+class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
