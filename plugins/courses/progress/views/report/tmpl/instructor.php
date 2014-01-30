@@ -217,6 +217,47 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 	{{/each}}
 </script>
 
+<script id="reports-template-main" type="text/x-handlebars-template">
+	<div class="reports-container-inner">
+		<table>
+			<thead>
+				<tr>
+					<td class="centered"><input type="checkbox" class="checkall" /></td>
+					<td>Name</td>
+					<td class="numeric">Responses</td>
+					<td class="numeric">Average</td>
+					<td class="numeric">Min</td>
+					<td class="numeric">Max</td>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each assets}}
+					<tr>
+						<td class="centered checkbox">
+							{{ifIsForm this.type 'form'}}
+						</td>
+						<td>
+							{{this.title}}
+						</td>
+						<td class="numeric">
+							{{getStat ../stats this.id 'responses'}}
+						</td>
+						<td class="numeric">
+							{{getStat ../stats this.id 'average'}}
+						</td>
+						<td class="numeric">
+							{{getStat ../stats this.id 'min'}}
+						</td>
+						<td class="numeric">
+							{{getStat ../stats this.id 'max'}}
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</script>
+
 <div class="main-container">
 	<div id="message-container"></div>
 	<div class="loading">
@@ -227,6 +268,7 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 		<div class="controls clear">
 			<div title="progress view" class="progress-button button active"></div>
 			<div title="gradebook view" class="gradebook-button button"></div>
+			<div title="reports view" class="reports-button button"></div>
 			<?php echo (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
 				? ''
 				: '<div title="edit grade policy" class="progress_button policy button"></div>'; ?>
@@ -235,6 +277,7 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 				: '<div title="add a new entry" class="gradebook_button addrow button"></div>'; ?>
 			<div title="export to csv" class="gradebook_button export button"></div>
 			<div title="refresh gradebook view" class="gradebook_button refresh button"></div>
+			<div title="download selected detailed results" class="reports_button download button"></div>
 		</div>
 		<div class="fetching-rows">
 			<div class="fetching-rows-inner">

@@ -144,6 +144,43 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
+	 * Generate summary statistics
+	 * 
+	 * @return     array $stats
+	 */
+	public function summaryStats()
+	{
+		// Get the grades themselves
+		$filters = array('scope'=>'asset', 'course_id'=>$this->course->get('course_id'));
+		$results = $this->_tbl->find($filters);
+		$grades  = array();
+
+		// Restructure data
+		foreach ($results as $r)
+		{
+			if ($r->override)
+			{
+				$grades[$r->scope_id][] = $r->override;
+			}
+			else if (!is_null($r->score))
+			{
+				$grades[$r->scope_id][] = $r->score;
+			}
+		}
+
+		// Compute stats
+		foreach ($grades as $asset_id => $grade)
+		{
+			$stats[$asset_id]['responses'] = count($grade);
+			$stats[$asset_id]['average']   = (count($grade) > 0) ? round(array_sum($grade) / count($grade), 2) : NULL;
+			$stats[$asset_id]['min']       = (count($grade) > 0) ? round(min($grade)) : NULL;
+			$stats[$asset_id]['max']       = (count($grade) > 0) ? round(max($grade)) : NULL;
+		}
+
+		return $stats;
+	}
+
+	/**
 	 * Get current progress
 	 *
 	 * At this point, this method only takes into account what students have viewed.

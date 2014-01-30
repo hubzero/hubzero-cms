@@ -737,6 +737,35 @@
 	cursor: pointer;
 }
 
+/* Reports CSS */
+.reports-container {
+	position: relative;
+}
+.reports-container table{
+	border: 1px solid #CCCCCC;
+	background: #F9F9F9;
+}
+.reports-container td {
+	padding: 10px;
+	border-bottom: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+}
+.reports-container tr td:last-child {
+	border-right: none;
+}
+.reports-container tbody tr:last-child {
+	border-bottom: none;
+}
+.reports-container td.numeric,
+.reports-container td.centered {
+	text-align: center;
+}
+.reports-container thead {
+	font-weight: bold;
+	background: #D1D9DE;
+	background: rgb(224, 227, 230);
+}
+
 /* Controls / buttons */
 .controls {
 	overflow: hidden;
@@ -811,21 +840,30 @@
 .controls .gradebook-button:before {
 	content: "\f02d";
 }
+.controls .reports-button:before {
+	content: "\25f7";
+}
 .controls .export:before {
 	content: "\f0f6";
 }
 .controls .policy:before {
 	content: "\f091";
 }
+.controls .download:before {
+	content: "\f063";
+}
 .controls .progress-button:before,
-.controls .gradebook-button:before {
+.controls .gradebook-button:before,
+.controls .reports-button:before {
 	left: 25px;
 }
 .controls .progress-button,
-.controls .gradebook-button {
+.controls .gradebook-button,
+.controls .reports-button {
 	width: 70px;
 }
-.controls .progress-button {
+.controls .progress-button,
+.controls .gradebook-button {
 	margin-left: 0;
 }
 .controls-wrap {

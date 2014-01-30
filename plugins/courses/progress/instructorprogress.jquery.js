@@ -24,6 +24,7 @@ if (!jq) {
 
 jQuery(document).ready(function($){
 	HUB.Plugins.CoursesProgress.initHandlebarsHelpers();
+	HUB.Plugins.CoursesProgress.initializeButtons();
 	HUB.Plugins.CoursesProgress.loadProgressData();
 });
 
@@ -36,6 +37,7 @@ HUB.Plugins.CoursesProgress = {
 	members   : {},
 	assets    : {},
 	canManage : false,
+	views     : ['progress', 'gradebook', 'reports'],
 
 	loadProgressData: function ( )
 	{
@@ -186,14 +188,41 @@ HUB.Plugins.CoursesProgress = {
 		});
 	},
 
+	loadReportsData: function ( )
+	{
+		var $    = this.jQuery,
+			form = $('.progress-form');
+
+		// Get data
+		$.ajax({
+			url      : form.attr('action'),
+			dataType : 'json',
+			data     : [{'name': 'action', 'value': 'getreportsdata'}],
+			success  : function ( data, textStatus, jqXHR ) {
+				// Render template - main portion
+				var source    = $('#reports-template-main').html(),
+					template  = Handlebars.compile(source),
+					context   = {stats: data.stats, assets: data.assets},
+					html      = template(context);
+
+				HUB.Plugins.CoursesProgress.toggleView(html, 'reports');
+				HUB.Plugins.CoursesProgress.initializeReports();
+			}
+		});
+	},
+
 	toggleView: function ( html, active )
 	{
 		var $         = this.jQuery,
 			form      = $('.progress-form'),
 			controls  = $('.controls-wrap'),
 			loading   = $('.loading'),
-			inactive  = ((active === "progress") ? 'gradebook' : 'progress'),
-			container = $('.main-container');
+			container = $('.main-container'),
+			inactive  = [];
+
+		inactive = $.grep(HUB.Plugins.CoursesProgress.views, function ( v ) {
+			return v != active;
+		});
 
 		// Insert into page
 		if (html !== '') {
@@ -201,7 +230,12 @@ HUB.Plugins.CoursesProgress = {
 		}
 
 		// Set proper class for styling
-		container.removeClass(inactive+'-container').addClass(active+'-container');
+		$.each(inactive, function ( idx, val ) {
+			container.removeClass(val+'-container');
+			controls.find('.'+val+'_button').hide();
+		});
+		container.addClass(active+'-container');
+		controls.find('.'+active+'_button').show();
 
 		// Remove loading icon
 		loading.fadeOut();
@@ -210,8 +244,6 @@ HUB.Plugins.CoursesProgress = {
 		form.fadeIn();
 		container.css('opacity', 1);
 		container.removeClass('maxHeaders fixedHeaders');
-		controls.find('.'+inactive+'_button').hide();
-		controls.find('.'+active+'_button').show();
 		controls.fadeIn();
 
 		if (active === 'progress') {
@@ -222,6 +254,50 @@ HUB.Plugins.CoursesProgress = {
 				'margin-right' : 0
 			});
 		}
+	},
+
+	initializeButtons: function ( )
+	{
+		var $   = this.jQuery,
+			c   = $('.main-container'),
+			clk = function ( t, button ) {
+				if (t.hasClass('active')) {
+					return;
+				}
+
+				c.css('opacity', 0.4);
+				$('.navigation').hide();
+				$('.controls .button').removeClass('active');
+				$('.controls .'+button+'-button').addClass('active');
+				$('.loading').show();
+				$("#none").remove();
+
+				if ($(window).scrollTop() > $('#page_main').offset().top) {
+					$(window).scrollTop($('#page_main').offset().top);
+				}
+			};
+
+
+		c.off('click', '.controls .gradebook-button').on('click', '.controls .gradebook-button', function ( e ) {
+			var t = $(this);
+
+			clk(t, 'gradebook');
+			HUB.Plugins.CoursesProgress.loadGradebookData();
+		});
+
+		c.off('click', '.controls .reports-button').on('click', '.controls .reports-button', function ( e ) {
+			var t = $(this);
+
+			clk(t, 'reports');
+			HUB.Plugins.CoursesProgress.loadReportsData();
+		});
+
+		c.off('click', '.controls .progress-button').on('click', '.controls .progress-button', function ( e ) {
+			var t = $(this);
+
+			clk(t, 'progress');
+			HUB.Plugins.CoursesProgress.loadProgressData();
+		});
 	},
 
 	initializeProgress: function ( )
@@ -386,26 +462,6 @@ HUB.Plugins.CoursesProgress = {
 					}
 				}
 			});
-		});
-
-		p.off('click', '.controls .progress-button');
-
-		p.off('click', '.controls .gradebook-button').on('click', '.controls .gradebook-button', function ( e ) {
-			var t = $(this),
-				p = $('.progress-container');
-
-			p.css('opacity', 0.4);
-			$('.navigation').hide();
-			$('.controls .button').removeClass('active');
-			$('.controls .gradebook-button').addClass('active');
-			$('.loading').show();
-			$("#none").remove();
-
-			if ($(window).scrollTop() > $('#page_main').offset().top) {
-				$(window).scrollTop($('#page_main').offset().top);
-			}
-
-			HUB.Plugins.CoursesProgress.loadGradebookData();
 		});
 
 		// Search/filter by student name
@@ -891,26 +947,6 @@ HUB.Plugins.CoursesProgress = {
 			HUB.Plugins.CoursesProgress.loadGradebookData();
 		});
 
-		g.off('click', '.controls .gradebook-button');
-
-		g.off('click', '.controls .progress-button').on('click', '.controls .progress-button', function ( e ) {
-			var t = $(this),
-				g = $('.gradebook-container');
-
-			g.css({'opacity' : 0.4});
-			$('.navigation').hide();
-			$('.controls .button').removeClass('active');
-			$('.controls .progress-button').addClass('active');
-			$('.loading').show();
-			$("#none").remove();
-
-			if ($(window).scrollTop() > $('#page_main').offset().top) {
-				$(window).scrollTop($('#page_main').offset().top);
-			}
-
-			HUB.Plugins.CoursesProgress.loadProgressData();
-		});
-
 		g.off('click', '.controls .export').on('click', '.controls .export', function ( e ) {
 			var t = $(this),
 				f = $('.progress-form'),
@@ -1018,7 +1054,7 @@ HUB.Plugins.CoursesProgress = {
 			});
 
 			if (active) {
-				var res = confirm('Deleting this gradebook item will delete all active overrides as well as delete the associated asset (if applicable). Are you sure?');
+				var res = confirm('Deleting this gradebook item will delete all active overrides as well as mark the associated asset as not graded. Are you sure?');
 
 				if (!res) {
 					return false;
@@ -1086,6 +1122,50 @@ HUB.Plugins.CoursesProgress = {
 				}
 			});
 		}
+	},
+
+	initializeReports: function ( )
+	{
+		var $ = this.jQuery,
+			r = $('.reports-container');
+
+		//$('.checkbox input').uniform();
+
+		// Remove margins if coming from gradebook tab and margins were present
+		$('.main-container').css({
+			'margin-right' : 0,
+			'margin-left'  : 0
+		});
+
+		r.off('click', '.checkall').on('click', '.checkall', function ( e ) {
+			var checkboxes = $('.download-checkbox');
+			var checkall   = $('.checkall');
+			checkboxes.prop("checked", checkall.prop("checked"));
+		});
+
+		r.off('click', '.controls .download').on('click', '.controls .download', function ( e ) {
+			var f  = $('.progress-form'),
+				a  = f.attr('action'),
+				cb = $('.download-checkbox'),
+				p  = false;
+				d  = [];
+
+			cb.each(function ( idx, val ) {
+				if ($(val).prop('checked')) {
+					p = true;
+					d.push($(val).val());
+				}
+			});
+
+			if (!p) {
+				alert("Please select the assessments for which detailed results should be downloaded");
+				return;
+			}
+
+			a += (a.search('/?/')) ? '&action=downloadresponses&assets='+d.join('-') : '?action=downloadresponses&assets='+d.join('-');
+
+			window.open(a);
+		});
 	},
 
 	resizeTable: function ( callback, scroll )
@@ -1488,6 +1568,9 @@ HUB.Plugins.CoursesProgress = {
 		Handlebars.registerHelper('ifAreEqual', function ( val1, val2 ) {
 			return (val1 === val2) ? new Handlebars.SafeString(' selected="selected"') : '';
 		});
+		Handlebars.registerHelper('ifIsForm', function ( val1, val2 ) {
+			return (this.type === 'form') ? new Handlebars.SafeString('<input type="checkbox" class="download-checkbox" name="download['+this.id+']" value="'+this.id+'" />') : '';
+		});
 		Handlebars.registerHelper('shorten', function ( title, length ) {
 			return (title.length < length) ? title : title.substring(0, length)+'...';
 		});
@@ -1499,6 +1582,23 @@ HUB.Plugins.CoursesProgress = {
 			} else {
 				return '';
 			}
+		});
+		Handlebars.registerHelper('getStat', function ( stats, asset_id, type ) {
+			var stat = '--';
+			if ($.type(stats) !== 'object' ||
+				$.type(stats[asset_id]) === 'undefined' ||
+				$.type(stats[asset_id][type]) === 'undefined') {
+				// Do nothing - use defaults
+			} else {
+				if (stats[asset_id][type] !== null) {
+					stat = stats[asset_id][type];
+				}
+				if (type !== "responses") {
+					stat = stat + '%';
+				}
+			}
+
+			return stat;
 		});
 	}
 };

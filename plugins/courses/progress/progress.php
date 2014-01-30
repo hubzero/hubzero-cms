@@ -141,7 +141,9 @@ class plgCoursesProgress extends JPlugin
 			case 'getprogressrows':     $this->getprogressrows();     break;
 			case 'getprogressdata':     $this->getprogressdata();     break;
 			case 'getgradebookdata':    $this->getgradebookdata();    break;
+			case 'getreportsdata':      $this->getreportsdata();      break;
 			case 'exportcsv':           $this->exportcsv();           break;
+			case 'downloadresponses':   $this->downloadresponses();   break;
 			case 'savegradebookitem':   $this->savegradebookitem();   break;
 			case 'deletegradebookitem': $this->deletegradebookitem(); break;
 			case 'savegradebookentry':  $this->savegradebookentry();  break;
@@ -180,6 +182,7 @@ class plgCoursesProgress extends JPlugin
 		Hubzero_Document::addPluginStylesheet('courses', 'progress', $layout.'.css');
 		Hubzero_Document::addPluginScript('courses', 'progress', $layout.'progress');
 		Hubzero_Document::addSystemScript('handlebars');
+		Hubzero_Document::addSystemScript('jquery.uniform.min');
 
 		// Set the layout
 		$this->view->setLayout($layout);
@@ -350,6 +353,47 @@ class plgCoursesProgress extends JPlugin
 	}
 
 	/**
+	 * Get data for reports view
+	 *
+	 * @return void
+	 **/
+	private function getreportsdata()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		// Get the grades
+		$stats = $this->course->offering()->gradebook()->summaryStats();
+
+		// Get the assets
+		$asset  = new CoursesTableAsset(JFactory::getDBO());
+		$assets = $asset->find(
+			array(
+				'w' => array(
+					'course_id'  => $this->course->get('id'),
+					'section_id' => $this->course->offering()->section()->get('id'),
+					'graded'     => true,
+					'state'      => 1
+				),
+				'order_by'  => 'title',
+				'order_dir' => 'ASC'
+			)
+		);
+
+		echo json_encode(
+			array(
+				'stats'  => $stats,
+				'assets' => $assets
+			)
+		);
+		exit();
+	}
+
+	/**
 	 * Export gradebook to csv
 	 *
 	 * @return void
@@ -418,6 +462,232 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		// That's all
+		exit();
+	}
+
+	/**
+	 * Generate detailed responses CSV files and zip and offer up as download
+	 *
+	 * A lot of the complexity of this method stems from the fact that the form data is
+	 * not actually labeled, but rather merely coordinates on a page. We must therefore
+	 * make assumptions on question numbers and response labels based on location within
+	 * the page. This is a significant shortfall, especially given that questions
+	 * or responses may at some point read horizontally, rather than vertically. 
+	 *
+	 * @return void
+	 **/
+	private function downloadresponses()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			exit();
+		}
+
+		if (!$asset_ids = JRequest::getVar('assets', false))
+		{
+			exit();
+		}
+
+		$protected = 'site' . DS . 'protected';
+		$tmp       = $protected . DS . 'tmp';
+
+		// We're going to temporarily house this in JPATH_ROOT/site/protected/tmp
+		if (!JFolder::exists($protected))
+		{
+			exit();
+		}
+
+		// Make sure tmp folder exists
+		if (!JFolder::exists($tmp))
+		{
+			JFolder::create($tmp);
+		}
+		else
+		{
+			// Folder was already there - do a sanity check and make sure no old responses zips are lying around
+			$files = JFolder::files($tmp);
+
+			if ($files && count($files) > 0)
+			{
+				foreach ($files as $file)
+				{
+					if (strstr($file, 'responses.zip') !== false)
+					{
+						JFile::delete($tmp . DS . $file);
+					}
+				}
+			}
+		}
+
+		// Get the individual asset ids
+		$asset_ids = explode('-', $asset_ids);
+		$db        = JFactory::getDBO();
+
+		// Set up our zip archive
+		$zip       = new ZipArchive();
+		$path      = JPATH_ROOT . DS . $tmp . DS . time() . '.responses.zip';
+		$zip->open($path, ZipArchive::CREATE);
+
+		// Loop through the assets
+		foreach ($asset_ids as $asset_id)
+		{
+			// Is it a number?
+			if (!is_numeric($asset_id))
+			{
+				continue;
+			}
+
+			// Get the rest of the asset row
+			$asset = new CoursesTableAsset($db);
+			$asset->load($asset_id);
+
+			// Make sure asset is a part of this course
+			if ($asset->get('course_id') != $this->course->get('id'))
+			{
+				continue;
+			}
+
+			// Get the form id
+			$query = "SELECT `id` FROM `#__courses_forms` WHERE `asset_id` = '{$asset_id}'";
+			$db->setQuery($query);
+			$form_id = $db->loadResult();
+
+			if (!$form_id)
+			{
+				continue;
+			}
+
+			// Get all the questions for this form, properly ordered
+			$query = "SELECT `id`, `version` FROM `#__courses_form_questions` WHERE form_id = '{$form_id}' ORDER BY version ASC, page ASC, top_dist ASC";
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+
+			// Build array of questions/versions map
+			$question_ids = array();
+			$question_vs  = array();
+			$questions    = array();
+			$answers      = array();
+			if ($results && count($results) > 0)
+			{
+				foreach ($results as $r)
+				{
+					$question_ids[] = $r->id;
+
+					// Compute question label (i.e. 1, 2, 3, etc...) based on idx within a given form/questions version
+					if (isset($question_vs[$r->version]))
+					{
+						++$question_vs[$r->version];
+					}
+					else
+					{
+						$question_vs[$r->version] = 1;
+					}
+
+					// Store a mapping of question id to question label computed above
+					$questions[$r->id] = array('qidx' => $question_vs[$r->version], 'version' => $r->version);
+
+					// Now grab all of the answers for each question
+					$query = "SELECT `id` FROM `#__courses_form_answers` WHERE `question_id` = '{$r->id}' ORDER BY top_dist ASC;";
+					$db->setQuery($query);
+					$ans = $db->loadObjectList();
+
+					if ($ans && count($ans) > 0)
+					{
+						$letter = NULL;
+
+						foreach ($ans as $a)
+						{
+							$answers[$a->id] = $this->getNextLetter($letter);
+							$letter          = $answers[$a->id];
+						}
+					}
+				}
+			}
+			else
+			{
+				continue;
+			}
+
+			// Now, select responses and start to build the csv...
+			$query = "SELECT * FROM `#__courses_form_responses` WHERE `question_id` IN (".implode(',', $question_ids).") ORDER BY `respondent_id` ASC";
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+			$output  = '';
+
+			if ($results && count($results) > 0)
+			{
+				$fields = array();
+
+				for ($i=1; $i <= max($question_vs); $i++)
+				{
+					$fields[] = $i;
+				}
+
+				sort($fields);
+				array_unshift($fields, 'Version');
+				array_unshift($fields, 'Attempt');
+				array_unshift($fields, 'Name');
+
+				$output     .= implode(',', $fields) . "\n";
+				$respondents = array();
+
+				foreach ($results as $response)
+				{
+					$respondents[$response->respondent_id][$questions[$response->question_id]['qidx']] = array(
+						'question_id' => $response->question_id,
+						'answer'      => (isset($answers[$response->answer_id])) ? $answers[$response->answer_id] : '--'
+					);
+				}
+
+				foreach ($respondents as $respondent_id => $response)
+				{
+					// Get name and attempt number for this row
+					$query = "SELECT `user_id`, `attempt` FROM `#__courses_members` cm JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id WHERE cr.`id` = '{$respondent_id}'";
+					$db->setQuery($query);
+					$aux     = $db->loadObject();
+					$name    = JUser::getInstance($aux->user_id)->get('name');
+					$attempt = $aux->attempt;
+					$fields  = array();
+
+					foreach ($response as $k => $v)
+					{
+						$version    = $questions[$v['question_id']]['version'];
+						$fields[$k] = $v['answer'];
+					}
+
+					ksort($fields);
+					array_unshift($fields, $version);
+					array_unshift($fields, $attempt);
+					array_unshift($fields, $name);
+					$output .= implode(',', $fields) . "\n";
+				}
+
+				$zip->addFromString($asset_id . '.responses.csv', $output);
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		// Close the zip archive handler
+		$zip->close();
+
+		// Set up the server
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($path);
+		$xserver->saveas('responses.zip');
+		$xserver->disposition('attachment');
+		$xserver->acceptranges(false);
+
+		// Serve the file
+		$xserver->serve();
+
+		// Now delete the file
+		JFile::delete($path);
+
+		// All done!
 		exit();
 	}
 
@@ -830,5 +1100,24 @@ class plgCoursesProgress extends JPlugin
 			);
 			return;
 		}
+	}
+
+	/**
+	 * Little helper function to get the next letter in the alphabet
+	 *
+	 * @param  $letter - letter after which the next letter should be returned
+	 * @return $chr - string: 1 character
+	 **/
+	private function getNextLetter($letter)
+	{
+		if (is_null($letter))
+		{
+			return 'a';
+		}
+
+		$ord = ord($letter);
+		$chr = chr($ord + 1);
+
+		return $chr;
 	}
 }
