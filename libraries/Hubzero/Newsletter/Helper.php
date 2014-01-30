@@ -39,7 +39,7 @@ class Hubzero_Newsletter_Helper
 	 * @param 	$mailingRecipientObject		Mailing Recipient Object
 	 * @return 	string						Email Token for verify and tracking
 	 */
-	public function generateMailingToken( $mailingRecipientObject )
+	public static function generateMailingToken( $mailingRecipientObject )
 	{
 		//we must have valid mailing recipient object
 		if (!is_object($mailingRecipientObject) || !$mailingRecipientObject->mailingid || !$mailingRecipientObject->email )
@@ -96,7 +96,7 @@ class Hubzero_Newsletter_Helper
 	 * @param 	$mailingToken	String Mailing token
 	 * @return 	object			Mailing Recipient Object
 	 */
-	public function parseMailingToken( $mailingToken )
+	public static function parseMailingToken( $mailingToken )
 	{
 		//we must have a token
 		if (!$mailingToken || $mailingToken == '')
@@ -137,8 +137,8 @@ class Hubzero_Newsletter_Helper
 		
 		//try to load mailing recipient object to validate
 		$sql = "SELECT * FROM #__newsletter_mailing_recipients 
-				WHERE mid=" . $this->database->quote( $mailingId ) . "
-				AND email=" . $this->database->quote( $email );
+				WHERE mid=" . $database->quote( $mailingId ) . "
+				AND email=" . $database->quote( $email );
 		$database->setQuery( $sql );
 		$recipient = $database->loadObject();
 		
@@ -210,7 +210,7 @@ class Hubzero_Newsletter_Helper
 	 *
 	 * @return 	void
 	 */
-	public function mailingOpenTrackerGif()
+	public static function mailingOpenTrackerGif()
 	{
 		//create fake image to output
 		$im = imagecreatetruecolor(1, 1);
@@ -423,7 +423,7 @@ class Hubzero_Newsletter_Helper
 	 * @param    $emailToken      Email Token to track per message
 	 * @return   String
 	 */
-	public function addForwardingToEmailMessage( $emailMessage, $emailToken )
+	public static function addForwardingToEmailMessage( $emailMessage, $emailToken )
 	{
 		//get protocol to track with
 		$protocol = self::getNewsletterTrackingProtocol();
