@@ -1410,7 +1410,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				)
 			);
 		}
-		else if ($revision)
+		elseif (isset($this->model->revision) && $this->model->revision)
 		{
 			$cats = $dispatcher->trigger('onResourcesAreas', array(
 					$this->model
@@ -1426,15 +1426,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 				}
 				foreach ($cat as $name => $title)
 				{
-					if ($name == 'about')
+					if ($name == 'about' || $name == 'versions' || $name == 'supportingdocs')
 					{
 						$cts[] = $cat;
 					}
 				}
 			}
-			/*$cats = array(
-				array('about' => JText::_('About'))
-			);*/
+
 			$cats = $cts;
 		}
 		// Get the sections
@@ -1603,7 +1601,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$view->thistool = $this->model->thistool;
 			$view->curtool  = $this->model->curtool;
 			$view->alltools = $this->model->alltools;
-			$view->revision = $revision;
+			$view->revision = $this->model->revision;
 		}
 		$view->model = $this->model;
 		//$view->config 		= $this->config;

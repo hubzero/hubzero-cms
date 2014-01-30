@@ -51,18 +51,15 @@ if ($this->curtool)
 }
 
 $this->model->resource->introtext = stripslashes($this->model->resource->introtext);
-//$this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
-if (strstr($this->model->resource->fulltxt, '\"'))
-{
-	$this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
-}
+$this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
 $this->model->resource->fulltxt = ($this->model->resource->fulltxt) ? trim($this->model->resource->fulltxt) : trim($this->model->resource->introtext);
 
-// Parse for <nb: > tags
-//$type = new ResourcesType($this->database);
-//$type->load($this->model->resource->type);
+// Parse for <nb:field> tags
+$type = new ResourcesType($this->database);
+$type->load($this->model->resource->type);
 
 $data = array();
+
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) 
 {
@@ -91,23 +88,6 @@ $maintext = $this->model->resource->fulltxt;
 $maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);
-
-if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
-		// Do nothing
-} else {
-		// Get the wiki parser and parse the full description
-		$wikiconfig = array(
-			'option'   => $this->option,
-			'scope'    => 'resources' . DS . $this->model->resource->id,
-			'pagename' => 'resources',
-			'pageid'   => $this->model->resource->id,
-			'filepath' => $this->model->params->get('uploadpath'),
-			'domain'   => ''
-		);
-		ximport('Hubzero_Wiki_Parser');
-		$p = Hubzero_Wiki_Parser::getInstance();
-		$maintext = $p->parse($maintext, $wikiconfig);
-}
 ?>
 <div class="subject abouttab">
 <?php
@@ -147,7 +127,7 @@ if ($shots) {
 		</div>
 		</div>
 <?php } ?>
-<?php if ($this->model->resource->revision == 'dev' or !$this->model->resource->toolpublished) { ?>
+<?php if (!$this->model->resource->toolpublished) { ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 			<div class="resource-content">
 				<?php echo $maintext; ?>
@@ -274,7 +254,7 @@ if ($shots) {
 	}
 }
 // Tags
-if (!$this->thistool && $this->revision != 'dev') {
+
 	if ($this->model->params->get('show_assocs')) {
 		//$tagCloud = $this->helper->getTagCloud($this->authorized);
 		$tags = $this->model->tags();
@@ -289,7 +269,7 @@ if (!$this->thistool && $this->revision != 'dev') {
 <?php
 		}
 	}
-}
+
 ?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->

@@ -835,10 +835,12 @@ class ResourcesHtml
 		{
 			if ($section['html'] != '') 
 			{
+				/*
 				if (!isset($cats[$k]) || !$cats[$k])
 				{
 					continue;
 				}
+				*/
 				$cls  = ($c) ? $c . ' ' : '';
 				//if (key($cats[$k]) != $active) 
 				if ($section['area'] != $active)
