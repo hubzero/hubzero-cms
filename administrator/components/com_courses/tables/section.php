@@ -156,7 +156,7 @@ class CoursesTableSection extends JTable
 	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object CoursesTableSection
 	 */
 	static function &getInstance($type, $prefix = 'JTable', $config = array())
 	{

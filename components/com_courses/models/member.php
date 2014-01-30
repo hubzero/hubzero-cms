@@ -105,7 +105,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object CoursesModelMember
 	 */
 	static function &getInstance($uid=null, $cid=0, $oid=0, $sid=0)
 	{

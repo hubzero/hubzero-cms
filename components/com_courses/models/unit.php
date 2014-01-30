@@ -131,7 +131,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object CoursesModelUnit
 	 */
 	static function &getInstance($oid=null, $offering_id=null)
 	{

@@ -628,7 +628,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 
 			//load wiki page from db
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-			$page = new WikiPage($this->database);
+			$page = new WikiTablePage($this->database);
 			$page->load(JRequest::getVar('pagename'), $course->get('cn') . DS . 'wiki');
 
 			//check specific wiki page access
