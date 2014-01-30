@@ -119,7 +119,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			<div class="col span6 omega">
 				<label for="field-publish_down">
 					<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_DOWN'); ?>
-					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s'))); ?>" />
+					<?php
+						$down = '';
+						if ($this->entry->get('publish_down') != '')
+						{
+							$down = $this->escape(stripslashes(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')));
+						}
+					?>
+					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $down; ?>" />
 					<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 			</div>
