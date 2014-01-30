@@ -148,7 +148,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object CollectionsModelPost
 	 */
 	static function &getInstance($oid=null)
 	{

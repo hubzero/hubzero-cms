@@ -126,7 +126,7 @@ class CollectionsModel extends JObject
 	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object CollectionsModel
 	 */
 	static function &getInstance($object_type='', $object_id=0)
 	{
