@@ -31,7 +31,7 @@
 namespace Hubzero\Component;
 
 use Hubzero\Component\Exception\InvalidTaskException;
-use Hubzero\Component\Exception\RuntimeException;
+use Hubzero\Component\Exception\InvalidControllerException;
 use Hubzero\Base\Object;
 use ReflectionClass;
 use ReflectionMethod;
@@ -45,24 +45,9 @@ use ReflectionMethod;
  * 
  * Executable tasks are determined by method name. All public methods that end in 
  * "Task" (e.g., displayTask, editTask) are callable by the end user.
- * 
- * View name defaults to controller name with layout defaulting to task name. So,
- * a $controller of "One" and a $task of "two" will map to:
- *
- *    /{component name}
- *        /views
- *            /one
- *                /tmpl
- *                    /two.php
  */
-class Controller extends Object
+class ApiController extends Object implements ControllerInterface
 {
-	/**
-	 * Container for component messages
-	 * @var		array
-	 */
-	public $componentMessageQueue = array();
-
 	/**
 	 * The name of the component derived from the controller class name
 	 * @var		string
@@ -119,27 +104,6 @@ class Controller extends Object
 	protected $_basePath = null;
 
 	/**
-	 * Redirection URL
-	 *
-	 * @param string
-	 */
-	protected $_redirect = null;
-
-	/**
-	 * The message to display
-	 *
-	 * @param string
-	 */
-	protected $_message = null;
-
-	/**
-	 * Message type
-	 *
-	 * @param string
-	 */
-	protected $_messageType = 'message';
-
-	/**
 	 * Constructor
 	 *
 	 * @param   array $config Optional configurations to be used
@@ -147,10 +111,6 @@ class Controller extends Object
 	 */
 	public function __construct($config=array())
 	{
-		$this->_redirect    = null;
-		$this->_message     = null;
-		$this->_messageType = 'message';
-
 		// Get the reflection info
 		$r = new ReflectionClass($this);
 
@@ -186,7 +146,7 @@ class Controller extends Object
 				// Uh-oh!
 				else
 				{
-					throw new RuntimeException(JText::_('Controller::__construct() : Can\'t get or parse class name.'), 500);
+					throw new InvalidControllerException(\JText::_('Controller::__construct() : Can\'t get or parse class name.'), 500);
 				}
 
 				$this->_name = strtolower($segments[1]);
@@ -209,7 +169,7 @@ class Controller extends Object
 		$this->_option = 'com_' . $this->_name;
 
 		// Determine the methods to exclude from the base class.
-		$xMethods = get_class_methods('\\Hubzero\\Component\\Controller');
+		$xMethods = get_class_methods('\\Hubzero\\Component\\ApiController');
 
 		// Get all the public methods of this class
 		foreach ($r->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
@@ -226,24 +186,6 @@ class Controller extends Object
 				$this->_taskMap[strtolower($name)] = $name;
 			}
 		}
-		
-		// get language object & get any loaded lang for option
-		$lang   = \JFactory::getLanguage();
-		$loaded = $lang->getPaths($this->_option);
-		
-		// Load language file if we dont have one yet 
-		if (!isset($loaded) || empty($loaded))
-		{
-			$lang->load($this->_option, $this->_basePath . '/../..');
-		}
-		
-		// Set some commonly used vars
-		$this->juser    = \JFactory::getUser();
-		$this->database = \JFactory::getDBO();
-		$this->config   = \JComponentHelper::getParams($this->_option);
-
-		// Clear component messages - for cross component messages
-		$this->getComponentMessage();
 	}
 
 	/**
@@ -336,47 +278,11 @@ class Controller extends Object
 			}
 		}
 
-		// Instantiate a view with layout the same name as the task
-		$this->view = new View(array(
-			'base_path' => $this->_basePath,
-			'name'      => $name,
-			'layout'    => $layout
-		));
-
-		// Set some commonly used vars
-		$this->view->set('option', $this->_option)
-					->set('task', $doTask)
-					->set('controller', $this->_controller);
-
 		// Record the actual task being fired
 		$doTask .= 'Task';
 
 		// Call the task
 		$this->$doTask();
-	}
-
-	/**
-	 * Reset the view object
-	 *
-	 * @param	string	The name of the view
-	 * @param	string	The name of the layout (optional)
-	 * @return	void
-	 */
-	public function setView($name, $layout=null)
-	{
-		$config = array(
-			'name' => $name
-		);
-		if ($layout)
-		{
-			$config['layout'] = $layout;
-		}
-		$this->view = new View($config);
-
-		// Set some commonly used vars
-		$this->view->option     = $this->_option;
-		$this->view->task       = $name;
-		$this->view->controller = $this->_controller;
 	}
 
 	/**
@@ -408,212 +314,6 @@ class Controller extends Object
 		unset($this->_taskMap['__default']);
 
 		return $this;
-	}
-
-	/**
-	 * Method to redirect the application to a new URL and optionally include a message
-	 *
-	 * @return	void
-	 */
-	public function redirect()
-	{
-		if ($this->_redirect != NULL)
-		{
-			// Preserve component messages after redirect
-			if (count($this->componentMessageQueue))
-			{
-				$session = \JFactory::getSession();
-				$session->set('component.message.queue', $this->componentMessageQueue);
-			}
-
-			$app = \JFactory::getApplication();
-			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
-		}
-	}
-
-	/**
-	 * Set a URL for browser redirection.
-	 *
-	 * @param	string URL to redirect to.
-	 * @param	string	Message to display on redirect. Optional, defaults to
-	 * 			value set internally by controller, if any.
-	 * @param	string	Message type. Optional, defaults to 'message'.
-	 * @return	void
-	 */
-	public function setRedirect($url, $msg=null, $type='message')
-	{
-		$this->_redirect = $url;
-		if ($msg !== null)
-		{
-			// controller may have set this directly
-			$this->_message	= $msg;
-		}
-		$this->_messageType	= $type;
-	}
-
-	/**
-	 * Method to add a message to the component message que
-	 *
-	 * @param   string $message The message to add
-	 * @param   string $type    The type of message to add
-	 * @return  void
-	 */
-	public function addComponentMessage($message, $type='message')
-	{
-		if (!count($this->componentMessageQueue))
-		{
-			$session = \JFactory::getSession();
-			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage)) 
-			{
-				$this->componentMessageQueue = $componentMessage;
-				$session->set('component.message.queue', null);
-			}
-		}
-
-		//if message is somthing
-		if ($message != '')
-		{
-			$this->componentMessageQueue[] = array(
-				'message' => $message,
-				'type'    => strtolower($type),
-				'option'  => $this->_option
-			);
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Method to get component messages
-	 *
-	 * @return	array
-	 */
-	public function getComponentMessage()
-	{
-		if (!count($this->componentMessageQueue))
-		{
-			$session = \JFactory::getSession();
-			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage))
-			{
-				$this->componentMessageQueue = $componentMessage;
-				$session->set('component.message.queue', null);
-			}
-		}
-
-		foreach ($this->componentMessageQueue as $k => $cmq)
-		{
-			if ($cmq['option'] != $this->_option)
-			{
-				$this->componentMessageQueue[$k] = array();
-			}
-		}
-
-		return $this->componentMessageQueue;
-	}
-
-	/**
-	 * Clear the component message queue
-	 *
-	 * @return	object
-	 */
-	public function clearComponentMessage()
-	{
-		$this->componentMessageQueue = array();
-
-		return $this;
-	}
-
-	/**
-	 * Method to add stylesheets to the document.
-	 * Defaults to current component and stylesheet name the same as component.
-	 *
-	 * @param   string  $option Component name to load stylesheet from
-	 * @param   string  $script Name of the stylesheet to load
-	 * @param   boolean $system Pull contents from shared /media/system folder
-	 * @return  void
-	 */
-	protected function _getStyles($option='', $stylesheet='', $system=false)
-	{
-		ximport('Hubzero_Document');
-
-		$option = ($option) ? $option : $this->_option;
-		if (substr($option, 0, strlen('com_')) !== 'com_')
-		{
-			$option = 'com_' . $option;
-		}
-
-		if ($system)
-		{
-			\Hubzero_Document::addSystemStylesheet($stylesheet);
-		}
-		else 
-		{
-			\Hubzero_Document::addComponentStylesheet($option, $stylesheet);
-		}
-	}
-
-	/**
-	 * Method to add scripts to the document.
-	 * Defaults to current component and script name the same as component.
-	 *
-	 * @param   string  $script Name of the script to load
-	 * @param   string  $option Component name to load script from
-	 * @param   boolean $system Pull contents from shared /media/system folder
-	 * @return  void
-	 */
-	protected function _getScripts($script='', $option='', $system=false)
-	{
-		ximport('Hubzero_Document');
-
-		$option = ($option) ? $option : $this->_option;
-		if (substr($option, 0, strlen('com_')) !== 'com_')
-		{
-			$option = 'com_' . $option;
-		}
-		$script = ($script) ? $script : $this->_name;
-
-		if ($system)
-		{
-			\Hubzero_Document::addSystemScript($script);
-		}
-		else 
-		{
-			\Hubzero_Document::addComponentScript($option, $script);
-		}
-	}
-
-	/**
-	 * Method to check admin access permission
-	 *
-	 * @return boolean True on success
-	 */
-	protected function _authorize()
-	{
-		// Check if they are logged in
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			if ($this->juser->authorise('core.admin', $this->_option))
-			{
-				return true;
-			}
-		}
-		else 
-		{
-			// Check if they're a site admin (from Joomla)
-			if ($this->juser->authorize($this->_option, 'manage'))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
 

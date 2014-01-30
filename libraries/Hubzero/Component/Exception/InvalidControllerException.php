@@ -5,6 +5,6 @@ namespace Hubzero\Component\Exception;
 /**
  * Invalid helper exception
  */
-class InvalidControllerException extends \Exception
+class InvalidControllerException extends \RuntimeException
 {
 }
