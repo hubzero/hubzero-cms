@@ -27,7 +27,13 @@ class Migration20130708082138ComWiki extends Hubzero_Migration
 
 		if ($result)
 		{
-			$version = new WikiPageRevision($db);
+			$cls = 'WikiPageRevision';
+			if (class_exists('WikiTableRevision'))
+			{
+				$cls = 'WikiTableRevision';
+			}
+
+			$version = new $cls($db);
 			$version->loadByVersion($result->pageid, $result->version);
 
 			$hostname = php_uname('n');

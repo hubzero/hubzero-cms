@@ -28,10 +28,18 @@ class Migration20131017133750ComWiki extends Hubzero_Migration
 			require_once JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php';
 			require_once JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php';
 
-			$version = new WikiPageRevision($db);
+			$cls = 'WikiPage';
+			$cls2 = 'WikiPageRevision';
+			if (class_exists('WikiTablePage'))
+			{
+				$cls = 'WikiTablePage';
+				$cls2 = 'WikiTableRevision';
+			}
+
+			$version = new $cls2($db);
 			$version->loadByVersion($result->pageid, $result->version);
 
-			$page = new WikiPage($db);
+			$page = new $cls($db);
 			$page->load($result->pageid);
 
 			$hostname = php_uname('n');
