@@ -262,7 +262,7 @@ HUB.Plugins.CoursesProgress = {
 			c   = $('.main-container'),
 			clk = function ( t, button ) {
 				if (t.hasClass('active')) {
-					return;
+					return false;
 				}
 
 				c.css('opacity', 0.4);
@@ -275,28 +275,33 @@ HUB.Plugins.CoursesProgress = {
 				if ($(window).scrollTop() > $('#page_main').offset().top) {
 					$(window).scrollTop($('#page_main').offset().top);
 				}
+
+				return true;
 			};
 
 
 		c.off('click', '.controls .gradebook-button').on('click', '.controls .gradebook-button', function ( e ) {
 			var t = $(this);
 
-			clk(t, 'gradebook');
-			HUB.Plugins.CoursesProgress.loadGradebookData();
+			if (clk(t, 'gradebook')) {
+				HUB.Plugins.CoursesProgress.loadGradebookData();
+			}
 		});
 
 		c.off('click', '.controls .reports-button').on('click', '.controls .reports-button', function ( e ) {
 			var t = $(this);
 
-			clk(t, 'reports');
-			HUB.Plugins.CoursesProgress.loadReportsData();
+			if (clk(t, 'reports')) {
+				HUB.Plugins.CoursesProgress.loadReportsData();
+			}
 		});
 
 		c.off('click', '.controls .progress-button').on('click', '.controls .progress-button', function ( e ) {
 			var t = $(this);
 
-			clk(t, 'progress');
-			HUB.Plugins.CoursesProgress.loadProgressData();
+			if (clk(t, 'progress')) {
+				HUB.Plugins.CoursesProgress.loadProgressData();
+			}
 		});
 	},
 
