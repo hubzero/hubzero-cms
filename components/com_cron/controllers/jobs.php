@@ -79,7 +79,7 @@ class CronControllerJobs extends Hubzero_Controller
 
 		$filters = array(
 			'state'    => 1,
-			'next_run' => JFactory::getDate()->toSql()
+			'next_run' => JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m-d H:i:s')
 		);
 
 		$output = new stdClass;
