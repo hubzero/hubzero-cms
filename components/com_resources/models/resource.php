@@ -156,7 +156,7 @@ class ResourcesModelResource extends JObject
 	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object ResourcesModelResource
 	 */
 	static function &getInstance($oid=null, $revision=null)
 	{
