@@ -1286,6 +1286,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
+		
+		// Make sure they have access to view this resource
+		if ($this->checkGroupAccess($this->model->resource)) 
+		{
+			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			return;
+		}
 
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper($this->model->resource->id, $this->database);
@@ -1354,10 +1361,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// Access check for tools
 		if ($this->model->isTool())
-		{
+		{			
 			// if (development revision
 			//   or (specific revision that is NOT published))
-			if (($revision=='dev') 
+			if (($revision == 'dev') 
 			 or (!$revision && $this->model->resource->published != 1)) 
 			{
 				// Check if the user has access to the tool
@@ -1371,7 +1378,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				}
 			}
 		}
-
+				
 		// Whew! Finally passed all the checks
 		// Let's get down to business...
 
@@ -1393,7 +1400,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		$sections = array();
 		$cats = array();
-
+		
 		// We need to do this here because we need some stats info to pass to the body
 		if (!isset($this->model->thistool) || !$this->model->thistool) 
 		{
@@ -1403,7 +1410,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				)
 			);
 		}
-		else if ($revision)
+		elseif (isset($this->model->revision) && $this->model->revision)
 		{
 			$cats = $dispatcher->trigger('onResourcesAreas', array(
 					$this->model
@@ -1419,17 +1426,16 @@ class ResourcesControllerResources extends Hubzero_Controller
 				}
 				foreach ($cat as $name => $title)
 				{
-					if ($name == 'about')
+					if ($name == 'about' || $name == 'versions' || $name == 'supportingdocs')
 					{
 						$cts[] = $cat;
 					}
 				}
 			}
-			/*$cats = array(
-				array('about' => JText::_('About'))
-			);*/
+
 			$cats = $cts;
 		}
+		
 		// Get the sections
 		$sections = $dispatcher->trigger('onResources', array(
 				$this->model,
@@ -1438,8 +1444,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 				'all',
 			)
 		);
-
+		
 		$available = array('play');
+		
 		foreach ($cats as $cat)
 		{
 			$name = key($cat);
@@ -1590,28 +1597,22 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 		// Instantiate a new view
 		$view = new JView($v);
-		//$view->filters = $filters;
+		
 		if ($this->model->isTool()) 
 		{
 			$view->thistool = $this->model->thistool;
 			$view->curtool  = $this->model->curtool;
 			$view->alltools = $this->model->alltools;
-			$view->revision = $revision;
+			$view->revision = $this->model->revision;
 		}
-		$view->model = $this->model;
-		//$view->config 		= $this->config;
+		$view->model 		= $this->model;
 		$view->tconfig 		= $tconfig;
 		$view->option 		= $this->_option;
-		//$view->resource 	= $this->model->resource;
-		//$view->params 		= $this->model->params;
-		//$view->authorized 	= $authorized;
-		//$view->attribs 		= $this->model->attribs;
 		$view->fsize 		= $fsize;
 		$view->cats 		= $cats;
 		$view->tab 			= $tab;
 		$view->sections 	= $sections;
 		$view->database 	= $this->database;
-		//$view->usersgroups 	= $usersgroups;
 		$view->helper 		= $helper;
 		if ($this->getError()) 
 		{

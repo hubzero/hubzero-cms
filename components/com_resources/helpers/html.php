@@ -830,14 +830,17 @@ class ResourcesHtml
 		}
 
 		$k = 0;
+
 		foreach ($sections as $section)
 		{
 			if ($section['html'] != '') 
 			{
+				/*
 				if (!isset($cats[$k]) || !$cats[$k])
 				{
 					continue;
 				}
+				*/
 				$cls  = ($c) ? $c . ' ' : '';
 				//if (key($cats[$k]) != $active) 
 				if ($section['area'] != $active)

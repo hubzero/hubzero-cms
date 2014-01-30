@@ -259,6 +259,7 @@ if ($mode != 'preview')
 		}
 		
 		echo $html;
+		
 	} // --- end else (if group check passed)
 ?>
 				</div><!-- / .aside launcharea -->
@@ -272,7 +273,7 @@ if ($mode != 'preview')
 <?php 
 	} 
 	else 
-	{
+	{ 
 ?>
 			<div class="clear sep"></div>
 		</div><!-- / .main section -->
@@ -304,6 +305,7 @@ if ($mode != 'preview')
 			ximport('Hubzero_Module_Helper');
 			echo Hubzero_Module_Helper::renderModules('extracontent');
 		}
+
 ?>
 			</div><!-- / .aside extracontent -->
 
