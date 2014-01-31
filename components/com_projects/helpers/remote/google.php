@@ -65,6 +65,35 @@ class ProjectsGoogleHelper extends JObject
 	}
 	
 	/**
+	 * Insert permission
+	 * 
+	 * @param    Google_DriveService  	$apiService 	Drive API service instance
+	 * @param    string					$id				Remote id
+	 * @param    string					$title			File title
+	 * @param    string					$parentId		Parent id
+	 * @param    array					&$metadata		Collector array
+	 *
+	 * @return   string (id) or false
+	 */
+	public static function insertPermission($apiService, $fileId, $value, $type, $role) 
+	{
+	  	$newPermission = new Google_Permission();
+	  	$newPermission->setValue($value);
+	  	$newPermission->setType($type);
+	  	$newPermission->setRole($role);
+	  
+		try 
+		{
+	    	return $apiService->permissions->insert($fileId, $newPermission);
+	  	} 
+		catch (Exception $e) 
+		{
+	    	print "An error occurred: " . $e->getMessage();
+	  	}
+	  	return NULL;
+	}
+	
+	/**
 	 * Patch file metadata (SYNC)
 	 * 
 	 * @param    Google_DriveService  	$apiService 	Drive API service instance
@@ -252,6 +281,76 @@ class ProjectsGoogleHelper extends JObject
 		{
 	    	return false;
 	  	}	
+	}
+	
+	/**
+	 * Delete parent
+	 * 
+	 * @param    Google_DriveService  	$apiService 	Drive API service instance
+	 * @param    string					$id				Remote id
+	 * @return   boolean
+	 */
+	public static function deleteParent ($apiService, $id = 0, $folderId = 0) 
+	{
+		// Check for what we need
+		if (!$apiService || !$id || !$folderId)
+		{
+			return false;
+		}
+		
+		// Removing parent ID from file so that the file gets removed from project folder
+		try 
+		{
+		    $apiService->parents->delete($id, $folderId);
+			return true;
+		} 
+		catch (Exception $e) 
+		{
+		    return false;
+		}
+	}
+	
+	/**
+	 * Delete all parents
+	 * 
+	 * @param    Google_DriveService  	$apiService 	Drive API service instance
+	 * @param    string					$id				Remote id
+	 * @return   boolean
+	 */
+	public static function deleteAllParents ($apiService, $id = 0) 
+	{
+		// Check for what we need
+		if (!$apiService || !$id)
+		{
+			return false;
+		}
+		
+		try 
+		{
+		    $parents = $apiService->parents->listParents($id);
+			
+			if (!empty($parents['items']))
+			{
+				foreach ($parents['items'] as $parent) 
+				{
+			      	$folderId = $parent['id'];
+
+					try 
+					{
+					    $apiService->parents->delete($id, $folderId);
+						return true;
+					} 
+					catch (Exception $e) 
+					{
+					    return false;
+					}
+				}
+			}		    
+		} 
+		catch (Exception $e) 
+		{
+		    return false;
+		}
 	}
 	
 	/**
@@ -477,7 +576,8 @@ class ProjectsGoogleHelper extends JObject
 					$fileSize 		= isset($doc['fileSize']) ? $doc['fileSize'] : NULL;
 										
 					// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = ProjectsGoogleHelper::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'], $connections, $remotes, $duplicates);
+					$fpath = ProjectsGoogleHelper::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'], 
+						$connections, $remotes, $duplicates);
 					
 					// Detect a rename or move
 					$rename = '';
@@ -501,24 +601,24 @@ class ProjectsGoogleHelper extends JObject
 					}
 												
 					$remotes[$fpath] = array(
-						'status' 	=> $status,
-						'time' 	 	=> $time,
-						'modified'	=> gmdate('Y-m-d H:i:s', $time),
-						'type'   	=> $type,
-						'local_path'=> $fpath,
-						'remoteid' 	=> $doc['id'],
-						'title'		=> $doc['title'],
-						'converted' => $converted,
-						'rParent'	=> ProjectsGoogleHelper::getParentID($doc['parents']),
-						'url'		=> $url,
-						'original' 	=> $original,
-						'author'	=> $author,
-						'synced'	=> $synced,
-						'md5' 		=> $md5Checksum,
-						'mimeType'	=> $doc['mimeType'],
-						'thumb'		=> $thumb,
-						'rename'	=> $rename,
-						'fileSize'	=> $fileSize
+						'status' 		=> $status,
+						'time' 	 		=> $time,
+						'modified'		=> gmdate('Y-m-d H:i:s', $time),
+						'type'   		=> $type,
+						'local_path'	=> $fpath,
+						'remoteid' 		=> $doc['id'],
+						'title'			=> $doc['title'],
+						'converted' 	=> $converted,
+						'rParent'		=> ProjectsGoogleHelper::getParentID($doc['parents']),
+						'url'			=> $url,
+						'original' 		=> $original,
+						'author'		=> $author,
+						'synced'		=> $synced,
+						'md5' 			=> $md5Checksum,
+						'mimeType'		=> $doc['mimeType'],
+						'thumb'			=> $thumb,
+						'rename'		=> $rename,
+						'fileSize'		=> $fileSize
 					);
 					
 					if (preg_match("/.folder/", $doc['mimeType']))
@@ -728,7 +828,7 @@ class ProjectsGoogleHelper extends JObject
 		
 		$parameters = array(
 			'q' => $q,
-			'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels/trashed,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
+			'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
 		);
 		
 		// Get a list of files in remote folder
@@ -747,7 +847,7 @@ class ProjectsGoogleHelper extends JObject
 					
 					// Check against modified date
 					$changed = (strtotime(date("c", strtotime($item['modifiedDate'])))  - strtotime($since));
-					if ($since && $changed <= 0 )
+					if ($since && $changed <= 0 && $item['labels']['trashed'] != 1)
 					{
 						$skip = 1;
 					}
@@ -831,24 +931,24 @@ class ProjectsGoogleHelper extends JObject
 					if (!$skip)
 					{
 						$remotes[$fpath] = array(
-							'status' 	=> $status,
-							'time' 	 	=> $time,
-							'modified'	=> gmdate('Y-m-d H:i:s', $time),
-							'type'   	=> $type,
-							'local_path'=> $fpath,
-							'remoteid' 	=> $item['id'],
-							'title'		=> $item['title'],
-							'converted' => $converted,
-							'rParent'	=> ProjectsGoogleHelper::getParentID($item['parents']),
-							'url'		=> $url,
-							'original' 	=> $original,
-							'author'	=> $author,
-							'synced'	=> $synced,
-							'md5' 		=> $md5Checksum,
-							'mimeType'	=> $item['mimeType'],
-							'thumb'		=> $thumb,
-							'rename'	=> $rename,
-							'fileSize'	=> $fileSize
+							'status' 		=> $status,
+							'time' 	 		=> $time,
+							'modified'		=> gmdate('Y-m-d H:i:s', $time),
+							'type'   		=> $type,
+							'local_path'	=> $fpath,
+							'remoteid' 		=> $item['id'],
+							'title'			=> $item['title'],
+							'converted' 	=> $converted,
+							'rParent'		=> ProjectsGoogleHelper::getParentID($item['parents']),
+							'url'			=> $url,
+							'original' 		=> $original,
+							'author'		=> $author,
+							'synced'		=> $synced,
+							'md5' 			=> $md5Checksum,
+							'mimeType'		=> $item['mimeType'],
+							'thumb'			=> $thumb,
+							'rename'		=> $rename,
+							'fileSize'		=> $fileSize
 						);
 					}	
 										

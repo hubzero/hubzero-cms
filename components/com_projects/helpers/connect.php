@@ -1218,22 +1218,33 @@ class ProjectsConnectHelper extends JObject {
 		}
 		
 		$success = 0;
-		
+				
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = ProjectsGoogleHelper::deleteItem ($apiService, $remoteid, $permanent);					
-		}
-				
-		// Delete connection record
-		//if ($permanent == true)
-		//{
-			$objRFile = new ProjectRemoteFile ($this->_db);
-			if ($objRFile->loadItem( $projectid, $remoteid, $service)) 
+			$success = ProjectsGoogleHelper::deleteItem ($apiService, $remoteid, $permanent);
+			
+			// NEW: simple deletion does not work now when owner different from project creator
+			if (!$success)
 			{
-				$objRFile->delete();
-			}
-		//}
+				// Service config
+				//$config = $this->_connect[$service];
+
+				// Get ID of user's remote project folder
+				//$folderId = $config['remote_dir_id'];
+
+				// Removing parent ID from file so that the file gets removed from project folder
+				//$success = ProjectsGoogleHelper::deleteParent ($apiService, $remoteid, $folderId);
+				$success = ProjectsGoogleHelper::deleteAllParents ($apiService, $remoteid);					
+			}			
+		}
+						
+		// Delete connection record
+		$objRFile = new ProjectRemoteFile ($this->_db);
+		if ($objRFile->loadItem( $projectid, $remoteid, $service)) 
+		{
+			$objRFile->delete();
+		}
 								
 		return $success;
 	}
