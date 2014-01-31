@@ -497,6 +497,7 @@ class plgProjectsTodo extends JPlugin
 			
 			// Get due date
 			$due = trim(JRequest::getVar('due', ''));
+
 			if ($due && $due!= 'mm/dd/yyyy') 
 			{
 				$date = explode('/', $due);
@@ -518,7 +519,7 @@ class plgProjectsTodo extends JPlugin
 						} 
 						if (checkdate($month, $day, $year)) 
 						{
-							$objTD->duedate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year));
+							$objTD->duedate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year))->toSql();
 						}
 					}
 				}
