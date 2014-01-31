@@ -41,7 +41,7 @@ if (!$this->juser->get('guest'))
 				<input type="hidden" name="active" value="reviews" />
 				<input type="hidden" name="action" value="savereply" />
 				<input type="hidden" name="parent" value="<?php echo ($this->level ? $this->escape($this->row->id) : 0); ?>" />
-				<input type="hidden" name="item_id" value="<?php echo $this->escape($this->resource->id); ?>" />
+				<input type="hidden" name="item_id" value="<?php echo $this->escape($this->publication->id); ?>" />
 				<input type="hidden" name="item_type" value="review" />
 
 				<label for="field-content-<?php echo $this->row->id; ?>">
