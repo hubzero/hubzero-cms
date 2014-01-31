@@ -49,6 +49,10 @@ $this->css();
 	{
 		foreach ($offerings as $offering)
 		{
+			if ($this->course->isManager())
+			{
+				$offering->sections(array('available' => false));
+			}
 			?>
 			<tr>
 				<th class="offering-title">
@@ -57,9 +61,18 @@ $this->css();
 					</span>
 				</th>
 			<?php if ($offering->sections()->total() <= 1) { ?>
+				<?php
+				$section = $offering->sections()->fetch('first');
+				if (is_object($section))
+				{
+					$offering->section($section->get('id'));
+				}
+				?>
 				<td>
 					<?php if ($this->course->isManager()) { ?>
-					--
+					<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
+					</a>
 					<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
 					<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
