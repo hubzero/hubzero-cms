@@ -337,6 +337,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$filters['offering_id'] = (int) $this->get('id');
 		}
+		if (!isset($filters['available']) && !JFactory::getApplication()->isAdmin())
+		{
+			$filters['available'] = true;
+		}
 
 		if (isset($filters['count']) && $filters['count'])
 		{

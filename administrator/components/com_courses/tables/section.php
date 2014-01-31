@@ -291,6 +291,14 @@ class CoursesTableSection extends JTable
 					  OR LOWER(os.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
+		if (isset($filters['available']) && $filters['available']) 
+		{
+			$now = JFactory::getDate()->toSql();
+
+			$where[] = "(os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->Quote($now) . ")";
+			$where[] = "(os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->Quote($now) . ")";
+		}
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
