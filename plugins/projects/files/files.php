@@ -692,14 +692,46 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
+	 * Register update info in user session
+	 * 
+	 * @return     void
+	 */
+	public function registerUpdate( $type = '' , $file = '', $append = true, $appendMessage = '') 
+	{
+		if (!$type || !$file)
+		{
+			return false;
+		}
+		
+		$kind = 'projects.' . $this->_project->alias . '.' . $type;
+		
+		// Get session
+		$jsession = JFactory::getSession();
+		
+		if ($append == true)
+		{
+			$exVal  = $jsession->get($kind);
+			$val 	= $exVal ? $exVal . ', ' . $file : $file;
+		}
+		else
+		{
+			$val = $file;
+		}
+		
+		$val .= $appendMessage ? $appendMessage : '';
+		
+		$jsession->set($kind, $val);
+		return true;				
+	}
+	
+	/**
 	 * Event call after file update
 	 * 
-	 * @return     void, redirect
+	 * @return     void
 	 */
 	public function onAfterUpdate() 
 	{
 		$sync     = 0;
-		$prov 	  = $this->_project->provisioned ? 1 : 0;
 		$activity = '';
 		$message  = '';
 		$ref	  = '';
@@ -715,11 +747,18 @@ class plgProjectsFiles extends JPlugin
 		$restored 	= $jsession->get('projects.' . $this->_project->alias . '.restored');
 		$extracted 	= $jsession->get('projects.' . $this->_project->alias . '.extracted');
 		
+		// Clean up session values
+		$jsession->set('projects.' . $this->_project->alias . '.failed', '');
+		$jsession->set('projects.' . $this->_project->alias . '.updated', '');
+		$jsession->set('projects.' . $this->_project->alias . '.uploaded', '');
+		$jsession->set('projects.' . $this->_project->alias . '.deleted', '');
+		$jsession->set('projects.' . $this->_project->alias . '.restored', '');
+		$jsession->set('projects.' . $this->_project->alias . '.extracted', '');
+		
 		// Provisioned project?
-		if ($this->_project->provisioned == 1 && !$this->_project->id)
+		if ($this->_project->provisioned || !$this->_project->id)
 		{
-			$path = $this->getMembersPath();
-			$prov = 1;
+			return false;
 		}
 		else 
 		{		
@@ -731,11 +770,7 @@ class plgProjectsFiles extends JPlugin
 		// Pass success or error message
 		if ($failed && !$uploaded && !$uploaded) 
 		{
-			// $this->_message = array('message' => 'Oups! Something went wrong. Upload failed.', 'type' => 'error');
 			$this->_message = array('message' => 'Failed to upload ' . $failed, 'type' => 'error');
-			
-			// Clean up session values
-			$jsession->set('projects.' . $this->_project->alias . '.failed', '');
 		}
 		elseif ($uploaded || $updated) 
 		{
@@ -778,7 +813,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				else
 				{
-					$message = 'uploaded ';
+					$message = 'updated ';
 					$u = 0;
 					foreach ($updateParts as $part)
 					{
@@ -787,9 +822,6 @@ class plgProjectsFiles extends JPlugin
 						$message .= count($updateParts) == $u ? '' : ', ';
 					}
 				}
-				
-				// Clean up session values
-				$jsession->set('projects.' . $this->_project->alias . '.updated', '');
 								
 				// Save referenced files
 				if ($extracted)
@@ -809,10 +841,7 @@ class plgProjectsFiles extends JPlugin
 			$this->_message = array('message' => $message, 'type' => 'success');
 		}
 		elseif ($deleted)
-		{
-			// Clean up session values
-			$jsession->set('projects.' . $this->_project->alias . '.deleted', '');
-			
+		{			
 			// Save referenced files
 			$ref = $deleted;
 			
@@ -828,10 +857,7 @@ class plgProjectsFiles extends JPlugin
 				. ' ' . $what, 'type' => 'success');						
 		}
 		elseif ($restored)
-		{
-			// Clean up session values
-			$jsession->set('projects.' . $this->_project->alias . '.restored', '');
-			
+		{			
 			// Save referenced files
 			$ref = $restored;
 			
@@ -845,22 +871,16 @@ class plgProjectsFiles extends JPlugin
 			$this->_message = array('message' => JText::_('PLG_PROJECTS_FILES_SUCCESS_RESTORED') 
 				. ' ' . basename($resParts[0]), 'type' => 'success');						
 		}
-		
-		if ($extracted)
-		{
-			// Clean up session values
-			$jsession->set('projects.' . $this->_project->alias . '.extracted', '');
-		}
-				
+						
 		// Force sync
-		if ($sync && !$prov)
+		if ($sync)
 		{
 			$obj = new Project( $this->_database );
 			$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 		}
 		
 		// Add activity to feed
-		if (!$prov && $activity && $this->_case == 'files')
+		if ($activity && $this->_case == 'files')
 		{
 			$objAA = new ProjectActivity( $this->_database );
 			
@@ -995,15 +1015,7 @@ class plgProjectsFiles extends JPlugin
 		$dirsize 	= 0;
 		$new 		= true;
 		$exists	  	= 0;
-				
-		// Get session
-		$jsession = JFactory::getSession();
-		
-		// Get values from session
-		$updateVal = $jsession->get('projects.' . $this->_project->alias . '.updated');
-		$uploadVal = $jsession->get('projects.' . $this->_project->alias . '.uploaded');
-		$failedVal = $jsession->get('projects.' . $this->_project->alias . '.failed');
-				
+								
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id or $this->_task == 'saveprov') 
 		{
@@ -1038,8 +1050,9 @@ class plgProjectsFiles extends JPlugin
 			$size = (int) $_SERVER["CONTENT_LENGTH"];
 		}
 		else
-		{			
-			$jsession->set('projects.' . $this->_project->alias . '.failed', $failedVal . ' (File not found) ' );
+		{						
+			// Store in session
+			$this->registerUpdate('failed', ' (File not found) ' , true);
 			
 			return json_encode(array('error' => JText::_('File not found')));
 		}
@@ -1067,19 +1080,10 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Some checks
-		/*
-		if ($size == 0) 
-		{
-			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
-			$jsession->set('projects.failed', $failedVal . ' (File is empty) ' );
-			
-			return json_encode(array('error' => JText::_('File is empty')));
-		}
-		*/
 		if ($size > $sizeLimit) 
 		{
-			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
-			$jsession->set('projects.' . $this->_project->alias . '.failed', $failedVal . ' (File too large) ' );
+			// Store in session
+			$this->registerUpdate('failed', $file, true, ' (File too large) ');
 			
 			return json_encode(array('error' => JText::sprintf('File too large')));
 		}
@@ -1115,10 +1119,13 @@ class plgProjectsFiles extends JPlugin
 
 		if ($size > $unused)
 		{
-			if (is_file($tempFile)) { unlink($tempFile); }
-
-			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-			$jsession->set('projects.' . $this->_project->alias . '.failed', $failedVal . ' (No disk space left) ' );
+			if (is_file($tempFile)) 
+			{ 
+				unlink($tempFile); 
+			}
+			
+			// Store in session
+			$this->registerUpdate('failed', $fName, true, ' (No disk space left) ');
 
 			return json_encode(array('error' => JText::_('No disk space left')));
 		}	
@@ -1154,8 +1161,8 @@ class plgProjectsFiles extends JPlugin
 				unlink($where); 
 			}
 			
-			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-			$jsession->set('projects.' . $this->_project->alias . '.failed', $failedVal . ' (Virus detected, refusing to upload) ' );
+			// Store in session
+			$this->registerUpdate('failed', $fName, true, ' (Virus detected, refusing to upload) ');
 			
 			return json_encode(array('error' => JText::sprintf('Virus detected, refusing to upload')));
 		}
@@ -1169,8 +1176,8 @@ class plgProjectsFiles extends JPlugin
 		{
 			if (!is_file($tempFile))
 			{
-				$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-				$jsession->set('projects.' . $this->_project->alias . '.failed', $failedVal . ' (Failed to upload temp file) ' );
+				// Store in session
+				$this->registerUpdate('failed', $fName, true, ' (Failed to upload temp file) ');
 
 				return json_encode(array('error' => JText::sprintf('Failed to upload temp file')));
 			}
@@ -1206,15 +1213,11 @@ class plgProjectsFiles extends JPlugin
 				// Store in session
 				if ($new)
 				{
-					$uploadVal = $uploadVal ? $uploadVal . ', ' . $fpath : $fpath;
-					$jsession->set('projects.' . $this->_project->alias . '.uploaded', $uploadVal 
-						. ' ( ' . $z . ' item(s) extracted )' );
+					$this->registerUpdate('uploaded', $fpath, true, ' ( ' . $z . ' item(s) extracted )');
 				}
 				else
 				{
-					$updateVal = $updateVal ? $updateVal . ', ' . $fpath : $fpath;
-					$jsession->set('projects.' . $this->_project->alias . '.updated', $updateVal 
-						. ' ( ' . $z . ' item(s) extracted )' );
+					$this->registerUpdate('updated', $fpath, true, ' ( ' . $z . ' item(s) extracted )');
 				}
 				
 				// Success
@@ -1226,9 +1229,7 @@ class plgProjectsFiles extends JPlugin
 			}	
 			else
 			{
-				$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-				$jsession->set('projects.' . $this->_project->alias . '.failed', $failedVal 
-					. ' - ' . JText::_('COM_PROJECT_FILES_ERROR_UNZIP_FAILED') );
+				$this->registerUpdate('failed', $fName);
 				return json_encode(array('error' => JText::_('COM_PROJECT_FILES_ERROR_UNZIP_FAILED')));
 			}
 		}
@@ -1264,6 +1265,16 @@ class plgProjectsFiles extends JPlugin
 						// Generate preview
 						$hash = $this->_git->gitLog($path, $fpath, '' , 'hash');
 						$this->getFilePreview($fpath, $hash, $path, $subdir);
+						
+						// Store in session
+						if ($new)
+						{
+							$this->registerUpdate('uploaded', $fpath);
+						}
+						else
+						{
+							$this->registerUpdate('updated', $fpath);
+						}
 					}
 				}
 				
@@ -1272,24 +1283,11 @@ class plgProjectsFiles extends JPlugin
 			}
 			else
 			{
-				$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-				$jsession->set('projects.' . $this->_project->alias . '.failed', $failedVal );
+				$this->registerUpdate('failed', $fName);
 				return json_encode(array('error' => JText::_('Failed to copy temp file')));
 			}
 		}
-		
-		// Store in session
-		if ($new)
-		{
-			$uploadVal = $uploadVal ? $uploadVal . ', ' . $fpath : $fpath;
-			$jsession->set('projects.' . $this->_project->alias . '.uploaded', $uploadVal );
-		}
-		else
-		{
-			$updateVal = $updateVal ? $updateVal . ', ' . $fpath : $fpath;
-			$jsession->set('projects.' . $this->_project->alias . '.updated', $updateVal );
-		}
-		
+				
 		return json_encode(array(
 			'success'   => 1, 
 			'file'      => $file,
@@ -1374,7 +1372,6 @@ class plgProjectsFiles extends JPlugin
 				if ($file) 
 				{	
 					$file = ProjectsHtml::makeSafeFile($file);
-					//$file = str_replace(' ' ,'_', $file);
 				}
 								
 				// Get file extention
@@ -1387,12 +1384,7 @@ class plgProjectsFiles extends JPlugin
 																
 				// Check file size
 				$sizelimit = ProjectsHtml::formatSize($this->_params->get('maxUpload', '104857600'));
-				/*
-				if ($files['size'][$i] == 0)
-				{
-					$this->setError( JText::_('Cannot accept zero-byte files.'));
-				}
-				*/
+
 				if ( $files['size'][$i] > intval($this->_params->get('maxUpload', '104857600')))
 				{
 					$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
@@ -1491,57 +1483,20 @@ class plgProjectsFiles extends JPlugin
 							{							
 								// Git add
 								$new = isset($updated[$file]) ? false : true;
-								$this->_git->gitAdd($path, $file, $commitMsg, $new);
+								$this->_git->gitAdd($path, $file, $commitMsg, $new);								
+								$this->_git->gitCommit($path, $commitMsg);
+								
+								// Store in session
+								$updateType = $new ? 'uploaded' : 'updated';
+								$this->registerUpdate($updateType, $file);
+								
+								// Generate preview
+								$hash = $this->_git->gitLog($path, $file, '' , 'hash');
+								$this->getFilePreview($file, $hash, $path, $subdir);
 							}
 						}						
 					}
 				}
-			}
-		}
-		
-		// Success message
-		if (count($uploaded) > 0)
-		{			
-			// Output status message
-			$this->_msg = JText::_('COM_PROJECTS_FILE_UPLOADED') . ' ' . count($uploaded) 
-				. ' ' . JText::_('COM_PROJECTS_FILES_S');
-				
-			$sync = 1;
-						
-			// Record activity
-			if ($this->_task != 'saveprov') 
-			{
-				// Git commit
-				if ($commitMsg)
-				{
-					$this->_git->gitCommit($path, $commitMsg);
-				}
-								
-				$objAA = new ProjectActivity( $this->_database );
-				$activity_action = count($updated) == count($uploaded)
-					? strtolower(JText::_('COM_PROJECTS_UPDATED')) 
-					: strtolower(JText::_('COM_PROJECTS_UPLOADED'));
-				
-				$ref = count($uploaded) == 1 ? $uploaded[0] : 0;
-				
-				if (count($uploaded) == 1) 
-				{
-					$activity_action .= ' ' . basename($uploaded[0]) . ' ';
-				}
-				else 
-				{
-					$activity_action .= ' ' . count($uploaded) . ' ' . JText::_('COM_PROJECTS_FILES_S');
-				}
-				
-				$activity_action .= ' '.strtolower(JText::_('COM_PROJECTS_IN_PROJECT_FILES'));
-				
-				if (!$this->_project->provisioned)
-				{
-					$aid = $objAA->recordActivity( $this->_project->id, 
-						$this->_uid, $activity_action, 
-						$ref, 'project files', JRoute::_('index.php?option=' . $this->_option . a . 
-						'alias=' . $this->_project->alias . a . 'active=files'), 'files', 1 );
-				}				
 			}
 		}
 						
@@ -1575,10 +1530,12 @@ class plgProjectsFiles extends JPlugin
 		else
 		{						
 			// Pass success or error message
-			if ($this->getError()) {
+			if ($this->getError()) 
+			{
 				$this->_message = array('message' => $this->getError(), 'type' => 'error');
 			}
-			elseif (isset($this->_msg) && $this->_msg) {
+			elseif (isset($this->_msg) && $this->_msg) 
+			{
 				$this->_message = array('message' => $this->_msg, 'type' => 'success');
 			}
 						
@@ -1595,12 +1552,6 @@ class plgProjectsFiles extends JPlugin
 			
 			// Redirect to file list		
 			$url .= $subdir ? '?subdir=' .urlencode($subdir) : '';
-			
-			if ($sync)
-			{
-				$obj = new Project( $this->_database );
-				$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
-			}
 			
 			if ($view == 'pub')
 			{
@@ -1638,12 +1589,6 @@ class plgProjectsFiles extends JPlugin
 		$z 			 = 0;
 		$unzipto 	 = $subdir ? $prefix . $path . DS . $subdir : $prefix . $path;
 		
-		// Get session
-		$jsession = JFactory::getSession();
-		
-		// Get values from session
-		$exVal = $jsession->get('projects.' . $this->_project->alias . '.extracted');
-
 		// Create dir to extract into					
 		if (!is_dir($extractPath))
 		{
@@ -1742,9 +1687,8 @@ class plgProjectsFiles extends JPlugin
 							$this->_git->gitAdd($path, $afile, $commitMsgZip);
 							$this->_git->gitCommit($path, $commitMsgZip); 
 							
-							// Save in session
-							$exVal = $exVal ? $exVal . ', ' . $afile : $afile;
-							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );
+							// Store in session
+							$this->registerUpdate('extracted', $afile);
 							
 							// Generate preview
 							$hash = $this->_git->gitLog($path, $afile, '' , 'hash');
@@ -1798,13 +1742,7 @@ class plgProjectsFiles extends JPlugin
 		// Reserved names (service directories)
 		$reserved = ProjectsHelper::getParamArray(
 			$this->_params->get('reservedNames'));
-			
-		// Get session
-		$jsession = JFactory::getSession();
-
-		// Get values from session
-		$exVal = $jsession->get('projects.' . $this->_project->alias . '.extracted');
-				
+							
 		// Do virus check
 		if (ProjectsHelper::virusCheck($tmp_name))
 		{
@@ -1929,8 +1867,8 @@ class plgProjectsFiles extends JPlugin
 							$this->_git->gitAdd($path, $afile, $commitMsgZip);
 							$this->_git->gitCommit($path, $commitMsgZip); 
 							
-							$exVal = $exVal ? $exVal . ', ' . $afile : $afile;
-							$jsession->set('projects.' . $this->_project->alias . '.extracted', $exVal );
+							// Store in session
+							$this->registerUpdate('extracted', $afile);
 							
 							// Generate preview
 							$hash = $this->_git->gitLog($path, $afile, '' , 'hash');
@@ -2293,6 +2231,9 @@ class plgProjectsFiles extends JPlugin
 				elseif ($this->_git->gitDelete($path, $item, $type, $commitMsg))
 				{
 					$deleted[] = $item;
+					
+					// Store in session
+					$this->registerUpdate('deleted', $item);					
 				}				
 			}
 						
@@ -2301,18 +2242,6 @@ class plgProjectsFiles extends JPlugin
 			{
 				// Commit changes
 				$this->_git->gitCommit($path, $commitMsg);
-				
-				$delVal = '';
-				$d = 0;
-				foreach ($deleted as $del)
-				{
-					$delVal .= basename($del);
-					$d++;
-					$delVal .= count($deleted) == $d ? '' : ', ';
-				}
-				
-				// Store in session
-				$jsession->set('projects.' . $this->_project->alias . '.deleted', $delVal );
 			}	
 			
 			// Pass success or error message
@@ -3129,9 +3058,9 @@ class plgProjectsFiles extends JPlugin
 		$i = 0;
 		foreach ($versions as $v)
 		{
-			$pr   = $v['remote']  ? array('id' => $v['remote'], 'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
-			$hash = $v['remote'] ? NULL : $v['hash'];
-			$preview = $this->getFilePreview($v['file'], $hash, $path, $subdir, $pr);
+			$pr   		= $v['remote']  ? array('id' => $v['remote'], 'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
+			$hash 		= $v['remote'] ? NULL : $v['hash'];
+			$preview 	= $this->getFilePreview($v['file'], $hash, $path, $subdir, $pr);
 
 			if ($preview)
 			{
@@ -3420,12 +3349,9 @@ class plgProjectsFiles extends JPlugin
 				$commitMsg = JText::_('PLG_PROJECTS_FILES_RESTORE_COMMIT_MESSAGE') . "\n";
 				$this->_git->gitAdd($path, $file, $commitMsg, $new = false);
 				$this->_git->gitCommit($path, $commitMsg);
-				
-				// Get session
-				$jsession = JFactory::getSession();
-				
+								
 				// Store in session
-				$jsession->set('projects.' . $this->_project->alias . '.restored', $file);
+				$this->registerUpdate('restored', $file, false);
 			}
 			else
 			{
@@ -4611,7 +4537,7 @@ class plgProjectsFiles extends JPlugin
 				'name'=>'status'
 			)
 		);
-
+		
 		$view->status 	= $status;
 		$view->option 	= $this->_option;
 		$view->project 	= $this->_project;
@@ -5733,7 +5659,7 @@ class plgProjectsFiles extends JPlugin
 			return json_encode($this->_rSync);
 		}		
 	}
-
+	
 	/**
 	 * Sync local and remote changes since last sync
 	 * 
@@ -6464,7 +6390,8 @@ class plgProjectsFiles extends JPlugin
 					if ($remote['thumb'] && $remote['status'] != 'D')
 					{						
 						$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' . ProjectsHTML::shortenFileName($filename, 15) );
-						$this->_connect->generateThumbnail($service, $projectCreator, $remote, $this->_config, $this->_project->alias, $ih);																			
+						$this->_connect->generateThumbnail($service, $projectCreator, $remote, 
+							$this->_config, $this->_project->alias, $ih);																			
 					}
 				}		
 
@@ -6528,7 +6455,7 @@ class plgProjectsFiles extends JPlugin
 		$this->_rSync['status'] = 'success';
 		return true;
 	}
-
+	
 	/**
 	 * Get sync status (AJAX call)
 	 * 
