@@ -453,6 +453,32 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		?>
 																	</td>
 																</tr>
+																<?php $params = JComponentHelper::getParams('com_groups'); ?>
+																
+																<?php if ($params->get('email_comment_processing')) :?>
+																	<tr>
+																		<td align="left">&nbsp;</td>
+																	</tr>
+																	<tr>
+																		<td style="text-align: left;font-weight: bold;" align="left">
+																			<?php echo JText::_('Discussion Group Emails Autosubscribe:'); ?>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td style="text-align:left; padding:1em; line-height:18px;" align="left">
+																			<?php
+																			if ($this->group->get('discussion_email_autosubscribe'))
+																			{
+																				echo JText::_('On');
+																			}
+																			else
+																			{
+																				echo JText::_('Off');
+																			}
+																			?>
+																		</td>
+																	</tr>
+																<?php endif; ?>
 																
 															</tbody>
 														</table>
