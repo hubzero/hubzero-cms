@@ -255,6 +255,76 @@ class ProjectsGoogleHelper extends JObject
 	}
 	
 	/**
+	 * Delete parent
+	 * 
+	 * @param    Google_DriveService  	$apiService 	Drive API service instance
+	 * @param    string					$id				Remote id
+	 * @return   boolean
+	 */
+	public static function deleteParent ($apiService, $id = 0, $folderId = 0) 
+	{
+		// Check for what we need
+		if (!$apiService || !$id || !$folderId)
+		{
+			return false;
+		}
+		
+		// Removing parent ID from file so that the file gets removed from project folder
+		try 
+		{
+		    $apiService->parents->delete($id, $folderId);
+			return true;
+		} 
+		catch (Exception $e) 
+		{
+		    return false;
+		}
+	}
+	
+	/**
+	 * Delete all parents
+	 * 
+	 * @param    Google_DriveService  	$apiService 	Drive API service instance
+	 * @param    string					$id				Remote id
+	 * @return   boolean
+	 */
+	public static function deleteAllParents ($apiService, $id = 0) 
+	{
+		// Check for what we need
+		if (!$apiService || !$id)
+		{
+			return false;
+		}
+		
+		try 
+		{
+		    $parents = $apiService->parents->listParents($id);
+			
+			if (!empty($parents['items']))
+			{
+				foreach ($parents['items'] as $parent) 
+				{
+			      	$folderId = $parent['id'];
+
+					try 
+					{
+					    $apiService->parents->delete($id, $folderId);
+						return true;
+					} 
+					catch (Exception $e) 
+					{
+					    return false;
+					}
+				}
+			}		    
+		} 
+		catch (Exception $e) 
+		{
+		    return false;
+		}
+	}
+	
+	/**
 	 * Delete remote item
 	 *
 	 * @param    Google_DriveService  	$apiService 	Drive API service instance
