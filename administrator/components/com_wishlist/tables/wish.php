@@ -411,7 +411,7 @@ class Wish extends JTable
 
 			if ($filters['sortby'] == 'latestcomment') 
 			{
-				$sql .= "\n (SELECT MAX(CC.added) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND (CC.category='wish' OR CC.category='wishcomment')  GROUP BY CC.referenceid) AS latestcomment, ";
+				$sql .= "\n (SELECT MAX(CC.created) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.item_type='wish' GROUP BY CC.referenceid) AS latestcomment, ";
 			}
 
 			// Get xprofile info
@@ -419,10 +419,11 @@ class Wish extends JTable
 			$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned) as assignedto, ";
 
 			// Get comments count
-			$sql .= "\n (SELECT count(*) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND CC.state=0 AND CC.category='wish') AS comments, ";
-			$sql .= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wish' WHERE CC.state=0 AND CC.category='wishcomment' AND C2.referenceid=ws.id) AS commentreplies, ";
-			$sql .= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wishcomment' JOIN #__comments AS C3 ON C3.id=C2.referenceid AND C3.category='wish'  WHERE CC.state=0 AND CC.category='wishcomment' AND C3.referenceid=ws.id) AS replyreplies, ";
-			$sql .= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
+			//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS comments, ";
+			//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' WHERE CC.state=0 AND CC.item_type='wish' AND C2.item_id=ws.id) AS commentreplies, ";
+			//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' JOIN #__item_comments AS C3 ON C3.id=C2.parent AND C3.item_type='wish'  WHERE CC.state=0 AND CC.item_type='wish' AND C3.item_id=ws.id) AS replyreplies, ";
+			//$sql .= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
+			$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS numreplies, ";
 
 			// Get abouse reports count
 			$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
@@ -654,10 +655,11 @@ class Wish extends JTable
 		$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned) as assignedto, ";
 
 		// Get comments count
-		$sql .= "\n (SELECT count(*) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND CC.state=0 AND CC.category='wish') AS comments, ";
-		$sql .= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wish' WHERE CC.state=0 AND CC.category='wishcomment' AND C2.referenceid=ws.id) AS commentreplies, ";
-		$sql .= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wishcomment' JOIN #__comments AS C3 ON C3.id=C2.referenceid AND C3.category='wish'  WHERE CC.state=0 AND CC.category='wishcomment' AND C3.referenceid=ws.id) AS replyreplies, ";
-		$sql .= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
+		//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS comments, ";
+		//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' WHERE CC.state=0 AND CC.item_type='wish' AND C2.item_id=ws.id) AS commentreplies, ";
+		//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' JOIN #__item_comments AS C3 ON C3.id=C2.parent AND C3.item_type='wish'  WHERE CC.state=0 AND CC.item_type='wish' AND C3.item_id=ws.id) AS replyreplies, ";
+		//$sql .= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
+		$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS numreplies, ";
 
 		// Get abouse reports count
 		$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
