@@ -393,12 +393,15 @@ class Hubzero_Item_Comment extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		parent::store();
-		
+		$result = parent::store($updateNulls);
+
+		if (!$result)
+		{
+			return false;
+		}
+
 		if ($this->attachmentNames && count($this->attachmentNames) > 0)
 		{
-			ximport('Hubzero_Item_Comment_File');
-
 			// save the attachments
 			foreach ($this->attachmentNames as $nm) 
 			{
@@ -446,6 +449,8 @@ class Hubzero_Item_Comment extends JTable
 				$this->_db->query();*/
 			}
 		}
+
+		return true;
 	}
 
 	/**

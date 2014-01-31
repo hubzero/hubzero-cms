@@ -25,18 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'h:i A';
-	$tz = null;
-}
-
-
 $wikiconfig = array(
 	'option'   => $this->option,
 	'scope'    => 'reply',
@@ -45,8 +33,9 @@ $wikiconfig = array(
 	'filepath' => '',
 	'domain'   => ''
 );
-if (!$this->parser) {
-	ximport('Hubzero_Wiki_Parser');
+
+if (!$this->parser) 
+{
 	$parser = Hubzero_Wiki_Parser::getInstance();
 	$this->parser = $parser;
 }
@@ -54,14 +43,13 @@ if (!$this->parser) {
 // Set the name of the reviewer
 $name = JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS');
 $juseri = new Hubzero_User_Profile();
-if ($this->reply->anonymous != 1) {
+if ($this->reply->anonymous != 1) 
+{
 	$name = JText::_('PLG_PUBLICATION_REVIEWS_UNKNOWN');
-	/*$ruser = JUser::getInstance($this->reply->added_by);
-	if (is_object($ruser)) {
-		$name = $ruser->get('name');
-	}*/
-	$juseri->load( $this->reply->added_by );
-	if (is_object($juseri) && $juseri->get('name')) {
+
+	$juseri->load($this->reply->created_by);
+	if (is_object($juseri) && $juseri->get('name')) 
+	{
 		$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$juseri->get('uidNumber')).'">'.stripslashes($juseri->get('name')).'</a>';
 	}
 }
@@ -73,51 +61,48 @@ if ($this->reply->anonymous != 1) {
 <div class="comment-content">
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
-		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->reply->added, $timeFormat, $tz); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->reply->added, $dateFormat, $tz); ?></span></a>
+		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">
+			<span class="comment-date-at">@</span> 
+			<span class="time"><time datetime="<?php echo $this->reply->created; ?>"><?php echo JHTML::_('date',$this->reply->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+			<span class="comment-date-on">on</span> 
+			<span class="date"><time datetime="<?php echo $this->reply->created; ?>"><?php echo JHTML::_('date',$this->reply->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+		</a>
 	</p>
 <?php if ($this->abuse && $this->reply->abuse_reports > 0) { ?>
 	<p class="warning"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_NOTICE_POSTING_REPORTED'); ?></p>
 <?php } else { ?>
-	<?php if ($this->reply->comment) { ?>
-		<?php echo $this->parser->parse(stripslashes($this->reply->comment), $wikiconfig); ?>
+	<?php if ($this->reply->content) { ?>
+		<?php echo $this->parser->parse(stripslashes($this->reply->content), $wikiconfig); ?>
 	<?php } else { ?>
 		<p><?php echo JText::_('PLG_PUBLICATION_REVIEWS_NO_COMMENT'); ?></p>
 	<?php } ?>
-	
+
 	<p class="comment-options">
-<?php if ($this->abuse) { ?>
-		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id); ?>"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPORT_ABUSE'); ?></a>
-<?php } ?>
-<?php
-	// Cannot reply at third level
-	if ($this->level < 3) {
-		echo '<a ';
-		//if (!$this->juser->get('guest')) {
-		//	echo 'class="showreplyform" href="javascript:void(0);"';
-		//} else {
-			echo 'href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews&action=reply&category=reviewcomment&refid='.$this->reply->id).'" ';
-		//}
-		echo 'class="reply" id="rep_'.$this->reply->id.'">'.JText::_('PLG_PUBLICATION_REVIEWS_REPLY').'</a>';
-	}
-?>
+	<?php if ($this->abuse) { ?>
+		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=itemcomment&id='.$this->reply->id.'&parent='.$this->id); ?>"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPORT_ABUSE'); ?></a>
+	<?php } ?>
+	<?php if ($this->level < 3) { // Cannot reply at third level ?>
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews&action=reply&category=review=&refid='.$this->reply->id); ?>" class="reply" id="rep_<?php echo $this->reply->id; ?>"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?></a>
+	<?php } ?>
 	</p>
-<?php 
+	<?php 
 	// Add the reply form if needed
-	if ($this->level < 3 && !$this->juser->get('guest')) {
+	if ($this->level < 3 && !$this->juser->get('guest')) 
+	{
 		$view = new Hubzero_Plugin_View(
 			array(
-				'folder'=>'publications',
-				'element'=>'reviews',
-				'name'=>'browse',
-				'layout'=>'addcomment'
+				'folder'  => 'publications',
+				'element' => 'reviews',
+				'name'    => 'browse',
+				'layout'  => 'addcomment'
 			)
 		);
-		$view->option = $this->option;
-		$view->row = $this->reply;
-		$view->juser = $this->juser;
-		$view->level = $this->level;
+		$view->option      = $this->option;
+		$view->row         = $this->reply;
+		$view->juser       = $this->juser;
+		$view->level       = $this->level;
 		$view->publication = $this->publication;
-		$view->addcomment = $this->addcomment;
+		$view->addcomment  = $this->addcomment;
 		$view->display();
 	}
 }

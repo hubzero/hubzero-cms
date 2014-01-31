@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-ximport('Hubzero_Comment');
-
 /**
  * Cotnroller class for wishes
  */
@@ -105,7 +102,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		$this->view->wishlist = new Wishlist($this->database);
 		$this->view->wishlist->load($this->view->wish->wishlist);
 
-		$obj = new Hubzero_Comment($this->database);
+		$obj = new Hubzero_Item_Comment($this->database);
 		//$obj->getResults(array('id' => $wishid, 'category' => 'wish'));
 
 		// Get record count
@@ -113,7 +110,7 @@ class WishlistControllerComments extends Hubzero_Controller
 
 		// Get records
 		//$comments1 = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
-		$comments1 = $obj->getResults(array('id' => $this->view->filters['wish'], 'category' => 'wish'), 1);
+		$comments1 = $obj->find(array('item_id' => $this->view->filters['wish'], 'item_type' => 'wish', 'parent' => 0), 1);
 		$comments = array();
 		if (count($comments1) > 0) 
 		{
@@ -126,7 +123,7 @@ class WishlistControllerComments extends Hubzero_Controller
 				$comment1->wish = $this->view->filters['wish'];
 				$comments[] = $comment1;
 
-				$comments2 = $obj->getResults(array('id' => $comment1->id, 'category' => 'wishcomment'), 1);
+				$comments2 = $obj->find(array('item_id' => $comment1->item_id, 'item_type' => 'wish', 'parent' => $comment1->id), 1);
 				if (count($comments2) > 0) 
 				{
 					foreach ($comments2 as $comment2)
@@ -135,7 +132,7 @@ class WishlistControllerComments extends Hubzero_Controller
 						$comment2->wish = $this->view->filters['wish'];
 						$comments[] = $comment2;
 
-						$comments3 = $obj->getResults(array('id' => $comment2->id, 'category' => 'wishcomment'), 1);
+						$comments3 = $obj->find(array('item_id' => $comment2->item_id, 'item_type' => 'wish', 'parent' => $comment2->id), 1);
 						if (count($comments3) > 0) 
 						{
 							foreach ($comments3 as $comment3)
@@ -211,16 +208,16 @@ class WishlistControllerComments extends Hubzero_Controller
 			}
 
 			// Load category
-			$this->view->row = new Hubzero_Comment($this->database);
+			$this->view->row = new Hubzero_Item_Comment($this->database);
 			$this->view->row->load($id);
 		}
 
 		if (!$this->view->row->id)
 		{
-			$this->view->row->category    = 'wish';
-			$this->view->row->referenceid = $this->view->wish;
-			$this->view->row->added       = JFactory::getDate()->toSql();
-			$this->view->row->added_by    = $this->juser->get('id');
+			$this->view->row->item_type  = 'wish';
+			$this->view->row->item_id    = $this->view->wish;
+			$this->view->row->created    = JFactory::getDate()->toSql();
+			$this->view->row->created_by = $this->juser->get('id');
 		}
 
 		// Set any errors
@@ -262,7 +259,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Hubzero_Comment($this->database);
+		$row = new Hubzero_Item_Comment($this->database);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -290,7 +287,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->referenceid,
+				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id,
 				JText::_('COM_WISHLIST_COMMENT_SAVED')
 			);
 			return;
@@ -316,7 +313,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		// Do we have any IDs?
 		if (count($ids) > 0) 
 		{
-			$tbl = new Hubzero_Comment($this->database);
+			$tbl = new Hubzero_Item_Comment($this->database);
 
 			// Loop through each ID
 			foreach ($ids as $id) 

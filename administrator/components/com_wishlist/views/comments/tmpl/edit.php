@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (document.getElementById('field-comment').value == ''){
+	if (document.getElementById('field-content').value == ''){
 		alert(<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>);
 	} else {
 		submitform(pressbutton);
@@ -74,8 +74,8 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td>
-							<label for="field-comment"><?php echo JText::_('COM_WISHLIST_COMMENT'); ?>:</label><br />
-							<textarea name="fields[comment]" id="field-comment" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->row->comment)); ?></textarea>
+							<label for="field-content"><?php echo JText::_('COM_WISHLIST_COMMENT'); ?>:</label><br />
+							<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
 						</td>
 					</tr>
 				</tbody>
@@ -88,15 +88,15 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('Reference ID'); ?>:</th>
 					<td>
-						<?php echo $this->row->referenceid; ?>
-						<input type="hidden" name="fields[referenceid]" value="<?php echo $this->row->referenceid; ?>" />
+						<?php echo $this->row->item_id; ?>
+						<input type="hidden" name="fields[item_id]" value="<?php echo $this->row->item_id; ?>" />
 					</td>
 				</tr>
 				<tr>
 					<th class="key"><?php echo JText::_('Category'); ?>:</th>
 					<td>
-						<?php echo $this->row->category; ?>
-						<input type="hidden" name="fields[category]" value="<?php echo $this->row->category; ?>" />
+						<?php echo $this->row->item_type; ?>
+						<input type="hidden" name="fields[item_type]" value="<?php echo $this->row->item_type; ?>" />
 					</td>
 				</tr>
 				<tr>
@@ -109,18 +109,18 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('Created'); ?>:</th>
 					<td>
-						<time datetime="<?php echo $this->row->added; ?>"><?php echo $this->row->added; ?></time>
-						<input type="hidden" name="fields[added]" id="field-added" value="<?php echo $this->row->added; ?>" />
+						<time datetime="<?php echo $this->row->created; ?>"><?php echo $this->row->created; ?></time>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
 					</td>
 				</tr>
 				<tr>
 					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
 					<td>
 						<?php 
-						$editor = JUser::getInstance($this->row->added_by);
+						$editor = JUser::getInstance($this->row->created_by);
 						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown'); 
 						?>
-						<input type="hidden" name="fields[added_by]" id="field-added_by" value="<?php echo $this->row->added_by; ?>" />
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
 					</td>
 				</tr>
 			</tbody>

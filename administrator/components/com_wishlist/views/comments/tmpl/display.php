@@ -138,8 +138,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$aalt = JText::_('Not anonymous');
 	}
 
-	$comment = substr($row->comment, 0, 50);
-	if (strlen($row->comment) >= 50) 
+	$comment = substr($row->content, 0, 50);
+	if (strlen($row->content) >= 50) 
 	{
 		$comment .= '...';
 	}
@@ -164,10 +164,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 <?php } ?>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($row->authorname)); ?>
+					<?php echo $this->escape(stripslashes($row->name)); ?>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->added; ?>"><?php echo $row->added; ?></time>
+					<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>

@@ -43,14 +43,14 @@ class AnswersModelComment extends AnswersModelAbstract
 	 * 
 	 * @var string
 	 */
-	protected $_tbl_name = 'Hubzero_Comment';
+	protected $_tbl_name = 'Hubzero_Item_Comment';
 
 	/**
 	 * Class scope
 	 * 
 	 * @var string
 	 */
-	protected $_scope = 'answercomment';
+	protected $_scope = 'answer';
 
 	/**
 	 * \Hubzero\Base\ItemList
@@ -74,20 +74,6 @@ class AnswersModelComment extends AnswersModelAbstract
 	private $_base = null;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      integer $id ID or alias
-	 * @return     void
-	 */
-	public function __construct($oid)
-	{
-		parent::__construct($oid);
-
-		$this->set('created', $this->get('added'));
-		$this->set('created_by', $this->get('added_by'));
-	}
-
-	/**
 	 * Get a list or count of comments
 	 * 
 	 * @param      string  $rtrn    Data format to return
@@ -97,13 +83,17 @@ class AnswersModelComment extends AnswersModelAbstract
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
-		if (!isset($filters['id']))
+		if (!isset($filters['parent']))
 		{
-			$filters['id'] = $this->get('id');
+			$filters['parent'] = $this->get('id');
 		}
-		if (!isset($filters['category']))
+		if (!isset($filters['item_type']))
 		{
-			$filters['category'] = 'answercomment';
+			$filters['item_type'] = $this->get('item_type');
+		}
+		if (!isset($filters['item_id']))
+		{
+			$filters['item_id'] = $this->get('item_id');
 		}
 
 		switch (strtolower($rtrn))
@@ -147,7 +137,7 @@ class AnswersModelComment extends AnswersModelAbstract
 					}
 					else
 					{
-						$results = $this->_tbl->getResults($filters);
+						$results = $this->_tbl->find($filters);
 					}
 
 					if ($results)
@@ -182,9 +172,9 @@ class AnswersModelComment extends AnswersModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('comment_parsed'))
+				if ($this->get('content.parsed'))
 				{
-					return $this->get('comment_parsed');
+					return $this->get('content.parsed');
 				}
 
 				$p = Hubzero_Wiki_Parser::getInstance();
@@ -198,15 +188,15 @@ class AnswersModelComment extends AnswersModelAbstract
 					'domain'   => ''
 				);
 
-				$this->set('comment_parsed', $p->parse(stripslashes($this->get('comment')), $wikiconfig));
+				$this->set('content.parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig));
 
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($this->get('comment_parsed'), $shorten, array('html' => true));
+					$content = \Hubzero\Utility\String::truncate($this->get('content.parsed'), $shorten, array('html' => true));
 					return $content;
 				}
 
-				return $this->get('comment_parsed');
+				return $this->get('content.parsed');
 			break;
 
 			case 'clean':
@@ -220,7 +210,7 @@ class AnswersModelComment extends AnswersModelAbstract
 
 			case 'raw':
 			default:
-				$content = $this->get('comment');
+				$content = $this->get('content');
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);
@@ -261,7 +251,7 @@ class AnswersModelComment extends AnswersModelAbstract
 			break;
 
 			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
+				$link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
 			break;
 
 			case 'permalink':
@@ -280,13 +270,6 @@ class AnswersModelComment extends AnswersModelAbstract
 	 */
 	public function delete()
 	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			$this->setError(JText::_('Database not found.'));
-			return false;
-		}
-
 		// Can't delete what doesn't exist
 		if (!$this->exists()) 
 		{

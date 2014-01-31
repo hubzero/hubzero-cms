@@ -53,25 +53,9 @@ class plgSupportComments extends JPlugin
 			return null;
 		}
 
-		switch ($category)
-		{
-			case 'itemcomment':
-			case 'collection':
-			case 'citations':
-			case 'citationscomment':
-				$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, concat(rc.`item_type`, 'comment') AS `parent_category`, NULL AS `href` " 
-						. "FROM #__item_comments AS rc "
-						. "WHERE rc.id=" . $refid;
-			break;
-
-			default:
-				$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, rc.added AS created, NULL as subject, rc.anonymous as anon, NULL AS `href`";
-				$query .= ", CASE rc.category WHEN 'reviewcomment' THEN 'reviewcomment' WHEN 'review' THEN 'reviewcomment' WHEN 'answer' THEN 'answercomment' WHEN 'answercomment' THEN 'answercomment' WHEN 'wishcomment' THEN 'wishcomment' WHEN 'wish' THEN 'wishcomment' END AS parent_category";
-				$query .= " FROM #__comments AS rc";
-				$query .= " WHERE rc.id=" . $refid;
-			break;
-		}
-
+		$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, concat(rc.`item_type`, 'comment') AS `parent_category`, NULL AS `href` " 
+				. "FROM #__item_comments AS rc "
+				. "WHERE rc.id=" . $refid;
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 
@@ -128,26 +112,9 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		switch ($category)
-		{
-			case 'itemcomment':
-			case 'collection':
-			case 'citations':
-			case 'citationscomment':
-				$comment = new Hubzero_Item_Comment($database);
-				$comment->load($refid);
-				$comment->state = 3;
-			break;
-
-			case 'reviewcomment':
-			case 'answercomment':
-			case 'wishcomment':
-			default:
-				$comment = new Hubzero_Comment($database);
-				$comment->load($refid);
-			break;
-		}
-
+		$comment = new Hubzero_Item_Comment($database);
+		$comment->load($refid);
+		$comment->state = 3;
 		$comment->store();
 
 		return '';
@@ -170,28 +137,10 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		switch ($category)
-		{
-			case 'itemcomment':
-			case 'collection':
-			case 'citations':
-			case 'citationscomment':
-				$comment = new Hubzero_Item_Comment($database);
-				$comment->load($refid);
-				//$comment->anonymous = 0;
-				$comment->state = 1;
-			break;
-
-			case 'reviewcomment':
-			case 'answercomment':
-			case 'wishcomment':
-			default:
-				$comment = new Hubzero_Comment($database);
-				$comment->load($refid);
-				//$comment->anonymous = 0;
-			break;
-		}
-
+		$comment = new Hubzero_Item_Comment($database);
+		$comment->load($refid);
+		//$comment->anonymous = 0;
+		$comment->state = 1;
 		$comment->store();
 
 		return '';
@@ -215,30 +164,11 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		switch ($category)
-		{
-			case 'itemcomment':
-			case 'collection':
-			case 'citations':
-			case 'citationscomment':
-				$comment = new Hubzero_Item_Comment($database);
-				$comment->load($refid);
-				//$comment->anonymous = 1;
-				$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
-				$comment->state = 1;
-			break;
-
-			case 'reviewcomment':
-			case 'answercomment':
-			case 'wishcomment':
-			default:
-				$comment = new Hubzero_Comment($database);
-				$comment->load($refid);
-				//$comment->anonymous = 1;
-				$comment->comment = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
-			break;
-		}
-
+		$comment = new Hubzero_Item_Comment($database);
+		$comment->load($refid);
+		//$comment->anonymous = 1;
+		$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+		$comment->state = 1;
 		$comment->store();
 
 		return '';

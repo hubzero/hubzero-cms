@@ -151,13 +151,13 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		// Incoming
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
-		if (!$comment['referenceid']) 
+		if (!$comment['item_id']) 
 		{
 			JError::raiseError(500, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
 			return;
 		}
 
-		if ($comment['category']) 
+		if ($comment['item_type']) 
 		{
 			$row = new AnswersModelComment(0);
 			if (!$row->bind($comment)) 
@@ -167,11 +167,11 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			}
 
 			// Perform some text cleaning, etc.
-			$row->set('comment', nl2br($row->get('comment')));
+			$row->set('content', nl2br($row->get('content')));
 			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
-			$row->set('added', JFactory::getDate()->toSql());
+			$row->set('created', JFactory::getDate()->toSql());
 			$row->set('state', 0);
-			$row->set('added_by', $this->juser->get('id'));
+			$row->set('created_by', $this->juser->get('id'));
 
 			// Save the data
 			if (!$row->store(true)) 

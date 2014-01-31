@@ -104,7 +104,7 @@ class plgHubzeroComments extends JPlugin
 		$this->view->params   = $this->params;
 
 		// set allowed Extensions
-		// defaults to set of image extensions defined in Hubzero_Comment
+		// defaults to set of image extensions defined in Hubzero_Item_Comment
 		$this->comment = new Hubzero_Item_Comment($this->database);
 		$this->comment->setAllowedExtensions( $allowedExtensions );
 		

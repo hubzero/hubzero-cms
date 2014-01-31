@@ -97,9 +97,6 @@ class plgPublicationsReviews extends Hubzero_Plugin
 			'html'=>'',
 			'metadata'=>''
 		);
-		
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
 
 		$h = new PlgPublicationsReviewsHelper();
 		$h->option   = $option;
@@ -149,11 +146,6 @@ class plgPublicationsReviews extends Hubzero_Plugin
 		{
 			return $arr;
 		}
-		
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
-		ximport('Hubzero_Comment');
-		ximport('Hubzero_User_Profile');
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgPublicationsReviewsHelper();
@@ -169,7 +161,6 @@ class plgPublicationsReviews extends Hubzero_Plugin
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('publications', 'reviews');
 			Hubzero_Document::addPluginScript('publications', 'reviews');
 			
@@ -226,7 +217,6 @@ class plgPublicationsReviews extends Hubzero_Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'=>'publications',
@@ -265,23 +255,27 @@ class plgPublicationsReviews extends Hubzero_Plugin
 	 * @param      boolean $abuse    Abuse flag
 	 * @return     array
 	 */
-	public function getComments($item, $category, $level, $abuse=false)
+	public function getComments($id, $item, $category, $level, $abuse=false)
 	{
 		$database = JFactory::getDBO();
-		
+
 		$level++;
 
-		$hc = new Hubzero_Comment( $database );
-		$comments = $hc->getResults( array('id'=>$item->id, 'category'=>$category) );
-		
+		$hc = new Hubzero_Item_Comment($database);
+		$comments = $hc->find(array(
+			'parent'    => ($level == 1 ? 0 : $item->id), 
+			'item_id'   => $id,
+			'item_type' => $category
+		));
+
 		if ($comments) 
 		{
-			foreach ($comments as $comment) 
+			foreach ($comments as $comment)
 			{
-				$comment->replies = plgPublicationsReviews::getComments($comment, 'reviewcomment', $level, $abuse);
+				$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
 				if ($abuse) 
 				{
-					$comment->abuse_reports = plgPublicationsReviews::getAbuseReports($comment->id, 'reviewcomment');
+					$comment->abuse_reports = self::getAbuseReports($comment->id, 'review');
 				}
 			}
 		}
@@ -470,25 +464,24 @@ class PlgPublicationsReviewsHelper extends JObject
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_CATEGORY') );
 			return;
 		}
-		
+
 		$database = JFactory::getDBO();
-		ximport( 'Hubzero_Comment' );
-			
-		$row = new Hubzero_Comment( $database );
+
+		$row = new Hubzero_Item_Comment( $database );
 		if (!$row->bind( $_POST )) 
 		{
 			$this->setError( $row->getError() );
 			return;
 		}
-			
+
 		// Perform some text cleaning, etc.
-		$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
-		$row->comment   = nl2br($row->comment);
-		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->added   	= $when;
-		$row->state     = 0;
-		$row->added_by 	= $juser->get('id');
-			
+		$row->content    = Hubzero_View_Helper_Html::purifyText($row->content);
+		$row->content    = nl2br($row->content);
+		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
+		$row->created    = $when;
+		$row->state      = 0;
+		$row->created_by = $juser->get('id');
+
 		// Check for missing (required) fields
 		if (!$row->check()) 
 		{
@@ -531,18 +524,17 @@ class PlgPublicationsReviewsHelper extends JObject
 		}
 		
 		// Delete the review
-		ximport( 'Hubzero_Comment' );
-		$reply = new Hubzero_Comment( $database );
-		
-		$comments = $reply->getResults( array('id'=>$replyid, 'category'=>'reviewcomment') );
+		$reply = new Hubzero_Item_Comment($database);
+
+		$comments = $reply->find(array('parent'=>$replyid, 'item_type'=>'review', 'item_id' => $publication->id));
 		if (count($comments) > 0) 
 		{
-			foreach ($comments as $comment) 
+			foreach ($comments as $comment)
 			{
-				$reply->delete( $comment->id );
+				$reply->delete($comment->id);
 			}
 		}
-		$reply->delete( $replyid );
+		$reply->delete($replyid);
 	}
 	
 	/**
@@ -559,7 +551,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$ajax = JRequest::getInt( 'ajax', 0 );
 		$cat  = JRequest::getVar( 'category', 'review' );
 		$vote = JRequest::getVar( 'vote', '' );
-		$ip   = $this->_ipAddress();
+		$ip   = JRequest::ip();
 		$rid  = JRequest::getInt( 'rid', 0, 'get' );
 				
 		if (!$id) 
@@ -843,34 +835,33 @@ class PlgPublicationsReviewsHelper extends JObject
 		$review = new PublicationReview( $database );
 		
 		// Delete the review's comments
-		ximport( 'Hubzero_Comment' );
-		$reply = new Hubzero_Comment( $database );
+		$reply = new Hubzero_Item_Comment( $database );
 		
-		$comments1 = $reply->getResults( array('id'=>$reviewid, 'category'=>'review') );
+		$comments1 = $reply->find(array('parent'=>$reviewid, 'item_type'=>'review', 'item_id' => $publication->id));
 		if (count($comments1) > 0) 
 		{
-			foreach ($comments1 as $comment1) 
+			foreach ($comments1 as $comment1)
 			{
-				$comments2 = $reply->getResults( array('id'=>$comment1->id, 'category'=>'reviewcomment') );
+				$comments2 = $reply->find(array('parent'=>$comment1->id, 'item_type'=>'review', 'item_id' => $publication->id));
 				if (count($comments2) > 0) 
 				{
-					foreach ($comments2 as $comment2) 
+					foreach ($comments2 as $comment2)
 					{
-						$comments3 = $reply->getResults( array('id'=>$comment2->id, 'category'=>'reviewcomment') );
+						$comments3 = $reply->find(array('parent'=>$comment2->id, 'item_type'=>'review', 'item_id' => $publication->id));
 						if (count($comments3) > 0) 
 						{
-							foreach ($comments3 as $comment3) 
+							foreach ($comments3 as $comment3)
 							{
-								$reply->delete( $comment3->id );
+								$reply->delete($comment3->id);
 							}
 						}
-						$reply->delete( $comment2->id );
+						$reply->delete($comment2->id);
 					}
 				}
-				$reply->delete( $comment1->id );
+				$reply->delete($comment1->id);
 			}
 		}
-		
+
 		// Delete the review
 		$review->delete( $reviewid );
 
@@ -883,82 +874,5 @@ class PlgPublicationsReviewsHelper extends JObject
 		
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$publication->id.'&active=reviews');
 		return;
-	}
-	
-	/**
-	 * Short description for '_validIp'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $ip Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _validIp($ip)
-	{
-		return (!preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
-	}
-
-	/**
-	 * Short description for '_ipAddress'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _ipAddress()
-	{
-		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) 
-		{
-			$ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} 
-		elseif ($this->_server('REMOTE_ADDR')) 
-		{
-			$ip_address = $_SERVER['REMOTE_ADDR'];
-		} 
-		elseif ($this->_server('HTTP_CLIENT_IP')) 
-		{
-			$ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} 
-		elseif ($this->_server('HTTP_X_FORWARDED_FOR')) 
-		{
-			$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}
-		
-		if ($ip_address === FALSE) 
-		{
-			$ip_address = '0.0.0.0';
-			return $ip_address;
-		}
-		
-		if (strstr($ip_address, ',')) 
-		{
-			$x = explode(',', $ip_address);
-			$ip_address = end($x);
-		}
-		
-		if (!$this->_validIp($ip_address)) 
-		{
-			$ip_address = '0.0.0.0';
-		}
-				
-		return $ip_address;
-	}
-	
-	/**
-	 * Short description for '_server'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $index Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */	
-	private function _server($index = '')
-	{		
-		if (!isset($_SERVER[$index])) 
-		{
-			return FALSE;
-		}
-		
-		return $_SERVER[$index];
 	}
 }

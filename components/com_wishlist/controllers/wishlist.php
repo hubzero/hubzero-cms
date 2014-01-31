@@ -870,7 +870,7 @@ class WishlistController extends JObject
 			}
 
 			// Get comments
-			$wish->replies = $this->getComments($wishid, $wishid, 'wish', 0, $abuse = true, $wishlist->owners, $this->_admin);
+			$wish->replies = $this->getComments($wishid, 0, 'wish', 0, $abuse = true, $wishlist->owners, $this->_admin);
 
 			// Do some text cleanup
 			$wish->subject = stripslashes($wish->subject);
@@ -957,9 +957,9 @@ class WishlistController extends JObject
 
 		if ($this->_task=='reply') 
 		{
-			$addcomment = new Hubzero_Comment($database);
-			$addcomment->referenceid = $this->referenceid;
-			$addcomment->category = $this->cat;
+			$addcomment = new Hubzero_Item_Comment($database);
+			$addcomment->item_id = $this->referenceid;
+			$addcomment->item_type = $this->cat;
 		} 
 		else 
 		{
@@ -2116,18 +2116,18 @@ class WishlistController extends JObject
 					// delete comments if option chosen
 					if (!$options['keepcomments']) 
 					{
-						$reply = new Hubzero_Comment($database);
-						$comments1 = $reply->getResults(array('id'=>$wishid, 'category'=>'wish'));
+						$reply = new Hubzero_Item_Comment($database);
+						$comments1 = $reply->getResults(array('item_id'=>$wishid, 'item_type'=>'wish', 'parent' => 0));
 						if (count($comments1) > 0) 
 						{
 							foreach ($comments1 as $comment1)
 							{
-								$comments2 = $reply->getResults(array('id'=>$comment1->id, 'category'=>'wishcomment'));
+								$comments2 = $reply->getResults(array('item_id'=>$wishid, 'item_type'=>'wish', 'parent' => $comment1->id));
 								if (count($comments2) > 0) 
 								{
 									foreach ($comments2 as $comment2)
 									{
-										$comments3 = $reply->getResults(array('id'=>$comment2->id, 'category'=>'wishcomment'));
+										$comments3 = $reply->getResults(array('item_id'=>$wishid, 'item_type'=>'wish', 'parent' => $comment2->id));
 										if (count($comments3) > 0) 
 										{
 											foreach ($comments3 as $comment3)
@@ -2751,9 +2751,9 @@ class WishlistController extends JObject
 			return;
 		}
 
-		if ($id && $category) 
+		if ($wishid && $category) 
 		{
-			$row = new Hubzero_Comment($database);
+			$row = new Hubzero_Item_Comment($database);
 			if (!$row->bind($_POST)) 
 			{
 				JError::raiseError(500, $row->getError());
@@ -2761,17 +2761,16 @@ class WishlistController extends JObject
 			}
 
 			// Perform some text cleaning, etc.
-			$row->comment   = $row->comment == JText::_('COM_WISHLIST_ENTER_COMMENTS') ? '' : $row->comment;
-			//$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
-			$attachment     = $this->upload($wishid);
-			$row->comment  .= ($attachment) ? "\n" . $attachment : '';
-			//$row->comment   = nl2br($row->comment);
-			//$row->comment   = str_replace('<br>', '<br />', $row->comment);
-			$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-			$row->added     = $when;
-			$row->state     = 0;
-			$row->category  = $category;
-			$row->added_by  = $juser->get('id');
+			$row->content    = $row->content == JText::_('COM_WISHLIST_ENTER_COMMENTS') ? '' : $row->content;
+			$attachment      = $this->upload($wishid);
+			$row->content   .= ($attachment) ? "\n" . $attachment : '';
+			$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
+			$row->created    = $when;
+			$row->state      = 0;
+			$row->item_id    = $wishid;
+			$row->parent     = $id;
+			$row->item_type  = $category;
+			$row->created_by = $juser->get('id');
 
 			// Check for missing (required) fields
 			if (!$row->check()) 
@@ -2797,7 +2796,7 @@ class WishlistController extends JObject
 
 				$name = JText::_('UNKNOWN');
 				$login = JText::_('UNKNOWN');
-				$ruser = Hubzero_User_Profile::getInstance($row->added_by);
+				$ruser = Hubzero_User_Profile::getInstance($row->created_by);
 				if (is_object($ruser)) 
 				{
 					$name = $ruser->get('name');
@@ -2838,8 +2837,8 @@ class WishlistController extends JObject
 				$message .= '----------------------------' . "\r\n";
 				$message .= JText::_('COM_WISHLIST_MSG_COMMENT_BY').' '.$name.' ';
 				$message .= $row->anonymous ? '' : '('.$login.')';
-				$message .= ' '.JText::_('COM_WISHLIST_MSG_POSTED_ON').' '.JHTML::_('date',$row->added, JText::_('DATE_FORMAT_HZ1')).':' . "\r\n";
-				$message .= $attach->parse(Hubzero_View_Helper_Html::purifyText($row->comment)) . "\r\n\r\n";
+				$message .= ' '.JText::_('COM_WISHLIST_MSG_POSTED_ON').' '.JHTML::_('date',$row->created, JText::_('DATE_FORMAT_HZ1')).':' . "\r\n";
+				$message .= $attach->parse(Hubzero_View_Helper_Html::purifyText($row->content)) . "\r\n\r\n";
 				$message .= "\r\n";
 
 				$message .= '----------------------------' . "\r\n";
@@ -2852,7 +2851,7 @@ class WishlistController extends JObject
 				// collect ids of people who were already emailed
 				$contacted = array();
 
-				if ($objWish->proposed_by != $row->added_by) 
+				if ($objWish->proposed_by != $row->created_by) 
 				{
 					$contacted[] = 	$objWish->proposed_by;
 
@@ -2863,7 +2862,7 @@ class WishlistController extends JObject
 					}
 				} // -- end send to wish author
 
-				if ($objWish->assigned && $objWish->assigned != $row->added_by && !in_array($objWish->assigned, $contacted)) 
+				if ($objWish->assigned && $objWish->assigned != $row->created_by && !in_array($objWish->assigned, $contacted)) 
 				{
 					$contacted[] = $objWish->assigned;
 
@@ -2875,17 +2874,17 @@ class WishlistController extends JObject
 				} // -- end send message to person to who wish is assigned
 
 				// get comment author if reply is posted to a comment
-				if ($category=='wishcomment') 
+				if ($row->parent) 
 				{
-					$parent = new Hubzero_Comment($database);
-					$parent->load($id);
-					$cuser = JUser::getInstance($parent->added_by);
+					$parent = new Hubzero_Item_Comment($database);
+					$parent->load($row->parent);
+					$cuser = JUser::getInstance($parent->created_by);
 
 					// send message to comment author
-					if (is_object($cuser) && $parent->added_by != $row->added_by && !in_array($parent->added_by, $contacted)) 
+					if (is_object($cuser) && $parent->created_by != $row->created_by && !in_array($parent->created_by, $contacted)) 
 					{
-						$contacted[] = 	$parent->added_by;
-						if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->added_by), $this->_option))) 
+						$contacted[] = 	$parent->created_by;
+						if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->created_by), $this->_option))) 
 						{
 							$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 						}
@@ -2893,7 +2892,7 @@ class WishlistController extends JObject
 				}
 
 				// get all users who commented
-				$commentors = self::getComments($wishid, $wishid, 'wish', 0, false, array(), 0, 1, 1);
+				$commentors = self::getComments($wishid, 0, 'wish', 0, false, array(), 0, 1, 1);
 				$comm = array_diff($commentors, $contacted);
 
 				if (count($comm) > 0) 
@@ -2924,7 +2923,7 @@ class WishlistController extends JObject
 		// Incoming
 		$replyid = JRequest::getInt('replyid', 0);
 
-		$row = new Hubzero_Comment($database);
+		$row = new Hubzero_Item_Comment($database);
 
 		// Do we have a reply ID?
 		if (!$replyid or !$row->load($replyid)) 
@@ -2932,10 +2931,10 @@ class WishlistController extends JObject
 			$this->setError(JText::_('COM_WISHLIST_ERROR_REPLY_NOT_FOUND'));
 			return;
 		}
-		if ($row->added_by == $juser->get('id')) 
+		if ($row->created_by == $juser->get('id')) 
 		{
 			// Delete the comment
-			$row->state = 4;
+			$row->state = 2;
 
 			if (!$row->store()) 
 			{
@@ -3156,10 +3155,10 @@ class WishlistController extends JObject
 		$live_site = rtrim(JURI::base(),'/');
 
 		$level++;
-		$hc = new Hubzero_Comment($database);
+		$hc = new Hubzero_Item_Comment($database);
 		$authors = array();
 
-		$comments = $hc->getResults(array('id' => $itemid, 'category' => $category), 1 , 1);
+		$comments = $hc->find(array('item_id' => $parentid, 'item_type' => $category, 'parent' => $itemid), 1 , 1);
 
 		if ($comments) 
 		{
@@ -3176,31 +3175,33 @@ class WishlistController extends JObject
 
 			foreach ($comments as $comment)
 			{
+				$database->setQuery("SELECT count(*) FROM `#__abuse_reports` AS RR WHERE RR.referenceid=" . $comment->id . " AND RR.state=0 AND RR.category='wish'");
+				$comment->reports = $database->loadResult();
 
-				$comment->comment = stripslashes($comment->comment);
+				$comment->content = stripslashes($comment->content);
 				if (!$skipattachments) 
 				{
 					$attach->description = '';
-					if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
+					if (!strstr($comment->content, '</p>') && !strstr($comment->content, '<pre class="wiki">')) 
 					{
-						$comment->comment = preg_replace('/<br\\s*?\/??>/i', '', $comment->comment);
-						//$comment->comment = htmlentities($comment->comment, ENT_COMPAT, 'UTF-8');
-						//$comment->comment = nl2br($comment->comment);
-						//$comment->comment = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $comment->comment);
+						$comment->content = preg_replace('/<br\\s*?\/??>/i', '', $comment->content);
+						//$comment->content = htmlentities($comment->content, ENT_COMPAT, 'UTF-8');
+						//$comment->content = nl2br($comment->content);
+						//$comment->content = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $comment->content);
 					}
-					$comment->comment    = $attach->parse($comment->comment);
+					$comment->content    = $attach->parse($comment->content);
 					$comment->attachment = $attach->description;
 				}
 
 				// get authors excluding current commentator
-				if ($comment->added_by != $juser->get('id')) 
+				if ($comment->created_by != $juser->get('id')) 
 				{
-					$authors[] = $comment->added_by;
+					$authors[] = $comment->created_by;
 				}
 
-				$comment->replies = self::getComments($parentid, $comment->id, 'wishcomment', $level, $abuse, $owners, $admin, $skipattachments, $getauthors);
+				$comment->replies = self::getComments($parentid, $comment->id, 'wish', $level, $abuse, $owners, $admin, $skipattachments, $getauthors);
 				$comment->admin = 0;
-				if (in_array($comment->added_by, $owners)) 
+				if (in_array($comment->created_by, $owners)) 
 				{
 					$comment->admin = 1;  // this is a comment by list owner
 				}

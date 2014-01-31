@@ -146,11 +146,6 @@ class plgResourcesReviews extends JPlugin
 			$rtrn = '';
 		}
 
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
-		ximport('Hubzero_Comment');
-		ximport('Hubzero_User_Profile');
-
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $model->resource;
@@ -170,7 +165,6 @@ class plgResourcesReviews extends JPlugin
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('resources', 'reviews');
 			Hubzero_Document::addPluginScript('resources', 'reviews');
 
@@ -223,7 +217,6 @@ class plgResourcesReviews extends JPlugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'=>'resources',
@@ -262,26 +255,27 @@ class plgResourcesReviews extends JPlugin
 	 * @param      boolean $abuse    Abuse flag
 	 * @return     array
 	 */
-	public static function getComments($item, $category, $level, $abuse=false)
+	public static function getComments($id, $item, $category, $level, $abuse=false)
 	{
 		$database = JFactory::getDBO();
 
 		$level++;
 
-		$hc = new Hubzero_Comment($database);
-		$comments = $hc->getResults(array(
-			'id' => $item->id, 
-			'category' => $category
+		$hc = new Hubzero_Item_Comment($database);
+		$comments = $hc->find(array(
+			'parent'    => ($level == 1 ? 0 : $item->id), 
+			'item_id'   => $id,
+			'item_type' => $category
 		));
 
 		if ($comments) 
 		{
 			foreach ($comments as $comment)
 			{
-				$comment->replies = self::getComments($comment, 'reviewcomment', $level, $abuse);
+				$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
 				if ($abuse) 
 				{
-					$comment->abuse_reports = self::getAbuseReports($comment->id, 'reviewcomment');
+					$comment->abuse_reports = self::getAbuseReports($comment->id, 'review');
 				}
 			}
 		}
@@ -409,9 +403,9 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 
 		// Incoming
-		$id       = JRequest::getInt('referenceid', 0);
+		$id       = JRequest::getInt('item_id', 0);
 		$rid      = JRequest::getInt('rid', 0);
-		$category = JRequest::getVar('category', '');
+		$category = JRequest::getVar('item_type', '');
 		$when     = JFactory::getDate()->toSql();
 
 		// Trim and addslashes all posted items
@@ -432,9 +426,8 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 
 		$database = JFactory::getDBO();
-		ximport('Hubzero_Comment');
 
-		$row = new Hubzero_Comment($database);
+		$row = new Hubzero_Item_Comment($database);
 		if (!$row->bind($_POST)) 
 		{
 			$this->setError($row->getError());
@@ -442,12 +435,12 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 
 		// Perform some text cleaning, etc.
-		$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
-		$row->comment   = nl2br($row->comment);
-		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->added     = $when;
-		$row->state     = 0;
-		$row->added_by  = $juser->get('id');
+		$row->content    = Hubzero_View_Helper_Html::purifyText($row->content);
+		$row->content    = nl2br($row->content);
+		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
+		$row->created    = $when;
+		$row->state      = 0;
+		$row->created_by = $juser->get('id');
 
 		// Check for missing (required) fields
 		if (!$row->check()) 
@@ -491,10 +484,9 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 
 		// Delete the review
-		ximport('Hubzero_Comment');
-		$reply = new Hubzero_Comment($database);
+		$reply = new Hubzero_Item_Comment($database);
 
-		$comments = $reply->getResults(array('id'=>$replyid, 'category'=>'reviewcomment'));
+		$comments = $reply->find(array('parent'=>$replyid, 'item_type'=>'review', 'item_id' => $resource->id));
 		if (count($comments) > 0) 
 		{
 			foreach ($comments as $comment)
@@ -773,20 +765,19 @@ class PlgResourcesReviewsHelper extends JObject
 		$review = new ResourcesReview($database);
 
 		// Delete the review's comments
-		ximport('Hubzero_Comment');
-		$reply = new Hubzero_Comment($database);
+		$reply = new Hubzero_Item_Comment($database);
 
-		$comments1 = $reply->getResults(array('id'=>$reviewid, 'category'=>'review'));
+		$comments1 = $reply->find(array('parent'=>$reviewid, 'item_type'=>'review', 'item_id' => $resource->id));
 		if (count($comments1) > 0) 
 		{
 			foreach ($comments1 as $comment1)
 			{
-				$comments2 = $reply->getResults(array('id'=>$comment1->id, 'category'=>'reviewcomment'));
+				$comments2 = $reply->find(array('parent'=>$comment1->id, 'item_type'=>'review', 'item_id' => $resource->id));
 				if (count($comments2) > 0) 
 				{
 					foreach ($comments2 as $comment2)
 					{
-						$comments3 = $reply->getResults(array('id'=>$comment2->id, 'category'=>'reviewcomment'));
+						$comments3 = $reply->find(array('parent'=>$comment2->id, 'item_type'=>'review', 'item_id' => $resource->id));
 						if (count($comments3) > 0) 
 						{
 							foreach ($comments3 as $comment3)

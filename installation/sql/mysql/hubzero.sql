@@ -674,20 +674,6 @@ CREATE TABLE `#__collections_votes` (
   KEY `idx_item_id_user_id` (`item_id`,`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `#__comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `referenceid` varchar(11) DEFAULT NULL,
-  `category` varchar(50) DEFAULT NULL,
-  `comment` text,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `added_by` int(11) DEFAULT NULL,
-  `state` tinyint(3) NOT NULL DEFAULT '0',
-  `anonymous` tinyint(2) NOT NULL DEFAULT '0',
-  `email` tinyint(2) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  FULLTEXT KEY `ftidx_comment` (`comment`),
-  FULLTEXT KEY `ftidx_referenceid` (`referenceid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 CREATE TABLE `#__courses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(255) NOT NULL DEFAULT '',

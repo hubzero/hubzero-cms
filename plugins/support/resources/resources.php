@@ -78,9 +78,9 @@ class plgSupportResources extends JPlugin
 		} 
 		else if ($category == 'reviewcomment') 
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.added AS created, rr.added_by as author, 
+			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author, 
 						NULL as subject, 'reviewcomment' as parent_category, rr.anonymous as anon 
-						FROM #__comments AS rr 
+						FROM #__item_comments AS rr 
 						WHERE rr.id=" . $refid;
 		}
 
@@ -106,8 +106,6 @@ class plgSupportResources extends JPlugin
 	 */
 	public function getParentId($parentid, $category)
 	{
-		ximport('Hubzero_Comment');
-
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
@@ -151,7 +149,7 @@ class plgSupportResources extends JPlugin
 	{
 		$database = JFactory::getDBO();
 
-		$parent = new Hubzero_Comment($database);
+		$parent = new Hubzero_Item_Comment($database);
 		$parent->load($parentid);
 
 		return $parent;
@@ -230,12 +228,10 @@ class plgSupportResources extends JPlugin
 			break;
 
 			case 'reviewcomment':
-				ximport('Hubzero_Comment');
-
-				$comment = new Hubzero_Comment($database);
+				$comment = new Hubzero_Item_Comment($database);
 				$comment->load($referenceid);
 				//$comment->state = 2;
-				$comment->comment = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+				$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
 				if (!$comment->store()) 
 				{
 					$this->setError($comment->getError());

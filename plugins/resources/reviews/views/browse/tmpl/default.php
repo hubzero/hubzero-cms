@@ -90,11 +90,11 @@ if ($this->reviews) {
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Comment.php');*/
 		$reply = true;
 
-		ximport('Hubzero_Comment');
 		// See if we have a comment (comeone clicked a "reply" link)
-		$addcomment = new Hubzero_Comment($database);
-		$addcomment->referenceid = JRequest::getInt('refid', 0);
-		$addcomment->category = JRequest::getVar('category', '');
+		$addcomment = new Hubzero_Item_Comment($database);
+		$addcomment->parent = JRequest::getInt('refid', 0);
+		$addcomment->item_id = JRequest::getInt('id', 0);
+		$addcomment->item_type = JRequest::getVar('category', '');
 	//}
 
 	$o = 'even';
@@ -135,7 +135,7 @@ if ($this->reviews) {
 		$replies = null;
 		if ($reply) {
 			// Get the replies to this review
-			$replies = plgResourcesReviews::getComments($review, 'review', 0, $abuse);
+			$replies = plgResourcesReviews::getComments($this->resource->id, $review, 'review', 0, $abuse);
 		}
 
 		// Get abuse reports

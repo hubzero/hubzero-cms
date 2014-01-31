@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!$this->juser->get('guest')) {
-	$category = ($this->level==0) ? 'review': 'reviewcomment';
-
+if (!$this->juser->get('guest')) 
+{
 	$class = ' hide';
-	if (is_object($this->addcomment)) {
-		$class = ($this->addcomment->referenceid == $this->row->id && $this->addcomment->category==$category) ? '' : ' hide';
+	if (is_object($this->addcomment)) 
+	{
+		$class = ($this->addcomment->parent == $this->row->id) ? '' : ' hide';
 	}
-?>
+	?>
 	<div class="addcomment comment-add<?php echo $class; ?>" id="commentform_<?php echo $this->row->id; ?>">
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$this->row->id); ?>" method="post" id="cform<?php echo $this->row->id; ?>">
 			<fieldset>
@@ -46,11 +46,12 @@ if (!$this->juser->get('guest')) {
 				<input type="hidden" name="rid" value="<?php echo $this->escape($this->resource->id); ?>" />
 				<input type="hidden" name="active" value="reviews" />
 				<input type="hidden" name="action" value="savereply" />
-				<input type="hidden" name="referenceid" value="<?php echo $this->escape($this->row->id); ?>" />
-				<input type="hidden" name="category" value="<?php echo $this->escape($category); ?>" />
+				<input type="hidden" name="parent" value="<?php echo ($this->level ? $this->escape($this->row->id) : 0); ?>" />
+				<input type="hidden" name="item_id" value="<?php echo $this->escape($this->resource->id); ?>" />
+				<input type="hidden" name="item_type" value="review" />
 
-				<label for="field-comment-<?php echo $this->row->id; ?>">
-					<textarea name="comment" id="field-comment-<?php echo $this->row->id; ?>" rows="4" cols="50" class="commentarea"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></textarea>
+				<label for="field-content-<?php echo $this->row->id; ?>">
+					<textarea name="content" id="field-content-<?php echo $this->row->id; ?>" rows="4" cols="50" class="commentarea"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></textarea>
 				</label>
 
 				<label class="reply-anonymous-label" for="field-anonymous-<?php echo $this->row->id; ?>">
@@ -64,6 +65,6 @@ if (!$this->juser->get('guest')) {
 			</fieldset>
 		</form>
 	</div>
-<?php
+	<?php
 }
 ?>

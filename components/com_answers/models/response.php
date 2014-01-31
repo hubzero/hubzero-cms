@@ -86,13 +86,17 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
-		if (!isset($filters['id']))
+		if (!isset($filters['item_id']))
 		{
-			$filters['id'] = $this->get('id');
+			$filters['item_id'] = $this->get('id');
 		}
-		if (!isset($filters['category']))
+		if (!isset($filters['item_type']))
 		{
-			$filters['category'] = 'answer';
+			$filters['item_type'] = 'answer';
+		}
+		if (!isset($filters['parent']))
+		{
+			$filters['parent'] = 0;
 		}
 
 		switch (strtolower($rtrn))
@@ -130,7 +134,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 			default:
 				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					$tbl = new Hubzero_Comment($this->_db);
+					$tbl = new Hubzero_Item_Comment($this->_db);
 
 					if ($this->get('replies', null) !== null)
 					{
@@ -138,7 +142,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 					}
 					else
 					{
-						$results = $tbl->getResults($filters);
+						$results = $tbl->find($filters);
 					}
 
 					if ($results)
@@ -431,13 +435,6 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 */
 	public function delete()
 	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			$this->setError(JText::_('Database not found.'));
-			return false;
-		}
-
 		// Can't delete what doesn't exist
 		if (!$this->exists()) 
 		{

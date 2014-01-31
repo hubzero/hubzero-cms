@@ -122,15 +122,15 @@ defined('_JEXEC') or die('Restricted access');
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
-					<!-- <a name="commentform<?php echo $this->comment->get('id'); ?>"></a> -->
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
-						<input type="hidden" name="comment[category]" value="<?php echo $this->comment->get('category') ?>" />
-						<input type="hidden" name="comment[referenceid]" value="<?php echo $this->comment->get('id'); ?>" />
-						<input type="hidden" name="comment[added]" value="" />
-						<input type="hidden" name="comment[added_by]" value="<?php echo $juser->get('id'); ?>" />
+						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type') ?>" />
+						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
+						<input type="hidden" name="comment[created]" value="" />
+						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="questions" />
 						<input type="hidden" name="rid" value="<?php echo $this->question->get('id'); ?>" />
@@ -141,9 +141,8 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
 							<?php
-							ximport('Hubzero_Wiki_Editor');
 							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('comment[comment]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
+							echo $editor->display('comment[content]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
 							?>
 						</label>
 

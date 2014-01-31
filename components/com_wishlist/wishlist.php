@@ -39,12 +39,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL('com_wishlist', 'manage', 'users', 'manager');
 }
 
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_User_Helper');
-ximport('Hubzero_Module_Helper');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Comment');
-
 jimport('joomla.application.component.view');
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.php');

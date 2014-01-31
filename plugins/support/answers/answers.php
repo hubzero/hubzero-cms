@@ -114,8 +114,6 @@ class plgSupportAnswers extends JPlugin
 	 */
 	public function getParentId($parentid, $category)
 	{
-		ximport('Hubzero_Comment');
-
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
@@ -164,7 +162,7 @@ class plgSupportAnswers extends JPlugin
 	{
 		$database = JFactory::getDBO();
 
-		$parent = new Hubzero_Comment($database);
+		$parent = new Hubzero_Item_Comment($database);
 		$parent->load($parentid);
 
 		return $parent;
@@ -340,9 +338,7 @@ class plgSupportAnswers extends JPlugin
 			break;
 
 			case 'answercomment':
-				ximport('Hubzero_Comment');
-
-				$comment = new Hubzero_Comment($database);
+				$comment = new Hubzero_Item_Comment($database);
 				$comment->load($referenceid);
 				$comment->state = 2;
 				if (!$comment->store()) 

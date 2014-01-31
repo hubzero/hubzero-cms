@@ -32,11 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 if (!$this->juser->get('guest')) {
-	$category = ($this->level==0) ? 'wish': 'wishcomment';
+	$category = 'wish';
 	
 	$class = ' hide';
 	if (is_object($this->addcomment)) {
-		$class = ($this->addcomment->referenceid == $this->refid && $this->addcomment->category==$category) ? '' : ' hide';
+		$class = ($this->addcomment->item_id == $this->refid && $this->addcomment->item_type==$category) ? '' : ' hide';
 	}
 	if ($this->level == 0) { ?>
 		<div class="below section<?php echo $class; ?>">
@@ -76,10 +76,13 @@ if (!$this->juser->get('guest')) {
 						<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
 						<input type="hidden" name="cat" value="<?php echo $category; ?>" />
 
+						<input type="hidden" name="item_id" value="<?php echo $this->wishid; ?>" />
+						<input type="hidden" name="item_type" value="<?php echo $category; ?>" />
+						<input type="hidden" name="parent" value="<?php echo $this->refid; ?>" />
+
 						<label>
 							<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
 							<?php
-							ximport('Hubzero_Wiki_Editor');
 							$editor = Hubzero_Wiki_Editor::getInstance();
 							echo $editor->display('comment', 'field_comment', '', 'minimal no-footer', '50', '10');
 							?>
@@ -131,10 +134,14 @@ if (!$this->juser->get('guest')) {
 								<input type="hidden" name="task" value="savereply" />
 								<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
 								<input type="hidden" name="cat" value="<?php echo $category; ?>" />
+
+								<input type="hidden" name="item_id" value="<?php echo $this->wishid; ?>" />
+								<input type="hidden" name="item_type" value="<?php echo $category; ?>" />
+								<input type="hidden" name="parent" value="<?php echo $this->refid; ?>" />
 								
 								<label for="comment<?php echo $this->refid; ?>">
 									<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
-									<textarea name="comment" id="comment<?php echo $this->refid; ?>" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?></textarea>
+									<textarea name="content" id="comment<?php echo $this->refid; ?>" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?></textarea>
 								</label>
 								
 								<fieldset>
