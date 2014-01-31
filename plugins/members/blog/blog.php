@@ -117,21 +117,24 @@ class plgMembersBlog extends JPlugin
 			// Get and determine task
 			$this->task = JRequest::getVar('action', '');
 
-			$bits = $this->_parseUrl();
-			$num = count($bits);
-			switch ($num)
+			if (!$this->task)
 			{
-				case 3:
-					$this->task = 'entry';
-				break;
+				$bits = $this->_parseUrl();
+				$num = count($bits);
+				switch ($num)
+				{
+					case 3:
+						$this->task = 'entry';
+					break;
 
-				case 2:
-				case 1:
-					if (is_numeric($bits[0])) 
-					{
-						$this->task = 'browse';
-					}
-				break;
+					case 2:
+					case 1:
+						if (is_numeric($bits[0])) 
+						{
+							$this->task = 'browse';
+						}
+					break;
+				}
 			}
 
 			switch ($this->task) 
