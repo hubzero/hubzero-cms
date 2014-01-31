@@ -449,6 +449,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			return $componentContent;
 		}
 		
+		// define path to group comonent
+		define('JPATH_GROUPCOMPONENT', $templateComponentFolder);
+		
 		// Call plugin to capture super group component route segments
 		JDispatcher::getInstance()->trigger('onBeforeRenderSuperGroupComponent', array());
 		
