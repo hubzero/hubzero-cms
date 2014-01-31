@@ -289,6 +289,15 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		var size	 = fileContainer.fileSize != null ? fileContainer.fileSize : fileContainer.size; 
 	    
 		var i = this.getArrayIndex(fileName, this._sFiles);
+		
+		ext = fileName.split('.').pop().toLowerCase();
+		if (ext.length > 4) { ext = ''; }
+		
+		// Do not allow adding folders
+		if (!ext && !size)
+		{
+			return false;
+		}
 
 		if (i == -1)
 		{				
@@ -547,6 +556,11 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		var elExt   = this._find(item, 'ext'); 
 		var elIcon  = this._find(item, 'icon');
 		var elError = this._find(item, 'error');
+		
+		if (!ext && size == 0)
+		{
+			return false;
+		}
 		   
 		elSize.innerHTML = this._formatSize(size);
 		elExt.innerHTML  = ext;
