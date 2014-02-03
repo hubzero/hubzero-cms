@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 				default:  $rcls = ' no-stars';        break;
 			}
 			?>
-			<p><span class="avgrating<?php echo $rcls; ?>"><span><?php echo JText::sprintf('WIKI_COMMENT_RATING', $this->comment->get('rating')); ?></span></span></p>
+			<p><span class="avgrating<?php echo $rcls; ?>"><span><?php echo JText::sprintf('COM_WIKI_COMMENT_RATING', $this->comment->get('rating')); ?></span></span></p>
 			<?php
 		}
 		?>
