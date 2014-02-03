@@ -121,6 +121,7 @@ class plgCoursesProgress extends JPlugin
 		$this->course = $course;
 		$this->base   = 'index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 		$this->base  .= ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
+		$this->db     = JFactory::getDBO();
 
 		// Instantiate a vew
 		$this->view = new Hubzero_Plugin_View(
@@ -138,6 +139,7 @@ class plgCoursesProgress extends JPlugin
 
 		switch (JRequest::getWord('action'))
 		{
+			case 'assessmentdetails':   $this->assessmentdetails();   break;
 			case 'getprogressrows':     $this->getprogressrows();     break;
 			case 'getprogressdata':     $this->getprogressdata();     break;
 			case 'getgradebookdata':    $this->getgradebookdata();    break;
@@ -169,9 +171,9 @@ class plgCoursesProgress extends JPlugin
 		$layout = ($this->course->offering()->section()->access('manage')) ? 'instructor' : 'student';
 
 		// If this is an instructor, see if they want the overall view, or an individual student
-		if($layout == 'instructor')
+		if ($layout == 'instructor')
 		{
-			if($student_id = JRequest::getInt('id', false))
+			if ($student_id = JRequest::getInt('id', false))
 			{
 				$layout = 'student';
 				$this->view->member = $this->course->offering()->section()->member($student_id);
@@ -182,7 +184,31 @@ class plgCoursesProgress extends JPlugin
 		Hubzero_Document::addPluginStylesheet('courses', 'progress', $layout.'.css');
 		Hubzero_Document::addPluginScript('courses', 'progress', $layout.'progress');
 		Hubzero_Document::addSystemScript('handlebars');
+		Hubzero_Document::addSystemStylesheet('contentbox.css');
+		Hubzero_Document::addSystemScript('contentbox');
 		Hubzero_Document::addSystemScript('jquery.uniform.min');
+
+		// Set the layout
+		$this->view->setLayout($layout);
+	}
+
+	/**
+	 * Render assessment details partial view
+	 *
+	 * @return void
+	 **/
+	private function assessmentdetails()
+	{
+		$layout = 'assessmentdetails_partial';
+
+		$asset_id = JRequest::getInt('asset_id', false);
+
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
+
+		$this->view->details = CoursesModelFormReport::getLetterResponseCountsForAssetId($this->db, $asset_id);
+
+		Hubzero_Document::addPluginStylesheet('courses', 'progress', 'assessmentdetails.css');
+		Hubzero_Document::addPluginScript('courses', 'progress', 'assessmentdetails');
 
 		// Set the layout
 		$this->view->setLayout($layout);
@@ -468,25 +494,21 @@ class plgCoursesProgress extends JPlugin
 	/**
 	 * Generate detailed responses CSV files and zip and offer up as download
 	 *
-	 * A lot of the complexity of this method stems from the fact that the form data is
-	 * not actually labeled, but rather merely coordinates on a page. We must therefore
-	 * make assumptions on question numbers and response labels based on location within
-	 * the page. This is a significant shortfall, especially given that questions
-	 * or responses may at some point read horizontally, rather than vertically. 
-	 *
 	 * @return void
 	 **/
 	private function downloadresponses()
 	{
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
+
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
-			exit();
+			JError::raiseError('403', 'Sorry, you don\'t have permission to do this');
 		}
 
 		if (!$asset_ids = JRequest::getVar('assets', false))
 		{
-			exit();
+			JError::raiseError('422', 'Sorry, we don\'t know what results you\'re trying to retrieve');
 		}
 
 		$protected = 'site' . DS . 'protected';
@@ -495,7 +517,7 @@ class plgCoursesProgress extends JPlugin
 		// We're going to temporarily house this in JPATH_ROOT/site/protected/tmp
 		if (!JFolder::exists($protected))
 		{
-			exit();
+			JError::raiseError('500', 'Missing temporary directory');
 		}
 
 		// Make sure tmp folder exists
@@ -522,7 +544,6 @@ class plgCoursesProgress extends JPlugin
 
 		// Get the individual asset ids
 		$asset_ids = explode('-', $asset_ids);
-		$db        = JFactory::getDBO();
 
 		// Set up our zip archive
 		$zip       = new ZipArchive();
@@ -539,7 +560,7 @@ class plgCoursesProgress extends JPlugin
 			}
 
 			// Get the rest of the asset row
-			$asset = new CoursesTableAsset($db);
+			$asset = new CoursesTableAsset($this->db);
 			$asset->load($asset_id);
 
 			// Make sure asset is a part of this course
@@ -548,121 +569,13 @@ class plgCoursesProgress extends JPlugin
 				continue;
 			}
 
-			// Get the form id
-			$query = "SELECT `id` FROM `#__courses_forms` WHERE `asset_id` = '{$asset_id}'";
-			$db->setQuery($query);
-			$form_id = $db->loadResult();
-
-			if (!$form_id)
+			if ($details = CoursesModelFormReport::getLetterResponsesForAssetId($this->db, $asset_id, true))
 			{
-				continue;
-			}
-
-			// Get all the questions for this form, properly ordered
-			$query = "SELECT `id`, `version` FROM `#__courses_form_questions` WHERE form_id = '{$form_id}' ORDER BY version ASC, page ASC, top_dist ASC";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
-
-			// Build array of questions/versions map
-			$question_ids = array();
-			$question_vs  = array();
-			$questions    = array();
-			$answers      = array();
-			if ($results && count($results) > 0)
-			{
-				foreach ($results as $r)
+				$output = implode(',', $details['headers']) . "\n";
+				foreach ($details['responses'] as $response)
 				{
-					$question_ids[] = $r->id;
-
-					// Compute question label (i.e. 1, 2, 3, etc...) based on idx within a given form/questions version
-					if (isset($question_vs[$r->version]))
-					{
-						++$question_vs[$r->version];
-					}
-					else
-					{
-						$question_vs[$r->version] = 1;
-					}
-
-					// Store a mapping of question id to question label computed above
-					$questions[$r->id] = array('qidx' => $question_vs[$r->version], 'version' => $r->version);
-
-					// Now grab all of the answers for each question
-					$query = "SELECT `id` FROM `#__courses_form_answers` WHERE `question_id` = '{$r->id}' ORDER BY top_dist ASC;";
-					$db->setQuery($query);
-					$ans = $db->loadObjectList();
-
-					if ($ans && count($ans) > 0)
-					{
-						$letter = NULL;
-
-						foreach ($ans as $a)
-						{
-							$answers[$a->id] = $this->getNextLetter($letter);
-							$letter          = $answers[$a->id];
-						}
-					}
+					$output .= implode(',', $response) . "\n";
 				}
-			}
-			else
-			{
-				continue;
-			}
-
-			// Now, select responses and start to build the csv...
-			$query = "SELECT * FROM `#__courses_form_responses` WHERE `question_id` IN (".implode(',', $question_ids).") ORDER BY `respondent_id` ASC";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
-			$output  = '';
-
-			if ($results && count($results) > 0)
-			{
-				$fields = array();
-
-				for ($i=1; $i <= max($question_vs); $i++)
-				{
-					$fields[] = $i;
-				}
-
-				sort($fields);
-				array_unshift($fields, 'Version');
-				array_unshift($fields, 'Attempt');
-				array_unshift($fields, 'Name');
-
-				$output     .= implode(',', $fields) . "\n";
-				$respondents = array();
-
-				foreach ($results as $response)
-				{
-					$respondents[$response->respondent_id][$questions[$response->question_id]['qidx']] = array(
-						'question_id' => $response->question_id,
-						'answer'      => (isset($answers[$response->answer_id])) ? $answers[$response->answer_id] : '--'
-					);
-				}
-
-				foreach ($respondents as $respondent_id => $response)
-				{
-					// Get name and attempt number for this row
-					$query = "SELECT `user_id`, `attempt` FROM `#__courses_members` cm JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id WHERE cr.`id` = '{$respondent_id}'";
-					$db->setQuery($query);
-					$aux     = $db->loadObject();
-					$name    = JUser::getInstance($aux->user_id)->get('name');
-					$attempt = $aux->attempt;
-					$fields  = array();
-
-					foreach ($response as $k => $v)
-					{
-						$version    = $questions[$v['question_id']]['version'];
-						$fields[$k] = $v['answer'];
-					}
-
-					ksort($fields);
-					array_unshift($fields, $version);
-					array_unshift($fields, $attempt);
-					array_unshift($fields, $name);
-					$output .= implode(',', $fields) . "\n";
-				}
-
 				$zip->addFromString($asset_id . '.responses.csv', $output);
 			}
 			else
@@ -1100,24 +1013,5 @@ class plgCoursesProgress extends JPlugin
 			);
 			return;
 		}
-	}
-
-	/**
-	 * Little helper function to get the next letter in the alphabet
-	 *
-	 * @param  $letter - letter after which the next letter should be returned
-	 * @return $chr - string: 1 character
-	 **/
-	private function getNextLetter($letter)
-	{
-		if (is_null($letter))
-		{
-			return 'a';
-		}
-
-		$ord = ord($letter);
-		$chr = chr($ord + 1);
-
-		return $chr;
 	}
 }

@@ -237,7 +237,8 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 							{{ifIsForm this.type 'form'}}
 						</td>
 						<td>
-							{{this.title}}
+							{{resultDetails this.type 'form'}}
+							<span class="form-title">{{this.title}}</span>
 						</td>
 						<td class="numeric">
 							{{getStat ../stats this.id 'responses'}}

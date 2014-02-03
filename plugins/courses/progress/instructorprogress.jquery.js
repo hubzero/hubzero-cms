@@ -1169,9 +1169,20 @@ HUB.Plugins.CoursesProgress = {
 				return;
 			}
 
-			a += (a.search('/?/')) ? '&action=downloadresponses&assets='+d.join('-') : '?action=downloadresponses&assets='+d.join('-');
+			a += (a.search(/\?/) >= 0) ? '&action=downloadresponses&assets='+d.join('-') : '?action=downloadresponses&assets='+d.join('-');
 
 			window.open(a);
+		});
+
+		r.off('click', '.result-details').on('click', '.result-details', function ( e ) {
+			var t       = $(this),
+				assetId = t.data('asset-id'),
+				src     = window.location.href + ((window.location.href.search(/\?/) >= 0) ? '&' : '?') + 'action=assessmentdetails&asset_id='+assetId+'&tmpl=component';
+
+			$.contentBox({
+				src   : src,
+				title : $(this).siblings('.form-title').html()
+			});
 		});
 	},
 
@@ -1577,6 +1588,9 @@ HUB.Plugins.CoursesProgress = {
 		});
 		Handlebars.registerHelper('ifIsForm', function ( val1, val2 ) {
 			return (this.type === 'form') ? new Handlebars.SafeString('<input type="checkbox" class="download-checkbox" name="download['+this.id+']" value="'+this.id+'" />') : '';
+		});
+		Handlebars.registerHelper('resultDetails', function ( val1, val2 ) {
+			return (this.type === 'form') ? new Handlebars.SafeString('<div class="result-details" data-asset-id="'+this.id+'"></div>') : '';
 		});
 		Handlebars.registerHelper('shorten', function ( title, length ) {
 			return (title.length < length) ? title : title.substring(0, length)+'...';
