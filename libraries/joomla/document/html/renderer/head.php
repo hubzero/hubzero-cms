@@ -178,7 +178,17 @@ class JDocumentRendererHead extends JDocumentRenderer
 				$buffer .= $tab . $tab . '<![CDATA[' . $lnEnd;
 			}
 
-			$buffer .= $content . $lnEnd;
+			if (is_array($content))
+			{
+				foreach ($content as $c)
+				{
+					$buffer .= $c . $lnEnd;
+				}
+			}
+			else
+			{
+				$buffer .= $content . $lnEnd;
+			}
 
 			// See above note
 			if ($document->_mime != 'text/html')

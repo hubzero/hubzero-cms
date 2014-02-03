@@ -481,11 +481,11 @@ class JDocument extends JObject
 	{
 		if (!isset($this->_script[strtolower($type)]))
 		{
-			$this->_script[strtolower($type)] = $content;
+			$this->_script[strtolower($type)] = array($content);
 		}
 		else
 		{
-			$this->_script[strtolower($type)] .= chr(13) . $content;
+			$this->_script[strtolower($type)][] = chr(13) . $content;
 		}
 
 		return $this;
