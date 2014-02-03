@@ -884,14 +884,49 @@ class plgProjectsFiles extends JPlugin
 		{
 			$objAA = new ProjectActivity( $this->_database );
 			
-			if (strlen($ref) > 255)
+			$refParts  = explode(',', $ref);
+			$parsedRef = '';
+
+			$selected = array();
+			foreach ($refParts as $file)
 			{
-				$ref = ProjectsHtml::shortenText($ref);
+				if (is_file( $path . DS . trim($file) ))
+				{
+					$hash   = $this->_git->gitLog($path, trim($file), '' , 'hash');					
+					if ($hash)
+					{
+						$selected[] = substr($hash, 0, 10) . ':' . trim($file);
+					}
+				}
 			}
-							
+			
+			// Save hash and file name in a reference
+			if ($selected)
+			{
+				foreach ($selected as $sel)
+				{
+					if (((strlen($parsedRef) + strlen($sel)) <= 254))
+					{
+						$parsedRef .= $sel . ',';
+					}
+					else
+					{
+						break;
+					}
+				}
+				$parsedRef = substr($parsedRef,0,strlen($parsedRef) - 1);
+			}
+			
+			// Check to make sure we are not over in char length			
+			if (strlen($parsedRef) > 255)
+			{
+				$parsedRef = ProjectsHtml::shortenText($parsedRef);
+			}
+			
+			// Record activity				
 			$aid = $objAA->recordActivity( $this->_project->id, 
 				$this->_uid, $activity, 
-				$ref, 'project files', JRoute::_('index.php?option=' . $this->_option . a . 
+				$parsedRef, 'project files', JRoute::_('index.php?option=' . $this->_option . a . 
 				'alias=' . $this->_project->alias . a . 'active=files'), 'files', 1 );
 		}		
 	}
@@ -6165,6 +6200,13 @@ class plgProjectsFiles extends JPlugin
 					$email = $objO->getProfileEmail($name, $this->_project->id);
 				}
 				$author = $this->_git->getGitAuthor($name, $email);
+				
+				// Change acting user to whoever did the remote change
+				$uid = $objO->getProfileId( $email, $this->_project->id);
+				if ($uid)
+				{
+					$this->_uid = $uid;
+				}
 
 				// Set Git author date (GIT_AUTHOR_DATE)
 				$cDate = date('c', $remote['time']); // Important! Needs to be local time, NOT UTC
@@ -6316,7 +6358,8 @@ class plgProjectsFiles extends JPlugin
 							if (JFolder::create( $this->prefix . $path . DS . $filename, 0775 )) 
 							{
 								$created = $this->_git->makeEmptyFolder($path, $filename);				
-								$commitMsg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($filename);
+								$commitMsg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') 
+									. '  ' . escapeshellarg($filename);
 								$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 								$output .= '++ created local folder: '. $filename . "\n";
 								$updated = 1;
@@ -6341,7 +6384,8 @@ class plgProjectsFiles extends JPlugin
 								$failed[] = $filename;
 
 								// Record sync status
-								$this->_writeToFile(JText::_('Skipping (size over limit)') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
+								$this->_writeToFile(JText::_('Skipping (size over limit)') 
+									. ' ' . ProjectsHTML::shortenFileName($filename, 30) );
 
 								continue;
 							}
@@ -6362,6 +6406,9 @@ class plgProjectsFiles extends JPlugin
 
 								$output .= '++ added new file to local: '. $filename . "\n";
 								$updated = 1;
+								
+								// Store in session
+								$this->registerUpdate('uploaded', $filename);								
 							}
 							else
 							{
@@ -6389,10 +6436,16 @@ class plgProjectsFiles extends JPlugin
 					// Generate local thumbnail
 					if ($remote['thumb'] && $remote['status'] != 'D')
 					{						
-						$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' . ProjectsHTML::shortenFileName($filename, 15) );
+						$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' 
+						. ProjectsHTML::shortenFileName($filename, 15) );
 						$this->_connect->generateThumbnail($service, $projectCreator, $remote, 
 							$this->_config, $this->_project->alias, $ih);																			
 					}
+					
+					// Generate local preview
+					$pr  = array('id' => $remote['remoteid'], 'modified' => $remote['modified']);
+					$hash = $this->_git->gitLog($path, $filename, '' , 'hash');
+					$this->getFilePreview($filename, $hash, $path, '', $pr);
 				}		
 
 				$processedRemote[$filename] = $remote;

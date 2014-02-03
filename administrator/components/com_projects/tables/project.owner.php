@@ -369,8 +369,8 @@ class ProjectOwner extends JTable
 	/**
 	 * Get email from user profile
 	 * 
-	 * @param      integer $projectid
-	 * @param      integer $uid
+	 * @param      string 	$name
+	 * @param      integer 	$projectid
 	 * @return     integer or NULL
 	 */
 	public function getProfileEmail( $name = '', $projectid = NULL )
@@ -384,6 +384,29 @@ class ProjectOwner extends JTable
 		$query  .=  " FROM #__xprofiles as x ";
 		$query  .=  " JOIN $this->_tbl AS o ON x.uidNumber=o.userid AND o.projectid=$projectid ";
 		$query  .= " WHERE x.name = '" . $name . "' ";
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();		
+	}
+	
+	/**
+	 * Get user ID profile
+	 * 
+	 * @param      string 	$email
+	 * @param      integer 	$projectid
+	 * @return     integer or NULL
+	 */
+	public function getProfileId ( $email = '', $projectid = NULL )
+	{
+		if ($projectid === NULL or !$email) 
+		{
+			return false;
+		}
+		
+		$query   =  "SELECT x.uidNumber ";
+		$query  .=  " FROM #__xprofiles as x ";
+		$query  .=  " JOIN $this->_tbl AS o ON x.uidNumber=o.userid AND o.projectid=$projectid ";
+		$query  .= " WHERE x.email = '" . $email . "' ";
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();		
