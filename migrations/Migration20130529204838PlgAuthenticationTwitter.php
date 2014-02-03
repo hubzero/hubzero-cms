@@ -13,7 +13,7 @@ class Migration20130529204838PlgAuthenticationTwitter extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		self::addPluginEntry('authentication', 'twitter');
+		self::addPluginEntry('authentication', 'twitter', 0);
 	}
 
 	/**
