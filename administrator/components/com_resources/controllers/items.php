@@ -874,6 +874,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			// New entry
 			$row->created    = $row->created ? $row->created : JFactory::getDate()->toSql();
 			$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('id');
+			$row->access	 = 0;
 		} else {
 			$old = new ResourcesResource($this->database);
 			$old->load($row->id);

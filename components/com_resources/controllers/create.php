@@ -727,6 +727,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->modified     = JFactory::getDate()->toSql();
 		$row->modified_by  = $this->juser->get('id');
+		$row->access	   = 0;
 
 		$row->introtext = (trim($row->fulltxt)) ? Hubzero_View_Helper_Html::shortenText(trim($row->fulltxt), 500, 0) : trim($row->fulltxt);
 		$row->fulltxt  = $this->_txtAutoP(trim($row->fulltxt), 1);
