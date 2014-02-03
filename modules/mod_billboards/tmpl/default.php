@@ -57,5 +57,5 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 	</div>
 	<!-- @TODO: let's make this whole line an if statement -->
-	<div <?php echo ($modbillboards->pager == 'null') ? '' : 'class="pager"'; ?>" id="<?php echo($modbillboards->pager); ?>"></div>
+	<div <?php echo ($modbillboards->pager == 'null') ? '' : 'class="pager"'; ?> id="<?php echo($modbillboards->pager); ?>"></div>
 </div>
