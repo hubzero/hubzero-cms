@@ -459,7 +459,7 @@ class plgProjectsNotes extends JPlugin
 			$what .= $exists ? ' "' . $page->title . '" ' : '';
 			$what .= ' '.JText::_('COM_PROJECTS_NOTE_IN_NOTES');
 			$aid = $objAA->recordActivity($this->_project->id, $this->_uid, $what, 
-				$controller->page->id, 'notes', JRoute::_('index.php?option=' . $this->_option . a
+				$controller->page->get('id'), 'notes', JRoute::_('index.php?option=' . $this->_option . a
 				. 'alias=' . $this->_project->alias . a . 'active=notes') , 'notes', 0);
 			
 			// Record page order for new pages

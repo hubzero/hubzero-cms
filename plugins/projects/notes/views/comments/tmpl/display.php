@@ -30,13 +30,21 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$mode = $this->page->params->get('mode', 'wiki');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
-<?php
-?>
+		<?php
+		if (!$this->page->isStatic()) 
+		{
+			$view = new JView(array(
+				'base_path' => $this->base_path, 
+				'name'      => 'page',
+				'layout'    => 'authors'
+			));
+			$view->page     = $this->page;
+			$view->display();
+		}
+		?>
 	</div><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
@@ -47,32 +55,29 @@ $mode = $this->page->params->get('mode', 'wiki');
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
 
-<?php /*if ($this->warning) { ?>
-	<p class="warning"><?php echo $this->warning; ?></p>
-<?php }*/ ?>
-
 <?php
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));
-	$view->option = $this->option;
+	$view->option     = $this->option;
 	$view->controller = $this->controller;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->config = $this->config;
-	$view->sub    = $this->sub;
+	$view->page       = $this->page;
+	$view->task       = $this->task;
+	$view->config     = $this->config;
+	$view->sub        = $this->sub;
 	$view->display();
 ?>
+
 <?php if (!$this->sub) { ?>
 <div class="section">
 	<div class="aside">
-		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
+		<p><a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 <?php } ?>
-		<p><?php echo JText::_('WIKI_COMMENTS_EXPLANATION'); ?></p>
+		<p><?php echo JText::_('COM_WIKI_COMMENTS_EXPLANATION'); ?></p>
 <?php if (!$this->sub) { ?>
 	</div><!-- / .subject -->
 </div><!-- / .section -->
@@ -81,76 +86,83 @@ $mode = $this->page->params->get('mode', 'wiki');
 
 <div class="main section">
 	<?php if ($this->sub) { ?>
-	<p class="comment-add-btn">
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a>
-	</p>
+		<a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
 	<?php } ?>
 	<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
 	<div class="clear"></div>
-<?php //if (!$this->sub) { ?>
+
 	<div class="aside">
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>" method="get">
+		<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="get">
 			<fieldset class="controls">
 				<label for="filter-version">
-					<?php echo JText::_('WIKI_COMMENT_REVISION'); ?>:
+					<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
 					<select name="version" id="filter-version">
 						<option value=""><?php echo JText::_('ALL'); ?></option>
-<?php
-		if (count($this->versions) > 1) 
-		{
-			foreach ($this->versions as $ver)
-			{
-?>
-						<option value="<?php echo $ver->version; ?>"<?php echo ($this->v == $ver->version) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->version; ?></option>
-<?php
-			}
-		}
-?>
+						<?php
+						foreach ($this->page->revisions('list') as $ver)
+						{
+						?>
+						<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->get('version'); ?></option>
+						<?php
+						}
+						?>
 					</select>
 				</label>
-				<input type="hidden" name="action" value="comments" />
-				<input type="hidden" name="active" value="notes" />
-				<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-
+				<input type="hidden" name="task" value="comments" />
 				<p class="submit"><input type="submit" value="<?php echo JText::_('GO'); ?>" /></p>
+			<?php if ($this->sub) { ?>
+				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
+			<?php } ?>
 			</fieldset>
 		</form>
 	</div><!-- / .aside -->
 	<div class="subject">
-<?php //} ?>
-<?php
-if ($this->comments) {
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'comments',
-		'layout'    => 'list'
-	));
-	$view->option = $this->option;
-	$view->page = $this->page;
-	$view->comments = $this->comments;
-	$view->c = '';
-	$view->level = 1;
-	$view->config = $this->config;
-	$view->display();
-} else {
-	if ($this->v) {
-		echo '<p>No comments found for this version.</p>';
-	} else {
-		echo '<p>No comments found. Be the first to add a comment!</p>';
-	}
-}
-?>
+		<?php
+		$filters = array('version' => '');
+		if ($this->v)
+		{
+			$filters['version'] = 'AND version=' . $this->v;
+		}
+
+		if ($this->page->comments('list', $filters)->total()) 
+		{
+			$view = new JView(array(
+				'base_path' => JPATH_ROOT . '/components/com_wiki',
+				'name'      => 'comments',
+				'layout'    => '_list'
+			));
+			$view->parent     = 0;
+			$view->page       = $this->page;
+			$view->option     = $this->option;
+			$view->comments   = $this->page->comments();
+			$view->config     = $this->config;
+			$view->depth      = 0;
+			$view->version    = $this->v;
+			$view->cls        = 'odd';
+			$view->display();
+		} 
+		else 
+		{
+			if ($this->v) 
+			{
+				echo '<p>No comments found for this version.</p>';
+			} 
+			else 
+			{
+				echo '<p>No comments found. Be the first to add a comment!</p>';
+			}
+		}
+		?>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
 
-<?php if (is_object($this->mycomment)) { ?>
+<?php if (isset($this->mycomment) && is_a($this->mycomment, 'WikiModelComment')) { ?>
 <div class="below section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>" method="post" id="commentform">
+	<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="post" id="commentform">
 		<h3 id="commentform-title">
 			<a name="commentform"></a>
-			<?php echo JText::_('WIKI_ADD_COMMENT'); ?>
+			<?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?>
 		</h3>
 		<div class="aside">
 			<table class="wiki-reference" summary="Wiki Syntax Reference">
@@ -189,68 +201,57 @@ if ($this->comments) {
 		</div><!-- / .aside -->
 		<div class="subject">
 			<p class="comment-member-photo">
-<?php 
-		ximport('Hubzero_User_Profile_Helper');
-		$juser = JFactory::getUser();
-		if (!$juser->get('guest')) {
-			$jxuser = new Hubzero_User_Profile();
-			$jxuser->load( $juser->get('id') );
-			$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
-		} else {
-			$config = JComponentHelper::getParams( 'com_members' );
-			$thumb = $config->get('defaultpic');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$dfthumb;
-			}
-			$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
-		}
-?>
-				<img src="<?php echo $thumb; ?>" alt="Member photo" />
+				<?php 
+				$juser = JFactory::getUser();
+				$anon = (!$juser->get('guest')) ? 0 : 1;
+				?>
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="Member photo" />
 			</p>
 			<fieldset>
-<?php if (!$this->mycomment->parent) { ?>
+			<?php if (!$this->mycomment->get('parent')) { ?>
 				<fieldset>
-					<legend><?php echo JText::_('WIKI_FIELD_RATING'); ?>:</legend>
-					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->rating == 1) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo JText::_('WIKI_FIELD_RATING_ONE'); ?></label>
-					<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->rating == 2) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
-					<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->rating == 3) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
-					<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->rating == 4) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
-					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->rating == 5) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo JText::_('WIKI_FIELD_RATING_FIVE'); ?></label>
+					<legend><?php echo JText::_('COM_WIKI_FIELD_RATING'); ?>:</legend>
+					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->get('rating') == 1) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo JText::_('COM_WIKI_FIELD_RATING_ONE'); ?></label>
+					<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->get('rating') == 2) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
+					<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->get('rating') == 3) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
+					<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->get('rating') == 4) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
+					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->get('rating') == 5) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo JText::_('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
 				</fieldset>
-<?php } ?>
+			<?php } ?>
 				<label>
-					<?php echo JText::_('WIKI_FIELD_COMMENTS'); ?>:
+					<?php echo JText::_('COM_WIKI_FIELD_COMMENTS'); ?>:
 					<?php
-					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('comment[ctext]', 'ctext', $this->mycomment->ctext, '', '35', '15');
+					echo $editor->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), '', '35', '15');
 					?>
 				</label>
 
-				<input type="hidden" name="comment[created]" value="<?php echo $this->mycomment->created; ?>" />
-				<input type="hidden" name="comment[id]" value="<?php echo $this->mycomment->id; ?>" />
-				<input type="hidden" name="comment[created_by]" value="<?php echo $this->mycomment->created_by; ?>" />
-				<input type="hidden" name="comment[status]" value="<?php echo $this->mycomment->status; ?>" />
-				<input type="hidden" name="comment[version]" value="<?php echo $this->mycomment->version; ?>" />
-				<input type="hidden" name="comment[parent]" value="<?php echo $this->mycomment->parent; ?>" />
-				<input type="hidden" name="comment[pageid]" value="<?php echo $this->mycomment->pageid; ?>" />
-				
-				<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-				<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
-				
-				<input type="hidden" name="action" value="savecomment" />
-				<input type="hidden" name="active" value="notes" />
-				<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
+				<input type="hidden" name="comment[created]" value="<?php echo $this->escape($this->mycomment->get('created')); ?>" />
+				<input type="hidden" name="comment[id]" value="<?php echo $this->escape($this->mycomment->get('id')); ?>" />
+				<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($this->mycomment->get('created_by')); ?>" />
+				<input type="hidden" name="comment[status]" value="<?php echo $this->escape($this->mycomment->get('status')); ?>" />
+				<input type="hidden" name="comment[version]" value="<?php echo $this->escape($this->mycomment->get('version')); ?>" />
+				<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->mycomment->get('parent')); ?>" />
+				<input type="hidden" name="comment[pageid]" value="<?php echo $this->escape($this->mycomment->get('pageid')); ?>" />
+
+				<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+				<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
-<?php if ($this->sub) { ?>
+			<?php if ($this->sub) { ?>
 				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
-<?php } ?>
-	
+				<input type="hidden" name="action" value="savecomment" />
+			<?php } else { ?>
+				<input type="hidden" name="task" value="savecomment" />
+			<?php } ?>
+
 				<label id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"<?php if ($this->mycomment->anonymous != 0) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::_('WIKI_FIELD_ANONYMOUS'); ?>
+					<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
+					<?php echo JText::_('COM_WIKI_FIELD_ANONYMOUS'); ?>
 				</label>
+
+				<?php echo JHTML::_('form.token'); ?>
 
 				<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" /></p>
 				<div class="sidenote">

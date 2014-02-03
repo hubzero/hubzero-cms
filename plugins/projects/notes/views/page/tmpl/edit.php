@@ -296,7 +296,7 @@ if ($this->page->access('edit')) {
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="action" value="save" />
-		<input type="hidden" name="gid" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
+		<input type="hidden" name="page[group_cn]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
 		<input type="hidden" name="active" value="notes" />
 		<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
 
