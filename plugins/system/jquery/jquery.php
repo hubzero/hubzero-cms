@@ -214,8 +214,19 @@ class plgSystemJquery extends JPlugin
 			{
 				foreach ($data['script'] as $key => $script)
 				{
-					$data['script'][$key] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*?)\}\)\;/is', '', $script);
-					$data['script'][$key] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*?)\}\)\;/is', '', $data['script'][$key]);
+					if (is_array($script))
+					{
+						foreach ($script as $i => $sc)
+						{
+							$data['script'][$key][$i] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*)\}\)\;/is', '', $sc);
+							$data['script'][$key][$i] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*)\}\)\;/is', '', $data['script'][$key][$i]);
+						}
+					}
+					else
+					{
+						$data['script'][$key] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*?)\}\)\;/is', '', $script);
+						$data['script'][$key] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*?)\}\)\;/is', '', $data['script'][$key]);
+					}
 				}
 			}
 			else
