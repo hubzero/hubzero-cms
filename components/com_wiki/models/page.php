@@ -812,24 +812,6 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 			$option = JRequest::getCmd('option', 'com_wiki');
 
-			// Check if they're a site admin (from Joomla)
-			if ($juser->authorize($option, 'manage')) 
-			{
-				$this->config()->set('access-page-admin', true);
-				$this->config()->set('access-page-manage', true);
-				$this->config()->set('access-page-create', true);
-				$this->config()->set('access-page-delete', true);
-				$this->config()->set('access-page-edit', true);
-				$this->config()->set('access-page-modify', true);
-
-				$this->config()->set('access-comment-view', true);
-				$this->config()->set('access-comment-create', true);
-				$this->config()->set('access-comment-delete', true);
-				$this->config()->set('access-comment-edit', true);
-
-				$this->config()->set('access-check-done', true);
-			}
-
 			if (!$this->config('access-check-done', false))
 			{
 				// Is a group set?
@@ -899,6 +881,23 @@ class WikiModelPage extends \Hubzero\Base\Model
 							break;
 						}
 					}
+				}
+				// Check if they're a site admin (from Joomla)
+				else if ($juser->authorize($option, 'manage')) 
+				{
+					$this->config()->set('access-page-admin', true);
+					$this->config()->set('access-page-manage', true);
+					$this->config()->set('access-page-create', true);
+					$this->config()->set('access-page-delete', true);
+					$this->config()->set('access-page-edit', true);
+					$this->config()->set('access-page-modify', true);
+
+					$this->config()->set('access-comment-view', true);
+					$this->config()->set('access-comment-create', true);
+					$this->config()->set('access-comment-delete', true);
+					$this->config()->set('access-comment-edit', true);
+
+					$this->config()->set('access-check-done', true);
 				}
 				// No group = Site wiki
 				else 
