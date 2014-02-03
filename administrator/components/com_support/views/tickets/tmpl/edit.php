@@ -40,9 +40,8 @@ JToolBarHelper::help('ticket.html', true);
 
 $juser = JFactory::getUser();
 
-ximport('Hubzero_User');
 $user = new Hubzero_User_Profile();
-//$user = Hubzero_User::getInstance($juser->get('id'));
+
 $user->load($juser->get('id'));
 $unknown = true;
 $name = '';
@@ -50,7 +49,7 @@ $usertype = JText::_('Unknown');
 $notify = array();
 
 $submitter = new Hubzero_User_Profile();
- // = Hubzero_User::getInstance($this->row->login);
+
 if ($this->row->login) 
 {
 	$submitter->load($this->row->login);
@@ -91,7 +90,7 @@ if (!$name)
 $owner = new Hubzero_User_Profile();
 if ($this->row->owner)
 {
-	$owner->load($this->row->owner); // = Hubzero_User::getInstance($this->row->owner);
+	$owner->load($this->row->owner);
 	if (is_object($owner) && $owner->get('name')) 
 	{
 		$notify[] = $this->escape(stripslashes($owner->get('name'))) . ' (' . $this->escape(stripslashes($owner->get('username'))) . ')';
@@ -100,8 +99,6 @@ if ($this->row->owner)
 
 //jimport('joomla.html.editor');
 //$editor = JEditor::getInstance();
-
-ximport('Hubzero_User_Profile');
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
@@ -226,7 +223,6 @@ if ($this->row->id) {
 					<td><?php 
 					if ($this->row->owner) 
 					{
-						//$owner = Hubzero_User::getInstance($this->row->owner);
 						if (is_object($owner))
 						{
 							echo '<a rel="profile" href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $owner->get('uidNumber') . '">' . $this->escape(stripslashes($owner->get('name'))) . '</a>';
