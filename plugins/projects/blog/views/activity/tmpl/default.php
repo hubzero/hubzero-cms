@@ -31,15 +31,16 @@ if (count($this->activities) > 0 ) {
 <ul>
 <?php
 // Loop through activities
-	foreach ($this->activities as $activity) { 	
-		$a = $activity['activity'];
-		$class = $activity['class'];
-		$deletable = $activity['deletable'];
-		$etbl = $activity['etbl'];
-		$eid = $activity['eid'];
-		$ebody = $activity['body'];
-		$comments = $activity['comments'];
-		$new = $activity['new'];
+	foreach ($this->activities as $activity) 
+	{ 	
+		$a 			= $activity['activity'];
+		$class 		= $activity['class'];
+		$deletable 	= $activity['deletable'];
+		$etbl 		= $activity['etbl'];
+		$eid 		= $activity['eid'];
+		$ebody 		= $activity['body'];
+		$comments 	= $activity['comments'];
+		$new 		= $activity['new'];
 
 		?>
 			<li id="li_<?php echo $a->id; ?>">

@@ -217,6 +217,7 @@
 	.infofeed .newitem, #plg-content .comments li.newitem {
 		background: #fff6ef;
 		border-right: 5px solid #f5ddcc;
+		padding-bottom: 1em;
 	}
 	.infofeed .newitem:hover {
 		background: #fcf1e9 !important;
