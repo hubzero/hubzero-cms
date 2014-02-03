@@ -134,7 +134,7 @@ class Hubzero_Message_Recipient extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid=" . $this->_db->Quote($mid) . " AND uid=" . $this->_db->Quote($uid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -154,16 +154,16 @@ class Hubzero_Message_Recipient extends JTable
 	 */
 	private function buildQuery($uid, $filters=array())
 	{
-		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid='$uid', $this->_tbl AS r 
-					WHERE r.uid='$uid' 
+		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid=" . $this->_db->Quote($uid) . ", $this->_tbl AS r 
+					WHERE r.uid=" . $this->_db->Quote($uid) . " 
 					AND r.mid=m.id ";
 		if (isset($filters['state'])) 
 		{
-			$query .= "AND r.state='" . $filters['state'] . "'";
+			$query .= "AND r.state=" . $this->_db->Quote($filters['state']);
 		}
 		if (isset($filters['filter']) && $filters['filter'] != '') 
 		{
-			$query .= "AND m.component='" . $filters['filter'] . "'";
+			$query .= "AND m.component=" . $this->_db->Quote($filters['filter']);
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
@@ -244,7 +244,7 @@ class Hubzero_Message_Recipient extends JTable
 
 		$query = "SELECT DISTINCT m.*, r.expires, r.actionid 
 				FROM #__xmessage AS m, $this->_tbl AS r
-				WHERE m.id = r.mid AND r.uid='$uid' AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid='$uid')";
+				WHERE m.id = r.mid AND r.uid=" . $this->_db->Quote($uid) . " AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid=" . $this->_db->Quote($uid) . ")";
 		$query .= " ORDER BY created DESC";
 		$query .= ($limit) ? " LIMIT $limit" : "";
 
@@ -269,7 +269,7 @@ class Hubzero_Message_Recipient extends JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE uid='$uid' AND state='2'";
+		$query = "DELETE FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " AND state='2'";
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
@@ -294,8 +294,9 @@ class Hubzero_Message_Recipient extends JTable
 			return false;
 		}
 
+		$ids = array_map('intval', $ids);
 		$ids = implode(',', $ids);
-		$query = "UPDATE $this->_tbl SET state='$state' WHERE id IN ($ids)";
+		$query = "UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id IN ($ids)";
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 

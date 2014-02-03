@@ -112,7 +112,7 @@ class Hubzero_Message_Seen extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid=" . $this->_db->Quote($mid) . " AND uid=" . $this->_db->Quote($uid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -134,7 +134,7 @@ class Hubzero_Message_Seen extends JTable
 	{
 		if (!$new) 
 		{
-			$this->_db->setQuery("UPDATE $this->_tbl SET whenseen='$this->whenseen' WHERE mid='$this->mid' AND uid='$this->uid'");
+			$this->_db->setQuery("UPDATE $this->_tbl SET whenseen=" . $this->_db->Quote($this->whenseen) . " WHERE mid=" . $this->_db->Quote($this->mid) . " AND uid=" . $this->_db->Quote($this->uid));
 			if ($this->_db->query()) 
 			{
 				$ret = true;
@@ -146,7 +146,7 @@ class Hubzero_Message_Seen extends JTable
 		} 
 		else 
 		{
-			$this->_db->setQuery("INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES ('$this->mid', '$this->uid', '$this->whenseen')");
+			$this->_db->setQuery("INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES (" . $this->_db->Quote($this->mid) . ", " . $this->_db->Quote($this->uid) . ", " . $this->_db->Quote($this->whenseen) . ")");
 			if ($this->_db->query()) 
 			{
 				$ret = true;
@@ -161,10 +161,8 @@ class Hubzero_Message_Seen extends JTable
 			$this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
 		} 
-		else 
-		{
-			return true;
-		}
+
+		return true;
 	}
 }
 

@@ -144,10 +144,11 @@ class Hubzero_Message_Component extends JTable
 		$where[] = "c.type = 'component'";
 		if (isset($filters['component']) && $filters['component'])
 		{
-			$where[] = "c.element = '" . $filters['component'] . "'";
+			$where[] = "c.element=" . $this->_db->Quote($filters['component']);
 		}
 
 		$query .= " WHERE " . implode(" AND ", $where);
+
 		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'c.name';

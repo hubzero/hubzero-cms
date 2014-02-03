@@ -118,6 +118,10 @@ class Hubzero_Message_Message extends JTable
 			$this->setError(JText::_('Please provide a message.'));
 			return false;
 		}
+
+		$this->group_id   = intval($this->group_id);
+		$this->created_by = intval($this->created_by);
+
 		return true;
 	}
 
@@ -173,18 +177,18 @@ class Hubzero_Message_Message extends JTable
 		}
 		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
 		{
-			$query .= " AND m.created_by=" . $filters['created_by'];
+			$query .= " AND m.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
 		if (isset($filters['daily_limit']) && $filters['daily_limit'] != 0) 
 		{
 			$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . " 00:00:00";
-			$end = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . " 23:59:59";
+			$end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . " 23:59:59";
 
-			$query .= " AND m.created >= '$start' AND m.created <= '$end'";
+			$query .= " AND m.created >= " . $this->_db->Quote($start) . " AND m.created <= " . $this->_db->Quote($end);
 		}
 		if (isset($filters['group_id']) && $filters['group_id'] != 0) 
 		{
-			$query .= " AND m.group_id=" . $filters['group_id'];
+			$query .= " AND m.group_id=" . $this->_db->Quote($filters['group_id']);
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{

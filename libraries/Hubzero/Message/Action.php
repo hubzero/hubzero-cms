@@ -118,7 +118,7 @@ class Hubzero_Message_Action extends JTable
 
 		$query = "SELECT m.id 
 				FROM #__xmessage_recipient AS r, $this->_tbl AS a, #__xmessage AS m
-				WHERE m.id=r.mid AND r.actionid = a.id AND m.type='$type' AND r.uid='$uid' AND a.class='$component' AND a.element='$element'";
+				WHERE m.id=r.mid AND r.actionid = a.id AND m.type=" . $this->_db->Quote($type) . " AND r.uid=" . $this->_db->Quote($uid) . " AND a.class=" . $this->_db->Quote($component) . " AND a.element=" . $this->_db->Quote($element);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
