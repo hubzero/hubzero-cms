@@ -33,10 +33,6 @@ HUB.Plugins.CoursesAssessmentDetails = {
 		var $ = this.jQuery,
 			b = $('.response-bar-inner');
 
-		b.css({
-			width : 0
-		});
-
 		b.each(function ( idx, val ) {
 			var v = $(val);
 			v.animate({width : v.data('width')+'%'}, 500);

@@ -35,6 +35,7 @@
 	background: #CC0007;
 	color: transparent;
 	border-radius: 1px;
+	width: 0;
 }
 .response-bar-inner.correct {
 	background: #00AB25;

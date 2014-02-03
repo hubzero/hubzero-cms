@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 						<div class="response-bar">
 							<?php $correct = ($response['correct']) ? ' correct' : ''; ?>
 							<?php $width   = $response['count'] / $responses_total * 100; ?>
-							<div data-width="<?php echo $width; ?>" class="response-bar-inner<?php echo $correct; ?>" style="width:<?php echo $width; ?>%;">
+							<div data-width="<?php echo $width; ?>" class="response-bar-inner<?php echo $correct; ?>">
 								<?php echo $response['count']; ?>
 							</div>
 						</div>
