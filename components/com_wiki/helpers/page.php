@@ -132,24 +132,6 @@ class WikiHelperPage
 
 		$option = JRequest::getCmd('option', 'com_wiki');
 
-		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($option, 'manage')) 
-		{
-			$config->set('access-admin', true);
-			$config->set('access-manage', true);
-			$config->set('access-create', true);
-			$config->set('access-delete', true);
-			$config->set('access-edit', true);
-			$config->set('access-modify', true);
-
-			$config->set('access-comment-view', true);
-			$config->set('access-comment-create', true);
-			$config->set('access-comment-delete', true);
-			$config->set('access-comment-edit', true);
-
-			return $config;
-		}
-
 		// Is a group set?
 		if (trim($page->group_cn)) 
 		{
@@ -218,6 +200,23 @@ class WikiHelperPage
 					break;
 				}
 			}
+		}
+		// Check if they're a site admin (from Joomla)
+		else if ($juser->authorize($option, 'manage')) 
+		{
+			$config->set('access-admin', true);
+			$config->set('access-manage', true);
+			$config->set('access-create', true);
+			$config->set('access-delete', true);
+			$config->set('access-edit', true);
+			$config->set('access-modify', true);
+
+			$config->set('access-comment-view', true);
+			$config->set('access-comment-create', true);
+			$config->set('access-comment-delete', true);
+			$config->set('access-comment-edit', true);
+
+			return $config;
 		}
 		// No group = Site wiki
 		else 
