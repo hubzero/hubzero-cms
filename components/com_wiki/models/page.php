@@ -109,6 +109,13 @@ class WikiModelPage extends \Hubzero\Base\Model
 	private $_authors = null;
 
 	/**
+	 * WikiModelAdapter
+	 * 
+	 * @var object
+	 */
+	private $_adapter = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course ID or alias
@@ -589,47 +596,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 * @param      string $type The type of link to return
 	 * @return     boolean
 	 */
-	public function link($type='')
+	public function link($type='', $params=null)
 	{
-		if (!isset($this->_base))
-		{
-			$this->_base  = 'index.php?option=' . ($this->get('group_cn') ? 'com_groups' : 'com_wiki');
-		}
-		$link = $this->_base . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename');
-
-		$task = 'task';
-		if ($this->get('group_cn'))
-		{
-			$task = 'action';
-		}
-
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'base':
-				$link = $this->_base . '&scope=' . $this->get('scope');
-			break;
-
-			case 'new':
-			case 'rename':
-			case 'edit':
-			case 'delete':
-			case 'history':
-			case 'compare':
-			case 'approve':
-			case 'comments':
-			case 'deleterevision':
-			case 'addcomment':
-				$link .= '&' . $task . '=' . strtolower($type);
-			break;
-
-			case 'permalink':
-			default:
-				
-			break;
-		}
-
-		return $link;
+		return $this->_adapter()->link($type, $params);
 	}
 
 	/**
@@ -1135,6 +1104,44 @@ class WikiModelPage extends \Hubzero\Base\Model
 	public function updateAuthors($authors)
 	{
 		return $this->_tbl->updateAuthors($authors);
+	}
+
+	/**
+	 * Calculate the average rating for the page
+	 *
+	 * @param     integer $user_id Optional ID of user the action was taken on/with
+	 * @return    void
+	 */
+	protected function _adapter()
+	{
+		if (!($this->_adapter instanceof WikiModelAdapterAbstract))
+		{
+			$scope = 'site';
+			if ($this->get('group_cn'))
+			{
+				$scope = strtolower(\JRequest::getCmd('option'));
+				$scope = ($scope ? substr($scope, 4) : 'site');
+			}
+			$cls = 'WikiModelAdapter' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = __DIR__ . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(\JText::sprintf('Invalid adapter type of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->_adapter = new $cls(
+				$this->get('pagename'), 
+				$this->get('scope'), 
+				$this->get('group_cn')
+			);
+		}
+
+		return $this->_adapter;
 	}
 }
 
