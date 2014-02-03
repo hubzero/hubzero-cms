@@ -73,7 +73,7 @@ $first = $this->model->entries('first');
 				<?php 
 			if ($first->exists()) {
 				$start = intval(substr($first->get('publish_up'), 0, 4));
-				$now = JFactory::getDate()->toFormat("Y");
+				$now = JFactory::getDate()->format("Y");
 				for ($i=$now, $n=$start; $i >= $n; $i--)
 				{
 				?>
