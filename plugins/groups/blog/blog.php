@@ -161,7 +161,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$this->database   = JFactory::getDBO();
 
 			//get the plugins params
-			$p = new Hubzero_Plugin_Params($this->database);
+			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
 			//push the css to the doc
@@ -963,7 +963,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$view->config     = $this->params;
 		$view->model      = $this->model;
 
-		$view->settings   = new Hubzero_Plugin_Params($this->database);
+		$view->settings   = new \Hubzero\Plugin\Params($this->database);
 		$view->settings->loadPlugin($this->group->gidNumber, 'groups', 'blog');
 
 		$view->authorized = $this->authorized;
@@ -1001,7 +1001,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		$settings = JRequest::getVar('settings', array(), 'post');
 
-		$row = new Hubzero_Plugin_Params($this->database);
+		$row = new \Hubzero\Plugin\Params($this->database);
 		if (!$row->bind($settings)) 
 		{
 			$this->setError($row->getError());

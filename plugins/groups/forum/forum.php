@@ -160,7 +160,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			//group vars
 			//$this->members = $members;
 			//get the plugins params
-			$p = new Hubzero_Plugin_Params($this->database);
+			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($this->group->get('gidNumber'), 'groups', $this->_name);
 
 			//option and paging vars
@@ -1838,7 +1838,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$view->config     = $this->params;
 		$view->model      = $this->model;
 
-		$view->settings   = new Hubzero_Plugin_Params($this->database);
+		$view->settings   = new \Hubzero\Plugin\Params($this->database);
 		$view->settings->loadPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
 
 		$view->authorized = $this->authorized;
@@ -1876,7 +1876,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		$settings = JRequest::getVar('settings', array(), 'post');
 
-		$row = new Hubzero_Plugin_Params($this->database);
+		$row = new \Hubzero\Plugin\Params($this->database);
 		if (!$row->bind($settings)) 
 		{
 			$this->setError($row->getError());

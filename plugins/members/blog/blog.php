@@ -102,7 +102,7 @@ class plgMembersBlog extends JPlugin
 			//$this->authorized = $authorized;
 			$this->database = JFactory::getDBO();
 
-			$p = new Hubzero_Plugin_Params($this->database);
+			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
 
 			// Push styles to the template
@@ -851,7 +851,7 @@ class plgMembersBlog extends JPlugin
 		$view->task     = $this->task;
 		$view->config   = $this->params;
 
-		$view->settings = new Hubzero_Plugin_Params($this->database);
+		$view->settings = new \Hubzero\Plugin\Params($this->database);
 		$view->settings->loadPlugin($this->member->get('uidNumber'), 'members', $this->_name);
 
 		$view->message  = (isset($this->message)) ? $this->message : '';
@@ -887,7 +887,7 @@ class plgMembersBlog extends JPlugin
 
 		$settings = JRequest::getVar('settings', array(), 'post');
 
-		$row = new Hubzero_Plugin_Params($this->database);
+		$row = new \Hubzero\Plugin\Params($this->database);
 		if (!$row->bind($settings)) 
 		{
 			$this->setError($row->getError());

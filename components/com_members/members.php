@@ -45,9 +45,6 @@ include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.p
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imghandler.php'); 
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Plugin_Params');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'profiles'));
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))

@@ -41,12 +41,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'manager');
 }
 
-// import needed HUBzero libs
-ximport('Hubzero_User_Helper');
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Plugin_Params');
-
 // require needed files
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'Helper.php');

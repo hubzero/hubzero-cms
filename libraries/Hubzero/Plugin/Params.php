@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Plugin;
 
 /**
  * Table class for custom plugin parameters
  */
-class Hubzero_Plugin_Params extends JTable
+class Params extends \JTable
 {
 	/**
 	 * int(11) Primary key
@@ -92,21 +91,21 @@ class Hubzero_Plugin_Params extends JTable
 		$this->object_id = intval($this->object_id);
 		if (!$this->object_id) 
 		{
-			$this->setError(JText::_('Entry must have an object ID'));
+			$this->setError(\JText::_('Entry must have an object ID'));
 			return false;
 		}
 
 		$this->folder = trim($this->folder);
 		if (!$this->folder) 
 		{
-			$this->setError(JText::_('Entry must have a folder'));
+			$this->setError(\JText::_('Entry must have a folder'));
 			return false;
 		}
 
 		$this->element = trim($this->element);
 		if (!$this->element) 
 		{
-			$this->setError(JText::_('Entry must have an element'));
+			$this->setError(\JText::_('Entry must have an element'));
 			return false;
 		}
 		return true;
@@ -180,10 +179,10 @@ class Hubzero_Plugin_Params extends JTable
 		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
 		$result = $this->_db->loadResult();
 
-		$paramsClass = 'JParameter';
+		$paramsClass = '\\JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$paramsClass = 'JRegistry';
+			$paramsClass = '\\JRegistry';
 		}
 
 		$params = new $paramsClass($result);
@@ -212,13 +211,13 @@ class Hubzero_Plugin_Params extends JTable
 			return null;
 		}
 
-		$paramsClass = 'JParameter';
+		$paramsClass = '\\JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$paramsClass = 'JRegistry';
+			$paramsClass = '\\JRegistry';
 		}
 
-		$plugin = JPluginHelper::getPlugin($folder, $element);
+		$plugin = \JPluginHelper::getPlugin($folder, $element);
 		$params = new $paramsClass($plugin->params);
 		return $params;
 	}

@@ -43,12 +43,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 jimport('joomla.filesystem.folder');
 jimport('joomla.application.component.view');
 
-//import needed HUBzero libs
-ximport('Hubzero_User_Helper');
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Plugin_Params');
-
 //require needed files
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Helper.php');
 

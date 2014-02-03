@@ -162,7 +162,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			$this->name       = substr($option, 4, strlen($option));
 
 			//get the plugins params
-			$p = new Hubzero_Plugin_Params($this->database);
+			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
 			$this->_authorize('collection');
@@ -1756,7 +1756,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$view->action      = $this->action;
 		$view->params      = $this->params;
 
-		$view->settings    = new Hubzero_Plugin_Params($this->database);
+		$view->settings    = new \Hubzero\Plugin\Params($this->database);
 		$view->settings->loadPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
 
 		$view->authorized  = $this->authorized;
@@ -1793,7 +1793,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 
 		$settings = JRequest::getVar('settings', array(), 'post');
 
-		$row = new Hubzero_Plugin_Params($this->database);
+		$row = new \Hubzero\Plugin\Params($this->database);
 		if (!$row->bind($settings)) 
 		{
 			$this->setError($row->getError());
@@ -1847,7 +1847,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$this->params->set('access-can-follow', false);
 		if (!$this->juser->get('guest')) 
 		{
-			$p = new Hubzero_Plugin_Params($this->database);
+			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params->merge($p->getCustomParams($this->group->get('gidNumber'), 'groups', $this->_name));
 
 			// Set asset to viewable

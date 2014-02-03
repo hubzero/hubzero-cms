@@ -127,7 +127,6 @@ class plgGroupsBulletinboard extends JPlugin
 			if ($juser->get('guest') 
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
-				ximport('Hubzero_Module_Helper');
 				$arr['html']  = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)) . '</p>';
 				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 				return $arr;
@@ -157,11 +156,10 @@ class plgGroupsBulletinboard extends JPlugin
 			$this->database   = JFactory::getDBO();
 
 			//get the plugins params
-			$p = new Hubzero_Plugin_Params($this->database);
+			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
 			//push the css to the doc
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
 
 			//include helpers
@@ -242,7 +240,6 @@ class plgGroupsBulletinboard extends JPlugin
 	 */
 	private function _browse()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -397,7 +394,6 @@ class plgGroupsBulletinboard extends JPlugin
 	 */
 	private function _entry()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',

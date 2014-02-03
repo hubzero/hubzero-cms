@@ -36,9 +36,6 @@ $option = JRequest::getCmd('option', 'com_time');
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.folder');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_User_Helper');
-ximport('Hubzero_Plugin_Params');
 
 require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'controllers'.DS.'time.php');
 
