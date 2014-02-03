@@ -111,7 +111,7 @@ class Seen extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid=" . $this->_db->Quote($mid) . " AND uid=" . $this->_db->Quote($uid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -160,10 +160,8 @@ class Seen extends \JTable
 			$this->setError(__CLASS__ . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
 		} 
-		else 
-		{
-			return true;
-		}
+
+		return true;
 	}
 }
 

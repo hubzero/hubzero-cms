@@ -119,7 +119,7 @@ class Notify extends \JTable
 			$type = $this->type;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE `uid`='$uid'";
+		$query  = "SELECT * FROM $this->_tbl WHERE `uid`=" . $this->_db->Quote($uid);
 		$query .= ($type) ? " AND `type`=" . $this->_db->Quote($type) : "";
 		$query .= " ORDER BY `priority` ASC";
 
@@ -144,7 +144,7 @@ class Notify extends \JTable
 			return false;
 		}
 
-		$query  = "DELETE FROM $this->_tbl WHERE `uid`='$uid'";
+		$query  = "DELETE FROM $this->_tbl WHERE `uid`=" . $this->_db->Quote($uid);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
