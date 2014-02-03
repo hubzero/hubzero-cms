@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,74 +24,53 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Component;
 
-/**
- * @see JView
- */
-jimport('joomla.application.component.view');
+use Hubzero\View\View as AbstractView;
 
 /**
  * Base class for a View
  *
  * Class holding methods for displaying presentation data.
  */
-class View extends \JView
+class View extends AbstractView
 {
 	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 * Returns $this so set() can be chained
-	 * 
-	 *    $object->set('foo', $bar)
-	 *           ->set('bar', $foo)
-	 *           ->doSomething();
+	 * Layout name
 	 *
-	 * @param   string  $property  The name of the property.
-	 * @param   mixed   $value     The value of the property to set.
-	 * @return  object
+	 * @var    string
 	 */
-	public function set($property, $value = null)
-	{
-		$this->$property = $value;
-		return $this; // So we can do method chaining!
-	}
+	protected $_layout = 'display';
 
 	/**
-	 * Get the base path.
+	 * Constructor
 	 *
-	 * @return  string
+	 * @param   array  $config  A named configuration array for object construction.<br/>
+	 *                          name: the name (optional) of the view (defaults to the view class name suffix).<br/>
+	 *                          charset: the character set to use for display<br/>
+	 *                          escape: the name (optional) of the function to use for escaping strings<br/>
+	 *                          base_path: the parent path (optional) of the views directory (defaults to the component folder)<br/>
+	 *                          template_plath: the path (optional) of the layout directory (defaults to base_path + /views/ + view name<br/>
+	 *                          helper_path: the path (optional) of the helper files (defaults to base_path + /helpers/)<br/>
+	 *                          layout: the layout (optional) to use to display the view<br/>
 	 */
-	public function getBasePath()
+	public function __construct($config = array())
 	{
-		return $this->_basePath;
-	}
+		parent::__construct($config);
 
-	/**
-	 * Set the base path
-	 *
-	 * @param  string  The path to set
-	 * @return object
-	 */
-	public function setBasePath($path)
-	{
-		$this->_basePath = $path;
-		return $this;
-	}
-
-	/**
-	 * Set the name
-	 *
-	 * @param  string  The name to set
-	 * @return object
-	 */
-	public function setName($name)
-	{
-		$this->_name = $name;
-		return $this;
+		// Set a base path for use by the view
+		if (array_key_exists('base_path', $config))
+		{
+			$this->_basePath = $config['base_path'];
+		}
+		else
+		{
+			$this->_basePath = JPATH_COMPONENT;
+		}
 	}
 
 	/**
@@ -167,15 +146,5 @@ class View extends \JView
 		}
 
 		return \Hubzero_Document::addComponentScript($component, $script, $type, $defer, $async);
-	}
-
-	/**
-	 * Get the string contents of the view.
-	 *
-	 * @return string
-	 */
-	public function __toString()
-	{
-		return $this->loadTemplate();
 	}
 }
