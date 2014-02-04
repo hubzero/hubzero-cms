@@ -9,7 +9,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-$showhelp 	= $params->get('showhelp', 1);
+$showhelp 	= $params->get('showhelp', 0);
 //
 // Site SubMenu
 //
