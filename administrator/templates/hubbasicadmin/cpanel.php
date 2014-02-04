@@ -56,6 +56,7 @@ if (JPluginHelper::isEnabled('system', 'debug')) {
 }
 
 $doc->addScript('templates/' . $this->template . '/js/index.js');
+/*
 $doc->addScriptDeclaration('
 	var sTimeout = ((' . $app->getCfg('lifetime') . '-1)*60*1000);
 	function sessionWarning() {
@@ -72,6 +73,7 @@ $doc->addScriptDeclaration('
 		sessionWarning.periodical(sTimeout);
 	});
 ');
+*/
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();

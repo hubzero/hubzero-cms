@@ -53,16 +53,7 @@ if (JPluginHelper::isEnabled('system', 'debug')) {
 	$doc->addStyleSheet('templates/' . $this->template . '/css/common/debug.css');
 }
 
-//$doc->addScript('templates/' . $this->template . '/js/index.js');
-// Load debug CSS if enabled
-/*if (JPluginHelper::isEnabled('system', 'jquery')) {
-	$doc->addScript('templates/' . $this->template . '/js/jquery.uniform.min.js');
-	$doc->addScriptDeclaration('
-		jQuery(document).ready(function($){
-			$("select, input[type=file]").uniform();
-		});'
-	);
-}*/
+/*
 $doc->addScriptDeclaration('
 	var sTimeout = ((' . $app->getCfg('lifetime') . '-1)*60*1000);
 	function sessionWarning() {
@@ -79,6 +70,7 @@ $doc->addScriptDeclaration('
 		sessionWarning.periodical(sTimeout);
 	});
 ');
+*/
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
