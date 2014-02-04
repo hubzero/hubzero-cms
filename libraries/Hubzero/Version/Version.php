@@ -41,7 +41,7 @@ final class Version
 	/**
 	 * HUBzero CMS version identification - see compareVersion()
 	 */
-	const VERSION = '1.2.1';
+	const VERSION = '1.2.2';
 
 	/**
 	 * Github Service Identifier for version information is retreived from
