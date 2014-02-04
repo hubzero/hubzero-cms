@@ -33,10 +33,20 @@
 }
 .response-bar-inner {
 	background: #CC0007;
-	color: transparent;
 	border-radius: 1px;
 	width: 0;
 }
 .response-bar-inner.correct {
 	background: #00AB25;
+}
+.count-left,
+.count-right {
+	color: #FFFFFF;
+	text-align: right;
+	margin-right: 5px;
+	font-size: 11px;
+}
+.count-right {
+	margin-right: -10px;
+	color: #000000;
 }
