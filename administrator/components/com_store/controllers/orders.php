@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for store orders
  */
@@ -333,11 +331,8 @@ class StoreControllerOrders extends Hubzero_Controller
 		
 		if (is_file($tempFile))
 		{
-			// Get some needed libraries
-			ximport('Hubzero_Content_Server');
-			
-			$xserver = new Hubzero_Content_Server();
-			$xserver->filename($tempFile);		
+			$xserver = new \Hubzero\Content\Server();
+			$xserver->filename($tempFile);
 			$xserver->serve_inline($tempFile);
 			exit;
 		}

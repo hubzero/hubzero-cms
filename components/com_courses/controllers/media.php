@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Courses controller class for media
  */
@@ -670,11 +668,8 @@ class CoursesControllerMedia extends Hubzero_Controller
 			return;
 		}
 
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename(JPATH_ROOT . DS . $file_path);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support

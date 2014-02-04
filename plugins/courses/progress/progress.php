@@ -588,7 +588,7 @@ class plgCoursesProgress extends JPlugin
 		$zip->close();
 
 		// Set up the server
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($path);
 		$xserver->saveas('responses.zip');
 		$xserver->disposition('attachment');

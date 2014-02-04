@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Content;
+
+use Hubzero\Base\Object;
 
 /**
  * Serve up a file
  */
-class Hubzero_Content_Server extends \Hubzero\Base\Object
+class Server extends Object
 {
 	/**
 	 * File to serve up
@@ -267,9 +268,7 @@ class Hubzero_Content_Server extends \Hubzero\Base\Object
 		$extension = $fileinfo['extension'];
 
 		// Get the file's mimetype
-		include_once(dirname(__FILE__) . DS . 'Mimetypes.php');
-
-		$mime = new Hubzero_Content_Mimetypes();
+		$mime = new Mimetypes();
 		$type = $mime->getMimeType($filename);
 
 		// Mimetype couldn't be determined?

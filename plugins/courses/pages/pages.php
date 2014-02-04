@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Courses Plugin class for pages
  */
@@ -849,9 +847,6 @@ class plgCoursesPages extends Hubzero_Plugin
 	 */
 	public function _fileDownload()
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		if (!$this->view->course->access('view'))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
@@ -902,7 +897,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

@@ -6066,12 +6066,9 @@ class plgProjectsPublications extends JPlugin
 			JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
 			return;
 		}
-		
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-				
+
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($serve);
 		$xserver->disposition($disp);
 		$xserver->acceptranges(false); // @TODO fix byte range support

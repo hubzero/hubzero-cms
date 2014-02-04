@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Forum controller class for threads
  */
@@ -748,11 +746,8 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

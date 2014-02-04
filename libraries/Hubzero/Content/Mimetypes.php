@@ -22,29 +22,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Content;
 
 /**
  * Hubzero class for determining the mimetype of a file
  */
-class Hubzero_Content_Mimetypes
+class Mimetypes
 {
 	/**
 	 * Define some private variables
 	 * 
 	 * @var array
 	 */
-	private $mimeTypes;
-
-	/**
-	* Initiate variables and include mime types
-	* 
-	* @return Nothing
-	*/
-	public function __construct()
-	{
-		$this->mimeTypes = array(
+	private static $mimeTypes = array(
 		'3dm'		=> 'x-world/x-3dmf',
 		'3dmf'	 => 'x-world/x-3dmf',
 		'a'			=> 'application/octet-stream',
@@ -756,8 +746,7 @@ class Hubzero_Content_Mimetypes
 		'potx'		=> 'application/vnd.openxmlformats-officedocument.presentationml.template',
 		'xltx' 		=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
 		'dmg'		=> 'application/x-apple-diskimage'
-		);
-	}
+	);
 
 	/**
 	 * Free up some memory
@@ -780,12 +769,11 @@ class Hubzero_Content_Mimetypes
 		if (is_file($file)) 
 		{
 			$extension = $this->_getExtension($file);
-			/**
-			* Attempts to retrieve file info from FINFO
-			* If FINFO functions are not available then try to retrieve MIME type from pre-defined MIMEs
-			* If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type function
-			* If all else fails, just return application/octet-stream
-			*/
+
+			// Attempts to retrieve file info from FINFO
+			// If FINFO functions are not available then try to retrieve MIME type from pre-defined MIMEs
+			// If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type function
+			// If all else fails, just return application/octet-stream
 			if (!function_exists('finfo_open') || in_array($extension, array('docx', 'pptx', 'xlsx'))) 
 			{
 				if (array_key_exists($extension, $this->mimeTypes)) 
@@ -834,13 +822,11 @@ class Hubzero_Content_Mimetypes
 	{
 		if (!is_null($file)) 
 		{
-			$parts = explode('.', $file);
-			$ext = strtolower(array_pop($parts));
-			return $ext;
-		} 
-		else 
-		{
-			return '##INVALID_FILE##';
+			$dot = strrpos($file, '.') + 1;
+
+			return strtolower(substr($file, $dot));
 		}
+
+		return '##INVALID_FILE##';
 	}
 }

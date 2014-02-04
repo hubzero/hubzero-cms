@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Get some needed libraries
-ximport('Hubzero_Content_Server');
-
 // Incoming
 $d = JRequest::getVar('d', 'inline');
 
@@ -52,57 +49,6 @@ if (empty($path))
 	JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
 	return;
 }
-/*if (preg_match("/^\s*http[s]{0,1}:/i", $resource->path)) 
-{
-	JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-	return;
-}
-if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $resource->path)) 
-{
-	JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-	return;
-}
-// Disallow windows drive letter
-if (preg_match("/^\s*[.]:/", $resource->path)) 
-{
-	JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-	return;
-}
-// Disallow \
-if (strpos('\\', $resource->path)) 
-{
-	JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-	return;
-}
-// Disallow ..
-if (strpos('..', $resource->path)) 
-{
-	JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-	return;
-}*/
-
-// Get the configured upload path
-/*$base_path = $this->config->get('uploadpath', '/site/resources');
-if ($base_path) 
-{
-	$base_path = DS . trim($base_path, DS);
-}
-
-// Does the path start with a slash?
-if (substr($resource->path, 0, 1) != DS) 
-{
-	$resource->path = DS . $resource->path;
-	// Does the beginning of the $resource->path match the config path?
-	if (substr($resource->path, 0, strlen($base_path)) == $base_path) 
-	{
-		// Yes - this means the full path got saved at some point
-	} 
-	else 
-	{
-		// No - append it
-		$resource->path = $base_path . $resource->path;
-	}
-}*/
 
 // Add JPATH_ROOT
 $filename = JPATH_ROOT . $path;
@@ -123,7 +69,7 @@ if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'htm
 }
 
 // Initiate a new content server and serve up the file
-$xserver = new Hubzero_Content_Server();
+$xserver = new \Hubzero\Content\Server();
 $xserver->filename($filename);
 //$xserver->saveas($this->model->get('title') . '.' . $ext);
 $xserver->disposition($d);

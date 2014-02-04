@@ -225,9 +225,6 @@ class typeFiles extends JObject
 
 		$html5video = array('mp4','m4v','webm','ogv'); // formats for HTML5 video
 
-		// Required
-		ximport('Hubzero_Content_Mimetypes');
-
 		// Allow viewing files via Google Doc viewer?
 		$googleView	= $params->get('googleview');
 
@@ -240,7 +237,7 @@ class typeFiles extends JObject
 				$count = count($selections['files']);
 
 				// Get file mimetype
-				$mt = new Hubzero_Content_Mimetypes();
+				$mt = new \Hubzero\Content\Mimetypes();
 				$mimetypes = array();
 
 				foreach($selections['files'] as $file) 

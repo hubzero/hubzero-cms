@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Blog controller class for media
  */
@@ -98,11 +96,8 @@ class BlogControllerMedia extends Hubzero_Controller
 			return;
 		}
 
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Serve up the image
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($file_path);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

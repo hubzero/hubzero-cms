@@ -2118,9 +2118,6 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 */
 	protected function download()
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Ensure we have a database object
 		if (!$this->database) 
 		{
@@ -2200,34 +2197,6 @@ class ResourcesControllerResources extends Hubzero_Controller
 			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
 			return;
 		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $resource->path)) 
-		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $resource->path)) 
-		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $resource->path)) 
-		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $resource->path)) 
-		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $resource->path)) 
-		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_BAD_FILE_PATH'));
-			return;
-		}
 
 		// Get the configured upload path
 		$base_path = $this->config->get('uploadpath', '/site/resources');
@@ -2270,7 +2239,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition($d);
 		$xserver->acceptranges(false); // @TODO fix byte range support
@@ -2303,8 +2272,6 @@ class ResourcesControllerResources extends Hubzero_Controller
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
-
-		ximport('Hubzero_Content_Server');
 
 		// Load the tool version
 		$tv = new ToolVersion($this->database);
@@ -2344,7 +2311,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($tarpath . $tarname);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support

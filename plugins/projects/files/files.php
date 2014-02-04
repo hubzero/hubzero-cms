@@ -2599,8 +2599,7 @@ class plgProjectsFiles extends JPlugin
 		if ($this->_task == 'shareit' && !$this->getError() && $service == 'google')
 		{
 			// Required
-			ximport('Hubzero_Content_Mimetypes');
-			$mt = new Hubzero_Content_Mimetypes();
+			$mt = new \Hubzero\Content\Mimetypes();
 						
 			// Get file extention
 			$parts = explode('.', $file);
@@ -3324,12 +3323,9 @@ class plgProjectsFiles extends JPlugin
 			JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
 			return;
 		}
-		
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-				
+
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($serve);
 		$xserver->disposition($disp);
 		$xserver->acceptranges(false); // @TODO fix byte range support
@@ -3501,9 +3497,6 @@ class plgProjectsFiles extends JPlugin
 			}
 		}
 		
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-		
 		// Are we previewing or downloading?
 		if (($render == 'thumb' || $render == 'inline' || $render == 'medium') && $file 
 			&& file_exists($this->prefix. $path . DS . $fpath)) 
@@ -3518,7 +3511,7 @@ class plgProjectsFiles extends JPlugin
 			// Serve image
 			if ($image && file_exists($image))
 			{				
-				$xserver = new Hubzero_Content_Server();
+				$xserver = new \Hubzero\Content\Server();
 				$xserver->filename($image);		
 				$xserver->serve_inline($image);
 				exit;	
@@ -3720,7 +3713,7 @@ class plgProjectsFiles extends JPlugin
 			}			
 			
 			// Initiate a new content server and serve up the file
-			$xserver = new Hubzero_Content_Server();
+			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($fullpath);
 			$xserver->disposition('attachment');
 			$xserver->acceptranges(false);
@@ -3848,8 +3841,7 @@ class plgProjectsFiles extends JPlugin
 			: JRoute::_($route . a . 'active=files');
 				
 		// Required
-		ximport('Hubzero_Content_Mimetypes');
-		$mt = new Hubzero_Content_Mimetypes();
+		$mt = new \Hubzero\Content\Mimetypes();
 		
 		$formats = $compiler->getFormatsArray();
 				
@@ -4007,13 +3999,10 @@ class plgProjectsFiles extends JPlugin
 			// Download compiled file?
 			if ($download)
 			{
-				// Get some needed libraries
-				ximport('Hubzero_Content_Server');
-				
 				$pdfName = $tex ? str_replace('temp__', '', basename($content)) : basename($content);
 					
 				// Serve up file
-				$xserver = new Hubzero_Content_Server();
+				$xserver = new \Hubzero\Content\Server();
 				$xserver->filename(JPATH_ROOT . $outputDir . DS . $content);
 				$xserver->disposition('attachment');
 				$xserver->acceptranges(false);
@@ -6708,8 +6697,6 @@ class plgProjectsFiles extends JPlugin
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 		
-		ximport('Hubzero_Content_Mimetypes');
-		
 		// Load language file
 		$this->loadLanguage();
 			
@@ -6957,7 +6944,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Required
-		$mt = new Hubzero_Content_Mimetypes();
+		$mt = new \Hubzero\Content\Mimetypes();
 			
 		// Build file object
 		$obj 				= new stdClass;

@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 
 /**
@@ -88,11 +87,8 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		jimport('joomla.filesystem.file');
 		$ext = strtolower(JFile::getExt($filename));
 
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition('attachment');
 		if (in_array($ext, array('jpg','jpeg','jpe','png','gif')))

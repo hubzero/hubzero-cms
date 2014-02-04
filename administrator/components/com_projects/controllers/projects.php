@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage projects
  */
@@ -673,10 +671,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Unlock sync
 		$obj->saveParam($id, $service . '_sync_lock', '');
-				
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-		
+
 		// Get log file
 		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;				
 		$repodir = trim($this->_config->get('webpath'), DS);		
@@ -685,7 +680,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if (file_exists($sfile))
 		{
 			// Serve up file
-			$xserver = new Hubzero_Content_Server();
+			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($sfile);
 			$xserver->disposition('attachment');
 			$xserver->acceptranges(false);

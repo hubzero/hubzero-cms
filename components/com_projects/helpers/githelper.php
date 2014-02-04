@@ -34,8 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Projects Git helper class
  */
-class ProjectsGitHelper extends JObject {
-		
+class ProjectsGitHelper extends JObject 
+{
 	/**
 	 * Git path
 	 * 
@@ -731,8 +731,7 @@ class ProjectsGitHelper extends JObject {
 		$locals = array();
 		
 		// MIME types		
-		ximport('Hubzero_Content_Mimetypes');
-		$mt = new Hubzero_Content_Mimetypes();
+		$mt = new \Hubzero\Content\Mimetypes();
 		
 		// Initial sync
 		if ($synced == 1)

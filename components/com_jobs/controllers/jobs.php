@@ -31,8 +31,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Jobs controller class for postings
  */
@@ -2087,9 +2085,8 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($archive) 
 		{
 			// Initiate a new content server and serve up the file
-			ximport('Hubzero_Content_Server');
 			jimport('joomla.filesystem.file');
-			$xserver = new Hubzero_Content_Server();
+			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($archive['path']);
 
 			$xserver->disposition('attachment');

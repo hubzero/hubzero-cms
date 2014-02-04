@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
@@ -121,9 +119,7 @@ class CoursesControllerCertificate extends Hubzero_Controller
 		if (is_file($file))
 		{
 			// Serve up the file
-			ximport('Hubzero_Content_Server');
-
-			$xserver = new Hubzero_Content_Server();
+			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($file);
 			$xserver->serve_inline($file);
 			exit;

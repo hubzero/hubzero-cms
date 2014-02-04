@@ -295,8 +295,6 @@ class CoursesModelAsset extends CoursesModelAbstract
 	public function download($course)
 	{
 		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		if (!$course->access('view'))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
@@ -344,7 +342,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

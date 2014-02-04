@@ -33,8 +33,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'query.php');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'EmailToken.php');
 
@@ -1222,9 +1220,6 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function downloadTask()
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Ensure we have a database object
 		if (!$this->database)
 		{
@@ -1249,34 +1244,6 @@ class SupportControllerTickets extends Hubzero_Controller
 		if (empty($file))
 		{
 			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND'));
-			return;
-		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $file))
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file))
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $file))
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $file))
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $file))
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
 			return;
 		}
 
@@ -1306,7 +1273,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

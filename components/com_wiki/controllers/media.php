@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Wiki controller class for media
  */
@@ -108,9 +106,6 @@ class WikiControllerMedia extends Hubzero_Controller
 	 */
 	public function downloadTask()
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		$this->page->set('pagename', trim(JRequest::getVar('pagename', '', 'default', 'none', 2)));
 
 		// Instantiate an attachment object
@@ -160,34 +155,6 @@ class WikiControllerMedia extends Hubzero_Controller
 			JError::raiseError(404, JText::_('COM_WIKI_FILE_NOT_FOUND'));
 			return;
 		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
 
 		// Get the configured upload path
 		$base_path = DS . trim($this->book->config('filepath', '/site/wiki'), DS) . DS . $this->page->get('id');
@@ -217,7 +184,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

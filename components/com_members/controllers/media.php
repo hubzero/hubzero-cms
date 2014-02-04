@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Members controller class for media
  */
@@ -650,8 +648,6 @@ class MembersControllerMedia extends Hubzero_Controller
 			$blog_config = JPluginHelper::getPlugin('members', 'blog');
 			$blog_params = new $paramsClass($blog_config->params);
 
-			ximport("Hubzero_User_Profile_Helper");
-
 			//build the base path to file based of upload path param
 			$base_path = str_replace('{{uid}}', Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber')), $blog_params->get('uploadpath'));
 		}
@@ -666,11 +662,8 @@ class MembersControllerMedia extends Hubzero_Controller
 			return;
 		}
 
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Serve up the image
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename(JPATH_ROOT . DS . $file_path);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support

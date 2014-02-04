@@ -52,8 +52,7 @@ if($this->docs) {
 			case 'file': 
 			default:
 			
-				ximport('Hubzero_Content_Mimetypes');
-				$mt = new Hubzero_Content_Mimetypes();
+				$mt = new \Hubzero\Content\Mimetypes();
 				
 				$mimetype 	= $mt->getMimeType($child->path);
 				$type 		= strtolower(array_shift(explode('/', $mimetype)));

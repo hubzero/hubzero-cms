@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_Controller');
-
 /**
  * Primary component controller (extends Hubzero_Controller)
  */
@@ -1003,9 +1001,6 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	 */	
 	protected function _serve()
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Incoming	
 		$version  = JRequest::getVar( 'v', '' );            // Get version number of a publication
 		$aid	  = JRequest::getInt( 'a', 0 );             // Attachment id 
@@ -1203,8 +1198,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 					
 					$view->googleView	= $pparams->get('googleview'); 
 					
-					ximport('Hubzero_Content_Mimetypes');
-					$mt = new Hubzero_Content_Mimetypes();
+					$mt = new \Hubzero\Content\Mimetypes();
 							
 					$view->mimetype 	= $mt->getMimeType(JPATH_ROOT . $path . DS . $pPath);
 					$view->type 		= strtolower(array_shift(explode('/', $view->mimetype)));
@@ -1275,7 +1269,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($downloadable['path']);
 		$xserver->disposition($disp);
 		$xserver->acceptranges(false); // @TODO fix byte range support
@@ -1301,9 +1295,6 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	 */	
 	protected function _serveData()
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Incoming
 		$pid      	= JRequest::getInt( 'id', 0 );	
 		$vid  	  	= JRequest::getInt( 'vid', 0 );   
@@ -1356,7 +1347,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename(JPATH_ROOT . $path . DS . $file);
 		$xserver->disposition($disp);
 		$xserver->acceptranges(false); // @TODO fix byte range support

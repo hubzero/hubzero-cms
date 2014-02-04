@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 
 
@@ -2849,9 +2847,6 @@ class SupportControllerTickets extends Hubzero_Controller
 			return;
 		}
 
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		// Ensure we have a database object
 		if (!$this->database) 
 		{
@@ -2937,7 +2932,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

@@ -929,9 +929,6 @@ class plgMembersResume extends JPlugin
 	 */
 	protected function download($member)
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		$database = JFactory::getDBO();
 		$juser    = JFactory::getUser();
 
@@ -966,7 +963,7 @@ class plgMembersResume extends JPlugin
 		$default_title .= substr($resume->filename, strripos($resume->filename, '.'));;
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($file);
 
 		// record view

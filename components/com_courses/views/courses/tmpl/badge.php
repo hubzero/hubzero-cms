@@ -59,7 +59,7 @@ switch ($this->action)
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($img_location);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false);
