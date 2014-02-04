@@ -183,7 +183,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 		if (!isset($filters['empty']))
 		{
 			$filters['empty']   = false;
-		}		
+		}
 		if (!isset($filters['sort']))
 		{
 			if (version_compare(JVERSION, '1.6', 'lt'))
@@ -197,8 +197,8 @@ class KbModelArchive extends \Hubzero\Base\Object
 		if (!isset($filters['sort_Dir']))
 		{
 			$filters['sort_Dir']  = 'ASC';
-		}	
-				
+		}
+
 		switch (strtolower($rtrn))
 		{
 			case 'count':

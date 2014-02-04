@@ -210,7 +210,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 		}
 
 		$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
-		$today = JFactory::getDate();
+		$today = JFactory::getDate()->toSql();
 
 		if ($this->param('close_comments') != 'now' && $today < $pdt)
 		{
@@ -280,11 +280,11 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof JUser))
 		{
 			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
-		if ($property && is_a($this->_creator, 'JUser'))
+		if ($property)
 		{
 			return $this->_creator->get($property);
 		}
@@ -747,7 +747,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function category()
 	{
-		if (!$this->_category instanceof KbModelCategory)
+		if (!($this->_category instanceof KbModelCategory))
 		{
 			$this->_category = KbModelCategory::getInstance($this->get('category'));
 		}
@@ -761,7 +761,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function section()
 	{
-		if (!$this->_section instanceof KbModelCategory)
+		if (!($this->_section instanceof KbModelCategory))
 		{
 			$this->_section = KbModelCategory::getInstance($this->get('section'));
 		}

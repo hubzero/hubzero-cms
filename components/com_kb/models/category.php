@@ -125,7 +125,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	public function articles($rtrn='list', $filters=array(), $clear=false)
 	{
 		$tbl = new KbTableArticle($this->_db);
-		
+
 		if ($this->get('section'))
 		{
 			if (!isset($filters['section']))
@@ -157,7 +157,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
-		
+
 		switch (strtolower($rtrn))
 		{
 			case 'count':
@@ -267,7 +267,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	 */
 	public function parent()
 	{
-		if (!$this->_parent instanceof KbModelCategory)
+		if (!($this->_parent instanceof KbModelCategory))
 		{
 			$this->_parent = KbModelCategory::getInstance($this->get('section', 0));
 		}

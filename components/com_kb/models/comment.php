@@ -126,11 +126,11 @@ class KbModelComment extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof JUser))
 		{
 			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
-		if ($property && is_a($this->_creator, 'JUser'))
+		if ($property)
 		{
 			return $this->_creator->get($property);
 		}
