@@ -75,9 +75,6 @@ defined('_JEXEC') or die('Restricted access');
 				<p class="comment-member-photo">
 					<span class="comment-anchor"></span>
 					<?php
-						ximport('Hubzero_User_Profile');
-						ximport('Hubzero_User_Profile_Helper');
-						
 						$anonymous = 1;
 						if (!$this->juser->get('guest')) 
 						{
@@ -94,10 +91,8 @@ defined('_JEXEC') or die('Restricted access');
 				{
 					if (($replyto = JRequest::getInt('replyto', 0))) 
 					{
-						$reply = new Hubzero_Item_Comment($this->database);
+						$reply = new \Hubzero\Item\Comment($this->database);
 						$reply->load($replyto);
-
-						ximport('Hubzero_View_Helper_Html');
 
 						$name = JText::_('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous) 
@@ -118,20 +113,20 @@ defined('_JEXEC') or die('Restricted access');
 							<span class="comment-date-on"><?php echo JText::_('COM_ANSWERS_ON'); ?></span> 
 							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 						</p>
-						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($reply->content), 300, 0); ?></p>
+						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($reply->content), 300); ?></p>
 					</blockquote>
 						<?php
 					}
 				}
 
-				$comment = new Hubzero_Item_Comment($this->database);
+				$comment = new \Hubzero\Item\Comment($this->database);
 				$comment->parent = JRequest::getInt('replyto', 0);
 				if (($edit = JRequest::getInt('editcomment', 0))) 
 				{
 					$comment->load($edit);
 					//if ($comment->created_by != $this->juser->get('id'))
 					//{
-					//	$comment = new Hubzero_Item_Comment($this->database);
+					//	$comment = new \Hubzero\Item\Comment($this->database);
 					//}
 				}
 				?>
@@ -140,7 +135,6 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 							if (!$this->juser->get('guest')) 
 							{
-								ximport('Hubzero_Wiki_Editor');
 								$editor = Hubzero_Wiki_Editor::getInstance();
 								echo $editor->display('comment[content]', 'commentcontent', $comment->content, 'minimal no-footer', '40', '15');
 							/*} else {

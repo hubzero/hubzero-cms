@@ -2,10 +2,10 @@
 /**
  * @package		HUBzero CMS
  * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @copyright	Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Item;
+
+use Hubzero\Item\Comment\File;
 
 /**
  * Table class for comments
  */
-class Hubzero_Item_Comment extends JTable 
+class Comment extends \JTable 
 {
 	/**
 	 * Primary key
@@ -182,42 +183,42 @@ class Hubzero_Item_Comment extends JTable
 	public function check() 
 	{
 		$this->content = trim($this->content);
-		if (!$this->content || $this->content == JText::_('Enter your comments...')) 
+		if (!$this->content || $this->content == \JText::_('Enter your comments...')) 
 		{
-			$this->setError(JText::_('Please provide a comment'));
+			$this->setError(\JText::_('Please provide a comment'));
 			return false;
 		}
 
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id) 
 		{
-			$this->setError(JText::_('Missing entry ID.'));
+			$this->setError(\JText::_('Missing entry ID.'));
 			return false;
 		}
 
 		$this->item_type = strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($this->item_type)));
 		if (!$this->item_type) 
 		{
-			$this->setError(JText::_('Missing entry type.'));
+			$this->setError(\JText::_('Missing entry type.'));
 			return false;
 		}
 
 		if (!$this->created_by) 
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$this->created_by = $juser->get('id');
 		}
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->state = 1;
 		}
 		else 
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$this->modified_by = $juser->get('id');
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified = \JFactory::getDate()->toSql();
 		}
 
 		// Check file attachment
@@ -234,17 +235,17 @@ class Hubzero_Item_Comment extends JTable
 				switch ($fileError) 
 				{
 					case 1:
-						$this->setError(JText::_('FILE TO LARGE THAN PHP INI ALLOWS'));
+						$this->setError(\JText::_('FILE TO LARGE THAN PHP INI ALLOWS'));
 						return false;
 					break;
 
 					case 2:
-						$this->setError(JText::_('FILE TO LARGE THAN HTML FORM ALLOWS'));
+						$this->setError(\JText::_('FILE TO LARGE THAN HTML FORM ALLOWS'));
 						return false;
 					break;
 
 					case 3:
-						$this->setError(JText::_('ERROR PARTIAL UPLOAD'));
+						$this->setError(\JText::_('ERROR PARTIAL UPLOAD'));
 						return false;
 					break;
 
@@ -258,7 +259,7 @@ class Hubzero_Item_Comment extends JTable
 			$fileSize = $_FILES[$fieldName]['size'];
 			if ($fileSize > 2000000)
 			{
-				$this->setError(JText::_('FILE BIGGER THAN 2MB'));
+				$this->setError(\JText::_('FILE BIGGER THAN 2MB'));
 				return false;
 			}
 
@@ -284,7 +285,7 @@ class Hubzero_Item_Comment extends JTable
 
 			if ($extOk == false) 
 			{
-				$this->setError(JText::_('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
+				$this->setError(\JText::_('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
 				return false;
 			}
 
@@ -302,9 +303,9 @@ class Hubzero_Item_Comment extends JTable
 
 			$uploadPath = $uploadDir . DS . $fileName;
 
-			if (!JFile::upload($fileTemp, $uploadPath)) 
+			if (!\JFile::upload($fileTemp, $uploadPath)) 
 			{
-				$this->setError(JText::_('ERROR MOVING FILE'));
+				$this->setError(\JText::_('ERROR MOVING FILE'));
 				return false;
 			}
 
@@ -325,7 +326,7 @@ class Hubzero_Item_Comment extends JTable
 		$path = trim($path);
 
 		jimport('joomla.filesystem.path');
-		$path = JPath::clean($path);
+		$path = \JPath::clean($path);
 		$path = str_replace(' ', '_', $path);
 
 		$this->_uploadDir = ($path) ? $path : $this->_uploadDir;
@@ -340,7 +341,7 @@ class Hubzero_Item_Comment extends JTable
 	{
 		return JPATH_ROOT . DS . ltrim($this->_uploadDir, DS);
 	}
-	
+
 	/**
 	 * Get allowed file extensions
 	 * 
@@ -350,21 +351,21 @@ class Hubzero_Item_Comment extends JTable
 	{
 		return $this->_extensions;
 	}
-	
+
 	/**
 	 * Set allowed file extensions
 	 * 
 	 * @param      $exts    Array of file extensions
 	 * @return     void
 	 */
-	public function setAllowedExtensions( $exts = array() )
+	public function setAllowedExtensions($exts = array())
 	{
 		if (is_array($exts) && !empty($exts))
 		{
 			$this->_extensions = $exts;
 		}
 	}
-	
+
 	/**
 	 * Check File Name
 	 * 
@@ -407,7 +408,7 @@ class Hubzero_Item_Comment extends JTable
 			{
 				// delete old attachment
 				// find old file and remove it from file system
-				$file = new Hubzero_Item_Comment_File($this->_db);
+				$file = new File($this->_db);
 				$file->loadByComment($this->id);
 				if ($file->id)
 				{
@@ -416,10 +417,6 @@ class Hubzero_Item_Comment extends JTable
 						$this->setError($file->getError());
 						continue;
 					}
-					/*if (file_exists($uploadDir . DS . $file->filename)) 
-					{
-						unlink($uploadDir . DS . $file->filename);
-					}*/
 				}
 				$file->filename = $nm;
 				$file->comment_id = $this->id;
@@ -428,25 +425,6 @@ class Hubzero_Item_Comment extends JTable
 					$this->setError($file->getError());
 					continue;
 				}
-
-				/*$sql = "SELECT filename FROM #__item_comment_files WHERE comment_id =" . $this->_db->Quote($this->id);
-				$this->_db->setQuery($sql);
-				$fileName = $this->_db->loadResult();
-
-				$uploadDir = $this->getUploadDir();
-
-				if (file_exists($uploadDir . DS . $fileName)) 
-				{
-					unlink($uploadDir . DS . $fileName);
-				}
-
-				$sql = "DELETE FROM #__item_comment_files WHERE comment_id =" . $this->_db->Quote($this->id);
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-
-				$sql = "INSERT INTO #__item_comment_files SET comment_id =" . $this->_db->Quote($this->id) . ", filename =" . $this->_db->Quote($nm);
-				$this->_db->setQuery($sql);
-				$this->_db->query();*/
 			}
 		}
 
@@ -478,11 +456,11 @@ class Hubzero_Item_Comment extends JTable
 
 		if (!$item_type || !$item_id) 
 		{
-			$this->setError(JText::_('Missing parameter(s). item_type:' . $item_type . ', item_id:' . $item_id));
+			$this->setError(\JText::_('Missing parameter(s). item_type:' . $item_type . ', item_id:' . $item_id));
 			return false;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		if (!$juser->get('guest')) 
 		{
@@ -500,8 +478,6 @@ class Hubzero_Item_Comment extends JTable
 		$sql .= "WHERE c.item_type=" . $this->_db->Quote($item_type) . " AND c.item_id=" . $this->_db->Quote($item_id) . " AND c.parent=" . $this->_db->Quote($parent) . " AND c.state IN (1, 3) ORDER BY created ASC LIMIT $start,$limit";
 
 		$this->_db->setQuery($sql);
-
-		//echo $this->_db->_sql; die;
 
 		$rows = $this->_db->loadObjectList();
 		if ($rows && count($rows) > 0)

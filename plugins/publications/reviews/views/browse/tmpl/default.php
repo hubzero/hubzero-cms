@@ -57,7 +57,7 @@ if ($this->reviews)
 		'filepath' => '',
 		'domain'   => ''
 	);
-	ximport('Hubzero_Wiki_Parser');
+
 	$parser = Hubzero_Wiki_Parser::getInstance();
 	
 	$admin = false;
@@ -77,12 +77,12 @@ if ($this->reviews)
 	// Set the reply flag
 	// Determines if we're allowing replies to reviews
 	$reply = false;
-	if (class_exists('Hubzero_Item_Comment')) 
+	if (class_exists('\\Hubzero\\Item\\Comment')) 
 	{
 		$reply = true;
 	
 		// See if we have a comment (comeone clicked a "reply" link)
-		$addcomment = new Hubzero_Item_Comment( $database );
+		$addcomment = new \Hubzero\Item\Comment( $database );
 		$addcomment->parent = JRequest::getInt('refid', 0);
 		$addcomment->item_id = JRequest::getInt('id', 0);
 		$addcomment->item_type = JRequest::getVar('category', '');

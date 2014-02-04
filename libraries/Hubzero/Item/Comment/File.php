@@ -22,13 +22,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Item\Comment;
 
 /**
  * Table class for comments
  */
-class Hubzero_Item_Comment_File extends JTable 
+class File extends \JTable 
 {
 	/**
 	 * int(11) Primary key
@@ -79,7 +78,7 @@ class Hubzero_Item_Comment_File extends JTable
 		$this->filename = trim($this->filename);
 		if (!$this->filename) 
 		{
-			$this->setError(JText::_('Please provide a file name'));
+			$this->setError(\JText::_('Please provide a file name'));
 			return false;
 		}
 
@@ -88,7 +87,7 @@ class Hubzero_Item_Comment_File extends JTable
 		$this->comment_id = intval($this->comment_id);
 		if (!$this->comment_id) 
 		{
-			$this->setError(JText::_('Missing comment ID.'));
+			$this->setError(\JText::_('Missing comment ID.'));
 			return false;
 		}
 
@@ -106,7 +105,7 @@ class Hubzero_Item_Comment_File extends JTable
 		$path = trim($path);
 
 		jimport('joomla.filesystem.path');
-		$path = JPath::clean($path);
+		$path = \JPath::clean($path);
 		$path = str_replace(' ', '_', $path);
 
 		$this->_uploadDir = ($path) ? $path : $this->_uploadDir;
@@ -289,7 +288,7 @@ class Hubzero_Item_Comment_File extends JTable
 		}
 		else if (is_numeric($filename) && $filename != $this->id)
 		{
-			$tbl = new Hubzero_Item_Comment_File($this->_db);
+			$tbl = new self($this->_db);
 			$tbl->load($filename);
 			$filename = $tbl->filename;
 		}
@@ -297,9 +296,9 @@ class Hubzero_Item_Comment_File extends JTable
 		if (file_exists($this->_getUploadDir() . DS . $filename)) 
 		{
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($this->_getUploadDir() . DS . $filename)) 
+			if (!\JFile::delete($this->_getUploadDir() . DS . $filename)) 
 			{
-				$this->setError(JText::_('Unable to delete file.'));
+				$this->setError(\JText::_('Unable to delete file.'));
 				return false;
 			}
 		}

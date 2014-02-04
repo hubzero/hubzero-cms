@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-	
 /**
  * Publications Plugin class for reviews
  */
@@ -261,7 +259,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 
 		$level++;
 
-		$hc = new Hubzero_Item_Comment($database);
+		$hc = new \Hubzero\Item\Comment($database);
 		$comments = $hc->find(array(
 			'parent'    => ($level == 1 ? 0 : $item->id), 
 			'item_id'   => $id,
@@ -467,7 +465,7 @@ class PlgPublicationsReviewsHelper extends JObject
 
 		$database = JFactory::getDBO();
 
-		$row = new Hubzero_Item_Comment( $database );
+		$row = new \Hubzero\Item\Comment( $database );
 		if (!$row->bind( $_POST )) 
 		{
 			$this->setError( $row->getError() );
@@ -475,7 +473,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		}
 
 		// Perform some text cleaning, etc.
-		$row->content    = Hubzero_View_Helper_Html::purifyText($row->content);
+		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
 		$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created    = $when;
@@ -524,7 +522,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		}
 		
 		// Delete the review
-		$reply = new Hubzero_Item_Comment($database);
+		$reply = new \Hubzero\Item\Comment($database);
 
 		$comments = $reply->find(array('parent'=>$replyid, 'item_type'=>'review', 'item_id' => $publication->id));
 		if (count($comments) > 0) 
@@ -835,7 +833,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$review = new PublicationReview( $database );
 		
 		// Delete the review's comments
-		$reply = new Hubzero_Item_Comment( $database );
+		$reply = new \Hubzero\Item\Comment( $database );
 		
 		$comments1 = $reply->find(array('parent'=>$reviewid, 'item_type'=>'review', 'item_id' => $publication->id));
 		if (count($comments1) > 0) 

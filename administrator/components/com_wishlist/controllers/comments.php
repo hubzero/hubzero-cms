@@ -102,7 +102,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		$this->view->wishlist = new Wishlist($this->database);
 		$this->view->wishlist->load($this->view->wish->wishlist);
 
-		$obj = new Hubzero_Item_Comment($this->database);
+		$obj = new \Hubzero\Item\Comment($this->database);
 		//$obj->getResults(array('id' => $wishid, 'category' => 'wish'));
 
 		// Get record count
@@ -208,7 +208,7 @@ class WishlistControllerComments extends Hubzero_Controller
 			}
 
 			// Load category
-			$this->view->row = new Hubzero_Item_Comment($this->database);
+			$this->view->row = new \Hubzero\Item\Comment($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -259,7 +259,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Hubzero_Item_Comment($this->database);
+		$row = new \Hubzero\Item\Comment($this->database);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -313,7 +313,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		// Do we have any IDs?
 		if (count($ids) > 0) 
 		{
-			$tbl = new Hubzero_Item_Comment($this->database);
+			$tbl = new \Hubzero\Item\Comment($this->database);
 
 			// Loop through each ID
 			foreach ($ids as $id) 

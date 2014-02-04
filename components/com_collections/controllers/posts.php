@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for bulletin boards
  */
@@ -305,8 +303,7 @@ class CollectionsControllerPosts extends Hubzero_Controller
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		ximport('Hubzero_Item_Comment');
-		$row = new Hubzero_Item_Comment($this->database);
+		$row = new \Hubzero\Item\Comment($this->database);
 		if (!$row->bind($comment)) 
 		{
 			$this->setError($row->getError());
@@ -351,8 +348,7 @@ class CollectionsControllerPosts extends Hubzero_Controller
 		}
 
 		// Initiate a whiteboard comment object
-		ximport('Hubzero_Item_Comment');
-		$comment = new Hubzero_Item_Comment($this->database);
+		$comment = new \Hubzero\Item\Comment($this->database);
 		$comment->load($id);
 		$comment->state = 2;
 

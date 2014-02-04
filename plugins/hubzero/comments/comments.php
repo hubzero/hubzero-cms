@@ -104,8 +104,8 @@ class plgHubzeroComments extends JPlugin
 		$this->view->params   = $this->params;
 
 		// set allowed Extensions
-		// defaults to set of image extensions defined in Hubzero_Item_Comment
-		$this->comment = new Hubzero_Item_Comment($this->database);
+		// defaults to set of image extensions defined in \Hubzero\Item\Comment
+		$this->comment = new \Hubzero\Item\Comment($this->database);
 		$this->comment->setAllowedExtensions( $allowedExtensions );
 		
 		$this->view->task     = $this->task    = JRequest::getVar('action', '');
@@ -346,7 +346,7 @@ class plgHubzeroComments extends JPlugin
 
 		$this->view->setLayout('vote');
 
-		$this->view->item = new Hubzero_Item_Comment($this->database);
+		$this->view->item = new \Hubzero\Item\Comment($this->database);
 		$this->view->item->load($v->item_id);
 		if ($v->vote == 1)
 		{
@@ -447,7 +447,7 @@ class plgHubzeroComments extends JPlugin
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object
-		//$row = new Hubzero_Item_Comment($this->database);
+		//$row = new \Hubzero\Item\Comment($this->database);
 		$row = $this->comment;
 
 		// pass data to comment object
@@ -532,7 +532,7 @@ class plgHubzeroComments extends JPlugin
 		}
 
 		// Initiate a blog comment object
-		$comment = new Hubzero_Item_Comment($this->database);
+		$comment = new \Hubzero\Item\Comment($this->database);
 		$comment->load($id);
 
 		if ($this->juser->get('id') != $comment->created_by 
@@ -649,9 +649,9 @@ class plgHubzeroComments extends JPlugin
 				} else {
 					$description = (is_object($p)) ? $p->parse(stripslashes($row->content)) : nl2br(stripslashes($row->content));
 				}
-				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
+				$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
 				/*if ($this->params->get('feed_entries') == 'partial') {
-					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
+					$description = \Hubzero\Utility\String::truncate($description, 300, 0);
 				}*/
 
 				@$date = ($row->created ? date('r', strtotime($row->created)) : '');
@@ -690,9 +690,9 @@ class plgHubzeroComments extends JPlugin
 						} else {
 							$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
 						}
-						$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
+						$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
 						/*if ($this->params->get('feed_entries') == 'partial') {
-							$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
+							$description = \Hubzero\Utility\String::truncate($description, 300);
 						}*/
 
 						@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
@@ -731,9 +731,9 @@ class plgHubzeroComments extends JPlugin
 								} else {
 									$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
 								}
-								$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
+								$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
 								/*if ($this->params->get('feed_entries') == 'partial') {
-									$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
+									$description = \Hubzero\Utility\String::truncate($description, 300, 0);
 								}*/
 
 								@$date = ($response->created ? date('r', strtotime($response->created)) : '');

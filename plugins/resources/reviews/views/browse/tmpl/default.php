@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile_Helper');
-
 $database = JFactory::getDBO();
 $juser = JFactory::getUser();
 $html = '';
@@ -63,7 +61,7 @@ if ($this->reviews) {
 		'filepath' => '',
 		'domain'   => ''
 	);
-	ximport('Hubzero_Wiki_Parser');
+
 	$parser = Hubzero_Wiki_Parser::getInstance();
 
 	$admin = false;
@@ -91,7 +89,7 @@ if ($this->reviews) {
 		$reply = true;
 
 		// See if we have a comment (comeone clicked a "reply" link)
-		$addcomment = new Hubzero_Item_Comment($database);
+		$addcomment = new \Hubzero\Item\Comment($database);
 		$addcomment->parent = JRequest::getInt('refid', 0);
 		$addcomment->item_id = JRequest::getInt('id', 0);
 		$addcomment->item_type = JRequest::getVar('category', '');

@@ -104,22 +104,17 @@ class plgCoursesReviews extends JPlugin
 		// Get reviews for this resource
 		$database = JFactory::getDBO();
 
-		ximport('Hubzero_Item_Comment');
-
-		$tbl = new Hubzero_Item_Comment($database);
+		$tbl = new \Hubzero\Item\Comment($database);
 
 		$this->option     = JRequest::getCmd('option', 'com_courses');
 		$this->controller = JRequest::getWord('controller', 'course');
 
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
 			Hubzero_Document::addPluginScript('courses', $this->_name);
-
-			ximport('Hubzero_Plugin_View');
 
 			$this->view = new Hubzero_Plugin_View(
 				array(
@@ -376,7 +371,7 @@ class plgCoursesReviews extends JPlugin
 
 		$this->view->setLayout('vote');
 
-		$this->view->item = new Hubzero_Item_Comment($this->database);
+		$this->view->item = new \Hubzero\Item\Comment($this->database);
 		$this->view->item->load($v->item_id);
 		if ($v->vote == 1)
 		{
@@ -465,7 +460,7 @@ class plgCoursesReviews extends JPlugin
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		$row = new Hubzero_Item_Comment($this->database);
+		$row = new \Hubzero\Item\Comment($this->database);
 		if (!$row->bind($comment)) 
 		{
 			$this->redirect(
@@ -543,7 +538,7 @@ class plgCoursesReviews extends JPlugin
 		}
 
 		// Initiate a blog comment object
-		$comment = new Hubzero_Item_Comment($this->database);
+		$comment = new \Hubzero\Item\Comment($this->database);
 		$comment->load($id);
 
 		if ($this->juser->get('id') != $comment->created_by 

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$comment = new Hubzero_Item_Comment($this->database);
+$comment = new \Hubzero\Item\Comment($this->database);
 
 $edit = JRequest::getInt('editcomment', 0);
 
@@ -101,8 +101,6 @@ $edit = JRequest::getInt('editcomment', 0);
 				<p class="comment-member-photo">
 					<span class="comment-anchor"></span>
 					<?php
-					ximport('Hubzero_User_Profile');
-					ximport('Hubzero_User_Profile_Helper');
 					$anonymous = 1;
 					if (!$this->juser->get('guest')) 
 					{
@@ -119,10 +117,8 @@ $edit = JRequest::getInt('editcomment', 0);
 				{
 					if (($replyto = JRequest::getInt('replyto', 0))) 
 					{
-						$reply = new Hubzero_Item_Comment($this->database);
+						$reply = new \Hubzero\Item\Comment($this->database);
 						$reply->load($replyto);
-
-						ximport('Hubzero_View_Helper_Html');
 
 						$name = JText::_('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous) 
@@ -143,7 +139,7 @@ $edit = JRequest::getInt('editcomment', 0);
 							<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span> 
 							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						</p>
-						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($reply->content), 300, 0); ?></p>
+						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($reply->content), 300); ?></p>
 					</blockquote>
 					<?php
 					}
@@ -155,7 +151,7 @@ $edit = JRequest::getInt('editcomment', 0);
 					$comment->load($edit);
 					/*if ($comment->created_by != $this->juser->get('id'))
 					{
-						$comment = new Hubzero_Item_Comment($this->database);
+						$comment = new \Hubzero\Item\Comment($this->database);
 					}*/
 					?>
 					<p class="warning">
@@ -212,7 +208,6 @@ $edit = JRequest::getInt('editcomment', 0);
 					<label>
 						<?php echo JText::_('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
 						<?php
-							ximport('Hubzero_Wiki_Editor');
 							echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', $comment->content, 'minimal', '40', '20');
 						?>
 					</label>

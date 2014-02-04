@@ -93,9 +93,6 @@ class plgResourcesReviews extends JPlugin
 			'metadata' => ''
 		);
 
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
-
 		$database = JFactory::getDBO();
 		$resource = new ResourcesResource($database);
 		$resource->load($id);
@@ -261,7 +258,7 @@ class plgResourcesReviews extends JPlugin
 
 		$level++;
 
-		$hc = new Hubzero_Item_Comment($database);
+		$hc = new \Hubzero\Item\Comment($database);
 		$comments = $hc->find(array(
 			'parent'    => ($level == 1 ? 0 : $item->id), 
 			'item_id'   => $id,
@@ -427,7 +424,7 @@ class PlgResourcesReviewsHelper extends JObject
 
 		$database = JFactory::getDBO();
 
-		$row = new Hubzero_Item_Comment($database);
+		$row = new \Hubzero\Item\Comment($database);
 		if (!$row->bind($_POST)) 
 		{
 			$this->setError($row->getError());
@@ -435,7 +432,7 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 
 		// Perform some text cleaning, etc.
-		$row->content    = Hubzero_View_Helper_Html::purifyText($row->content);
+		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
 		$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created    = $when;
@@ -484,7 +481,7 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 
 		// Delete the review
-		$reply = new Hubzero_Item_Comment($database);
+		$reply = new \Hubzero\Item\Comment($database);
 
 		$comments = $reply->find(array('parent'=>$replyid, 'item_type'=>'review', 'item_id' => $resource->id));
 		if (count($comments) > 0) 
@@ -765,7 +762,7 @@ class PlgResourcesReviewsHelper extends JObject
 		$review = new ResourcesReview($database);
 
 		// Delete the review's comments
-		$reply = new Hubzero_Item_Comment($database);
+		$reply = new \Hubzero\Item\Comment($database);
 
 		$comments1 = $reply->find(array('parent'=>$reviewid, 'item_type'=>'review', 'item_id' => $resource->id));
 		if (count($comments1) > 0) 

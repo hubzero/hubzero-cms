@@ -214,36 +214,6 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
-	 */
-	/*public function set($property, $value = null)
-	{
-		return $this->_tbl->set($property, $value);
-	}*/
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	/*public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}*/
-
-	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
@@ -254,13 +224,13 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof Hubzero_User_Profile))
 		{
-			ximport('Hubzero_User_Profile');
 			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		if ($property && $this->_creator instanceof Hubzero_User_Profile)
+		if ($property)
 		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
@@ -277,14 +247,14 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 */
 	public function modifier($property=null)
 	{
-		if (!isset($this->_modifier) || !is_object($this->_modifier))
+		if (!($this->_modifier instanceof Hubzero_User_Profile))
 		{
-			ximport('Hubzero_User_Profile');
 			$this->_modifier = Hubzero_User_Profile::getInstance($this->get('modified_by'));
 		}
-		if ($property && $this->_creator instanceof Hubzero_User_Profile)
+		if ($property)
 		{
-			return $this->_creator->get($property);
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_modifier->get($property);
 		}
 		return $this->_modifier;
 	}
@@ -300,8 +270,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 		{
 			$total = 0;
 
-			ximport('Hubzero_Item_Comment');
-			$bc = new Hubzero_Item_Comment($this->_db);
+			$bc = new \Hubzero\Item\Comment($this->_db);
 
 			if (($results = $bc->getComments('collection', $this->get('id'))))
 			{

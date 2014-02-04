@@ -43,7 +43,7 @@ class AnswersModelComment extends AnswersModelAbstract
 	 * 
 	 * @var string
 	 */
-	protected $_tbl_name = 'Hubzero_Item_Comment';
+	protected $_tbl_name = '\\Hubzero\\Item\\Comment';
 
 	/**
 	 * Class scope

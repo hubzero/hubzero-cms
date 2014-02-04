@@ -149,7 +149,7 @@ class plgSupportResources extends JPlugin
 	{
 		$database = JFactory::getDBO();
 
-		$parent = new Hubzero_Item_Comment($database);
+		$parent = new \Hubzero\Item\Comment($database);
 		$parent->load($parentid);
 
 		return $parent;
@@ -228,7 +228,7 @@ class plgSupportResources extends JPlugin
 			break;
 
 			case 'reviewcomment':
-				$comment = new Hubzero_Item_Comment($database);
+				$comment = new \Hubzero\Item\Comment($database);
 				$comment->load($referenceid);
 				//$comment->state = 2;
 				$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';

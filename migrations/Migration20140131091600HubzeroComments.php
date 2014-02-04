@@ -34,9 +34,15 @@ class Migration20140131091600HubzeroComments extends Hubzero_Migration
 					}
 				}
 
+				$cls = 'Hubzero_Item_Comment';
+				if (class_exists('\\Hubzero\\Item\\Comment'))
+				{
+					$cls = '\\Hubzero\\Item\\Comment';
+				}
+
 				foreach ($results as $r)
 				{
-					$record = new Hubzero_Item_Comment($db);
+					$record = new $cls($db);
 					if (substr($r->category, -7) == 'comment')
 					{
 						if (isset($parents[$r->referenceid]))

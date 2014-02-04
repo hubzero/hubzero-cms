@@ -112,7 +112,7 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new Hubzero_Item_Comment($database);
+		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);
 		$comment->state = 3;
 		$comment->store();
@@ -137,7 +137,7 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new Hubzero_Item_Comment($database);
+		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);
 		//$comment->anonymous = 0;
 		$comment->state = 1;
@@ -164,7 +164,7 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new Hubzero_Item_Comment($database);
+		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);
 		//$comment->anonymous = 1;
 		$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';

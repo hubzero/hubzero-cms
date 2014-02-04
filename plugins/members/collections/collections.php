@@ -1540,8 +1540,7 @@ class plgMembersCollections extends JPlugin
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		ximport('Hubzero_Item_Comment');
-		$row = new Hubzero_Item_Comment($this->database);
+		$row = new \Hubzero\Item\Comment($this->database);
 		if (!$row->bind($comment)) 
 		{
 			$this->setError($row->getError());
@@ -1586,8 +1585,7 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Initiate a whiteboard comment object
-		ximport('Hubzero_Item_Comment');
-		$comment = new Hubzero_Item_Comment($this->database);
+		$comment = new \Hubzero\Item\Comment($this->database);
 		$comment->load($id);
 		$comment->state = 2;
 

@@ -957,7 +957,7 @@ class WishlistController extends JObject
 
 		if ($this->_task=='reply') 
 		{
-			$addcomment = new Hubzero_Item_Comment($database);
+			$addcomment = new \Hubzero\Item\Comment($database);
 			$addcomment->item_id = $this->referenceid;
 			$addcomment->item_type = $this->cat;
 		} 
@@ -2116,7 +2116,7 @@ class WishlistController extends JObject
 					// delete comments if option chosen
 					if (!$options['keepcomments']) 
 					{
-						$reply = new Hubzero_Item_Comment($database);
+						$reply = new \Hubzero\Item\Comment($database);
 						$comments1 = $reply->getResults(array('item_id'=>$wishid, 'item_type'=>'wish', 'parent' => 0));
 						if (count($comments1) > 0) 
 						{
@@ -2753,7 +2753,7 @@ class WishlistController extends JObject
 
 		if ($wishid && $category) 
 		{
-			$row = new Hubzero_Item_Comment($database);
+			$row = new \Hubzero\Item\Comment($database);
 			if (!$row->bind($_POST)) 
 			{
 				JError::raiseError(500, $row->getError());
@@ -2876,7 +2876,7 @@ class WishlistController extends JObject
 				// get comment author if reply is posted to a comment
 				if ($row->parent) 
 				{
-					$parent = new Hubzero_Item_Comment($database);
+					$parent = new \Hubzero\Item\Comment($database);
 					$parent->load($row->parent);
 					$cuser = JUser::getInstance($parent->created_by);
 
@@ -2923,7 +2923,7 @@ class WishlistController extends JObject
 		// Incoming
 		$replyid = JRequest::getInt('replyid', 0);
 
-		$row = new Hubzero_Item_Comment($database);
+		$row = new \Hubzero\Item\Comment($database);
 
 		// Do we have a reply ID?
 		if (!$replyid or !$row->load($replyid)) 
@@ -3155,7 +3155,7 @@ class WishlistController extends JObject
 		$live_site = rtrim(JURI::base(),'/');
 
 		$level++;
-		$hc = new Hubzero_Item_Comment($database);
+		$hc = new \Hubzero\Item\Comment($database);
 		$authors = array();
 
 		$comments = $hc->find(array('item_id' => $parentid, 'item_type' => $category, 'parent' => $itemid), 1 , 1);

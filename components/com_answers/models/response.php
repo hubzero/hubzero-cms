@@ -134,7 +134,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 			default:
 				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					$tbl = new Hubzero_Item_Comment($this->_db);
+					$tbl = new \Hubzero\Item\Comment($this->_db);
 
 					if ($this->get('replies', null) !== null)
 					{
