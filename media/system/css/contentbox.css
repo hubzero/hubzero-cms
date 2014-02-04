@@ -12,8 +12,6 @@
 	-o-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 
-	-webkit-filter: grayscale(0);
-
 	-o-transform: perspective(5000px) rotateX(0deg);
 	-ms-transform: perspective(5000px) rotateX(0deg);
 	-moz-transform: perspective(5000px) rotateX(0deg);
@@ -32,15 +30,12 @@
 	-o-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 
-	-webkit-filter: grayscale(75%);
-
 	-o-transform: perspective(5000px) rotateX(-25deg);
 	-ms-transform: perspective(5000px) rotateX(-25deg);
 	-moz-transform: perspective(5000px) rotateX(-25deg);
 	-webkit-transform: perspective(5000px) rotateX(-25deg);
 	transform: perspective(5000px) rotateX(-25deg);
 }
-
 .content-box-overlay {
 	background: #000;
 	opacity: 0;
