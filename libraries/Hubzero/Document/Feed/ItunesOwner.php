@@ -28,35 +28,34 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Document\Feed;
+
+use Hubzero\Base\Object;
 
 /**
- * Hubzero_Document_Feed_ItunesOwner is an internal class that stores feed image information
+ * ItunesOwner is an internal class that stores feed image information
  *
  * @author Johan Janssens <johan.janssens@joomla.org>
  * @author Shawn Rice <zooley@purdue.edu>
  */
-class Hubzero_Document_Feed_ItunesOwner extends JObject
+class ItunesOwner extends Object
 {
 	/**
 	 * Email attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $email = "";
+	public $email = '';
 
 	/**
 	 * Name attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $name = "";
+	public $name = '';
 }
 

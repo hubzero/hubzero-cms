@@ -28,45 +28,43 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Document\Feed;
+
+use Hubzero\Base\Object;
 
 /**
- * Hubzero_Document_Feed_Enclosure is an internal class that stores feed enclosure information
+ * Enclosure is an internal class that stores feed enclosure information
  *
  * @author Johan Janssens <johan.janssens@joomla.org>
  * @author Shawn Rice <zooley@purdue.edu>
  */
-class Hubzero_Document_Feed_Enclosure extends JObject
+class Enclosure extends Object
 {
 	/**
 	 * URL enclosure element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	 var $url = "";
+	 public $url = '';
 
 	/**
 	 * Lenght enclosure element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	 var $length = "";
+	 public $length = '';
 
 	 /**
 	 * Type enclosure element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	 var $type = "";
+	 public $type = '';
 }
 

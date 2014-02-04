@@ -28,23 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Document\Renderer;
 
- /**
- * Hubzero_Document_Renderer_RSS is a feed that implements RSS 2.0 Specification that includes support for iTunes tags
+/**
+ * RSS is a feed that implements RSS 2.0 Specification that includes support for iTunes tags
  * 
  * @see    http://www.rssboard.org/rss-specification
  */
-class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
+class Rss extends \JDocumentRenderer
 {
 	/**
 	 * Renderer mime type
 	 *
-	 * @var		string
-	 * @access	private
+	 * @var  string
 	 */
-	var $_mime = 'application/rss+xml';
+	private $_mime = 'application/rss+xml';
 
 	/**
 	 * Render the feed
@@ -54,10 +52,10 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 	 */
 	public function render($name = NULL, $params = NULL, $content = NULL)
 	{
-		$now  = JFactory::getDate();
-		$data =& $this->_doc;
+		$now  = \JFactory::getDate();
+		$data = $this->_doc;
 
-		$uri = JFactory::getURI();
+		$uri = \JFactory::getURI();
 		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 
 		$feed  = '<rss xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd" version="2.0">' . "\n";
@@ -149,7 +147,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 		}
 		if ($data->pubDate != '') 
 		{
-			$pubDate = JFactory::getDate($data->pubDate);
+			$pubDate = \JFactory::getDate($data->pubDate);
 			$feed .= "		<pubDate>" . $this->escape($pubDate->toRFC822()) . "</pubDate>\n";
 		}
 		if ($data->category != '') 
@@ -254,7 +252,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 			}
 			if ($data->items[$i]->date != '') 
 			{
-				$itemDate = JFactory::getDate($data->items[$i]->date);
+				$itemDate = \JFactory::getDate($data->items[$i]->date);
 				$feed .= "			<pubDate>" . $this->escape($itemDate->toRFC822()) . "</pubDate>\n";
 			}
 			if ($data->items[$i]->guid != '') 
@@ -276,12 +274,11 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 	/**
 	 * Convert links in a text from relative to absolute
 	 *
-	 * @access public
-	 * @return	string
+	 * @return  string
 	 */
 	private function _relToAbs($text)
 	{
-		$base = JURI::base();
+		$base = \JURI::base();
 		$text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
 
 		return $text;
@@ -290,8 +287,8 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 	/**
 	 * Escape text
 	 *
-	 * @param     string $text
-	 * @return    string
+	 * @param   string $text
+	 * @return  string
 	 */
 	public function escape($text)
 	{

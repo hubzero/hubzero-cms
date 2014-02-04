@@ -28,104 +28,96 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Document\Feed;
+
+use Hubzero\Base\Object;
 
 /**
- * Hubzero_Document_Feed_Item is an internal class that stores feed item information
+ * Item is an internal class that stores feed item information
  *
  * @author Johan Janssens <johan.janssens@joomla.org>
  * @author Shawn Rice <zooley@purdue.edu>
  */
-class Hubzero_Document_Feed_Item extends JObject
+class Item extends Object
 {
 	/**
 	 * Title item element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $title;
+	public $title;
 
 	/**
 	 * Link item element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $link;
+	public $link;
 
 	/**
 	 * Description item element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $description;
+	public $description;
 
 	/**
 	 * Author item element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $author;
+	public $author;
 
 	/**
 	 * Author email element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $authorEmail;
+	public $authorEmail;
 
 	/**
 	 * Category element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $category;
+	public $category;
 
 	/**
 	 * Comments element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $comments;
+	public $comments;
 
 	/**
 	 * Enclosure element
 	 *
 	 * @var		object
-	 * @access	public
 	 */
-	var $enclosure =  null;
+	public $enclosure =  null;
 
 	/**
 	 * Guid element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var  string
 	 */
-	var $guid;
+	public $guid;
 
 	/**
 	 * Published date
@@ -144,84 +136,81 @@ class Hubzero_Document_Feed_Item extends JObject
 	 *	Unix:
 	 *	1043082341
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $pubDate;
+	public $pubDate;
 
 	/**
 	 * Source element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $source;
+	public $source;
 
 	/* iTunes specific tags */
 
 	/**
 	 * Description for 'itunes_summary'
 	 * 
-	 * @var string
+	 * @public string
 	 */
-	var $itunes_summary = "";
+	public $itunes_summary = '';
 
 	/**
 	 * Description for 'itunes_explicit'
 	 * 
-	 * @var string
+	 * @public string
 	 */
-	var $itunes_explicit = "no";
+	public $itunes_explicit = "no";
 
 	/**
 	 * Description for 'itunes_keywords'
 	 * 
-	 * @var string
+	 * @public string
 	 */
-	var $itunes_keywords = "";
+	public $itunes_keywords = '';
 
 	/**
 	 * Description for 'itunes_author'
 	 * 
-	 * @var string
+	 * @public string
 	 */
-	var $itunes_author = "";
+	public $itunes_author = '';
 
 	/**
 	 * Description for 'itunes_image'
 	 * 
-	 * @var string
+	 * @public string
 	 */
-	var $itunes_image = "";
+	public $itunes_image = '';
 
 	/**
 	 * Description for 'itunes_duration'
 	 * 
-	 * @var string
+	 * @public string
 	 */
-	var $itunes_duration = "";
+	public $itunes_duration = '';
 
 	/**
 	 * Description for 'itunes_category'
 	 * 
-	 * @var string
+	 * @public string
 	 */
-	var $itunes_category = "";
+	public $itunes_category = '';
 
 	/**
 	 * Description for 'itunes_subcategories'
 	 * 
-	 * @var unknown
+	 * @public unknown
 	 */
-	var $itunes_subcategories = null;
+	public $itunes_subcategories = null;
 
 	/**
-	 * Set the Hubzero_Document_Feed_Enclosure for this item
+	 * Set the Enclosure for this item
 	 *
-	 * @access public
-	 * @param object $enclosure The Hubzero_Document_Feed_Item to add to the feed.
+	 * @param object $enclosure The Item to add to the feed.
 	*/
 	public function setEnclosure($enclosure)
 	{

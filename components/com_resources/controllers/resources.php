@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Resources controller class
  */
@@ -1640,8 +1638,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
-		ximport('Hubzero_Document_Feed');
-		$doc = new Hubzero_Document_Feed;
+		$doc = new \Hubzero\Document\Feed;
 		$app = JFactory::getApplication();
 		$params = $app->getParams();
 
@@ -1727,10 +1724,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$title = '[' . $type . '] ' . $title;
 
 		// Build some basic RSS document information
-		$dtitle = Hubzero_View_Helper_Html::purifyText(stripslashes($title));
+		$dtitle = \Hubzero\Utility\Sanitize::clean(stripslashes($title));
 
-		$doc->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle), 250, 0));
-		$doc->description = htmlspecialchars(html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
+		$doc->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle), 250));
+		$doc->description = htmlspecialchars(html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
 		$doc->copyright = JText::sprintf('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category = JText::_('COM_RESOURCES_RSS_CATEGORY');
 		$doc->link = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id);
@@ -1764,7 +1761,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 		$tags = implode(', ', $tagarray);
 		//$tags = $rt->get_tag_string($resource->id, 0, 0, 0, 0, 0);
-		$tags = trim(Hubzero_View_Helper_Html::shortenText($tags, 250, 0));
+		$tags = trim(\Hubzero\Utility\String::truncate($tags, 250));
 		$tags = rtrim($tags, ',');
 
 		$helper->getUnlinkedContributors();
@@ -1780,7 +1777,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			}
 		}
 
-		$doc->itunes_summary = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($resource->introtext)));
+		$doc->itunes_summary = html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext)));
 		if (count($categories) > 0) 
 		{
 			$doc->itunes_category = $categories[0];
@@ -1798,14 +1795,14 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$dimg = $this->checkForImage($itunes_image_name, $this->config->get('uploadpath'), $resource->created, $resource->id);
 		if ($dimg) 
 		{
-			$dimage = new Hubzero_Document_Feed_Image();
+			$dimage = new \Hubzero\Document\Feed\Image();
 			$dimage->url = $dimg;
-			$dimage->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle . ' ' . JText::_('COM_RESOURCES_RSS_ARTWORK')), 250, 0));
+			$dimage->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle . ' ' . JText::_('COM_RESOURCES_RSS_ARTWORK')), 250));
 			$dimage->link = $base.$doc->link;
 			$doc->itunes_image = $dimage;
 		}
 
-		$owner = new Hubzero_Document_Feed_ItunesOwner;
+		$owner = new \Hubzero\Document\Feed\ItunesOwner;
 		$owner->email = $jconfig->getValue('config.mailfrom');
 		$owner->name  = $jconfig->getValue('config.sitename');
 
@@ -1888,7 +1885,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 						{
 							if (stripslashes($grandchild->introtext) != '')
 							{
-								$gdescription = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($grandchild->introtext)));
+								$gdescription = html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($grandchild->introtext)));
 							}
 							array_push($podcasts, $grandchild->path);
 							array_push($children, $grandchild);
@@ -1904,7 +1901,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$rtags = $rtt->get_tag_string($row->id, 0, 0, 0, 0, 0);
 				if (trim($rtags))
 				{
-					$rtags = trim(Hubzero_View_Helper_Html::shortenText($rtags, 250, 0));
+					$rtags = trim(\Hubzero\Utility\String::truncate($rtags, 250));
 					$rtags = rtrim($rtags, ',');
 				}
 
@@ -1918,7 +1915,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				foreach ($podcasts as $podcast)
 				{
 					// Load individual item creator class
-					$item = new Hubzero_Document_Feed_Item();
+					$item = new \Hubzero\Document\Feed\Item();
 					$item->title       = $title;
 					$item->link        = $link;
 					$item->description = $description;
@@ -1929,7 +1926,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 					$img = $this->checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
 					if ($img) 
 					{
-						$image = new Hubzero_Document_Feed_Image();
+						$image = new \Hubzero\Document\Feed\Image();
 						$image->url = $img;
 						$image->title = $title.' '.JText::_('COM_RESOURCES_RSS_ARTWORK');
 						$image->link = $base.$link;
@@ -1965,7 +1962,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 						{
 							$fs = filesize($podcastp);
 
-							$enclosure = new Hubzero_Document_Feed_Enclosure; //JObject;
+							$enclosure = new \Hubzero\Document\Feed\Enclosure; //JObject;
 							$enclosure->url = $podcast;
 							switch (ResourcesHtml::getFileExtension($podcast))
 							{

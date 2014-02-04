@@ -28,75 +28,70 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Document\Feed;
+
+use Hubzero\Base\Object;
 
 /**
- * Hubzero_Document_Feed_Image is an internal class that stores feed image information
+ * Image is an internal class that stores feed image information
  *
  * @author Johan Janssens <johan.janssens@joomla.org>
  * @author Shawn Rice <zooley@purdue.edu>
  */
-class Hubzero_Document_Feed_Image extends JObject
+class Image extends Object
 {
 	/**
 	 * Title image attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $title = "";
+	public $title = '';
 
 	/**
 	 * URL image attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $url = "";
+	public $url = '';
 
 	/**
 	 * Link image attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $link = "";
+	public $link = '';
 
 	/**
 	 * Image width attribute
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $width;
+	public $width;
 
 	/**
 	 * Image height attribute
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $height;
+	public $height;
 
 	/**
 	 * Image description attribute
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var	 string
 	 */
-	var $description;
+	public $description;
 }
 
