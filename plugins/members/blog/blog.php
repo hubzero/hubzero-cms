@@ -117,7 +117,7 @@ class plgMembersBlog extends JPlugin
 			// Get and determine task
 			$this->task = JRequest::getVar('action', '');
 
-			if (!$this->task)
+			if (!($task = JRequest::getVar('action', '', 'post')))
 			{
 				$bits = $this->_parseUrl();
 				$num = count($bits);
@@ -135,6 +135,10 @@ class plgMembersBlog extends JPlugin
 						}
 					break;
 				}
+			}
+			else
+			{
+				$this->task = $task;
 			}
 
 			switch ($this->task) 
