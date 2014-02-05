@@ -52,7 +52,8 @@ class modLatestBlog extends \Hubzero\Module\Module
 			'limit'    => $this->params->get('limit', 5),
 			'start'    => 0,
 			'scope'    => $this->params->get('blog', 'site'),
-			'group_id' => 0
+			'group_id' => 0,
+			'state'    => 1
 		);
 		if ($filters['scope'] == 'both' || $filters['scope'] == 'group')
 		{
