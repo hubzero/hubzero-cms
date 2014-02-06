@@ -1228,7 +1228,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$message['plaintext'] .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_SUPPORT_COOKIES_ENABLED')."\r\n" : JText::_('COM_SUPPORT_COOKIES_DISABLED')."\r\n";
 		$message['plaintext'] .= JText::_('COM_SUPPORT_REFERRER').': '. $problem['referer'] ."\r\n";
 		$message['plaintext'] .= ($problem['tool']) ? JText::_('COM_SUPPORT_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message['plaintext'] .= JText::_('COM_SUPPORT_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_PROBLEM_DETAILS').': '. preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $attach->parse(stripslashes($problem['long']))) ."\r\n\r\n";
 
 		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
