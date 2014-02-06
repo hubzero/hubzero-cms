@@ -26,7 +26,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
-ximport('Hubzero_Plugin');
 
 /**
  * Groups Plugin class for usage
@@ -143,9 +142,6 @@ class plgGroupsUsage extends Hubzero_Plugin
 			//reference group for other functions
 			$this->group = $group;
 
-			//import the hubzero document library
-			ximport('Hubzero_Document');
-
 			//get the joomla document
 			$doc = JFactory::getDocument();
 
@@ -191,7 +187,6 @@ class plgGroupsUsage extends Hubzero_Plugin
 			$doc->addScriptDeclaration($script);
 
 			//import and create view
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',
@@ -201,7 +196,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 			);
 
 			//get the group pages
-			$query = "SELECT id, title FROM #__xgroups_pages WHERE state=1 AND gidNumber=" . $group->get('gidNumber');
+			$query = "SELECT id, title FROM `#__xgroups_pages` WHERE state=1 AND gidNumber=" . $database->quote($group->get('gidNumber'));
 			$database->setQuery($query);
 			$view->pages = $database->loadAssocList();
 
@@ -246,7 +241,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 		$rr = new ResourcesResource($database);
 
-		$database->setQuery("SELECT COUNT(*) FROM " . $rr->getTableName() . " AS r WHERE r.group_owner='" . $gid . "'");
+		$database->setQuery("SELECT COUNT(*) FROM " . $rr->getTableName() . " AS r WHERE r.group_owner=" . $database->quote($gid));
 		return $database->loadResult();
 	}
 
@@ -265,7 +260,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 		}
 		$database = JFactory::getDBO();
 
-		$database->setQuery("SELECT COUNT(*) FROM #__wiki_page AS p WHERE p.scope='" . $gid . DS . 'wiki' . "' AND p.group_cn='" . $gid . "'");
+		$database->setQuery("SELECT COUNT(*) FROM `#__wiki_page` AS p WHERE p.scope=" . $database->quote($gid . DS . 'wiki') . " AND p.group_cn=" . $database->quote($gid));
 		return $database->loadResult();
 	}
 
@@ -284,7 +279,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 		}
 		$database = JFactory::getDBO();
 
-		$database->setQuery("SELECT id FROM #__wiki_page AS p WHERE p.scope='" . $gid . DS . 'wiki' . "' AND p.group_cn='" . $gid . "'");
+		$database->setQuery("SELECT id FROM `#__wiki_page` AS p WHERE p.scope=" . $database->quote($gid . DS . 'wiki') . " AND p.group_cn=" . $database->quote($gid));
 		$pageids = $database->loadObjectList();
 		if ($pageids) 
 		{
@@ -294,7 +289,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 				$ids[] = $pageid->id;
 			}
 
-			$database->setQuery("SELECT COUNT(*) FROM #__wiki_attachments WHERE pageid IN (" . implode(',', $ids) . ")");
+			$database->setQuery("SELECT COUNT(*) FROM `#__wiki_attachments` WHERE pageid IN (" . implode(',', $ids) . ")");
 			return $database->loadResult();
 		} 
 		else 
@@ -381,14 +376,18 @@ class plgGroupsUsage extends Hubzero_Plugin
 
 		if ($pageid != '') 
 		{
-			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gidNumber=" . $gid . " AND date > '{$start}' AND date < '{$end}' AND pageid={$pageid} ORDER BY date ASC";
+			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " AND `pageid`=" . $database->quote($pageid) . " ORDER BY `date` ASC";
 		} 
 		else 
 		{
-			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gidNumber=" . $gid . " AND date > '{$start}' AND date < '{$end}' ORDER BY date ASC";
+			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " ORDER BY `date` ASC";
 		}
 		$database->setQuery($query);
 		$views = $database->loadAssocList();
+		if (!$views)
+		{
+			$views = array();
+		}
 
 		$s = strtotime($start);
 		$e = strtotime($end);
@@ -536,7 +535,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 
 		$database = JFactory::getDBO();
 
-		$query = "SELECT count(*) FROM jos_blog_entries as be, jos_blog_comments as bc WHERE be.scope='group' AND be.group_id=" . $gid . " AND be.id=bc.entry_id";
+		$query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND be.group_id=" . $database->quote($gid) . " AND be.id=bc.entry_id";
 		$database->setQuery($query);
 
 		$count = $database->loadResult();
@@ -553,7 +552,7 @@ class plgGroupsUsage extends Hubzero_Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$query = "SELECT COUNT(*) FROM #__events WHERE scope=".$database->quote('group')." AND scope_id=" . $database->quote($gid) . " AND state=1";
+		$query = "SELECT COUNT(*) FROM `#__events` WHERE scope=".$database->quote('group')." AND scope_id=" . $database->quote($gid) . " AND state=1";
 		$database->setQuery($query);
 		return $database->loadResult();
 	}
