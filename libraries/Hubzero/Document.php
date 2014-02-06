@@ -44,6 +44,21 @@ jimport('joomla.document.document');
 class Hubzero_Document
 {
 	/**
+	 * Get the base path
+	 *
+	 * @return  string
+	 */
+	public static function base()
+	{
+		$base = JPATH_SITE;
+		if (JFactory::getApplication()->isAdmin())
+		{
+			$base = JPATH_ADMINISTRATOR;
+		}
+		return $base;
+	}
+
+	/**
 	 * Adds a linked stylesheet from a component to the page
 	 *
 	 * @param	string  $component  Component name
@@ -55,37 +70,37 @@ class Hubzero_Document
 	 */
 	public static function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$template = $app->getTemplate();
 
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
+		$root = self::base();
 
 		if (empty($stylesheet)) 
 		{
 			$stylesheet = substr($component, 4) . '.css';
 		}
-
-		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
-
-		$assetcss = DS . 'components' . DS . $component . DS . 'assets' . DS . 'css' . DS . $stylesheet;
-
-		$componentcss = DS . 'components' . DS . $component . DS . $stylesheet;
-
-		if (file_exists(JPATH_SITE . $templatecss)) 
+		if (substr(strtolower($stylesheet), -4) != '.css')
 		{
-			// Chech for CSS in /templates/$template/html/$component/
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
+			$stylesheet .= '.css';
 		}
-		else if (file_exists(JPATH_SITE . $assetcss)) 
+
+		// Build a list of possible paths
+		$paths = array();
+
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
+		$paths[] = DS . 'components' . DS . $component . DS . 'assets' . DS . 'css' . DS . $stylesheet;
+		$paths[] = DS . 'components' . DS . $component . DS . $stylesheet;
+
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
 		{
-			// Chech for CSS in /components/$component/assets/css/
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $assetcss . '?v=' . filemtime(JPATH_SITE . $assetcss), $type, $media, $attribs);
-		} 
-		else if (file_exists(JPATH_SITE . $componentcss)) 
-		{
-			// Chech for CSS in /components/$component/
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $componentcss . '?v=' . filemtime(JPATH_SITE . $componentcss), $type, $media, $attribs);
+			if (file_exists($root . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime($root . $path), $type, $media, $attribs);
+				break;
+			}
 		}
 	}
 
@@ -101,36 +116,43 @@ class Hubzero_Document
 	 */
 	public static function addComponentScript($component, $script = '', $type = "text/javascript", $defer = false, $async = false)
 	{
-		$mainframe = JFactory::getApplication();
-
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
-
 		if (empty($script)) 
 		{
 			$script = substr($component, 4);
 		}
 
-		$base = DS . 'components' . DS . $component;
-
-		$url = $base . DS . $script . '.js';
-		$urlAlt = '';
-		if (JPluginHelper::isEnabled('system', 'jquery'))
+		// We need to momentarily strip the file extension
+		if (substr(strtolower($script), -3) == '.js')
 		{
-			if (file_exists(JPATH_SITE . $base . DS . $script . '.jquery.js')) 
-			{
-				$urlAlt .= $base . DS . $script . '.jquery.js';
-			}
+			$script .= substr($script, 0, -3);
 		}
 
-		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		$base = DS . 'components' . DS . $component;
+
+		// Build a list of possible paths
+		$paths = array();
+
+		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
-		} 
-		else if (file_exists(JPATH_SITE . $url)) 
+			$paths[] = $base . DS . 'assets' . DS . 'js' . DS . $script . '.jquery.js';
+			$paths[] = $base . DS . $script . '.jquery.js';
+		}
+
+		$paths[] = $base . DS . 'assets' . DS . 'js' . DS . $script . '.js';
+		$paths[] = $base . DS . $script . '.js';
+
+		$root = self::base();
+
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
 		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			if (file_exists($root . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime($root . $path), $type, $defer, $async);
+				break;
+			}
 		}
 	}
 
@@ -150,23 +172,29 @@ class Hubzero_Document
 			return;
 		}
 
-		$mainframe = JFactory::getApplication();
-
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
-
-		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . DS . 'css' . DS . $stylesheet;
-
-		$systemcss = DS . 'media' . DS . 'system' . DS . 'css' . DS . $stylesheet;
-
-		if (file_exists(JPATH_SITE . $templatecss)) 
+		if (substr(strtolower($stylesheet), -4) != '.css')
 		{
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
-		} 
-		else 
+			$stylesheet .= '.css';
+		}
+
+		$template  = JFactory::getApplication()->getTemplate();
+
+		// Build a list of possible paths
+		$paths = array();
+
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . DS . 'css' . DS . $stylesheet;
+		$paths[] = DS . 'media' . DS . 'system' . DS . 'css' . DS . $stylesheet;
+
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
 		{
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $systemcss . '?v=' . filemtime(JPATH_SITE . $systemcss), $type, $media, $attribs);
+			if (file_exists(JPATH_SITE . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $media, $attribs);
+				break;
+			}
 		}
 	}
 
@@ -186,31 +214,32 @@ class Hubzero_Document
 			return;
 		}
 
-		$mainframe = JFactory::getApplication();
-
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
+		// We need to momentarily strip the file extension
+		if (substr(strtolower($script), -3) == '.js')
+		{
+			$script .= substr($script, 0, -3);
+		}
 
 		$base = DS . 'media' . DS . 'system' . DS . 'js';
 
-		$url = $base . DS . $script . '.js';
-		$urlAlt = '';
+		// Build a list of possible paths
+		$paths = array();
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			if (file_exists(JPATH_SITE . $base . DS . $script . '.jquery.js')) 
-			{
-				$urlAlt .= $base . DS . $script . '.jquery.js';
-			}
+			$paths[] = $base . DS . $script . '.jquery.js';
 		}
+		$paths[] = $base . DS . $script . '.js';
 
-		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
 		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
-		} 
-		else if (file_exists(JPATH_SITE . $url)) 
-		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			if (file_exists(JPATH_SITE . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $defer, $async);
+				break;
+			}
 		}
 	}
 
@@ -322,31 +351,43 @@ class Hubzero_Document
 	 */
 	public static function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
-		$mainframe = JFactory::getApplication();
-
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
+		$template = JFactory::getApplication()->getTemplate();
 
 		if (empty($stylesheet)) 
 		{
 			$stylesheet = $module . '.css';
 		}
-
-		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $stylesheet;
-
-		$modulecss = DS . 'modules' . DS . $module . DS . $stylesheet;
-
-		if (file_exists(JPATH_SITE . $templatecss)) 
+		if (!$stylesheet)
 		{
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
-		} 
-		else 
+			return;
+		}
+
+		if (substr(strtolower($stylesheet), -4) != '.css')
 		{
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $modulecss . '?v=' . filemtime(JPATH_SITE . $modulecss), $type, $media, $attribs);
+			$stylesheet .= '.css';
+		}
+
+		$root = self::base();
+
+		// Build a list of possible paths
+		$paths = array();
+
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $stylesheet;
+		$paths[] = DS . 'modules' . DS . $module . DS . $stylesheet;
+
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
+		{
+			if (file_exists($root . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime($root . $path), $type, $media, $attribs);
+				break;
+			}
 		}
 	}
-	
+
 	/**
 	 * Adds a linked script to the page
 	 *
@@ -359,31 +400,48 @@ class Hubzero_Document
 	 */
 	public static function addModuleScript($module, $script = '', $type = "text/javascript", $defer = false, $async = false)
 	{
-		$mainframe = JFactory::getApplication();
-
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
+		$template = JFactory::getApplication()->getTemplate();
 
 		if (empty($script)) 
 		{
 			$script = $module;
 		}
 
-		$url = DS . 'modules' . DS . $module . DS . $script . '.js';
-		$urlAlt = '';
-		if (JPluginHelper::isEnabled('system', 'jquery'))
+		if (!$script)
 		{
-			$urlAlt = DS . 'modules' . DS . $module . DS . $script . '.jquery.js';
+			return;
 		}
 
-		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		// We need to momentarily strip the file extension
+		if (substr(strtolower($script), -3) == '.js')
 		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
-		} 
-		else 
+			$script .= substr($script, 0, -3);
+		}
+
+		$root = self::base();
+
+		// Build a list of possible paths
+		$paths = array();
+
+		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.jquery.js';
+			$paths[] = DS . 'modules' . DS . $module . DS . $script . '.jquery.js';
+		}
+
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.js';
+		$paths[] = DS . 'modules' . DS . $module . DS . $script . '.js';
+
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
+		{
+			if (file_exists($root . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime($root . $path), $type, $defer, $async);
+				break;
+			}
 		}
 	}
 
@@ -400,30 +458,41 @@ class Hubzero_Document
 	 */
 	public static function addPluginStyleSheet($folder, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
-		$mainframe = JFactory::getApplication();
-
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
+		$template = JFactory::getApplication()->getTemplate();
 
 		if (empty($stylesheet)) 
 		{
+			if (!$plugin)
+			{
+				return;
+			}
 			$stylesheet = $plugin . '.css';
 		}
-		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $stylesheet;
 
-		$plugincss = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
+		if (substr(strtolower($stylesheet), -4) != '.css')
+		{
+			$stylesheet .= '.css';
+		}
 
-		if (file_exists(JPATH_SITE . $templatecss)) 
+		// Build a list of possible paths
+		$paths = array();
+
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $stylesheet;
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
+
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
 		{
-			$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
-		} 
-		else if (file_exists(JPATH_SITE . $plugincss))
-		{
-			$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
+			if (file_exists(JPATH_SITE . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $media, $attribs);
+				break;
+			}
 		}
 	}
-	
+
 	/**
 	 * Adds a linked script to the page
 	 *
@@ -437,41 +506,46 @@ class Hubzero_Document
 	 */
 	public static function addPluginScript($folder, $plugin, $script = '', $type = "text/javascript", $defer = false, $async = false)
 	{
-		$mainframe = JFactory::getApplication();
-
-		$jdocument = JFactory::getDocument();
-
-		$template  = $mainframe->getTemplate();
+		$template = JFactory::getApplication()->getTemplate();
 
 		if (empty($script)) 
 		{
 			$script = $plugin;
 		}
 
-		$url = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
-		$urlAlt = '';
-		$tmpl = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.js';
-		if (JPluginHelper::isEnabled('system', 'jquery'))
+		if (!$script)
 		{
-			$tmplAlt = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.jquery.js';
-			$urlAlt = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
+			return;
 		}
 
-		if ($tmplAlt && file_exists(JPATH_SITE . $tmplAlt)) 
+		// We need to momentarily strip the file extension
+		if (substr(strtolower($script), -3) == '.js')
 		{
-			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $tmplAlt . '?v=' . filemtime(JPATH_SITE . $tmplAlt), $type, $defer, $async);
-		} 
-		else if ($tmpl && file_exists(JPATH_SITE . $tmpl)) 
+			$script .= substr($script, 0, -3);
+		}
+
+		// Build a list of possible paths
+		$paths = array();
+
+		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $tmpl . '?v=' . filemtime(JPATH_SITE . $tmpl), $type, $defer, $async);
-		} 
-		else if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.jquery.js';
+			$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
+		}
+
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.js';
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
+
+		// Run through each path until we find one that works
+		foreach ($paths as $path)
 		{
-			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
-		} 
-		else if (file_exists(JPATH_SITE . $url)) 
-		{
-			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			if (file_exists(JPATH_SITE . $path)) 
+			{
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $defer, $async);
+				break;
+			}
 		}
 	}
 
