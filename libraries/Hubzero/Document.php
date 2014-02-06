@@ -124,7 +124,7 @@ class Hubzero_Document
 		// We need to momentarily strip the file extension
 		if (substr(strtolower($script), -3) == '.js')
 		{
-			$script .= substr($script, 0, -3);
+			$script = substr($script, 0, -3);
 		}
 
 		$base = DS . 'components' . DS . $component;
@@ -217,7 +217,7 @@ class Hubzero_Document
 		// We need to momentarily strip the file extension
 		if (substr(strtolower($script), -3) == '.js')
 		{
-			$script .= substr($script, 0, -3);
+			$script = substr($script, 0, -3);
 		}
 
 		$base = DS . 'media' . DS . 'system' . DS . 'js';
@@ -415,7 +415,7 @@ class Hubzero_Document
 		// We need to momentarily strip the file extension
 		if (substr(strtolower($script), -3) == '.js')
 		{
-			$script .= substr($script, 0, -3);
+			$script = substr($script, 0, -3);
 		}
 
 		$root = self::base();
@@ -521,7 +521,7 @@ class Hubzero_Document
 		// We need to momentarily strip the file extension
 		if (substr(strtolower($script), -3) == '.js')
 		{
-			$script .= substr($script, 0, -3);
+			$script = substr($script, 0, -3);
 		}
 
 		// Build a list of possible paths
