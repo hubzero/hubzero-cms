@@ -49,10 +49,6 @@ if ($this->direction == 'rtl') {
 	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
 }
 
-if (JPluginHelper::isEnabled('system', 'debug')) {
-	$doc->addStyleSheet('templates/' . $this->template . '/css/common/debug.css');
-}
-
 /*
 $doc->addScriptDeclaration('
 	var sTimeout = ((' . $app->getCfg('lifetime') . '-1)*60*1000);

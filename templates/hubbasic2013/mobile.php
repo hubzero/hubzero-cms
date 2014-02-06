@@ -31,8 +31,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//import need HUBzero libraries
-ximport('Hubzero_Document');
 
 $config = JFactory::getConfig();
 

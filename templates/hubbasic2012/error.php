@@ -28,7 +28,7 @@ $v = $browser->major();
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css" />
 <?php if ($config->getValue('config.application_env', 'production') != 'production') { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="/modules/mod_application_env/mod_application_env.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/modules/mod_application_env/mod_application_env.css" />
 <?php } ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
@@ -66,7 +66,7 @@ $v = $browser->major();
 					<div id="topbar">
 						<ul>
 							<li><a href="#content"><?php echo JText::_('TPL_HUBBASIC_SKIP'); ?></a></li>
-							<li><a href="/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
+							<li><a href="<?php echo $this->baseurl; ?>/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
 						<?php Hubzero_Module_Helper::displayModules('search'); ?>
 					<?php if (Hubzero_Module_Helper::countModules('helppane')) : ?>
@@ -87,8 +87,6 @@ $v = $browser->major();
 							</h1>
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 							<?php if (!$juser->get('guest')) { 
-									ximport('Hubzero_User_Profile');
-									ximport('Hubzero_User_Profile_Helper');
 									$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 							?>
 								<li id="account-info">

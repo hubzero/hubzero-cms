@@ -48,11 +48,6 @@ if ($this->direction == 'rtl') {
 	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
 }
 
-// Load debug CSS if enabled
-if (JPluginHelper::isEnabled('system', 'debug')) {
-	$doc->addStyleSheet('templates/' . $this->template . '/css/common/debug.css');
-}
-
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();

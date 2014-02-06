@@ -50,11 +50,6 @@ if ($this->direction == 'rtl') {
 	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
 }
 
-// Load debug CSS if enabled
-if (JPluginHelper::isEnabled('system', 'debug')) {
-	$doc->addStyleSheet('templates/' . $this->template . '/css/common/debug.css');
-}
-
 $doc->addScript('templates/' . $this->template . '/js/index.js');
 /*
 $doc->addScriptDeclaration('

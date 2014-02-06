@@ -62,11 +62,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'tooltip', 'comments', 'voting', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
-		
+
 		<jdoc:include type="head" />
-<?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/debug.css" />
-<?php } ?>
+
 		<!--[if IE 10]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie10.css" />
 		<![endif]-->
@@ -89,7 +87,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					<div id="topbar">
 						<ul>
 							<li><a href="#content"><?php echo JText::_('TPL_HUBBASIC_SKIP'); ?></a></li>
-							<li><a href="/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
+							<li><a href="<?php echo $this->baseurl; ?>/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
 						<jdoc:include type="modules" name="search" />
 <?php if ($this->countModules('helppane')) : ?>
@@ -111,8 +109,6 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 <?php if (!$juser->get('guest')) { 
-		ximport('Hubzero_User_Profile');
-		ximport('Hubzero_User_Profile_Helper');
 		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 ?>
 								<li id="account-info">

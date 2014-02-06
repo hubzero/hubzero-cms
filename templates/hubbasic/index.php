@@ -62,9 +62,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
 
 		<jdoc:include type="head" />
-<?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/debug.css" />
-<?php } ?>
+
 		<!--[if IE 9]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
@@ -82,7 +80,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
 <?php if ($this->countModules('helppane')) : ?>
 			<p id="tab">
-				<a href="/support/" title="Need help? Send a trouble report to our support team.">
+				<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="Need help? Send a trouble report to our support team.">
 					<span>Need Help?</span>
 				</a>
 			</p>

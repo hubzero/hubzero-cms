@@ -66,9 +66,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
 
 		<jdoc:include type="head" />
-<?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/debug.css" />
-<?php } ?>
+
 		<!--[if IE 10]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie10.css" />
 		<![endif]-->

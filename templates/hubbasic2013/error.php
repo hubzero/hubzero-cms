@@ -34,10 +34,7 @@ $v = $browser->major();
 <?php } ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
-<?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="/media/cms/css/debug.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/debug.css" />
-<?php } ?>
+
 <?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.ui.js"></script>

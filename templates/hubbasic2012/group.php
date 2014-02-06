@@ -33,19 +33,20 @@ $template = 'hubbasic2012';
 	<body class="contentpane" id="group-body">
 		<jdoc:include type="modules" name="notices" />
 		<jdoc:include type="modules" name="helppane" />
-		<?php if ($this->countModules('helppane')) : ?>
-					<p id="tab">
-						<a href="/support" title="<?php echo JText::_('Need help? Send a trouble report to our support team.'); ?>">
-							<span><?php echo JText::_('Need Help?'); ?></span>
-						</a>
-					</p>
-		<?php endif; ?>
-		
-		<div id="special-bar">	
-			<a href="/" id="powered">powered by <span><?php echo $config->getValue('sitename'); ?></span></a>		
-			<p><a href="/about">Learn more about <?php echo $config->getValue('sitename'); ?></a></p>
+
+	<?php if ($this->countModules('helppane')) : ?>
+		<p id="tab">
+			<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('Need help? Send a trouble report to our support team.'); ?>">
+				<span><?php echo JText::_('Need Help?'); ?></span>
+			</a>
+		</p>
+	<?php endif; ?>
+
+		<div id="special-bar">
+			<a href="<?php echo $this->baseurl; ?>/" id="powered">powered by <span><?php echo $config->getValue('sitename'); ?></span></a>
+			<p><a href="<?php echo $this->baseurl; ?>/about">Learn more about <?php echo $config->getValue('sitename'); ?></a></p>
 		</div>
-		
+
 		<jdoc:include type="message" />
 		<jdoc:include type="component" />
 		<jdoc:include type="modules" name="endpage" />
