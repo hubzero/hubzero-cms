@@ -122,6 +122,12 @@ class plgContentFormathtml extends JPlugin
 
 		$content = preg_replace('/^(<!-- \{FORMAT:HTML\} -->)/i', '', $content);
 
+		include_once(__DIR__ . '/parser.php');
+
+		$parser = new \Plugins\Content\Formathtml\Parser($params);
+
+		$content = $parser->parse($content);
+
 		$article->set($key, $content);
 	}
 

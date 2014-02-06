@@ -1,0 +1,114 @@
+/*
+
+Twitter Styling CSS
+
+*/
+
+.twitter_feed_container { 
+	}
+.twitter_feed_container h3 {
+	margin:0;
+	padding:0;
+	font-size:18px;
+	}
+.twitter_feed_container ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+	border-left:3px solid #ccc;
+	margin-left:5px;
+	padding-left:10px;
+	}
+.twitter_feed_container ul li {
+	padding:0;
+	overflow:hidden;
+	}
+.twitter_feed_container ul li .tweetProfilePicture {
+	float:left;
+	margin-right:10px;
+	}
+.twitter_feed_container ul li .tweetProfile {
+	font-weight:bold;
+	font-size:14px;
+	display:block;
+	}
+.twitter_feed_container ul li .tweetProfile span {
+	color:#777;
+	font-weight:bold;
+	}
+.twitter_feed_container ul li .tweetProfile a {
+	color:#444;
+	}
+.twitter_feed_container ul li .tweetProfile a:hover {
+	border-bottom:1px solid #444;
+	background:#efefef;
+	}
+.twitter_feed_container ul li .tweetStatus {
+	color:#555;
+	}
+.twitter_feed_container ul li .tweetTime {
+	display:block;
+	color:#aaa;
+	font-size:11px;
+	line-height:11px;
+	}
+	
+
+/* Side Bar Feed */	
+#content_aside .twitter_feed_container { 
+	}
+#content_aside .twitter_feed_container h3 {
+	margin:0;
+	padding:0 5px 5px 5px;
+	font-size:16px;
+	font-weight:400;
+	background:transparent url('twitter.png') 100% 1px no-repeat;
+	}
+#content_aside .twitter_feed_container ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+	border:none;
+	}
+#content_aside .twitter_feed_container ul li {
+	padding:0;
+	overflow:hidden;
+	margin-bottom:5px;
+	background-color:#f5f5f5;
+    padding:5px;
+    border:1px solid #efefef;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    -o-border-radius:5px;
+    border-radius:5px;
+	}
+#content_aside .twitter_feed_container ul li .tweetProfilePicture {
+	display:none;
+	}
+#content_aside .twitter_feed_container ul li .tweetProfile {
+	display:none
+	}
+#content_aside .twitter_feed_container ul li .tweetProfile span {
+	color:#777;
+	font-weight:bold;
+	}
+#content_aside .twitter_feed_container ul li .tweetProfile a {
+	color:#444;
+	}
+#content_aside .twitter_feed_container ul li .tweetProfile a:hover {
+	border-bottom:1px solid #444;
+	background:#efefef;
+	}
+#content_aside .twitter_feed_container ul li .tweetStatus {
+	color:#777;
+	font-size:12px;
+	line-height:14px;
+	}
+#content_aside .twitter_feed_container ul li .tweetTime {
+	display:block;
+	text-align:right;
+	color:#ccc;
+	font-size:10px;
+	line-height:11px;
+	}
+	
