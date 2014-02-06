@@ -692,10 +692,25 @@ class EventsEvent extends JTable
 			$where[] = "a.scope=" . $this->_db->quote('group');
 			$where[] = "a.scope_id=" . $this->_db->quote( $filters['scope_id'] ); 
 		}
-		
+
 		$query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
-		$query .= " ORDER BY a.publish_up DESC LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
-		
+		$query .= " ORDER BY a.publish_up DESC";
+
+		if (isset($filters['limit']))
+		{
+			$filters['limit'] = intval($filters['limit']);
+			if ($filters['limit'] > 0)
+			{
+				if (!isset($filters['start']))
+				{
+					$filters['start'] = 0;
+				}
+				$filters['start'] = intval($filters['start']);
+
+				$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			}
+		}
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
