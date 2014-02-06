@@ -76,16 +76,14 @@ class HelperManager
 	 * @var array
 	 */
 	protected $_invokableClasses = array(
-		'partial'   => 'Hubzero\View\Helper\Partial',
-		'truncate'  => 'Hubzero\View\Helper\Truncate',
-		'css'       => 'Hubzero\View\Helper\Css',
-		'js'        => 'Hubzero\View\Helper\Js',
-		'obfuscate' => 'Hubzero\View\Helper\Obfuscate',
 		'autolink'  => 'Hubzero\View\Helper\Autolink',
-		'highlight' => 'Hubzero\View\Helper\Highlight',
-		'paginator' => 'Hubzero\View\Helper\Paginator',
 		'clean'     => 'Hubzero\View\Helper\Clean',
-		'editor'    => 'Hubzero\View\Helper\Editor',
+		//'editor'    => 'Hubzero\View\Helper\Editor',
+		'highlight' => 'Hubzero\View\Helper\Highlight',
+		'obfuscate' => 'Hubzero\View\Helper\Obfuscate',
+		//'paginator' => 'Hubzero\View\Helper\Paginator',
+		//'partial'   => 'Hubzero\View\Helper\Partial',
+		'truncate'  => 'Hubzero\View\Helper\Truncate',
 	);
 
 	/**
