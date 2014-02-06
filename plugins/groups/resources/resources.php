@@ -507,7 +507,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Build query
 		$filters = array();
-		$filters['now'] = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+		$filters['now'] = \JFactory::getDate()->toSql();
 		$filters['sortby'] = $sort;
 		$filters['group'] = $group->get('cn');
 		$filters['access'] = $access;
