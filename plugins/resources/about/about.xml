@@ -41,10 +41,12 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
-			<field name="badges" type="radio" default="0" label="Show User Badges" description="Show User Badges">
-				<option value="0">No</option>
-				<option value="1">Yes</option>
-			</field>
+			<fieldset name="basic">
+				<field name="badges" type="radio" default="0" label="Show User Badges" description="Show User Badges">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+			</fieldset>
 		</fields>
 	</config>
 </extension>
