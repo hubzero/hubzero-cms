@@ -227,6 +227,16 @@ class SiteController extends Object implements ControllerInterface
 			}
 		}
 
+		// get language object & get any loaded lang for option
+		$lang   = \JFactory::getLanguage();
+		$loaded = $lang->getPaths($this->_option);
+
+		// Load language file if we dont have one yet 
+		if (!isset($loaded) || empty($loaded))
+		{
+			$lang->load($this->_option, $this->_basePath . '/../..');
+		}
+
 		// Set some commonly used vars
 		$this->juser    = \JFactory::getUser();
 		$this->database = \JFactory::getDBO();
