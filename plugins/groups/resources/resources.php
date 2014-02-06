@@ -434,7 +434,7 @@ class plgGroupsResources extends Hubzero_Plugin
 
 		$rr = new ResourcesResource($database);
 
-		$database->setQuery("SELECT id FROM ".$rr->getTableName()." AS r WHERE r.group_owner='".$gid."'");
+		$database->setQuery("SELECT id FROM ".$rr->getTableName()." AS r WHERE r.group_owner=".$database->quote($gid));
 		return $database->loadObjectList();
 	}
 
@@ -519,7 +519,7 @@ class plgGroupsResources extends Hubzero_Plugin
 
 		// Build query
 		$filters = array();
-		$filters['now'] = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+		$filters['now'] = \JFactory::getDate()->toSql();
 		$filters['sortby'] = $sort;
 		$filters['group'] = $group->get('cn');
 		$filters['access'] = $access;
