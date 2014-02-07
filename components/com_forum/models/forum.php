@@ -280,7 +280,7 @@ class ForumModel extends ForumModelAbstract
 		$filters['scope']    = isset($filters['scope'])    ? $filters['scope']    : $this->get('scope');
 		$filters['scope_id'] = isset($filters['scope_id']) ? $filters['scope_id'] : $this->get('scope_id');
 		$filters['state']    = isset($filters['state'])    ? $filters['state']    : self::APP_STATE_PUBLISHED;
-		$filters['state']    = isset($filters['parent'])   ? $filters['parent']   : -1;
+		$filters['parent']   = isset($filters['parent'])   ? $filters['parent']   : -1;
 
 		switch (strtolower($rtrn))
 		{
