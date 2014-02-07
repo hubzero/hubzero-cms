@@ -45,9 +45,6 @@ class modLatestDiscussions extends Hubzero_Module
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
-		ximport("Hubzero_Group");
-		ximport("Hubzero_Group_Helper");
-
 		//get the params
 		$this->limit = $this->params->get('limit', 5);
 		$this->charlimit = $this->params->get('charlimit', 100);
@@ -100,6 +97,8 @@ class modLatestDiscussions extends Hubzero_Module
 		$threads = array();
 		$t = array();
 
+		$p = array();
+
 		// Run through all the posts and collect some data
 		foreach ($posts as $k => $post) 
 		{
@@ -123,8 +122,8 @@ class modLatestDiscussions extends Hubzero_Module
 					$posts->remove($k);
 					continue;
 				}
-				$posts[$k]->set('group_alias', $group->get('cn'));
-				$posts[$k]->set('group_title', $group->get('description'));
+				$post->set('group_alias', $group->get('cn'));
+				$post->set('group_title', $group->get('description'));
 			}
 
 			if ($post->get('parent') == 0)
@@ -140,7 +139,11 @@ class modLatestDiscussions extends Hubzero_Module
 				}
 			}
 			$ids[] = $post->get('category_id');
+
+			$p[] = $post;
 		}
+
+		$this->posts = new \Hubzero\Base\ItemList($p);
 
 		// Get any threads not found above
 		if (count($t) > 0)
@@ -171,7 +174,7 @@ class modLatestDiscussions extends Hubzero_Module
 
 		//set posts to view
 		$this->threads = $threads;
-		$this->posts = $posts;
+		//$this->posts = $posts;
 		$this->categories = $categories;
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
