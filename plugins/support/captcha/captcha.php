@@ -505,6 +505,13 @@ class plgSupportCaptcha extends JPlugin
 	 */
 	private function _createImageAdv()
 	{
+		if (!isset($GLOBALS['totalCaptchas']))
+		{
+			$GLOBALS['totalCaptchas'] = -1;
+		}
+
+		$GLOBALS['totalCaptchas']++;
+
 		$alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 		$allowed_symbols = "23456789abcdeghkmnpqsuvxyz";
 
@@ -742,7 +749,7 @@ class plgSupportCaptcha extends JPlugin
 
 		//Set the session to store the security code
 		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']) + 0), $security_code);
+		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
 		$width = 120;
 		$height = 40;
 	}
