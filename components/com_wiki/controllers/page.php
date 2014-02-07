@@ -1049,6 +1049,9 @@ class WikiControllerPage extends Hubzero_Controller
 					$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE'));
 				}
 
+				$cache = JFactory::getCache('callback');
+				$cache->clean('callback');
+
 				// Log the action
 				$log = new WikiLog($this->database);
 				$log->pid       = $this->page->id;
