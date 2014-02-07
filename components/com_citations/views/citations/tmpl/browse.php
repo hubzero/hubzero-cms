@@ -39,7 +39,7 @@ $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
 $rollover = ($rollover == "yes") ? 1 : 0;
 $citationsFormat = new CitationsFormat( $this->database );
-$template = $citationsFormat->getDefaultFormat()->format;
+$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
 //batch downloads
 $batch_download = $this->config->get("citation_batch_download", 1);

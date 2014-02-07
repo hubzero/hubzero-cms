@@ -213,7 +213,7 @@ $area = JRequest::getVar('area', 'about');
 		<div class="citation-citation">
 			<?php
 				$citationsFormat = new CitationsFormat( $this->database );
-				$template = $citationsFormat->getDefaultFormat()->format;
+				$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 				
 				$cf = new CitationFormat();
 				$cf->setTemplate($template);
