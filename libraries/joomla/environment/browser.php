@@ -375,7 +375,10 @@ class JBrowser extends JObject
 			elseif (preg_match('|Chrome[/ ]([0-9.]+)|', $this->_agent, $version))
 			{
 				$this->setBrowser('chrome');
-				list ($this->_majorVersion, $this->_minorVersion) = explode('.', $version[1]);
+				/* [!] HUBZERO - Changed to handle UAS that do not include the minor version (StatusCake) */
+				$bits = explode('.', $version[1]); //list ($this->_majorVersion, $this->_minorVersion)
+				$this->_majorVersion = $bits[0];
+				$this->_minorVersion = (isset($bits[1]) ? $bits[1] : 0);
 				$this->_setFeature('javascript', true);
 			}
 			elseif (preg_match('|CrMo[/ ]([0-9.]+)|', $this->_agent, $version))
