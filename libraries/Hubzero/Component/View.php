@@ -110,7 +110,9 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
-		return \Hubzero_Document::addComponentStylesheet($component, $stylesheet, $type, $media, $attribs);
+		\Hubzero_Document::addComponentStylesheet($component, $stylesheet, $type, $media, $attribs);
+
+		return $this;
 	}
 
 	/**
@@ -145,6 +147,8 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
-		return \Hubzero_Document::addComponentScript($component, $script, $type, $defer, $async);
+		\Hubzero_Document::addComponentScript($component, $script, $type, $defer, $async);
+
+		return $this;
 	}
 }
