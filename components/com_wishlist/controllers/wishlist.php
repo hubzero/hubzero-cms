@@ -330,9 +330,9 @@ class WishlistController extends JObject
 	public function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
-		if ($this->_subtitle) 
+		if ($this->_list_title) 
 		{
-			$this->_title .= ' - ' . $this->_subtitle;
+			$this->_title .= ' - ' . $this->_list_title;
 		}
 		else if ($this->_task) 
 		{
@@ -352,14 +352,12 @@ class WishlistController extends JObject
 	{
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
+		$pathway->setPathway(array());
 
 		$comtitle  = JText::_(strtoupper($this->_option));
 		$comtitle .= $this->_list_title ? ' - ' . $this->_list_title : '';
-
-		if (count($pathway->getPathWay()) <= 0) 
-		{
-			$this->startPath($wishlist, $comtitle, $pathway);
-		}
+		
+		$this->startPath($wishlist, $comtitle, $pathway);
 
 		if ($this->_task) 
 		{
@@ -432,9 +430,15 @@ class WishlistController extends JObject
 			$typenorm = strtolower($typenorm);
 
 			$pathway->addItem(JText::_('Resources'), 'index.php?option=com_resources');
-			$pathway->addItem(ucfirst(JText::_($wishlist->resource->typetitle)), JRoute::_('index.php?option=com_resources&type='.$typenorm));
-			$pathway->addItem(stripslashes($wishlist->resource->title),JRoute::_('index.php?option=com_resources&id='.$wishlist->referenceid));
-			$pathway->addItem(JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->category . '&rid='.$wishlist->referenceid);
+			$pathway->addItem(ucfirst(JText::_($wishlist->resource->typetitle)),
+			 	JRoute::_('index.php?option=com_resources&type='.$typenorm));
+			
+			$pathway->addItem(stripslashes($wishlist->resource->title),
+				JRoute::_('index.php?option=com_resources&id='.$wishlist->referenceid));
+			
+			$pathway->addItem(JText::_(strtoupper($this->_name)), 'index.php?option=' 
+				. $this->_option . '&task=wishlist&category=' . $wishlist->category 
+				. '&rid='.$wishlist->referenceid);
 		}
 		else 
 		{
@@ -443,12 +447,15 @@ class WishlistController extends JObject
 				ximport('Hubzero_Group');
 				$group = Hubzero_Group::getInstance($wishlist->referenceid);
 				$pathway->addItem('Groups','index.php?option=com_groups');
-				$pathway->addItem($group->get('description'), 'index.php?option=com_groups&cn='.$group->get('cn'));
-				$pathway->addItem('Wishlist', 'index.php?option=com_groups&cn='.$group->get('cn').'&active=wishlist');
+				$pathway->addItem($group->get('description'),
+				 	'index.php?option=com_groups&cn='.$group->get('cn'));
+				$pathway->addItem('Wishlist',
+				 	'index.php?option=com_groups&cn='.$group->get('cn').'&active=wishlist');
 			} 
 			else 
 			{
-				$pathway->addItem($title, 'index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->category . '&rid='.$wishlist->referenceid);
+				$pathway->addItem($title, 'index.php?option=' . $this->_option 
+					. '&task=wishlist&category=' . $wishlist->category . '&rid='.$wishlist->referenceid);
 			}
 		}
 	}
@@ -563,8 +570,7 @@ class WishlistController extends JObject
 
 				if ($resource->title && $resource->standalone == 1  && $resource->published == 1) 
 				{
-					$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('COM_WISHLIST_NAME_RESOURCE_TOOL').' '.$resource->alias : JText::_('COM_WISHLIST_NAME_RESOURCE_ID').' '.$resource->id;
-					$id = $obj->createlist($cat, $refid, 1, $rtitle, $resource->title);
+					$id = $obj->createlist($cat, $refid, 1, '', $resource->title);
 				}
 			}
 			else if (!$id && $cat == 'user') 
@@ -636,9 +642,12 @@ class WishlistController extends JObject
 				}
 			}
 
+			$wishlistTitle = $wishlist->category == 'general' 
+				? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+			
 			// Set page title
-			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
-			$this->_subtitle = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) 
+				? $wishlistTitle : '';
 			$this->_buildTitle();
 
 			// Set the pathway
@@ -760,9 +769,13 @@ class WishlistController extends JObject
 			$wishlist->groups 	= $owners['groups'];
 
 			// Set page title
-			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' && isset($wishlist->resource->alias))
+			$wishlistTitle = $wishlist->category == 'general' 
+				? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+				
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' 
+				&& isset($wishlist->resource->alias))
 							? 'tool "' . $wishlist->resource->alias . '"'
-							: $wishlist->title;
+							: $wishlistTitle;
 			if (!$wishlist->public && !$this->_admin) 
 			{
 				$this->_list_title = '';
@@ -770,7 +783,8 @@ class WishlistController extends JObject
 			$this->_buildTitle();
 
 			// Set the pathway
-			$this->_wishpath  = 'index.php?option=' . $this->_option . '&task=wish&category=' . $cat . '&rid=' . $refid . '&wishid='.$wishid;
+			$this->_wishpath  = 'index.php?option=' . $this->_option . '&task=wish&category=' . $cat 
+				. '&rid=' . $refid . '&wishid='.$wishid;
 			$this->_wishtitle = Hubzero_View_Helper_Html::shortenText($wish->subject, 80, 0);
 			$this->_buildPathway($wishlist);
 
@@ -1134,9 +1148,13 @@ class WishlistController extends JObject
 		$this->_getScripts();
 
 		// Set page title
-		$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias))
+		$wishlistTitle = $wishlist->category == 'general' 
+			? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+			
+		$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  
+			&& isset($wishlist->resource->alias))
 						? 'tool "'. $wishlist->resource->alias.'"'
-						: $wishlist->title;
+						: $wishlistTitle;
 		if (!$wishlist->public && !$this->_admin) 
 		{
 			$this->_list_title = '';
@@ -1229,14 +1247,18 @@ class WishlistController extends JObject
 		}
 
 		$wishlist = $obj->get_wishlist($objWish->wishlist);
+		
+		// Set page title
+		$wishlistTitle = $wishlist->category == 'general' 
+			? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
 
 		// Login required
 		if ($juser->get('guest')) 
-		{
-			// Set page title
-			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias))
+		{				
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  
+				&& isset($wishlist->resource->alias))
 						? 'tool "'. $wishlist->resource->alias.'"'
-						: $wishlist->title;
+						: $wishlistTitle;
 			if (!$wishlist->public && !$this->_admin) 
 			{
 				$this->_list_title = '';
@@ -1363,7 +1385,7 @@ class WishlistController extends JObject
 			}
 
 			$message  = '----------------------------'.r.n;
-			$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+			$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', ' . $wishlistTitle.' '.JText::_('WISHLIST').r.n;
 			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
 			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, JText::_('DATE_FORMAT_HZ1'));
 			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
@@ -1463,7 +1485,11 @@ class WishlistController extends JObject
 		}
 
 		// Set page title
-		$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+		$wishlistTitle = $wishlist->category == 'general' 
+			? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+			
+		$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) 
+			? $wishlistTitle : '';
 		$this->_buildTitle();
 
 		// Set the pathway
@@ -1572,6 +1598,15 @@ class WishlistController extends JObject
 		// Get wish list info
 		$objWishlist = new Wishlist ($database);
 		$wishlist = $objWishlist->get_wishlist($listid);
+		
+		if (!$wishlist) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
+			return;
+		}
+		
+		$wishlistTitle = $wishlist->category == 'general' 
+			? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
 
 		// trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
@@ -1706,7 +1741,7 @@ class WishlistController extends JObject
 				}
 			}
 
-			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '.$wishlist->title.' '.JText::_('from').' '.$name;
+			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '.$wishlistTitle.' '.JText::_('from').' '.$name;
 			$from = array();
 			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 			$from['email'] = $jconfig->getValue('config.mailfrom');
@@ -1716,7 +1751,7 @@ class WishlistController extends JObject
 			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
 
 			$message  = '----------------------------'."\r\n";
-			$message .= JText::_('COM_WISHLIST_WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('COM_WISHLIST_WISHLIST')."\r\n";
+			$message .= JText::_('COM_WISHLIST_WISH').' #'.$row->id.', '.$wishlistTitle.' '.JText::_('COM_WISHLIST_WISHLIST')."\r\n";
 			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject)."\r\n";
 			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$row->proposed, JText::_('DATE_FORMAT_HZ1'));
 			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
@@ -1745,7 +1780,7 @@ class WishlistController extends JObject
 		{
 			// put the  amount on hold
 			$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
-			$BTL->hold($reward, JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->id . ' ' . JText::_('COM_WISHLIST_FOR') . ' ' . $wishlist->title, 'wish', $row->id);
+			$BTL->hold($reward, JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->id . ' ' . JText::_('COM_WISHLIST_FOR') . ' ' . $wishlistTitle, 'wish', $row->id);
 		}
 
 		$saved = $wishid ? 2 : 3;
@@ -1791,12 +1826,16 @@ class WishlistController extends JObject
 			// load wish
 			$objWish->load($wishid);
 			$changed = 0;
+			
+			$wishlistTitle = $wishlist->category == 'general' 
+				? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
 
 			// Login required
 			if ($juser->get('guest')) 
 			{
-				// Set page title
-				$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+					
+				$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) 
+					? $wishlistTitle : '';
 				$this->_buildTitle();
 
 				// Set the pathway
@@ -1903,7 +1942,7 @@ class WishlistController extends JObject
 					}
 
 					$message  = '----------------------------'."\r\n";
-					$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('COM_WISHLIST')."\r\n";
+					$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$wishlistTitle.' '.JText::_('COM_WISHLIST')."\r\n";
 					$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject)."\r\n";
 					$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, JText::_('DATE_FORMAT_HZ1'));
 					$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
@@ -2260,14 +2299,17 @@ class WishlistController extends JObject
 			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
+		
+		$wishlistTitle = $wishlist->category == 'general' 
+			? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
 
 		// Login required
 		if ($juser->get('guest')) 
-		{
-			// Set page title
-			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias))
+		{				
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  
+				&& isset($wishlist->resource->alias))
 						? 'tool "' . $wishlist->resource->alias . '"'
-						: $wishlist->title;
+						: $wishlistTitle;
 			if (!$wishlist->public && !$this->_admin) 
 			{
 				$this->_list_title = '';
@@ -2306,7 +2348,7 @@ class WishlistController extends JObject
 
 		// put the  amount on hold
 		$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
-		$BTL->hold($amount, JText::_('COM_WISHLIST_BANKING_HOLD').' #'.$wishid.' '.JText::_('COM_WISHLIST_FOR').' '.$wishlist->title, 'wish', $wishid);
+		$BTL->hold($amount, JText::_('COM_WISHLIST_BANKING_HOLD').' #'.$wishid.' '.JText::_('COM_WISHLIST_FOR').' '.$wishlistTitle, 'wish', $wishid);
 
 		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 
@@ -2349,9 +2391,13 @@ class WishlistController extends JObject
 			if ($juser->get('guest')) 
 			{
 				// Set page title
-				$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' && isset($wishlist->resource->alias))
+				$wishlistTitle = $wishlist->category == 'general' 
+					? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+					
+				$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' 
+					&& isset($wishlist->resource->alias))
 							? 'tool "' . $wishlist->resource->alias . '"'
-							: $wishlist->title;
+							: $wishlistTitle;
 				if (!$wishlist->public && !$this->_admin) 
 				{
 					$this->_list_title = '';
@@ -2463,9 +2509,13 @@ class WishlistController extends JObject
 		if ($juser->get('guest')) 
 		{
 			// Set page title
-			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' && isset($wishlist->resource->alias))
+			$wishlistTitle = $wishlist->category == 'general' 
+				? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+				
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' 
+				&& isset($wishlist->resource->alias))
 						? 'tool "' . $wishlist->resource->alias . '"'
-						: $wishlist->title;
+						: $wishlistTitle;
 			if (!$wishlist->public && !$this->_admin) 
 			{
 				$this->_list_title = '';
@@ -2720,9 +2770,13 @@ class WishlistController extends JObject
 		}
 
 		// Set page title
-		$this->_list_title = (isset($wishlist->resource) && $wishlist->resource->type=='7' && isset($wishlist->resource->alias))
+		$wishlistTitle = $wishlist->category == 'general' 
+			? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+		
+		$this->_list_title = (isset($wishlist->resource) && $wishlist->resource->type=='7' 
+			&& isset($wishlist->resource->alias))
 					? 'tool "' . $wishlist->resource->alias . '"'
-					: $wishlist->title;
+					: $wishlistTitle;
 		if (!$wishlist->public && !$this->_admin) 
 		{
 			$this->_list_title = '';
@@ -2838,7 +2892,7 @@ class WishlistController extends JObject
 				// for others included in the conversation thread.
 				$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
 
-				$message  = JText::_('COM_WISHLIST_WISH').' #'.$wishid.', '.$wishlist->title.' '.JText::_('COM_WISHLIST') . "\r\n";
+				$message  = JText::_('COM_WISHLIST_WISH').' #'.$wishid.', '.$wishlistTitle.' '.JText::_('COM_WISHLIST') . "\r\n";
 				$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject) . "\r\n";
 				$message .= '----------------------------' . "\r\n";
 				$message .= JText::_('COM_WISHLIST_MSG_COMMENT_BY').' '.$name.' ';
@@ -2985,8 +3039,12 @@ class WishlistController extends JObject
 			$obj = new Wishlist($database);
 			$wishlist = $obj->get_wishlist($listid, $rid, $cat);
 
+			$wishlistTitle = $wishlist->category == 'general' 
+				? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+			
 			// Set page title
-			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) 
+				? $wishlistTitle : '';
 			$this->_buildTitle();
 
 			// Set the pathway
@@ -3040,8 +3098,12 @@ class WishlistController extends JObject
 		// Login required
 		if ($juser->get('guest')) 
 		{
+			$wishlistTitle = $wishlist->category == 'general' 
+				? $wishlist->title : ucfirst($wishlist->category) . ' #' . $wishlist->referenceid;
+			
 			// Set page title
-			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) 
+				? $wishlistTitle : '';
 			$this->_buildTitle();
 
 			// Set the pathway

@@ -224,7 +224,7 @@ class Wishlist extends JTable
 				// resources can only have one list
 				if (!$this->get_wishlist('', $refid, 'resource')) 
 				{
-					$this->title = $title ? $title : 'Resource #' . $rid;
+					$this->title = $title ? $title : 'Resource #' . $refid;
 
 					if (!$this->store()) 
 					{
@@ -243,7 +243,20 @@ class Wishlist extends JTable
 			break;
 
 			case 'group':
-				$this->title = $title ? $title : 'Group #' . $rid;
+				$this->title = $title ? $title : 'Group #' . $refid;
+				if (!$this->store()) 
+				{
+					$this->_error = $this->getError();
+					return false;
+				}
+				// Checkin wishlist
+				$this->checkin();
+
+				return $this->id;
+			break;
+			
+			case 'publication':
+				$this->title = $title ? $title : 'Publication #' . $refid;
 				if (!$this->store()) 
 				{
 					$this->_error = $this->getError();
