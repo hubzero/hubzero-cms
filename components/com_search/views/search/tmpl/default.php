@@ -32,9 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Push some resources to the tmeplate
-ximport('Hubzero_Document');
-Hubzero_Document::addComponentStyleSheet('com_search');
-Hubzero_Document::addComponentScript('com_search', 'assets/js/search');
+$this->css()
+     ->js();
 
 $show_weight = array_key_exists('show_weight', $_GET);
 ?>
@@ -130,8 +129,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<ol class="results">
 			<?php foreach ($this->results as $res) : ?>
 				<li>
-					<p class="title"><a href="<?php $res->get_link(); ?>"><?php echo $res->get_highlighted_title(); ?></a></p>
 					<?php $before = $this->app->triggerEvent('onBeforeSearchRender' . $res->get_plugin(), array($res)); ?>
+					<p class="title"><a href="<?php echo $res->get_link(); ?>"><?php echo $res->get_highlighted_title(); ?></a></p>
 					<div class="summary">
 						<?php if ($res->has_metadata()): ?>
 							<p class="details">
