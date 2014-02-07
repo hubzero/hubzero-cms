@@ -732,7 +732,7 @@ class CitationFormat
 				$html = '<ul class="tags badges">';
 				foreach ($badges as $badge) 
 				{
-					$html .= '<li><a>' . stripslashes($badge['raw_tag']) . '</a></li>';
+					$html .= '<li><a href="javascript:void(0);">' . stripslashes($badge['raw_tag']) . '</a></li>';
 				}
 				$html .= "</ul>";
 				return $html;
@@ -775,7 +775,6 @@ class CitationFormat
 			if($includeHtml)
 			{
 				$html  = '<ul class="tags">';
-				$html .= '<li>Tags: </li>';
 				foreach ($tags as $tag) 
 				{
 					$cls = ($tag['admin']) ? 'admin' : '';
