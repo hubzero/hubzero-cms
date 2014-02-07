@@ -47,6 +47,49 @@ class ForumModelAttachment extends ForumModelAbstract
 	protected $_tbl_name = 'ForumTableAttachment';
 
 	/**
+	 * Constructor
+	 * 
+	 * @param      mixed   $oid        ID (integer), alias (string), array or object
+	 * @param      integer $section_id Section ID
+	 * @return     void
+	 */
+	public function __construct($oid=null, $pid=null)
+	{
+		$this->_db = JFactory::getDBO();
+
+		$cls = $this->_tbl_name;
+		$this->_tbl = new $cls($this->_db);
+
+		if (!($this->_tbl instanceof JTable))
+		{
+			$this->_logError(
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . JText::_('Table class must be an instance of JTable.')
+			);
+			throw new LogicException(JText::_('Table class must be an instance of JTable.'));
+		}
+
+		if ($oid)
+		{
+			if (is_numeric($oid))
+			{
+				$this->_tbl->load($oid);
+			}
+			else if (is_string($oid))
+			{
+				$this->_tbl->loadByAlias($oid, $section_id);
+			}
+			else if (is_object($oid) || is_array($oid))
+			{
+				$this->bind($oid);
+			}
+		} 
+		else if ($pid)
+		{
+			$this->_tbl->loadByPost($pid);
+		}
+	}
+
+	/**
 	 * Returns a reference to a forum post attachment model
 	 *
 	 * @param      mixed   $oid ID (int), alias (string), array, or object
