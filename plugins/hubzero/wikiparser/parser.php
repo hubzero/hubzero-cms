@@ -85,6 +85,7 @@ class WikiParser
 		'pageid'   => null,
 		'filepath' => null,
 		'domain'   => null,
+		'macros'   => true,
 
 		'fullparse' => true,
 		'camelcase' => true,
@@ -311,7 +312,10 @@ class WikiParser
 
 		// Process macros
 		// Individual macros determine if they're allowed in fullparse mode or not
-		$text = $this->macros($text);
+		if ($this->get('macros', true)) 
+		{
+			$text = $this->macros($text);
+		}
 
 		// Do quotes. '''stuff''' => <strong>stuff</strong>
 		$text = $this->quotes($text);
