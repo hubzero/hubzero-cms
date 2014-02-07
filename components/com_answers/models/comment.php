@@ -46,6 +46,13 @@ class AnswersModelComment extends AnswersModelAbstract
 	protected $_tbl_name = '\\Hubzero\\Item\\Comment';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_answers.comment.content';
+
+	/**
 	 * Class scope
 	 * 
 	 * @var string
@@ -172,14 +179,17 @@ class AnswersModelComment extends AnswersModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('content.parsed'))
+				if ($this->get('content.parsed') !== null)
 				{
-					return $this->get('content.parsed');
+					$content = $this->get('content.parsed');
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
-
-				$wikiconfig = array(
+				$config = array(
 					'option'   => 'com_answers',
 					'scope'    => 'question',
 					'pagename' => $this->get('id'),
@@ -188,15 +198,17 @@ class AnswersModelComment extends AnswersModelAbstract
 					'domain'   => ''
 				);
 
-				$this->set('content.parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig));
+				$content = stripslashes($this->get('content'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
 
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($this->get('content.parsed'), $shorten, array('html' => true));
-					return $content;
-				}
+				$this->set('content.parsed', $this->get('content'));
+				$this->set('content', $content);
 
-				return $this->get('content.parsed');
+				return $this->content('parsed');
 			break;
 
 			case 'clean':

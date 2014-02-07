@@ -49,6 +49,13 @@ class AnswersModelResponse extends AnswersModelAbstract
 	protected $_tbl_name = 'AnswersTableResponse';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_answers.response.answer';
+
+	/**
 	 * Class scope
 	 * 
 	 * @var string
@@ -177,14 +184,17 @@ class AnswersModelResponse extends AnswersModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('answer_parsed'))
+				if ($this->get('answer_parsed') !== null)
 				{
-					return $this->get('answer_parsed');
+					$content = $this->get('answer_parsed');
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
-
-				$wikiconfig = array(
+				$config = array(
 					'option'   => 'com_answers',
 					'scope'    => 'question',
 					'pagename' => $this->get('id'),
@@ -193,19 +203,17 @@ class AnswersModelResponse extends AnswersModelAbstract
 					'domain'   => ''
 				);
 
-				$this->set('answer_parsed', $p->parse(stripslashes($this->get('answer')), $wikiconfig));
+				$content = stripslashes($this->get('answer'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
 
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($this->get('answer_parsed'), $shorten, array('html' => true));
-					if (substr($content, -7) == '&#8230;') 
-					{
-						$content .= '</p>';
-					}
-					return $content;
-				}
+				$this->set('answer_parsed', $this->get('answer'));
+				$this->set('answer', $content);
 
-				return $this->get('answer_parsed');
+				return $this->content('parsed');
 			break;
 
 			case 'clean':
