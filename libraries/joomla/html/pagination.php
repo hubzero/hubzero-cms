@@ -81,10 +81,16 @@ class JPagination extends JObject
 			$this->limitstart = 0;
 		}
 
+		// Set the pagination iteration loop values.
+		$displayedPages = 10;
+
 		if (!$this->limit)
 		{
 			$this->limit = $total;
 			$this->limitstart = 0;
+			//$displayedPages = 1;
+			// If we are viewing all records set the view all flag to true.
+			$this->_viewall = true;
 		}
 
 		/*
@@ -108,31 +114,7 @@ class JPagination extends JObject
 			$this->set('pages.current', $this->limitstart + 1);
 		}
 
-		// Set the pagination iteration loop values.
-		$displayedPages = 10;
-
 		// Completely rewritten to center active page - zooley (2012-08-10)
-		/*$this->set('pages.start', $this->get('pages.current') - ($displayedPages / 2));
-		if ($this->get('pages.start') < 1)
-		{
-			$this->set('pages.start', 1);
-		}
-		if (($this->get('pages.start') + $displayedPages) > $this->get('pages.total'))
-		{
-			$this->set('pages.stop', $this->get('pages.total'));
-			if ($this->get('pages.total') < $displayedPages)
-			{
-				$this->set('pages.start', 1);
-			}
-			else
-			{
-				$this->set('pages.start', $this->get('pages.total') - $displayedPages + 1);
-			}
-		}
-		else
-		{
-			$this->set('pages.stop', ($this->get('pages.start') + $displayedPages - 1));
-		}*/
 		$this->set('pages.middle', ceil($displayedPages / 2));
 
 		$start_loop = $this->get('pages.current') - $this->get('pages.middle') + 1;
@@ -153,12 +135,6 @@ class JPagination extends JObject
 		$this->set('pages.i', $i);
 		$this->set('pages.start', $start_loop);
 		$this->set('pages.stop', $stop_loop);
-
-		// If we are viewing all records set the view all flag to true.
-		if ($limit == 0)
-		{
-			$this->_viewall = true;
-		}
 	}
 
 	/**
@@ -740,7 +716,7 @@ class JPagination extends JObject
 			//$offset = $offset == 0 ? '' : $offset;
 
 			$data->pages[$i] = new JPaginationObject($i, $this->prefix);
-			if ($i != $this->get('pages.current') || $this->_viewall)
+			if ($i != $this->get('pages.current')) // || $this->_viewall)
 			{
 				$data->pages[$i]->rel  = (($i + 1) == $this->get('pages.current')) ? 'prev' : '';
 				$data->pages[$i]->rel  = (($i - 1) == $this->get('pages.current')) ? 'next' : $data->pages[$i]->rel;
@@ -748,6 +724,7 @@ class JPagination extends JObject
 				$data->pages[$i]->link = JRoute::_($params . '&' . $this->prefix . 'limitstart=' . $offset);
 			}
 		}
+
 		return $data;
 	}
 }
