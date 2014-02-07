@@ -585,7 +585,7 @@ class BlogModelEntry extends \Hubzero\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('content_parsed'));
+				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
 					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
