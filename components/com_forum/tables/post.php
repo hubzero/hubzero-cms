@@ -399,7 +399,7 @@ class ForumTablePost extends JTable
 			}
 			if (!isset($filters['sort']) || !$filters['sort']) 
 			{
-				$filters['sort'] = 'c.created';
+				$filters['sort'] = 'c.id';
 			}
 			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
 			{
@@ -481,14 +481,14 @@ class ForumTablePost extends JTable
 				{
 					if (!isset($filters['sort']) || !$filters['sort']) 
 					{
-						$filters['sort'] = 'activity DESC, c.created';
+						$filters['sort'] = 'activity DESC, c.id';
 					}
 				} 
 				else 
 				{
 					if (!isset($filters['sort']) || !$filters['sort']) 
 					{
-						$filters['sort'] = 'c.sticky DESC, activity DESC, c.created';
+						$filters['sort'] = 'c.sticky DESC, activity DESC, c.id';
 					}
 				}
 				if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
@@ -658,7 +658,7 @@ class ForumTablePost extends JTable
 				{
 					if (!isset($filters['sort']) || !$filters['sort']) 
 					{
-						$filters['sort'] = 'activity DESC, c.created';
+						$filters['sort'] = 'activity DESC, c.id';
 					}
 					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
 					{
@@ -672,7 +672,7 @@ class ForumTablePost extends JTable
 					{
 						$filters['sort_Dir'] = 'DESC';
 					}
-					$query .= " ORDER BY c.sticky DESC, activity DESC, c.created " . $filters['sort_Dir'];
+					$query .= " ORDER BY c.sticky DESC, activity DESC, c.id " . $filters['sort_Dir'];
 				}
 			}
 
@@ -828,14 +828,14 @@ class ForumTablePost extends JTable
 			{
 				if (!isset($filters['sort']) || !$filters['sort']) 
 				{
-					$filters['sort'] = 'activity DESC, c.created';
+					$filters['sort'] = 'activity DESC, c.id';
 				}
 			} 
 			else 
 			{
 				if (!isset($filters['sort']) || !$filters['sort']) 
 				{
-					$filters['sort'] = 'c.sticky DESC, activity DESC, c.created';
+					$filters['sort'] = 'c.sticky DESC, activity DESC, c.id';
 				}
 			}
 			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
@@ -955,7 +955,7 @@ class ForumTablePost extends JTable
 			return null;
 		}
 
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " AND r.state=1 ORDER BY created DESC LIMIT 1";
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " AND r.state=1 ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$obj = $this->_db->loadObject();
@@ -991,7 +991,7 @@ class ForumTablePost extends JTable
 		{
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
-		$query .= " ORDER BY created DESC LIMIT 1";
+		$query .= " ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$obj = $this->_db->loadObject();
