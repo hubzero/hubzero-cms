@@ -129,6 +129,11 @@ class plgContentFormatwiki extends JPlugin
 			$params['fullparse'] = true;
 		}
 
+		if ($this->params->get('convertFormat'))
+		{
+			$params['macros'] = false;
+		}
+
 		// Trigger the onFinderBeforeSave event.
 		$results = $dispatcher->trigger('onWikiParseText', array($content, $params, $params['fullparse'], true));
 		$content = implode('', $results);
