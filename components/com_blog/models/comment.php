@@ -46,6 +46,13 @@ class BlogModelComment extends \Hubzero\Base\Model
 	protected $_tbl_name = 'BlogTableComment';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_blog.comment.content';
+
+	/**
 	 * JUser
 	 * 
 	 * @var object
@@ -159,11 +166,11 @@ class BlogModelComment extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof Hubzero_User_Profile))
 		{
 			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		if ($property && $this->_creator instanceof Hubzero_User_Profile)
+		if ($property)
 		{
 			$property = ($property == 'id') ? 'uidNumber' : $property;
 			if ($property == 'picture')
@@ -292,14 +299,15 @@ class BlogModelComment extends \Hubzero\Base\Model
 					'domain'   => ''
 				);
 
-				$content = $this->importPlugin('hubzero')->trigger('onWikiParseText', array(
-					stripslashes($this->get('content')), 
-					$config,  // options
-					false,     // full parse
-					false      // new parser?
+				$content = stripslashes($this->get('content'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
 				));
 
-				$this->set('content_parsed', implode('', $content));
+				$this->set('content_parsed', $this->get('content'));
+				$this->set('content', $content);
 
 				return $this->content($as, $shorten);
 			break;

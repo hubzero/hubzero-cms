@@ -48,6 +48,13 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	protected $_tbl_name = 'BlogTableEntry';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_blog.entry.content';
+
+	/**
 	 * BlogModelComment
 	 * 
 	 * @var object
@@ -123,12 +130,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			$this->bind($oid);
 		}
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$this->params = new $paramsClass($this->_tbl->get('params'));
+		$this->params = new JRegistry($this->_tbl->get('params'));
 	}
 
 	/**
@@ -153,7 +155,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid])) 
 		{
-			$instances[$oid] = new BlogModelEntry($oid, $scope, $group_id);
+			$instances[$oid] = new self($oid, $scope, $group_id);
 		}
 
 		return $instances[$oid];
@@ -242,11 +244,11 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof Hubzero_User_Profile))
 		{
 			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		if ($property && $this->_creator instanceof Hubzero_User_Profile)
+		if ($property)
 		{
 			$property = ($property == 'id') ? 'uidNumber' : $property;
 			if ($property == 'picture')
@@ -270,7 +272,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		 || ($id !== null && (int) $this->_comment->get('id') != $id))
 		{
 			$this->_comment = null;
-			if (isset($this->_comments) && ($this->_comments instanceof \Hubzero\Base\ItemList))
+			if ($this->_comments instanceof \Hubzero\Base\ItemList)
 			{
 				foreach ($this->_comments as $key => $comment)
 				{
@@ -547,7 +549,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'parsed':
-				if (($content = $this->get('content_parsed')))
+				if ($content = $this->get('content_parsed'))
 				{
 					if ($shorten)
 					{
@@ -568,20 +570,21 @@ class BlogModelEntry extends \Hubzero\Base\Model
 					'domain'   => ''
 				);
 
-				$content = $this->importPlugin('hubzero')->trigger('onWikiParseText', array(
-					stripslashes($this->get('content')), 
-					$config,  // options
-					true,     // full parse
-					true      // new parser?
+				$content = stripslashes($this->get('content'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
 				));
 
-				$this->set('content_parsed', implode('', $content));
+				$this->set('content_parsed', $this->get('content')); //implode('', $content));
+				$this->set('content', $content);
 
 				return $this->content($as, $shorten);
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('content_parsed'));
+				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);
