@@ -65,7 +65,7 @@ class plgSearchBlogs extends SearchPlugin
 		}
 
 		$date = JFactory::getDate();
-		$now = $date->toMySQL();
+		$now = $date->toSql();
 
 		$terms = $request->get_term_ar();
 		$weight = '(match(be.title, be.content) against (\''.join(' ', $terms['stemmed']).'\'))';
