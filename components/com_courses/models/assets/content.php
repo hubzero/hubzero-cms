@@ -77,6 +77,13 @@ class ContentAssetHandler extends AssetHandler
 		$this->asset['created_by'] = JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = JRequest::getInt('course_id', 0);
 
+		// Check whether asset should be graded
+		if ($graded = JRequest::getInt('graded', false))
+		{
+			$this->asset['graded']       = $graded;
+			$this->asset['grade_weight'] = 'homework';
+		}
+
 		// Save the asset
 		if (!$assetObj->save($this->asset))
 		{
@@ -148,6 +155,27 @@ class ContentAssetHandler extends AssetHandler
 		$this->asset['created_by'] = $assetObj->created_by;
 		$this->asset['course_id']  = $assetObj->course_id;
 		$this->asset['state']      = $assetObj->state;
+
+		// If we have a state coming in as an int
+		if ($graded = JRequest::getInt('graded', false))
+		{
+			$this->asset['graded'] = $graded;
+			// By default, weight asset as a 'homework' type
+			$grade_weight = $assetObj->grade_weight;
+			if (empty($grade_weight))
+			{
+				$this->asset['grade_weight'] = 'homework';
+			}
+			else
+			{
+				$this->asset['grade_weight'] = $grade_weight;
+			}
+		}
+		elseif ($graded = JRequest::getInt('edit_graded', false))
+		{
+			$this->asset['graded'] = 0;
+			$this->asset['grade_weight'] = $assetObj->grade_weight;
+		}
 
 		// Save the asset
 		if (!$assetObj->save($this->asset))

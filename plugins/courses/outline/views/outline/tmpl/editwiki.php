@@ -126,6 +126,12 @@ $asset = new CoursesModelAsset($id);
 			</select>
 		</p>
 
+		<p>
+			<label for="graded">Create a gradebook entry for this item?</label>
+			<input name="graded" type="checkbox" value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
+			<input type="hidden" name="edit_graded" value="1" />
+		</p>
+
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
