@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Hubzero\Content;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -36,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 * 
 * @TODO: add flag to ignore development scripts?
 */
-class Hubzero_Migration
+class Migration
 {
 	/**
 	 * Document root in which to search for migration scripts
@@ -60,18 +62,11 @@ class Hubzero_Migration
 	private static $db = null;
 
 	/**
-	 * Logging type (ex: stdout, php error log)
-	 *
-	 * @var string
-	 **/
-	private $log_type = array('error_log');
-
-	/**
-	 * Log messages themselves (stored as array to return to browser, or something that won't stream output)
+	 * Log messages themselves (stored as array to return to browser, or other client)
 	 *
 	 * @var array
 	 **/
-	private $internal_log = array();
+	private $log = array();
 
 	/**
 	 * Date of last migrations run - implicit by last log entry
@@ -84,78 +79,24 @@ class Hubzero_Migration
 	 * Constructor
 	 *
 	 * @param $docroot - default null, which should then resolve to hub docroot
-	 * @param $log_type - additional location to log updates/errors
 	 * @return void
 	 **/
-	public function __construct($docroot=null, $log_type=null)
+	public function __construct($docroot=null)
 	{
 		// Try to determine the document root if none provided
 		if (is_null($docroot))
 		{
-			if (is_file(dirname(dirname(dirname(__FILE__))) . '/configuration.php'))
-			{
-				$this->docroot = dirname(dirname(dirname(__FILE__)));
-			}
-			else
-			{
-				$conf = '/etc/hubzero.conf';
-				if (is_file($conf) && is_readable($conf))
-				{
-					$content = file_get_contents($conf);
-					preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-					if (isset($matches[1]))
-					{
-						$this->docroot = $matches[1];
-					}
-				}
-				else
-				{
-					// Can't retrieve default docroot
-					$this->log('Could not detect default document root, and none provided.');
-					return false;
-				}
-			}
+			$this->docroot = JPATH_ROOT;
 		}
 		else
 		{
 			$this->docroot = rtrim($docroot, '/');
 		}
 
-		// Set the log type if one is given
-		if (is_string($log_type))
-		{
-			$this->log_type[] = $log_type;
-		}
-		elseif (is_array($log_type))
-		{
-			$this->log_type = array_merge($log_type, $this->log_type);
-		}
-
-		// If log type includes error log and stdout, but no cli error log destination is set, only use one of the two
-		// If no error_log path is set, it seems to just echo instead of writing to a file, effectively printing messages twice
-		$path = ini_get('error_log');
-		if (empty($path)
-			&& in_array('stdout', $this->log_type)
-			&& in_array('error_log', $this->log_type)
-			&& php_sapi_name() == 'cli')
-		{
-			$key = array_search('error_log', $this->log_type);
-			if ($key !== false)
-			{
-				unset($this->log_type[$key]);
-			}
-		}
-
-		// Setup joomla environment
-		if (php_sapi_name() == 'cli' && !defined('DS'))
-		{
-			$this->joomlaInit();
-		}
-
 		// Setup the database connection
 		if (!self::$db = $this->getDBO())
 		{
-			$this->log('Error: database connection failed.');
+			$this->log('Error: database connection failed.', 'error');
 			return false;
 		}
 
@@ -179,91 +120,9 @@ class Hubzero_Migration
 		}
 		catch (PDOException $e)
 		{
-			$this->log('Error: failed to look up last migrations log entry.');
+			$this->log('Error: failed to look up last migrations log entry.', 'error');
 			return false;
 		}
-	}
-
-	/**
-	 * Setup Joomla environment
-	 *
-	 * @return class var
-	 **/
-	private function joomlaInit()
-	{
-		// See if this looks like a valid joomla document root
-		if (file_exists($this->docroot . '/configuration.php'))
-		{
-			$docroot = $this->docroot;
-		}
-		else
-		{
-			if (is_file(is_file(dirname(dirname(dirname(__FILE__))) . '/configuration.php')))
-			{
-				$docroot = dirname(dirname(dirname(__FILE__)));
-			}
-			else
-			{
-				// We couldn't find a config file in the provided doc root, so try to find one another way
-				$conf = '/etc/hubzero.conf';
-				if (is_file($conf) && is_readable($conf))
-				{
-					$content = file_get_contents($conf);
-					preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-
-					if (isset($matches[1]))
-					{
-						$docroot = rtrim($matches[1], '/');
-					}
-					else
-					{
-						$this->log('Could not find a reasonable Joomla document root.');
-						return false;
-					}
-				}
-				else
-				{
-					$this->log('Could not find a HUBzero configuration file');
-					return false;
-				}
-			}
-		}
-
-		define('DS', '/');
-		define('JPATH_ROOT',          $docroot);
-		define('JPATH_BASE',          JPATH_ROOT);
-		define('JPATH_SITE',          JPATH_ROOT);
-		define('JPATH_CONFIGURATION', JPATH_ROOT);
-		define('JPATH_INSTALLATION',  JPATH_ROOT . DS . 'installation');
-		define('JPATH_ADMINISTRATOR', JPATH_ROOT . DS . 'administrator');
-		define('JPATH_LIBRARIES',     JPATH_ROOT . DS . 'libraries');
-		define('JPATH_XMLRPC',        JPATH_ROOT . DS . 'xmlrpc');
-		define('JPATH_THEMES',        JPATH_BASE . DS . 'templates');
-		define('JPATH_CACHE',         JPATH_BASE . DS . 'cache');
-		define('JPATH_MANIFESTS',     JPATH_ADMINISTRATOR . DS . 'manifests');
-
-		if (is_file(JPATH_LIBRARIES.DS.'cms.php'))
-		{
-			require_once JPATH_BASE.DS.'includes'.DS.'framework.php';
-		}
-		else
-		{
-			require_once JPATH_LIBRARIES.DS.'loader.php';
-		}
-
-		JLoader::import('joomla.error.error');
-		JLoader::import('joomla.factory');
-		JLoader::import('joomla.base.object');
-		JLoader::import('joomla.database.database');
-
-		if (!defined('JVERSION'))
-		{
-			JLoader::import('joomla.version');
-			$version = new JVersion();
-			define('JVERSION', $version->getShortVersion());
-		}
-
-		JFactory::getApplication('site');
 	}
 
 	/**
@@ -299,41 +158,14 @@ class Hubzero_Migration
 		}
 		else
 		{
-			if (is_file(is_file(dirname(dirname(dirname(__FILE__))) . '/configuration.php')))
-			{
-				$docroot = dirname(dirname(dirname(__FILE__)));
-			}
-			else
-			{
-				// We couldn't find a config file in the provided doc root, so try to find one another way
-				$conf = '/etc/hubzero.conf';
-				if (is_file($conf) && is_readable($conf))
-				{
-					$content = file_get_contents($conf);
-					preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-
-					if (isset($matches[1]))
-					{
-						require_once $matches[1] . '/configuration.php';
-					}
-					else
-					{
-						$this->log('Could not find a Joomla configuration file');
-						return false;
-					}
-				}
-				else
-				{
-					$this->log('Could not find a HUBzero configuration file');
-					return false;
-				}
-			}
+			$this->log('Error: document root does not contain a configuration file', 'error');
+			return false;
 		}
 
 		// Instantiate a config object
-		$config = new JConfig();
+		$config = new \JConfig();
 
-		$db = JDatabase::getInstance(
+		$db = \JDatabase::getInstance(
 			array(
 				'driver'   => 'pdo',
 				'host'     => $config->host,
@@ -347,7 +179,7 @@ class Hubzero_Migration
 		// Test the connection
 		if (!$db->connected())
 		{
-			$this->log('PDO connection failed');
+			$this->log('PDO connection failed', 'error');
 			return false;
 		}
 
@@ -392,7 +224,7 @@ class Hubzero_Migration
 			}
 			else
 			{
-				$this->log("Provided file ({$file}) could not be found.");
+				$this->log("Provided file ({$file}) could not be found.", 'error');
 				return false;
 			}
 		}
@@ -430,10 +262,9 @@ class Hubzero_Migration
 	 * @param $dryrun      - run the udpate, but only display what would be changed, wihthout actually doing anything
 	 * @param $ignoreDates - run the update on all files found lacking entries in the db, not just those after the last run date
 	 * @param $logOnly     - run the update, and mark as run, but don't actually run sql (usefully to mark changes that had already been made manually)
-	 * @param $print       - print the contents of effected files
 	 * @return bool - success
 	 **/
-	public function migrate($direction='up', $force=false, $dryrun=false, $ignoreDates=false, $logOnly=false, $print=false)
+	public function migrate($direction='up', $force=false, $dryrun=false, $ignoreDates=false, $logOnly=false)
 	{
 		// Make sure we have files
 		if (empty($this->files))
@@ -452,11 +283,6 @@ class Hubzero_Migration
 		if ($ignoreDates)
 		{
 			$this->log("Ignore dates: all eligible files will be included!");
-		}
-
-		if ($print)
-		{
-			$contents = array();
 		}
 
 		// Loop through files and run their '$direction' method
@@ -484,7 +310,7 @@ class Hubzero_Migration
 						// or if it hasn't been run at all and we're not going down
 						if ($row != $direction || (!$row && $direction != 'down'))
 						{
-							$this->log("Migration {$direction}() in {$file} has not been run and should be (by using the -i option)");
+							$this->log("Migration {$direction}() in {$file} has not been run and should be (by using the -i option)", 'warning');
 						}
 
 						continue;
@@ -493,7 +319,7 @@ class Hubzero_Migration
 				else
 				{
 					// Filename did not contain a valid date
-					$this->log("File did not contain a valid date ({$file}).");
+					$this->log("File did not contain a valid date ({$file}).", 'warning');
 					continue;
 				}
 			}
@@ -549,7 +375,7 @@ class Hubzero_Migration
 			// Include the file
 			if (!is_file($fullpath))
 			{
-				$this->log("{$fullpath} is not a valid file");
+				$this->log("{$fullpath} is not a valid file", 'warning');
 				continue;
 			}
 			else
@@ -563,25 +389,21 @@ class Hubzero_Migration
 			// Make sure file and classname match
 			if (!class_exists($class))
 			{
-				$this->log("{$info['filename']} does not have a class of the same name");
+				$this->log("{$info['filename']} does not have a class of the same name", 'warning');
 				continue;
 			}
 
 			// Check if we're making a dry run, or only logging changes
-			if ($dryrun || $logOnly || $print)
+			if ($dryrun || $logOnly)
 			{
 				if ($dryrun)
 				{
-					$this->log("Would run {$direction}() {$file}", true, "1;32");
+					$this->log("Would run {$direction}() {$file}", 'success');
 				}
 				elseif ($logOnly)
 				{
 					$this->recordMigration($file, $hash, $direction);
-					$this->log("Marking as run: {$direction}() in {$file}");
-				}
-				elseif ($print)
-				{
-					$contents[] = array('filename'=>$info['filename'], 'content'=>file_get_contents($fullpath));
+					$this->log("Marking as run: {$direction}() in {$file}", 'success');
 				}
 			}
 			else
@@ -593,7 +415,7 @@ class Hubzero_Migration
 					{
 						if ($class::pre(self::$db) === false)
 						{
-							$this->log("Running pre() returned false {$file}");
+							$this->log("Running pre() returned false {$file}", 'warning');
 							continue;
 						}
 
@@ -601,7 +423,7 @@ class Hubzero_Migration
 					}
 					catch (PDOException $e)
 					{
-						$this->log("Error: running pre() resulted in\n\n{$e}\n\nin {$file}");
+						$this->log("Error: running pre() resulted in\n\n{$e}\n\nin {$file}", 'error');
 						return false;
 					}
 				}
@@ -619,25 +441,25 @@ class Hubzero_Migration
 							{
 								// Completely failed...stop immediately
 								$message = (isset($result->error->message) && !empty($result->error->message)) ? $result->error->message : '[no message provided]';
-								$this->log("Error: running {$direction}() resulted in a fatal error in {$file}: {$message}", true);
+								$this->log("Error: running {$direction}() resulted in a fatal error in {$file}: {$message}", 'error');
 								return false;
 							}
 							else if (isset($result->error->type) && $result->error->type == 'warning')
 							{
 								// Just a warning...display message and carry on (my wayward son)
 								$message = (isset($result->error->message) && !empty($result->error->message)) ? $result->error->message : '[no message provided]';
-								$this->log("Warning: running {$direction}() resulted in a non-fatal error in {$file}: {$message}", true);
+								$this->log("Warning: running {$direction}() resulted in a non-fatal error in {$file}: {$message}", 'warning');
 								// Continue...i.e. don't log that this migration was run, so it shows up again on the next run
 								continue;
 							}
 						}
 
 						$this->recordMigration($file, $hash, $direction);
-						$this->log("Running {$direction}() in {$file}");
+						$this->log("Running {$direction}() in {$file}", 'success');
 					}
 					catch (PDOException $e)
 					{
-						$this->log("Error: running {$direction}() resulted in\n\n{$e}\n\nin {$file}");
+						$this->log("Error: running {$direction}() resulted in\n\n{$e}\n\nin {$file}", 'error');
 						return false;
 					}
 				}
@@ -649,7 +471,7 @@ class Hubzero_Migration
 					{
 						if ($class::post(self::$db) === false)
 						{
-							$this->log("Running post() returned false {$file}");
+							$this->log("Running post() returned false {$file}", 'warning');
 							continue;
 						}
 
@@ -657,14 +479,14 @@ class Hubzero_Migration
 					}
 					catch (PDOException $e)
 					{
-						$this->log("Error: running post() resulted in\n\n{$e}\n\nin {$file}");
+						$this->log("Error: running post() resulted in\n\n{$e}\n\nin {$file}", 'error');
 						return false;
 					}
 				}
 			}
 		}
 
-		return ($print) ? $contents : true;
+		return true;
 	}
 
 	/**
@@ -695,7 +517,7 @@ class Hubzero_Migration
 		}
 		catch (PDOException $e)
 		{
-			$this->log("Failed inserting migration record: {$e}");
+			$this->log("Failed inserting migration record: {$e}", 'error');
 			return false;
 		}
 	}
@@ -704,26 +526,12 @@ class Hubzero_Migration
 	 * Logging mechanism
 	 *
 	 * @param $message - message to log
+	 * @param $type    - message type, can be one predefined values from output class (not specified will default to 'normal' text)
 	 * @return log messages
 	 **/
-	public function log($message, $emphasize=false, $style="1;31")
+	public function log($message, $type=null)
 	{
-		if (in_array('stdout', $this->log_type))
-		{
-			if ($emphasize)
-			{
-				$message = chr(27) . "[" . $style . "m" . $message . chr(27) . "[0m";
-			}
-			fwrite(STDOUT, $message . "\n");
-		}
-		if (in_array('internal_log', $this->log_type))
-		{
-			$this->internal_log[] = $message;
-		}
-		if (in_array('error_log', $this->log_type))
-		{
-			error_log($message);
-		}
+		$this->log[] = array('message' => $message, 'type' => $type);
 	}
 
 	/**
@@ -755,7 +563,7 @@ class Hubzero_Migration
 		}
 		catch (PDOException $e)
 		{
-			$this->log('Unable to create needed migrations table');
+			$this->log('Unable to create needed migrations table', 'error');
 			return false;
 		}
 	}
