@@ -34,6 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Profile_Helper');
 
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M d, Y';
+	$tz = false;
+}
+
 		/* Wish view */
 		$error		= $this->getError();
 		
@@ -265,11 +274,10 @@ if ($this->wishlist && $this->wish) {
 						$eligible = array_merge($this->wishlist->owners, $this->wishlist->advisory);
 						$eligible = array_unique($eligible);
 						$voters = ($this->wish->num_votes <= count($eligible)) ? count($eligible) : $this->wish->num_votes;
-						//$html .= "\t\t\t".'<div class="wishpriority">'.JText::_('PRIORITY').': '.$this->wish->ranking.' <span>('.$this->wish->num_votes.' '.JText::_('NOTICE_OUT_OF').' '.$voters.' '.JText::_('VOTES').')</span>';
 						$html = '';
 						if ($due && $this->wish->status!=1) 
 						{
-							$html .= ($this->wish->due <= JFactory::getDate()->toSql()) ? '<span class="overdue"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('OVERDUE') : '<span class="due"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->due);
+							$html .= ($this->wish->due <= JFactory::getDate()->toSql()) ? '<span class="overdue"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('COM_WISHLIST_OVERDUE') : '<span class="due"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id) . '?action=editplan#plan">' . JText::_('COM_WISHLIST_WISH_DUE_IN') . ' ' . WishlistHTML::nicetime($this->wish->due);
 							$html .= '</a></span>';
 						}
 						//$html .= '</div>'."\n";
@@ -860,7 +868,7 @@ if ($this->wishlist && $this->wish) {
 <?php if ($this->admin) {  // let advisory committee view this too ?>
 	<div class="below section" id="section-plan">
 		<h3>
-			<!-- <a name="plan"></a> -->
+			<a name="plan"></a>
 			<?php echo JText::_('COM_WISHLIST_IMPLEMENTATION_PLAN'); ?>
 			<?php if ($this->wish->plan) { ?>
 				(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>"><?php echo JText::_('COM_WISHLIST_ACTION_EDIT'); ?></a>)
@@ -878,39 +886,6 @@ if ($this->wishlist && $this->wish) {
 				</p>
 			<?php } else { ?>
 				<p><?php echo JText::_('COM_WISHLIST_PLAN_DEADLINE_EXPLANATION'); ?></p>
-				<table class="wiki-reference">
-					<caption>Wiki Syntax Reference</caption>
-					<tbody>
-						<tr>
-							<td>'''bold'''</td>
-							<td><b>bold</b></td>
-						</tr>
-						<tr>
-							<td>''italic''</td>
-							<td><i>italic</i></td>
-						</tr>
-						<tr>
-							<td>__underline__</td>
-							<td><span style="text-decoration:underline;">underline</span></td>
-						</tr>
-						<tr>
-							<td>{{{monospace}}}</td>
-							<td><code>monospace</code></td>
-						</tr>
-						<tr>
-							<td>~~strike-through~~</td>
-							<td><del>strike-through</del></td>
-						</tr>
-						<tr>
-							<td>^superscript^</td>
-							<td><sup>superscript</sup></td>
-						</tr>
-						<tr>
-							<td>,,subscript,,</td>
-							<td><sub>subscript</sub></td>
-						</tr>
-					</tbody>
-				</table>
 			<?php } ?>
 			</div><!-- / .aside -->
 			<div class="subject" id="full_plan">
@@ -920,31 +895,15 @@ if ($this->wishlist && $this->wish) {
 				</p>
 				<fieldset>
 			<?php if ($this->wish->action=='editplan') { ?>
-					<fieldset>
-						<legend><?php echo JText::_('COM_WISHLIST_DUE'); ?></legend>
-						
-						<label for="nodue" id="nodue-label">
-							<input class="option" type="radio" name="isdue" id="nodue" value="0" <?php echo ($due == '') ? 'checked="checked"' : '';?> /> 
-							<?php echo JText::_('COM_WISHLIST_DUE_NEVER'); ?>
-						</label>
-
-						<span class="or"><?php echo JText::_('COM_WISHLIST_OR'); ?></span>
-
-						<label for="isdue" id="isdue-label">
-							<input class="option" type="radio" id="isdue" name="isdue" value="1" <?php echo ($due != '') ? 'checked="checked"' : ''; ?> />
-						</label>
-						
-						<label for="publish_up" id="publish_up-label">
-							<?php echo JText::_('COM_WISHLIST_ON'); ?>
-							<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $due; ?>" />
-						</label>
-					</fieldset>
-
 					<label>
-						<?php echo JText::_('COM_WISHLIST_WISH_ASSIGNED_TO'); ?>:
-						<?php echo $this->wish->assignlist; ?>
+					<?php echo JText::_('COM_WISHLIST_WISH_ASSIGNED_TO'); ?>:
+					<?php echo $this->wish->assignlist; ?>
 					</label>
-					
+					<label for="publish_up" id="publish_up-label">
+						<?php echo JText::_('COM_WISHLIST_DUE'); ?> (<?php echo JText::_('COM_WISHLIST_OPTIONAL'); ?>)
+						<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $due ? JHTML::_('date', $this->wish->due, $dateFormat, $tz) : ''; ?>" />
+					</label>
+				
 					<?php if($this->wish->plan) { ?>
 					<label class="newrev" for="create_revision">
 						<input type="checkbox" class="option" name="create_revision" id="create_revision" value="1" />
@@ -955,7 +914,6 @@ if ($this->wishlist && $this->wish) {
 					<?php } ?>
 					<label>
 						<?php echo JText::_('COM_WISHLIST_ACTION_INSERT_TEXT'); ?> 
-						(<?php echo JText::_('COM_WISHLIST_ACTION_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" class="popup 400x500"><?php echo JText::_('COM_WISHLIST_WIKI_FORMATTING'); ?></a>)	
 						<textarea name="pagetext" id="pagetext" rows="40" cols="35"><?php echo isset($this->wish->plan->pagetext) ? $this->escape($this->wish->plan->pagetext) : ''; ?></textarea>
 					</label>
 					
@@ -976,7 +934,7 @@ if ($this->wishlist && $this->wish) {
 					
 					<div class="sidenote">
 						<p>
-							<?php echo JText::_('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?> <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+							<?php echo JText::_('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?>
 						</p>
 					</div>
 			<?php } else if (!$this->wish->plan) { ?>
@@ -992,7 +950,7 @@ if ($this->wishlist && $this->wish) {
 							<?php echo $assigned; ?>
 
 							<?php echo JText::_('COM_WISHLIST_PLAN_IS_DUE'); ?> 
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>'">
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
 								<?php echo ($due) ? $due : JText::_('COM_WISHLIST_DUE_NEVER'); ?>
 							</a>
 						</p>
@@ -1003,7 +961,7 @@ if ($this->wishlist && $this->wish) {
 						<?php echo JText::_('COM_WISHLIST_PLAN_IS_ASSIGNED'); ?> 
 						<?php echo $assigned; ?>
 						<?php echo JText::_('COM_WISHLIST_PLAN_IS_DUE'); ?>
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>'">
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
 							<?php echo ($due) ? $due : JText::_('COM_WISHLIST_DUE_NEVER'); ?>
 						</a>.
 					</p>

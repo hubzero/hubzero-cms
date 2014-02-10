@@ -612,3 +612,19 @@
 		font-family: "Fontcons";
 		content: "\f078";
 	}
+	#publish_up-label input {
+		display: block;
+	}
+	.due, .overdue {
+		float: right;
+		background: #fefae2;
+		border: 2px solid #e6d6c0;
+		padding: 0 0.5em;
+	}
+	.due a, .overdue a {
+		color: orange;
+		border: none;
+	}
+	.overdue a {
+		color: red;
+	}

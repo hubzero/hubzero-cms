@@ -31,32 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Controller');
+ximport('Hubzero_Environment');
+
 /**
  * Wishlist controller class
  */
-class WishlistController extends JObject
+class WishlistController extends Hubzero_Controller
 {
-	/**
-	 * Description for '_name'
-	 * 
-	 * @var string
-	 */
-	private $_name  = NULL;
-
-	/**
-	 * Description for '_data'
-	 * 
-	 * @var array
-	 */
-	private $_data  = array();
-
-	/**
-	 * Description for '_task'
-	 * 
-	 * @var string
-	 */
-	private $_task  = NULL;
-
 	/**
 	 * Description for '_error'
 	 * 
@@ -286,39 +268,6 @@ class WishlistController extends JObject
 		else 
 		{
 			Hubzero_Document::addComponentStylesheet($this->_option);
-		}
-	}
-
-	/**
-	 * Push scripts to the document head
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      string $name Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function _getScripts($option='',$script='')
-	{
-		$document = JFactory::getDocument();
-
-		//$option = ($option) ? $option : $this->_option;
-		//$script = ($script) ? $script : $this->_name;
-
-		$path = DS . 'components' . DS . $option . DS . 'assets' . DS . 'js' . DS . $script . '.js';
-		$pathAlt = null;
-
-		$document = JFactory::getDocument();
-		if (JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$pathAlt = DS . 'components' . DS . $option . DS . 'assets' . DS . 'js' . DS . $script . '.jquery.js';
-		}
-
-		if ($pathAlt && is_file(JPATH_ROOT . $pathAlt))
-		{
-			$document->addScript($pathAlt);
-		}
-		else if (is_file(JPATH_ROOT . $path))
-		{
-			$document->addScript($path);
 		}
 	}
 
@@ -795,6 +744,10 @@ class WishlistController extends JObject
 
 			// Push some scripts to the template
 			$this->_getScripts();
+			
+			$document = JFactory::getDocument();
+			$document->addStylesheet('components' . DS . 'com_projects' . DS 
+			. 'assets' . DS . 'css' . DS . 'calendar.css');
 
 			// Go through some access checks
 			if ($juser->get('guest') && $action) 
@@ -1341,7 +1294,7 @@ class WishlistController extends JObject
 		if ($due) 
 		{
 			$publishtime = $due.' 00:00:00';
-			$due = JFactory::getDate(strtotime($publishtime));
+			$due = JFactory::getDate(strtotime($publishtime))->toSql();
 		}
 
 		//is this wish assigned to anyone?
