@@ -64,7 +64,7 @@ class plgResourcesShare extends JPlugin
 
 		if (!$model->type->params->get('plg_share')) 
 		{
-			return;
+			return $area;
 		}
 
 		return $area;
