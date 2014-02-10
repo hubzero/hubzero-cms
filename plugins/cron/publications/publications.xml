@@ -46,4 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
+	<params group="authorstats">
+		<param name="userids" type="text" menu="hide" label="List of user ids of authors" default="" description="Only users with ids in the list (comma-separated) will get author stats" />
+	</params>
 </extension>
