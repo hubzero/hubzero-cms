@@ -263,7 +263,7 @@ window.addEvent('domready', Fields.initialise);
 		<?php
 			if ($this->plugins)
 			{
-				$pth = false;
+				$pth = true;
 				$paramsClass = 'JParameter';
 				/*if (version_compare(JVERSION, '1.6', 'ge'))
 				{
@@ -284,17 +284,23 @@ window.addEvent('domready', Fields.initialise);
 								$style = 'block';
 								$data = $this->row->get('params');
 							}
-							$param = new $paramsClass(
-								(is_object($data) ? $data->toString() : $data),
-								JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . ($pth ? DS . $plugin->element : '') . '.xml'
-							);
-							$out = $param->render('params', $event['params']);
+
+							$out = null;
+							if ($event['params'])
+							{
+								$param = new $paramsClass(
+									(is_object($data) ? $data->toString() : $data),
+									JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . ($pth ? DS . $plugin->element : '') . '.xml'
+								);
+								$out = $param->render('params', $event['params']);
+							}
+
 							if (!$out) 
 							{
 								$out = '<table><tbody><tr><td><i>There are no Parameters for this item</i></td></tr></tbody></table>';
 							}
 							?>
-							<fieldset class="adminform paramlist" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
+							<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
 								<legend><?php echo JText::_('Parameters'); ?></legend>
 								<?php echo $out; ?>
 							</fieldset>
