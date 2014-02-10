@@ -170,4 +170,42 @@ class Message extends \Swift_Message
 		$encryptor = new Token();
 		return $encryptor->buildEmailToken(1, 1, $user_id, $object_id);
 	}
+
+	/**
+	 * Add an attachment
+	 *
+	 * @param   mixed  $attachment File path (string) or object (Swift_Mime_MimeEntity)
+	 * @param   string $filename   Optional filename to set
+	 * @return  object
+	 */
+	public function addAttachment($attachment, $filename=null)
+	{
+		if (!($attachment instanceof Swift_Mime_MimeEntity))
+		{
+			$attachment = \Swift_Attachment::fromPath($attachment);
+		}
+
+		if ($filename && is_string($filename))
+		{
+			$attachment->setFilename($filename);
+		}
+
+		return $this->attach($attachment);
+	}
+
+	/**
+	 * Remove an attachment
+	 *
+	 * @param   mixed  $attachment File path (string) or object (Swift_Mime_MimeEntity)
+	 * @return  object
+	 */
+	public function removeAttachment($attachment)
+	{
+		if (!($attachment instanceof Swift_Mime_MimeEntity))
+		{
+			$attachment = \Swift_Attachment::fromPath($attachment);
+		}
+
+		return $this->detach($attachment);
+	}
 }
