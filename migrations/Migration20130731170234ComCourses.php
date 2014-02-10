@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding an override field to courses grade book
  **/
-class Migration20130731170234ComCourses extends Hubzero_Migration
+class Migration20130731170234ComCourses extends Migration
 {
 	/**
 	 * Up

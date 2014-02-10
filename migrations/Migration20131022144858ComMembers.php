@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for moving member manager notes to joomla notes feature
  **/
-class Migration20131022144858ComMembers extends Hubzero_Migration
+class Migration20131022144858ComMembers extends Migration
 {
 	/**
 	 * Up

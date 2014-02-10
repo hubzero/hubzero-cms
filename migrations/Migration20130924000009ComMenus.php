@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for menu table migrations
  **/
-class Migration20130924000009ComMenus extends Hubzero_Migration
+class Migration20130924000009ComMenus extends Migration
 {
 	/**
 	 * Up

@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for setting up databases projects plugin
  **/
-class Migration20130813210535PlgProjectsDatabases extends Hubzero_Migration
+class Migration20130813210535PlgProjectsDatabases extends Migration
 {
 	/**
 	 * Up

@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for fixing courses references to user_id that should really be member_id
  **/
-class Migration20130905195600ComCourses extends Hubzero_Migration
+class Migration20130905195600ComCourses extends Migration
 {
 	/**
 	 * Up

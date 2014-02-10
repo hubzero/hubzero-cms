@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for renaming metrics_author_cluster if it exists, creating it otherwise
  **/
-class Migration20130827143717Core extends Hubzero_Migration
+class Migration20130827143717Core extends Migration
 {
 	/**
 	 * Up

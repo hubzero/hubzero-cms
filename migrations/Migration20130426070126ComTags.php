@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for fixing up tags indices
  **/
-class Migration20130426070126ComTags extends Hubzero_Migration
+class Migration20130426070126ComTags extends Migration
 {
 	/**
 	 * Up

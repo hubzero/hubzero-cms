@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for allowing null scores in gradebook for unfinished forms
  **/
-class Migration20130423213901ComCourses extends Hubzero_Migration
+class Migration20130423213901ComCourses extends Migration
 {
 	/**
 	 * Up

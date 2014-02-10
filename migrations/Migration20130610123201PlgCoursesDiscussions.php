@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for fixing wrong datatype on column
  **/
-class Migration20130610123201PlgCoursesDiscussions extends Hubzero_Migration
+class Migration20130610123201PlgCoursesDiscussions extends Migration
 {
 	/**
 	 * Up

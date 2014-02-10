@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding indices to pdf2form tables
  **/
-class Migration20130812132139ComCollections extends Hubzero_Migration
+class Migration20130812132139ComCollections extends Migration
 {
 	/**
 	 * Up

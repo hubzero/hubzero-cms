@@ -1,9 +1,11 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20121018000000ComWiki extends Hubzero_Migration
+class Migration20121018000000ComWiki extends Migration
 {
 	protected static function up($db)
 	{

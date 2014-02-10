@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for converting joomla upload max units
  **/
-class Migration20131021211223Core extends Hubzero_Migration
+class Migration20131021211223Core extends Migration
 {
 	/**
 	 * Up

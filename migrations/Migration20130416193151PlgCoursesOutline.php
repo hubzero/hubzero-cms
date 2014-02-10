@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for inserting courses outline plugin
  **/
-class Migration20130416193151PlgCoursesOutline extends Hubzero_Migration
+class Migration20130416193151PlgCoursesOutline extends Migration
 {
 	/**
 	 * Up

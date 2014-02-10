@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for updating custom footer module links to point to com_users, rather than com_user
  **/
-class Migration20131209221353ComUsers extends Hubzero_Migration
+class Migration20131209221353ComUsers extends Migration
 {
 	/**
 	 * Up

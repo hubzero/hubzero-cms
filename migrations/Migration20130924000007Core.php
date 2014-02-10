@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for user groups (access control list)
  **/
-class Migration20130924000007Core extends Hubzero_Migration
+class Migration20130924000007Core extends Migration
 {
 	/**
 	 * Up

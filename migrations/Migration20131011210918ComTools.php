@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding tool licenses if missing
  **/
-class Migration20131011210918ComTools extends Hubzero_Migration
+class Migration20131011210918ComTools extends Migration
 {
 	/**
 	 * Up

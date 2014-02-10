@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding com_forum component entry if missing, or adding admin_menu_link if missing
  **/
-class Migration20130918132946ComForum extends Hubzero_Migration
+class Migration20130918132946ComForum extends Migration
 {
 	/**
 	 * Up

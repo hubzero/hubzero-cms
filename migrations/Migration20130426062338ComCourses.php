@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for updating grading policies
  **/
-class Migration20130426062338ComCourses extends Hubzero_Migration
+class Migration20130426062338ComCourses extends Migration
 {
 	/**
 	 * Up

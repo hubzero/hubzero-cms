@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for removing Joomla templates
  **/
-class Migration20130926143200Core extends Hubzero_Migration
+class Migration20130926143200Core extends Migration
 {
 	/**
 	 * Up

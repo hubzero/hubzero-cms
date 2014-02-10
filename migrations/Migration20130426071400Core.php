@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for fixing some links in default content
  **/
-class Migration20130426071400Core extends Hubzero_Migration
+class Migration20130426071400Core extends Migration
 {
 	/**
 	 * Up

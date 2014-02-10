@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for fixing up members badges table
  **/
-class Migration20130814201250ComCourses extends Hubzero_Migration
+class Migration20130814201250ComCourses extends Migration
 {
 	/**
 	 * Up

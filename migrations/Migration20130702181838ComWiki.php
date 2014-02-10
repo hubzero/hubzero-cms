@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for fixing nanoHUB reference in wiki formatting page
  **/
-class Migration20130702181838ComWiki extends Hubzero_Migration
+class Migration20130702181838ComWiki extends Migration
 {
 	/**
 	 * Up

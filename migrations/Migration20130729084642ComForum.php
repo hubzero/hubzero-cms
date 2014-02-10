@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding more details to asset views table
  **/
-class Migration20130729084642ComForum extends Hubzero_Migration
+class Migration20130729084642ComForum extends Migration
 {
 	/**
 	 * Up

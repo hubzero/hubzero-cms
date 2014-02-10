@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding some needed indices to courses forms tables
  **/
-class Migration20131206231821ComCourses extends Hubzero_Migration
+class Migration20131206231821ComCourses extends Migration
 {
 	/**
 	 * Up

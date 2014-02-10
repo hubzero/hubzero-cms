@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding indices and setting default field value
  **/
-class Migration20131113143500ComSupport extends Hubzero_Migration
+class Migration20131113143500ComSupport extends Migration
 {
 	/**
 	 * Up

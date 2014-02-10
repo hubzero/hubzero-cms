@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for contact details
  **/
-class Migration20130924000004ComContacts extends Hubzero_Migration
+class Migration20130924000004ComContacts extends Migration
 {
 	/**
 	 * Up

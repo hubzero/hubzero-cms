@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for add watching table
  **/
-class Migration20130426074801ComSupport extends Hubzero_Migration
+class Migration20130426074801ComSupport extends Migration
 {
 	/**
 	 * Up

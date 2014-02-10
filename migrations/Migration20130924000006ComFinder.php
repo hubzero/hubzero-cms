@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for new joomla search/finder tables
  **/
-class Migration20130924000006ComFinder extends Hubzero_Migration
+class Migration20130924000006ComFinder extends Migration
 {
 	/**
 	 * Up

@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding concept of 'attempts' to forms
  **/
-class Migration20130819145850ComCourses extends Hubzero_Migration
+class Migration20130819145850ComCourses extends Migration
 {
 	/**
 	 * Up

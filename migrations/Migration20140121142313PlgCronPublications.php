@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding publications cron plugin
  **/
-class Migration20140121142313PlgCronPublications extends Hubzero_Migration
+class Migration20140121142313PlgCronPublications extends Migration
 {
 	/**
 	 * Up

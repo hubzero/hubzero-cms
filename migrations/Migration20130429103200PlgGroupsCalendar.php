@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for new group calendar plugin
  **/
-class Migration20130429103200PlgGroupsCalendar extends Hubzero_Migration
+class Migration20130429103200PlgGroupsCalendar extends Migration
 {
 	/**
 	 * Up

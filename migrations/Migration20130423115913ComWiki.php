@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding wiki page links table
  **/
-class Migration20130423115913ComWiki extends Hubzero_Migration
+class Migration20130423115913ComWiki extends Migration
 {
 	/**
 	 * Up

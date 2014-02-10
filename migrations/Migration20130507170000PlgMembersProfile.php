@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for new member address fields
  **/
-class Migration20130507170000PlgMembersProfile extends Hubzero_Migration
+class Migration20130507170000PlgMembersProfile extends Migration
 {
 	/**
 	 * Up

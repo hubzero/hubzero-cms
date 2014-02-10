@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for creating publication categories table (if it doesn't exist)
  **/
-class Migration20130828201526ComPublications extends Hubzero_Migration
+class Migration20130828201526ComPublications extends Migration
 {
 	/**
 	 * Up

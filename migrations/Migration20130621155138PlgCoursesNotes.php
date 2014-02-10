@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding offering_id to notes
  **/
-class Migration20130621155138PlgCoursesNotes extends Hubzero_Migration
+class Migration20130621155138PlgCoursesNotes extends Migration
 {
 	/**
 	 * Up

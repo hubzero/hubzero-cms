@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for updating view security to be invoker
  **/
-class Migration20130828203404Core extends Hubzero_Migration
+class Migration20130828203404Core extends Migration
 {
 	/**
 	 * Up

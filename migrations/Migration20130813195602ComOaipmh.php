@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for installing oaipmh component
  **/
-class Migration20130813195602ComOaipmh extends Hubzero_Migration
+class Migration20130813195602ComOaipmh extends Migration
 {
 	/**
 	 * Up

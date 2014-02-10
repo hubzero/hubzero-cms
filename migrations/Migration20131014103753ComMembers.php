@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding members quota interface
  **/
-class Migration20131014103753ComMembers extends Hubzero_Migration
+class Migration20131014103753ComMembers extends Migration
 {
 	/**
 	 * Up

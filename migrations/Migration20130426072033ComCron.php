@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding com cron component
  **/
-class Migration20130426072033ComCron extends Hubzero_Migration
+class Migration20130426072033ComCron extends Migration
 {
 	/**
 	 * Up

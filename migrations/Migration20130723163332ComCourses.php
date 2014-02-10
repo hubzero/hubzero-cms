@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding first_visit timestamp
  **/
-class Migration20130723163332ComCourses extends Hubzero_Migration
+class Migration20130723163332ComCourses extends Migration
 {
 	/**
 	 * Up

@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for updating form info to correspond to code changes
  **/
-class Migration20130830175756ComCourses extends Hubzero_Migration
+class Migration20130830175756ComCourses extends Migration
 {
 	/**
 	 * Up

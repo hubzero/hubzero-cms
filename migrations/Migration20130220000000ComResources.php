@@ -1,9 +1,11 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130220000000ComResources extends Hubzero_Migration
+class Migration20130220000000ComResources extends Migration
 {
 	protected static $up = "CREATE TABLE IF NOT EXISTS `#__media_tracking` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,

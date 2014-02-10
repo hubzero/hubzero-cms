@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for creating default member roles if none exist
  **/
-class Migration20130423204715ComCourses extends Hubzero_Migration
+class Migration20130423204715ComCourses extends Migration
 {
 	/**
 	 * Up

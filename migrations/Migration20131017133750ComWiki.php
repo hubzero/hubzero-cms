@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for fixing some dated references to topics, rather than wiki
  **/
-class Migration20131017133750ComWiki extends Hubzero_Migration
+class Migration20131017133750ComWiki extends Migration
 {
 	/**
 	 * Up

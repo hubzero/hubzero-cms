@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding com_dataviewer
  **/
-class Migration20130815175354ComDataviewer extends Hubzero_Migration
+class Migration20130815175354ComDataviewer extends Migration
 {
 	/**
 	 * Up

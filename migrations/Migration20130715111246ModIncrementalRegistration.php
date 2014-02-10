@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding mail preference option to incremental registration
  **/
-class Migration20130715111246ModIncrementalRegistration extends Hubzero_Migration
+class Migration20130715111246ModIncrementalRegistration extends Migration
 {
 	/**
 	 * Up

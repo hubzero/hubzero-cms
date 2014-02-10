@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding a column to track whether an asset should have a corresponding gradebook entry or not
  **/
-class Migration20140117212240ComCourses extends Hubzero_Migration
+class Migration20140117212240ComCourses extends Migration
 {
 	/**
 	 * Up

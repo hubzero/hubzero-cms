@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding params field to asset groups
  **/
-class Migration20130911070500ComCourses extends Hubzero_Migration
+class Migration20130911070500ComCourses extends Migration
 {
 	/**
 	 * Up

@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for adding asset subtype to courses assets
  **/
-class Migration20130423001442ComCourses extends Hubzero_Migration
+class Migration20130423001442ComCourses extends Migration
 {
 	/**
 	 * Up
