@@ -502,7 +502,7 @@ class Migration
 		// Try inserting a migration record into the database
 		try
 		{
-			$date = new JDate();
+			$date = new \JDate();
 
 			// Craete our object to insert
 			$obj = (object) array(
@@ -510,7 +510,7 @@ class Migration
 					'hash'      => $hash,
 					'direction' => $direction,
 					'date'      => $date->toSql(),
-					'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : JFactory::getUser()->get('id')
+					'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : \JFactory::getUser()->get('id')
 				);
 
 			self::$db->insertObject('migrations', $obj);
@@ -696,8 +696,8 @@ class Migration
 				if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 				{
 					// Use the MySQL driver for this
-					$config = JFactory::getConfig();
-					$database = JDatabase::getInstance(
+					$config = \JFactory::getConfig();
+					$database = \JDatabase::getInstance(
 						array(
 							'driver'   => 'mysql',
 							'host'     => $config->getValue('host'),
@@ -707,7 +707,7 @@ class Migration
 						) 
 					);
 
-					$table = new JTableMenu($database);
+					$table = new \JTableMenu($database);
 					$table->rebuild();
 				}
 			}
@@ -872,8 +872,8 @@ class Migration
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 			{
 				// Use the MySQL driver for this
-				$config = JFactory::getConfig();
-				$database = JDatabase::getInstance(
+				$config = \JFactory::getConfig();
+				$database = \JDatabase::getInstance(
 					array(
 						'driver'   => 'mysql',
 						'host'     => $config->getValue('host'),
@@ -883,7 +883,7 @@ class Migration
 					) 
 				);
 
-				$table = new JTableMenu($database);
+				$table = new \JTableMenu($database);
 				$table->rebuild();
 			}
 		}
