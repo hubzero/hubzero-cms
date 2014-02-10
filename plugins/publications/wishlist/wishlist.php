@@ -178,7 +178,7 @@ class plgPublicationsWishlist extends JPlugin
 		
 		if (!$wishlist) 
 		{
-			$html = '<p class="error">' . JText::_('COM_WISHLIST_ERROR_LIST_NOT_FOUNDD') . '</p>';
+			$html = '<p class="error">' . JText::_('COM_WISHLIST_ERROR_LIST_NOT_FOUND') . '</p>';
 		} 
 		else 
 		{
