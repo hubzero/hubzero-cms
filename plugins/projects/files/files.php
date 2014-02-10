@@ -896,6 +896,9 @@ class plgProjectsFiles extends JPlugin
 					if ($hash)
 					{
 						$selected[] = substr($hash, 0, 10) . ':' . trim($file);
+						
+						// Generate preview
+						$this->getFilePreview(trim($file), $hash, $path, '');
 					}
 				}
 			}
@@ -1096,7 +1099,8 @@ class plgProjectsFiles extends JPlugin
 		if ($prov)
 		{
 			$path  		= $this->getMembersPath();			
-			$quota 		= ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+			$quota 		= ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 
+							'GB', 'b');
 			$dirsize 	= $this->getDiskUsage($path, $prefix, false);			
 		}
 		else 
@@ -1110,7 +1114,8 @@ class plgProjectsFiles extends JPlugin
 			$quota 		= $params->get('quota');
 			$quota 		= $quota 
 						  ? $quota 
-						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 
+							'GB', 'b');
 			$dirsize 	= $this->getDiskUsage($path, $prefix, $this->_usageGit);							
 		}
 		
@@ -1296,11 +1301,7 @@ class plgProjectsFiles extends JPlugin
 					if ($commitMsg)
 					{
 						$this->_git->gitCommit($path, $commitMsg);
-						
-						// Generate preview
-						$hash = $this->_git->gitLog($path, $fpath, '' , 'hash');
-						$this->getFilePreview($fpath, $hash, $path, $subdir);
-						
+												
 						// Store in session
 						if ($new)
 						{
