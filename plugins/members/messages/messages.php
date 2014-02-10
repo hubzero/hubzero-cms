@@ -197,16 +197,16 @@ class plgMembersMessages extends Hubzero_Plugin
 
 		//get the number of unread messages
 		$recipient = new Hubzero_Message_Recipient($database);
-		$messages = $recipient->getMessages($member->get('uidNumber')); 
-		$umessages = $recipient->getUnreadMessages($member->get('uidNumber'), 0); 
+		$inboxCount = $recipient->getMessagesCount($member->get('uidNumber'), array('state' => '0')); 
+		$unreadMessages = $recipient->getUnreadMessages($member->get('uidNumber'), 0); 
 
 		//return total message count
-		$arr['metadata']['count'] = count($messages);
+		$arr['metadata']['count'] = $inboxCount;
 
 		//if we have unread messages show alert
-		if (count($umessages) > 0) 
+		if (count($unreadMessages) > 0) 
 		{
-			$title = count($umessages) . ' unread message(s).';
+			$title = count($unreadMessages) . ' unread message(s).';
 			$link = JRoute::_('index.php?option=com_members&id='.$member->get("uidNumber").'&active=messages');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Messages Alert</h5>{$title}</span></a>";
 		}

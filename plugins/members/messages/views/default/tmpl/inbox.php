@@ -152,7 +152,7 @@ $database = JFactory::getDBO();
 							<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a title="<?php echo JText::_('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash'); ?>">
+							<a title="<?php echo JText::_('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash&activetab=inbox'); ?>">
 								<?php echo JText::_('PLG_MEMBERS_MESSAGES_TRASH'); ?>
 							</a>
 						</td>

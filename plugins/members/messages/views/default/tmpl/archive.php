@@ -134,7 +134,7 @@ $database = JFactory::getDBO();
 						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
 					
 						//delete link
-						$del_link = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash');
+						$del_link = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash&activetab=archive');
 						$delete = '<a title="' . JText::_('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . JText::_('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
 					
 						//special action
