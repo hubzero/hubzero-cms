@@ -791,7 +791,7 @@ class ProjectsHelper extends JObject {
 		$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 	
 		
 		// Get wiki upload path
-		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));		
+		$previewPath = ProjectsHelper::getWikiPath($page->id);		
 		
 		// Get joomla libraries
 		jimport('joomla.filesystem.folder');
@@ -1031,7 +1031,7 @@ class ProjectsHelper extends JObject {
 		$database = JFactory::getDBO();
 		
 		// Get wiki upload path
-		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));
+		$previewPath = ProjectsHelper::getWikiPath($page->id);
 		
 		if ($copy == true)
 		{
@@ -1059,7 +1059,8 @@ class ProjectsHelper extends JObject {
 			
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
-			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, $base_path, 'wikicontent', $root = 0);
+			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, 
+				$base_path, 'wikicontent', $root = 0);
 			
 			if (!is_dir(JPATH_ROOT . $pubPath))
 			{
