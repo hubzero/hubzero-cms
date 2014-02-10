@@ -1271,8 +1271,126 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		$user_id = JFactory::getApplication()->getAuthn('user_id');
 
+		if (!$user_id || !is_numeric($user_id))
+		{
+			$this->setMessage("Unauthorized", 403, 'Unauthorized');
+			return;
+		}
+
+		// Parse some things out of the referer
+		$referer = $_SERVER['HTTP_REFERER'];
+		preg_match('/\/asset\/([[:digit:]])*\//', $referer, $matches);
+
+		if (!$asset_id = $matches[1])
+		{
+			$this->setMessage("Failed to get asset ID", 422, 'Unprocessable Entity');
+			return;
+		}
+
+		// Get course info...this seems a little wonky
+		preg_match('/\/courses\/([[:alnum:]]*)\/([[:alnum:]\:]*)/', $referer, $matches);
+
+		$course_alias   = $matches[1];
+		$offering_alias = $matches[2];
+		$section_alias  = '__default';
+
+		if (strpos($offering_alias, ":"))
+		{
+			$parts = explode(":", $offering_alias);
+			$offering_alias = $parts[0];
+			$section_alias  = $parts[1];
+		}
+
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
+
+		$course = CoursesModelCourse::getInstance($course_alias);
+		$course->offering($offering_alias);
+		$course->offering()->section($section_alias);
+		$section_id = $course->offering()->section()->get('id');
+
+		$member = CoursesModelMember::getInstance($user_id, 0, 0, $section_id);
+
+		if (!$member_id = $member->get('id'))
+		{
+			$this->setMessage("Failed to get course member ID", 422, 'Unprocessable Entity');
+			return;
+		}
+
+		if (!$data = JRequest::getVar('payload', false))
+		{
+			$this->setMessage("Missing payload", 422, 'Unprocessable Entity');
+			return;
+		}
+
+		// Get the key and IV - Trim the first xx characters from the payload for IV
+		$key  = $course->config()->get('unity_key', 0);
+		$iv   = substr($payload, 0, 31);
+		$data = substr($payload, 32);
+
+		$message = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, base64_decode($data), MCRYPT_MODE_CBC, $iv);
+		$message = trim($message);
+		$message = json_decode($message);
+
+		if (!$message || !is_object($message))
+		{
+			$this->setMessage("Failed to decode message", 500, 'Internal error');
+			return;
+		}
+
+		// Get timestamp
+		$now = JFactory::getDate()->toSql();
+
+		// Save the unity details
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.unity.php';
+		$unity = new CoursesTableAssetUnity($this->db);
+		$unity->set('member_id', $member_id);
+		$unity->set('asset_id', $asset_id);
+		$unity->set('created', $now);
+		$unity->set('passed', (($message->passed) ? 1 : 0));
+		$unity->set('details', $message->details);
+		if (!$unity->store())
+		{
+			$this->setMessage($unity->getError(), 500, 'Internal error');
+			return;
+		}
+
+		// Now set/update the gradebook item
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
+		$gradebook = new CoursesTableGradeBook($this->db);
+		$gradebook->loadByUserAndAssetId($member_id, $asset_id);
+
+		// Score is either 100 or 0
+		$score = ($message->passed) ? 100 : 0;
+
+		// See if gradebook entry already exists
+		if ($gradebook->get('id'))
+		{
+			// Entry does exist, see if current score is better than previous score
+			if ($score > $gradebook->get('score'))
+			{
+				$gradebook->set('score', $score);
+				if (!$gradebook->store())
+				{
+					$this->setMessage($gradebook->getError(), 500, 'Internal error');
+					return;
+				}
+			}
+		}
+		else
+		{
+			$gradebook->set('member_id', $member_id);
+			$gradebook->set('score', $score);
+			$gradebook->set('scope', 'asset');
+			$gradebook->set('scope_id', $asset_id);
+			if (!$gradebook->store())
+			{
+				$this->setMessage($gradebook->getError(), 500, 'Internal error');
+				return;
+			}
+		}
+
 		// Return message
-		$this->setMessage(array('user'=>$user_id), 200, 'OK');
+		$this->setMessage(array('success' => true), 200, 'OK');
 	}
 
 	//--------------------------
