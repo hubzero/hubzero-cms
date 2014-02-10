@@ -259,6 +259,7 @@ class plgGroupsProjects extends Hubzero_Plugin
 		}
 
 		// Get counts
+		$view->projectcount = count($this->_projects);
 		$view->newcount = $obj->getUpdateCount ($this->_projects, $this->_juser->get('id'));
 
 		$view->which   = $which;
