@@ -223,8 +223,9 @@ class typeNotes extends JObject
 		// Get helper
 		$projectsHelper = new ProjectsHelper( $this->_database );
 		
+		$config = JComponentHelper::getParams( 'com_projects' );		
 		$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
-		$group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
+		$group = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
 		$note = $projectsHelper->getSelectedNote($item, $group, $masterscope);
 		$title = $note ? $note->title : '';
