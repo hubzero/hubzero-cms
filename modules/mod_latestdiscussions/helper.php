@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying the latest forum posts
  */
-class modLatestDiscussions extends Hubzero_Module
+class modLatestDiscussions extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -162,7 +162,7 @@ class modLatestDiscussions extends Hubzero_Module
 			}
 		}
 
-		$database->setQuery("SELECT c.id, c.alias, s.alias as section FROM #__forum_categories c LEFT JOIN #__forum_sections as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
+		$database->setQuery("SELECT c.id, c.alias, s.alias as section FROM `#__forum_categories` c LEFT JOIN `#__forum_sections` as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
 		$cats = $database->loadObjectList();
 		if ($cats)
 		{
@@ -188,8 +188,7 @@ class modLatestDiscussions extends Hubzero_Module
 	public function display()
 	{
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

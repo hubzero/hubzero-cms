@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Module class for displaying a YouTube feed
  */
-class modFeedYoutubeHelper extends Hubzero_Module
+class modFeedYoutubeHelper extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents

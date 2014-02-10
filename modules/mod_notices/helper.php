@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying site wide notices
  */
-class modNotices extends Hubzero_Module
+class modNotices extends \Hubzero\Module\Module
 {
 	/**
 	 * Calculate the time left from a date time
@@ -212,8 +212,7 @@ class modNotices extends Hubzero_Module
 		// Only do something if the module's time frame hasn't expired
 		if ($this->publish && !$hide) 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStylesheet($this->module->module);
+			$this->css();
 
 			// Get some parameters
 			$this->moduleid   = $this->params->get('moduleid', 'sitenotice');

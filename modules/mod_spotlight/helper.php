@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for showing content spotlight
  */
-class modSpotlight extends Hubzero_Module
+class modSpotlight extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -75,9 +73,6 @@ class modSpotlight extends Hubzero_Module
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
-
-		ximport('Hubzero_User_Profile');
-		ximport('Hubzero_View_Helper_Html');
 
 		if (!class_exists('FeaturesHistory'))
 		{

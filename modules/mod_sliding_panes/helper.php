@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying sliding panes of content
  */
-class modSlidingPanes extends Hubzero_Module
+class modSlidingPanes extends \Hubzero\Module\Module
 {
 	/**
 	 * Get a list of content articles
@@ -98,8 +98,6 @@ class modSlidingPanes extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$jdocument = JFactory::getDocument();
-
 		$type = $this->params->get('animation', 'slide');
 
 		// Check if we have multiple instances of the module running
@@ -107,9 +105,8 @@ class modSlidingPanes extends Hubzero_Module
 		if (!$this->multiple_instances) 
 		{
 			// Push some CSS to the template
-			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStylesheet($this->module->module, $type . '.css');
-			Hubzero_Document::addModuleScript($this->module->module);
+			$this->css($type . '.css');
+			$this->js();
 		}
 
 		$id = rand();
@@ -134,7 +131,7 @@ class modSlidingPanes extends Hubzero_Module
 			});";
 		}
 
-		$jdocument->addScriptDeclaration($js);
+		$this->js($js);
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

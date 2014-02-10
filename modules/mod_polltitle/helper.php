@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying the latest poll's title
  */
-class modPollTitle extends Hubzero_Module
+class modPollTitle extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents

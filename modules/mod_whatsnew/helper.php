@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying what's new in a category of content
  */
-class modWhatsNew extends Hubzero_Module
+class modWhatsNew extends \Hubzero\Module\Module
 {
 	/**
 	 * Get the categories for What's New
@@ -286,8 +286,7 @@ class modWhatsNew extends Hubzero_Module
 	public function display()
 	{
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

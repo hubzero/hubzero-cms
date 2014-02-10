@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying tips
  */
-class modQuickTips extends Hubzero_Module
+class modQuickTips extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content

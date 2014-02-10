@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying quotes
  */
-class modQuotes extends Hubzero_Module
+class modQuotes extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents
@@ -71,8 +71,7 @@ class modQuotes extends Hubzero_Module
 	public function display()
 	{
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

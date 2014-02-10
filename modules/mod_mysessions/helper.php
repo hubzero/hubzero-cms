@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a user's sessions
  */
-class modMySessions extends Hubzero_Module
+class modMySessions extends \Hubzero\Module\Module
 {
 	/**
 	 * Set the time when the session will tiemout
@@ -143,11 +143,10 @@ class modMySessions extends Hubzero_Module
 		$this->sessions = $session->getRecords( $this->juser->get('username'), '', false );
 		
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 		
 		// Add the JavaScript that does the AJAX magic to the template
-		Hubzero_Document::addModuleScript($this->module->module);
+		$this->js();
 		
 		//output module
 		require(JModuleHelper::getLayoutPath($this->module->module));

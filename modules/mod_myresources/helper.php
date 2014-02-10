@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a user's resources
  */
-class modMyResources extends Hubzero_Module
+class modMyResources extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -48,8 +48,8 @@ class modMyResources extends Hubzero_Module
 		if (!$this->no_html) 
 		{
 			// Push the module CSS to the template
-			$this->addStyleSheet();
-			$this->addScript();
+			$this->css();
+			$this->js();
 		}
 
 		$database = JFactory::getDBO();

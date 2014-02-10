@@ -32,13 +32,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying a user's questions
  * Requires com_answers component
  */
-class modMyQuestions extends Hubzero_Module
+class modMyQuestions extends \Hubzero\Module\Module
 {
 	/**
 	 * Format the tags
@@ -218,8 +216,7 @@ class modMyQuestions extends Hubzero_Module
 
 		//$juser = JFactory::getUser();
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		// show assigned?
 		$show_assigned = intval($this->params->get('show_assigned'));

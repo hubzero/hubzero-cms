@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a quick contact form
  */
-class modRapidContact extends Hubzero_Module
+class modRapidContact extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -44,8 +44,7 @@ class modRapidContact extends Hubzero_Module
 	 */
 	public function display()
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_rapid_contact');
+		$this->css();
 
 		// Field labels
 		$this->name_label    = $this->params->get('name_label', JText::_('MOD_RAPID_CONTACT_FIELD_NAME'));

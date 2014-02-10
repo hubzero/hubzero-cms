@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a YouTube feed
  */
-class modYoutubeHelper extends Hubzero_Module
+class modYoutubeHelper extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -101,8 +101,7 @@ class modYoutubeHelper extends Hubzero_Module
 		$lazy_loading = $this->params->get('lazy');
 
 		//Push some CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
+		$this->css();
 
 		//push the container that the feed with loaded in
 		$this->id = $id;
@@ -111,11 +110,11 @@ class modYoutubeHelper extends Hubzero_Module
 		//if we are lazy loading
 		if ($lazy_loading) 
 		{
-			Hubzero_Document::addModuleScript($this->module->module);
+			$this->js();
 
 			if (JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				$jdocument->addScriptDeclaration("
+				$this->js("
 					jQuery(document).ready(function($){
 						var youtubefeed = $('#youtube_feed_" . $id . "').youtube({
 							type: '" . $type . "',
@@ -138,7 +137,7 @@ class modYoutubeHelper extends Hubzero_Module
 			} 
 			else 
 			{
-				$jdocument->addScriptDeclaration("
+				$this->js("
 					window.addEvent('domready', function() {
 						var youtubefeed = new HUB.Youtube('youtube_feed_" . $id . "',{
 							type: '" . $type . "',

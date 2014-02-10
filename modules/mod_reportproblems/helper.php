@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a report problems form
  */
-class modReportProblems extends Hubzero_Module
+class modReportProblems extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -49,7 +49,6 @@ class modReportProblems extends Hubzero_Module
 		$this->verified = 0;
 		if (!$this->juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Profile');
 			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
 			{
@@ -78,11 +77,9 @@ class modReportProblems extends Hubzero_Module
 		$this->browser = $browser->name();
 		$this->browser_ver = $browser->version();
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
-		Hubzero_Document::addModuleScript($this->module->module);
-
-		JFactory::getDocument()->addScriptDeclaration('jQuery(document).ready(function(jq) { HUB.Modules.ReportProblems.initialize("' . $this->params->get('trigger', '#tab') . '"); });');
+		$this->css();
+		$this->js();
+		$this->js('jQuery(document).ready(function(jq) { HUB.Modules.ReportProblems.initialize("' . $this->params->get('trigger', '#tab') . '"); });');
 
 		$this->supportParams = JComponentHelper::getParams('com_support');
 

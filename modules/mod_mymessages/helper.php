@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Module class for displaying the latest messages
  */
-class modMyMessages extends Hubzero_Module
+class modMyMessages extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -60,8 +60,7 @@ class modMyMessages extends Hubzero_Module
 		}
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

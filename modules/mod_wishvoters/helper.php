@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying top wish voters
  */
-class modWishVoters extends Hubzero_Module
+class modWishVoters extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -88,8 +88,7 @@ class modWishVoters extends Hubzero_Module
 		}
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

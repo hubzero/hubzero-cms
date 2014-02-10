@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Module class for com_wishlist data
  */
-class modWishlist extends Hubzero_Module
+class modWishlist extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -90,8 +90,7 @@ class modWishlist extends Hubzero_Module
 			$this->accepted = $this->database->loadResult();
 		}
 
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
+		$this->css();
 
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));

@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a user's support tickets
  */
-class modMyTickets extends Hubzero_Module
+class modMyTickets extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -98,7 +98,6 @@ class modMyTickets extends Hubzero_Module
 		$this->rows1 = $rows1;
 		$this->rows2 = $rows2;
 
-		ximport('Hubzero_User_Profile');
 		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 		$xgroups = $profile->getGroups('members');
 
@@ -134,8 +133,7 @@ class modMyTickets extends Hubzero_Module
 		}
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

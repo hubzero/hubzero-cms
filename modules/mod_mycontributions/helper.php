@@ -32,12 +32,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying contributions in progress
  */
-class modMyContributions extends Hubzero_Module
+class modMyContributions extends \Hubzero\Module\Module
 {
 	/**
 	 * Get a list of contributions
@@ -107,7 +105,7 @@ class modMyContributions extends Hubzero_Module
 	{
 		$juser = JFactory::getUser();
 		$database = JFactory::getDBO();
-		ximport('Hubzero_Tool');
+
 		// Query filters defaults
 		$filters = array();
 		$filters['sortby'] = 'f.published DESC';
@@ -316,8 +314,7 @@ class modMyContributions extends Hubzero_Module
 		$this->limit_other = intval($this->params->get('limit_other', 5));
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		// Tools in progress
 		$this->tools = ($this->show_tools) ? $this->_getToollist($this->show_questions, $this->show_wishes, $this->show_tickets, $this->limit_tools) : array();

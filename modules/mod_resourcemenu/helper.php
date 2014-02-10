@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a megamenu
  */
-class modResourceMenu extends Hubzero_Module
+class modResourceMenu extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -67,9 +67,8 @@ class modResourceMenu extends Hubzero_Module
 		$this->html = $obj->text;
 
 		// Push some CSS to the tmeplate
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
-		Hubzero_Document::addModuleScript($this->module->module);
+		$this->css();
+		$this->js();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying who's online
  */
-class modXWhosonline extends Hubzero_Module
+class modXWhosonline extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents

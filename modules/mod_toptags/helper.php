@@ -32,12 +32,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying a tag cloud of most used tags
  */
-class modTopTags extends Hubzero_Module
+class modTopTags extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents

@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a user's submissions and their progress
  */
-class modMySubmissions extends Hubzero_Module
+class modMySubmissions extends \Hubzero\Module\Module
 {
 	/**
 	 * Check if the type selection step is completed

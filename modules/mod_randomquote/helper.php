@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a random quote
  */
-class modRandomQuote extends Hubzero_Module
+class modRandomQuote extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents
@@ -45,7 +45,6 @@ class modRandomQuote extends Hubzero_Module
 	public function run()
 	{
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'selectedquotes.php');
-		ximport('Hubzero_View_Helper_Html');
 
 		$database = JFactory::getDBO();
 
@@ -91,8 +90,7 @@ class modRandomQuote extends Hubzero_Module
 	public function display()
 	{
 		// Push some CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

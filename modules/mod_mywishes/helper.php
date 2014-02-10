@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a user's wishes
  */
-class modMyWishes extends Hubzero_Module
+class modMyWishes extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -96,8 +96,7 @@ class modMyWishes extends Hubzero_Module
 		$this->rows2 = $rows2;
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

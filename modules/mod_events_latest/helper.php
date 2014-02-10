@@ -32,8 +32,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 // Parameters:
 // ===========
 //
@@ -64,7 +62,7 @@ ximport('Hubzero_Module');
  * 
  * Long description (if any) ...
  */
-class modEventsLatest extends Hubzero_Module
+class modEventsLatest extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module output
@@ -73,8 +71,7 @@ class modEventsLatest extends Hubzero_Module
 	 */
 	public function display()
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

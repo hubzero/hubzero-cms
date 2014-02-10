@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying ways to find resources
  */
-class modFindResources extends Hubzero_Module
+class modFindResources extends \Hubzero\Module\Module
 {
 	/**
 	 * Generate module contents

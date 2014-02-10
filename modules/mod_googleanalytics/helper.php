@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying current system environment
  */
-class modGoogleAnalytics extends Hubzero_Module
+class modGoogleAnalytics extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module

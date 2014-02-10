@@ -14,12 +14,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying a poll
  */
-class modPoll extends Hubzero_Module
+class modPoll extends \Hubzero\Module\Module
 {
 	/**
 	 * Get poll data

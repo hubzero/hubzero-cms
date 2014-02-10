@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for com_groups data
  */
-class modGroups extends Hubzero_Module
+class modGroups extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -88,8 +88,7 @@ class modGroups extends Hubzero_Module
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE created >= '$lastDay' AND type='$type'");
 		$this->pastDay = $this->database->loadResult();
 
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
+		$this->css();
 
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));

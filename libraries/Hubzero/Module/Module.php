@@ -144,7 +144,9 @@ class Module extends Object
 			$module = 'mod_' . $module;
 		}
 
-		return \Hubzero_Document::addModuleStylesheet($module, $stylesheet, $type, $media, $attribs);
+		\Hubzero_Document::addModuleStylesheet($module, $stylesheet, $type, $media, $attribs);
+
+		return $this;
 	}
 
 	/**
@@ -179,7 +181,9 @@ class Module extends Object
 			$module = 'mod_' . $module;
 		}
 
-		return \Hubzero_Document::addModuleScript($module, $script, $type, $defer, $async);
+		\Hubzero_Document::addModuleScript($module, $script, $type, $defer, $async);
+
+		return $this;
 	}
 
 	/**

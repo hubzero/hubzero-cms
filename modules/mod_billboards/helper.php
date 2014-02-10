@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Mod_Billboards helper class, used to query for billboards and contains the display method
  */
-class modBillboards extends Hubzero_Module
+class modBillboards extends \Hubzero\Module\Module
 {
 	/**
 	 * Get the list of billboads in the selected collection
@@ -77,13 +77,12 @@ class modBillboards extends Hubzero_Module
 		if (!$this->multiple_instances)
 		{
 			// Push some CSS to the template
-			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStylesheet('mod_billboards');
-			if(!JPluginHelper::isEnabled('system', 'jquery'))
+			$this->css();
+			if (!JPluginHelper::isEnabled('system', 'jquery'))
 			{
 				$jdocument->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
 			}
-			$jdocument->addScript('/modules/mod_billboards/mod_billboards.js');
+			$this->js();
 		}
 
 		// Get the billboard slides
@@ -102,7 +101,7 @@ class modBillboards extends Hubzero_Module
 		$image_location = $params->get('image_location', '/site/media/images/billboards/');
 
 		// Add the CSS to the template for each billboard
-		foreach($this->slides as $slide)
+		foreach ($this->slides as $slide)
 		{
 			$background = (!empty($slide->background_img)) ? "background: url('$image_location$slide->background_img') no-repeat 0 0;" : '';
 			$padding    = (!empty($slide->padding)) ? "padding: $slide->padding;" : '';
@@ -114,8 +113,8 @@ class modBillboards extends Hubzero_Module
 				#$slide->alias p {
 					$padding
 					}";
-			$jdocument->addStyleDeclaration($css);
-			$jdocument->addStyleDeclaration($slide->css);
+			$this->css($css);
+			$this->css($slide->css);
 		}
 
 		// Add the CSS to give the pager a unique ID per billboard collection
@@ -129,7 +128,7 @@ class modBillboards extends Hubzero_Module
 				".slider #$this->pager a.activeSlide {
 					opacity:1.0;
 					}";
-			$jdocument->addStyleDeclaration($pager);
+			$this->css($pager);
 		}
 		else 
 		{
@@ -138,7 +137,7 @@ class modBillboards extends Hubzero_Module
 
 		// Add the javascript ready function with variables based on this specific billboard
 		// Pause: true - means the billbaord stops scrolling on hover
-		if(!JPluginHelper::isEnabled('system', 'jquery'))
+		if (!JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			$js = '
 				var $jQ = jQuery.noConflict();
@@ -191,6 +190,6 @@ class modBillboards extends Hubzero_Module
 				});';
 		}
 
-		$jdocument->addScriptDeclaration($js);
+		$this->js($js);
 	}
 }

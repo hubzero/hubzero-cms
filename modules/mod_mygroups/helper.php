@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a list of groups for a user
  */
-class modMyGroups extends Hubzero_Module
+class modMyGroups extends \Hubzero\Module\Module
 {
 	/**
 	 * Get groups for a user
@@ -165,8 +165,7 @@ class modMyGroups extends Hubzero_Module
 		$this->groups = $groups;
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

@@ -30,12 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying the latest blog posts
  */
-class modLatestBlog extends Hubzero_Module
+class modLatestBlog extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -70,7 +68,6 @@ class modLatestBlog extends Hubzero_Module
 
 		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
 		{
-			ximport('Hubzero_Group_Helper');
 			$juser = JFactory::getUser();
 
 			//make sure that the group for each blog post has the right privacy setting
@@ -114,8 +111,7 @@ class modLatestBlog extends Hubzero_Module
 	public function display()
 	{
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

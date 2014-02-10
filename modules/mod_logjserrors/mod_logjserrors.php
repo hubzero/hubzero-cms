@@ -1,4 +1,5 @@
-<?
+<?php
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$log = array();
 	array_map(function($k) use(&$log) { 
@@ -10,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}, array('message', 'file', 'line', 'url', 'navigator'));
 	$fh = fopen('/var/log/hubzero/client_error.log', 'a');
 	fwrite($fh, print_r($log, 1));
-	fclose($fh);	
+	fclose($fh);
 	exit();
 }
 ?>

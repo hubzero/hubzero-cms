@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a user's projects
  */
-class modMyProjects extends Hubzero_Module
+class modMyProjects extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -48,7 +48,7 @@ class modMyProjects extends Hubzero_Module
 		$db = JFactory::getDBO();
 
 		// Get the module parameters
-		$params =& $this->params;
+		$params = $this->params;
 		$this->moduleclass = $params->get('moduleclass');
 		$limit = intval($params->get('limit'));
 
@@ -59,7 +59,6 @@ class modMyProjects extends Hubzero_Module
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php');
-		ximport('Hubzero_View_Helper_Html');
 
 		// Set filters
 		$filters = array();
@@ -82,8 +81,7 @@ class modMyProjects extends Hubzero_Module
 		$this->rows = $obj->getRecords($filters, false, $juser->get('id'), 0, $setup_complete);
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_myprojects');
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath('mod_myprojects'));
 	}

@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Module class for Administrator dashboard
  */
-class modDashboard extends Hubzero_Module
+class modDashboard extends \Hubzero\Module\Module
 {
 	/**
 	 * Output module TML
@@ -123,8 +123,7 @@ class modDashboard extends Hubzero_Module
 		}
 
 		// Get styles
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . substr($this->module->module, 4). '.css');
+		$this->css();
 
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));

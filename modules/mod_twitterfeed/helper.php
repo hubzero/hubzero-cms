@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a Twitter feed
  */
-class modTwitterFeed extends Hubzero_Module
+class modTwitterFeed extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module

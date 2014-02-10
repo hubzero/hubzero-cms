@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying the latest forum posts
  */
-class modLatestGroups extends Hubzero_Module
+class modLatestGroups extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -46,9 +46,6 @@ class modLatestGroups extends Hubzero_Module
 
 		$juser = JFactory::getUser();
 		$uid = $juser->get('id');
-
-		ximport("Hubzero_Group");
-		ximport("Hubzero_Group_Helper");
 
 		//get the params
 		$this->cls = $this->params->get('moduleclass_sfx');
@@ -103,8 +100,7 @@ class modLatestGroups extends Hubzero_Module
 	public function display()
 	{
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

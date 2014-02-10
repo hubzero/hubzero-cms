@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for com_support ticket data
  */
-class modSupportTickets extends Hubzero_Module
+class modSupportTickets extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -111,8 +111,7 @@ class modSupportTickets extends Hubzero_Module
 		// Get avgerage lifetime
 		$this->lifetime = $st->getAverageLifeOfTicket($this->type, $this->year, $this->group);
 
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
+		$this->css();
 
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));

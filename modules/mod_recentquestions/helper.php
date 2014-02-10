@@ -30,12 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying recent questions
  */
-class modRecentQuestions extends Hubzero_Module
+class modRecentQuestions extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents
@@ -99,8 +97,7 @@ class modRecentQuestions extends Hubzero_Module
 	public function display()
 	{
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

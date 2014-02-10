@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying featured members
  */
-class modFeaturedmember extends Hubzero_Module
+class modFeaturedmember extends \Hubzero\Module\Module
 {
 	/**
 	 * Generate module contents
@@ -51,8 +51,6 @@ class modFeaturedmember extends Hubzero_Module
 			$this->setError(JText::_('FeaturesHistory class missing'));
 			return false;
 		}
-
-		ximport('Hubzero_User_Profile');
 
 		$database = JFactory::getDBO();
 
@@ -167,8 +165,6 @@ class modFeaturedmember extends Hubzero_Module
 		// Did we have a result to display?
 		if ($this->row) 
 		{
-			ximport('Hubzero_View_Helper_Html');
-
 			$config = JComponentHelper::getParams('com_members');
 
 			// Is this a content article or a member profile?

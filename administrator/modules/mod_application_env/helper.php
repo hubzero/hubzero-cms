@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying current system environment
  */
-class modApplicationEnv extends Hubzero_Module
+class modApplicationEnv extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module
@@ -52,8 +52,7 @@ class modApplicationEnv extends Hubzero_Module
 			return;
 		}
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_application_env');
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath('mod_application_env'));
 	}

@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying announcements
  */
-class modAnnouncementsHelper extends Hubzero_Module
+class modAnnouncementsHelper extends \Hubzero\Module\Module
 {
 	/**
 	 * Get a list of content pages
@@ -108,11 +108,10 @@ class modAnnouncementsHelper extends Hubzero_Module
 		}
 
 		// Push some CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
+		$this->css();
 
 		$this->content = $this->_getList();	
-		$this->cid = (int) $this->params->get('catid', 0);	
+		$this->cid = (int) $this->params->get('catid', 0);
 		$this->container = $this->params->get('container', 'block-announcements');
 
 		require(JModuleHelper::getLayoutPath($this->module->module));

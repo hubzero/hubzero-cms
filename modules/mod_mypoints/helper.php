@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying point total and recent transactions
  */
-class modMyPoints extends Hubzero_Module
+class modMyPoints extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -69,8 +69,7 @@ class modMyPoints extends Hubzero_Module
 			$this->history = $BTL->history($this->limit);
 
 			// Push the module CSS to the template
-			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStyleSheet($this->module->module);
+			$this->css();
 		}
 
 		require(JModuleHelper::getLayoutPath($this->module->module));

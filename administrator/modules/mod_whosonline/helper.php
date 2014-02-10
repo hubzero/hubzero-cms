@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for showing users online
  */
-class modWhosOnline extends Hubzero_Module
+class modWhosOnline extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
@@ -72,8 +72,7 @@ class modWhosOnline extends Hubzero_Module
 		$this->rows = $this->database->loadObjectList();
 		
 		//add stylesheets to view
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
+		$this->css();
 
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));

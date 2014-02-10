@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying current system environment
  */
-class modNewsletter extends Hubzero_Module
+class modNewsletter extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module
@@ -73,9 +73,8 @@ class modNewsletter extends Hubzero_Module
 		}
 		
 		//add stylesheets and scripts
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
-		Hubzero_Document::addModuleScript($this->module->module);
+		$this->css();
+		$this->js();
 		
 		//display module
 		require(JModuleHelper::getLayoutPath($this->module->module));

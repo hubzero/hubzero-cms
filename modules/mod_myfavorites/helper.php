@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a user's favorites
  */
-class modMyFavorites extends Hubzero_Module
+class modMyFavorites extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
@@ -70,7 +70,6 @@ class modMyFavorites extends Hubzero_Module
 
 		$option = 'com_members';
 
-		ximport('Hubzero_User_Profile');
 		$member = Hubzero_User_Profile::getInstance($juser->get('id'));
 
 		// Get the search result totals
@@ -150,8 +149,7 @@ class modMyFavorites extends Hubzero_Module
 		$this->cats = $cats;
 
 		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

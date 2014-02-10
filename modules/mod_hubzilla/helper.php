@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying current system environment
  */
-class modHubzilla extends Hubzero_Module
+class modHubzilla extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module
@@ -44,9 +44,8 @@ class modHubzilla extends Hubzero_Module
 	 */
 	public function display()
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
-		Hubzero_Document::addModuleScript($this->module->module);
+		$this->css()
+		     ->js();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

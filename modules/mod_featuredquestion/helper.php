@@ -32,12 +32,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Module class for displaying a random featured question
  */
-class modFeaturedquestion extends Hubzero_Module
+class modFeaturedquestion extends \Hubzero\Module\Module
 {
 	/**
 	 * Generate module contents

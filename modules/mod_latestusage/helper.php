@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying latest usage
  */
-class modLatestusage extends Hubzero_Module
+class modLatestusage extends \Hubzero\Module\Module
 {
 	/**
 	 * Get the count of users currently online

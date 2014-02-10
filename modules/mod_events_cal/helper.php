@@ -32,12 +32,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Module');
-
 /**
  * Class for events calendar module
  */
-class modEventsCalendar extends Hubzero_Module
+class modEventsCalendar extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module utput
@@ -46,8 +44,7 @@ class modEventsCalendar extends Hubzero_Module
 	 */
 	public function display()
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		$this->css();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

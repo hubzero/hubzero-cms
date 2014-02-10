@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for com_answers data
  */
-class modAnswers extends Hubzero_Module
+class modAnswers extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
