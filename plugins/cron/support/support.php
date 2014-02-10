@@ -60,6 +60,11 @@ class plgCronSupport extends JPlugin
 				'name'   => 'sendTicketsReminder',
 				'label'  =>  JText::_('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
 				'params' => 'ticketreminder'
+			),
+			array(
+				'name'   => 'sendTicketList',
+				'label'  =>  JText::_('PLG_CRON_SUPPORT_EMAIL_LIST'),
+				'params' => 'ticketlist'
 			)
 		);
 
@@ -73,6 +78,196 @@ class plgCronSupport extends JPlugin
 	 */
 	public function onClosePending($params=null)
 	{
+		$database = JFactory::getDBO();
+
+		$sql = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(JFactory::getDate()->toSql());
+
+		$where = array();
+
+		$where[] = "t.`type`=0";
+		$where[] = "t.`open`=1";
+
+		if (is_object($params))
+		{
+			$statuses = array();
+			if ($params->get('support_ticketpending_waiting', 1))
+			{
+				$statuses[] = '2';
+			}
+			if ($params->get('support_ticketpending_new', 0))
+			{
+				$statuses[] = '0';
+			}
+			if ($params->get('support_ticketpending_accepted', 0))
+			{
+				$statuses[] = '1';
+			}
+
+			$where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+
+			if ($group = $params->get('support_ticketpending_group'))
+			{
+				$where[] = "t.`group`=" . $database->quote($group);
+			}
+
+			if ($owners = $params->get('support_ticketpending_owners'))
+			{
+				$usernames = explode(',', $owners);
+				$usernames = array_map('trim', $usernames);
+				foreach ($usernames as $k => $username)
+				{
+					$usernames[$k] = $database->quote($username);
+				}
+
+				$where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
+			}
+
+			if ($severity = $params->get('support_ticketpending_severity'))
+			{
+				if ($severity != 'all')
+				{
+					$severities = explode(',', $severity);
+					$severities = array_map('trim', $severities);
+					foreach ($severities as $k => $severity)
+					{
+						$severities[$k] = $database->quote($severity);
+					}
+					$where[] = "t.`severity` IN (" . implode(", ", $severities) . ")";
+				}
+			}
+
+			if ($owned = intval($params->get('support_ticketpending_owned', 0)))
+			{
+				if ($owned == 1)
+				{
+					$where[] = "(t.`owner` IS NULL OR `owner`='')";
+				}
+				else if ($owned == 2)
+				{
+					$where[] = "(t.`owner` IS NOT NULL AND `owner` !='')";
+				}
+			}
+
+			if ($submitters = $params->get('support_ticketpending_submitters'))
+			{
+				$usernames = explode(',', $submitters);
+				$usernames = array_map('trim', $usernames);
+				foreach ($usernames as $k => $username)
+				{
+					$usernames[$k] = $database->quote($username);
+				}
+
+				$where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
+			}
+
+			if ($tags = $params->get('support_ticketpending_excludeTags', 'fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate'))
+			{
+				$tags = explode(',', $tags);
+				$tags = array_map('trim', $tags);
+				foreach ($tags as $k => $tag)
+				{
+					$tags[$k] = $database->quote($tag);
+				}
+
+				$where[] = "t.`id` NOT IN (
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
+							WHERE jto.`tbl`='support' 
+							AND (
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
+							)
+						)";
+			}
+
+			if ($tags = $params->get('support_ticketpending_includeTags', 'pendingreview'))
+			{
+				$tags = explode(',', $tags);
+				$tags = array_map('trim', $tags);
+				foreach ($tags as $k => $tag)
+				{
+					$tags[$k] = $database->quote($tag);
+				}
+
+				$where[] = "t.`id` IN (
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
+							WHERE jto.`tbl`='support' 
+							AND (
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
+							)
+						)";
+			}
+
+			if ($created = $params->get('support_ticketpending_activity', '-2week'))
+			{
+				$op = '';
+				switch ($created)
+				{
+					// Created before (older than)
+					case '-day':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 day');
+					break;
+
+					case '-week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 week');
+					break;
+
+					case '-2week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-2 week');
+					break;
+
+					case '-3week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-3 week');
+					break;
+
+					case '-month':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 month');
+					break;
+
+					case '-6month':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-6 month');
+					break;
+
+					case '-year':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 year');
+					break;
+
+					case '--':
+						$op = '';
+					break;
+				}
+
+				if ($op)
+				{
+					$where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) " . $op . $database->quote($timestamp->toSql());
+				}
+			}
+		}
+		else
+		{
+			$timestamp = JFactory::getDate('-2 week');
+			$where[] = "t.`created` <= " . $database->quote($timestamp->toSql());
+		}
+
+		if (count($where)  > 0)
+		{
+			$sql .= " WHERE " . implode(" AND ", $where);
+		}
+		//echo $sql;
+		$database->setQuery($sql);
+		if (!$database->query())
+		{
+			$logger = \Hubzero_Factory::getLogger();
+			$logger->logError('CRON query failed: ' . $database->getErrorMsg());
+		}
+
 		return true;
 	}
 
@@ -83,18 +278,14 @@ class plgCronSupport extends JPlugin
 	 */
 	public function sendTicketsReminder($params=null)
 	{
-		$lang = JFactory::getLanguage();
-		$lang->load('com_support');
-
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
 
 		$jconfig = JFactory::getConfig();
-		//$jconfig->getValue('config.sitename')
 		$sconfig = JComponentHelper::getParams('com_support');
 
-		//JLanguage::load('com_support');
 		$lang = JFactory::getLanguage();
+		$lang->load('com_support');
 		$lang->load('com_support', JPATH_BASE);
 
 		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2";
@@ -106,7 +297,7 @@ class plgCronSupport extends JPlugin
 			if ($group)
 			{
 				$users = $group->get('members');
-				$database->setQuery("SELECT username FROM #__users WHERE id IN (" . implode(',', $users) . ");");
+				$database->setQuery("SELECT username FROM `#__users` WHERE id IN (" . implode(',', $users) . ");");
 				if (!($usernames = $database->loadResultArray()))
 				{
 					$usernames = array();
@@ -125,8 +316,6 @@ class plgCronSupport extends JPlugin
 		{
 			return true;
 		}
-
-		ximport('Hubzero_Plugin_View');
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
 
@@ -238,9 +427,423 @@ class plgCronSupport extends JPlugin
 			//set mail
 			if (!mail($fullEmailAddress, $jconfig->getValue('config.sitename') . ' ' . $subject, $message, $headers, $args))
 			{
-				$this->setError('Failed to mail %s', $fullEmailAddress);
+				$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
 			}
 			$mailed[] = $juser->get('username');
+			//echo $message;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Send emails reminding people of their open tickets
+	 * 
+	 * @return     boolean
+	 */
+	public function sendTicketList($params=null)
+	{
+		$database = JFactory::getDBO();
+		$juri = JURI::getInstance();
+
+		$jconfig = JFactory::getConfig();
+		$sconfig = JComponentHelper::getParams('com_support');
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_support');
+		$lang->load('com_support', JPATH_BASE);
+
+		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`username`=t.`owner`";
+
+		$where = array();
+
+		$where[] = "t.`type`=0";
+
+		if (is_object($params))
+		{
+			if ($val = $params->get('support_ticketlist_open', 1))
+			{
+				$where[] = "t.`open`=" . $val;
+			}
+
+			$statuses = array();
+			if ($params->get('support_ticketlist_waiting', 1))
+			{
+				$statuses[] = '2';
+			}
+			if ($params->get('support_ticketlist_new', 1))
+			{
+				$statuses[] = '0';
+			}
+			if ($params->get('support_ticketlist_accepted', 1))
+			{
+				$statuses[] = '1';
+			}
+
+			$where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+
+			if ($group = $params->get('support_ticketlist_group'))
+			{
+				$where[] = "t.`group`=" . $database->quote($group);
+			}
+
+			if ($owners = $params->get('support_ticketlist_owners'))
+			{
+				$usernames = explode(',', $owners);
+				$usernames = array_map('trim', $usernames);
+				foreach ($usernames as $k => $username)
+				{
+					$usernames[$k] = $database->quote($username);
+				}
+
+				$where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
+			}
+
+			if ($severity = $params->get('support_ticketlist_severity'))
+			{
+				if ($severity != 'all')
+				{
+					$severities = explode(',', $severity);
+					$severities = array_map('trim', $severities);
+					foreach ($severities as $k => $severity)
+					{
+						$severities[$k] = $database->quote($severity);
+					}
+					$where[] = "t.`severity` IN (" . implode(", ", $severities) . ")";
+				}
+			}
+
+			if ($owned = intval($params->get('support_ticketlist_owned', 0)))
+			{
+				if ($owned == 1)
+				{
+					$where[] = "(t.`owner` IS NULL OR t.`owner`='')";
+				}
+				else if ($owned == 2)
+				{
+					$where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='')";
+				}
+			}
+
+			if ($submitters = $params->get('support_ticketlist_submitters'))
+			{
+				$usernames = explode(',', $submitters);
+				$usernames = array_map('trim', $usernames);
+				foreach ($usernames as $k => $username)
+				{
+					$usernames[$k] = $database->quote($username);
+				}
+
+				$where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
+			}
+
+			if ($tags = $params->get('support_ticketlist_excludeTags', 'fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate'))
+			{
+				$tags = explode(',', $tags);
+				$tags = array_map('trim', $tags);
+				foreach ($tags as $k => $tag)
+				{
+					$tags[$k] = $database->quote($tag);
+				}
+
+				$where[] = "t.`id` NOT IN (
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
+							WHERE jto.`tbl`='support' 
+							AND (
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
+							)
+						)";
+			}
+
+			if ($tags = $params->get('support_ticketlist_includeTags'))
+			{
+				$tags = explode(',', $tags);
+				$tags = array_map('trim', $tags);
+				foreach ($tags as $k => $tag)
+				{
+					$tags[$k] = $database->quote($tag);
+				}
+
+				$where[] = "t.`id` IN (
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
+							WHERE jto.`tbl`='support' 
+							AND (
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
+							)
+						)";
+			}
+
+			if ($created = $params->get('support_ticketlist_created', '+week'))
+			{
+				$op = '';
+				switch ($created)
+				{
+					// Created before (older than)
+					case '-day':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 day');
+					break;
+
+					case '-week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 week');
+					break;
+
+					case '-2week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-2 week');
+					break;
+
+					case '-3week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-3 week');
+					break;
+
+					case '-month':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 month');
+					break;
+
+					case '-6month':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-6 month');
+					break;
+
+					case '-year':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 year');
+					break;
+
+					// Created since (newer than)
+					case '+day':
+						$op = '>=';
+						$timestamp = JFactory::getDate('-1 day');
+					break;
+
+					case '+week':
+						$op = '>=';
+						$timestamp = JFactory::getDate('-1 week');
+					break;
+
+					case '+2week':
+						$op = '>=';
+						$timestamp = JFactory::getDate('-2 week');
+					break;
+
+					case '+3week':
+						$op = '>=';
+						$timestamp = JFactory::getDate('-3 week');
+					break;
+
+					case '+month':
+						$op = '>=';
+						$timestamp = JFactory::getDate('-1 month');
+					break;
+
+					case '+6month':
+						$op = '>=';
+						$timestamp = JFactory::getDate('-6 month');
+					break;
+
+					case '+year':
+						$op = '>=';
+						$timestamp = JFactory::getDate('-1 year');
+					break;
+				}
+
+				if ($op)
+				{
+					$where[] = "t.`created`" . $op . $database->quote($timestamp->toSql());
+				}
+			}
+
+			if ($created = $params->get('support_ticketpending_activity', '--'))
+			{
+				$op = '';
+				switch ($created)
+				{
+					// Created before (older than)
+					case '-day':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 day');
+					break;
+
+					case '-week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 week');
+					break;
+
+					case '-2week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-2 week');
+					break;
+
+					case '-3week':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-3 week');
+					break;
+
+					case '-month':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 month');
+					break;
+
+					case '-6month':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-6 month');
+					break;
+
+					case '-year':
+						$op = '<=';
+						$timestamp = JFactory::getDate('-1 year');
+					break;
+
+					case '--':
+						$op = '';
+					break;
+				}
+
+				if ($op)
+				{
+					$where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) " . $op . $database->quote($timestamp->toSql());
+				}
+			}
+		}
+		else
+		{
+			$where[] = "t.`open`=1";
+		}
+
+		if (count($where)  > 0)
+		{
+			$sql .= " WHERE " . implode(" AND ", $where);
+		}
+		$sql .= " ORDER BY t.`created` ASC LIMIT 0, 500";
+		//echo $sql;
+		$database->setQuery($sql);
+		if (!($results = $database->loadObjectList()))
+		{
+			return true;
+		}
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
+
+		if ($params->get('support_ticketlist_severity', 'all') != 'all')
+		{
+			$severities = explode(',', $params->get('support_ticketlist_severity', 'all'));
+		}
+		else
+		{
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			$severities = SupportUtilities::getSeverities($sconfig->get('severities'));
+		}
+
+		$from = array();
+		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT');
+		$from['email']     = $jconfig->getValue('config.mailfrom');
+		$from['multipart'] = md5(date('U'));
+
+		//set mail headers
+		$headers  = "MIME-Version: 1.0 \n";
+		if (array_key_exists('multipart', $from))
+		{
+			$headers .= "Content-Type: multipart/alternative;boundary=" . chr(34) . $from['multipart'] . chr(34) . "\r\n";
+		}
+		else
+		{
+			$headers .= "Content-type: text/plain; charset=utf-8\n";
+		}
+		$headers .= "X-Priority: 3\n";
+		$headers .= "X-MSMail-Priority: Normal\n";
+		$headers .= "Importance: Normal\n";
+		$headers .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
+		$headers .= "X-Component: com_support\r\n";
+		$headers .= "X-Component-Object: support_ticket_reminder\r\n";
+		$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
+		$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
+
+		//set mail additional args (mail return path - used for bounces)
+		if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
+		{
+			$args = '-f hubmail-bounces@' . $host;
+		}
+
+		$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKETS');
+
+		$usernames = array();
+		if ($users = $params->get('support_ticketlist_notify'))
+		{
+			$usernames = explode(',', $users);
+			$usernames = array_map('trim', $usernames);
+		}
+
+		$mailed = array();
+
+		foreach ($usernames as $owner)
+		{
+			if ($owner == '{config.mailfrom}')
+			{
+				$name  = $jconfig->getValue('config.mailfrom');
+				$email = $jconfig->getValue('config.mailfrom');
+			}
+			else if (strstr($owner, '@'))
+			{
+				$name  = $owner;
+				$email = $owner;
+			}
+			else
+			{
+				// Get the user's account
+				$juser = JUser::getInstance($owner);
+				if (!is_object($juser) || !$juser->get('id'))
+				{
+					continue;
+				}
+
+				$name  = $juser->get('name');
+				$email = $juser->get('email');
+			}
+
+			// Try to ensure no duplicates
+			if (in_array($email, $mailed))
+			{
+				continue;
+			}
+
+			$eview = new JView(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+				'name'      => 'emails', 
+				'layout'    => 'ticketlist'
+			));
+			$eview->option     = 'com_support';
+			$eview->controller = 'tickets';
+			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+			$eview->boundary   = $from['multipart'];
+			$eview->tickets    = $results;
+
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+
+			// email
+			if (strpos($name, ','))
+			{
+				$fullEmailAddress = '"' . $name . '" <' . $email . '>';
+			}
+			else
+			{
+				$fullEmailAddress = $name . ' <' . $email . '>';
+			}
+
+			//set mail
+			$logger = \Hubzero_Factory::getLogger();
+			if (!mail($fullEmailAddress, $jconfig->getValue('config.sitename') . ' ' . $subject, $message, $headers, $args))
+			{
+				//$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
+				$logger->logError('CRON email failed: ' . JText::sprintf('Failed to mail %s', $fullEmailAddress));
+			}
+			$mailed[] = $email;
 			//echo $message;
 		}
 

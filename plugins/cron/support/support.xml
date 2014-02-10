@@ -40,8 +40,47 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_cron_support.ini</language>
 	</languages>
 	<config>
-		<fields name="params">
+		<fields name="fields">
 			<fieldset group="ticketpending">
+				<field name="support_ticketpending_new" type="list" default="0" label="Has status: New" description="Ticket is open and new (no action taken yet).">
+					<option value="0">no</option>
+					<option value="1">yes</option>
+				</field>
+				<field name="support_ticketpending_waiting" type="list" default="1" label="Has status: Waiting" description="Ticket has a status of waiting user action.">
+					<option value="0">no</option>
+					<option value="1">yes</option>
+				</field>
+				<field name="support_ticketpending_accepted" type="list" default="0" label="Has status: Accepted" description="Ticket is open and has some action taken on it (tagged, comments, etc).">
+					<option value="0">no</option>
+					<option value="1">yes</option>
+				</field>
+				<field name="support_ticketpending_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
+					<option value="all">All</option>
+					<option value="critical,major">High</option>
+					<option value="normal">Normal</option>
+					<option value="minor,trivial">Low</option>
+				</field>
+				<field name="support_ticketpending_activity" type="list" default="-2week" label="Last activity" description="When the last activity on the ticket was.">
+					<option value="all">--</option>
+					<option value="-day">Older than 1 day</option>
+					<option value="-week">Older than 1 week</option>
+					<option value="-2week">Older than 2 weeks</option>
+					<option value="-3week">Older than 3 weeks</option>
+					<option value="-month">Older than 1 month</option>
+					<option value="-6month">Older than 6 months</option>
+					<option value="-year">Older than 1 year</option>
+				</field>
+				<field name="support_ticketpending_group" type="text" menu="hide" label="For group" default="" description="Only users within the group specified will be messaged." />
+				<field name="support_ticketpending_owned" type="list" default="0" label="Is assigned?" description="Ticket is assigned to someone or not.">
+					<option value="0">all</option>
+					<option value="1">no</option>
+					<option value="2">yes</option>
+				</field>
+				<field name="support_ticketpending_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
+				<field name="support_ticketpending_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
+				<field name="support_ticketpending_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="Who to notify" description="A comma-separated list of usernames or email addresses." />
+				<field name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
+				<field name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="pendingreview" label="Include tickets tagged with" description="A comma-separated list of tags." />
 			</fieldset>
 			<fieldset group="ticketreminder">
 				<field name="support_ticketreminder_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
@@ -51,6 +90,67 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="minor,trivial">Low</option>
 				</field>
 				<field name="support_ticketreminder_group" type="text" menu="hide" label="For users in group" default="" description="Only users within the group specified will be messaged." />
+			</fieldset>
+			<fieldset group="ticketlist">
+				<field name="support_ticketlist_open" type="list" default="1" label="Open/Closed" description="Ticket is open or closed.">
+					<option value="1">Open</option>
+					<option value="0">Closed</option>
+				</field>
+				<field name="support_ticketlist_new" type="list" default="1" label="Has status: New" description="Ticket is open and new (no action taken yet).">
+					<option value="0">no</option>
+					<option value="1">yes</option>
+				</field>
+				<field name="support_ticketlist_waiting" type="list" default="1" label="Has status: Waiting" description="Ticket has a status of waiting user action.">
+					<option value="0">no</option>
+					<option value="1">yes</option>
+				</field>
+				<field name="support_ticketlist_accepted" type="list" default="1" label="Has status: Accepted" description="Ticket is open and has some action taken on it (tagged, comments, etc).">
+					<option value="0">no</option>
+					<option value="1">yes</option>
+				</field>
+				<field name="support_ticketlist_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
+					<option value="all">All</option>
+					<option value="critical,major">High</option>
+					<option value="normal">Normal</option>
+					<option value="minor,trivial">Low</option>
+				</field>
+				<field name="support_ticketlist_created" type="list" default="+week" label="Created" description="Ticket creation time.">
+					<option value="-day">Older than 1 day</option>
+					<option value="-week">Older than 1 week</option>
+					<option value="-2week">Older than 2 weeks</option>
+					<option value="-3week">Older than 3 weeks</option>
+					<option value="-month">Older than 1 month</option>
+					<option value="-6month">Older than 6 months</option>
+					<option value="-year">Older than 1 year</option>
+					<option value="+day">Created in the past day</option>
+					<option value="+week">Created in the past week</option>
+					<option value="+2week">Created in the past 2 weeks</option>
+					<option value="+3week">Created in the past 3 weeks</option>
+					<option value="+month">Created in the past month</option>
+					<option value="+6month">Created in the past 6 months</option>
+					<option value="+year">Created in the past year</option>
+				</field>
+				<field name="support_ticketlist_activity" type="list" default="all" label="Last activity" description="When the last activity on the ticket was.">
+					<option value="all">--</option>
+					<option value="-day">Older than 1 day</option>
+					<option value="-week">Older than 1 week</option>
+					<option value="-2week">Older than 2 weeks</option>
+					<option value="-3week">Older than 3 weeks</option>
+					<option value="-month">Older than 1 month</option>
+					<option value="-6month">Older than 6 months</option>
+					<option value="-year">Older than 1 year</option>
+				</field>
+				<field name="support_ticketlist_group" type="text" menu="hide" label="For group" default="" description="Only users within the group specified will be messaged." />
+				<field name="support_ticketlist_owned" type="list" default="0" label="Is assigned?" description="Ticket is assigned to someone or not.">
+					<option value="0">all</option>
+					<option value="1">no</option>
+					<option value="2">yes</option>
+				</field>
+				<field name="support_ticketlist_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
+				<field name="support_ticketlist_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
+				<field name="support_ticketlist_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="Who to notify" description="A comma-separated list of usernames or email addresses." />
+				<field name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
+				<field name="support_ticketlist_includeTags" type="textarea" cols="30" rows="3" default="" label="Include tickets tagged with" description="A comma-separated list of tags." />
 			</fieldset>
 		</fields>
 	</config>
