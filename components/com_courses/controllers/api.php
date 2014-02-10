@@ -704,6 +704,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 					if (!is_dir(dirname($param_path)))
 					{
 						mkdir(dirname($param_path));
+						copy(JPATH_ROOT . $asset_path . DS . $file[0], $param_path);
 					}
 					else
 					{
