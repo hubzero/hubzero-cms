@@ -203,7 +203,11 @@ class plgTagsWiki extends JPlugin
 		{
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by, 
 						v.created AS modified, v.created AS publish_up, NULL AS publish_down,  
-						CONCAT('index.php?option=com_wiki&pagename=', w.pagename) AS href, 'wiki' AS section ";
+						CASE 
+							WHEN w.group_cn != '' THEN CONCAT('index.php?option=com_groups&scope=', w.scope, '&pagename=', w.pagename)
+							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
+						END AS href, 
+						'wiki' AS section ";
 			if (isset($filters['tags'])) 
 			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
