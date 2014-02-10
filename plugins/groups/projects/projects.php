@@ -62,6 +62,8 @@ class plgGroupsProjects extends Hubzero_Plugin
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
 		$this->_juser = JFactory::getUser();
+		$this->_total = 0;
+		$this->_projects = array();
 	}
 
 	/**
@@ -100,7 +102,8 @@ class plgGroupsProjects extends Hubzero_Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html' => ''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		//get this area details
@@ -114,6 +117,18 @@ class plgGroupsProjects extends Hubzero_Plugin
 				$return = 'metadata';
 			}
 		}
+		
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		
+		// Set filters
+		$filters = array();
+		$filters['group']  = $group->get('gidNumber');
+		$filters['mine']     = 1;
+		
+		// Get a record count
+		$obj 				= new Project($this->_database);
+		$this->_projects 	= $obj->getGroupProjectIds($group->get('gidNumber'), $this->_juser->get('id'));
 
 		//if we want to return content
 		if ($return == 'html') 
@@ -155,7 +170,8 @@ class plgGroupsProjects extends Hubzero_Plugin
 			//check to see if user is member and plugin access requires members
 			if (!in_array($juser->get('id'), $members) && $group_plugin_acl == 'members' && $authorized != 'admin') 
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' 
+					. JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -164,9 +180,10 @@ class plgGroupsProjects extends Hubzero_Plugin
 			Hubzero_Document::addPluginStylesheet('groups', 'projects');
 
 			// Load classes
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+				. DS . 'helpers' . DS . 'html.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+				. DS . 'helpers' . DS . 'imghandler.php');
 			ximport('Hubzero_View_Helper_Html');
 
 			// Which view 
@@ -180,7 +197,13 @@ class plgGroupsProjects extends Hubzero_Plugin
 				default:        $arr['html'] = $this->_view('all');   break;
 			}
 		}
+		
+		//get meta
+		$arr['metadata'] = array();
 
+		//return total message count
+		$arr['metadata']['count'] = count($this->_projects);
+		
 		// Return the output
 		return $arr;
 	}
@@ -215,10 +238,12 @@ class plgGroupsProjects extends Hubzero_Plugin
 		if ($which == 'all') 
 		{
 			$filters['which'] = 'owned';
-			$view->owned = $obj->getGroupProjects($this->group->get('gidNumber'), $this->_juser->get('id'), $filters, $this->_setup_complete);
+			$view->owned = $obj->getGroupProjects($this->group->get('gidNumber'), 
+				$this->_juser->get('id'), $filters, $this->_setup_complete);
 
 			$filters['which'] = 'other';
-			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), $this->_juser->get('id'), $filters, $this->_setup_complete);
+			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), 
+				$this->_juser->get('id'), $filters, $this->_setup_complete);
 		}
 		else 
 		{
@@ -229,13 +254,12 @@ class plgGroupsProjects extends Hubzero_Plugin
 				$which = 'owned';
 			}
 			$filters['which'] = $which;
-			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), $this->_juser->get('id'), $filters, $this->_setup_complete);
+			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), 
+				$this->_juser->get('id'), $filters, $this->_setup_complete);
 		}
 
 		// Get counts
-		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), $this->_juser->get('id'));
-		$view->projectcount = count($projects);
-		$view->newcount = $obj->getUpdateCount ($projects, $this->_juser->get('id'));
+		$view->newcount = $obj->getUpdateCount ($this->_projects, $this->_juser->get('id'));
 
 		$view->which   = $which;
 		$view->juser   = $this->_juser;
@@ -258,9 +282,12 @@ class plgGroupsProjects extends Hubzero_Plugin
 	 */
 	protected function _updates() 
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
 
 		// Build the final HTML
 		ximport('Hubzero_Plugin_View');
@@ -285,11 +312,13 @@ class plgGroupsProjects extends Hubzero_Plugin
 		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), $this->_juser->get('id'));
 		$view->projectcount = count($projects);
 
-		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), $this->_juser->get('id'), 1); // active only
+		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), 
+			$this->_juser->get('id'), 1); // active only
 		$view->newcount = $obj->getUpdateCount($projects, $this->_juser->get('id'));
 
 		// Get activity class
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
 		$objAC = new ProjectActivity($this->_database);
 
 		$afilters = array();
@@ -300,7 +329,8 @@ class plgGroupsProjects extends Hubzero_Plugin
 		$view->filters = $afilters;	
 
 		$activities = $objAC->getActivities(0, $afilters, 0, $this->_juser->get('id'), $projects);
-		$view->activities = $this->prepActivities($activities, 'com_projects', $this->_juser->get('id'), $view->filters, $view->limit);
+		$view->activities = $this->prepActivities($activities, 'com_projects', 
+			$this->_juser->get('id'), $view->filters, $view->limit);
 
 		$view->uid      = $this->_juser->get('id');
 		$view->config   = $this->_config;
