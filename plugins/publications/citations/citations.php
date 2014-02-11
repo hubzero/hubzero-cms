@@ -52,6 +52,9 @@ class plgPublicationsCitations extends JPlugin
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'citations' );
 		$this->_params = new JParameter( $this->_plugin->params );
+		
+		// Load component configs
+		$this->_config 		= JComponentHelper::getParams('com_publications');
 
 		$this->loadLanguage();
 	}
@@ -66,7 +69,7 @@ class plgPublicationsCitations extends JPlugin
 	 */	
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true)
 	{
-		if ($publication->_category->_params->get('plg_citations') && $extended) 
+		if ($publication->_category->_params->get('plg_citations')) 
 		{
 			$areas = array(
 				'citations' => JText::_('PLG_PUBLICATION_CITATIONS')
@@ -90,7 +93,8 @@ class plgPublicationsCitations extends JPlugin
 	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
 	 */	
-	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true  )
+	public function onPublication( $publication, $option, $areas, 
+		$rtrn='all', $version = 'default', $extended = true  )
 	{
 		$arr = array(
 			'html'=>'',
@@ -113,20 +117,18 @@ class plgPublicationsCitations extends JPlugin
 				}
 			}
 		}
-		
-		// Only applicable to latest published version
-		if (!$extended) 
-		{
-			return $arr;
-		}
-		
+				
 		$database = JFactory::getDBO();
 
 		// Get a needed library
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
 
 		// Get citations for this publication
 		$c = new CitationsCitation( $database );
@@ -146,10 +148,10 @@ class plgPublicationsCitations extends JPlugin
 			);
 
 			// Pass the view some info
-			$view->option = $option;
-			$view->publication = $publication;
-			$view->citations = $citations;
-			$view->format = (isset($this->_params) && $this->_params->get('format')) ? $this->_params->get('format') : 'APA';
+			$view->option 		= $option;
+			$view->publication 	= $publication;
+			$view->citations 	= $citations;
+			$view->format 		= $this->_config->get('citation_format', 'apa');
 			if ($this->getError()) 
 			{
 				$view->setError( $this->getError() );

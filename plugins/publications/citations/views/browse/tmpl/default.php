@@ -39,21 +39,36 @@ if ($this->citations) {
 	
 	$formatter = new CitationFormat;
 	$formatter->setTemplate($this->format);
-	
+				
 	// Loop through the citations and build the HTML
 	foreach ($this->citations as $cite) 
 	{
+		
+		$showLinks = ($cite->title && $cite->author && $cite->publisher) ? true : false;
+		
 		$item  = "\t".'<li>'."\n";
-		$item .= CitationFormat::formatReference($cite, '');
+		$formatted = $cite->formatted ? $cite->formatted : CitationFormat::formatReference($cite, '');
+		
+		if ($cite->doi && $cite->url)
+		{
+			$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">' 
+				. 'doi:' . $cite->doi . '</a>', $formatted);
+		}
+		
+		$item .= $formatted;		
 		$item .= "\t\t".'<p class="details">'."\n";
-		$item .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_citations&task=download&id='.$cite->id.'&format=bibtex&no_html=1').'" title="'.JText::_('PLG_PUBLICATION_CITATIONS_DOWNLOAD_BIBTEX').'">BibTex</a> <span>|</span> '."\n";
-		$item .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_citations&task=download&id='.$cite->id.'&format=endnote&no_html=1').'" title="'.JText::_('PLG_PUBLICATION_CITATIONS_DOWNLOAD_ENDNOTE').'">EndNote</a>'."\n";
+		if ($showLinks)
+		{
+			$item .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_citations&task=download&id='.$cite->id.'&format=bibtex&no_html=1').'" title="'.JText::_('PLG_PUBLICATION_CITATIONS_DOWNLOAD_BIBTEX').'">BibTex</a> <span>|</span> '."\n";
+			$item .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_citations&task=download&id='.$cite->id.'&format=endnote&no_html=1').'" title="'.JText::_('PLG_PUBLICATION_CITATIONS_DOWNLOAD_ENDNOTE').'">EndNote</a>'."\n";
+		}
 		if ($cite->eprint) {
 			if ($cite->eprint) {
 				$item .= "\t\t\t".' <span>|</span> <a href="'.stripslashes($cite->eprint).'">'.JText::_('PLG_PUBLICATION_CITATIONS_ELECTRONIC_PAPER').'</a>'."\n";
 			}
 		}
 		$item .= "\t\t".'</p>'."\n";
+		
 		$item .= "\t".'</li>'."\n";
 
 		// Decide which group to add it to
