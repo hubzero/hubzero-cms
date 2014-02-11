@@ -1324,8 +1324,8 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		// Get the key and IV - Trim the first xx characters from the payload for IV
 		$key  = $course->config()->get('unity_key', 0);
-		$iv   = substr($payload, 0, 31);
-		$data = substr($payload, 32);
+		$iv   = substr($data, 0, 32);
+		$data = substr($data, 32);
 
 		$message = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, base64_decode($data), MCRYPT_MODE_CBC, $iv);
 		$message = trim($message);
