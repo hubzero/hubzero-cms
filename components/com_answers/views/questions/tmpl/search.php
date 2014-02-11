@@ -193,7 +193,7 @@ if (!$this->filters['filterby'] == 'none')
 							<td>
 							<?php if (!$row->isReported()) { ?>
 								<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>">
-									<?php echo $this->escape(stripslashes($row->get('subject'))); ?>
+									<?php echo $this->escape($row->subject('clean')); ?>
 								</a><br />
 							<?php } else { ?>
 								<span class="entry-title">

@@ -98,14 +98,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label for="field-question">
 				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
 				<?php
-					ximport('Hubzero_Wiki_Editor');
-					echo Hubzero_Wiki_Editor::getInstance()->display(
+					echo $this->helpers()->editor(
 						'fields[question]', // name
-						'field-question',   // id 
 						stripslashes($this->question->get('question', '')), // content
-						'',    // classname
-						'35',  // cols
-						'10'   // rows
+						35,  // cols
+						10,   // rows
+						'field-question'   // id 
 					);
 				?>
 			</label>

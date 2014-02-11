@@ -141,8 +141,7 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
 							<?php
-							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('comment[content]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
+							echo JFactory::getEditor()->display('comment[content]', '', '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 

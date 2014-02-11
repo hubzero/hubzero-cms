@@ -78,7 +78,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		if (is_object($question) && $question->get('subject')) 
 		{
 			$pathway->addItem(
-				\Hubzero\Utility\String::truncate(stripslashes($question->get('subject')), 50),
+				\Hubzero\Utility\String::truncate($question->subject('clean'), 50),
 				$question->link()
 			);
 		}
@@ -99,7 +99,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		}
 		if (is_object($question) && $question->get('subject')) 
 		{
-			$this->view->title .= ': ' . \Hubzero\Utility\String::truncate(stripslashes($question->get('subject')), 50);
+			$this->view->title .= ': ' . \Hubzero\Utility\String::truncate($question->subject('clean'), 50);
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);

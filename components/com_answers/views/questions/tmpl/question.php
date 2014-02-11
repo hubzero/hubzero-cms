@@ -349,9 +349,7 @@ if (!$this->question->get('anonymous'))
 					<label for="responseanswer">
 						<?php echo JText::_('COM_ANSWERS_YOUR_RESPONSE'); ?>:
 						<?php
-						ximport('Hubzero_Wiki_Editor');
-						$editor = Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('response[answer]', 'responseanswer', '', 'minimal', '50', '10');
+						echo $this->helpers()->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'minimal'));
 						?>
 					</label>
 
