@@ -1,0 +1,112 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project links  CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#import-link label {
+		font-size: 90%;
+		margin: 1em 0;
+		display: block;
+	}
+	#import-link input {
+		width: 100%;
+	}	
+	
+/* Link
+--------------------------------------------- */
+	#link-preview {
+		margin: 1em 0;
+		border: 1px solid #CCC;
+		padding: 1em;
+		background: #FFFFFF;
+		border: 1px solid #dae6ec;
+	}
+	#link-preview h5 {
+		margin-top: 0 !important;
+	}
+	#link-preview p {
+		margin: 0;
+		padding: 0;
+	}
+	#link-image {
+		float: left;
+		display: block;
+		width: 100px;
+		height: 100px;
+		border: 1px solid #F7F7F7;
+		background: #F7F7F7;
+		margin-right: 1em;
+		text-align: center;
+		vertical-align: middle;
+		line-height:100px;
+	}
+	#link-image.noimage: {
+		background: #F7F7F7;
+	}
+	#link-image img {
+		max-width: 100px;
+		min-width: 50px;
+		max-height: 100px;
+		background: #FFF;
+		margin: 0 auto;
+	}
+	#link-preview p#link-url {
+		line-height: 1em;
+		margin-bottom: 0.5em;
+	}
+	#link-preview p#link-desc {
+		color: #999;
+		line-height: 1em;
+	}
+	#link-submit {
+		clear: both;
+	}
+	#link-submit .submitarea {
+		margin: 1em 0;
+	}
+	input#parse-url {
+		width: 100%;
+	}
+	#link-loading {
+		text-align: center;
+		padding: 1em;
+		font-size: 85%;
+		color: #e08d2b;
+	}
+	#link-content {
+		padding: 1em;
+		font-size: 85%;
+		background: #FFFFFF;
+		border: 1px solid #dae6ec;
+	}
+	.links:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		margin-right: 0.3em;
+		vertical-align: middle;
+	}
+	.links:before {
+		content: "\26D3";
+		color: #abc1cd;
+	}
+	.submit-citation {
+		display: block;
+		padding: 1em 0;
+		text-align: center;
+	}
