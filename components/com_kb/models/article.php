@@ -53,6 +53,13 @@ class KbModelArticle extends \Hubzero\Base\Model
 	protected $_tbl_name = 'KbTableArticle';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_kb.article.fulltxt';
+
+	/**
 	 * KbModelCategory
 	 * 
 	 * @var object
@@ -508,18 +515,32 @@ class KbModelArticle extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'parsed':
-				if ($shorten)
+				if ($content = $this->get('fulltxt.parsed'))
 				{
-					$content = \Hubzero\Utility\String::truncate($this->get('fulltxt'), $shorten, array('html' => true));
-
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
 					return $content;
 				}
 
-				return $this->get('fulltxt');
+				$config = array();
+
+				$content = stripslashes($this->get('fulltxt'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
+
+				$this->set('fulltxt.parsed', $this->get('fulltxt'));
+				$this->set('fulltxt', $content);
+
+				return $this->content($as, $shorten);
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->get('fulltxt'));
+				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);
@@ -529,7 +550,12 @@ class KbModelArticle extends \Hubzero\Base\Model
 
 			case 'raw':
 			default:
-				return $this->get('fulltxt');
+				$content = stripslashes($this->get('fulltxt'));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
 			break;
 		}
 	}

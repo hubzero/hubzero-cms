@@ -118,7 +118,6 @@ defined('_JEXEC') or die('Restricted access');
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
-					<!-- <a name="commentform<?php echo $this->comment->get('id'); ?>"></a> -->
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('COM_KB_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_KB_ANONYMOUS'))); ?></span></legend>
 
@@ -140,14 +139,13 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_KB_ENTER_COMMENTS'); ?></span>
 							<?php
-							ximport('Hubzero_Wiki_Editor');
-							echo Hubzero_Wiki_Editor::getInstance()->display('comment[comment]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
+							echo JFactory::getEditor()->display('comment[comment]', '', '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 
 						<label id="comment-anonymous-label" for="comment-anonymous">
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo JText::_('COM_KB_POST_COMMENT_ANONYMOUSLY'); ?>
+							<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
 						</label>
 
 						<p class="submit">

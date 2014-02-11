@@ -195,7 +195,7 @@ defined('_JEXEC') or die('Restricted access');
 						<span class="date"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('date')); ?></time></span>
 					</p>
 					<p>
-						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content('raw')), 300, 0); ?>
+						<?php echo \Hubzero\Utility\String::truncate(stripslashes($this->replyto->content('raw')), 300); ?>
 					</p>
 				</blockquote>
 				<?php
@@ -208,8 +208,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
 				<?php
 				if (!$this->juser->get('guest')) {
-					ximport('Hubzero_Wiki_Editor');
-					echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
+					echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal'));
 				} else {
 					$rtrn = JRoute::_($this->article->link() . '#post-comment');
 					?>
