@@ -362,8 +362,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<label for="commentcontent">
 					Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 					<?php
-						ximport('Hubzero_Wiki_Editor');
-						echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
+						echo $this->helpers()->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
 					?>
 				</label>
 				<?php } else { ?>
