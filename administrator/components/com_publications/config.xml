@@ -106,7 +106,6 @@
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="autoapprove" type="list" default="1" label="Auto-approve" description="Automatically approve new submissions">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
@@ -116,17 +115,21 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="default_category" type="text" menu="hide" default="dataset" label="Default category" description="Optionally set the category of newly created publications to the specified value if exists" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
 		<field name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
 		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder thumbnail image for video-type files in publication gallery" />
 		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder thumbnail image for image-type files in publication gallery" />
 		<field name="email_image" type="text" menu="hide" default="" label="Email header image (http://)" description="Default image for HTML email header - use full address starting with http://" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="documentation" type="text" menu="hide" default="" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
+		<field name="deposit_terms" type="text" menu="hide" default="" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
+		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+	</fieldset>
+	<fieldset name="DOI">
 		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what Digital Object Identifiers (DOI) are [optional]" />
 		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for issuing DOIs (what goes after doi:)" />
 		<field name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles if required" />
@@ -136,10 +139,8 @@
 		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate organization-supported tools" />
-		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe organization-supported tools" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
+	</fieldset>
+	<fieldset name="SECTIONS">
 		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of authors on publication page">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
@@ -162,21 +163,19 @@
 			<option value="2">Auto Generated</option>
 			<option value="3">Manually Inputed</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="suggest_licence" type="list" default="0" label="Suggest license" description="Allow users to suggest licenses">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>
-		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="documentation" type="text" menu="hide" default="" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
-		<field name="deposit_terms" type="text" menu="hide" default="" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
+		<field name="citation_format" type="list" default="apa" label="Citation format" description="Choose format for citations">
+			<option value="apa">APA</option>
+			<option value="ieee">IEEE</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate organization-supported tools" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe organization-supported tools" />
+		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
+	</fieldset>
+	<fieldset name="AIP">
 		<field name="repository" type="list" default="0" label="Trusted Digital Repository" description="Trusted Digital Repository">
 			<option value="0">no</option>
 			<option value="1">yes</option>

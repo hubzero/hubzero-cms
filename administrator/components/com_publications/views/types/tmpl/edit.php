@@ -64,6 +64,7 @@ $panels = array(
 	'tags'			=> 1,
 	'access'		=> 0,
 	'license'		=> 2,
+	'citations'		=> 1,
 	'notes'			=> 1
 );
 

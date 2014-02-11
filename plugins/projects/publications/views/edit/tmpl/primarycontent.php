@@ -81,6 +81,9 @@ else
 		<p class="editing mini"><a href="<?php echo $this->url; ?>" >&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION_CHANGE_TYPE'); ?></a></span>
 	<?php } ?>
 	<div id="pub-editor">
+		<?php if ($selOff) { ?>
+		<div id="c-pane" class="columns">
+		<?php } else { ?>
 		<div class="two columns first" id="c-selector">
 			<div class="c-inner" id="c-item-picker">
 				<h4><?php echo $ptitle; ?></h4>
@@ -106,6 +109,7 @@ else
 			</div>
 		</div>
 		<div class="two columns second" id="c-output">
+		<?php } ?>
 			<form action="<?php echo JRoute::_($this->route); ?>" method="post" id="plg-form" enctype="multipart/form-data">
 			<fieldset>	
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
@@ -127,10 +131,11 @@ else
 				<input type="hidden" name="vid" id="vid" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="selections" id="selections" value="" />
 			</fieldset>
+
 			<div class="c-inner">
 			<?php if ($canedit) { ?>
 				<span class="c-submit"><input type="submit" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->attachments) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
-			<?php } ?>
+			<?php } ?>			
 				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?>: </h5>
 				<ul id="c-filelist" class="c-list <?php if(!$canedit || !$this->pub->id) { ?>noedit<?php } ?>">
 					<li id="nosel" <?php if($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
@@ -175,10 +180,11 @@ else
 						} 
 					}  ?>
 				</ul>
+					
 				<?php if ($canedit) { ?>
 				<div id="pub-options"></div>
 				<?php } ?>
-			</div>
+				</div>
 			</form>
 		 </div> 
 	</div>

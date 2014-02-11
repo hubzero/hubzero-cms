@@ -179,16 +179,10 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		// Load language file
-		$this->loadLanguage();
-		
+		$this->loadLanguage();		
 		$database = JFactory::getDBO();
-		
-		// Enable views
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
 				
 		// Get JS & CSS
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('projects', 'publications');
 		Hubzero_Document::addPluginStylesheet('projects', 'publications');
 				
@@ -465,47 +459,6 @@ class plgProjectsPublications extends JPlugin
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();		
-	}
-	
-	/**
-	 * Get supported master types applicable to individual project
-	 * 
-	 * @return     string
-	 */
-	private function _getAllowedTypes($tChoices) 
-	{
-		$choices = array();
-		
-		if (is_object($this->_project) && $this->_project->id && !empty($tChoices))
-		{
-			foreach ($tChoices as $choice)
-			{
-				$pluginName = is_object($choice) ? $choice->alias : $choice;
-
-				// We need a plugin
-				if (!JPluginHelper::isEnabled('projects', $pluginName))
-				{
-					continue;
-				}
-				
-				$plugin = JPluginHelper::getPlugin('projects', $pluginName);
-				$params = new JParameter($plugin->params);
-				
-				// Get restrictions from plugin params 
-				$projects = $params->get('restricted') ? ProjectsHelper::getParamArray($params->get('restricted')) : array();
-				
-				if (!empty($projects))
-				{
-					if (!in_array($this->_project->alias, $projects))
-					{
-						continue;
-					}
-				}
-
-				$choices[] = $choice;
-			}
-		}
-		return $choices;
 	}
 	
 	/**
@@ -821,7 +774,8 @@ class plgProjectsPublications extends JPlugin
 		// Start url
 		$route = $this->_project->provisioned 
 					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';		
+					: 'index.php?option=com_projects' . a . 'alias=' 
+						. $this->_project->alias . a . 'active=publications';		
 
 		// If publication not found, raise error
 		if (!$pub) 
@@ -974,7 +928,8 @@ class plgProjectsPublications extends JPlugin
 				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
 				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
 				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
-				$document->addStyleSheet('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css');
+				$document->addStyleSheet('plugins' . DS . 'hubzero' . DS 
+					. 'autocompleter' . DS . 'autocompleter.css');
 			}
 		}
 				
@@ -1073,7 +1028,34 @@ class plgProjectsPublications extends JPlugin
 					$view->audience = new PublicationAudience( $this->_database );
 				}
 				break;
+				
+			case 'citations':
 			
+				/*
+				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+									. DS . 'com_publications' . DS . 'tables' . DS . 'citation.php' );
+				
+				$pCitation = new PublicationCitation( $this->_database);					
+				$view->citations = $pCitation->getRecords($row->publication_id);
+				*/
+				
+				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+					. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+					. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
+				include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' 
+					. DS . 'helpers' . DS . 'format.php' );
+				$view->format = $this->_pubconfig->get('citation_format', 'apa');
+
+				// Get citations for this publication
+				$c = new CitationsCitation( $this->_database );
+				$view->citations = $c->getCitations( 'publication', $row->publication_id );
+				
+				Hubzero_Document::addPluginStylesheet('projects', 'links');	
+				Hubzero_Document::addPluginScript('projects', 'links');
+				 	
+				break;
+						
 			case 'gallery':
 				// Get screenshots
 				$pScreenshot = new PublicationScreenshot( $this->_database );
@@ -1081,7 +1063,8 @@ class plgProjectsPublications extends JPlugin
 				
 				// Get gallery path
 				$webpath = $this->_pubconfig->get('webpath');
-				$view->gallery_path = $view->helper->buildPath($row->publication_id, $row->id, $webpath, 'gallery');
+				$view->gallery_path = $view->helper->buildPath($row->publication_id, 
+					$row->id, $webpath, 'gallery');
 				
 				// Get project file path
 				$view->fpath = ProjectsHelper::getProjectPath($this->_project->alias, 
@@ -1108,10 +1091,8 @@ class plgProjectsPublications extends JPlugin
 				break;
 		}
 		
-		//Import the wiki parser
-		ximport('Hubzero_Wiki_Parser');
+		// Import the wiki parser
 		$view->parser = Hubzero_Wiki_Parser::getInstance();
-
 		$view->wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => '',
@@ -1807,10 +1788,8 @@ class plgProjectsPublications extends JPlugin
 		$document = JFactory::getDocument();
 		$document->addScript('components' . DS . 'com_publications' . DS . 'publications.js');
 		
-		//Import the wiki parser
-		ximport('Hubzero_Wiki_Parser');
+		// Import the wiki parser
 		$view->parser = Hubzero_Wiki_Parser::getInstance();
-
 		$view->wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => '',
@@ -2326,6 +2305,10 @@ class plgProjectsPublications extends JPlugin
 						$objP->category = $cat;
 						$objP->store();
 					}					
+					break;
+					
+				case 'citations':
+					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SAVED');
 					break;
 
 				case 'notes':
@@ -3828,7 +3811,6 @@ class plgProjectsPublications extends JPlugin
 					else
 					{
 						// Instantiate a new registration object
-						ximport('Hubzero_Registration');
 						$xregistration = new Hubzero_Registration();
 						
 						$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
@@ -3935,7 +3917,6 @@ class plgProjectsPublications extends JPlugin
 		$objO = new ProjectOwner( $this->_database );
 		
 		// Instantiate a new registration object
-		ximport('Hubzero_Registration');
 		$xregistration = new Hubzero_Registration();
 		
 		// Get current owners
@@ -4233,7 +4214,6 @@ class plgProjectsPublications extends JPlugin
 		// Convert
 		if ($raw) 
 		{
-			ximport('Hubzero_Wiki_Parser');
 			$p = Hubzero_Wiki_Parser::getInstance();
 			
 			// import the wiki parser
@@ -5228,6 +5208,7 @@ class plgProjectsPublications extends JPlugin
 			'tags'			=> 1,
 			'access'		=> 0,
 			'license'		=> 2,
+			'citations'		=> 1,
 			'notes'			=> 1
 		);
 				
@@ -5354,6 +5335,16 @@ class plgProjectsPublications extends JPlugin
 				// Check tags
 				$tagsHelper = new PublicationTags( $this->_database);
 				$checked['tags'] = $tagsHelper->countTags($row->publication_id) > 0 ? 1 : 0;
+			}
+			elseif ($value == 'citations')
+			{
+				// Check citations
+				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+					. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
+					
+				$assoc 	= new CitationsAssociation($this->_database);
+				$filters = array('tbl' => 'publication', 'oid' => $row->publication_id);
+				$checked['citations'] = ($assoc->getCount($filters) > 1) ? 1 : 0;		
 			}
 			elseif ($value == 'notes')
 			{
@@ -6013,13 +6004,56 @@ class plgProjectsPublications extends JPlugin
 		if (!isset($this->_git))
 		{
 			// Git helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
+			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' 
+				. DS . 'helpers' . DS . 'githelper.php' );
 			$this->_git = new ProjectsGitHelper(
 				$this->_config->get('gitpath', '/opt/local/bin/git'), 
 				0,
 				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
 			);			
 		}
+	}
+	
+	/**
+	 * Get supported master types applicable to individual project
+	 * 
+	 * @return     string
+	 */
+	private function _getAllowedTypes($tChoices) 
+	{
+		$choices = array();
+		
+		if (is_object($this->_project) && $this->_project->id && !empty($tChoices))
+		{
+			foreach ($tChoices as $choice)
+			{
+				$pluginName = is_object($choice) ? $choice->alias : $choice;
+
+				// We need a plugin
+				if (!JPluginHelper::isEnabled('projects', $pluginName))
+				{
+					continue;
+				}
+				
+				$plugin = JPluginHelper::getPlugin('projects', $pluginName);
+				$params = new JParameter($plugin->params);
+				
+				// Get restrictions from plugin params 
+				$projects = $params->get('restricted') 
+					? ProjectsHelper::getParamArray($params->get('restricted')) : array();
+				
+				if (!empty($projects))
+				{
+					if (!in_array($this->_project->alias, $projects))
+					{
+						continue;
+					}
+				}
+
+				$choices[] = $choice;
+			}
+		}
+		return $choices;
 	}
 	
 	/**
@@ -6085,5 +6119,5 @@ class plgProjectsPublications extends JPlugin
 		}
 
 		return;
-	}
+		}
 }

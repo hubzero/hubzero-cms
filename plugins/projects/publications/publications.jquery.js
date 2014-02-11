@@ -83,6 +83,10 @@ HUB.ProjectPublications = {
 		{						
 			HUB.ProjectPublications.panelNotes();
 		}
+		if (section == 'citations') 
+		{						
+			HUB.ProjectPublications.panelCitations();
+		}
 		
 		// Enable/disable save button
 		HUB.ProjectPublications.checkBtn();	
@@ -136,6 +140,15 @@ HUB.ProjectPublications = {
 		}
 	},
 	
+	// CITATIONS
+	panelCitations: function()
+	{
+		var $ = this.jQuery;
+		
+		
+		
+	},
+		
 	// CONTENT
 	panelContent: function(gallery)
 	{

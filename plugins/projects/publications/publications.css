@@ -909,6 +909,7 @@
 --------------------------------------------- */
 	ul#c-filelist {
 		height: auto;
+		margin: 0;
 	}
 	#c-filelist .c-edit {
 		margin-top: -1.5em;
@@ -1530,7 +1531,6 @@
 		padding: 1em 0.5em;	
 		background: #FFFFFF;
 		border: 1px solid #dae6ec;
-		width: 92%;
 	}
 	#pub-options div div {
 		display: block;
@@ -1538,7 +1538,6 @@
 		border: none;
 	}
 	#pub-options p.notice {
-		width: 90%;
 		margin: 1em 0;
 	}
 	#pub-options div p {
@@ -1620,10 +1619,12 @@
 	ul.next-options li#next-question {
 		
 	}
-	ul.next-options li#next-question p {
+	ul.next-options li#next-question p,
+	ul.next-options li#next-citation p {
 		margin-top: -3em;
 	}
-	ul.next-options li#next-question:before {
+	ul.next-options li#next-question:before,
+	ul.next-options li#next-citation:before {
 		width: 32px;
 		height: 32px;
 		font-size: 32px;
@@ -1631,7 +1632,11 @@
 		content: "\f05a";
 		color: #89c685;
 		display: inline;
-		margin-left: -32px;
+		margin-left: -40px;
+	}
+	ul.next-options li#next-citation:before {
+		content: "\275D";
+		color: #777;	
 	}
 	ul.next-options p {
 		margin-top: 0;
@@ -1841,6 +1846,33 @@
 		font-weight: normal;
 		position: absolute;
 	}
+	
+/* Citations 
+--------------------------------------------- */
+
+	.c-panel-citations {
+		padding: 1em 0;
+	}
+	.c-delete {
+		float: right;
+		margin-top: -1.5em;
+	}
+	.c-citation {
+		display: block;
+		padding: 0.5em;
+	}
+	#c-citations li {
+		text-align: justify;
+	}
+	#c-citations li.c-drag {
+		width: auto;
+	}
+	#c-citations li .c-delete {
+		display: none;
+	}
+	#c-citations li:hover .c-delete {
+		display: block;
+	}
 		
 /* Display messages
 --------------------------------------------- */
@@ -1885,7 +1917,7 @@
 	
 /* 	@media rules
 --------------------------------------------- */
-	@media all and (max-width: 1000px) {
+	@media all and (max-width: 1100px) {
 		p#version-label {
 			margin-top: 2.5em;
 		}		
