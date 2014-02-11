@@ -112,6 +112,15 @@ class plgGroupsCollections extends Hubzero_Plugin
 
 		$this->model = new CollectionsModel('group', $this->group->get('gidNumber'));
 
+		//get the plugins params
+		$p = new Hubzero_Plugin_Params(JFactory::getDBO());
+		$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
+		$this->members = $group->get('members');
+		$this->authorized = $authorized;
+
+		$this->_authorize('collection');
+		$this->_authorize('item');
+
 		//are we returning html
 		if ($return == 'html') 
 		{
@@ -153,20 +162,12 @@ class plgGroupsCollections extends Hubzero_Plugin
 			$this->authorized = $authorized;
 
 			//group vars
-			
 			$this->members    = $members;
 
 			// Set some variables so other functions have access
 			$this->action     = $action;
 			$this->option     = $option;
 			$this->name       = substr($option, 4, strlen($option));
-
-			//get the plugins params
-			$p = new Hubzero_Plugin_Params($this->database);
-			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
-
-			$this->_authorize('collection');
-			$this->_authorize('item');
 
 			$this->params->set('access-plugin', 0);
 			if ($group_plugin_acl == 'registered')
