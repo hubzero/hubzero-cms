@@ -2773,7 +2773,6 @@ class WishlistController extends Hubzero_Controller
 			$row->created    = $when;
 			$row->state      = 0;
 			$row->item_id    = $wishid;
-			$row->parent     = $id;
 			$row->item_type  = $category;
 			$row->created_by = $juser->get('id');
 

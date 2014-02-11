@@ -78,14 +78,11 @@ if (!$this->juser->get('guest')) {
 
 						<input type="hidden" name="item_id" value="<?php echo $this->wishid; ?>" />
 						<input type="hidden" name="item_type" value="<?php echo $category; ?>" />
-						<input type="hidden" name="parent" value="<?php echo $this->refid; ?>" />
+						<input type="hidden" name="parent" value="" />
 
-						<label>
+						<label for="comment<?php echo $this->refid; ?>">
 							<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
-							<?php
-							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('comment', 'field_comment', '', 'minimal no-footer', '50', '10');
-							?>
+							<textarea name="content" id="comment<?php echo $this->refid; ?>" rows="4" cols="50" class="commentarea" placeholder="<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>"></textarea>
 						</label>
 						
 						<fieldset>
@@ -141,7 +138,7 @@ if (!$this->juser->get('guest')) {
 								
 								<label for="comment<?php echo $this->refid; ?>">
 									<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
-									<textarea name="content" id="comment<?php echo $this->refid; ?>" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?></textarea>
+									<textarea name="content" id="comment<?php echo $this->refid; ?>" rows="4" cols="50" class="commentarea" placeholder="<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>"></textarea>
 								</label>
 								
 								<fieldset>

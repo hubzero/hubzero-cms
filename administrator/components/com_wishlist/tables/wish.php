@@ -423,7 +423,7 @@ class Wish extends JTable
 			//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' WHERE CC.state=0 AND CC.item_type='wish' AND C2.item_id=ws.id) AS commentreplies, ";
 			//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' JOIN #__item_comments AS C3 ON C3.id=C2.parent AND C3.item_type='wish'  WHERE CC.state=0 AND CC.item_type='wish' AND C3.item_id=ws.id) AS replyreplies, ";
 			//$sql .= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
-			$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS numreplies, ";
+			$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=1 AND CC.item_type='wish') AS numreplies, ";
 
 			// Get abouse reports count
 			$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
@@ -659,7 +659,7 @@ class Wish extends JTable
 		//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' WHERE CC.state=0 AND CC.item_type='wish' AND C2.item_id=ws.id) AS commentreplies, ";
 		//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC JOIN #__item_comments AS C2 ON C2.id=CC.item_id AND C2.item_type='wish' JOIN #__item_comments AS C3 ON C3.id=C2.parent AND C3.item_type='wish'  WHERE CC.state=0 AND CC.item_type='wish' AND C3.item_id=ws.id) AS replyreplies, ";
 		//$sql .= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
-		$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS numreplies, ";
+		$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=1 AND CC.item_type='wish') AS numreplies, ";
 
 		// Get abouse reports count
 		$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
