@@ -106,6 +106,6 @@ class plgGroupsCalendarHelper
 			'14'    => array('abbreviation' => 'LINT',  'name' => 'Line Islands Time')
 		);
 
-		return $abbreviations[$timezone];
+		return (isset($abbreviations[$timezone]) ? $abbreviations[$timezone] : null;
 	}
 }
