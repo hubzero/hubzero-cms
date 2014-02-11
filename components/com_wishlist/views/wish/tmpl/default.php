@@ -103,7 +103,7 @@ if ($this->wishlist && $this->wish) {
 		$filters .= ($this->filters['start'])    ? '&start=' . $this->filters['start']       : '';
 ?>
 	<div id="content-header">
-		<h2><?php echo $this->title.' #'.$this->wish->id; ?></h2>
+		<h2><?php echo $this->title . ': ' . JText::_('COM_WISHLIST_WISH') . ' #' . $this->wish->id; ?></h2>
 	</div><!-- / #content-header -->		
 <?php if ($this->wish->saved==3 && !$error) { ?>
 	<p class="passed"><?php echo JText::_('New wish successfully posted. Thank you!'); ?></p>
