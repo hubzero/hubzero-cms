@@ -93,7 +93,7 @@ Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 		<fieldset>
 			<legend>
 				<?php if ($this->announcement->get('id')) : ?>
-						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
+						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 				<?php else : ?>
 						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_NEW'); ?>
 				<?php endif; ?>
