@@ -1148,6 +1148,13 @@ class CitationsControllerCitations extends Hubzero_Controller
 		
 		// file details
 		$image_details = pathinfo($image);
+
+		// make sure we have an image
+		$image_headers = @get_headers($image);
+		if (!is_array($image_headers) || strstr($image_headers[0], '200') === false)
+		{
+			exit();
+		}
 		
 		//ouput image based on type
 		switch ($image_details['extension'])
