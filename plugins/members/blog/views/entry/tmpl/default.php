@@ -29,8 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile_Helper');
-
 $juser = JFactory::getUser();
 
 $entry_year  = substr($this->row->get('publish_up'), 0, 4);
@@ -239,7 +237,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							<span class="comment-date-on"><?php echo JText::_('PLG_MEMBERS_BLOG_ON'); ?></span> 
 							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
-						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($replyto->get('content')), 300, 0); ?></p>
+						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?></p>
 					</blockquote>
 					<?php
 						}
@@ -248,8 +246,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 						Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('PLG_MEMBERS_BLOG_REQUIRED'); ?></span>
 						<?php
 						if (!$juser->get('guest')) {
-							//ximport('Hubzero_Wiki_Editor');
-							echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', '', '', '40', '15');
+							echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent');
 						} else { 
 						?>
 						<p class="warning">

@@ -65,8 +65,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<label for="entrycontent">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
 				<?php
-				ximport('Hubzero_Wiki_Editor');
-				echo Hubzero_Wiki_Editor::getInstance()->display('entry[content]', 'entrycontent', stripslashes($this->entry->get('content')), '', '50', '30');
+				echo JFactory::getEditor()->display('entry[content]', stripslashes($this->entry->get('content')), '', '', 50, 30, false, 'entrycontent');
 				?>
 			</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
