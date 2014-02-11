@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 				</th>
 				<td>
 				<?php if (!$row->isReported()) { ?>
-					<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('subject'))); ?></a><br />
+					<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a><br />
 				<?php } else { ?>
 					<span class="entry-title"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
 				<?php } ?>

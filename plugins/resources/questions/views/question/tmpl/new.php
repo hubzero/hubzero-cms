@@ -82,8 +82,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label for="field-question">
 				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
 				<?php
-				ximport('Hubzero_Wiki_Editor');
-				echo Hubzero_Wiki_Editor::getInstance()->display('question[question]', 'field-question', $this->escape(stripslashes($this->row->get('question'))), '', '50', '10');
+				echo JFactory::getEditor()->display('question[question]', $this->escape(stripslashes($this->row->get('question'))), '', '', 50, 10, false, 'field-question');
 				?>
 				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
