@@ -304,7 +304,9 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 			$stylesheet .= '.css';
 		}
 
-		return \Hubzero_Document::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
+		\Hubzero_Document::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
+
+		return $this;
 	}
 
 	/**
@@ -333,6 +335,8 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 			return \JFactory::getDocument()->addScriptDeclaration($script);
 		}
 
-		return \Hubzero_Document::addPluginScript($folder, $plugin, $script, $type, $defer, $async);
+		\Hubzero_Document::addPluginScript($folder, $element, $script, $type, $defer, $async);
+
+		return $this;
 	}
 }
