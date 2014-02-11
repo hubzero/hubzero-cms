@@ -136,11 +136,13 @@ HUB.ProjectLinks = {
 			$('#link-loading').html(HUB.ProjectPublications.loadingIma('Loading link preview...'));
 			HUB.ProjectLinks.showElement($('#link-loading'), 'show');			
 		}
+		
+		var projectid = $('#projectid').length ? $('#projectid').val() : 0;
 				
 		// Show selected link
 		if ($(input).val())
 		{						
-			$.post("index.php?option=com_projects&active=links&action=" + action + "&no_html=1&ajax=1&url="+escape($(input).val()), {}, 
+			$.post("/projects/" + projectid + "/links/?action=" + action + "&no_html=1&ajax=1&url="+escape($(input).val()), {}, 
 				function (response) {
 					
 				response = $.parseJSON(response);
@@ -193,7 +195,7 @@ HUB.ProjectLinks = {
 				// Show preview
 				if (response.preview)
 				{					
-					if (response.type && response.type == 'doi')
+					if (response.rtype && response.rtype == 'doi')
 					{
 						response.preview = '<p>' + response.preview + '</p>';
 					}

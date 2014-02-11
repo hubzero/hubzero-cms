@@ -482,7 +482,7 @@ class plgProjectsLinks extends JPlugin
 	{		
 		// Incoming
 		$url 			= $url ? $url : JRequest::getVar('url', $url);
-		$output 		= array('type' => 'url');
+		$output 		= array('rtype' => 'url');
 		
 		if (!$url)
 		{
@@ -505,7 +505,7 @@ class plgProjectsLinks extends JPlugin
 		// Pull DOI metadata
 		if ($doi)
 		{
-			$output['type'] = 'doi';
+			$output['rtype'] = 'doi';
 			$data = self::getDoiMetadata($doi, $citation, $url, $format);
 			
 			if ($this->getError())
