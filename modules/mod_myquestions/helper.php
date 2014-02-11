@@ -121,7 +121,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 		$juser = JFactory::getUser();
 
 		// Get some classes we need
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
@@ -151,7 +151,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 			case 'mine':
 				$filters['mine'] = 1;
 				$filters['sortby'] = 'responses';
-		    break;
+			break;
 
 			case 'assigned':
 				$filters['mine'] = 0;
@@ -170,20 +170,20 @@ class modMyQuestions extends \Hubzero\Module\Module
 				{
 					$filters['filterby'] = 'none';
 				}
-		    break;
+			break;
 
 			case 'interest':
 				$filters['mine'] = 0;
 				$interests = (count($interests) <= 0) ? $this->_getInterests() : $interests;
 				$filters['filterby'] = (!$interests) ? 'none' : 'open';
 				$filters['tag'] = $interests;
-		    break;
+			break;
 		}
 
 		$results = $aq->getResults($filters);
 		if ($this->banking && $results) 
 		{
-	 		$awards = array();
+			$awards = array();
 
 			foreach ($results as $result)
 			{
@@ -199,7 +199,12 @@ class modMyQuestions extends \Hubzero\Module\Module
 
 			// re-sort by max reponses
 			array_multisort($awards, SORT_DESC, $results);
-	 	}
+		}
+
+		foreach ($results as $k => $result)
+		{
+			$results[$k] = new AnswersModelQuestion($result);
+		}
 
 		return $results;
 	}

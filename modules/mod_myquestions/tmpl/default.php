@@ -44,17 +44,17 @@ $juser = JFactory::getUser();
 	{
 		if ($i < $this->limit_mine) 
 		{
-			$rcount = (isset($this->openquestions[$i]->rcount)) ?  $this->openquestions[$i]->rcount : 0;
+			$rcount = $this->openquestions[$i]->get('rcount', 0);
 			$rclass = ($rcount > 0) ?  'yes' : 'no';
 			?>
 			<li class="question">
-				<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->openquestions[$i]->id); ?>">
-					<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->openquestions[$i]->subject), 60)); ?>
+				<a href="<?php echo JRoute::_($this->openquestions[$i]->link()); ?>">
+					<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->openquestions[$i]->subject('clean'), 60)); ?>
 				</a>
 				<span><span class="responses_<?php echo $rclass; ?>"><?php echo $rcount; ?></span></span>
 
 			<?php if ($rcount > 0 && $this->banking) { ?>
-				<p class="earnpoints"><?php echo JText::_('MOD_MYQUESTIONS_CLOSE_THIS_QUESTION') . ' ' . $this->escape($this->openquestions[$i]->maxaward) . ' ' . JText::_('MOD_MYQUESTIONS_POINTS'); ?></p>
+				<p class="earnpoints"><?php echo JText::_('MOD_MYQUESTIONS_CLOSE_THIS_QUESTION') . ' ' . $this->escape($this->openquestions[$i]->get('maxaward', 0)) . ' ' . JText::_('MOD_MYQUESTIONS_POINTS'); ?></p>
 			<?php } ?>
 			</li>
 			<?php
@@ -84,11 +84,11 @@ $juser = JFactory::getUser();
 			{
 				?>
 				<li class="question">
-					<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->assigned[$i]->id); ?>">
-						<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->assigned[$i]->subject), 60)); ?>
+					<a href="<?php echo JRoute::_($this->assigned[$i]->link()); ?>">
+						<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->assigned[$i]->subject('clean'), 60)); ?>
 					</a>
 				<?php if ($this->banking) { ?>
-					<span ><span class="pts"><?php echo $this->escape($this->assigned[$i]->maxaward) . ' ' . strtolower(JText::_('MOD_MYQUESTIONS_PTS')); ?></span></span>
+					<span ><span class="pts"><?php echo $this->escape($this->assigned[$i]->get('maxaward', 0)) . ' ' . strtolower(JText::_('MOD_MYQUESTIONS_PTS')); ?></span></span>
 				<?php } ?>
 				</li>
 				<?php
@@ -124,11 +124,11 @@ $juser = JFactory::getUser();
 			{
 				?>
 				<li class="question">
-					<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->otherquestions[$i]->id); ?>">
-						<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->otherquestions[$i]->subject), 60)); ?>
+					<a href="<?php echo JRoute::_($this->otherquestions[$i]->link()); ?>">
+						<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->otherquestions[$i]->subject('clean'), 60)); ?>
 					</a>
 				<?php if ($this->banking) { ?>
-					<span><span class="pts"><?php echo $this->escape($this->otherquestions[$i]->maxaward) . ' ' . strtolower(JText::_('MOD_MYQUESTIONS_PTS')); ?></span></span>
+					<span><span class="pts"><?php echo $this->escape($this->otherquestions[$i]->get('maxaward', 0)) . ' ' . strtolower(JText::_('MOD_MYQUESTIONS_PTS')); ?></span></span>
 				<?php } ?>
 				</li>
 				<?php
