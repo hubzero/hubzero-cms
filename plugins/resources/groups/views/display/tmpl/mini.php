@@ -31,15 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->group->get('logo'))
-{
-	$config = JComponentHelper::getParams('com_groups');
-	$logo = DS . trim($config->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber') . DS . $this->group->get('logo');
-}
-else 
-{
-	$logo = ''; //'/components/com_groups/assets/img/group_default_logo.png';
-}
+$logo = $this->group->getLogo();
 ?>
 <div id="group-owner" class="container">
 	<h3><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></h3>
