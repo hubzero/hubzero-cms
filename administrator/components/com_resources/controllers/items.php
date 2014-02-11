@@ -933,6 +933,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$txta = new $paramsClass('');
 			foreach ($attribs as $k => $v)
 			{
+				if ($k == 'timeof')
+				{
+					$v = JFactory::getDate($v, JFactory::getConfig()->get('offset'))->toSql();
+				}
 				$txta->set($k, $v);
 			}
 			$row->attribs = $txta->toString();

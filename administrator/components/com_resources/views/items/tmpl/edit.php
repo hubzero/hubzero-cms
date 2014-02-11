@@ -193,7 +193,8 @@ function popratings()
 					<th class="key"><label for="attrib[location]">Location:</label></th>
 					<td><input type="text" name="attrib[location]" id="attrib[location]" size="25" maxlength="250" value="<?php echo $this->attribs->get('location', ''); ?>" /></td>
 					<th class="key"><label for="attrib[timeof]">Time:</label></th>
-					<td><input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo $this->attribs->get('timeof', ''); ?>" /></td>
+					<td>
+						<input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo JHTML::_('date', $this->attribs->get('timeof', ''), 'Y-m-d H:i:s'); ?>" /></td>
 				</tr>
 				<tr>
 					<th class="key"><label for="attrib_canonical">Canonical:</label></th>
