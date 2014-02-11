@@ -100,7 +100,7 @@ HUB.CoursesOutline = {
 				.on('click', '.browse-files', this.openFileBrowser)
 				.on('click', '.asset-item-title.toggle-editable', this.showTitleQuickEdit)
 				.on('click', '.asset-title-reset', this.resetTitleQuickEdit)
-				.on('submit', '.asset-title-form', this.submitTitleQuickEdit);
+				.on('click', '.asset-title-save', this.submitTitleQuickEdit);
 
 			$('.delete-tray').on('click', '.restore', this.restore);
 			$('.header .trash').on('click', this.toggleTrash);
@@ -748,8 +748,8 @@ HUB.CoursesOutline = {
 		 */
 		submitTitleQuickEdit: function ( e ) {
 			var $  = HUB.CoursesOutline.jQuery,
-			form   = $(this),
-			parent = $(this).parents('li:first');
+			form   = $(this).parents('.asset-title-form'),
+			parent = $(this).parents('.asset-item');
 
 			e.stopPropagation();
 			e.preventDefault();
@@ -1186,7 +1186,7 @@ HUB.CoursesOutline = {
 				.on('click', '.add-new.asset-group-item', this.create)
 				.on('click', ".asset-group-item-title.toggle-editable", this.showTitleQuickEdit)
 				.on('click', ".assetgroup-title-reset", this.resetTitleQuickEdit)
-				.on('submit', '.assetgroup-title-form', this.submitTitleQuickEdit);
+				.on('click', '.assetgroup-title-save', this.submitTitleQuickEdit);
 			$('.outline-main')
 				.on('assetGroupUpdate', this.update)
 				.on('assetGroupCreate', this.refresh)
@@ -1472,8 +1472,8 @@ HUB.CoursesOutline = {
 		 */
 		submitTitleQuickEdit: function ( e ) {
 			var $  = HUB.CoursesOutline.jQuery,
-			form   = $(this),
-			parent = $(this).parents('li:first');
+			form   = $(this).parents('.assetgroup-title-form'),
+			parent = $(this).parents('.asset-group-item');
 
 			e.stopPropagation();
 			e.preventDefault();
