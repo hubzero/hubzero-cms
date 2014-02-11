@@ -382,7 +382,7 @@ class View extends Object
 				$r = null;
 				if (!preg_match('/View((view)*(.*(view)?.*))$/i', get_class($this), $r))
 				{
-					\JError::raiseError(500, JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'));
+					\JError::raiseError(500, \JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'));
 				}
 				if (strpos($r[3], 'view'))
 				{
