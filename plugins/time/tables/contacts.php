@@ -146,7 +146,7 @@ Class TimeContacts extends JTable
 		// Only contacts for a certain hub
 		if (!empty($filters['hub_id']))
 		{
-			$query .= " WHERE c.hub_id = '".$filters['hub_id']."'";
+			$query .= " WHERE c.hub_id = ".$this->_db->quote($filters['hub_id']);
 		}
 
 		$this->_db->setQuery($query);

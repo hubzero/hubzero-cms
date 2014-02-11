@@ -161,7 +161,7 @@ Class TimeHubs extends JTable
 		// If we only want active hubs
 		if(!empty($filters['active']))
 		{
-			$query .= " WHERE h.active = ".$filters['active'];
+			$query .= " WHERE h.active = ".$this->_db->quote($filters['active']);
 		}
 
 		$this->_db->setQuery($query);
@@ -188,6 +188,10 @@ Class TimeHubs extends JTable
 		// If orderby and orderdir are set, use them
 		if(!empty($filters['orderby']) && !empty($filters['orderdir']))
 		{
+			if (!in_array(strtoupper($filters['orderdir']), array('ASC', 'DESC')))
+			{
+				$filters['orderdir'] = 'DESC';
+			}
 			$query .= " ORDER BY ".$filters['orderby']." ".$filters['orderdir'];
 		}
 		// If orderby and orderdir are not set, use some defaults
@@ -195,7 +199,7 @@ Class TimeHubs extends JTable
 		{
 			$query .= " ORDER BY name ASC";
 		}
-		$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		$query .= " LIMIT ".intval($filters['start']).",".intval($filters['limit']);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -216,7 +220,7 @@ Class TimeHubs extends JTable
 		$query .= " LEFT JOIN #__time_reports_records_assoc as assoc ON assoc.record_id = rec.id";
 		$query .= " LEFT JOIN #__time_reports as rep ON rep.id = assoc.report_id";
 
-		$query .= " WHERE rep.id = ".$id;
+		$query .= " WHERE rep.id = ".$this->_db->quote($id);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

@@ -156,14 +156,14 @@ Class TimeRecords extends JTable
 			if(!empty($filters['user']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "u.id = " . $filters['user'];
+				$query .= "u.id = " . $this->_db->quote($filters['user']);
 
 				$first = false;
 			}
 			if(!empty($filters['task']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.id = " . $filters['task'];
+				$query .= "p.id = " . $this->_db->quote($filters['task']);
 
 				$first = false;
 			}
@@ -172,8 +172,8 @@ Class TimeRecords extends JTable
 				foreach($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "(LOWER(r.description) LIKE '%" . strtolower($arg) . "%'";
-					$query .= " OR LOWER(p.name) LIKE '%" . strtolower($arg) . "%')";
+					$query .= "(LOWER(r.description) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
+					$query .= " OR LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%')";
 
 					$first = false;
 				}
@@ -211,9 +211,9 @@ Class TimeRecords extends JTable
 		// This is used when creating bill for a given task and id range
 		if(!empty($filters['pid']) && !empty($filters['startdate']) && !empty($filters['enddate']))
 		{
-			$query .= " WHERE p.id = ".$filters['pid'];
+			$query .= " WHERE p.id = ".$this->_db->quote($filters['pid']);
 			$query .= " AND billed = 0";
-			$query .= " AND r.date between '".$filters['startdate']."' AND '".$filters['enddate']."'";
+			$query .= " AND r.date BETWEEN ".$this->_db->quote($filters['startdate'])." AND ".$this->_db->quote($filters['enddate']);
 		}
 		// This is used when we're pulling records to display a report
 		elseif(!empty($filters['id_range']))
@@ -223,7 +223,7 @@ Class TimeRecords extends JTable
 		// This is for Mike M.
 		elseif(!empty($filters['startdate']) && !empty($filters['enddate']))
 		{
-			$query .= " WHERE r.date between '".$filters['startdate']."' AND '".$filters['enddate']."'";
+			$query .= " WHERE r.date BETWEEN ".$this->_db->quote($filters['startdate'])." AND ".$this->_db->quote($filters['enddate']);
 		}
 		// Filter by user and/or task on general records view
 		elseif(!empty($filters['user']) || !empty($filters['task']) || !empty($filters['search']) || !empty($filters['q']))
@@ -233,14 +233,14 @@ Class TimeRecords extends JTable
 			if(!empty($filters['user']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "u.id = " . $filters['user'];
+				$query .= "u.id = " . $this->_db->quote($filters['user']);
 
 				$first = false;
 			}
 			if(!empty($filters['task']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.id = " . $filters['task'];
+				$query .= "p.id = " . $this->_db->quote($filters['task']);
 
 				$first = false;
 			}
@@ -249,8 +249,8 @@ Class TimeRecords extends JTable
 				foreach($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "(LOWER(r.description) LIKE '%" . strtolower($arg) . "%'";
-					$query .= " OR LOWER(p.name) LIKE '%" . strtolower($arg) . "%')";
+					$query .= "(LOWER(r.description) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
+					$query .= " OR LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%')";
 
 					$first = false;
 				}
@@ -272,6 +272,10 @@ Class TimeRecords extends JTable
 		// This is used in our records display for sorting
 		if(!empty($filters['orderby']) && !empty($filters['orderdir']))
 		{
+			if (!in_array(strtoupper($filters['orderdir']), array('ASC', 'DESC')))
+			{
+				$filters['orderdir'] = 'DESC';
+			}
 			$query .= " ORDER BY ".$filters['orderby']." ".$filters['orderdir'];
 		}
 		else
@@ -280,7 +284,7 @@ Class TimeRecords extends JTable
 			$query .= " ORDER BY r.id DESC";
 		}
 		// Set limit and start for pagination
-		$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		$query .= " LIMIT ".intval($filters['start']).",".intval($filters['limit']);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -296,7 +300,7 @@ Class TimeRecords extends JTable
 	{
 		$query  = "SELECT r.*, u.name as uname, h.name as hname, h.id as hid, p.active as pactive, p.name as pname";
 		$query .= $this->buildquery();
-		$query .= " WHERE r.id = ".$id;
+		$query .= " WHERE r.id = ".$this->_db->Quote($id);
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObject();
@@ -338,7 +342,7 @@ Class TimeRecords extends JTable
 		$query .= $this->buildquery();
 		if(!empty($uid))
 		{
-			$query .= " WHERE u.id = " . $uid;
+			$query .= " WHERE u.id = " . $this->_db->Quote($uid);
 		}
 		$query .= " GROUP BY task_id";
 		$query .= " ORDER BY hours DESC";
@@ -360,7 +364,7 @@ Class TimeRecords extends JTable
 		$query .= $this->buildquery();
 		if(!empty($hub))
 		{
-			$query .= " WHERE h.id = " . $hub;
+			$query .= " WHERE h.id = " . $this->_db->Quote($hub);
 		}
 		$query .= " GROUP BY hname";
 		$query .= " ORDER BY hours DESC";
@@ -382,7 +386,7 @@ Class TimeRecords extends JTable
 		$query .= $this->buildquery();
 		if(!empty($date['start']) && !empty($date['end']))
 		{
-			$query .= " WHERE `date` >= '" . $date['start'] . "' AND `date` <= '" . $date['end'] . "'";
+			$query .= " WHERE `date` >= " . $this->_db->Quote($date['start']) . " AND `date` <= " . $this->_db->Quote($date['end']);
 		}
 		$query .= " GROUP BY name";
 		$query .= " ORDER BY entries DESC";
@@ -408,7 +412,7 @@ Class TimeRecords extends JTable
 			if(!empty($filters['id_range']) && !empty($filters['user_id']))
 			{
 				$query .= " WHERE r.id in (".$filters['id_range'].")";
-				$query .= " AND r.user_id = " . $filters['user_id'];
+				$query .= " AND r.user_id = " . $this->_db->Quote($filters['user_id']);
 			}
 			elseif(!empty($filters['id_range']))
 			{
@@ -416,7 +420,7 @@ Class TimeRecords extends JTable
 			}
 			elseif(!empty($filters['user_id']))
 			{
-				$query .= " WHERE r.user_id = " . $filters['user_id'];
+				$query .= " WHERE r.user_id = " . $this->_db->Quote($filters['user_id']);
 			}
 		}
 
