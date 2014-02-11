@@ -118,7 +118,7 @@ class Migration
 				$this->last_run['down'] = substr($rowdown['file'], 9, 14);
 			}
 		}
-		catch (PDOException $e)
+		catch (\PDOException $e)
 		{
 			$this->log('Error: failed to look up last migrations log entry.', 'error');
 			return false;
@@ -189,7 +189,7 @@ class Migration
 			$db->setQuery("SELECT `id` FROM `migrations` LIMIT 1");
 			$db->query();
 		}
-		catch (PDOException $e)
+		catch (\PDOException $e)
 		{
 			if ($this->createMigrationsTable($db) === false)
 			{
@@ -342,7 +342,7 @@ class Migration
 					$ignore = true;
 				}
 			}
-			catch (PDOException $e) 
+			catch (\PDOException $e) 
 			{
 				$ignore = false;
 			}
@@ -421,7 +421,7 @@ class Migration
 
 						$this->log("Running pre() {$file}");
 					}
-					catch (PDOException $e)
+					catch (\PDOException $e)
 					{
 						$this->log("Error: running pre() resulted in\n\n{$e}\n\nin {$file}", 'error');
 						return false;
@@ -457,7 +457,7 @@ class Migration
 						$this->recordMigration($file, $hash, $direction);
 						$this->log("Running {$direction}() in {$file}", 'success');
 					}
-					catch (PDOException $e)
+					catch (\PDOException $e)
 					{
 						$this->log("Error: running {$direction}() resulted in\n\n{$e}\n\nin {$file}", 'error');
 						return false;
@@ -477,7 +477,7 @@ class Migration
 
 						$this->log("Running post() {$file}");
 					}
-					catch (PDOException $e)
+					catch (\PDOException $e)
 					{
 						$this->log("Error: running post() resulted in\n\n{$e}\n\nin {$file}", 'error');
 						return false;
@@ -515,7 +515,7 @@ class Migration
 
 			self::$db->insertObject('migrations', $obj);
 		}
-		catch (PDOException $e)
+		catch (\PDOException $e)
 		{
 			$this->log("Failed inserting migration record: {$e}", 'error');
 			return false;
@@ -561,7 +561,7 @@ class Migration
 			$this->log('Migrations table successfully created');
 			return true;
 		}
-		catch (PDOException $e)
+		catch (\PDOException $e)
 		{
 			$this->log('Unable to create needed migrations table', 'error');
 			return false;
