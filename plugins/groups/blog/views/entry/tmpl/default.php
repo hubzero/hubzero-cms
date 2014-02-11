@@ -170,7 +170,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 					</h4>
 					<p class="entry-author-bio">
 						<?php if ($author->get('bio')) { ?>
-							<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
+							<?php echo \Hubzero\Utility\String::truncate(stripslashes($author->get('bio')), 300); ?>
 						<?php } else { ?>
 							<?php echo JText::_('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?>
 						<?php } ?>
@@ -263,14 +263,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 							<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span> 
 							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
-						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($replyto->get('content')), 300, 0); ?></p>
+						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?></p>
 					</blockquote>
 					<?php } ?>
 
 					<?php if (!$this->juser->get('guest')) { ?>
 						<label for="comment_content">
 							Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-							<?php echo $editor->display('comment[content]', 'comment_content', '', '', '40', '15'); ?>
+							<?php echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'comment_content'); ?>
 						</label>
 
 						<label id="comment-anonymous-label">

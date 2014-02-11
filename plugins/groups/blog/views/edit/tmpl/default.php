@@ -66,7 +66,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 		<label for="entry_content">
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
 			<?php 
-			echo Hubzero_Wiki_Editor::getInstance()->display('entry[content]', 'entry_content', $this->escape(stripslashes($this->entry->get('content'))), '', '50', '30'); ?>
+			echo JFactory::getEditor()->display('entry[content]', $this->escape(stripslashes($this->entry->get('content'))), '', '', 50, 30, false, 'entry_content');
+			?>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
 			<p class="error"><?php echo JText::_('PLG_GROUPS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
