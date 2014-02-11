@@ -107,7 +107,7 @@ class plgContentFormatwiki extends JPlugin
 		else
 		{
 			// Force apply a format?
-			if ($this->params->get('applyFormat'))
+			if ($this->params->get('applyFormat') && !preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content))
 			{
 				$content = '<!-- {FORMAT:WIKI} -->' . $content;
 				$article->set($key, $content)
