@@ -62,7 +62,6 @@ class plgEditorWikiToolbar extends JPlugin
 				$script = $this->_name . '.mootools';
 			}
 
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('editors', $this->_name);
 			Hubzero_Document::addPluginScript('editors', $this->_name, $script);
 
@@ -116,6 +115,10 @@ class plgEditorWikiToolbar extends JPlugin
 		if (!is_array($params['class']))
 		{
 			$params['class'] = array($params['class']);
+		}
+		if ($cls = $this->params->get('class'))
+		{
+			$params['class'][] = $cls;
 		}
 		$params['class'][] = 'wiki-toolbar-content';
 		$params['class'] = implode(' ', $params['class']);

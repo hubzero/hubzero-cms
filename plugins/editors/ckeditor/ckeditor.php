@@ -144,7 +144,11 @@ class plgEditorCkeditor extends JPlugin
 		{
 			$params['class'] = array($params['class']);
 		}
-		$params['class'][] = 'wiki-toolbar-content';
+		if ($cls = $this->params->get('class'))
+		{
+			$params['class'][] = $cls;
+		}
+		$params['class'][] = 'ckeditor-content';
 		$params['class'] = implode(' ', $params['class']);
 
 		$atts = array();
