@@ -85,7 +85,16 @@ class modRecentQuestions extends \Hubzero\Module\Module
 		
 		$this->database->setQuery($query);
 		$this->rows = $this->database->loadObjectList();
-		
+
+		if ($this->rows)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+			foreach ($this->rows as $k => $row)
+			{
+				$this->rows[$k] = new AnswersModelQuestion($row);
+			}
+		}
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
