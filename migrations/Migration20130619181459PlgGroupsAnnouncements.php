@@ -53,7 +53,7 @@ class Migration20130619181459PlgGroupsAnnouncements extends Migration
 		$p = $db->loadResult();
 
 		//load params object
-		$params = new JParameter( $p );
+		$params = new \JParameter( $p );
 
 		//set param to hide messages tab
 		$params->set('display_tab', 0);

@@ -41,7 +41,7 @@ class Migration20130816143341ComCitations extends Migration
 		
 		$db->setQuery($sql);
 		$rawCitationParams = $db->loadResult();
-		$citationParams = new JParameter( $rawCitationParams );
+		$citationParams = new \JParameter( $rawCitationParams );
 		
 		//insert default format
 		$query = "INSERT INTO `#__citations_format` (`typeid`, `style`, `format`)

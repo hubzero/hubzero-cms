@@ -16,8 +16,8 @@ class Migration20131112130740ComUsage extends Migration
 	protected static function up($db)
 	{
 		// Get stats DB object
-		$config     = JComponentHelper::getParams('com_usage');
-		$siteConfig = JFactory::getConfig();
+		$config     = \JComponentHelper::getParams('com_usage');
+		$siteConfig = \JFactory::getConfig();
 
 		$options['driver']   = $config->get('statsDBDriver');
 		$options['host']     = $config->get('statsDBHost');
@@ -51,7 +51,7 @@ class Migration20131112130740ComUsage extends Migration
 
 		try
 		{
-			$statsDb = JDatabase::getInstance($options);
+			$statsDb = \JDatabase::getInstance($options);
 		}
 		catch (Exception $e)
 		{

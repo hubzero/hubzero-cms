@@ -369,8 +369,8 @@ class Migration20130924000009ComMenus extends Migration
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 			{
 				// Use the MySQL driver for this
-				$config = JFactory::getConfig();
-				$database = JDatabase::getInstance(
+				$config = \JFactory::getConfig();
+				$database = \JDatabase::getInstance(
 					array(
 						'driver'   => 'mysql',
 						'host'     => $config->getValue('host'),
@@ -380,7 +380,7 @@ class Migration20130924000009ComMenus extends Migration
 					) 
 				);
 
-				$table = new JTableMenu($database);
+				$table = new \JTableMenu($database);
 				$table->rebuild();
 			}
 

@@ -22,7 +22,7 @@ class Migration20140108233319ComGroups extends Migration
 		$base = JPATH_ROOT . DS . 'site' . DS . 'groups';
 		
 		// get group folders
-		$groupFolders = JFolder::folders( $base, '.', false, true );
+		$groupFolders = \JFolder::folders( $base, '.', false, true );
 		
 		// make sure we have one!
 		if (count($groupFolders) < 1)
@@ -50,7 +50,7 @@ class Migration20140108233319ComGroups extends Migration
 			}
 			
 			//get group files
-			$groupFiles = JFolder::files( $groupFolder );
+			$groupFiles = \JFolder::files( $groupFolder );
 
 			// move each group file
 			foreach ($groupFiles as $groupFile)

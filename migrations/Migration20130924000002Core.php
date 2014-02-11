@@ -275,8 +275,8 @@ class Migration20130924000002Core extends Migration
 			{
 				// Rebuild categories
 				// Use the MySQL driver for this
-				$config = JFactory::getConfig();
-				$database = JDatabase::getInstance(
+				$config = \JFactory::getConfig();
+				$database = \JDatabase::getInstance(
 					array(
 						'driver'   => 'mysql',
 						'host'     => $config->getValue('host'),
@@ -286,7 +286,7 @@ class Migration20130924000002Core extends Migration
 					) 
 				);
 
-				$table = new JTableCategory($database);
+				$table = new \JTableCategory($database);
 				$table->rebuild();
 
 				// Rebuild assets
@@ -297,7 +297,7 @@ class Migration20130924000002Core extends Migration
 
 	private function rebuildAssets($parentId=1, $leftId=0, $level=0)
 	{
-		$database = JFactory::getDbo();
+		$database = \JFactory::getDbo();
 		$query = $database->getQuery(true);
 		$query->select('id');
 		$query->from('#__assets');
