@@ -81,7 +81,7 @@ class GroupsHelperView
 		{
 			// Get group plugins
 			JPluginHelper::importPlugin('groups');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			
 			// Trigger the functions that return the areas we'll be using
 			// then add overview to array
@@ -113,7 +113,7 @@ class GroupsHelperView
 	{
 		// Get group plugins
 		JPluginHelper::importPlugin('groups');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// are we authorized
 		$authorized = self::authorize( $group );
@@ -144,7 +144,7 @@ class GroupsHelperView
 		
 			// Get group plugins
 			JPluginHelper::importPlugin('groups');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 		
 			//get active tab
 			$tab = self::getTab( $group );

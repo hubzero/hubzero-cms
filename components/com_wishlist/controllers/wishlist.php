@@ -243,7 +243,7 @@ class WishlistController extends Hubzero_Controller
 	 * @param      string $css Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function _getStyles($option='', $css='')
+	public function _getStyles($option='', $css='', $system=false)
 	{
 		ximport('Hubzero_Document');
 		if ($option) 

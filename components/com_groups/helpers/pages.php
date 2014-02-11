@@ -439,6 +439,7 @@ class GroupsHelperPages
 		if ($markHit)
 		{
 			$groupsTablePageHit = new GroupsTablePageHit( $database );
+			$pageHit            = new stdClass;
 			$pageHit->gidNumber = $group->get('gidNumber');
 			$pageHit->pageid    = $page->get('id');
 			$pageHit->userid    = $juser->get('id');
