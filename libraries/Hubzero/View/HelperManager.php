@@ -78,7 +78,7 @@ class HelperManager
 	protected $_invokableClasses = array(
 		'autolink'  => 'Hubzero\View\Helper\Autolink',
 		'clean'     => 'Hubzero\View\Helper\Clean',
-		//'editor'    => 'Hubzero\View\Helper\Editor',
+		'editor'    => 'Hubzero\View\Helper\Editor',
 		'highlight' => 'Hubzero\View\Helper\Highlight',
 		'obfuscate' => 'Hubzero\View\Helper\Obfuscate',
 		//'paginator' => 'Hubzero\View\Helper\Paginator',
