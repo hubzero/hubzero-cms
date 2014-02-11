@@ -729,8 +729,9 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		$row->modified_by  = $this->juser->get('id');
 		$row->access	   = 0;
 
-		$row->introtext = (trim($row->fulltxt)) ? Hubzero_View_Helper_Html::shortenText(trim($row->fulltxt), 500, 0) : trim($row->fulltxt);
-		$row->fulltxt  = $this->_txtAutoP(trim($row->fulltxt), 1);
+		$row->fulltxt   = trim($row->fulltxt);
+		$row->introtext = ($row->fulltxt ? \Hubzero\Utility\String::truncate($row->fulltxt, 500) : $row->fulltxt);
+		$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
 		$type = new ResourcesType($this->database);
@@ -809,7 +810,6 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			$row->fulltxt   = $this->_txtClean($row->fulltxt);
 			//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 			$row->footertext = $this->_txtClean($row->footertext);
-			//$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltxt, 500, 0);
 		}
 
 		// Check content

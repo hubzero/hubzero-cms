@@ -99,7 +99,7 @@ $view->display();
 
 			<label for="field-fulltxt">
 				<?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
-				<textarea name="fulltxt" id="field-fulltxt" cols="50" rows="20"><?php echo ResourcesControllerCreate::_txtUnpee(stripslashes($this->row->fulltxt)); ?></textarea>
+				<?php echo JFactory::getEditor()->display('fulltxt', $this->escape(stripslashes($this->row->fulltxt)), '', '', 50, 20, false, 'field-fulltxt'); ?>
 			</label>
 		</fieldset><div class="clear"></div>
 <?php if ($fields) { ?>
