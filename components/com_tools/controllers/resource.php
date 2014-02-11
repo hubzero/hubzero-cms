@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
+ximport('Hubzero_Tool_Version');
 
 /**
  * Tool classes
@@ -79,8 +79,6 @@ class ToolsControllerResource extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		ximport('Hubzero_Tool_Version');
-
 		// Incoming
 		$alias   = JRequest::getVar('app', '');
 		$version = JRequest::getVar('editversion', 'dev');
@@ -208,10 +206,9 @@ class ToolsControllerResource extends Hubzero_Controller
 				}
 			}
 
-			ximport('Hubzero_View_Helper_Html');
 			$hztv->fulltxt    = $objV->fulltxt    = $status['fulltxt'];
-			$hztv->description = $objV->description = Hubzero_View_Helper_Html::shortenText(JRequest::getVar('description', $status['description'], 'post'), 500, 0);
-			$hztv->title       = $objV->title       = Hubzero_View_Helper_Html::shortenText(preg_replace('/\s+/', ' ', JRequest::getVar('title', $status['title'], 'post')), 500, 0);
+			$hztv->description = $objV->description = \Hubzero\Utility\String::truncate(JRequest::getVar('description', $status['description'], 'post'), 500);
+			$hztv->title       = $objV->title       = \Hubzero\Utility\String::truncate(preg_replace('/\s+/', ' ', JRequest::getVar('title', $status['title'], 'post')), 500);
 
 			if (!$hztv->update()) 
 			{
@@ -568,7 +565,6 @@ class ToolsControllerResource extends Hubzero_Controller
 
 		if (!$this->juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Helper');
 			$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = $this->_getUsersGroups($xgroups);
@@ -745,7 +741,6 @@ class ToolsControllerResource extends Hubzero_Controller
 		// otherwise superadmins can only act if they are also a member of the component admin group
 		if (($admingroup = trim($this->config->get('admingroup', '')))) 
 		{
-			ximport('Hubzero_User_Helper');
 			// Check if they're a member of admin group
 			$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
 			if ($ugs && count($ugs) > 0) 

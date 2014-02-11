@@ -78,8 +78,7 @@ $fields = $elements->render();
 		</label>
 		<label for="field-fulltxt">
 			<?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT'); ?>:
-			<textarea name="fulltxt" id="field-fulltxt" cols="50" rows="20"><?php echo $this->escape(stripslashes($this->status['fulltxt'])); ?></textarea>
-			<span class="hint"><a href="/wiki/Help:WikiFormatting"><?php echo JText::_('COM_TOOLS_WIKI_FORMATTING'); ?></a> <?php echo JText::_('COM_TOOLS_COMPOSE_TIP_ALLOWED'); ?>.</span>
+			<?php echo JFactory::getEditor()->display('fulltxt', $this->escape(stripslashes($this->status['fulltxt'])), '', '', 50, 20, false, 'field-fulltxt'); ?>
 		</label>
 	</fieldset><div class="clear"></div>
 
