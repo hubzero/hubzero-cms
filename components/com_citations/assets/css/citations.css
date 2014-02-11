@@ -88,6 +88,9 @@
 	}
 
 /* Citations Label */
+	.citations .citation-label {
+		min-width: 30px;
+	}
 	.citations .citation-label .type {
 		font-weight: bold;
 		text-transform: uppercase;

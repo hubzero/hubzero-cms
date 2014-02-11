@@ -327,7 +327,20 @@ if ($label == "none") {
 										</td>
 									<?php endif; ?>
 									<td class="citation-container">
-										<?php echo $formatter->formatCitation($cite, $this->filters['search'], $coins, $this->config); ?>
+										<?php 
+											$formatted = $cite->formatted 
+												? $cite->formatted 
+												: $formatter->formatCitation($cite, 
+													$this->filters['search'], $coins, $this->config);
+													
+											if ($cite->doi && $cite->url)
+											{
+												$formatted = str_replace('doi:' . $cite->doi, 
+													'<a href="' . $cite->url . '" rel="external">' 
+													. 'doi:' . $cite->doi . '</a>', $formatted);
+											}
+											
+											echo $formatted; ?>
 										<?php
 											//get this citations rollover param
 											$params = new JParameter($cite->params);
@@ -364,10 +377,14 @@ if ($label == "none") {
 									<?php } ?>
 								</tr>
 								<tr>
-									<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
+									<?php if($this->isAdmin === true) { ?>
+										<td></td>
+									<?php } ?>
+									<td></td>
+									<td <?php if ($label != "none") { echo 'colspan="2"'; } ?> class="citation-details">
 										<?php
 											$singleCitationView = $this->config->get('citation_single_view', 0);
-											if (!$singleCitationView)
+											if (!$singleCitationView && ($cite->title && $cite->author && $cite->publisher))
 											{
 												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); 
 											}
