@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Reports plugin for time component
  */
-class plgTimeReports extends Hubzero_Plugin
+class plgTimeReports extends \Hubzero\Plugin\Plugin
 {
 
 	/**
@@ -108,7 +106,6 @@ class plgTimeReports extends Hubzero_Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'html.php');
 
 		// Add some styles to the view
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('time','reports');
 		Hubzero_Document::addPluginScript('time','reports');
 
@@ -147,7 +144,6 @@ class plgTimeReports extends Hubzero_Plugin
 	private function _view()
 	{
 		// Create a new plugin view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'time',
@@ -180,7 +176,6 @@ class plgTimeReports extends Hubzero_Plugin
 	private function _create_bill()
 	{
 		// Create a new plugin view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder' =>'time',
@@ -211,7 +206,6 @@ class plgTimeReports extends Hubzero_Plugin
 	private function _view_bill()
 	{
 		// Create a new plugin view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder' =>'time',

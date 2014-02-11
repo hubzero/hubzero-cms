@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Overview plugin for time component
  */
-class plgTimeOverview extends Hubzero_Plugin
+class plgTimeOverview extends \Hubzero\Plugin\Plugin
 {
 
 	/**
@@ -107,7 +105,6 @@ class plgTimeOverview extends Hubzero_Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'charts.php');
 
 		// Add some styles to the view
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('time','overview');
 
 		// Get the Joomla document and add google JS API
@@ -150,7 +147,6 @@ class plgTimeOverview extends Hubzero_Plugin
 		$records = new TimeRecords($this->db);
 		
 		// Create a new plugin view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'time',

@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Hubs plugin for time component
  */
-class plgTimeHubs extends Hubzero_Plugin
+class plgTimeHubs extends \Hubzero\Plugin\Plugin
 {
 
 	/**
@@ -109,7 +107,6 @@ class plgTimeHubs extends Hubzero_Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		// Add some styles to the view
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('time','hubs');
 		Hubzero_Document::addPluginScript('time','hubs');
 
@@ -151,7 +148,6 @@ class plgTimeHubs extends Hubzero_Plugin
 		$hubs = new TimeHubs($this->db);
 
 		// Create a new plugin view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'time',
@@ -201,7 +197,6 @@ class plgTimeHubs extends Hubzero_Plugin
 	private function _edit($hub=null, $contacts=null)
 	{
 		// Create a new plugin view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'time',
@@ -268,7 +263,6 @@ class plgTimeHubs extends Hubzero_Plugin
 	private function _read_only()
 	{
 		// Create a new plugin view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'time',
@@ -311,9 +305,6 @@ class plgTimeHubs extends Hubzero_Plugin
 		$records          = new TimeRecords($this->db);
 		$hours            = $records->getSummaryHoursByHub(1, $view->row->id);
 		$view->totalHours = ($hours) ? $hours[0]->hours : 0;
-
-		// Import the wiki parser
-		ximport('Hubzero_Wiki_Parser');
 
 		// Set up the wiki configuration
 		$wikiconfig = array(

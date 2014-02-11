@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Publications Plugin class for reviews
  */
-class plgPublicationsReviews extends Hubzero_Plugin
+class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 {
 	
 	/**

@@ -31,30 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-ximport('Hubzero_Plugin');
-
 // include role lib
 require_once JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'members'.DS.'role.php';
 
 /**
  * Groups Plugin class for group members
  */
-class plgGroupsMembers extends Hubzero_Plugin
+class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -116,8 +106,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->_name = substr($option, 4, strlen($option));
 		
 		//Create user object
-		$juser =& JFactory::getUser();
-
 		$juser = JFactory::getUser();
 
 		// Only perform the following if this is the active tab/plugin
@@ -159,7 +147,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$document = JFactory::getDocument();
 			$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->description.': '.JText::_('PLG_GROUPS_MEMBERS'));
 
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', 'members');
 			Hubzero_Document::addPluginScript('groups', 'members');
 
@@ -208,7 +195,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 				// Get group members based on their status
 				// Note: this needs to happen *after* any potential actions ar performed above
 
-				ximport('Hubzero_Plugin_View');
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'groups',
@@ -234,12 +220,11 @@ class plgGroupsMembers extends Hubzero_Plugin
 				}
 
 				//get messages plugin access level
-				ximport("Hubzero_Group_Helper");
 				$view->messages_acl = Hubzero_Group_Helper::getPluginAccess($group, 'messages');
 
 				//get all member roles
 				$db = JFactory::getDBO();
-				$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber='".$group->get('gidNumber')."'";
+				$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber=".$db->quote($group->get('gidNumber'));
 				$db->setQuery($sql);
 				$view->member_roles = $db->loadAssocList();
 
@@ -629,7 +614,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -792,7 +776,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -906,7 +889,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -1017,7 +999,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 	
 	public function editRole()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -1183,7 +1164,6 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',

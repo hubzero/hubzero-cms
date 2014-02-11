@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Groups Plugin class for blog entries
  */
-class plgGroupsBlog extends Hubzero_Plugin
+class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -165,7 +156,6 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
 			//push the css to the doc
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
 			Hubzero_Document::addPluginScript('groups', $this->_name);
 
@@ -302,7 +292,6 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _browse()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -515,7 +504,6 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _entry()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -626,7 +614,6 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		// Instantiate view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -810,7 +797,6 @@ class plgGroupsBlog extends Hubzero_Plugin
 			}
 
 			// Output HTML
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',
@@ -949,7 +935,6 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		// Output HTML
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',

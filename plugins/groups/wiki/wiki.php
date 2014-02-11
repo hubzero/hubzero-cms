@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Groups Plugin class for wiki
  */
-class plgGroupsWiki extends Hubzero_Plugin
+class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function plgGroupsWiki(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -321,7 +312,7 @@ class plgGroupsWiki extends Hubzero_Plugin
 			return array();
 		}
 		$database = JFactory::getDBO();
-		$database->setQuery("SELECT id FROM #__wiki_page AS p WHERE p.group_cn='" . $gid . "'");
+		$database->setQuery("SELECT id FROM `#__wiki_page` AS p WHERE p.group_cn=" . $database->quote($gid));
 		return $database->loadObjectList();
 	}
 }

@@ -29,26 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for profile
  */
-class plgMembersProfile extends Hubzero_Plugin
+class plgMembersProfile extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -59,10 +50,9 @@ class plgMembersProfile extends Hubzero_Plugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		$areas = array();
-		
-		$areas['profile'] = JText::_('PLG_MEMBERS_PROFILE');
-				
+		$areas = array(
+			'profile' => JText::_('PLG_MEMBERS_PROFILE')
+		);
 		return $areas;
 	}
 
@@ -166,8 +156,7 @@ class plgMembersProfile extends Hubzero_Plugin
 		$plugin = JPluginHelper::getPlugin("members", "profile");
 		$params = new $paramsClass( $plugin->params );
 		$params->merge($rparams);
-        
-		ximport('Hubzero_Document');
+
 		Hubzero_Document::addPluginStylesheet('members', 'profile');
 		Hubzero_Document::addPluginScript('members', 'profile');
 		
@@ -177,7 +166,6 @@ class plgMembersProfile extends Hubzero_Plugin
 			$document->addScript("/media/system/js/jquery.fileuploader.js");
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -375,7 +363,6 @@ class plgMembersProfile extends Hubzero_Plugin
 	 */
 	public function editAddress()
 	{
-		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -387,8 +374,7 @@ class plgMembersProfile extends Hubzero_Plugin
 		
 		//get request vars
 		$this->view->addressId = JRequest::getInt('addressid', 0);
-		
-		ximport('Hubzero_Document');
+
 		Hubzero_Document::addPluginStylesheet('members', 'profile');
 		Hubzero_Document::addPluginScript('members', 'profile');
 		

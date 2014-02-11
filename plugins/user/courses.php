@@ -31,25 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Courses user plugin for replicating essential course info to an underlying group (for file system access)
  */
-class plgUserCourses extends Hubzero_Plugin
+class plgUserCourses extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Constructor
-	 *
-	 * @param 	object $subject The object to observe
-	 * @param 	array  $config  An array that holds the plugin configuration
-	 * @since 1.5
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
 	/**
 	 * Update group and membership info in underlying 'course-' group (group type 4)
 	 *
@@ -60,7 +46,6 @@ class plgUserCourses extends Hubzero_Plugin
 	public function onAfterStoreCourse($course)
 	{
 		// Get a new group object
-		ximport('Hubzero_Group');
 		$group = new Hubzero_Group();
 
 		// If the course doesn't have a group id set, then we need to create a new group

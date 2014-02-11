@@ -173,8 +173,7 @@ class EventsCalendar extends JTable
 	public function refreshAll( $group )
 	{
 		//get refresh interval
-		ximport('Hubzero_Plugin');
-		$params = Hubzero_Plugin::getParams('calendar','groups');
+		$params = \Hubzero\Plugin\Plugin::getParams('calendar','groups');
 		$refreshInterval = $params->get('import_subscription_interval', 60);
 		
 		//get all group calendars

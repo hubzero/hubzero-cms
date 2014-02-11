@@ -29,27 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load some needed libraries
-ximport('Hubzero_Plugin');
-
 /**
  * Members Plugin class for messages
  */
-class plgMembersMessages extends Hubzero_Plugin
+class plgMembersMessages extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -116,7 +106,6 @@ class plgMembersMessages extends Hubzero_Plugin
 			$this->app = JFactory::getApplication();
 			$this->jconfig = JFactory::getConfig();
 
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', 'messages');
 
 			$task = JRequest::getVar('action','');
@@ -160,7 +149,6 @@ class plgMembersMessages extends Hubzero_Plugin
 			}
 
 			//html for the messages
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',
@@ -227,7 +215,6 @@ class plgMembersMessages extends Hubzero_Plugin
 		// Push some scripts to the template
 		Hubzero_Document::addPluginScript('members', 'messages');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -295,10 +282,8 @@ class plgMembersMessages extends Hubzero_Plugin
 	public function archive($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -365,10 +350,8 @@ class plgMembersMessages extends Hubzero_Plugin
 	public function trash($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -442,10 +425,8 @@ class plgMembersMessages extends Hubzero_Plugin
 	public function sent($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -514,13 +495,11 @@ class plgMembersMessages extends Hubzero_Plugin
 	public function settings($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
 		$xmc = new \Hubzero\Message\Component($database);
 		$components = $xmc->getRecords();
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -611,7 +590,6 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	private function create($database, $option, $member) 
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -699,7 +677,6 @@ class plgMembersMessages extends Hubzero_Plugin
 			$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $xmessage->component);
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',

@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Groups Plugin class for calendar
  */
-class plgGroupsCalendar extends Hubzero_Plugin
+class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function plgGroupsCalendar(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -154,7 +145,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			}
 			
 			//push styles to the view
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups','calendar');
 			Hubzero_Document::addPluginScript('groups','calendar');
 			
@@ -237,7 +227,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	 */
 	private function display()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -459,7 +448,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		}
 		
 		//create the view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -772,7 +760,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	private function details()
 	{
 		//create the view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -1222,7 +1209,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	private function register()
 	{
 		//create the view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -1431,7 +1417,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		if ($eventsEvent->email != '')
 		{
 			//build message to send to event admin
-			ximport('Hubzero_Plugin_View');
 			$email = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',
@@ -1482,7 +1467,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	private function registrants()
 	{
 		//create the view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -1639,7 +1623,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	private function calendars()
 	{
 		//create the view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -1697,7 +1680,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$calendarId = JRequest::getVar('calendar_id','');
 		
 		//create the view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',

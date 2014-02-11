@@ -34,21 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Courses Plugin class for forum entries
  */
-class plgCoursesDiscussions extends Hubzero_Plugin
+class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -496,7 +489,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			}
 
 			//push the stylesheet to the view
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 
 			$this->base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=' . $this->_name;
@@ -575,7 +567,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		$this->_active = 'outline';
 
-		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 		Hubzero_Document::addPluginScript('courses', $this->_name, 'discussions.lecture');
 
@@ -594,7 +585,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -878,7 +868,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$thread->total = 0;
 		$thread->html = null;
 
-		ximport('Hubzero_Wiki_Parser');
 		$wikiconfig = array(
 			'option'   => $this->option,
 			'scope'    => $this->_name,
@@ -1117,7 +1106,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		if ($results = $post->getTree($post->id, $filters))
 		{
-			ximport('Hubzero_Wiki_Parser');
 			$wikiconfig = array(
 				'option'   => $this->option,
 				'scope'    => 'discussions',
@@ -1301,7 +1289,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		Hubzero_Document::addPluginScript('courses', $this->_name);
 
 		// Instantiate a vew
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -1609,7 +1596,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		Hubzero_Document::addPluginScript('courses', $this->_name);
 
 		// Instantiate a vew
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -1701,7 +1687,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Instantiate a vew
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -1919,7 +1904,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			return $this->panel();
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -2007,7 +1991,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	 */
 	/*public function search()
 	{
-		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -2116,7 +2099,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			return $this->panel();
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -2336,7 +2318,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			return $this->panel();
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -2550,7 +2531,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	 */
 	public function editthread($post=null)
 	{
-		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',

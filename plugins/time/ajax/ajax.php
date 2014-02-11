@@ -31,15 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Ajax plugin for time component
  *
  * DEPRECATION NOTICE: deprecate after all are transitioned from the old time dashboard widget
  *                     and after Mike update HUBman.  All internal ajax calls now point to API
  */
-class plgTimeAjax extends Hubzero_Plugin
+class plgTimeAjax extends \Hubzero\Plugin\Plugin
 {
 
 	/**

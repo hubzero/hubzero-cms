@@ -31,27 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-ximport('Hubzero_Plugin');
-
 /**
  * Groups Plugin class for messages
  */
-class plgGroupsMessages extends Hubzero_Plugin
+class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -151,7 +141,6 @@ class plgGroupsMessages extends Hubzero_Plugin
 			}
 
 			//push styles to the view
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups','messages');
 			Hubzero_Document::addPluginScript('groups','messages');
 
@@ -206,7 +195,6 @@ class plgGroupsMessages extends Hubzero_Plugin
 		);
 
 		// Instantiate a view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -267,7 +255,6 @@ class plgGroupsMessages extends Hubzero_Plugin
 		}
 
 		// Instantiate the view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -312,7 +299,6 @@ class plgGroupsMessages extends Hubzero_Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_MESSAGES_SEND'));
 
 		// Instantiate a vew
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -323,7 +309,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 
 		//get all member roles
 		$db = JFactory::getDBO();
-		$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber='".$this->group->get('gidNumber')."'";
+		$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber=".$db->quote($this->group->get('gidNumber'));
 		$db->setQuery($sql);
 		$member_roles = $db->loadAssocList();
 

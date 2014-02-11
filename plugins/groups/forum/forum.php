@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Groups Plugin class for forum entries
  */
-class plgGroupsForum extends Hubzero_Plugin
+class plgGroupsForum extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -152,7 +143,6 @@ class plgGroupsForum extends Hubzero_Plugin
 				$arr['html'] = '<p class="warning">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active_real)) . '</p>';
 				return $arr;
 			}
-			ximport('Hubzero_Plugin_View');
 
 			//user vars
 			$this->authorized = $authorized;
@@ -259,7 +249,6 @@ class plgGroupsForum extends Hubzero_Plugin
 			$action = JRequest::getVar('action', $action, 'post');
 
 			//push the stylesheet to the view
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
 			Hubzero_Document::addPluginScript('groups', $this->_name);
 
@@ -1316,8 +1305,6 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Translate the message wiki formatting to html
 		/*
-		ximport('Hubzero_Wiki_Parser');
-
 		$p = Hubzero_Wiki_Parser::getInstance();
 		
 		$wikiconfig = array(
@@ -1822,7 +1809,6 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		// Output HTML
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',

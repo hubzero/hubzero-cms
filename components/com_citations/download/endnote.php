@@ -265,8 +265,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		
 		//get the endnote import params
 		//we want to get the endnote key used for importing badges to export them
-		ximport('Hubzero_Plugin');
-		$endnote_import_plugin_params = Hubzero_Plugin::getParams( 'endnote', 'citation' );
+		$endnote_import_plugin_params = \Hubzero\Plugin\Plugin::getParams( 'endnote', 'citation' );
 		$custom_tags = explode("\n", $endnote_import_plugin_params->get('custom_tags'));
 		
 		$citation_endnote_tags = array();

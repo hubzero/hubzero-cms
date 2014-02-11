@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Groups Plugin class for assets
  */
-class plgGroupsCollections extends Hubzero_Plugin
+class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -179,7 +170,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 			}
 
 			//push the css to the doc
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
 
 			$task = '';
@@ -345,7 +335,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 	 */
 	private function _followers()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -437,7 +426,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 	 */
 	private function _collections()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -533,7 +521,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 	 */
 	private function _collection()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -747,7 +734,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 	 */
 	private function _posts()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -835,7 +821,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 	 */
 	private function _post()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -919,7 +904,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 			return;
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$no_html = JRequest::getInt('no_html', 0);
 		if ($no_html)
 		{
@@ -1133,7 +1117,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 				$item_id = $post->get('item_id');
 			}
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',
@@ -1342,7 +1325,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 			}
 
 			// Output HTML
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',
@@ -1535,7 +1517,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 			return;
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -1674,7 +1655,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 			}
 
 			// Output HTML
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',
@@ -1741,7 +1721,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 		}
 
 		// Output HTML
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',

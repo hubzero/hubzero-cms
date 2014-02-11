@@ -34,21 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Group Announcements
  */
-class plgGroupsAnnouncements extends Hubzero_Plugin
+class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -74,7 +67,6 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 	public function onBeforeGroup( $group, $authorized )
 	{
 		//creat view object
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -250,7 +242,6 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 	{
 		// Get course members based on their status
 		// Note: this needs to happen *after* any potential actions ar performed above
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -309,7 +300,6 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 	private function _edit()
 	{
 		//create view object
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
@@ -459,7 +449,6 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		$announcement->load( $id );
 		
 		//load created by user profile
-		ximport('Hubzero_User_Profile');
 		$profile = Hubzero_User_Profile::getInstance( $announcement->created_by );
 		
 		//make sure we are the one who created it

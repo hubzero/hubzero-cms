@@ -31,13 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-ximport('Hubzero_Plugin');
-
 /**
  * Groups Plugin class for wishlist
  */
-class plgGroupsWishlist extends Hubzero_Plugin
+class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor
@@ -174,11 +171,6 @@ class plgGroupsWishlist extends Hubzero_Plugin
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
 
-			//import hubzero libararys
-			ximport('Hubzero_View_Helper_Html');
-			ximport('Hubzero_Group');
-			ximport('Hubzero_Document');
-
 			//set some more vars
 			$gid = $this->group->get('gidNumber');
 			$cn = $this->group->get('cn');
@@ -260,7 +252,6 @@ class plgGroupsWishlist extends Hubzero_Plugin
 
 			// HTML output
 			// Instantiate a view
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',

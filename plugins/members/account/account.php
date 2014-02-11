@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Account Plugin class for members
  *
@@ -40,21 +38,14 @@ ximport('Hubzero_Plugin');
  * as well as uploading/managing ssh keys, and adding or remove linked accounts
  *
  */
-class plgMembersAccount extends Hubzero_Plugin
+class plgMembersAccount extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -106,9 +97,6 @@ class plgMembersAccount extends Hubzero_Plugin
 			'metadata'=>''
 		);
 
-		// Imports (needed for view and metadata)
-		ximport('Hubzero_User_Password');
-
 		// Initialize a few things (needed for view and metadata)
 		$this->member = $member;
 
@@ -123,12 +111,6 @@ class plgMembersAccount extends Hubzero_Plugin
 				$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 				die('insecure connection and redirection failed');
 			}
-
-			// Import a few things (just needed for views)
-			ximport('Hubzero_Document');
-			ximport('Hubzero_Plugin_View');
-			ximport('Hubzero_Auth_Link');
-			ximport('Hubzero_Auth_Domain');
 
 			// Add stylesheet
 			Hubzero_Document::addPluginStylesheet('members', 'account');
@@ -304,7 +286,6 @@ class plgMembersAccount extends Hubzero_Plugin
 		$view->key = $this->readKey();
 
 		// Get the password rules
-		ximport('Hubzero_Password_Rule');
 		$password_rules = Hubzero_Password_Rule::getRules();
 
 		// Get the password rule descriptions
@@ -349,8 +330,6 @@ class plgMembersAccount extends Hubzero_Plugin
 		// Import helpers/classes
 		jimport('joomla.mail.helper');
 		jimport('joomla.user.helper');
-		ximport('Hubzero_Auth_Link');
-		ximport('Hubzero_User_Password');
 
 		// Make sure they're logged in
 		if ($this->user->get('guest'))
@@ -552,7 +531,6 @@ class plgMembersAccount extends Hubzero_Plugin
 		$view->id     = $this->user->get('id');
 
 		// Get the password rules
-		ximport('Hubzero_Password_Rule');
 		$password_rules = Hubzero_Password_Rule::getRules();
 
 		// Get the password rule descriptions
@@ -576,9 +554,6 @@ class plgMembersAccount extends Hubzero_Plugin
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Load some needed libraries
-		ximport('Hubzero_Registration_Helper');
-		ximport('Hubzero_User_Helper');
-		ximport('Hubzero_User_Profile');
 		jimport('joomla.user.helper');
 
 		// Initiate profile classs
@@ -689,9 +664,6 @@ class plgMembersAccount extends Hubzero_Plugin
 	 */
 	private function _unlink()
 	{
-		// Import a few things
-		ximport('Hubzero_User_Password');
-		
 		// Get the id of the account to be unlinked
 		$hzal_id = JRequest::getInt('hzal_id', null);
 
@@ -992,7 +964,6 @@ class plgMembersAccount extends Hubzero_Plugin
 	public function checkPass()
 	{
 		// Get the password rules
-		ximport('Hubzero_Password_Rule');
 		$password_rules = Hubzero_Password_Rule::getRules();
 
 		$pw_rules = array();

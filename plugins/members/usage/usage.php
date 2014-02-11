@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for usage
  */
-class plgMembersUsage extends Hubzero_Plugin
+class plgMembersUsage extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor
@@ -100,17 +98,14 @@ class plgMembersUsage extends Hubzero_Plugin
 			(!in_array($database->getPrefix() . 'author_stats', $tables) 
 		 || !in_array($database->getPrefix() . 'metrics_author_cluster', $tables))) 
 		{
-			ximport('Hubzero_View_Helper_Html');
 			$arr['html'] = '<p class="error">' . JText::_('PLG_MEMBERS_USAGE_ERROR_MISSING_TABLE') . '</p>';
 			return $arr;
 		}
 
 		if ($returnhtml) 
 		{
-			ximport('Hubzero_Document');
 			Hubzero_Document::addComponentStylesheet('com_usage');
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',
@@ -133,14 +128,24 @@ class plgMembersUsage extends Hubzero_Plugin
 			$view->cluster_users   = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
 
-			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type FROM #__resources AS r LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.$member->get("uidNumber").'") AND (r.access=0 OR r.access=3) ORDER BY r.publish_up DESC';
+			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type 
+					FROM #__resources AS r 
+					LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id 
+					LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" 
+					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get("uidNumber")).'") AND (r.access=0 OR r.access=3) 
+					ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
 			$view->tool_stats    = $database->loadObjectList();
 			$view->tool_total_12 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 12);
 			$view->tool_total_14 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 14);
 
-			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type FROM #__resources AS r LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.$member->get("uidNumber").'") AND (r.access=0 OR r.access=3) ORDER BY r.publish_up DESC';
+			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type 
+					FROM #__resources AS r 
+					LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id 
+					LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" 
+					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.intval($member->get("uidNumber")).'") AND (r.access=0 OR r.access=3) 
+					ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
 			$view->andmore_stats    = $database->loadObjectList();
@@ -186,7 +191,13 @@ class plgMembersUsage extends Hubzero_Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$sql = 'SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), "%d %b %Y") AS first_contrib, DATE_FORMAT(MAX(res.publish_up), "%d %b %Y") AS last_contrib FROM #__resources AS res, #__author_assoc AS aa, #__resource_types AS restypes WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = "' . $authorid . '" AND res.standalone = 1 AND res.published = 1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources"';
+		$sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), '%d %b %Y') AS first_contrib, DATE_FORMAT(MAX(res.publish_up), '%d %b %Y') AS last_contrib 
+				FROM #__resources AS res, #__author_assoc AS aa, #__resource_types AS restypes 
+				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = " . $database->quote($authorid) . " 
+				AND res.standalone = 1 
+				AND res.published = 1 
+				AND (res.access=0 OR res.access=3) 
+				AND aa.subtable = 'resources'";
 
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
@@ -220,7 +231,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$sql = 'SELECT jobs FROM #__resource_stats_tools WHERE resid="' . $resid . '" AND period="' . $period . '" ORDER BY datetime DESC LIMIT 1';
+		$sql = "SELECT jobs FROM #__resource_stats_tools WHERE resid=" . $database->quote($resid) . " AND period=" . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
 
 		$database->setQuery($sql);
 		$result = $database->loadResult();
@@ -254,7 +265,7 @@ class plgMembersUsage extends Hubzero_Plugin
 		}
 
 		$data = '-';
-		$sql = 'SELECT MAX(datetime), users FROM ' . $table . ' WHERE resid = "' . $resid . '" AND period = "' . $period . '" GROUP BY datetime ORDER BY datetime DESC LIMIT 1';
+		$sql = "SELECT MAX(datetime), users FROM " . $table . " WHERE resid = " . $database->quote($resid) . " AND period = " . $database->quote($period) . " GROUP BY datetime ORDER BY datetime DESC LIMIT 1";
 
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
@@ -283,7 +294,7 @@ class plgMembersUsage extends Hubzero_Plugin
 		$cluster['users']   = 0;
 		$cluster['schools'] = 0;
 
-		$sql = 'SELECT classes FROM `#__metrics_author_cluster` WHERE authorid = "' . $authorid . '"';
+		$sql = "SELECT classes FROM `#__metrics_author_cluster` WHERE authorid = " . $database->quote($authorid);
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 		if ($result) 
@@ -291,7 +302,7 @@ class plgMembersUsage extends Hubzero_Plugin
 			$cluster['classes'] = $result;
 		}
 
-		$sql = 'SELECT users FROM `#__metrics_author_cluster` WHERE authorid = "' . $authorid . '"';
+		$sql = "SELECT users FROM `#__metrics_author_cluster` WHERE authorid = " . $database->quote($authorid);
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 		if ($result) 
@@ -299,7 +310,7 @@ class plgMembersUsage extends Hubzero_Plugin
 			$cluster['users'] = $result;
 		}
 
-		$sql = 'SELECT schools FROM `#__metrics_author_cluster` WHERE authorid = "' . $authorid . '"';
+		$sql = "SELECT schools FROM `#__metrics_author_cluster` WHERE authorid = " . $database->quote($authorid);
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 		if ($result) 
@@ -323,16 +334,16 @@ class plgMembersUsage extends Hubzero_Plugin
 
 		if ($authorid) 
 		{
-			$sql = 'SELECT COUNT(DISTINCT (c.id)) 
+			$sql = "SELECT COUNT(DISTINCT (c.id)) 
 			FROM #__citations c, #__citations_assoc ca, #__author_assoc aa, #__resources r 
-					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.tbl = "resource" AND r.published=1 
-					AND r.standalone=1 AND aa.authorid = "' . $authorid . '"';
+					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = 'resources' AND ca.tbl = 'resource' AND r.published=1 
+					AND r.standalone=1 AND aa.authorid = " . $database->quote($authorid);
 		} 
 		else 
 		{
-			$sql = 'SELECT COUNT(DISTINCT (c.id)) AS citations 
+			$sql = "SELECT COUNT(DISTINCT (c.id)) AS citations 
 					FROM #__resources r, #__citations c, #__citations_assoc ca 
-					WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND standalone=1 AND r.id = "' . $resid . '"';
+					WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = 'resource' AND standalone=1 AND r.id = " . $database->quote($resid);
 		}
 
 		$database->setQuery($sql);
@@ -407,7 +418,7 @@ class plgMembersUsage extends Hubzero_Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$sql = 'SELECT ' . $user_type . ' FROM #__author_stats WHERE authorid = "' . $authorid . '" AND period = "' . $period . '" ORDER BY datetime DESC LIMIT 1';
+		$sql = "SELECT " . $user_type . " FROM #__author_stats WHERE authorid = " . $database->quote($authorid) . " AND period = " . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
 
 		$database->setQuery($sql);
 		return $database->loadResult();

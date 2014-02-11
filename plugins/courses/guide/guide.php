@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Courses Plugin class for pages
  */
-class plgCoursesGuide extends Hubzero_Plugin
+class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call after course outline
@@ -67,7 +58,6 @@ class plgCoursesGuide extends Hubzero_Plugin
 			return;
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -97,7 +87,6 @@ class plgCoursesGuide extends Hubzero_Plugin
 
 		if (!isset($tmpl) || $tmpl != 'component')
 		{
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 			Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
 		}
@@ -167,7 +156,6 @@ class plgCoursesGuide extends Hubzero_Plugin
 				$action = $act;
 			}
 
-			ximport('Hubzero_Plugin_View');
 			$this->view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'courses',

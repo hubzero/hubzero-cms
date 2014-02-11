@@ -34,21 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Courses Plugin class for pages
  */
-class plgCoursesPages extends Hubzero_Plugin
+class plgCoursesPages extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -131,7 +124,6 @@ class plgCoursesPages extends Hubzero_Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 			Hubzero_Document::addPluginScript('courses', $this->_name);
 
@@ -152,7 +144,6 @@ class plgCoursesPages extends Hubzero_Plugin
 				$action = $act;
 			}
 
-			ximport('Hubzero_Plugin_View');
 			$this->view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'courses',

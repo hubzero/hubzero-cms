@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Plugin');
-
 /**
  * Courses Plugin class for the outline
  */
-class plgCoursesOutline extends Hubzero_Plugin
+class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -141,14 +132,12 @@ class plgCoursesOutline extends Hubzero_Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 
 			// Course and action
 			$this->course = $course;
 			$action = strtolower(JRequest::getWord('action', ''));
 
-			ximport('Hubzero_Plugin_View');
 			$this->view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'courses',
