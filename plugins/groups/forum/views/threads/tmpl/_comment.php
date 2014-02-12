@@ -30,8 +30,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-	ximport('Hubzero_User_Profile');
-	ximport('Hubzero_User_Profile_Helper');
 	$juser = JFactory::getUser();
 
 	$this->comment->set('section', $this->filters['section']);
@@ -165,8 +163,7 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
 							<span class="label-text"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
 							<?php
-							ximport('Hubzero_Wiki_Editor');
-							echo Hubzero_Wiki_Editor::getInstance()->display('fields[comment]', 'field_' . $this->comment->get('id') . '_comment', '', 'minimal no-footer', '35', '4');
+							echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 4, false, 'field_' . $this->comment->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 

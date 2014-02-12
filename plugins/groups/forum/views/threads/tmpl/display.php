@@ -217,7 +217,7 @@ $this->thread->set('category', $this->category->get('alias'));
 				<label for="field_comment">
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
-					echo Hubzero_Wiki_Editor::getInstance()->display('fields[comment]', 'field_comment', '', '', '35', '15');
+					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 				

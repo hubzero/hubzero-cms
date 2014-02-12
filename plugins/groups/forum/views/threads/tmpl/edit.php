@@ -125,8 +125,7 @@ if ($this->post->exists()) {
 				<label for="field_comment">
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', stripslashes($this->post->get('comment')), 'no-file-macro no-image-macro', '35', '15');
+					echo \JFactory::getEditor()->display('fields[comment]', $this->escape(stripslashes($this->post->get('comment'))), '', '', 35, 15, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
