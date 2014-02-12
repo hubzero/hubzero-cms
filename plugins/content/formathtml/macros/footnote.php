@@ -90,7 +90,7 @@ class FootNote extends Macro
 
 			$i = count($wm->footnotes) + 1;
 
-			$footnote = new stdClass;
+			$footnote = new \stdClass;
 			$footnote->content = $note;
 			$footnote->id      = 'fnref-' . $i;
 			$footnote->refs    = array(

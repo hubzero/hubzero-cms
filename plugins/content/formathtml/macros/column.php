@@ -80,29 +80,29 @@ class Column extends Macro
 
 		$attribs = explode(',', $et);
 		$text = strtolower(array_shift($attribs));
-		
+
 		if (is_numeric($text))
 		{
 			$this->_columns = intval($text);
-			return;
+			return '<div class="grid">' . "\n";
 		}
 
 		if (trim($text) == 'start') 
 		{
 			$this->_cursor++;
 			
-			$cls = array('columns');
+			$cls = array('col');
 			
 			switch ($this->_columns)
 			{
-				case 6: $cls[] = 'six';   break;
-				case 5: $cls[] = 'five';  break;
-				case 4: $cls[] = 'four';  break;
-				case 3: $cls[] = 'three'; break;
-				case 2: $cls[] = 'two';   break;
+				case 6: $cls[] = 'span2';   break;
+				//case 5: $cls[] = 'five';  break;
+				case 4: $cls[] = 'span3';  break;
+				case 3: $cls[] = 'span4'; break;
+				case 2: $cls[] = 'span6';   break;
 				default: break;
 			}
-			switch ($this->_cursor)
+			/*switch ($this->_cursor)
 			{
 				case 6:  $cls[] = 'sixth';  break;
 				case 5:  $cls[] = 'fifth';  break;
@@ -111,6 +111,10 @@ class Column extends Macro
 				case 2:  $cls[] = 'second'; break;
 				case 1:
 				default: $cls[] = 'first';  break;
+			}*/
+			if ($this->_cursor == $this->_columns)
+			{
+				$cls[] = 'omega';
 			}
 			
 			$atts = array();
@@ -142,10 +146,10 @@ class Column extends Macro
 		}
 		elseif (trim($text) == 'end') 
 		{
-			$div  = '</div>';
+			$div  = '</div><!-- / .col -->';
 			if ($this->_cursor == $this->_columns)
 			{
-				$div .= "\n" . '<div class="clear"><!-- columns --></div>';
+				$div .= "\n" . '</div><!-- / .grid -->';
 				$this->_cursor = 0;
 			}
 		}

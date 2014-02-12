@@ -199,6 +199,10 @@ class Parser
 		// We'll put this back after other processes
 		$text = $this->strip($text);
 
+		$text = preg_replace('/<p>(\[\[[^\]]+\]\])\n<\/p>/i', "\n$1\n", $text);
+
+		$text = preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
+
 		// Process macros
 		// Individual macros determine if they're allowed in fullparse mode or not
 		$text = $this->macros($text);
@@ -230,9 +234,9 @@ class Parser
 	 */
 	private function strip($text)
 	{
-		$text = preg_replace_callback('/<(pre)(.+?)>(.*)<\/(pre)>/si', array(&$this, '_dataPush'), $text);
+		$text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/iU', array(&$this, '_dataPush'), $text);
 
-		$text = preg_replace_callback('/<(code)(.+?)>(.*)<\/(code)>/si', array(&$this, '_dataPush'), $text);
+		$text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', array(&$this, '_dataPush'), $text);
 
 		return $text;
 	}

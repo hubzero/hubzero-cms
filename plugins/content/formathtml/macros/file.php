@@ -470,7 +470,7 @@ class File extends Macro
 	 */
 	private function _embed($file, $attr=array())
 	{
-		$ext = strtolower(JFile::getExt($file));
+		$ext = strtolower(\JFile::getExt($file));
 
 		switch ($ext)
 		{
