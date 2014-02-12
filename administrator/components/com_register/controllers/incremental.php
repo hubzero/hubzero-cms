@@ -42,8 +42,10 @@ class RegisterControllerIncremental extends \Hubzero\Component\AdminController
 
 	public function saveTask() {
 		$dbh = JFactory::getDBO();
-		$dbh->execute('DELETE FROM #__incremental_registration_groups');
-		$dbh->execute('DELETE FROM #__incremental_registration_group_label_rel');
+		$dbh->setQuery('DELETE FROM #__incremental_registration_groups');
+		$dbh->execute();
+		$dbh->setQuery('DELETE FROM #__incremental_registration_group_label_rel');
+		$dbh->execute();
 		
 		for ($idx = 0; isset($_POST['group-hours-'.$idx]); ++$idx) {
 			if (!($hours = (int)$_POST['group-hours-'.$idx])) {
@@ -59,7 +61,8 @@ class RegisterControllerIncremental extends \Hubzero\Component\AdminController
 			$gid = $dbh->insertid();
 			foreach ($_POST['group-cols-'.$idx] as $colKey) {
 				if (($colKey = trim($colKey))) {
-					$dbh->execute('INSERT INTO #__incremental_registration_group_label_rel(group_id, label_id) VALUES ('.$gid.', (SELECT id FROM #__incremental_registration_labels WHERE field = '.$dbh->quote($colKey).'))');	
+					$dbh->setQuery('INSERT INTO #__incremental_registration_group_label_rel(group_id, label_id) VALUES ('.$gid.', (SELECT id FROM #__incremental_registration_labels WHERE field = '.$dbh->quote($colKey).'))');	
+					$dbh->execute();
 				}
 			}
 		}
@@ -68,13 +71,15 @@ class RegisterControllerIncremental extends \Hubzero\Component\AdminController
 			$awardPer = (int)$_POST['award-per'];
 			$testGroup = (int)$_POST['test-group'];
 			$dbh->setQuery('SELECT popover_text, award_per, test_group FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
-			list($exPopover, $exAward, $exGroup) = $dbh->loadRow();
+			list($exPopover, $exAward, $exGroup) = $row = $dbh->loadRow();
 
 			if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup) {
-				$dbh->execute('INSERT INTO #__incremental_registration_options(popover_text, award_per, test_group) VALUES ('.$dbh->quote($popoverText).', '.$awardPer.', '.$testGroup.')');
+				$dbh->setQuery('INSERT INTO #__incremental_registration_options(popover_text, award_per, test_group) VALUES ('.$dbh->quote($popoverText).', '.$awardPer.', '.$testGroup.')');
+				$dbh->execute();
 			}
 		}
-		$dbh->execute('DELETE FROM #__incremental_registration_popover_recurrence');
+		$dbh->setQuery('DELETE FROM #__incremental_registration_popover_recurrence');
+		$dbh->execute();
 		for ($idx = 0; isset($_POST['recur-'.$idx]); ++$idx) {
 			$hours = (int)$_POST['recur-'.$idx];
 			if ($_POST['recur-type-'.$idx] == 'week') {
@@ -84,7 +89,8 @@ class RegisterControllerIncremental extends \Hubzero\Component\AdminController
 				$hours *= 24;
 			}
 			if ($hours) {
-				$dbh->execute('INSERT INTO #__incremental_registration_popover_recurrence(idx, hours) VALUES ('.$idx.', '.$hours.')');
+				$dbh->setQuery('INSERT INTO #__incremental_registration_popover_recurrence(idx, hours) VALUES ('.$idx.', '.$hours.')');
+				$dbh->execute();
 			}
 		}
 		$this->setRedirect(
