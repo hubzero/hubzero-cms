@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$morelink = count($this->content) > 0 ? $this->content[0]->secname : 'announcements';
+$morelink = count($this->content) > 0 ? $this->content[0]->catpath : 'announcements';
 $morelink = $this->params->get('show_viewall', '') ? $morelink : '';
 $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get('subscribe_path', '') ?  $this->params->get('subscribe_path', '') : '';
 
@@ -56,14 +56,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 		<?php 
 		foreach ($this->content as $item) 
 		{
-			$url  = $item->secname;
-			$url .= $item->secname == $item->catname ? '' : DS . $item->catname;
-			$url .= DS . $item->alias;
-
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$url = $item->catpath . DS . $item->alias;
-			}
+			$url = DS . $item->catpath . DS . $item->alias;
 
 			// get associated image
 			preg_match('/<img\s+.*?src="(.*?)"/is', $item->introtext , $match);
@@ -86,7 +79,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 					<?php echo JHTML::_('date', $item->publish_up, JText::_('DATE_FORMAT_HZ1')); ?>
 				</span>
 			<?php } ?>
-			<?php if ($this->params->get('show_desc', '') && $desc != '') { ?>
+			<?php if ($this->params->get('show_desc', '')) { ?>
 				<span class="a-desc">
 					<?php 
 					// get cleaned article body text
