@@ -119,6 +119,7 @@ if ($this->getError())
 				$data = json_decode($log->get('comments'));
 				if (!isset($data->entries))
 				{
+					$data = new stdClass;
 					$data->entries = 0;
 				}
 				switch ($log->get('action'))
