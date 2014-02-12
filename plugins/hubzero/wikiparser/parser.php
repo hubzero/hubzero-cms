@@ -312,10 +312,7 @@ class WikiParser
 
 		// Process macros
 		// Individual macros determine if they're allowed in fullparse mode or not
-		if ($this->get('macros', true)) 
-		{
-			$text = $this->macros($text);
-		}
+		$text = $this->macros($text);
 
 		// Do quotes. '''stuff''' => <strong>stuff</strong>
 		$text = $this->quotes($text);
@@ -1504,6 +1501,16 @@ class WikiParser
 
 			$matches[1] = strtolower($matches[1]);
 			$macroname = ucfirst($matches[1]) . 'Macro';
+
+			if (!$this->get('macros', true)) 
+			{
+				return $this->_dataPush(array(
+					$matches[1],
+					'macro',
+					$this->_randomString(),
+					$matches[0]
+				));
+			}
 
 			if (!$this->get('domain') && strtolower(substr($macroname, 0, 5)) == 'group') 
 			{
