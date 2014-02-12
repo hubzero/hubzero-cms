@@ -1,12 +1,14 @@
 <?php
 
+use Hubzero\Content\Migration;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Add a column to store formatted citation in citations table
  **/
-class Migration20140206141200ComCitations extends Hubzero_Migration
+class Migration20140206141200ComCitations extends Migration
 {
 	/**
 	 * Up
