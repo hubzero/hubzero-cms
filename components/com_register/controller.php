@@ -811,7 +811,13 @@ class RegisterController extends Hubzero_Controller
 				$newUsertype = $usersConfig->get('new_usertype');
 				if (!$newUsertype) 
 				{
-					$newUsertype = 'Registered';
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true)
+						->select('id')
+						->from('#__usergroups')
+						->where('title = "Registered"');
+					$db->setQuery($query);
+					$newUsertype = $db->loadResult();
 				}
 
 				$user->set('username', $xregistration->get('login'));
@@ -833,16 +839,7 @@ class RegisterController extends Hubzero_Controller
 				}
 				else
 				{
-					// There's got to be a better way to do this!
-					$db = JFactory::getDbo();
-					$query = $db->getQuery(true)
-						->select('id')
-						->from('#__usergroups')
-						->where('title = ' . $db->quote(trim($newUsertype)));
-					$db->setQuery($query);
-					$result = $db->loadResult();
-
-					$user->set('groups', array($result));
+					$user->set('groups', array($newUsertype));
 				}
 
 				$date = JFactory::getDate();
