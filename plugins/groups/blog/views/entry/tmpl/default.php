@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
-$editor = Hubzero_Wiki_Editor::getInstance();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog'
 ?>
@@ -244,7 +243,6 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 						$replyto = $this->row->comment(JRequest::getInt('reply', 0));
 						if ($replyto->exists()) 
 						{
-							ximport('Hubzero_View_Helper_Html');
 							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 							if (!$replyto->get('anonymous')) 
 							{
