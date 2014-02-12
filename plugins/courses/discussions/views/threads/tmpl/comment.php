@@ -160,9 +160,8 @@ defined('_JEXEC') or die('Restricted access');
 
 						<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
 							<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
-							<textarea name="fields[comment]" id="field_<?php echo $this->comment->get('id'); ?>_comment" cols="35" rows="5"></textarea>
 							<?php
-							//echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_' . $this->comment->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
+							echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_' . $this->comment->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 
