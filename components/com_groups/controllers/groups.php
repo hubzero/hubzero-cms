@@ -1540,6 +1540,12 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//get the group
 		$group = \Hubzero\User\Group::getInstance( $this->cn );
 
+		// make sure we have a group
+		if (is_object($group))
+		{
+			return;
+		}
+
 		//authorize
 		$authorized = $this->_authorize();
 
