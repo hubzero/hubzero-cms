@@ -124,8 +124,8 @@ class Arguments
 		if (isset($this->raw) && count($this->raw) > 0)
 		{
 			// Take the first argument as command to be run - defaults to help
-			$command = (isset($this->raw[1])) ? $this->raw[1] : 'help';
-			$class   = __NAMESPACE__ . '\\Command\\' . $command;
+			$command = (isset($this->raw[1])) ? $this->raw[1] : 'Help';
+			$class   = __NAMESPACE__ . '\\Command\\' . ucfirst($command);
 
 			// Make sure class exists
 			if (class_exists($class))
