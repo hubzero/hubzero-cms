@@ -143,11 +143,6 @@ This course is intended to be broadly accessible to those with a background in '
 
 			<label for="field_blurb">
 				<?php echo JText::_('Brief description'); ?> <span class="optional"><?php echo JText::_('COM_COURSES_OPTIONAL'); ?></span>
-				<?php
-					/*ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('blurb', 'field_blurb', stripslashes($this->course->get('blurb')), 'minimal', '50', '3');*/
-				?>
 				<textarea name="course[blurb]" id="field-blurb" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
 				<span class="hint">
 					A brief, one or two sentences about your course. Think of this as the text you would see in a course catalog.
@@ -158,9 +153,7 @@ This course is intended to be broadly accessible to those with a background in '
 				<?php echo JText::_('Overview'); ?> <span class="optional"><?php echo JText::_('COM_COURSES_OPTIONAL'); ?></span>
 				
 				<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('course[description]', 'field_description', stripslashes($this->course->get('description')), '', '50', '30');
+					echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 30, false, 'field_description');
 				?>
 				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 
