@@ -48,6 +48,13 @@ class ForumModelPost extends ForumModelAbstract
 	protected $_tbl_name = 'ForumTablePost';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_forum.post.comment';
+
+	/**
 	 * ForumModelAttachment
 	 * 
 	 * @var object
@@ -294,14 +301,16 @@ class ForumModelPost extends ForumModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('content_parsed'))
+				if ($content = $this->get('content_parsed'))
 				{
-					return $this->get('content_parsed');
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
-
-				$wikiconfig = array(
+				$config = array(
 					'option'   => 'com_forum',
 					'scope'    => 'forum',
 					'pagename' => 'forum',
@@ -312,24 +321,22 @@ class ForumModelPost extends ForumModelAbstract
 
 				$attach = new ForumTableAttachment($this->_db);
 
-				$this->set('content_parsed', $p->parse(stripslashes($this->get('comment')), $wikiconfig, true, true));
+				$content = stripslashes($this->get('comment'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
+
+				$this->set('content_parsed', $this->get('comment'));
 				$this->set('content_parsed', $this->get('content_parsed') . $attach->getAttachment(
 					$this->get('id'), 
 					$this->link('download'), 
 					$this->_config
 				));
+				$this->set('comment', $content);
 
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($this->get('content_parsed'), $shorten, array('html' => true));
-					if (substr($content, -7) == '&#8230;') 
-					{
-						$content .= '</p>';
-					}
-					return $content;
-				}
-
-				return $this->get('content_parsed');
+				return $this->content($as, $shorten);
 			break;
 
 			case 'clean':

@@ -86,12 +86,13 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof Hubzero_User_Profile))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		if ($property && $this->_creator instanceof JUser)
+		if ($property)
 		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;

@@ -137,9 +137,7 @@ else
 				<label for="fieldcomment">
 					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_FORUM_REQUIRED'); ?></span>
 					<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'fieldcomment', stripslashes($this->post->get('comment')), '', '35', '15');
+					echo \JFactory::getEditor()->display('fields[comment]', $this->escape(stripslashes($this->post->get('comment'))), '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 

@@ -32,8 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
-ximport('Hubzero_User_Profile_Helper');
-
 $this->category->set('section_alias', $this->filters['section']);
 
 $this->thread->set('section', $this->filters['section']);
@@ -215,9 +213,7 @@ $this->thread->set('category', $this->category->get('alias'));
 				<label for="fieldcomment">
 					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?>
 					<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'fieldcomment', '', '', '35', '15');
+					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 

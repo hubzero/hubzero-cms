@@ -55,12 +55,18 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 	 */
 	public function __construct($scope_id=0)
 	{
+		$this->set('scope_id', $scope_id);
+
 		$offering = CoursesModelOffering::getInstance($this->get('scope_id'));
 		$course = CoursesModelCourse::getInstance($offering->get('course_id'));
 
 		$this->_segments['gid']      = $course->get('alias');
 		$this->_segments['offering'] = $offering->get('alias') . ($offering->section()->get('alias') != '__default' ? ':' . $offering->section()->get('alias') : '');
 		$this->_segments['active']   = 'discussions';
+		if (JRequest::getVar('active') == 'outline')
+		{
+			$this->_segments['active']   = 'outline';
+		}
 	}
 
 	/**
@@ -75,18 +81,21 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 	{
 		$segments = $this->_segments;
 
-		if ($this->get('section'))
+		if ($this->_segments['active'] == 'outline')
 		{
-			$segments['unit'] = $this->get('section');
+			if ($this->get('section'))
+			{
+				$segments['unit'] = $this->get('section');
+			}
+			if ($this->get('category'))
+			{
+				$segments['b'] = $this->get('category');
+			}
 		}
-		if ($this->get('category'))
-		{
-			$segments['b'] = $this->get('category');
-		}
-		if ($this->get('thread'))
+		/*if ($this->get('thread'))
 		{
 			$segments['c'] = $this->get('thread');
-		}
+		}*/
 
 		$anchor = '';
 
@@ -94,23 +103,34 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 		switch (strtolower($type))
 		{
 			case 'base':
-				return $this->_base . '?' . (string) $this->_build($this->_segments);
+				return $this->_base . '?' . (string) $this->_build($segments);
 			break;
 
 			case 'edit':
 				if ($this->get('thread'))
 				{
-					$segments['c'] = $this->get('post');
+					$segments['action'] = 'edit';
+					$segments['post'] = $this->get('post');
+					$segments['thread'] = $this->get('thread');
 				}
-				$segments['task'] = 'edit';
+				else
+				{
+					$segments['action'] = 'edit';
+				}
+				//$this->base . '&action=edit&post=' . $this->comment->get('id') . '&thread=' . $this->comment->thread
 			break;
 
 			case 'delete':
 				if ($this->get('thread'))
 				{
-					$segments['c'] = $this->get('post');
+					$segments['action'] = 'delete';
+					$segments['post'] = $this->get('post');
+					$segments['thread'] = $this->get('thread');
 				}
-				$segments['task'] = 'delete';
+				else
+				{
+					$segments['task'] = 'delete';
+				}
 			break;
 
 			case 'new':
@@ -123,11 +143,14 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 			break;
 
 			case 'download':
-				$segments['post'] = $this->get('post');
+				$segments['active']   = 'discussions';
+				$segments['unit'] = 'download';
+				$segments['b'] = $this->get('thread');
 				$segments['file'] = '';
 			break;
 
 			case 'reply':
+				$segments['thread'] = $this->get('thread');
 				$segments['reply'] = $this->get('post');
 			break;
 
