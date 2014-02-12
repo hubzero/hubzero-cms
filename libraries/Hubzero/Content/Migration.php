@@ -666,7 +666,7 @@ class Migration
 					);
 
 				// Register the component container just under root in the assets table
-				$asset = JTable::getInstance('Asset');
+				$asset = \JTable::getInstance('Asset');
 				$asset->name = $option;
 				$asset->parent_id = 1;
 				$asset->rules = json_encode($defaulRules);
@@ -857,7 +857,7 @@ class Migration
 			$db->query();
 
 			// Remove the component container in the assets table
-			$asset = JTable::getInstance('Asset');
+			$asset = \JTable::getInstance('Asset');
 			if ($asset->loadByName($name))
 			{
 				$asset->delete();
