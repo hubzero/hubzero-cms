@@ -109,9 +109,14 @@ class plgContentFormatwiki extends JPlugin
 			// Force apply a format?
 			if ($this->params->get('applyFormat') && !preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content))
 			{
-				$content = '<!-- {FORMAT:WIKI} -->' . $content;
-				$article->set($key, $content)
-				        ->store(false);
+				// Are we converting the format?
+				// Only apply the wiki format if not. Saves us an extra DB call.
+				if (!$this->params->get('convertFormat'))
+				{
+					$content = '<!-- {FORMAT:WIKI} -->' . $content;
+					$article->set($key, $content)
+					        ->store(false);
+				}
 			}
 			else
 			{
