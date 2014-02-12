@@ -115,8 +115,7 @@ class modFeaturedblog extends \Hubzero\Module\Module
 		{
 			// No - so we need to display a member
 			// Load some needed libraries
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
 			// Check the feature history for today's feature
 			$fh->loadActive($start, 'blogs');
@@ -183,13 +182,6 @@ class modFeaturedblog extends \Hubzero\Module\Module
 			// Is this a content article or a member profile?
 			if (isset($this->row->catid)) 
 			{
-				// Content article
-				$this->title = $this->row->title;
-				$this->id    = $this->row->created_by_alias;
-				$this->txt   = $this->row->introtext;
-
-				$this->profile = Hubzero_User_Profile::getInstance($this->id);
-
 				// Check if the article has been saved in the feature history
 				$fh->loadObject($this->row->id, 'content');
 				if (!$fh->id) 
@@ -203,14 +195,6 @@ class modFeaturedblog extends \Hubzero\Module\Module
 			} 
 			else 
 			{
-				if (!isset($this->profile) && !is_object($this->profile)) 
-				{
-					$this->profile = Hubzero_User_Profile::getInstance($this->row->created_by);
-				}
-				$this->txt   = $this->row->content;
-				$this->title = $this->row->title;
-				$this->id    = $this->row->id;
-
 				// Check if this has been saved in the feature history
 				if (!$fh->id) 
 				{
@@ -221,51 +205,6 @@ class modFeaturedblog extends \Hubzero\Module\Module
 					$fh->store();
 				}
 			}
-
-			// Do we have a picture?
-			$thumb = '';
-			if (isset($this->profile->picture) && $this->profile->picture != '') 
-			{
-				// Yes - so build the path to it
-				$thumb  = DS . trim($config->get('webpath', '/site/members'), DS);
-				$thumb .= DS . Hubzero_View_Helper_Html::niceidformat($this->profile->uidNumber) . DS . $this->profile->picture;
-
-				// No - use default picture
-				if (is_file(JPATH_ROOT . $thumb)) 
-				{
-					// Build a thumbnail filename based off the picture name
-					$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
-
-					if (!is_file(JPATH_ROOT . $thumb)) 
-					{
-						// Create a thumbnail image
-						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-
-						$ih = new MembersImgHandler();
-						$ih->set('image', $this->profile->picture);
-						$ih->set('path', JPATH_ROOT . DS . trim($config->get('webpath', '/site/members'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($this->profile->uidNumber) . DS);
-						$ih->set('maxWidth', 50);
-						$ih->set('maxHeight', 50);
-						$ih->set('cropratio', '1:1');
-						$ih->set('outputName', $ih->createThumbName());
-						if (!$ih->process()) 
-						{
-							$this->setError($ih->getError());
-						}
-					}
-				}
-			}
-
-			// No - use default picture
-			if (!is_file(JPATH_ROOT . $thumb)) 
-			{
-				$thumb = DS . ltrim($config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
-				// Build a thumbnail filename based off the picture name
-				$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
-			}
-
-			$this->thumb   = $thumb;
-			$this->filters = $filters;
 
 			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
