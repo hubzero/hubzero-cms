@@ -46,7 +46,7 @@ class RegisterControllerIncremental extends \Hubzero\Component\AdminController
 		$dbh->execute();
 		$dbh->setQuery('DELETE FROM #__incremental_registration_group_label_rel');
 		$dbh->execute();
-
+		
 		for ($idx = 0; isset($_POST['group-hours-'.$idx]); ++$idx) {
 			if (!($hours = (int)$_POST['group-hours-'.$idx])) {
 				continue;
