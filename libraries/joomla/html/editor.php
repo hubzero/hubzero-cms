@@ -255,6 +255,10 @@ class JEditor extends JObject
 		}
 
 		$document = JFactory::getDocument();
+		if (get_class($document) != 'JDocumentHTML')
+		{
+			return;
+		}
 		$document->addCustomTag($return);
 	}
 
