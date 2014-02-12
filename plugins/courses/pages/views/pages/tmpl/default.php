@@ -63,16 +63,6 @@ if (!$this->page)
 }
 else
 {
-
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => $this->course->get('alias') . DS . $this->offering->get('alias') . DS . 'pages',
-		'pagename' => $this->page->get('url'),
-		'pageid'   => '',
-		'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . 'pagefiles',
-		'domain'   => $this->course->get('alias')
-	);
-
 	//$layout = 'page';
 	$pathway = JFactory::getApplication()->getPathway();
 	$pathway->addItem(
@@ -83,19 +73,6 @@ else
 	$authorized = false;
 	if ($this->page->get('offering_id'))
 	{
-		$wikiconfig = array(
-			'option'   => $this->option,
-			'scope'    => $this->course->get('alias') . DS . $this->offering->get('alias') . DS . 'pages',
-			'pagename' => $this->page->get('url'),
-			'pageid'   => '',
-			'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course->get('id') . DS . 'pagefiles' . DS . $this->offering->get('id'),
-			'domain'   => $this->course->get('alias')
-		);
-		if ($this->page->get('section_id'))
-		{
-			$wikiconfig['filepath'] = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course->get('id') . DS . 'sections' . DS . $this->offering->section()->get('id') . DS . 'pagefiles';
-		}
-
 		// If they're a course level manager
 		if ($this->offering->access('manage'))
 		{
@@ -107,9 +84,6 @@ else
 			$authorized = true;
 		}
 	}
-
-	ximport('Hubzero_Wiki_Parser');
-	$p = Hubzero_Wiki_Parser::getInstance();
 ?>
 <?php if ($authorized) { ?>
 		<ul class="manager-options">
@@ -125,7 +99,7 @@ else
 			</li>
 		</ul>
 <?php } ?>
-<?php echo $p->parse($this->page->get('content'), $wikiconfig); ?>
+<?php echo $this->page->content('parsed'); ?>
 <?php
 }
 ?>

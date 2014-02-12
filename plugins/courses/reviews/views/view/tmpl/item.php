@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-	ximport('Hubzero_User_Profile');
-	ximport('Hubzero_User_Profile_Helper');
-
 	$juser = JFactory::getUser();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
@@ -189,9 +186,13 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="action" value="save" />
 
+							<?php echo JHTML::_('form.token'); ?>
+
 							<label for="comment-<?php echo $this->comment->id; ?>-content">
 								<span><?php echo JText::_('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?></span>
-								<textarea name="comment[content]" id="comment-<?php echo $this->comment->id; ?>-content" rows="4" cols="50" placeholder="<?php echo JText::_('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?>"></textarea>
+								<?php
+									echo \JFactory::getEditor()->display('comment[content]', '', '', '', 35, 4, false, 'comment-' . $this->comment->id . '-content', null, null, array('class' => 'minimal no-footer'));
+								?>
 							</label>
 
 							<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->id; ?>-anonymous">

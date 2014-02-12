@@ -168,7 +168,6 @@ class plgCoursesReviews extends JPlugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'html' || $rtrn == 'metadata') 
 		{
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'courses',

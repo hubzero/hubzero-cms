@@ -47,6 +47,13 @@ class CoursesModelPage extends CoursesModelAbstract
 	protected $_tbl_name = 'CoursesTablePage';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_courses.page.content';
+
+	/**
 	 * Object scope
 	 * 
 	 * @var string
@@ -76,8 +83,6 @@ class CoursesModelPage extends CoursesModelAbstract
 					return $content;
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
-
 				$config = array(
 					'option'   => JRequest::getCmd('option', 'com_courses'),
 					'scope'    => JRequest::getVar('gid', ''),
@@ -86,16 +91,26 @@ class CoursesModelPage extends CoursesModelAbstract
 					'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : ''),
 					'domain'   => $this->get('course_id')
 				);
-
-				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $config));
-
-				$content = $this->get('content_parsed');
-				if ($shorten)
+				if ($this->get('offering_id'))
 				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					$config['scope'] = CoursesModelCourse::getInstance($this->get('course_id'))->get('alias') . DS . CoursesModelOffering::getInstance($this->get('offering_id'))->get('alias') . DS . 'pages';
+				}
+				if ($this->get('section_id'))
+				{
+					$config['filepath'] = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'sections' . DS . $this->get('section_id') . DS . 'pagefiles';
 				}
 
-				return $content;
+				$content = stripslashes($this->get('content'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
+
+				$this->set('content_parsed', $this->get('content'));
+				$this->set('content', $content);
+
+				return $this->content($as, $shorten);
 			break;
 
 			case 'clean':
@@ -109,7 +124,12 @@ class CoursesModelPage extends CoursesModelAbstract
 
 			case 'raw':
 			default:
-				return $this->get('content');
+				$content = stripslashes($this->get('content'));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
 			break;
 		}
 	}

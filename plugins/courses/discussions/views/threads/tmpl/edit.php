@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile_Helper');
 $juser = JFactory::getUser();
 
 $no_html = JRequest::getInt('no_html', 0);
@@ -57,7 +56,6 @@ if ($this->post->id) {
 			?>
 			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
 		</p>
-	
 
 		<fieldset>
 	<?php } ?>
@@ -79,10 +77,9 @@ if ($this->post->id) {
 
 			<label for="field_comment">
 				<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
+				<textarea name="fields[comment]" id="field_<?php echo $this->comment->get('id'); ?>_comment" cols="35" rows="5"><?php echo $this->escape($this->post->get('comment')); ?></textarea>
 				<?php
-				ximport('Hubzero_Wiki_Editor');
-				$editor = Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('fields[comment]', 'field_comment', $this->post->get('comment'), 'minimal no-footer', '35', '5');
+				//echo \JFactory::getEditor()->display('fields[comment]', $this->escape($this->post->get('comment')), '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 		<?php if (!$this->post->get('parent')) { ?>
@@ -151,6 +148,8 @@ if ($this->post->id) {
 
 		<input type="hidden" name="section" value="<?php //echo $this->filters['section']; ?>" />
 		<input type="hidden" name="return" value="<?php //echo base64_encode(JRoute::_($base . '&active=outline&unit=' . $this->filters['section'] . '&b=' . $this->category->alias)); ?>" />
+
+		<?php echo JHTML::_('form.token'); ?>
 	<?php if (!$no_html) { ?>
 		<p class="instructions">
 			Click on a comment on the left to view a discussion or start your own above.

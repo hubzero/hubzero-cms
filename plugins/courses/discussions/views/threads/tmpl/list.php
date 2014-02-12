@@ -83,8 +83,6 @@ if ($this->comments && is_array($this->comments))
 		$view->depth      = $this->depth;
 		$view->cls        = $cls;
 		$view->base       = $this->base;
-		$view->parser     = $this->parser;
-		$view->wikiconfig = $this->wikiconfig;
 		$view->attach     = $this->attach;
 		$view->course     = $this->course;
 		$view->search     = $this->search;

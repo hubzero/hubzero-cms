@@ -30,7 +30,6 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_Wiki_Parser');
 $view = new Hubzero_Plugin_View(
 	array(
 		'folder'  => 'courses',
@@ -93,8 +92,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				<label for="fields_content">
 					<?php echo JText::_('PLG_COURSES_PAGES_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_PAGES_REQUIRED'); ?></span>
 					<?php
-						ximport('Hubzero_Wiki_Editor');
-						echo Hubzero_Wiki_Editor::getInstance()->display('fields[content]', 'field_content', stripslashes($this->model->get('content')), '', '50', '50');
+						echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->model->get('content'))), '', '', 35, 50, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 					?>
 					<span class="hint"><?php echo JText::sprintf('PLG_COURSES_PAGES_FIELD_CONTENT_HINT', JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'), JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros')); ?></span>
 				</label>

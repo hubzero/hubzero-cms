@@ -119,13 +119,10 @@ $levels = array(
 
 			<fieldset id="overview_content">
 				<legend>Enter Custom Overview Content</legend>
-				<label for="course[overview_content]">
+				<label for="field_description">
 					<?php
-						ximport('Hubzero_Wiki_Editor');
-						$editor = Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('course[overview_content]', 'course[overview_content]', stripslashes($this->course->get('overview_content')), '', '50', '15');
+						echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 50, false, 'field_description');
 					?>
-					<span class="hint"><a class="popup" href="/wiki/Help:WikiFormatting">Wiki formatting</a> is allowed.</span>
 				</label>
 			</fieldset>
 		</fieldset>

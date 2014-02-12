@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'forum.php');
+
 /**
  * Courses Plugin class for forum entries
  */
@@ -97,8 +99,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
 		// Load the parent unit
@@ -187,7 +187,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
 		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
@@ -205,8 +204,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			{
 				$category->store();
 			}
-
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 			// Mark all threads in category as deleted
 			$thread = new ForumTablePost(JFactory::getDBO());
@@ -235,8 +232,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			return;
 		}
-
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 
 		$section = new ForumTableSection(JFactory::getDBO());
 		$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
@@ -267,8 +262,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-
 		$section = new ForumTableSection(JFactory::getDBO());
 		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
 		if ($section->id)
@@ -279,8 +272,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				$section->store();
 			}
 
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-
 			$categories = $section->getRecords(array('section_id' => $section->id));
 			if ($categories)
 			{
@@ -290,8 +281,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					$ids[] = $category->id;
 				}
 				$section->setStateBySection($section->id, 2);
-
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 				$thread = new ForumTablePost(JFactory::getDBO());
 				$thread->setStateByCategory($ids, 2);
@@ -342,8 +331,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->offering = $offering;
 		$this->database = JFactory::getDBO();
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
-
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
@@ -356,12 +343,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$this->_active = $this->_name;
 
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
-			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'pagination.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
-
 			//Create user object
 			$this->juser = JFactory::getUser();
 
@@ -373,44 +354,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				'sort_Dir' => 'DESC',
 				'sort'     => 'ordering ASC, created ASC, title'
 			));
-
-			// Make a list of linked sections
-			/*$linked = array();
-			if ($this->sections)
-			{
-				foreach ($this->sections as $section)
-				{
-					$linked[$section->object_id] = $section;
-				}
-			}
-			else
-			{
-				$this->sections = array();
-			}
-
-			// Go through and create any sections that don't already exist
-			if ($this->offering->units()->total() > 0)
-			{
-				foreach ($this->offering->units() as $unit)
-				{
-					if (!isset($linked[$unit->get('id')]))
-					{
-						$section = new ForumTableSection($this->database);
-						$section->title     = $unit->get('title');
-						$section->alias     = $unit->get('alias');
-						$section->state     = 1;
-						$section->scope     = 'course';
-						$section->scope_id  = $this->offering->get('id');
-						$section->object_id = $unit->get('id');
-						$section->ordering  = $unit->get('ordering');
-						if ($section->check())
-						{
-							$section->store();
-							$this->sections[] = $section;
-						}
-					}
-				}
-			}*/
 
 			//option and paging vars
 			$this->option = 'com_courses';
@@ -575,12 +518,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->offering = $course->offering();
 
 		$this->base = 'index.php?option=' . $this->option . '&gid=' . $course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=' . $this->_active;
-
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
 
 		$this->_authorize('category');
 		$this->_authorize('thread');
@@ -1054,7 +991,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 									 : $threads->lastchange;
 
 				$cview = new Hubzero_Plugin_View(
-								array(
+					array(
 						'folder'  => 'courses',
 						'element' => $this->_name,
 						'name'    => 'threads',
@@ -1063,15 +1000,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				);
 				$cview->option      = $this->option;
 				$cview->thread      = $row;
-
-				$cview->unit       = '';
-				$cview->lecture    = '';
+				$cview->unit        = '';
+				$cview->lecture     = '';
 				if ($this->_active == 'outline')
 				{
-					$cview->unit       = $this->unit->get('alias');
-					$cview->lecture    = $this->lecture->get('alias');
+					$cview->unit    = $this->unit->get('alias');
+					$cview->lecture = $this->lecture->get('alias');
 				}
-
 				$cview->cls         = 'odd';
 				$cview->base        = $this->base;
 				$cview->search      = '';
@@ -1481,55 +1416,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			 && $view->sections[$key]->object_id)
 			{
 				$view->sections[$key]->categories = array();
-				/*$unit = CoursesModelUnit::getInstance($view->sections[$key]->object_id);
-				if ($unit->assetgroups()->total())
-				{
-					foreach ($unit->assetgroups() as $agt) 
-					{ 
-						if ($agt->get('alias') != 'lectures')
-						{
-							continue;
-						}
-						if ($agt->isAvailable()) 
-						{
-							foreach ($agt->children() as $ag) 
-							{ 
-								if (!$ag->isAvailable())
-								{
-									continue;
-								}
-								$cat = new ForumTableCategory($this->database);
-								$cat->loadByObject($ag->get('id'), $section->id, $this->offering->get('id'), 'course');
-								if (!$cat->get('id'))
-								{
-									$cat->section_id  = $section->id;
-									if ($ag->get('title') == '--')
-									{
-										$cat->title       = $ag->assets()->fetch('first')->get('title');
-									}
-									else
-									{
-										$cat->title       = $ag->get('title');
-									}
-									$cat->alias       = $ag->get('alias');
-									$cat->description = JText::sprintf('Discussions for %s', $ag->get('title'));
-									$cat->state       = 1;
-									$cat->scope       = 'course';
-									$cat->scope_id    = $this->offering->get('id');
-									$cat->object_id   = $ag->get('id');
-									$cat->ordering    = $ag->get('ordering');
-									if ($cat->check())
-									{
-										$cat->store();
-										$view->sections[$key]->categories[] = $cat;
-									}
-								}
-								$cat->threads = 0;
-								$cat->posts = 0;
-							}
-						}
-					}
-				}*/
 			}
 
 			$view->stats->categories += count($view->sections[$key]->categories);
@@ -1953,6 +1839,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Get records
 		$view->rows = $view->forum->getRecords($view->filters);
+		if ($view->rows)
+		{
+			foreach ($view->rows as $i => $row)
+			{
+				$view->rows[$i] = new ForumModelPost($row);
+			}
+		}
 
 		//get authorization
 		$this->_authorize('category');
@@ -1983,109 +1876,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		return $view->loadTemplate();
 	}
-
-	/**
-	 * Search forum entries and display results
-	 * 
-	 * @return     string
-	 */
-	/*public function search()
-	{
-		$this->view = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => 'categories',
-				'layout'  => 'search'
-			)
-		);
-
-		$jconfig = JFactory::getConfig();
-
-		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['authorized'] = 1;
-		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->view->filters['search']   = JRequest::getVar('q', '');
-		$this->view->filters['scope']    = 'course';
-		$this->view->filters['scope_id'] = $this->offering->get('id');
-
-		$this->view->section = new ForumTableSection($this->database);
-		$this->view->section->title = JText::_('Posts');
-		$this->view->section->alias = str_replace(' ', '-', $this->view->section->title);
-		$this->view->section->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->title));
-
-		// Get all sections
-		$sections = $this->view->section->getRecords(array(
-			'state'    => 1, 
-			'scope'    => $this->view->filters['scope'],
-			'scope_id' => $this->view->filters['scope_id']
-		));
-		$s = array();
-		foreach ($sections as $section)
-		{
-			$s[$section->id] = $section;
-		}
-		$this->view->sections = $s;
-
-		$this->view->category = new ForumTableCategory($this->database);
-		$this->view->category->title = JText::_('Search');
-		$this->view->category->alias = str_replace(' ', '-', $this->view->category->title);
-		$this->view->category->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->title));
-
-		// Get all categories
-		$categories = $this->view->category->getRecords(array(
-			'state'    => 1, 
-			'scope'    => $this->view->filters['scope'],
-			'scope_id' => $this->view->filters['scope_id']
-		));
-		$c = array();
-		foreach ($categories as $category)
-		{
-			$c[$category->id] = $category;
-		}
-		$this->view->categories = $c;
-
-		// Initiate a forum object
-		$this->view->forum = new ForumTablePost($this->database);
-
-		// Get record count
-		$this->view->total = $this->view->forum->getCount($this->view->filters);
-
-		// Get records
-		$this->view->rows = $this->view->forum->getRecords($this->view->filters);
-
-		//get authorization
-		$this->_authorize('category');
-		$this->_authorize('thread');
-
-		$this->view->config = $this->params;
-		$this->view->course = $this->course;
-		$this->view->offering = $this->offering;
-		$this->view->option = $this->option;
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
-			$this->view->filters['limit']
-		);
-
-		$this->view->notifications = $this->getPluginMessage();
-
-		// Set any errors
-		if ($this->getError()) 
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		return $this->view->loadTemplate();
-	}*/
 
 	/**
 	 * Show a form for editing a category
@@ -2191,6 +1981,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function savecategory()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		if (!$this->course->access('manage', 'offering')) 
 		{
 			return $this->panel();
@@ -2375,6 +2168,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Get replies
 		//$view->filters['parent'] = 0;
 		$rows = $view->post->getRecords($view->filters);
+		if ($rows)
+		{
+			foreach ($rows as $i => $row)
+			{
+				$rows[$i] = new ForumModelPost($row);
+			}
+		}
 
 		$view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start']    = JRequest::getInt('limitstart', 0);
@@ -2384,14 +2184,14 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		);
 
 		$levellimit = ($view->filters['limit'] == 0) ? 500 : $view->filters['limit'];
-		
+
 		foreach ($rows as $v)
 		{
 			//$children[0][] = $v;
 			//$children[$v->id] = $v->children();
 			
 			//$v->set('name', '');
-			$pt      = $v->parent;
+			$pt      = $v->get('parent');
 			$list    = @$children[$pt] ? $children[$pt] : array();
 			array_push($list, $v);
 			$children[$pt] = $list;
@@ -2491,7 +2291,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($children[$id] as $v)
 			{
-				$id = $v->id;
+				$id = $v->get('id');
 
 				//if ($type) 
 				//{
@@ -2504,7 +2304,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					$spacer = '&nbsp;&nbsp;';
 				}*/
 
-				if ($v->parent == 0) 
+				if ($v->get('parent') == 0) 
 				{
 					$txt = '';
 				} 
@@ -2512,11 +2312,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				{
 					$txt = $pre;
 				}
-				$pt = $v->parent;
+				$pt = $v->get('parent');
 
 				$list[$id] = $v;
-				$list[$id]->treename = "$indent$txt";
-				$list[$id]->children = count(@$children[$id]);
+				$list[$id]->set('treename', "$indent$txt");
+				$list[$id]->set('children', count(@$children[$id]));
 
 				$list = $this->_treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
 			}
@@ -2645,6 +2445,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function savethread()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Must be logged in
 		if ($this->juser->get('guest')) 
 		{
@@ -3037,34 +2840,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
 			return;
 		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $file)) 
-		{
-			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file)) 
-		{
-			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $file)) 
-		{
-			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $file)) 
-		{
-			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $file)) 
-		{
-			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_BAD_FILE_PATH'));
-			return;
-		}
 
 		// Get the configured upload path
 		$basePath  = DS . trim($this->params->get('filepath', '/site/forum'), DS) . DS  . $attach->parent . DS . $attach->post_id;
@@ -3173,11 +2948,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	public function onCourseDelete($course)
 	{
 		$log = JText::_('PLG_COURSES_FORUM') . ': ';
-
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
 
 		$this->database = JFactory::getDBO();
 

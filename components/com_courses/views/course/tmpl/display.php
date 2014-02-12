@@ -244,11 +244,7 @@ if (!$c)
 		<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
 				<label for="field_blurb">
-					<?php
-						ximport('Hubzero_Wiki_Editor');
-						$editor =& Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('course[blurb]', 'field_blurb', stripslashes($this->course->get('blurb')), '', '50', '5');
-					?>
+					<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
 				</label>
 
 				<label for="actags">
@@ -256,7 +252,7 @@ if (!$c)
 
 					<?php 
 					JPluginHelper::importPlugin( 'hubzero' );
-					$dispatcher =& JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))) );
 					$tf = implode("\n", $tf);
 
@@ -470,9 +466,7 @@ if (!$c)
 
 					<label for="field_description">
 						<?php
-							ximport('Hubzero_Wiki_Editor');
-							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('page[content]', 'field_content', stripslashes($page->get('content')), '', '50', '50');
+							echo \JFactory::getEditor()->display('page[content]', $this->escape(stripslashes($page->get('content'))), '', '', 35, 50, false, 'field_content');
 						?>
 					</label>
 

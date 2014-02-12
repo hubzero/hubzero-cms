@@ -1,22 +1,34 @@
 <?php 
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 defined('_JEXEC') or die('Restricted access');
-$juser = JFactory::getUser();
-
-ximport('Hubzero_User_Profile_Helper');
-
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_Wiki_Parser');
-
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => 'forum',
-	'pagename' => 'forum',
-	'pageid'   => $this->post->id,
-	'filepath' => '',
-	'domain'   => $this->post->id
-);
-
-$p = Hubzero_Wiki_Parser::getInstance();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>
@@ -57,14 +69,14 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			foreach ($this->participants as $participant) 
 			{ 
 				if (!$participant->anonymous) { 
-		?>
+				?>
 				<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
-		<?php 
+				<?php 
 				} else if (!$anon) {
 					$anon = true;
-		?>
+				?>
 				<li><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS'); ?></li>
-		<?php
+				<?php
 				}
 			}
 		?>
@@ -90,12 +102,20 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 	</div><!-- / .aside  -->
 
 	<div class="subject">
-		<!-- <h4 class="comments-title">
-			<?php echo JText::_('PLG_COURSES_DISCUSSIONS_COMMENTS'); ?>
-		</h4> -->
 		<form action="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="get">
 			<?php
-			if ($this->rows) {
+			if ($this->rows) 
+			{
+				$wikiconfig = array(
+					'option'   => $this->option,
+					'scope'    => 'forum',
+					'pagename' => 'forum',
+					'pageid'   => $this->post->id,
+					'filepath' => '',
+					'domain'   => $this->post->id
+				);
+				$p = Hubzero_Wiki_Parser::getInstance();
+
 				$last = '0000-00-00 00:00:00';
 				foreach ($this->rows as $row)
 				{
@@ -127,10 +147,13 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				$view->attach     = $this->attach;
 				$view->course     = $this->course;
 				$view->display();
-			} else { ?>
+			} 
+			else 
+			{
+		?>
 				<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_NO_REPLIES_FOUND'); ?></p>
-		<?php } ?>
 		<?php 
+			}
 			$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 			$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
 			$this->pageNav->setAdditionalUrlParam('active', 'forum');
@@ -156,6 +179,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 				<?php
+				$juser = JFactory::getUser();
 				$anon = 1;
 				$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
 				if (!$juser->get('guest')) 
@@ -186,9 +210,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				<label for="field_comment">
 					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?>
 					<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', '', 'minimal no-footer', '35', '15');
+					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
@@ -231,6 +253,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
+
+			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>

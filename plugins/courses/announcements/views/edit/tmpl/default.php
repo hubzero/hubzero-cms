@@ -53,8 +53,7 @@ $juser = JFactory::getUser();
 			<label for="field_content">
 				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
-				ximport('Hubzero_Wiki_Editor');
-				echo Hubzero_Wiki_Editor::getInstance()->display('fields[content]', 'field_content', $this->escape(stripslashes($this->model->get('content'))), 'minimal no-footer', '35', '5');
+				echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->model->get('content'))), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 

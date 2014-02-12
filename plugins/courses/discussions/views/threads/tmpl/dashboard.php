@@ -34,17 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => 'forum',
-	'pagename' => 'forum',
-	'pageid'   => 0,
-	'filepath' => '',
-	'domain'   => 0
-);
-ximport('Hubzero_Wiki_Parser');
-$p = Hubzero_Wiki_Parser::getInstance();
-
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 
 $instructors = array();
@@ -236,9 +225,7 @@ if (count($inst) > 0)
 							<label for="field_comment">
 								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 								<?php
-								ximport('Hubzero_Wiki_Editor');
-								$editor = Hubzero_Wiki_Editor::getInstance();
-								echo $editor->display('fields[comment]', 'field_comment', '', 'minimal no-footer', '35', '5');
+								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 								?>
 							</label>
 
@@ -254,30 +241,30 @@ if (count($inst) > 0)
 									<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
 									<select name="fields[category_id]" id="field-category_id">
 										<option value="0"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
-				<?php
+							<?php
 								foreach ($this->sections as $section)
 								{
 									if ($section->categories) 
 									{
-				?>
+							?>
 										<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
-				<?php
+							<?php
 										foreach ($section->categories as $category)
 										{
 											if ($category->closed)
 											{
 												continue;
 											}
-				?>
+							?>
 										<option value="<?php echo $category->id; ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
-				<?php
+							<?php
 										}
-				?>
+							?>
 										</optgroup>
-				<?php
+							<?php
 									}
 								}
-				?>
+							?>
 									</select>
 								</label>
 								</div>
@@ -307,17 +294,14 @@ if (count($inst) > 0)
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 
+						<?php echo JHTML::_('form.token'); ?>
+
 						<p class="instructions">
 							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
 						</p>
 					</form>
 
 					<div class="comment-thread"><?php if ($this->data) { echo $this->data->html; } ?></div>
-					<!-- 
-					<input type="hidden" name="lastchange" id="lastchange" value="" />
-					<input type="hidden" name="lastid" id="lastid" value="" />
-					<input type="hidden" name="parent-thread" id="parent-thread" value="" />
-					-->
 				</div><!-- / .comments-frame -->
 			</div><!-- / .comments-panel -->
 

@@ -85,8 +85,7 @@ $rows = $this->offering->announcements(array(
 						<label for="field_content">
 							<span><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?></span> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 							<?php
-							ximport('Hubzero_Wiki_Editor');
-							echo Hubzero_Wiki_Editor::getInstance()->display('fields[content]', 'field_content', '', 'minimal no-footer', '35', '3');
+							echo \JFactory::getEditor()->display('fields[content]', '', '', '', 35, 3, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 

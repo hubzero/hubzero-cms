@@ -208,7 +208,7 @@ $edit = JRequest::getInt('editcomment', 0);
 					<label>
 						<?php echo JText::_('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
 						<?php
-							echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', $comment->content, 'minimal', '40', '20');
+							echo \JFactory::getEditor()->display('comment[content]', $this->escape(stripslashes($comment->content)), '', '', 35, 20, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
 						?>
 					</label>
 

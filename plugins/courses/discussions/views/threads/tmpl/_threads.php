@@ -98,7 +98,7 @@ if ($this->threads && is_array($this->threads))
 		if ($offering->exists())
 		{
 			$database = JFactory::getDBO();
-			$database->setQuery("UPDATE #__forum_posts SET scope_sub_id=" . $offering->section()->get('id') . " WHERE scope='course' AND scope_sub_id=0 AND id IN(" . implode(",", $subs) . ")");
+			$database->setQuery("UPDATE `#__forum_posts` SET scope_sub_id=" . $offering->section()->get('id') . " WHERE scope='course' AND scope_sub_id=0 AND id IN(" . implode(",", $subs) . ")");
 			if (!$database->query())
 			{
 				echo '<!-- Failed to update data -->';

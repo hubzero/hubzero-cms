@@ -47,6 +47,13 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	protected $_tbl_name = 'CoursesTableAnnouncement';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_courses.announcement.content';
+
+	/**
 	 * Object scope
 	 * 
 	 * @var string
@@ -120,14 +127,16 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('content_parsed'))
+				if ($content = $this->get('content_parsed'))
 				{
-					return $this->get('content_parsed');
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
-
-				$wikiconfig = array(
+				$config = array(
 					'option'   => 'com_courses',
 					'scope'    => 'courses',
 					'pagename' => $this->get('id'),
@@ -136,15 +145,17 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 					'domain'   => ''
 				);
 
-				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig));
+				$content = stripslashes($this->get('content'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
 
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($this->get('content_parsed'), $shorten, array('html' => true));
-					return $content;
-				}
+				$this->set('content_parsed', $this->get('content')); //implode('', $content));
+				$this->set('content', $content);
 
-				return $this->get('content_parsed');
+				return $this->content($as, $shorten);
 			break;
 
 			case 'clean':
@@ -158,7 +169,12 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 
 			case 'raw':
 			default:
-				return $this->get('content');
+				$content = stripslashes($this->get('content'));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
 			break;
 		}
 	}

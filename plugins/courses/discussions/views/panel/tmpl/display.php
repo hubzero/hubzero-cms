@@ -123,34 +123,34 @@ if (count($inst) > 0)
 					</div><!-- / .category -->
 		<?php if (count($this->sections) > 0) { ?>
 			<?php
-			$tfilters = array();
-							$tfilters['scope']      = $this->filters['scope'];
-							$tfilters['scope_id']   = $this->filters['scope_id'];
-							if ($this->config->get('discussions_threads', 'all') != 'all')
-							{
-								$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
-							}
-							$tfilters['state']       = 1;
-							//$tfilters['category_id'] = $row->id;
-							$tfilters['sort_Dir']    = 'DESC';
-							$tfilters['limit']       = (100 * count($this->sections));
-							$tfilters['start']       = 0;
-							$tfilters['parent']      = 0;
-							$tfilters['sticky']     = false;
+				$tfilters = array();
+				$tfilters['scope']      = $this->filters['scope'];
+				$tfilters['scope_id']   = $this->filters['scope_id'];
+				if ($this->config->get('discussions_threads', 'all') != 'all')
+				{
+					$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
+				}
+				$tfilters['state']       = 1;
+				//$tfilters['category_id'] = $row->id;
+				$tfilters['sort_Dir']    = 'DESC';
+				$tfilters['limit']       = (100 * count($this->sections));
+				$tfilters['start']       = 0;
+				$tfilters['parent']      = 0;
+				$tfilters['sticky']     = false;
 
-							$threads = array();
-							$results = $this->post->getRecords($tfilters);
-							if ($results)
-							{
-								foreach ($results as $thread)
-								{
-									if (!isset($threads[$thread->category_id]))
-									{
-										$threads[$thread->category_id] = array();
-									}
-									$threads[$thread->category_id][] = $thread;
-								}
-							}
+				$threads = array();
+				$results = $this->post->getRecords($tfilters);
+				if ($results)
+				{
+					foreach ($results as $thread)
+					{
+						if (!isset($threads[$thread->category_id]))
+						{
+							$threads[$thread->category_id] = array();
+						}
+						$threads[$thread->category_id][] = $thread;
+					}
+				}
 			?>
 			<?php foreach ($this->sections as $section) { ?>
 					<div class="category category-results closed" id="sc<?php echo $section->id; ?>">
@@ -166,29 +166,12 @@ if (count($inst) > 0)
 							{ 
 								?>
 								<div class="thread closed" id="ct<?php echo $row->id; ?>" data-category="<?php echo $row->id; ?>">
-									<?php
-										/*$tfilters = array();
-										$tfilters['scope']      = $this->filters['scope'];
-										$tfilters['scope_id']   = $this->filters['scope_id'];
-										if ($this->config->get('discussions_threads', 'all') != 'all')
-										{
-											$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
-										}
-										$tfilters['state']       = 1;
-										$tfilters['category_id'] = $row->id;
-										$tfilters['sort_Dir']    = 'DESC';
-										$tfilters['limit']       = 100;
-										$tfilters['start']       = 0;
-										$tfilters['parent']      = 0;
-										$tfilters['sticky']     = false;*/
-									?>
 									<div class="thread-header">
 										<span class="thread-title"><?php echo $this->escape(stripslashes($row->title)); ?></span>
-										<span class="thread-discussions count"><?php echo $row->threads; //$this->post->getCount($tfilters); ?></span>
+										<span class="thread-discussions count"><?php echo $row->threads; ?></span>
 									</div><!-- / .thread-header -->
 									<div class="thread-content">
 										<?php
-										//$width = $thread->rgt - $thread->lft;
 											$view = new Hubzero_Plugin_View(
 												array(
 													'folder'  => 'courses',
@@ -199,7 +182,7 @@ if (count($inst) > 0)
 											);
 											$view->category    = 'category' . $row->id;
 											$view->option      = $this->option;
-											$view->threads     = isset($threads[$row->id]) ? $threads[$row->id] : null;//$this->post->getRecords($tfilters);
+											$view->threads     = isset($threads[$row->id]) ? $threads[$row->id] : null;
 											$view->unit        = $row->alias;
 											$view->lecture     = $row->id;
 											$view->config      = $this->config;
@@ -212,28 +195,8 @@ if (count($inst) > 0)
 										?>
 									</div><!-- / .thread-content -->
 								</div><!-- / .thread -->
-						<?php } ?>
-							<?php
-					/*} else {
-								$view = new Hubzero_Plugin_View(
-									array(
-										'folder'  => 'courses',
-										'element' => 'discussions',
-										'name'    => 'threads',
-										'layout'  => '_threads'
-									)
-								);
-								$view->option      = $this->option;
-								$view->threads     = $this->post->getRecords($filters);
-								$view->unit        = $row->alias;
-								$view->lecture     = 0;
-								$view->config      = $this->config;
-								$view->instructors = $instructors;
-								$view->cls         = 'odd';
-								$view->base        = $base;
-								$view->course      = $this->course;
-								$view->display();
-							}*/
+								<?php 
+							}
 							?>
 						<?php } else { ?>
 							<p class="instructions">
@@ -242,14 +205,7 @@ if (count($inst) > 0)
 						<?php } ?>
 						</div><!-- / .category-content -->
 					</div><!-- / .category -->
-				<?php
-						//}
-					//}
-				?>
 			<?php } ?>
-					<!-- <p class="instructions">
-						Click a category above to see available threads.
-					</p> -->
 		<?php } ?>
 				</div><!-- / .comment-threads -->
 
@@ -257,13 +213,12 @@ if (count($inst) > 0)
 
 			<div class="comments-panel">
 				<div class="comments-toolbar">
-					<p><span class="comments" data-comments="%s comments" data-add="<?php echo JText::_('Start a discussion'); ?>"><?php echo JText::_('Start a discussion'); ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
+					<p><span class="comments" data-comments="%s comments" data-add="<?php echo JText::_('Start a discussion'); ?>"><?php echo JText::_('Start a discussion'); ?></span></p>
 				</div><!-- / .comments-toolbar -->
 				<div class="comments-frame">
 
 					<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
 						<p class="comment-member-photo">
-							<a class="comment-anchor" name="commentform"></a>
 							<?php
 							$anon = 1;
 							if (!$juser->get('guest')) 
@@ -285,7 +240,8 @@ if (count($inst) > 0)
 								</strong> 
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
 									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
@@ -293,9 +249,7 @@ if (count($inst) > 0)
 							<label for="field_comment">
 								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 								<?php
-								ximport('Hubzero_Wiki_Editor');
-								$editor = Hubzero_Wiki_Editor::getInstance();
-								echo $editor->display('fields[comment]', 'field_comment', '', 'minimal no-footer', '35', '5');
+								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 								?>
 							</label>
 
@@ -364,6 +318,8 @@ if (count($inst) > 0)
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 
+						<?php echo JHTML::_('form.token'); ?>
+
 						<p class="instructions">
 							<?php echo JText::_('Click on a section and category to the left to view a list of comments.'); ?><br /><br />
 							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
@@ -371,11 +327,6 @@ if (count($inst) > 0)
 					</form>
 
 					<div class="comment-thread"><?php if ($this->data) { echo $this->data->html; } ?></div>
-					<!-- 
-					<input type="hidden" name="lastchange" id="lastchange" value="" />
-					<input type="hidden" name="lastid" id="lastid" value="" />
-					<input type="hidden" name="parent-thread" id="parent-thread" value="" />
-					-->
 				</div><!-- / .comments-frame -->
 			</div><!-- / .comments-panel -->
 

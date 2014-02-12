@@ -40,9 +40,7 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
 		<label for="field_description">
 			<?php
-				ximport('Hubzero_Wiki_Editor');
-				$editor =& Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('course[description]', 'field_description', stripslashes($this->course->get('description')), '', '50', '50');
+				echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 50, false, 'field_description');
 			?>
 			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 		</label>
@@ -68,18 +66,6 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 }
 else
 {
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => '',
-		'pagename' => $this->course->get('alias'),
-		'pageid'   => $this->course->get('id'),
-		'filepath' => DS . ltrim($this->course->config()->get('uploadpath', '/site/courses'), DS),
-		'domain'   => $this->course->get('alias')
-	);
-
-	ximport('Hubzero_Wiki_Parser');
-	$parser = Hubzero_Wiki_Parser::getInstance();
-
 	if ($this->course->access('edit', 'course')) 
 	{
 		?>
@@ -98,6 +84,6 @@ else
 	}
 	else
 	{
-		echo $parser->parse(stripslashes($this->course->get('description')), $wikiconfig);
+		echo $this->course->description('parsed');
 	}
 }

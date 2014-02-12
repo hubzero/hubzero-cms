@@ -1,8 +1,36 @@
-<?php 
-defined('_JEXEC') or die( 'Restricted access' );
-$juser = JFactory::getUser();
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-ximport('Hubzero_User_Profile_Helper');
+defined('_JEXEC') or die( 'Restricted access' );
+
+$juser = JFactory::getUser();
 ?>
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
@@ -14,14 +42,13 @@ ximport('Hubzero_User_Profile_Helper');
 <?php } else { ?>
 		<?php echo JText::_('PLG_COURSES_DISCUSSIONS_NEW_CATEGORY'); ?>
 <?php } ?>
-	</h3>			
+	</h3>
 	<div class="aside">
 		<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_HINT'); ?></p>
 	</div><!-- /.aside -->
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
-				<a class="comment-anchor" name="commentform"></a>
 				<?php
 				$jxuser = new Hubzero_User_Profile();
 				$jxuser->load($juser->get('id'));
@@ -39,19 +66,15 @@ ximport('Hubzero_User_Profile_Helper');
 					<?php } ?>
 					</select>
 				</label>
-				
+
 				<label for="field-title">
 					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REQUIRED'); ?></span>
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->model->title)); ?>" />
 				</label>
-				
+
 				<label for="field-description">
 					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_DESCRIPTION'); ?>
-					<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[description]', 'field-description', $this->escape(stripslashes($this->model->description)), 'minimal no-footer', '35', '5');
-					?>
+					<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->description)); ?></textarea>
 				</label>
 
 				<label for="field-closed" id="comment-anonymous-label">
@@ -81,6 +104,8 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="active" value="discussions" />
 			<input type="hidden" name="unit" value="manage" />
 			<input type="hidden" name="action" value="savecategory" />
+
+			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>

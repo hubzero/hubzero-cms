@@ -604,6 +604,12 @@ class CoursesModelCourse extends CoursesModelAbstract
 				$this->setError($this->_tbl->getError());
 				return false;
 			}
+
+			$this->importPlugin('content')->trigger('onContentBeforeSave', array(
+				'com_courses.course.description',
+				&$this, 
+				$this->exists()
+			));
 		}
 
 		if (!$this->_tbl->store())
@@ -784,6 +790,72 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Get the content of the entry
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function description($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+
+		switch ($as)
+		{
+			case 'parsed':
+				if ($content = $this->get('description.parsed'))
+				{
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
+				}
+
+				$config = array(
+					'option'   => 'com_courses',
+					'scope'    => '',
+					'pagename' => $this->get('alias'),
+					'pageid'   => 0, //$this->get('id'),
+					'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS),
+					'domain'   => $this->get('alias')
+				);
+
+				$content = stripslashes($this->get('description'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					'com_courses.course.description',
+					&$this,
+					&$config
+				));
+
+				$this->set('description.parsed', $this->get('description'));
+				$this->set('description', $content);
+
+				return $this->description($as, $shorten);
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('parsed'));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('description'));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
+			break;
+		}
 	}
 }
 
