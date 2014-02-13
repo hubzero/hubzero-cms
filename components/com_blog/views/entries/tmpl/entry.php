@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile');
-
 $juser = JFactory::getUser();
 
 $first = $this->model->entries('first');
@@ -351,7 +349,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 					</p>
 					<p>
-						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($replyto->get('content')), 300, 0); ?>
+						<?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?>
 					</p>
 				</blockquote>
 				<?php
@@ -360,9 +358,9 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			?>
 				<?php if (!$juser->get('guest')) { ?>
 				<label for="commentcontent">
-					Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
+					Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>:
 					<?php
-						echo $this->helpers()->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
+						echo \JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 				<?php } else { ?>

@@ -83,7 +83,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<label for="entrycontent"<?php if ($this->task == 'save' && !$this->entry->get('content')) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 				<?php
-				echo $this->helpers()->editor('entry[content]', $this->escape(stripslashes($this->entry->get('content'))), 50, 40);
+				echo \JFactory::getEditor()->display('entry[content]', $this->escape(stripslashes($this->entry->get('content'))), '', '', 50, 40, false, 'entrycontent');
 				?>
 			</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
