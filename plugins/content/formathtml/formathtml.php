@@ -54,6 +54,8 @@ class plgContentFormathtml extends JPlugin
 
 		$content = ltrim($article->get($key));
 
+		if (!$content) return;
+
 		// Is there a format already applied?
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
 		{
@@ -78,6 +80,7 @@ class plgContentFormathtml extends JPlugin
 			}
 		}
 
+		$content = \Hubzero\Utility\Sanitize::clean($content);
 		//$content = \Hubzero\Utility\Sanitize::html($content);
 
 		if ($this->params->get('applyFormat'))
@@ -108,6 +111,8 @@ class plgContentFormathtml extends JPlugin
 
 		$content = ltrim($article->get($key));
 
+		if (!$content) return;
+
 		// Is there a format already applied?
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
 		{
@@ -122,11 +127,14 @@ class plgContentFormathtml extends JPlugin
 
 		$content = preg_replace('/^(<!-- \{FORMAT:HTML\} -->)/i', '', $content);
 
-		include_once(__DIR__ . '/parser.php');
+		if (trim($content))
+		{
+			include_once(__DIR__ . '/parser.php');
 
-		$parser = new \Plugins\Content\Formathtml\Parser($params);
+			$parser = new \Plugins\Content\Formathtml\Parser($params);
 
-		$content = $parser->parse($content);
+			$content = $parser->parse($content);
+		}
 
 		$article->set($key, $content);
 	}
