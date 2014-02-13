@@ -31,10 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//tag editor
-
-ximport('Hubzero_Wiki_Editor');
-$editor = Hubzero_Wiki_Editor::getInstance();
 ?>
 
 <?php if ($this->getError()) { ?>
