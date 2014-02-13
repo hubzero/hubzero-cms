@@ -180,7 +180,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 					return $this->get('pagetext_parsed');
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
+				$p = WikiHelperParser::getInstance();
 
 				$wikiconfig = array(
 					'option'   => JRequest::getCmd('option', 'com_wiki'),

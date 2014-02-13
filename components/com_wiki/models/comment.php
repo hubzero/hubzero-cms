@@ -206,7 +206,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 					return $this->get('chtml');
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
+				$p = WikiHelperParser::getInstance();
 
 				$wikiconfig = array(
 					'option'   => JRequest::getCmd('option', 'com_wiki'),

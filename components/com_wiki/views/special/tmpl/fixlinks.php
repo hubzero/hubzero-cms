@@ -97,7 +97,7 @@ $pageNav = new JPagination(
 <?php
 if ($rows) 
 {
-	$p = Hubzero_Wiki_Parser::getInstance();
+	$p = WikiHelperParser::getInstance();
 
 	foreach ($rows as $row)
 	{

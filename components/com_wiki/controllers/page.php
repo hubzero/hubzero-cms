@@ -298,7 +298,7 @@ class WikiControllerPage extends Hubzero_Controller
 			'domain'   => $this->page->get('group_cn')
 		);
 
-		$p = Hubzero_Wiki_Parser::getInstance();
+		$p = WikiHelperParser::getInstance();
 
 		// Parse the text
 		if (intval($this->book->config('cache', 1)))
@@ -506,7 +506,7 @@ class WikiControllerPage extends Hubzero_Controller
 				'domain'   => $this->_group
 			);
 
-			$p = Hubzero_Wiki_Parser::getInstance();
+			$p = WikiHelperParser::getInstance();
 
 			$this->revision->set('pagehtml', $p->parse($this->revision->get('pagetext'), $wikiconfig, true, true));
 		}

@@ -671,7 +671,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 					return $this->get('pagetext_parsed');
 				}
 
-				$p = Hubzero_Wiki_Parser::getInstance();
+				$p = WikiHelperParser::getInstance();
 
 				$wikiconfig = array(
 					'option'   => 'com_wiki',

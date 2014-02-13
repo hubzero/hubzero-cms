@@ -197,7 +197,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 			return JText::_('No default pages found');
 		}
 
-		$p = Hubzero_Wiki_Parser::getInstance();
+		$p = WikiHelperParser::getInstance();
 
 		foreach ($pages as $f => $c)
 		{
