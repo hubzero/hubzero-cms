@@ -27,10 +27,10 @@ function submitbutton(pressbutton)
 	<h2><?php echo stripslashes($this->event->title); ?></h2>
 	
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label>
+		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->resp->getSearchTerms(); ?>" />
 
-		<label for="filter_sortby"><?php echo JText::_('SORT'); ?>:</label>
+		<label for="filter_sortby"><?php echo JText::_('COM_EVENTS_SORT'); ?>:</label>
 		<select name="sortby" id="filter_sortby">
 			<option value="id DESC"<?php if ($this->resp->getOrdering() == 'id DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_ID_DESC'); ?></option>
 			<option value="id ASC"<?php if ($this->resp->getOrdering() == 'id ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_ID_ASC'); ?></option>
@@ -42,16 +42,16 @@ function submitbutton(pressbutton)
 			<option value="registered ASC"<?php if ($this->resp->getOrdering() == 'registered ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_REGISTERED_ASC'); ?></option>
 		</select>
 
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_EVENTS_GO'); ?>" />
 	</fieldset>
 
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
  			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $rows );?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_EVENTS_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_RESPONDANT_NAME'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_EMAIL'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_EVENTS_REGISTERED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_RESPONDANT_REGISTERED'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_SPECIAL_NEEDS'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_COMMENT'); ?></th>
 			</tr>
