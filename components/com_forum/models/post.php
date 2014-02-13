@@ -351,6 +351,7 @@ class ForumModelPost extends ForumModelAbstract
 			case 'raw':
 			default:
 				$content = $this->get('comment');
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);

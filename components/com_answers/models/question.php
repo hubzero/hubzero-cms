@@ -566,6 +566,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);
@@ -628,6 +629,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 			case 'clean':
 				$content = strip_tags($this->subject('parsed'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);

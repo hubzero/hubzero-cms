@@ -223,6 +223,7 @@ class AnswersModelComment extends AnswersModelAbstract
 			case 'raw':
 			default:
 				$content = $this->get('content');
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);

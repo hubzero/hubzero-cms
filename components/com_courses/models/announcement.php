@@ -170,6 +170,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('content'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);
