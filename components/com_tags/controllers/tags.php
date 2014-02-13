@@ -504,6 +504,10 @@ class TagsControllerTags extends Hubzero_Controller
 				$s = array();
 				foreach ($sqls as $sql)
 				{
+					if (!is_string($sql))
+					{
+						continue;
+					}
 					if (trim($sql) != '') 
 					{
 						$s[] = $sql;
