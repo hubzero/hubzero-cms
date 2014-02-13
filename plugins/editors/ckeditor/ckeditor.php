@@ -123,8 +123,25 @@ class plgEditorCkeditor extends JPlugin
 			$id = $name;
 		}
 
+		if (!isset($params['class']))
+		{
+			$params['class'] = array();
+		}
+		if (!is_array($params['class']))
+		{
+			$params['class'] = array($params['class']);
+		}
+		if ($cls = $this->params->get('class'))
+		{
+			foreach ($this->_split(' ', $cls) as $piece)
+			{
+				$params['class'][] = $piece;
+			}
+		}
+		$params['class'][] = 'ckeditor-content';
+
 		// build config & json encode
-		$config = json_encode($this->_buildConfig());
+		$config = json_encode($this->_buildConfig(in_array('minimal', $params['class'])));
 
 		// fix script and php protected source
 
@@ -136,19 +153,6 @@ class plgEditorCkeditor extends JPlugin
 		// script to actually make ckeditor
 		$script = '<script>$(document).ready(function(){ $("#'.$id.'").ckeditor(function(){}, '.$config.'); });</script>';
 
-		if (!isset($params['class']))
-		{
-			$params['class'] = array();
-		}
-		if (!is_array($params['class']))
-		{
-			$params['class'] = array($params['class']);
-		}
-		if ($cls = $this->params->get('class'))
-		{
-			$params['class'][] = $cls;
-		}
-		$params['class'][] = 'ckeditor-content';
 		$params['class'] = implode(' ', $params['class']);
 
 		$atts = array();
@@ -165,9 +169,37 @@ class plgEditorCkeditor extends JPlugin
 	/**
 	 * Build a config object
 	 *
+	 * @param   string $delimiter
+	 * @param   string $input
+	 * @return  array
+	 */
+	private function _split($delimiter, $input) 
+	{
+		$even = array();
+
+		if (is_array($input))
+		{
+			foreach ($input as $el) 
+			{
+				$even = array_merge($even, $this->_split($delimiter, $el));
+			}
+		}
+		else
+		{
+			$pieces = explode($delimiter, $input);
+			$pieces = array_map('trim', $pieces);
+
+			$even = array_merge($even, $pieces);
+		}
+		return $even;
+	}
+
+	/**
+	 * Build a config object
+	 *
 	 * @return  object stdClass
 	 */
-	private function _buildConfig()
+	private function _buildConfig($minimal=false)
 	{
 		// store params in local var for easier accessing
 		$params = $this->params;
@@ -179,7 +211,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->hubzeroAutogrow_autoStart     = true;
 		$config->hubzeroAutogrow_minHeight     = 200;
 		$config->hubzeroAutogrow_maxHeight     = 1000;
-		$config->toolbarCanCollapse            = true;
+		$config->toolbarCanCollapse            = ($minimal ? false : true);
 		$config->extraPlugins                  = 'tableresize,hubzeroautogrow,hubzeroequation,hubzerogrid,codemirror';
 		$config->removePlugins                 = 'resize';
 		$config->resize_enabled                = false;
@@ -210,6 +242,15 @@ class plgEditorCkeditor extends JPlugin
 			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
 			array('HubzeroAutoGrow')
 		);
+		if ($minimal)
+		{
+			$config->toolbar                   = array(
+				array('Link', 'Unlink', 'Anchor'),
+				array('Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
+				array('NumberedList', 'BulletedList'),
+				array('HubzeroAutoGrow')
+			);
+		}
 
 		$config->codemirror = new stdClass;
 		$config->codemirror->autoFormatOnModeChange = false;
