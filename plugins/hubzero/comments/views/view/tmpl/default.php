@@ -73,7 +73,6 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="subject">
 			<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform" enctype="multipart/form-data">
 				<p class="comment-member-photo">
-					<span class="comment-anchor"></span>
 					<?php
 						$anonymous = 1;
 						if (!$this->juser->get('guest')) 
@@ -124,27 +123,14 @@ defined('_JEXEC') or die('Restricted access');
 				if (($edit = JRequest::getInt('editcomment', 0))) 
 				{
 					$comment->load($edit);
-					//if ($comment->created_by != $this->juser->get('id'))
-					//{
-					//	$comment = new \Hubzero\Item\Comment($this->database);
-					//}
 				}
 				?>
 					<label for="commentcontent">
-						<?php echo JText::_('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_HUBZERO_COMMENTS_REQUIRED'); ?></span>
+						<?php echo JText::_('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
 						<?php
 							if (!$this->juser->get('guest')) 
 							{
-								$editor = Hubzero_Wiki_Editor::getInstance();
-								echo $editor->display('comment[content]', 'commentcontent', $comment->content, 'minimal no-footer', '40', '15');
-							/*} else {
-								$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
-								?>
-								<p class="warning">
-									You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
-								</p>
-								<?php
-							*/
+								echo \JFactory::getEditor()->display('comment[content]', '', '', '', 35, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
 							}
 						?>
 					</label>
@@ -154,7 +140,6 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="file" name="commentFile" id="commentFile" />
 					</label>
 
-				<?php //if (!$this->juser->get('guest')) { ?>
 					<label id="comment-anonymous-label">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->anonymous) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
@@ -163,12 +148,7 @@ defined('_JEXEC') or die('Restricted access');
 					<p class="submit">
 						<input type="submit" name="submit" value="<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
 					</p>
-				<?php //} ?>
-				<?php /*} else { ?>
-					<p class="warning">
-						<?php echo JText::_('PLG_HUBZERO_COMMENTS_THREAD_CLOSED'); ?>
-					</p>
-				<?php }*/ ?>
+
 					<input type="hidden" name="comment[id]" value="<?php echo $comment->id; ?>" />
 					<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->id; ?>" />
 					<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
@@ -184,7 +164,7 @@ defined('_JEXEC') or die('Restricted access');
 							<strong><?php echo JText::_('PLG_HUBZERO_COMMENTS_KEEP_RELEVANT'); ?></strong>
 						</p>
 						<p>
-							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked.
+							URLs (starting with http://) or email addresses will automatically be linked.
 						</p>
 					</div>
 				</fieldset>

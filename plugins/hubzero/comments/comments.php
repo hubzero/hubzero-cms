@@ -82,7 +82,8 @@ class plgHubzeroComments extends JPlugin
 			return '';
 		}
 
-		ximport('Hubzero_Plugin_View');
+		include_once __DIR__ . '/comment.php';
+
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'hubzero',
@@ -396,8 +397,6 @@ class plgHubzeroComments extends JPlugin
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) 
 		{
-			ximport('Hubzero_Document');
-			//Hubzero_Document::addPluginStyleSheet('hubzero', 'comments');
 			Hubzero_Document::addPluginScript('hubzero', 'comments');
 
 			$this->_pushscripts = false;
@@ -448,7 +447,7 @@ class plgHubzeroComments extends JPlugin
 
 		// Instantiate a new comment object
 		//$row = new \Hubzero\Item\Comment($this->database);
-		$row = $this->comment;
+		$row = new plgHubzeroCommentsModelComment($this->comment);
 
 		// pass data to comment object
 		if (!$row->bind($comment)) 
@@ -460,9 +459,9 @@ class plgHubzeroComments extends JPlugin
 			);
 			return;
 		}
-		$row->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
+		$row->set('uploadDir', $this->params->get('comments_uploadpath', '/site/comments'));
 
-		if ($row->id && !$this->params->get('access-edit-comment')) 
+		if ($row->exists() && !$this->params->get('access-edit-comment')) 
 		{
 			$this->redirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)), 
@@ -472,24 +471,13 @@ class plgHubzeroComments extends JPlugin
 			return;
 		}
 
-		// Check content
-		if (!$row->check()) 
+		// Store new content
+		if (!$row->store(true)) 
 		{
 			$key   = 'failed_comment';
-			$value = $row->content;
+			$value = $row->content('raw');
 			JFactory::getApplication()->setUserState($key, $value);
-			
-			$this->redirect(
-				$this->url, 
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
 
-		// Store new content
-		if (!$row->store()) 
-		{
 			$this->redirect(
 				$this->url, 
 				$row->getError(),
