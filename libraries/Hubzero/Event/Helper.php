@@ -95,6 +95,6 @@ class Hubzero_Event_Helper
 			'14'    => array('abbreviation' => 'LINT',  'name' => 'Line Islands Time')
 		);
 		
-		return (isset($abbreviations[$timezone]) ? $abbreviations[$timezone] : null;
+		return (isset($abbreviations[$timezone])) ? $abbreviations[$timezone] : null;
 	}
 }
