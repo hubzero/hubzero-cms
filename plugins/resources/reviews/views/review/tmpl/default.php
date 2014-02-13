@@ -47,22 +47,21 @@ if ($this->review->id) {
 	</h3>
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->review->resource_id.'&active=reviews'); ?>" method="post" id="commentform">
 		<div class="aside">
-<?php if ($this->banking) {	?>
+		<?php if ($this->banking) {	?>
 			<p class="help"><?php echo JText::_('PLG_RESOURCES_REVIEWS_DID_YOU_KNOW_YOU_CAN'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS'); ?></a> <?php echo JText::_('PLG_RESOURCES_REVIEWS_FOR_REVIEWS'); ?>? <?php echo JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS_EXP'); ?></p>
-<?php } ?>
+		<?php } ?>
 		</div><!-- / .aside -->
 		<div class="subject">
 			<p class="comment-member-photo">
-				<span class="comment-anchor"><a name="reviewform"></a></span>
-<?php
-			$anon = 1;
-			ximport('Hubzero_User_Profile_Helper');
-			$jxuser = Hubzero_User_Profile::getInstance($this->juser->get('id'));
-			if (!$this->juser->get('guest')) 
-			{
-				$anon = 0;
-			}
-?>
+				<span class="comment-anchor"></span>
+				<?php
+				$anon = 1;
+				$jxuser = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+				if (!$this->juser->get('guest')) 
+				{
+					$anon = 0;
+				}
+				?>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 			</p>
 			<fieldset>
@@ -107,14 +106,12 @@ if ($this->review->id) {
 
 				<label for="review_comments">
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_COMMENTS');
-		if ($this->banking) {
-			echo ' ( <span class="required">'.JText::_('PLG_RESOURCES_REVIEWS_REQUIRED').'</span> '.JText::_('PLG_RESOURCES_REVIEWS_FOR_ELIGIBILITY').' <a href="'.$this->infolink.'">'.JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS').'</a> )';
-		}
-		?>
+					if ($this->banking) {
+						echo ' ( <span class="required">'.JText::_('PLG_RESOURCES_REVIEWS_REQUIRED').'</span> '.JText::_('PLG_RESOURCES_REVIEWS_FOR_ELIGIBILITY').' <a href="'.$this->infolink.'">'.JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS').'</a> )';
+					}
+					?>
 					<?php
-					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('comment', 'review_comments', $this->review->comment, 'no-image-macro no-file-macro', '35', '10');
+					echo JFactory::getEditor()->display('comment', $this->review->comment, '', '', 35, 10, false, 'review_comments', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
@@ -132,7 +129,7 @@ if ($this->review->id) {
 						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
+						URLs (starting with http://) or email addresses will automatically be linked.
 					</p>
 				</div>
 			</fieldset>

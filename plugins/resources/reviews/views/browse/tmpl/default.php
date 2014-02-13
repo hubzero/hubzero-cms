@@ -31,12 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
+if (!isset($this->reviews) || !$this->reviews) 
+{
+	$this->reviews = array();
+}
+
+foreach ($this->reviews as $k => $review)
+{
+	$this->reviews[$k] = new ResourcesModelReview($review);
+}
+$this->reviews = new \Hubzero\Base\ItemList($this->reviews);
+
 $juser = JFactory::getUser();
-$html = '';
 ?>
 <h3 class="section-header">
-	<a name="reviews"></a>
 	<?php echo JText::_('PLG_RESOURCES_REVIEWS'); ?>
 </h3>
 <p class="section-options">
@@ -50,353 +58,56 @@ $html = '';
 			</a>
 	<?php } ?>
 </p>
-<?php
-// Did we get any results back?
-if ($this->reviews) {
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => 'review',
-		'pagename' => $this->resource->id,
-		'pageid'   => $this->resource->id,
-		'filepath' => '',
-		'domain'   => ''
-	);
 
-	$parser = Hubzero_Wiki_Parser::getInstance();
-
-	$admin = false;
-	// Check if they're a site admin (from Joomla)
-	/*if ($juser->authorize($this->option, 'manage')) 
-	{
-		$admin = true;
-	}*/
-
-	// Set the abuse flag
-	// Determines if we're using abuse reports or not
-	/*$abuse = false;
-	if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
-	{*/
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-		$abuse = true;
-	//}
-
-	// Set the reply flag
-	// Determines if we're allowing replies to reviews
-	/*$reply = false;
-	if (is_file(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Comment.php')) 
-	{
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Comment.php');*/
-		$reply = true;
-
-		// See if we have a comment (comeone clicked a "reply" link)
-		$addcomment = new \Hubzero\Item\Comment($database);
-		$addcomment->parent = JRequest::getInt('refid', 0);
-		$addcomment->item_id = JRequest::getInt('id', 0);
-		$addcomment->item_type = JRequest::getVar('category', '');
-	//}
-
-	$o = 'even';
-
-	$html = "\t".'<ol class="comments">'."\n";
-	foreach ($this->reviews as $review)
-	{
-		// Get the rating
-		switch ($review->rating)
-		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
-			case 0:
-			default:  $class = ' no-stars';      break;
-		}
-
-		// Set the name of the reviewer
-		$name = JText::_('PLG_RESOURCES_REVIEWS_ANONYMOUS');
-		$ruser = Hubzero_User_Profile::getInstance($review->user_id);
-		if ($review->anonymous != 1) 
-		{
-			$name = JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN');
-			//$ruser = JUser::getInstance($review->user_id);
-			if (is_object($ruser)) 
-			{
-				$name = $this->escape(stripslashes($ruser->get('name')));
-			}
-		}
-
-		$replies = null;
-		if ($reply) {
-			// Get the replies to this review
-			$replies = plgResourcesReviews::getComments($this->resource->id, $review, 'review', 0, $abuse);
-		}
-
-		// Get abuse reports
-		if ($abuse) {
-			$abuse_reports = plgResourcesReviews::getAbuseReports($review->id, 'review');
-		}
-
-		$o = ($o == 'odd') ? 'even' : 'odd';
-
-		// Build the list item
-		$html .= "\t".'<li class="comment '.$o.'" id="c'.$review->id.'">';
-		$html .= "\t\t".'<p class="comment-member-photo">'."\n";
-		$html .= "\t\t".'	<span class="comment-anchor"></span>'."\n";
-		$html .= "\t\t".'	<img src="'.Hubzero_User_Profile_Helper::getMemberPhoto($ruser, $review->anonymous).'" alt="" />'."\n";
-		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
-		$html .= "\t\t".'<div class="comment-content">'."\n";
-		
-		if ($review->comment && $this->voting && $review->user_id != $juser->get('id')) {
-			// Display thumbs voting
-			$html .= "\t\t".'<p id="reviews_'.$review->id.'" class="comment-voting voting">'."\n";
-			//$html .= $this->rateitem($review, $juser, $this->option, $this->resource->id)."\n";
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'resources',
-					'element' => 'reviews',
-					'name'    => 'browse',
-					'layout'  => 'rateitem'
-				)
-			);
-			$view->option = $this->option;
-			$view->item = $review;
-			$view->rid = $this->resource->id;
-
-			$html .= $view->loadTemplate();
-			$html .= "\t\t".'</p>'."\n";
-		}
-		
-		$html .= "\t\t".'<p class="comment-title">'."\n";
-		$html .= "\t\t".'	<strong>'. $name.'</strong> '."\n";
-		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$review->id).'" title="'. JText::_('PLG_RESOURCES_REVIEWS_PERMALINK').'"><span class="comment-date-at">@</span> <span class="time"><time datetime="' . $review->created . '">'. JHTML::_('date', $review->created, JText::_('TIME_FORMAT_HZ1')).'</time></span> <span class="comment-date-on">on</span> <span class="date"><time datetime="' . $review->created . '">'.JHTML::_('date',$review->created, JText::_('DATE_FORMAT_HZ1')).'</time></span></a>'."\n";
-		$html .= "\t\t".'</p><!-- / .comment-title -->'."\n";
-		$html .= "\t\t\t".'<p><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></p>'."\n";
-		if ($abuse && $abuse_reports > 0) {
-			$html .= "\t\t\t".'<p class="warning">'.JText::_('PLG_RESOURCES_REVIEWS_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
-			$html .= "\t\t".'</div>'."\n";
-		} else {
-			if ($review->comment) {
-				/*if ($this->voting) {
-					// Display thumbs voting
-					$html .= "\t\t".'<p id="reviews_'.$review->id.'" class="comment-voting voting">'."\n";
-					//$html .= $this->rateitem($review, $juser, $this->option, $this->resource->id)."\n";
-					$view = new Hubzero_Plugin_View(
-						array(
-							'folder'  => 'resources',
-							'element' => 'reviews',
-							'name'    => 'browse',
-							'layout'  => 'rateitem'
-						)
-					);
-					$view->option = $this->option;
-					$view->item = $review;
-					$view->rid = $this->resource->id;
-
-					$html .= $view->loadTemplate();
-					$html .= "\t\t".'</p>'."\n";
-				}*/
-				$html .= $parser->parse(stripslashes($review->comment), $wikiconfig);
-			} else {
-				$html .= "\t\t\t".'<p class="comment-none">'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
-			}
-
-			//if ((($abuse || $reply) && $review->comment) || $admin) {
-			if (($abuse || $reply) || $admin) {
-				$html .= "\t\t\t".'<p class="comment-options">'."\n";
-				//if ($reply && $review->comment) {
-				if ($reply) {
-					$html .= "\t\t\t\t".'<a class="';
-					//if (!$juser->get('guest')) {
-						$html .= 'icon-reply reply';
-					//}
-					if ($juser->get('guest')) {
-						$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review')));
-					} else {
-						$href = JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review');
-					}
-					$html .= '" href="'.$href.'" id="rep_'.$review->id.'" data-rel="commentform_' . $review->id . '" data-txt-inactive="' . JText::_('PLG_RESOURCES_REVIEWS_REPLY') . '" data-txt-active="' . JText::_('PLG_RESOURCES_REVIEWS_CANCEL') . '" title="'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'"">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>'."\n";
-				}
-				//if ($abuse && $review->comment) {
-				if ($abuse) {
-					if ($juser->get('guest')) {
-						$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id)));
-					} else {
-						$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id);
-					}
-					$html .= "\t\t\t\t".'<a class="icon-abuse abuse" href="'.$href.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE').'</a> | '."\n";
-				}
-				
-				if ($admin) {
-					$html .= "\t\t\t\t".' | <a class="icon-delete delete" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=deletereview&reviewid='.$review->id).'">'.JText::_('PLG_RESOURCES_REVIEWS_DELETE').'</a>'."\n";
-				}
-				$html .= "\t\t\t".'</p>'."\n";
-			}
-
-			// Add the comment form
-			if ($reply) {
-				//$html .= $this->addcomment($review->id, 0, $juser, $this->option, $addcomment, $this->resource->id);
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'resources',
-						'element' => 'reviews',
-						'name'    => 'browse',
-						'layout'  => 'addcomment'
-					)
-				);
-				$view->option = $this->option;
-				$view->resource = $this->resource;
-				$view->row = $review;
-				$view->juser = $juser;
-				$view->level = 0;
-				$view->addcomment = $addcomment;
-
-				$html .= $view->loadTemplate();
-			}
-			$html .= "\t\t".'</div>'."\n";
-
-			// Display comments
-			if ($replies) {
-				//$html .= $this->comments($replies, $review->id, $juser, $this->resource->id, $this->option, $addcomment, $abuse, $admin)."\n";
-				$html .= "\t\t".'<ol class="comments pass2">'."\n";
-				foreach ($replies as $reply)
-				{
-					$o = ($o == 'odd') ? 'even' : 'odd';
-
-					// Comment
-					$html .= "\t\t\t".'<li class="comment '.$o;
-					if ($abuse && $reply->abuse_reports > 0) {
-						$html .= ' abusive';
-					}
-					$html .= '" id="c'.$reply->id.'r">';
-					//$html .= $this->comment($reply, $juser, $this->option, $this->resource->id, $addcomment, 1, $abuse, $o, $admin)."\n";
-					$view = new Hubzero_Plugin_View(
-						array(
-							'folder'=>'resources',
-							'element'=>'reviews',
-							'name'=>'browse',
-							'layout'=>'comment'
-						)
-					);
-					$view->option = $this->option;
-					$view->reply = $reply;
-					$view->juser = $juser;
-					$view->id = $this->resource->id;
-					$view->level = 1;
-					$view->abuse = $abuse;
-					$view->resource = $this->resource;
-					$view->addcomment = $addcomment;
-					$view->parser = $parser;
-					$html .= $view->loadTemplate();
-					// Another level? 
-					if (count($reply->replies) > 0) {
-						$html .= "\t\t\t".'<ol class="comments pass3">'."\n";
-						foreach ($reply->replies as $r)
-						{
-							$o = ($o == 'odd') ? 'even' : 'odd';
-
-							$html .= "\t\t\t\t".'<li class="comment '.$o;
-							if ($abuse && $r->abuse_reports > 0) {
-								$html .= ' abusive';
-							}
-							$html .= '" id="c'.$r->id.'r">';
-							//$html .= $this->comment($r, $juser, $this->option, $this->resource->id, $addcomment, 2, $abuse, $o, $admin)."\n";
-							$view = new Hubzero_Plugin_View(
-								array(
-									'folder'=>'resources',
-									'element'=>'reviews',
-									'name'=>'browse',
-									'layout'=>'comment'
-								)
-							);
-							$view->option = $this->option;
-							$view->reply = $r;
-							$view->juser = $juser;
-							$view->id = $this->resource->id;
-							$view->level = 2;
-							$view->abuse = $abuse;
-							$view->resource = $this->resource;
-							$view->addcomment = $addcomment;
-							$view->parser = $parser;
-							$html .= $view->loadTemplate();
-
-							// Yet another level?? 
-							if (count($r->replies) > 0) {
-								$html .= "\t\t\t".'<ol class="comments pass4">'."\n";
-								foreach ($r->replies as $rr)
-								{
-									$o = ($o == 'odd') ? 'even' : 'odd';
-
-									$html .= "\t\t\t\t".'<li class="comment '.$o;
-									if ($abuse && $rr->abuse_reports > 0) {
-										$html .= ' abusive';
-									}
-									$html .= '" id="c'.$rr->id.'r">';
-									//$html .= $this->comment($rr, $juser, $this->option, $this->resource->id, $addcomment, 3, $abuse, $o, $admin)."\n";
-									$view = new Hubzero_Plugin_View(
-										array(
-											'folder'=>'resources',
-											'element'=>'reviews',
-											'name'=>'browse',
-											'layout'=>'comment'
-										)
-									);
-									$view->option = $this->option;
-									$view->reply = $rr;
-									$view->juser = $juser;
-									$view->id = $this->resource->id;
-									$view->level = 3;
-									$view->abuse = $abuse;
-									$view->resource = $this->resource;
-									$view->addcomment = $addcomment;
-									$view->parser = $parser;
-									$html .= $view->loadTemplate();
-
-									$html .= "\t\t\t\t".'</li>'."\n";
-								}
-								$html .= "\t\t\t".'</ol><!-- end pass4 -->'."\n";
-							}
-							$html .= "\t\t\t".'</li>'."\n";
-						}
-						$html .= "\t\t\t".'</ol><!-- end pass3 -->'."\n";
-					}
-					$html .= "\t\t".'</li>'."\n";
-				}
-				$html .= "\t\t".'</ol><!-- end pass2 -->'."\n";
-			}
-		}
-		$html .= "\t".'</li>'."\n";
-	}
-	$html .= "\t".'</ol>'."\n";
-} else {
-	$html = "\t".'<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
-}
-echo $html;
-if ($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php }
+<?php } ?>
+
+<?php
+if ($this->reviews->total() > 0)
+{
+	$view = new Hubzero_Plugin_View(
+		array(
+			'folder'  => 'resources',
+			'element' => 'reviews',
+			'name'    => 'browse',
+			'layout'  => '_list'
+		)
+	);
+	$view->parent     = 0;
+	$view->cls        = 'odd';
+	$view->depth      = 0;
+	$view->option     = $this->option;
+	$view->resource   = $this->resource;
+	$view->comments   = $this->reviews;
+	$view->config     = $this->config;
+	$view->base       = 'index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews';
+	$view->display();
+}
+else
+{
+	echo '<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
+}
 
 // Display the review form if needed
-if (!$juser->get('guest')) {
+if (!$juser->get('guest')) 
+{
 	$myreview = $this->h->myreview;
-	if (is_object($myreview)) {
+	if (is_object($myreview)) 
+	{
 		$view = new Hubzero_Plugin_View(
 			array(
-				'folder'=>'resources',
-				'element'=>'reviews',
-				'name'=>'review'
+				'folder'  => 'resources',
+				'element' => 'reviews',
+				'name'    => 'review'
 			)
 		);
-		$view->option = $this->option;
-		$view->review = $this->h->myreview;
-		$view->banking = $this->banking;
+		$view->option   = $this->option;
+		$view->review   = $this->h->myreview;
+		$view->banking  = $this->banking;
 		$view->infolink = $this->infolink;
 		$view->resource = $this->resource;
-		$view->juser = $juser;
+		$view->juser    = $juser;
 		$view->display();
 	}
 }

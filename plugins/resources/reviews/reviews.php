@@ -162,6 +162,8 @@ class plgResourcesReviews extends JPlugin
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
+			include_once(__DIR__ . '/models/review.php');
+
 			Hubzero_Document::addPluginStylesheet('resources', 'reviews');
 			Hubzero_Document::addPluginScript('resources', 'reviews');
 
@@ -175,17 +177,15 @@ class plgResourcesReviews extends JPlugin
 				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)));
 				return;
 			} 
-			else 
-			{
-				// Instantiate a view
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'resources',
-						'element' => 'reviews',
-						'name'    => 'browse'
-					)
-				);
-			}
+
+			// Instantiate a view
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'resources',
+					'element' => 'reviews',
+					'name'    => 'browse'
+				)
+			);
 
 			// Thumbs voting CSS & JS
 			$view->voting = $this->params->get('voting', 1);
@@ -198,7 +198,7 @@ class plgResourcesReviews extends JPlugin
 			$view->h = $h;
 			$view->banking  = $this->banking;
 			$view->infolink = $this->infolink;
-			//$view->voting = $voting;
+			$view->config   = $this->params;
 			if ($h->getError()) 
 			{
 				foreach ($h->getErrors() as $error)
@@ -221,7 +221,6 @@ class plgResourcesReviews extends JPlugin
 					'name'=>'metadata'
 				)
 			);
-			
 			if ($model->resource->alias) 
 			{
 				$url = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=reviews');
@@ -390,6 +389,9 @@ class PlgResourcesReviewsHelper extends JObject
 	 */
 	private function savereply()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$juser = JFactory::getUser();
 
 		// Is the user logged in?
@@ -400,13 +402,10 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 
 		// Incoming
-		$id       = JRequest::getInt('item_id', 0);
-		$rid      = JRequest::getInt('rid', 0);
-		$category = JRequest::getVar('item_type', '');
-		$when     = JFactory::getDate()->toSql();
+		$id = JRequest::getInt('id', 0);
 
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim', $_POST);
+		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		if (!$id) 
 		{
@@ -415,17 +414,10 @@ class PlgResourcesReviewsHelper extends JObject
 			return;
 		}
 
-		if (!$category) 
-		{
-			// Cannot proceed
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_CATEGORY'));
-			return;
-		}
-
 		$database = JFactory::getDBO();
 
 		$row = new \Hubzero\Item\Comment($database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($comment)) 
 		{
 			$this->setError($row->getError());
 			return;
@@ -433,9 +425,9 @@ class PlgResourcesReviewsHelper extends JObject
 
 		// Perform some text cleaning, etc.
 		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
-		$row->content    = nl2br($row->content);
+		//$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created    = $when;
+		$row->created    = JFactory::getDate()->toSql();
 		$row->state      = 0;
 		$row->created_by = $juser->get('id');
 
@@ -445,9 +437,11 @@ class PlgResourcesReviewsHelper extends JObject
 			$this->setError($row->getError());
 			return;
 		}
+
 		// Save the data
 		if (!$row->store()) 
 		{
+			echo $row->getError(); die();
 			$this->setError($row->getError());
 			return;
 		}
@@ -661,7 +655,7 @@ class PlgResourcesReviewsHelper extends JObject
 
 		// Perform some text cleaning, etc.
 		$row->id        = JRequest::getInt('reviewid', 0);
-		$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
+		$row->comment   = \Hubzero\Utility\Sanitize::clean($row->comment);
 		$row->comment   = nl2br($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
