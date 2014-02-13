@@ -1446,7 +1446,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$group = Hubzero_Group::getInstance( $this->cn );
 
 		// make sure we have a group
-		if (is_object($group))
+		if (!is_object($group))
 		{
 			return;
 		}
