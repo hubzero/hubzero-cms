@@ -86,7 +86,7 @@ class plgTagsBlogs extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!isset($areas['blogs'])) 
+			if (!isset($areas['blogs']) && !in_array('blogs', $areas)) 
 			{
 				return array();
 			}

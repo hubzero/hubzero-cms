@@ -86,7 +86,7 @@ class plgTagsKb extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!isset($areas['kb'])) 
+			if (!isset($areas['kb']) && !in_array('kb', $areas)) 
 			{
 				return array();
 			}

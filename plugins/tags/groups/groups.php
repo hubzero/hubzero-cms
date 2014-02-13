@@ -87,7 +87,7 @@ class plgTagsGroups extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit) 
 		{
-			if (!isset($areas['groups'])) 
+			if (!isset($areas['groups']) && !in_array('groups', $areas)) 
 			{
 				return array();
 			}
