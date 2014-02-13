@@ -43,13 +43,13 @@ if (substr($base, -13) == 'administrator')
 {
 	$base 		= substr($base, 0, strlen($base)-13);
 	$sef 		= 'projects/' . $this->project->alias;
-	$pubSef		= 'publications' . DS . $this->row->publication_id . DS . $this->row->version_label;
+	$pubSef		= 'publications' . DS . $this->row->publication_id . DS . $this->row->version_number;
 }
 else
 {
 	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
 	$pubSef		= JRoute::_('index.php?option=' . $this->option . '&id=' 
-				. $this->row->publication_id . '&v=' . $this->row->version_label);
+				. $this->row->publication_id . '&v=' . $this->row->version_number);
 }
 
 $link 	 = rtrim($base, DS) . DS . trim($sef, DS);
