@@ -515,6 +515,16 @@ class plgMembersBlog extends JPlugin
 	}
 
 	/**
+	 * Display a warning message
+	 * 
+	 * @return     string
+	 */
+	private function _login() 
+	{
+		return '<p class="warning">' . JText::_('You must be logged in to perform this action.') . '</p>';
+	}
+
+	/**
 	 * Display a form for creating an entry
 	 * 
 	 * @return     string
