@@ -1456,7 +1456,7 @@ class Hubzero_User_Profile extends JObject
 	 */
 	public function getGroupMemberRoles($uid, $gid)
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT r.id, r.name, r.permissions FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.roleid AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
 		$db->setQuery($sql);
 		
