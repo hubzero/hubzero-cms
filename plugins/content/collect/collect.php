@@ -84,11 +84,9 @@ class plgContentCollect extends JPlugin
 		if (!$juser->get('guest')) 
 		{
 			// Push some scripts to the template
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginScript('content', $this->_name);
 			Hubzero_Document::addPluginStylesheet('content', $this->_name);
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'content',
@@ -130,8 +128,6 @@ class plgContentCollect extends JPlugin
 		$b->loadType($this->article->id, 'article');
 		if (!$b->id)
 		{
-			ximport('Hubzero_View_Helper_Html');
-
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			if (!$url)
 			{
@@ -147,7 +143,7 @@ class plgContentCollect extends JPlugin
 			$b->type        = 'article';
 			$b->object_id   = $this->article->id;
 			$b->title       = $this->article->title;
-			$b->description = Hubzero_View_Helper_Html::shortenText($text, 300, 0, 1);
+			$b->description = \Hubzero\Utility\String::truncate($text, 300, array('html' => true));
 			if (!$b->check()) 
 			{
 				$this->setError($b->getError());
@@ -164,7 +160,6 @@ class plgContentCollect extends JPlugin
 		// No board ID selected so present repost form
 		if (!$collection_id && !$collection_title)
 		{
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'content',
@@ -221,7 +216,7 @@ class plgContentCollect extends JPlugin
 				// No record found -- we're OK to add one
 				$stick->item_id       = $item_id;
 				$stick->collection_id = $collection_id;
-				$stick->description   = JRequest::getVar('description', '');
+				$stick->description   = JRequest::getVar('description', '', 'none', 2);
 				if ($stick->check()) 
 				{
 					// Store new content

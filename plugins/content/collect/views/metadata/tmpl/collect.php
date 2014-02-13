@@ -41,8 +41,7 @@ if ($url == '/?action=collect&nohtml=1')
 {
 	$url = '/home' . $url;
 }
-ximport('Hubzero_Wiki_Editor');
-$editor = Hubzero_Wiki_Editor::getInstance();
+
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -110,7 +109,7 @@ if ($this->groupboards)
 
 		<label for="field_description">
 			<?php echo JText::_('PLG_CONTENT_COLLECT_ADD_DESCRIPTION'); ?>
-			<?php echo $editor->display('description', 'field_description', '', '', '50', '5'); ?>
+			<?php echo \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 
