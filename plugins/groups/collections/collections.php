@@ -104,7 +104,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->model = new CollectionsModel('group', $this->group->get('gidNumber'));
 
 		//get the plugins params
-		$p = new Hubzero_Plugin_Params(JFactory::getDBO());
+		$db = JFactory::getDBO();
+		$p = new Hubzero\Plugin\Params($db);
 		$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 		$this->members = $group->get('members');
 		$this->authorized = $authorized;
@@ -1827,7 +1828,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->juser->get('guest')) 
 		{
 			$p = new \Hubzero\Plugin\Params($this->database);
-			$this->params->merge($p->getCustomParams($this->group->get('gidNumber'), 'groups', $this->_name));
+			$customParams = $p->getCustomParams($this->group->get('gidNumber'), 'groups', $this->_name);
+			$this->params->merge($customParams);
 
 			// Set asset to viewable
 			$this->params->set('access-view-' . $assetType, false);
