@@ -31,44 +31,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (is_a($this->row, 'CollectionsModelCollection'))
+if ($this->row instanceof CollectionsModelCollection)
 {
 	$collection = $this->row;
-	$content = $collection->get('description'); 
 }
 else
 {
 	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
-	$content = ($this->row->get('description')) ? $this->row->get('description') : $collection->get('description'); 
-}
-
-switch ($collection->get('object_type'))
-{
-	case 'member':
-		$url = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
-	break;
-
-	case 'group':
-		ximport('Hubzero_Group');
-		$group = new Hubzero_Group();
-		$group->read($collection->get('object_id'));
-		$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
-	break;
-	
-	default:
-		$url = 'index.php?option=com_collections&task=all&id=' . $collection->get('id');
-	break;
+	if ($this->row->get('description'))
+	{
+		$collection->set('description', $this->row->get('description'));
+	}
 }
 ?>
 		<h4<?php if ($collection->get('access', 0) == 4) { echo ' class="private"'; } ?>>
-			<a href="<?php echo JRoute::_($url); ?>">
+			<a href="<?php echo JRoute::_($collection->link()); ?>">
 				<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
 			</a>
 		</h4>
 		<div class="description">
-			<?php echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false); ?>
+			<?php echo $collection->description('parsed'); ?>
 		</div>
-		<table summary="Board content counts">
+		<table>
 			<tbody>
 				<tr>
 					<td>

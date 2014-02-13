@@ -54,11 +54,11 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	protected $_tbl_name = 'CollectionsTableCollection';
 
 	/**
-	 * JDatabase
+	 * Model context
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	//private $_db = NULL;
+	protected $_context = 'com_collections.collection.description';
 
 	/**
 	 * Container for properties
@@ -108,10 +108,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		else if (is_object($oid))
 		{
 			$this->bind($oid);
-			/*if (isset($oid->posts))
-			{
-				$this->_tbl->set('posts', $oid->posts);
-			}*/
+
 			if (isset($oid->following))
 			{
 				$this->_following = $oid->following ? true : false;
@@ -120,10 +117,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		else if (is_array($oid))
 		{
 			$this->bind($oid);
-			/*if (isset($oid['posts']))
-			{
-				$this->_tbl->set('posts', $oid['posts']);
-			}*/
+
 			if (isset($oid['following']))
 			{
 				$this->_following = $oid['following'] ? true : false;
@@ -152,7 +146,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new CollectionsModelCollection($oid, $object_id, $object_type);
+			$instances[$key] = new self($oid, $object_id, $object_type);
 		}
 
 		return $instances[$key];
@@ -170,19 +164,49 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	}
 
 	/**
+	 * Return a formatted timestamp
+	 * 
+	 * @param      string $as What format to return
+	 * @return     boolean
+	 */
+	public function created($as='')
+	{
+		switch (strtolower($as))
+		{
+			case 'date':
+				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+			break;
+
+			case 'time':
+				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+			break;
+
+			default:
+				return $this->get('created');
+			break;
+		}
+	}
+
+	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire user object
 	 *
-	 * @return     mixed
+	 * @param   string $property
+	 * @return  mixed
 	 */
-	public function creator()
+	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof Hubzero_User_Profile))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_creator->get($property);
 		}
 		return $this->_creator;
 	}
@@ -541,10 +565,80 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 			break;
 
 			case 'member':
-			default:
 				$href = 'index.php?option=com_members&id=' . $this->get('object_id') . '&active=collections&task=' . $this->get('alias');
+			break;
+
+			default:
+				$href = 'index.php?option=com_collections&task=all&id=' . $this->get('id');
 			break;
 		}
 		return $href;
+	}
+
+	/**
+	 * Get the content of the entry
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function description($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+
+		switch ($as)
+		{
+			case 'parsed':
+				if (($content = $this->get('description.parsed')))
+				{
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
+				}
+
+				$config = array(
+					'option'   => $this->get('option', JRequest::getCmd('option')),
+					'scope'    => $this->get('scope', 'collection'),
+					'pagename' => $this->get('alias'),
+					'pageid'   => 0,
+					'filepath' => $this->get('path', '/site/collections'),
+					'domain'   => ''
+				);
+
+				$content = stripslashes($this->get('description'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
+
+				$this->set('description.parsed', $this->get('description'));
+				$this->set('description', $content);
+
+				return $this->description($as, $shorten);
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('description.parsed'));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('description'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
+			break;
+		}
 	}
 }

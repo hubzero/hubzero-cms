@@ -31,15 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-//tag editor
 if ($this->collection_id)
 {
 	$task = JRequest::getVar('board', 0) . '/collect';
 }
-
-ximport('Hubzero_Wiki_Editor');
-$editor = Hubzero_Wiki_Editor::getInstance();
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -108,7 +103,7 @@ $editor = Hubzero_Wiki_Editor::getInstance();
 
 		<label for="field_description">
 			<?php echo JText::_('COM_COLLECTIONS_ADD_DESCRIPTION'); ?>
-			<?php echo $editor->display('description', 'field_description', '', '', '50', '5'); ?>
+			<?php echo \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 

@@ -31,23 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import helper class
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Document');
-
-//$assets = array();
-//$ids = array();
 $likes = 0;
 if ($this->rows->total() > 0) 
 {
 	foreach ($this->rows as $row)
 	{
 		$likes += $row->get('positive', 0);
-		//$ids[] = $row->id;
 	}
 }
 
-$database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option;
@@ -56,88 +48,41 @@ $base = 'index.php?option=' . $this->option;
 	<h2><?php echo JText::_('Collections'); ?></h2>
 </div>
 
-<!-- <div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="board btn" href="<?php echo JRoute::_($base . '&controller=boards'); ?>">
-				<span><?php echo JText::_('Boards'); ?></span>
-			</a>
-		</li>
-	</ul>
-</div> -->
-
-	<ul class="sub-menu">
-		<li<?php if ($this->task == 'popular') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=popular'); ?>">
-				<span><?php echo JText::_('Popular posts'); ?></span>
-			</a>
-		</li>
-		<li<?php if ($this->task == 'recent') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=recent'); ?>">
-				<span><?php echo JText::_('Recent posts'); ?></span>
-			</a>
-		</li>
-		<li<?php if ($this->task == 'spotlight') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=spotlight'); ?>">
-				<span><?php echo JText::_('Collection Spotlight'); ?></span>
-			</a>
-		</li>
-	</ul>
+<ul class="sub-menu">
+	<li<?php if ($this->task == 'popular') { echo ' class="active"'; } ?>>
+		<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=popular'); ?>">
+			<span><?php echo JText::_('Popular posts'); ?></span>
+		</a>
+	</li>
+	<li<?php if ($this->task == 'recent') { echo ' class="active"'; } ?>>
+		<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=recent'); ?>">
+			<span><?php echo JText::_('Recent posts'); ?></span>
+		</a>
+	</li>
+	<li<?php if ($this->task == 'spotlight') { echo ' class="active"'; } ?>>
+		<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=spotlight'); ?>">
+			<span><?php echo JText::_('Collection Spotlight'); ?></span>
+		</a>
+	</li>
+</ul>
 
 <form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
-	<!-- <fieldset class="filters">
-<?php if (!$this->filters['trending']) { ?>
-		<span class="post count">
-			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>" has <strong><?php echo $this->rows->total(); ?></strong> posts
-		</span>
-<?php } else { ?>
-		<span class="post count">
-			<a href="#"><?php echo JText::_('Recent'); ?></a>
-		</span>
-		<span class="post count">
-			<a href="#"><?php echo JText::_('Popular'); ?></a>
-		</span>
-<?php } ?>
-<?php /*if ($this->rows && $this->config->get('access-create-bulletin')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&scope=posts/new&boards=' . $this->board->id); ?>">
-			<?php echo JText::_('New post'); ?>
-		</a>
-<?php }*/ ?>
-		<div class="clear"></div>
-	</fieldset> -->
 	<div class="main section">
 		<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
-	ximport('Hubzero_User_Profile');
-	ximport('Hubzero_User_Profile_Helper');
-
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
-
-		if ($item->get('state') == 2)
-		{
-			$item->set('type', 'deleted');
-		}
 ?>
 		<div class="post <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 				<?php
-					$type = $item->get('type');
-					if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-					{
-						$type = 'link';
-					}
-					/*if (strstr($type, ':'))
-					{
-						$type = substr($type, strrpos($type, ':'));
-					}*/
 					$view = new JView(
 						array(
 							'name'    => 'posts',
-							'layout'  => 'display_' . $type
+							'layout'  => 'display_' . $item->type()
 						)
 					);
 					$view->option     = $this->option;
@@ -191,12 +136,12 @@ if ($this->rows->total() > 0)
 					</div><!-- / .actions -->
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator('id') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator('name'))); ?>" class="img-link">
+						<img src="<?php echo $row->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>">
-							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator('id') . '&active=collections'); ?>">
+							<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 						</a> 
 						onto 
 						<a href="<?php echo JRoute::_($row->link()); ?>">

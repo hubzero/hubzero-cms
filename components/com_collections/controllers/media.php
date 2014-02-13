@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Collections controller class for media
  */
-class CollectionsControllerMedia extends Hubzero_Controller
+class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Download a file

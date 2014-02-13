@@ -47,6 +47,13 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	protected $_tbl_name = 'CollectionsTableItem';
 
 	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_collections.item.description';
+
+	/**
 	 * CoursesTableInstance
 	 * 
 	 * @var object
@@ -59,13 +66,6 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 * @var object
 	 */
 	private $_modifier = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	//private $_db = NULL;
 
 	/**
 	 * Container for properties
@@ -87,57 +87,6 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 * @var array
 	 */
 	private $_comments = null;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      integer $id  ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
-	 */
-	/*public function __construct($oid=null)
-	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new CollectionsTableItem($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-			if (isset($oid->reposts))
-			{
-				$this->set('reposts', $oid->reposts);
-			}
-			if (isset($oid->comments))
-			{
-				$this->set('comments', $oid->comments);
-			}
-			if (property_exists($oid, 'voted'))
-			{
-				$this->set('voted', ($oid->voted ? $oid->voted : 0));
-			}
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-			if (isset($oid['reposts']))
-			{
-				$this->set('reposts', $oid['reposts']);
-			}
-			if (isset($oid['comments']))
-			{
-				$this->set('comments', $oid['comments']);
-			}
-			if (isset($oid['voted']))
-			{
-				$this->set('voted', $oid['voted']);
-			}
-		}
-	}*/
 
 	/**
 	 * Returns a reference to a collections item instance
@@ -169,7 +118,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new CollectionsModelItem($oid);
+			$instances[$key] = new self($oid);
 		}
 
 		return $instances[$key];
@@ -214,13 +163,38 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	}
 
 	/**
+	 * Return a formatted timestamp
+	 * 
+	 * @param      string $as What format to return
+	 * @return     boolean
+	 */
+	public function created($as='')
+	{
+		switch (strtolower($as))
+		{
+			case 'date':
+				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+			break;
+
+			case 'time':
+				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+			break;
+
+			default:
+				return $this->get('created');
+			break;
+		}
+	}
+
+	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire user object
 	 *
-	 * @return     mixed
+	 * @param   string $property
+	 * @return  mixed
 	 */
 	public function creator($property=null)
 	{
@@ -237,13 +211,14 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get the modifier of this entry
 	 * 
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire user object
 	 *
-	 * @return     mixed
+	 * @param   string $property
+	 * @return  mixed
 	 */
 	public function modifier($property=null)
 	{
@@ -530,17 +505,6 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Bind data to the model's table object
-	 * 
-	 * @param      mixed $data Array or object
-	 * @return     boolean True on success, false if errors
-	 */
-	/*public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}*/
-
-	/**
 	 * Store content
 	 * Can be passed a boolean to turn off check() method
 	 *
@@ -666,6 +630,93 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 		$bt->tag_object($this->get('created_by'), $this->get('id'), $this->get('_tags', ''), 1, 1);
 
 		return true;
+	}
+
+	/**
+	 * Get the content of the entry
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function description($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+
+		switch ($as)
+		{
+			case 'parsed':
+				if (($content = $this->get('description.parsed')))
+				{
+					if ($shorten)
+					{
+						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+					}
+					return $content;
+				}
+
+				$config = array(
+					'option'   => $this->get('option', JRequest::getCmd('option')),
+					'scope'    => 'collections',
+					'pagename' => 'collections',
+					'pageid'   => 0,
+					'filepath' => '',
+					'domain'   => 'collection'
+				);
+
+				$content = stripslashes($this->get('description'));
+				$this->importPlugin('content')->trigger('onContentPrepare', array(
+					$this->_context,
+					&$this,
+					&$config
+				));
+
+				$this->set('description.parsed', $this->get('description'));
+				$this->set('description', $content);
+
+				return $this->description($as, $shorten);
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('description.parsed'));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('description'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+				}
+				return $content;
+			break;
+		}
+	}
+
+	/**
+	 * Get the item type
+	 * 
+	 * @return     string
+	 */
+	public function type()
+	{
+		if ($this->get('state') == 2)
+		{
+			$this->set('type', 'deleted');
+		}
+
+		$type = $this->get('type');
+		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+		{
+			$type = 'link';
+		}
+		return $type;
 	}
 }
 

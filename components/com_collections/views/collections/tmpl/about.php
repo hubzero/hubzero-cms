@@ -31,13 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import helper class
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Document');
-
-$database = JFactory::getDBO();
-$this->juser = JFactory::getUser();
-
 $base = 'index.php?option=' . $this->option;
 ?>
 <div id="content-header">

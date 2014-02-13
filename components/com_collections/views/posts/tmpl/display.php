@@ -31,54 +31,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_User_Profile_Helper');
-
 $item = $this->post->item();
 
-$database = JFactory::getDBO();
-//$this->juser = JFactory::getUser();
-
-ximport('Hubzero_Wiki_Parser');
-
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => 'collections',
-	'pagename' => 'collections',
-	'pageid'   => 0,
-	'filepath' => '',
-	'domain'   => 'collection'
-);
-
-$p = Hubzero_Wiki_Parser::getInstance();
-
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
-
-if ($item->get('state') == 2)
-{
-	$item->set('type', 'deleted');
-}
-$type = $item->get('type');
-if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-{
-	$type = 'link';
-}
 ?>
 
-<div class="post full <?php echo $type; ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&post=' . $this->post->get('id') . '&task=comment'); ?>" data-width="600" data-height="350">
+<div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&post=' . $this->post->get('id') . '&task=comment'); ?>" data-width="600" data-height="350">
 	<div class="content">
 		<div class="creator attribution clearfix">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($item->creator()->get('name')))); ?>" />
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator('name'))); ?>" class="img-link">
+				<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($item->creator('name')))); ?>" />
 			</a>
 			<p>
 				<?php echo JText::sprintf('COM_COLLECTIONS_USER_CREATEd_POST', '<a href="' . JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')) . '">' . $this->escape(stripslashes($item->creator()->get('name'))) . '</a>'); ?>
 				<br />
 				<span class="entry-date">
 					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
-					<span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+					<span class="time"><?php echo $item->created('time'); ?></span> 
 					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
-					<span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+					<span class="date"><?php echo $item->created('date'); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
@@ -87,15 +58,13 @@ if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'li
 		$view = new JView(
 			array(
 				'name'    => $this->controller,
-				'layout'  => 'display_' . $type
+				'layout'  => 'display_' . $item->type()
 			)
 		);
 		$view->actual     = true;
 		$view->option     = $this->option;
 		$view->params     = $this->config;
 		$view->row        = $this->post;
-		$view->parser     = $p;
-		$view->wikiconfig = $wikiconfig;
 		$view->display();
 		?>
 
@@ -120,12 +89,12 @@ if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'li
 		</div><!-- / .meta -->
 
 		<div class="convo attribution clearfix">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->post->creator(), 0); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->post->creator()->get('name')))); ?>" />
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>" class="img-link">
+				<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->post->creator('name')))); ?>" />
 			</a>
 			<p>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
-					<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>
 				</a> 
 				<?php echo JText::_('COM_COLLECTIONS_ONTO'); ?>
 				<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
@@ -186,7 +155,7 @@ if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'li
 					<br />
 					<span class="entry-date">
 						<?php 
-						$now = JFactory::getDate(); 
+						$now = JFactory::getDate()->toSql(); 
 						?>
 						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
 						<span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span> 
@@ -206,6 +175,8 @@ if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'li
 						<input type="hidden" name="post" value="<?php echo $this->post->get('id'); ?>" />
 						<input type="hidden" name="task" value="savecomment" />
 						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
+
+						<?php echo JHTML::_('form.token'); ?>
 
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
 						<input type="submit" class="comment-submit" value="<?php echo JText::_('COM_COLLECTIONS_SAVE'); ?>" />

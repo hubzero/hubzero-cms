@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for bulletin boards
  */
-class CollectionsControllerCollections extends Hubzero_Controller
+class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -54,66 +52,6 @@ class CollectionsControllerCollections extends Hubzero_Controller
 
 		parent::execute();
 	}
-
-	/**
-	 * Display a list of latest whiteboard entries
-	 * 
-	 * @return     string
-	 */
-	/*public function popularTask()
-	{
-		$this->view->setLayout('posts');
-
-		$this->view->config     = $this->config;
-
-		$this->_getStyles();
-
-		$this->_getScripts('assets/js/jquery.masonry');
-		$this->_getScripts('assets/js/jquery.infinitescroll');
-		$this->_getScripts('assets/js/' . $this->_name);
-
-		// Filters for returning results
-		$this->view->filters = array();
-		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
-		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['search'] = JRequest::getVar('search', '');
-		$this->view->filters['id']     = JRequest::getInt('id', 0);
-		$this->view->filters['user_id'] = $this->juser->get('id');
-		$this->view->filters['sort']   = 'i.positive';
-		$this->view->filters['state']   = 1;
-		//$this->view->filters['trending'] = true;
-		//$this->view->filters['board_id'] = 0;
-		if ($this->view->filters['id'])
-		{
-			$this->view->filters['object_type'] = 'site';
-		}
-		$this->view->filters['access'] = 0;
-
-		$this->view->collection = new CollectionsModelCollection();
-
-		$this->view->filters['count'] = true;
-		$this->view->total = $this->view->collection->posts($this->view->filters);
-
-		$this->view->filters['count'] = false;
-		$this->view->rows = $this->view->collection->posts($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
-			$this->view->filters['limit']
-		);
-
-		if ($this->getError()) 
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-		$this->view->display();
-	}*/
 
 	/**
 	 * Display a list of latest whiteboard entries
