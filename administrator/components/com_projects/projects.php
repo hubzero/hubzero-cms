@@ -80,10 +80,6 @@ if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
 			.'com_projects' . DS . 'tables' . DS . 'project.database.version.php');
 }
 
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Plugin_View');
-ximport('Hubzero_Group');
-
 $controllerName = JRequest::getCmd('controller', 'projects');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {

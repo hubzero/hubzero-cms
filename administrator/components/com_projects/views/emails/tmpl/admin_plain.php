@@ -25,18 +25,32 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%m/%d/%Y';
+$dateFormat = '%b %d, %Y';
 $tz = null;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'm/d/Y';
+	$dateFormat = 'M d, Y';
 	$tz = false;
 }
 
-if (substr($this->url,0,1) == '/') {
-	$this->url = substr($this->url,1,strlen($this->url));
+$juri 	 = JURI::getInstance();
+$jconfig = JFactory::getConfig();
+$base 	 = rtrim($juri->base(), DS);
+if (substr($base, -13) == 'administrator')
+{
+	$base 		= substr($base, 0, strlen($base)-13);
+	$sef 		= 'projects/' . $this->project->alias;
+	$sef_browse = 'projects/browse';
 }
+else
+{
+	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef_browse = JRoute::_('index.php?option=' . $this->option . a . 'task=browse');
+}
+
+$link = rtrim($base, DS) . DS . trim($sef, DS);
+$browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
 
 $message  = $this->subject."\n";
 $message .= '-------------------------------'."\n";
@@ -44,8 +58,18 @@ $message .= JText::_('COM_PROJECTS_PROJECT').': '.$this->project->title.' ('.$th
 $message .= ucfirst(JText::_('COM_PROJECTS_CREATED')).' '.JHTML::_('date', $this->project->created, $dateFormat, $tz).' '.JText::_('COM_PROJECTS_BY').' ';
 $message .= $this->project->owned_by_group ? $this->nativegroup->cn.' '.JText::_('COM_PROJECTS_GROUP') : $this->project->fullname;
 $message .= "\n";
-$message .= JText::_('COM_PROJECTS_EMAIL_URL').': '.$this->url."\n";
+$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $link."\n";
 $message .= '-------------------------------'."\n";
+
+// Append a message
+if ($this->message)
+{
+	$message .= JText::_('COM_PROJECTS_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
+	$message .= $this->message ."\n";
+}
+
+$message = str_replace('<br />', '', $message);
+$message = preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo $message;
 ?>

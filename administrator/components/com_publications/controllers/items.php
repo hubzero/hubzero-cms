@@ -544,6 +544,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$description 	= stripslashes($description);
 		$release_notes 	= stripslashes(trim(JRequest::getVar( 'release_notes', '', 'post' )));
 		$metadata 		= '';
+		$activity 		= '';
 					
 		// Get metadata
 		if (isset($_POST['nbtag']))
@@ -736,7 +737,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 				// Append comment to activity
 				if ($message && $aid)
 				{
-					require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_projects'.DS.'tables'.DS.'project.comment.php');
+					require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+						. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
 					$objC = new ProjectComment( $this->database );
 					
 					$comment = Hubzero_View_Helper_Html::shortenText($message, 250, 0);
@@ -752,14 +754,16 @@ class PublicationsControllerItems extends Hubzero_Controller
 					$objC->store();
 					
 					// Get new entry ID
-					if(!$objC->id) {
+					if (!$objC->id) {
 						$objC->checkin();
 					}
 					$objAA = new ProjectActivity ( $this->database );
-					if( $objC->id ) {
+					if ( $objC->id ) {
 						$what = JText::_('COM_PROJECTS_AN_ACTIVITY');
 						$curl = '#tr_'.$aid; // same-page link
-						$caid = $objAA->recordActivity( $pub->project_id, $this->juser->get('id'), JText::_('COM_PROJECTS_COMMENTED').' '.JText::_('COM_PROJECTS_ON').' '.$what, $objC->id, $what, $curl, 'quote', 0, 1 );
+						$caid = $objAA->recordActivity( $pub->project_id, $this->juser->get('id'),
+						 	JText::_('COM_PROJECTS_COMMENTED') . ' ' . JText::_('COM_PROJECTS_ON')
+							. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1 );
 						
 						// Store activity ID
 						if($caid) {
@@ -803,14 +807,18 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
 	
 		// Get ids of publication authors with accounts
-		$notify = $pa->getAuthors($row->id, 1, 1, 1);
+		$notify = $pa->getAuthors($row->id, 1, 1, 1, true);
 		$notify[] = $row->created_by;
 		$notify = array_unique($notify);
-	
+
 		// Send email
 		if ($sendmail && !$this->getError()) 
 		{
-			$this->_emailContributors($row, $subject, $message, $notify, $action);	
+			// Get pub project
+			$project = new Project($this->database);
+			$project->load($objP->project_id);
+			
+			$this->_emailContributors($row, $project, $subject, $message, $notify, $action);	
 		}
 		
 		// Append any errors
@@ -877,11 +885,16 @@ class PublicationsControllerItems extends Hubzero_Controller
 	 * Sends a message to authors (or creator) of a publication
 	 * 
 	 * @param      object $row      Publication
-	 * @param      object $database JDatabase
+	 * @param      object $project  Project
 	 * @return     void
 	 */
-	private function _emailContributors($row, $subject = '', $message = '', $authors = array(), $action = 'publish')
+	private function _emailContributors($row, $project, $subject = '', $message = '', $authors = array(), $action = 'publish')
 	{
+		if (!$row || !$project)
+		{
+			return false;
+		}
+		
 		// Get pub authors' ids
 		if (empty($authors)) 
 		{
@@ -909,35 +922,36 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('PUBLICATIONS');
 			
 			$subject = $subject ? $subject : JText::_('COM_PUBLICATIONS_STATUS_UPDATE');
-
-			$juri = JURI::getInstance();
-			$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->publication_id).'?v='.$row->version_number;
-			if (substr($sef, 0, 1) == '/')
-			{
-				$sef = substr($sef, 1, strlen($sef));
-			}
 			
 			// Get message body
-			$eview = new JView( array('name'=>'emails' ) );
-			$eview->option = $this->_option;
-			$eview->subject = $subject;
-			$eview->action = $action;
-			$eview->hubShortName = $jconfig->getValue('config.sitename');
-			$eview->row = $row;
-			$livesite = $jconfig->getValue('config.live_site');
-			$eview->url = $livesite.DS.'publications'.DS.$row->publication_id.DS.'?v='.$row->version_number;
+			$eview 					= new JView( array('name'=>'emails', 'layout' => 'admin_plain' ) );
+			$eview->option 			= $this->_option;
+			$eview->subject 		= $subject;
+			$eview->action 			= $action;
+			$eview->row 			= $row;
+			$eview->message			= $message;
+			$eview->project			= $project;
+			
+			$body = array();
+			$body['plaintext'] 	= $eview->loadTemplate();
+			$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
 
-			$body = $eview->loadTemplate();
-			if ($message) 
-			{
-				$body.=  JText::_('COM_PUBLICATION_MSG_MESSAGE_FROM_ADMIN').': '."\n".$message;
-			}	
-			$body = str_replace("\n\n", "\n", $body);
+			// HTML email
+			$eview->setLayout('admin_html');
+			$body['multipart'] = $eview->loadTemplate();
+			$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 			// Send message
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('publication_status_changed', $subject, $body, $from, $authors, $this->_option)))
+			if (!$dispatcher->trigger('onSendMessage', array(
+				'publication_status_changed', 
+				$subject, 
+				$body, 
+				$from, 
+				$authors, 
+				$this->_option)
+			))
 			{
 				$this->setError(JText::_('Failed to message authors.'));
 			}

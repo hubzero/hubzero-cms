@@ -463,7 +463,7 @@ class PublicationHelper extends JObject
 	 */
 	public function getThumb ($pid = 0, $versionid = 0, $config, $force = false, $cat = '')
 	{
-		// Get publication firectory path
+		// Get publication directory path
 		$webpath = $config->get('webpath', 'site/publications');
 		$path = $this->buildPath($pid, $versionid, $webpath);
 		

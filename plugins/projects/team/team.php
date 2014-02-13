@@ -573,7 +573,8 @@ class plgProjectsTeam extends JPlugin
 						if ($left) 
 						{
 							$note .= ' '.JText::_('COM_PROJECTS_AND').' '.$left.' '.JText::_('COM_PROJECTS_MORE').' ';
-							$note .= $left == 1 ? JText::_('COM_PROJECTS_ACTIVITY_PERSON') : JText::_('COM_PROJECTS_ACTIVITY_PERSONS');
+							$note .= $left == 1 ? JText::_('COM_PROJECTS_ACTIVITY_PERSON') 
+								: JText::_('COM_PROJECTS_ACTIVITY_PERSONS');
 						}	
 						break;
 					}
@@ -978,15 +979,16 @@ class plgProjectsTeam extends JPlugin
 		// Message body for HUB user
 		$eview = new Hubzero_Plugin_View(
 			array(
-				'folder'=>'projects',
-				'element'=>'team',
-				'name'=>'emails',
-				'layout'=>'invite'
+				'folder'	=>'projects',
+				'element'	=>'team',
+				'name'		=>'emails',
+				'layout'	=>'invite_plain'
 			)
 		);	
 		
 		// Get profile of author group
-		if ($this->_project->owned_by_group) {			
+		if ($this->_project->owned_by_group) 
+		{			
 			$eview->nativegroup = Hubzero_Group::getInstance( $this->_project->owned_by_group);
 		}
 		
@@ -1001,8 +1003,15 @@ class plgProjectsTeam extends JPlugin
 		$eview->email 			= $email;
 		$eview->role 			= $role;
 		$eview->pub 			= isset($pub) ? $pub : '';
-		$message 				= $eview->loadTemplate();
-		$message 				= str_replace("\n", "\r\n", $message);
+		$eview->delimiter  		= '';
+		
+		$message['plaintext'] 	= $eview->loadTemplate();
+		$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
+		
+		// HTML email
+		$eview->setLayout('invite_html');
+		$message['multipart'] 	= $eview->loadTemplate();
+		$message['multipart'] 	= str_replace("\n", "\r\n", $message['multipart']);
 		
 		if ($uid) 
 		{
@@ -1015,8 +1024,10 @@ class plgProjectsTeam extends JPlugin
 				return true;
 			}
 		}
-		else {			
-			if (ProjectsHtml::email($email, $jconfig->getValue('config.sitename').': '.$subject, $message, $from)) {
+		else 
+		{			
+			if (ProjectsHtml::email($email, $jconfig->getValue('config.sitename').': '.$subject, $message, $from)) 
+			{
 				return true;
 			}
 		}

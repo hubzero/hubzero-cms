@@ -1029,16 +1029,7 @@ class plgProjectsPublications extends JPlugin
 				}
 				break;
 				
-			case 'citations':
-			
-				/*
-				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-									. DS . 'com_publications' . DS . 'tables' . DS . 'citation.php' );
-				
-				$pCitation = new PublicationCitation( $this->_database);					
-				$view->citations = $pCitation->getRecords($row->publication_id);
-				*/
-				
+			case 'citations':				
 				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 					. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
@@ -2423,7 +2414,7 @@ class plgProjectsPublications extends JPlugin
 					$this->_project, 
 					$managers, 
 					JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STARTED'),
-					'projects_admin_message', 
+					'projects_admin_notice', 
 					'publication',
 					$profile->get('name') . ' ' 
 						. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
@@ -2892,7 +2883,7 @@ class plgProjectsPublications extends JPlugin
 						$this->_project, 
 						$managers, 
 						JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
-						'projects_admin_message', 
+						'projects_admin_notice', 
 						'publication',
 						$profile->get('name') . ' ' . html_entity_decode($action) . ' - ' . $juri->base() 
 							. $sef . '/?version=' . $row->version_number

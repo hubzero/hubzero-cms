@@ -706,5 +706,81 @@ class PublicationsHtml
 		$pee = trim($pee);
 		return $pee;
 	}	
+	
+	/**
+	 * Get project thumbnail
+	 * 
+	 * @param      int 		$pid
+	 * @param      int 		$versionid
+	 * @param      array 	$config
+	 * @return     string HTML
+	 */
+	public static function getThumbSrc( $pid, $versionid, $config, $cat = '' )
+	{		
+		// Get publication directory path
+		$webpath = $config->get('webpath', 'site/publications');
+		$path 	 = PublicationsHtml::buildPath($pid, $versionid, $webpath);
+		
+		if (file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
+		{
+			return $path . DS . 'thumb.png';
+		}
+		else
+		{
+			// Get default picture
+			$default = $cat == 'tools' 
+					? $config->get('toolpic', '/components/com_publications/assets/img/tool_thumb.gif')
+					: $config->get('defaultpic', '/components/com_publications/assets/img/resource_thumb.gif');
+			
+			return file_exists( JPATH_ROOT . $default) ? $default : NULL;
+		}
+	}
+	
+	/**
+	 * Create a thumbnail name
+	 * 
+	 * @param      string $image Image name
+	 * @param      string $tn    Thumbnail prefix
+	 * @param      string $ext  
+	 * @return     string
+	 */
+	public static function createThumbName( $image=null, $tn='_thumb', $ext = '' )
+	{
+		if (!$image) 
+		{
+			$this->setError( JText::_('No image set.') );
+			return false;
+		}
+		
+		$image = explode('.',$image);
+		$n = count($image);
+		
+		if ($n > 1) 
+		{
+			$image[$n-2] .= $tn;
+			$end = array_pop($image);
+			if ($ext) 
+			{
+				$image[] = $ext;
+			}
+			else 
+			{
+				$image[] = $end;
+			}
+			
+			$thumb = implode('.',$image);
+		}
+		else 
+		{
+			// No extension
+			$thumb = $image[0];
+			$thumb .= $tn;
+			if ($ext) 
+			{
+				$thumb .= '.'.$ext;
+			}
+		}	
+		return $thumb;
+	}
 }
 

@@ -831,6 +831,9 @@ class ProjectsHtml
 	
 		if ($picname) 
 		{
+			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS 
+				. 'helpers' . DS . 'imghandler.php' );
+			
 			$ih = new ProjectsImgHandler();
 			$thumb = $ih->createThumbName($picname);
 			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  '';
@@ -1393,26 +1396,32 @@ class ProjectsHtml
 	 * 
 	 * @param      string $email
 	 * @param      string $subject
-	 * @param      string $message
+	 * @param      string $body
 	 * @param      array $from
 	 * @return     void
 	 */	
-	public static function email($email, $subject, $message, $from) 
+	public static function email($email, $subject, $body, $from) 
 	{
 		if ($from) 
 		{
-			$args = "-f '" . $from['email'] . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			$headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $from['name'] ."\n";
-			if (mail($email, $subject, $message, $headers, $args)) 
+			$body_plain = is_array($body) && isset($body['plaintext']) ? $body['plaintext'] : $body;
+			$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : NULL;
+			
+			$message = new \Hubzero\Mail\Message();
+			$message->setSubject($subject)
+				->addTo($email, $email)
+				->addFrom($from['email'], $from['name'])
+				->setPriority('normal');
+
+			$message->addPart($body_plain, 'text/plain');
+			
+			if ($body_html)	
 			{
-				return true;
+				$message->addPart($body_html, 'text/html');
 			}
+			
+			$message->send();
+			
 		}
 		return false;
 	}

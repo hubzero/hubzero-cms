@@ -110,7 +110,8 @@ function PublicationsParseRoute($segments)
 		
 	if (is_numeric($segments[0])) 
 	{
-		$vars['id'] = $segments[0];
+		$vars['task'] = 'view';
+		$vars['id']   = $segments[0];
 	} 
 	elseif (in_array($segments[0], $tasks)) 
 	{

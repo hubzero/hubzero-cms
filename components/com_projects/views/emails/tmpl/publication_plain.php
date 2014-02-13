@@ -25,22 +25,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%m/%d/%Y';
+$dateFormat = '%b %d, %Y';
 $tz = null;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'm/d/Y';
+	$dateFormat = 'M d, Y';
 	$tz = false;
 }
 
-$juri = JURI::getInstance();
-
-$sef = JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias);
-if (substr($sef,0,1) == '/') 
+$juri 	 = JURI::getInstance();
+$jconfig = JFactory::getConfig();
+$base 	 = rtrim($juri->base(), DS);
+if (substr($base, -13) == 'administrator')
 {
-	$sef = substr($sef,1,strlen($sef));
+	$base 		= substr($base, 0, strlen($base)-13);
+	$sef 		= 'projects/' . $this->project->alias;
 }
+else
+{
+	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+}
+
+$link = rtrim($base, DS) . DS . trim($sef, DS);
 
 $message  = JText::_('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') ."\n";
 $message .= '-------------------------------' ."\n";
@@ -61,7 +68,7 @@ $message .= "\n";
 
 if ($this->project->private == 0)
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $juri->base() . $sef . "\n";
+	$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
 }
 $message .= '-------------------------------' ."\n\n";
 
@@ -72,5 +79,9 @@ if ($this->message)
 	$message .= '-------------------------------' ."\n\n";
 }
 
+$message = str_replace('<br />', '', $message);
+$message = preg_replace('/\n{3,}/', "\n\n", $message);
+
 echo $message;
+
 ?>

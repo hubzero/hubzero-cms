@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_Controller');
-ximport('Hubzero_Environment');
-
 /**
  * Primary component controller (extends Hubzero_Controller)
  */
@@ -69,8 +66,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$this->_longname = JText::_('COMPONENT_LONG_NAME');
-				
 		// Publishing enabled?
 		$this->_publishing = 
 			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
@@ -473,7 +468,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 */
 	protected function _login() 
 	{		
-		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option 
+			. '&task=' . $this->_task), 'server');
 		
 		// Fix for weird bug refusing to redirect to /files
 		if (substr($rtrn, -6, 6) == '/files')
@@ -1490,7 +1486,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					if ($ajax)
 					{
 						// Plugin not active in this project					
-						echo '<p class="error">' . JText::_('We are sorry, this content cannot load in this project.') . '</p>';
+						echo '<p class="error">' . JText::_('COM_PROJECTS_ERROR_CONTENT_CANNOT_LOAD') . '</p>';
 						return;
 					}
 					
@@ -2352,8 +2348,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 							$objAA = new ProjectActivity ( $this->database );
 							$objAA->recordActivity( $pid, $this->juser->get('id'),
 								JText::_('COM_PROJECTS_PROJECT_STARTED', 
-								$pid, '', '', 'project'));							
-							$this->_notifyTeam($pid, 'invite');
+								$pid, '', '', 'project'));
+								
+							// Send out emails							
+							$this->_notifyTeam($pid);
 						}								
 					}						
 				}
@@ -3047,7 +3045,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						$this->setNotification(JText::_('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG') );
 
 						// Send out emails to team members
-						$this->_notifyTeam($obj->id, 'invite');
+						$this->_notifyTeam($obj->id);
 					}
 					if ($reviewer == 'sponsored')
 					{
@@ -3668,7 +3666,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Convert
 		if ($raw) 
 		{
-			ximport('Hubzero_Wiki_Parser');
 			$p = Hubzero_Wiki_Parser::getInstance();
 			
 			//import the wiki parser
@@ -3689,122 +3686,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}		
 	}
 
-	/**
-	 * Notify project team
-	 * 
-	 * @param  int $pid
-	 * @param  string $action
-	 * @param  int $managers_only
-	 * @return void
-	 */			
-	protected function _notifyTeam($pid = '', $action = '', $managers_only = 0)
-	{
-		// Is messaging turned on?
-		if ($this->config->get('messaging') != 1)
-		{
-			return false;
-		}
-		
-		// Which notifications are allowed?
-		$actions = array('invite');		
-		if (!$pid || !$action || !in_array($action, $actions))
-		{
-			return false;
-		}
-		
-		// Get project
-		$obj 		= new Project( $this->database );
-		$objO 		= new ProjectOwner( $this->database );
-		$project 	= $obj->getProject($pid, $this->juser->get('id'));
-			
-		// Set up email config
-		$jconfig 		= JFactory::getConfig();
-		$from 			= array();
-		$from['name']  	= $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_PROJECTS');
-		$from['email'] 	= $jconfig->getValue('config.mailfrom');
-		
-		// Get team/managers
-		$filters = array( 'select'=> 'o.userid, o.invited_code, o.invited_email, o.role ', 'sortby' => 'status' );
-		if ($managers_only)
-		{
-			$filters['role'] = 1;
-		}
-		$team = $objO->getOwners( $pid, $filters );
-		
-		// Must have addressees
-		if (empty($team))
-		{
-			return false;
-		} 
-		
-		// Email subject
-		switch ($action) 
-		{
-			case 'invite':   
-			default:	 
-				$subject_active  = JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $project->alias; 
-				$subject_pending = JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $project->alias; 		  
-				break;			
-		}
-						
-		// Message body
-		$eview 					= new JView( array('name'=>'emails', 'layout'=> $action ) );
-		$eview->option 			= $this->_option;
-		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
-		$eview->project 		= $project;
-		$eview->goto 			= 'alias=' . $project->alias;
-		$eview->user 			= $this->juser->get('id');
-
-		// Get profile of author group
-		if ($project->owned_by_group) 
-		{
-			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );
-		}
-		
-		// Send out message/email
-		foreach ($team as $member) 
-		{
-			$eview->role = $member->role;
-			if ($member->userid && $member->userid != $this->juser->get('id') ) 
-			{
-				$eview->uid = $member->userid;	
-				$message 	= $eview->loadTemplate();
-				$message 	= str_replace("\n", "\r\n", $message);	
-				
-				// Creator
-				if ($member->userid == $project->created_by_user && $action == 'invite')
-				{
-					$subject_active  = JText::_('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED') 
-					. ' ' . $project->alias . '!'; 
-				}
-
-				// Send HUB message
-				JPluginHelper::importPlugin( 'xmessage' );
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger( 'onSendMessage', 
-					array( 
-						'projects_member_added', 
-						$subject_active, 
-						$message, 
-						$from, 
-						array($member->userid), 
-						$this->_option 
-					)
-				);								
-			}
-			elseif ($member->invited_email && $member->invited_code) 
-			{
-				$eview->uid 	= 0;
-				$eview->code 	= $member->invited_code;
-				$eview->email 	= $member->invited_email;
-				$message 		= $eview->loadTemplate();
-				$message 		= str_replace("\n", "\r\n", $message);
-				ProjectsHtml::email($member->invited_email, $jconfig->getValue('config.sitename') 
-					. ': ' . $subject_pending, $message, $from);
-			}
-		}						
-	}
-	
 	/**
 	 * Update activity counts (AJAX)
 	 * 
@@ -4005,5 +3886,128 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$modules .= $view->loadTemplate();	
 		
 		return $modules;
+	}
+	
+	/**
+	 * Notify project team
+	 * 
+	 * @param  int $pid
+	 * @param  string $action
+	 * @param  int $managers_only
+	 * @return void
+	 */			
+	protected function _notifyTeam($pid = '', $managers_only = 0)
+	{
+		// Is messaging turned on?
+		if ($this->config->get('messaging') != 1)
+		{
+			return false;
+		}
+		
+		// Check required
+		if (!$pid)
+		{
+			return false;
+		}
+		
+		$message = array();
+		
+		// Get project
+		$obj 		= new Project( $this->database );
+		$objO 		= new ProjectOwner( $this->database );
+		$project 	= $obj->getProject($pid, $this->juser->get('id'));
+			
+		// Set up email config
+		$jconfig 		= JFactory::getConfig();
+		$from 			= array();
+		$from['name']  	= $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_PROJECTS');
+		$from['email'] 	= $jconfig->getValue('config.mailfrom');
+		
+		// Get team/managers
+		$filters = array( 'select'=> 'o.userid, o.invited_code, o.invited_email, o.role ', 'sortby' => 'status' );
+		if ($managers_only)
+		{
+			$filters['role'] = 1;
+		}
+		$team = $objO->getOwners( $pid, $filters );
+		
+		// Must have addressees
+		if (empty($team))
+		{
+			return false;
+		} 
+		
+		$subject_active  = JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $project->alias; 
+		$subject_pending = JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $project->alias;
+						
+		// Message body
+		$eview 					= new JView( array('name'=>'emails', 'layout'=> 'invite_plain' ) );
+		$eview->option 			= $this->_option;
+		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
+		$eview->project 		= $project;
+		$eview->goto 			= 'alias=' . $project->alias;
+		$eview->user 			= $this->juser->get('id');
+		$eview->delimiter  		= '';
+
+		// Get profile of author group
+		if ($project->owned_by_group) 
+		{
+			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );
+		}
+		
+		// Send out message/email
+		foreach ($team as $member) 
+		{
+			$eview->role = $member->role;
+			if ($member->userid && $member->userid != $this->juser->get('id') ) 
+			{
+				$eview->uid = $member->userid;	
+				$message['plaintext'] 	= $eview->loadTemplate();
+				$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
+				
+				// HTML email
+				$eview->setLayout('invite_html');
+				$message['multipart'] = $eview->loadTemplate();
+				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);	
+				
+				// Creator
+				if ($member->userid == $project->created_by_user)
+				{
+					$subject_active  = JText::_('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED') 
+					. ' ' . $project->alias . '!'; 
+				}
+
+				// Send HUB message
+				JPluginHelper::importPlugin( 'xmessage' );
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger( 'onSendMessage', 
+					array( 
+						'projects_member_added', 
+						$subject_active, 
+						$message, 
+						$from, 
+						array($member->userid), 
+						$this->_option 
+					)
+				);								
+			}
+			elseif ($member->invited_email && $member->invited_code) 
+			{
+				$eview->uid 	= 0;
+				$eview->code 	= $member->invited_code;
+				$eview->email 	= $member->invited_email;
+				
+				$message['plaintext'] 	= $eview->loadTemplate();
+				$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
+				
+				// HTML email
+				$eview->setLayout('invite_html');
+				$message['multipart'] = $eview->loadTemplate();
+				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+				
+				ProjectsHtml::email($member->invited_email, $jconfig->getValue('config.sitename') 
+					. ': ' . $subject_pending, $message, $from);
+			}
+		}						
 	}
 }

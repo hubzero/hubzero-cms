@@ -467,7 +467,7 @@ class ProjectsHelper extends JObject {
 	 * @param      string 	$reviewer
 	 * @return     void
 	 */	
-	public function sendHUBMessage( 
+	public static function sendHUBMessage( 
 		$option, $config, $project, 
 		$addressees = array(), $subject = '', 
 		$component = '', $layout = '', 
@@ -490,8 +490,11 @@ class ProjectsHelper extends JObject {
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('COM_PROJECTS');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 		
+		// Html email
+		$from['multipart'] = md5(date('U'));
+		
 		// Get message body
-		$eview 					= new JView( array('name'=>'emails', 'layout'=> $layout ) );
+		$eview 					= new JView( array('name'=>'emails', 'layout'=> $layout . '_plain' ) );
 		$eview->option 			= $option;
 		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
 		$eview->project 		= $project;
@@ -505,8 +508,14 @@ class ProjectsHelper extends JObject {
 		{
 			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );	
 		}
-		$body = $eview->loadTemplate();
-		$body = str_replace("\n", "\r\n", $body);
+		$body = array();
+		$body['plaintext'] 	= $eview->loadTemplate();
+		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
+
+		// HTML email
+		$eview->setLayout($layout . '_html');
+		$body['multipart'] = $eview->loadTemplate();
+		$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 		// Send HUB message
 		JPluginHelper::importPlugin( 'xmessage' );
