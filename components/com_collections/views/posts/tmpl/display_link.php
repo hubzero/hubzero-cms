@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $item = $this->row->item();
 ?>
 		<p class="link">
-			<a href="<?php echo stripslashes($item->get('url')); ?>">
+			<a href="<?php echo stripslashes($item->get('url')); ?>" rel="external">
 				<?php echo ($item->get('title')) ? $this->escape(stripslashes($item->get('title'))) : $this->escape(stripslashes($item->get('url'))); ?>
 			</a>
 		</p>

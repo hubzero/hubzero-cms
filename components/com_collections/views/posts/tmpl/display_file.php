@@ -104,7 +104,7 @@ if ($assets->total() > 0)
 		{
 ?>
 				<li class="type-<?php echo $asset->get('type'); ?>">
-					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>">
+					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" <?php echo ($asset->get('type') == 'link') ? ' rel="external"' : ''; ?>>
 						<?php echo $asset->get('filename'); ?>
 					</a>
 					<span class="file-meta">
