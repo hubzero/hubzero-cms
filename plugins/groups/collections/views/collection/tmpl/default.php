@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
@@ -91,50 +90,19 @@ if ($this->rows->total() > 0)
 	?>
 	<div id="posts">
 	<?php
-	ximport('Hubzero_User_Profile');
-	ximport('Hubzero_User_Profile_Helper');
-
-	ximport('Hubzero_Wiki_Parser');
-
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => 'collections',
-		'pagename' => 'collections',
-		'pageid'   => 0,
-		'filepath' => '',
-		'domain'   => 'collection'
-	);
-
-	$p = Hubzero_Wiki_Parser::getInstance();
-
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
-
-		if ($item->get('state') == 2)
-		{
-			$item->set('type', 'deleted');
-		}
-		$type = $item->get('type');
-		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-		{
-			$type = 'link';
-		}
 ?>
-		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
+		<div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
-				/*$type = $item->get('type');
-				if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-				{
-					$type = 'link';
-				}*/
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'groups',
 						'element' => $this->name,
 						'name'    => 'post',
-						'layout'  => 'default_' . $type
+						'layout'  => 'default_' . $item->type()
 					)
 				);
 				$view->name       = $this->name;
@@ -142,9 +110,6 @@ if ($this->rows->total() > 0)
 				$view->group      = $this->group;
 				$view->params     = $this->params;
 				$view->row        = $row;
-				//$view->board      = $this->collection;
-				$view->parser     = $p;
-				$view->wikiconfig = $wikiconfig;
 				$view->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
@@ -196,7 +161,7 @@ if ($this->rows->total() > 0)
 			<?php /*if ($row->original() || $item->get('created_by') != $this->juser->get('id')) { ?>
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
+						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator('name'))); ?>" />
 					</a>
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
@@ -205,20 +170,22 @@ if ($this->rows->total() > 0)
 						posted 
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> 
+							<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span> 
+							<span class="entry-date-on">on</span> 
+							<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
 			<?php }*/ ?>
 			<?php //if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator('name'))); ?>" class="img-link">
+						<img src="<?php echo $row->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator('name'))); ?>" />
 					</a>
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
-							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+							<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 						</a> 
 						onto 
 						<a href="<?php echo JRoute::_($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
@@ -226,8 +193,10 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> 
+							<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
+							<span class="entry-date-on">on</span> 
+							<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -249,10 +218,6 @@ if ($this->rows->total() > 0)
 					<li><?php echo JText::_('Done!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
-			<!-- <div class="questions">
-				<p><strong>What is the "Collect" button for?</strong></p>
-				<p>This is how you can add other content on the site to a collection. You can collect wiki pages, resources, and more. You can even collect other collections!<p>
-			</div><!- / .post-type -->
 		<?php } else { ?>
 			<div class="instructions">
 				<p><?php echo JText::_('No posts available for this collection.'); ?></p>

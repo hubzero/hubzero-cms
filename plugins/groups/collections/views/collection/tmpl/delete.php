@@ -41,7 +41,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<fieldset>
 			<legend><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_HEADER'); ?></legend>
 
-			<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_WARNING', stripslashes($this->collection->get('title'))); ?></p>
+			<p class="warning">
+				<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_WARNING', stripslashes($this->collection->get('title'))); ?>
+			</p>
 
 			<label for="confirmdel">
 				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
@@ -57,6 +59,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<input type="hidden" name="action" value="deletecollection" />
 		<input type="hidden" name="board" value="<?php echo $this->collection->get('id'); ?>" />
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
+
+		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />

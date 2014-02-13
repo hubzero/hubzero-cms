@@ -142,12 +142,8 @@ if ($assets->total() > 0)
 	}
 }
 ?>
-<?php if ($item->get('description') || $this->row->get('description')) { ?>
+<?php if ($content = $item->description('parsed')) { ?>
 		<div class="description">
-			<?php 
-			$content = ($this->row->get('description')) ? $this->row->get('description') : $item->get('description'); 
-			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
-			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); 
-			?>
+			<?php echo $content; ?>
 		</div>
 <?php } ?>

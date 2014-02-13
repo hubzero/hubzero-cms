@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
@@ -96,37 +95,11 @@ if ($this->rows->total() > 0)
 	?>
 	<div id="posts">
 	<?php
-	ximport('Hubzero_User_Profile');
-	ximport('Hubzero_User_Profile_Helper');
-
-	ximport('Hubzero_Wiki_Parser');
-
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => 'collections',
-		'pagename' => 'collections',
-		'pageid'   => 0,
-		'filepath' => '',
-		'domain'   => 'posts'
-	);
-
-	$p = Hubzero_Wiki_Parser::getInstance();
-
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
-
-		if ($item->get('state') == 2)
-		{
-			$item->set('type', 'deleted');
-		}
-		$type = $item->get('type');
-		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-		{
-			$type = 'link';
-		}
 ?>
-		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
+		<div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
 				$view = new Hubzero_Plugin_View(
@@ -134,7 +107,7 @@ if ($this->rows->total() > 0)
 						'folder'  => 'groups',
 						'element' => $this->name,
 						'name'    => 'post',
-						'layout'  => 'default_' . $type
+						'layout'  => 'default_' . $item->type()
 					)
 				);
 				$view->name       = $this->name;
@@ -142,9 +115,6 @@ if ($this->rows->total() > 0)
 				$view->group      = $this->group;
 				$view->params     = $this->params;
 				$view->row        = $row;
-				//$view->board      = $this->collection;
-				$view->parser     = $p;
-				$view->wikiconfig = $wikiconfig;
 				$view->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
@@ -217,12 +187,12 @@ if ($this->rows->total() > 0)
 			<?php } ?>
 			<?php if (!$row->original()) {*/ ?>
 				<div class="convo attribution reposted clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator('name'))); ?>" class="img-link">
+						<img src="<?php echo $row->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator('name'))); ?>" />
 					</a>
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
-							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+							<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 						</a> 
 						onto 
 						<a href="<?php echo JRoute::_($row->link()); ?>">
@@ -230,8 +200,8 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
+							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date') ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->

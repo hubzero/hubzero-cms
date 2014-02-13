@@ -56,8 +56,6 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
-$editor = Hubzero_Wiki_Editor::getInstance();
-
 $dir = $item->get('id');
 if (!$dir)
 {
@@ -97,7 +95,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 					</label>
 		<?php } ?>
 				</div><!-- / .col span-half -->
-				<div class="col span-half">
+				<div class="col span-half omega">
 		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 					<div id="link-adder" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 						<noscript>
@@ -175,11 +173,9 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 				<label for="field_description">
 					<?php echo JText::_('Description'); ?> <!-- <span class="optional">optional</span> -->
 					<?php if ($this->entry->get('original')) { ?>
-						<?php echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($item->get('description'))), 'minimal no-footer', '50', '5'); ?>
-						<!-- <textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($item->get('description'))); ?></textarea> -->
+						<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
 					<?php } else { ?>
-						<?php echo $editor->display('post[description]', 'field_description', $this->escape(stripslashes($this->entry->get('description'))), 'minimal no-footer', '50', '5'); ?>
-						<!-- <textarea name="post[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea> -->
+						<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
 					<?php } ?>
 				</label>
 			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
@@ -238,7 +234,9 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 	<input type="hidden" name="action" value="save" />
-		
+
+	<?php echo JHTML::_('form.token'); ?>
+
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<?php if ($item->get('id')) { ?>

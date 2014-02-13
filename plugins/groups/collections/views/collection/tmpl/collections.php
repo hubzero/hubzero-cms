@@ -97,20 +97,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <?php if ($this->rows->total() > 0) { ?>
 	<div id="posts">
 	<?php 
-	ximport('Hubzero_Wiki_Parser');
-
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => 'collections',
-		'pagename' => 'collections',
-		'pageid'   => 0,
-		'filepath' => '',
-		'domain'   => 'collection'
-	);
-
-	$p = Hubzero_Wiki_Parser::getInstance();
-
-	foreach ($this->rows as $row) { ?>
+	foreach ($this->rows as $row) 
+	{
+		?>
 		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
@@ -124,8 +113,6 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						);
 						$view->row        = $row;
 						$view->collection = $row;
-						$view->parser     = $p;
-						$view->wikiconfig = $wikiconfig;
 						$view->display();
 				?>
 				<div class="meta">

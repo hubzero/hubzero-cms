@@ -104,8 +104,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->model = new CollectionsModel('group', $this->group->get('gidNumber'));
 
 		//get the plugins params
-		$db = JFactory::getDBO();
-		$p = new Hubzero\Plugin\Params($db);
+		$p = new \Hubzero\Plugin\Params($this->database);
 		$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 		$this->members = $group->get('members');
 		$this->authorized = $authorized;
@@ -989,6 +988,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _save()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Login check
 		if ($this->juser->get('guest')) 
 		{
@@ -1151,6 +1153,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$collection_id = JRequest::getInt('collection_id', 0);
 		if (!$collection_id)
 		{
@@ -1292,6 +1297,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _delete()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Login check
 		if ($this->juser->get('guest')) 
 		{
@@ -1383,6 +1391,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _savecomment()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Ensure the user is logged in
 		if ($this->juser->get('guest')) 
 		{
@@ -1573,6 +1584,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _savecollection()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		if ($this->juser->get('guest')) 
 		{
 			return $this->_login();
