@@ -78,6 +78,14 @@ abstract class Model extends Object
 	protected $_db = NULL;
 
 	/**
+	 * Model context.
+	 * option.model(.content)
+	 * 
+	 * @var string
+	 */
+	protected $_context = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
@@ -391,6 +399,15 @@ abstract class Model extends Object
 			{
 				return false;
 			}
+
+			if ($this->_context)
+			{
+				$this->importPlugin('content')->trigger('onContentBeforeSave', array(
+					$this->_context,
+					&$this, 
+					$this->exists()
+				));
+			}
 		}
 
 		// Attempt to store data
@@ -559,7 +576,7 @@ abstract class Model extends Object
 	 */
 	public function __call($method, $parameters)
 	{
-		throw new \BadMethodCallException(\JText::sprintf('Method [%s] does not exist.', $method));
+		throw new \BadMethodCallException(__CLASS__ . '; ' . \JText::sprintf('Method [%s] does not exist.', $method));
 	}
 }
 
