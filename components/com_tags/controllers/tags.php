@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for tags
  */
-class TagsControllerTags extends Hubzero_Controller
+class TagsControllerTags extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
@@ -504,6 +502,10 @@ class TagsControllerTags extends Hubzero_Controller
 				$s = array();
 				foreach ($sqls as $sql)
 				{
+					if (!is_string($sql))
+					{
+						continue;
+					}
 					if (trim($sql) != '') 
 					{
 						$s[] = $sql;
