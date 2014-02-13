@@ -34,7 +34,7 @@ class Mimetypes
 	 * 
 	 * @var array
 	 */
-	private static $mimeTypes = array(
+	private $mimeTypes = array(
 		'3dm'		=> 'x-world/x-3dmf',
 		'3dmf'	 => 'x-world/x-3dmf',
 		'a'			=> 'application/octet-stream',
