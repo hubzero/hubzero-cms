@@ -88,6 +88,7 @@ dl.entry-meta dd {
 	margin: 0 1.5em 0 0;
 	padding: 0;
 	display: inline;
+	background: none !important;
 }
 dl.entry-meta dd a {
 	color: #666;
