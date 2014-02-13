@@ -149,7 +149,7 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 	 * 
 	 * @return    void
 	 */
-	public function hasTemplate($group, $template)
+	public static function hasTemplate($group, $template)
 	{
 		// define base path
 		$params = JComponentHelper::getParams('com_groups');

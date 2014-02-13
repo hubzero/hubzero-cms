@@ -758,7 +758,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		// then add overview to array
