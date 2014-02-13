@@ -856,7 +856,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post');
+		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
 		$row = new BlogModelComment($comment['id']);

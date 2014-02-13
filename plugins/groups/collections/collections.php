@@ -1005,7 +1005,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$files  = JRequest::getVar('fls', '', 'files', 'array');
 		/*$descriptions = JRequest::getVar('description', array(), 'post');*/
 
@@ -1181,7 +1181,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			// No record found -- we're OK to add one
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
-			$post->description   = JRequest::getVar('description', '');
+			$post->description   = JRequest::getVar('description', '', 'none', 2);
 			if ($post->check()) 
 			{
 				$this->setError($post->getError());
