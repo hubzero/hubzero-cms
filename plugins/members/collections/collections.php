@@ -126,7 +126,6 @@ class plgMembersCollections extends JPlugin
 			$this->action = JRequest::getVar('action', $default);
 
 			//push the css to the doc
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', $this->_name);
 
 			$juri = JURI::getInstance();
@@ -298,7 +297,6 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _followers()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -391,7 +389,6 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _following()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -470,7 +467,6 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _collections()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -561,7 +557,6 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _collection()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -787,7 +782,6 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _feed()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -876,7 +870,6 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _posts()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -967,7 +960,6 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _post()
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -1056,7 +1048,6 @@ class plgMembersCollections extends JPlugin
 			return;
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$no_html = JRequest::getInt('no_html', 0);
 		if ($no_html)
 		{
@@ -1139,6 +1130,9 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _save()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		if ($this->juser->get('guest')) 
 		{
 			return $this->_login();
@@ -1266,7 +1260,6 @@ class plgMembersCollections extends JPlugin
 				$item_id = $post->get('item_id');
 			}
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',
@@ -1297,6 +1290,9 @@ class plgMembersCollections extends JPlugin
 				return $view->loadTemplate();
 			}
 		}
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		$collection_id = JRequest::getInt('collection_id', 0);
 		if (!$collection_id)
@@ -1438,6 +1434,9 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _delete()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Login check
 		if ($this->juser->get('guest')) 
 		{
@@ -1474,7 +1473,6 @@ class plgMembersCollections extends JPlugin
 			}
 
 			// Output HTML
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',
@@ -1671,7 +1669,6 @@ class plgMembersCollections extends JPlugin
 			return;
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -1805,7 +1802,6 @@ class plgMembersCollections extends JPlugin
 			}
 
 			// Output HTML
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',

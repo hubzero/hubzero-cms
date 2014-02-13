@@ -31,82 +31,48 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_User_Profile_Helper');
-
 $item = $this->post->item();
 
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
-
-ximport('Hubzero_Wiki_Parser');
-
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => 'collections',
-	'pagename' => 'collections',
-	'pageid'   => 0,
-	'filepath' => '',
-	'domain'   => 'collection'
-);
-
-$p = Hubzero_Wiki_Parser::getInstance();
-
-if ($item->get('state') == 2)
-{
-	$item->set('type', 'deleted');
-}
 ?>
 
-<div class="post full <?php echo $item->get('type'); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
+<div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
 	<div class="content">
 		<div class="creator attribution clearfix">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator('name'))); ?>" class="img-link">
+				<img src="<?php echo $item->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator('name'))); ?>" />
 			</a>
 			<p>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
-					<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($item->creator('name'))); ?>
 				</a> created this post
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-					<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+					<span class="entry-date-at">@</span> <span class="time"><?php echo $item->created('time'); ?></span> 
+					<span class="entry-date-on">on</span> <span class="date"><?php echo $item->created('date'); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
-<?php
-$type = $item->get('type');
-if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-{
-	$type = 'link';
-}
-
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'  => 'members',
-		'element' => $this->name,
-		'name'    => 'post',
-		'layout'  => 'default_' . $type
-	)
-);
-
-$view->actual = true;
-$view->name       = $this->name;
-//$view->juser      = $this->juser;
-$view->option     = $this->option;
-$view->member     = $this->member;
-$view->params     = $this->params;
-//$view->authorized = $this->authorized;
-$view->row        = $this->post;
-//$view->collection = $this->collection;
-$view->parser     = $p;
-$view->wikiconfig = $wikiconfig;
-
-$view->display();
-?>
+		<?php
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => $this->name,
+				'name'    => 'post',
+				'layout'  => 'default_' . $item->type()
+			)
+		);
+		$view->actual = true;
+		$view->name       = $this->name;
+		$view->option     = $this->option;
+		$view->member     = $this->member;
+		$view->params     = $this->params;
+		$view->row        = $this->post;
+		$view->display();
+		?>
 	<?php if (count($item->tags()) > 0) { ?>
 		<div class="tags-wrap">
 			<?php echo $item->tags('render'); ?>
@@ -160,7 +126,7 @@ $view->display();
 			</a>
 			<p>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
-					<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>
 				</a> 
 				onto 
 				<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
@@ -168,13 +134,12 @@ $view->display();
 				</a>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-					<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+					<span class="entry-date-at">@</span> <span class="time"><?php echo $this->post->created('time'); ?></span> 
+					<span class="entry-date-on">on</span> <span class="date"><?php echo $this->post->created('date'); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
 <?php 
-
 if ($item->get('comments')) 
 { 
 	?>
@@ -183,8 +148,7 @@ if ($item->get('comments'))
 	foreach ($item->comments() as $comment)
 	{
 		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
-?>
-		
+		?>
 			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
 					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
@@ -202,7 +166,7 @@ if ($item->get('comments'))
 					<p><?php echo stripslashes($comment->content); ?></p>
 				</blockquote>
 			</div>
-<?php 
+		<?php 
 	}
 	?>
 		</div>
@@ -236,6 +200,8 @@ $now = JFactory::getDate();
 						<input type="hidden" name="scope" value="post/<?php echo $this->post->get('id'); ?>/savecomment" />
 						<input type="hidden" name="action" value="savecomment" />
 						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
+
+						<?php echo JHTML::_('form.token'); ?>
 
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
 						<input type="submit" class="comment-submit" value="<?php echo JText::_('Post comment'); ?>" />

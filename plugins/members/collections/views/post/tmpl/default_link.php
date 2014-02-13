@@ -35,15 +35,11 @@ $item = $this->row->item();
 ?>
 		<h4>
 			<a href="<?php echo stripslashes($item->get('url')); ?>">
-				<?php echo ($item->get('title')) ? $this->escape(stripslashes($item->get('title'))) : $this->escape(stripslashes($item->get('url'))); ?>
+				<?php echo $this->escape(stripslashes($item->get('title', $item->get('url')))); ?>
 			</a>
 		</h4>
-<?php if ($item->get('description') || $this->row->get('description')) { ?>
+<?php if ($content = $item->description('parsed')) { ?>
 		<div class="description">
-			<?php 
-			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); 
-			$content = ($this->row->get('description')) ? $this->row->get('description') : $item->get('description'); 
-			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
-			?>
+			<?php echo $content; ?>
 		</div>
 <?php } ?>

@@ -60,6 +60,8 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<input type="hidden" name="board" value="<?php echo $this->collection->get('id'); ?>" />
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
+		<?php echo JHTML::_('form.token'); ?>
+
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
 <?php if (!$this->no_html) { ?>

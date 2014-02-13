@@ -81,6 +81,8 @@ else
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="action" value="savecollection" />
 
+	<?php echo JHTML::_('form.token'); ?>
+
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>">
