@@ -237,26 +237,6 @@ class WishlistController extends Hubzero_Controller
 	}
 
 	/**
-	 * Push CSS to the document head
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      string $css Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function _getStyles($option='', $css='', $system=false)
-	{
-		ximport('Hubzero_Document');
-		if ($option) 
-		{
-			Hubzero_Document::addComponentStylesheet($option, $css);
-		} 
-		else 
-		{
-			Hubzero_Document::addComponentStylesheet($this->_option);
-		}
-	}
-
-	/**
 	 * Build the page title
 	 * 
 	 * @return     void
