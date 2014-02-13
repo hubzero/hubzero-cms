@@ -195,7 +195,7 @@ class Hubzero_Group_Helper
 	 *
 	 * @return    string
 	 */
-	public function listGroups( $name="", $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
+	public static function listGroups( $name="", $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150 )
 	{
 		//user object
 		$user = JFactory::getUser();
