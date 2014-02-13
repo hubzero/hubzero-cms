@@ -85,11 +85,9 @@ class plgWikiCollect extends JPlugin
 		if (!$juser->get('guest')) 
 		{
 			// Push some scripts to the template
-			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginScript('wiki', $this->_name);
 			Hubzero_Document::addPluginStylesheet('wiki', $this->_name);
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'wiki',
@@ -155,7 +153,6 @@ class plgWikiCollect extends JPlugin
 		// No board ID selected so present repost form
 		if (!$collection_id && !$collection_title)
 		{
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'wiki',
@@ -213,7 +210,7 @@ class plgWikiCollect extends JPlugin
 				// No record found -- we're OK to add one
 				$stick->item_id       = $item_id;
 				$stick->collection_id = $collection_id;
-				$stick->description = JRequest::getVar('description', '');
+				$stick->description = JRequest::getVar('description', '', 'none', 2);
 				if ($stick->check()) 
 				{
 					// Store new content

@@ -99,7 +99,7 @@ if ($this->groupboards)
 
 		<label for="field_description">
 			<?php echo JText::_('PLG_WIKI_COLLECT_ADD_DESCRIPTION'); ?>
-			<?php echo $editor->display('description', 'field_description', '', '', '50', '5'); ?>
+			<?php echo \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 
