@@ -294,8 +294,8 @@ class Migration implements CommandInterface
 				'Specify the document root through which the the application
 				will search for migrations directories. The primary use case
 				for this is specifying an alternate directory for testing.
-				By default, it will look in the /etc/hubzero.conf file for
-				the document root specified there.',
+				By default, it will use the JPATH_ROOT constant for
+				the document root.',
 				'Example: -r=/www/myhub/unittests/migrations'
 			)
 			->addArgument(
@@ -316,8 +316,8 @@ class Migration implements CommandInterface
 				will find all migrations, but only run those that haven\'t been run
 				before (whereas --force will run them irrespective of whether or not it
 				thinks they\'ve already been run). You do not have to use -e with this
-				option. This option may be usefill in checking if any migrations have
-				missed over the course of time.'
+				option. This option is necessary when needing to run migrations that
+				have been skipped for one reason or another.'
 			)
 			->addArgument(
 				'-f: full run',
@@ -337,7 +337,7 @@ class Migration implements CommandInterface
 			)
 			->addArgument(
 				'--file: run a provided filed',
-				'Provide the filename to be run.  This and only this file will be run.
+				'Provide the filename to be run. This and only this file will be run.
 				This will automatically place the migration in (-i) mode, ignoring dates.
 				It will not, however, force it to be run, if a log entry for this file
 				and direction already exists. Use the (--force) option to override this
@@ -352,7 +352,8 @@ class Migration implements CommandInterface
 			)
 			->addArgument(
 				'--email: send email',
-				'Specify an email address to receive the output of this run.',
+				'Specify an email address to receive the output of this run. If no
+				files are executed during the migration, an email will not be sent.',
 				'Example: --email=sampleuser@hubzero.org'
 			);
 	}
