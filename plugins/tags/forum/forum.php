@@ -99,7 +99,7 @@ class plgTagsForum extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!isset($areas['forum'])) 
+			if (!isset($areas['forum']) && !in_array('forum', $areas)) 
 			{
 				return array();
 			}

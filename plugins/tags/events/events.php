@@ -86,7 +86,7 @@ class plgTagsEvents extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!isset($areas['events'])) 
+			if (!isset($areas['events']) && !in_array('events', $areas)) 
 			{
 				return array();
 			}

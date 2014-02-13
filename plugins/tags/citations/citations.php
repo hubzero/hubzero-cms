@@ -86,7 +86,7 @@ class plgTagsCitations extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!isset($areas['citations'])) 
+			if (!isset($areas['citations']) && !in_array('citations', $areas)) 
 			{
 				return array();
 			}
