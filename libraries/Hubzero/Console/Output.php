@@ -128,9 +128,8 @@ class Output
 		// Now check if the paragraph is longer than 70 characters and subdivide as appropriate
 		do
 		{
-			if (strlen($paragraph) > 70)
+			if (strlen($paragraph) > 70 && $break = strpos($paragraph, " ", 70))
 			{
-				$break     = strpos($paragraph, " ", 70);
 				$message   = substr($paragraph, 0, $break);
 				$paragraph = trim(substr($paragraph, $break));
 			}
