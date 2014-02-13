@@ -21,7 +21,7 @@ $connected = $this->params->get($service . '_token');
 
 JToolBarHelper::title( JText::_( 'Projects' ) . ': '.stripslashes($this->obj->title).' ('.$this->obj->alias.', #'.$this->obj->id.')', 'addedit.png' );
 JToolBarHelper::spacer();
-JToolBarHelper::save();
+JToolBarHelper::save('save', 'Save');
 JToolBarHelper::cancel();
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -33,32 +33,40 @@ $profile->load( $this->obj->created_by_user );
 // Determine status & options
 $status = '';
 $row = $this->obj;
-if($row->state == 1 && $row->setup_stage >= $setup_complete) {
+if ($row->state == 1 && $row->setup_stage >= $setup_complete) 
+{
 	$status   = '<span class="active">'.JText::_('COM_PROJECTS_ACTIVE').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 }
-else if($row->state == 2) {
+elseif ($row->state == 2) 
+{
 	$status  = '<span class="deleted">'.JText::_('COM_PROJECTS_DELETED').'</span> ';
 }
-else if ($row->setup_stage < $setup_complete) {
+elseif ($row->setup_stage < $setup_complete) 
+{
 	$status  = '<span class="setup">'.JText::_('Setup').'</span> '.JText::_('in progress');
 }
-else if($row->state == 0) {
+elseif ($row->state == 0) 
+{
 	$text = $this->suspended ? JText::_('COM_PROJECTS_SUSPENDED') : JText::_('COM_PROJECTS_INACTIVE');
 	$status = '<span class="inactive">'.$text.'</span> ';
-	if($this->suspended) {
-		$status .= $this->suspended == 1 ? ' ('.JText::_('COM_PROJECTS_BY_ADMIN').')' : ' ('.JText::_('COM_PROJECTS_BY_PROJECT_MANAGER').')';
+	if ($this->suspended) 
+	{
+		$status .= $this->suspended == 1 
+			? ' (' . JText::_('COM_PROJECTS_BY_ADMIN') .')' 
+			: ' (' . JText::_('COM_PROJECTS_BY_PROJECT_MANAGER').')';
 	}
 }
-else if($row->state == 5) {
+elseif ($row->state == 5) 
+{
 	$status  = '<span class="inactive">'.JText::_('COM_PROJECTS_PENDING_APPROVAL').'</span> ';
 }
 
-$sysgroup = $this->config->get('group_prefix', 'pr-').$this->obj->alias;
-$quota = $this->params->get('quota');
-$quota = $quota ? $quota : ProjectsHtml::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+$sysgroup 	= $this->config->get('group_prefix', 'pr-').$this->obj->alias;
+$quota 		= $this->params->get('quota');
+$quota 		= $quota ? $quota : ProjectsHtml::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
 
-$pubQuota = $this->params->get('pubQuota');
-$pubQuota = $pubQuota ? $pubQuota : ProjectsHtml::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+$pubQuota 	= $this->params->get('pubQuota');
+$pubQuota 	= $pubQuota ? $pubQuota : ProjectsHtml::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
@@ -238,7 +246,7 @@ function submitbutton(pressbutton)
 				</tr>
 			</tbody>
 		</table>
-		
+		<?php if ($row->setup_stage >= $setup_complete) { ?>
 		<table class="statustable">
 			<caption><?php echo JText::_('COM_PROJECTS_FILES'); ?></caption>
 			<tbody>
@@ -262,13 +270,14 @@ function submitbutton(pressbutton)
 				<tr>
 					<td colspan="3"><?php echo JText::_('Maintenance options:'); ?> &nbsp; <a href="index.php?option=com_projects&amp;task=gitgc&amp;id=<?php echo $this->obj->id; ?>"><?php echo JText::_('git gc --aggressive'); ?></a> [<?php echo JText::_('Takes minutes to run'); ?>]</td>
 				</tr>
-				<?php if($cEnabled) { ?>
+				<?php if ($cEnabled) { ?>
 				<tr>
 					<td colspan="3"><?php echo JText::_('Connections'); ?>: <span style="font-weight:bold;"><?php echo $connected ? $service : 'not connected'; ?></span> &nbsp; <?php if ($connected) { ?><a href="index.php?option=com_projects&amp;task=fixsync&amp;id=<?php echo $this->obj->id; ?>"><?php echo JText::_('download sync log'); ?></a> &nbsp; [<?php echo JText::_('Also fixes stalled sync'); ?>] <?php } ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 		</table>
+		<?php } ?>
 	  </td>
 	  <td class="holdtbl">
 		<table class="statustable">
