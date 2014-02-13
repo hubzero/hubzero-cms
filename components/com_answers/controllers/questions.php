@@ -734,7 +734,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$tags   = JRequest::getVar('tags', '');
 
 		// If offering a reward, do some checks
@@ -1086,7 +1086,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$response = JRequest::getVar('response', array(), 'post');
+		$response = JRequest::getVar('response', array(), 'post', 'none', 2);
 
 		// Initiate class and bind posted items to database fields
 		$row = new AnswersModelResponse($response['id']);
@@ -1428,10 +1428,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 
 		//instantiate database object
 		$database = JFactory::getDBO();
-
-		//import Hubzero Libs
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Module_Helper');
 
 		//get the id of module so we get the right params
 		$mid = JRequest::getInt("m", 0);

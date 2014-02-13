@@ -471,7 +471,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Incoming
 		$section = JRequest::getVar('section', '');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		$assetType = 'thread';

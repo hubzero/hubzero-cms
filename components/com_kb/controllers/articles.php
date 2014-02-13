@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Knowledge Base controller
  */
-class KbControllerArticles extends Hubzero_Controller
+class KbControllerArticles extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
