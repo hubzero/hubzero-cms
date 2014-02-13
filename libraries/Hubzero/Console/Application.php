@@ -91,6 +91,12 @@ class Application
 			$this->output->error($e->getMessage());
 		}
 
+		// Check for interactive flag and set on output accordingly
+		if ($this->arguments->getOpt('interactive'))
+		{
+			$this->output->makeInteractive();
+		}
+
 		$class = $this->arguments->get('class');
 		$task  = $this->arguments->get('task');
 

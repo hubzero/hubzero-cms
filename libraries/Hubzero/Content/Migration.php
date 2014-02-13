@@ -55,6 +55,13 @@ class Migration
 	private $files = array();
 
 	/**
+	 * Array holding files affected during this migration (i.e. those that are/would be run)
+	 *
+	 * @var array
+	 **/
+	private $affectedFiles = array();
+
+	/**
 	 * Variable holding database object
 	 *
 	 * @var string
@@ -74,6 +81,13 @@ class Migration
 	 * @var array
 	 **/
 	private $last_run = array('up'=>null, 'down'=>null);
+
+	/**
+	 * Array of callbacks
+	 *
+	 * @var array
+	 **/
+	private $callbacks;
 
 	/**
 	 * Constructor
@@ -393,6 +407,9 @@ class Migration
 				continue;
 			}
 
+			// We've made it this far, add this file to list of affected files
+			$this->affectedFiles[] = $info['filename'];
+
 			// Check if we're making a dry run, or only logging changes
 			if ($dryrun || $logOnly)
 			{
@@ -532,6 +549,23 @@ class Migration
 	public function log($message, $type=null)
 	{
 		$this->log[] = array('message' => $message, 'type' => $type);
+
+		if (isset($this->callbacks['message']) && is_callable($this->callbacks['message']))
+		{
+			$this->callbacks['message']($message, $type);
+		}
+	}
+
+	/**
+	 * Register a callback
+	 *
+	 * @param  (string)  $name - callback name
+	 * @param  (closure) $callback - function to run
+	 * @return void
+	 **/
+	public function registerCallback($name, $callback)
+	{
+		$this->callbacks[$name] = $callback;
 	}
 
 	/**

@@ -202,15 +202,28 @@ class Migration implements CommandInterface
 		$migration = new \Hubzero\Content\Migration($directory);
 
 		// Make sure we got a migration object
-		if($migration === false)
+		if ($migration === false)
 		{
 			$this->output->error('Error: failed to instantiate new migration object.');
+		}
+
+		// For now, we're just going to force into interactive mode (no reason not to)
+		$this->output->makeInteractive();
+		if ($this->output->isInteractive())
+		{
+			// Register callback function
+			$output   = $this->output;
+			$callback = function($message, $type=null) use ($output)
+			{
+				$output->addLine($message, $type);
+			};
+			$migration->registerCallback('message', $callback);
 		}
 
 		// Find migration files
 		$this->output->addLine('Running migration...');
 
-		if($migration->find($extension, $file) === false)
+		if ($migration->find($extension, $file) === false)
 		{
 			// Find failed, do nothing
 			$this->output->error('Migration find failed! See log messages for details.');
@@ -218,19 +231,22 @@ class Migration implements CommandInterface
 		else // no errors during 'find', so continue
 		{
 			// Run migration itself
-			if(!$result = $migration->migrate($direction, $force, $dryrun, $ignoreDates, $logOnly))
+			if (!$result = $migration->migrate($direction, $force, $dryrun, $ignoreDates, $logOnly))
 			{
 				$this->output->error('Migration failed! See log messages for details.');
 			}
 			else
 			{
-				$this->output->addLinesFromArray($migration->get('log'));
+				if (!$this->output->isInteractive())
+				{
+					$this->output->addLinesFromArray($migration->get('log'));
+				}
 				$this->output->addLine('Success: ' . ucfirst($direction) . ' migration complete!', 'success');
 			}
 		}
 
-		// Email results if requested
-		if($email)
+		// Email results if requested (only do so if there's something to report)
+		if ($email && count($migration->get('affectedFiles')) > 0)
 		{
 			$this->output->addLine("Emailing results to: {$email}");
 
@@ -248,6 +264,10 @@ class Migration implements CommandInterface
 			{
 				$this->output->addLine("Error: failed to send message!", 'warning');
 			}
+		}
+		elseif ($email)
+		{
+			$this->output->addLine('Ignoring email as no files were affected in this run.', 'info');
 		}
 	}
 

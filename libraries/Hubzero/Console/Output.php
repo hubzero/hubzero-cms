@@ -57,6 +57,16 @@ class Output
 	private $defaultIndentation = '';
 
 	/**
+	 * Track whether we're in interactive mode
+	 *
+	 * While in interactive mode, output each line as it's given
+	 * rather than pooling and waiting until render is called.
+	 *
+	 * @var string
+	 **/
+	private $isInteractive = false;
+
+	/**
 	 * Render out stored output to command line
 	 *
 	 * @return void
@@ -71,6 +81,9 @@ class Output
 				// Echo out the message
 				echo $line['message'] . "\n";
 			}
+
+			// Reset response
+			$this->response = array();
 		}
 	}
 
@@ -88,6 +101,11 @@ class Output
 		$this->response[] = array(
 			'message' => $message
 		);
+
+		if ($this->isInteractive())
+		{
+			$this->render();
+		}
 
 		return $this;
 	}
@@ -260,6 +278,10 @@ class Output
 					$style['color']  = '41';
 					break;
 
+				case 'info':
+					$style['color'] = $this->translateColor('blue');
+					break;
+
 				case 'success':
 					$style['color'] = $this->translateColor('green');
 					break;
@@ -268,6 +290,26 @@ class Output
 
 		$messageStyles = $style['format'] . ';' . $style['color'];
 		$message       = chr(27) . "[" . $messageStyles . "m" . $style['indentation'] . $message . chr(27) . "[0m";
+	}
+
+	/**
+	 * Make output stream rather than pooled and dumped out at the end when render is called
+	 *
+	 * @return void
+	 **/
+	public function makeInteractive()
+	{
+		$this->isInteractive = true;
+	}
+
+	/**
+	 * Check if output is streamed
+	 *
+	 * @return void
+	 **/
+	public function isInteractive()
+	{
+		return $this->isInteractive;
 	}
 
 	/**
