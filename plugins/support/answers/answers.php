@@ -91,6 +91,11 @@ class plgSupportAnswers extends JPlugin
 		{
 			foreach ($rows as $key => $row)
 			{
+				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches))
+				{
+					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
+				}
+
 				switch ($category)
 				{
 					case 'answer':
@@ -142,7 +147,7 @@ class plgSupportAnswers extends JPlugin
 
 		if ($category == 'answer') 
 		{
-			$database->setQuery("SELECT qid FROM #__answers_responses WHERE id=" . $refid);
+			$database->setQuery("SELECT qid FROM `#__answers_responses` WHERE id=" . $refid);
 		 	return $database->loadResult();
 		}
 
@@ -220,7 +225,7 @@ class plgSupportAnswers extends JPlugin
 		switch ($category)
 		{
 			case 'answer':
-				$database->setQuery("UPDATE #__answers_responses SET state='2' WHERE id=" . $referenceid);
+				$database->setQuery("UPDATE `#__answers_responses` SET state='2' WHERE id=" . $referenceid);
 				if (!$database->query()) 
 				{
 					$this->setError($database->getErrorMsg());
@@ -242,7 +247,7 @@ class plgSupportAnswers extends JPlugin
 				$responders = array();
 
 				// Get all the answers for this question
-				$database->setQuery("SELECT r.id, r.created_by FROM #__answers_responses AS r WHERE r.question_id=" . $referenceid);
+				$database->setQuery("SELECT r.id, r.created_by FROM `#__answers_responses` AS r WHERE r.question_id=" . $referenceid);
 				$answers = $database->loadObjectList();
 
 				if ($answers) 
@@ -250,7 +255,7 @@ class plgSupportAnswers extends JPlugin
 					foreach ($answers as $answer)
 					{
 						// Delete response
-						$database->setQuery("UPDATE #__answers_responses SET state='2' WHERE id=" . $answer->id);
+						$database->setQuery("UPDATE `#__answers_responses` SET state='2' WHERE id=" . $answer->id);
 						if (!$database->query()) 
 						{
 							$this->setError($database->getErrorMsg());
@@ -262,7 +267,7 @@ class plgSupportAnswers extends JPlugin
 					}
 				}
 
-				$database->setQuery("UPDATE #__answers_questions SET state='2', reward='0' WHERE id=" . $referenceid);
+				$database->setQuery("UPDATE `#__answers_questions` SET state='2', reward='0' WHERE id=" . $referenceid);
 				if (!$database->query()) 
 				{
 					$this->setError($database->getErrorMsg());
@@ -303,7 +308,7 @@ class plgSupportAnswers extends JPlugin
 					}
 
 					// get id of asker
-					$database->setQuery("SELECT created_by FROM #__answers_questions WHERE id=" . $parentid);
+					$database->setQuery("SELECT created_by FROM `#__answers_questions` WHERE id=" . $parentid);
 					$asker = $database->loadResult();
 
 					if ($asker) 
@@ -317,7 +322,7 @@ class plgSupportAnswers extends JPlugin
 						if (isset($asker_id)) 
 						{
 							// Remove hold 
-							$sql = "DELETE FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=" . $parentid . " AND uid='" . $asker_id . "'";
+							$sql = "DELETE FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid=" . $parentid . " AND uid='" . $asker_id . "'";
 							$database->setQuery($sql);
 							if (!$database->query()) 
 							{
@@ -365,7 +370,7 @@ class plgSupportAnswers extends JPlugin
 		$database = JFactory::getDBO();
 
 		// check if question owner assigned a reward for answering his Q 
-		$sql = "SELECT amount FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=" . $id;
+		$sql = "SELECT amount FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid=" . $id;
 		$database->setQuery($sql);
 
 		return $database->loadResult();

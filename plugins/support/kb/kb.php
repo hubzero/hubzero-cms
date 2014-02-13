@@ -83,6 +83,10 @@ class plgSupportKb extends JPlugin
 		{
 			foreach ($rows as $key => $row)
 			{
+				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches))
+				{
+					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
+				}
 				$rows[$key]->href = JRoute::_('index.php?option=com_kb&section=' . $row->section . '&category=' . $row->category . '&alias=' . $row->article);
 			}
 		}

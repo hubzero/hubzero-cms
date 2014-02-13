@@ -53,7 +53,7 @@ class plgSupportBlog extends JPlugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
 		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category 
 					FROM #__blog_comments AS rc 
@@ -75,9 +75,13 @@ class plgSupportBlog extends JPlugin
 				$tz = 0;
 			}
 
-			ximport('xblog');
 			foreach ($rows as $key => $row)
 			{
+				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches))
+				{
+					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
+				}
+
 				$entry = new BlogTableEntry($database);
 				$entry->load($rows[$key]->entry_id);
 
@@ -107,10 +111,30 @@ class plgSupportBlog extends JPlugin
 
 		$database = JFactory::getDBO();
 
+		$msg = 'This comment was found to contain objectionable material and was removed by the administrator.';
+
 		$comment = new BlogTableComment($database);
 		$comment->load($refid);
 		$comment->anonymous = 1;
-		$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->content, $matches))
+		{
+			$format = strtolower(trim($matches[1]));
+			switch ($format)
+			{
+				case 'html':
+					$comment->content = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
+				break;
+
+				case 'wiki':
+				default:
+					$comment->content = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
+				break;
+			}
+		}
+		else
+		{
+			$comment->content = '[[Span(' . $msg . ', class="warning")]]';
+		}
 		$comment->store();
 
 		return '';

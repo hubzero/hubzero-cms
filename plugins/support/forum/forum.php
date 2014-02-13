@@ -86,6 +86,10 @@ class plgSupportForum extends JPlugin
 				{
 					$thread = $this->_getThread($row->parent);
 				}*/
+				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches))
+				{
+					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
+				}
 
 				switch ($row->scope)
 				{
@@ -99,7 +103,6 @@ class plgSupportForum extends JPlugin
 					break;
 
 					case 'group':
-						ximport('Hubzero_Group');
 						$group = Hubzero_Group::getInstance($row->scope_id);
 						$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=forum&scope=' . $row->section . '/' . $row->category . '/' . $parent;
 					break;
@@ -156,13 +159,34 @@ class plgSupportForum extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
+		$msg = 'This comment was found to contain objectionable material and was removed by the administrator.';
+
 		$database = JFactory::getDBO();
 
 		$comment = new ForumTablePost($database);
 		$comment->load($refid);
 		$comment->anonymous = 1;
 		$comment->state     = 2;
-		$comment->comment   = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]' . "\n\n" . $comment->comment;
+		//$comment->comment   = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]' . "\n\n" . $comment->comment;
+		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->comment, $matches))
+		{
+			$format = strtolower(trim($matches[1]));
+			switch ($format)
+			{
+				case 'html':
+					$comment->comment = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
+				break;
+
+				case 'wiki':
+				default:
+					$comment->comment = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
+				break;
+			}
+		}
+		else
+		{
+			$comment->comment = '[[Span(' . $msg . ', class="warning")]]';
+		}
 		$comment->store();
 
 		return '';

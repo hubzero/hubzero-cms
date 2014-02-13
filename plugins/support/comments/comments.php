@@ -65,6 +65,11 @@ class plgSupportComments extends JPlugin
 			{
 				foreach ($rows as $key => $row)
 				{
+					if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches))
+					{
+						$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
+					}
+
 					switch ($row->parent_category)
 					{
 						case 'collection':
@@ -164,10 +169,29 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
+		$msg = 'This comment was found to contain objectionable material and was removed by the administrator.';
+
 		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);
-		//$comment->anonymous = 1;
-		$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->content, $matches))
+		{
+			$format = strtolower(trim($matches[1]));
+			switch ($format)
+			{
+				case 'html':
+					$comment->content = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
+				break;
+
+				case 'wiki':
+				default:
+					$comment->content = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
+				break;
+			}
+		}
+		else
+		{
+			$comment->content = '[[Span(' . $msg . ', class="warning")]]';
+		}
 		$comment->state = 1;
 		$comment->store();
 
