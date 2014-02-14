@@ -304,6 +304,11 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 			$stylesheet .= '.css';
 		}
 
+		if ($folder == 'system')
+		{
+			return \Hubzero_Document::addSystemStylesheet($stylesheet);
+		}
+
 		\Hubzero_Document::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
 
 		return $this;
@@ -328,6 +333,11 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 		if (!$element)
 		{
 			$element = $this->_element;
+		}
+
+		if ($folder == 'system')
+		{
+			return \Hubzero_Document::addSystemScript($script);
 		}
 
 		if ($folder === true || strstr($script, '(') || strstr($script, ';'))
