@@ -166,7 +166,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$info  = JText::_('Created') . ': ' . $row->created . '<br />';
 	$info .= JText::_('Created by') . ': ' . $this->escape($row->created_by) . '<br />';
 
-	$now = date( "Y-m-d H:i:s" );
+	$now = JFactory::getDate()->toSql();
 	switch ($row->published)
 	{
 		case 0:

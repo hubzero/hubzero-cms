@@ -151,7 +151,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$info .= JText::_('Created by') . ': ' . $this->escape($row->created_by) . '<br />';
 	
 	// Get the published status
-	$now = date( "Y-m-d H:i:s" );
+	$now = JFactory::getDate()->toSql();
 	switch ($row->published)
 	{
 		case 0:
