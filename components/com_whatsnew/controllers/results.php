@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for dipslaying what's new
  */
-class WhatsnewControllerResults extends Hubzero_Controller
+class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
@@ -437,7 +435,7 @@ class WhatsnewControllerResults extends Hubzero_Controller
 
 				// Strip html from feed item description text
 				$description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($row->text));
-				$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0, 0);
+				$description = \Hubzero\Utility\String::truncate($description, 300, 0);
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 

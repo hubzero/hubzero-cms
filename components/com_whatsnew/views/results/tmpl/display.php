@@ -289,7 +289,7 @@ foreach ($this->results as $category)
 				$html .= "\t" . '<li>' . "\n";
 				$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 				if ($row->text) {
-					$html .= "\t\t" . '<p>' . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)), 200, 0) . '</p>' . "\n";
+					$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
 				}
 				$html .= "\t\t" . '<p class="href">' . $juri->base() . $row->href . '</p>' . "\n";
 				$html .= "\t" . '</li>' . "\n";
