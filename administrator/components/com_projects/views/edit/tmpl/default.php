@@ -21,7 +21,8 @@ $connected = $this->params->get($service . '_token');
 
 JToolBarHelper::title( JText::_( 'Projects' ) . ': '.stripslashes($this->obj->title).' ('.$this->obj->alias.', #'.$this->obj->id.')', 'addedit.png' );
 JToolBarHelper::spacer();
-JToolBarHelper::save('save', 'Save');
+JToolBarHelper::apply();
+JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
