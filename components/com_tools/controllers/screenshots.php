@@ -31,12 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Tool_Version');
-ximport('Hubzero_Tool');
-ximport('Hubzero_Group');
-ximport('Hubzero_Trac_Project');
-ximport('Hubzero_Controller');
-
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'helper.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
@@ -46,7 +40,7 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_r
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerScreenshots extends Hubzero_Controller
+class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it

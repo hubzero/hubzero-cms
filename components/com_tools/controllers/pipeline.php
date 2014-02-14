@@ -31,12 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Tool_Version');
-ximport('Hubzero_Tool');
-ximport('Hubzero_Group');
-ximport('Hubzero_Trac_Project');
-ximport('Hubzero_Controller');
-
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
@@ -62,7 +56,7 @@ include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerPipeline extends Hubzero_Controller
+class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -940,7 +934,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
 	{
-		if (!($hztrac = Hubzero_Trac_Project::find_or_create('app:' . $toolname))) 
+		if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname))) 
 		{
 			return false;
 		}
@@ -1193,7 +1187,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		}
 		$hzg->set('members', $tool['developers']);
 
-		$hztrac = Hubzero_Trac_Project::find_or_create('app:' . $tool['toolname']);
+		$hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $tool['toolname']);
 		$hztrac->add_group_permission('apps', array(
 			'WIKI_ADMIN',
 			'MILESTONE_ADMIN',

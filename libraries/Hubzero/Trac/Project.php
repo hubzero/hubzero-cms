@@ -28,17 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Trac;
 
 /**
- * Short description for 'Hubzero_Trac_Project'
- * 
- * Long description (if any) ...
+ * TRAC project class
  */
-class Hubzero_Trac_Project
+class Project
 {
-
 	/**
 	 * Description for 'id'
 	 * 
@@ -68,22 +64,9 @@ class Hubzero_Trac_Project
 	private $_list_keys = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Resets internal properties
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	private function __construct()
-	{
-	}
-
-	/**
-	 * Short description for 'clear'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean
 	 */
 	public function clear()
 	{
@@ -91,14 +74,18 @@ class Hubzero_Trac_Project
 
 		$this->_updatedkeys = array();
 
-		foreach ($cvars as $key=>$value) {
-			if ($key{0} != '_') {
+		foreach ($cvars as $key => $value) 
+		{
+			if ($key{0} != '_') 
+			{
 				unset($this->$key);
 
-				if (!in_array($key, $this->_list_keys)) {
+				if (!in_array($key, $this->_list_keys)) 
+				{
 					$this->$key = null;
 				}
-				else {
+				else 
+				{
 					$this->$key = array();
 				}
 			}
@@ -110,25 +97,21 @@ class Hubzero_Trac_Project
 	}
 
 	/**
-	 * Short description for 'logDebug'
+	 * Log a debug message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $msg Parameter description (if any) ...
+	 * @param      string $msg Message to log
 	 * @return     void
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  Hubzero_Factory::getLogger();
+		$xlog =  \Hubzero_Factory::getLogger();
 		$xlog->debug($msg);
 	}
 
 	/**
-	 * Short description for 'toArray'
+	 * Output data as an array
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function toArray()
 	{
@@ -136,8 +119,10 @@ class Hubzero_Trac_Project
 
 		$cvars = get_class_vars(__CLASS__);
 
-		foreach ($cvars as $key=>$value) {
-			if ($key{0} == '_') {
+		foreach ($cvars as $key=>$value) 
+		{
+			if ($key{0} == '_') 
+			{
 				continue;
 			}
 
@@ -150,23 +135,26 @@ class Hubzero_Trac_Project
 	}
 
 	/**
-	 * Short description for 'find'
+	 * Find a project
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $name PRoject name
+	 * @return     mixed
 	 */
 	public function find($name)
 	{
-		$hztp = new Hubzero_Trac_Project();
+		$hztp = new self();
 
 		if (is_numeric($name))
+		{
 			$hztp->id = $name;
+		}
 		else
+		{
 			$hztp->name = $name;
+		}
 
-		if ($hztp->read() == false) {
+		if ($hztp->read() == false) 
+		{
 			return false;
 		}
 
@@ -174,25 +162,30 @@ class Hubzero_Trac_Project
 	}
 
 	/**
-	 * Short description for 'find_or_create'
+	 * Find a project. Create it if one doesn't exist.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $name Project name
+	 * @return     mixed
 	 */
 	public static function find_or_create($name)
 	{
-		$hztp = new Hubzero_Trac_Project();
+		$hztp = new self();
 
 		if (is_numeric($name))
+		{
 			$hztp->id = $name;
+		}
 		else
+		{
 			$hztp->name = $name;
+		}
 
-		if ($hztp->read() == false) {
+		if ($hztp->read() == false) 
+		{
 			if ($hztp->create() == false)
+			{
 				return false;
+			}
 		}
 
 		return $hztp;
@@ -207,44 +200,51 @@ class Hubzero_Trac_Project
 	 */
 	public function create()
 	{
-		$db =  JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return false;
 		}
 
-		if (is_numeric($this->id)) {
-			$query = "INSERT INTO #__trac_project (id,name) VALUES ( " . $db->Quote($this->id) . "," . $db->Quote($this->name) . ");";
+		if (is_numeric($this->id)) 
+		{
+			$query = "INSERT INTO `#__trac_project` (id,name) VALUES ( " . $db->Quote($this->id) . "," . $db->Quote($this->name) . ");";
 			$db->setQuery($query);
 
 			$result = $db->query();
 
-			if ($result !== false || $db->getErrorNum() == 1062) {
+			if ($result !== false || $db->getErrorNum() == 1062) 
+			{
 				return true;
 			}
 		}
-		else {
-			$query = "INSERT INTO #__trac_project (name) VALUES ( " . $db->Quote($this->name) . ");";
+		else 
+		{
+			$query = "INSERT INTO `#__trac_project` (name) VALUES ( " . $db->Quote($this->name) . ");";
 
 			$db->setQuery($query);
 
 			$result = $db->query();
 
-			if ($result === false && $db->getErrorNum() == 1062) {
-				$query = "SELECT id FROM #__trac_project WHERE name=" . $db->Quote($this->name) . ";";
+			if ($result === false && $db->getErrorNum() == 1062) 
+			{
+				$query = "SELECT id FROM `#__trac_project` WHERE name=" . $db->Quote($this->name) . ";";
 
 				$db->setQuery($query);
 
 				$result = $db->loadResult();
 
-				if ($result == null) {
+				if ($result == null) 
+				{
 					return false;
 				}
 
 				$this->id = $result;
 				return true;
 			}
-			else if ($result !== false) {
+			else if ($result !== false) 
+			{
 				$this->id = $db->insertid();
 				return true;
 			}
@@ -262,33 +262,39 @@ class Hubzero_Trac_Project
 	 */
 	public function read()
 	{
-		$db =  JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$lazyloading = false;
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return false;
 		}
 
-		if (is_numeric($this->id)) {
-			$query = "SELECT * FROM #__trac_project WHERE id = " . $db->Quote($this->id) . ";";
+		if (is_numeric($this->id)) 
+		{
+			$query = "SELECT * FROM `#__trac_project` WHERE id = " . $db->Quote($this->id) . ";";
 		}
-		else {
-			$query = "SELECT * FROM #__trac_project WHERE name = " . $db->Quote($this->name) . ";";
+		else 
+		{
+			$query = "SELECT * FROM `#__trac_project` WHERE name = " . $db->Quote($this->name) . ";";
 		}
 
 		$db->setQuery($query);
 
 		$result = $db->loadAssoc();
 
-		if (empty($result)) {
+		if (empty($result)) 
+		{
 			return false;
 		}
 
 		$this->clear();
 
-		foreach ($result as $key=>$value) {
-			if (property_exists(__CLASS__, $key) && $key{0} != '_') {
+		foreach ($result as $key => $value) 
+		{
+			if (property_exists(__CLASS__, $key) && $key{0} != '_') 
+			{
 				$this->__set($key, $value);
 			}
 		}
@@ -316,63 +322,76 @@ class Hubzero_Trac_Project
 
 		$first = true;
 
-		foreach ($classvars as $property=>$value) {
-			if (($property{0} == '_') || in_array($property, $this->_list_keys)) {
+		foreach ($classvars as $property=>$value) 
+		{
+			if (($property{0} == '_') || in_array($property, $this->_list_keys)) 
+			{
 				continue;
 			}
 
-			if (!$all && !in_array($property, $this->_updatedkeys)) {
+			if (!$all && !in_array($property, $this->_updatedkeys)) 
+			{
 				continue;
 			}
 
-			if (!$first) {
+			if (!$first) 
+			{
 				$query .= ',';
 			}
-			else {
+			else 
+			{
 				$first = false;
 			}
 
 			$value = $this->__get($property);
 
-			if ($value === null) {
+			if ($value === null)
+			{
 				$query .= "`$property`=NULL";
 			}
-			else {
+			else 
+			{
 				$query .= "`$property`=" . $db->Quote($value);
 			}
 		}
 
 		$query .= " WHERE `id`=" . $db->Quote($this->__get('id')) . ";";
 
-		if ($first == true) {
+		if ($first == true) 
+		{
 			$query = '';
 		}
 
-		if (!empty($query)) {
+		if (!empty($query)) 
+		{
 			$db->setQuery($query);
 
 			$result = $db->query();
 
-			if ($result === false) {
+			if ($result === false) 
+			{
 				return false;
 			}
 
 			$affected = $db->getAffectedRows();
 
-			if ($affected < 1) {
+			if ($affected < 1) 
+			{
 				$this->create();
 
 				$db->setQuery($query);
 
 				$result = $db->query();
 
-				if ($result === false) {
+				if ($result === false) 
+				{
 					return false;
 				}
 
 				$affected = $db->getAffectedRows();
 
-				if ($affected < 1) {
+				if ($affected < 1) 
+				{
 					return false;
 				}
 			}
@@ -390,35 +409,40 @@ class Hubzero_Trac_Project
 	 */
 	public function delete()
 	{
-		if (!isset($this->name) && !isset($this->id)) {
+		if (!isset($this->name) && !isset($this->id)) 
+		{
 			return false;
 		}
 
 		$db = JFactory::getDBO();
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return false;
 		}
 
-		if (!isset($this->id)) {
-			$db->setQuery("SELECT id FROM #__trac_project WHERE name=" . $db->Quote($this->name) . ";");
+		if (!isset($this->id)) 
+		{
+			$db->setQuery("SELECT id FROM `#__trac_project` WHERE name=" . $db->Quote($this->name) . ";");
 
 			$this->id = $db->loadResult();
 		}
 
-		if (empty($this->id)) {
+		if (empty($this->id)) 
+		{
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__trac_project WHERE id=" . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__trac_project` WHERE id=" . $db->Quote($this->id) . ";");
 
-		if (!$db->query()) {
+		if (!$db->query()) 
+		{
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__trac_user_permission WHERE trac_project_id=" . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__trac_user_permission` WHERE trac_project_id=" . $db->Quote($this->id) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__trac_group_permission WHERE trac_project_id=" . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__trac_group_permission` WHERE trac_project_id=" . $db->Quote($this->id) . ";");
 		$db->query();
 
 		return true;
@@ -436,8 +460,10 @@ class Hubzero_Trac_Project
 	{
 		$xlog =  Hubzero_Factory::getLogger();
 
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
-			if (empty($property)) {
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		{
+			if (empty($property)) 
+			{
 				$property = '(null)';
 			}
 
@@ -445,31 +471,38 @@ class Hubzero_Trac_Project
 			die();
 		}
 
-        if (in_array($property, $this->_list_keys)) {
-            if (!array_key_exists($property, get_object_vars($this))) {
-                $db =  JFactory::getDBO();
+		if (in_array($property, $this->_list_keys)) 
+		{
+			if (!array_key_exists($property, get_object_vars($this))) 
+			{
+				$db =  JFactory::getDBO();
 
-                if (is_object($db)) {
-                    $query = null;
+				if (is_object($db)) 
+				{
+					$query = null;
 
-					if (!empty($query)) {
-	                    $db->setQuery($query);
+					if (!empty($query)) 
+					{
+						$db->setQuery($query);
 
-    	                $result = $db->loadResultArray();
+						$result = $db->loadResultArray();
 					}
 
-                    if ($result !== false) {
-                        $this->__set($property, $result);
-                    }
-                }
-            }
-        }
+					if ($result !== false) 
+					{
+						$this->__set($property, $result);
+					}
+				}
+			}
+		}
 
-		if (isset($this->$property)) {
+		if (isset($this->$property)) 
+		{
 			return $this->$property;
 		}
 
-		if (array_key_exists($property, get_object_vars($this))) {
+		if (array_key_exists($property, get_object_vars($this))) 
+		{
 			return null;
 		}
 
@@ -489,8 +522,10 @@ class Hubzero_Trac_Project
 	 */
 	public function __set($property = null, $value = null)
 	{
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
-			if (empty($property)) {
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		{
+			if (empty($property)) 
+			{
 				$property = '(null)';
 			}
 
@@ -498,17 +533,20 @@ class Hubzero_Trac_Project
 			die();
 		}
 
-        if (in_array($property, $this->_list_keys)) {
-            $value = array_diff((array) $value, array(''));
-            $value = array_unique($value);
-            $value = array_values($value);
-            $this->$property = $value;
-        }
-        else {
-            $this->$property = $value;
-        }
+		if (in_array($property, $this->_list_keys)) 
+		{
+			$value = array_diff((array) $value, array(''));
+			$value = array_unique($value);
+			$value = array_values($value);
+			$this->$property = $value;
+		}
+		else 
+		{
+			$this->$property = $value;
+		}
 
-		if (!in_array($property, $this->_updatedkeys)) {
+		if (!in_array($property, $this->_updatedkeys)) 
+		{
 			$this->_updatedkeys[] = $property;
 		}
 	}
@@ -523,8 +561,10 @@ class Hubzero_Trac_Project
 	 */
 	public function __isset($property = null)
 	{
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
-			if (empty($property)) {
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		{
+			if (empty($property)) 
+			{
 				$property = '(null)';
 			}
 
@@ -545,8 +585,10 @@ class Hubzero_Trac_Project
 	 */
 	public function __unset($property = null)
 	{
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
-			if (empty($property)) {
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		{
+			if (empty($property)) 
+			{
 				$property = '(null)';
 			}
 
@@ -628,35 +670,42 @@ class Hubzero_Trac_Project
 	{
 		$db =  JFactory::getDBO();
 
-		if ($user == 'anonymous') {
+		if ($user == 'anonymous') 
+		{
 			$user = '0';
 		}
 
-		if (!is_numeric($user)) {
-			$query = "SELECT id FROM #__users WHERE username=" . $db->Quote($user) . ";";
+		if (!is_numeric($user)) 
+		{
+			$query = "SELECT id FROM `#__users` WHERE username=" . $db->Quote($user) . ";";
 			$db->setQuery($query);
 			$user_id = $db->loadResult();
 
-			if ($user_id === false) {
+			if ($user_id === false) 
+			{
 				$this->_error("Unknown user $user");
 				return false;
 			}
 		}
 		else
+		{
 			$user_id = $user;
+		}
 
 		$quoted_project_id = $db->Quote($this->id);
 		$quoted_user_id = $db->Quote($user_id);
 		$values = '';
 
-		foreach((array) $action as $a) {
-			if (!empty($values)) {
+		foreach ((array) $action as $a) 
+		{
+			if (!empty($values)) 
+			{
 				$values .= ',';
 			}
 			$values .= "($quoted_project_id,$quoted_user_id," . $db->Quote($a) .")";
 		}
 
-		$query = "INSERT IGNORE INTO #__trac_user_permission (trac_project_id,user_id,action) VALUES " .  $values . ";";
+		$query = "INSERT IGNORE INTO `#__trac_user_permission` (trac_project_id,user_id,action) VALUES " .  $values . ";";
 
 		$db->setQuery($query);
 		$db->query();
@@ -675,16 +724,19 @@ class Hubzero_Trac_Project
 	{
 		$db =  JFactory::getDBO();
 
-		if ($group == 'authenticated') {
+		if ($group == 'authenticated') 
+		{
 			$group = '0';
 		}
 
-		if (!is_numeric($group)) {
-			$query = "SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($group) . ";";
+		if (!is_numeric($group)) 
+		{
+			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($group) . ";";
 			$db->setQuery($query);
 			$group_id = $db->loadResult();
 
-			if ($group_id === false) {
+			if ($group_id === false) 
+			{
 				$this->_error("Unknown group $group");
 				return false;
 			}
@@ -694,14 +746,16 @@ class Hubzero_Trac_Project
 		$quoted_group_id = $db->Quote($group_id);
 		$values = '';
 
-		foreach((array) $action as $a) {
-			if (!empty($values)) {
+		foreach ((array) $action as $a) 
+		{
+			if (!empty($values)) 
+			{
 				$values .= ',';
 			}
 			$values .= "($quoted_project_id,$quoted_group_id," . $db->Quote($a) .")";
 		}
 
-		$query = "INSERT IGNORE INTO #__trac_group_permission (trac_project_id,group_id,action) VALUES " .  $values . ";";
+		$query = "INSERT IGNORE INTO `#__trac_group_permission` (trac_project_id,group_id,action) VALUES " .  $values . ";";
 
 		$db->setQuery($query);
 		$db->query();
@@ -721,41 +775,51 @@ class Hubzero_Trac_Project
 		$db =  JFactory::getDBO();
 		$all = false;
 
-		if ($user == 'anonymous') {
+		if ($user == 'anonymous') 
+		{
 			$user = '0';
 		}
 
-		if (!is_numeric($user)) {
-			$query = "SELECT id FROM #__users WHERE username=" . $db->Quote($user) . ";";
+		if (!is_numeric($user)) 
+		{
+			$query = "SELECT id FROM `#__users` WHERE username=" . $db->Quote($user) . ";";
 			$db->setQuery($query);
 			$user_id = $db->loadResult();
 
-			if ($user_id === false) {
+			if ($user_id === false) 
+			{
 				$this->_error("Unknown user $user");
 				return false;
 			}
 		}
 		else
+		{
 			$user_id = $user;
+		}
 
 		$quoted_project_id = $db->Quote($this->id);
 		$quoted_user_id = $db->Quote($user_id);
 		$values = '';
 
-		foreach((array) $action as $a) {
-			if ($a == '*') {
+		foreach ((array) $action as $a) 
+		{
+			if ($a == '*') 
+			{
 				$all = true;
 			}
-			if (!empty($values)) {
+			if (!empty($values)) 
+			{
 				$values .= ',';
 			}
 			$values .= $db->Quote($a);
 		}
 
-		$query = "DELETE FROM  #__trac_user_permission WHERE trac_project_id=$quoted_project_id AND user_id=$quoted_user_id";
+		$query = "DELETE FROM `#__trac_user_permission` WHERE trac_project_id=$quoted_project_id AND user_id=$quoted_user_id";
 
 		if (!$all)
+		{
 			$query .= " AND action IN (" .  $values . ");";
+		}
 
 		$db->setQuery($query);
 		$db->query();
@@ -775,16 +839,19 @@ class Hubzero_Trac_Project
 		$db =  JFactory::getDBO();
 		$all = false;
 
-		if ($group == 'authenticated') {
+		if ($group == 'authenticated') 
+		{
 			$group = '0';
 		}
 
-		if (!is_numeric($group)) {
-			$query = "SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($group) . ";";
+		if (!is_numeric($group)) 
+		{
+			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($group) . ";";
 			$db->setQuery($query);
 			$group_id = $db->loadResult();
 
-			if ($group_id === null) {
+			if ($group_id === null) 
+			{
 				$this->_error("Unknown group $group");
 				return false;
 			}
@@ -794,20 +861,25 @@ class Hubzero_Trac_Project
 		$quoted_group_id = $db->Quote($group_id);
 		$values = '';
 
-		foreach((array) $action as $a) {
-			if ($a == '*') {
+		foreach ((array) $action as $a) 
+		{
+			if ($a == '*') 
+			{
 				$all = true;
 			}
-			if (!empty($values)) {
+			if (!empty($values)) 
+			{
 				$values .= ',';
 			}
 			$values .= $db->Quote($a);
 		}
 
-		$query = "DELETE FROM  #__trac_group_permission WHERE trac_project_id=$quoted_project_id AND group_id=$quoted_group_id";
+		$query = "DELETE FROM `#__trac_group_permission` WHERE trac_project_id=$quoted_project_id AND group_id=$quoted_group_id";
 
 		if (!$all)
+		{
 			$query .= " AND action IN (" .  $values . ");";
+		}
 
 		$db->setQuery($query);
 		$db->query();
@@ -826,15 +898,18 @@ class Hubzero_Trac_Project
 		$db =  JFactory::getDBO();
 		$quoted_project_id = $db->Quote($this->id);
 
-		if ($user == "anonymous") {
+		if ($user == "anonymous") 
+		{
 			$user = '0';
 		}
 		$quoted_user = $db->Quote($user);
-		if (is_numeric($user)) {
-			$query = "SELECT action FROM #__trac_user_permission AS up WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
+		if (is_numeric($user)) 
+		{
+			$query = "SELECT action FROM `#__trac_user_permission` AS up WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
 		}
-		else {
-			$query = "SELECT action FROM #__trac_user_permission AS up, #__users AS u WHERE up.trac_project_id=$quoted_project_id AND u.id=up.user_id AND u.username=$quoted_user;";
+		else 
+		{
+			$query = "SELECT action FROM `#__trac_user_permission` AS up, `#__users` AS u WHERE up.trac_project_id=$quoted_project_id AND u.id=up.user_id AND u.username=$quoted_user;";
 		}
 
 		$db->setQuery($query);
@@ -856,15 +931,18 @@ class Hubzero_Trac_Project
 		$db =  JFactory::getDBO();
 		$quoted_project_id = $db->Quote($this->id);
 
-		if ($group == 'authenticated') {
+		if ($group == 'authenticated') 
+		{
 			$group = '0';
 		}
 		$quoted_group = $db->Quote($group);
-		if (is_numeric($group)) {
-			$query = "SELECT action FROM #__trac_group_permission AS gp WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";
+		if (is_numeric($group)) 
+		{
+			$query = "SELECT action FROM `#__trac_group_permission` AS gp WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";
 		}
-		else {
-			$query = "SELECT action FROM #__trac_group_permission AS gp, #__xgroups AS g WHERE gp.trac_project_id=$quoted_project_id AND g.gidNumber=gp.group_id AND g.cn=$quoted_group;";
+		else 
+		{
+			$query = "SELECT action FROM `#__trac_group_permission` AS gp, `#__xgroups` AS g WHERE gp.trac_project_id=$quoted_project_id AND g.gidNumber=gp.group_id AND g.cn=$quoted_group;";
 		}
 
 		$db->setQuery($query);
