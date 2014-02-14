@@ -1,14 +1,14 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130401000000ComGroups extends Migration
+class Migration20130401000000ComGroups extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
-		self::deletePluginEntry('groups', 'userenrollment');
+		$this->deletePluginEntry('groups', 'userenrollment');
 	}
 }

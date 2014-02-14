@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,18 +8,18 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding params field to asset groups
  **/
-class Migration20140131091600HubzeroComments extends Migration
+class Migration20140131091600HubzeroComments extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if ($db->tableExists('#__comments'))
+		if ($this->db->tableExists('#__comments'))
 		{
 			$query = "SELECT * FROM `#__comments`";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			if ($results && count($results) > 0)
 			{
@@ -44,7 +44,7 @@ class Migration20140131091600HubzeroComments extends Migration
 
 				foreach ($results as $r)
 				{
-					$record = new $cls($db);
+					$record = new $cls($this->db);
 					if (substr($r->category, -7) == 'comment')
 					{
 						if (isset($parents[$r->referenceid]))
@@ -80,17 +80,17 @@ class Migration20140131091600HubzeroComments extends Migration
 			}
 
 			$query = "DROP TABLE IF EXISTS `#__comments`;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if (!$db->tableExists('#__comments'))
+		if (!$this->db->tableExists('#__comments'))
 		{
 			$query = "CREATE TABLE `#__comments` (
 				  `filter_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -109,8 +109,8 @@ class Migration20140131091600HubzeroComments extends Migration
 				  `params` mediumtext,
 				  PRIMARY KEY (`filter_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

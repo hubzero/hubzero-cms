@@ -1,13 +1,13 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130311000000PlgHubzeroComments extends Migration
+class Migration20130311000000PlgHubzeroComments extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__item_comments` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,17 +47,17 @@ class Migration20130311000000PlgHubzeroComments extends Migration
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 	}
 
-	protected static function down($db)
+	public function down()
 	{
 		$query = "DROP TABLE IF EXISTS `#__item_comments`;
 				DROP TABLE IF EXISTS `#__item_comment_files`;
 				DROP TABLE IF EXISTS `#__item_votes`;";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 	}
 }

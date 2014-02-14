@@ -1,23 +1,23 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130331000000ComCourses extends Migration
+class Migration20130331000000ComCourses extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
-		self::addPluginEntry('courses', 'faq');
-		self::addPluginEntry('courses', 'related');
-		self::addPluginEntry('courses', 'store');
+		$this->addPluginEntry('courses', 'faq');
+		$this->addPluginEntry('courses', 'related');
+		$this->addPluginEntry('courses', 'store');
 	}
 
-	protected static function down($db)
+	public function down()
 	{
-		self::deletePluginEntry('courses', 'faq');
-		self::deletePluginEntry('courses', 'related');
-		self::deletePluginEntry('courses', 'store');
+		$this->deletePluginEntry('courses', 'faq');
+		$this->deletePluginEntry('courses', 'related');
+		$this->deletePluginEntry('courses', 'store');
 	}
 }

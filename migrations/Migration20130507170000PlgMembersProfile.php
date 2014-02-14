@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,17 +8,17 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for new member address fields
  **/
-class Migration20130507170000PlgMembersProfile extends Migration
+class Migration20130507170000PlgMembersProfile extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = '';
 
 		// create event calendars table
-		if (!$db->tableExists('#__xprofiles_address'))
+		if (!$this->db->tableExists('#__xprofiles_address'))
 		{
 			$query .= "CREATE TABLE `#__xprofiles_address` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -38,8 +38,8 @@ class Migration20130507170000PlgMembersProfile extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

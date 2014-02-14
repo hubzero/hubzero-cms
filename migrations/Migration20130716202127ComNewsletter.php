@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20130716202127ComNewsletter extends Migration
+class Migration20130716202127ComNewsletter extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addComponentEntry('Newsletters', 'com_newsletter');
+		$this->addComponentEntry('Newsletters', 'com_newsletter');
 
 		// create component entry
 		$query = "";
@@ -168,19 +168,19 @@ class Migration20130716202127ComNewsletter extends Migration
 		
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::addPluginEntry('cron', 'newsletter');
+		$this->addPluginEntry('cron', 'newsletter');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deleteComponentEntry('Newsletters');
+		$this->deleteComponentEntry('Newsletters');
 		
 		// remove all newsletter tables
 		$query .= "
@@ -201,10 +201,10 @@ class Migration20130716202127ComNewsletter extends Migration
 		
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::deletePluginEntry('cron', 'newsletter');
+		$this->deletePluginEntry('cron', 'newsletter');
 	}
 }

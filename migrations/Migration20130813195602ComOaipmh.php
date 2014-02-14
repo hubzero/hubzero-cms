@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for installing oaipmh component
  **/
-class Migration20130813195602ComOaipmh extends Migration
+class Migration20130813195602ComOaipmh extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableExists('#__oaipmh_dcspecs'))
+		if (!$this->db->tableExists('#__oaipmh_dcspecs'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__oaipmh_dcspecs` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,8 +25,8 @@ class Migration20130813195602ComOaipmh extends Migration
 							PRIMARY KEY (`id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query = "INSERT INTO `#__oaipmh_dcspecs` (`id`, `name`, `query`, `display`) VALUES
 						(1, 'resource IDs', 'SELECT p.id FROM #__publications p, #__publication_versions pv WHERE p.id = pv.publication_id AND pv.state = 1', 1),
@@ -47,22 +47,22 @@ class Migration20130813195602ComOaipmh extends Migration
 						(16, 'language', '', 1),
 						(17, 'source', '', 1);";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableExists('#__oaipmh_dcspecs'))
+		if ($this->db->tableExists('#__oaipmh_dcspecs'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__oaipmh_dcspecs`;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

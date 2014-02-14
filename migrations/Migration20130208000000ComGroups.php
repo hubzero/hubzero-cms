@@ -1,57 +1,57 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130208000000ComGroups extends Migration
+class Migration20130208000000ComGroups extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
 		$query = '';
 
-		if ($db->tableHasField('#__xgroups', 'access'))
+		if ($this->db->tableHasField('#__xgroups', 'access'))
 		{
 			$query .= "ALTER TABLE `#__xgroups` DROP `access`;\n";
 		}
-		if ($db->tableHasField('#__xgroups', 'privacy') && !$db->tableHasField('#__xgroups', 'discoverability'))
+		if ($this->db->tableHasField('#__xgroups', 'privacy') && !$this->db->tableHasField('#__xgroups', 'discoverability'))
 		{
 			$query .= "ALTER TABLE `#__xgroups` CHANGE `privacy` `discoverability` TINYINT(3);\n";
 		}
-		if (!$db->tableHasField('#__xgroups', 'approved'))
+		if (!$this->db->tableHasField('#__xgroups', 'approved'))
 		{
 			$query .= "ALTER TABLE `#__xgroups` ADD COLUMN `approved` TINYINT(3) DEFAULT 1 AFTER `published`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
-	protected static function down($db)
+	public function down()
 	{
 		$query = '';
 
-		if ($db->tableHasField('#__xgroups', 'approved'))
+		if ($this->db->tableHasField('#__xgroups', 'approved'))
 		{
 			$query .= "ALTER TABLE `#__xgroups` DROP `approved`;\n";
 		}
-		if (!$db->tableHasField('#__xgroups', 'privacy') && $db->tableHasField('#__xgroups', 'discoverability'))
+		if (!$this->db->tableHasField('#__xgroups', 'privacy') && $this->db->tableHasField('#__xgroups', 'discoverability'))
 		{
 			$query .= "ALTER TABLE `#__xgroups` CHANGE `discoverability` `privacy` TINYINT(3);\n";
 		}
-		if (!$db->tableHasField('#__xgroups', 'access'))
+		if (!$this->db->tableHasField('#__xgroups', 'access'))
 		{
 			$query .= "ALTER TABLE `#__xgroups` ADD COLUMN `access` tinyint(3) DEFAULT '0' AFTER `type`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,23 +8,23 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140207091831PlgContent extends Migration
+class Migration20140207091831PlgContent extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addPluginEntry('content', 'formatwiki', 1, '{"applyFormat":"1","convertFormat":"0"}');
-		self::addPluginEntry('content', 'formathtml', 0);
+		$this->addPluginEntry('content', 'formatwiki', 1, '{"applyFormat":"1","convertFormat":"0"}');
+		$this->addPluginEntry('content', 'formathtml', 0);
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deletePluginEntry('content', 'formatwiki');
-		self::deletePluginEntry('content', 'formathtml');
+		$this->deletePluginEntry('content', 'formatwiki');
+		$this->deletePluginEntry('content', 'formathtml');
 	}
 }

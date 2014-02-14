@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,21 +8,21 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding help component
  **/
-class Migration20130426071658ComHelp extends Migration
+class Migration20130426071658ComHelp extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addComponentEntry('Help');
+		$this->addComponentEntry('Help');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deleteComponentEntry('Help');
+		$this->deleteComponentEntry('Help');
 	}
 }

@@ -1,28 +1,28 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for for adding wikiwyg plugin
  **/
-class Migration20140211083120PlgEditorsWikiwyg extends Migration
+class Migration20140211083120PlgEditorsWikiwyg extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addPluginEntry('editors','wikiwyg');
+		$this->addPluginEntry('editors','wikiwyg');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deletePluginEntry('editors','wikiwyg');
+		$this->deletePluginEntry('editors','wikiwyg');
 	}
 }

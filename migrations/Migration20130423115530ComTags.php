@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,43 +8,43 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding tags substitutes index
  **/
-class Migration20130423115530ComTags extends Migration
+class Migration20130423115530ComTags extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableHasKey('#__tags_substitute', 'idx_tag_id'))
+		if (!$this->db->tableHasKey('#__tags_substitute', 'idx_tag_id'))
 		{
 			$query .= "ALTER TABLE `#__tags_substitute` ADD INDEX `idx_tag_id` (`tag_id`);";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableHasKey('#__tags_substitute', 'idx_tag_id'))
+		if ($this->db->tableHasKey('#__tags_substitute', 'idx_tag_id'))
 		{
 			$query .= "DROP INDEX `idx_tag_id` ON `#__tags_substitute`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

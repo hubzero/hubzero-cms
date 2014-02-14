@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding com cron component
  **/
-class Migration20130426072033ComCron extends Migration
+class Migration20130426072033ComCron extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableExists('#__cron_jobs'))
+		if (!$this->db->tableExists('#__cron_jobs'))
 		{
 			$query = "CREATE TABLE `#__cron_jobs` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -34,29 +34,29 @@ class Migration20130426072033ComCron extends Migration
 						`ordering` int(11) NOT NULL DEFAULT '0',
 						PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::addComponentEntry('Cron');
-		self::addPluginEntry('cron', 'support');
-		self::addPluginEntry('cron', 'members');
-		self::addPluginEntry('cron', 'cache');
+		$this->addComponentEntry('Cron');
+		$this->addPluginEntry('cron', 'support');
+		$this->addPluginEntry('cron', 'members');
+		$this->addPluginEntry('cron', 'cache');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableExists('#__cron_jobs'))
+		if ($this->db->tableExists('#__cron_jobs'))
 		{
 			$query = "DROP TABLE `#__cron_jobs`;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::deleteComponentEntry('Cron');
-		self::deletePluginEntry('cron');
+		$this->deleteComponentEntry('Cron');
+		$this->deletePluginEntry('cron');
 	}
 }

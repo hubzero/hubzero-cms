@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding billboards component
  **/
-class Migration20130930160944ComBillboards extends Migration
+class Migration20130930160944ComBillboards extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableExists('#__billboards'))
+		if (!$this->db->tableExists('#__billboards'))
 		{
 			$query = "CREATE TABLE `#__billboards` (
 						`id` int(11) unsigned NOT NULL auto_increment,
@@ -38,8 +38,8 @@ class Migration20130930160944ComBillboards extends Migration
 						PRIMARY KEY  (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
 						VALUES (1,'Powered by HUBzero','Powered by HUBzero','HUBzero is a platform used to create dynamic web sites for scientific research and educational activities. With HUBzero, you can easily publish your research software and related educational materials on the web.','Learn more &rsaquo;','http://hubzero.org/about','learnmore','relative','slideone.png','15px','poweredbyhubzero','',1,1,0,'0000-00-00 00:00:00');
@@ -52,11 +52,11 @@ class Migration20130930160944ComBillboards extends Migration
 
 						INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
 						VALUES (1,'User groups for collaboration','User groups for collaboration','Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exist for a specific interest or topic. If you can\'t find one you like, feel free to start your own.','Learn more &rsaquo;','/groups','learnmore','bottomright','slidefour.png','0 0 0 170px','usergroupsforcollaboration','#usergroupsforcollaboration h3 {\r\nline-height:2em;\r\n}',1,4,0,'0000-00-00 00:00:00');";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__billboard_collection'))
+		if (!$this->db->tableExists('#__billboard_collection'))
 		{
 			$query = "CREATE TABLE `#__billboard_collection` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -64,38 +64,38 @@ class Migration20130930160944ComBillboards extends Migration
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query = "INSERT INTO `#__billboard_collection` (`name`) VALUES ('Home Default Billboard');";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::addComponentEntry('Billboards');
+		$this->addComponentEntry('Billboards');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableExists('#__billboards'))
+		if ($this->db->tableExists('#__billboards'))
 		{
 			$query = "DROP TABLE `#__billboards`";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if ($db->tableExists('#__billboard_collection'))
+		if ($this->db->tableExists('#__billboard_collection'))
 		{
 			$query = "DROP TABLE `#__billboard_collection`";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::deleteComponentEntry('Billboards');
+		$this->deleteComponentEntry('Billboards');
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,18 +8,18 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140114091331PlgGeocode extends Migration
+class Migration20140114091331PlgGeocode extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if (!$db->loadResult())
+		if (!$this->db->loadResult())
 		{
 			$plugins = array(
 				'arcgisonline', 
@@ -58,7 +58,7 @@ class Migration20140114091331PlgGeocode extends Migration
 				{
 					$enabled = 1;
 				}
-				self::addPluginEntry('geocode', $plugin, $enabled);
+				$this->addPluginEntry('geocode', $plugin, $enabled);
 			}
 		}
 	}
@@ -66,15 +66,15 @@ class Migration20140114091331PlgGeocode extends Migration
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if ($db->loadResult())
+		if ($this->db->loadResult())
 		{
-			self::deletePluginEntry('geocode');
+			$this->deletePluginEntry('geocode');
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,60 +8,60 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140110132217ComWeblinks extends Migration
+class Migration20140110132217ComWeblinks extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if ($id = $db->loadResult())
+		if ($id = $this->db->loadResult())
 		{
-			self::deleteComponentEntry('weblinks');
+			$this->deleteComponentEntry('weblinks');
 
-			self::deletePluginEntry('search', 'weblinks');
+			$this->deletePluginEntry('search', 'weblinks');
 
-			self::deleteModuleEntry('mod_weblinks');
+			$this->deleteModuleEntry('mod_weblinks');
 
 			$query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_weblinks';";
-			$db->setQuery($query);
-			if ($results = $db->loadResultArray())
+			$this->db->setQuery($query);
+			if ($results = $this->db->loadResultArray())
 			{
 				$query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 
 				$query = "DELETE FROM `#__modules` WHERE `module`='mod_weblinks';";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			$query = "DROP TABLE IF EXISTS `#__weblinks`;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if (!($id = $db->loadResult()))
+		if (!($id = $this->db->loadResult()))
 		{
-			self::addComponentEntry('weblinks');
+			$this->addComponentEntry('weblinks');
 
-			self::addPluginEntry('weblinks', 'contacts', 0);
+			$this->addPluginEntry('weblinks', 'contacts', 0);
 
-			if (!$db->tableExists('#__weblinks'))
+			if (!$this->db->tableExists('#__weblinks'))
 			{
 				$query = "CREATE TABLE `#__weblinks` (
 					  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -104,8 +104,8 @@ class Migration20140110132217ComWeblinks extends Migration
 					  KEY `idx_language` (`language`),
 					  KEY `idx_xreference` (`xreference`)
 					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}

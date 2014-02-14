@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,15 +8,15 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for migrating joomla content
  **/
-class Migration20130924000002Core extends Migration
+class Migration20130924000002Core extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		// Create assets table (all of this will only run the first time the table is created)
-		if (!$db->tableExists('#__assets'))
+		if (!$this->db->tableExists('#__assets'))
 		{
 			$query = "CREATE  TABLE IF NOT EXISTS `#__assets` (
 				`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
@@ -35,8 +35,8 @@ class Migration20130924000002Core extends Migration
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			// Insert some default values
 			$query = "INSERT INTO `#__assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`)
@@ -68,12 +68,12 @@ class Migration20130924000002Core extends Migration
 				(25,1,0,0,1,'com_weblinks','com_weblinks','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":[],\"core.edit\":{\"4\":1},\"core.edit.state\":{\"5\":1},\"core.edit.own\":[]}'),
 				(26,1,0,0,1,'com_wrapper','com_wrapper','{}');";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			// Insert all components as assets (parent is 0 because we don't need more than 1 entry per component - i.e. no sub items used for menus in 1.5)
-			$db->setQuery('SELECT * FROM `#__components` WHERE parent = 0');
-			$components = $db->loadObjectList();
+			$this->db->setQuery('SELECT * FROM `#__components` WHERE parent = 0');
+			$components = $this->db->loadObjectList();
 
 			if (count($components) > 0)
 			{
@@ -94,9 +94,9 @@ class Migration20130924000002Core extends Migration
 				foreach ($components as $com)
 				{
 					// Make sure it isn't already in there
-					$query = "SELECT id FROM `#__assets` WHERE `name` = " . $db->Quote($com->option);
-					$db->setQuery($query);
-					if ($db->loadResult())
+					$query = "SELECT id FROM `#__assets` WHERE `name` = " . $this->db->Quote($com->option);
+					$this->db->setQuery($query);
+					if ($this->db->loadResult())
 					{
 						continue;
 					}
@@ -105,39 +105,39 @@ class Migration20130924000002Core extends Migration
 					$query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES ";
 					$query .= "(";
 					$query .= '1,';                                  // parent_id 1 is the root asset
-					$query .= $db->Quote('') . ',';                  // lft
-					$query .= $db->Quote('') . ',';                  // rgt
+					$query .= $this->db->Quote('') . ',';                  // lft
+					$query .= $this->db->Quote('') . ',';                  // rgt
 					$query .= '1,';                                  // level
-					$query .= $db->Quote($com->option) . ',';        // name
-					$query .= $db->Quote($com->option) . ',';        // title
-					$query .= $db->Quote(json_encode($defaulRules)); // rules
+					$query .= $this->db->Quote($com->option) . ',';        // name
+					$query .= $this->db->Quote($com->option) . ',';        // title
+					$query .= $this->db->Quote(json_encode($defaulRules)); // rules
 					$query .= ");";
 
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 
 			// Insert existing categories as assets (ignore root item)
-			$db->setQuery('SELECT * FROM `#__categories` WHERE extension != "system"');
-			$categories = $db->loadObjectList();
+			$this->db->setQuery('SELECT * FROM `#__categories` WHERE extension != "system"');
+			$categories = $this->db->loadObjectList();
 
 			if (count($categories) > 0)
 			{
 				foreach ($categories as $cat)
 				{
 					// Make sure it isn't already in there
-					$query = "SELECT id FROM `#__assets` WHERE `name` = " . $db->Quote($cat->extension.'.category.'.$cat->id);
-					$db->setQuery($query);
-					if ($db->loadResult())
+					$query = "SELECT id FROM `#__assets` WHERE `name` = " . $this->db->Quote($cat->extension.'.category.'.$cat->id);
+					$this->db->setQuery($query);
+					if ($this->db->loadResult())
 					{
 						continue;
 					}
 
 					// Query for parent id
-					$query = "SELECT `id` FROM `#__assets` WHERE `name` = " . $db->Quote($cat->extension);
-					$db->setQuery($query);
-					$result = $db->loadResult();
+					$query = "SELECT `id` FROM `#__assets` WHERE `name` = " . $this->db->Quote($cat->extension);
+					$this->db->setQuery($query);
+					$result = $this->db->loadResult();
 					if (!is_numeric($result))
 					{
 						// If we don't find the component entry, continue
@@ -145,71 +145,71 @@ class Migration20130924000002Core extends Migration
 					}
 
 					$query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES (";
-					$query .= $db->Quote($result) . ',';                                                             // parent_id (from list entered above)
-					$query .= $db->Quote('') . ',';                                                                  // lft
-					$query .= $db->Quote('') . ',';                                                                  // rgt
+					$query .= $this->db->Quote($result) . ',';                                                             // parent_id (from list entered above)
+					$query .= $this->db->Quote('') . ',';                                                                  // lft
+					$query .= $this->db->Quote('') . ',';                                                                  // rgt
 					$query .= $cat->level+1 . ',';                                                                   // level
-					$query .= $db->Quote($cat->extension.'.category.'.$cat->id) . ',';                               // name
-					$query .= $db->Quote($cat->extension) . ',';                                                     // title
-					$query .= $db->Quote('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}'); // rules
+					$query .= $this->db->Quote($cat->extension.'.category.'.$cat->id) . ',';                               // name
+					$query .= $this->db->Quote($cat->extension) . ',';                                                     // title
+					$query .= $this->db->Quote('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}'); // rules
 					$query .= ");";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 
 					// Now, update the categories table with the asset id
-					$id = $db->insertid();
+					$id = $this->db->insertid();
 					$query = "UPDATE `#__categories` SET `asset_id` = {$id} WHERE `id` = {$cat->id};";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 
 			// Now, go back and set parent_id for categories that are level 2 (those were original 1.5 categories, i.e. below sections)
 			$query = "SELECT * FROM `#__categories` WHERE level = 2";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			if (count($results) > 0)
 			{
 				foreach ($results as $r)
 				{
 					// Get the category id from the assets table
-					$query = "SELECT `id` FROM `#__assets` WHERE name = " . $db->Quote('com_content.category.'.$r->id);
-					$db->setQuery($query);
-					$id = $db->loadResult();
+					$query = "SELECT `id` FROM `#__assets` WHERE name = " . $this->db->Quote('com_content.category.'.$r->id);
+					$this->db->setQuery($query);
+					$id = $this->db->loadResult();
 
 					// Get the category parent id from the assets table
-					$query = "SELECT `id` FROM `#__assets` WHERE name = " . $db->Quote('com_content.category.'.$r->parent_id);
-					$db->setQuery($query);
-					$parent_id = $db->loadResult();
+					$query = "SELECT `id` FROM `#__assets` WHERE name = " . $this->db->Quote('com_content.category.'.$r->parent_id);
+					$this->db->setQuery($query);
+					$parent_id = $this->db->loadResult();
 
 					// Update the assets table
 					$query = "UPDATE `#__assets` SET parent_id = {$parent_id} WHERE `id` = {$id}";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 
 			// We're going to go ahead and add asset_id here, as we need to insert into below
-			if (!$db->tableHasField('#__content', 'asset_id') && $db->tableHasField('#__content', 'id'))
+			if (!$this->db->tableHasField('#__content', 'asset_id') && $this->db->tableHasField('#__content', 'id'))
 			{
 				$query = "ALTER TABLE `#__content` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #_assets table.' AFTER `id`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Insert articles
-			$db->setQuery('SELECT * FROM `#__content`');
-			$articles = $db->loadObjectList();
+			$this->db->setQuery('SELECT * FROM `#__content`');
+			$articles = $this->db->loadObjectList();
 
 			if (count($articles) > 0)
 			{
 				foreach ($articles as $art)
 				{
 					// Query for parent ID
-					$query = "SELECT `id`, `level` FROM `#__assets` WHERE `name` = " . $db->Quote('com_content.category.'.$art->catid);
-					$db->setQuery($query);
-					$obj    = $db->loadObject();
+					$query = "SELECT `id`, `level` FROM `#__assets` WHERE `name` = " . $this->db->Quote('com_content.category.'.$art->catid);
+					$this->db->setQuery($query);
+					$obj    = $this->db->loadObject();
 					$level  = (is_object($obj) && is_numeric($obj->level)) ? $obj->level+1 : 4;
 					if (is_object($obj) && is_numeric($obj->id))
 					{
@@ -219,30 +219,30 @@ class Migration20130924000002Core extends Migration
 					{
 						// We didn't find a parent id, so just use the 'uncategorised' category
 						$query = "SELECT `asset_id` FROM `#__categories` WHERE `extension` = 'com_content' AND `alias` = 'uncategorised';";
-						$db->setQuery($query);
-						if (!$result = $db->loadResult())
+						$this->db->setQuery($query);
+						if (!$result = $this->db->loadResult())
 						{
 							continue;
 						}
 					}
 
 					$query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES (";
-					$query .= $db->Quote($result) . ',';                                            // parent_id
-					$query .= $db->Quote('') . ',';                                                 // lft
-					$query .= $db->Quote('') . ',';                                                 // rgt
+					$query .= $this->db->Quote($result) . ',';                                            // parent_id
+					$query .= $this->db->Quote('') . ',';                                                 // lft
+					$query .= $this->db->Quote('') . ',';                                                 // rgt
 					$query .= $level . ',';                                                         // level
-					$query .= $db->Quote('com_content.article.'.$art->id) . ',';                    // name
-					$query .= $db->Quote($art->title) . ',';                                        // title
-					$query .= $db->Quote('{"core.delete":[],"core.edit":[],"core.edit.state":[]}'); // rules
+					$query .= $this->db->Quote('com_content.article.'.$art->id) . ',';                    // name
+					$query .= $this->db->Quote($art->title) . ',';                                        // title
+					$query .= $this->db->Quote('{"core.delete":[],"core.edit":[],"core.edit.state":[]}'); // rules
 					$query .= ")";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 
 					// Now, update the content table with the asset id
-					$id = $db->insertid();
+					$id = $this->db->insertid();
 					$query = "UPDATE `#__content` SET `asset_id` = {$id} WHERE `id` = {$art->id};";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 
@@ -267,8 +267,8 @@ class Migration20130924000002Core extends Migration
 					"7" => 1
 					)
 				);
-			$db->setQuery("UPDATE `#__assets` SET rules='".json_encode($rules)."' WHERE NAME= 'com_mailto' OR NAME='com_massmail' OR NAME='com_config';");
-			$db->query();
+			$this->db->setQuery("UPDATE `#__assets` SET rules='".json_encode($rules)."' WHERE NAME= 'com_mailto' OR NAME='com_massmail' OR NAME='com_config';");
+			$this->db->query();
 
 			// If we have the nested set class available, use it to rebuild lft/rgt
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
@@ -290,7 +290,7 @@ class Migration20130924000002Core extends Migration
 				$table->rebuild();
 
 				// Rebuild assets
-				self::rebuildAssets();
+				$this->rebuildAssets();
 			}
 		}
 	}
@@ -310,7 +310,7 @@ class Migration20130924000002Core extends Migration
 
 		foreach ($children as $node)
 		{
-			$rightId = self::rebuildAssets($node->id, $rightId, $level + 1);
+			$rightId = $this->rebuildAssets($node->id, $rightId, $level + 1);
 
 			if ($rightId === false)
 			{

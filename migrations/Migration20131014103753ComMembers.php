@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding members quota interface
  **/
-class Migration20131014103753ComMembers extends Migration
+class Migration20131014103753ComMembers extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableExists('#__users_quotas'))
+		if (!$this->db->tableExists('#__users_quotas'))
 		{
 			$query = "CREATE TABLE `#__users_quotas` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -28,11 +28,11 @@ class Migration20131014103753ComMembers extends Migration
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__users_quotas_classes'))
+		if (!$this->db->tableExists('#__users_quotas_classes'))
 		{
 			$query = "CREATE TABLE `#__users_quotas_classes` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -44,15 +44,15 @@ class Migration20131014103753ComMembers extends Migration
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query = "INSERT INTO `#__users_quotas_classes` (`id`, `alias`, `hard_files`, `soft_files`, `hard_blocks`, `soft_blocks`) VALUES (1, 'default', 0, 0, 1000000, 900000);";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__users_quotas_log'))
+		if (!$this->db->tableExists('#__users_quotas_log'))
 		{
 			$query = "CREATE TABLE `#__users_quotas_log` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -68,35 +68,35 @@ class Migration20131014103753ComMembers extends Migration
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableExists('#__users_quotas'))
+		if ($this->db->tableExists('#__users_quotas'))
 		{
 			$query = "DROP TABLE `#__users_quotas`";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if ($db->tableExists('#__users_quotas_classes'))
+		if ($this->db->tableExists('#__users_quotas_classes'))
 		{
 			$query = "DROP TABLE `#__users_quotas_classes`";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if ($db->tableExists('#__users_quotas_log'))
+		if ($this->db->tableExists('#__users_quotas_log'))
 		{
 			$query = "DROP TABLE `#__users_quotas_log`";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

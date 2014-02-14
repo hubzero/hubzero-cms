@@ -1,17 +1,17 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20121015000000ComTools extends Migration
+class Migration20121015000000ComTools extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
 		$query = '';
 
-		if (!$db->tableExists('#__venue') && !$db->tableExists('venue'))
+		if (!$this->db->tableExists('#__venue') && !$this->db->tableExists('venue'))
 		{
 			$query .= "CREATE TABLE IF NOT EXISTS `#__venue` (
 						`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -20,7 +20,7 @@ class Migration20121015000000ComTools extends Migration
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
 		}
-		if (!$db->tableExists('#__venue_countries') && !$db->tableExists('venue_countries'))
+		if (!$this->db->tableExists('#__venue_countries') && !$this->db->tableExists('venue_countries'))
 		{
 			$query .= "CREATE TABLE IF NOT EXISTS `#__venue_countries` (
 						`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,28 +31,28 @@ class Migration20121015000000ComTools extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
-	protected static function down($db)
+	public function down()
 	{
 		$query = '';
 
-		if ($db->tableExists('#__venue'))
+		if ($this->db->tableExists('#__venue'))
 		{
 			$query .= "DROP TABLE IF EXISTS `#__venue`;\n";
 		}
-		if ($db->tableExists('#__venue_countries'))
+		if ($this->db->tableExists('#__venue_countries'))
 		{
 			$query .= "DROP TABLE IF EXISTS `#__venue_countries`;\n";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

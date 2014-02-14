@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for fixing some dated references to topics, rather than wiki
  **/
-class Migration20131017133750ComWiki extends Migration
+class Migration20131017133750ComWiki extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query  = "SELECT * FROM `#__wiki_page` AS wp,";
 		$query .= " `#__wiki_version` AS wv";
@@ -22,8 +22,8 @@ class Migration20131017133750ComWiki extends Migration
 		$query .= " ORDER BY wv.version DESC";
 		$query .= " LIMIT 1;";
 
-		$db->setQuery($query);
-		$result = $db->loadObject();
+		$this->db->setQuery($query);
+		$result = $this->db->loadObject();
 
 		if ($result)
 		{
@@ -38,10 +38,10 @@ class Migration20131017133750ComWiki extends Migration
 				$cls2 = 'WikiTableRevision';
 			}
 
-			$version = new $cls2($db);
+			$version = new $cls2($this->db);
 			$version->loadByVersion($result->pageid, $result->version);
 
-			$page = new $cls($db);
+			$page = new $cls($this->db);
 			$page->load($result->pageid);
 
 			$hostname = php_uname('n');

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,18 +8,18 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for creating default member roles if none exist
  **/
-class Migration20130423204715ComCourses extends Migration
+class Migration20130423204715ComCourses extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "SELECT * FROM `#__courses_roles`";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if (!$db->loadResult())
+		if (!$this->db->loadResult())
 		{
 			$query = "INSERT INTO `jos_courses_roles` (`offering_id`, `alias`, `title`, `permissions`)
 						VALUES
@@ -27,8 +27,8 @@ class Migration20130423204715ComCourses extends Migration
 							(0, 'manager', 'Manager', ''),
 							(0, 'student', 'Student', '');";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

@@ -1,20 +1,20 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130415000000ComSupport extends Migration
+class Migration20130415000000ComSupport extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableHasField('#__support_tickets', 'closed'))
+		if (!$this->db->tableHasField('#__support_tickets', 'closed'))
 		{
 			// Add a unique index on grade book and asset_id field to forms table
 			$query = "ALTER TABLE `#__support_tickets` ADD `closed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00' AFTER `created`";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			// Closed tickets
 			$sql = "SELECT c.ticket, c.created
@@ -23,8 +23,8 @@ class Migration20130415000000ComSupport extends Migration
 					WHERE t.open=0 
 					ORDER BY c.created ASC";
 
-			$db->setQuery($sql);
-			$clsd = $db->loadObjectList();
+			$this->db->setQuery($sql);
+			$clsd = $this->db->loadObjectList();
 
 			// First we need to loop through all the entries and reove some potential duplicates
 			$closedTickets = array();
@@ -45,19 +45,19 @@ class Migration20130415000000ComSupport extends Migration
 
 			foreach ($closedTickets as $ticket => $closed)
 			{
-				$query = "UPDATE `#__support_tickets` SET `closed`=" . $db->Quote($closed) . " WHERE id=" . $db->Quote($ticket);
+				$query = "UPDATE `#__support_tickets` SET `closed`=" . $this->db->Quote($closed) . " WHERE id=" . $this->db->Quote($ticket);
 
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
 
-	protected function down($db)
+	public function down()
 	{
 		$query = "ALTER TABLE `#__support_tickets` DROP `closed`;";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 	}
 }

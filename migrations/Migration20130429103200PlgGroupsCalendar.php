@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,17 +8,17 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for new group calendar plugin
  **/
-class Migration20130429103200PlgGroupsCalendar extends Migration
+class Migration20130429103200PlgGroupsCalendar extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = '';
 
 		// create event calendars table
-		if (!$db->tableExists('#__events_calendars'))
+		if (!$this->db->tableExists('#__events_calendars'))
 		{
 			$query .= "CREATE TABLE `#__events_calendars` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -32,23 +32,23 @@ class Migration20130429103200PlgGroupsCalendar extends Migration
 		}
 
 		// add calendar_id, scope, and scope id to events so we can have them belong to other sections
-		if (!$db->tableHasField('#__events', 'calendar_id'))
+		if (!$this->db->tableHasField('#__events', 'calendar_id'))
 		{
 			$query .= "ALTER TABLE `#__events` ADD COLUMN calendar_id int(11) AFTER catid;\n";
 		}
-		if (!$db->tableHasField('#__events', 'scope'))
+		if (!$this->db->tableHasField('#__events', 'scope'))
 		{
 			$query .= "ALTER TABLE `#__events` ADD COLUMN scope VARCHAR(100) AFTER calendar_id;\n";
 
 			// set scope on all current site events
 			$query .= "UPDATE `#__events` SET scope='event' WHERE (scope IS NULL OR scope='');";
 		}
-		if (!$db->tableHasField('#__events', 'scope_id'))
+		if (!$this->db->tableHasField('#__events', 'scope_id'))
 		{
 			$query .= "ALTER TABLE `#__events` ADD COLUMN scope_id INT(11)  AFTER scope;\n";
 		}
 
-		if ($db->tableExists('#__xgroups_events'))
+		if ($this->db->tableExists('#__xgroups_events'))
 		{
 			// move group events to events table
 			$query .= "INSERT INTO `#__events`(scope, scope_id, title, content, state, created, created_by, publish_up, publish_down)
@@ -71,8 +71,8 @@ class Migration20130429103200PlgGroupsCalendar extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,16 +8,16 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding courses badge implementation
  **/
-class Migration20130507030333ComCourses extends Migration
+class Migration20130507030333ComCourses extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableExists('#__courses_offering_badges'))
+		if (!$this->db->tableExists('#__courses_offering_badges'))
 		{
 			$query .= "CREATE TABLE `#__courses_offering_badges` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -28,12 +28,12 @@ class Migration20130507030333ComCourses extends Migration
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
 		}
 
-		if (!$db->tableHasField('#__courses_offerings', 'badge_id'))
+		if (!$this->db->tableHasField('#__courses_offerings', 'badge_id'))
 		{
 			$query .= "ALTER TABLE `#__courses_offerings` ADD `badge_id` INT(11)  NULL  DEFAULT NULL  AFTER `state`;\n";
 		}
 
-		if (!$db->tableExists('#__courses_member_badges'))
+		if (!$this->db->tableExists('#__courses_member_badges'))
 		{
 			$query .= "CREATE TABLE `#__courses_member_badges` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -50,37 +50,37 @@ class Migration20130507030333ComCourses extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableExists('#__courses_offering_badges'))
+		if ($this->db->tableExists('#__courses_offering_badges'))
 		{
 			$query .= "DROP TABLE `#__courses_offering_badges`;\n";
 		}
 
-		if ($db->tableHasField('#__courses_offerings', 'badge_id'))
+		if ($this->db->tableHasField('#__courses_offerings', 'badge_id'))
 		{
 			$query .= "ALTER TABLE `#__courses_offerings` DROP `badge_id`;\n";
 		}
 
-		if ($db->tableExists('#__courses_member_badges'))
+		if ($this->db->tableExists('#__courses_member_badges'))
 		{
 			$query .= "DROP TABLE `#__courses_member_badges`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

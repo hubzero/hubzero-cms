@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20131112130740ComUsage extends Migration
+class Migration20131112130740ComUsage extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		// Get stats DB object
 		$config     = \JComponentHelper::getParams('com_usage');
@@ -61,19 +61,19 @@ class Migration20131112130740ComUsage extends Migration
 
 		$options['driver'] = $originalDriver;
 
-		if ($db->tableExists('#__extensions'))
+		if ($this->db->tableExists('#__extensions'))
 		{
 			$query = 'SELECT `params` FROM `#__extensions` WHERE element = "com_usage"';
-			$db->setQuery($query);
-			$result = $db->loadResult();
+			$this->db->setQuery($query);
+			$result = $this->db->loadResult();
 
 			$params = (array) json_decode($result);
 		}
 		else
 		{
 			$query = 'SELECT `params` FROM `#__plugins` WHERE element = "com_usage"';
-			$db->setQuery($query);
-			$result = $db->loadResult();
+			$this->db->setQuery($query);
+			$result = $this->db->loadResult();
 
 			$params = array();
 
@@ -101,13 +101,13 @@ class Migration20131112130740ComUsage extends Migration
 		$params['statsDBPassword'] = $options['password'];
 		$params['statsDBDatabase'] = $options['database'];
 
-		if ($db->tableExists('#__extensions'))
+		if ($this->db->tableExists('#__extensions'))
 		{
 			$params = json_encode($params);
 
-			$query = 'UPDATE `#__extensions` SET params = '.$db->quote($params).' WHERE element = "com_usage"';
-			$db->setQuery($query);
-			$db->query();
+			$query = 'UPDATE `#__extensions` SET params = '.$this->db->quote($params).' WHERE element = "com_usage"';
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 		else
 		{
@@ -119,9 +119,9 @@ class Migration20131112130740ComUsage extends Migration
 
 			$params = $p;
 
-			$query = 'UPDATE `#__plugins` SET params = '.$db->quote($params).' WHERE element = "com_usage"';
-			$db->setQuery($query);
-			$db->query();
+			$query = 'UPDATE `#__plugins` SET params = '.$this->db->quote($params).' WHERE element = "com_usage"';
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		// Set up return if needed

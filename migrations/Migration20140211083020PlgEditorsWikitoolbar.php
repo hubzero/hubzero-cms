@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,21 +8,21 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140211083020PlgEditorsWikitoolbar extends Migration
+class Migration20140211083020PlgEditorsWikitoolbar extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addPluginEntry('editors','wikitoolbar');
+		$this->addPluginEntry('editors','wikitoolbar');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deletePluginEntry('editors','wikitoolbar');
+		$this->deletePluginEntry('editors','wikitoolbar');
 	}
 }

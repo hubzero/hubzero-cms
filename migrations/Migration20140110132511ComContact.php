@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,47 +8,47 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140110132511ComContact extends Migration
+class Migration20140110132511ComContact extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if ($id = $db->loadResult())
+		if ($id = $this->db->loadResult())
 		{
-			self::deleteComponentEntry('contact');
+			$this->deleteComponentEntry('contact');
 
-			self::deletePluginEntry('search', 'contacts');
-			self::deletePluginEntry('user', 'contactcreator');
+			$this->deletePluginEntry('search', 'contacts');
+			$this->deletePluginEntry('user', 'contactcreator');
 
 			$query = "DROP TABLE IF EXISTS `#__contact_details`;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if (!($id = $db->loadResult()))
+		if (!($id = $this->db->loadResult()))
 		{
-			self::addComponentEntry('contact');
+			$this->addComponentEntry('contact');
 
-			self::addPluginEntry('search', 'contacts', 0);
-			self::addPluginEntry('user', 'contactcreator');
+			$this->addPluginEntry('search', 'contacts', 0);
+			$this->addPluginEntry('user', 'contactcreator');
 
-			if (!$db->tableExists('#__contact_details'))
+			if (!$this->db->tableExists('#__contact_details'))
 			{
 				$query = "CREATE TABLE `#__contact_details` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -103,8 +103,8 @@ class Migration20140110132511ComContact extends Migration
 					  KEY `idx_language` (`language`),
 					  KEY `idx_xreference` (`xreference`)
 					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}

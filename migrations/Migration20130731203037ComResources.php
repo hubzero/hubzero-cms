@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,31 +8,31 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20130731203037ComResources extends Migration
+class Migration20130731203037ComResources extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableHasField('#__media_tracking', 'total_viewing_time'))
+		if (!$this->db->tableHasField('#__media_tracking', 'total_viewing_time'))
 		{
 			$query = "ALTER TABLE `#__media_tracking` ADD COLUMN `total_viewing_time` int(11) DEFAULT 0;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableHasField('#__media_tracking', 'total_viewing_time'))
+		if ($this->db->tableHasField('#__media_tracking', 'total_viewing_time'))
 		{
 			$query = "ALTER TABLE `#__media_tracking` DROP `total_viewing_time`;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

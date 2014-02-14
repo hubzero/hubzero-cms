@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20130517101308ComContent extends Migration
+class Migration20130517101308ComContent extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if ($db->tableExists('#__components'))
+		if ($this->db->tableExists('#__components'))
 		{
 			$query  = "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=\n','') WHERE `option` = 'com_content';";
 			$query .= "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=0\n','') WHERE `option` = 'com_content';";
@@ -24,14 +24,14 @@ class Migration20130517101308ComContent extends Migration
 			$query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=0\n','') WHERE `link` LIKE '%com_content%';";
 			$query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=1\n','') WHERE `link` LIKE '%com_content%';";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 		else
 		{
 			$query = "SELECT `extension_id`, `params` from `#__extensions` WHERE `element` = 'com_content'";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			if (count($results) > 0)
 			{
@@ -40,15 +40,15 @@ class Migration20130517101308ComContent extends Migration
 					$params = json_decode($r->params);
 					unset($params->show_pdf_icon);
 
-					$query = "UPDATE `#__extensions` SET `params` = " . $db->quote(json_encode($params)) . " WHERE `extension_id` = " . $db->quote($r->extension_id);
-					$db->setQuery($query);
-					$db->query();
+					$query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `extension_id` = " . $this->db->quote($r->extension_id);
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 
 			$query = "SELECT `id`, `params` from `#__menu` WHERE `link` LIKE '%com_content%'";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			if (count($results) > 0)
 			{
@@ -57,9 +57,9 @@ class Migration20130517101308ComContent extends Migration
 					$params = json_decode($r->params);
 					unset($params->show_pdf_icon);
 
-					$query = "UPDATE `#__menu` SET `params` = " . $db->quote(json_encode($params)) . " WHERE `id` = " . $db->quote($r->id);
-					$db->setQuery($query);
-					$db->query();
+					$query = "UPDATE `#__menu` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `id` = " . $this->db->quote($r->id);
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 		}

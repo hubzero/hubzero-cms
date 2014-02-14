@@ -1,57 +1,57 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20121217000000ComForum extends Migration
+class Migration20121217000000ComForum extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
 		$query = '';
 
-		if (!$db->tableHasField('#__forum_sections', 'object_id'))
+		if (!$this->db->tableHasField('#__forum_sections', 'object_id'))
 		{
 			$query .= "ALTER TABLE `#__forum_sections` ADD `object_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `asset_id`;\n";
 		}
-		if (!$db->tableHasField('#__forum_categories', 'object_id'))
+		if (!$this->db->tableHasField('#__forum_categories', 'object_id'))
 		{
 			$query .= "ALTER TABLE `#__forum_categories` ADD `object_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `asset_id`;\n";
 		}
-		if (!$db->tableHasField('#__forum_posts', 'object_id'))
+		if (!$this->db->tableHasField('#__forum_posts', 'object_id'))
 		{
 			$query .= "ALTER TABLE `#__forum_posts` ADD `object_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `asset_id`;\n";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
-	protected static function down($db)
+	public function down()
 	{
 		$query = '';
 
-		if ($db->tableHasField('#__forum_sections', 'object_id'))
+		if ($this->db->tableHasField('#__forum_sections', 'object_id'))
 		{
 			$query .= "ALTER TABLE `#__forum_sections` DROP `object_id`;\n";
 		}
-		if ($db->tableHasField('#__forum_categories', 'object_id'))
+		if ($this->db->tableHasField('#__forum_categories', 'object_id'))
 		{
 			$query .= "ALTER TABLE `#__forum_categories` DROP `object_id`;\n";
 		}
-		if ($db->tableHasField('#__forum_posts', 'object_id'))
+		if ($this->db->tableHasField('#__forum_posts', 'object_id'))
 		{
 			$query .= "ALTER TABLE `#__forum_posts` DROP `object_id`;\n";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

@@ -1,21 +1,21 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding unity asset table
  **/
-class Migration20140212162812ComCourses extends Migration
+class Migration20140212162812ComCourses extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableExists('#__courses_asset_unity'))
+		if (!$this->db->tableExists('#__courses_asset_unity'))
 		{
 			$query = "CREATE TABLE `#__courses_asset_unity` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -27,22 +27,22 @@ class Migration20140212162812ComCourses extends Migration
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableExists('#__courses_asset_unity'))
+		if ($this->db->tableExists('#__courses_asset_unity'))
 		{
 			$query = "DROP TABLE `#__courses_asset_unity`";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

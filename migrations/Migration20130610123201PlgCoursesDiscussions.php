@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,43 +8,43 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for fixing wrong datatype on column
  **/
-class Migration20130610123201PlgCoursesDiscussions extends Migration
+class Migration20130610123201PlgCoursesDiscussions extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableHasField('#__forum_posts', 'scope_sub_id'))
+		if (!$this->db->tableHasField('#__forum_posts', 'scope_sub_id'))
 		{
 			$query = "ALTER TABLE `#__forum_posts` ADD `scope_sub_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `scope_id`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__forum_posts', 'scope_sub_id'))
+		if ($this->db->tableHasField('#__forum_posts', 'scope_sub_id'))
 		{
 			$query .= "ALTER TABLE `#__forum_posts` DROP `scope_sub_id`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

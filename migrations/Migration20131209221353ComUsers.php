@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,16 +8,16 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for updating custom footer module links to point to com_users, rather than com_user
  **/
-class Migration20131209221353ComUsers extends Migration
+class Migration20131209221353ComUsers extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "SELECT `id`, `content` FROM `#__modules` WHERE `position` = 'footer' AND `module` = 'mod_custom'";
-		$db->setQuery($query);
-		$results = $db->loadObjectList();
+		$this->db->setQuery($query);
+		$results = $this->db->loadObjectList();
 
 		if ($results && count($results) > 0)
 		{
@@ -29,9 +29,9 @@ class Migration20131209221353ComUsers extends Migration
 
 				if ($new_content != $r->content)
 				{
-					$query = "UPDATE `#__modules` SET `content` = " . $db->quote($new_content) . " WHERE `id` = " . $db->quote($r->id);
-					$db->setQuery($query);
-					$db->query();
+					$query = "UPDATE `#__modules` SET `content` = " . $this->db->quote($new_content) . " WHERE `id` = " . $this->db->quote($r->id);
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 		}

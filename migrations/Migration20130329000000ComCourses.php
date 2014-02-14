@@ -1,13 +1,13 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130329000000ComCourses extends Migration
+class Migration20130329000000ComCourses extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__courses_member_notes` (
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -23,18 +23,18 @@ class Migration20130329000000ComCourses extends Migration
 			`state` tinyint(2) NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 
-		self::addPluginEntry('courses', 'notes');
+		$this->addPluginEntry('courses', 'notes');
 	}
 
-	protected static function down($db)
+	public function down()
 	{
 		$query = "DROP TABLE IF EXISTS `#__courses_member_notes`;";
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 
-		self::deletePluginEntry('courses', 'notes');
+		$this->deletePluginEntry('courses', 'notes');
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding com_dataviewer
  **/
-class Migration20130815175354ComDataviewer extends Migration
+class Migration20130815175354ComDataviewer extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$params = array(
 			"record_display_limit"   => "10",
@@ -23,14 +23,14 @@ class Migration20130815175354ComDataviewer extends Migration
 			"acl_groups"             => ""
 		);
 
-		self::addComponentEntry('Dataviewer', 'com_dataviewer', 1, $params);
+		$this->addComponentEntry('Dataviewer', 'com_dataviewer', 1, $params);
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deleteComponentEntry('Dataviewer');
+		$this->deleteComponentEntry('Dataviewer');
 	}
 }

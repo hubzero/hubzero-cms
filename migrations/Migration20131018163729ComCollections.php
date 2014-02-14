@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,21 +8,21 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Re-add collections component entry to fix up instances where it was only partially added in the Joomla 2.5 version
  **/
-class Migration20131018163729ComCollections extends Migration
+class Migration20131018163729ComCollections extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addComponentEntry('Collections');
+		$this->addComponentEntry('Collections');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deleteComponentEntry('Collections');
+		$this->deleteComponentEntry('Collections');
 	}
 }

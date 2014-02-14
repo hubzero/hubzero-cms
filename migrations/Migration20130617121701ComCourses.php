@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,69 +8,69 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for fixing wrong datatype on column
  **/
-class Migration20130617121701ComCourses extends Migration
+class Migration20130617121701ComCourses extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableHasField('#__courses_offering_sections', 'params'))
+		if (!$this->db->tableHasField('#__courses_offering_sections', 'params'))
 		{
 			$query = "ALTER TABLE `#__courses_offering_sections` ADD `params` TEXT  NOT NULL  AFTER `grade_policy_id`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "";
 
-		if (!$db->tableHasField('#__courses_offerings', 'params'))
+		if (!$this->db->tableHasField('#__courses_offerings', 'params'))
 		{
 			$query = "ALTER TABLE `#__courses_offerings` ADD `params` TEXT  NOT NULL  AFTER `created_by`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__courses_offering_sections', 'params'))
+		if ($this->db->tableHasField('#__courses_offering_sections', 'params'))
 		{
 			$query .= "ALTER TABLE `#__courses_offering_sections` DROP `params`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "";
 
-		if ($db->tableHasField('#__courses_offerings', 'params'))
+		if ($this->db->tableHasField('#__courses_offerings', 'params'))
 		{
 			$query .= "ALTER TABLE `#__courses_offerings` DROP `params`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

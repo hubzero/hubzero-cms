@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20131111165410Core extends Migration
+class Migration20131111165410Core extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$init_params = array(
 			"period"     => "14",
@@ -21,19 +21,19 @@ class Migration20131111165410Core extends Migration
 			"map_path"   => "/site/stats/resource_maps/"
 		);
 
-		if ($db->tableExists('#__extensions'))
+		if ($this->db->tableExists('#__extensions'))
 		{
 			$query = 'SELECT `params` FROM `#__extensions` WHERE folder = "resources" AND element = "usage"';
-			$db->setQuery($query);
-			$result = $db->loadResult();
+			$this->db->setQuery($query);
+			$result = $this->db->loadResult();
 
 			$params = (array) json_decode($result);
 		}
 		else
 		{
 			$query = 'SELECT `params` FROM `#__plugins` WHERE folder = "resources" AND element = "usage"';
-			$db->setQuery($query);
-			$result = $db->loadResult();
+			$this->db->setQuery($query);
+			$result = $this->db->loadResult();
 
 			$params = array();
 
@@ -96,13 +96,13 @@ class Migration20131111165410Core extends Migration
 			$params = $init_params;
 		}
 
-		if ($db->tableExists('#__extensions'))
+		if ($this->db->tableExists('#__extensions'))
 		{
 			$params = json_encode($params);
 
-			$query = 'UPDATE `#__extensions` SET params = '.$db->quote($params).' WHERE folder = "resources" AND element = "usage"';
-			$db->setQuery($query);
-			$db->query();
+			$query = 'UPDATE `#__extensions` SET params = '.$this->db->quote($params).' WHERE folder = "resources" AND element = "usage"';
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 		else
 		{
@@ -114,12 +114,12 @@ class Migration20131111165410Core extends Migration
 
 			$params = $p;
 
-			$query = 'UPDATE `#__plugins` SET params = '.$db->quote($params).' WHERE folder = "resources" AND element = "usage"';
-			$db->setQuery($query);
-			$db->query();
+			$query = 'UPDATE `#__plugins` SET params = '.$this->db->quote($params).' WHERE folder = "resources" AND element = "usage"';
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__resource_stats_tools_tops'))
+		if (!$this->db->tableExists('#__resource_stats_tools_tops'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__resource_stats_tools_tops` (
 						`top` tinyint(4) NOT NULL default '0',
@@ -128,18 +128,18 @@ class Migration20131111165410Core extends Migration
 						`size` tinyint(4) NOT NULL default '0',
 						PRIMARY KEY  (`top`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query  = "INSERT IGNORE INTO `#__resource_stats_tools_tops` VALUES";
 			$query .= " (1,'Users By Country Of Residence',1,5),";
 			$query .= " (2,'Top Domains By User Count',1,5),";
 			$query .= " (3,'Users By Organization Type',1,5)";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__stats_tops'))
+		if (!$this->db->tableExists('#__stats_tops'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__stats_tops` (
 						`id` tinyint(4) NOT NULL default '0',
@@ -148,8 +148,8 @@ class Migration20131111165410Core extends Migration
 						`size` tinyint(4) NOT NULL default '0',
 						PRIMARY KEY  (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query  = "INSERT IGNORE INTO `#__stats_tops` VALUES";
 			$query .= " (1,'Top Tools by Ranking',1,5),";
@@ -161,11 +161,11 @@ class Migration20131111165410Core extends Migration
 			$query .= " (7,'Top Tools by Simulation CPU Time',2,5),";
 			$query .= " (8,'Top Tools by Simulation Interaction Time',2,5),";
 			$query .= " (9,'Top Tools by Citations',1,5)";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__citations_secondary'))
+		if (!$this->db->tableExists('#__citations_secondary'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__citations_secondary` (
 						`id` int(11) NOT NULL auto_increment,
@@ -174,11 +174,11 @@ class Migration20131111165410Core extends Migration
 						`search_string` tinytext,
 						PRIMARY KEY  (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__session_geo'))
+		if (!$this->db->tableExists('#__session_geo'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__session_geo` (
 						`session_id` varchar(200) NOT NULL default '0',
@@ -202,11 +202,11 @@ class Migration20131111165410Core extends Migration
 						KEY `time` (`time`),
 						KEY `ip` (`ip`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__metrics_ipgeo_cache'))
+		if (!$this->db->tableExists('#__metrics_ipgeo_cache'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__metrics_ipgeo_cache` (
 						`ip` int(10) NOT NULL DEFAULT '0000000000',
@@ -220,8 +220,8 @@ class Migration20131111165410Core extends Migration
 						PRIMARY KEY (`ip`),
 						KEY (`lookup_datetime`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

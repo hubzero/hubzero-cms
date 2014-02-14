@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,9 +8,9 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140108233319ComGroups extends Migration
+class Migration20140108233319ComGroups extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
 		// import needed libraries
 		jimport('joomla.filesystem.folder');
@@ -71,7 +71,7 @@ class Migration20140108233319ComGroups extends Migration
 		umask($old);
 	}
 	
-	protected static function down($db)
+	public function down()
 	{
 		
 	}

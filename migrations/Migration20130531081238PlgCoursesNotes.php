@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,43 +8,43 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding offering_id to notes
  **/
-class Migration20130531081238PlgCoursesNotes extends Migration
+class Migration20130531081238PlgCoursesNotes extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableHasField('#__courses_member_notes', 'section_id'))
+		if (!$this->db->tableHasField('#__courses_member_notes', 'section_id'))
 		{
 			$query = "ALTER TABLE `#__courses_member_notes` ADD `section_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `timestamp`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__courses_member_notes', 'section_id'))
+		if ($this->db->tableHasField('#__courses_member_notes', 'section_id'))
 		{
 			$query .= "ALTER TABLE `#__courses_member_notes` DROP `section_id`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,25 +8,25 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding indices and setting default field value
  **/
-class Migration20131113143500ComSupport extends Migration
+class Migration20131113143500ComSupport extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if ($db->tableExists('#__support_acl_acos'))
+		if ($this->db->tableExists('#__support_acl_acos'))
 		{
 			$query = "ALTER TABLE `#__support_acl_acos` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `model` `model` VARCHAR(100)  NOT NULL  DEFAULT '',
 					CHANGE `foreign_key` `foreign_key` INT(11)  NOT NULL  DEFAULT '0'
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if ($db->tableExists('#__support_acl_aros'))
+		if ($this->db->tableExists('#__support_acl_aros'))
 		{
 			$query = "ALTER TABLE `#__support_acl_aros` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -34,18 +34,18 @@ class Migration20131113143500ComSupport extends Migration
 					CHANGE `alias` `alias` VARCHAR(255)  NOT NULL  DEFAULT '',
 					CHANGE `model` `model` VARCHAR(100)  NOT NULL  DEFAULT ''
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
-			if (!$db->tableHasKey('#__support_acl_aros', 'idx_model_foreign_key'))
+			if (!$this->db->tableHasKey('#__support_acl_aros', 'idx_model_foreign_key'))
 			{
 				$query = "ALTER TABLE `#__support_acl_aros` ADD INDEX `idx_model_foreign_key` (`model`, `foreign_key`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_acl_aros_acos'))
+		if ($this->db->tableExists('#__support_acl_aros_acos'))
 		{
 			$query = "ALTER TABLE `#__support_acl_aros_acos` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -56,25 +56,25 @@ class Migration20131113143500ComSupport extends Migration
 					CHANGE `action_update` `action_update` TINYINT(3)  NOT NULL  DEFAULT '0',
 					CHANGE `action_delete` `action_delete` TINYINT(3)  NOT NULL  DEFAULT '0';
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
-			if (!$db->tableHasKey('#__support_acl_aros_acos', 'idx_aco_id'))
+			if (!$this->db->tableHasKey('#__support_acl_aros_acos', 'idx_aco_id'))
 			{
 				$query = "ALTER TABLE `#__support_acl_aros_acos` ADD INDEX `idx_aco_id` (`aco_id`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
-			if (!$db->tableHasKey('#__support_acl_aros_acos', 'idx_aro_id'))
+			if (!$this->db->tableHasKey('#__support_acl_aros_acos', 'idx_aro_id'))
 			{
 				$query = "ALTER TABLE `#__support_acl_aros_acos` ADD INDEX `idx_aro_id` (`aro_id`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_attachments'))
+		if ($this->db->tableExists('#__support_attachments'))
 		{
 			$query = "ALTER TABLE `#__support_attachments` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -82,18 +82,18 @@ class Migration20131113143500ComSupport extends Migration
 					CHANGE `filename` `filename` VARCHAR(255)  DEFAULT '',
 					CHANGE `description` `description` VARCHAR(255)  NOT NULL  DEFAULT ''
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
-			if (!$db->tableHasKey('#__support_attachments', 'idx_ticket'))
+			if (!$this->db->tableHasKey('#__support_attachments', 'idx_ticket'))
 			{
 				$query = "ALTER TABLE `#__support_attachments` ADD INDEX `idx_ticket` (`ticket`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_comments'))
+		if ($this->db->tableExists('#__support_comments'))
 		{
 			$query = "ALTER TABLE `#__support_comments` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -102,36 +102,36 @@ class Migration20131113143500ComSupport extends Migration
 					CHANGE `comment` `comment` TEXT  NOT NULL,
 					CHANGE `changelog` `changelog` TEXT  NOT NULL
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
-			if (!$db->tableHasKey('#__support_comments', 'idx_ticket'))
+			if (!$this->db->tableHasKey('#__support_comments', 'idx_ticket'))
 			{
 				$query = "ALTER TABLE `#__support_comments` ADD INDEX `idx_ticket` (`ticket`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
-			if (!$db->tableHasKey('#__support_comments', 'idx_created_by'))
+			if (!$this->db->tableHasKey('#__support_comments', 'idx_created_by'))
 			{
 				$query = "ALTER TABLE `#__support_comments` ADD INDEX `idx_created_by` (`created_by`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_messages'))
+		if ($this->db->tableExists('#__support_messages'))
 		{
 			$query = "ALTER TABLE `#__support_messages` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `title` `title` VARCHAR(250)  NOT NULL  DEFAULT '',
 					CHANGE `message` `message` TEXT  NOT NULL
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if ($db->tableExists('#__support_queries'))
+		if ($this->db->tableExists('#__support_queries'))
 		{
 			$query = "ALTER TABLE `#__support_queries` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -142,48 +142,48 @@ class Migration20131113143500ComSupport extends Migration
 					CHANGE `sort` `sort` VARCHAR(100)  NOT NULL  DEFAULT '',
 					CHANGE `sort_dir` `sort_dir` VARCHAR(100)  NOT NULL  DEFAULT ''
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
-			if (!$db->tableHasKey('#__support_queries', 'idx_user_id'))
+			if (!$this->db->tableHasKey('#__support_queries', 'idx_user_id'))
 			{
 				$query = "ALTER TABLE `#__support_queries` ADD INDEX `idx_user_id` (`user_id`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
-			if (!$db->tableHasKey('#__support_queries', 'idx_iscore'))
+			if (!$this->db->tableHasKey('#__support_queries', 'idx_iscore'))
 			{
 				$query = "ALTER TABLE `#__support_queries` ADD INDEX `idx_iscore` (`iscore`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_resolutions'))
+		if ($this->db->tableExists('#__support_resolutions'))
 		{
 			$query = "ALTER TABLE `#__support_resolutions` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `title` `title` VARCHAR(100)  NOT NULL  DEFAULT '',
 					CHANGE `alias` `alias` VARCHAR(100)  NOT NULL  DEFAULT ''
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if ($db->tableExists('#__support_tickets'))
+		if ($this->db->tableExists('#__support_tickets'))
 		{
 			$query = "ALTER TABLE `#__support_tickets` 
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT
 			;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
-			if (!$db->tableHasKey('#__support_tickets', 'idx_owner'))
+			if (!$this->db->tableHasKey('#__support_tickets', 'idx_owner'))
 			{
 				$query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_owner` (`owner`);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
@@ -191,96 +191,96 @@ class Migration20131113143500ComSupport extends Migration
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableExists('#__support_acl_acos'))
+		if ($this->db->tableExists('#__support_acl_acos'))
 		{
-			if ($db->tableHasKey('#__support_acl_acos', 'idx_model_foreign_key'))
+			if ($this->db->tableHasKey('#__support_acl_acos', 'idx_model_foreign_key'))
 			{
 				$query = "ALTER TABLE `#__support_acl_acos` DROP INDEX `idx_model_foreign_key`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_acl_aros'))
+		if ($this->db->tableExists('#__support_acl_aros'))
 		{
-			if ($db->tableHasKey('#__support_acl_aros', 'idx_model_foreign_key'))
+			if ($this->db->tableHasKey('#__support_acl_aros', 'idx_model_foreign_key'))
 			{
 				$query = "ALTER TABLE `#__support_acl_aros` DROP INDEX `idx_model_foreign_key`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_acl_aros_acos'))
+		if ($this->db->tableExists('#__support_acl_aros_acos'))
 		{
-			if ($db->tableHasKey('#__support_acl_aros_acos', 'idx_aco_id'))
+			if ($this->db->tableHasKey('#__support_acl_aros_acos', 'idx_aco_id'))
 			{
 				$query = "ALTER TABLE `#__support_acl_aros_acos` DROP INDEX `idx_aco_id`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
-			if ($db->tableHasKey('#__support_acl_aros_acos', 'idx_aro_id'))
+			if ($this->db->tableHasKey('#__support_acl_aros_acos', 'idx_aro_id'))
 			{
 				$query = "ALTER TABLE `#__support_acl_aros_acos` DROP INDEX `idx_aro_id`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_attachments'))
+		if ($this->db->tableExists('#__support_attachments'))
 		{
-			if ($db->tableHasKey('#__support_attachments', 'idx_ticket'))
+			if ($this->db->tableHasKey('#__support_attachments', 'idx_ticket'))
 			{
 				$query = "ALTER TABLE `#__support_attachments` DROP INDEX `idx_ticket`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_comments'))
+		if ($this->db->tableExists('#__support_comments'))
 		{
-			if ($db->tableHasKey('#__support_comments', 'idx_ticket'))
+			if ($this->db->tableHasKey('#__support_comments', 'idx_ticket'))
 			{
 				$query = "ALTER TABLE `#__support_comments` DROP INDEX `idx_ticket`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
-			if ($db->tableHasKey('#__support_comments', 'idx_created_by'))
+			if ($this->db->tableHasKey('#__support_comments', 'idx_created_by'))
 			{
 				$query = "ALTER TABLE `#__support_comments` DROP INDEX `idx_created_by`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_queries'))
+		if ($this->db->tableExists('#__support_queries'))
 		{
-			if ($db->tableHasKey('#__support_queries', 'idx_user_id'))
+			if ($this->db->tableHasKey('#__support_queries', 'idx_user_id'))
 			{
 				$query = "ALTER TABLE `#__support_queries` DROP INDEX `idx_user_id`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
-			if ($db->tableHasKey('#__support_queries', 'idx_iscore'))
+			if ($this->db->tableHasKey('#__support_queries', 'idx_iscore'))
 			{
 				$query = "ALTER TABLE `#__support_queries` DROP INDEX `idx_iscore`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		if ($db->tableExists('#__support_tickets'))
+		if ($this->db->tableExists('#__support_tickets'))
 		{
-			if ($db->tableHasKey('#__support_tickets', 'idx_owner'))
+			if ($this->db->tableHasKey('#__support_tickets', 'idx_owner'))
 			{
 				$query = "ALTER TABLE `#__support_tickets` DROP INDEX `idx_owner`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,21 +8,21 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding projects links plugin
  **/
-class Migration20140211154400PlgProjectsLinks extends Migration
+class Migration20140211154400PlgProjectsLinks extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addPluginEntry('projects', 'links');
+		$this->addPluginEntry('projects', 'links');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deletePluginEntry('projects', 'links');
+		$this->deletePluginEntry('projects', 'links');
 	}
 }

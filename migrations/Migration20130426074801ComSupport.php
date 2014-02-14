@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,16 +8,16 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for add watching table
  **/
-class Migration20130426074801ComSupport extends Migration
+class Migration20130426074801ComSupport extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableExists('#__support_watching'))
+		if (!$this->db->tableExists('#__support_watching'))
 		{
 			$query .= "CREATE TABLE `#__support_watching` (
 							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -29,55 +29,55 @@ class Migration20130426074801ComSupport extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "";
 
-		if (!$db->tableHasKey('#__support_watching', 'idx_ticket_id'))
+		if (!$this->db->tableHasKey('#__support_watching', 'idx_ticket_id'))
 		{
 			$query .= "ALTER TABLE `#__support_watching` ADD INDEX `idx_ticket_id` (`ticket_id`);";
 		}
 
-		if (!$db->tableHasKey('#__support_watching', 'idx_user_id'))
+		if (!$this->db->tableHasKey('#__support_watching', 'idx_user_id'))
 		{
 			$query .= "ALTER TABLE `#__support_watching` ADD INDEX `idx_user_id` (`user_id`);";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableExists('#__support_watching'))
+		if ($this->db->tableExists('#__support_watching'))
 		{
 			$query .= "DROP TABLE `#__support_watching`";
 		}
 
-		if ($db->tableHasKey('#__support_watching', 'idx_ticket_id'))
+		if ($this->db->tableHasKey('#__support_watching', 'idx_ticket_id'))
 		{
 			$query .= "ALTER TABLE DROP INDEX `idx_ticket_id`;";
 		}
 
-		if ($db->tableHasKey('#__support_watching', 'idx_user_id'))
+		if ($this->db->tableHasKey('#__support_watching', 'idx_user_id'))
 		{
 			$query .= "ALTER TABLE DROP INDEX `idx_user_id`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

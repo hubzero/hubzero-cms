@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140109024336ComGroups extends Migration
+class Migration20140109024336ComGroups extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__xgroups_pages_checkout` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -25,28 +25,28 @@ class Migration20140109024336ComGroups extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		// delete categories table
-		if ($db->tableExists('#__xgroups_pages_checkout'))
+		if ($this->db->tableExists('#__xgroups_pages_checkout'))
 		{
 			$query = "DROP TABLE #__xgroups_pages_checkout;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 		
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,26 +8,26 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding com_forum component entry if missing, or adding admin_menu_link if missing
  **/
-class Migration20130918132946ComForum extends Migration
+class Migration20130918132946ComForum extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addComponentEntry('Forum');
+		$this->addComponentEntry('Forum');
 
-		if ($db->tableExists('#__components'))
+		if ($this->db->tableExists('#__components'))
 		{
 			$query = "SELECT * FROM `#__components` WHERE `name` = 'Forum'";
-			$db->setQuery($query);
-			$result = $db->loadObject();
+			$this->db->setQuery($query);
+			$result = $this->db->loadObject();
 
 			if ($result && empty($result->admin_menu_link))
 			{
 				$query = "UPDATE `#__components` SET `admin_menu_link` = 'option=com_forum' WHERE `id` = '{$result->id}'";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
@@ -35,8 +35,8 @@ class Migration20130918132946ComForum extends Migration
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::deleteComponentEntry('Forum');
+		$this->deleteComponentEntry('Forum');
 	}
 }

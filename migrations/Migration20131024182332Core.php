@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for fixing dated kb article on password changing
  **/
-class Migration20131024182332Core extends Migration
+class Migration20131024182332Core extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$current  = "<p>We have an online form to <a href=\"/change_password\" title=\"Change password form\">change your password</a>.  ";
 		$current .= "You can use the link included here, or you can find the same link on the page that you go to when you first ";
@@ -26,8 +26,8 @@ class Migration20131024182332Core extends Migration
 		$new .= "<a href=\"/members/myaccount/account\">account page</a> for a quick password change form.</p>";
 
 		$query = "SELECT * FROM `#__faq` WHERE `alias` = 'pwchange'";
-		$db->setQuery($query);
-		$results = $db->loadObjectList();
+		$this->db->setQuery($query);
+		$results = $this->db->loadObjectList();
 
 		if ($results && count($results) > 0)
 		{
@@ -39,9 +39,9 @@ class Migration20131024182332Core extends Migration
 
 				if ($distance < 50)
 				{
-					$query = "UPDATE `#__faq` SET `fulltxt` = " . $db->quote($new) . " WHERE `id` = " . $db->quote($r->id);
-					$db->setQuery($query);
-					$db->query();
+					$query = "UPDATE `#__faq` SET `fulltxt` = " . $this->db->quote($new) . " WHERE `id` = " . $this->db->quote($r->id);
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 		}

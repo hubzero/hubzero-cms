@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for creating and populating new joomla extensions table
  **/
-class Migration20130924000005Core extends Migration
+class Migration20130924000005Core extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableExists('#__extensions'))
+		if (!$this->db->tableExists('#__extensions'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__extensions` (
 							`extension_id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -43,8 +43,8 @@ class Migration20130924000005Core extends Migration
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query = "
 				# Components
@@ -198,17 +198,17 @@ class Migration20130924000005Core extends Migration
 
 				INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 				(800, 'joomla', 'package', 'pkg_joomla', '', 0, 1, 1, 1, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			$query = "ALTER TABLE `#__extensions` AUTO_INCREMENT = 1000;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			// Migrate components
 			$query = "SELECT * FROM `#__components` WHERE parent = 0;";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			// Build list of extensions to exclude (i.e. they're no longer in the core)
 			$excludes = array('com_sef', 'com_userpoints', 'com_hub', 'com_storefront', 'com_contribute', 'com_contribtool');
@@ -222,19 +222,19 @@ class Migration20130924000005Core extends Migration
 				}
 
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$r->option}';";
-				$db->setQuery($query);
-				if ($id = $db->loadResult())
+				$this->db->setQuery($query);
+				if ($id = $this->db->loadResult())
 				{
-					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->enabled}', `params` = " . $db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
-					$db->setQuery($query);
-					$db->query();
+					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->enabled}', `params` = " . $this->db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+					$this->db->setQuery($query);
+					$this->db->query();
 					continue;
 				}
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
-				$query .= "VALUES ('{$r->option}', 'component', '{$r->option}', '', 1, {$r->enabled}, 1, {$r->iscore}, '', " . $db->quote($r->params) . ", '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$query .= "VALUES ('{$r->option}', 'component', '{$r->option}', '', 1, {$r->enabled}, 1, {$r->iscore}, '', " . $this->db->quote($r->params) . ", '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Look for any components we missed...(frontend?)
@@ -247,16 +247,16 @@ class Migration20130924000005Core extends Migration
 				}
 
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$c}';";
-				$db->setQuery($query);
-				if ($db->loadResult())
+				$this->db->setQuery($query);
+				if ($this->db->loadResult())
 				{
 					continue;
 				}
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
 				$query .= "('{$c}', 'component', '{$c}', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Look for any components we missed...(backend?)
@@ -269,32 +269,32 @@ class Migration20130924000005Core extends Migration
 				}
 
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$c}';";
-				$db->setQuery($query);
-				if ($db->loadResult())
+				$this->db->setQuery($query);
+				if ($this->db->loadResult())
 				{
 					continue;
 				}
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
 				$query .= "('{$c}', 'component', '{$c}', '', 1, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Migrate plugins
 			$query = "SELECT * FROM `#__plugins`;";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			foreach ($results as $r)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = 'plg_{$r->folder}_{$r->element}';";
-				$db->setQuery($query);
-				if ($id = $db->loadResult())
+				$this->db->setQuery($query);
+				if ($id = $this->db->loadResult())
 				{
-					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->published}', `params` = " . $db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
-					$db->setQuery($query);
-					$db->query();
+					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->published}', `params` = " . $this->db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+					$this->db->setQuery($query);
+					$this->db->query();
 					continue;
 				}
 
@@ -304,8 +304,8 @@ class Migration20130924000005Core extends Migration
 				// Build and execute query
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
 				$query .= "VALUES ('plg_{$r->folder}_{$r->element}', 'plugin', '{$r->element}', '{$r->folder}', {$r->client_id}, {$r->published}, {$r->access}, {$r->iscore}, '', '{$r->params}', '', '', {$r->checked_out}, '{$r->checked_out_time}', {$r->ordering}, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Migrate modules (site)
@@ -313,8 +313,8 @@ class Migration20130924000005Core extends Migration
 			foreach ($modules as $m)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
-				$db->setQuery($query);
-				if ($db->loadResult())
+				$this->db->setQuery($query);
+				if ($this->db->loadResult())
 				{
 					continue;
 				}
@@ -326,8 +326,8 @@ class Migration20130924000005Core extends Migration
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
 				$query .= "('{$m}', 'module', '{$m}', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Migrate modules (admin)
@@ -335,8 +335,8 @@ class Migration20130924000005Core extends Migration
 			foreach ($modules as $m)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
-				$db->setQuery($query);
-				if ($db->loadResult())
+				$this->db->setQuery($query);
+				if ($this->db->loadResult())
 				{
 					continue;
 				}
@@ -348,8 +348,8 @@ class Migration20130924000005Core extends Migration
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
 				$query .= "('{$m}', 'module', '{$m}', '', 1, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Migrate templates
@@ -357,8 +357,8 @@ class Migration20130924000005Core extends Migration
 			foreach ($templates as $t)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}';";
-				$db->setQuery($query);
-				if ($db->loadResult())
+				$this->db->setQuery($query);
+				if ($this->db->loadResult())
 				{
 					continue;
 				}
@@ -370,8 +370,8 @@ class Migration20130924000005Core extends Migration
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
 				$query .= "('".ucfirst($t)."', 'template', '{$t}', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Admin templates too
@@ -379,8 +379,8 @@ class Migration20130924000005Core extends Migration
 			foreach ($templates as $t)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}';";
-				$db->setQuery($query);
-				if ($db->loadResult())
+				$this->db->setQuery($query);
+				if ($this->db->loadResult())
 				{
 					continue;
 				}
@@ -392,14 +392,14 @@ class Migration20130924000005Core extends Migration
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
 				$query .= "('".ucfirst($t)."', 'template', '{$t}', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 
 			// Convert params to json
 			$query = "SELECT `extension_id`, `params` FROM `#__extensions` WHERE `params` IS NOT NULL AND `params` != '' AND SUBSTR(`params`, 1, 1) != '{';";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			if (count($results) > 0)
 			{
@@ -426,9 +426,9 @@ class Migration20130924000005Core extends Migration
 						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
 					}
 
-					$query = "UPDATE `#__extensions` SET `params` = " . $db->Quote(json_encode($array)) . " WHERE `extension_id` = {$r->extension_id};";
-					$db->setQuery($query);
-					$db->query();
+					$query = "UPDATE `#__extensions` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE `extension_id` = {$r->extension_id};";
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 
@@ -436,8 +436,8 @@ class Migration20130924000005Core extends Migration
 			$query  = "UPDATE `jos_extensions` SET";
 			$query .= " `params` = '{\"filters\":{\"1\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"6\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"7\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"2\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"3\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"4\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"5\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"10\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"12\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"8\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"}}}'";
 			$query .= " WHERE `element` = 'com_config';";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			// Delete some old/unused plugins
 			$query  = "DELETE FROM `#__extensions` WHERE `folder` = 'search';";
@@ -450,24 +450,24 @@ class Migration20130924000005Core extends Migration
 			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'openid';";
 			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'joomla';";
 			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'editors' AND `element` = 'xstandard';";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			// Also, force xusers user plugin last in list
 			$query = "SELECT max(ordering) FROM `#__extensions` WHERE `folder` = 'user';";
-			$db->setQuery($query);
-			$max = $db->loadResult();
+			$this->db->setQuery($query);
+			$max = $this->db->loadResult();
 			$max++;
 			$query = "UPDATE `#__extensions` SET `ordering` = '{$max}' WHERE `folder` = 'user' AND `element` = 'xusers';";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 
 			// Delete plugins and components tables
-			if ($db->tableExists('#__plugins'))
+			if ($this->db->tableExists('#__plugins'))
 			{
 				$query = "DROP TABLE IF EXISTS `#__plugins`;";
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}

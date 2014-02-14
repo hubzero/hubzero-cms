@@ -1,19 +1,19 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class Migration20130201000000PlgUserConstantcontact extends Migration
+class Migration20130201000000PlgUserConstantcontact extends Base
 {
-	protected static function up($db)
+	public function up()
 	{
-		self::addPluginEntry('user', 'constantcontact');
+		$this->addPluginEntry('user', 'constantcontact');
 	}
 
-	protected function down($db)
+	public function down()
 	{
-		self::deletePluginEntry('user', 'constantcontact');
+		$this->deletePluginEntry('user', 'constantcontact');
 	}
 }

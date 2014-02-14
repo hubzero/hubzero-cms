@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,95 +8,95 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for fixing wrong datatype on column
  **/
-class Migration20130621115001ComSupport extends Migration
+class Migration20130621115001ComSupport extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableHasField('#__abuse_reports', 'reviewed'))
+		if (!$this->db->tableHasField('#__abuse_reports', 'reviewed'))
 		{
 			$query = "ALTER TABLE `#__abuse_reports` ADD `reviewed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "";
 
-		if (!$db->tableHasField('#__abuse_reports', 'reviewed_by'))
+		if (!$this->db->tableHasField('#__abuse_reports', 'reviewed_by'))
 		{
 			$query = "ALTER TABLE `#__abuse_reports` ADD `reviewed_by` INT(11)  NOT NULL  DEFAULT '0';";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "";
 
-		if (!$db->tableHasField('#__abuse_reports', 'note'))
+		if (!$this->db->tableHasField('#__abuse_reports', 'note'))
 		{
 			$query = "ALTER TABLE `#__abuse_reports` ADD `note` TEXT  NOT NULL;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__abuse_reports', 'reviewed'))
+		if ($this->db->tableHasField('#__abuse_reports', 'reviewed'))
 		{
 			$query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "";
 
-		if ($db->tableHasField('#__abuse_reports', 'reviewed_by'))
+		if ($this->db->tableHasField('#__abuse_reports', 'reviewed_by'))
 		{
 			$query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed_by`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "";
 
-		if ($db->tableHasField('#__abuse_reports', 'note'))
+		if ($this->db->tableHasField('#__abuse_reports', 'note'))
 		{
 			$query .= "ALTER TABLE `#__abuse_reports` DROP `note`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

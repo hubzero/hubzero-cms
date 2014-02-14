@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,44 +8,44 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding mail preference option to incremental registration
  **/
-class Migration20130715111246ModIncrementalRegistration extends Migration
+class Migration20130715111246ModIncrementalRegistration extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption'))
+		if (!$this->db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption'))
 		{
 			$query = "ALTER TABLE `#__profile_completion_awards` ADD COLUMN mailPreferenceOption int not null default 0;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "SELECT * FROM `#__incremental_registration_labels` WHERE `field` = 'mailPreferenceOption';";
-		$db->setQuery($query);
-		if (!$db->loadResult())
+		$this->db->setQuery($query);
+		if (!$this->db->loadResult())
 		{
 			$query = "INSERT INTO `#__incremental_registration_labels` (field, label) VALUES ('mailPreferenceOption', 'E-Mail Updates');";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption'))
+		if ($this->db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption'))
 		{
 			$query = "ALTER TABLE `#__profile_completion_awards` DROP COLUMN mailPreferenceOption;";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		$query = "DELETE FROM `#__incremental_registration_labels` WHERE `field` = 'mailPreferenceOption';";
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 	}
 }

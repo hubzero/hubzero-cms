@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,16 +8,16 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding wiki page links table
  **/
-class Migration20130423115913ComWiki extends Migration
+class Migration20130423115913ComWiki extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableExists('#__wiki_page_links'))
+		if (!$this->db->tableExists('#__wiki_page_links'))
 		{
 			$query .= "CREATE TABLE IF NOT EXISTS `#__wiki_page_links` (
 							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -35,27 +35,27 @@ class Migration20130423115913ComWiki extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableExists('#__wiki_page_links'))
+		if ($this->db->tableExists('#__wiki_page_links'))
 		{
 			$query .= "DROP TABLE IF EXISTS `#__wiki_page_links`";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

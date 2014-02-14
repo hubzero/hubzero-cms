@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,16 +8,16 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20130829211856ComPublications extends Migration
+class Migration20130829211856ComPublications extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$queries = array();
 
-		if (!$db->tableExists('#__publications'))
+		if (!$this->db->tableExists('#__publications'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publications` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -37,7 +37,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_access'))
+		if (!$this->db->tableExists('#__publication_access'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_access` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,7 +47,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_attachments'))
+		if (!$this->db->tableExists('#__publication_attachments'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_attachments` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -75,7 +75,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_audience'))
+		if (!$this->db->tableExists('#__publication_audience'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_audience` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -94,7 +94,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_audience_levels'))
+		if (!$this->db->tableExists('#__publication_audience_levels'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_audience_levels` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -119,7 +119,7 @@ class Migration20130829211856ComPublications extends Migration
 						  VALUES ('level5','Professional','Beyond PhD')";
 		}
 
-		if (!$db->tableExists('#__publication_authors'))
+		if (!$this->db->tableExists('#__publication_authors'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_authors` (
 				`publication_version_id` int(11) NOT NULL DEFAULT '0',
@@ -142,7 +142,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_categories'))
+		if (!$this->db->tableExists('#__publication_categories'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_categories` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -174,7 +174,7 @@ class Migration20130829211856ComPublications extends Migration
 			$queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Teaching Materials','Text','teaching material','teachingmaterials','Supplementary materials (study notes, guides, etc.) that don\'t quite fit into any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
 		}
 
-		if (!$db->tableExists('#__publication_master_types'))
+		if (!$this->db->tableExists('#__publication_master_types'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_master_types` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -205,7 +205,7 @@ class Migration20130829211856ComPublications extends Migration
 						  VALUES ('Databases','databases','project database','0','0','2','')";
 		}
 
-		if (!$db->tableExists('#__publication_ratings'))
+		if (!$this->db->tableExists('#__publication_ratings'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_ratings` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -220,7 +220,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_screenshots'))
+		if (!$this->db->tableExists('#__publication_screenshots'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_screenshots` (
 				`id` int(10) NOT NULL AUTO_INCREMENT,
@@ -238,7 +238,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_stats'))
+		if (!$this->db->tableExists('#__publication_stats'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_stats` (
 				`id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -254,7 +254,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_versions'))
+		if (!$this->db->tableExists('#__publication_versions'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_versions` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -290,7 +290,7 @@ class Migration20130829211856ComPublications extends Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__publication_licenses'))
+		if (!$this->db->tableExists('#__publication_licenses'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_licenses` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -319,8 +319,8 @@ class Migration20130829211856ComPublications extends Migration
 			// Run queries
 			foreach ($queries as $query)
 			{
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
@@ -369,86 +369,86 @@ class Migration20130829211856ComPublications extends Migration
 			"aip_path" => "/srv/AIP"
 		);
 
-		self::addComponentEntry('Publications', 'com_publications', 1, $params);
+		$this->addComponentEntry('Publications', 'com_publications', 1, $params);
 
-		self::addPluginEntry('publications', 'related');
-		self::addPluginEntry('publications', 'recommendations');
-		self::addPluginEntry('publications', 'supportingdocs');
-		self::addPluginEntry('publications', 'versions');
-		self::addPluginEntry('publications', 'questions');
-		self::addPluginEntry('publications', 'citations');
-		self::addPluginEntry('publications', 'usage');
-		self::addPluginEntry('publications', 'share');
+		$this->addPluginEntry('publications', 'related');
+		$this->addPluginEntry('publications', 'recommendations');
+		$this->addPluginEntry('publications', 'supportingdocs');
+		$this->addPluginEntry('publications', 'versions');
+		$this->addPluginEntry('publications', 'questions');
+		$this->addPluginEntry('publications', 'citations');
+		$this->addPluginEntry('publications', 'usage');
+		$this->addPluginEntry('publications', 'share');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$queries = array();
 
-		if ($db->tableExists('#__publications'))
+		if ($this->db->tableExists('#__publications'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publications`";
 		}
 
-		if ($db->tableExists('#__publication_access'))
+		if ($this->db->tableExists('#__publication_access'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_access`";
 		}
 
-		if ($db->tableExists('#__publication_attachments'))
+		if ($this->db->tableExists('#__publication_attachments'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_attachments`";
 		}
 
-		if ($db->tableExists('#__publication_audience'))
+		if ($this->db->tableExists('#__publication_audience'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_audience`";
 		}
 
-		if ($db->tableExists('#__publication_audience_levels'))
+		if ($this->db->tableExists('#__publication_audience_levels'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_audience_levels`";
 		}
 
-		if ($db->tableExists('#__publication_authors'))
+		if ($this->db->tableExists('#__publication_authors'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_authors`";
 		}
 
-		if ($db->tableExists('#__publication_categories'))
+		if ($this->db->tableExists('#__publication_categories'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_categories`";
 		}
 
-		if ($db->tableExists('#__publication_master_types'))
+		if ($this->db->tableExists('#__publication_master_types'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_master_types`";
 		}
 
-		if ($db->tableExists('#__publication_ratings'))
+		if ($this->db->tableExists('#__publication_ratings'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_ratings`";
 		}
 
-		if ($db->tableExists('#__publication_screenshots'))
+		if ($this->db->tableExists('#__publication_screenshots'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_screenshots`";
 		}
 
-		if ($db->tableExists('#__publication_stats'))
+		if ($this->db->tableExists('#__publication_stats'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_stats`";
 		}
 
-		if ($db->tableExists('#__publication_versions'))
+		if ($this->db->tableExists('#__publication_versions'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_versions`";
 		}
 
-		if ($db->tableExists('#__publication_licenses'))
+		if ($this->db->tableExists('#__publication_licenses'))
 		{
 			$queries[] = "DROP TABLE IF EXISTS `#__publication_licenses`";
 		}
@@ -458,13 +458,13 @@ class Migration20130829211856ComPublications extends Migration
 			// Run queries
 			foreach ($queries as $query)
 			{
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
-		self::deleteComponentEntry('Publications');
+		$this->deleteComponentEntry('Publications');
 
-		self::deletePluginEntry('publications');
+		$this->deletePluginEntry('publications');
 	}
 }

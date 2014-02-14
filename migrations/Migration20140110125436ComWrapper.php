@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,35 +8,35 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140110125436ComWrapper extends Migration
+class Migration20140110125436ComWrapper extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_wrapper';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if ($id = $db->loadResult())
+		if ($id = $this->db->loadResult())
 		{
-			self::deleteComponentEntry('wrapper');
+			$this->deleteComponentEntry('wrapper');
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_wrapper';";
 
-		$db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if (!($id = $db->loadResult()))
+		if (!($id = $this->db->loadResult()))
 		{
-			self::addComponentEntry('wrapper');
+			$this->addComponentEntry('wrapper');
 		}
 	}
 }

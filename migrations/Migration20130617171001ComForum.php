@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,43 +8,43 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for fixing wrong datatype on column
  **/
-class Migration20130617171001ComForum extends Migration
+class Migration20130617171001ComForum extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableHasField('#__forum_posts', 'closed'))
+		if (!$this->db->tableHasField('#__forum_posts', 'closed'))
 		{
 			$query = "ALTER TABLE `#__forum_posts` ADD `closed` TINYINT(2)  NOT NULL  DEFAULT '0';";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__forum_posts', 'closed'))
+		if ($this->db->tableHasField('#__forum_posts', 'closed'))
 		{
 			$query .= "ALTER TABLE `#__forum_posts` DROP `closed`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

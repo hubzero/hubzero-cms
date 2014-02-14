@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20130619181459PlgGroupsAnnouncements extends Migration
+class Migration20130619181459PlgGroupsAnnouncements extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `jos_announcements` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -29,18 +29,18 @@ class Migration20130619181459PlgGroupsAnnouncements extends Migration
 						`sticky` tinyint(2) NOT NULL DEFAULT '0',
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 
 		$params = array(
 			'plugin_access' => 'members',
 			'display_tab'   => 1
 		);
 
-		self::addPluginEntry('groups', 'announcements', 1, $params);
+		$this->addPluginEntry('groups', 'announcements', 1, $params);
 
 		//get citation params
-		if ($db->tableExists('#__extensions'))
+		if ($this->db->tableExists('#__extensions'))
 		{
 			$sql = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `element`='messages' AND `folder` = 'groups'";
 		}
@@ -49,8 +49,8 @@ class Migration20130619181459PlgGroupsAnnouncements extends Migration
 			$sql = "SELECT `params` FROM `#__plugins` WHERE `element`='messages' AND `folder`='groups'";
 		}
 
-		$db->setQuery($sql);
-		$p = $db->loadResult();
+		$this->db->setQuery($sql);
+		$p = $this->db->loadResult();
 
 		//load params object
 		$params = new \JParameter( $p );
@@ -59,15 +59,15 @@ class Migration20130619181459PlgGroupsAnnouncements extends Migration
 		$params->set('display_tab', 0);
 
 		//save new params
-		if ($db->tableExists('#__extensions'))
+		if ($this->db->tableExists('#__extensions'))
 		{
-			$query = "UPDATE `#__extensions` SET `params`=".$db->quote(json_encode($params->toArray()))." WHERE `element`='messages' AND `folder`='groups'";
+			$query = "UPDATE `#__extensions` SET `params`=".$this->db->quote(json_encode($params->toArray()))." WHERE `element`='messages' AND `folder`='groups'";
 		}
 		else
 		{
 			$query = "UPDATE `#__plugins` SET `params`='" . $params->toString() . "' WHERE `element`='messages' AND `folder`='groups'";
 		}
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,12 +8,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20130812182339ComCart extends Migration
+class Migration20130812182339ComCart extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		/*Table structure for table `#__cart` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart` (
@@ -27,8 +27,8 @@ class Migration20130812182339ComCart extends Migration
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 
 		/*Table structure for table `#__cart_cart_items` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_cart_items` (
@@ -43,8 +43,8 @@ class Migration20130812182339ComCart extends Migration
 		  PRIMARY KEY (`crtId`,`sId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_carts` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_carts` (
@@ -56,8 +56,8 @@ class Migration20130812182339ComCart extends Migration
 		  UNIQUE KEY `uidNumber` (`uidNumber`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_coupons` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_coupons` (
@@ -67,8 +67,8 @@ class Migration20130812182339ComCart extends Migration
 		  `crtCnStatus` char(15) DEFAULT NULL
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_memberships` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_memberships` (
@@ -80,8 +80,8 @@ class Migration20130812182339ComCart extends Migration
 		  UNIQUE KEY `pId` (`pId`,`crtId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_saved_addresses` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_saved_addresses` (
@@ -97,8 +97,8 @@ class Migration20130812182339ComCart extends Migration
 		  UNIQUE KEY `uidNumber` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_transaction_info` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_info` (
@@ -122,8 +122,8 @@ class Migration20130812182339ComCart extends Migration
 		  PRIMARY KEY (`tId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_transaction_items` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_items` (
@@ -134,8 +134,8 @@ class Migration20130812182339ComCart extends Migration
 		  PRIMARY KEY (`tId`,`sId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_transaction_steps` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_steps` (
@@ -147,8 +147,8 @@ class Migration20130812182339ComCart extends Migration
 		  UNIQUE KEY `tId` (`tId`,`tsStep`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		/*Table structure for table `#__cart_transactions` */		
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transactions` (
@@ -160,64 +160,64 @@ class Migration20130812182339ComCart extends Migration
 		  PRIMARY KEY (`tId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 				
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "DROP TABLE IF EXISTS `#__cart`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_cart_items`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_carts`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_coupons`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_memberships`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_saved_addresses`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_transaction_info`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_transaction_items`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_transaction_steps`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__cart_transactions`";
 
-		$db->setQuery($query);
-		$db->query();
+		$this->db->setQuery($query);
+		$this->db->query();
 	}
 }

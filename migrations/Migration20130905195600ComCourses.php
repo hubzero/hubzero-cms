@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,19 +8,19 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for fixing courses references to user_id that should really be member_id
  **/
-class Migration20130905195600ComCourses extends Migration
+class Migration20130905195600ComCourses extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if ($db->tableHasField('#__courses_grade_book', 'user_id'))
+		if ($this->db->tableHasField('#__courses_grade_book', 'user_id'))
 		{
 			// Fix gradebook entires
 			$query = "SELECT * FROM `#__courses_grade_book` ORDER BY `user_id` ASC";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			if ($results && count($results) > 0)
 			{
@@ -30,14 +30,14 @@ class Migration20130905195600ComCourses extends Migration
 					{
 						case 'asset':
 							$query = "SELECT `course_id` FROM `#__courses_assets` WHERE `id` = '{$r->scope_id}'";
-							$db->setQuery($query);
-							$course_id = $db->loadResult();
+							$this->db->setQuery($query);
+							$course_id = $this->db->loadResult();
 						break;
 
 						case 'unit':
 							$query = "SELECT `course_id` FROM `#__courses_units` AS cu, `#__courses_offerings` AS co WHERE cu.offering_id = co.id AND cu.id = '{$r->scope_id}'";
-							$db->setQuery($query);
-							$course_id = $db->loadResult();
+							$this->db->setQuery($query);
+							$course_id = $this->db->loadResult();
 						break;
 
 						case 'course':
@@ -48,58 +48,58 @@ class Migration20130905195600ComCourses extends Migration
 					$query  = "SELECT `id` FROM `#__courses_members` WHERE `user_id` = '{$r->user_id}'";
 					$query .= " AND `course_id` = '{$course_id}'";
 					$query .= " ORDER BY student DESC, first_visit DESC";
-					$db->setQuery($query);
-					$id = $db->loadResult();
+					$this->db->setQuery($query);
+					$id = $this->db->loadResult();
 
 					if ($id)
 					{
 						$query = "UPDATE `#__courses_grade_book` SET `user_id` = '{$id}' WHERE `id` = '{$r->id}'";
-						$db->setQuery($query);
-						$db->query();
+						$this->db->setQuery($query);
+						$this->db->query();
 					}
 					else
 					{
 						$query = "DELETE FROM `#__courses_grade_book` WHERE `id` = '{$r->id}'";
-						$db->setQuery($query);
-						$db->query();
+						$this->db->setQuery($query);
+						$this->db->query();
 					}
 				}
 			}
 		}
 
-		if ($db->tableHasField('#__courses_grade_book', 'user_id') && !$db->tableHasField('#__courses_grade_book', 'member_id'))
+		if ($this->db->tableHasField('#__courses_grade_book', 'user_id') && !$this->db->tableHasField('#__courses_grade_book', 'member_id'))
 		{
 			$query = "ALTER TABLE `#__courses_grade_book` CHANGE `user_id` `member_id` INT(11) NOT NULL";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		// Fix old asset views data that doesn't have course_id filled in...
 		$query = "SELECT DISTINCT(asset_id) FROM `#__courses_asset_views` WHERE `course_id` IS NULL";
-		$db->setQuery($query);
-		$results = $db->loadObjectList();
+		$this->db->setQuery($query);
+		$results = $this->db->loadObjectList();
 
 		if ($results && count($results) > 0)
 		{
 			foreach ($results as $r)
 			{
 				$query  = "SELECT `course_id` FROM `#__courses_assets` WHERE `id` = '{$r->asset_id}'";
-				$db->setQuery($query);
-				$id = $db->loadResult();
+				$this->db->setQuery($query);
+				$id = $this->db->loadResult();
 
 				if ($id)
 				{
 					$query = "UPDATE `#__courses_asset_views` SET `course_id` = '{$id}' WHERE `asset_id` = '{$r->asset_id}'";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 		}
 
 		// Fix asset views
 		$query = "SELECT * FROM `#__courses_asset_views`";
-		$db->setQuery($query);
-		$results = $db->loadObjectList();
+		$this->db->setQuery($query);
+		$results = $this->db->loadObjectList();
 
 		if ($results && count($results) > 0)
 		{
@@ -108,24 +108,24 @@ class Migration20130905195600ComCourses extends Migration
 				$query  = "SELECT `id` FROM `#__courses_members` WHERE `user_id` = '{$r->viewed_by}'";
 				$query .= " AND `course_id` = '{$r->course_id}'";
 				$query .= " ORDER BY student DESC, first_visit DESC";
-				$db->setQuery($query);
-				$id = $db->loadResult();
+				$this->db->setQuery($query);
+				$id = $this->db->loadResult();
 
 				if ($id)
 				{
 					$query = "UPDATE `#__courses_asset_views` SET `viewed_by` = '{$id}' WHERE `id` = '{$r->id}'";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 		}
 
-		if ($db->tableHasField('#__courses_form_respondents', 'user_id'))
+		if ($this->db->tableHasField('#__courses_form_respondents', 'user_id'))
 		{
 			// Fix form respondents
 			$query = "SELECT * FROM `#__courses_form_respondents`";
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
 
 			if ($results && count($results) > 0)
 			{
@@ -139,27 +139,27 @@ class Migration20130905195600ComCourses extends Migration
 					$query .= " AND cfd.form_id = cf.id";
 					$query .= " AND cf.asset_id = ca.id";
 					$query .= " AND cfr.id = '{$r->id}'";
-					$db->setQuery($query);
-					$course_id = $db->loadResult();
+					$this->db->setQuery($query);
+					$course_id = $this->db->loadResult();
 
 					$query  = "SELECT `id` FROM `#__courses_members` WHERE `user_id` = '{$r->user_id}'";
 					$query .= " AND `course_id` = '{$course_id}'";
 					$query .= " ORDER BY student DESC, first_visit DESC";
-					$db->setQuery($query);
-					$id = $db->loadResult();
+					$this->db->setQuery($query);
+					$id = $this->db->loadResult();
 
 					$query = "UPDATE `#__courses_form_respondents` SET `user_id` = '{$id}' WHERE `id` = '{$r->id}'";
-					$db->setQuery($query);
-					$db->query();
+					$this->db->setQuery($query);
+					$this->db->query();
 				}
 			}
 		}
 
-		if ($db->tableHasField('#__courses_form_respondents', 'user_id') && !$db->tableHasField('#__courses_form_respondents', 'member_id'))
+		if ($this->db->tableHasField('#__courses_form_respondents', 'user_id') && !$this->db->tableHasField('#__courses_form_respondents', 'member_id'))
 		{
 			$query = "ALTER TABLE `#__courses_form_respondents` CHANGE `user_id` `member_id` INT(11) NOT NULL";
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,43 +8,43 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding twitter authentication plugin
  **/
-class Migration20130530153638ComCron extends Migration
+class Migration20130530153638ComCron extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if (!$db->tableHasField('#__cron_jobs', 'params'))
+		if (!$this->db->tableHasField('#__cron_jobs', 'params'))
 		{
 			$query = "ALTER TABLE `#__cron_jobs` ADD `params` TEXT  NOT NULL  AFTER `ordering`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__cron_jobs', 'params'))
+		if ($this->db->tableHasField('#__cron_jobs', 'params'))
 		{
 			$query .= "ALTER TABLE `#__cron_jobs` DROP `params`;";
 		}
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

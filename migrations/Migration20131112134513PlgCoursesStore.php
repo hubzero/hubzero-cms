@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,21 +8,21 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for disabling courses store plugin for the time being
  **/
-class Migration20131112134513PlgCoursesStore extends Migration
+class Migration20131112134513PlgCoursesStore extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::disablePlugin('courses', 'store');
+		$this->disablePlugin('courses', 'store');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		self::enablePlugin('courses', 'store');
+		$this->enablePlugin('courses', 'store');
 	}
 }

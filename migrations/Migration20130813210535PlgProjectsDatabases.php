@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,14 +8,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for setting up databases projects plugin
  **/
-class Migration20130813210535PlgProjectsDatabases extends Migration
+class Migration20130813210535PlgProjectsDatabases extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		if (!$db->tableExists('#__project_databases'))
+		if (!$this->db->tableExists('#__project_databases'))
 		{
 			$query = "CREATE TABLE `#__project_databases` (
 						`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -35,11 +35,11 @@ class Migration20130813210535PlgProjectsDatabases extends Migration
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if (!$db->tableExists('#__project_database_versions'))
+		if (!$this->db->tableExists('#__project_database_versions'))
 		{
 			$query = "CREATE TABLE `#__project_database_versions` (
 						`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -49,34 +49,34 @@ class Migration20130813210535PlgProjectsDatabases extends Migration
 						PRIMARY KEY (`id`,`database_name`,`version`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::addPluginEntry('projects', 'databases', 0);
+		$this->addPluginEntry('projects', 'databases', 0);
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
-		if ($db->tableExists('#__project_databases'))
+		if ($this->db->tableExists('#__project_databases'))
 		{
 			$query = "DROP TABLE `#__project_databases`";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		if ($db->tableExists('#__project_database_versions'))
+		if ($this->db->tableExists('#__project_database_versions'))
 		{
 			$query = "DROP TABLE `#__project_database_versions`;";
 
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
-		self::deletePluginEntry('projects', 'databases');
+		$this->deletePluginEntry('projects', 'databases');
 	}
 }

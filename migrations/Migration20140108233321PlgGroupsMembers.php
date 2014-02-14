@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,69 +8,69 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140108233321PlgGroupsMembers extends Migration
+class Migration20140108233321PlgGroupsMembers extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 		
 		// change role to name
-		if (!$db->tableHasField('#__xgroups_roles', 'name'))
+		if (!$this->db->tableHasField('#__xgroups_roles', 'name'))
 		{
 			$query = "ALTER TABLE `#__xgroups_roles` CHANGE `role` `name` VARCHAR(150);";
 		}
 		
 		// add permissions field
-		if (!$db->tableHasField('#__xgroups_roles', 'permissions'))
+		if (!$this->db->tableHasField('#__xgroups_roles', 'permissions'))
 		{
 			$query .= "ALTER TABLE `#__xgroups_roles` ADD COLUMN `permissions` TEXT;";
 		}
 		
 		// add role to roleid
-		if (!$db->tableHasField('#__xgroups_member_roles', 'roleid'))
+		if (!$this->db->tableHasField('#__xgroups_member_roles', 'roleid'))
 		{
 			$query .= "ALTER TABLE `#__xgroups_member_roles` CHANGE `role` `roleid` INT(11);";
 		}
 		
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		$query = "";
 		
 		// change role to name
-		if ($db->tableHasField('#__xgroups_roles', 'name'))
+		if ($this->db->tableHasField('#__xgroups_roles', 'name'))
 		{
 			$query = "ALTER TABLE `#__xgroups_roles` CHANGE `name` `role` VARCHAR(150);";
 		}
 		
 		// add permissions field
-		if ($db->tableHasField('#__xgroups_roles', 'permissions'))
+		if ($this->db->tableHasField('#__xgroups_roles', 'permissions'))
 		{
 			$query .= "ALTER TABLE `#__xgroups_roles` DROP COLUMN `permissions`;";
 		}
 		
 		// add role to roleid
-		if ($db->tableHasField('#__xgroups_member_roles', 'roleid'))
+		if ($this->db->tableHasField('#__xgroups_member_roles', 'roleid'))
 		{
 			$query .= "ALTER TABLE `#__xgroups_member_roles` CHANGE `roleid` `role` INT(11);";
 		}
 		
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

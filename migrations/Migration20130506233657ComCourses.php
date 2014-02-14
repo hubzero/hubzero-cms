@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,16 +8,16 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for grade policy changes
  **/
-class Migration20130506233657ComCourses extends Migration
+class Migration20130506233657ComCourses extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__courses_grade_policies', 'score_criteria'))
+		if ($this->db->tableHasField('#__courses_grade_policies', 'score_criteria'))
 		{
 			// If the table is of the 'old' style, just get rid of it
 			$query .= "DROP TABLE `#__courses_grade_policies`;\n";
@@ -40,8 +40,8 @@ class Migration20130506233657ComCourses extends Migration
 
 		if (!empty($query))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

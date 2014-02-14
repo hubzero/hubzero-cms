@@ -1,6 +1,6 @@
 <?php
 
-use Hubzero\Content\Migration;
+use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,21 +8,21 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding pages plugin entry
  **/
-class Migration20130729130302PlgYsearchCourses extends Migration
+class Migration20130729130302PlgYsearchCourses extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
-		self::addPluginEntry('ysearch', 'courses');
+		$this->addPluginEntry('ysearch', 'courses');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected function down($db)
+	public function down()
 	{
-		self::deletePluginEntry('ysearch', 'courses');
+		$this->deletePluginEntry('ysearch', 'courses');
 	}
 }
