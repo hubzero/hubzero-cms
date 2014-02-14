@@ -45,7 +45,7 @@ class plgContentFormatwiki extends JPlugin
 	 */
 	public function onContentBeforeSave($context, &$article, $isNew)
 	{
-		if (!($article instanceof \Hubzero\Base\Model) || $context == 'com_content.article')
+		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
 		{
 			return;
 		}
@@ -82,8 +82,7 @@ class plgContentFormatwiki extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		//if (is_object($content) || $context == 'com_content.article')
-		if (!($article instanceof \Hubzero\Base\Model) || $context == 'com_content.article')
+		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
 		{
 			return;
 		}
@@ -114,8 +113,8 @@ class plgContentFormatwiki extends JPlugin
 				if (!$this->params->get('convertFormat'))
 				{
 					$content = '<!-- {FORMAT:WIKI} -->' . $content;
-					$article->set($key, $content)
-					        ->store(false);
+					$article->set($key, $content);
+					$article->store(false);
 				}
 			}
 			else
@@ -146,8 +145,8 @@ class plgContentFormatwiki extends JPlugin
 		if ($this->params->get('convertFormat'))
 		{
 			$content = '<!-- {FORMAT:HTML} -->' . $content;
-			$article->set($key, $content)
-			        ->store(false);
+			$article->set($key, $content);
+			$article->store(false);
 		}
 
 		//return $content;

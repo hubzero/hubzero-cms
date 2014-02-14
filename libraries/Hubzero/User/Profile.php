@@ -31,13 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile_Helper');
-
 /**
- * Short description for 'Hubzero_User_Profile'
- * Long description (if any) ...
+ * Extended user profile
  */
-class Hubzero_User_Profile extends JObject
+class Hubzero_User_Profile extends \Hubzero\Base\Object
 {
 	// properties
 	
@@ -859,6 +856,22 @@ class Hubzero_User_Profile extends JObject
 	 * @param boolean $mysqlonly Parameter description (if any) ...
 	 * @return boolean Return description (if any) ...
 	 */
+	public function store()
+	{
+		if (!is_numeric($this->get('uidNumber')))
+		{
+			return $this->create();
+		}
+		return $this->update();
+	}
+
+	/**
+	 * Short description for 'update'
+	 * Long description (if any) ...
+	 *
+	 * @param boolean $mysqlonly Parameter description (if any) ...
+	 * @return boolean Return description (if any) ...
+	 */
 	public function update()
 	{
 		if (!is_numeric($this->get('uidNumber')))
@@ -1527,9 +1540,6 @@ class Hubzero_User_Profile extends JObject
 		if (!isset($groups))
 		{
 			$groups = array('applicants'=>array(), 'invitees'=>array(), 'members'=>array(), 'managers'=>array(), 'all'=>array());
-			
-			ximport('Hubzero_User_Helper');
-			
 			$groups['all'] = Hubzero_User_Helper::getGroups($this->get('uidNumber'), 'all', 1);
 			
 			if ($groups['all'])
@@ -1571,6 +1581,60 @@ class Hubzero_User_Profile extends JObject
 	}
 
 	/**
+	 * Get the content of the entry
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function getBio($as='parsed', $shorten=0)
+	{
+		$options = array();
+
+		switch (strtolower($as))
+		{
+			case 'parsed':
+				$config = array(
+					'option'   => 'com_members',
+					'scope'    => 'profile',
+					'pagename' => 'member',
+					'pageid'   => 0,
+					'filepath' => '',
+					'domain'   => '',
+					'camelcase' => 0
+				);
+
+				\JPluginHelper::importPlugin('content');
+				\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+					'com_members.profile.bio',
+					&$this,
+					&$config
+				));
+				$content = $this->get('bio');
+
+				$options = array('html' => true);
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->getBio('parsed'));
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('bio'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+
+		return $content;
+	}
+
+	/**
 	 * Get a user's picture
 	 *
 	 * @param    integer $anonymous Is user anonymous?
@@ -1579,7 +1643,6 @@ class Hubzero_User_Profile extends JObject
 	 */
 	public function getPicture($anonymous=0, $thumbit=true)
 	{
-		ximport('Hubzero_User_Profile_Helper');
 		return Hubzero_User_Profile_Helper::getMemberPhoto($this, $anonymous, $thumbit);
 	}
 }

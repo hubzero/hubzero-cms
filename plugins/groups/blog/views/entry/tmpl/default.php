@@ -169,7 +169,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 					</h4>
 					<p class="entry-author-bio">
 						<?php if ($author->get('bio')) { ?>
-							<?php echo \Hubzero\Utility\String::truncate(stripslashes($author->get('bio')), 300); ?>
+							<?php echo $author->getBio('parsed', 300); ?>
 						<?php } else { ?>
 							<?php echo JText::_('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?>
 						<?php } ?>

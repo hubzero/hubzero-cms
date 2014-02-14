@@ -127,7 +127,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							window.bonus_amount = '.$incrOpts->getAwardPerField().';
 						</script>';
 			echo $increm;
-			ximport('Hubzero_Document');
+
 			Hubzero_Document::addComponentScript('assets/js/incremental');
 		}
 	?>
@@ -169,7 +169,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="value"><?php echo $this->escape($this->profile->get('name')); ?></div>
 					<br class="clear" />
 					<?php
-						ximport('Hubzero_Plugin_View');
 						$editview = new Hubzero_Plugin_View(
 							array(
 								'folder'  => 'members',
@@ -284,16 +283,15 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							//create select for organizations and optional text input
 							$organizations  = '<select name="org" class="input-select">';
 							$organizations .= '<option value="">' . JText::_('PLG_MEMBERS_PROFILE_SELECT_OR_ENTER_BELOW') . '</option>';
-							foreach($orgs as $o)
-							{   
+							foreach ($orgs as $o)
+							{
 								$sel = ($o == $this->profile->get("organization")) ? "selected=\"selected\"" : "";
 								$organizations .= "<option {$sel} value=\"{$o}\">{$o}</option>";
 							}
 							$organizations .= "</select>";
 							$organization_alt = (!in_array($this->profile->get("organization"), $orgs)) ? $this->escape($this->profile->get('organization')) : "";
 							$organizations_text = "<input type=\"text\" name=\"orgtext\" class=\"input-text\" value=\"{$organization_alt}\" />";
-						
-							ximport('Hubzero_Plugin_View');
+
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -333,7 +331,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						if ($this->params->get('access_orgtype') == 2) 
 						{
 							$cls .= "private";
-						}                     
+						}
 						if ($this->profile->get("orgtype") == "" || is_null($this->profile->get("orgtype")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
@@ -370,7 +368,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 							$organization_types .= "</select>"; 
 
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -426,7 +423,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -498,7 +494,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="value"><?php echo $url; ?></div>
 						<br class="clear" />
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -562,7 +557,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="value"><?php echo $tel; ?></div>
 						<br class="clear" />
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -627,7 +621,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -684,18 +677,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<div class="section-content">
 					<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_BIOGRAPHY'); ?></div>
 					<?php
-						if ($this->profile->get('bio')) {
-							$wikiconfig = array(
-								'option'   => $this->option,
-								'scope'    => 'members'.DS.'profile',
-								'pagename' => 'member',
-								'pageid'   => 0,
-								'filepath' => '',
-								'domain'   => '' 
-							);
-							ximport('Hubzero_Wiki_Parser');
-							$p = Hubzero_Wiki_Parser::getInstance();
-							$bio = $p->parse(stripslashes($this->profile->get('bio')), $wikiconfig, false);
+						if ($this->profile->get('bio')) 
+						{
+							$bio = $this->profile->getBio('parsed');
 						}
 						else
 						{
@@ -706,7 +690,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<br class="clear" />
 					
 					<?php
-						ximport('Hubzero_Plugin_View');
 						$editview = new Hubzero_Plugin_View(
 							array(
 								'folder'  => 'members',
@@ -714,12 +697,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								'name'    => 'edit'
 							)
 						);
-					
-						ximport('Hubzero_Wiki_Editor');
-						$editor = Hubzero_Wiki_Editor::getInstance();
-					
-						$bio = $editor->display('profile[bio]', 'profile_bio', stripslashes($this->profile->get('bio')), '', '100', '15'); 
-					
+
+						$bio = \JFactory::getEditor()->display('profile[bio]', $this->escape(stripslashes($this->profile->getBio('raw'))), '', '', 100, 15, false, 'profile_bio', null, null, array('class' => 'minimal no-footer'));
 						$editview->registration_field = "bio";
 						$editview->profile_field = "bio";
 						$editview->registration = $this->registration->Bio;

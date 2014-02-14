@@ -298,7 +298,7 @@ if (count($this->rows) > 0)
 					// Load their bio
 					$profile = new Hubzero_User_Profile();
 					$profile->load($row->uidNumber);
-					$txt = $profile->get('bio');
+					$txt = $profile->getBio('parsed');
 
 					// Do we have a picture?
 					$thumb = '';

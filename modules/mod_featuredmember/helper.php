@@ -209,7 +209,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 				 || ($this->params->get('access_bio') == 1 && !$juser->get('guest'))
 				) 
 				{
-					$this->txt = $this->profile->get('bio');
+					$this->txt = $this->profile->getBio('parsed');
 				} 
 				else 
 				{

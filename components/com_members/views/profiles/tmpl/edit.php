@@ -355,12 +355,9 @@ if ($this->registration->Interests != REG_HIDE) {
 	$html .= "\t\t".'</label>'."\n";
 }
 
-ximport('Hubzero_Wiki_Editor');
-$editor = Hubzero_Wiki_Editor::getInstance();
-
 $html .= "\t\t".'<label for="profilebio">'."\n";
 $html .= "\t\t\t".JText::_('BIO').':'."\n";
-$html .= "\t\t\t".$editor->display('profile[bio]', 'profilebio', stripslashes($this->profile->get('bio')), '', '40', '10');
+$html .= "\t\t\t".\JFactory::getEditor()->display('profile[bio]', $this->escape(stripslashes($this->profile->getBio('raw'))), '', '', 35, 10, false, 'profilebio', null, null, array('class' => 'minimal no-footer'));
 $html .= "\t\t\t".'<span class="hint"><a class="popup" href="'.JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting').'">Wiki formatting</a> is allowed for Bios.</span>'."\n";
 $html .= "\t\t".'</label>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
@@ -377,7 +374,6 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	if ($this->registration->Citizenship != REG_HIDE
 	 || $this->registration->Residency != REG_HIDE) {
-		ximport('Hubzero_Geo');
 		$countries = Hubzero_Geo::getcountries();
 	}
 

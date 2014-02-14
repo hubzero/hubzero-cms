@@ -30,23 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$bio = '';
-if ($b = $this->instructor->get('bio'))
-{
-	$wikiconfig = array(
-		'option'   => 'com_members',
-		'scope'    => 'members' . DS . 'profile',
-		'pagename' => 'member',
-		'pageid'   => 0,
-		'filepath' => '',
-		'domain'   => '' 
-	);
-
-	$p = Hubzero_Wiki_Parser::getInstance();
-
-	$bio = $p->parse(stripslashes($b), $wikiconfig, false);
-}
 ?>
 <div class="course-instructor">
 	<p class="course-instructor-photo">
@@ -67,8 +50,8 @@ if ($b = $this->instructor->get('bio'))
 	</div><!-- / .course-instructor-content cf -->
 
 	<div class="course-instructor-bio">
-		<?php if ($bio) { ?>
-			<?php echo $bio; ?>
+		<?php if ($this->instructor->get('bio')) { ?>
+			<?php echo $this->instructor->getBio('parsed'); ?>
 		<?php } else { ?>
 			<em><?php echo JText::_('This instructor has yet to write their bio.'); ?></em>
 		<?php } ?>

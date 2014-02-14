@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage site members
  */
-class MembersControllerMembers extends Hubzero_Controller
+class MembersControllerMembers extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of site members
@@ -247,7 +245,7 @@ class MembersControllerMembers extends Hubzero_Controller
 		}
 
 		// Incoming profile edits
-		$p = JRequest::getVar('profile', array(), 'post');
+		$p = JRequest::getVar('profile', array(), 'post', 'none', 2);
 
 		// Load the profile
 		$profile = new Hubzero_User_Profile();

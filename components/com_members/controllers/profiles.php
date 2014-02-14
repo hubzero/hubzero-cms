@@ -1335,9 +1335,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return false;
 		} 
 
-		ximport('Hubzero_Registration');
-		ximport('Hubzero_Registration_Helper');
-
 		$no_html = JRequest::getVar("no_html", 0);
 
 		// Incoming user ID
@@ -1351,7 +1348,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming profile edits
-		$p = JRequest::getVar('profile', array(), 'post');
+		$p = JRequest::getVar('profile', array(), 'post', 'none', 2);
 		$n = JRequest::getVar('name', array(), 'post');
 		$a = JRequest::getVar('access', array(), 'post');
 

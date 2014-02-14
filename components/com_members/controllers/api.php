@@ -72,7 +72,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 			'first_name' => $result->get('givenName'),
 			'middle_name' => $result->get('middleName'),
 			'last_name' => $result->get('surname'),
-			'bio' => $result->get('bio'),
+			'bio' => $result->getBio('clean'),
 			'email' => $result->get('email'),
 			'phone' => $result->get('phone'),
 			'url' => $result->get('url'),

@@ -231,8 +231,8 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 							</a>
 						</h4>
 						<p class="entry-author-bio">
-						<?php if ($bio = $this->row->creator('bio')) { ?>
-							<?php echo \Hubzero\Utility\String::truncate(stripslashes($bio), 300); ?>
+						<?php if ($this->row->creator('bio')) { ?>
+							<?php echo $this->row->creator()->getBio('parsed', 300); ?>
 						<?php } else { ?>
 							<em><?php echo JText::_('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
 						<?php } ?>
