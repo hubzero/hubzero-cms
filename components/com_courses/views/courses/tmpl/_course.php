@@ -46,8 +46,6 @@ switch ($this->columns)
 	case 3: $columns = 'three'; break;
 	case 4: $columns = 'four';  break;
 }
-
-ximport('Hubzero_View_Helper_Html');
 ?>
 <div class="<?php echo $columns; ?> columns <?php echo $cls; ?>">
 	<div class="course-list">
@@ -59,7 +57,7 @@ ximport('Hubzero_View_Helper_Html');
 			</h3>
 		<?php if ($this->course->get('blurb')) { ?>
 			<p>
-				<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($this->course->get('blurb'))), 150, 0, 0); ?>
+				<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($this->course->get('blurb'))), 150); ?>
 			</p>
 		<?php } ?>
 		<?php if ($this->course->isManager()) { ?>

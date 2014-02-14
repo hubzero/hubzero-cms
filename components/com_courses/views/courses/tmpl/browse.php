@@ -187,8 +187,6 @@ $juser = JFactory::getUser();
 				<?php
 				if ($this->courses->total() > 0) 
 				{
-					ximport('Hubzero_User_Profile_Helper');
-					ximport('Hubzero_View_Helper_Html');
 					foreach ($this->courses as $course)
 					{
 						//get status
@@ -233,7 +231,7 @@ $juser = JFactory::getUser();
 							<?php
 								}
 							?>
-								<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($course->get('blurb')), 200); ?>
+								<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
 							</td>
 						<?php /*if ($course->access('manage')) { ?>
 							<td>
