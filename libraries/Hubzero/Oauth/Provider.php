@@ -28,15 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Oauth;
+
+use OAuthProvider;
+use OAuthException;
 
 /**
- * Short description for 'Hubzero_Oauth_Provider'
- * 
- * Long description (if any) ...
+ * OAuth provider class
  */
-class Hubzero_Oauth_Provider
+class Provider
 {
 
 	/**
@@ -353,16 +353,14 @@ class Hubzero_Oauth_Provider
 	 */
  	function consumerHandler()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (!is_object($db))
 		{
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" . 
-				$db->Quote($this->_provider->consumer_key) . 
-				" LIMIT 1;");
+		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" . $db->Quote($this->_provider->consumer_key) . " LIMIT 1;");
 
 		$result = $db->loadObject();
 
@@ -406,7 +404,7 @@ class Hubzero_Oauth_Provider
 			return OAUTH_BAD_TIMESTAMP;
 		}
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (!is_object($db))
 		{
@@ -448,16 +446,14 @@ class Hubzero_Oauth_Provider
 	 */
 	function tokenHandler()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 			
 		if (!is_object($db))
 		{
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	. 
-				$db->Quote($this->_provider->token) . 
-				" LIMIT 1;");
+		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	. $db->Quote($this->_provider->token) . " LIMIT 1;");
 
 		$result = $db->loadObject();
 		

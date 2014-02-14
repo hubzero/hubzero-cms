@@ -428,7 +428,7 @@ class Hubzero_API extends JApplication
 			}			
 		}
 
-		$oauthp = new Hubzero_Oauth_Provider($params);
+		$oauthp = new \Hubzero\Oauth\Provider($params);
 		$oauthp->setRequestTokenPath('/api/oauth/request_token');
 		$oauthp->setAccessTokenPath('/api/oauth/access_token');
 		$oauthp->setAuthorizePath('/api/oauth/authorize');
