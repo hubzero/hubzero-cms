@@ -1303,22 +1303,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$sef = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id);
 		$forum_message .= "\r\n\r\n" . rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
 
-		// Translate the message wiki formatting to html
-		/*
-		$p = Hubzero_Wiki_Parser::getInstance();
-		
-		$wikiconfig = array(
-			'option'   => $this->option,
-			'scope'    => 'group' . DS . 'forum',
-			'pagename' => 'group',
-			'pageid'   => $this->group->get('gidNumber'),
-			'filepath' => '',
-			'domain'   => ''
-		);
-		
-		$forum_message = $p->parse("\n".stripslashes($forum_message), $wikiconfig);		
-		*/
-
 		$params = JComponentHelper::getParams('com_groups');
 
 		// Email the group and insert email tokens to allow them to respond to group posts via email

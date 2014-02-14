@@ -577,17 +577,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0) 
 		{
-			$wikiconfig = array(
-				'option'   => $this->_option,
-				'scope'    => '',
-				'pagename' => $entry->get('alias'),
-				'pageid'   => $entry->id,
-				'filepath' => '',
-				'domain'   => ''
-			);
-			ximport('Hubzero_Wiki_Parser');
-			$p = Hubzero_Wiki_Parser::getInstance();
-
 			foreach ($rows as $row)
 			{
 				// URL link to article
@@ -610,9 +599,9 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 				} 
 				else 
 				{
-					$description = $p->parse($row->content, $wikiconfig);
+					$description = $row->content;
 				}
-				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
+				$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
 
 				@$date = ($row->created ? date('r', strtotime($row->created)) : '');
 
@@ -653,9 +642,9 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 						} 
 						else 
 						{
-							$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
+							$description = stripslashes($reply->content);
 						}
-						$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
+						$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
 
 						@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
 
@@ -695,9 +684,9 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 								} 
 								else 
 								{
-									$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
+									$description = stripslashes($response->content);
 								}
-								$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
+								$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
 
 								@$date = ($response->created ? date('r', strtotime($response->created)) : '');
 

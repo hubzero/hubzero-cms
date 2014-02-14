@@ -3,17 +3,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => 'forum',
-	'pagename' => 'forum',
-	'pageid'   => 0,
-	'filepath' => '',
-	'domain'   => 0
-);
-ximport('Hubzero_Wiki_Parser');
-$p = Hubzero_Wiki_Parser::getInstance();
-
 $ct = count($this->sections);
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions&unit=manage';
@@ -170,7 +159,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 							</span>
 							<span class="entry-details">
 								<span class="entry-description">
-									<?php echo str_replace(array('<p>', '</p>'), '', $p->parse(stripslashes($row->description), $wikiconfig, false)); ?>
+									<?php echo str_replace(array('<p>', '</p>'), '', stripslashes($row->description)); ?>
 								</span>
 							</span>
 						</td>

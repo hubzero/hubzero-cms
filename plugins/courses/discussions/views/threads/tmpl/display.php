@@ -106,16 +106,6 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<?php
 			if ($this->rows) 
 			{
-				$wikiconfig = array(
-					'option'   => $this->option,
-					'scope'    => 'forum',
-					'pagename' => 'forum',
-					'pageid'   => $this->post->id,
-					'filepath' => '',
-					'domain'   => $this->post->id
-				);
-				$p = Hubzero_Wiki_Parser::getInstance();
-
 				$last = '0000-00-00 00:00:00';
 				foreach ($this->rows as $row)
 				{
@@ -142,8 +132,6 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				$view->depth      = 0;
 				$view->cls        = 'odd';
 				$view->base       = $base;
-				$view->parser     = $p;
-				$view->wikiconfig = $wikiconfig;
 				$view->attach     = $this->attach;
 				$view->course     = $this->course;
 				$view->display();

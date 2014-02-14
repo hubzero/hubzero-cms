@@ -805,16 +805,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$thread->total = 0;
 		$thread->html = null;
 
-		$wikiconfig = array(
-			'option'   => $this->option,
-			'scope'    => $this->_name,
-			'pagename' => $this->_name,
-			'pageid'   => $post->id,
-			'filepath' => '',
-			'domain'   => $post->id
-		);
-		$p = Hubzero_Wiki_Parser::getInstance();
-
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -854,14 +844,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			$view->comments = $this->treeRecurse($children[$post->get('parent')], $children);
 		}
-		//print_r($this->database); die();
+
 		$view->parent = $post->parent;
 		$view->thread = $post->id;
 		$view->option = $this->option;
 		$view->config      = $this->params;
 		$view->depth      = 0;
 		$view->cls        = 'odd';
-		$view->parser     = $p;
 		$view->base       = $this->base . '&thread=' . $post->id . ($filters['search'] ? '&action=search&search=' . $filters['search'] : '');
 		
 		$view->unit       = '';
@@ -872,7 +861,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$view->lecture    = $this->lecture->get('alias');
 		}
 
-		$view->wikiconfig = $wikiconfig;
 		$view->attach     = new ForumTableAttachment($this->database);
 		$view->course     = $this->course;
 		$view->search     = $filters['search'];
@@ -1041,16 +1029,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		if ($results = $post->getTree($post->id, $filters))
 		{
-			$wikiconfig = array(
-				'option'   => $this->option,
-				'scope'    => 'discussions',
-				'pagename' => 'discussions',
-				'pageid'   => $post->id,
-				'filepath' => '',
-				'domain'   => $post->id
-			);
-			$p = Hubzero_Wiki_Parser::getInstance();
-
 			foreach ($results as $key => $row)
 			{
 				$thread->lastchange = ($row->created > $thread->lastchange) 
@@ -1083,8 +1061,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				$cview->depth      = 1;
 				$cview->cls        = 'odd';
 				$cview->base       = $this->base;
-				$cview->parser     = $p;
-				$cview->wikiconfig = $wikiconfig;
 				$cview->attach     = new ForumTableAttachment($this->database);
 				$cview->course     = $this->course;
 				$cview->search     = '';
