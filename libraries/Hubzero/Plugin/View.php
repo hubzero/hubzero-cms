@@ -349,4 +349,31 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		return $this;
 	}
+
+	/**
+	 * Create a plugin view and return it
+	 *
+	 * @param   string $layout View layout
+	 * @param   string $name   View name
+	 * @return	object
+	 */
+	public function view($layout, $name=null)
+	{
+		// If we were passed only a view model, just render it.
+		if ($layout instanceof \Hubzero\View\View) 
+		{
+			return $layout;
+		}
+
+		$view = new self(array(
+			'folder'  => $this->_folder,
+			'element' => $this->_element,
+			'name'    => ($name ? $name : $this->_name),
+			'layout'  => $layout
+		));
+		$view->set('folder', $this->_folder)
+		     ->set('element', $this->_element);
+
+		return $view;
+	}
 }

@@ -151,4 +151,31 @@ class View extends AbstractView
 
 		return $this;
 	}
+
+	/**
+	 * Create a component view and return it
+	 *
+	 * @param   string $layout View layout
+	 * @param   string $name   View name
+	 * @return	object
+	 */
+	public function view($layout, $name=null)
+	{
+		// If we were passed only a view model, just render it.
+		if ($layout instanceof \Hubzero\View\View) 
+		{
+			return $layout;
+		}
+
+		$view = new self(array(
+			'base_path' => $this->_basePath,
+			'name'      => ($name ? $name : $this->_name),
+			'layout'    => $layout
+		));
+		$view->set('option', $this->option)
+		     ->set('controller', $this->controller)
+		     ->set('task', $this->task);
+
+		return $view;
+	}
 }
