@@ -588,7 +588,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				//$link = JRoute::_($row->href);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)),300,0));
+				$description = html_entity_decode(\Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)),300));
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 

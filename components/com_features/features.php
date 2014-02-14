@@ -43,7 +43,6 @@ jimport('joomla.application.component.helper');
 
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'history.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-ximport('Hubzero_View_Helper_Html');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'items'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

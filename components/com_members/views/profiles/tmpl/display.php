@@ -138,7 +138,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	if ($rows = $c->getRecords($filters, false))
 	{
-		ximport('Hubzero_User_Profile_Helper');
 		$i = 0;
 		foreach ($rows as $row)
 		{
@@ -183,7 +182,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</div>
 				<p class="course-instructor-bio">
 				<?php if ($contributor->get('bio')) { ?>
-					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($contributor->get('bio')), 200, 0); ?>
+					<?php echo \Hubzero\Utility\String::truncate(stripslashes($contributor->get('bio')), 200); ?>
 				<?php } else { ?>
 					<em><?php echo JText::_('This contributor has yet to write their bio.'); ?></em>
 				<?php } ?>

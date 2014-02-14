@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Jobs controller class for postings
  */
-class JobsControllerJobs extends Hubzero_Controller
+class JobsControllerJobs extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Method to set a property of the class
@@ -602,7 +602,6 @@ class JobsControllerJobs extends Hubzero_Controller
 		$specialgroup = $this->config->get('specialgroup', '');
 		if ($specialgroup)
 		{
-			ximport('Hubzero_Group');
 			$sgroup = Hubzero_Group::getInstance($specialgroup);
 			if (!$sgroup)
 			{
@@ -1865,8 +1864,6 @@ class JobsControllerJobs extends Hubzero_Controller
 			$admingroup = $this->config->get('admingroup', '');
 			if ($admingroup) 
 			{
-				ximport('Hubzero_User_Helper');
-
 				$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
 				if ($ugs && count($ugs) > 0) 
 				{

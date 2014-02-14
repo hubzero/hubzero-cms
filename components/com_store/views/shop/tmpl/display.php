@@ -65,7 +65,7 @@ if ($this->rows) {
 			</div>
 			<div class="infoholder">
 				<h4><?php echo $row->title; ?></h4>
-				<p><?php echo Hubzero_View_Helper_Html::shortenText($row->description, 200, 0); ?></p>
+				<p><?php echo \Hubzero\Utility\String::truncate($row->description, 200); ?></p>
 				<p>
 <?php if ($row->category ) { ?>
 					<span class="sizes"><?php echo JText::_('COM_STORE_CATEGORY'); ?>: <?php echo $row->category; ?></span>

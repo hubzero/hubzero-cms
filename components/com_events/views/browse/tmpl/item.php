@@ -83,7 +83,7 @@ foreach ($this->fields as $field)
 }
 $html .= $info;
 if (!$info) {
-	$html .= "\t\t".'<p class="description">'. Hubzero_View_Helper_Html::shortenText($this->row->content,300,0) .'</p>'."\n";
+	$html .= "\t\t".'<p class="description">'. \Hubzero\Utility\String::truncate($this->row->content,300) .'</p>'."\n";
 }
 $html .= "\t".'</div></li>'."\n";
 

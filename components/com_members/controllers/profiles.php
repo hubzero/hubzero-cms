@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Members controller class for profiles
  */
-class MembersControllerProfiles extends Hubzero_Controller
+class MembersControllerProfiles extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task

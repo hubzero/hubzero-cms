@@ -150,7 +150,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						else if($mj->status == 0) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_PENDING')).')'; }
 						else if($mj->status == 3) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_INACTIVE')).')'; } ?>
                     	</span> 
-					<?php echo '<span class="code">'.$mj->code.'</span>: <a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&code='.$mj->code).'">'.Hubzero_View_Helper_Html::shortenText($mj->title, 50, 0).'</a>';  ?>     
+					<?php echo '<span class="code">'.$mj->code.'</span>: <a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&code='.$mj->code).'">'.\Hubzero\Utility\String::truncate($mj->title, 50).'</a>';  ?>     
         	</p>
         <?php }
 		} ?>

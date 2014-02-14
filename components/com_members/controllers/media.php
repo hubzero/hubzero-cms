@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Members controller class for media
  */
-class MembersControllerMedia extends Hubzero_Controller
+class MembersControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task

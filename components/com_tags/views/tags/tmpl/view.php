@@ -374,10 +374,10 @@ foreach ($this->results as $category)
 				}
 
 				$html .= "\t".'<li>'."\n";
-				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.Hubzero_View_Helper_Html::purifyText($row->title).'</a></p>'."\n";
+				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.\Hubzero\Utility\Sanitize::clean($row->title).'</a></p>'."\n";
 				if ($row->ftext) {
 					$row->ftext = strip_tags($row->ftext);
-					$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText($row->ftext), 200)."\n";
+					$html .= "\t\t".\Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll($row->ftext), 200)."\n";
 				}
 				$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 				$html .= "\t".'</li>'."\n";

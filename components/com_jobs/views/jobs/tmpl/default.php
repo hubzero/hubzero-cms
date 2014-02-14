@@ -193,7 +193,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 				'filepath' => '',
 				'domain'   => ''
 			);
-			ximport('Hubzero_Wiki_Parser');
 			$p = Hubzero_Wiki_Parser::getInstance();
 
 			$maxscore = $filters['search'] && $jobs[0]->keywords > 0 ? $jobs[0]->keywords : 1;
@@ -242,7 +241,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 				$html .= t.t.t.'<tr>'."\n";
 				$html .= t.t.t.t.'<td class="jobtitle">'."\n";
-				$html .= t.t.t.t.'<a href="'.JRoute::_('index.php?option='.$option.'&task=job'.a.'code='.$jobs[$i]->code).'" title="'.Hubzero_View_Helper_Html::shortenText($txt, 250, 0).'">';
+				$html .= t.t.t.t.'<a href="'.JRoute::_('index.php?option='.$option.'&task=job'.a.'code='.$jobs[$i]->code).'" title="'.\Hubzero\Utility\String::truncate($txt, 250).'">';
 				$html .= $jobs[$i]->title.'</a>'."\n";
 				$html .= t.t.t.t.'</td>'."\n";
 				if ($this->admin && !$this->emp && !$this->mini) {

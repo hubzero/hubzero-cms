@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wishlist controller class
  */
-class WishlistController extends Hubzero_Controller
+class WishlistController extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Short description for '__construct'
@@ -376,7 +376,6 @@ class WishlistController extends Hubzero_Controller
 				break;
 			
 			case 'group':
-				ximport('Hubzero_Group');	
 				$group = Hubzero_Group::getInstance($wishlist->referenceid);
 				if ($group)
 				{
@@ -448,7 +447,6 @@ class WishlistController extends Hubzero_Controller
 				break;
 			
 			case 'group':
-				ximport('Hubzero_Group');
 				$group = Hubzero_Group::getInstance($wishlist->referenceid);
 				$pathway->addItem('Groups','index.php?option=com_groups');
 				$pathway->addItem($group->get('description'),
@@ -524,8 +522,6 @@ class WishlistController extends Hubzero_Controller
 	 */
 	public function wishlist()
 	{
-		ximport('Hubzero_Group');
-
 		$database = JFactory::getDBO();
 		$juser 	  = JFactory::getUser();
 
@@ -783,7 +779,7 @@ class WishlistController extends Hubzero_Controller
 			// Set the pathway
 			$this->_wishpath  = 'index.php?option=' . $this->_option . '&task=wish&category=' 
 				. $cat . '&rid=' . $refid . '&wishid='.$wishid;
-			$this->_wishtitle = Hubzero_View_Helper_Html::shortenText($wish->subject, 80, 0);
+			$this->_wishtitle = \Hubzero\Utility\String::truncate($wish->subject, 80);
 			$this->_buildPathway($wishlist);
 
 			// Push some styles to the template
@@ -1319,7 +1315,7 @@ class WishlistController extends Hubzero_Controller
 				'filepath' => '',
 				'domain'   => ''
 			);
-			ximport('Hubzero_Wiki_Parser');
+
 			$p = Hubzero_Wiki_Parser::getInstance();
 			$page->pagehtml = $p->parse($page->pagetext, $wikiconfig);
 
@@ -2022,8 +2018,6 @@ class WishlistController extends Hubzero_Controller
 	 */
 	public function movewish()
 	{
-		ximport('Hubzero_Group');
-
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
@@ -2879,7 +2873,7 @@ class WishlistController extends Hubzero_Controller
 				$message .= JText::_('COM_WISHLIST_MSG_COMMENT_BY').' '.$name.' ';
 				$message .= $row->anonymous ? '' : '('.$login.')';
 				$message .= ' '.JText::_('COM_WISHLIST_MSG_POSTED_ON').' '.JHTML::_('date',$row->created, JText::_('DATE_FORMAT_HZ1')).':' . "\r\n";
-				$message .= $attach->parse(Hubzero_View_Helper_Html::purifyText($row->content)) . "\r\n\r\n";
+				$message .= $attach->parse(\Hubzero\Utility\Sanitize::clean($row->content)) . "\r\n\r\n";
 				$message .= "\r\n";
 
 				$message .= '----------------------------' . "\r\n";

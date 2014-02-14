@@ -94,7 +94,7 @@ if (count($this->apps) > 0) {
 			}
 ?>
 				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
-					<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($project->title), 50, 0); ?></a></td>
+					<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($project->title), 50); ?></a></td>
 					<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo $this->escape($project->toolname); ?></a></td>
 					<td><span class="<?php echo $status; ?>-code"><?php echo $status; ?></span></td>
 				</tr>

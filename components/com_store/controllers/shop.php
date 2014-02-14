@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for the store
  */
-class StoreControllerShop extends Hubzero_Controller
+class StoreControllerShop extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task

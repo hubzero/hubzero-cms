@@ -112,7 +112,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	{
 ?>
 			<p>
-				<?php echo Hubzero_View_Helper_Html::shortenText($item->title, 28, 0); ?>
+				<?php echo \Hubzero\Utility\String::truncate($item->title, 28); ?>
 <?php if ($item->selectedsize) { ?>
 			</p>
 			<p>
