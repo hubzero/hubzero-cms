@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'helpers' . DS . 'helper.php');
+
 /**
  * Courses controller class for media
  */
@@ -614,7 +616,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 		if ($this->active == 'wiki') 
 		{
 			//get access level for wiki
-			$access = Hubzero_Course_Helper::getPluginAccess($course, 'wiki');
+			$access = CoursesHelper::getPluginAccess($course, 'wiki');
 
 			//check to make sure user has access to wiki section
 			if (($access == 'members' && !in_array($this->juser->get('id'), $course->get('members'))) 
@@ -643,7 +645,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 		else 
 		{
 			//get access level for overview or other course pages
-			$access = Hubzero_Course_Helper::getPluginAccess($course, 'overview');
+			$access = CoursesHelper::getPluginAccess($course, 'overview');
 
 			//check to make sure we can access it
 			if (($access == 'members' && !in_array($this->juser->get('id'), $course->get('members'))) 
