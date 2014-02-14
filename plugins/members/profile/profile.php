@@ -82,6 +82,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		
 		//include address library
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php' );
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
 
 		$arr = array(
 			'html' => '',
@@ -120,9 +121,6 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	private function view()
 	{
 		$app = JFactory::getApplication();
-		
-		// Load some needed libraries
-		ximport('Hubzero_Registration');
 
 		// Find out which fields are hidden, optional, or required
 		$registration               = new JObject();
@@ -179,7 +177,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$session = JFactory::getSession();
 		if ($session->get('registration.incomplete'))
 		{
-			$xreg = new Hubzero_Registration();
+			$xreg = new RegisterModelRegistration();
 			$juser =  JFactory::getUser(); 
 			$xprofile = Hubzero_Factory::getProfile();
 
@@ -304,7 +302,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		unset($fields->_errors);
 
 		//load the user profile
-		$registration = new Hubzero_Registration();
+		$registration = new RegisterModelRegistration();
 		$registration->loadProfile($profile);
 
 		//add tags to the registration object

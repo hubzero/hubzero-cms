@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
+
 /**
  * Members controller class for profiles
  */
@@ -701,9 +703,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		);
 
 		// Load some needed libraries
-		ximport('Hubzero_Registration_Helper');
-		ximport('Hubzero_User_Helper');
-
 		if (Hubzero_User_Helper::isXDomainUser($this->juser->get('id'))) 
 		{
 			JError::raiseError(403, JText::_('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT'));
@@ -730,7 +729,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->newpass2 = $newpass2;
 		$this->view->validated = true;
 
-		ximport('Hubzero_Password_Rule');
 		$password_rules = Hubzero_Password_Rule::getRules();
 
 		$this->view->password_rules = array();
@@ -1125,7 +1123,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for editing a profile
 	 * 
-	 * @param      object $xregistration Hubzero_Registration
+	 * @param      object $xregistration RegisterModelRegistration
 	 * @param      object $profile       Hubzero_User_Profile
 	 * @return     void
 	 */
@@ -1218,15 +1216,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
 
-		// Load some needed libraries
-		ximport('Hubzero_Registration');
-		ximport('Hubzero_Registration_Helper');
-
 		// Instantiate an xregistration object if we don't already have one
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($xregistration)) 
 		{
-			$xregistration = new Hubzero_Registration();
+			$xregistration = new RegisterModelRegistration();
 		}
 		$this->view->xregistration = $xregistration;
 
@@ -1393,8 +1387,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JRequest::setVar('interests', $tags, 'post');
 		}
 
-		// Instantiate a new Hubzero_Registration
-		$xregistration = new Hubzero_Registration();
+		// Instantiate a new RegisterModelRegistration
+		$xregistration = new RegisterModelRegistration();
 		$xregistration->loadPOST();
 
 		// Push the posted data to the profile
@@ -1407,7 +1401,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			if ($oldemail != $xregistration->_registration['email']) 
 			{
 				// Get a new confirmation code
-				$confirm = Hubzero_Registration_Helper::genemailconfirm();
+				$confirm = RegisterHelperUtility::genemailconfirm();
 
 				$profile->set('emailConfirmed', $confirm);
 			}

@@ -40,11 +40,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 jimport('joomla.application.component.helper');
 
-ximport('Hubzero_Registration');
-ximport('Hubzero_Registration_Helper');
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_User_Helper');
-
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'registration.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'controller.php');
 

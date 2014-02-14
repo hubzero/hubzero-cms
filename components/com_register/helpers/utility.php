@@ -32,25 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'Hubzero_Registration_Helper'
- * 
- * Long description (if any) ...
+ * Helper class for registration. 
+ * Use primarily for input validation.
  */
-class Hubzero_Registration_Helper
+class RegisterHelperUtility
 {
-
-	/**
-	 * Short description for 'genemailconfirm'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     integer Return description (if any) ...
-	 */
-	public static function genemailconfirm()
-	{
-	    return(-rand(1, pow(2, 31)-1)); // php5 in debian etch returns negative values if i don't subtract 1 from this max 
-	}
-
 	/**
 	 * Short description for 'validateOrgType'
 	 * 
@@ -60,14 +46,16 @@ class Hubzero_Registration_Helper
 	 * @return     boolean Return description (if any) ...
 	 */
 	public static function validateOrgType($org)
-    {
-        $orgtypes = array('university','precollege','nationallab','industry','government','military','unemployed');
+	{
+		$orgtypes = array('university','precollege','nationallab','industry','government','military','unemployed');
 
-		if (in_array($org,$orgtypes))
-            return true;
+		if (in_array($org, $orgtypes))
+		{
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	/**
 	 * Check validity of login
@@ -82,7 +70,7 @@ class Hubzero_Registration_Helper
 
 		if (preg_match("/^[".$firstCharClass."][_.a-z0-9]{1,31}$/", $login))
 		{
-			if (Hubzero_Registration_Helper::is_positiveint($login))
+			if (self::is_positiveint($login))
 			{
 				return(0);
 			}
@@ -107,11 +95,11 @@ class Hubzero_Registration_Helper
 	 */
 	public static function is_positiveint($x)
 	{
-		if (is_numeric($x) && intval($x) == $x && $x >= 0) {
+		if (is_numeric($x) && intval($x) == $x && $x >= 0)
+		{
 			return(true);
-		} else {
-			return(false);
 		}
+		return(false);
 	}
 
 	/**
@@ -124,11 +112,11 @@ class Hubzero_Registration_Helper
 	 */
 	public static function validpassword($password)
 	{
-		if (preg_match("/^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$/", $password)) {
+		if (preg_match("/^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$/", $password))
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -141,11 +129,11 @@ class Hubzero_Registration_Helper
 	 */
 	public static function validemail($email)
 	{
-		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/", $email)) {
+		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/", $email))
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -159,11 +147,11 @@ class Hubzero_Registration_Helper
 	public static function validurl($url)
 	{
 		$ptrn = '/([a-z0-9_\-]{1,5}:\/\/)?(([a-z0-9_\-]{1,}):([a-z0-9_\-]{1,})\@)?((www\.)|([a-z0-9_\-]{1,}\.)+)?([a-z0-9_\-]{3,})(\.[a-z]{2,4})(\/([a-z0-9_\-]{1,}\/)+)?([a-z0-9_\-]{1,})?(\.[a-z]{2,})?(\?)?(((\&)?[a-z0-9_\-]{1,}(\=[a-z0-9_\-]{1,})?)+)?/';
-		if (preg_match($ptrn, $url)) {
+		if (preg_match($ptrn, $url))
+		{
 			return(1);
-		} else {
-			return(0);
 		}
+		return(0);
 	}
 
 	/**
@@ -176,11 +164,11 @@ class Hubzero_Registration_Helper
 	 */
 	public static function validphone($phone)
 	{
-		if (preg_match("/^[\ \#\*\+\:\,\.0-9-]*$/", $phone)) {
+		if (preg_match("/^[\ \#\*\+\:\,\.0-9-]*$/", $phone))
+		{
 			return(1);
-		} else {
-			return(0);
 		}
+		return(0);
 	}
 
 	/**
@@ -193,11 +181,23 @@ class Hubzero_Registration_Helper
 	 */
 	public static function validtext($text)
 	{
-		if (!strchr($text, "	")) {
+		if (!strchr($text, "	")) 
+		{
 			return(1);
-		} else {
-			return(0);
 		}
+		return(0);
+	}
+
+	/**
+	 * Short description for 'genemailconfirm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
+	public static function genemailconfirm()
+	{
+		return(-rand(1, pow(2, 31)-1)); // php5 in debian etch returns negative values if i don't subtract 1 from this max 
 	}
 
 	/**
@@ -210,7 +210,7 @@ class Hubzero_Registration_Helper
 	 */
 	public static function userpassgen($length = 8)
 	{
-	    $genpass = '';
+		$genpass = '';
 		$salt = "abchefghjkmnpqrstuvwxyz0123456789";
 		srand((double)microtime()*1000000);
 		$i = 0;
@@ -239,81 +239,6 @@ class Hubzero_Registration_Helper
 		$result = $db->loadResult();
 
 		return ($result) ? true : false;
-	}
-
-	// display various forms. placeholders until we develop a template override system
-	// for them.
-
-	/**
-	 * Short description for 'select_form'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $formdata Parameter description (if any) ...
-	 * @param      array $errors Parameter description (if any) ...
-	 * @return     void
-	 */
-	public static function select_form($formdata = array(), $errors = array())
-	{
-		$result = include 'components/com_myaccount/select.html.php';
-	}
-
-	/**
-	 * Short description for 'registration_form'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $task Parameter description (if any) ...
-	 * @param      unknown &$xregistration Parameter description (if any) ...
-	 * @return     void
-	 */
-	public static function registration_form($task, &$xregistration)
-	{
-		$result = include 'components/com_myaccount/registration.html.php';
-	}
-
-	/**
-	 * Short description for 'recovery_form'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $email Parameter description (if any) ...
-	 * @param      array $errors Parameter description (if any) ...
-	 * @return     void
-	 */
-	public static function recovery_form($email, $errors = array())
-	{
-		$result = include 'components/com_myaccount/recovery.html.php';
-	}
-
-	/**
-	 * Short description for 'raiselimits_form'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $resource Parameter description (if any) ...
-	 * @param      unknown $admin Parameter description (if any) ...
-	 * @param      unknown $target_xprofile Parameter description (if any) ...
-	 * @return     void
-	 */
-	public static function raiselimits_form($resource, $admin, $target_xprofile)
-	{
-		$result = include 'components/com_myaccount/raiselimits.html.php';
-	}
-
-	/**
-	 * Short description for 'delete_form'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$HTTP_POST_VARS Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      boolean $confirmSingleParent Parameter description (if any) ...
-	 * @return     void
-	 */
-	public static function delete_form(&$HTTP_POST_VARS, $uid, $confirmSingleParent = false)
-	{
-		$result = include 'components/com_myaccount/delete.html.php';
 	}
 }
 

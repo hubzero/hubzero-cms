@@ -414,8 +414,8 @@ class plgProjectsTeam extends JPlugin
 		$objO = new ProjectOwner($this->_database);
 		
 		// Instantiate a new registration object
-		ximport('Hubzero_Registration');
-		$xregistration = new Hubzero_Registration();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
+		$xregistration = new RegisterModelRegistration();
 							
 		// Owner names not supplied
 		if (!$members && !$groups) 

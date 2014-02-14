@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'helpers' . DS . 'utility.php');
+
 /**
  * Description for ''REG_HIDE''
  */
@@ -72,11 +74,9 @@ define('PASS_SCORE_GOOD', 50);
 define('PASS_SCORE_STRONG', 68);
 
 /**
- * Short description for 'Hubzero_Registration'
- * 
- * Long description (if any) ...
+ * Model class for a registration
  */
-class Hubzero_Registration
+class RegisterModelRegistration
 {
 
 	/**
@@ -567,29 +567,48 @@ class Hubzero_Registration
 	 */
 	private function registrationField($name, $default, $task = 'register')
 	{
-		if (($task == 'register') || ($task == 'create') || ($task == 'new'))
-			$index = 0;
-		else if ($task == 'proxycreate')
-			$index = 1;
-		else if ($task == 'update')
-			$index = 2;
-		else if ($task == 'edit')
-			$index = 3;
+		switch ($task)
+		{
+			case 'register':
+			case 'create':
+			case 'new':
+				$index = 0;
+			break;
+
+			case 'proxycreate':
+				$index = 1;
+			break;
+
+			case 'update':
+				$index = 2;
+			break;
+
+			case 'edit':
+				$index = 3;
+			break;
+
+			default:
+				$index = 0;
+			break;
+		}
+
+		$hconfig = JComponentHelper::getParams('com_register');
+
+		$default    = str_pad($default, 4, '-');
+		$configured  = $hconfig->get($name);
+		if (empty($configured))
+		{
+			$configured = $default;
+		}
+		$length     = strlen($configured);
+		if ($length > $index) 
+		{
+			$value = substr($configured, $index, 1);
+		} 
 		else
-			$index = 0;
-
-          $hconfig = JComponentHelper::getParams('com_register');
-
-          $default    = str_pad($default, 4, '-');
-          $configured  = $hconfig->get($name);
-          if (empty($configured))
-               $configured = $default;
-          $length     = strlen($configured);
-          if ($length > $index) {
-               $value = substr($configured, $index, 1);
-          } else {
-               $value = substr($default, $index, 1);
-          }
+		{
+			$value = substr($default, $index, 1);
+		}
 
 		switch ($value)
 		{
@@ -629,9 +648,6 @@ class Hubzero_Registration
 	 */
 	public function check($task = 'create', $id = 0, $field_to_check = array())
 	{
-		ximport('Hubzero_User_Helper');
-		ximport('Hubzero_Registration_Helper');
-		
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		
@@ -717,7 +733,7 @@ class Hubzero_Registration
 		if ($registrationUsername != REG_HIDE)
 		{
 			$allowNumericFirstCharacter = ($task == 'update') ? true : false;
-			if (!empty($login) && !Hubzero_Registration_Helper::validlogin($login, $allowNumericFirstCharacter) )
+			if (!empty($login) && !RegisterHelperUtility::validlogin($login, $allowNumericFirstCharacter) )
 				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';
 		}
 
@@ -753,7 +769,7 @@ class Hubzero_Registration
 		{
 			if (!empty($registration['password']))
 			{
-				$result = Hubzero_Registration_Helper::valid_password($registration['password']);
+				$result = RegisterHelperUtility::valid_password($registration['password']);
 
 				if ($result)
 					$this->_invalid['password'] = $result;
@@ -785,7 +801,7 @@ class Hubzero_Registration
 			} else if ($score >= PASS_SCORE_STRONG) {
 				// Strong pass
 			}
-			ximport('Hubzero_Password_Rule');
+
 			$rules = Hubzero_Password_Rule::getRules();
 			$msg = Hubzero_Password_Rule::validate($registration['password'],$rules,$login,$registration['name']);
 			if (!empty($msg))
@@ -828,7 +844,7 @@ class Hubzero_Registration
 		}
 
 		if ($registrationFullname != REG_HIDE)
-			if (!empty($registration['name']) && !Hubzero_Registration_Helper::validtext($registration['name']) )
+			if (!empty($registration['name']) && !RegisterHelperUtility::validtext($registration['name']) )
 				$this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
 
 		if ($registrationEmail == REG_REQUIRED)
@@ -846,7 +862,7 @@ class Hubzero_Registration
 			{   
 				$this->_missing['email'] = 'Valid Email';
 			}
-			elseif(!Hubzero_Registration_Helper::validemail($email))
+			elseif(!RegisterHelperUtility::validemail($email))
 			{
 				$this->_invalid['email'] = 'Invalid email address. Please correct and try again.';
 			}
@@ -897,7 +913,7 @@ class Hubzero_Registration
 
 		if ($registrationURL != REG_HIDE)
 		{   
-			if (!empty($registration['web']) && !Hubzero_Registration_Helper::validurl($registration['web']))
+			if (!empty($registration['web']) && !RegisterHelperUtility::validurl($registration['web']))
 			{
 				$this->_invalid['web'] = 'Invalid web site URL. You may be using characters that are not allowed.';
 			}
@@ -913,7 +929,7 @@ class Hubzero_Registration
 		}
 
 		if ($registrationPhone != REG_HIDE)
-			if (!empty($registration['phone']) && !Hubzero_Registration_Helper::validphone($registration['phone']))
+			if (!empty($registration['phone']) && !RegisterHelperUtility::validphone($registration['phone']))
 				$this->_invalid['phone'] = 'Invalid phone number. You may be using characters that are not allowed.';
 
 		if ($registrationEmployment == REG_REQUIRED)
@@ -929,7 +945,7 @@ class Hubzero_Registration
 		if ($registrationEmployment != REG_HIDE)
 			if (empty($registration['orgtype']))
 			{
-				//if (! Hubzero_Registration_Helper::validateOrgType($registration['orgtype']) )
+				//if (!RegisterHelperUtility::validateOrgType($registration['orgtype']) )
 					$this->_invalid['orgtype'] = 'Invalid employment status. Please make a new selection.';
 			}
 		*/
@@ -945,9 +961,9 @@ class Hubzero_Registration
 
 		if ($registrationOrganization != REG_HIDE)
 		{
-			if (!empty($registration['org']) && !Hubzero_Registration_Helper::validtext($registration['org'])) {
+			if (!empty($registration['org']) && !RegisterHelperUtility::validtext($registration['org'])) {
 				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
-			} elseif (!empty($registration['orgtext']) && !Hubzero_Registration_Helper::validtext($registration['orgtext'])) {
+			} elseif (!empty($registration['orgtext']) && !RegisterHelperUtility::validtext($registration['orgtext'])) {
 				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
 			}
 		}
@@ -963,7 +979,7 @@ class Hubzero_Registration
 
 		if ($registrationCitizenship != REG_HIDE)
 		{
-			if (!empty($registration['countryorigin']) && !Hubzero_Registration_Helper::validtext($registration['countryorigin']))
+			if (!empty($registration['countryorigin']) && !RegisterHelperUtility::validtext($registration['countryorigin']))
 			{
 				$this->_invalid['countryorigin'] = 'Invalid country of origin. You may be using characters that are not allowed.';
 			}
@@ -980,7 +996,7 @@ class Hubzero_Registration
 
 		if ($registrationResidency != REG_HIDE) 
 		{
-			if (!empty($registration['countryresident']) && !Hubzero_Registration_Helper::validtext($registration['countryresident']))
+			if (!empty($registration['countryresident']) && !RegisterHelperUtility::validtext($registration['countryresident']))
 			{
 				$this->_invalid['countryresident'] = 'Invalid country of residency. You may be using characters that are not allowed.';
 			}
@@ -996,7 +1012,7 @@ class Hubzero_Registration
 		}
 
 		if ($registrationSex != REG_HIDE)
-			if (!empty($registration['sex']) && !Hubzero_Registration_Helper::validtext($registration['sex']))
+			if (!empty($registration['sex']) && !RegisterHelperUtility::validtext($registration['sex']))
 				$this->_invalid['sex'] = 'Invalid gender selection.';
 
 		if ($registrationDisability == REG_REQUIRED)
@@ -1055,7 +1071,7 @@ class Hubzero_Registration
 		/*
 		if ($registrationRace != REG_HIDE)
 		{
-			if (!empty($registration['race']) || !Hubzero_Registration_Helper::validtext($registration['race']))
+			if (!empty($registration['race']) || !RegisterHelperUtility::validtext($registration['race']))
 			{
 				$this->_invalid['race'] = 'Invalid racial selection.';
 			}
@@ -1074,9 +1090,9 @@ class Hubzero_Registration
 		/*
 		if ($registrationInterests != REG_HIDE)
 		{
-			if (!empty($registration['edulevel']) && !Hubzero_Registration_Helper::validtext($registration['edulevel']))
+			if (!empty($registration['edulevel']) && !RegisterHelperUtility::validtext($registration['edulevel']))
 				$this->_invalid['interests'] = 'Invalid interest selection.';
-			if (!empty($registration['role']) && !Hubzero_Registration_Helper::validtext($registration['role']))
+			if (!empty($registration['role']) && !RegisterHelperUtility::validtext($registration['role']))
 				$this->_invalid['interests'] = 'Invalid interest selection.';
 		}
 		*/
@@ -1092,10 +1108,10 @@ class Hubzero_Registration
 
 		if ($registrationReason != REG_HIDE)
 		{
-			if (!empty($registration['reason']) && !Hubzero_Registration_Helper::validtext($registration['reason'])) {
+			if (!empty($registration['reason']) && !RegisterHelperUtility::validtext($registration['reason'])) {
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
 			}
-			if (!empty($registration['reasontxt']) && !Hubzero_Registration_Helper::validtext($registration['reasontxt'])) {
+			if (!empty($registration['reasontxt']) && !RegisterHelperUtility::validtext($registration['reasontxt'])) {
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
 			}
 		}
@@ -1252,7 +1268,7 @@ class Hubzero_Registration
 		}
 		
 		// check the general validity
-		if (!Hubzero_Registration_Helper::validlogin($username)) 
+		if (!RegisterHelperUtility::validlogin($username)) 
 		{
 			$ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase alphanumeric characters.';	
 			return $ret;
@@ -1288,31 +1304,30 @@ class Hubzero_Registration
 	{
 		$loginMaxLen = 32;
 		$email = strtolower($email);
-		
-		ximport('Hubzero_Registration_Helper');
+
 		$email = explode('@', $email);
-		
+
 		$local = $email[0];
 		$domain = '';
 		if (!empty($email[1]))
 		{
 			$domain = $email[1];
 		}
-		
+
 		// strip bad characters
 		$local = preg_replace("/[^A-Za-z0-9_\.]/", '', $local);
 		$domain = preg_replace("/[^A-Za-z0-9_\.]/", '', $domain);
-		
+
 		// Try just the local part of an address
 		$login = $local;
 		// Make sure login username is no longer than max allowed by DB
 		$login = substr($login, 0, $loginMaxLen);
 		$logincheck = self::checkusername($login);
-		if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
+		if (RegisterHelperUtility::validlogin($login) && $logincheck['status'] == 'ok')
 		{
 			return $login;
 		}
-		
+
 		// try full email address with @ replaced with '_'
 		if (!empty($domain))
 		{
@@ -1321,11 +1336,11 @@ class Hubzero_Registration
 		// Make sure login username is no longer than max allowed by DB
 		$login = substr($login, 0, $loginMaxLen);
 		$logincheck = self::checkusername($login);
-		if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
+		if (RegisterHelperUtility::validlogin($login) && $logincheck['status'] == 'ok')
 		{
 			return $login;
 		}
-		
+
 		// generate username by simply appending a sequential number to local part of an address until there is an avilable username available
 		for ($i = 1; true; $i++)
 		{
@@ -1334,14 +1349,13 @@ class Hubzero_Registration
 			
 			$login = substr($local, 0, $loginMaxLen - $numberLen) . $i;
 			$logincheck = self::checkusername($login);
-			if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
+			if (RegisterHelperUtility::validlogin($login) && $logincheck['status'] == 'ok')
 			{
 				return $login;
 			}
 		}
-				
+
 		return false;
 	}
-	
 }
 

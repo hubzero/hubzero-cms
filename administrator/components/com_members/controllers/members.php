@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
+
 /**
  * Manage site members
  */
@@ -297,8 +299,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		} 
 		else 
 		{
-			ximport('Hubzero_Registration_Helper');
-			$confirm = Hubzero_Registration_Helper::genemailconfirm();
+			$confirm = RegisterHelperUtility::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
 
@@ -568,8 +569,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 			} 
 			else 
 			{
-				ximport('Hubzero_Registration_Helper');
-				$confirm = Hubzero_Registration_Helper::genemailconfirm();
+				$confirm = RegisterHelperUtility::genemailconfirm();
 				$profile->set('emailConfirmed', $confirm);
 			}
 

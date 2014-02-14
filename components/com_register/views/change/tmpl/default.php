@@ -47,12 +47,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if (($this->email_confirmed != 1) && ($this->email_confirmed != 3)) { ?>
 		<div class="explaination">
 			<h4>Never received or cannot find the confirmation email?</h4>
-			<p>You can have a new confirmation email sent to "<?php echo htmlentities($this->email,ENT_COMPAT,'UTF-8'); ?>" by <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resend&return='.$this->return); ?>">clicking here</a>.</p>
+			<p>You can have a new confirmation email sent to "<?php echo $this->escape($this->email); ?>" by <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resend&return='.$this->return); ?>">clicking here</a>.</p>
 		</div>
 <?php } ?>
 		<fieldset>
 			<h3><?php echo JText::_('Correct Email Address'); ?></h3>
-			<label<?php if (!$this->email || !Hubzero_Registration_Helper::validemail($this->email)) { echo' class="fieldWithErrors"'; } ?>>
+			<label<?php if (!$this->email || !RegisterHelperUtility::validemail($this->email)) { echo' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('Valid E-mail:'); ?>
 				<input name="email" id="email" type="text" size="51" value="<?php echo $this->escape($this->email); ?>" />
 			</label>

@@ -182,11 +182,13 @@ class UsersModelReset extends JModelForm
 			$msg = array();
 		}
 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'helpers' . DS . 'utility.php');
+
 		if (!$password1 || !$password2) {
 			$this->setError( JText::_('you must enter your new password twice to ensure we have it correct') );
 		} elseif ($password1 != $password2) {
 			$this->setError( JText::_('the new password and confirmation you entered do not match. Please try again') );
-		} elseif (!Hubzero_Registration_Helper::validpassword($password1)) {
+		} elseif (!RegisterHelperUtility::validpassword($password1)) {
 			$this->setError( JText::_('the password you entered was invalid password. You may be using characters that are not allowed') );
 		} elseif (!empty($msg)) {
 			$this->setError( JText::_('the password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );

@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for registration
  */
@@ -142,7 +140,7 @@ class RegisterController extends Hubzero_Controller
 		$this->_buildTitle();
 
 		// Instantiate a new registration object
-		$xregistration = new Hubzero_Registration();
+		$xregistration = new RegisterModelRegistration();
 
 		if (JRequest::getVar('edit', '', 'post')) 
 		{
@@ -350,8 +348,6 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function proxycreate($action='show')
 	{
-		ximport('Hubzero_User_Password');
-		
 		$action = ($action) ? $action : 'show';
 
 		$admin = $this->juser->authorize($this->_option, 'manage');
@@ -384,7 +380,7 @@ class RegisterController extends Hubzero_Controller
 		$this->_buildTitle();
 
 		// Instantiate a new registration object
-		$xregistration = new Hubzero_Registration();
+		$xregistration = new RegisterModelRegistration();
 
 		// Show the form if needed
 		if ($action == 'show') 
@@ -519,8 +515,6 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function update()
 	{
-		ximport('Hubzero_Auth_Link');
-		
 		$app = JFactory::getApplication();
 		
 		$force = false;
@@ -549,7 +543,7 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		// Instantiate a new registration object
-		$xregistration = new Hubzero_Registration();
+		$xregistration = new RegisterModelRegistration();
 
 		$xprofile    = Hubzero_Factory::getProfile();
 		$jsession = JFactory::getSession();
@@ -573,7 +567,6 @@ class RegisterController extends Hubzero_Controller
 				$xregistration->loadAccount($this->juser);
 			}
 
-			ximport('Hubzero_Auth_Link');
 			$username = $this->juser->get('username');
 			$email = $this->juser->get('email');
 
@@ -782,8 +775,6 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function create()
 	{
-		ximport('Hubzero_Auth_Link');
-
 		// Add the CSS to the template
 		$this->_getStyles();
 
@@ -820,7 +811,7 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		// Instantiate a new registration object
-		$xregistration = new Hubzero_Registration();
+		$xregistration = new RegisterModelRegistration();
 
 		if (JRequest::getMethod() == 'POST') 
 		{
@@ -1186,7 +1177,7 @@ class RegisterController extends Hubzero_Controller
 		// Get the registration object
 		if (!is_object($xregistration)) 
 		{
-			$view->xregistration = new Hubzero_Registration();
+			$view->xregistration = new RegisterModelRegistration();
 		} 
 		else 
 		{
@@ -1195,7 +1186,6 @@ class RegisterController extends Hubzero_Controller
 
 		// Push some values to the view
 
-		ximport('Hubzero_Password_Rule');
 		$password_rules = Hubzero_Password_Rule::getRules();
 
 		$view->password_rules = array();
@@ -1297,7 +1287,7 @@ class RegisterController extends Hubzero_Controller
 		$username = JRequest::getVar('user','','post');
 
 		// Instantiate a new registration object
-		$xregistration = new Hubzero_Registration();
+		$xregistration = new RegisterModelRegistration();
 
 		// Score the password
 		$score = $xregistration->scorePassword($password, $username);
@@ -1351,7 +1341,7 @@ class RegisterController extends Hubzero_Controller
 		$username = JRequest::getVar('userlogin', '', 'get');
 
 		// Instantiate a new registration object
-		$xregistration = new Hubzero_Registration();
+		$xregistration = new RegisterModelRegistration();
 
 		// Check the username
 		$usernamechecked = $xregistration->checkusername($username);
@@ -1402,9 +1392,8 @@ class RegisterController extends Hubzero_Controller
 
 		if (($email_confirmed != 1) && ($email_confirmed != 3)) 
 		{
-			$confirm = Hubzero_Registration_Helper::genemailconfirm();
+			$confirm = RegisterHelperUtility::genemailconfirm();
 
-			ximport('Hubzero_User_Profile');
 			$xprofile = new Hubzero_User_Profile();
 			$xprofile->load($login);
 			$xprofile->set('emailConfirmed', $confirm);
@@ -1516,7 +1505,7 @@ class RegisterController extends Hubzero_Controller
 			{
 				$this->setError(JText::_('COM_REGISTER_ERROR_INVALID_EMAIL'));
 			}
-			if ($pemail && Hubzero_Registration_Helper::validemail($pemail) /*&& ($newemail != $email)*/) 
+			if ($pemail && RegisterHelperUtility::validemail($pemail) /*&& ($newemail != $email)*/) 
 			{
 				// Check if the email address was actually changed
 				if ($pemail == $email) 
@@ -1554,9 +1543,8 @@ class RegisterController extends Hubzero_Controller
 					{
 						// No errors
 						// Attempt to send a new confirmation code
-						$confirm = Hubzero_Registration_Helper::genemailconfirm();
+						$confirm = RegisterHelperUtility::genemailconfirm();
 
-						ximport('Hubzero_User_Profile');
 						$xprofile = new Hubzero_User_Profile();
 						$xprofile->load($login);
 						$xprofile->set('emailConfirmed', $confirm);
@@ -1651,7 +1639,7 @@ class RegisterController extends Hubzero_Controller
 		if (($email_confirmed == 1) || ($email_confirmed == 3)) 
 		{
 			// The current user is confirmed - check to see if the incoming code is valid at all
-			if (Hubzero_Registration_Helper::isActiveCode($code))
+			if (RegisterHelperUtility::isActiveCode($code))
 			{
 				$this->setError('login mismatch');
 
@@ -1676,7 +1664,6 @@ class RegisterController extends Hubzero_Controller
 			}
 			
 			//load user profile
-			ximport('Hubzero_User_Profile');
 			$profile = new Hubzero_User_Profile();
 			$profile->load($xprofile->get('username'));
 			
