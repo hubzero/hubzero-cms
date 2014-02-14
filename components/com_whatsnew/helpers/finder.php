@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Helper class for returning "what's new" results
  */
-class Hubzero_Whatsnew
+class WhatsnewHelperFinder
 {
 	/**
 	 * Get what's new based on a time period and category
@@ -67,7 +67,7 @@ class Hubzero_Whatsnew
 
 		$new = array();
 		$i = 0;
-		foreach($areas as $k => $area)
+		foreach ($areas as $k => $area)
 		{
 			$new[$i]['alias']   = $k;
 			$new[$i]['title']   = ($k == 'resources') ? 'Resources' : $area;
