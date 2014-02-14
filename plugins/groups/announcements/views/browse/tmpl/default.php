@@ -32,9 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 //add styles and scripts
-ximport('Hubzero_Document');
-Hubzero_Document::addPluginStylesheet('groups', $this->name);
-Hubzero_Document::addPluginScript('groups', $this->name);
+$this->css();
+$this->js();
 ?>
 
 <?php if ($this->authorized == 'manager') : ?>

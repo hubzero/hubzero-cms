@@ -28,19 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-// Define Announcement States
-define('ANNOUNCEMENT_STATE_UNPUBLISHED', 0);
-define('ANNOUNCEMENT_STATE_PUBLISHED',   1);
-define('ANNOUNCEMENT_STATE_DELETED',     2);
+namespace Hubzero\Item;
 
 /**
  * Hubzero Announcement Model Class
  */
-class Hubzero_Announcement extends JTable
+class Announcement extends \JTable
 {
+	/*
+	 * Define Announcement States
+	 */
+	const STATE_UNPUBLISHED = 0;
+	const STATE_PUBLISHED   = 1;
+	const STATE_DELETED     = 2;
+
 	/**
 	 * int(11)
 	 * 
@@ -151,16 +152,28 @@ class Hubzero_Announcement extends JTable
 		//make sure we have content
 		if (!isset($this->content) || $this->content == '')
 		{
-			$this->setError(JText::_('Announcement must contain some content.'));
+			$this->setError(\JText::_('Announcement must contain some content.'));
 			return false;
 		}
 
 		if (!$this->created)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 		}
 
 		return true;
+	}
+
+	/**
+	 * Mark item as archived
+	 * 
+	 * @return object
+	 */
+	public function archive()
+	{
+		$this->state = self::STATE_DELETED;
+
+		return $this;
 	}
 
 	/**
@@ -271,7 +284,7 @@ class Hubzero_Announcement extends JTable
 		//published
 		if (isset($filters['published']))
 		{
-			$now = JFactory::getDate();
+			$now = \JFactory::getDate();
 			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now->toSql()) . ")";
 			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now->toSql()) . ")";
 		}
@@ -324,11 +337,11 @@ class Hubzero_Announcement extends JTable
 		$up = $down = null;
 		if ($announcement->publish_up != '' && $announcement->publish_up != $this->_db->getNullDate())
 		{
-			$up = JFactory::getDate($announcement->publish_up)->toUnix();
+			$up = \JFactory::getDate($announcement->publish_up)->toUnix();
 		}
 		if ($announcement->publish_down != '' && $announcement->publish_down != $this->_db->getNullDate())
 		{
-			$down = JFactory::getDate($announcement->publish_down)->toUnix();
+			$down = \JFactory::getDate($announcement->publish_down)->toUnix();
 		}
 
 		// if we have a null uptime or uptime less then our date
@@ -353,23 +366,22 @@ class Hubzero_Announcement extends JTable
 		{
 			$announcement = $this;
 		}
-		
+
 		// load group
-		$group = Hubzero_Group::getInstance($announcement->scope_id);
-		
+		$group = \Hubzero_Group::getInstance($announcement->scope_id);
+
 		// get all group members
 		$groupMembers = array();
 		foreach ($group->get('members') as $member)
 		{
-			if ($profile = Hubzero_User_Profile::getInstance($member))
+			if ($profile = \Hubzero_User_Profile::getInstance($member))
 			{
 				$groupMembers[$profile->get('email')] = $profile->get('name');
 			}
 		}
-		
+
 		// create view object
-		ximport('Hubzero_Plugin_View');
-		$eview = new Hubzero_Plugin_View(
+		$eview = new \Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'announcements',
@@ -377,7 +389,7 @@ class Hubzero_Announcement extends JTable
 				'layout'  => 'announcement_plain'
 			)
 		);
-		
+
 		// plain text
 		$eview->announcement = $announcement;
 		$plain = $eview->loadTemplate();
@@ -387,20 +399,20 @@ class Hubzero_Announcement extends JTable
 		$eview->setLayout('announcement_html');
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
-		
+
 		// set from address
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 		$from = array(
-			'name' => $jconfig->getValue('config.sitename') . ' Groups',
+			'name'  => $jconfig->getValue('config.sitename') . ' Groups',
 			'email' => $jconfig->getValue('config.mailfrom')
 		);
-		
+
 		// define subject
 		$subject = $group->get('description') . ' Group Announcement';
-		
+
 		// create message object
 		$message = new \Hubzero\Mail\Message();
-		
+
 		// set message details and send
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
@@ -408,7 +420,7 @@ class Hubzero_Announcement extends JTable
 				->addPart($plain, 'text/plain')
 				->addPart($html, 'text/html')
 				->send();
-		
+
 		// all good
 		return true; 
 	}

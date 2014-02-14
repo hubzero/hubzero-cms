@@ -32,8 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 //add styles and scripts
-Hubzero_Document::addPluginStylesheet('groups', $this->name);
-Hubzero_Document::addPluginScript('groups', $this->name);
+$this->css();
+$this->js();
+
 Hubzero_Document::addSystemScript('jquery.timepicker');
 Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
 Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
@@ -142,6 +143,7 @@ Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 		<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="action" value="save" />
-		
+
+		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div>

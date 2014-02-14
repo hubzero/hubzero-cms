@@ -40,7 +40,7 @@ $wikiconfig = array(
 	'filepath' => JPATH_ROOT . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber'),
 	'domain'   => '' 
 );
-ximport('Hubzero_Wiki_Parser');
+
 $p = Hubzero_Wiki_Parser::getInstance();
 
 //class of announcement 
@@ -87,7 +87,6 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php if ($this->authorized == 'manager') : ?>
 			<dd class="entry-author">
 				<?php
-					ximport('Hubzero_User_Profile');
 					$profile = Hubzero_User_Profile::getInstance($this->announcement->created_by);
 					if (is_object($profile) && $profile->get('name') != '')
 					{

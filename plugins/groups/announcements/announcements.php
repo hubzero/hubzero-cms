@@ -106,9 +106,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->filters['published'] = 1;
 		
 		//create new announcement Object
-		$hubzeroAnnouncement = new Hubzero_Announcement( $view->database );
-		$view->total = $hubzeroAnnouncement->count( $view->filters );
-		$view->rows  = $hubzeroAnnouncement->find( $view->filters );
+		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($view->database);
+		$view->total = $hubzeroAnnouncement->count($view->filters);
+		$view->rows  = $hubzeroAnnouncement->find($view->filters);
 		
 		//display list of announcements
 		return $view->loadTemplate();
@@ -222,8 +222,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		);
 		
 		//instantiate announcement object and get count
-		$hubzeroAnnouncement = new Hubzero_Announcement( $this->database );
-		$total = $hubzeroAnnouncement->count( $filters );
+		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($this->database);
+		$total = $hubzeroAnnouncement->count($filters);
 		
 		//set metadata for menu
 		$arr['metadata']['count'] = $total;
@@ -275,9 +275,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 		
 		//create new announcement Object
-		$hubzeroAnnouncement = new Hubzero_Announcement( $this->database );
-		$view->total = $hubzeroAnnouncement->count( $view->filters );
-		$view->rows  = $hubzeroAnnouncement->find( $view->filters );
+		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($this->database);
+		$view->total = $hubzeroAnnouncement->count($view->filters);
+		$view->rows  = $hubzeroAnnouncement->find($view->filters);
 		
 		//get any errors
 		if ($this->getError()) 
@@ -312,7 +312,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$id = JRequest::getInt('id', 0);
 		
 		//create new announcement Object
-		$view->announcement = new Hubzero_Announcement($this->database);
+		$view->announcement = new \Hubzero\Item\Announcement($this->database);
 		
 		//if we have an id load that announcemnt
 		if (isset($id) && $id != 0)
@@ -352,6 +352,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	 */
 	private function _save()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		//verify were authorized
 		if ($this->authorized != 'manager')
 		{
@@ -400,7 +403,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 		
 		//announcement model
-		$announcement = new Hubzero_Announcement( $this->database );
+		$announcement = new \Hubzero\Item\Announcement($this->database);
 		
 		//attempt to save
 		if (!$announcement->save($fields))
@@ -419,11 +422,13 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$announcement->sent = 1;
 			$announcement->save($announcement);
 		}
-		
+
 		//success!
-		$redirect = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements');
-		$message  = JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_CREATED');
-		$this->redirect( $redirect, $message, 'success');
+		$this->redirect(
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
+			JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_CREATED'),
+			'success'
+		);
 		return;
 	}
 
@@ -445,7 +450,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$id = JRequest::getInt('id', 0);
 		
 		//announcement model
-		$announcement = new Hubzero_Announcement( $this->database );
+		$announcement = new \Hubzero\Item\Announcement($this->database);
 		$announcement->load( $id );
 		
 		//load created by user profile
@@ -459,7 +464,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 		
 		//set to deleted state
-		$announcement->state = ANNOUNCEMENT_STATE_DELETED;
+		$announcement->archive();
 		
 		//attempt to delete announcement
 		if (!$announcement->save( $announcement ))
@@ -467,10 +472,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_UNABLE_TO_DELETE'));
 			return $this->_list();
 		}
-		
-		$redirect = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements');
-		$message  = JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED');
-		$this->redirect( $redirect, $message, 'success');
+
+		$this->redirect(
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
+			JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED'),
+			'success'
+		);
 		return;
 	}
 }
