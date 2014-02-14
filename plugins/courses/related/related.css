@@ -57,7 +57,10 @@
 		text-shadow: 0 1px 1px #fff;
 	}
 	.course-block .description {
-		padding: 0 1em;
+		padding: 1em;
+	}
+	.course-block .description p {
+		margin: 0;
 	}
 	.course-block .action {
 		background-color: #f0f0f0;

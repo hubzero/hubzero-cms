@@ -88,7 +88,6 @@ class plgCoursesRelated extends JPlugin
 		$database->setQuery($query);
 		if (($courses = $database->loadObjectList()))
 		{
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'courses',

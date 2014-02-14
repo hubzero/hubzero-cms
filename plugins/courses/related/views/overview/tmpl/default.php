@@ -31,8 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Document');
-Hubzero_Document::addPluginStylesheet('courses', $this->name);
+$this->css();
 ?>
 <div id="related-courses" class="after section">
 	<h3>
@@ -65,7 +64,7 @@ Hubzero_Document::addPluginStylesheet('courses', $this->name);
 			</h4>
 			<div class="content">
 				<div class="description">
-					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($course->get('blurb')), 500); ?>
+					<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 500); ?>
 				</div>
 				<p class="action">
 					<a class="btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $course->get('alias') . '&active=overview'); ?>">
