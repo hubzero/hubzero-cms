@@ -85,6 +85,18 @@ if ($this->model->resource->introtext)
 // Check if there's anything left in the fulltxt after removing custom fields
 // If not, set it to the introtext
 $maintext = $this->model->resource->fulltxt;
+if (!preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) 
+{
+	ximport('Hubzero_Wiki_Parser');
+	$maintext = Hubzero_Wiki_Parser::getInstance()->parse($maintext, array(
+		'option'   => JRequest::getCmd('option', 'com_resources'),
+		'scope'    => 'resources' . DS . $this->model->resource->id,
+		'pagename' => 'resources',
+		'pageid'   => $this->model->resource->id,
+		'filepath' => $this->model->params->get('uploadpath'),
+		'domain'   => ''
+	));
+}
 $maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);
