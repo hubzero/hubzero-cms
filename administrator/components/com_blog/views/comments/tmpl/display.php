@@ -48,8 +48,6 @@ if ($canDo->get('core.create'))
 	JToolBarHelper::addNew();
 }
 JHTML::_('behavior.tooltip');
-
-ximport('Hubzero_View_Helper_Html');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -133,11 +131,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->get('treename'); ?>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->get('content'))), 90, 0); ?>
+						<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->get('content'))), 90); ?>
 					</a>
 				<?php } else { ?>
 					<span>
-						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->get('content'))), 90, 0); ?>
+						<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->get('content'))), 90); ?>
 					</span>
 				<?php } ?>
 				</td>

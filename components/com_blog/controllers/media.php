@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Blog controller class for media
  */
-class BlogControllerMedia extends Hubzero_Controller
+class BlogControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute task
@@ -341,7 +341,6 @@ class BlogControllerMedia extends Hubzero_Controller
 		switch ($scope)
 		{
 			case 'member':
-				ximport('Hubzero_View_Helper_Html');
 				jimport('joomla.plugin.plugin');
 				$plugin = JPluginHelper::getPlugin('members', 'blog');
 				$params = new $paramClass($plugin->params);

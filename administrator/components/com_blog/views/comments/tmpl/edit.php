@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<td class="key"><label for="field-content"><?php echo JText::_('Content'); ?></label></td>
-					<td><textarea name="fields[content]" id="field-content" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->get('content'))); ?></textarea></td>
+					<td><textarea name="fields[content]" id="field-content" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->content('raw'))); ?></textarea></td>
 				</tr>
 			</tbody>
 		</table>

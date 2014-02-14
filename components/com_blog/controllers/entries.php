@@ -624,10 +624,10 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');
-				$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($item->description));
+				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
 				if ($this->config->get('feed_entries') == 'partial') 
 				{
-					$item->description = Hubzero_View_Helper_Html::shortenText($item->description, 300, 0);
+					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 				}
 
 				// Load individual item creator class
@@ -838,17 +838,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$this->wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => 'blog',
-			'pagename' => $this->entry->get('alias'),
-			'pageid'   => 0,
-			'filepath' => $this->config->get('uploadpath'),
-			'domain'   => ''
-		);
-		ximport('Hubzero_Wiki_Parser');
-		$this->p = Hubzero_Wiki_Parser::getInstance();
-
 		foreach ($rows as $row)
 		{
 			$this->_comment($doc, $row);
@@ -878,7 +867,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		} 
 		else 
 		{
-			$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($this->p->parse($row->get('content'), $this->wikiconfig)));
+			$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($row->content('clean')));
 		}
 
 		if ($row->get('anonymous'))
