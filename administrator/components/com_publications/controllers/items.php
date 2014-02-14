@@ -465,6 +465,16 @@ class PublicationsControllerItems extends Hubzero_Controller
 			JText::_('Author information updated')
 		);		
 	}
+	
+	/**
+	 * Save a publication and fall through to edit view
+	 *
+	 * @return void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(true);
+	}
 
 	/**
 	 * Saves a publication
@@ -472,7 +482,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -819,11 +829,21 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$output .= ' '.$this->getError();
 		}
 
-		// Redirect
-		$this->setRedirect(
-			$url,
-			$output
-		);
+		// Redirect to edit view?
+		if ($redirect)
+		{
+			$this->setRedirect(
+				$url,
+				$output
+			);
+		}
+		else
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				$output
+			);
+		}
 	}
 	
 	/**
