@@ -276,12 +276,22 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	}
 	
 	/**
+	 * Save a project and fall through to edit view
+	 *
+	 * @return void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(true);
+	}
+
+	/**
 	 * Saves a project
 	 * Redirects to main listing
 	 * 
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -428,12 +438,22 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			// Send HUB message
 			JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger( 'onSendMessage', array( 'projects_admin_message', $subject, $body, $from, $managers, $this->_option ));
+			$dispatcher->trigger( 'onSendMessage', array( 'projects_admin_message', $subject, 
+				$body, $from, $managers, $this->_option ));
 		}
 		
 		// Redirect
-		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&id='.$id;
 		$this->_message = JText::_('Item successfully saved');
+		
+		// Redirect to edit view?
+		if ($redirect)
+		{
+			$this->_redirect = 'index.php?option=' . $this->_option . '&task=edit&id=' . $id;
+		}
+		else
+		{
+			$this->_redirect = 'index.php?option=' . $this->_option;
+		}
 	}
 	
 	/**
