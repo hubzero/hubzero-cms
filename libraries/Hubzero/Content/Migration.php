@@ -66,7 +66,7 @@ class Migration
 	 *
 	 * @var string
 	 **/
-	private static $db = null;
+	private $db = null;
 
 	/**
 	 * Log messages themselves (stored as array to return to browser, or other client)
@@ -108,7 +108,7 @@ class Migration
 		}
 
 		// Setup the database connection
-		if (!self::$db = $this->getDBO())
+		if (!$this->db = $this->getDBO())
 		{
 			$this->log('Error: database connection failed.', 'error');
 			return false;
@@ -117,11 +117,11 @@ class Migration
 		// Try to figure out the date of the last file run
 		try
 		{
-			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `file` DESC LIMIT 1');
-			$rowup = self::$db->loadAssoc();
+			$this->db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `file` DESC LIMIT 1');
+			$rowup = $this->db->loadAssoc();
 
-			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\' ORDER BY `file` DESC LIMIT 1');
-			$rowdown = self::$db->loadAssoc();
+			$this->db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\' ORDER BY `file` DESC LIMIT 1');
+			$rowdown = $this->db->loadAssoc();
 
 			if (count($rowup) > 0)
 			{
@@ -224,7 +224,7 @@ class Migration
 	public function find($extension=null, $file=null)
 	{
 		// Exclude certain thiings from our search
-		$exclude = array(".", "..", "__migration_template.php");
+		$exclude = array(".", "..");
 
 		$files = array_diff(scandir($this->docroot . DS . 'migrations'), $exclude);
 		$ext   = '';
@@ -317,8 +317,8 @@ class Migration
 					if (is_numeric($this->last_run[$direction]) && $date <= $this->last_run[$direction] && !$force)
 					{
 						// This migration is older than the current, but let's see if we should inform that it should still be run
-						self::$db->setQuery("SELECT `direction` FROM migrations WHERE `file` = " . self::$db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
-						$row = self::$db->loadResult();
+						$this->db->setQuery("SELECT `direction` FROM migrations WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
+						$row = $this->db->loadResult();
 
 						// Check if last run was either not in the current direction we're going,
 						// or if it hasn't been run at all and we're not going down
@@ -345,8 +345,8 @@ class Migration
 			try
 			{
 				// Look to the database log to see the last run on this file
-				self::$db->setQuery("SELECT `direction` FROM migrations WHERE `file` = " . self::$db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
-				$row = self::$db->loadResult();
+				$this->db->setQuery("SELECT `direction` FROM migrations WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
+				$row = $this->db->loadResult();
 
 				// If the last migration for this file doesn't exist, or, it was the opposite of $direction, we can go ahead and run it.
 				// But, if the last run was the same direction as is currently being run, we shouldn't run it again
@@ -398,10 +398,10 @@ class Migration
 			}
 
 			// Set classname
-			$class = $info['filename'];
+			$classname = $info['filename'];
 
 			// Make sure file and classname match
-			if (!class_exists($class))
+			if (!class_exists($classname))
 			{
 				$this->log("{$info['filename']} does not have a class of the same name", 'warning');
 				continue;
@@ -409,6 +409,9 @@ class Migration
 
 			// We've made it this far, add this file to list of affected files
 			$this->affectedFiles[] = $info['filename'];
+
+			// Instantiate our class
+			$class = new $classname($this->db, $this->callbacks);
 
 			// Check if we're making a dry run, or only logging changes
 			if ($dryrun || $logOnly)
@@ -430,7 +433,7 @@ class Migration
 				{
 					try
 					{
-						if ($class::pre(self::$db) === false)
+						if ($class->pre() === false)
 						{
 							$this->log("Running pre() returned false {$file}", 'warning');
 							continue;
@@ -450,7 +453,7 @@ class Migration
 				{
 					try
 					{
-						$result = $class::$direction(self::$db);
+						$result = $class->$direction();
 
 						if (is_object($result) && isset($result->error))
 						{
@@ -486,7 +489,7 @@ class Migration
 				{
 					try
 					{
-						if ($class::post(self::$db) === false)
+						if ($class->post() === false)
 						{
 							$this->log("Running post() returned false {$file}", 'warning');
 							continue;
@@ -530,7 +533,7 @@ class Migration
 					'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : \JFactory::getUser()->get('id')
 				);
 
-			self::$db->insertObject('migrations', $obj);
+			$this->db->insertObject('migrations', $obj);
 		}
 		catch (\PDOException $e)
 		{
@@ -573,7 +576,7 @@ class Migration
 	 *
 	 * @return bool
 	 **/
-	private function createMigrationsTable(&$db)
+	private function createMigrationsTable($db)
 	{
 		$this->log('Migrations table did not exist...attempting to create it now');
 
@@ -599,422 +602,6 @@ class Migration
 		{
 			$this->log('Unable to create needed migrations table', 'error');
 			return false;
-		}
-	}
-
-	/**
-	 * Add, as needed, the component to the appropriate table, depending on the Joomla version
-	 *
-	 * @param $name           - (string) component name
-	 * @param $option         - (string) com_xyz
-	 * @param $enabled        - (int)    whether or not the component should be enabled
-	 * @param $params         - (string) component params (if already known)
-	 * @param $createMenuItem - (bool)   create an admin menu item for this component
-	 * @return bool
-	 **/
-	public static function addComponentEntry($name, $option=NULL, $enabled=1, $params='', $createMenuItem=true)
-	{
-		$db = self::$db;
-
-		if ($db->tableExists('#__components'))
-		{
-			// First, make sure it isn't already there
-			$query = "SELECT `id` FROM `#__components` WHERE `name` = " . $db->quote($name);
-			$db->setQuery($query);
-			if ($db->loadResult())
-			{
-				return true;
-			}
-
-			if (is_null($option))
-			{
-				$option = 'com_' . strtolower($name);
-			}
-
-			$ordering = 0;
-
-			if (!empty($params) && is_array($params))
-			{
-				$p = '';
-				foreach ($params as $k => $v)
-				{
-					$p .= "{$k}={$v}\n";
-				}
-
-				$params = $p;
-			}
-
-			$query = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)";
-			$query .= " VALUES ('{$name}', 'option={$option}', 0, 0, 'option={$option}', '{$name}', '{$option}', {$ordering}, '', 0, ".$db->quote($params).", {$enabled})";
-			$db->setQuery($query);
-			$db->query();
-		}
-		else
-		{
-			if (is_null($option))
-			{
-				$option = 'com_' . strtolower($name);
-			}
-			$name = $option;
-
-			// First, make sure it isn't already there
-			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = " . $db->quote($option);
-			$db->setQuery($query);
-			if ($db->loadResult())
-			{
-				$component_id = $db->loadResult();
-			}
-			else
-			{
-				$ordering = 0;
-
-				if (!empty($params) && is_array($params))
-				{
-					$params = json_encode($params);
-				}
-
-				$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-				$query .= " VALUES ('{$name}', 'component', '{$option}', '', 1, {$enabled}, 1, 0, '', ".$db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
-				$db->setQuery($query);
-				$db->query();
-				$component_id = $db->insertId();
-			}
-
-			// Secondly, add asset entry if not yet created
-			$query = "SELECT `id` FROM `#__assets` WHERE `name` = " . $db->quote($option);
-			$db->setQuery($query);
-			if (!$db->loadResult())
-			{
-				// Build default ruleset
-				$defaulRules = array(
-					"core.admin"      => array(
-						"7" => 1
-						),
-					"core.manage"     => array(
-						"6" => 1
-						),
-					"core.create"     => array(),
-					"core.delete"     => array(),
-					"core.edit"       => array(),
-					"core.edit.state" => array()
-					);
-
-				// Register the component container just under root in the assets table
-				$asset = \JTable::getInstance('Asset');
-				$asset->name = $option;
-				$asset->parent_id = 1;
-				$asset->rules = json_encode($defaulRules);
-				$asset->title = $option;
-				$asset->setLocation(1, 'last-child');
-				$asset->store();
-			}
-
-			if ($createMenuItem)
-			{
-				// Check for an admin menu entry...if it's not there, create it
-				$query = "SELECT `id` FROM `#__menu` WHERE `menutype` = 'main' AND `title` = " . $db->quote($option);
-				$db->setQuery($query);
-				if ($db->loadResult())
-				{
-					return true;
-				}
-
-				$alias = substr($option, 4);
-
-				$query = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)";
-				$query .= " VALUES ('main', '{$option}', '{$alias}', '', '{$alias}', 'index.php?option={$option}', 'component', {$enabled}, 1, 1, {$component_id}, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 0, 0, '*', 1)";
-				$db->setQuery($query);
-				$db->query();
-
-				// If we have the nested set class available, use it to rebuild lft/rgt
-				if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
-				{
-					// Use the MySQL driver for this
-					$config = \JFactory::getConfig();
-					$database = \JDatabase::getInstance(
-						array(
-							'driver'   => 'mysql',
-							'host'     => $config->getValue('host'),
-							'user'     => $config->getValue('user'),
-							'password' => $config->getValue('password'),
-							'database' => $config->getValue('db')
-						) 
-					);
-
-					$table = new \JTableMenu($database);
-					$table->rebuild();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Add, as needed, the plugin entry to the appropriate table, depending on the Joomla version
-	 *
-	 * @param $folder  - (string) plugin folder
-	 * @param $element - (string) plugin element
-	 * @param $enabled - (int)    whether or not the plugin should be enabled
-	 * @param $params  - (array)  plugin params (if already known)
-	 * @return bool
-	 **/
-	public static function addPluginEntry($folder, $element, $enabled=1, $params='')
-	{
-		$db = self::$db;
-
-		if ($db->tableExists('#__plugins'))
-		{
-			$folder  = strtolower($folder);
-			$element = strtolower($element);
-			$name    = ucfirst($folder) . ' - ' . ucfirst($element);
-
-			// First, make sure it isn't already there
-			$query = "SELECT `id` FROM `#__plugins` WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
-			$db->setQuery($query);
-			if ($db->loadResult())
-			{
-				return true;
-			}
-
-			// Get ordering
-			$query = "SELECT MAX(ordering) FROM `#__plugins` WHERE `folder` = " . $db->quote($folder);
-			$db->setQuery($query);
-			$ordering = (is_numeric($db->loadResult())) ? $db->loadResult()+1 : 1;
-
-			if (!empty($params) && is_array($params))
-			{
-				$p = '';
-				foreach ($params as $k => $v)
-				{
-					$p .= "{$k}={$v}\n";
-				}
-
-				$params = $p;
-			}
-
-			$query = "INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)";
-			$query .= " VALUES ('{$name}', '{$element}', '{$folder}', 0, {$ordering}, {$enabled}, 0, 0, 0, '0000-00-00 00:00:00', ".$db->quote($params).")";
-			$db->setQuery($query);
-			$db->query();
-		}
-		else
-		{
-			$folder  = strtolower($folder);
-			$element = strtolower($element);
-			$name    = 'plg_' . $folder . '_' . $element;
-
-			// First, make sure it isn't already there
-			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
-			$db->setQuery($query);
-			if ($db->loadResult())
-			{
-				return true;
-			}
-
-			// Get ordering
-			$query = "SELECT MAX(ordering) FROM `#__extensions` WHERE `folder` = " . $db->quote($folder);
-			$db->setQuery($query);
-			$ordering = (is_numeric($db->loadResult())) ? $db->loadResult()+1 : 1;
-
-			if (!empty($params) && is_array($params))
-			{
-				$params = json_encode($params);
-			}
-
-			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-			$query .= " VALUES ('{$name}', 'plugin', '{$element}', '{$folder}', 0, {$enabled}, 1, 0, '', ".$db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
-			$db->setQuery($query);
-			$db->query();
-		}
-	}
-
-	/**
-	 * Add, as needed, the module entry to the appropriate table, depending on the Joomla version
-	 *
-	 * @param $element - (string) plugin element
-	 * @param $enabled - (int)    whether or not the plugin should be enabled
-	 * @param $params  - (array)  plugin params (if already known)
-	 * @return bool
-	 **/
-	public static function addModuleEntry($element, $enabled=1, $params='')
-	{
-		$db = self::$db;
-
-		if ($db->tableExists('#__extensions'))
-		{
-			$name = $element;
-
-			// First, make sure it isn't already there
-			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = " . $db->quote($name);
-			$db->setQuery($query);
-			if ($db->loadResult())
-			{
-				return true;
-			}
-
-			$ordering = 0;
-
-			if (!empty($params) && is_array($params))
-			{
-				$params = json_encode($params);
-			}
-
-			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-			$query .= " VALUES ('{$name}', 'module', '{$element}', '', 0, {$enabled}, 1, 0, '', ".$db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
-			$db->setQuery($query);
-			$db->query();
-		}
-	}
-
-	/**
-	 * Remove component entries from the appropriate table, depending on the Joomla version
-	 *
-	 * @param $name - (string) component name
-	 * @return bool
-	 **/
-	public static function deleteComponentEntry($name)
-	{
-		$db = self::$db;
-
-		if ($db->tableExists('#__components'))
-		{
-			// Delete component entry
-			$query = "DELETE FROM `#__components` WHERE `name` = " . $db->quote($name);
-			$db->setQuery($query);
-			$db->query();
-		}
-		else
-		{
-			$name = 'com_' . strtolower($name);
-			// Delete component entry
-			$query = "DELETE FROM `#__extensions` WHERE `name` = " . $db->quote($name);
-			$db->setQuery($query);
-			$db->query();
-
-			// Remove the component container in the assets table
-			$asset = \JTable::getInstance('Asset');
-			if ($asset->loadByName($name))
-			{
-				$asset->delete();
-			}
-
-			// Check for an admin menu entry...if it's not there, create it
-			$query = "DELETE FROM `#__menu` WHERE `menutype` = 'main' AND `title` = " . $db->quote($name);
-			$db->setQuery($query);
-			$db->query();
-
-			// If we have the nested set class available, use it to rebuild lft/rgt
-			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
-			{
-				// Use the MySQL driver for this
-				$config = \JFactory::getConfig();
-				$database = \JDatabase::getInstance(
-					array(
-						'driver'   => 'mysql',
-						'host'     => $config->getValue('host'),
-						'user'     => $config->getValue('user'),
-						'password' => $config->getValue('password'),
-						'database' => $config->getValue('db')
-					) 
-				);
-
-				$table = new \JTableMenu($database);
-				$table->rebuild();
-			}
-		}
-	}
-
-	/**
-	 * Remove plugin entries from the appropriate table, depending on the Joomla version
-	 *
-	 * @param $name - (string) plugin name
-	 * @return bool
-	 **/
-	public static function deletePluginEntry($folder, $element=NULL)
-	{
-		$db = self::$db;
-
-		if ($db->tableExists('#__plugins'))
-		{
-			// Delete plugin(s) entry
-			$query = "DELETE FROM `#__plugins` WHERE `folder` = " . $db->quote($folder) . ((!is_null($element)) ? " AND `element` = '{$element}'" : "");
-			$db->setQuery($query);
-			$db->query();
-		}
-		else
-		{
-			// Delete plugin(s) entry
-			$query = "DELETE FROM `#__extensions` WHERE `folder` = " . $db->quote($folder) . ((!is_null($element)) ? " AND `element` = '{$element}'" : "");
-			$db->setQuery($query);
-			$db->query();
-		}
-	}
-
-	/**
-	 * Remove module entries from the appropriate table, depending on the Joomla version
-	 *
-	 * @param $name - (string) plugin name
-	 * @return bool
-	 **/
-	public static function deleteModuleEntry($element)
-	{
-		$db = self::$db;
-
-		if ($db->tableExists('#__extensions'))
-		{
-			// Delete module entry
-			$query = "DELETE FROM `#__extensions` WHERE `element` = '{$element}'";
-			$db->setQuery($query);
-			$db->query();
-		}
-	}
-
-	/**
-	 * Enable plugin
-	 *
-	 * @param  $folder  - (string) plugin folder
-	 * @param  $element - (string) plugin element
-	 * @return void
-	 **/
-	public static function enablePlugin($folder, $element)
-	{
-		self::setPluginStatus($folder, $element, 1);
-	}
-
-	/**
-	 * Disable plugin
-	 *
-	 * @param  $folder  - (string) plugin folder
-	 * @param  $element - (string) plugin element
-	 * @return void
-	 **/
-	public static function disablePlugin($folder, $element)
-	{
-		self::setPluginStatus($folder, $element, 0);
-	}
-
-	/**
-	 * Enable/disable plugin
-	 *
-	 * @param  $folder  - (string) plugin folder
-	 * @param  $element - (string) plugin element
-	 * @param  $enabled - (int)    whether or not the plugin should be enabled
-	 * @return void
-	 **/
-	private static function setPluginStatus($folder, $element, $enabled=1)
-	{
-		$db = self::$db;
-
-		if ($db->tableExists('#__plugins'))
-		{
-			$query = "UPDATE `#__plugins` SET `published` = '{$enabled}' WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
-			$db->setQuery($query);
-			$db->query();
-		}
-		else
-		{
-			$query = "UPDATE `#__extensions` SET `enabled` = '{$enabled}' WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
-			$db->setQuery($query);
-			$db->query();
 		}
 	}
 }
