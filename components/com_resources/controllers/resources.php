@@ -2191,6 +2191,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 			}
 		}
 
+		$resource->path = trim($resource->path);
+
 		// Ensure we have a path
 		if (empty($resource->path)) 
 		{
