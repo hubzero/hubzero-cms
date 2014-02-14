@@ -54,6 +54,7 @@ $text = ($this->task == 'edit'
 
 JToolBarHelper::title(JText::_('Publication') . ': [ ' . $text . ' ]', 'addedit.png');
 JToolBarHelper::spacer();
+JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
