@@ -59,13 +59,86 @@ class ForumControllerApi extends Hubzero_Api_Controller
 			case 'thread':     $this->thread();     break;
 			case 'categories': $this->categories(); break;
 			default:
-				$this->errorMessage(
-					500, 
-					JText::_('Invalid task.'), 
-					JRequest::getWord('format', 'json')
-				);
+				$this->service();
 			break;
 		}
+	}
+
+	/**
+	 * Displays a available options and parameters the API
+	 * for this comonent offers.
+	 *
+	 * @return  void
+	 */
+	private function service()
+	{
+		$response = new stdClass();
+		$response->component = 'forum';
+		$response->tasks = array(
+			'sections' => array(
+				'description' => JText::_('Get a list of available sections and stats for each.'),
+				'parameters'  => array(
+				),
+			),
+			'categories' => array(
+				'description' => JText::_('Get a list of categories for a specific section.'),
+				'parameters'  => array(
+					'section' => array(
+						'description' => JText::_('Section alias.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'search' => array(
+						'description' => JText::_('A word or phrase to search for.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'limit' => array(
+						'description' => JText::_('Number of result to return.'),
+						'type'        => 'integer',
+						'default'     => '25'
+					),
+					'limitstart' => array(
+						'description' => JText::_('Number of where to start returning results.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+				),
+			),
+			'threads' => array(
+				'description' => JText::_('Get a list of threads for a specific section and category.'),
+				'parameters'  => array(
+					'section' => array(
+						'description' => JText::_('Section alias.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'category' => array(
+						'description' => JText::_('Category alias.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'search' => array(
+						'description' => JText::_('A word or phrase to search for.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'limit' => array(
+						'description' => JText::_('Number of result to return.'),
+						'type'        => 'integer',
+						'default'     => '25'
+					),
+					'limitstart' => array(
+						'description' => JText::_('Number of where to start returning results.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+				),
+			),
+		);
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
 	}
 
 	/**

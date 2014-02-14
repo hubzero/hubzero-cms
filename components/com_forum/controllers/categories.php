@@ -25,12 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for forum categories
  */
-class ForumControllerCategories extends Hubzero_Controller
+class ForumControllerCategories extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determine task and execute

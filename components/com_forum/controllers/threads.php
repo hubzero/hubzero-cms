@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Forum controller class for threads
  */
-class ForumControllerThreads extends Hubzero_Controller
+class ForumControllerThreads extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
@@ -199,8 +199,6 @@ class ForumControllerThreads extends Hubzero_Controller
 	public function latestTask()
 	{
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-		ximport('Hubzero_Group');
-		ximport('Hubzero_View_Helper_Html');
 
 		$app = JFactory::getApplication();
 
@@ -226,11 +224,11 @@ class ForumControllerThreads extends Hubzero_Controller
 		$doc->category    = JText::_('COM_FORUM_RSS_CATEGORY');
 
 		// get all forum posts on site forum
-		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id='0' AND scope='site' AND f.state='1'");
+		$this->database->setQuery("SELECT f.* FROM `#__forum_posts` f WHERE f.scope_id='0' AND scope='site' AND f.state='1'");
 		$site_forum = $this->database->loadAssocList();
 
 		// get any group posts
-		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id<>'0' AND scope='group' AND f.state='1'");
+		$this->database->setQuery("SELECT f.* FROM `#__forum_posts` f WHERE f.scope_id<>'0' AND scope='group' AND f.state='1'");
 		$group_forum = $this->database->loadAssocList();
 
 		// make sure that the group for each forum post has the right privacy setting
@@ -239,7 +237,6 @@ class ForumControllerThreads extends Hubzero_Controller
 			$group = Hubzero_Group::getInstance($gf['scope_id']);
 			if (is_object($group)) 
 			{
-				ximport("Hubzero_Group_Helper");
 				$forum_access = Hubzero_Group_Helper::getPluginAccess($group, 'forum');
 
 				if ($forum_access == 'nobody' 
@@ -272,7 +269,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			$ids[] = $post['category_id'];
 		}
-		$this->database->setQuery("SELECT c.id, c.alias, s.alias as section FROM #__forum_categories c LEFT JOIN #__forum_sections as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
+		$this->database->setQuery("SELECT c.id, c.alias, s.alias as section FROM `#__forum_categories` c LEFT JOIN `#__forum_sections` as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
 		$cats = $this->database->loadObjectList();
 		if ($cats)
 		{
@@ -318,7 +315,7 @@ class ForumControllerThreads extends Hubzero_Controller
 
 				// Get description
 				$description = stripslashes($row['comment']);
-				$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0, 0);
+				$description = \Hubzero\Utility\String::truncate($description, 300, 0);
 
 				// Get author
 				$juser = JUser::getInstance($row['created_by']);

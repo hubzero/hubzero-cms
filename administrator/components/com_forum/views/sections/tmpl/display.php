@@ -70,8 +70,6 @@ function submitbutton(pressbutton)
 			$html = '';
 			//if ($this->results) 
 			//{
-				ximport('Hubzero_Group');
-				ximport('Hubzero_View_Helper_Html');
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 				$list = array(
@@ -113,7 +111,7 @@ function submitbutton(pressbutton)
 							/*$group = Hubzero_Group::getInstance($result->scope_id);
 							if ($group)
 							{
-								$result->caption = Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0);
+								$result->caption = \Hubzero\Utility\String::truncate($group->get('cn'), 50);
 							}
 							else
 							{
@@ -124,7 +122,7 @@ function submitbutton(pressbutton)
 						case 'course':
 							$offering = CoursesModelOffering::getInstance($result->scope_id);
 							$course = CoursesModelCourse::getInstance($offering->get('course_id'));
-							$result->caption = Hubzero_View_Helper_Html::shortenText($course->get('alias'), 50, 0) . ': ' . Hubzero_View_Helper_Html::shortenText($offering->get('alias'), 50, 0);
+							$result->caption = \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50);
 						break;
 						default:
 							$result->caption = $result->scope . ($result->scope_id ? ' (' . $this->escape(stripslashes($result->scope_id)) . ')' : '');

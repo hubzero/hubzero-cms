@@ -29,12 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for forum categories
  */
-class ForumControllerCategories extends Hubzero_Controller
+class ForumControllerCategories extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all categories in a section
@@ -132,8 +130,6 @@ class ForumControllerCategories extends Hubzero_Controller
 		
 		/*if ($sections)
 		{
-			ximport('Hubzero_Group');
-			ximport('Hubzero_View_Helper_Html');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 			foreach ($sections as $s)
@@ -145,7 +141,7 @@ class ForumControllerCategories extends Hubzero_Controller
 						$ky = $s->scope;
 						if ($group)
 						{
-							$ky .= ' (' . Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0) . ')';
+							$ky .= ' (' . \Hubzero\Utility\String::truncate($group->get('cn'), 50) . ')';
 						}
 						else
 						{
@@ -155,7 +151,7 @@ class ForumControllerCategories extends Hubzero_Controller
 					case 'course':
 						$offering = CoursesModelOffering::getInstance($s->scope_id);
 						$course = CoursesModelCourse::getInstance($offering->get('course_id'));
-						$ky = $s->scope . ' (' . Hubzero_View_Helper_Html::shortenText($course->get('alias'), 50, 0) . ': ' . Hubzero_View_Helper_Html::shortenText($offering->get('alias'), 50, 0) . ')';
+						$ky = $s->scope . ' (' . \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50) . ')';
 					break;
 					case 'site':
 					default:
