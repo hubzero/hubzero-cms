@@ -46,9 +46,6 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'time', 'hubs' );
-		$this->_params = new JParameter( $this->_plugin->params );
 		$this->loadLanguage();
 	}
 
@@ -91,10 +88,10 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		);
 
 		// Set some values for use later
-		$this->_option   =  $option;
-		$this->action    =  $action;
-		$this->active    =  $active;
-		$this->db        =  JFactory::getDBO();
+		$this->_option   = $option;
+		$this->action    = $action;
+		$this->active    = $active;
+		$this->db        = JFactory::getDBO();
 		$this->juser     = JFactory::getUser();
 		$this->mainframe = JFactory::getApplication();
 
@@ -221,6 +218,12 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 			$view->row = $hub;
 		}
 
+		include_once(__DIR__ . '/hub.php');
+		$obj = new TimeModelHub($view->row);
+
+		// Parse the notes for the view
+		$view->row->notes = $obj->notes('raw');
+
 		// Check if we have a contacts array coming in - if so, use that
 		if (is_array($contacts))
 		{
@@ -306,20 +309,11 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		$hours            = $records->getSummaryHoursByHub(1, $view->row->id);
 		$view->totalHours = ($hours) ? $hours[0]->hours : 0;
 
-		// Set up the wiki configuration
-		$wikiconfig = array(
-			'option'   => $this->option,
-			'scope'    => 'time',
-			'pagename' => 'hubs',
-			'pageid'   => $view->row->id,
-			'filepath' => '',
-			'domain'   => $view->row->id
-		);
-
-		$p = Hubzero_Wiki_Parser::getInstance();
+		include_once(__DIR__ . '/hub.php');
+		$obj = new TimeModelHub($view->row);
 
 		// Parse the notes for the view
-		$view->row->notes = $p->parse("\n" . stripslashes($view->row->notes), $wikiconfig);
+		$view->row->notes = $obj->notes('parsed');
 
 		// If viewing an entry from a page other than the first, take the user back to that page if they click "all xxx"
 		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
@@ -342,7 +336,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Incoming posted data
-		$hub      = JRequest::getVar('hub', array(), 'post');
+		$hub      = JRequest::getVar('hub', array(), 'post', 'none', 2);
 		$hub      = array_map('trim', $hub);
 		$contacts = JRequest::getVar('contact', array(), 'post');
 
@@ -364,7 +358,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		}
 
 		// Save the contacts info
-		foreach($contacts as $contact)
+		foreach ($contacts as $contact)
 		{
 			// Add the hub id to the contact array
 			$contact['hub_id'] = $hubs->id;
@@ -373,7 +367,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 			$contact = array_map('trim', $contact);
 
 			// First check and make sure we don't save an empty contact
-			if($contact['name'] == 'name' || $contact['phone'] == 'phone' || $contact['email'] == 'email' || $contact['role'] == 'role')
+			if ($contact['name'] == 'name' || $contact['phone'] == 'phone' || $contact['email'] == 'email' || $contact['role'] == 'role')
 			{
 				break;
 			}
@@ -382,7 +376,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 			$contactObj = new TimeContacts($this->db);
 
 			// Save the contact info
-			if(!$contactObj->save($contact));
+			if (!$contactObj->save($contact));
 			{
 				// Something went wrong...return errors (probably from 'check')
 				$this->addPluginMessage($contactObj->getError(), 'error');
@@ -397,7 +391,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		}
 
 		// If we had errors, redirect back to edit
-		if($has_errors == true)
+		if ($has_errors == true)
 		{
 			return $this->_edit($hubs, $contactsObjArray);
 		}

@@ -57,7 +57,7 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 			<div class="title"><?php echo JText::_('PLG_TIME_HUBS_' . strtoupper($this->action)) . ': ' . $this->row->name; ?></div>
 			<div class="grouping" id="name-group">
 				<label for="name"><?php echo JText::_('PLG_TIME_HUBS_NAME'); ?>:</label>
-				<input type="text" name="hub[name]" id="name" value="<?php echo htmlentities(stripslashes($this->row->name), ENT_QUOTES); ?>" size="50" />
+				<input type="text" name="hub[name]" id="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 			</div>
 
 			<label for="contact"><?php echo JText::_('PLG_TIME_HUBS_CONTACTS'); ?>:</label>
@@ -67,10 +67,10 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 					foreach($this->contacts as $contact)
 					{ ?>
 						<div class="grouping contact-grouping" id="contact-<?php echo $contact->id; ?>-group">
-							<input type="text" name="contact[<?php echo $contact->id; ?>][name]" id="" value="<?php echo htmlentities(stripslashes($contact->name), ENT_QUOTES); ?>" />
-							<input type="text" name="contact[<?php echo $contact->id; ?>][phone]" id="" value="<?php echo htmlentities(stripslashes($contact->phone), ENT_QUOTES); ?>" />
-							<input type="text" name="contact[<?php echo $contact->id; ?>][email]" id="" value="<?php echo htmlentities(stripslashes($contact->email), ENT_QUOTES); ?>" />
-							<input type="text" name="contact[<?php echo $contact->id; ?>][role]" id="" value="<?php echo htmlentities(stripslashes($contact->role), ENT_QUOTES); ?>" />
+							<input type="text" name="contact[<?php echo $contact->id; ?>][name]" id="" value="<?php echo $this->escape(stripslashes($contact->name)); ?>" />
+							<input type="text" name="contact[<?php echo $contact->id; ?>][phone]" id="" value="<?php echo $this->escape(stripslashes($contact->phone)); ?>" />
+							<input type="text" name="contact[<?php echo $contact->id; ?>][email]" id="" value="<?php echo $this->escape(stripslashes($contact->email)); ?>" />
+							<input type="text" name="contact[<?php echo $contact->id; ?>][role]" id="" value="<?php echo $this->escape(stripslashes($contact->role)); ?>" />
 							<input type="hidden" name="contact[<?php echo $contact->id; ?>][id]" value="<?php echo $contact->id; ?>" />
 							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs&action=deletecontact&id='.$contact->id); ?>" class="delete_contact" title="Delete contact"></a>
 						</div>
@@ -87,12 +87,12 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 
 				<div class="grouping" id="liaison-group">
 					<label for="liaison"><?php echo JText::_('PLG_TIME_HUBS_LIAISON'); ?>:</label>
-					<input type="text" name="hub[liaison]" id="liaison" value="<?php echo htmlentities(stripslashes($this->row->liaison), ENT_QUOTES); ?>" size="50" />
+					<input type="text" name="hub[liaison]" id="liaison" value="<?php echo $this->escape(stripslashes($this->row->liaison)); ?>" size="50" />
 				</div>
 
 				<div class="grouping" id="anniversary-group">
 					<label for="anniversary_date"><?php echo JText::_('PLG_TIME_HUBS_ANNIVERSARY_DATE'); ?>:</label>
-					<input class="hadDatepicker" type="text" name="hub[anniversary_date]" id="anniversary_date" value="<?php echo htmlentities(stripslashes($this->row->anniversary_date), ENT_QUOTES); ?>" size="50" />
+					<input class="hadDatepicker" type="text" name="hub[anniversary_date]" id="anniversary_date" value="<?php echo $this->escape(stripslashes($this->row->anniversary_date)); ?>" size="50" />
 				</div>
 
 				<div class="grouping" id="support-group">
@@ -103,10 +103,7 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 				<div class="grouping" id="notes-group">
 					<label for="notes"><?php echo JText::_('PLG_TIME_HUBS_NOTES'); ?>:</label>
 					<?php
-						// Import the HUBzero wiki editor
-						ximport('Hubzero_Wiki_Editor');
-						$editor = Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('hub[notes]', 'notes', stripslashes($this->row->notes), '', '50', '6');
+						echo \JFactory::getEditor()->display('hub[notes]', $this->escape($this->row->notes), '', '', 35, 6, false, 'notes', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</div>
 

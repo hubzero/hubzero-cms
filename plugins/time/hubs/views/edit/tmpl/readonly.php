@@ -78,12 +78,12 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 			<h3 class="headings"><?php echo JText::_('PLG_TIME_HUBS_DETAILS'); ?></h3>
 			<div class="grouping" id="name-grouping">
 				<label for="name"><?php echo JText::_('PLG_TIME_HUBS_NAME'); ?>:</label>
-				<?php echo htmlentities(stripslashes($this->row->name), ENT_QUOTES); ?>
+				<?php echo $this->escape(stripslashes($this->row->name)); ?>
 			</div>
 
 			<div class="grouping" id="liaison-grouping">
 				<label for="liaison"><?php echo JText::_('PLG_TIME_HUBS_LIAISON'); ?>:</label>
-				<?php echo htmlentities(stripslashes($this->row->liaison), ENT_QUOTES); ?>
+				<?php echo $this->escape(stripslashes($this->row->liaison)); ?>
 			</div>
 
 			<div class="grouping" id="anniversary-grouping">
@@ -93,17 +93,17 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 
 			<div class="grouping" id="support-grouping">
 				<label for="support_level"><?php echo JText::_('PLG_TIME_HUBS_SUPPORT_LEVEL'); ?>:</label>
-				<?php echo htmlentities(stripslashes($this->row->support_level), ENT_QUOTES); ?>
+				<?php echo $this->escape(stripslashes($this->row->support_level)); ?>
 			</div>
 
 			<div class="grouping" id="tasks-grouping">
 				<label for="active_tasks"><?php echo JText::_('PLG_TIME_HUBS_ACTIVE_TASKS'); ?>:</label>
-				<?php echo htmlentities(stripslashes($this->activeTasks), ENT_QUOTES); ?>
+				<?php echo $this->escape(stripslashes($this->activeTasks)); ?>
 			</div>
 
 			<div class="grouping" id="hours-grouping">
 				<label for="total_hours"><?php echo JText::_('PLG_TIME_HUBS_TOTAL_HOURS'); ?>:</label>
-				<?php echo htmlentities(stripslashes($this->totalHours), ENT_QUOTES); ?>
+				<?php echo $this->escape(stripslashes($this->totalHours)); ?>
 			</div>
 		</div>
 
@@ -116,10 +116,10 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 					foreach($this->contacts as $contact)
 					{ ?>
 						<div class="contact-entry">
-							<div class="contact-name"><?php echo htmlentities(stripslashes($contact->name), ENT_QUOTES); ?></div>
-							<div class="contact-phone"><?php echo htmlentities(stripslashes($contact->phone), ENT_QUOTES); ?></div>
-							<div class="contact-email"><?php echo htmlentities(stripslashes($contact->email), ENT_QUOTES); ?></div>
-							<div class="contact-role"><?php echo htmlentities(stripslashes($contact->role), ENT_QUOTES); ?></div>
+							<div class="contact-name"><?php echo $this->escape(stripslashes($contact->name)); ?></div>
+							<div class="contact-phone"><?php echo $this->escape(stripslashes($contact->phone)); ?></div>
+							<div class="contact-email"><?php echo $this->escape(stripslashes($contact->email)); ?></div>
+							<div class="contact-role"><?php echo $this->escape(stripslashes($contact->role)); ?></div>
 						</div>
 						<?php $i++;
 					} // close foreach contacts
