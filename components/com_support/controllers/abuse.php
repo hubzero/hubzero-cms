@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Report items as abusive
  */
-class SupportControllerAbuse extends Hubzero_Controller
+class SupportControllerAbuse extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Method to set the document path

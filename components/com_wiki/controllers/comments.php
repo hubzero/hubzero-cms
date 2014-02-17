@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Wiki controller class for comments
  */
-class WikiControllerComments extends Hubzero_Controller
+class WikiControllerComments extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor

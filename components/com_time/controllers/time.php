@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
- * Primary component controller (extends Hubzero_Controller)
+ * Primary component controller (extends \Hubzero\Component\SiteController)
  */
-class TimeController extends Hubzero_Controller
+class TimeController extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute function

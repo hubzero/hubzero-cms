@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Wiki controller class for page history
  */
-class WikiControllerHistory extends Hubzero_Controller
+class WikiControllerHistory extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor
@@ -136,11 +134,11 @@ class WikiControllerHistory extends Hubzero_Controller
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -227,11 +225,11 @@ class WikiControllerHistory extends Hubzero_Controller
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(

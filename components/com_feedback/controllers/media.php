@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Feedback controller class for media management
  */
-class FeedbackControllerMedia extends Hubzero_Controller
+class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Upload an image

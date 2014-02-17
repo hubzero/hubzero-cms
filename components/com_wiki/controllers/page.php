@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki controller class for pages
  */
-class WikiControllerPage extends Hubzero_Controller
+class WikiControllerPage extends \Hubzero\Component\SiteController
 {
 	public $book = null;
 

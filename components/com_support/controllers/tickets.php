@@ -33,11 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 
-
 /**
  * Manage support tickets
  */
-class SupportControllerTickets extends Hubzero_Controller
+class SupportControllerTickets extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determine task and execute it

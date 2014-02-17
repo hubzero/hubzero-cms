@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class NewsletterControllerMailing extends Hubzero_Controller
+class NewsletterControllerMailing extends \Hubzero\Component\SiteController
 {
 	/**
 	 * General Tracking Task - Routes to open and click tracking based on type

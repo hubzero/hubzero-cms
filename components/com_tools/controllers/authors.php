@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
@@ -44,7 +42,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpe
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerAuthors extends Hubzero_Controller
+class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it

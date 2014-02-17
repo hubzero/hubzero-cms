@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Feedback controller class
  */
-class FeedbackControllerFeedback extends Hubzero_Controller
+class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determine task and execute it

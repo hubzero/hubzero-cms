@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class NewsletterControllerMailinglist extends Hubzero_Controller
+class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Override parent build title method

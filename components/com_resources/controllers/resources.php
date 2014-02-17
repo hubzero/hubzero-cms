@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Resources controller class
  */
-class ResourcesControllerResources extends Hubzero_Controller
+class ResourcesControllerResources extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor

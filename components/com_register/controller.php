@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Controller class for registration
  */
-class RegisterController extends Hubzero_Controller
+class RegisterController extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determine task and execute it

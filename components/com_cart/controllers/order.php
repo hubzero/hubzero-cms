@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php');
 include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
 

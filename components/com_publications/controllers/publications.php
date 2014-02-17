@@ -32,9 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Primary component controller (extends Hubzero_Controller)
+ * Primary component controller (extends \Hubzero\Component\SiteController)
  */
-class PublicationsControllerPublications extends Hubzero_Controller
+class PublicationsControllerPublications extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it

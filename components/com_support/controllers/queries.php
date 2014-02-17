@@ -29,13 +29,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 
 /**
  * Support controller class for ticket queries
  */
-class SupportControllerQueries extends Hubzero_Controller
+class SupportControllerQueries extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Displays a list of records

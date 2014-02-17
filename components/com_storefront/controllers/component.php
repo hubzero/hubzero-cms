@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  *  Base component controller class
  */
-class ComponentController extends Hubzero_Controller
+class ComponentController extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Parse the URL parameters and map each parameter (in order) to the given array of names

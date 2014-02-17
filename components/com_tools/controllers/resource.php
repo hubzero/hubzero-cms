@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Tool_Version');
-
 /**
  * Tool classes
  */
@@ -54,7 +52,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpe
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerResource extends Hubzero_Controller
+class ToolsControllerResource extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it

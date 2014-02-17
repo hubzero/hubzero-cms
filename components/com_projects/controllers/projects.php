@@ -32,9 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Primary component controller (extends Hubzero_Controller)
+ * Primary component controller (extends \Hubzero\Component\SiteController)
  */
-class ProjectsControllerProjects extends Hubzero_Controller
+class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 {	
 	/**
 	 * Method to set a property of the class

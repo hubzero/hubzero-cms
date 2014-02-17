@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 // Include required forms models
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
@@ -41,7 +39,8 @@ require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
 /**
  * Courses form controller class
  */
-class CoursesControllerForm extends Hubzero_Controller {
+class CoursesControllerForm extends \Hubzero\Component\SiteController
+{
 	/**
 	 * Execute a task
 	 * 

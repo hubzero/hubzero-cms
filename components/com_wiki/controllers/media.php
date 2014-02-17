@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki controller class for media
  */
-class WikiControllerMedia extends Hubzero_Controller
+class WikiControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor

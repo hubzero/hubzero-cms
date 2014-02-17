@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for tools (default)
  */
-class ToolsControllerTools extends Hubzero_Controller
+class ToolsControllerTools extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task

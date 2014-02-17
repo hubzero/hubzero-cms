@@ -31,16 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import Hubzero Controller Class
-ximport('Hubzero_Controller');
-
 //import filesystem library
 jimport('joomla.filesystem.folder');
 
 /**
  * Help controller class
  */
-class HelpControllerHelp extends Hubzero_Controller
+class HelpControllerHelp extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Method to set the document path

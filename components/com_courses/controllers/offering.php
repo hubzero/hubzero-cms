@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Courses controller class for an offering
  */
-class CoursesControllerOffering extends Hubzero_Controller
+class CoursesControllerOffering extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task

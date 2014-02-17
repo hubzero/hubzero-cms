@@ -26,12 +26,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * OAIPMH controller for XML output
  */
-class OaipmhControllerXml extends Hubzero_Controller 
+class OaipmhControllerXml extends \Hubzero\Component\SiteController
 {
 	/**
 	 * int(11) Primary key

@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Projects controller class
  */
-class ProjectsControllerMedia extends Hubzero_Controller
+class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Upload project image

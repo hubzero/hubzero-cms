@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Groups controller class
  */
-class GroupsControllerAbstract extends Hubzero_Controller
+class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Set a notification

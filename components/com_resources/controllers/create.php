@@ -31,14 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
 
 /**
  * Resources controller for creating a resource
  */
-class ResourcesControllerCreate extends Hubzero_Controller
+class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Container for steps

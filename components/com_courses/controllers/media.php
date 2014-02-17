@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'helpers
 /**
  * Courses controller class for media
  */
-class CoursesControllerMedia extends Hubzero_Controller
+class CoursesControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Track video viewing progress

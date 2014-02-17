@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JLoader::import('Hubzero.Controller');
 
-class OAuthControllerAuthorize extends Hubzero_Controller
+class OAuthControllerAuthorize extends \Hubzero\Component\SiteController
 {
 	public function authorizeTask()
 	{
