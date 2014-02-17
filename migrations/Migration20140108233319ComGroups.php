@@ -39,10 +39,10 @@ class Migration20140108233319ComGroups extends Base
 			if (!is_dir( $groupUploadFolder ))
 			{
 				// create uploads folder
-				if (!JFolder::create( $groupUploadFolder, 0774 ))
+				if (!\JFolder::create( $groupUploadFolder, 0774 ))
 				{
-					$return = new stdClass();
-					$return->error = new stdClass();
+					$return = new \stdClass();
+					$return->error = new \stdClass();
 					$return->error->type = 'warning';
 					$return->error->message = 'Failed to create uploads folder. Try running again with elevated privileges';
 					return $return;
@@ -57,10 +57,10 @@ class Migration20140108233319ComGroups extends Base
 			{
 				$from = $groupFolder . DS . $groupFile;
 				$to   = $groupUploadFolder . DS . $groupFile;
-				if (!JFile::move( $from, $to ))
+				if (!\JFile::move( $from, $to ))
 				{
-					$return = new stdClass();
-					$return->error = new stdClass();
+					$return = new \stdClass();
+					$return->error = new \stdClass();
 					$return->error->type = 'warning';
 					$return->error->message = 'Failed to move files to uploads folder. Try running again with elevated privileges';
 					return $return;
