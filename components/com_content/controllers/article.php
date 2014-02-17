@@ -245,7 +245,7 @@ class ContentControllerArticle extends JControllerForm
 	 * @return	void
 	 * @since	1.6
 	 */
-	protected function postSaveHook(JModel &$model, $validData)
+	protected function postSaveHook(JModel &$model, $validData = array())
 	{
 		$task = $this->getTask();
 
