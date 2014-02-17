@@ -43,7 +43,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 // require needed files
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'course.php');
 
 // build controller path and name

@@ -615,12 +615,9 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		//if were on the wiki we need to output files a specific way
 		if ($this->active == 'wiki') 
 		{
-			//get access level for wiki
-			$access = CoursesHelper::getPluginAccess($course, 'wiki');
-
 			//check to make sure user has access to wiki section
-			if (($access == 'members' && !in_array($this->juser->get('id'), $course->get('members'))) 
-			 || ($access == 'registered' && $this->juser->get('guest') == 1)) 
+			if (!in_array($this->juser->get('id'), $course->get('members')) 
+			 || $this->juser->get('guest')) 
 			{
 				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
 				return;
@@ -644,12 +641,9 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		} 
 		else 
 		{
-			//get access level for overview or other course pages
-			$access = CoursesHelper::getPluginAccess($course, 'overview');
-
 			//check to make sure we can access it
-			if (($access == 'members' && !in_array($this->juser->get('id'), $course->get('members'))) 
-			 || ($access == 'registered' && $this->juser->get('guest') == 1)) 
+			if (!in_array($this->juser->get('id'), $course->get('members')) 
+			 || $this->juser->get('guest') == 1) 
 			{
 				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
 				return;
