@@ -715,7 +715,7 @@ class ResourcesModelResource extends JObject
 						{
 							$this->toolauthors = array();
 
-							$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName, n.givenName AS firstname, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization AS org, t.*, a.role"
+							$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization AS org, t.*, a.role"
 								 . " FROM #__tool_authors AS t JOIN #__xprofiles AS n ON n.uidNumber=t.uid JOIN #__tool_version AS v ON v.id=t.version_id"
 								 . " LEFT JOIN #__author_assoc AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid=" . $this->resource->id
 								 . " WHERE t.toolname='" . $this->resource->alias . "' AND v.state<>3"
