@@ -40,7 +40,7 @@ $offerings = $this->course->offerings(array(
 
 $action = strtolower(JRequest::getWord('action', ''));
 
-Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview');
+$this->js('courses.overview.js');
 ?>
 <div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 	<h2>
@@ -396,7 +396,7 @@ if (!$c)
 					$name = key($cat);
 					if ($name != '') 
 					{
-						$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
+						$url = JRoute::_($this->course->link() . '&active=' . $name);
 
 						if (strtolower($name) == $this->active) 
 						{

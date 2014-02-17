@@ -138,14 +138,12 @@ if (count($this->notifications) > 0)
 							$count = 0;
 							foreach ($mycourses as $course)
 							{
-								$view = new JView(array(
-									'name'   => 'courses',
-									'layout' => '_course'
-								));
-								$view->count   = $count;
-								$view->columns = 2;
-								$view->course  = $course;
-								$view->display();
+								$this->view('_course')
+								     ->set('count', $count)
+								     ->set('columns', 2)
+								     ->set('course', $course)
+								     ->display();
+
 
 								if ($count == 1) 
 								{
@@ -185,14 +183,11 @@ if (count($this->notifications) > 0)
 							$count = 0;
 							foreach ($this->interestingcourses as $course)
 							{
-								$view = new JView(array(
-									'name'   => 'courses',
-									'layout' => '_course'
-								));
-								$view->count   = $count;
-								$view->columns = 2;
-								$view->course  = $course;
-								$view->display();
+								$this->view('_course')
+								     ->set('count', $count)
+								     ->set('columns', 2)
+								     ->set('course', $course)
+								     ->display();
 
 								if ($count == 1) 
 								{
@@ -231,19 +226,16 @@ if (count($this->notifications) > 0)
 						$count = 0;
 						foreach ($this->popularcourses as $course)
 						{
-							$view = new JView(array(
-								'name'   => 'courses',
-								'layout' => '_course'
-							));
-							$view->count   = $count;
-							$view->columns = 2;
-							$view->course  = $course;
-							$view->display();
+							$this->view('_course')
+							     ->set('count', $count)
+							     ->set('columns', 2)
+							     ->set('course', $course)
+							     ->display();
 
 							if ($count == 1) 
 							{
 								$count = 0;
-								echo '<div class="clear"></div>';	
+								echo '<div class="clear"></div>';
 							}
 							else
 							{

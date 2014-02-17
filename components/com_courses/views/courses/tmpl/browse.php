@@ -210,7 +210,7 @@ $juser = JFactory::getUser();
 								<span class="entry-id"><?php echo $course->get('id'); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $course->get('alias')); ?>">
+								<a class="entry-title" href="<?php echo JRoute::_($course->link()); ?>">
 									<?php echo $this->escape(stripslashes($course->get('title'))); ?>
 								</a><br />
 							<?php
@@ -233,19 +233,6 @@ $juser = JFactory::getUser();
 							?>
 								<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
 							</td>
-						<?php /*if ($course->access('manage')) { ?>
-							<td>
-								<span class="<?php echo $status; ?> status"><?php
-									switch ($status)
-									{
-										case 'manager': echo JText::_('COM_COURSES_STATUS_MANAGER'); break;
-										case 'new': echo JText::_('COM_COURSES_STATUS_NEW_COURSE'); break;
-										case 'member': echo JText::_('COM_COURSES_STATUS_APPROVED'); break;
-										default: break;
-									}
-								?></span>
-							</td>
-					<?php }*/ ?>
 						</tr>
 				<?php 
 					} // for loop 

@@ -51,7 +51,7 @@ switch ($this->columns)
 	<div class="course-list">
 		<div class="details">
 			<h3>
-				<a href="<?php echo JRoute::_('index.php?option=com_courses&controller=course&gid=' . $this->course->get('alias')); ?>">
+				<a href="<?php echo JRoute::_($this->course->link()); ?>">
 					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 				</a>
 			</h3>
