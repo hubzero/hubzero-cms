@@ -156,14 +156,7 @@ class plgTagsWiki extends JPlugin
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					if ($row->data1 != '' && $row->category != '') 
-					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope=' . $row->data1 . '&pagename=' . $row->alias);
-					} 
-					else 
-					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_wiki&scope=' . $row->data1 . '&pagename=' . $row->alias);
-					}
+					$rows[$key]->href = JRoute::_($rows[$key]->href);
 					$rows[$key]->text = $rows[$key]->itext;
 				}
 			}
