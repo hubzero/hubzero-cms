@@ -17,12 +17,12 @@ class Migration20140217151012ComCourses extends Base
 	{
 		if ($this->db->tableExists('#__courses_offering_sections'))
 		{
-			if (!$db->tableHasField('#__courses_offering_sections', 'is_default'))
+			if (!$this->db->tableHasField('#__courses_offering_sections', 'is_default'))
 			{
 				$query = "ALTER TABLE `#__courses_offering_sections` ADD `is_default` TINYINT(2)  NOT NULL  DEFAULT '0' AFTER `offering_id`";
 
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
@@ -34,12 +34,12 @@ class Migration20140217151012ComCourses extends Base
 	{
 		if ($this->db->tableExists('#__courses_offering_sections'))
 		{
-			if ($db->tableHasField('#__courses_offering_sections', 'is_default'))
+			if ($this->db->tableHasField('#__courses_offering_sections', 'is_default'))
 			{
 				$query = "ALTER TABLE `#__courses_offering_sections` DROP `is_default`;";
 
-				$db->setQuery($query);
-				$db->query();
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
