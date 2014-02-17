@@ -133,7 +133,7 @@ class ModIncrementalRegistrationController
 			}
 			$doc = JFactory::getDocument();
 			$doc->addStylesheet($media->get('/mod_incremental_registration.css'));
-			$doc->addScript($media->get('/mod_incremental_registration.js'));
+			$doc->addScript($media->get('/mod_incremental_registration.jquery.js'));
 
 			if ($row) 
 			{

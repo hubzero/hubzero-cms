@@ -59,7 +59,6 @@ class ModIncrementalRegistrationGroups
 		$colNames = array();
 		$wantRace = false;
 		$wantDisability = false;
-		$wantLocation = false;
 		foreach ($cols as $col) {
 			if ($col['field'] == 'race') {
 				$wantRace = $col['label'];
