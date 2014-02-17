@@ -57,14 +57,10 @@ class AnswersControllerApi extends Hubzero_Api_Controller
 		switch ($this->segments[0]) 
 		{
 			case 'search':    $this->questionsTask();  break;
-			case 'questions':    $this->questionsTask();  break;
+			case 'questions': $this->questionsTask();  break;
 
 			default:
-				$this->errorMessage(
-					500, 
-					JText::_('Invalid task.'), 
-					JRequest::getWord('format', 'json')
-				);
+				$this->serviceTask();
 			break;
 		}
 	}
@@ -92,6 +88,49 @@ class AnswersControllerApi extends Hubzero_Api_Controller
 		//add error to message body
 		$this->setMessageType(JRequest::getWord('format', $format));
 		$this->setMessage($object);
+	}
+
+	/**
+	 * Documents available API tasks and their options
+	 *
+	 * @return  void
+	 */
+	public function serviceTask()
+	{
+		$response = new stdClass();
+		$response->component = 'answers';
+		$response->tasks = array(
+			'questions' => array(
+				'description' => JText::_('Get a list of questions.'),
+				'parameters'  => array(
+					'search' => array(
+						'description' => JText::_('A word or phrase to search for.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'filterby' => array(
+						'description' => JText::_('Filter results by question status.'),
+						'type'        => 'string',
+						'default'     => 'all',
+						'accepts'     => array('all', 'open', 'closed')
+					),
+					'sort' => array(
+						'description' => JText::_('Sorting to be applied to the records.'),
+						'type'        => 'string',
+						'default'     => 'date',
+						'accepts'     => array('created', 'helpful', 'reward', 'state')
+					),
+					'sort_Dir' => array(
+						'description' => JText::_('Direction to sort records by.'),
+						'type'        => 'string',
+						'default'     => 'desc',
+						'accepts'     => array('asc', 'desc')
+					),
+				),
+			),
+		);
+
+		$this->setMessage($response);
 	}
 
 	/**
