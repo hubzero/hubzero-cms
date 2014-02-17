@@ -42,7 +42,6 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 			<?php
 				echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 50, false, 'field_description');
 			?>
-			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 		</label>
 
 		<p class="submit">
