@@ -264,7 +264,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	// See if it's checked out or not
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
-		$checked = JHTMLGrid::_checkedOut($row);
+		$checked = JHTML::_('grid.checkedOut', $row, $i);
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				 ? JText::_('Checked out') . ': ' . JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')) . '<br />'
 				 : '';
