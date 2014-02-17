@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for collection posts
  */
-class CollectionsControllerPosts extends Hubzero_Controller
+class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of articles

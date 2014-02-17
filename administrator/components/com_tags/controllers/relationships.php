@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Tags controller class for managing raltionships between tags
  */
-class TagsControllerRelationships extends Hubzero_Controller
+class TagsControllerRelationships extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Show a form for looking up a tag's relationships

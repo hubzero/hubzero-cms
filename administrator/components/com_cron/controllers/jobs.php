@@ -29,9 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
-class CronControllerJobs extends Hubzero_Controller
+/**
+ * Cron controller class for jobs
+ */
+class CronControllerJobs extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a form for editing an entry

@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage resource types
  */
-class CronControllerPlugins extends Hubzero_Controller
+class CronControllerPlugins extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it
