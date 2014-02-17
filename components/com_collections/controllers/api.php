@@ -56,18 +56,14 @@ class CollectionsControllerApi extends Hubzero_Api_Controller
 
 		switch ($this->segments[0]) 
 		{
-			case 'collections':  $this->collectionsTask();  break;
+			case 'collections': $this->collectionsTask(); break;
 			case 'collection':  $this->collectionTask();  break;
 
-			case 'posts': $this->postsTask();  break;
-			case 'post': $this->postTask();  break;
+			case 'posts': $this->postsTask(); break;
+			case 'post':  $this->postTask();  break;
 
 			default:
-				$this->errorMessage(
-					500, 
-					JText::_('Invalid task.'), 
-					JRequest::getWord('format', 'json')
-				);
+				$this->serviceTask();
 			break;
 		}
 	}
@@ -95,6 +91,80 @@ class CollectionsControllerApi extends Hubzero_Api_Controller
 		//add error to message body
 		$this->setMessageType(JRequest::getWord('format', $format));
 		$this->setMessage($object);
+	}
+
+	/**
+	 * Displays a available options and parameters the API
+	 * for this comonent offers.
+	 *
+	 * @return  void
+	 */
+	private function serviceTask()
+	{
+		$response = new stdClass();
+		$response->component = 'collections';
+		$response->tasks = array(
+			'collections' => array(
+				'description' => JText::_('Get a list of collections.'),
+				'parameters'  => array(
+					'sort_Dir' => array(
+						'description' => JText::_('Direction to sort results by.'),
+						'type'        => 'string',
+						'default'     => 'desc',
+						'accepts'     => array('asc', 'desc')
+					),
+					'search' => array(
+						'description' => JText::_('A word or phrase to search for.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'limit' => array(
+						'description' => JText::_('Number of result to return.'),
+						'type'        => 'integer',
+						'default'     => '25'
+					),
+					'limitstart' => array(
+						'description' => JText::_('Number of where to start returning results.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+				),
+			),
+			'posts' => array(
+				'description' => JText::_('Get a list of posts.'),
+				'parameters'  => array(
+					'collection' => array(
+						'description' => JText::_('ID of the collection to retrieve posts for.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+					'sort_Dir' => array(
+						'description' => JText::_('Direction to sort results by.'),
+						'type'        => 'string',
+						'default'     => 'desc',
+						'accepts'     => array('asc', 'desc')
+					),
+					'search' => array(
+						'description' => JText::_('A word or phrase to search for.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'limit' => array(
+						'description' => JText::_('Number of result to return.'),
+						'type'        => 'integer',
+						'default'     => '25'
+					),
+					'limitstart' => array(
+						'description' => JText::_('Number of where to start returning results.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+				),
+			),
+		);
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
 	}
 
 	/**
@@ -222,12 +292,12 @@ class CollectionsControllerApi extends Hubzero_Api_Controller
 				$obj = new stdClass;
 				$obj->id          = $entry->get('id');
 				$obj->title       = $entry->get('title', $collection->get('title'));
-				$obj->description = $entry->get('description', $collection->get('description'));
+				$obj->description = $entry->description('clean'); //get('description', $collection->get('description'));
 				$obj->type        = 'collection';
-				$obj->posted      = $entry->get('created');
-				$obj->author      = $entry->creator()->get('name');
+				$obj->posted      = $entry->created();
+				$obj->author      = $entry->creator('name');
 
-				switch ($collection->get('object_type'))
+				/*switch ($collection->get('object_type'))
 				{
 					case 'member':
 						$url = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
@@ -244,7 +314,8 @@ class CollectionsControllerApi extends Hubzero_Api_Controller
 						$url = 'index.php?option=com_collections&task=all&id=' . $collection->get('id');
 					break;
 				}
-				$obj->url         = $base . DS . ltrim(JRoute::_($url), DS);
+				$obj->url         = $base . DS . ltrim(JRoute::_($url), DS);*/
+				$obj->url         = $base . DS . ltrim(JRoute::_($collection->link()), DS);
 
 				$obj->files       = $collection->count('file');
 				$obj->links       = $collection->count('link');

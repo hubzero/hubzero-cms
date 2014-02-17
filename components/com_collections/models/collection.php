@@ -89,6 +89,13 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	private $_following = null;
 
 	/**
+	 * User object
+	 * 
+	 * @var object
+	 */
+	private $_creator = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -621,7 +628,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('description.parsed'));
+				$content = strip_tags($this->description('description.parsed'));
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);
