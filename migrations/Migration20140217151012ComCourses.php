@@ -23,6 +23,11 @@ class Migration20140217151012ComCourses extends Base
 
 				$this->db->setQuery($query);
 				$this->db->query();
+
+				$query = "UPDATE `#__courses_offering_sections` SET `is_default`=1 WHERE `alias`='__default'";
+
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
