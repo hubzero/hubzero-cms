@@ -65,16 +65,6 @@ class plgSupportBlog extends JPlugin
 		$rows = $database->loadObjectList();
 		if ($rows) 
 		{
-			$yearFormat = 'Y';
-			$monthFormat = 'm';
-			$tz = true;
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$yearFormat = '%Y';
-				$monthFormat = '%m';
-				$tz = 0;
-			}
-
 			foreach ($rows as $key => $row)
 			{
 				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches))
@@ -82,10 +72,10 @@ class plgSupportBlog extends JPlugin
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
 
-				$entry = new BlogTableEntry($database);
-				$entry->load($rows[$key]->entry_id);
+				$entry = new BlogModelEntry($rows[$key]->entry_id);
 
-				$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $entry->created_by . '&active=blog&task=' . JHTML::_('date', $entry->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $entry->publish_up, $monthFormat, $tz) . '/' . $entry->alias . '#c' . $rows[$key]->id);
+				$rows[$key]->text = strip_tags($rows[$key]->text);
+				$rows[$key]->href = JRoute::_($entry->link() . '#c' . $rows[$key]->id);
 			}
 		}
 		return $rows;
