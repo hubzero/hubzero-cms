@@ -69,9 +69,10 @@ class Output
 	/**
 	 * Render out stored output to command line
 	 *
+	 * @param  (bool) $newLine - whether or not to include new line with each response (really only applies to interactive output)
 	 * @return void
 	 **/
-	public function render()
+	public function render($newLine=true)
 	{
 		// Make sure there is something there
 		if (count($this->response) > 0)
@@ -79,7 +80,12 @@ class Output
 			foreach ($this->response as $line)
 			{
 				// Echo out the message
-				echo $line['message'] . "\n";
+				echo $line['message'];
+
+				if ($newLine)
+				{
+					echo "\n";
+				}
 			}
 
 			// Reset response
@@ -92,9 +98,10 @@ class Output
 	 *
 	 * @param  (string) $message - text of line
 	 * @param  (mixed)  $styles  - array of custom styles or string containing predefined term (see formatLine() for posibilities)
+	 * @param  (bool)   $newLine - whether or not line should end with a new line
 	 * @return (object) $this    - for method chaining
 	 **/
-	public function addLine($message, $styles=null)
+	public function addLine($message, $styles=null, $newLine=true)
 	{
 		$this->formatLine($message, $styles);
 
@@ -104,8 +111,24 @@ class Output
 
 		if ($this->isInteractive())
 		{
-			$this->render();
+			$this->render($newLine);
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Add a new string to the output buffer
+	 *
+	 * Main difference between this and addLine() is that this is a shortcut for not
+	 * including a new line at the end of the output
+	 *
+	 * @param  (string) $message - text of string
+	 * @return (object) $this    - for method chaining
+	 **/
+	public function addString($message)
+	{
+		$this->addLine($message, null, false);
 
 		return $this;
 	}
@@ -216,6 +239,18 @@ class Output
 	public function getHelpOutput()
 	{
 		$class = __NAMESPACE__ . '\\Output\\Help';
+
+		return new $class();
+	}
+
+	/**
+	 * Get our output subclass specialized for rendering progress tracking
+	 *
+	 * @return (object) $obj - new Progress output class
+	 **/
+	public function getProgressOutput()
+	{
+		$class = __NAMESPACE__ . '\\Output\\Progress';
 
 		return new $class();
 	}

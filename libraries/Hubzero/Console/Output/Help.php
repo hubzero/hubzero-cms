@@ -135,4 +135,22 @@ class Help extends Output
 
 		return $this;
 	}
+
+	/**
+	 * Helper method for adding a new section header to helper doc
+	 *
+	 * @return (object) $this - for method chaining
+	 **/
+	public function addSection($text)
+	{
+		$this->addLine(
+			$text . ":",
+			array(
+				'color'       => 'yellow',
+				'indentation' => 0
+			)
+		);
+
+		return $this;
+	}
 }

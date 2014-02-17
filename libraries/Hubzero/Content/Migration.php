@@ -475,7 +475,7 @@ class Migration
 						}
 
 						$this->recordMigration($file, $hash, $direction);
-						$this->log("Running {$direction}() in {$file}", 'success');
+						$this->log("Completed {$direction}() in {$file}", 'success');
 					}
 					catch (\PDOException $e)
 					{

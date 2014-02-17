@@ -211,18 +211,20 @@ class Migration implements CommandInterface
 		$this->output->makeInteractive();
 		if ($this->output->isInteractive())
 		{
-			// Register callback function
+			// Register callback function for adding lines interactively
 			$output   = $this->output;
 			$callback = function($message, $type=null) use ($output)
 			{
 				$output->addLine($message, $type);
 			};
 			$migration->registerCallback('message', $callback);
+
+			// Add progress callback as well
+			$progress = $this->output->getProgressOutput();
+			$migration->registerCallback('progress', $progress);
 		}
 
 		// Find migration files
-		$this->output->addLine('Running migration...');
-
 		if ($migration->find($extension, $file) === false)
 		{
 			// Find failed, do nothing

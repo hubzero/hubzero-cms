@@ -64,6 +64,26 @@ class Base
 	}
 
 	/**
+	 * Helper function for calling a given callback
+	 *
+	 * @param (string) $callback - name of callback to use
+	 * @param (string) $fund     - name of callback function to call
+	 * @param (array)  $args     - args to pass to callback function
+	 * @return void
+	 **/
+	public function callback($callback, $func, $args=array())
+	{
+		// Make sure the callback is set (this is protecting us when running in non-interactive mode and callbacks aren't set)
+		if (!isset($this->callbacks[$callback]))
+		{
+			return false;
+		}
+
+		// Call function
+		call_user_func_array(array($this->callbacks[$callback], $func), $args);
+	}
+
+	/**
 	 * Add, as needed, the component to the appropriate table, depending on the Joomla version
 	 *
 	 * @param $name           - (string) component name

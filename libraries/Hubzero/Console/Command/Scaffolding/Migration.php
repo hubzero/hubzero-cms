@@ -141,8 +141,89 @@ class Migration extends Scaffolding
 			)
 			->addArgument(
 				'--editor: editor',
-				'Speicify the editor to use in creating the migration file.',
+				'Specify the editor to use in creating the migration file.',
 				'Example: --editor=nano'
+			)
+			->addSection(
+				'Migration methods (available within a migration)'
+			)
+			->addParagraph(
+				'Migrations have several common methods available to the creator of the migration.
+				These are listed below. The methods below that are intended to
+				display output should be passed through the callback() function
+				so that it can make sure the migration is running in interactive
+				mode and everything is properly set up. The examples indicate
+				proper use of each method.',
+				array(
+					'indentation' => 2
+				)
+			)
+			->addSpacer()
+			->addArgument(
+				'addComponentEntry($name, $option=NULL, $enabled=1, $params=\'\', $createMenuItem=true)',
+				'Adds a new component entry to the database, creating it only if
+				needed. Params should be JSON encoded.',
+				'Example: $this->addComponentEntry(\'com_awesome\');'
+			)
+			->addArgument(
+				'addPluginEntry($folder, $element, $enabled=1, $params=\'\')',
+				'Adds a new plugin entry to the database, creating it only if
+				needed. Params should be JSON encoded.',
+				'Example: $this->addPluginEntry(\'groups\', \'members\');'
+			)
+			->addArgument(
+				'addModuleEntry($element, $enabled=1, $params=\'\')',
+				'Adds a new module entry to the database, creating it only if
+				needed. Params should be JSON encoded.',
+				'Example: $this->addModuleEntry(\'mod_awesome\');'
+			)
+			->addArgument(
+				'deleteComponentEntry($name)',
+				'Removes a component entry by name from the database.',
+				'Example: $this->deleteComponentEntry(\'com_awesome\');'
+			)
+			->addArgument(
+				'deletePluginEntry($folder, $element=NULL)',
+				'Removes a plugin entry by name from the database. Leaving the element
+				argument empty will delete all plugins for the specified folder.',
+				'Example: $this->deleteComponentEntry(\'groups\', \'members\');'
+			)
+			->addArgument(
+				'deleteModuleEntry($element)',
+				'Removes a module entry by name from the database.',
+				'Example: $this->deleteModuleEntry(\'mod_awesome\');'
+			)
+			->addArgument(
+				'enablePlugin($folder, $element)',
+				'Enables (turns on) a plugin.',
+				'Example: $this->enablePlugin(\'groups\', \'members\');'
+			)
+			->addArgument(
+				'disablePlugin($folder, $element)',
+				'Disables (turns off) a plugin.',
+				'Example: $this->disablePlugin(\'groups\', \'members\');'
+			)
+			->addArgument(
+				'progress:init',
+				'Initialize a progress tracker. Can provide one argument to the
+				method giving a message that will be displayed before the
+				percentage counter.',
+				'Example: $this->callback(\'progress\', \'init\', array(\'Running \' . __CLASS__ . \'.php:\'));'
+			)
+			->addArgument(
+				'progress:setProgress',
+				'Update the current progress value. Should provide one argument
+				specifying the current progress value [(int) 1 - 100].',
+				'Example: $this->callback(\'progress\', \'setProgress\', array($i));'
+			)
+			->addArgument(
+				'progress:done',
+				'Terminate the progress tracker. This will back the cursor up
+				to the beginning of the line so future text can overwrite it.
+				In the case of migrations, this will likely mean that the line
+				indicating successful completion of the file will be shown.
+				No arguments are expected.',
+				'Example: $this->callback(\'progress\', \'done\');'
 			);
 	}
 
