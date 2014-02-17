@@ -368,10 +368,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if ($this->view->group->isSuperGroup())
 		{
 			//use group template file if we have it
-			if (is_file(JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'group.php'))
-			{
-				JRequest::setVar('tmpl', 'group');
-			}
+			JRequest::setVar('tmpl', 'group');
 			
 			// load super group template
 			// parse & render
