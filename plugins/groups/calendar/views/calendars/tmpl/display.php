@@ -119,7 +119,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 									}
 									else
 									{
-										echo date('m/d/Y @ g:ia', strtotime($calendar->last_fetched));	
+										echo JHTML::_('date', $calendar->last_fetched, 'm/d/Y @ g:ia');
 									}
 								?>
 							</span>

@@ -1743,10 +1743,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($calendar['url'] != '' && filter_var($calendar['url'], FILTER_VALIDATE_URL))
 		{
 			$calendar['readonly'] = 1;
+			$needsRefresh = true;
 		}
 		else
 		{
 			$calendar['url'] = '';
+			$calendar['readonly'] = 0;
+			$needsRefresh = false;
 		}
 		
 		//new events calendar object
@@ -1757,6 +1760,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError( $eventsCalendar->getError() );
 			return $this->editCalendar();
+		}
+
+		// should we refresh?
+		if ($needsRefresh)
+		{
+			$eventsCalendar->refresh($this->group, $eventsCalendar->id);
 		}
 		
 		//inform and redirect
@@ -1786,14 +1795,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		
 		//get calendars
 		$eventsCalendar = new EventsCalendar( $this->database );
-		$calendars = $eventsCalendar->getCalendars( $this->group, $calendarId );
-		$calendar = $calendars[0];
+		$eventsCalendar->load($calendarId);
 		
-		//make sure we have a calendar
-		if (!is_object($calendar) || $calendar->id == '')
-		{
-			return $this->calendars();
-		}
+		// delete the calendars events
+		$eventsCalendar->deleteEvents();
 		
 		//delete calendar
 		$eventsCalendar->delete( $calendar->id );

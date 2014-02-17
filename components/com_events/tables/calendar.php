@@ -182,19 +182,26 @@ class EventsCalendar extends JTable
 		//loop through each calendar to see if we need to refresh it
 		foreach ($calendars as $calendar)
 		{
-			//if we dont have a url or its not valid move on
-			if ($calendar->url == '' || !filter_var($calendar->url, FILTER_VALIDATE_URL))
+			// load the calendar
+			$eventsCalendar = new EventsCalendar($this->_db);
+			$eventsCalendar->load($calendar->id);
+
+			// check if subscription
+			if (!$eventsCalendar->isSubscription())
 			{
 				continue;
 			}
-			
-			//build our refresh after date
-			$now           = time();
-			$lastRefreshed = strtotime($calendar->last_fetched_attempt);
-			$needToRefresh = strtotime('+'.$refreshInterval.' MINUTES', $lastRefreshed);
-			
+
+			// get datetimes needed to refresh
+			$now             = JFactory::getDate();
+			$lastRefreshed   = JFactory::getDate($calendar->last_fetched_attempt);
+			$refreshInterval = new DateInterval("PT{$refreshInterval}M");
+
+			// add refresh interval to last refreshed
+			$lastRefreshed->add($refreshInterval);
+
 			//is it time to refresh?
-			if ($now >= $needToRefresh)
+			if ($now >= $lastRefreshed)
 			{
 				$this->refresh( $group, $calendar->id );
 			}
@@ -231,14 +238,19 @@ class EventsCalendar extends JTable
 		$calendarHeaders = get_headers($calendarUrl, 1);
 		$statusCode      = (isset($calendarHeaders[0])) ? $calendarHeaders[0] : '';
 		
-		//check to make sure we have a 200 or 404 otherwise continue
-		if (!stristr($statusCode, '404 Not Found') && !stristr($statusCode, '200 Ok'))
+		// if we got a 301, lets update the location
+		if (stristr($statusCode, '301 Moved Permanently'))
 		{
-			return false;
+			if (isset($calendarHeaders['Location']))
+			{
+				$this->url = $calendarHeaders['Location'];
+				$this->save( $this );
+				$this->refresh($group,$this->id);
+			}
 		}
 		
 		//make sure the calendar url is valid
-		if (!strstr($calendarHeaders[0], '200 OK'))
+		if (!strstr($statusCode, '200 OK'))
 		{
 			$this->failed_attempts      = $this->failed_attempts + 1;
 			$this->last_fetched_attempt = JFactory::getDate()->toSql();
@@ -284,14 +296,33 @@ class EventsCalendar extends JTable
 			//get the current event if we have one
 			$currentEvent   = (isset($currentEvents[$uid])) ? $currentEvents[$uid] : new stdClass;
 			$currentEventId = (isset($currentEvent->id)) ? $currentEvent->id : null;
-			
+
+			// make sure we handle all day events from Google
+			if (strlen($incomingEvent['DTSTART']) == 8)
+			{
+				$incomingEvent['DTSTART'] .= 'T05000Z';
+			}
+			if (strlen($incomingEvent['DTEND']) == 8)
+			{
+				$incomingEvent['DTEND'] .= 'T050000Z';
+			}
+
 			//get the start and end dates and parse to unix timestamp
-			$start = $iCalReader->iCalDateToUnixTimestamp($incomingEvent['DTSTART']);
-			$end   = $iCalReader->iCalDateToUnixTimestamp($incomingEvent['DTEND']);
+			$start = JFactory::getDate($incomingEvent['DTSTART']);
+			$end   = JFactory::getDate($incomingEvent['DTEND']);
+			$tz    = new DateTimezone(JFactory::getConfig()->get('offset'));
+			$start->setTimezone($tz);
+			$end->setTimezone($tz);
 			
-			//handle all day events and timezones
-			list($start, $end) = $iCalReader->handleAllDayEvents( $start, $end );
-			list($start, $end) = $iCalReader->handleTimezoneOffset( $start, $end );
+			// set publish up/down
+			$publish_up   = $start->toSql();
+			$publish_down = $end->toSql();
+
+			// handle all day events
+			if ($start->add(new DateInterval('P1D')) == $end)
+			{
+				$publish_down = '0000-00-00 00:00:00';
+			}
 			
 			//create event object
 			$eventsEvent = new EventsEvent( $this->_db );
@@ -305,13 +336,13 @@ class EventsCalendar extends JTable
 			//set event vars
 			$eventsEvent->title        = (isset($incomingEvent['SUMMARY'])) ? $incomingEvent['SUMMARY'] : '';
 			$eventsEvent->content      = (isset($incomingEvent['DESCRIPTION'])) ? $incomingEvent['DESCRIPTION'] : '';
-			$eventsEvent->content      = stripslashes(str_replace('\n', "\n", $e->content));
+			$eventsEvent->content      = stripslashes(str_replace('\n', "\n", $eventsEvent->content));
 			$eventsEvent->adresse_info = (isset($incomingEvent['LOCATION'])) ? $incomingEvent['LOCATION'] : '';
 			$eventsEvent->extra_info   = (isset($incomingEvent['URL;VALUE=URI'])) ? $incomingEvent['URL;VALUE=URI'] : '';
 			$eventsEvent->modified     = JFactory::getDate()->toSql();
 			$eventsEvent->modified_by  = $juser->get('id');
-			$eventsEvent->publish_up   = $start;
-			$eventsEvent->publish_down = $end;
+			$eventsEvent->publish_up   = $publish_up;
+			$eventsEvent->publish_down = $publish_down;
 			
 			//this a new event
 			if ($currentEventId == null)
@@ -338,6 +369,38 @@ class EventsCalendar extends JTable
 		$this->last_fetched_attempt = JFactory::getDate()->toSql();
 		$this->failed_attempts      = 0;
 		$this->save( $this );
+		return true;
+	}
+
+	/**
+	 * Is Calendar a subscription
+	 * @return boolean [description]
+	 */
+	public function isSubscription()
+	{
+		return $this->readonly && filter_var($this->url, FILTER_VALIDATE_URL);
+	}
+
+	/**
+	 * Delete a calendars events
+	 * 
+	 * @param  boolean $force Force delete events (event if not subscription)
+	 * @return void
+	 */
+	public function deleteEvents($force = false)
+	{
+		// if were not a subscription and not force deleting
+		if (!$this->isSubscription() && !$force)
+		{
+			return false;
+		}
+
+		// delete events
+		$sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->id);
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+
+		// all good
 		return true;
 	}
 }
