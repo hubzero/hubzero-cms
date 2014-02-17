@@ -42,7 +42,7 @@ class TagsControllerApiTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that instance is an instance of TimeController
+	 * Test that instance is an instance of TagsControllerApi
 	 *
 	 * @group com_tags
 	 */
@@ -52,7 +52,7 @@ class TagsControllerApiTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that instance extends Hubzero_Controller
+	 * Test that instance extends Hubzero_Api_Controller
 	 *
 	 * @group com_tags
 	 */

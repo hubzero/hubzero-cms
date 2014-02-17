@@ -6,7 +6,7 @@
  */
 
 // Include time api component controller
-require_once JPATH_BASE . DS . 'components' . DS . 'com_tags' . DS . 'controllers' . DS . 'api.php';
+require_once JPATH_BASE . DS . 'components' . DS . 'com_answers' . DS . 'controllers' . DS . 'api.php';
 
 /**
  * Test class for time component api controller
@@ -42,17 +42,7 @@ class AnswersControllerApiTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that instance is an instance of AnswersController
-	 *
-	 * @group com_answers
-	 */
-	function testIsInstanceOfTagsControllerApi()
-	{
-		$this->assertTrue($this->instance instanceof AnswersControllerApi);
-	}
-
-	/**
-	 * Test that instance extends Hubzero_Controller
+	 * Test that instance extends Hubzero_Api_Controller
 	 *
 	 * @group com_answers
 	 */
