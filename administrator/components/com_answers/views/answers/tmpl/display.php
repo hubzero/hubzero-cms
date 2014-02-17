@@ -79,7 +79,7 @@ function submitbutton(pressbutton) {
 				<th colspan="6">
 					#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> - 
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->filters['qid']; ?>" title="Edit this question">
-						<?php echo $this->escape(stripslashes($this->question->get('subject'))); ?>
+						<?php echo $this->escape($this->question->subject('clean')); ?>
 					</a>
 				</th>
 			</tr>
@@ -126,7 +126,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>" title="Edit this Answer">
-						<span><?php echo $row->content('raw', 75); ?></span>
+						<span><?php echo $row->content('clean', 75); ?></span>
 					</a>
 				</td>
 				<td>

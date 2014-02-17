@@ -127,11 +127,11 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->get('subject'))); ?></span>
+						<span><?php echo $this->escape($row->subject('clean')); ?></span>
 					</a>
 				<?php } else { ?>
 					<span>
-						<span><?php echo $this->escape(stripslashes($row->get('subject'))); ?></span>
+						<span><?php echo $this->escape($row->subject('clean')); ?></span>
 					</span>
 				<?php } ?>
 				</td>

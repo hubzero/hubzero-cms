@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for questions
  */
-class AnswersControllerQuestions extends Hubzero_Controller
+class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task

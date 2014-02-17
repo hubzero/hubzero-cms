@@ -89,13 +89,13 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<span>Question:</span><br />
-							<?php echo $this->escape(stripslashes($this->question->get('subject'))); ?>
+							<?php echo $this->escape($this->question->subject('clean')); ?>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<label>Answer:</label><br />
-							<?php echo $editor->display('answer[answer]', stripslashes($this->row->get('answer')), '100%', 'auto', '50', '15'); ?>
+							<?php echo $editor->display('answer[answer]', $this->escape($this->row->content('raw')), '100%', 'auto', '50', '15'); ?>
 						</td>
 					</tr>
 				</tbody>

@@ -86,13 +86,13 @@ function submitbutton(pressbutton)
 					<tr>
 						<td colspan="2">
 							<label for="q_subject">Subject: <span class="required">*</span></label><br />
-							<input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" />
+							<input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->subject('raw')); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
 							<label for="question[question]">Question:</label><br />
-							<?php echo $editor->display('question[question]', stripslashes($this->row->get('question')), '100%', 'auto', '50', '15'); ?>
+							<?php echo $editor->display('question[question]', $this->row->content('raw'), '100%', 'auto', '50', '15'); ?>
 						</td>
 					</tr>
 					<tr>
