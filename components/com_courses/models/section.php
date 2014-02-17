@@ -743,4 +743,29 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		return $this->_badge; 
 	}
+
+	/**
+	 * Mark this section as the default for this offering
+	 * 
+	 * @return  boolean
+	 */
+	public function makeDefault()
+	{
+		if (!$this->exists() || !$this->get('offering_id'))
+		{
+			return true;
+		}
+
+		$sections = $this->_tbl->find(array('offering_id' => $this->get('offering_id')));
+		foreach ($sections as $section)
+		{
+			$section = new CoursesModelSection($section);
+			$section->set('is_default', 0);
+			$section->store(false);
+		}
+
+		$this->set('is_default', 1);
+
+		return $this->store(false);
+	}
 }

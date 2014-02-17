@@ -165,12 +165,30 @@ window.addEvent('domready', function(){
 								<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 							</tr>
 							<tr>
+								<th class="key"><?php echo JText::_('Default section'); ?>:</th>
+								<td>
+									<label for="field-is_default-yes"><input type="radio" name="fields[is_default]" id="field-is_default-yes" value="1" <?php if ($this->row->get('is_default', 0) == 1) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('yes'); ?></label>
+									<label for="field-is_default-no"><input type="radio" name="fields[is_default]" id="field-is_default-no" value="0" <?php if ($this->row->get('is_default', 0) == 0) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('no'); ?></label>
+								</td>
+							</tr>
+							<tr>
 								<th class="key"><label for="field-enrollment"><?php echo JText::_('Enrollment'); ?>:</label></th>
 								<td>
 									<select name="fields[enrollment]" id="field-enrollment">
 										<option value="0"<?php if ($this->row->get('enrollment', 2) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Open (anyone can join)'); ?></option>
 										<option value="1"<?php if ($this->row->get('enrollment', 2) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Restricted (coupon code is required)'); ?></option>
 										<option value="2"<?php if ($this->row->get('enrollment', 2) == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed (no new enrollment)'); ?></option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th class="key"><label for="field-state"><?php echo JText::_('State'); ?>:</label></th>
+								<td>
+									<select name="fields[state]" id="field-state">
+										<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+										<option value="3"<?php if ($this->row->get('state') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('Draft'); ?></option>
+										<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+										<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
 									</select>
 								</td>
 							</tr>

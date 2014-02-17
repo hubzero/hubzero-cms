@@ -625,6 +625,120 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Make a section the default one
+	 *
+	 * @return	void
+	 */
+	public function makedefaultTask()
+	{
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (is_array($ids))
+		{
+			$id = (!empty($ids)) ? $ids[0] : 0;
+		}
+		else
+		{
+			$id = 0;
+		}
+
+		$row = CoursesModelSection::getInstance($id);
+		$row->makeDefault();
+
+		// Redirect back to the courses page
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0)
+		);
+	}
+
+	/**
+	 * Publish a course
+	 *
+	 * @return void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+
+	/**
+	 * Unpublish a course
+	 *
+	 * @return void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Set the state of a course
+	 *
+	 * @return void
+	 */
+	public function stateTask($state=0)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (!is_array($ids))
+		{
+			$ids = array();
+		}
+
+		// Do we have any IDs?
+		$num = 0;
+		if (!empty($ids))
+		{
+			// foreach course id passed in
+			foreach ($ids as $id)
+			{
+				// Load the course page
+				$section = CoursesModelSection::getInstance($id);
+
+				// Ensure we found the course info
+				if (!$section->exists())
+				{
+					continue;
+				}
+
+				//set the course to be published and update
+				$section->set('state', $state);
+				if (!$section->store())
+				{
+					$this->setError(JText::_('Unable to set state for section #' . $id . '.'));
+					continue;
+				}
+
+				$num++;
+			}
+		}
+
+		if ($this->getErrors())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				implode('<br />', $this->getErrors()),
+				'error'
+			);
+		}
+		else
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
+				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+			);
+		}
+	}
+
+	/**
 	 * Cancel a task (redirects to default task)
 	 *
 	 * @return	void

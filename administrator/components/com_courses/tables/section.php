@@ -198,7 +198,14 @@ class CoursesTableSection extends JTable
 			return parent::load($oid);
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote(trim($oid)) . " AND offering_id=" . $this->_db->Quote(intval($offering_id));
+		if ($oid == '!!default!!')
+		{
+			$query = "SELECT * FROM $this->_tbl WHERE `is_default`=1 AND `offering_id`=" . $this->_db->Quote(intval($offering_id)) . " LIMIT 1";
+		}
+		else
+		{
+			$query = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote(trim($oid)) . " AND offering_id=" . $this->_db->Quote(intval($offering_id));
+		}
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 

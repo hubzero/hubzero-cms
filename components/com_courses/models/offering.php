@@ -191,7 +191,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function __construct($oid, $course_id=null)
 	{
-		$section = '__default';
+		$section = '!!default!!';
 
 		$this->_db = JFactory::getDBO();
 
@@ -212,7 +212,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			$this->bind($oid);
 		}
 
-		if ($this->exists() && $section)
+		if ($this->exists()) // && $section)
 		{
 			$this->section($section);
 		}
@@ -297,7 +297,15 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				foreach ($this->sections() as $section)
 				{
-					if ((int) $section->get('id') == $id || (string) $section->get('alias') == $id)
+					if ($id == '!!default!!')
+					{
+						if ($section->get('is_default'))
+						{
+							$this->_section = $section;
+							break;
+						}
+					}
+					else if ((int) $section->get('id') == $id || (string) $section->get('alias') == $id)
 					{
 						$this->_section = $section;
 						break;
@@ -1159,6 +1167,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			$section->set('alias', '__default');
 			$section->set('title', JText::_('Default'));
 			$section->set('state', 1);
+			$section->set('is_default', 1);
 			$section->set('start_date', $this->get('start_date'));
 			$section->set('end_date', $this->get('end_date'));
 			$section->set('publish_up', $this->get('publish_up'));
