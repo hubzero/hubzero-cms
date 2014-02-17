@@ -58,7 +58,7 @@ class plgCronCourses extends JPlugin
 			array(
 				'name'   => 'emailInstructorDigest',
 				'label'  => JText::_('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
-				'params' => ''
+				'params' => 'emaildigest'
 			),
 		);
 
@@ -100,8 +100,23 @@ class plgCronCourses extends JPlugin
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
 
+		$course_id = 0;
+
+		if (isset($params) && is_object($params))
+		{
+			$course_id = $params->get('course');
+		}
+
 		$coursesObj = new CoursesModelCourses();
-		$courses    = $coursesObj->courses();
+
+		if ($course_id)
+		{
+			$courses = array($coursesObj->course($course_id));
+		}
+		else
+		{
+			$courses = $coursesObj->courses();
+		}
 
 		if (isset($courses) && count($courses) > 0)
 		{
@@ -216,10 +231,10 @@ class plgCronCourses extends JPlugin
 								// Build message
 								$message = new \Hubzero\Mail\Message();
 								$message->setSubject($subject)
-								        ->addFrom($from['email'], $from['name'])
-								        ->addTo($juser->get('email'), $juser->get('name'))
-								        ->addHeader('X-Component', 'com_courses')
-								        ->addHeader('X-Component-Object', 'courses_instructor_digest');
+										->addFrom($from['email'], $from['name'])
+										->addTo($juser->get('email'), $juser->get('name'))
+										->addHeader('X-Component', 'com_courses')
+										->addHeader('X-Component-Object', 'courses_instructor_digest');
 
 								$message->addPart($plain, 'text/plain');
 								$message->addPart($html, 'text/html');
