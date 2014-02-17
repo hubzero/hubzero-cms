@@ -233,7 +233,13 @@ class plgResourcesQuestions extends JPlugin
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
-			return $this->_browse();
+			$app = JFactory::getApplication();
+			$app->redirect(
+				'/login?return=' . base64_encode($_SERVER['REQUEST_URI']),
+				JText::_('PLG_RESOURCES_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
+				'warning'
+			);
+			return;
 		}
 
 		$lang = JFactory::getLanguage();
