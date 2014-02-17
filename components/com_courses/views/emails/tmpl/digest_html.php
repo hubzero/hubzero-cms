@@ -273,27 +273,46 @@ $base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
 												</td>
 											</tr>
 										</table>
-										<?php foreach ($this->latest as $post) : ?>
-										<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-											<tr>
-												<td width="75" style="padding: 10px 0;">
-													<img width="50" style="-webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;" src="<?php echo $juri->root() . Hubzero_User_Profile::getInstance($post->created_by)->getPicture(); ?>" />
-												</td>
-												<td style="padding: 10px 0;">
-													<div style="position: relative; border: 1px solid #CCCCCC; padding: 12px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;">
-														<div style="background: #FFFFFF; border: 1px solid #CCCCCC; width: 15px; height: 15px;
-															position: absolute; top: 50%; left: -10px; margin-top: -7px;
-															transform:rotate(45deg); -ms-transform:rotate(45deg); -webkit-transform:rotate(45deg);"></div>
-														<div style="background: #FFFFFF; width: 11px; height: 23px;
-															position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
-														<div>
-															<?php echo $post->comment; ?>
+										<?php if (count($this->latest) > 0) : ?>
+											<?php foreach ($this->latest as $post) : ?>
+											<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+												<tr>
+													<td width="75" style="padding: 10px 0;">
+														<img width="50" src="<?php echo $juri->root() . Hubzero_User_Profile::getInstance($post->created_by)->getPicture(); ?>" />
+													</td>
+													<td style="padding: 10px 0;">
+														<div style="position: relative; border: 1px solid #CCCCCC; padding: 12px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;">
+															<div style="background: #FFFFFF; border: 1px solid #CCCCCC; width: 15px; height: 15px;
+																position: absolute; top: 50%; left: -10px; margin-top: -7px;
+																transform:rotate(45deg); -ms-transform:rotate(45deg); -webkit-transform:rotate(45deg);"></div>
+															<div style="background: #FFFFFF; width: 11px; height: 23px; position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
+															<div style="color: #AAAAAA; font-size: 11px; text-align:center;">
+																<?php echo JFactory::getUser($post->created_by)->get('name'); ?> | created: <?php echo JHTML::_('date', $post->created, 'M j, Y g:i:s a'); ?>
+															</div>
+															<div>
+																<?php echo $post->comment; ?>
+															</div>
+															<div style="color: #AAAAAA; font-size: 11px; text-align:center;">
+																<?php $reply  = $base . DS . $this->offering->get('alias') . DS . 'discussions'; ?>
+																<?php $thread = ($post->parent) ? $post->parent : $post->id; ?>
+																<a href="<?php echo $reply . '?thread='.$thread.'&reply='.$post->id; ?>">reply</a>
+															</div>
 														</div>
-													</div>
-												</td>
-											</tr>
-										</table>
-										<?php endforeach; ?>
+													</td>
+												</tr>
+											</table>
+											<?php endforeach; ?>
+										<?php else : ?>
+											<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+												<tr>
+													<td style="padding: 10px 0;">
+														<div>
+															No new comments to display
+														</div>
+													</td>
+												</tr>
+											</table>
+										<?php endif; ?>
 
 										<!-- ====== Start Footer Spacer ====== -->
 										<table  width="650" cellpadding="0" cellspacing="0" border="0">

@@ -153,11 +153,6 @@ class plgCronCourses extends JPlugin
 									continue;
 								}
 
-								if ($juser->get('email') != 'samwilson@purdue.edu')
-								{
-									continue;
-								}
-
 								// Get discussion stats and posts
 								require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php';
 
