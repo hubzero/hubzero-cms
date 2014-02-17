@@ -73,7 +73,7 @@ class ForumModelAdminSection extends JModelAdmin
 		 * @return	JTable	A database object
 		 * @since	1.7
 		 */
-	public function getTable($type = 'Section', $prefix = 'Forum', $config = array()) 
+	public function getTable($type = 'Section', $prefix = 'ForumTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

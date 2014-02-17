@@ -68,85 +68,38 @@ function submitbutton(pressbutton)
 			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ None ]'); ?></option>
 			<?php
 			$html = '';
-			//if ($this->results) 
-			//{
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
-				$list = array(
-					'group'  => array(),
-					'course' => array()
-				);
+			$list = array();
 
-				$database = JFactory::getDBO();
-
-				$database->setQuery("
-					SELECT s.scope, s.scope_id, 
-						CASE 
-							WHEN scope='course' THEN c.alias
-							WHEN scope='group' THEN g.cn
-							ELSE s.scope
-						END AS caption
-					FROM #__forum_sections AS s
-					LEFT JOIN #__xgroups AS g ON g.gidNumber=s.scope_id AND s.scope='group' 
-					LEFT JOIN #__courses_offerings AS c ON c.id=s.scope_id AND s.scope='course'
-				");
-				$results = $database->loadObjectList();
-
-				//foreach ($this->results as $result)
-				foreach ($results as $result)
+			foreach ($this->results as $result)
+			{
+				if ($result->get('scope') == 'site')
 				{
-					//$result->caption = '';
-					if ($result->scope == 'site')
-					{
-						continue;
-					}
-					/*if (isset($list[$result->scope][$result->scope_id]))
-					{
-						$result->caption = $list[$result->scope][$result->scope_id]->caption;
-						continue;
-					}*/
-					switch ($result->scope)
-					{
-						case 'group':
-							/*$group = Hubzero_Group::getInstance($result->scope_id);
-							if ($group)
-							{
-								$result->caption = \Hubzero\Utility\String::truncate($group->get('cn'), 50);
-							}
-							else
-							{
-								$result->caption = $result->scope_id;
-							}*/
-							$result->caption = $result->caption ? $result->caption : $result->scope . ' (' . $result->scope_id . ')';
-						break;
-						case 'course':
-							$offering = CoursesModelOffering::getInstance($result->scope_id);
-							$course = CoursesModelCourse::getInstance($offering->get('course_id'));
-							$result->caption = \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50);
-						break;
-						default:
-							$result->caption = $result->scope . ($result->scope_id ? ' (' . $this->escape(stripslashes($result->scope_id)) . ')' : '');
-						break;
-					}
-					$list[$result->scope][$result->scope_id] = $result;
+					continue;
 				}
-
-				foreach ($list as $label => $optgroup)
+				if (!isset($list[$result->get('scope')]))
 				{
-					$html .= ' <optgroup label="' . $label . '">';
-					foreach ($optgroup as $result)
-					{
-						$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
-						if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id) 
-						{
-							$html .= ' selected="selected"';
-						}
-						$html .= '>' . $this->escape(stripslashes($result->caption));
-						$html .= '</option>'."\n";
-					}
-					$html .= '</optgroup>'."\n";
+					$list[$result->get('scope')] = array();
 				}
-			//}
+				$list[$result->get('scope')][$result->get('scope_id')] = $result;
+			}
+
+			foreach ($list as $label => $optgroup)
+			{
+				$html .= ' <optgroup label="' . $label . '">';
+				foreach ($optgroup as $result)
+				{
+					$html .= ' <option value="' . $result->get('scope') . ':' . $result->get('scope_id') . '"';
+					if ($this->filters['scopeinfo'] == $result->get('scope') . ':' . $result->get('scope_id')) 
+					{
+						$html .= ' selected="selected"';
+					}
+					$html .= '>' . $this->escape($result->adapter()->name());
+					$html .= '</option>'."\n";
+				}
+				$html .= '</optgroup>'."\n";
+			}
+
 			echo $html;
 			?>
 		</select>
@@ -175,11 +128,9 @@ function submitbutton(pressbutton)
 if ($this->results)
 {
 	$k = 0;
-	for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
+	foreach ($this->results as $i => $row)
 	{
-		$row =& $this->results[$i];
-		
-		switch ($row->state) 
+		switch ($row->get('state')) 
 		{
 			case '2':
 				$task = 'publish';
@@ -202,86 +153,86 @@ if ($this->results)
 			break;
 		}
 		
-		switch ($row->access)
+		switch ($row->get('access'))
 		{
 			case 0:
 				$color_access = 'style="color: green;"';
 				$task_access  = '1';
-				$row->groupname = JText::_('Public');
+				$row->set('access_level', JText::_('Public'));
 				break;
 			case 1:
 				$color_access = 'style="color: red;"';
 				$task_access  = '2';
-				$row->groupname = JText::_('Registered');
+				$row->set('access_level', JText::_('Registered'));
 				break;
 			case 2:
 				$color_access = 'style="color: black;"';
 				$task_access  = '3';
-				$row->groupname = JText::_('Special');
+				$row->set('access_level', JText::_('Special'));
 				break;
 			case 3:
 				$color_access = 'style="color: blue;"';
 				$task_access  = '4';
-				$row->groupname = JText::_('Protected');
+				$row->set('access_level', JText::_('Protected'));
 				break;
 			case 4:
 				$color_access = 'style="color: red;"';
 				$task_access  = '0';
-				$row->groupname = JText::_('Private');
+				$row->set('access_level', JText::_('Private'));
 				break;
 		}
+
+		$cat = $row->categories('count', array('state' => -1));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<?php echo $row->id; ?>
+					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task; ?>">
+						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
-						<span><?php echo $this->escape($row->access_level); ?></span>
+					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
+						<span><?php echo $this->escape($row->get('access_level')); ?></span>
 					<!-- </a> -->
 				</td>
 				<td>
-<?php //if ($this->escape($row->scope)) { ?>
 					<span class="scope">
-						<span><?php echo isset($list[$row->scope]) ? $row->scope . ' (' . $this->escape($list[$row->scope][$row->scope_id]->caption) . ')' : '[ site ]'; /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
+						<span><?php echo $this->escape($row->get('scope')) . ' (' . $this->escape($row->adapter()->name()) . ')'; ?></span>
 					</span>
-<?php //} ?>
 				</td>
 				<td>
-<?php if ($row->categories > 0) { ?>
-					<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=categories&amp;section_id=<? echo $row->id; ?>" title="<?php echo JText::_('View the categories for this section'); ?>">
-						<span><?php echo $row->categories; ?></span>
+				<?php if ($cat > 0) { ?>
+					<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=categories&amp;section_id=<? echo $row->get('id'); ?>" title="<?php echo JText::_('View the categories for this section'); ?>">
+						<span><?php echo $cat; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="glyph category">
-						<span><?php echo $row->categories; ?></span>
+						<span><?php echo $cat; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -296,8 +247,8 @@ if ($this->results)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -62,13 +62,6 @@ class ForumModelPost extends ForumModelAbstract
 	protected $_attachment = null;
 
 	/**
-	 * Scope adapter
-	 * 
-	 * @var object
-	 */
-	private $_adapter = null;
-
-	/**
 	 * Returns a reference to a forum post model
 	 *
 	 * @param      mixed $oid ID (int) or array or object
@@ -249,22 +242,19 @@ class ForumModelPost extends ForumModelAbstract
 	 */
 	public function link($type='', $params=null)
 	{
+		return $this->adapter()->build($type, $params);
+	}
+
+	/**
+	 * Get the adapter
+	 * 
+	 * @return  object
+	 */
+	public function adapter()
+	{
 		if (!$this->_adapter)
 		{
-			$scope = strtolower($this->get('scope'));
-			$cls = 'ForumModelAdapter' . ucfirst($scope);
-
-			if (!class_exists($cls))
-			{
-				$path = dirname(__FILE__) . '/adapters/' . $scope . '.php';
-				if (!is_file($path))
-				{
-					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
-				}
-				include_once($path);
-			}
-
-			$this->_adapter = new $cls($this->get('scope_id'));
+			$this->_adapter = $this->_adapter();
 			$this->_adapter->set('thread', $this->get('thread'));
 			$this->_adapter->set('parent', $this->get('parent'));
 			$this->_adapter->set('post', $this->get('id'));
@@ -284,7 +274,7 @@ class ForumModelPost extends ForumModelAbstract
 			$this->_adapter->set('section', $this->get('section'));
 		}
 
-		return $this->_adapter->build($type, $params);
+		return $this->_adapter;
 	}
 
 	/**

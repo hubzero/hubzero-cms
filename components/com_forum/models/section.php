@@ -323,5 +323,21 @@ class ForumModelSection extends ForumModelAbstract
 
 		return true;
 	}
+
+	/**
+	 * Get the adapter
+	 * 
+	 * @return  object
+	 */
+	public function adapter()
+	{
+		if (!$this->_adapter)
+		{
+			$this->_adapter = $this->_adapter();
+			$this->_adapter->set('section', $this->get('alias'));
+		}
+
+		return $this->_adapter;
+	}
 }
 

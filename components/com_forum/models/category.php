@@ -55,13 +55,6 @@ class ForumModelCategory extends ForumModelAbstract
 	private $_cache = array();
 
 	/**
-	 * Scope adapter
-	 * 
-	 * @var object
-	 */
-	private $_adapter = null;
-
-	/**
 	 * Constructor
 	 * 
 	 * @param      mixed   $oid        ID (integer), alias (string), array or object
@@ -307,31 +300,7 @@ class ForumModelCategory extends ForumModelAbstract
 	 */
 	public function link($type='', $params=null)
 	{
-		if (!$this->_adapter)
-		{
-			$scope = strtolower($this->get('scope'));
-			$cls = 'ForumModelAdapter' . ucfirst($scope);
-
-			if (!class_exists($cls))
-			{
-				$path = dirname(__FILE__) . '/adapters/' . $scope . '.php';
-				if (!is_file($path))
-				{
-					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
-				}
-				include_once($path);
-			}
-
-			$this->_adapter = new $cls($this->get('scope_id'));
-			if (!$this->get('section_alias'))
-			{
-				$this->set('section_alias', ForumModelSection::getInstance($this->get('section_id'))->get('alias'));
-			}
-			$this->_adapter->set('section', $this->get('section_alias'));
-			$this->_adapter->set('category', $this->get('alias'));
-		}
-
-		return $this->_adapter->build($type, $params);
+		return $this->adapter()->build($type, $params);
 	}
 
 	/**
@@ -351,6 +320,27 @@ class ForumModelCategory extends ForumModelAbstract
 			$this->_cache['last'] = new ForumModelPost($last);
 		}
 		return $this->_cache['last'];
+	}
+
+	/**
+	 * Get the adapter
+	 * 
+	 * @return  object
+	 */
+	public function adapter()
+	{
+		if (!$this->_adapter)
+		{
+			$this->_adapter = $this->_adapter();
+			if (!$this->get('section_alias'))
+			{
+				$this->set('section_alias', ForumModelSection::getInstance($this->get('section_id'))->get('alias'));
+			}
+			$this->_adapter->set('section', $this->get('section_alias'));
+			$this->_adapter->set('category', $this->get('alias'));
+		}
+
+		return $this->_adapter;
 	}
 }
 

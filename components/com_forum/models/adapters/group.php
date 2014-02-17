@@ -59,6 +59,8 @@ class ForumModelAdapterGroup extends ForumModelAdapterAbstract
 
 		$this->_segments['cn']     = $group->get('cn');
 		$this->_segments['active'] = 'forum';
+
+		$this->_name = $group->get('cn');
 	}
 
 	/**

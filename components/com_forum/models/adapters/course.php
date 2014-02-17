@@ -57,6 +57,8 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 	{
 		$this->set('scope_id', $scope_id);
 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+
 		$offering = CoursesModelOffering::getInstance($this->get('scope_id'));
 		$course = CoursesModelCourse::getInstance($offering->get('course_id'));
 
@@ -67,6 +69,8 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 		{
 			$this->_segments['active']   = 'outline';
 		}
+
+		$this->_name = \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50);
 	}
 
 	/**

@@ -51,6 +51,13 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 	protected $_config = NULL;
 
 	/**
+	 * Scope adapter
+	 * 
+	 * @var object
+	 */
+	protected $_adapter = null;
+
+	/**
 	 * Return a formatted timestamp
 	 * 
 	 * @param      string $as What data to return
@@ -116,6 +123,34 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 			return $this->_config->get($key);
 		}
 		return $this->_config;
+	}
+
+	/**
+	 * Create an adapter object based on scope
+	 * 
+	 * @return  object
+	 */
+	public function _adapter()
+	{
+		if (!$this->get('scope'))
+		{
+			$this->set('scope', 'site');
+		}
+
+		$scope = strtolower($this->get('scope'));
+		$cls = 'ForumModelAdapter' . ucfirst($scope);
+
+		if (!class_exists($cls))
+		{
+			$path = __DIR__ . '/adapters/' . $scope . '.php';
+			if (!is_file($path))
+			{
+				throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
+			}
+			include_once($path);
+		}
+
+		return new $cls($this->get('scope_id'));
 	}
 }
 

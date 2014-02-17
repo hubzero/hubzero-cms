@@ -58,7 +58,7 @@ else
 	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'thread.php');
 }
 
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'section.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'forum.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'forum.php');
 
 $controllerName = JRequest::getCmd('controller', 'sections');

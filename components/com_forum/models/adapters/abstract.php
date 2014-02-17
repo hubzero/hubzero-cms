@@ -51,6 +51,13 @@ abstract class ForumModelAdapterAbstract extends \Hubzero\Base\Object
 	protected $_segments = array();
 
 	/**
+	 * Scope title
+	 * 
+	 * @var string
+	 */
+	protected $_name = '';
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $scope_id Scope ID (group, course, etc.)
@@ -58,6 +65,19 @@ abstract class ForumModelAdapterAbstract extends \Hubzero\Base\Object
 	 */
 	public function __construct($scope_id=0)
 	{
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * 
+	 * @param      string $type   The type of link to return
+	 * @param      mixed  $params Optional string or associative array of params to append
+	 * @return     string
+	 */
+	public function name()
+	{
+		return $this->_name;
 	}
 
 	/**

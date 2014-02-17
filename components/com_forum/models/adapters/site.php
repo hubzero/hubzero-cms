@@ -48,6 +48,13 @@ class ForumModelAdapterSite extends ForumModelAdapterAbstract
 	);
 
 	/**
+	 * Scope title
+	 * 
+	 * @var string
+	 */
+	protected $_name = 'site';
+
+	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 

@@ -59,12 +59,6 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			0, 
 			'int'
 		);
-		$this->view->filters['group']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.group', 
-			'group', 
-			-1,
-			'int'
-		);
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
 			'filter_order', 
@@ -86,24 +80,19 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			$this->view->filters['scope'] = $bits[0];
 			$this->view->filters['scope_id'] = intval(end($bits));
 		}
+		else
+		{
+			$this->view->filters['scope'] = '';
+			$this->view->filters['scope_id'] = -1;
+		}
 
-		$model = new ForumTableSection($this->database);
-		
+		$model = new ForumModel($this->view->filters['scope'], $this->view->filters['scope_id']);
+
 		// Get a record count
-		$this->view->total = $model->getCount($this->view->filters);
+		$this->view->total = $model->sections('count', $this->view->filters);
 
 		// Get records
-		$this->view->results = $model->getRecords($this->view->filters);
-		if ($this->view->results)
-		{
-			$category = new ForumTableCategory($this->database);
-			foreach ($this->view->results as $key => $section)
-			{
-				$this->view->filters['section_id'] = $section->id;
-
-				$this->view->results[$key]->categories = $category->getCount($this->view->filters);
-			}
-		}
+		$this->view->results = $model->sections('list', $this->view->filters);
 
 		// initiate paging
 		jimport('joomla.html.pagination');
@@ -159,13 +148,12 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		else 
 		{
 			// load infor from database
-			$this->view->row = new ForumTableSection($this->database);
-			$this->view->row->load($id);
+			$this->view->row = new ForumModelSection($id);
 		}
 
-		if (!$this->view->row->id)
+		if (!$this->view->row->exists())
 		{
-			$this->view->row->created_by = $this->juser->get('id');
+			$this->view->row->set('created_by', $this->juser->get('id'));
 		}
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -185,30 +173,32 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Save an entry and show the edit form
+	 * 
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Saves an entry and redirects to listing
 	 *
 	 * @return	void
 	 */
-	public function saveTask() 
+	public function saveTask($redirect=true) 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new ForumTableSection($this->database);
+		$row = new ForumModelSection($fields['id']);
 		if (!$row->bind($fields)) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-		
-		// Check content
-		if (!$row->check()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -216,19 +206,24 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		}
 
 		// Store content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Section Successfully Saved'),
-			'message'
-		);
+		if ($redirect)
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Section Successfully Saved'),
+				'message'
+			);
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
@@ -343,9 +338,13 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumTableSection($this->database);
-			$row->load(intval($id));
-			$row->state = $state;
+			$row = new ForumModelSection(intval($id));
+			if (!$row->exists())
+			{
+				continue;
+			}
+
+			$row->set('state', $state);
 			if (!$row->store()) 
 			{
 				JError::raiseError(500, $row->getError());
@@ -398,9 +397,13 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumTableSection($this->database);
-			$row->load(intval($id));
-			$row->access = $state;
+			$row = new ForumModelSection(intval($id));
+			if (!$row->exists())
+			{
+				continue;
+			}
+
+			$row->set('access', $state);
 			if (!$row->store()) 
 			{
 				JError::raiseError(500, $row->getError());
@@ -422,8 +425,6 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$section = JRequest::getInt('section_id', 0);
-
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);

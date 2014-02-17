@@ -74,7 +74,7 @@ class ForumModelAdminCategory extends JModelAdmin
 		 * @return	JTable	A database object
 		 * @since	1.7
 		 */
-	public function getTable($type = 'Category', $prefix = 'Forum', $config = array()) 
+	public function getTable($type = 'Category', $prefix = 'ForumTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

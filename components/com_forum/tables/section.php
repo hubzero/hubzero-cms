@@ -353,7 +353,7 @@ class ForumTableSection extends JTable
 
 		$where = array();
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']) && (int) $filters['state'] >= 0) 
 		{
 			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
