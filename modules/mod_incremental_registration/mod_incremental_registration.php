@@ -132,15 +132,13 @@ class ModIncrementalRegistrationController
 			}
 			$doc = JFactory::getDocument();
 			$doc->addStylesheet($media->get('/mod_incremental_registration.css'));
-			$jquery = '';
-			if (JPluginHelper::isEnabled('system', 'jquery'))
-			{
-				$jquery = '.jquery';
-			}
-			$doc->addScript($media->get('/mod_incremental_registration' . $jquery . '.js'));
+			$doc->addScript($media->get('/mod_incremental_registration.jquery.js'));
 
 			if ($row) 
 			{
+				$dbh->setQuery('SELECT popover_text, award_per FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
+				list($introText, $awardPer) = $dbh->loadRow();
+				
 				if ($_SERVER['REQUEST_METHOD'] == 'GET') 
 				{
 					require JPATH_BASE . $media->get('/views/popover.php');
@@ -288,6 +286,14 @@ class ModIncrementalRegistrationController
 					if (isset($row['mailPreferenceOption']) && $mailPreferenceOption == -1) {
 						$errors['mailPreferenceOption'] = true;
 					}
+					if (isset($row['location']) && !$location) {
+						if (isset($_POST['location'])) {
+							$location = trim($_POST['location']);
+						}
+						else {
+							$errors['location'] = true;
+						}
+					}
 
 					if ($errors) 
 					{
@@ -305,7 +311,7 @@ class ModIncrementalRegistrationController
 							{
 								if (!$v) 
 								{
-									$award += 15;
+									$award += $awardPer;
 								}
 							}
 						}

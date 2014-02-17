@@ -58,7 +58,7 @@ class ModIncrementalRegistrationGroups
 		}
 		$colNames = array();
 		$wantRace = false;
-		$wantDisability = true;
+		$wantDisability = false;
 		foreach ($cols as $col) {
 			if ($col['field'] == 'race') {
 				$wantRace = true;
@@ -75,7 +75,7 @@ class ModIncrementalRegistrationGroups
 		$neededCols = array();
 		$nonUS = false;
 		foreach ($cols as $col) {
-			if (!isset($profile[$col['field']])) {
+			if (!array_key_exists($col['field'], $profile)) {
 				continue;
 			}
 			if ($col['field'] == 'mailPreferenceOption') {

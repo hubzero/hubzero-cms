@@ -250,9 +250,10 @@ $defaultCountries = array(
 ?>
 <div id="overlay"></div>
 <div id="questions">
-	<h2>Help us keep this website and its services free</h2>
-	<p>Please provide a little more information about yourself. <small>(<a href="/legal/privacy">Why do we need this information?</a>)</small></p>
-	<p>We'll award you with <strong>15</strong> points for each question you answer. You can use these points towards items in the site <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
+	<?php echo $introText; ?>
+	<?php if ($awardPer): ?>
+		<p>We'll award you with <strong><?php echo $awardPer; ?></strong> points for each question you answer. You can use these points towards items in the site <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
+	<?php endif; ?>
 	<form action="" method="post">
 		<ol>
 				<?php if (isset($row['orgtype'])): ?>
@@ -511,6 +512,15 @@ $defaultCountries = array(
 								<option value="0">No, don't send me emails</option>
 							</select>
 						</div>
+					</li>
+				<?php endif; ?>
+				<?php if (isset($row['location'])): ?>
+					<li>
+						<?php if (isset($errors['location'])): ?>
+							<p class="warning">Please enter a postal code.</p>
+						<?php endif; ?>
+						<label for="location">What is your postal code?</label>
+						<p class="indented"><input id="location" name="location" value="<?php echo isset($_POST['location']) ? str_replace('"', '&quot;', $_POST['location']) : '' ?>" /></p>
 					</li>
 				<?php endif; ?>
 			</ol>
