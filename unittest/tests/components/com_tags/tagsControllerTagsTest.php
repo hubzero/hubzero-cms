@@ -20,7 +20,7 @@ class TagsControllerTagsTest extends PHPUnit_Framework_TestCase
 	 */
 	function setUp()
 	{
-		$app = JFactory::getApplication('site');
+		$app =& JFactory::getApplication('site');
 		$this->instance = new TagsControllerTags();
 	}
 
@@ -55,13 +55,13 @@ class TagsControllerTagsTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that instance extends Hubzero_Controller
+	 * Test that instance extends \Hubzero\Component\SiteController
 	 *
 	 * @group com_tags
 	 * @runInSeparateProcess
 	 */
 	function testExtendsHubzeroController()
 	{
-		$this->assertTrue($this->instance instanceof Hubzero_Controller);
+		$this->assertTrue($this->instance instanceof \Hubzero\Component\SiteController);
 	}
 }
