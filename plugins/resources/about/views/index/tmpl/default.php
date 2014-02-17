@@ -178,7 +178,7 @@ if (!$this->model->access('view-all')) {
 			{
 				foreach ($contributors as $contributor)
 				{
-					$authors[] = $contributor->name;
+					$authors[] = $contributor->name ? $contributor->name : $contributor->xname;
 				}
 			}
 			$cite->author = implode(';', $authors); //$this->helper->ul_contributors;

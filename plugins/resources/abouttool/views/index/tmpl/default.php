@@ -202,12 +202,12 @@ if ($shots) {
 			$cite->url = '';
 			$cite->type = '';
 			$authors = array();
-			$contributors = $this->model->contributors('!submitter');
+			$contributors = $this->model->contributors('tool');
 			if ($contributors)
 			{
 				foreach ($contributors as $contributor)
 				{
-					$authors[] = $contributor->name;
+					$authors[] = $contributor->name ? $contributor->name : $contributor->xname;
 				}
 			}
 			$cite->author = implode(';', $authors);
