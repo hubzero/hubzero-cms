@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Wiki controller class for entries
  */
-class WikiControllerComments extends Hubzero_Controller
+class WikiControllerComments extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of blog entries

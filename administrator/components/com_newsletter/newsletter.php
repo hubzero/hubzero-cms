@@ -53,9 +53,6 @@ require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.recipient.php' );
 require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.recipient.action.php' );
 require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php' );
 
-//include Hubzero Libraries
-ximport('Hubzero_Controller');
-
 //instantiate controller
 $controllerName = JRequest::getCmd('controller', 'newsletter');
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

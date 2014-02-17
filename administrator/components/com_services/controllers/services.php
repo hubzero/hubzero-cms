@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for services
  */
-class ServicesControllerServices extends Hubzero_Controller
+class ServicesControllerServices extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Services List

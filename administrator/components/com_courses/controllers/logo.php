@@ -31,15 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-ximport('Hubzero_View_Helper_Html');
-
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
  * Manage logo for a course
  */
-class CoursesControllerLogo extends Hubzero_Controller
+class CoursesControllerLogo extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Upload a file to the wiki via AJAX

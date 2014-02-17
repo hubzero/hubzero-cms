@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Controller class for wiki pages
  */
-class WikiControllerPages extends Hubzero_Controller
+class WikiControllerPages extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task

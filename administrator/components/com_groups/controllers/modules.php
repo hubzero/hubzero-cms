@@ -31,13 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import hubzero controller lib
-ximport('Hubzero_Controller');
-
 /**
  * Groups controller class
  */
-class GroupsControllerModules extends Hubzero_Controller
+class GroupsControllerModules extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Override Execute Method

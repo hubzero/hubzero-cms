@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Store controller class for handling media (files)
  */
-class StoreControllerMedia extends Hubzero_Controller
+class StoreControllerMedia extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Upload an image

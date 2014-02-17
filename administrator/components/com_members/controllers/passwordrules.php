@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage members password rules
  */
-class MembersControllerPasswordRules extends Hubzero_Controller
+class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of password rules

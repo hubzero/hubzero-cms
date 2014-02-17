@@ -26,12 +26,10 @@
  */
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for OAIPMH config
  */
-class OaipmhControllerConfig extends Hubzero_Controller
+class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display config optins

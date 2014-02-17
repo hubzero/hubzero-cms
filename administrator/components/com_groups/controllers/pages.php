@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Groups controller class for managing group pages
  */
-class GroupsControllerPages extends Hubzero_Controller
+class GroupsControllerPages extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Overload exec method to load group object

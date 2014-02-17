@@ -31,14 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.type.php');
 
 /**
  * Manage resource author roles
  */
-class ResourcesControllerRoles extends Hubzero_Controller
+class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List resource roles

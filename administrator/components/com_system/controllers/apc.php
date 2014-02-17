@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Primary controller for the APC component
  */
-class SystemControllerApc extends Hubzero_Controller
+class SystemControllerApc extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Controller execute method, used for selecting the correct function based on task.  

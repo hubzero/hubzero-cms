@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage messaging settings
  */
-class MembersControllerMessages extends Hubzero_Controller
+class MembersControllerMessages extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of messaging settings

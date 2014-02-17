@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage members password blacklist
  */
-class MembersControllerWhosOnline extends Hubzero_Controller
+class MembersControllerWhosOnline extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display whose online

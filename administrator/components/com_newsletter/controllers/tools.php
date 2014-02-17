@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class NewsletterControllerTools extends Hubzero_Controller
+class NewsletterControllerTools extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display Newsletter Tools

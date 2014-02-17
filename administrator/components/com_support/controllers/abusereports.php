@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reportabuse.php');
 
 /**
@@ -40,7 +38,7 @@ include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reportabuse.php');
  * 
  * Long description (if any) ...
  */
-class SupportControllerAbusereports extends Hubzero_Controller
+class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of records

@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage employer types for registration
  */
-class RegisterControllerEmployers extends Hubzero_Controller
+class RegisterControllerEmployers extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all employer types

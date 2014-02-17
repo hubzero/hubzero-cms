@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_Controller');
-
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'venue.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
@@ -42,7 +40,7 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
  * 
  * Long description (if any) ...
  */
-class ToolsControllerHosts extends Hubzero_Controller
+class ToolsControllerHosts extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of hosts

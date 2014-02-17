@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for job categories
  */
-class JobsControllerCategories extends Hubzero_Controller
+class JobsControllerCategories extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List categories

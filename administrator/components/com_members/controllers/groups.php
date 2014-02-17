@@ -31,13 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-ximport('Hubzero_Group');
-
 /**
  * Manage a member's group memberships
  */
-class MembersControllerGroups extends Hubzero_Controller
+class MembersControllerGroups extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Add a member to a group

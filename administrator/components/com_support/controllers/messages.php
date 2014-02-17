@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Support controller class for message templates
  */
-class SupportControllerMessages extends Hubzero_Controller
+class SupportControllerMessages extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of records

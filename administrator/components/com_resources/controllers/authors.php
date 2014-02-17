@@ -31,14 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-ximport('Hubzero_User_Profile');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
 
 /**
  * Manage resource authors
  */
-class ResourcesControllerAuthors extends Hubzero_Controller
+class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List resource authors

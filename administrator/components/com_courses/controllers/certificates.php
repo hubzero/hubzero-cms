@@ -38,7 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerCertificates extends Hubzero_Controller
+class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of courses

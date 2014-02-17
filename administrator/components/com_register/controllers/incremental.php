@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
- * 
+ * Controller class for incremental registration
  */
-class RegisterControllerIncremental extends Hubzero_Controller
+class RegisterControllerIncremental extends \Hubzero\Component\AdminController
 {
 	public function displayTask() {
 		$this->view->display();

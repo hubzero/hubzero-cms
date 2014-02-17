@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Controller class for store orders
  */
-class StoreControllerOrders extends Hubzero_Controller
+class StoreControllerOrders extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task

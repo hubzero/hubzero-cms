@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Events controller for configuration
  */
-class EventsControllerConfigure extends Hubzero_Controller
+class EventsControllerConfigure extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Determines task and attempts to execute it

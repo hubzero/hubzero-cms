@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for usage
  */
-class UsageControllerData extends Hubzero_Controller
+class UsageControllerData extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display primary page

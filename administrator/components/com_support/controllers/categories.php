@@ -31,14 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
- * Short description for 'SupportControllerCategories'
- * 
- * Long description (if any) ...
+ * Support controller class for categories
  */
-class SupportControllerCategories extends Hubzero_Controller
+class SupportControllerCategories extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of records

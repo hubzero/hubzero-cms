@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-class NewsletterControllerStory extends Hubzero_Controller
+class NewsletterControllerStory extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Add Newsletter Story Task

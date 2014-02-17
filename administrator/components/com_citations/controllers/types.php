@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for citation types
  */
-class CitationsControllerTypes extends Hubzero_Controller
+class CitationsControllerTypes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List types

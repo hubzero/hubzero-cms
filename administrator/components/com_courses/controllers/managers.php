@@ -31,14 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
  * Manage a course's manager entries
  */
-class CoursesControllerManagers extends Hubzero_Controller
+class CoursesControllerManagers extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Short description for 'addmanager'

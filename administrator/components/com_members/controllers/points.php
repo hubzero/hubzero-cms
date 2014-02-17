@@ -31,13 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-ximport('Hubzero_User_Profile');
-
 /**
  * Members controller class for user points
  */
-class MembersControllerPoints extends Hubzero_Controller
+class MembersControllerPoints extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display an overview of point earnings

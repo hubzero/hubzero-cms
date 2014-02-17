@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for Geo DB config
  */
-class SystemControllerGeodb extends Hubzero_Controller
+class SystemControllerGeodb extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Default view

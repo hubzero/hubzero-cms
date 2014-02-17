@@ -32,16 +32,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Tool');
-ximport('Hubzero_Tool_Version');
-ximport('Hubzero_Controller');
-
 /**
  * Short description for 'ContribtoolController'
  * 
  * Long description (if any) ...
  */
-class ToolsControllerVersions extends Hubzero_Controller
+class ToolsControllerVersions extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all versions for a specific entry

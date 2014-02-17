@@ -31,14 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
- * Short description for 'SupportControllerSections'
- * 
- * Long description (if any) ...
+ * Support controller class for managing ticket sections
  */
-class SupportControllerSections extends Hubzero_Controller
+class SupportControllerSections extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of records

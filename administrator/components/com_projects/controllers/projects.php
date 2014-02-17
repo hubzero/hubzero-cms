@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Manage projects
  */
-class ProjectsControllerProjects extends Hubzero_Controller
+class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Executes a task

@@ -31,14 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'entry.php');
 
 /**
  * System controller class for custom routes
  */
-class SystemControllerRoutes extends Hubzero_Controller
+class SystemControllerRoutes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of entries

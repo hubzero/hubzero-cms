@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage host entries for a member
  */
-class MembersControllerHosts extends Hubzero_Controller
+class MembersControllerHosts extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Add a host entry for a member

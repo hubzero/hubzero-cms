@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage organizations for registration
  */
-class RegisterControllerOrganizations extends Hubzero_Controller
+class RegisterControllerOrganizations extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all organizations

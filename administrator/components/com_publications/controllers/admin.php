@@ -31,14 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-. DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
 
 /**
  * Publication administrative support
  */
-class PublicationsControllerAdmin extends Hubzero_Controller
+class PublicationsControllerAdmin extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List available admin tasks

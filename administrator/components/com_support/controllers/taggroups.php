@@ -31,14 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
- * Short description for 'SupportControllerTaggroups'
- * 
- * Long description (if any) ...
+ * Support controller class for managing tag/group association
  */
-class SupportControllerTaggroups extends Hubzero_Controller
+class SupportControllerTaggroups extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of tickets

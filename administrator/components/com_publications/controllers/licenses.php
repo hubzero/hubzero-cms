@@ -31,13 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'license.php');
 
 /**
  * Manage publication licenses
  */
-class PublicationsControllerLicenses extends Hubzero_Controller
+class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List resource types

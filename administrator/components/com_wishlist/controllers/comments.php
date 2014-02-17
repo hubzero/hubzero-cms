@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Cotnroller class for wishes
  */
-class WishlistControllerComments extends Hubzero_Controller
+class WishlistControllerComments extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of entries

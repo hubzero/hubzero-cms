@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_Controller');
-
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
 
 /**
@@ -40,7 +38,7 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
  * 
  * Long description (if any) ...
  */
-class ToolsControllerHosttypes extends Hubzero_Controller
+class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Short description for 'type_display'

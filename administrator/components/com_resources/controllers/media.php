@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Methods for listing and managing files and folders
  */
-class ResourcesControllerMedia extends Hubzero_Controller
+class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Upload a file or create a new folder

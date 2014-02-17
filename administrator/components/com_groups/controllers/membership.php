@@ -31,13 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'group.php');
 
 /**
  * Groups controller class for managing membership and group info
  */
-class GroupsControllerMembership extends Hubzero_Controller
+class GroupsControllerMembership extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of groups

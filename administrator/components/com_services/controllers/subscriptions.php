@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Controller class for service subscriptions
  */
-class ServicesControllerSubscriptions extends Hubzero_Controller
+class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Subscriptions List

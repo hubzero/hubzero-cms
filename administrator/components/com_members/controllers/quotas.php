@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage member quotas
  */
-class MembersControllerQuotas extends Hubzero_Controller
+class MembersControllerQuotas extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display member quotas

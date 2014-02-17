@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Manage resource entries
  */
-class ResourcesControllerItems extends Hubzero_Controller
+class ResourcesControllerItems extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Executes a task

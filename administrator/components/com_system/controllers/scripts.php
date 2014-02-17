@@ -31,13 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 include_once(JPATH_COMPONENT. DS . 'helpers' . DS . 'script.php');
 
 /**
  * System controller class for scripts
  */
-class SystemControllerScripts extends Hubzero_Controller
+class SystemControllerScripts extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Path to a log file

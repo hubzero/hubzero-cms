@@ -38,7 +38,7 @@ include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'query.php');
 /**
  * Support controller class for tickets
  */
-class SupportControllerTickets extends Hubzero_Controller
+class SupportControllerTickets extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Displays a list of tickets

@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
@@ -41,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerAssetgroups extends Hubzero_Controller
+class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it

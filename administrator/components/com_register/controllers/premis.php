@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Import PREMIS redistration dump files
  */
-class RegisterControllerPremis extends Hubzero_Controller
+class RegisterControllerPremis extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all employer types
@@ -55,9 +53,8 @@ class RegisterControllerPremis extends Hubzero_Controller
 
 		// Output the HTML
 		$this->view->display();
-		
 	}
-	
+
 	public function saveTask()
 	{
 		$file = JRequest::getVar('upload', '', 'files', 'array');
@@ -86,7 +83,7 @@ class RegisterControllerPremis extends Hubzero_Controller
 		
 		if (strlen($filename) > 230)
 		{
-			$filename = substr($filename, 0, 230);			
+			$filename = substr($filename, 0, 230);
 		}
 	
 		$path = JPATH_ROOT . DS . 'site' . DS . 'protected' . DS . 'premis_uploads';
@@ -151,14 +148,14 @@ class RegisterControllerPremis extends Hubzero_Controller
 					$courses['add'] = $data[6];
 					$courses['drop'] = $data[7];
 					
-					$return = Hubzero_Register_Premis::doRegistration($user, $courses);			
+					$return = Hubzero_Register_Premis::doRegistration($user, $courses);
 					if ($return['status'] == 'ok')
 					{
-						$line['msg'] = $return['message'];	
+						$line['msg'] = $return['message'];
 						$ok++;
 					}
 					else {
-						$line['msg'] = $return['message'];	
+						$line['msg'] = $return['message'];
 						$fail++;
 					}
 					$line['status'] = $return['status'];
@@ -172,7 +169,6 @@ class RegisterControllerPremis extends Hubzero_Controller
 			$this->view->report = $report;
 			$this->view->ok = $ok;
 			$this->view->fail = $fail;
-				
 		}
 		else 
 		{
@@ -187,12 +183,10 @@ class RegisterControllerPremis extends Hubzero_Controller
 
 		// Output the HTML
 		$this->view->display();
-		
 	}
 	
 	public function statTask()
 	{
 		echo 'ff';
 	}
-
 }

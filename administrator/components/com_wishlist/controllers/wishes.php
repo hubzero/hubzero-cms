@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Cotnroller class for wishes
  */
-class WishlistControllerWishes extends Hubzero_Controller
+class WishlistControllerWishes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of entries
