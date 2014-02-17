@@ -102,7 +102,6 @@ class plgCronCourses extends JPlugin
 
 		$coursesObj = new CoursesModelCourses();
 		$courses    = $coursesObj->courses();
-		$mailed     = array();
 
 		if (isset($courses) && count($courses) > 0)
 		{
@@ -113,6 +112,7 @@ class plgCronCourses extends JPlugin
 					continue;
 				}
 
+				$mailed      = array();
 				$managers    = $course->managers();
 				$enrollments = $course->students(array('count'=>true));
 				$offerings   = $course->offerings();
