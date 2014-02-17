@@ -899,13 +899,15 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$row->publish_up = JFactory::getDate($row->publish_up, JFactory::getConfig()->get('offset'))->toSql();
 		
 		// publish down
-		if (trim($row->publish_down) == 'Never')
+		if (!$row->published_down || trim($row->published_down) == '0000-00-00 00:00:00' 
+			|| trim($row->publish_down) == 'Never')
 		{
 			$row->publish_down = '0000-00-00 00:00:00';
 		}
 		else
 		{
-			$row->publish_down = JFactory::getDate($row->publish_down, JFactory::getConfig()->get('offset'))->toSql();
+			$row->publish_down = JFactory::getDate($row->publish_down,
+			 	JFactory::getConfig()->get('offset'))->toSql();
 		}
 		
 		$paramsClass = 'JParameter';

@@ -383,7 +383,7 @@ function popratings()
 					<td class="paramlist_key"><label>Change Creator:</label></th>
 					<td><?php echo $this->lists['created_by']; ?></td>
 				</tr>
-<?php if ($this->row->standalone == 1) { ?>
+<?php // if ($this->row->standalone == 1) { ?>
 				<tr>
 					<td class="paramlist_key"><label for="publish_up">Start Publishing:</label></th>
 					<td>
@@ -404,7 +404,7 @@ function popratings()
 						<?php echo JHTML::_('calendar', $down, 'publish_down', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 					</td>
 				</tr>
-<?php } ?>
+<?php // } ?>
 				<tr>
 					<td class="paramlist_key"><strong>Hits:</strong></td>
 					<td>
