@@ -41,6 +41,12 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
+			<fieldset group="emaildigest">
+				<field name="course" type="sql" default="1" label="Select course to receive emails" query="SELECT 0 AS value, 'All' AS course UNION SELECT id AS value, title AS course FROM #__courses" />
+			</fieldset>
 		</fields>
 	</config>
+	<params group="emaildigest">
+		<param name="course" type="sql" default="0" label="Select course to receive emails" query="SELECT 0 AS value, 'All' AS course UNION SELECT id AS value, title AS course FROM #__courses" />
+	</params>
 </extension>
