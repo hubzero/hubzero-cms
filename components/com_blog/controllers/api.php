@@ -60,11 +60,7 @@ class BlogControllerApi extends Hubzero_Api_Controller
 			case 'archive': $this->archiveTask();  break;
 
 			default:
-				$this->errorMessage(
-					500, 
-					JText::_('Invalid task.'), 
-					JRequest::getWord('format', 'json')
-				);
+				$this->serviceTask();
 			break;
 		}
 	}
@@ -92,6 +88,55 @@ class BlogControllerApi extends Hubzero_Api_Controller
 		//add error to message body
 		$this->setMessageType(JRequest::getWord('format', $format));
 		$this->setMessage($object);
+	}
+
+	/**
+	 * Displays a available options and parameters the API
+	 * for this comonent offers.
+	 *
+	 * @return  void
+	 */
+	private function serviceTask()
+	{
+		$response = new stdClass();
+		$response->component = 'blog';
+		$response->tasks = array(
+			'archive' => array(
+				'description' => JText::_('Get a list of categories for a specific section.'),
+				'parameters'  => array(
+					'sort' => array(
+						'description' => JText::_('Field to sort results by.'),
+						'type'        => 'string',
+						'default'     => 'created',
+						'accepts'     => array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state')
+					),
+					'sort_Dir' => array(
+						'description' => JText::_('Direction to sort results by.'),
+						'type'        => 'string',
+						'default'     => 'desc',
+						'accepts'     => array('asc', 'desc')
+					),
+					'search' => array(
+						'description' => JText::_('A word or phrase to search for.'),
+						'type'        => 'string',
+						'default'     => 'null'
+					),
+					'limit' => array(
+						'description' => JText::_('Number of result to return.'),
+						'type'        => 'integer',
+						'default'     => '25'
+					),
+					'limitstart' => array(
+						'description' => JText::_('Number of where to start returning results.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+				),
+			),
+		);
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
 	}
 
 	/**
