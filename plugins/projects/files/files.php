@@ -573,8 +573,7 @@ class plgProjectsFiles extends JPlugin
 			array(
 				'folder'	=>'projects',
 				'element'	=>'files',
-				'name'		=>'upload',
-				'layout' 	=> 'files'
+				'name'		=>'browser'
 			)
 		);
 			
