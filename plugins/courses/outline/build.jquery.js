@@ -1570,10 +1570,8 @@ HUB.CoursesOutline = {
 			title     = $('.unit-title-arrow'),
 			assetlist = $('.asset-group-type-list');
 
-			// Add the active class to the first unit (giving the expanded down arrow next to the title)
-			title.first().addClass('unit-title-arrow-active');
-			// Hide all of the units except for the first one
-			assetlist.not(':first').hide();
+			// Hide all of the units
+			assetlist.hide();
 
 			// Add events
 			$(".unit")
