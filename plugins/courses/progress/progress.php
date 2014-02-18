@@ -181,12 +181,12 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		// Add some styles to the view
-		Hubzero_Document::addPluginStylesheet('courses', 'progress', $layout.'.css');
-		Hubzero_Document::addPluginScript('courses', 'progress', $layout.'progress');
-		Hubzero_Document::addSystemScript('handlebars');
-		Hubzero_Document::addSystemStylesheet('contentbox.css');
-		Hubzero_Document::addSystemScript('contentbox');
-		Hubzero_Document::addSystemScript('jquery.uniform.min');
+		\Hubzero\Document\Assets::addPluginStylesheet('courses', 'progress', $layout.'.css');
+		\Hubzero\Document\Assets::addPluginScript('courses', 'progress', $layout.'progress');
+		\Hubzero\Document\Assets::addSystemScript('handlebars');
+		\Hubzero\Document\Assets::addSystemStylesheet('contentbox.css');
+		\Hubzero\Document\Assets::addSystemScript('contentbox');
+		\Hubzero\Document\Assets::addSystemScript('jquery.uniform.min');
 
 		// Set the layout
 		$this->view->setLayout($layout);
@@ -207,8 +207,8 @@ class plgCoursesProgress extends JPlugin
 
 		$this->view->details = CoursesModelFormReport::getLetterResponseCountsForAssetId($this->db, $asset_id);
 
-		Hubzero_Document::addPluginStylesheet('courses', 'progress', 'assessmentdetails.css');
-		Hubzero_Document::addPluginScript('courses', 'progress', 'assessmentdetails');
+		\Hubzero\Document\Assets::addPluginStylesheet('courses', 'progress', 'assessmentdetails.css');
+		\Hubzero\Document\Assets::addPluginScript('courses', 'progress', 'assessmentdetails');
 
 		// Set the layout
 		$this->view->setLayout($layout);
