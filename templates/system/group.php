@@ -21,7 +21,7 @@ $return = DS . trim(str_replace(JURI::base(),'', JURI::current()), DS);
 	<head>
 		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> Doesn't validate... -->
 
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'comments', 'voting', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'comments', 'voting', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/hubbasic2013/css/main.css" type="text/css" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/group.css" type="text/css" />
 
