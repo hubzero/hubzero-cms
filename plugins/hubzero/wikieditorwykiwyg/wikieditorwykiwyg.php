@@ -64,9 +64,8 @@ class plgHubzeroWikiEditorWykiwyg extends JPlugin
 	{
 		if ($this->_pushscripts) 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('hubzero', 'wikieditorwykiwyg');
-			Hubzero_Document::addPluginScript('hubzero', 'wikieditorwykiwyg');
+			\Hubzero\Document\Assets::addPluginStylesheet('hubzero', 'wikieditorwykiwyg');
+			\Hubzero\Document\Assets::addPluginScript('hubzero', 'wikieditorwykiwyg');
 
 			$this->_pushscripts = false;
 		}

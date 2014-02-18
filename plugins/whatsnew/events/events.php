@@ -145,7 +145,7 @@ class plgWhatsnewEvents extends JPlugin
 	 */
 	public function documents()
 	{
-		Hubzero_Document::addComponentStylesheet('com_events');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_events');
 	}
 
 	/**

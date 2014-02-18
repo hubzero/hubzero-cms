@@ -106,8 +106,8 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		// Add some styles to the view
-		Hubzero_Document::addPluginStylesheet('time','records');
-		Hubzero_Document::addPluginScript('time','records');
+		\Hubzero\Document\Assets::addPluginStylesheet('time','records');
+		\Hubzero\Document\Assets::addPluginScript('time','records');
 
 		// Only perform the following if this is the active tab/plugin
 		if ($return == 'html') {

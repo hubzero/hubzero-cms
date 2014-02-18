@@ -282,8 +282,8 @@ class plgWhatsnewResources extends JPlugin
 	 	$document = JFactory::getDocument();
 		$document->addScript('components' . DS . 'com_resources' . DS . 'assets' . DS . 'css' . DS . 'resources.js');
 
-		Hubzero_Document::addComponentStylesheet('com_resources');
-		Hubzero_Document::addComponentScript('com_resources');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
+		\Hubzero\Document\Assets::addComponentScript('com_resources');
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');

@@ -140,8 +140,7 @@ class plgTagsEvents extends JPlugin
 		{
 			if (count($areas) > 1) 
 			{
-				ximport('Hubzero_Document');
-				Hubzero_Document::addComponentStylesheet('com_events');
+				\Hubzero\Document\Assets::addComponentStylesheet('com_events');
 
 				return $e_fields . $e_from . $e_where;
 			}
@@ -177,8 +176,7 @@ class plgTagsEvents extends JPlugin
 	 */
 	public function documents()
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addComponentStylesheet('com_events');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_events');
 	}
 
 	/**
@@ -202,7 +200,7 @@ class plgTagsEvents extends JPlugin
 		if ($row->ftext) 
 		{
 			$row->ftext = str_replace('[[BR]]', '', $row->ftext);
-			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";

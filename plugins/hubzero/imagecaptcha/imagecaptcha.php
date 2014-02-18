@@ -155,13 +155,11 @@ class plgHubzeroImagecaptcha extends JPlugin
 
 		$GLOBALS['totalCaptchas']++;
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStyleSheet('hubzero', 'imagecaptcha');
+		\Hubzero\Document\Assets::addPluginStyleSheet('hubzero', 'imagecaptcha');
 		//$document = JFactory::getDocument();
 		//$document->addScript(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.js');
 		//$document->addStyleSheet(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.css');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'hubzero',

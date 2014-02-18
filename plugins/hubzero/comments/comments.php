@@ -397,7 +397,7 @@ class plgHubzeroComments extends JPlugin
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) 
 		{
-			Hubzero_Document::addPluginScript('hubzero', 'comments');
+			\Hubzero\Document\Assets::addPluginScript('hubzero', 'comments');
 
 			$this->_pushscripts = false;
 		}

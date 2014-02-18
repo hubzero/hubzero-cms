@@ -105,7 +105,7 @@ class plgTimeOverview extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'charts.php');
 
 		// Add some styles to the view
-		Hubzero_Document::addPluginStylesheet('time','overview');
+		\Hubzero\Document\Assets::addPluginStylesheet('time','overview');
 
 		// Get the Joomla document and add google JS API
 		$doc = JFactory::getDocument();

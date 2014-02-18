@@ -164,7 +164,6 @@ class plgTagsResources extends JPlugin
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
 
-		ximport('Hubzero_User_Helper');
 		$juser = JFactory::getUser();
 		$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 
@@ -388,8 +387,7 @@ class plgTagsResources extends JPlugin
 	public static function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
-		ximport('Hubzero_Document');
-		Hubzero_Document::addComponentStylesheet('com_resources');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
@@ -513,11 +511,11 @@ class plgTagsResources extends JPlugin
 		$html .= '</p>' . "\n";
 		if ($row->itext) 
 		{
-			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->itext)), 200) . "\n";
+			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . "\n";
 		} 
 		else if ($row->ftext) 
 		{
-			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>'."\n";

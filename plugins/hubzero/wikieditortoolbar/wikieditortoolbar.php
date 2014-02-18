@@ -66,9 +66,8 @@ class plgHubzeroWikiEditorToolbar extends JPlugin
 	{
 		if ($this->_pushscripts) 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('hubzero', 'wikieditortoolbar');
-			Hubzero_Document::addPluginScript('hubzero', 'wikieditortoolbar');
+			\Hubzero\Document\Assets::addPluginStylesheet('hubzero', 'wikieditortoolbar');
+			\Hubzero\Document\Assets::addPluginScript('hubzero', 'wikieditortoolbar');
 
 			$this->_pushscripts = false;
 		}

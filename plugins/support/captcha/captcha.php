@@ -204,7 +204,6 @@ class plgSupportCaptcha extends JPlugin
 
 		if (!$juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Profile');
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
 			{
@@ -467,10 +466,8 @@ class plgSupportCaptcha extends JPlugin
 
 		$GLOBALS['totalCaptchas']++;
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStyleSheet('support', 'captcha');
+		\Hubzero\Document\Assets::addPluginStyleSheet('support', 'captcha');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder' => 'support',

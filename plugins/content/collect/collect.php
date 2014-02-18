@@ -84,8 +84,8 @@ class plgContentCollect extends JPlugin
 		if (!$juser->get('guest')) 
 		{
 			// Push some scripts to the template
-			Hubzero_Document::addPluginScript('content', $this->_name);
-			Hubzero_Document::addPluginStylesheet('content', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('content', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('content', $this->_name);
 
 			$view = new Hubzero_Plugin_View(
 				array(

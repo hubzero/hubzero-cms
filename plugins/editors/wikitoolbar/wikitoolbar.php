@@ -62,8 +62,8 @@ class plgEditorWikiToolbar extends JPlugin
 				$script = $this->_name . '.mootools';
 			}
 
-			Hubzero_Document::addPluginStylesheet('editors', $this->_name);
-			Hubzero_Document::addPluginScript('editors', $this->_name, $script);
+			\Hubzero\Document\Assets::addPluginStylesheet('editors', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('editors', $this->_name, $script);
 
 			$this->_pushscripts = false;
 		}

@@ -85,8 +85,8 @@ class plgWikiCollect extends JPlugin
 		if (!$juser->get('guest')) 
 		{
 			// Push some scripts to the template
-			Hubzero_Document::addPluginScript('wiki', $this->_name);
-			Hubzero_Document::addPluginStylesheet('wiki', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('wiki', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('wiki', $this->_name);
 
 			$view = new Hubzero_Plugin_View(
 				array(

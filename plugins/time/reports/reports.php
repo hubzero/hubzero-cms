@@ -106,8 +106,8 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'html.php');
 
 		// Add some styles to the view
-		Hubzero_Document::addPluginStylesheet('time','reports');
-		Hubzero_Document::addPluginScript('time','reports');
+		\Hubzero\Document\Assets::addPluginStylesheet('time','reports');
+		\Hubzero\Document\Assets::addPluginScript('time','reports');
 
 		// Only perform the following if this is the active tab/plugin
 		if ($return == 'html') {

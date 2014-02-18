@@ -104,8 +104,8 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		// Add some styles to the view
-		Hubzero_Document::addPluginStylesheet('time','hubs');
-		Hubzero_Document::addPluginScript('time','hubs');
+		\Hubzero\Document\Assets::addPluginStylesheet('time','hubs');
+		\Hubzero\Document\Assets::addPluginScript('time','hubs');
 
 		// Only perform the following if this is the active tab/plugin
 		if ($return == 'html') {
