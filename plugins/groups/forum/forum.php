@@ -249,8 +249,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$action = JRequest::getVar('action', $action, 'post');
 
 			//push the stylesheet to the view
-			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
-			Hubzero_Document::addPluginScript('groups', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('groups', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('groups', $this->_name);
 
 			switch ($action)
 			{

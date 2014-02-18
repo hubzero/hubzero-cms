@@ -35,9 +35,9 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 $this->js();
 
-Hubzero_Document::addSystemScript('jquery.timepicker');
-Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
-Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
+\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.datepicker.css');
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.timepicker.css');
 ?>
 
 <ul id="page_options">

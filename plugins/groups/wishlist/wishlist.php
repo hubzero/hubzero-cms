@@ -273,7 +273,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			);
 
 			//push the stylesheet to the view
-			Hubzero_Document::addPluginStylesheet('groups', 'wishlist');
+			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wishlist');
 
 			// Pass the view some info
 			$view->option = $option;

@@ -135,7 +135,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$doc = JFactory::getDocument();
 
 			//add usage stylesheet to view
-			Hubzero_Document::addPluginStylesheet('groups', 'usage');
+			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'usage');
 
 			//add datepicker stylesheet to view
 			$doc->addStyleSheet('plugins' . DS . 'groups' . DS . 'usage' . DS . 'datepicker.css');

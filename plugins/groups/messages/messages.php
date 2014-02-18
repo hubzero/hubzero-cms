@@ -141,8 +141,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			}
 
 			//push styles to the view
-			Hubzero_Document::addPluginStylesheet('groups','messages');
-			Hubzero_Document::addPluginScript('groups','messages');
+			\Hubzero\Document\Assets::addPluginStylesheet('groups','messages');
+			\Hubzero\Document\Assets::addPluginScript('groups','messages');
 
 			$task = strtolower(trim($action));
 

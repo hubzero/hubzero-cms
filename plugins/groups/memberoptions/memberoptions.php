@@ -94,8 +94,6 @@ class plgGroupsMemberOptions extends JPlugin
 	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
-		ximport('Hubzero_Document');
-
 		// The output array we're returning
 		$arr = array(
 			'html'=>''
@@ -143,7 +141,6 @@ class plgGroupsMemberOptions extends JPlugin
 	{
 		// HTML output
 		// Instantiate a view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'groups',

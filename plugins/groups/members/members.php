@@ -147,8 +147,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			$document = JFactory::getDocument();
 			$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->description.': '.JText::_('PLG_GROUPS_MEMBERS'));
 
-			Hubzero_Document::addPluginStylesheet('groups', 'members');
-			Hubzero_Document::addPluginScript('groups', 'members');
+			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'members');
+			\Hubzero\Document\Assets::addPluginScript('groups', 'members');
 
 			$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))

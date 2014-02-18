@@ -156,8 +156,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
 			//push the css to the doc
-			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
-			Hubzero_Document::addPluginScript('groups', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('groups', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('groups', $this->_name);
 
 			// Append to document the title
 			$document = JFactory::getDocument();
@@ -655,9 +655,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		Hubzero_Document::addSystemScript('jquery.timepicker');
-		Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
-		Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.datepicker.css');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.timepicker.css');
 
 		return $view->loadTemplate();
 	}

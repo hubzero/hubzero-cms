@@ -174,7 +174,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 
 			//push styles to the view
-			Hubzero_Document::addPluginStylesheet('groups', 'projects');
+			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'projects');
 
 			// Load classes
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');

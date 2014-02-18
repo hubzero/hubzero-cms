@@ -145,8 +145,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			}
 			
 			//push styles to the view
-			Hubzero_Document::addPluginStylesheet('groups','calendar');
-			Hubzero_Document::addPluginScript('groups','calendar');
+			\Hubzero\Document\Assets::addPluginStylesheet('groups','calendar');
+			\Hubzero\Document\Assets::addPluginScript('groups','calendar');
 			
 			//check to see if we need to include the mootools datepicker
 			if (!JPluginHelper::isEnabled('system', 'jquery'))
@@ -404,8 +404,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->calendars = $eventsCalendar->getCalendars( $this->group );
 		
 		//add ddslick lib
-		Hubzero_Document::addSystemScript('jquery.fancyselect.min');
-		Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 		
 		if ($this->getError()) 
 		{
@@ -520,15 +520,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 		
 		//added need scripts and stylesheets
-		Hubzero_Document::addSystemScript('fileupload/jquery.fileupload');
-		Hubzero_Document::addSystemScript('fileupload/jquery.iframe-transport');
-		Hubzero_Document::addSystemScript('jquery.fancyselect.min');
-		Hubzero_Document::addSystemScript('jquery.timepicker');
-		Hubzero_Document::addSystemScript('toolbox');
-		Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
-		Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
-		Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
-		Hubzero_Document::addSystemStylesheet('toolbox.css');
+		\Hubzero\Document\Assets::addSystemScript('fileupload/jquery.fileupload');
+		\Hubzero\Document\Assets::addSystemScript('fileupload/jquery.iframe-transport');
+		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
+		\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
+		\Hubzero\Document\Assets::addSystemScript('toolbox');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.datepicker.css');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.timepicker.css');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
+		\Hubzero\Document\Assets::addSystemStylesheet('toolbox.css');
 		
 		//get any errors if there are any
 		if ($this->getError()) 

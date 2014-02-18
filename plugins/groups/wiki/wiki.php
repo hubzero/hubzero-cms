@@ -229,7 +229,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			$content = ob_get_contents();
 			ob_end_clean();
 
-			Hubzero_Document::addPluginStylesheet('groups', 'wiki');
+			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wiki');
 
 			// Return the content
 			$arr['html'] = $content;
