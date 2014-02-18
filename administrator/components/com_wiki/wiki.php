@@ -58,11 +58,10 @@ else
 	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'pagePermissions.php');
 }
 
-ximport('Hubzero_User_Helper');
-
 // Include scripts
+include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'parser.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'book.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'wiki.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'book.php');
 
 // Initiate controller
 $controllerName = JRequest::getCmd('controller', 'pages');

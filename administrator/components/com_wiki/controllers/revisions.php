@@ -243,7 +243,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 			'domain'   => $this->_group
 		);
 
-		$p = Hubzero_Wiki_Parser::getInstance();
+		$p = WikiHelperParser::getInstance();
 		$row->set('pagehtml', $p->parse($row->get('pagetext'), $wikiconfig));
 
 		// Store new content
