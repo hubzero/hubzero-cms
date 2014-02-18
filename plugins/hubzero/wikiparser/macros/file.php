@@ -657,7 +657,7 @@ class FileMacro extends WikiMacro
 						}
 						if (isset($attr['created']))
 						{
-							$html .= ' ' . Hubzero_View_Helper_Html::timeAgo($attr['created']);
+							$html .= ' ' . Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt(JHTML::_('date', $attr['created'], JFactory::getDBO()->getDateFormat())));
 						}
 						$html .= '</span>)';
 					}
