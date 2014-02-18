@@ -30,6 +30,7 @@
 	<languages>
 		<language tag="en-GB">en-GB.plg_cron_courses.ini</language>
 	</languages>
-	<params>
+	<params group="emaildigest">
+		<param name="course" type="sql" default="0" label="Select course to receive emails" query="SELECT 0 AS value, 'All' AS course UNION SELECT id AS value, title AS course FROM #__courses" />
 	</params>
 </install>
