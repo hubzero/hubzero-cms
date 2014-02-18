@@ -104,15 +104,13 @@ class plgResourcesShare extends JPlugin
 			return;
 		}
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('resources', 'share');
-		Hubzero_Document::addPluginScript('resources', 'share');
+		\Hubzero\Document\Assets::addPluginStylesheet('resources', 'share');
+		\Hubzero\Document\Assets::addPluginScript('resources', 'share');
 
 		// Email form
 		if ($sharewith == 'email') 
 		{
 			// Instantiate a view
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
@@ -144,7 +142,6 @@ class plgResourcesShare extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
 			// Instantiate a view
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',

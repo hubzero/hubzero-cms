@@ -105,8 +105,7 @@ class plgResourcesFavorite extends JPlugin
 			if ($rtrn == 'all' || $rtrn == 'metadata') 
 			{
 				// Push some scripts to the template
-				ximport('Hubzero_Document');
-				Hubzero_Document::addPluginScript('resources', 'favorite');
+				\Hubzero\Document\Assets::addPluginScript('resources', 'favorite');
 
 				$database = JFactory::getDBO();
 
@@ -123,7 +122,6 @@ class plgResourcesFavorite extends JPlugin
 					$cls = 'faved';
 				}
 
-				ximport('Hubzero_Plugin_View');
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'resources',

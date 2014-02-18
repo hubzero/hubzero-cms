@@ -157,7 +157,6 @@ class plgResourcesQuestions extends JPlugin
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
@@ -181,12 +180,9 @@ class plgResourcesQuestions extends JPlugin
 	 */
 	private function _browse()
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
 
 		// Instantiate a view
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'resources',
@@ -245,10 +241,8 @@ class plgResourcesQuestions extends JPlugin
 		$lang = JFactory::getLanguage();
 		$lang->load('com_answers');
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'resources',

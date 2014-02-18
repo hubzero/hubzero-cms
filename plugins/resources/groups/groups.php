@@ -96,7 +96,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
 
 		if ($miniview) 
 		{

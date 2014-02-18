@@ -164,8 +164,8 @@ class plgResourcesReviews extends JPlugin
 		{
 			include_once(__DIR__ . '/models/review.php');
 
-			Hubzero_Document::addPluginStylesheet('resources', 'reviews');
-			Hubzero_Document::addPluginScript('resources', 'reviews');
+			\Hubzero\Document\Assets::addPluginStylesheet('resources', 'reviews');
+			\Hubzero\Document\Assets::addPluginScript('resources', 'reviews');
 
 			// Did they perform an action?
 			// If so, they need to be logged in first.

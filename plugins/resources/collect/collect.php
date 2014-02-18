@@ -97,8 +97,8 @@ class plgResourcesCollect extends JPlugin
 			if ($rtrn == 'all' || $rtrn == 'metadata') 
 			{
 				// Push some scripts to the template
-				Hubzero_Document::addPluginScript('resources', $this->_name);
-				Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+				\Hubzero\Document\Assets::addPluginScript('resources', $this->_name);
+				\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
 
 				$view = new Hubzero_Plugin_View(
 					array(

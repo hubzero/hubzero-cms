@@ -34,8 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $base = rtrim(JURI::getInstance()->base(true), '/');
 
 // Push scripts to document
-ximport('Hubzero_Document');
-Hubzero_Document::addPluginStylesheet('resources', 'usage');
+\Hubzero\Document\Assets::addPluginStylesheet('resources', 'usage');
 $document = JFactory::getDocument();
 if (!JPluginHelper::isEnabled('system', 'jquery'))
 {
