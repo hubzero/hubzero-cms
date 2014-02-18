@@ -217,6 +217,9 @@ class plgProjectsFiles extends JPlugin
 				$this->_uid = $juser->get('id');
 			}
 			
+			// Incoming
+			$this->subdir 	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
+			
 			// Get time zone
 			$zone = date_default_timezone_get();
 						
@@ -240,6 +243,16 @@ class plgProjectsFiles extends JPlugin
 			
 			// Include Git Helper
 			$this->getGitHelper();
+			
+			// Contribute process outside of projects
+			if (!is_object($this->_project) or !$this->_project->id) 
+			{
+				$this->_project = new Project( $this->_database );
+				$this->_project->provisioned = 1;
+			}
+
+			// Get path
+			$this->path = $this->getProjectPath();
 			
 			// Compiler Helper
 			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'compiler.php' );
@@ -382,33 +395,27 @@ class plgProjectsFiles extends JPlugin
 	 */
 	public function view ($sync = 0) 
 	{		
-		// Incoming
-		$subdir 	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
-						
 		// Build query
 		$filters = array();
 		$filters['limit'] 	 = JRequest::getInt('limit', 100);
 		$filters['start']    = JRequest::getInt( 'limitstart', 0);
 		$filters['sortby']   = JRequest::getVar( 'sortby', 'filename');
 		$filters['sortdir']  = JRequest::getVar( 'sortdir', 'ASC');
-		
-		// Get path
-		$path = $this->getProjectPath();
-		
+				
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
 		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');	
 									
 		// Something is wrong
-		if (!$path)
+		if (!$this->path)
 		{
 			// Output error
 			$view = new Hubzero_Plugin_View(
 				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'error'
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'error'
 				)
 			);
 
@@ -417,14 +424,11 @@ class plgProjectsFiles extends JPlugin
 			$view->setError( $this->getError() );
 			return $view->loadTemplate();	
 		}
-						
-		// Initialize Git
-		$this->_git->iniGit($path);
-				
+										
 		// Does subdirectory exist?
-		if ($subdir && !is_dir($this->prefix . $path . DS . $subdir)) 
+		if ($this->subdir && !is_dir($this->prefix . $this->path . DS . $this->subdir)) 
 		{
-			$subdir = '';
+			$this->subdir = '';
 		}
 				
 		// Write config file
@@ -448,7 +452,7 @@ class plgProjectsFiles extends JPlugin
 		);
 				
 		// Get used space in project directory
-		$view->dirsize = $this->getDiskUsage($path, $this->prefix, $this->_usageGit);
+		$view->dirsize = $this->getDiskUsage($this->path, $this->prefix, $this->_usageGit);
 								
 		// Get connection details for user
 		$objO = new ProjectOwner( $this->_database );
@@ -464,8 +468,9 @@ class plgProjectsFiles extends JPlugin
 		$view->params = new JParameter( $obj->params );
 						
 		// Get local files and folders						
-		$localFiles 		= $this->getFiles($path, $subdir, 1, 0, 0, 0, $filters['sortby'], $filters['sortdir']);	
-		$localDirs 			= $this->getFolders($path, $subdir, $this->prefix);
+		$localFiles 		= $this->getFiles($this->path, $this->subdir, 
+								1, 0, 0, 0, $filters['sortby'], $filters['sortdir']);	
+		$localDirs 			= $this->getFolders($this->path, $this->subdir, $this->prefix);
 						
 		// Sharing with external services setup
 		$view->connect		 = $this->_connect;
@@ -485,7 +490,7 @@ class plgProjectsFiles extends JPlugin
 			foreach ($view->services as $servicename)
 			{				
 				// Get stored remote connections			
-				$remotes[$servicename] = $objRFile->getRemoteEditFiles($this->_project->id, $servicename, $subdir);	
+				$remotes[$servicename] = $objRFile->getRemoteEditFiles($this->_project->id, $servicename, $this->subdir);	
 				
 				$sync	= $sync == 2 ? 0 : $view->params->get($servicename . '_sync_queue', 0);							
 			}		
@@ -510,7 +515,7 @@ class plgProjectsFiles extends JPlugin
 		$view->uid 			= $this->_uid;
 		$view->juser		= JFactory::getUser();
 		$view->filters 		= $filters;
-		$view->subdir 		= $subdir;
+		$view->subdir 		= $this->subdir;
 		$view->task			= $this->_task;
 		$view->case 		= $this->_case;
 		$view->tool			= $this->_tool;
@@ -528,32 +533,6 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
-	 * Get path to member dir (for provisioned projects)
-	 * 
-	 * @return     string
-	 */
-	public function getMembersPath() 
-	{
-		// Get members config
-		$mconfig = JComponentHelper::getParams( 'com_members' );
-			
-		// Build upload path
-		$dir  = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
-		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
-
-		if (!is_dir( JPATH_ROOT . $path )) 
-		{
-			if (!JFolder::create( JPATH_ROOT . $path, 0775 )) 
-			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return;
-			}
-		}
-		
-		return $path;
-	}
-	
-	/**
 	 * Browser for within publications
 	 * 
 	 * @return     string
@@ -566,7 +545,6 @@ class plgProjectsFiles extends JPlugin
 		$primary 	= JRequest::getInt('primary', 1);
 		$images 	= JRequest::getInt('images', 0);
 		$pid 		= JRequest::getInt('pid', 0);
-		$prov		= 0;
 
 		if (!$ajax) 
 		{
@@ -581,45 +559,33 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Provisioned project?
-		if ($this->_project->provisioned == 1 && !$this->_project->id)
-		{
-			$path = $this->getMembersPath();
-			$prov = 1;
-		}
-		else 
-		{		
-			// Get path and initialize Git
-			$path = $this->getProjectPath($this->_project->alias, $this->_case);
-			$this->_git->iniGit($path);			
-		}	
-
-		// Are we in a subdirectory?
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
+		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
 		$prefix = $prov ? JPATH_ROOT : $this->prefix;
 		
 		// Does subdirectory exist?
-		if (!is_dir($prefix. $path. DS . $subdir)) 
+		if (!is_dir($prefix. $this->path. DS . $this->subdir)) 
 		{
-			$subdir = '';
+			$this->subdir = '';
 		}
 														
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
 			array(
-				'folder'=>'projects',
-				'element'=>'files',
-				'name'=>'upload',
-				'layout' => 'files'
+				'folder'	=>'projects',
+				'element'	=>'files',
+				'name'		=>'upload',
+				'layout' 	=> 'files'
 			)
 		);
-				
+			
+		// Get file list	
 		if ($prov)
 		{
-			$view->files = $this->getMemberFiles($path, $subdir);
+			$view->files = $this->getMemberFiles($this->path, $this->subdir);
 		}		
 		elseif (in_array($content, $this->_valid_cases)) 
 		{	
-			$view->files = $this->getFiles($path, $subdir, 0, 0, 0, 0, '', 'ASC', true);
+			$view->files = $this->getFiles($this->path, $this->subdir, 0, 0, 0, 0, '', 'ASC', true);
 		}
 		else 
 		{
@@ -644,9 +610,9 @@ class plgProjectsFiles extends JPlugin
 			$pubparams  = new JParameter($pubPlugin->params);
 						
 			$view->image_ext = ProjectsHelper::getParamArray(
-				$pubparams->get('image_types', 'bmp, jpeg, jpg, png' ));			
+								$pubparams->get('image_types', 'bmp, jpeg, jpg, png' ));			
 			$view->video_ext = ProjectsHelper::getParamArray(
-				$pubparams->get('video_types', 'avi, mpeg, mov, wmv' ));
+								$pubparams->get('video_types', 'avi, mpeg, mov, wmv' ));
 			
 			$other = 1;
 				
@@ -661,7 +627,7 @@ class plgProjectsFiles extends JPlugin
 			$excude_files = array();
 			foreach ($view->exclude as $exclude) 
 			{
-				$excude_files[] = str_replace($path. DS, '', trim($exclude->path));
+				$excude_files[] = str_replace($this->path. DS, '', trim($exclude->path));
 			}
 			$view->exclude = $excude_files;
 		}
@@ -675,7 +641,7 @@ class plgProjectsFiles extends JPlugin
 		$view->project 		= $this->_project;
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
-		$view->subdir 		= $subdir;
+		$view->subdir 		= $this->subdir;
 		$view->case 		= $this->_case;
 		$view->base 		= $content;
 		$view->config 		= $this->_config;
@@ -759,12 +725,6 @@ class plgProjectsFiles extends JPlugin
 		if ($this->_project->provisioned || !$this->_project->id)
 		{
 			return false;
-		}
-		else 
-		{		
-			// Get path and initialize Git
-			$path = $this->getProjectPath($this->_project->alias, $this->_case);
-			$this->_git->iniGit($path);			
 		}
 		
 		// Pass success or error message
@@ -890,15 +850,15 @@ class plgProjectsFiles extends JPlugin
 			$selected = array();
 			foreach ($refParts as $file)
 			{
-				if (is_file( $path . DS . trim($file) ))
+				if (is_file( $this->path . DS . trim($file) ))
 				{
-					$hash   = $this->_git->gitLog($path, trim($file), '' , 'hash');					
+					$hash   = $this->_git->gitLog($this->path, trim($file), '' , 'hash');					
 					if ($hash)
 					{
 						$selected[] = substr($hash, 0, 10) . ':' . trim($file);
 						
 						// Generate preview
-						$this->getFilePreview(trim($file), $hash, $path, '');
+						$this->getFilePreview(trim($file), $hash, $this->path, '');
 					}
 				}
 			}
@@ -941,33 +901,12 @@ class plgProjectsFiles extends JPlugin
 	 */
 	public function upload() 
 	{		
-		$prov 	= 0;
-		$pid 	= JRequest::getInt('pid', 0);
-		
-		// Contribute process outside of projects
-		if (!is_object($this->_project) or !$this->_project->id) 
-		{
-			$this->_project = new Project( $this->_database );
-			$this->_project->provisioned = 1;
-		}
-		
-		// Provisioned project?
-		if ($this->_project->provisioned == 1 && !$this->_project->id)
-		{
-			$path = $this->getMembersPath();
-			$prov = 1;
-		}
-		else 
-		{		
-			// Get path and initialize Git
-			$path = $this->getProjectPath($this->_project->alias, $this->_case);
-			$this->_git->iniGit($path);			
-		}
+		$prov 	= $this->_project->provisioned == 1 ? 1 : 0;
 		
 		// Incoming
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		$ajax 	= JRequest::getInt('ajax', 0);		
 		$prefix = $prov ? JPATH_ROOT : $this->prefix;
+		$pid 	= JRequest::getInt('pid', 0);
 		
 		// Add uploader css		
 		if (!$ajax)
@@ -985,25 +924,25 @@ class plgProjectsFiles extends JPlugin
 			)
 		);
 		
-		// Get used space & quota
+		// Get used space
+		$usageGit = $prov ? false : $this->_usageGit;
+		$dirsize = $this->getDiskUsage($this->path, $prefix, false);
+		
+		// Get quota & routing
 		if ($prov)
-		{
-			$dirsize = $this->getDiskUsage($path, $prefix, false);
-			$view->quota = ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			
-			$route = 'index.php?option=com_publications' . a . 'task=submit';
-			$view->url = JRoute::_($route);
+		{			
+			$view->quota = ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');			
+			$route 		 = 'index.php?option=com_publications' . a . 'task=submit';
+			$view->url   = JRoute::_($route);
 		}
 		else
 		{
-			$dirsize = $this->getDiskUsage($path, $prefix, $this->_usageGit);
-			
 			// Get quota
-			$params = new JParameter($this->_project->params);
-			$quota = $params->get('quota');
+			$params 	 = new JParameter($this->_project->params);
+			$quota 		 = $params->get('quota');
 			$view->quota = $quota 
-					? $quota 
-					: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+				? $quota 
+				: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 					
 			$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;		
 			$view->url 	= ($this->_case != 'files' && $this->_tool->name) 
@@ -1019,7 +958,7 @@ class plgProjectsFiles extends JPlugin
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->pid 			= $pid;
-		$view->subdir 		= $subdir;
+		$view->subdir 		= $this->subdir;
 		$view->case 		= $this->_case;
 		$view->ajax			= $ajax;
 		$view->config 		= $this->_config;
@@ -1045,24 +984,15 @@ class plgProjectsFiles extends JPlugin
 	{
 		// Incoming
 		$expand  	= JRequest::getInt('expand_zip');
-		$subdir  	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		$sizeLimit 	= $this->_params->get('maxUpload', '104857600');
 		$pid 		= JRequest::getInt('pid', 0);
 	
-		$prov    	= 0;
+		$prov    	= ($this->_task == 'saveprov' || $this->_project->provisioned == 1) ? 1 : 0;
+		$this->_task= $prov ? 'saveprov' : $this->_task;
 		$dirsize 	= 0;
 		$new 		= true;
 		$exists	  	= 0;
-								
-		// Contribute process outside of projects
-		if (!is_object($this->_project) or !$this->_project->id or $this->_task == 'saveprov') 
-		{
-			$this->_project = new Project( $this->_database );
-			$this->_project->provisioned = 1;
-			$prov = 1;
-			$this->_task == 'saveprov';
-		}
-		
+										
 		// Get temp path
 		$temp_path 	 = $prov ? 'temp' : $this->getProjectPath ($this->_project->alias, 'temp');
 		$prefix 	 = $prov ? JPATH_ROOT : $this->prefix;
@@ -1097,17 +1027,13 @@ class plgProjectsFiles extends JPlugin
 		
 		// Provisioned project scenario
 		if ($prov)
-		{
-			$path  		= $this->getMembersPath();			
-			$quota 		= ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 
+		{		
+			$quota 		= ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 
 							'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($path, $prefix, false);			
+			$dirsize 	= $this->getDiskUsage($this->path, $prefix, false);			
 		}
 		else 
 		{
-			// Get path and initialize Git
-			$path = $this->getProjectPath();
-			$this->_git->iniGit($path);
 
 			// Get quota
 			$params 	= new JParameter($this->_project->params);
@@ -1116,7 +1042,7 @@ class plgProjectsFiles extends JPlugin
 						  ? $quota 
 						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 
 							'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($path, $prefix, $this->_usageGit);							
+			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->_usageGit);							
 		}
 		
 		// Some checks
@@ -1142,11 +1068,11 @@ class plgProjectsFiles extends JPlugin
 		
 		$fName 	  = $ext ? $filename . '.' . $ext : $filename;
 		
-		$fpath = $subdir ? $subdir . DS . $fName : $fName;
-		$file  = $prefix . $path . DS . $fpath;	
+		$fpath = $this->subdir ? $this->subdir . DS . $fName : $fName;
+		$file  = $prefix . $this->path . DS . $fpath;	
 			
 		$tempFile = $prefix . $temp_path . DS . $fName;
-		$repoFile = $prefix . $path . DS . $fpath;
+		$repoFile = $prefix . $this->path . DS . $fpath;
 		
 		// Are we updating?
 		if (file_exists($repoFile))
@@ -1194,7 +1120,7 @@ class plgProjectsFiles extends JPlugin
 			if ($exists && !$expand) 
 			{ 
 				// Discard uploaded change
-				$this->_git->callGit($path, 'checkout ' . $fpath);
+				$this->_git->callGit($this->path, 'checkout ' . $fpath);
 			}
 			else
 			{
@@ -1229,14 +1155,14 @@ class plgProjectsFiles extends JPlugin
 			{	
 				// Expand tar file
 				$z = $this->untar($tempFile, $uploaded, $updated, 
-					$commitMsgZip, $cSize, $path, $prefix, $subdir, 
+					$commitMsgZip, $cSize, $this->path, $prefix, $this->subdir, 
 					$unused, $fName );						
 			}
 			elseif ($ext == 'zip')
 			{					
 				// Expand zip using ZipArchiver
 				$z = $this->unzip($tempFile, $uploaded, $updated, 
-					$commitMsgZip, $cSize, $path, $prefix, $subdir, 
+					$commitMsgZip, $cSize, $this->path, $prefix, $this->subdir, 
 					$unused, $fName );
 			}
 			// Commit expanded files
@@ -1244,7 +1170,7 @@ class plgProjectsFiles extends JPlugin
 			{
 				if (!$prov)
 				{
-					$this->_git->gitCommit($path, $commitMsgZip); 
+					$this->_git->gitCommit($this->path, $commitMsgZip); 
 				}
 				
 				// Delete temp file
@@ -1278,7 +1204,7 @@ class plgProjectsFiles extends JPlugin
 			//JFile::copy($tempFile, $prefix . $path . DS . $fpath);
 			//exec('cp ' . $tempFile . ' ' . $prefix . $path . DS . $fpath );
 									
-			if (file_exists($prefix . $path . DS . $fpath)) 
+			if (file_exists($prefix . $this->path . DS . $fpath)) 
 			{
 				if ($exists) 
 				{
@@ -1296,11 +1222,11 @@ class plgProjectsFiles extends JPlugin
 					// Git add	
 					$new = in_array($fpath, $updated) ? false : true;
 					
-					$this->_git->gitAdd($path, $fpath, $commitMsg, $new);
+					$this->_git->gitAdd($this->path, $fpath, $commitMsg, $new);
 					
 					if ($commitMsg)
 					{
-						$this->_git->gitCommit($path, $commitMsg);
+						$this->_git->gitCommit($this->path, $commitMsg);
 												
 						// Store in session
 						if ($new)
@@ -1359,8 +1285,6 @@ class plgProjectsFiles extends JPlugin
 		$skipped  = array();
 		$sync	  = 0;
 		
-		// Are we in a subdirectory?
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		$prefix = $this->_task == 'saveprov' ? JPATH_ROOT : $this->prefix;
 		
 		// Archive formats
@@ -1371,24 +1295,19 @@ class plgProjectsFiles extends JPlugin
 		
 		// Provisioned project scenario
 		if ($this->_task == 'saveprov')
-		{
-			$path  		= $this->getMembersPath();			
+		{			
 			$quota 		= ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($path, $prefix, false);			
+			$dirsize 	= $this->getDiskUsage($this->path, $prefix, false);			
 		}
 		else 
 		{
-			// Get path and initialize Git
-			$path = $this->getProjectPath();
-			$this->_git->iniGit($path);
-
 			// Get quota
 			$params 	= new JParameter($this->_project->params);
 			$quota 		= $params->get('quota');
 			$quota 		= $quota 
 						  ? $quota 
 						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($path, $prefix, $this->_usageGit);								
+			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->_usageGit);								
 		}
 		
 		// Compute used space
@@ -1416,7 +1335,7 @@ class plgProjectsFiles extends JPlugin
 				$base  = $parts[0];
 				
 				// Subdir?
-				$file = $subdir ? $subdir . DS . $file : $file;
+				$file = $this->subdir ? $this->subdir . DS . $file : $file;
 																
 				// Check file size
 				$sizelimit = ProjectsHtml::formatSize($this->_params->get('maxUpload', '104857600'));
@@ -1454,13 +1373,13 @@ class plgProjectsFiles extends JPlugin
 					{	
 						// Expand tar file
 						$z = $this->untar($tmp_name, $uploaded, $updated, 
-							$commitMsgZip, $cSize, $path, $prefix, $subdir, $unused, $file );						
+							$commitMsgZip, $cSize, $this->path, $prefix, $subdir, $unused, $file );						
 					}
 					elseif ($ext == 'zip')
 					{					
 						// Expand zip using ZipArchiver
 						$z = $this->unzip($tmp_name, $uploaded, $updated, 
-							$commitMsgZip, $cSize, $path, $prefix, $subdir, $unused, $file );
+							$commitMsgZip, $cSize, $this->path, $prefix, $subdir, $unused, $file );
 					}
 					
 					// Commit expanded files
@@ -1468,7 +1387,7 @@ class plgProjectsFiles extends JPlugin
 					{
 						if ($this->_task != 'saveprov')
 						{
-							$this->_git->gitCommit($path, $commitMsgZip); 
+							$this->_git->gitCommit($this->path, $commitMsgZip); 
 						}
 					}	
 					else
@@ -1481,32 +1400,32 @@ class plgProjectsFiles extends JPlugin
 				if (!$this->getError() && (!$zipfile || !$expand)) 
 				{				
 					// cd
-					chdir($prefix . $path);
+					chdir($prefix . $this->path);
 					
 					$exists = 0;					
-					if (file_exists($prefix . $path . DS . $file)) 
+					if (file_exists($prefix . $this->path . DS . $file)) 
 					{
 						$exists    = 1;
 						$updated[] = $file;
 					}
 
-					if (!JFile::upload($tmp_name, $prefix . $path . DS . $file)) 
+					if (!JFile::upload($tmp_name, $prefix . $this->path . DS . $file)) 
 					{
 						$this->setError(JText::_('COM_PROJECTS_ERROR_UPLOADING'));
 					}
 					else
 					{
 						// Do virus check
-						if (ProjectsHelper::virusCheck($prefix . $path . DS . $file))
+						if (ProjectsHelper::virusCheck($prefix . $this->path . DS . $file))
 						{
 							if ($exists) 
 							{ 
 								// Discard uploaded change
-								$this->_git->callGit($path, 'checkout ' . $file);
+								$this->_git->callGit($this->path, 'checkout ' . $file);
 							}
 							else
 							{
-								unlink($prefix . $path . DS . $file); 
+								unlink($prefix . $this->path . DS . $file); 
 							}
 							
 							$this->setError(JText::_('Virus detected, refusing to upload'));
@@ -1519,16 +1438,16 @@ class plgProjectsFiles extends JPlugin
 							{							
 								// Git add
 								$new = isset($updated[$file]) ? false : true;
-								$this->_git->gitAdd($path, $file, $commitMsg, $new);								
-								$this->_git->gitCommit($path, $commitMsg);
+								$this->_git->gitAdd($this->path, $file, $commitMsg, $new);								
+								$this->_git->gitCommit($this->path, $commitMsg);
 								
 								// Store in session
 								$updateType = $new ? 'uploaded' : 'updated';
 								$this->registerUpdate($updateType, $file);
 								
 								// Generate preview
-								$hash = $this->_git->gitLog($path, $file, '' , 'hash');
-								$this->getFilePreview($file, $hash, $path, $subdir);
+								$hash = $this->_git->gitLog($this->path, $file, '' , 'hash');
+								$this->getFilePreview($file, $hash, $this->path, $this->subdir);
 							}
 						}						
 					}
@@ -1587,7 +1506,7 @@ class plgProjectsFiles extends JPlugin
 				: JRoute::_($route . a . 'active=files');
 			
 			// Redirect to file list		
-			$url .= $subdir ? '?subdir=' .urlencode($subdir) : '';
+			$url .= $this->subdir ? '?subdir=' .urlencode($this->subdir) : '';
 			
 			if ($view == 'pub')
 			{
@@ -1651,7 +1570,8 @@ class plgProjectsFiles extends JPlugin
 			exec('tar xvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out );
 
 			// Now copy extracted contents into project
-			$extracted = JFolder::files($extractPath, '.', true, true, $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));	
+			$extracted = JFolder::files($extractPath, '.', true, true, 
+				$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));	
 
 			foreach ($extracted as $e)
 			{
@@ -1699,7 +1619,8 @@ class plgProjectsFiles extends JPlugin
 					if (JFolder::create( $unzipto . DS . $safe_dir ) && $this->_task != 'saveprov')
 					{
 						$this->_git->makeEmptyFolder($path, $afile);				
-						$commitMsgZip .= JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($afile) ."\n";
+						$commitMsgZip .= JText::_('COM_PROJECTS_CREATED_DIRECTORY') 
+							. '  ' . escapeshellarg($afile) ."\n";
 					}
 					$z++;
 				}
@@ -1835,7 +1756,8 @@ class plgProjectsFiles extends JPlugin
 						if ($this->_task != 'saveprov')
 						{
 							$this->_git->makeEmptyFolder($path, $afile);				
-							$commitMsgZip .= JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($afile) ."\n";
+							$commitMsgZip .= JText::_('COM_PROJECTS_CREATED_DIRECTORY') 
+								. '  ' . escapeshellarg($afile) ."\n";
 						}
 						$z++;									
 					}
@@ -1855,7 +1777,8 @@ class plgProjectsFiles extends JPlugin
 							if ($this->_task != 'saveprov')
 							{
 								$this->_git->makeEmptyFolder($path, $adir);				
-								$commitMsgZip .= JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($adir) ."\n";
+								$commitMsgZip .= JText::_('COM_PROJECTS_CREATED_DIRECTORY') 
+									. '  ' . escapeshellarg($adir) ."\n";
 							}
 							$z++;									
 						}
@@ -1935,12 +1858,7 @@ class plgProjectsFiles extends JPlugin
 	{
 		// Incoming
 		$newdir = JRequest::getVar('newdir', '', 'post');
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
-		
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
+				
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 		$url 	= ($this->_case != 'files' && $this->_tool->name) 
 			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
@@ -1961,12 +1879,12 @@ class plgProjectsFiles extends JPlugin
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->ajax 		= 1;		
-		$view->subdir 		= $subdir;
+		$view->subdir 		= $this->subdir;
 		$view->case 		= $this->_case;
 		$view->tool			= $this->_tool;
 		$view->url			= $url;
 		$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
-		$view->path 		= $this->prefix . $path;
+		$view->path 		= $this->prefix . $this->path;
 		$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 		if ($this->getError()) 
 		{
@@ -1984,16 +1902,10 @@ class plgProjectsFiles extends JPlugin
 	{
 		// Incoming
 		$newdir = JRequest::getVar('newdir', '', 'post');
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
-		
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
+		$newdir = ProjectsHtml::makeSafeDir($newdir);
+		$createdir = $this->subdir ? $this->subdir . DS . $newdir : $newdir;
 		
 		$sync = 0;
-		
-		$newdir = ProjectsHtml::makeSafeDir($newdir);
-		$createdir = $subdir ? $subdir . DS . $newdir : $newdir;
 		
 		// Reserved names (service directories)
 		$reserved = ProjectsHelper::getParamArray(
@@ -2015,9 +1927,9 @@ class plgProjectsFiles extends JPlugin
 			// Check that we directory name is not reserved for other purposes
 			$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME') );
 		}	
-		elseif (!is_dir($this->prefix . $path . DS . $createdir))
+		elseif (!is_dir($this->prefix . $this->path . DS . $createdir))
 		{			
-			if (!JFolder::create( $this->prefix . $path . DS . $createdir )) 
+			if (!JFolder::create( $this->prefix . $this->path . DS . $createdir )) 
 			{
 				// Failed to create directory
 				$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_DIR_CREATE') );
@@ -2025,9 +1937,9 @@ class plgProjectsFiles extends JPlugin
 			else 
 			{
 				// Success
-				$created = $this->_git->makeEmptyFolder($path, $createdir);				
+				$created = $this->_git->makeEmptyFolder($this->path, $createdir);				
 				$commitMsg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($createdir);
-				$this->_git->gitCommit($path, $commitMsg);
+				$this->_git->gitCommit($this->path, $commitMsg);
 				
 				$this->_msg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') . ': ' . $newdir;	
 				
@@ -2053,7 +1965,7 @@ class plgProjectsFiles extends JPlugin
 		}
 
 		// Redirect to file list
-		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 		
 		if ($sync && $this->_case == 'files')
 		{
@@ -2074,16 +1986,9 @@ class plgProjectsFiles extends JPlugin
 	{
 		// Incoming
 		$dir = trim(urldecode(JRequest::getVar('dir', '')), DS);
-		
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
-		// Are we in a subdirectory?
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
-		
+				
 		// cd
-		chdir($this->prefix . $path);
+		chdir($this->prefix . $this->path);
 		
 		$sync = 0;
 		
@@ -2093,23 +1998,23 @@ class plgProjectsFiles extends JPlugin
 			: JRoute::_($route . a . 'active=files');
 
 		// Check that we have directory to delete
-		if (!$dir || !is_dir($this->prefix . $path . DS . $dir) || $dir == '.git' || $dir == '.')
+		if (!$dir || !is_dir($this->prefix . $this->path . DS . $dir) || $dir == '.git' || $dir == '.')
 		{
 			$this->setError(JText::_('COM_PROJECTS_ERROR_NO_DIR_TO_DELETE'));	
 		}
 		else
 		{
 			$commitMsg = '';			
-			$deleted = $this->_git->gitDelete($path, $dir, 'folder', $commitMsg);	
-			$this->_git->gitCommit($path, $commitMsg);
+			$deleted = $this->_git->gitDelete($this->path, $dir, 'folder', $commitMsg);	
+			$this->_git->gitCommit($this->path, $commitMsg);
 						
 			// If directory is still there (not in Git)			
-			if (file_exists($this->prefix . $path . DS . $dir))
+			if (file_exists($this->prefix . $this->path . DS . $dir))
 			{
-				JFolder::delete($this->prefix . $path . DS . $dir);
+				JFolder::delete($this->prefix . $this->path . DS . $dir);
 			}
 			
-			if (!file_exists($this->prefix . $path . DS . $dir))
+			if (!file_exists($this->prefix . $this->path . DS . $dir))
 			{
 				$this->_msg = JText::_('COM_PROJECTS_DELETED_DIRECTORY');
 				
@@ -2129,7 +2034,7 @@ class plgProjectsFiles extends JPlugin
 		}
 
 		// Redirect to file list
-		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 		
 		if ($sync && $this->_case == 'files')
 		{
@@ -2156,15 +2061,8 @@ class plgProjectsFiles extends JPlugin
 			$this->setError(JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_DELETE'));
 		}
 				
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-						
 		// cd
-		chdir($this->prefix . $path);
-		
-		// Are we in a subdirectory?
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
+		chdir($this->prefix . $this->path);
 		
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 		$url 	= ($this->_case != 'files' && $this->_tool->name) 
@@ -2196,12 +2094,12 @@ class plgProjectsFiles extends JPlugin
 			$view->authorized 	= $this->_authorized;
 			$view->uid 			= $this->_uid;
 			$view->ajax 		= JRequest::getInt('ajax', 0);		
-			$view->subdir 		= $subdir;
+			$view->subdir 		= $this->subdir;
 			$view->case 		= $this->_case;
 			$view->tool			= $this->_tool;
 			$view->url			= $url;
 			$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
-			$view->path 		= $this->prefix . $path;
+			$view->path 		= $this->prefix . $this->path;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 			if ($this->getError()) 
 			{
@@ -2234,7 +2132,7 @@ class plgProjectsFiles extends JPlugin
 					continue;
 				}
 				
-				$item = $subdir ? $subdir . DS . $item : $item;
+				$item = $this->subdir ? $this->subdir . DS . $item : $item;
 				
 				$remote 	= NULL;
 				$service 	= 'google';
@@ -2264,7 +2162,7 @@ class plgProjectsFiles extends JPlugin
 						$deleted[] = $item;	
 					}
 				}												
-				elseif ($this->_git->gitDelete($path, $item, $type, $commitMsg))
+				elseif ($this->_git->gitDelete($this->path, $item, $type, $commitMsg))
 				{
 					$deleted[] = $item;
 					
@@ -2277,7 +2175,7 @@ class plgProjectsFiles extends JPlugin
 			if (count($deleted) > 0)
 			{
 				// Commit changes
-				$this->_git->gitCommit($path, $commitMsg);
+				$this->_git->gitCommit($this->path, $commitMsg);
 			}	
 			
 			// Pass success or error message
@@ -2287,7 +2185,7 @@ class plgProjectsFiles extends JPlugin
 			}
 
 			// Redirect to file list
-			$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+			$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 			
 			$this->_referer = $url;
 			return;
@@ -2308,13 +2206,6 @@ class plgProjectsFiles extends JPlugin
 		{
 			$this->setError(JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_MOVE'));
 		}
-								
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
-		// Are we in a subdirectory?
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 		$url 	= ($this->_case != 'files' && $this->_tool->name) 
@@ -2333,8 +2224,8 @@ class plgProjectsFiles extends JPlugin
 				)
 			);
 			
-			$view->dirs 		= $this->getFolders($path, '', $this->prefix, 1, true);
-			$view->path 		= $this->prefix. $path;
+			$view->dirs 		= $this->getFolders($this->path, '', $this->prefix, 1, true);
+			$view->path 		= $this->prefix. $this->path;
 			$view->items 		= $items;
 			$view->database 	= $this->_database;
 			$view->services		= $this->_rServices;
@@ -2347,7 +2238,7 @@ class plgProjectsFiles extends JPlugin
 			$view->case 		= $this->_case;
 			$view->ajax 		= JRequest::getInt('ajax', 0);
 			$view->tool			= $this->_tool;
-			$view->subdir 		= $subdir;
+			$view->subdir 		= $this->subdir;
 			$view->url			= $url;
 			$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
@@ -2365,7 +2256,7 @@ class plgProjectsFiles extends JPlugin
 			$sync 	= 0;
 			
 			// cd
-			chdir($this->prefix . $path);
+			chdir($this->prefix . $this->path);
 			
 			// Get new path
 			$newpath = trim(urldecode(JRequest::getVar('newpath', '')), DS);
@@ -2378,12 +2269,12 @@ class plgProjectsFiles extends JPlugin
 			{
 				$newdir = stripslashes($newdir);
 				$newdir = ProjectsHtml::makeSafeDir($newdir);
-				$newdir = $subdir ? $subdir . DS . $newdir : $newdir;
+				$newdir = $this->subdir ? $this->subdir . DS . $newdir : $newdir;
 			}
-			if ($newdir && !file_exists( $this->prefix . $path . DS . $newdir )) 
+			if ($newdir && !file_exists( $this->prefix . $this->path . DS . $newdir )) 
 			{
 				// Create new directory
-				if (!JFolder::create( $this->prefix . $path . DS . $newdir, 0775 )) 
+				if (!JFolder::create( $this->prefix . $this->path . DS . $newdir, 0775 )) 
 				{
 					$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				}
@@ -2393,7 +2284,7 @@ class plgProjectsFiles extends JPlugin
 			$commitMsg = '';
 			
 			// Process request
-			if (($newpath != $subdir || $newdir) && !$this->getError()) 
+			if (($newpath != $this->subdir || $newdir) && !$this->getError()) 
 			{
 				foreach ($items as $element) 
 				{
@@ -2409,7 +2300,7 @@ class plgProjectsFiles extends JPlugin
 					}
 					
 					// Include subdir
-					$from = $subdir ? $subdir . DS . $item : $item;
+					$from = $this->subdir ? $this->subdir . DS . $item : $item;
 															
 					// Set new path
 					if ($newdir) 
@@ -2421,7 +2312,7 @@ class plgProjectsFiles extends JPlugin
 						$where = $newpath ? $newpath . DS . $item : $item;				
 					}
 																			
-					if ($this->_git->gitMove($path, $from, $where, $type, $commitMsg))
+					if ($this->_git->gitMove($this->path, $from, $where, $type, $commitMsg))
 					{
 						$moved[] = $where;
 					}					
@@ -2436,12 +2327,12 @@ class plgProjectsFiles extends JPlugin
 			if (!$this->getError()) 
 			{
 				// Delete original directory if empty
-				if ($subdir && file_exists($this->prefix. $path . DS . $subdir)) 
+				if ($this->subdir && file_exists($this->prefix. $this->path . DS . $this->subdir)) 
 				{
-					$contents = scandir($this->prefix. $path. DS . $subdir);
+					$contents = scandir($this->prefix. $this->path. DS . $this->subdir);
 					if (count($contents) <= 2) 
 					{
-						JFolder::delete($this->prefix. $path. DS . $subdir);
+						JFolder::delete($this->prefix. $this->path. DS . $this->subdir);
 					}
 				}
 			}	
@@ -2450,13 +2341,14 @@ class plgProjectsFiles extends JPlugin
 			if ($moved) 
 			{
 				// Commit changes
-				$this->_git->gitCommit($path, $commitMsg);
+				$this->_git->gitCommit($this->path, $commitMsg);
 				
 				// Force sync
 				$sync = 1;
 				
 				// Output message
-				$this->_msg = JText::_('COM_PROJECTS_MOVED'). ' ' . count($moved) . ' ' . JText::_('COM_PROJECTS_FILES_S');
+				$this->_msg = JText::_('COM_PROJECTS_MOVED'). ' ' 
+					. count($moved) . ' ' . JText::_('COM_PROJECTS_FILES_S');
 			}			
 			elseif (empty($moved)) 
 			{
@@ -2474,7 +2366,7 @@ class plgProjectsFiles extends JPlugin
 			}
 			
 			// Redirect to file list
-			$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+			$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 			
 			if ($sync && $this->_case == 'files')
 			{
@@ -2497,7 +2389,6 @@ class plgProjectsFiles extends JPlugin
 		// Incoming
 		$converted  = JRequest::getInt('converted', 0);
 		$service 	= JRequest::getVar('service', 'google');
-		$subdir  	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		// Combine file and folder data
 		$items = $this->_sortIncoming();
@@ -2515,19 +2406,15 @@ class plgProjectsFiles extends JPlugin
 		$type 	= key($items[0]);
 		$file 	= $items[0][$type];
 		$remote = NULL;
-		$fpath 	= $subdir ? $subdir. DS . $file : $file;
+		$fpath 	= $this->subdir ? $this->subdir. DS . $file : $file;
 		$shared = array();
 		$sync 	= 0;
-				
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
+						
 		// Are we syncing project home directory or other?
 		$localDir   = $this->_connect->getConfigParam($service, 'local_dir');
 		$localDir   = $localDir == '#home' ? '' : $localDir;
 		
-		$localPath  =  $path;
+		$localPath  =  $this->path;
 		$localPath .= $localDir ? DS . $localDir : '';
 						
 		// Check for remote connection
@@ -2544,7 +2431,8 @@ class plgProjectsFiles extends JPlugin
 					if (!$connected)
 					{					
 						// Redirect to connect screen
-						$this->_message = array('message' => JText::_('COM_PROJECTS_REMOTE_PLEASE_CONNECT'), 'type' => 'success');
+						$this->_message = array('message' => JText::_('COM_PROJECTS_REMOTE_PLEASE_CONNECT'), 
+							'type' => 'success');
 						$url  = JRoute::_('index.php?option=' . $this->_option
 							 . a . 'alias=' . $this->_project->alias . a . 'active=files');
 						$url .= '/?action=connect';
@@ -2583,10 +2471,10 @@ class plgProjectsFiles extends JPlugin
 			$view->project 		= $this->_project;
 			$view->authorized 	= $this->_authorized;
 			$view->uid 			= $this->_uid;		
-			$view->subdir 		= $subdir;
+			$view->subdir 		= $this->subdir;
 			$view->case 		= $this->_case;
 			$view->tool			= $this->_tool;
-			$view->path 		= $this->prefix . $path;
+			$view->path 		= $this->prefix . $this->path;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 
 			if ($this->getError()) 
@@ -2641,7 +2529,7 @@ class plgProjectsFiles extends JPlugin
 					$title   = implode($n_parts);				
 					$title 	.= '.' . $importExt; 
 
-					$newpath = $subdir ? $subdir. DS . $title : $title;
+					$newpath = $this->subdir ? $this->subdir. DS . $title : $title;
 					
 					// Do we have original file present?
 					if ($originalPath && file_exists($this->prefix . $localPath . DS . $originalPath))
@@ -2654,17 +2542,18 @@ class plgProjectsFiles extends JPlugin
 					}
 					
 					// Replacing file?
-					$exists = file_exists($this->prefix . $path. DS . $newpath) ? 1 : 0;
+					$exists = file_exists($this->prefix . $this->path. DS . $newpath) ? 1 : 0;
 					
 					// Download remote file
-					if ($this->_connect->importFile($service, $this->_uid, $resource, $newpath, $this->prefix . $localPath, $importExt ))
+					if ($this->_connect->importFile($service, $this->_uid, $resource, 
+						$newpath, $this->prefix . $localPath, $importExt ))
 					{
 						// Git add & commit
 						$commitMsg = JText::_('COM_PROJECTS_FILES_SHARE_IMPORTED') . "\n";
-						$this->_git->gitAdd($path, $newpath, $commitMsg);
-						$this->_git->gitCommit($path, $commitMsg);
+						$this->_git->gitAdd($this->path, $newpath, $commitMsg);
+						$this->_git->gitCommit($this->path, $commitMsg);
 						
-						$mTypeParts = explode(';', $mt->getMimeType($this->prefix . $path. DS . $newpath));						
+						$mTypeParts = explode(';', $mt->getMimeType($this->prefix . $this->path. DS . $newpath));						
 						
 						// Get local file information
 						$local = array(
@@ -2765,7 +2654,7 @@ class plgProjectsFiles extends JPlugin
 						// Remove original local file
 						$commitMsg = JText::_('COM_PROJECTS_FILES_SHARE_EXPORTED') . "\n";
 						$deleted = $this->_git->gitDelete($localPath, $remote['fpath'], 'file', $commitMsg);
-						$this->_git->gitCommit($path, $commitMsg);
+						$this->_git->gitCommit($this->path, $commitMsg);
 						
 						// Remove original remote file
 						$deleted = $this->_connect->deleteRemoteItem( 
@@ -2815,7 +2704,7 @@ class plgProjectsFiles extends JPlugin
 		// Redirect to file list
 		$url  = JRoute::_('index.php?option=' . $this->_option . a 
 			. 'alias=' . $this->_project->alias . a . 'active=files');
-		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 		
 		if ($sync && $this->_case == 'files')
 		{
@@ -2839,7 +2728,6 @@ class plgProjectsFiles extends JPlugin
 		$new 	 = urldecode(JRequest::getVar( 'new', ''));
 		$mode 	 = JRequest::getVar( 'mode', $this->params->get('diffmode', 'side-by-side'));
 		$file 	 = urldecode(JRequest::getVar( 'file', ''));
-		$subdir  = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		$full 	 = JRequest::getInt( 'full');
 		
 		$remote 		= NULL;
@@ -2849,15 +2737,11 @@ class plgProjectsFiles extends JPlugin
 		$nParts = explode('@', $new);
 		$oParts = explode('@', $old);
 		$diff	= NULL;	
-		
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
-		$fpath = $subdir ? $subdir. DS . $file : $file;			
+				
+		$fpath = $this->subdir ? $this->subdir. DS . $file : $file;			
 		
 		// Binary file?
-		$binary	= $this->_git->isBinary($this->prefix . $path . DS . $fpath);
+		$binary	= $this->_git->isBinary($this->prefix . $this->path . DS . $fpath);
 		
 		// Do some checks				
 		if (count($nParts) <= 2 || count($oParts) <= 2)
@@ -2897,11 +2781,12 @@ class plgProjectsFiles extends JPlugin
 			}
 									
 			// Get text blobs
-			$old['text'] = $this->_git->gitLog($path, $old['fpath'], $old['hash'], 'blob');
-			$new['text'] = $this->_git->gitLog($path, $new['fpath'], $new['hash'], 'blob');
+			$old['text'] = $this->_git->gitLog($this->path, $old['fpath'], $old['hash'], 'blob');
+			$new['text'] = $this->_git->gitLog($this->path, $new['fpath'], $new['hash'], 'blob');
 			
 			// Diff class
-			include_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'php-diff' . DS . 'Diff.php' );
+			include_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS 
+				. 'files' . DS . 'php-diff' . DS . 'Diff.php' );
 			
 			$context = ($old['text'] == $new['text'] || $full == 1) ? count($old['text']) : 10;
 			$options = array(
@@ -2933,7 +2818,7 @@ class plgProjectsFiles extends JPlugin
 			{
 				// Print git diff
 				$mode = 'git';
-				$diff = $this->_git->gitDiff($path, $old, $new);
+				$diff = $this->_git->gitDiff($this->path, $old, $new);
 				
 				if (is_array($diff))
 				{
@@ -2969,7 +2854,7 @@ class plgProjectsFiles extends JPlugin
 		$view->tool			= $this->_tool;
 		$view->uid 			= $this->_uid;
 		$view->title		= $this->_area['title'];		
-		$view->subdir 		= $subdir;
+		$view->subdir 		= $this->subdir;
 		$view->ajax			= 0;
 		$view->connected	= $connected;
 		$view->remote		= $remote;
@@ -3001,7 +2886,6 @@ class plgProjectsFiles extends JPlugin
 		// Incoming
 		$checked = JRequest::getVar( 'asset', '', 'request', 'array' );
 		$ajax 	 = JRequest::getInt('ajax', 0);
-		$subdir  = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		// Can only view history of one file at a time		
 		if (empty($checked) or $checked[0] == '') 
@@ -3029,7 +2913,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		else
 		{			
-			$fpath = $subdir ? $subdir. DS . $file : $file;
+			$fpath = $this->subdir ? $this->subdir. DS . $file : $file;
 
 			// Check for remote connection
 			if (!empty($this->_rServices) && $this->_case == 'files')
@@ -3046,12 +2930,8 @@ class plgProjectsFiles extends JPlugin
 					}							
 				}		
 			}
-			
-			// Get path and initialize Git
-			$path = $this->getProjectPath();
-			$this->_git->iniGit($path);
-			
-			chdir($this->prefix . $path);
+						
+			chdir($this->prefix . $this->path);
 			
 			// Should history be paired with another file?
 			$local_path = NULL;
@@ -3061,13 +2941,13 @@ class plgProjectsFiles extends JPlugin
 			}
 									
 			// Local file present?
-			if (file_exists( $this->prefix . $path . DS . $fpath))
+			if (file_exists( $this->prefix . $this->path . DS . $fpath))
 			{
-				$this->_git->sortLocalRevisions($fpath, $path, $versions, $timestamps);
+				$this->_git->sortLocalRevisions($fpath, $this->path, $versions, $timestamps);
 			}
 			if ($local_path && $local_path != $fpath)
 			{
-				$this->_git->sortLocalRevisions($local_path, $path, $versions, $timestamps, 1);
+				$this->_git->sortLocalRevisions($local_path, $this->path, $versions, $timestamps, 1);
 			}
 			
 			// Get remote revision history
@@ -3093,9 +2973,10 @@ class plgProjectsFiles extends JPlugin
 		$i = 0;
 		foreach ($versions as $v)
 		{
-			$pr   		= $v['remote']  ? array('id' => $v['remote'], 'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
+			$pr   		= $v['remote']  ? array('id' => $v['remote'], 
+						'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
 			$hash 		= $v['remote'] ? NULL : $v['hash'];
-			$preview 	= $this->getFilePreview($v['file'], $hash, $path, $subdir, $pr);
+			$preview 	= $this->getFilePreview($v['file'], $hash, $this->path, $this->subdir, $pr);
 
 			if ($preview)
 			{
@@ -3122,10 +3003,10 @@ class plgProjectsFiles extends JPlugin
 			: JRoute::_($route . a . 'active=files');
 			
 		// Binary file?
-		$view->binary		= $this->_git->isBinary($this->prefix . $path . DS . $fpath);
+		$view->binary		= $this->_git->isBinary($this->prefix . $this->path . DS . $fpath);
 
 		$view->versions 	= $versions;
-		$view->path 		= $this->prefix. $path;
+		$view->path 		= $this->prefix. $this->path;
 		$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 		$view->file 		= $file;
 		$view->fpath 		= $fpath;
@@ -3136,7 +3017,7 @@ class plgProjectsFiles extends JPlugin
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->title		= $this->_area['title'];		
-		$view->subdir 		= $subdir;
+		$view->subdir 		= $this->subdir;
 		$view->remote		= $remote;
 		$view->connected	= $connected;
 		$view->config		= $this->_config;
@@ -3160,20 +3041,13 @@ class plgProjectsFiles extends JPlugin
 		$newname = JRequest::getVar( 'newname', '', 'post');
 		$oldname = JRequest::getVar( 'oldname', '', 'post');
 		$rename  = JRequest::getVar( 'rename', 'file', 'post');
-		
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
-		// Are we in a subdirectory?
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
-		
+				
 		if (!$newname)
 		{
 			$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_NAME'));
 		}
 		
-		if (!$oldname)
+		if (!$oldname) 
 		{
 			$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 		}
@@ -3195,11 +3069,11 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Set paths
-		$newpath = $subdir ? $subdir . DS . $newname : $newname;
-		$oldpath = $subdir ? $subdir . DS . $oldname : $oldname;
+		$newpath = $this->subdir ? $this->subdir . DS . $newname : $newname;
+		$oldpath = $this->subdir ? $this->subdir . DS . $oldname : $oldname;
 		
 		// cd
-		chdir($this->prefix . $path);
+		chdir($this->prefix . $this->path);
 		
 		$sync = 0;
 				
@@ -3215,7 +3089,7 @@ class plgProjectsFiles extends JPlugin
 				{
 					$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_DIR') . ' ' . $newpath);
 				}
-				if (!is_dir($this->prefix . $path . DS . $oldpath))
+				if (!is_dir($this->prefix . $this->path . DS . $oldpath))
 				{
 					$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 				}
@@ -3230,7 +3104,7 @@ class plgProjectsFiles extends JPlugin
 					$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
 				}
 				
-				if (!is_file($this->prefix . $path . DS . $oldpath))
+				if (!is_file($this->prefix . $this->path . DS . $oldpath))
 				{
 					$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 				}
@@ -3242,8 +3116,8 @@ class plgProjectsFiles extends JPlugin
 		{							
 			$commitMsg = '';
 			$type = $rename == 'dir' ? 'folder' : 'file';
-			$this->_git->gitMove($path, $oldpath, $newpath, $type, $commitMsg);
-			$this->_git->gitCommit($path, $commitMsg);
+			$this->_git->gitMove($this->path, $oldpath, $newpath, $type, $commitMsg);
+			$this->_git->gitCommit($this->path, $commitMsg);
 						
 			// Output message
 			$this->_msg = JText::_('COM_PROJECTS_FILES_RENAMED_SUCCESS');	
@@ -3269,7 +3143,7 @@ class plgProjectsFiles extends JPlugin
 			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 	
-		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 
 		if ($sync && $this->_case == 'files')
 		{
@@ -3355,32 +3229,27 @@ class plgProjectsFiles extends JPlugin
 		// Incoming
 		$file 	= urldecode(JRequest::getVar( 'asset', ''));
 		$hash 	= JRequest::getVar('hash', '');
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
-		
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
+				
 		// cd
-		chdir($this->prefix. $path);
+		chdir($this->prefix. $this->path);
 		
 		// Make sure we have a file to work with
 		if (!$file) 
 		{		
 			$this->setError(JText::_('PLG_PROJECTS_FILES_RESTORE_NO_FILE_SELECTED'));
 		}
-		elseif (!is_file( $this->prefix . $path . DS . $file ))
+		elseif (!is_file( $this->prefix . $this->path . DS . $file ))
 		{			
 			// Checkout pre-delete revision
-			$this->_git->gitCheckout( $path, $file, $hash . '^ ' );
+			$this->_git->gitCheckout( $this->path, $file, $hash . '^ ' );
 			
 			// If restored
-			if (is_file( $this->prefix . $path . DS . $file))
+			if (is_file( $this->prefix . $this->path . DS . $file))
 			{
 				// Git add & commit
 				$commitMsg = JText::_('PLG_PROJECTS_FILES_RESTORE_COMMIT_MESSAGE') . "\n";
-				$this->_git->gitAdd($path, $file, $commitMsg, $new = false);
-				$this->_git->gitCommit($path, $commitMsg);
+				$this->_git->gitAdd($this->path, $file, $commitMsg, $new = false);
+				$this->_git->gitCommit($this->path, $commitMsg);
 								
 				// Store in session
 				$this->registerUpdate('restored', $file, false);
@@ -3413,7 +3282,7 @@ class plgProjectsFiles extends JPlugin
 			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 		
-		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 						
 		$this->_referer = $url;
 		return;
@@ -3435,16 +3304,9 @@ class plgProjectsFiles extends JPlugin
 		$deleteTemp = 0; 
 		$remote 	= NULL;
 		$revision 	= JRequest::getVar('revision', '');
-							
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
 		
 		// cd
-		chdir($this->prefix. $path);
-
-		// Are we in a subdirectory?
-		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
+		chdir($this->prefix. $this->path);
 		
 		if (!$file) 
 		{
@@ -3469,7 +3331,7 @@ class plgProjectsFiles extends JPlugin
 			{
 				// Multi-file download
 				$multifile = 1;
-				$archive = $this->_archiveFiles($items, $this->prefix . $path, $subdir);
+				$archive = $this->_archiveFiles($items, $this->prefix . $this->path, $this->subdir);
 
 				if (!$archive)
 				{
@@ -3481,7 +3343,7 @@ class plgProjectsFiles extends JPlugin
 		// Build file path and check for remote connection
 		if ($file)
 		{
-			$fpath = $subdir ? $subdir. DS . $file : $file;
+			$fpath = $this->subdir ? $this->subdir. DS . $file : $file;
 			// Check for remote connection
 			if (!empty($this->_rServices) && $this->_case == 'files')
 			{
@@ -3500,13 +3362,14 @@ class plgProjectsFiles extends JPlugin
 		
 		// Are we previewing or downloading?
 		if (($render == 'thumb' || $render == 'inline' || $render == 'medium') && $file 
-			&& file_exists($this->prefix. $path . DS . $fpath)) 
+			&& file_exists($this->prefix. $this->path . DS . $fpath)) 
 		{
-			$hash   = ($remote && $remote['converted'] == 1) ? '' : $this->_git->gitLog($path, $fpath, '' , 'hash');
+			$hash   = ($remote && $remote['converted'] == 1) ? '' 
+					: $this->_git->gitLog($this->path, $fpath, '' , 'hash');
 			$medium = $render == 'medium' ? true : false;
 			$image  = ($render == 'thumb' || $render == 'medium')  
-					? $this->getFilePreview($file, $hash, $path, $subdir, $remote, $medium)
-					: $path . DS . $fpath;
+					? $this->getFilePreview($file, $hash, $this->path, $this->subdir, $remote, $medium)
+					: $this->path . DS . $fpath;
 			$image = ($render == 'thumb' || $render == 'medium') ? JPATH_ROOT . $image : $this->prefix . $image;
 			
 			// Serve image
@@ -3547,7 +3410,7 @@ class plgProjectsFiles extends JPlugin
 			}
 			
 			// Need file in working tree
-			if ((!$remote || $remote['converted'] == 0) && !file_exists($this->prefix. $path . DS . $fpath))
+			if ((!$remote || $remote['converted'] == 0) && !file_exists($this->prefix. $this->path . DS . $fpath))
 			{
 				$ok = 0;
 			}
@@ -3559,19 +3422,19 @@ class plgProjectsFiles extends JPlugin
 			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
 			{	
 				// Get git object
-				$hash  	  =  $this->_git->gitLog($path, $fpath, '' , 'hash');
-				$filesize =  $this->_git->gitLog($path, $fpath, '' , 'size');
+				$hash  	  =  $this->_git->gitLog($this->path, $fpath, '' , 'hash');
+				$filesize =  $this->_git->gitLog($this->path, $fpath, '' , 'size');
 			}
 															
 			// Get image preview
 			if (!$this->getError() && $ok == 1) 
 			{
-				$image = $this->getFilePreview($file, $hash, $path, $subdir, $remote);	
+				$image = $this->getFilePreview($file, $hash, $this->path, $this->subdir, $remote);	
 			}
 			
 			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
 			{				
-				$binary = $this->_git->isBinary($this->prefix . $path . DS . $fpath);
+				$binary = $this->_git->isBinary($this->prefix . $this->path . DS . $fpath);
 				
 				// If non-binary and below 10MB
 				if (!$binary && $filesize <= 10485760)
@@ -3628,7 +3491,8 @@ class plgProjectsFiles extends JPlugin
 					if (!$connected)
 					{					
 						// Redirect to connect screen
-						$this->_message = array('message' => JText::_('COM_PROJECTS_REMOTE_PLEASE_CONNECT'), 'type' => 'success');
+						$this->_message = array('message' => JText::_('COM_PROJECTS_REMOTE_PLEASE_CONNECT'), 
+							'type' => 'success');
 						$url  = JRoute::_('index.php?option=' . $this->_option
 							 . a . 'alias=' . $this->_project->alias . a . 'active=files');
 						$url .= '/?action=connect';
@@ -3638,7 +3502,8 @@ class plgProjectsFiles extends JPlugin
 					
 					// Load remote resource
 					$this->_connect->setUser($this->_project->created_by_user);
-					$resource = $this->_connect->loadRemoteResource($remote['service'], $this->_project->created_by_user, $remote['id']);
+					$resource = $this->_connect->loadRemoteResource($remote['service'], 
+						$this->_project->created_by_user, $remote['id']);
 					
 					$openLink = $resource && isset($resource['alternateLink']) ? $resource['alternateLink'] : '';
 					
@@ -3659,7 +3524,8 @@ class plgProjectsFiles extends JPlugin
 					
 					// Load remote resource
 					$this->_connect->setUser($this->_project->created_by_user);
-					$resource = $this->_connect->loadRemoteResource($remote['service'], $this->_project->created_by_user, $remote['id']);
+					$resource = $this->_connect->loadRemoteResource($remote['service'], 
+						$this->_project->created_by_user, $remote['id']);
 					
 					// Tex file?
 					$tex    = ProjectsCompiler::isTexFile($remote['title'], $remote['original_format']);
@@ -3688,7 +3554,7 @@ class plgProjectsFiles extends JPlugin
 					$serveas = trim(end($parts));
 					
 					$temppath = 'temp-' . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 ) . $serveas;
-					$fullpath = $this->prefix. $path . DS .$temppath;
+					$fullpath = $this->prefix. $this->path . DS .$temppath;
 					
 					// Get file content
 					$this->_git->getContent($file, $hash, $temppath);
@@ -3699,9 +3565,9 @@ class plgProjectsFiles extends JPlugin
 				else
 				{
 					// Viewing current file
-					$fpath 		= $subdir ? $subdir. DS . $file : $file;
+					$fpath 		= $this->subdir ? $this->subdir. DS . $file : $file;
 					$serveas 	= urldecode(JRequest::getVar('serveas', $file));
-					$fullpath	= $this->prefix. $path . DS . $fpath;
+					$fullpath	= $this->prefix. $this->path . DS . $fpath;
 				}
 			}
 			
@@ -3755,7 +3621,7 @@ class plgProjectsFiles extends JPlugin
 			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 	
-		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 		
 		$this->_referer = $url;
 		return;
@@ -3774,7 +3640,6 @@ class plgProjectsFiles extends JPlugin
 		
 		// Incoming
 		$checked 	= JRequest::getVar( 'asset', '', 'request', 'array' );
-		$subdir  	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		$commit  	= JRequest::getInt( 'commit', 0 );
 		$download  	= JRequest::getInt( 'download', 0 );
 		
@@ -3793,11 +3658,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			$file = urldecode($checked[0]);
 		}
-		
-		// Get path and initialize Git
-		$path = $this->getProjectPath();
-		$this->_git->iniGit($path);
-		
+				
 		// Path for storing temp previews
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$outputDir = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'compiled';
@@ -3881,10 +3742,10 @@ class plgProjectsFiles extends JPlugin
 			$cType = $mTypeParts[0];
 			
 			// Include subdir in path
-			$fpath = $subdir ? $subdir. DS . $file : $file;
+			$fpath = $this->subdir ? $this->subdir. DS . $file : $file;
 			
 			// Binary?
-			$binary = $this->_git->isBinary($this->prefix . $path . DS . $fpath);
+			$binary = $this->_git->isBinary($this->prefix . $this->path . DS . $fpath);
 			
 			// Check for remote connection
 			if (!empty($this->_rServices) && $this->_case == 'files')
@@ -3918,9 +3779,9 @@ class plgProjectsFiles extends JPlugin
 				// Get data
 				$data = $this->_connect->sendHttpRequest($remote['service'], $this->_project->created_by_user, $url);
 			}
-			elseif (file_exists($this->prefix. $path . DS . $fpath))
+			elseif (file_exists($this->prefix. $this->path . DS . $fpath))
 			{
-				$data = file_get_contents($this->prefix. $path . DS . $fpath);	
+				$data = file_get_contents($this->prefix. $this->path . DS . $fpath);	
 			}
 			else
 			{
@@ -3937,7 +3798,7 @@ class plgProjectsFiles extends JPlugin
 				$data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data);		
 
 				// Compile and get path to PDF
-				$content = $compiler->compileTex ($this->prefix. $path . DS . $fpath, 
+				$content = $compiler->compileTex ($this->prefix. $this->path . DS . $fpath, 
 					$data, $texpath, JPATH_ROOT . $outputDir, 1, $tempBase);
 
 				// Read log (to show in case of error)
@@ -3966,7 +3827,7 @@ class plgProjectsFiles extends JPlugin
 				// Make sure we can handle preview of this type of file				
 				if ($ext == 'pdf' || in_array($cType, $formats['images']) || !$binary)
 				{
-					JFile::copy($this->prefix. $path . DS . $fpath, JPATH_ROOT . $outputDir . DS . $tempBase);
+					JFile::copy($this->prefix. $this->path . DS . $fpath, JPATH_ROOT . $outputDir . DS . $tempBase);
 					$content = $tempBase;
 				}
 			}
@@ -4025,14 +3886,14 @@ class plgProjectsFiles extends JPlugin
 			if ($commit && $tex)
 			{
 				$pdfName = str_replace('temp__', '', basename($content));
-				$where 	 = $subdir ? $subdir. DS . $pdfName : $pdfName;
+				$where 	 = $this->subdir ? $this->subdir. DS . $pdfName : $pdfName;
 				
-				if (JFile::copy(JPATH_ROOT . $outputDir . DS . $content, $this->prefix. $path . DS . $where))
+				if (JFile::copy(JPATH_ROOT . $outputDir . DS . $content, $this->prefix. $this->path . DS . $where))
 				{
 					// Git add & commit
 					$commitMsg = JText::_('COM_PROJECTS_FILES_COMPILED_COMMITTED') . "\n";
-					$this->_git->gitAdd($path, $where, $commitMsg);
-					$this->_git->gitCommit($path, $commitMsg);
+					$this->_git->gitAdd($this->path, $where, $commitMsg);
+					$this->_git->gitCommit($this->path, $commitMsg);
 					
 					if ($this->_case == 'files')
 					{
@@ -4045,7 +3906,7 @@ class plgProjectsFiles extends JPlugin
 						'type' => 'success'
 					);
 					
-					$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
+					$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 					
 					// Redirect to file list
 					$this->_referer = $url;
@@ -4098,7 +3959,7 @@ class plgProjectsFiles extends JPlugin
 		$view->formats		= $formats;
 		$view->ext			= $ext;
 		$view->remote		= $remote;
-		$view->subdir 		= $subdir;
+		$view->subdir 		= $this->subdir;
 		$view->case 		= $this->_case;
 		$view->option 		= $this->_option;
 		$view->image		= $image;
@@ -4457,8 +4318,15 @@ class plgProjectsFiles extends JPlugin
 		$this->getGitHelper();
 		
 		// Get path and initialize Git
-		$path = $this->getProjectPath($project->alias, $case);
-		$this->_git->iniGit($path);
+		if ($by == 'admin')
+		{
+			$this->_project = $project;
+			$path = $this->getProjectPath($project->alias, $case);
+		}
+		else
+		{
+			$path = $this->path;
+		}
 		
 		$route  = 'index.php?option=' . $option . a . 'alias=' . $project->alias;
 
@@ -4481,16 +4349,16 @@ class plgProjectsFiles extends JPlugin
 
 			return true;
 		}
-		
+
 		// Report .git usage?	
 		if ($this->_usageGit == true || $by == 'admin')
 		{
-			$view->dirsize = $this->getDiskUsage($path, $this->prefix, true);
-			$view->totalspace = $this->getDiskUsage($path, $this->prefix, false, false);
+			$view->dirsize 	  = self::getDiskUsage($path, $this->prefix, true);
+			$view->totalspace = self::getDiskUsage($path, $this->prefix, false, false);
 		}
 		else
 		{
-			$view->totalspace = $this->getDiskUsage($path, $this->prefix, false);
+			$view->totalspace = self::getDiskUsage($path, $this->prefix, false);
 			$view->dirsize = $view->totalspace;
 		}
 		
@@ -4549,10 +4417,7 @@ class plgProjectsFiles extends JPlugin
 	 */
 	public function status()  
 	{
-		// Get project path
-		$path = $this->getProjectPath();
-		
-		$status = $this->_git->gitStatus($path);
+		$status = $this->_git->gitStatus($this->path);
 		
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
@@ -4573,7 +4438,7 @@ class plgProjectsFiles extends JPlugin
 		$view->url 	= ($this->_case != 'files' && $this->_tool->name) 
 			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
-		$view->subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);		
+		$view->subdir = $this->subdir;		
 		
 		if ($this->getError()) 
 		{
@@ -4588,10 +4453,7 @@ class plgProjectsFiles extends JPlugin
 	 * @return     string
 	 */
 	public function showTrash()  
-	{
-		// Get project path
-		$path = $this->getProjectPath();
-		
+	{		
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -4602,7 +4464,7 @@ class plgProjectsFiles extends JPlugin
 		);
 		
 		// Get deleted files
-		$view->files = $this->_git->listDeleted($path);
+		$view->files = $this->_git->listDeleted($this->path);
 
 		$view->option 	= $this->_option;
 		$view->project 	= $this->_project;
@@ -4614,7 +4476,7 @@ class plgProjectsFiles extends JPlugin
 		$view->url 	= ($this->_case != 'files' && $this->_tool->name) 
 			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
-		$view->subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);		
+		$view->subdir = $this->subdir;		
 		
 		if ($this->getError()) 
 		{
@@ -5130,72 +4992,6 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
-	 * Get project path
-	 * 
-	 * @param      string	$identifier
-	 * @param      string  	$case
-	 *
-	 * @return     string
-	 */
-	public function getProjectPath($identifier = NULL, $case = NULL) 
-	{		
-		if (!$identifier)
-		{
-			$identifier = $this->_project->alias;
-		}
-		if (!$case)
-		{
-			$case = isset($this->_case) && $this->_case ? $this->_case : 'files';
-		}
-		
-		if (!$case || !$identifier )
-		{
-			$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_GET_PROJECT_PATH') );
-			return false;
-		}
-						
-		// Build upload path for project files
-		$dir = strtolower($identifier);
-		$webdir = DS . trim($this->_config->get('webpath'), DS);
-				
-		// Do we need to create master directory off the web root?
-		if (!$this->prefix && !is_dir($webdir))
-		{
-			$this->setError( JText::_('Master directory does not exist. Administrator must fix this! ')  . $webdir );
-			return false;
-		}
-		
-		// Do we have an tool repo?		
-		if (preg_match("/tools:/", $case))
-		{			
-			// Get tools params
-			$aPlugin = JPluginHelper::getPlugin( 'projects', 'tools' );
-			$aParams = new JParameter($aPlugin->params);
-			
-			$reponame = isset($this->_tool->name) && $this->_tool->name ? $this->_tool->name : preg_replace("/tools:/", "", $case);
-			$path     = ($aParams->get('repo_location') == 1) 
-						? str_replace('/projects', '/tools', $webdir) 
-						: $webdir . DS . $dir. DS . 'tools';
-			$path    .= DS . strtolower($reponame);
-		}
-		else 
-		{
-			$path  = $webdir. DS . $dir. DS . $case;
-		}
-		
-		if (!is_dir( $this->prefix. $path )) 
-		{
-			// Create path
-			if (!JFolder::create( $this->prefix. $path, 0775 )) 
-			{
-				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') ) . $this->prefix. $path ;
-			}
-		}
-		
-		return $path;		
-	}
-	
-	/**
 	 * Blank screen (for iframe)
 	 *
 	 * @return     string
@@ -5402,7 +5198,7 @@ class plgProjectsFiles extends JPlugin
 			chdir($prefix . $path);
 
 			$where = $git == true ? ' .[!.]*' : '';
-
+			
 			// Make sure there is .git directory
 			if ($git == true && !is_dir($prefix . $path . DS . '.git'))
 			{
@@ -6739,9 +6535,6 @@ class plgProjectsFiles extends JPlugin
 			return $arr;
 		}
 		
-		// Initialize Git
-		$this->_git->iniGit($this->path);
-		
 		// Incoming
 		$this->subdir 	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
 				
@@ -6770,7 +6563,8 @@ class plgProjectsFiles extends JPlugin
 		}
 		else
 		{
-			$arr['message']  =  (isset($this->_msg) && $this->_msg)  ? $this->_msg : JText::_('PLG_PROJECTS_FILES_MESSAGE_SUCESS');
+			$arr['message']  =  (isset($this->_msg) && $this->_msg)  
+							? $this->_msg : JText::_('PLG_PROJECTS_FILES_MESSAGE_SUCESS');
 		}
 		
 		// Return data
@@ -6982,5 +6776,117 @@ class plgProjectsFiles extends JPlugin
 		$obj->commitHash 	= $hash ? $hash : $this->_git->gitLog($this->path, $obj->localPath, '', 'hash');	
 
 		return $obj;
+	}
+	
+	/* Get Paths */
+
+	/**
+	 * Get project path
+	 * 
+	 * @param      string	$identifier
+	 * @param      string  	$case
+	 *
+	 * @return     string
+	 */
+	public function getProjectPath($identifier = NULL, $case = NULL) 
+	{		
+		if (!isset($this->_project) || !is_object($this->_project))
+		{
+			return NULL;
+		}
+
+		// Provisioned project with no repo
+		if ($this->_project->provisioned == 1 && !$this->_project->id)
+		{
+			return $this->getMembersPath();
+		}
+
+		if (!$identifier)
+		{
+			$identifier = $this->_project->alias;
+		}
+		if (!$case)
+		{
+			$case = isset($this->_case) && $this->_case ? $this->_case : 'files';
+		}
+
+		if (!$case || !$identifier )
+		{
+			$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_GET_PROJECT_PATH') );
+			return false;
+		}
+
+		// Build upload path for project files
+		$dir = strtolower($identifier);
+		$webdir = DS . trim($this->_config->get('webpath'), DS);
+
+		// Do we need to create master directory off the web root?
+		if (!$this->prefix && !is_dir($webdir))
+		{
+			$this->setError( JText::_('Master directory does not exist. Administrator must fix this! ')  . $webdir );
+			return false;
+		}
+
+		// Do we have an tool repo?		
+		if (preg_match("/tools:/", $case))
+		{			
+			// Get tools params
+			$aPlugin = JPluginHelper::getPlugin( 'projects', 'tools' );
+			$aParams = new JParameter($aPlugin->params);
+
+			$reponame = isset($this->_tool->name) && $this->_tool->name 
+				? $this->_tool->name : preg_replace("/tools:/", "", $case);
+			$path     = ($aParams->get('repo_location') == 1) 
+						? str_replace('/projects', '/tools', $webdir) 
+						: $webdir . DS . $dir. DS . 'tools';
+			$path    .= DS . strtolower($reponame);
+		}
+		else 
+		{
+			$path  = $webdir. DS . $dir. DS . $case;
+		}
+
+		if (!is_dir( $this->prefix. $path )) 
+		{			
+			// Create path
+			if (!JFolder::create( $this->prefix. $path, 0775 )) 
+			{
+				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') ) . $this->prefix. $path ;
+			}
+		}
+
+		// Initialize Git
+		if (($case == 'files' || preg_match("/tools:/", $case)) && is_dir( $this->prefix. $path ))
+		{
+			$this->_git->iniGit($path);
+		}
+		
+		return $path;		
+	}
+	
+	/**
+	 * Get path to member dir (for provisioned projects)
+	 * 
+	 * @return     string
+	 */
+	public function getMembersPath() 
+	{
+		// Get members config
+		$mconfig = JComponentHelper::getParams( 'com_members' );
+			
+		// Build upload path
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
+		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
+
+		if (!is_dir( JPATH_ROOT . $path )) 
+		{
+			if (!JFolder::create( JPATH_ROOT . $path, 0775 )) 
+			{
+				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return;
+			}
+		}
+		
+		return $path;
 	}
 }
