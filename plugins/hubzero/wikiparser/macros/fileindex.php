@@ -85,8 +85,6 @@ class FileIndexMacro extends WikiMacro
 				$config->set('filepath', $this->filepath);
 			}
 
-			ximport('Hubzero_View_Helper_Html');
-
 			// Build and return the link
 			$html = '<ul>';
 			foreach ($rows as $row)
@@ -97,7 +95,7 @@ class FileIndexMacro extends WikiMacro
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
-				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename . '</a> (' . Hubzero_View_Helper_Html::formatSize(filesize($fpath)) . ') ';
+				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? Hubzero_View_Helper_Html::formatSize(filesize($fpath)) : '-- file not found --') . ') ';
 				$huser = JUser::getInstance($row->created_by);
 				if ($huser->get('id'))
 				{
@@ -105,7 +103,7 @@ class FileIndexMacro extends WikiMacro
 				}
 				if ($row->created && $row->created != '0000-00-00 00:00:00')
 				{
-					$html .= Hubzero_View_Helper_Html::timeAgo($row->created) . '. ';
+					$html .= Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt(JHTML::_('date', $row->created, JFactory::getDBO()->getDateFormat()))) . '. ';
 				}
 				$html .= ($row->description) ? '<span>"' . stripslashes($row->description) . '"</span>' : '';
 				$html .= '</li>' . "\n";
