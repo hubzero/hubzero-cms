@@ -32,8 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </h3>
 <?php
 if ($this->rows) {
-	ximport('Hubzero_Document');
-	Hubzero_Document::addComponentStylesheet('com_answers');		
+	\Hubzero\Document\Assets::addComponentStylesheet('com_answers');		
 	
 	/*if ($this->count > 0 && ($this->count > $this->limit)) {
 		$tag = ($this->publication->type== 7) ? 'tool'.$this->publication->alias : 'publication'.$this->publication->id;
@@ -87,7 +86,7 @@ if ($this->rows) {
 			}
 
 			if ($row->question != '') {
-				$fulltext = htmlspecialchars(Hubzero_View_Helper_Html::purifyText(stripslashes($row->question)));
+				$fulltext = htmlspecialchars(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->question)));
 			} else {
 			 	$fulltext = stripslashes($row->subject);
 			}

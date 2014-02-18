@@ -122,8 +122,7 @@ class plgPublicationsFavorite extends JPlugin
 			if ($rtrn == 'all' || $rtrn == 'metadata') 
 			{
 				// Push some scripts to the template
-				ximport('Hubzero_Document');
-				Hubzero_Document::addPluginScript('publications', 'favorite');
+				\Hubzero\Document\Assets::addPluginScript('publications', 'favorite');
 
 				$database = JFactory::getDBO();
 
@@ -140,7 +139,6 @@ class plgPublicationsFavorite extends JPlugin
 					$cls = 'faved';
 				}
 
-				ximport('Hubzero_Plugin_View');
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'publications',

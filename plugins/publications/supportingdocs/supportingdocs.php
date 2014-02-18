@@ -120,8 +120,7 @@ class plgPublicationsSupportingDocs extends JPlugin
 			return $arr;
 		}*/
 				
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('publications', 'supportingdocs');
+		\Hubzero\Document\Assets::addPluginStylesheet('publications', 'supportingdocs');
 		
 		$database = JFactory::getDBO();
 		
@@ -132,7 +131,6 @@ class plgPublicationsSupportingDocs extends JPlugin
 		$jconfig = JFactory::getConfig();
 				
 		// Instantiate a view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'publications',

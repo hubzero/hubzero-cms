@@ -159,8 +159,8 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			Hubzero_Document::addPluginStylesheet('publications', 'reviews');
-			Hubzero_Document::addPluginScript('publications', 'reviews');
+			\Hubzero\Document\Assets::addPluginStylesheet('publications', 'reviews');
+			\Hubzero\Document\Assets::addPluginScript('publications', 'reviews');
 			
 			// Did they perform an action?
 			// If so, they need to be logged in first.
@@ -191,7 +191,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			$voting = $this->_params->get('voting');
 			if ($voting) 
 			{
-				Hubzero_Document::addComponentStylesheet('com_answers', 'assets/css/vote.css');
+				\Hubzero\Document\Assets::addComponentStylesheet('com_answers', 'assets/css/vote.css');
 			}
 			
 			// Pass the view some info

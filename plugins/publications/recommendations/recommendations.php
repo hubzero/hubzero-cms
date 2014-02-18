@@ -103,7 +103,6 @@ class plgPublicationRecommendations extends JPlugin
 		$results = $r->getResults($filters);
 		
 		// Instantiate a view
-		ximport('Hubzero_Plugin_View');
 		if ($miniview) 
 		{
 			$view = new Hubzero_Plugin_View(
@@ -117,8 +116,7 @@ class plgPublicationRecommendations extends JPlugin
 		} 
 		else 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginScript('resources', 'recommendations');
+			\Hubzero\Document\Assets::addPluginScript('resources', 'recommendations');
 			
 			$view = new Hubzero_Plugin_View(
 				array(

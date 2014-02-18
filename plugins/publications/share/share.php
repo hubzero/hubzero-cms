@@ -115,15 +115,13 @@ class plgPublicationsShare extends JPlugin
 			return;
 		}
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('publications', 'share');
-		Hubzero_Document::addPluginScript('publications', 'share');
+		\Hubzero\Document\Assets::addPluginStylesheet('publications', 'share');
+		\Hubzero\Document\Assets::addPluginScript('publications', 'share');
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
 			// Instantiate a view
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'=>'publications',
