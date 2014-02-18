@@ -44,13 +44,13 @@ if ($this->a->get('type') == 'video')
 	<div class="sortable-assets-handle"></div>
 	<div class="asset-item-title title toggle-editable"><?= $this->escape(stripslashes($this->a->get('title'))) ?></div>
 	<div class="title-edit">
-		<form action="/api/courses/asset/save" class="asset-title-form">
+		<form action="<?php echo JURI::base(true); ?>/api/courses/asset/save" class="asset-title-form">
 			<input class="title-text" name="title" type="text" value="<?= $this->a->get('title') ?>" />
 			<input class="asset-title-save" type="submit" value="Save" />
 			<input class="asset-title-reset" type="reset" value="Cancel" />
-			<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-			<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
-			<input type="hidden" name="id" value="<?= $this->a->get('id') ?>" />
+			<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
+			<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
+			<input type="hidden" name="id" value="<?= $this->a->get('id'); ?>" />
 		</form>
 	</div>
 	<a class="asset-preview" href="<?= $href ?>" title="preview"></a>
@@ -59,7 +59,7 @@ if ($this->a->get('type') == 'video')
 		<a class="asset-edit-deployment" href="#" title="edit deployment"<?php echo ($this->a->get('state') != 1) ? ' style="display:none;"': ''; ?>></a>
 	<?php endif; ?>
 	<a class="asset-delete" href="#" title="delete"></a>
-	<form action="/api/courses/asset/togglepublished" class="next-step-publish">
+	<form action="<?php echo JURI::base(true); ?>/api/courses/asset/togglepublished" class="next-step-publish">
 		<span class="next-step-publish">
 			<label class="published-label" for="published">
 				<span class="published-label-text"><?= ($this->a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published' ?></span>
@@ -68,11 +68,11 @@ if ($this->a->get('type') == 'video')
 					name="published"
 					type="checkbox"
 					<?= ($this->a->get('state') == 0) ? '' : 'checked="checked"' ?> />
-				<input type="hidden" class="asset_id" name="id" value="<?= $this->a->get('id') ?>" />
-				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
+				<input type="hidden" class="asset_id" name="id" value="<?= $this->a->get('id'); ?>" />
+				<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
+				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id'); ?>" />
 				<input type="hidden" name="scope" value="asset_group" />
-				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+				<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
 			</label>
 		</span>
 	</form>

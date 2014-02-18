@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-Hubzero_Document::addSystemScript('jquery.fancyselect.min');
-Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
+\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 
 // Get our asset model
 $asset = new CoursesModelAsset(JRequest::getInt('asset_id', null));
@@ -55,7 +55,7 @@ $tool_path = $config->get('tool_path');
 <div class="edit-asset">
 	<h3>Edit Asset</h3>
 
-	<form action="/api/courses/asset/save" method="POST" class="edit-form">
+	<form action="<?php echo JURI::base(true); ?>/api/courses/asset/save" method="POST" class="edit-form">
 
 		<p>
 			<label for="title">Title:</label>
@@ -128,7 +128,7 @@ $tool_path = $config->get('tool_path');
 
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
-		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
 		<input type="hidden" name="id" value="<?= $asset->get('id') ?>" />
 
 		<input type="submit" value="Submit" class="submit" />

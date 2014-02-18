@@ -31,13 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+$this->js();
+
 $juser = JFactory::getUser();
 ?>
 <div class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_HINT'); ?></p>
 		</div><!-- /.aside -->
@@ -86,7 +89,7 @@ $juser = JFactory::getUser();
 
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
-			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>">
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>">
 				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CANCEL'); ?>
 			</a>
 		</p>
@@ -98,7 +101,7 @@ $juser = JFactory::getUser();
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="action" value="save" />
 

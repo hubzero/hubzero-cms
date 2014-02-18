@@ -36,21 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * Courses Plugin class for related course
  */
-class plgCoursesRelated extends JPlugin
+class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return data on a course view (this will be some form of HTML)

@@ -37,13 +37,13 @@ $publish_down = (!is_null($unit->get('publish_down')) && $unit->get('publish_dow
 ?>
 
 <div class="main section <?php echo $this->scope; ?>-edit">
-	<form action="/api/courses/unit/save" class="edit-form unit-edit-form">
+	<form action="<?php echo JURI::base(true); ?>/api/courses/unit/save" class="edit-form unit-edit-form">
 		<input type="text" value="<?php echo $publish_up; ?>"   name="publish_up"   id="publish_up"   class="datepicker" placeholder="Start publishing on" />
 		<input type="text" value="<?php echo $publish_down; ?>" name="publish_down" id="publish_down" class="datepicker" placeholder="Stop publishing on" />
 
 		<input type="hidden" name="id" value="<?php echo $this->scope_id; ?>" />
 		<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
 		<input type="hidden" name="section_id" value="<?= $this->course->offering()->section()->get('id') ?>" />
 
 		<input type="submit" name="submit" value="Save" />

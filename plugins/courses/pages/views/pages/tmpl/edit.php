@@ -30,23 +30,16 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'  => 'courses',
-		'element' => 'pages',
-		'name'    => 'pages',
-		'layout'  => 'default_menu'
-	)
-);
-$view->option     = $this->option;
-$view->controller = $this->controller;
-$view->course     = $this->course;
-$view->offering   = $this->offering;
-$view->page       = $this->model;
-$view->pages      = $this->pages;
-$view->display();
+$this->view('default_menu')
+     ->set('option', $this->option)
+     ->set('controller', $this->controller)
+     ->set('course', $this->course)
+     ->set('offering', $this->offering)
+     ->set('page', $this->model)
+     ->set('pages', $this->pages)
+     ->display();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
+$base = $this->offering->link() . '&active=pages';
 ?>
 
 <div class="pages-wrap">
@@ -133,7 +126,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 			<input type="hidden" name="active" value="pages" />
 			<input type="hidden" name="action" value="save" />
-			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 		</form>
 
 		<div class="clear"></div>

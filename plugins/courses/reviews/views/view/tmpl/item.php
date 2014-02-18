@@ -55,8 +55,8 @@ defined('_JEXEC') or die('Restricted access');
 
 	$xuser = new Hubzero_User_Profile();
 	$xuser->load($this->comment->created_by);
-	
-	$rtrn = $this->url ? $this->url : JRequest::getVar('REQUEST_URI', 'index.php?option=' . $this->option . '&gid=' . $this->obj->get('alias') . '&active=reviews', 'server');
+
+	$rtrn = $this->url ? $this->url : JRequest::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
 	if (!strstr($rtrn, 'index.php'))
 	{
 		$rtrn .= '?';
@@ -80,24 +80,17 @@ defined('_JEXEC') or die('Restricted access');
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->id; ?>">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"></span>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $this->comment->anonymous); ?>" alt="" />
+				<img src="<?php echo $xuser->getPicture($this->comment->anonymous); ?>" alt="" />
 			</p>
 			<div class="comment-content">
 				<?php
 				if ($this->params->get('comments_votable', 1))
 				{
-					$view = new Hubzero_Plugin_View(
-						array(
-							'folder'  => 'courses',
-							'element' => 'reviews',
-							'name'    => 'view',
-							'layout'  => 'vote'
-						)
-					);
-					$view->option = $this->option;
-					$view->item   = $this->comment;
-					$view->url    = $this->url;
-					$view->display();
+					$this->view('vote')
+					     ->set('option', $this->option)
+					     ->set('item', $this->comment)
+					     ->set('url', $this->url)
+					     ->display();
 				}
 				?>
 				<p class="comment-title">
@@ -218,23 +211,16 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 			if ($this->comment->replies) 
 			{
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'courses',
-						'element' => 'reviews',
-						'name'    => 'view',
-						'layout'  => 'list'
-					)
-				);
-				$view->option     = $this->option;
-				$view->comments   = $this->comment->replies;
-				$view->obj_type   = $this->obj_type;
-				$view->obj        = $this->obj;
-				$view->params     = $this->params;
-				$view->depth      = $this->depth;
-				$view->url        = $this->url;
-				$view->cls        = $cls;
-				$view->display();
+				$this->view('list')
+				     ->set('option', $this->option)
+				     ->set('comments', $this->comment->replies)
+				     ->set('obj_type', $this->obj_type)
+				     ->set('obj', $this->obj)
+				     ->set('params', $this->params)
+				     ->set('depth', $this->depth)
+				     ->set('url', $this->url)
+				     ->set('cls', $cls)
+				     ->display();
 			}
 			?>
 		</li>

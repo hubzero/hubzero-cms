@@ -30,15 +30,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-error_reporting(E_ALL);
-	@ini_set('display_errors', '1');
+
 $juser = JFactory::getUser();
 
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_User_Profile_Helper');
-
 $units = $this->course->offering()->units();
-$unit = $this->course->offering()->unit($this->unit);
+$unit  = $this->course->offering()->unit($this->unit);
 
 if (!$unit)
 {
@@ -53,8 +49,8 @@ if (!$lecture)
 	JError::raiseError(404, JText::_('uh-oh'));
 }
 
-$base    = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&active=outline';
-$altBase = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
+$base    = $this->course->offering()->link() . '&active=outline';
+$altBase = $this->course->offering()->link();
 $current = $unit->assetgroups()->key();
 
 if (!$this->course->offering()->access('view')) { ?>

@@ -31,6 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+if ($this->params->get('allowClose', 1))
+{
+	$this->js();
+}
+
 $rows = $this->offering->announcements(array(
 	'limit'     => $this->params->get('display_limit', 1), 
 	'published' => true

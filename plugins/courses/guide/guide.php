@@ -87,8 +87,8 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 
 		if (!isset($tmpl) || $tmpl != 'component')
 		{
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-			Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
+			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
+			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name, 'guide.overlay');
 		}
 
 		$area = array(
@@ -133,7 +133,6 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				//return $arr;
 				$return = 'metadata';
 			}
 		}
@@ -141,10 +140,6 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			//ximport('Hubzero_Document');
-			//Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-			//Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
-
 			$active = strtolower(JRequest::getWord('unit', ''));
 
 			if ($active == 'mark')

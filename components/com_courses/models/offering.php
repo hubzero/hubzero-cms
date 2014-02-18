@@ -287,6 +287,13 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function section($id=null)
 	{
+		if ($id instanceof CoursesModelSection)
+		{
+			$this->_link = null;
+			$this->_section = $id;
+			return $this->_section;
+		}
+
 		if (!isset($this->_section) 
 		 || ($id !== null && (int) $this->_section->get('id') != $id && (string) $this->_section->get('alias') != $id))
 		{
@@ -1320,8 +1327,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$course = CoursesModelCourse::getInstance($this->get('course_id'));
 				$this->set('course_alias', $course->get('alias'));
 			}
-			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('course_alias') . '&offering=' . $this->get('alias');
-			$this->_link .= ($this->section()->get('alias') != '__default') ? ':' . $this->section()->get('alias') : '';
+			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('course_alias') . '&offering=' . $this->alias();
 		}
 
 		// If it doesn't exist or isn't published
@@ -1364,6 +1370,16 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Get the offering alias with section alias
+	 * 
+	 * @return     string
+	 */
+	public function alias()
+	{
+		return $this->get('alias') . ($this->section()->get('is_default') ? '' : ':' . $this->section()->get('alias'));
 	}
 }
 

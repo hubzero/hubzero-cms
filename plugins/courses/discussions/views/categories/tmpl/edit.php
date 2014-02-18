@@ -47,7 +47,7 @@ $juser = JFactory::getUser();
 		<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_HINT'); ?></p>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions'); ?>" method="post" id="commentform">
+		<form action="<?php echo JRoute::_($this->offering->link() . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<?php
 				$jxuser = new Hubzero_User_Profile();
@@ -100,7 +100,7 @@ $juser = JFactory::getUser();
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 			<input type="hidden" name="active" value="discussions" />
 			<input type="hidden" name="unit" value="manage" />
 			<input type="hidden" name="action" value="savecategory" />

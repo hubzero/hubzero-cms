@@ -40,7 +40,7 @@ $asset = new CoursesModelAsset($id);
 <div class="wiki-edit">
 	<h3>Create a wiki page</h3>
 
-	<form action="/api/courses/asset/new" method="POST" class="edit-form">
+	<form action="<?php echo JURI::base(true); ?>/api/courses/asset/new" method="POST" class="edit-form">
 
 		<div class="title-error error">Please provide a title first</div>
 		<p>
@@ -49,12 +49,7 @@ $asset = new CoursesModelAsset($id);
 		</p>
 
 		<label for="content">Content: </label>
-<?php
-		ximport('Hubzero_Wiki_Editor');
-		$editor = Hubzero_Wiki_Editor::getInstance();
-
-		echo $editor->display('content', 'content', $asset->get('content'), '', '35', '10');
-?>
+		<?php echo Hubzero_Wiki_Editor::getInstance()->display('content', 'content', $asset->get('content'), '', '35', '10'); ?>
 
 <?php // @TODO: implement asset insertion to wiki body! ?>
 
@@ -134,7 +129,7 @@ $asset = new CoursesModelAsset($id);
 
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
 		<input type="hidden" name="id" id="asset_id" value="<?= $id ?>" />
 		<input type="hidden" name="type" value="wiki" />
 

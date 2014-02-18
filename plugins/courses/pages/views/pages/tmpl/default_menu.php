@@ -30,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
+$base = $this->offering->link() . '&active=pages';
 ?>
 <div class="pages-menu">
 	<ul>

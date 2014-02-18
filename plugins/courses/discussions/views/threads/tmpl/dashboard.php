@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
+$base = $this->course->offering()->link();
 
 $instructors = array();
 
@@ -78,6 +78,7 @@ if (count($inst) > 0)
 							
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+							<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 							<input type="hidden" name="active" value="discussions" />
 							<input type="hidden" name="action" value="search" />
 						</fieldset>
@@ -113,28 +114,20 @@ if (count($inst) > 0)
 						</div><!-- / .category-header -->
 						<div class="category-content">
 							<?php 
-							//print_r($this->post);
-							$view = new Hubzero_Plugin_View(
-								array(
-									'folder'  => 'courses',
-									'element' => 'discussions',
-									'name'    => 'threads',
-									'layout'  => '_threads'
-								)
-							);
-							$view->category    = 'categoryreplies';
-							$view->option      = $this->option;
-							$view->threads     = $this->post->find($filters);
-							$view->unit        = ''; //$row->alias; //$this->unit;
-							$view->lecture     = 0; //$this->lecture;
-							$view->config      = $this->config;
-							$view->instructors = $instructors;
-							$view->cls         = 'odd';
-							$view->base        = $base;
-							$view->course      = $this->course;
-							$view->prfx        = 'mine';
-							$view->active      = $this->thread;
-							$view->display();
+							$this->view('_threads')
+							     ->set('category', 'categoryreplies')
+							     ->set('option', $this->option)
+							     ->set('threads', $this->post->find($filters))
+							     ->set('unit', '')
+							     ->set('lecture', 0)
+							     ->set('config', $this->config)
+							     ->set('instructors', $instructors)
+							     ->set('cls', 'odd')
+							     ->set('base', $base)
+							     ->set('course', $this->course)
+							     ->set('prfx', 'mine')
+							     ->set('active', $this->thread)
+							     ->display();
 							?>
 						</div><!-- / .category-content -->
 					</div><!-- / .category -->
@@ -158,27 +151,20 @@ if (count($inst) > 0)
 						</div><!-- / .category-header -->
 						<div class="category-content">
 							<?php 
-							$view = new Hubzero_Plugin_View(
-								array(
-									'folder'  => 'courses',
-									'element' => 'discussions',
-									'name'    => 'threads',
-									'layout'  => '_threads'
-								)
-							);
-							$view->category    = 'categorynew';
-							$view->option      = $this->option;
-							$view->threads     = $this->post->find($filters);
-							$view->unit        = ''; //$row->alias; //$this->unit;
-							$view->lecture     = 0; //$this->lecture;
-							$view->config      = $this->config;
-							$view->instructors = $instructors;
-							$view->cls         = 'odd';
-							$view->base        = $base;
-							$view->course      = $this->course;
-							$view->prfx        = 'new';
-							$view->active      = $this->thread;
-							$view->display();
+							$this->view('_threads')
+							     ->set('category', 'categorynew')
+							     ->set('option', $this->option)
+							     ->set('threads', $this->post->find($filters))
+							     ->set('unit', '')
+							     ->set('lecture', 0)
+							     ->set('config', $this->config)
+							     ->set('instructors', $instructors)
+							     ->set('cls', 'odd')
+							     ->set('base', $base)
+							     ->set('course', $this->course)
+							     ->set('prfx', 'new')
+							     ->set('active', $this->thread)
+							     ->display();
 							?>
 						</div><!-- / .category -->
 					</div><!-- / .category -->
@@ -217,7 +203,8 @@ if (count($inst) > 0)
 								</strong> 
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
 									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
@@ -290,7 +277,7 @@ if (count($inst) > 0)
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 

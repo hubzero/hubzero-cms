@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+$this->js();
+
 $juser = JFactory::getUser();
 
 $filters = $this->filters;
@@ -43,7 +46,7 @@ $filters['count'] = false;
 $rows = $this->offering->announcements($filters);
 $manager = $this->offering->access('manage', 'section');
 
-$base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=announcements';
+$base = $this->offering->link() . '&active=announcements';
 ?>
 <div class="course_members">
 	<h3 class="heading">
@@ -126,7 +129,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 		<div class="clear"></div>
 
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
 

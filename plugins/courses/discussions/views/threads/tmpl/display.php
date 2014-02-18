@@ -30,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
+$base = $this->offering->link() . '&active=forum';
 ?>
 <div class="filters">
 	<div class="filters-inner">
@@ -115,26 +115,19 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					}
 				}
 				echo '<input type="hidden" name="lastchange" id="lastchange" value="' . $last . '" />';
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'courses',
-						'element' => 'forum',
-						'name'    => 'threads',
-						'layout'  => 'list'
-					)
-				);
-				$view->option     = $this->option;
-				$view->comments   = $this->rows;
-				$view->post       = $this->post;
-				$view->unit       = $this->category->alias;//$this->unit->get('alias');
-				$view->lecture    = $this->post->id;
-				$view->config     = $this->config;
-				$view->depth      = 0;
-				$view->cls        = 'odd';
-				$view->base       = $base;
-				$view->attach     = $this->attach;
-				$view->course     = $this->course;
-				$view->display();
+				$this->view('list')
+				     ->set('option', $this->option)
+				     ->set('comments', $this->rows)
+				     ->set('post', $this->post)
+				     ->set('unit', $this->category->alias)
+				     ->set('lecture', $this->post->id)
+				     ->set('config', $this->config)
+				     ->set('depth', 0)
+				     ->set('cls', 'odd')
+				     ->set('base', $base)
+				     ->set('attach', $this->attach)
+				     ->set('course', $this->course)
+				     ->display();
 			} 
 			else 
 			{
@@ -237,7 +230,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />

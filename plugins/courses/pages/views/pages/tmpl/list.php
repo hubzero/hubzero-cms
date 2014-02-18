@@ -35,7 +35,7 @@ $no_html = JRequest::getVar('no_html', 0);
 
 $section = JRequest::getInt('section_id', 0);
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
+$base = $this->offering->alias() . '&active=pages';
 
 if (!$no_html) { ?>
 <script type="text/javascript">

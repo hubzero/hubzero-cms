@@ -36,7 +36,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 ?>
 
 <div class="edit-assetgroup">
-	<form action="/api/courses/assetgroup/save" method="POST" class="edit-form">
+	<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save" method="POST" class="edit-form">
 
 		<p>
 			<label for="title">Title:</label>
@@ -89,7 +89,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 ?>
 
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
 		<input type="hidden" name="id" value="<?= $ag->get('id') ?>" />
 
 		<input type="submit" value="Submit" class="submit" />

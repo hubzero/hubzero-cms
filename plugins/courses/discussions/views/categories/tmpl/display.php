@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
+$base = $this->offering->link() . '&active=forum';
 ?>
 <!-- <ul id="page_options">
 	<li>
@@ -49,7 +49,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-					<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
+					<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 					<input type="hidden" name="active" value="forum" />
 					<input type="hidden" name="action" value="search" />
 				</fieldset>

@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $now = JFactory::getDate();
 
 $year  = JHTML::_('date', $now, 'Y');
@@ -51,7 +53,7 @@ $query  = "SELECT sd.*
 $database->setQuery($query);
 $rows = $database->loadObjectList();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '');
+$base = $this->offering->link();
 ?>
 
 	<h3 class="heading">
@@ -101,8 +103,9 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				</div>
 			<?php if ($rows) { ?>
 				<ul class="dashboard-timeline">
-				<?php foreach ($rows as $i => $row) { 
-
+				<?php 
+				foreach ($rows as $i => $row) 
+				{
 					switch ($row->scope)
 					{
 						case 'unit':
@@ -138,7 +141,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					{
 						break;
 					}
-				} ?>
+				}
+				?>
 				</ul>
 			<?php } else { ?>
 				<ul class="dashboard-timeline">

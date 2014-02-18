@@ -58,7 +58,7 @@ $this->css();
 		?>
 		<div class="course-block col span-third<?php if ($cls) { echo $cls; } ?>">
 			<h4>
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $course->get('alias')); ?>">
+				<a href="<?php echo JRoute::_($course->link()); ?>">
 					<?php echo $this->escape(stripslashes($course->get('title'))); ?>
 				</a>
 			</h4>
@@ -67,7 +67,7 @@ $this->css();
 					<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 500); ?>
 				</div>
 				<p class="action">
-					<a class="btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $course->get('alias') . '&active=overview'); ?>">
+					<a class="btn" href="<?php echo JRoute::_($course->link() . '&active=overview'); ?>">
 						<?php echo JText::_('PLG_COURSES_RELATED_OVERVIEW'); ?>
 					</a>
 				</p>

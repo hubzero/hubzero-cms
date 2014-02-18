@@ -41,23 +41,16 @@ $edit = JRequest::getInt('editcomment', 0);
 			<?php echo JText::_('PLG_COURSES_REVIEWS'); ?>
 		</h3>
 	<?php if ($this->comments) {
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'courses',
-				'element' => 'reviews',
-				'name'    => 'view',
-				'layout'  => 'list'
-			)
-		);
-		$view->option     = $this->option;
-		$view->comments   = $this->comments;
-		$view->obj_type   = $this->obj_type;
-		$view->obj        = $this->obj;
-		$view->params     = $this->params;
-		$view->depth      = $this->depth;
-		$view->url        = $this->url;
-		$view->cls        = 'odd';
-		$view->display();
+		$this->view('list')
+		     ->set('option', $this->option)
+		     ->set('comments', $this->comments)
+		     ->set('obj_type', $this->obj_type)
+		     ->set('obj', $this->obj)
+		     ->set('params', $this->params)
+		     ->set('depth', $this->depth)
+		     ->set('url', $this->url)
+		     ->set('cls', 'odd')
+		     ->display();
 	} else if ($this->depth <= 1) { ?>
 		<div class="no-reviews">
 			<?php if ($this->obj->isManager()) { ?>

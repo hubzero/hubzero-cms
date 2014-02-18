@@ -132,7 +132,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
 
 			// Course and action
 			$this->course = $course;
@@ -159,8 +159,8 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 				break;
 
 				default:
-					Hubzero_Document::addPluginScript('courses', $this->_name);
-					Hubzero_Document::addSystemScript('jquery.masonry');
+					\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
+					\Hubzero\Document\Assets::addSystemScript('jquery.masonry');
 					$this->_display();
 				break;
 			}
@@ -218,13 +218,13 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 			// Setup view
 			$this->view->setLayout("edit{$scope}");
 
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name, 'build.css');
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name, $scope.'.css');
-			Hubzero_Document::addPluginScript('courses', $this->_name, $scope);
+			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, 'build.css');
+			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, $scope.'.css');
+			\Hubzero\Document\Assets::addPluginScript('courses', $this->_name, $scope);
 
 			// Add file uploader JS
-			Hubzero_Document::addSystemScript('jquery.iframe-transport');
-			Hubzero_Document::addSystemScript('jquery.fileupload');
+			\Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
+			\Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
 
 			$this->view->title         = "Edit {$scope}";
 			$this->view->scope         = $scope;
@@ -234,20 +234,20 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add outline builder style and script
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name, 'build.css');
-		Hubzero_Document::addPluginScript('courses', $this->_name, 'build');
+		\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, 'build.css');
+		\Hubzero\Document\Assets::addPluginScript('courses', $this->_name, 'build');
 
 		// Add underscore
-		Hubzero_Document::addSystemScript('underscore-min');
-		Hubzero_Document::addSystemScript('jquery.hoverIntent');
+		\Hubzero\Document\Assets::addSystemScript('underscore-min');
+		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
 
 		// Add 'uniform' js and css
-		Hubzero_Document::addSystemStylesheet('uniform.css');
-		Hubzero_Document::addSystemScript('jquery.uniform');
+		\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
 
 		// Add file uploader JS
-		Hubzero_Document::addSystemScript('jquery.iframe-transport');
-		Hubzero_Document::addSystemScript('jquery.fileupload');
+		\Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
+		\Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
 
 		// Setup view
 		$this->view->setLayout('build');

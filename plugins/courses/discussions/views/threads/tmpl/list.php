@@ -66,27 +66,20 @@ if ($this->comments && is_array($this->comments))
 
 	foreach ($this->comments as $comment) 
 	{
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'courses',
-				'element' => 'discussions',
-				'name'    => 'threads',
-				'layout'  => 'comment'
-			)
-		);
-		$view->option     = $this->option;
-		$view->comment    = $comment;
-		$view->post       = $this->post;
-		$view->unit       = $this->unit;
-		$view->lecture    = $this->lecture;
-		$view->config     = $this->config;
-		$view->depth      = $this->depth;
-		$view->cls        = $cls;
-		$view->base       = $this->base;
-		$view->attach     = $this->attach;
-		$view->course     = $this->course;
-		$view->search     = $this->search;
-		$view->display();
+		$this->view('comment')
+		     ->set('option', $this->option)
+		     ->set('comment', $comment)
+		     ->set('post', $this->post)
+		     ->set('unit', $this->unit)
+		     ->set('lecture', $this->lecture)
+		     ->set('config', $this->config)
+		     ->set('depth', $this->depth)
+		     ->set('cls', $cls)
+		     ->set('base', $this->base)
+		     ->set('attach', $this->attach)
+		     ->set('course', $this->course)
+		     ->set('search', $this->search)
+		     ->display();
 	}
 }
 ?>

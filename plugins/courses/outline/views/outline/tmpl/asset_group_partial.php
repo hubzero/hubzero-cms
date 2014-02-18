@@ -39,39 +39,39 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p>Drag files here to upload</p>
 		<p>or</p>
 		<div class="aux-attachments">
-			<form action="/api/courses/asset/new" class="aux-attachments-form attach-link">
+			<form action="<?php echo JURI::base(true); ?>/api/courses/asset/new" class="aux-attachments-form attach-link">
 				<label for"content" class="aux-attachments-content-label">Attach a link:</label>
 				<textarea class="input-content" name="content" placeholder="" rows="5"></textarea>
 				<input class="input-type" type="hidden" name="type" value="link" />
 				<input class="aux-attachments-submit" type="submit" value="Add" />
 				<input class="aux-attachments-cancel" type="reset" value="Cancel" />
-				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
-				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
-				<a href="/help/courses/builder" target="_blank" class="help-info">help</a>
+				<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
+				<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
+				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id'); ?>" />
+				<a href="<?php echo JURI::base(true); ?>/help/courses/builder" target="_blank" class="help-info">help</a>
 			</form>
 			<a href="#" title="Attach a link" class="attach-link"></a>
 			<a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>
 			<a href="#" title="Include a wiki page" class="attach-wiki"></a>
 			<a href="#" title="Browse for files" class="browse-files"></a>
 		</div>
-		<form action="/api/courses/asset/new" class="uploadfiles-form">
+		<form action="<?php echo JURI::base(true); ?>/api/courses/asset/new" class="uploadfiles-form">
 			<input type="file" name="files[]" class="fileupload" multiple />
-			<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-			<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
-			<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
+			<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
+			<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
+			<input type="hidden" name="scope_id" value="<?= $this->ag->get('id'); ?>" />
 		</form>
 	</div>
 	<div class="asset-group-item-container">
 		<div class="asset-group-item-title title toggle-editable"><?= $this->ag->get('title') ?></div>
 		<div class="title-edit">
-			<form action="/api/courses/assetgroup/save" class="assetgroup-title-form">
-				<input class="title-text" name="title" type="text" value="<?= $this->ag->get('title') ?>" />
+			<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save" class="assetgroup-title-form">
+				<input class="title-text" name="title" type="text" value="<?= $this->ag->get('title'); ?>" />
 				<input class="assetgroup-title-save" type="submit" value="Save" />
 				<input class="assetgroup-title-reset" type="reset" value="Cancel" />
-				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
-				<input type="hidden" name="id" value="<?= $this->ag->get('id') ?>" />
+				<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
+				<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
+				<input type="hidden" name="id" value="<?= $this->ag->get('id'); ?>" />
 			</form>
 		</div>
 <?php
@@ -90,24 +90,17 @@ if ($this->ag->assets()->total())
 			{
 				$hasPublishedAssets = true;
 
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'courses',
-						'element' => 'outline',
-						'name'    => 'outline',
-						'layout'  => 'asset_partial'
-					)
-				);
-				$view->base   = $this->base;
-				$view->course = $this->course;
-				$view->unit   = $this->unit;
-				$view->ag     = $this->ag;
-				$view->a      = $a;
-				$view->display();
+				$this->view('asset_partial')
+				     ->set('base', $this->base)
+				     ->set('course', $this->course)
+				     ->set('unit', $this->unit)
+				     ->set('ag', $this->ag)
+				     ->set('a', $a)
+				     ->display();
 			}
 		}
 
-		if(!$hasPublishedAssets) // There are assets, but none are published
+		if (!$hasPublishedAssets) // There are assets, but none are published
 		{
 ?>
 			<li class="asset-item asset missing nofiles">

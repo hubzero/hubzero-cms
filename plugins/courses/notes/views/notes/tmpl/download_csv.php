@@ -46,7 +46,7 @@ if ($notes)
 	}
 }
 
-$base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias');
+$base = $this->offering->link();
 
 	if ($results)
 	{

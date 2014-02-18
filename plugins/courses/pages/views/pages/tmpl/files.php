@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
+$base = $this->offering->link() . '&active=pages';
 ?>
 	<div id="attachments">
 		<form action="<?php echo JRoute::_($base); ?>" id="adminForm" method="post" enctype="multipart/form-data">
@@ -62,7 +62,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				<input type="hidden" name="section_id" value="<?php echo $this->escape($this->page->get('section_id')); ?>" />
 				<input type="hidden" name="active" value="pages" />
 				<input type="hidden" name="action" value="upload" />
-				<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 			</fieldset>
 		</form>
 <?php if ($this->getError()) { ?>

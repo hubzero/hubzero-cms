@@ -151,7 +151,7 @@ defined('_JEXEC') or die('Restricted access');
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 						<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_($this->base)); ?>" />
@@ -190,29 +190,22 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3)) 
 		{
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'courses',
-					'element' => 'discussions',
-					'name'    => 'threads',
-					'layout'  => 'list'
-				)
-			);
-			$view->parent     = $this->comment->get('id');
-			$view->thread     = $this->comment->get('thread');
-			$view->option     = $this->option;
-			$view->comments   = $this->comment->get('replies');
-			$view->post       = $this->post;
-			$view->unit       = $this->unit;
-			$view->lecture    = $this->lecture;
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->base       = $this->base;
-			$view->attach     = $this->attach;
-			$view->course     = $this->course;
-			$view->search     = $this->search;
-			$view->display();
+			$this->view('list')
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('thread', $this->comment->get('thread'))
+			     ->set('option', $this->option)
+			     ->set('comments', $this->comment->get('replies'))
+			     ->set('post', $this->post)
+			     ->set('unit', $this->unit)
+			     ->set('lecture', $this->lecture)
+			     ->set('config', $this->config)
+			     ->set('depth', $this->depth)
+			     ->set('cls', $cls)
+			     ->set('base', $this->base)
+			     ->set('attach', $this->attach)
+			     ->set('course', $this->course)
+			     ->set('search', $this->search)
+			     ->display();
 		}
 		?>
 	</li>

@@ -48,7 +48,7 @@ $this->js('courses.overview.js');
 	</h2>
 	<?php if ($this->course->get('logo')) { ?>
 	<p class="course-identity">
-		<img src="/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+		<img src="<?php echo JURI::base(true); ?>/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
 	</p>
 	<?php } ?>
 	<p id="page_identity">

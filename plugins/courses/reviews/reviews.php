@@ -31,30 +31,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'reviews' . DS . 'tables' . DS . 'review.php');
 
 /**
  * Resources Plugin class for review
  */
-class plgCoursesReviews extends JPlugin
+class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 {
-	private $_pushscripts = true;
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Push scripts to the document?
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	private $_pushscripts = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -109,12 +105,12 @@ class plgCoursesReviews extends JPlugin
 		$this->option     = JRequest::getCmd('option', 'com_courses');
 		$this->controller = JRequest::getWord('controller', 'course');
 
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+		\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			Hubzero_Document::addPluginScript('courses', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
 
 			$this->view = new Hubzero_Plugin_View(
 				array(
@@ -130,7 +126,7 @@ class plgCoursesReviews extends JPlugin
 			$this->view->controller = $this->controller;
 			$this->view->obj      = $this->obj      = $course;
 			$this->view->obj_type = $this->obj_type = substr($this->option, 4);
-			$this->view->url      = $this->url      = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->obj->get('alias') . '&active=' . $this->_name, false, true);
+			$this->view->url      = $this->url      = JRoute::_($course->link() . '&active=' . $this->_name, false, true);
 			$this->view->depth    = 0;
 			$this->view->tbl      = $tbl;
 
@@ -300,7 +296,7 @@ class plgCoursesReviews extends JPlugin
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
-		$url = ($url != '') ? $url : JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->obj->get('id') . '&active=reviews'), 'server');
+		$url = ($url != '') ? $url : JRequest::getVar('REQUEST_URI', JRoute::_($this->obj->link() . '&active=reviews'), 'server');
 		$url = str_replace('&amp;', '&', $url);
 
 		$msg = ($msg) ? $msg : '';

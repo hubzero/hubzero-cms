@@ -5,7 +5,7 @@ $juser = JFactory::getUser();
 
 $ct = count($this->sections);
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions&unit=manage';
+$base = $this->offering->link() . '&active=discussions&unit=manage';
 ?>
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
@@ -116,6 +116,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<input type="hidden" name="fields[scope_id]" value="<?php echo $section->scope_id; ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 						<input type="hidden" name="action" value="savesection" />
 						<input type="hidden" name="unit" value="manage" />
 						<input type="hidden" name="active" value="discussions" />
@@ -213,6 +214,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 	<?php if ($this->config->get('access-create-section')) { ?>
 		<div class="container">
 			<form method="post" action="<?php echo JRoute::_($base); ?>">
+				<fieldset>
 					<table class="entries categories">
 						<caption>
 							<label for="field-title">
@@ -230,6 +232,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+					<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 					<input type="hidden" name="fields[scope]" value="course" />
 					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->course->offering()->get('id'); ?>" />
 					<input type="hidden" name="active" value="discussions" />

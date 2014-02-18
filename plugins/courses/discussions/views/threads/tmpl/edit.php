@@ -35,7 +35,7 @@ $juser = JFactory::getUser();
 
 $no_html = JRequest::getInt('no_html', 0);
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->name;
+$base = $this->offering->link() . '&active=' . $this->name;
 if ($this->post->id) {
 	$action = $base . '&unit=' . $this->category->alias . '&b=' . $this->post->id;
 } else {
@@ -69,7 +69,8 @@ if ($this->post->id) {
 				</strong> 
 				<span class="permalink">
 					<span class="comment-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+					<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+					<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 				</span>
 			</p>
@@ -142,7 +143,7 @@ if ($this->post->id) {
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-		<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 		<input type="hidden" name="active" value="discussions" />
 		<input type="hidden" name="action" value="savethread" />
 

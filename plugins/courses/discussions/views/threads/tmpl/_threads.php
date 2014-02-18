@@ -55,25 +55,17 @@ if ($this->threads && is_array($this->threads))
 	$subs = array();
 	foreach ($this->threads as $thread) 
 	{
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'courses',
-				'element' => 'discussions',
-				'name'    => 'threads',
-				'layout'  => '_thread'
-			)
-		);
-		$view->option     = $this->option;
-		$view->course     = $this->course;
-		$view->unit       = $this->unit;
-		$view->lecture    = $this->lecture;
-		$view->config     = $this->config;
-
-		$view->thread     = $thread;
-		$view->cls        = $cls;
-		$view->base       = $this->base;
-		$view->search     = $this->search;
-		$view->active     = (isset($this->active) ? $this->active : '');
+		$view = $this->view('_thread');
+		$view->set('option', $this->option)
+		     ->set('course', $this->course)
+		     ->set('unit', $this->unit)
+		     ->set('lecture', $this->lecture)
+		     ->set('config', $this->config)
+		     ->set('thread', $thread)
+		     ->set('cls', $cls)
+		     ->set('base', $this->base)
+		     ->set('search', $this->search)
+		     ->set('active', (isset($this->active) ? $this->active : ''));
 
 		if (!$thread->scope_sub_id)
 		{
@@ -82,11 +74,11 @@ if ($this->threads && is_array($this->threads))
 
 		if (isset($this->instructors))
 		{
-			$view->instructors = $this->instructors;
+			$view->set('instructors', $this->instructors);
 		}
 		if (isset($this->prfx)) 
 		{
-			$view->prfx = $this->prfx;
+			$view->set('prfx', $this->prfx);
 		}
 		
 		$view->display();

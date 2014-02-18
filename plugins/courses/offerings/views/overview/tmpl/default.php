@@ -31,16 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Document');
-Hubzero_Document::addPluginStylesheet('courses', 'offerings');
+$this->css();
 ?>
 <div class="container">
 	<table class="entries">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('PLG_COURSES_OFFERINGS_OFFERING'); ?></th>
-				<th><?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLLED'); ?></th>
-				<th><?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLLMENT'); ?></th>
+				<th scope="col"><?php echo JText::_('PLG_COURSES_OFFERINGS_OFFERING'); ?></th>
+				<th scope="col"><?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLLED'); ?></th>
+				<th scope="col"><?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLLMENT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

@@ -31,27 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
 include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 
 /**
  * Courses Plugin class for store
  */
-class plgCoursesStore extends JPlugin
+class plgCoursesStore extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -120,7 +112,7 @@ class plgCoursesStore extends JPlugin
 
 		$product = null;
 
-		$url = 'index.php?option=com_courses&controller=offering&gid=' . $course->get('alias') . '&offering=' . $offering->get('alias') . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '') . '&task=enroll';
+		$url = $offering->link() . '&task=enroll';
 
 		if ($offering->params('store_product_id', 0))
 		{
@@ -138,7 +130,7 @@ class plgCoursesStore extends JPlugin
 
 		if (is_object($product) && $product->data->id)
 		{
-			$url = '/cart'; //index.php?option=com_storefront/product/' . $product->pId;
+			$url = 'index.php?option=com_cart'; //index.php?option=com_storefront/product/' . $product->pId;
 		}
 
 		return $url;
@@ -177,6 +169,7 @@ class plgCoursesStore extends JPlugin
 			if (!$params->get('store_product_id', 0))
 			{
 				include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+
 				$product = new StorefrontModelCourse();
 				$product->setName($title);
 				$product->setDescription($description);
@@ -212,7 +205,6 @@ class plgCoursesStore extends JPlugin
 			}
 			else
 			{
-				ximport('Hubzero_Storefront_Warehouse');
 				$warehouse = new StorefrontModelWarehouse();
 				try 
 				{
@@ -262,7 +254,6 @@ class plgCoursesStore extends JPlugin
 
 		if ($product = $params->get('store_product_id', 0))
 		{
-			ximport('Hubzero_Storefront_Warehouse');
 			$warehouse = new StorefrontModelWarehouse();
 			// Delete by existing course ID (pID returned with $course->add() when the course was created)
 			$warehouse->deleteProduct($product);
@@ -361,6 +352,7 @@ class plgCoursesStore extends JPlugin
 				//$section = new CorusesModelSection($model->get('section_id'));
 
 				include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+
 				$product = new StorefrontModelCourse();
 				$product->set('course_id', $model->find('course'));
 

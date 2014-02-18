@@ -50,7 +50,7 @@ $total = count($this->courses);
 			{
 				$sfx .= '&offering=' . $course->offering_alias;
 			}
-			if (isset($course->section_alias) && $course->section_alias != '__default')
+			if (isset($course->section_alias) && !$course->is_default)
 			{
 				$sfx .= ':' . $course->section_alias;
 			}

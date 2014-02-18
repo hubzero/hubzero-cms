@@ -61,12 +61,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div class="main section enroll-restricted">
 		<?php
-			foreach ($this->notifications as $notification) {
-				echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+			foreach ($this->notifications as $notification) 
+			{
+				echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 			}
 		?>
 
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') !== '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&task=enroll'); ?>" method="post" id="hubForm">
+		<form action="<?php echo JRoute::_($this->course->offering()->link() . '&task=enroll'); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<h3><?php echo JText::_('Code not working?'); ?></h3>
 				<p><?php echo JText::_('It may be possible that the code has already been redeemed.'); ?></p>

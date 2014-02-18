@@ -31,27 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
-
 /**
  * Courses Plugin class for course members
  */
-class plgCoursesAnnouncements extends JPlugin
+class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -128,7 +118,7 @@ class plgCoursesAnnouncements extends JPlugin
 		$pathway = JFactory::getApplication()->getPathway();
 		$pathway->addItem(
 			JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
-			'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->_name
+			$this->offering->link() . '&active=' . $this->_name
 		);
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
@@ -158,14 +148,6 @@ class plgCoursesAnnouncements extends JPlugin
 	 */
 	public function onCourseBeforeOutline($course, $offering)
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		if ($this->params->get('allowClose', 1))
-		{
-			Hubzero_Document::addPluginScript('courses', $this->_name);
-		}
-
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -189,11 +171,7 @@ class plgCoursesAnnouncements extends JPlugin
 	 */
 	public function onCourseDashboard($course, $offering)
 	{
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		Hubzero_Document::addPluginScript('courses', $this->_name, $this->_name . '.dashboard');
-
 		// Instantiate a vew
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -227,7 +205,6 @@ class plgCoursesAnnouncements extends JPlugin
 	{
 		// Get course members based on their status
 		// Note: this needs to happen *after* any potential actions ar performed above
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -248,10 +225,6 @@ class plgCoursesAnnouncements extends JPlugin
 		$view->filters['start']  = ($view->filters['limit'] == 0) ? 0 : $view->filters['start'];
 
 		$view->no_html = JRequest::getInt('no_html', 0);
-
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		Hubzero_Document::addPluginScript('courses', $this->_name);
 
 		if ($this->getError()) 
 		{
@@ -276,7 +249,6 @@ class plgCoursesAnnouncements extends JPlugin
 			return $this->_list();
 		}
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
@@ -296,10 +268,6 @@ class plgCoursesAnnouncements extends JPlugin
 			$model = CoursesModelAnnouncement::getInstance($id);
 		}
 		$view->model = $model;
-
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		Hubzero_Document::addPluginScript('courses', $this->_name);
 
 		if ($this->getError()) 
 		{

@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+$this->js('announcements.dashboard.js');
+
 $rows = $this->offering->announcements(array(
 	'limit'     => $this->params->get('display_limit', 1), 
 	'published' => true
@@ -76,7 +79,7 @@ $rows = $this->offering->announcements(array(
 
 			<div class="col span-half omega">
 				<h3><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?></h3>
-				<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="announcementForm" class="full">
+				<form action="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>" method="post" id="announcementForm" class="full">
 					<fieldset>
 						<legend>
 							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
@@ -107,7 +110,7 @@ $rows = $this->offering->announcements(array(
 
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-					<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
+					<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 					<input type="hidden" name="active" value="announcements" />
 					<input type="hidden" name="action" value="save" />
 

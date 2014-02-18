@@ -39,7 +39,7 @@ foreach ($plugins as $plugin)
 	$course_plugin_access[$plugin['name']] = $plugin['default_access'];
 }
 ?>
-<div id="guide-overlay" class="guide-wrap" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=' . $this->plugin . '&unit=mark'); ?>">
+<div id="guide-overlay" class="guide-wrap" data-action="<?php echo JRoute::_($this->offering->link() . '&active=' . $this->plugin . '&unit=mark'); ?>">
 	<div class="guide-content">
 
 		<div class="grid">
@@ -73,7 +73,7 @@ foreach ($plugins as $plugin)
 				<div class="guide-about">
 					<h3><?php echo JText::_('Welcome to the course!'); ?></h3>
 					<p><?php echo JText::_('We\'ve tried to organize things to group related content and make it easier to find what you need. Feel free to explore the various menu options.'); ?></p>
-					<p><?php echo JText::sprintf('You can always get back to the %s by clicking the link found under the title of this course.', '<a href="' . JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias')) . '">Course overview</a>'); ?></p>
+					<p><?php echo JText::sprintf('You can always get back to the %s by clicking the link found under the title of this course.', '<a href="' . JRoute::_($this->course->link()) . '">Course overview</a>'); ?></p>
 					<p class="guide-dismiss">
 						<?php echo JText::_('Click anywhere to dismiss this guide and get started!'); ?>
 					</p>

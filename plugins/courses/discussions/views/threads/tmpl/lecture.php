@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
+$base = $this->course->offering()->link();
 ?>
 <div id="comments-container" data-action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>">
 
@@ -91,27 +91,20 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 									$instructors[] = $i->get('user_id');
 								}
 							}
-
-							$cview = new Hubzero_Plugin_View(
-								array(
-									'folder'  => 'courses',
-									'element' => 'discussions',
-									'name'    => 'threads',
-									'layout'  => '_threads'
-								)
-							);
-							$cview->category   = 'category' . $this->post->category_id;
-							$cview->option     = $this->option;
-							$cview->threads    = $this->threads;
-							$cview->unit       = $this->unit->get('alias');
-							$cview->lecture    = $this->lecture->get('alias');
-							$cview->config     = $this->config;
-							$cview->cls        = 'odd';
-							$cview->base       = $base . '&active=outline';
-							$cview->course     = $this->course;
-							$cview->search     = $this->filters['search'];
-							$cview->active     = $this->thread;
-							$cview->display();
+							$this->view('_threads')
+							     ->set('category', 'category' . $this->post->category_id)
+							     ->set('option', $this->option)
+							     ->set('threads', $this->threads)
+							     ->set('unit', $this->unit->get('alias'))
+							     ->set('lecture', $this->lecture->get('alias'))
+							     ->set('config', $this->config)
+							     ->set('cls', 'odd')
+							     ->set('instructors', $instructors)
+							     ->set('base', $base . '&active=outline')
+							     ->set('course', $this->course)
+							     ->set('search', $this->filters['search'])
+							     ->set('active', $this->thread)
+							     ->display();
 							?>
 							<input type="hidden" name="threads_lastchange" id="threads_lastchange" value="<?php echo $threads_lastchange; ?>" />
 						</div>
@@ -190,7 +183,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 						<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />

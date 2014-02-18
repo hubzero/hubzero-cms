@@ -66,13 +66,13 @@ if ($offering->exists())
 		}
 	}
 
-	$url = 'index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . '&task=enroll';
+	$url = $offering->link() . '&task=enroll';
 	if ($product && $product->data->id)
 	{
-		$url = '/cart'; //index.php?option=com_storefront/product/' . $product->pId;
+		$url = 'index.php?option=com_cart'; //index.php?option=com_storefront/product/' . $product->pId;
 	}
 ?>
-			<table summary="<?php echo JText::_('Course offering availability information'); ?>">
+			<table>
 				<tbody>
 <?php if (!$this->course->isManager() && !$this->course->isStudent() && $product) { ?>
 					<tr>
@@ -97,7 +97,7 @@ if ($offering->exists())
 			</table>
 		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
 			<p>
-				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') != '__default' ? ':' . $offering->section()->get('alias') : '')); ?>">
+				<a class="outline btn" href="<?php echo JRoute::_($offering->link()); ?>">
 					<?php echo JText::_('Enter course'); ?>
 				</a>
 			</p>

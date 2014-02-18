@@ -31,28 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
+require_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'notes' . DS . 'models' . DS . 'note.php');
 
 /**
  * Courses Plugin class for course members
  */
-class plgCoursesNotes extends JPlugin
+class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-
-		require_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'notes' . DS . 'models' . DS . 'note.php');
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -112,16 +103,14 @@ class plgCoursesNotes extends JPlugin
 
 		if ($return == 'html') 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-			Hubzero_Document::addPluginScript('courses', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
 
 			$this->config   = $config;
 			$this->course   = $course;
 			$this->offering = $offering;
 			$this->database = JFactory::getDBO();
 
-			ximport('Hubzero_Plugin_View');
 			$this->view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'courses',
@@ -190,11 +179,6 @@ class plgCoursesNotes extends JPlugin
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		Hubzero_Document::addPluginScript('courses', $this->_name);
-
-		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',

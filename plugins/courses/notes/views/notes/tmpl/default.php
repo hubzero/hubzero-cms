@@ -46,7 +46,7 @@ if ($notes)
 	}
 }
 
-$base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias');
+$base = $this->offering->link();
 ?>
 <form action="<?php echo JRoute::_($base . '&active=notes'); ?>" method="get">
 	<fieldset class="filters">
@@ -100,7 +100,7 @@ $base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course-
 	jQuery(document).ready(function(jQuery){
 		var $ = jQuery;
 
-		var url = "<?php echo '/index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=notes&no_html=1&note='; ?>";
+		var url = "<?php echo JURI::base(true) . '/' . $this->offering->link() . '&active=notes&no_html=1&note='; ?>";
 
 		$('#page_content textarea').each(function(i, el){
 			$(el).on('keyup', function (e) {

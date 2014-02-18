@@ -3,7 +3,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=discussions';
+$base = $this->offering->link() . '&active=discussions';
 
 $instructors = array();
 
@@ -46,6 +46,7 @@ if (count($inst) > 0)
 							
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+							<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 							<input type="hidden" name="active" value="discussions" />
 							<input type="hidden" name="action" value="search" />
 						</fieldset>
@@ -84,28 +85,20 @@ if (count($inst) > 0)
 						</div><!-- / .category-header -->
 						<div class="category-content">
 							<?php 
-							//print_r($this->post);
-							$view = new Hubzero_Plugin_View(
-								array(
-									'folder'  => 'courses',
-									'element' => 'discussions',
-									'name'    => 'threads',
-									'layout'  => '_threads'
-								)
-							);
-							$view->category    = 'categorymine';
-							$view->option      = $this->option;
-							$view->threads     = $this->post->getRecords($filters);
-							$view->unit        = ''; //$row->alias; //$this->unit;
-							$view->lecture     = 0; //$this->lecture;
-							$view->config      = $this->config;
-							$view->instructors = $instructors;
-							$view->cls         = 'odd';
-							$view->base        = $base;
-							$view->course      = $this->course;
-							$view->prfx        = 'mine';
-							$view->active     = $this->thread;
-							$view->display();
+							$this->view('_threads', 'threads')
+							     ->set('category', 'categorymine')
+							     ->set('option', $this->option)
+							     ->set('threads', $this->post->getRecords($filters))
+							     ->set('unit', '')
+							     ->set('lecture', 0)
+							     ->set('config', $this->config)
+							     ->set('instructors', $instructors)
+							     ->set('cls', 'odd')
+							     ->set('base', $base)
+							     ->set('course', $this->course)
+							     ->set('prfx', 'mine')
+							     ->set('active', $this->thread)
+							     ->display();
 							?>
 						</div><!-- / .category-content -->
 					</div><!-- / .category -->
@@ -160,26 +153,19 @@ if (count($inst) > 0)
 									</div><!-- / .thread-header -->
 									<div class="thread-content">
 										<?php
-											$view = new Hubzero_Plugin_View(
-												array(
-													'folder'  => 'courses',
-													'element' => 'discussions',
-													'name'    => 'threads',
-													'layout'  => '_threads'
-												)
-											);
-											$view->category    = 'category' . $row->id;
-											$view->option      = $this->option;
-											$view->threads     = isset($threads[$row->id]) ? $threads[$row->id] : null;
-											$view->unit        = $row->alias;
-											$view->lecture     = $row->id;
-											$view->config      = $this->config;
-											$view->instructors = $instructors;
-											$view->cls         = 'odd';
-											$view->base        = $base;
-											$view->course      = $this->course;
-											$view->active      = $this->thread;
-											$view->display();
+											$this->view('_threads', 'threads')
+											     ->set('category', 'category' . $row->id)
+											     ->set('option', $this->option)
+											     ->set('threads', isset($threads[$row->id]) ? $threads[$row->id] : null)
+											     ->set('unit', $row->alias)
+											     ->set('lecture', $row->id)
+											     ->set('config', $this->config)
+											     ->set('instructors', $instructors)
+											     ->set('cls', 'odd')
+											     ->set('base', $base)
+											     ->set('course', $this->course)
+											     ->set('active', $this->thread)
+											     ->display();
 										?>
 									</div><!-- / .thread-content -->
 								</div><!-- / .thread -->
@@ -302,7 +288,7 @@ if (count($inst) > 0)
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 

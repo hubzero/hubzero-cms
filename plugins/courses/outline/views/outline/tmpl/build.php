@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
+$base = $this->course->offering()->link();
 
 ?>
 
@@ -72,20 +72,13 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						if ($ag->assets()->total()) :
 							foreach ($ag->assets() as $a) :
 								if ($a->isDeleted()) :
-									$view = new Hubzero_Plugin_View(
-										array(
-											'folder'  => 'courses',
-											'element' => 'outline',
-											'name'    => 'outline',
-											'layout'  => 'asset_partial'
-										)
-									);
-									$view->base   = $base;
-									$view->course = $this->course;
-									$view->unit   = $unit;
-									$view->ag     = $ag;
-									$view->a      = $a;
-									$view->display();
+									$this->view('asset_partial')
+									     ->set('base', $base)
+									     ->set('course', $this->course)
+									     ->set('unit', $unit)
+									     ->set('ag', $ag)
+									     ->set('a', $a)
+									     ->display();
 								endif;
 							endforeach;
 						endif;
@@ -109,7 +102,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				</div>
 				<div class="clear"></div>
 				<div class="unit-edit">
-					<form action="/api/courses/unit/save" class="unit-edit-form">
+					<form action="<?php echo JURI::base(true); ?>/api/courses/unit/save" class="unit-edit-form">
 						<label for="title">Title:</label>
 						<input class="unit-edit-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" placeholder="title" />
 						<label for="publish_up">Publish start date:</label>
@@ -119,7 +112,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						<input class="unit-edit-save" type="submit" value="Save" />
 						<input class="unit-edit-reset" type="reset" value="Cancel" />
 						<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 						<input type="hidden" name="section_id" value="<?= $this->course->offering()->section()->get('id') ?>" />
 						<input type="hidden" name="id" value="<?php echo $unit->get('id'); ?>" />
 					</form>
@@ -132,7 +125,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 			<ul class="asset-group-type-list">
 
-			<? foreach($unit->assetgroups() as $agt) : ?>
+			<? foreach ($unit->assetgroups() as $agt) : ?>
 
 				<li class="asset-group-type-item <?= ($agt->get('state') == '1') ? 'published' : 'unpublished' ?>">
 					<div class="asset-group-type-item-container">
@@ -141,7 +134,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								<div class="asset-group-title-edit edit">edit</div>
 								<div class="title"><?php echo $agt->get('title'); ?></div>
 							</div>
-							<form action="/api/courses/assetgroup/save">
+							<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save">
 								<div class="label-input-pair">
 									<label for="title">Title:</label>
 									<input class="" name="title" type="text" value="<?= $agt->get('title') ?>" />
@@ -169,47 +162,33 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 <?php
 				// Loop through our asset groups
-				foreach($agt->children() as $ag)
+				foreach ($agt->children() as $ag)
 				{
-					$view = new Hubzero_Plugin_View(
-						array(
-							'folder'  => 'courses',
-							'element' => 'outline',
-							'name'    => 'outline',
-							'layout'  => 'asset_group_partial'
-						)
-					);
-					$view->base   = $base;
-					$view->course = $this->course;
-					$view->unit   = $unit;
-					$view->ag     = $ag;
-					$view->display();
+					$this->view('asset_group_partial')
+					     ->set('base', $base)
+					     ->set('course', $this->course)
+					     ->set('unit', $unit)
+					     ->set('ag', $ag)
+					     ->display();
 				}
 
 				// Now display assets directly attached to the asset group type
 				if ($agt->assets()->total())
 				{
-					$view = new Hubzero_Plugin_View(
-						array(
-							'folder'  => 'courses',
-							'element' => 'outline',
-							'name'    => 'outline',
-							'layout'  => 'asset_group_partial'
-						)
-					);
-					$view->base   = $base;
-					$view->course = $this->course;
-					$view->unit   = $unit;
-					$view->ag     = $agt;
-					$view->display();
+					$this->view('asset_group_partial')
+					     ->set('base', $base)
+					     ->set('course', $this->course)
+					     ->set('unit', $unit)
+					     ->set('ag', $agt)
+					     ->display();
 				}
 ?>
 
 								<li class="add-new asset-group-item">
 									Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
-									<form action="/api/courses/assetgroup/save">
+									<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save">
 										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 										<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
 										<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
 									</form>
@@ -235,7 +214,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					{
 						$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
 					}
-					echo '<li class="asset-group-item"><a class="asset ' . $a.get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+					echo '<li class="asset-group-item"><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 				}
 ?>
 				</ul>
@@ -248,10 +227,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 		<li class="add-new unit-item">
 			Add a new unit
-			<form action="/api/courses/unit/save">
+			<form action="<?php echo JURI::base(true); ?>/api/courses/unit/save">
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
-				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 				<input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id'); ?>" />
 			</form>
 		</li>

@@ -102,7 +102,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					{
 						$sfx .= '&offering=' . $row->offering_alias;
 					}
-					if (isset($row->section_alias) && $row->section_alias != '__default')
+					if (isset($row->section_alias) && !$row->is_default)
 					{
 						$sfx .= ':' . $row->section_alias;
 					}

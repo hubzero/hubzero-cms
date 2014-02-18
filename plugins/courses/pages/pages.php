@@ -124,8 +124,8 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-			Hubzero_Document::addPluginScript('courses', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
+			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name);
 
 			$action = strtolower(JRequest::getWord('group', ''));
 			if ($action && $action != 'edit' && $action != 'delete')
@@ -146,7 +146,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 			$this->view = new Hubzero_Plugin_View(
 				array(
-					'folder'  => 'courses',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'pages'
 				)
@@ -253,7 +253,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name, false, true);
+			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
 			);
@@ -264,7 +264,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
-		Hubzero_Document::addSystemScript('jquery.fileuploader');
+		\Hubzero\Document\Assets::addSystemScript('jquery.fileuploader');
 		$this->view->setLayout('edit');
 
 		if (is_object($model))
@@ -324,7 +324,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name, false, true);
+			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
 			);
@@ -361,7 +361,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name . '&unit=' . $model->get('url'))
+			JRoute::_($this->view->offering->link() . '&active=' . $this->_name . '&unit=' . $model->get('url'))
 		);
 	}
 
@@ -375,7 +375,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name, false, true);
+			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
 			);
@@ -399,7 +399,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=pages')
+			JRoute::_($this->view->offering->link() . '&active=pages')
 		);
 	}
 
