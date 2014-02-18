@@ -137,17 +137,13 @@ class plgProjectsBlog extends JPlugin
 			// Load component configs
 			$this->_config = JComponentHelper::getParams( 'com_projects' );
 			
-			// Enable views
-			ximport('Hubzero_View_Helper_Html');
-			ximport('Hubzero_Plugin_View');
-						
 			$database = JFactory::getDBO();
 			
 			// Add CSS and JS
 			$document = JFactory::getDocument();
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginScript('projects', 'blog');
-			Hubzero_Document::addPluginStylesheet('projects', 'blog');
+
+			\Hubzero\Document\Assets::addPluginScript('projects', 'blog');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'blog');
 																	
 			// Set vars									
 			$this->_task = JRequest::getVar( 'action', '' );

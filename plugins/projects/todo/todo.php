@@ -168,8 +168,8 @@ class plgProjectsTodo extends JPlugin
 			$document = JFactory::getDocument();
 			$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 						
-			Hubzero_Document::addPluginScript('projects', 'todo');
-			Hubzero_Document::addPluginStylesheet('projects', 'todo');	
+			\Hubzero\Document\Assets::addPluginScript('projects', 'todo');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'todo');	
 			
 			$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
 			$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;

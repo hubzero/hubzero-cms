@@ -192,7 +192,7 @@ class plgProjectsFiles extends JPlugin
 				$objA = new ProjectTool( $database );
 				$this->_tool = $objA->getFullRecord($reponame, $this->_project->id);
 				
-				Hubzero_Document::addPluginStylesheet('projects', 'tools');
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'tools');
 				$lang = JFactory::getLanguage();
 				$lang->load('plg_projects_tools');
 			}
@@ -225,12 +225,12 @@ class plgProjectsFiles extends JPlugin
 						
 			// Get JS and CSS
 			$document = JFactory::getDocument();
-			ximport('Hubzero_Document');
+
 			if ($this->_task != 'browser')
 			{
-				Hubzero_Document::addPluginScript('projects', 'files');
+				\Hubzero\Document\Assets::addPluginScript('projects', 'files');
 			}
-			Hubzero_Document::addPluginStylesheet('projects', 'files');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files');
 			
 			//  Establish connection to external services (NEW)
 			if (is_object($this->_project) && $this->_project->id && !$this->_project->provisioned) 

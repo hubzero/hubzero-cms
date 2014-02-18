@@ -194,8 +194,8 @@ class plgProjectsNotes extends JPlugin
 			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
 
-			Hubzero_Document::addPluginScript('projects', 'notes');
-			Hubzero_Document::addPluginStylesheet('projects', 'notes');
+			\Hubzero\Document\Assets::addPluginScript('projects', 'notes');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'notes');
 
 			// Import some needed libraries
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
@@ -227,7 +227,7 @@ class plgProjectsNotes extends JPlugin
 				$objProjectTool = new ProjectTool( $database );
 				$this->_tool = $objProjectTool->getFullRecord($tool, $this->_project->id);
 				
-				Hubzero_Document::addPluginStylesheet('projects', 'tools');
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'tools');
 				$lang = JFactory::getLanguage();
 				$lang->load('plg_projects_tools');
 			}

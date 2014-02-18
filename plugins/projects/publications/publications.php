@@ -183,8 +183,8 @@ class plgProjectsPublications extends JPlugin
 		$database = JFactory::getDBO();
 				
 		// Get JS & CSS
-		Hubzero_Document::addPluginScript('projects', 'publications');
-		Hubzero_Document::addPluginStylesheet('projects', 'publications');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'publications');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
 				
 		// Import publication helpers
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php' );
@@ -578,8 +578,8 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		// Get content plugin JS/CSS
-		Hubzero_Document::addPluginScript('projects', $base);
-		Hubzero_Document::addPluginStylesheet('projects', $base);
+		\Hubzero\Document\Assets::addPluginScript('projects', $base);
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', $base);
 		
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id) 
@@ -852,7 +852,7 @@ class plgProjectsPublications extends JPlugin
 		
 		if ($section == 'content' || $section == 'gallery')
 		{
-			Hubzero_Document::addPluginScript('projects', 'files');
+			\Hubzero\Document\Assets::addPluginScript('projects', 'files');
 		}
 		
 		// Base of primary content corresponds to master type!
@@ -954,8 +954,8 @@ class plgProjectsPublications extends JPlugin
 				$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
 																				
 				// Get Files JS
-				Hubzero_Document::addPluginScript('projects', 'files');
-				Hubzero_Document::addPluginStylesheet('projects', 'files');							
+				\Hubzero\Document\Assets::addPluginScript('projects', 'files');
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files');							
 				break;
 			
 			case 'description':
@@ -1042,8 +1042,8 @@ class plgProjectsPublications extends JPlugin
 				$c = new CitationsCitation( $this->_database );
 				$view->citations = $c->getCitations( 'publication', $row->publication_id );
 				
-				Hubzero_Document::addPluginStylesheet('projects', 'links');	
-				Hubzero_Document::addPluginScript('projects', 'links');
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');	
+				\Hubzero\Document\Assets::addPluginScript('projects', 'links');
 				 	
 				break;
 						

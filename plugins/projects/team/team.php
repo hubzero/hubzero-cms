@@ -142,10 +142,6 @@ class plgProjectsTeam extends JPlugin
 			
 			$database = JFactory::getDBO();
 			
-			// Enable views
-			ximport('Hubzero_View_Helper_Html');
-			ximport('Hubzero_Plugin_View');
-			
 			// Set vars									
 			$this->_task 		= $action ? $action : JRequest::getVar('action','');
 			$this->_project 	= $project;
@@ -167,9 +163,8 @@ class plgProjectsTeam extends JPlugin
 			
 			// Add CSS and JS
 			$document = JFactory::getDocument();
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginScript('projects', 'team');
-			Hubzero_Document::addPluginStylesheet('projects', 'team');
+			\Hubzero\Document\Assets::addPluginScript('projects', 'team');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team');
 			
 			switch($this->_task) 
 			{	
