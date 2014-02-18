@@ -199,6 +199,7 @@ class plgProjectsNotes extends JPlugin
 
 			// Import some needed libraries
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
 			$pagename = trim(JRequest::getVar('pagename', ''));
 			$scope = trim(JRequest::getVar( 'scope', '' ));

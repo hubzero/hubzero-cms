@@ -800,7 +800,7 @@ class ProjectsHelper extends JObject {
 		$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 	
 		
 		// Get wiki upload path
-		$previewPath = ProjectsHelper::getWikiPath($page->id);		
+		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));		
 		
 		// Get joomla libraries
 		jimport('joomla.filesystem.folder');
@@ -1040,7 +1040,7 @@ class ProjectsHelper extends JObject {
 		$database = JFactory::getDBO();
 		
 		// Get wiki upload path
-		$previewPath = ProjectsHelper::getWikiPath($page->id);
+		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));
 		
 		if ($copy == true)
 		{
