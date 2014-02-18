@@ -109,7 +109,6 @@ class plgMembersGroups extends JPlugin
 			'metadata'=>''
 		);
 
-		ximport('Hubzero_User_Helper');
 		$applicants = $member->getGroups('applicants'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'applicants', 1);
 		$invitees   = $member->getGroups('invitees'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'invitees', 1);
 		$members    = $member->getGroups('members'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'members', 1);
@@ -139,10 +138,8 @@ class plgMembersGroups extends JPlugin
 		// Build the final HTML
 		if ($returnhtml) 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('members', 'groups');
+			\Hubzero\Document\Assets::addPluginStylesheet('members', 'groups');
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',

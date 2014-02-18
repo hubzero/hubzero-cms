@@ -194,9 +194,8 @@ class plgMembersContributions extends JPlugin
 		// Build the HTML
 		if ($returnhtml) 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('members', 'contributions');
-			Hubzero_Document::addComponentScript('com_resources', 'resources');
+			\Hubzero\Document\Assets::addPluginStylesheet('members', 'contributions');
+			\Hubzero\Document\Assets::addComponentScript('com_resources', 'resources');
 
 			$limit = ($limit == 0) ? 'all' : $limit;
 
@@ -220,7 +219,6 @@ class plgMembersContributions extends JPlugin
 				$active = '';
 			}
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',

@@ -127,8 +127,6 @@ class plgMembersResume extends JPlugin
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) 
 		{
-			ximport('Hubzero_User_Profile');
-
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0) 
@@ -165,8 +163,6 @@ class plgMembersResume extends JPlugin
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) 
 		{
-			ximport('Hubzero_User_Profile');
-
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0) 
@@ -212,8 +208,8 @@ class plgMembersResume extends JPlugin
 		}
 
 		$document = JFactory::getDocument();
-		/*ximport('Hubzero_Document');
-		Hubzero_Document::addComponentScript('com_jobs');
+		/*
+		\Hubzero\Document\Assets::addComponentScript('com_jobs');
 		*/
 
 		// The output array we're returning
@@ -377,8 +373,6 @@ class plgMembersResume extends JPlugin
 	 */
 	public function getThumb($uid)
 	{
-		ximport('Hubzero_User_Profile_Helper');
-
 		$profile = Hubzero_User_Profile::getInstance($uid);
 
 		return Hubzero_User_Profile_Helper::getMemberPhoto($profile);
@@ -426,8 +420,7 @@ class plgMembersResume extends JPlugin
 		}
 
 		// Add styles and scripts
-		ximport('Hubzero_Document');
-		Hubzero_Document::addComponentStylesheet('com_jobs');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_jobs');
 
 		$jt = new JobType($database);
 		$jc = new JobCategory($database);
@@ -450,7 +443,6 @@ class plgMembersResume extends JPlugin
 		$jobstats = new JobStats($database);
 		$stats = $jobstats->getStats($member->get('uidNumber'), 'seeker');
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -593,7 +585,6 @@ class plgMembersResume extends JPlugin
 		$base_path = $this->params->get('webpath', '/site/members');
 		$base_path = DS . trim($base_path, DS);
 
-		ximport('Hubzero_View_Helper_Html');
 		$dir = Hubzero_View_Helper_Html::niceidformat($uid);
 
 		$listdir = $base_path . DS . $dir;

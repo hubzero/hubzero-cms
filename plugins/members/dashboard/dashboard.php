@@ -99,7 +99,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 			$this->_act = JRequest::getVar('act', 'customize');
 
-			Hubzero_Document::addPluginStylesheet('members', 'dashboard');
+			\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard');
 
 			$this->view = new Hubzero_Plugin_View(
 				array(
@@ -157,9 +157,9 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		{
 			if (!JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				Hubzero_Document::addPluginScript('members', 'dashboard', 'xsortables');
+				\Hubzero\Document\Assets::addPluginScript('members', 'dashboard', 'xsortables');
 			}
-			Hubzero_Document::addPluginScript('members', 'dashboard');
+			\Hubzero\Document\Assets::addPluginScript('members', 'dashboard');
 		}
 
 		$this->num_default = $this->params->get('defaultNumber', 6);

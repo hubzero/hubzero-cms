@@ -126,7 +126,7 @@ class plgMembersCollections extends JPlugin
 			$this->action = JRequest::getVar('action', $default);
 
 			//push the css to the doc
-			Hubzero_Document::addPluginStylesheet('members', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('members', $this->_name);
 
 			$juri = JURI::getInstance();
 			$path = $juri->getPath();
@@ -312,7 +312,7 @@ class plgMembersCollections extends JPlugin
 		$view->params      = $this->params;
 		$view->model       = $this->model;
 
-		Hubzero_Document::addPluginScript('members', $this->_name);
+		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 		$this->jconfig = JFactory::getConfig();
 
@@ -404,7 +404,7 @@ class plgMembersCollections extends JPlugin
 		$view->params      = $this->params;
 		$view->model       = $this->model;
 
-		Hubzero_Document::addPluginScript('members', $this->_name);
+		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 		$this->jconfig = JFactory::getConfig();
 
@@ -489,10 +489,10 @@ class plgMembersCollections extends JPlugin
 		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 
-		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
-		Hubzero_Document::addPluginScript('members', $this->_name);
+		//\Hubzero\Document\Assets::addPluginScript('members', $this->_name, 'jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
+		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 		// Filters for returning results
 		$filters = array();
@@ -570,10 +570,10 @@ class plgMembersCollections extends JPlugin
 		$view->params     = $this->params;
 		$view->model      = $this->model;
 
-		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
-		Hubzero_Document::addPluginScript('members', $this->_name);
+		//\Hubzero\Document\Assets::addPluginScript('members', $this->_name, 'jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
+		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 		$this->jconfig = JFactory::getConfig();
 
@@ -795,10 +795,10 @@ class plgMembersCollections extends JPlugin
 		$view->option     = $this->option;
 		$view->params     = $this->params;
 
-		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
-		Hubzero_Document::addPluginScript('members', $this->_name);
+		//\Hubzero\Document\Assets::addPluginScript('members', $this->_name, 'jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
+		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 		// Filters for returning results
 		$this->jconfig = JFactory::getConfig();
@@ -884,10 +884,10 @@ class plgMembersCollections extends JPlugin
 		$view->params     = $this->params;
 		$view->model      = $this->model;
 
-		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
-		Hubzero_Document::addPluginScript('members', $this->_name);
+		//\Hubzero\Document\Assets::addPluginScript('members', $this->_name, 'jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
+		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 		$this->jconfig = JFactory::getConfig();
 
@@ -1117,7 +1117,7 @@ class plgMembersCollections extends JPlugin
 		}
 		else
 		{
-			Hubzero_Document::addPluginScript('members', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 			return $view->loadTemplate();
 		}

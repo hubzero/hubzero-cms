@@ -113,9 +113,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			}
 
 			// Add stylesheet
-			Hubzero_Document::addPluginStylesheet('members', 'account');
-			Hubzero_Document::addPluginScript('members', 'account');
-			Hubzero_Document::addSystemScript('jquery.hoverIntent');
+			\Hubzero\Document\Assets::addPluginStylesheet('members', 'account');
+			\Hubzero\Document\Assets::addPluginScript('members', 'account');
+			\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
 
 			// Add providers stylesheet
 			$doc = JFactory::getDocument();

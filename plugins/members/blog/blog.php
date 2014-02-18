@@ -106,9 +106,8 @@ class plgMembersBlog extends JPlugin
 			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
 
 			// Push styles to the template
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('members', $this->_name);
-			Hubzero_Document::addPluginScript('members', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('members', $this->_name);
+			\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 			// Append to document the title
 			$document = JFactory::getDocument();
@@ -261,7 +260,6 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _browse() 
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -402,10 +400,10 @@ class plgMembersBlog extends JPlugin
 
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');
-				$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($item->description));
+				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
 				if ($this->params->get('feed_entries') == 'partial') 
 				{
-					$item->description = Hubzero_View_Helper_Html::shortenText($item->description, 300, 0);
+					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 				}
 
 				// Load individual item creator class
@@ -431,7 +429,6 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _entry() 
 	{
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -543,7 +540,6 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Instantiate view
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -585,9 +581,9 @@ class plgMembersBlog extends JPlugin
 			}
 		}
 
-		Hubzero_Document::addSystemScript('jquery.timepicker');
-		Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
-		Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.datepicker.css');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.timepicker.css');
 
 		// Render view
 		return $view->loadTemplate();
@@ -684,7 +680,6 @@ class plgMembersBlog extends JPlugin
 			}
 
 			// Output HTML
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',
@@ -848,7 +843,6 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Output HTML
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',

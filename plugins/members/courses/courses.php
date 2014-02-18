@@ -127,10 +127,8 @@ class plgMembersCourses extends JPlugin
 			$this->app = JFactory::getApplication();
 			$this->jconfig = JFactory::getConfig();
 
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('members', $this->_name);
+			\Hubzero\Document\Assets::addPluginStylesheet('members', $this->_name);
 
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',

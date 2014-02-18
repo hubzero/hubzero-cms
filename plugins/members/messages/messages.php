@@ -106,7 +106,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->app = JFactory::getApplication();
 			$this->jconfig = JFactory::getConfig();
 
-			Hubzero_Document::addPluginStylesheet('members', 'messages');
+			\Hubzero\Document\Assets::addPluginStylesheet('members', 'messages');
 
 			$task = JRequest::getVar('action','');
 			if (!$task) 
@@ -213,7 +213,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	public function inbox($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		Hubzero_Document::addPluginScript('members', 'messages');
+		\Hubzero\Document\Assets::addPluginScript('members', 'messages');
 
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -282,7 +282,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	public function archive($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
+		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
 
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -350,7 +350,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	public function trash($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
+		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
 
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -425,7 +425,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	public function sent($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
+		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
 
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -495,7 +495,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	public function settings($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
+		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
 
 		$xmc = new \Hubzero\Message\Component($database);
 		$components = $xmc->getRecords();

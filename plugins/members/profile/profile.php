@@ -155,8 +155,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$params = new $paramsClass( $plugin->params );
 		$params->merge($rparams);
 
-		Hubzero_Document::addPluginStylesheet('members', 'profile');
-		Hubzero_Document::addPluginScript('members', 'profile');
+		\Hubzero\Document\Assets::addPluginStylesheet('members', 'profile');
+		\Hubzero\Document\Assets::addPluginScript('members', 'profile');
 		
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
@@ -373,8 +373,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		//get request vars
 		$this->view->addressId = JRequest::getInt('addressid', 0);
 
-		Hubzero_Document::addPluginStylesheet('members', 'profile');
-		Hubzero_Document::addPluginScript('members', 'profile');
+		\Hubzero\Document\Assets::addPluginStylesheet('members', 'profile');
+		\Hubzero\Document\Assets::addPluginScript('members', 'profile');
 		
 		//get member addresses
 		$this->view->address = new MembersAddress( JFactory::getDBO() );

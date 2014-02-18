@@ -128,7 +128,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</script>';
 			echo $increm;
 
-			Hubzero_Document::addComponentScript('assets/js/incremental');
+			\Hubzero\Document\Assets::addComponentScript('assets/js/incremental');
 		}
 	?>
 	
