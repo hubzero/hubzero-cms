@@ -28,29 +28,32 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Password;
 
-class Hubzero_Password_Rule
+class Rule
 {
 	public static function getRules($group = null, $all = false)
 	{
-		$db =  JFactory::getDBO();
+		$db =  \JFactory::getDBO();
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return array();
 		}
 
-		if (empty($group)) {
+		if (empty($group)) 
+		{
 			$group = "'%'";
 		}
-		else {
+		else 
+		{
 			$group = $db->Quote($group);
 		}
 
 		$query = "SELECT id,rule,class,value,description,failuremsg FROM " . "#__password_rule WHERE `grp` LIKE $group";
 
-		if ($all == false) {
+		if ($all == false) 
+		{
 			$query .= " AND enabled='1'";
 		} 
 
@@ -60,7 +63,8 @@ class Hubzero_Password_Rule
 
 		$result = $db->loadAssocList();
 
-		if (empty($result)) {
+		if (empty($result)) 
+		{
 			return array();
 		}
 
@@ -69,8 +73,6 @@ class Hubzero_Password_Rule
 
 	public static function analyze($password)
 	{
-		ximport('Hubzero_Password_CharacterClass');
-
 		$stats = array();
 		$len = strlen($password);
 		$stats['count'][0] = $len;
@@ -79,29 +81,35 @@ class Hubzero_Password_Rule
 		$classes = array();
 		$histogram = array();
 
-		for($i = 0; $i < $len; $i++) {
+		for ($i = 0; $i < $len; $i++) 
+		{
 			$c = $password[$i];
 
-			$cl = Hubzero_Password_CharacterClass::match($c);
+			$cl = CharacterClass::match($c);
 
-			foreach($cl as $class) {
+			foreach ($cl as $class) 
+			{
 				if (empty($stats['count'][$class->name]))
 				{
 					$stats['count'][$class->name] = 1;
-					if ($class->flag) {
+					if ($class->flag) 
+					{
 						$stats['uniqueClasses']++;
 					}
 				}
-				else {
+				else 
+				{
 					$stats['count'][$class->name]++;
 				}
 			}
-			
-			if (empty($histogram[$c])) {
+
+			if (empty($histogram[$c])) 
+			{
 				$histogram[$c] = 1;
 				$stats['uniqueCharacters']++;
 			}
-			else {
+			else 
+			{
 				$histogram[$c]++;
 			}
 		}
@@ -111,86 +119,105 @@ class Hubzero_Password_Rule
 
 	public static function validate($password, $rules, $user, $name=null)
 	{
-		if (empty($rules)) {
+		if (empty($rules)) 
+		{
 			return array();
 		}
-
-		ximport('Hubzero_Password_Blacklist');
-		ximport('Hubzero_User_Password');
-		ximport('Hubzero_User_Password_History');
 
 		$fail = array();
 
 		$stats = self::analyze($password);
 
-		foreach($rules as $rule) {
-			if ($rule['rule'] == 'minCharacterClasses') {
-				if ($stats['uniqueClasses'] < $rule['value']) {
+		foreach ($rules as $rule) 
+		{
+			if ($rule['rule'] == 'minCharacterClasses') 
+			{
+				if ($stats['uniqueClasses'] < $rule['value']) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'maxCharacterClasses') {
-				if ($stats['uniqueClasses'] > $rule['value']) {
+			else if ($rule['rule'] == 'maxCharacterClasses') 
+			{
+				if ($stats['uniqueClasses'] > $rule['value']) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'minPasswordLength') {
-				if ($stats['count'][0] < $rule['value']) {
+			else if ($rule['rule'] == 'minPasswordLength') 
+			{
+				if ($stats['count'][0] < $rule['value']) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'maxPasswordLength') {
-				if ($stats['count'][0] > $rule['value']) {
+			else if ($rule['rule'] == 'maxPasswordLength') 
+			{
+				if ($stats['count'][0] > $rule['value']) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'maxClassCharacters') {
-				if (empty($rule['class'])) {
+			else if ($rule['rule'] == 'maxClassCharacters') 
+			{
+				if (empty($rule['class'])) 
+				{
 					continue;
 				}
 
 				$class = $rule['class'];
 
-				if (empty($stats['count'][$class])) {
+				if (empty($stats['count'][$class])) 
+				{
 					$stats['count'][$class] = 0;
 				}
 
-				if ($stats['count'][$class] > $rule['value']) {
+				if ($stats['count'][$class] > $rule['value']) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'minClassCharacters') {
-				if (empty($rule['class'])) {
+			else if ($rule['rule'] == 'minClassCharacters') 
+			{
+				if (empty($rule['class'])) 
+				{
 					continue;
 				}
 
 				$class = $rule['class'];
 
-				if (empty($stats['count'][$class])) {
+				if (empty($stats['count'][$class])) 
+				{
 					$stats['count'][$class] = 0;
 				}
 
-				if ($stats['count'][$class] < $rule['value']) {
+				if ($stats['count'][$class] < $rule['value']) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'minUniqueCharacters') {
-				if ($stats['uniqueCharacters'] < $rule['value']) {
+			else if ($rule['rule'] == 'minUniqueCharacters') 
+			{
+				if ($stats['uniqueCharacters'] < $rule['value']) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'notBlacklisted') {
-				if (Hubzero_Password_Blacklist::basedOnBlackList($password)) {
+			else if ($rule['rule'] == 'notBlacklisted') 
+			{
+				if (Blacklist::basedOnBlackList($password)) 
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'notNameBased') {
-				ximport('Hubzero_User_Profile');
+			else if ($rule['rule'] == 'notNameBased') 
+			{
+				if ($name == null) 
+				{
+					$xuser = \Hubzero_User_Profile::getInstance($user);
 
-				if ($name == null) {
-					$xuser = Hubzero_User_Profile::getInstance($user);
-
-					if (!is_object($xuser)) {
+					if (!is_object($xuser)) 
+					{
 						continue;
 					}
 
@@ -225,7 +252,7 @@ class Hubzero_Password_Rule
 			}
 			else if ($rule['rule'] == 'notUsernameBased') {
 				if (is_numeric($user)) {
-					$juser = JUser::getInstance($user);
+					$juser = \JUser::getInstance($user);
 
 					if (!is_object($juser)) {
 						continue;
@@ -241,10 +268,10 @@ class Hubzero_Password_Rule
 			else if ($rule['rule'] == 'notReused') {
 				$passhash = "{MD5}" . base64_encode(pack('H*', md5($password)));
 
-				$date = new DateTime('now');
+				$date = new \DateTime('now');
 				$date->modify("-" . $rule['value'] . "day");
 
-				$phist = Hubzero_User_Password_History::getInstance($user);
+				$phist = \Hubzero\User\Password\History::getInstance($user);
 				if (!is_object($phist)) {
 					continue;
 				}
@@ -254,7 +281,7 @@ class Hubzero_Password_Rule
 				}
 			}
 			else if ($rule['rule'] == 'notRepeat') {
-				if (Hubzero_User_Password::passwordMatches($user, $password, true)) {
+				if (\Hubzero\User\Password::passwordMatches($user, $password, true)) {
 					$fail[] = $rule['failuremsg'];
 				}
 			}
@@ -265,10 +292,12 @@ class Hubzero_Password_Rule
 			}
 		}
 
-		if (empty($fail)) {
+		if (empty($fail)) 
+		{
 			return array();
 		}
-		else {
+		else 
+		{
 			return $fail;
 		}
 	}
@@ -279,14 +308,17 @@ class Hubzero_Password_Rule
 
 		$len = strlen($word);
 
-		for($i = 0; $i < $len; $i++) {
+		for ($i = 0; $i < $len; $i++) 
+		{
 			$o = ord( $word[$i] );
 
-			if ($o < 97) { // convert to lowercase
+			if ($o < 97) 
+			{ // convert to lowercase
 				$o += 32;
 			}
 
-			if ($o > 122 || $o < 97) { // skip anything not a lowercase letter
+			if ($o > 122 || $o < 97) 
+			{ // skip anything not a lowercase letter
 				continue;
 			}
 
@@ -309,27 +341,33 @@ class Hubzero_Password_Rule
 		$words[] = $fullname;
 		$words[] = strrev($fullname);
 
-		foreach($names as $e) {
+		foreach ($names as $e) 
+		{
 			$e = self::normalize_word($e);
 
-			if (strlen($e) > 3) {
+			if (strlen($e) > 3) 
+			{
 				$words[] = $e;
 				$words[] = strrev($e);
 			}
 		}
 
-		if ($count > 1) {
+		if ($count > 1) 
+		{
 			$e = self::normalize_word($names[0] . $names[$count-1]);
 			$words[] = $e;
 			$words[] = strrev($e);
 		}
 
-		foreach($words as $w) {
-			if (empty($w)) {
+		foreach ($words as $w) 
+		{
+			if (empty($w)) 
+			{
 				continue;
 			}
-		
-			if (strpos($w, $word) !== false) {
+
+			if (strpos($w, $word) !== false) 
+			{
 				return true;
 			}
 		}
@@ -345,17 +383,21 @@ class Hubzero_Password_Rule
 		$words = array();
 		$words[] = $username;
 		$words[] = strrev($username);
-		
-		foreach($words as $w) {
-			if (empty($w)) {
+
+		foreach ($words as $w) 
+		{
+			if (empty($w)) 
+			{
 				continue;
 			}
 
-			if (empty($word)) {
+			if (empty($word)) 
+			{
 				continue;
 			}
 
-			if (strpos($w, $word) !== false) {
+			if (strpos($w, $word) !== false) 
+			{
 				return true;
 			}
 		}

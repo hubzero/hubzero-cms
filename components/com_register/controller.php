@@ -1186,7 +1186,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 
 		// Push some values to the view
 
-		$password_rules = Hubzero_Password_Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::getRules();
 
 		$view->password_rules = array();
 

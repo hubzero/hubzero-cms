@@ -28,20 +28,21 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Password;
 
-class Hubzero_Password_Blacklist
+class Blacklist
 {
 	public function inBlacklist($word)
 	{
-		$db =  JFactory::getDBO();
+		$db =  \JFactory::getDBO();
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return false;
 		}
 
-		if (empty($word)) {
+		if (empty($word)) 
+		{
 			$word = '';
 		}
 
@@ -286,14 +287,17 @@ class Hubzero_Password_Blacklist
 
 		$len = strlen($word);
 
-		for($i = 0; $i < $word; $i++) {
-			$o = ord( $word[$i] );
+		for ($i = 0; $i < $word; $i++) 
+		{
+			$o = ord($word[$i]);
 
-			if ($o < 97) { // convert to lowercase
+			if ($o < 97) 
+			{ // convert to lowercase
 				$o += 32;
 			}
 
-			if ($o > 122 || $o < 97) { // skip anything not a lowercase letter
+			if ($o > 122 || $o < 97) 
+			{ // skip anything not a lowercase letter
 				continue;
 			}
 
@@ -305,13 +309,15 @@ class Hubzero_Password_Blacklist
 
 	public function basedOnBlacklist($word)
 	{
-		$db =  JFactory::getDBO();
+		$db =  \JFactory::getDBO();
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return false;
 		}
 
-		if (empty($word)) {
+		if (empty($word)) 
+		{
 			$word = '';
 		}
 
@@ -322,8 +328,10 @@ class Hubzero_Password_Blacklist
 		$len = strlen($word);
 		$word2 = '';
 		// @FIXME: badly inefficient
-		for($i = 0; $i < $len; $i++) {
-			if (preg_match('/[a-zA-Z]/',$word[$i])) {
+		for ($i = 0; $i < $len; $i++) 
+		{
+			if (preg_match('/[a-zA-Z]/',$word[$i])) 
+			{
 				$word2 .= $word[$i];
 			}
 		}
@@ -372,8 +380,10 @@ class Hubzero_Password_Blacklist
 		$words[] = $surname.$middleName.$givenName;
 		$words[] = strrev($surname.$middleName.$givenName);
 
-		foreach($words as $w) {
-			if ($w == $word) {
+		foreach($words as $w) 
+		{
+			if ($w == $word) 
+			{
 				return true;
 			}
 		}
@@ -389,14 +399,15 @@ class Hubzero_Password_Blacklist
 		$words = array();
 		$words[] = $username;
 		$words[] = strrev($username);
-		
-		foreach($words as $w) {
-			if ($w == $word) {
+
+		foreach ($words as $w) 
+		{
+			if ($w == $word) 
+			{
 				return true;
 			}
 		}
 
 		return false;
 	}
-		
 }

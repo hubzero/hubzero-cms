@@ -59,7 +59,7 @@ class UsersViewReset extends JViewLegacy
 
 		$this->prepareDocument();
 
-		$password_rules = Hubzero_Password_Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::getRules();
 		$this->password_rules = array();
 
 		foreach($password_rules as $rule) {

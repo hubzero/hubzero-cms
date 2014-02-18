@@ -58,9 +58,6 @@ class MembersControllerApi extends Hubzero_Api_Controller
 		//check to make sure we have a profile
 		if ($result === false)	return $this->not_found();
 		
-		//
-		ximport("Hubzero_User_Profile_Helper");
-		
 		//get any request vars
 		$format = JRequest::getVar('format', 'json');
 		
@@ -298,8 +295,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 		if ($result === false)	return $this->not_found();
 
 		// Get the password rules
-		ximport('Hubzero_Password_Rule');
-		$password_rules = Hubzero_Password_Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::getRules();
 
 		$pw_rules = array();
 
@@ -318,7 +314,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 		// Validate the password
 		if (!empty($pw))
 		{
-			$msg = Hubzero_Password_Rule::validate($pw, $password_rules, $result);
+			$msg = \Hubzero\Password\Rule::validate($pw, $password_rules, $result);
 		}
 		else
 		{

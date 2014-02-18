@@ -729,7 +729,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->newpass2 = $newpass2;
 		$this->view->validated = true;
 
-		$password_rules = Hubzero_Password_Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::getRules();
 
 		$this->view->password_rules = array();
 
@@ -743,7 +743,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		if (!empty($newpass)) 
 		{
-			$msg = Hubzero_Password_Rule::validate($newpass, $password_rules, $profile->get('username'));
+			$msg = \Hubzero\Password\Rule::validate($newpass, $password_rules, $profile->get('username'));
 		}
 		else 
 		{

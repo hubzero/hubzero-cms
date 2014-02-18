@@ -28,10 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Password;
 
-class Hubzero_Password_CharacterClass
+class CharacterClass
 {
 	static $classes = null;
 
@@ -47,32 +46,37 @@ class Hubzero_Password_CharacterClass
 		self::$classes = $classes;
 	}
 
-    public function match($char = null)
+	public function match($char = null)
 	{
 		$result = array();
 
-		if (empty(self::$classes)) {
+		if (empty(self::$classes)) 
+		{
 			self::init();
 		}
 
-		if (empty(self::$classes)) {
+		if (empty(self::$classes)) 
+		{
 			return $result;
 		}
 
-		if (count($char) == 0) {
+		if (count($char) == 0) 
+		{
 			$char = chr(0);
 		}
 
 		$char = $char{0};
 
-		foreach(self::$classes as $class) {
-			if (preg_match("/" . $class['regex'] . "/", $char)) {
-				$match = new stdClass();
+		foreach (self::$classes as $class) 
+		{
+			if (preg_match("/" . $class['regex'] . "/", $char)) 
+			{
+				$match = new \stdClass();
 				$match->name = $class['name'];
 				$match->flag = $class['flag'];
 				$result[] = $match;
 			}
-		}	
+		}
 
 		return $result;
 	}
