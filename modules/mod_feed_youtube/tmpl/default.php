@@ -42,8 +42,7 @@ if ($this->feed)
 	$layout = $this->params->get('layout') ? $this->params->get('layout') : 'vertical';
 
 	// Push some CSS to the template
-	ximport('Hubzero_Document');
-	Hubzero_Document::addModuleStylesheet($this->module->module);
+	$this->css();
 
 	$youtube_ima  = DS . trim($this->params->get('imagepath'), DS);
 	if (!is_file(JPATH_ROOT . $youtube_ima)) 

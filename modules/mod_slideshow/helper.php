@@ -63,7 +63,7 @@ class modSlideshow extends \Hubzero\Module\Module
 		$noflash        = $this->params->get('stype', 0);
 		$noflash_link   = $this->params->get('noflash_link', '');
 
-		$swffile = rtrim(Hubzero_Document::getModuleImage($this->module->module, 'banner' . $width . 'x' . $height . '.swf'), '.swf');
+		$swffile = rtrim(\Hubzero\Document\Assets::getModuleImage($this->module->module, 'banner' . $width . 'x' . $height . '.swf'), '.swf');
 
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');

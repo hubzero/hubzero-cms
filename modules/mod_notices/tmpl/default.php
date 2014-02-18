@@ -33,8 +33,7 @@ if ($this->publish) { ?>
 	$page = JRequest::getVar('REQUEST_URI', '', 'server');
 	if ($page && $this->params->get('allowClose', 1)) 
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleScript('mod_notices');
+		$this->js();
 
 		$page .= (strstr($page, '?')) ? '&' : '?';
 		$page .= $this->moduleid . '=close';
