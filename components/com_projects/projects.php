@@ -41,11 +41,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 jimport('joomla.application.component.helper');
 jimport('joomla.application.component.view');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Group');
-ximport('Hubzero_User_Helper');
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_Document');
 
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.activity.php' );

@@ -784,7 +784,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		//push scripts
 		$this->_getScripts('assets/js/' . $this->_name);
-		Hubzero_Document::addSystemScript('jquery.cycle2');
+		\Hubzero\Document\Assets::addSystemScript('jquery.cycle2');
 		
 		$this->view->task = $this->_task;
 		

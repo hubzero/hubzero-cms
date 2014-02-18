@@ -70,10 +70,6 @@ require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 
 jimport('joomla.application.component.helper');
 jimport('joomla.application.component.view');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Group');
-ximport('Hubzero_User_Helper');
-ximport('Hubzero_Document');
 
 $controllerName = JRequest::getCmd('controller', 'publications');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

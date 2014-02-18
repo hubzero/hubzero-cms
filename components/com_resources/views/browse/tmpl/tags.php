@@ -32,8 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Import share CSS to style share features on right side of trifold
-ximport('Hubzero_Document');
-Hubzero_Document::addPluginStylesheet('resources', 'share');
+\Hubzero\Document\Assets::addPluginStylesheet('resources', 'share');
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

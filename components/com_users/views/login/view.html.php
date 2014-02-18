@@ -44,13 +44,13 @@ class UsersViewLogin extends JViewLegacy
 		}
 
 		// Get and add the js and extra css to the page
-		Hubzero_Document::addComponentStylesheet('com_users', 'login.css');
-		Hubzero_Document::addComponentStylesheet('com_users', 'providers.css');
-		Hubzero_Document::addComponentScript('com_users', 'assets/js/login');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'login.css');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
+		\Hubzero\Document\Assets::addComponentScript('com_users', 'assets/js/login');
 
-		Hubzero_Document::addSystemStylesheet('uniform.css');
-		Hubzero_Document::addSystemScript('jquery.uniform');
-		Hubzero_Document::addSystemScript('jquery.hoverIntent');
+		\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
+		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {

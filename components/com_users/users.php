@@ -11,9 +11,7 @@ defined('_JEXEC') or die;
 
 require_once JPATH_COMPONENT.'/helpers/route.php';
 
-ximport('Hubzero_Document');
-
-Hubzero_Document::addComponentStylesheet('com_users');
+\Hubzero\Document\Assets::addComponentStylesheet('com_users');
 
 // Launch the controller.
 $controller = JControllerLegacy::getInstance('Users');

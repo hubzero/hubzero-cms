@@ -54,14 +54,11 @@ class UsersViewLink extends JViewLegacy
 		}
 
 		// Get and add the js and extra css to the page
-		Hubzero_Document::addComponentStylesheet('com_users', 'link.css');
-		Hubzero_Document::addComponentStylesheet('com_users', 'providers.css');
-		Hubzero_Document::addComponentScript('com_users', 'assets/js/link');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'link.css');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
+		\Hubzero\Document\Assets::addComponentScript('com_users', 'assets/js/link');
 
 		// Import a few things
-		ximport('Hubzero_Auth_Link');
-		ximport('Hubzero_Auth_Domain');
-		ximport('Hubzero_User_Profile_Helper');
 		jimport('joomla.user.helper');
 
 		// Look up a few things

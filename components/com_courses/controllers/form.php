@@ -144,8 +144,8 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		$this->_getScripts('assets/js/select');
 
 		// Add tablesorter
-		Hubzero_Document::addSystemStylesheet('tablesorter.themes.blue.css');
-		Hubzero_Document::addSystemScript('jquery.tablesorter.min');
+		\Hubzero\Document\Assets::addSystemStylesheet('tablesorter.themes.blue.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.tablesorter.min');
 
 		// Set the title and pathway
 		$this->_buildTitle('Upload a PDF');
@@ -273,8 +273,8 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		$this->_getScripts('assets/js/' . $this->_task);
 
 		// Add tablesorter
-		Hubzero_Document::addSystemStylesheet('tablesorter.themes.blue.css');
-		Hubzero_Document::addSystemScript('jquery.tablesorter.min');
+		\Hubzero\Document\Assets::addSystemStylesheet('tablesorter.themes.blue.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.tablesorter.min');
 
 		$this->view->pdf   = $this->assertExistentForm();
 		$this->view->dep   = ($dep) ? $dep : new PdfFormDeployment;
@@ -388,8 +388,8 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		$this->_getScripts('assets/js/timepicker');
 
 		// Add tablesorter
-		Hubzero_Document::addSystemStylesheet('tablesorter.themes.blue.css');
-		Hubzero_Document::addSystemScript('jquery.tablesorter.min');
+		\Hubzero\Document\Assets::addSystemStylesheet('tablesorter.themes.blue.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.tablesorter.min');
 
 		$this->view->pdf   = $this->assertExistentForm();
 		$this->view->title = $this->view->pdf->getTitle();

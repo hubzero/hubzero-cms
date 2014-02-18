@@ -2226,8 +2226,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_getStyles();
 		
 		// Add projects stylesheet
-		Hubzero_Document::addComponentStylesheet('com_projects');
-		Hubzero_Document::addComponentScript('com_projects', 'assets/js/projects');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
+		\Hubzero\Document\Assets::addComponentScript('com_projects', 'assets/js/projects');
 
 		// Set page title
 		$this->_task_title = JText::_('COM_PUBLICATIONS_SUBMIT');

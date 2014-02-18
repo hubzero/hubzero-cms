@@ -141,19 +141,19 @@ if ($type == 'hubpresenter')
 	$presentation = $presentation->presentation;
 
 	// Add the HUBpresenter stylesheet and scripts
-	Hubzero_Document::addComponentStylesheet('com_resources', "/assets/css/hubpresenter.css");
-	Hubzero_Document::addComponentStylesheet('com_courses', "/assets/css/hubpresenter.css");
+	\Hubzero\Document\Assets::addComponentStylesheet('com_resources', "/assets/css/hubpresenter.css");
+	\Hubzero\Document\Assets::addComponentStylesheet('com_courses', "/assets/css/hubpresenter.css");
 
-	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter");
-	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
+	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/hubpresenter");
+	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
 }
 elseif ($type == 'html5')
 {
-	Hubzero_Document::addComponentStylesheet('com_resources', "/assets/css/video.css");
-	Hubzero_Document::addComponentStylesheet('com_courses', "/assets/css/video.css");
+	\Hubzero\Document\Assets::addComponentStylesheet('com_resources', "/assets/css/video.css");
+	\Hubzero\Document\Assets::addComponentStylesheet('com_courses', "/assets/css/video.css");
 
-	Hubzero_Document::addComponentScript('com_resources', "assets/js/video");
-	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
+	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/video");
+	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
 
 	$presentation = $manifest->presentation;
 

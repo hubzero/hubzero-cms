@@ -704,7 +704,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		//do we want to share with a group
 		if (isset($group) && $group != 0)
 		{
-			ximport('Hubzero_Group');
 			$hg = Hubzero_Group::getInstance( $group );
 			$members = $hg->get('members');
 			
@@ -1034,7 +1033,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 		
 		//get users groups
-		ximport('Hubzero_User_Helper');
 		$this->view->mygroups = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members', 1 );
 
 		// Push styles to the document
@@ -1044,8 +1042,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		//$this->_getScripts('assets/js/' . $this->_controller);
 		
 		//add editable plugin
-		//ximport('Hubzero_Document');
-		//Hubzero_Document::addSystemScript('jquery.editable.min');
+		//\Hubzero\Document\Assets::addSystemScript('jquery.editable.min');
 
 		$this->view->app      = $app;
 		$this->view->config   = $this->config;

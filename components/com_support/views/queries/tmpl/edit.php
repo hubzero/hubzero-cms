@@ -30,10 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Push some styles to the template
-//$document = JFactory::getDocument();
-//$document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'conditions.css');
-
 $tmpl = JRequest::getVar('tmpl', '');
 $no_html = JRequest::getInt('no_html', 0);
 
@@ -41,10 +37,10 @@ $juser = JFactory::getUser();
 ?>
 <?php 
 if (!$tmpl && !$no_html) { 
-	ximport('Hubzero_Document');
-	Hubzero_Document::addComponentScript($this->option, 'assets/js/json2');
-	Hubzero_Document::addComponentScript($this->option, 'assets/js/condition.builder');
-	Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.css');
+	// Push some styles to the template
+	$this->js('json2.js');
+	$this->js('condition.builder.js');
+	$this->css('conditions.css');
 ?>
 	<form action="index.php" method="post" name="adminForm" id="item-form">
 		<div class="col width-100">

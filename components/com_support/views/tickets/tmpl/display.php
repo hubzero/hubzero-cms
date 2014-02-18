@@ -33,10 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $live_site = rtrim(JURI::base(), '/');
 
-ximport('Hubzero_Document');
-Hubzero_Document::addComponentScript($this->option, 'assets/js/json2');
-Hubzero_Document::addComponentScript($this->option, 'assets/js/condition.builder');
-Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.css');
+$this->js('json2.js');
+$this->js('condition.builder.js');
+$this->css('conditions.css');
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

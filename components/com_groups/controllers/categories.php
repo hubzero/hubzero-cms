@@ -133,8 +133,8 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		
 		//push scripts
 		$this->_getScripts('assets/js/' . $this->_name);
-		Hubzero_Document::addSystemScript('jquery.colpick');
-		Hubzero_Document::addSystemStylesheet('jquery.colpick.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.colpick');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.colpick.css');
 		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();

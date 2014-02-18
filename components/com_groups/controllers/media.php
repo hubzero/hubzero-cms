@@ -143,9 +143,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// push scripts
 		$this->_getScripts('assets/js/' . $this->_name);
 		$this->_getScripts('assets/js/groups.mediabrowser.jquery');
-		Hubzero_document::addSystemScript('jquery.fileuploader');
-		Hubzero_document::addSystemScript('jquery.contextMenu');
-		Hubzero_document::addSystemStylesheet('jquery.contextMenu.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.fileuploader');
+		\Hubzero\Document\Assets::addSystemScript('jquery.contextMenu');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.contextMenu.css');
 		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
@@ -316,8 +316,8 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$this->_getScripts('assets/js/groups.medialist.jquery');
 		
 		//add jquery context menu plugin
-		Hubzero_Document::addSystemScript('jquery.contextMenu');
-		Hubzero_Document::addSystemStylesheet('jquery.contextMenu.css');
+		\Hubzero\Document\Assets::addSystemScript('jquery.contextMenu');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.contextMenu.css');
 		
 		// pass vars to view
 		//$this->view->config = $this->config;
