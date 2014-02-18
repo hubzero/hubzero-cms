@@ -31,6 +31,7 @@
 namespace Hubzero\Component;
 
 use Hubzero\View\View as AbstractView;
+use Hubzero\Document\Assets;
 
 /**
  * Base class for a View
@@ -92,7 +93,8 @@ class View extends AbstractView
 
 		if ($component === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
-			return \JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			return $this;
 		}
 
 		if ($stylesheet && substr($stylesheet, -4) != '.css')
@@ -102,7 +104,8 @@ class View extends AbstractView
 
 		if ($component == 'system')
 		{
-			return \Hubzero_Document::addSystemStylesheet($stylesheet);
+			Assets::addSystemStylesheet($stylesheet);
+			return $this;
 		}
 
 		if (substr($component, 0, strlen('com_')) !== 'com_')
@@ -110,7 +113,7 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
-		\Hubzero_Document::addComponentStylesheet($component, $stylesheet, $type, $media, $attribs);
+		Assets::addComponentStylesheet($component, $stylesheet, $type, $media, $attribs);
 
 		return $this;
 	}
@@ -134,12 +137,14 @@ class View extends AbstractView
 
 		if ($component === true || strstr($script, '(') || strstr($script, ';'))
 		{
-			return \JFactory::getDocument()->addScriptDeclaration($script);
+			\JFactory::getDocument()->addScriptDeclaration($script);
+			return $this;
 		}
 
 		if ($component == 'system')
 		{
-			return \Hubzero_Document::addSystemScript($script);
+			Assets::addSystemScript($script);
+			return $this;
 		}
 
 		if (substr($component, 0, strlen('com_')) !== 'com_')
@@ -147,7 +152,7 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
-		\Hubzero_Document::addComponentScript($component, $script, $type, $defer, $async);
+		Assets::addComponentScript($component, $script, $type, $defer, $async);
 
 		return $this;
 	}
@@ -162,7 +167,7 @@ class View extends AbstractView
 	public function view($layout, $name=null)
 	{
 		// If we were passed only a view model, just render it.
-		if ($layout instanceof \Hubzero\View\View) 
+		if ($layout instanceof AbstractView) 
 		{
 			return $layout;
 		}

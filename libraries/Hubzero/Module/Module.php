@@ -31,6 +31,7 @@
 namespace Hubzero\Module;
 
 use Hubzero\Base\Object;
+use Hubzero\Document\Assets;
 
 /**
  * Base class for modules
@@ -126,7 +127,8 @@ class Module extends Object
 
 		if ($module === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
-			return \JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			return $this;
 		}
 
 		if ($stylesheet && substr($stylesheet, -4) != '.css')
@@ -136,7 +138,8 @@ class Module extends Object
 
 		if ($module == 'system')
 		{
-			return \Hubzero_Document::addSystemStylesheet($stylesheet);
+			Assets::addSystemStylesheet($stylesheet);
+			return $this;
 		}
 
 		if (substr($module, 0, strlen('mod_')) !== 'mod_')
@@ -144,7 +147,7 @@ class Module extends Object
 			$module = 'mod_' . $module;
 		}
 
-		\Hubzero_Document::addModuleStylesheet($module, $stylesheet, $type, $media, $attribs);
+		Assets::addModuleStylesheet($module, $stylesheet, $type, $media, $attribs);
 
 		return $this;
 	}
@@ -168,12 +171,14 @@ class Module extends Object
 
 		if ($module === true || strstr($script, '(') || strstr($script, ';'))
 		{
-			return \JFactory::getDocument()->addScriptDeclaration($script);
+			\JFactory::getDocument()->addScriptDeclaration($script);
+			return $this;
 		}
 
 		if ($module == 'system')
 		{
-			return \Hubzero_Document::addSystemScript($script);
+			Assets::addSystemScript($script);
+			return $this;
 		}
 
 		if (substr($module, 0, strlen('mod_')) !== 'mod_')
@@ -181,7 +186,7 @@ class Module extends Object
 			$module = 'mod_' . $module;
 		}
 
-		\Hubzero_Document::addModuleScript($module, $script, $type, $defer, $async);
+		Assets::addModuleScript($module, $script, $type, $defer, $async);
 
 		return $this;
 	}

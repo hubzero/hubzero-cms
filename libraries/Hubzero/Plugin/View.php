@@ -306,10 +306,10 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		if ($folder == 'system')
 		{
-			return \Hubzero_Document::addSystemStylesheet($stylesheet);
+			return \Hubzero\Document\Assets::addSystemStylesheet($stylesheet);
 		}
 
-		\Hubzero_Document::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
+		\Hubzero\Document\Assets::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
 
 		return $this;
 	}
@@ -337,7 +337,7 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		if ($folder == 'system')
 		{
-			return \Hubzero_Document::addSystemScript($script);
+			return \Hubzero\Document\Assets::addSystemScript($script);
 		}
 
 		if ($folder === true || strstr($script, '(') || strstr($script, ';'))
@@ -345,7 +345,7 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 			return \JFactory::getDocument()->addScriptDeclaration($script);
 		}
 
-		\Hubzero_Document::addPluginScript($folder, $element, $script, $type, $defer, $async);
+		\Hubzero\Document\Assets::addPluginScript($folder, $element, $script, $type, $defer, $async);
 
 		return $this;
 	}

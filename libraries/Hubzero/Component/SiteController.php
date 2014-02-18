@@ -33,6 +33,7 @@ namespace Hubzero\Component;
 use Hubzero\Component\Exception\InvalidTaskException;
 use Hubzero\Component\Exception\InvalidControllerException;
 use Hubzero\Base\Object;
+use Hubzero\Document\Assets;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -544,11 +545,11 @@ class SiteController extends Object implements ControllerInterface
 
 		if ($system)
 		{
-			\Hubzero_Document::addSystemStylesheet($stylesheet);
+			Assets::addSystemStylesheet($stylesheet);
 		}
 		else 
 		{
-			\Hubzero_Document::addComponentStylesheet($option, $stylesheet);
+			Assets::addComponentStylesheet($option, $stylesheet);
 		}
 	}
 
@@ -572,11 +573,11 @@ class SiteController extends Object implements ControllerInterface
 
 		if ($system)
 		{
-			\Hubzero_Document::addSystemScript($script);
+			Assets::addSystemScript($script);
 		}
 		else 
 		{
-			\Hubzero_Document::addComponentScript($option, $script);
+			Assets::addComponentScript($option, $script);
 		}
 	}
 
