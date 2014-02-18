@@ -126,7 +126,7 @@ class plgAuthenticationHubzero extends JPlugin
 
 		if ($result)
 		{	
-			if (Hubzero_User_Password::passwordMatches($result->username, $credentials['password'], true)) {
+			if (\Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true)) {
 				
 				$user = JUser::getInstance($result->id);
 				
@@ -144,7 +144,7 @@ class plgAuthenticationHubzero extends JPlugin
 					$session = JFactory::getSession();
 					$session->set('badpassword', '1');
 				}
-				if(Hubzero_User_Password::isPasswordExpired($result->username))
+				if(\Hubzero\User\Password::isPasswordExpired($result->username))
 				{
 					$session = JFactory::getSession();
 					$session->set('expiredpassword', '1');

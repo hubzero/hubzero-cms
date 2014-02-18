@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_User_Password');
+ximport('\Hubzero\User\Password');
 
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
@@ -66,7 +66,7 @@ else
 			<p>If you don't remember your current password, you'll have to <a href="<?php echo JRoute::_('index.php?option=com_'.$c_user.'&task=logout&return='.base64_encode('/'.$c_user.'/reset')); ?>">reset your password</a></p>
 		</div>
 		<fieldset>
-			<label<?php echo ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
+			<label<?php echo ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('MEMBER_FIELD_CURRENT_PASS'); ?>
 				<input name="oldpass" id="oldpass" type="password" value="" />
 			</label>
@@ -74,7 +74,7 @@ else
 					if ($this->change && !$this->oldpass) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
 					}
-					if ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true)) {
+					if ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true)) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
 					}
 ?>

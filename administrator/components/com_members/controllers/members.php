@@ -194,7 +194,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$this->view->profile = new Hubzero_User_Profile();
 		$this->view->profile->load($id);
 
-		$this->view->password = Hubzero_User_Password::getInstance($id);
+		$this->view->password = \Hubzero\User\Password::getInstance($id);
 
 		// Get the user's interests (tags)
 		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
@@ -389,10 +389,10 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		{
 			ximport('Hubzero_User_Helper');
 
-			Hubzero_User_Password::changePassword( $profile->get('username'), $newpass);
+			\Hubzero\User\Password::changePassword( $profile->get('username'), $newpass);
 		}
 
-		$passinfo = Hubzero_User_Password::getInstance($id);
+		$passinfo = \Hubzero\User\Password::getInstance($id);
 
 		// Do we have shadow info to change?
 		$shadowMax     = JRequest::getInt('shadowMax', false, 'post');

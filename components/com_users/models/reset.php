@@ -200,7 +200,7 @@ class UsersModelReset extends JModelForm
 		}
 
 		// Encrypt the password and update the profile
-		$result = Hubzero_User_Password::changePassword($profile->get('username'), $password1);
+		$result = \Hubzero\User\Password::changePassword($profile->get('username'), $password1);
 
 		// Save the changes
 		if (!$result) {

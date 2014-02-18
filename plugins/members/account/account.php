@@ -258,7 +258,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Determine what type of password change the user needs
-		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
 		if(!empty($hzup->passhash))
 		{
 			// A password has already been set, now check if they're logged in with a linked account
@@ -344,7 +344,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make sure this is an auth link account (i.e. no password set)
-		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
 		if(!empty($hzup->passhash))
 		{
 			JError::raiseError(404, JText::_('PLG_MEMBERS_ACCOUNT_NOT_LINKED_ACCOUNT'));
@@ -615,7 +615,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// No errors, so let's move on - encrypt the password and update the profile
-		$result = Hubzero_User_Password::changePassword($profile->get('uidNumber'), $password1);
+		$result = \Hubzero\User\Password::changePassword($profile->get('uidNumber'), $password1);
 
 		// Save the changes
 		if (!$result)
@@ -671,7 +671,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$hzal = Hubzero_Auth_Link::find_by_id($hzal_id);
 
 		// Determine what type of password change the user needs
-		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
 		if(empty($hzup->passhash) && count(Hubzero_Auth_Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
 		{
 			$this->setRedirect(
@@ -703,7 +703,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function getPassInfo()
 	{
-		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
 
 		// Check to see if password expiration is even enforced
 		if(empty($hzup->passhash) || $hzup->shadowMax === NULL)

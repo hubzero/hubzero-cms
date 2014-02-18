@@ -370,7 +370,7 @@ class OauthControllerApi extends Hubzero_Api_Controller
 				return;
 			}
 			
-			$match = Hubzero_User_Password::passwordMatches($x_auth_username, $x_auth_password, true);			
+			$match = \Hubzero\User\Password::passwordMatches($x_auth_username, $x_auth_password, true);			
 			
 			if (!$match)
 			{

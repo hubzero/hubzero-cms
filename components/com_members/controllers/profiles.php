@@ -614,7 +614,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			die('insecure connection and redirection failed');
 		}
 
-		ximport('Hubzero_User_Password');
+		ximport('\Hubzero\User\Password');
 
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
@@ -764,7 +764,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		$passrules = false;
 
-		if (!Hubzero_User_Password::passwordMatches($profile->get('uidNumber'), $oldpass, true)) 
+		if (!\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $oldpass, true)) 
 		{
 			$this->setError(JText::_('MEMBERS_PASS_INCORRECT'));
 		} 
@@ -820,7 +820,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Encrypt the password and update the profile
-		$result = Hubzero_User_Password::changePassword($profile->get('uidNumber'), $newpass);
+		$result = \Hubzero\User\Password::changePassword($profile->get('uidNumber'), $newpass);
 
 		// Save the changes
 		if (!$result)

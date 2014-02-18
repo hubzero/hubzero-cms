@@ -28,64 +28,95 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\User\Password;
 
-class Hubzero_User_Password_History
+class History
 {
+	/**
+	 * User ID
+	 *
+	 * @var integer
+	 */
 	private $user_id;
 
+	/**
+	 * Log a message
+	 * 
+	 * @param   string $msg
+	 * @return  void
+	 */
 	private function logDebug($msg)
 	{
-		$xlog = &HUbzero_Factory::getLogger();
+		$xlog = \Hubzero_Factory::getLogger();
 		$xlog->debug($msg);
 	}
 
+	/**
+	 * Get an instance of a user's password History
+	 * 
+	 * @param   mixed $instance User ID (integer) or username (string)
+	 * @return  object
+	 */
 	public static function getInstance($instance)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db)) {
 			return false;
 		}
 
-		$hzph = new Hubzero_User_Password_History();
+		$hzph = new self();
 
-		if (is_numeric($instance) && $instance > 0) {
+		if (is_numeric($instance) && $instance > 0) 
+		{
 			$hzph->user_id = $instance;
 		}
-		else {
+		else 
+		{
 			$query = "SELECT id FROM #__users WHERE username=" .  $db->Quote($instance) . ";";
 			$db->setQuery($query);
 			$result = $db->loadResult();
-			if (is_numeric($result) && $result > 0) {
+			if (is_numeric($result) && $result > 0) 
+			{
 				$hzph->user_id = $result;
 			}
 		}
 
-		if (empty($hzph->user_id)) {
+		if (empty($hzph->user_id)) 
+		{
 			return false;
 		}
 
 		return $hzph;
 	}
 
+	/**
+	 * Add a passhash to a user's history
+	 * 
+	 * @param   string $passhash
+	 * @param   string $invalidated
+	 * @return  boolean
+	 */
 	public function add($passhash = null, $invalidated = null)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return false;
 		}
 
-		if (empty($passhash)) {
+		if (empty($passhash)) 
+		{
 			$passhash = null;
 		}
 
-		if (empty($invalidated)) {
+		if (empty($invalidated)) 
+		{
 			$invalidated = "UTC_TIMESTAMP()";
 		}
-		else {
+		else 
+		{
 			$invalidated = $db->Quote($invalidated); 
 		}
 
@@ -103,18 +134,27 @@ class Hubzero_User_Password_History
 
 		$result = $db->query();
 
-		if ($result !== false || $db->getErrorNum() == 1062) {
+		if ($result !== false || $db->getErrorNum() == 1062) 
+		{
 			return true;
 		}
 
 		return false;
 	}
 
+	/**
+	 * Check if a passhash exists for a user
+	 * 
+	 * @param   string $passhash
+	 * @param   string $since
+	 * @return  boolean
+	 */
 	public function exists($passhash = null, $since =  null)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		if (empty($db)) {
+		if (empty($db)) 
+		{
 			return false;
 		}
 
@@ -122,7 +162,8 @@ class Hubzero_User_Password_History
 			"user_id=" . $db->Quote($this->user_id) . " AND " .
 			"passhash=" . $db->Quote($passhash);
 
-		if (!empty($since)) {
+		if (!empty($since)) 
+		{
 			$query .= " AND invalidated >= " . $db->Quote($since);
 		}
 
@@ -132,20 +173,29 @@ class Hubzero_User_Password_History
 
 		$result = $db->loadResult();
 
-		if ($result == '1') {
+		if ($result == '1') 
+		{
 			return true;
 		}
 
 		return false;
 	}
 
+	/**
+	 * Remove a passhash from a user's history
+	 * 
+	 * @param   string $passhash
+	 * @param   string $timestamp
+	 * @return  boolean
+	 */
 	public function remove($passhash, $timestamp)
 	{
-		if ($this->user_id <= 0) {
+		if ($this->user_id <= 0) 
+		{
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -157,17 +207,25 @@ class Hubzero_User_Password_History
 			$db->Quote($passhash) . " AND invalidated = " .
 			$db->Quote($timestamp) . ";");
 
-		if (!$db->query()) {
+		if (!$db->query()) 
+		{
 			return false;
 		}
 
 		return true;
 	}
 
+	/**
+	 * Shortcut helper method for adding 
+	 * a password to a user's history
+	 * 
+	 * @param   string $passhash
+	 * @param   string $user
+	 * @return  boolean
+	 */
 	public static function addPassword($passhash, $user = null)
 	{
 		$hzuph = self::getInstance($user);
-
 		$hzuph->add($passhash);
 
 		return true;

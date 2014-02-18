@@ -475,7 +475,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 
 		if ($result) 
 		{
-			$result = Hubzero_User_Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
+			$result = \Hubzero\User\Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
 		}
 		
 		// Did we successully create/update an account?
@@ -949,7 +949,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 
 					if ($result) 
 					{
-						$result = Hubzero_User_Password::changePassword($xprofile->get('uidNumber'), $xregistration->get('password'));
+						$result = \Hubzero\User\Password::changePassword($xprofile->get('uidNumber'), $xregistration->get('password'));
 						// Set password back here in case anything else down the line is looking for it
 						$xprofile->set('password', $xregistration->get('password'));
 					}

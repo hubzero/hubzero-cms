@@ -232,7 +232,7 @@ class plgUserXusers extends JPlugin
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
 		ximport('Hubzero_User_Profile');
-		ximport('Hubzero_User_Password');
+		ximport('\Hubzero\User\Password');
 
 		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
 

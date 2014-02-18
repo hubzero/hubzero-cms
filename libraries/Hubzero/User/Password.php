@@ -28,15 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\User;
+
+use Hubzero\User\Password\History;
 
 /**
- * Short description for 'Hubzero_User_Password' Long description (if any) . ..
+ * Password handling class for users
  */
-class Hubzero_User_Password
+class Password
 {
-	
 	/**
 	 * Description for 'user_id'
 	 *
@@ -149,7 +149,7 @@ class Hubzero_User_Password
 	 */
 	public static function getInstance($instance, $storage = null)
 	{
-		$hzup = new Hubzero_User_Password();
+		$hzup = new self();
 		
 		if ($hzup->read($instance) === false)
 		{
@@ -166,14 +166,14 @@ class Hubzero_User_Password
 	 */
 	public function create()
 	{
-		$db =  JFactory::getDBO();
+		$db =  \JFactory::getDBO();
 		
 		if (empty($db))
 		{
 			return false;
 		}
 		
-		// @FIXME: this should fail if id doesn't exist in jos_users
+		// @FIXME: this should fail if id doesn't exist in #__users
 		
 
 		if ($this->user_id > 0)
@@ -216,7 +216,7 @@ class Hubzero_User_Password
 		
 		$this->clear();
 		
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		
 		if (empty($db))
 		{
@@ -254,7 +254,7 @@ class Hubzero_User_Password
 		}
 		else
 		{
-			$hzp = Hubzero_User_Profile::getInstance($instance);
+			$hzp = \Hubzero_User_Profile::getInstance($instance);
 			
 			if (is_object($hzp))
 			{
@@ -277,9 +277,9 @@ class Hubzero_User_Password
 	 * @param boolean $all Parameter description (if any) ...
 	 * @return boolean Return description (if any) ...
 	 */
-	function update()
+	public function update()
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		
 		$query = "UPDATE #__users_password SET ";
 		
@@ -342,8 +342,8 @@ class Hubzero_User_Password
 		
 		if ($affected > 0)
 		{
-			JPluginHelper::importPlugin('user');
-			JDispatcher::getInstance()->trigger('onAfterStorePassword', array($this));
+			\JPluginHelper::importPlugin('user');
+			\JDispatcher::getInstance()->trigger('onAfterStorePassword', array($this));
 		}
 		
 		return true;
@@ -361,7 +361,7 @@ class Hubzero_User_Password
 			return false;
 		}
 		
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		
 		if (empty($db))
 		{
@@ -391,8 +391,8 @@ class Hubzero_User_Password
 		
 		if ($affected > 0)
 		{
-			JPluginHelper::importPlugin('user');
-			JDispatcher::getInstance()->trigger('onAfterDeletePassword', array($this));
+			\JPluginHelper::importPlugin('user');
+			\JDispatcher::getInstance()->trigger('onAfterDeletePassword', array($this));
 		}
 		
 		return true;
@@ -600,10 +600,8 @@ class Hubzero_User_Password
 
 	public static function changePasshash($user = null, $passhash)
 	{
-		ximport('Hubzero_User_Password_History');
-		
 		// Get config values for min, max, and warning
-		$config =  JComponentHelper::getParams('com_members');
+		$config = \JComponentHelper::getParams('com_members');
 		$shadowMin = $config->get('shadowMin', '0');
 		$shadowMax = $config->get('shadowMax', null);
 		$shadowWarning = $config->get('shadowWarning', '7');
@@ -624,7 +622,7 @@ class Hubzero_User_Password
 		$hzup->__set('shadowExpire', null);
 		$hzup->update();
 		
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		
 		$db->setQuery("UPDATE #__xprofiles SET userPassword=" . $db->Quote($passhash) . " WHERE uidNumber=" . $db->Quote($hzup->get('user_id')) . ";");
 		$db->query();
@@ -634,7 +632,7 @@ class Hubzero_User_Password
 		
 		if (!empty($oldhash))
 		{
-			Hubzero_User_Password_History::addPassword($oldhash, $user);
+			History::addPassword($oldhash, $user);
 		}
 		
 		return true;
@@ -685,7 +683,7 @@ class Hubzero_User_Password
 		else
 		{
 			jimport('joomla.user.helper');
-			$hashed = JUserHelper::getCryptedPassword($password, $salt, $encryption);
+			$hashed = \JUserHelper::getCryptedPassword($password, $salt, $encryption);
 		}
 		
 		return ($crypt == $hashed);
@@ -703,7 +701,7 @@ class Hubzero_User_Password
 		}
 		else if ($alltables)
 		{
-			$profile = Hubzero_User_Profile::getInstance($user);
+			$profile = \Hubzero_User_Profile::getInstance($user);
 			
 			if (is_object($profile) && ($profile->get('userPassword') != ''))
 			{
@@ -711,7 +709,7 @@ class Hubzero_User_Password
 			}
 			else
 			{
-				$user = JUser::getInstance($user);
+				$user = \JUser::getInstance($user);
 				
 				if (is_object($user) && !empty($user->password))
 				{

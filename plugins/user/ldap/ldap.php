@@ -102,7 +102,7 @@ class plgUserLdap extends JPlugin
 	/**
 	 * Method is called after password data is stored in the database
 	 *
-	 * @param object holds the new password data (Hubzero_User_Password)
+	 * @param object holds the new password data (\Hubzero\User\Password)
 	 */
 	public function onAfterStorePassword($user)
 	{
@@ -113,7 +113,7 @@ class plgUserLdap extends JPlugin
 	/**
 	 * Method is called after password data is deleted from the database
 	 *
-	 * @param object holds the new password data (Hubzero_User_Password)
+	 * @param object holds the new password data (\Hubzero\User\Password)
 	 */
 	public function onAfterDeletePassword($user)
 	{
