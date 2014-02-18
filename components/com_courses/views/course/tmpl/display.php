@@ -179,7 +179,9 @@ if ($offerings->total())
 
 						foreach ($offering->sections() as $sect)
 						{
-							if ($sect->get('alias') != '__default' && $sect->get('enrollment') != 2 && $sect->get('publish_down') != '0000-00-00 00:00:00' && $sect->get('publish_down') <= $now)
+							if ($sect->get('alias') != '__default' 
+							 && $sect->get('enrollment') != 2 
+							 && $sect->get('publish_down') == '0000-00-00 00:00:00' || ($sect->get('publish_down') != '0000-00-00 00:00:00' && $sect->get('publish_down') <= $now))
 							{
 								$offering->section($sect->get('alias'));
 								break;
