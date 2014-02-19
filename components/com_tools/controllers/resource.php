@@ -118,7 +118,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		// process first step
 		if ($nextstep == 3 && isset($_POST['nbtag'])) 
 		{
-		    $hztv = Hubzero_Tool_VersionHelper::getToolRevision($this->_toolid, $version);
+		    $hztv = ToolsHelperVersion::getToolRevision($this->_toolid, $version);
 
 			$objV = new ToolVersion($this->database);
 			if (!$objV->bind($_POST)) 

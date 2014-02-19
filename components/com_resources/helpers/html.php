@@ -2067,9 +2067,11 @@ class ResourcesHtml
 					}
 				}
 
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+
 				// Create some tool objects
-				$hztv = Hubzero_Tool_Version::getInstance($resource->tool);
-				$ht = Hubzero_Tool::getInstance($hztv->toolid);
+				$hztv = ToolsModelVersion::getInstance($resource->tool);
+				$ht = ToolsModelTool::getInstance($hztv->toolid);
 				if ($ht) 
 				{ // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
 					$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->tool);

@@ -33,9 +33,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ContribtoolController'
- * 
- * Long description (if any) ...
+ * Tools controller class
  */
 class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 {
@@ -97,10 +95,10 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get a record count
-		$this->view->total = Hubzero_Tool::getToolCount($this->view->filters, true);
+		$this->view->total = ToolsModelTool::getToolCount($this->view->filters, true);
 
 		// Get records
-		$this->view->rows = Hubzero_Tool::getToolSummaries($this->view->filters, true);
+		$this->view->rows = ToolsModelTool::getToolSummaries($this->view->filters, true);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -150,7 +148,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		}
 		else 
 		{
-			$this->view->row = Hubzero_Tool::getInstance($id);
+			$this->view->row = ToolsModelTool::getInstance($id);
 		}
 
 		// Set any errors
@@ -199,7 +197,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$row = Hubzero_Tool::getInstance(intval($fields['id']));
+		$row = ToolsModelTool::getInstance(intval($fields['id']));
 		if (!$row)
 		{
 			JRequest::setVar('id', $fields['id']);

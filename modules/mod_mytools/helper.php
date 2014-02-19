@@ -45,6 +45,8 @@ class modToolList extends \Hubzero\Module\Module
 	 */
 	private function _getToollist($lst=NULL)
 	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+
 		$toollist = array();
 
 		// Create a Tool object
@@ -67,7 +69,7 @@ class modToolList extends \Hubzero\Module\Module
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
 						$item = trim(implode('_r', $bits));
 					}
-					/*$thistool = Hubzero_Tool_Version::getVersionInfo('', 'current', $item, '');
+					/*$thistool = ToolsModelVersion::getVersionInfo('', 'current', $item, '');
 
 					if (is_array($thistool) && isset($thistool[0])) 
 					{
@@ -76,7 +78,7 @@ class modToolList extends \Hubzero\Module\Module
 					}*/
 					$items[] = $item;
 				}
-				$tools = Hubzero_Tool_Version::getVersionInfo('', 'current', $items, '');
+				$tools = ToolsModelVersion::getVersionInfo('', 'current', $items, '');
 			} 
 			else 
 			{
@@ -86,7 +88,7 @@ class modToolList extends \Hubzero\Module\Module
 		else 
 		{
 			// Get all available tools
-			$tools = Hubzero_Tool::getMyTools();
+			$tools = ToolsModelTool::getMyTools();
 		}
 
 		$toolnames = array();

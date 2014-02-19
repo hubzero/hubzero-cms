@@ -245,7 +245,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			else 
 			{
 				// Update the revision number
-				$hztv = Hubzero_Tool_VersionHelper::getDevelopmentToolVersion($this->_toolid);
+				$hztv = ToolsHelperVersion::getDevelopmentToolVersion($this->_toolid);
 				$hztv->revision = intval($rev[1]);
 				if (!$hztv->update()) 
 				{
@@ -439,7 +439,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$xlog->debug("publish(): checkpoint 2:$result, check revision");
 
 		// check if version is valid
-		if (!Hubzero_Tool::validateVersion($status['version'], $error_v, $this->_toolid))
+		if (!ToolsModelTool::validateVersion($status['version'], $error_v, $this->_toolid))
 		{
 			$result = false; 
 			$this->setError($error_v);
@@ -537,7 +537,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		{
 			$invokedir = rtrim($this->config->get('invokescript_dir', DS . 'apps'), "\\/");
 
-			$hzt = Hubzero_Tool::getInstance($this->_toolid);
+			$hzt = ToolsModelTool::getInstance($this->_toolid);
 			$hztv_cur = $hzt->getCurrentVersion();
 			$hztv_dev = $hzt->getDevelopmentVersion();
 
@@ -559,7 +559,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				'@D1'    => 'd1'
 			);
 
-			$new_hztv = Hubzero_Tool_Version::createInstance($status['toolname'], $newtool);
+			$new_hztv = ToolsModelVersion::createInstance($status['toolname'], $newtool);
 			$new_hztv->toolname      = $status['toolname'];
 			$new_hztv->instance      = $newtool;
 			$new_hztv->toolid        = $this->_toolid;
@@ -594,7 +594,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$this->_setTracAccess($new_hztv->toolname, $new_hztv->codeaccess, $new_hztv->wikiaccess);
 
 				// update tool entry
-				$hzt = Hubzero_Tool::getInstance($this->_toolid);
+				$hzt = ToolsModelTool::getInstance($this->_toolid);
 				$hzt->add('version', $new_hztv->instance);
 				$hzt->update();
 

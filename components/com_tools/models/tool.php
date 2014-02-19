@@ -31,56 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.helper');
-ximport('Hubzero_Tool_Version');
-
-/**
- * Short description for 'Hubzero_ToolHelper'
- * 
- * Long description (if any) ...
- */
-class Hubzero_ToolHelper
-{
-
-	/**
-	 * Short description for 'iterate'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param	  unknown $func Parameter description (if any) ...
-	 * @return	 boolean Return description (if any) ...
-	 */
-	public static function iterate($func)
-	{
-		$db =  JFactory::getDBO();
-
-		if (true)
-		{
-			$query = "SELECT toolname FROM #__tool;";
-
-			$db->setQuery($query);
-
-			$result = $db->loadResultArray();
-
-			if ($result === false)
-			{
-				return false;
-			}
-
-			foreach($result as $row)
-			{
-				call_user_func($func, $row);
-			}
-		}
-
-		return true;
-	}
-}
+include_once(__DIR__ . '/../helpers/version.php');
 
 /**
  * Hubzero class for tools
  */
-class Hubzero_Tool
+class ToolsModelTool
 {
 	/**
 	 * Description for 'id'
@@ -292,7 +248,7 @@ class Hubzero_Tool
 	 */
 	public static function getInstance($instance)
 	{
-		$hztv = new Hubzero_Tool();
+		$hztv = new self();
 
 		if ($hztv->read($instance) === false)
 		{
@@ -317,7 +273,7 @@ class Hubzero_Tool
 			return false;
 		}
 
-		$instance = new Hubzero_Tool();
+		$instance = new self();
 
 		$instance->toolname = $name;
 
@@ -1052,7 +1008,7 @@ class Hubzero_Tool
 	 */
 	public function getCurrentVersion()
 	{
-		return Hubzero_Tool_VersionHelper::getCurrentToolVersion($this->id);
+		return ToolsHelperVersion::getCurrentToolVersion($this->id);
 	}
 
 	/**
@@ -1064,7 +1020,7 @@ class Hubzero_Tool
 	 */
 	public function getDevelopmentVersion()
 	{
-		return Hubzero_Tool_VersionHelper::getDevelopmentToolVersion($this->id);
+		return ToolsHelperVersion::getDevelopmentToolVersion($this->id);
 	}
 
 	/**
@@ -1077,7 +1033,7 @@ class Hubzero_Tool
 	 */
 	public function getRevision($revision = 'dev')
 	{
-		return Hubzero_Tool_VersionHelper::getToolRevision($this->id, $revision);
+		return ToolsHelperVersion::getToolRevision($this->id, $revision);
 	}
 
 	/**
@@ -1141,7 +1097,7 @@ class Hubzero_Tool
 			return false;
 		}
 
-		$hzvt = Hubzero_Tool_Version::getInstance($result);
+		$hzvt = ToolsModelVersion::getInstance($result);
 
 		if (empty($hzvt))
 		{
@@ -1183,7 +1139,7 @@ class Hubzero_Tool
 
 		foreach ((array) $result as $v)
 		{
-			$hzvt = Hubzero_Tool_Version::getInstance($v);
+			$hzvt = ToolsModelVersion::getInstance($v);
 
 			if (empty($hzvt))
 			{

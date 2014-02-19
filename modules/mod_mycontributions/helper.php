@@ -112,9 +112,10 @@ class modMyContributions extends \Hubzero\Module\Module
 		$filters['filterby'] = 'all';
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 		// Create a Tool object
-		$rows = Hubzero_Tool::getTools($filters, false);
+		$rows = ToolsModelTool::getTools($filters, false);
 		$limit = 100000;
 
 		if ($rows) 
@@ -122,7 +123,7 @@ class modMyContributions extends \Hubzero\Module\Module
 			for ($i=0; $i < count($rows); $i++)
 			{
 				// what is resource id?
-				$rid = Hubzero_Tool::getResourceId($rows[$i]->id);
+				$rid = ToolsModelTool::getResourceId($rows[$i]->id);
 				$rows[$i]->rid = $rid;
 
 				// get questions, wishes and tickets on published tools
@@ -290,7 +291,7 @@ class modMyContributions extends \Hubzero\Module\Module
 	public function display()
 	{
 		// Get the user's profile 
-		$xprofile = Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
 		$juser = JFactory::getUser();
 		$session_quota = $xprofile->get('jobsAllowed');
 		$administrator = in_array('middleware', $xprofile->get('admin'));

@@ -596,7 +596,6 @@ class ToolVersion extends  JTable
 	 */
 	public function getToolVersions($toolid, &$versions, $toolname='', $exclude_dev = 0)
 	{
-		ximport('Hubzero_Tool');
 		$xlog = Hubzero_Factory::getLogger();
 
 		$objA = new ToolAuthor($this->_db);
@@ -622,6 +621,8 @@ class ToolVersion extends  JTable
 
 		if ($versions) 
 		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+
 			foreach ($versions as $version) 
 			{
 				// get list of authors
@@ -631,7 +632,7 @@ class ToolVersion extends  JTable
 				}
 				else 
 				{
-					$rid = Hubzero_Tool::getResourceId($version->toolid);
+					$rid = ToolsModelTool::getResourceId($version->toolid);
 					$version->authors = $objA->getToolAuthors('dev', $rid);
 				}
 			}

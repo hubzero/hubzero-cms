@@ -118,8 +118,6 @@ class ToolGroup extends  JTable
 	 */
 	public function saveGroup($toolid=NULL, $devgroup, $members, $exist)
 	{
-		ximport('Hubzero_Group');
-
 		if (!$toolid or !$devgroup) 
 		{
 			return false;
@@ -170,15 +168,14 @@ class ToolGroup extends  JTable
 	 */
 	public function saveMemberGroups($toolid=NULL, $newgroups, $editversion='dev', $membergroups=array())
 	{
-		ximport('Hubzero_Tool');
-		ximport('Hubzero_Group');
-
 		if (!$toolid) 
 		{
 			return false;
 		}
 
-		$membergroups = Hubzero_Tool::getToolGroups($toolid);
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+
+		$membergroups = ToolsModelTool::getToolGroups($toolid);
 		$membergroups = ToolsHelperUtils::transform($membergroups, 'cn');
 		$newgroups = ToolsHelperUtils::transform($newgroups, 'cn');
 		$to_delete = array_diff($membergroups, $newgroups);
@@ -219,8 +216,6 @@ class ToolGroup extends  JTable
 	 */
 	public function writeMemberGroups($new, $id, $database, &$err='')
 	{
-		ximport('Hubzero_Group');
-
 		$toolhelper = new ToolsHelperUtils();
 
 		$groups    = is_array($new) ? $new : $toolhelper->makeArray($new);

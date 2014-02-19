@@ -47,7 +47,9 @@ foreach ($this->course->offering()->units() as $unit) :
 	endforeach;
 endforeach;
 
-$tools     = Hubzero_Tool::getMyTools();
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+
+$tools     = ToolsModelTool::getMyTools();
 $config    = JComponentHelper::getParams('com_courses');
 $tool_path = $config->get('tool_path');
 ?>

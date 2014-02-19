@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -44,16 +42,17 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 else 
 {
-	$option = JRequest::getCmd('option');
+	$option = JRequest::getCmd('option', 'com_tools');
 
 	if (!JFactory::getUser()->authorise('core.manage', $option)) 
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
 }
+
 // Include scripts
-//require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'models'.DS.'mw.class.php' );
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'mw.utils.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'tool.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php');
 
 $controllerName = JRequest::getCmd('controller', 'pipeline');

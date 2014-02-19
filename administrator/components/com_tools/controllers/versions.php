@@ -33,9 +33,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ContribtoolController'
- * 
- * Long description (if any) ...
+ * Tools controller class for tool versions
  */
 class ToolsControllerVersions extends \Hubzero\Component\AdminController
 {
@@ -103,7 +101,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 		
-		$this->view->tool = Hubzero_Tool::getInstance($this->view->filters['id']);
+		$this->view->tool = ToolsModelTool::getInstance($this->view->filters['id']);
 		$this->view->total = count($this->view->tool->version);
 		$this->view->rows = $this->view->tool->getToolVersionSummaries($this->view->filters, true);
 		
@@ -148,9 +146,9 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->view->parent = Hubzero_Tool::getInstance($id);
+		$this->view->parent = ToolsModelTool::getInstance($id);
 
-		$this->view->row = Hubzero_Tool_Version::getInstance($version);
+		$this->view->row = ToolsModelVersion::getInstance($version);
 
 		// Set any errors
 		if ($this->getError())
@@ -197,7 +195,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 			return;
 		}
 		
-		$row = Hubzero_Tool_Version::getInstance(intval($fields['version']));
+		$row = ToolsModelVersion::getInstance(intval($fields['version']));
 		if (!$row)
 		{
 			JRequest::setVar('id', $fields['id']);

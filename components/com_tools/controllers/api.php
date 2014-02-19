@@ -87,7 +87,7 @@ class ToolsControllerApi extends \Hubzero\Api\Controller
 		$format = JRequest::getVar('format', 'json');
 		
 		//get list of tools
-		$tools = Hubzero_Tool::getMyTools();
+		$tools = ToolsModelTool::getMyTools();
 		
 		//get the supported tag
 		$rconfig = JComponentHelper::getParams('com_resources');

@@ -377,7 +377,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$hzt = Hubzero_Tool::getInstance($this->_toolid);
+		$hzt = ToolsModelTool::getInstance($this->_toolid);
 		$hztv_dev = $hzt->getRevision('development');
 		$hztv_current = $hzt->getRevision('current');
 
@@ -387,8 +387,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			'version'         => $hztv_dev->version,
 			'state'           => $hzt->state,
 			'toolname'        => $hzt->toolname,
-			'membergroups'    => Hubzero_Tool::getToolGroups($this->_toolid),
-			'resourceid'      => Hubzero_Tool::getResourceId($this->_toolid),
+			'membergroups'    => ToolsModelTool::getToolGroups($this->_toolid),
+			'resourceid'      => ToolsModelTool::getResourceId($this->_toolid),
 			'currentrevision' => (is_object($hztv_current) ? $hztv_current->revision : ''),
 			'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : '')
 		);
@@ -655,7 +655,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			);
 		}
 
-		$hztv = Hubzero_Tool_VersionHelper::getDevelopmentToolVersion($id);
+		$hztv = ToolsHelperVersion::getDevelopmentToolVersion($id);
 
 		$this->license_choice = array(
 			'text'      => JRequest::getVar('license', ''),
@@ -720,7 +720,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		
 		// Open source
-		if (Hubzero_Tool::validateLicense($this->license_choice, $hztv->codeaccess, $error))
+		if (ToolsModelTool::validateLicense($this->license_choice, $hztv->codeaccess, $error))
 		{
 			// code for saving license
 			$hztv->license = strip_tags($this->license_choice['text']);
@@ -1032,7 +1032,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if (!Hubzero_Tool::validate($tool, $err, $id))
+		if (!ToolsModelTool::validate($tool, $err, $id))
 		{
 			// display form with errors
 			//$title = JText::_(strtoupper($this->_option)).': '.JText::_('COM_TOOLS_EDIT_TOOL');
@@ -1072,7 +1072,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// save tool info
 		if (!$id)  // new tool
 		{
-			$hzt = Hubzero_Tool::createInstance($tool['toolname']);
+			$hzt = ToolsModelTool::createInstance($tool['toolname']);
 			$hzt->toolname      = $tool['toolname'];
 			$hzt->title         = $tool['title'];
 			$hzt->published     = 0;
@@ -1084,7 +1084,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$hzt = Hubzero_Tool::getInstance($id);
+			$hzt = ToolsModelTool::getInstance($id);
 		}
 
 		// get tool id for newly registered tool
@@ -1109,7 +1109,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			if ($hztv === false)
 			{
 				$xlog->debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
-				$hztv = Hubzero_Tool_Version::createInstance($tool['toolname'], $tool['toolname'] . $dev_suffix);
+				$hztv = ToolsModelVersion::createInstance($tool['toolname'], $tool['toolname'] . $dev_suffix);
 
 				$oldstatus = $hztv->toArray();
 				$oldstatus['toolstate']    = $hzt->state;
@@ -1242,7 +1242,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// create resource page
-		$rid = Hubzero_Tool::getResourceId($hzt->toolname,$hzt->id);
+		$rid = ToolsModelTool::getResourceId($hzt->toolname,$hzt->id);
 
 		if (empty($rid))
 		{
@@ -1385,7 +1385,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		$error = '';
 
-		$hzt = Hubzero_Tool::getInstance($this->_toolid);
+		$hzt = ToolsModelTool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
 
 		if ($newstate && !intval($newstate)) 
@@ -1396,7 +1396,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
 		$oldstatus['toolstate'] = $hzt->state;
 
-		if (Hubzero_Tool::validateVersion($newversion, $error, $hzt->id))
+		if (ToolsModelTool::validateVersion($newversion, $error, $hzt->id))
 		{
 			$this->_error = $error;
 			$hztv->version = $newversion;
@@ -1519,7 +1519,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		//$newversion  = JRequest::getVar('newversion', '');
 		$editversion = JRequest::getVar('editversion', 'dev');
 
-		$hzt = Hubzero_Tool::getInstance($this->_toolid);
+		$hzt = ToolsModelTool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
 
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
@@ -1594,7 +1594,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$newversion  = JRequest::getVar('newversion', '');
 		$editversion = JRequest::getVar('editversion', 'dev');
 
-		$hzt = Hubzero_Tool::getInstance($this->_toolid);
+		$hzt = ToolsModelTool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
 
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
@@ -1609,7 +1609,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		{
 			$xlog->debug(__FUNCTION__ . "() state changing");
 
-			if ($newstate == ToolsHelperHtml::getStatusNum('Approved') && Hubzero_Tool::validateVersion($oldstatus['version'], $error, $hzt->id))
+			if ($newstate == ToolsHelperHtml::getStatusNum('Approved') && ToolsModelTool::validateVersion($oldstatus['version'], $error, $hzt->id))
 			{
 				$this->_error = $error;
 				$xlog->debug(__FUNCTION__ . "() state changing to approved, action confirm");
@@ -1642,7 +1642,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 				$xlog->debug(__FUNCTION__ . "() state changing away from  published");
 				// Get version ids
-				$rid = Hubzero_Tool::getResourceId($hzt->toolname,$hzt->id);
+				$rid = ToolsModelTool::getResourceId($hzt->toolname,$hzt->id);
 
 				$to   = $objV->getVersionIdFromResource($rid, 'dev');
 				$from = $objV->getVersionIdFromResource($rid, 'current');
@@ -1732,7 +1732,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$newstate = ToolsHelperHtml::getStatusNum($newstate);
 		}
 
-		$hzt = Hubzero_Tool::getInstance($this->_toolid);
+		$hzt = ToolsModelTool::getInstance($this->_toolid);
 
 		if ($comment)
 		{
