@@ -1374,7 +1374,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$juser = JUser::getInstance($row->owner);
 
 			// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
-			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
+			if ($allowEmailResponses)
 			{
 				$encryptor = new \Hubzero\Mail\Token();
 				// The reply-to address contains the token 
@@ -2016,8 +2016,12 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		//$params =  JComponentHelper::getParams($this->_option);
 		$allowEmailResponses = $this->config->get('email_processing');
+		if (!file_exists("/etc/hubmail_gw.conf"))
+		{
+			$allowEmailResponses = false;
+		}
 
-		if ($allowEmailResponses and file_exists("/etc/hubmail_gw.conf"))
+		if ($allowEmailResponses)
 		{
 			$encryptor = new \Hubzero\Mail\Token();
 		}
