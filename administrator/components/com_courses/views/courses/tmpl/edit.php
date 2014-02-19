@@ -94,6 +94,32 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
+						<td class="key"><label for="field-group_id"><?php echo JText::_('Group'); ?>:</label></td>
+						<td>
+							<select name="fields[group_id]" id="field-group_id">
+								<option value="0"<?php if (!$this->row->get('group_id')) { echo ' selected="selected"'; } ?>><?php echo JText::_('[none]'); ?></option>
+							<?php
+							$filters = array(
+								'authorized' => 'admin',
+								'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
+								'type'       => array(1, 3),
+								'sortby'     => 'description'
+							);
+							$groups = Hubzero_Group::find($filters);
+							if ($groups)
+							{
+								foreach ($groups as $group)
+								{
+									?>
+									<option value="<?php echo $group->gidNumber; ?>"<?php if ($group->gidNumber == $this->row->get('group_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($group->description); ?> (<?php echo $this->escape($group->cn); ?>)</option>
+									<?php 
+								}
+							}
+							?>
+							</select>
+						</td>
+					</tr>
+					<tr>
 						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
 						<td>
 							<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
@@ -114,7 +140,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
 						<td>
-							<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+							<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
 							<span class="hint"><?php echo JText::_('This is a longer, detailed description of the course.'); ?></span>
 						</td>
 					</tr>
