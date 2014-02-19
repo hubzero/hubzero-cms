@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_View_Helper_Html');
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<h4><?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?></h4>

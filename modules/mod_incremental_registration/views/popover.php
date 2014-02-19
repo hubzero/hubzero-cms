@@ -1,6 +1,4 @@
 <?php 
-ximport('Hubzero_Geo');
-
 $defaultCountries = array(
 					array('code' => 'af', 'name' => 'AFGHANISTAN'),
 					array('code' => 'ax', 'name' => 'ALAND ISLANDS'),

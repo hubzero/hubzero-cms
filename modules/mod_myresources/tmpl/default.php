@@ -64,7 +64,6 @@ if (!$this->no_html) {
 		<?php } else { ?>
 			<ul class="expandedlist">
 			<?php
-				ximport('Hubzero_View_Helper_Html');
 				for ($i=0; $i < count($this->contributions); $i++)
 				{
 					// Determine css class
