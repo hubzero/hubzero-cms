@@ -54,7 +54,7 @@ if ($this->post->id) {
 			}
 			$now = JFactory::getDate();
 			?>
-			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
+			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
 		</p>
 
 		<fieldset>

@@ -1,9 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-	ximport('Hubzero_User_Profile');
-	ximport('Hubzero_User_Profile_Helper');
-
 	$juser = JFactory::getUser();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';

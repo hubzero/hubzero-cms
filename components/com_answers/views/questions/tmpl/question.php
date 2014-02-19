@@ -334,7 +334,7 @@ if (!$this->question->get('anonymous'))
 							$anon = 1;
 						}
 					?>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo JText::_('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo JText::_('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
 				</p>
 				<fieldset>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -62,7 +62,7 @@ if ($this->review->id) {
 					$anon = 0;
 				}
 				?>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
+				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 			</p>
 			<fieldset>
 				<input type="hidden" name="created" value="<?php echo $this->review->created; ?>" />

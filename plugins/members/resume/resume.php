@@ -375,7 +375,7 @@ class plgMembersResume extends JPlugin
 	{
 		$profile = Hubzero_User_Profile::getInstance($uid);
 
-		return Hubzero_User_Profile_Helper::getMemberPhoto($profile);
+		return \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 	}
 
 	/**

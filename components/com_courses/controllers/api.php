@@ -1150,7 +1150,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		}
 
 		// Find user by email
-		$user_email = Hubzero_User_Profile_Helper::find_by_email($user_email);
+		$user_email = \Hubzero\User\Profile\Helper::find_by_email($user_email);
 
 		if (empty($user_email[0]))
 		{

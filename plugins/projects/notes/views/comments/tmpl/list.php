@@ -45,9 +45,6 @@ $this->c = ($this->c) ? $this->c : 'odd';
 $i = 1;
 $html = '';
 if (count($this->comments) > 0) {
-	ximport('Hubzero_User_Profile_Helper');
-	ximport('Hubzero_User_Profile');
-
 	$wikiconfig = array(
 		'option'   => $this->option,
 		'scope'    => $this->page->scope,
@@ -56,7 +53,6 @@ if (count($this->comments) > 0) {
 		'filepath' => '',
 		'domain'   => $this->page->group_cn
 	);
-	ximport('Hubzero_Wiki_Parser');
 	$parser = Hubzero_Wiki_Parser::getInstance();
 
 	$html .= '<ol class="comments">'."\n";
@@ -76,7 +72,7 @@ if (count($this->comments) > 0) {
 		$html .= "\t".'<li class="comment '.$this->c.'" id="c'.$comment->id.'">'."\n";
 		$html .= "\t\t".'<p class="comment-member-photo">'."\n";
 		$html .= "\t\t".'	<a name="c'.$comment->id.'"></a>'."\n";
-		$html .= "\t\t".'	<img src="'.Hubzero_User_Profile_Helper::getMemberPhoto($cuser, $comment->anonymous).'" alt="" />'."\n";
+		$html .= "\t\t".'	<img src="'.\Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous).'" alt="" />'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
 		$html .= "\t\t".'<div class="comment-content">'."\n";
 		if ($comment->rating) {

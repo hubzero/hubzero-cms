@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 							$anonymous = 0;
 						}
 					?>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anonymous); ?>" alt="" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anonymous); ?>" alt="" />
 				</p>
 				<fieldset>
 				<?php

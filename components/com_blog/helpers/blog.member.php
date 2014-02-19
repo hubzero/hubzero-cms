@@ -45,8 +45,6 @@ class BlogHelperMember
 	 */
 	public function getMemberPhoto($member, $anonymous=0)
 	{
-		ximport('Hubzero_User_Profile_Helper');
-
-		return Hubzero_User_Profile_Helper::getMemberPhoto($member, $anonymous);
+		return \Hubzero\User\Profile\Helper::getMemberPhoto($member, $anonymous);
 	}
 }

@@ -1643,6 +1643,6 @@ class Hubzero_User_Profile extends \Hubzero\Base\Object
 	 */
 	public function getPicture($anonymous=0, $thumbit=true)
 	{
-		return Hubzero_User_Profile_Helper::getMemberPhoto($this, $anonymous, $thumbit);
+		return \Hubzero\User\Profile\Helper::getMemberPhoto($this, $anonymous, $thumbit);
 	}
 }

@@ -164,7 +164,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<div class="contributor">
 				<p class="contributor-photo">
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $contributor->get('uidNumber')); ?>">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($contributor, 0); ?>" alt="<?php echo JText::sprintf('%s\'s photo', $this->escape(stripslashes($contributor->get('name')))); ?>" />
+						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($contributor, 0); ?>" alt="<?php echo JText::sprintf('%s\'s photo', $this->escape(stripslashes($contributor->get('name')))); ?>" />
 					</a>
 				</p>
 				<div class="contributor-content">

@@ -77,7 +77,7 @@ class UsersViewLink extends JViewLegacy
 		$display_name = $pparams->get('display_name', ucfirst($plugin->name));
 
 		// Look for conflicts - first check in the hub accounts
-		$profile_conflicts = Hubzero_User_Profile_Helper::find_by_email($hzal->email);
+		$profile_conflicts = \Hubzero\User\Profile\Helper::find_by_email($hzal->email);
 
 		// Now check the auth_link table
 		$link_conflicts = Hubzero_Auth_Link::find_by_email($hzal->email, array($hzad->id));

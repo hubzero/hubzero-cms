@@ -24,8 +24,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-ximport('Hubzero_User_Profile_Helper');
 ?>
 <div class="public-list-header">
 	<h3><?php echo JText::_('COM_PROJECTS_TEAM'); ?></h3>
@@ -38,7 +36,7 @@ ximport('Hubzero_User_Profile_Helper');
 			{ 
 				// Get profile thumb image 			
 				$profile = Hubzero_User_Profile::getInstance($owner->userid);
-				$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
+				$thumb = $profile->getPicture();
 			?>
 			<li>
 				<img width="50" height="50" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" />

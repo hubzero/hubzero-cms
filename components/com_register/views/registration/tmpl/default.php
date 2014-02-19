@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 	$html .= '<form action="'. $form_action .'" method="post" id="hubForm">'."\n";
 
 
-	$emailusers = Hubzero_User_Profile_Helper::find_by_email($this->registration['email']);
+	$emailusers = \Hubzero\User\Profile\Helper::find_by_email($this->registration['email']);
 
 	if($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing)) {
 		// Check to see if third party auth plugins are enabled

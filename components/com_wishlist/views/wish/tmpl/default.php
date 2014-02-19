@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile');
-ximport('Hubzero_User_Profile_Helper');
-
 $dateFormat = '%b %d, %Y';
 $tz = null;
 
@@ -205,7 +202,7 @@ if ($this->wishlist && $this->wish) {
 			<div class="entry wish" id="w<?php echo $this->wish->id; ?>">
 				<p class="entry-member-photo">
 					<span class="entry-anchor"><!-- <a name="w<?php echo $this->wish->id; ?>"></a> --></span>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($user, $this->wish->anonymous); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($user, $this->wish->anonymous); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p><!-- / .wish-member-photo -->
 
 				<div class="entry-content">
@@ -237,8 +234,6 @@ if ($this->wishlist && $this->wish) {
 				<?php if ($this->wish->about) { ?>
 					<div class="entry-long">
 						<?php 
-						ximport('Hubzero_Wiki_Parser');
-
 						$wikiconfig = array(
 							'option'   => $this->option,
 							'scope'    => 'wishlist',
@@ -891,7 +886,7 @@ if ($this->wishlist && $this->wish) {
 			<div class="subject" id="full_plan">
 				<p class="plan-member-photo">
 					<span class="plan-anchor"><!-- <a name="planform"></a> --></span>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, 0); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p>
 				<fieldset>
 			<?php if ($this->wish->action=='editplan') { ?>
@@ -979,7 +974,6 @@ if ($this->wishlist && $this->wish) {
 								'filepath' => '',
 								'domain'   => '' 
 							);
-							ximport('Hubzero_Wiki_Parser');
 							$p = Hubzero_Wiki_Parser::getInstance();
 
 							echo $p->parse($this->wish->plan->pagetext, $wikiconfig);

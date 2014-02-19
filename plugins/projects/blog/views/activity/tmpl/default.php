@@ -49,7 +49,7 @@ if (count($this->activities) > 0 ) {
 				<span class="m_options"><span class="delit" id="mo_<?php echo $a->id; ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$this->goto.a.'task=view'.a.'active=feed').'/?action=delete'.a.'tbl='.$etbl.a.'eid='.$eid;  ?>">x</a></span></span>
 				<?php } ?>
 				<span class="blog-time"><?php echo ProjectsHtml::timeAgo($a->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?> </span>
-				<div class="blog-item"><img class="blog-author" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($a->userid, $a->admin); ?>" alt="" />
+				<div class="blog-item"><img class="blog-author" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($a->userid, $a->admin); ?>" alt="" />
 					<span class="actor"><?php echo $a->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $a->name; ?></span>
 					<div class="<?php echo $class; ?> activity<?php if($a->admin) { echo ' admin-action'; } ?>">
 						 <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>	

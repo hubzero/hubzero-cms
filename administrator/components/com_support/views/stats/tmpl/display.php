@@ -32,7 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'Ticket Stats' ).' ]</small></small>', 'support.png' );
+JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'Ticket Stats' ), 'support.png' );
 
 JToolBarHelper::spacer();
 JToolBarHelper::help('stats.html', true);
@@ -459,8 +459,6 @@ function getMonthName($month)
 		<?php
 		if ($this->users)
 		{
-			ximport('Hubzero_User_Profile');
-			ximport('Hubzero_User_Profile_Helper');
 			//$chunked = array_chunk($this->users, ceil(count($this->users) / 2));
 			$chunked = array_chunk($this->users, 2);
 
@@ -522,7 +520,7 @@ function getMonthName($month)
 					<strong>#<?php echo $j; ?></strong>
 				</p>
 				<p class="entry-member-photo">
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($profile, $anon); ?>" alt="<?php echo JText::sprintf('Photo for %s', $this->escape(stripslashes($user->name))); ?>" />
+					<img src="<?php echo $profile->getPicture($anon); ?>" alt="<?php echo JText::sprintf('Photo for %s', $this->escape(stripslashes($user->name))); ?>" />
 				</p>
 				<p class="entry-title">
 					<?php echo $this->escape(stripslashes($user->name)); ?><br />

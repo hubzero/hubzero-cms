@@ -90,7 +90,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					
 					<?php if ($checkout) : ?>
 						<div class="item-checkout">
-							<img width="15" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($checkout->userid); ?>" />
+							<img width="15" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($checkout->userid); ?>" />
 							<?php
 								$user = Hubzero_User_Profile::getInstance($checkout->userid);
 								echo JText::sprintf('<a href="/members/%s">%s</a> is currently editing', $user->get('uidNumber'), $user->get('name'));

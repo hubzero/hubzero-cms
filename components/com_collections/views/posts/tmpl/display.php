@@ -119,7 +119,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		?>
 			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($cuser->get('name')))); ?>" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($cuser->get('name')))); ?>" />
 				</a>
 				<p>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>">
@@ -145,7 +145,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<div class="commnts">
 			<div class="comment convo clearfix">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->juser->get('name')))); ?>" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->juser->get('name')))); ?>" />
 				</a>
 				<p>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>">

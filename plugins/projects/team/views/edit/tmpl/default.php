@@ -48,8 +48,6 @@ $goto  = 'alias='.$this->project->alias;
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
 
-ximport('Hubzero_User_Profile_Helper');
-
 ?>
 <?php if (!$this->setup) { ?>
 	<h5><?php echo JText::_('COM_PROJECTS_ADD_NEW_MEMBERS').' '.JText::_('COM_PROJECTS_AS').':'; ?></h5>
@@ -125,7 +123,7 @@ ximport('Hubzero_User_Profile_Helper');
 	{
 					// Get profile thumb image 			
 					$profile = Hubzero_User_Profile::getInstance($owner->userid);
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
+					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 					
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 					$creator = $this->project->created_by_user == $owner->userid ? 1 : 0;

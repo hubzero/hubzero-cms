@@ -167,7 +167,7 @@ defined('_JEXEC') or die('Restricted access');
 		<form method="post" action="<?php echo JRoute::_($this->article->link()); ?>" id="commentform">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"><!-- <a name="post-comment"></a> --></span>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, (!$this->juser->get('guest') ? 0 : 1)); ?>" alt="" />
+				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, (!$this->juser->get('guest') ? 0 : 1)); ?>" alt="" />
 			</p>
 			<fieldset>
 			<?php

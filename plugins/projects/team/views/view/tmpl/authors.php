@@ -31,8 +31,6 @@ $route = $this->project->provisioned
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
 $p_url = JRoute::_($route . a . 'active=team');
 
-ximport('Hubzero_User_Profile_Helper');
-
 $shown = array();
 ?>
 <div>	
@@ -44,7 +42,7 @@ $shown = array();
 					
 					// Get profile thumb image 				
 					$profile = Hubzero_User_Profile::getInstance($owner->userid);
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
+					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 					
 					if(in_array($owner->userid, $this->exclude)) {
 						// Skip certain team members if necessary

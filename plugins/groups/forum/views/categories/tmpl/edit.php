@@ -2,8 +2,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $juser = JFactory::getUser();
 
-ximport('Hubzero_User_Profile_Helper');
-
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 ?>
 <ul id="page_options">

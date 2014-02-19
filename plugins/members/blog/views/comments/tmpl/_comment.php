@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 	ximport('Hubzero_User_Profile');
-	ximport('Hubzero_User_Profile_Helper');
+	ximport('\Hubzero\User\Profile\Helper');
 
 	$juser = JFactory::getUser();
 
@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
 			<a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a>
-			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">

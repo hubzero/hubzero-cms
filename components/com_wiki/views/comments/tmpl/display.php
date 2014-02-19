@@ -207,7 +207,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$juser = JFactory::getUser();
 				$anon = (!$juser->get('guest')) ? 0 : 1;
 				?>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="Member photo" />
+				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="Member photo" />
 			</p>
 			<fieldset>
 			<?php if (!$this->mycomment->get('parent')) { ?>

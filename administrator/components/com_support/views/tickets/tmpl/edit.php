@@ -149,7 +149,7 @@ if ($this->row->id) {
 			<div class="ticket">
 				<p class="ticket-member-photo">
 					<span class="ticket-anchor"><a name="t<?php echo $this->row->id; ?>"></a></span>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($submitter, $unknown); ?>" alt="" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($submitter, $unknown); ?>" alt="" />
 				</p>
 				<div class="ticket-head">
 					<strong>
@@ -301,7 +301,7 @@ if ($this->row->id) {
 				<li class="<?php echo $access .' comment'; ?>" id="c<?php echo $comment->id; ?>">
 					<p class="comment-member-photo">
 						<span class="comment-anchor"><a name="c<?php echo $comment->id; ?>"></a></span>
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($useri, $anon); ?>" alt="<?php echo JText::_('profile_image'); ?>" />
+						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($useri, $anon); ?>" alt="<?php echo JText::_('profile_image'); ?>" />
 					</p>
 					<p class="comment-head">
 						<strong>
@@ -505,7 +505,7 @@ if ($this->row->id) {
 			<div class="new ticket">
 				<p class="ticket-member-photo">
 					<span class="ticket-anchor"><a name="new"></a></span>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($user, 0); ?>" alt="<?php echo JText::_('profile_image'); ?>" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($user, 0); ?>" alt="<?php echo JText::_('profile_image'); ?>" />
 				</p>
 				
 				<fieldset class="ticket-head">

@@ -211,7 +211,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 						$anon = 0;
 					}
 					?>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php

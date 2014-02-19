@@ -131,7 +131,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $default = DS . trim($this->config->get('defaultpic'), DS);
-$default = Hubzero_User_Profile_Helper::thumbit($default);
+$default = \Hubzero\User\Profile\Helper::thumbit($default);
 
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
@@ -190,9 +190,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->picture)
 	{
 		$thumb  = DS . trim($this->config->get('webpath'), DS);
-		$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($row->uidNumber);
+		$thumb .= DS . \Hubzero\User\Profile\Helper::niceidformat($row->uidNumber);
 		$thumb .= DS . ltrim($row->picture, DS);
-		$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+		$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
 		
 		if (file_exists(JPATH_ROOT . $thumb))
 		{

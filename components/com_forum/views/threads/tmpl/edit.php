@@ -82,11 +82,10 @@ else
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 				<?php
-				ximport('Hubzero_User_Profile_Helper');
 				$jxuser = new Hubzero_User_Profile();
 				$jxuser->load($this->post->get('created_by', $juser->get('id')));
 				?>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0); ?>" alt="" />
+				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 			</p>
 
 			<fieldset>

@@ -46,11 +46,7 @@ $goto  = 'alias=' . $this->project->alias;
 <div id="plg-header">
 	<h3 class="team"><?php echo $this->title; ?></h3>
 </div>
-<?php
 
-ximport('Hubzero_User_Profile_Helper');
-
-?>	
 <form id="plg-form" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto).'/?active=team'; ?>">
  <div>
 	<input type="hidden" id="id" name="id" value="<?php echo $this->project->id; ?>" />
@@ -79,7 +75,7 @@ ximport('Hubzero_User_Profile_Helper');
 	{
 					// Get profile thumb image 				
 					$profile = Hubzero_User_Profile::getInstance($owner->userid);
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
+					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 					
 					$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
 					$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'  

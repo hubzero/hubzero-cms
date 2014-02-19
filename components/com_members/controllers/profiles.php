@@ -173,10 +173,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$json = array();
 		if (count($rows) > 0) 
 		{
-			ximport('Hubzero_User_Profile_Helper');
-
 			$default = DS . trim($this->config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
-			$default = Hubzero_User_Profile_Helper::thumbit($default);
+			$default = \Hubzero\User\Profile\Helper::thumbit($default);
 			foreach ($rows as $row)
 			{
 				$picture = $default;
@@ -188,9 +186,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				if ($row->public && $row->picture)
 				{
 					$thumb  = DS . trim($this->config->get('webpath', '/site/members'), DS);
-					$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($row->uidNumber);
+					$thumb .= DS . \Hubzero\User\Profile\Helper::niceidformat($row->uidNumber);
 					$thumb .= DS . ltrim($row->picture, DS);
-					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+					$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
 
 					if (file_exists(JPATH_ROOT . $thumb))
 					{
@@ -613,8 +611,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			die('insecure connection and redirection failed');
 		}
-
-		ximport('\Hubzero\User\Password');
 
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));

@@ -160,7 +160,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			?>
 			<div class="entry-author">
 				<h3><?php echo JText::_('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
-				<p class="entry-author-photo"><img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($author, 0); ?>" alt="" /></p>
+				<p class="entry-author-photo"><img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($author, 0); ?>" alt="" /></p>
 				<div class="entry-author-content">
 					<h4>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->get('created_by')); ?>">
@@ -236,7 +236,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 							$anon = 0;
 						}
 					?>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php

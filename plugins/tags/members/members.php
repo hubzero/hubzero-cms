@@ -201,7 +201,7 @@ class plgTagsMembers extends JPlugin
 		$juri = JURI::getInstance();
 
 		$html  = "\t" . '<li class="member">' . "\n";
-		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . Hubzero_User_Profile_Helper::getMemberPhoto($member, 0) . '" alt="" /></p>' . "\n";
+		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . $member->getPicture() . '" alt="" /></p>' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		if ($row->ftext) 
 		{

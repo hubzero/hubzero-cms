@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_User_Helper');
-ximport("Hubzero_User_Profile_Helper");
+ximport("\Hubzero\User\Profile\Helper");
 
 $juser = JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
@@ -84,7 +84,7 @@ if (!$no_html) {
 	<div id="page_container">
 		<div id="page_sidebar">
 			<?php
-				$src = Hubzero_User_Profile_Helper::getMemberPhoto($this->profile, 0, false);
+				$src = \Hubzero\User\Profile\Helper::getMemberPhoto($this->profile, 0, false);
 				$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber'));
 			?>
 			<div id="page_identity">

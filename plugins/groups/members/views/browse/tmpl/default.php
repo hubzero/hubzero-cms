@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile_Helper');
-
 $filters = array(
 	'members'  => JText::_('PLG_GROUPS_MEMBERS'),
 	'managers' => JText::_('PLG_GROUPS_MEMBERS_MANAGERS'),
@@ -206,7 +204,6 @@ $option = 'com_groups';
 							//$emailthumb = '/components/com_groups/assets/img/emailthumb.png';
 
 							// Some needed libraries
-							ximport('Hubzero_User_Profile');
 							$juser = JFactory::getUser();
 							// Loop through the results
 							$html = '';
@@ -237,7 +234,7 @@ $option = 'com_groups';
 								}
 								else
 								{
-									$pic = Hubzero_User_Profile_Helper::getMemberPhoto($u, 0);
+									$pic = \Hubzero\User\Profile\Helper::getMemberPhoto($u, 0);
 								}
 
 								switch ($this->filter)

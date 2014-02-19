@@ -114,8 +114,6 @@ if (!trim($this->row->report))
 }
 
 $cc = array();
-
-ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -195,7 +193,7 @@ ximport('Hubzero_User_Profile_Helper');
 		<div class="ticket entry" id="t<?php echo $this->row->id; ?>">
 			<p class="entry-member-photo">
 				<span class="entry-anchor"><a name="ticket"></a></span>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($submitter, $unknown); ?>" alt="" />
+				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($submitter, $unknown); ?>" alt="" />
 			</p><!-- / .entry-member-photo -->
 			<div class="entry-content">
 				<p class="entry-title">
@@ -266,7 +264,6 @@ ximport('Hubzero_User_Profile_Helper');
 <?php if (count($this->comments) > 0) { ?>
 		<ol class="comments">
 <?php
-		ximport('Hubzero_User_Profile');
 		$o = 'even';
 		$i = 0;
 		foreach ($this->comments as $comment)
@@ -312,8 +309,8 @@ ximport('Hubzero_User_Profile_Helper');
 ?>
 			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->id; ?>">
 				<p class="comment-member-photo">
-					<span class="comment-anchor"><a name="c<?php echo $comment->id; ?>"></a></span>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juseri, $anon); ?>" alt="" />
+					<span class="comment-anchor"></span>
+					<img src="<?php echo $juseri->getPicture($anon); ?>" alt="" />
 				</p>
 				<div class="comment-content">
 					<p class="comment-head">
@@ -415,11 +412,11 @@ ximport('Hubzero_User_Profile_Helper');
 				if (!$juser->get('guest')) {
 					$jxuser = new Hubzero_User_Profile();
 					$jxuser->load($juser->get('id'));
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
+					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, 0);
 				} else {
 					$config = JComponentHelper::getParams('com_members');
 					$thumb = DS . ltrim($config->get('defaultpic'), DS);
-					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+					$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
 				}
 			?>
 				<img src="<?php echo $thumb; ?>" alt="" />

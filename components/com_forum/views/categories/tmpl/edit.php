@@ -29,9 +29,8 @@
  */
 
 defined('_JEXEC') or die( 'Restricted access' );
-$juser = JFactory::getUser();
 
-ximport('Hubzero_User_Profile_Helper');
+$juser = JFactory::getUser();
 ?>
 	<div id="content-header">
 		<h2><?php echo JText::_('COM_FORUM'); ?></h2>

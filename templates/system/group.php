@@ -46,7 +46,7 @@ $return = DS . trim(str_replace(JURI::base(),'', JURI::current()), DS);
 								<li>
 									<div id="account-info">
 										<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
-											<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($profile); ?>" alt="<?php echo $juser->get('name'); ?>" />
+											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" />
 											<span class="account-name"><?php echo stripslashes($profile->get('name')); ?></span>
 											<span class="account-email"><?php echo $profile->get('email'); ?></span>
 										</a>

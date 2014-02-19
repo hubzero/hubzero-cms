@@ -28,15 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\User\Profile;
 
 /**
- * Short description for 'Hubzero_User_Profile_Helper'
- * 
- * Long description (if any) ...
+ * Profile helper class
  */
-class Hubzero_User_Profile_Helper
+class Helper
 {
 
 	/**
@@ -50,7 +47,7 @@ class Hubzero_User_Profile_Helper
 	 */
 	public static function iterate_profiles($func)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = "SELECT uidNumber FROM #__xprofiles;";
 
@@ -83,7 +80,7 @@ class Hubzero_User_Profile_Helper
 		if (empty($email))
 			return false;
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = "SELECT username FROM #__xprofiles WHERE email=" . $db->Quote($email);
 
@@ -110,17 +107,15 @@ class Hubzero_User_Profile_Helper
 	{
 		static $dfthumb;
 
-		$config = JComponentHelper::getParams('com_members');
+		$config = \JComponentHelper::getParams('com_members');
 
-		if (is_a($member, 'JUser'))
+		if ($member instanceof \JUser)
 		{
-			ximport('Hubzero_User_Profile');
-			$member = Hubzero_User_Profile::getInstance($member->get('id'));
+			$member = \Hubzero_User_Profile::getInstance($member->get('id'));
 		}
 		else if (is_numeric($member) || is_string($member))
 		{
-			ximport('Hubzero_User_Profile');
-			$member = Hubzero_User_Profile::getInstance($member);
+			$member = \Hubzero_User_Profile::getInstance($member);
 		}
 
 		$thumb = '';
@@ -128,7 +123,7 @@ class Hubzero_User_Profile_Helper
 		if (!$anonymous && is_object($member) && $member->get('picture')) 
 		{
 			$thumb .= DS . trim($config->get('webpath', '/site/members'), DS);
-			$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber'));
+			$thumb .= DS . self::niceidformat($member->get('uidNumber'));
 
 			$thumbAlt = $thumb . DS . ltrim($member->get('picture'), DS);
 			if ($thumbit)
@@ -140,7 +135,7 @@ class Hubzero_User_Profile_Helper
 
 			if ($thumbit)
 			{
-				$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+				$thumb = self::thumbit($thumb);
 			}
 		}
 
@@ -148,20 +143,20 @@ class Hubzero_User_Profile_Helper
 		$dfthumb = DS . ltrim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
 		if ($thumbit)
 		{
-			$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
+			$dfthumb = self::thumbit($dfthumb);
 		}
 
 		if ($thumbAlt && file_exists(JPATH_ROOT . $thumbAlt)) 
 		{
-			return str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $thumbAlt;
+			return str_replace('/administrator', '', rtrim(\JURI::getInstance()->base(true), DS)) . $thumbAlt;
 		} 
 		else if ($thumb && file_exists(JPATH_ROOT . $thumb)) 
 		{
-			return str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $thumb;
+			return str_replace('/administrator', '', rtrim(\JURI::getInstance()->base(true), DS)) . $thumb;
 		} 
 		else if (file_exists(JPATH_ROOT . $dfthumb)) 
 		{
-			return str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $dfthumb;
+			return str_replace('/administrator', '', rtrim(\JURI::getInstance()->base(true), DS)) . $dfthumb;
 		}
 	}
 
@@ -175,9 +170,9 @@ class Hubzero_User_Profile_Helper
 	public static function thumbit($thumb)
 	{
 		jimport('joomla.filesystem.file');
-		$ext = JFile::getExt($thumb);
+		$ext = \JFile::getExt($thumb);
 
-		return JFile::stripExt($thumb) . '_thumb.' . $ext;
+		return \JFile::stripExt($thumb) . '_thumb.' . $ext;
 	}
 
 	/**

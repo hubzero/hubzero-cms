@@ -80,8 +80,8 @@ class MembersControllerApi extends Hubzero_Api_Controller
 			'country_origin' => $result->get('countryorigin'),
 			'member_since' => $result->get('registerDate'),
 			'picture' => array(
-				'thumb' => Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, true ),
-				'full' => Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, false )
+				'thumb' => \Hubzero\User\Profile\Helper::getMemberPhoto( $result, 0, true ),
+				'full' => \Hubzero\User\Profile\Helper::getMemberPhoto( $result, 0, false )
 			)
 		);
 		

@@ -87,7 +87,7 @@ $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&contr
 						?>
 						<div class="created">
 							<?php if ($created_by != 'n/a') : ?>
-								<img align="left" width="40" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
+								<img align="left" width="40" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
 							<?php endif; ?>
 							<span class="created-date"><?php echo $created; ?></span>
 							<span class="created-by"><?php echo $created_by; ?></span>
@@ -116,7 +116,7 @@ $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&contr
 						?>
 						<div class="approved">
 							<?php if ($approved_by != 'n/a') : ?>
-								<img align="left" width="40" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
+								<img align="left" width="40" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
 							<?php endif; ?>
 							<span class="approved-date"><?php echo $approved_on; ?></span>
 							<span class="approved-by"><?php echo $approved_by; ?></span>

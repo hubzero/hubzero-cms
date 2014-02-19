@@ -649,7 +649,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			$blog_params = new $paramsClass($blog_config->params);
 
 			//build the base path to file based of upload path param
-			$base_path = str_replace('{{uid}}', Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber')), $blog_params->get('uploadpath'));
+			$base_path = str_replace('{{uid}}', \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber')), $blog_params->get('uploadpath'));
 		}
 
 		//build file path
