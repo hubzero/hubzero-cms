@@ -171,19 +171,63 @@ class Scaffolding implements CommandInterface
 		{
 			foreach ($this->templateFiles as $template)
 			{
-				if (!copy($template['path'], $template['destination']))
+				if (is_dir($template['path']))
 				{
-					$this->output->error("Error: an problem occured copying {$template['path']} to {$template['destination']}.");
+					if (!\JFolder::copy($template['path'], $template['destination']))
+					{
+						$this->output->error("Error: an problem occured copying {$template['path']} to {$template['destination']}.");
+					}
+
+					// Get folder contents
+					$this->scanFolder($template['destination']);
 				}
+				elseif (is_file($template['path']))
+				{
+					if (!copy($template['path'], $template['destination']))
+					{
+						$this->output->error("Error: an problem occured copying {$template['path']} to {$template['destination']}.");
+					}
 
-				// Get template contents
-				$contents = file_get_contents($template['path']);
-				$contents = $this->doReplacements($contents);
+					// Get template contents
+					$contents = file_get_contents($template['destination']);
+					$contents = $this->doReplacements($contents);
 
-				// Write file
-				file_put_contents($template['destination'], $contents);
+					// Write file
+					$this->putContents($template['destination'], $contents);
+				}
 			}
 		}
+	}
+
+	/**
+	 * Add a new replacement for the template
+	 *
+	 * @param  (string) $key
+	 * @param  (string) $value
+	 * @return (object) $this - for method chaining
+	 **/
+	protected function addReplacement($key, $value)
+	{
+		$this->replacements[$key] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Add a new template file
+	 *
+	 * @param  (string) $filename - template filename
+	 * @param  (string) $destination - final location of template file after making
+	 * @return (object) $this - for method chaining
+	 **/
+	protected function addTemplateFile($filename, $destination)
+	{
+		$this->templateFiles[] = array(
+			'path'        => __DIR__ . DS . 'Scaffolding' . DS . 'Templates' . DS . $filename,
+			'destination' => $destination
+		);
+
+		return $this;
 	}
 
 	/**
@@ -211,6 +255,34 @@ class Scaffolding implements CommandInterface
 				}
 				else
 				{
+					// See if there are any instances of our key with special qualifiers
+					if (preg_match_all("/%={$k}\+([[:alpha:]]+)=%/", $contents, $matches) && isset($matches[1]))
+					{
+						// Remove complete match
+						unset($matches[0]);
+						foreach ($matches[1] as $match)
+						{
+							switch ($match)
+							{
+								// Upper case first character
+								case 'ucf':
+									$value = ucfirst($v);
+									break;
+								// Upper case first character and plural
+								case 'ucfp':
+									$value = ucfirst($this->makePlural($v));
+									break;
+								// Plural form
+								case 'p':
+									$value = $this->makePlural($v);
+									break;
+							}
+
+							$contents = str_replace("%={$k}+{$match}=%", $value, $contents);
+						}
+					}
+
+					// Now do all basic replacements
 					$contents = str_replace("%={$k}=%", $v, $contents);
 				}
 			}
@@ -253,33 +325,123 @@ class Scaffolding implements CommandInterface
 	}
 
 	/**
-	 * Add a new replacement for the template
+	 * Write contents out to file
 	 *
-	 * @param  (string) $key
-	 * @param  (string) $value
-	 * @return (object) $this - for method chaining
+	 * @return void
 	 **/
-	protected function addReplacement($key, $value)
+	private function putContents($path, $contents)
 	{
-		$this->replacements[$key] = $value;
+		file_put_contents($path, $contents);
 
-		return $this;
+		$info = pathinfo($path);
+
+		// See if we need to do var replacement in actual filename
+		if (preg_match("/%=([[:alpha:]_]*)=%/", $info['filename'], $matches) && isset($this->replacements[$matches[1]]))
+		{
+			$newfile = preg_replace("/%=([[:alpha:]_]*)=%/", $this->replacements[$matches[1]], $info['filename']);
+			rename($path, $info['dirname'] . DS . $newfile . '.' . $info['extension']);
+		}
 	}
 
 	/**
-	 * Add a new template file
+	 * Scan template folder for files to iterate through
 	 *
-	 * @param  (string) $filename - template filename
-	 * @param  (string) $destination - final location of template file after making
-	 * @return (object) $this - for method chaining
+	 * @return void
 	 **/
-	protected function addTemplateFile($filename, $destination)
+	private function scanFolder($path)
 	{
-		$this->templateFiles[] = array(
-			'path'        => __DIR__ . DS . 'Scaffolding' . DS . 'Templates' . DS . $filename,
-			'destination' => $destination
+		$files = array_diff(scandir($path), array('.', '..'));
+
+		if ($files && count($files) > 0)
+		{
+			foreach ($files as $file)
+			{
+				if (is_file($path . DS . $file))
+				{
+					$contents = file_get_contents($path . DS . $file);
+					$contents = $this->doReplacements($contents);
+
+					$this->putContents($path . DS . $file, $contents);
+				}
+				else
+				{
+					$this->scanFolder($path . DS . $file);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Make a given string plural...trying to account for as many english language constructs as possible
+	 *
+	 * @return (string) $string - plural form of given string
+	 **/
+	public static function makePlural($string)
+	{
+		$plural = array(
+			array( '/(quiz)$/i',               "$1zes"   ),
+			array( '/^(ox)$/i',                "$1en"    ),
+			array( '/([m|l])ouse$/i',          "$1ice"   ),
+			array( '/(matr|vert|ind)ix|ex$/i', "$1ices"  ),
+			array( '/(x|ch|ss|sh)$/i',         "$1es"    ),
+			array( '/([^aeiouy]|qu)y$/i',      "$1ies"   ),
+			array( '/([^aeiouy]|qu)ies$/i',    "$1y"     ),
+			array( '/(hive)$/i',               "$1s"     ),
+			array( '/(?:([^f])fe|([lr])f)$/i', "$1$2ves" ),
+			array( '/sis$/i',                  "ses"     ),
+			array( '/([ti])um$/i',             "$1a"     ),
+			array( '/(buffal|tomat)o$/i',      "$1oes"   ),
+			array( '/(bu)s$/i',                "$1ses"   ),
+			array( '/(alias|status)$/i',       "$1es"    ),
+			array( '/(octop|vir)us$/i',        "$1i"     ),
+			array( '/(ax|test)is$/i',          "$1es"    ),
+			array( '/s$/i',                    "s"       ),
+			array( '/$/',                      "s"       )
 		);
 
-		return $this;
+		$irregular = array(
+			array( 'move',   'moves'    ),
+			array( 'sex',    'sexes'    ),
+			array( 'child',  'children' ),
+			array( 'man',    'men'      ),
+			array( 'person', 'people'   )
+		);
+
+		$uncountable = array( 
+			'sheep', 
+			'fish',
+			'series',
+			'species',
+			'money',
+			'rice',
+			'information',
+			'equipment'
+		);
+
+		// First, check if singular and plural are the same
+		if (in_array(strtolower($string), $uncountable))
+		{
+			return $string;
+		}
+
+		// Now, check for irregular singular forms
+		foreach ($irregular as $noun)
+		{
+			if (strtolower($string) == $noun[0])
+			{
+				return $noun[1];
+			}
+		}
+
+		// Finally, check for matches using regular expressions
+		foreach ($plural as $pattern)
+		{
+			if (preg_match($pattern[0], $string))
+			{
+				return preg_replace($pattern[0], $pattern[1], $string);
+			}
+		}
+
+		return $string;
 	}
 }
