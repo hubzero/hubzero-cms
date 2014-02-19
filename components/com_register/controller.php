@@ -548,7 +548,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 		$xprofile    = Hubzero_Factory::getProfile();
 		$jsession = JFactory::getSession();
 
-		$hzal = Hubzero_Auth_Link::find_by_id($this->juser->get('auth_link_id'));
+		$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
 
 		if (JRequest::getMethod() == 'POST') 
 		{
@@ -803,7 +803,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 
 		if ($this->juser->get('auth_link_id')) 
 		{
-			$hzal = Hubzero_Auth_Link::find_by_id($this->juser->get('auth_link_id'));
+			$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
 		}
 		else 
 		{

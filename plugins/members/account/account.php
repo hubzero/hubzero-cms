@@ -206,7 +206,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Get linked accounts, if any
 		$view->domains_avail = JPluginHelper::getPlugin('authentication');
-		$view->hzalaccounts  = Hubzero_Auth_Link::find_by_user_id($this->user->get("id"));
+		$view->hzalaccounts  = \Hubzero\Auth\Link::find_by_user_id($this->user->get("id"));
 
 		// Put the used domains into an array with details available from the providers (if applicable)
 		$view->domains_used = array();
@@ -668,11 +668,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$hzal_id = JRequest::getInt('hzal_id', null);
 
 		// Get instance
-		$hzal = Hubzero_Auth_Link::find_by_id($hzal_id);
+		$hzal = \Hubzero\Auth\Link::find_by_id($hzal_id);
 
 		// Determine what type of password change the user needs
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
-		if(empty($hzup->passhash) && count(Hubzero_Auth_Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
+		if(empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'),

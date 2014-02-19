@@ -231,9 +231,6 @@ class plgUserXusers extends JPlugin
 	 */
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
-		ximport('Hubzero_User_Profile');
-		ximport('\Hubzero\User\Password');
-
 		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
 
 		if (!is_object($xprofile)) {
@@ -431,9 +428,6 @@ class plgUserXusers extends JPlugin
 	 */
 	public function onAfterDeleteUser($user, $succes, $msg)
 	{
-		ximport('Hubzero_User_Profile');
-		ximport('Hubzero_Auth_Link');
-
 		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
 		
 		// remove user from groups
@@ -443,7 +437,7 @@ class plgUserXusers extends JPlugin
 			$xprofile->delete();
 		}
 
-		Hubzero_Auth_Link::delete_by_user_id($user['id']);
+		\Hubzero\Auth\Link::delete_by_user_id($user['id']);
 
 		// Check if quota exists for the user
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';

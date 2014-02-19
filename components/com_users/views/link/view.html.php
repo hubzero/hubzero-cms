@@ -62,8 +62,8 @@ class UsersViewLink extends JViewLegacy
 		jimport('joomla.user.helper');
 
 		// Look up a few things
-		$hzal    = Hubzero_Auth_Link::find_by_id($user->get("auth_link_id"));
-		$hzad    = Hubzero_Auth_Domain::find_by_id($hzal->auth_domain_id);
+		$hzal    = \Hubzero\Auth\Link::find_by_id($user->get("auth_link_id"));
+		$hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
 		$plugins = JPluginHelper::getPlugin('authentication');
 
 		// Get the display name for the current plugin being used
@@ -80,7 +80,7 @@ class UsersViewLink extends JViewLegacy
 		$profile_conflicts = \Hubzero\User\Profile\Helper::find_by_email($hzal->email);
 
 		// Now check the auth_link table
-		$link_conflicts = Hubzero_Auth_Link::find_by_email($hzal->email, array($hzad->id));
+		$link_conflicts = \Hubzero\Auth\Link::find_by_email($hzal->email, array($hzad->id));
 
 		$conflict = array();
 		if($profile_conflicts)
@@ -89,7 +89,7 @@ class UsersViewLink extends JViewLegacy
 			{
 				$user_id    = JUserHelper::getUserId($p);
 				$juser      = JFactory::getUser($user_id);
-				$auth_link  = Hubzero_Auth_Link::find_by_user_id($juser->id);
+				$auth_link  = \Hubzero\Auth\Link::find_by_user_id($juser->id);
 				$dname      = (is_object($auth_link) && $auth_link->auth_domain_name) ? $auth_link->auth_domain_name : 'hubzero';
 				$conflict[] = array("auth_domain_name" => $dname, "name" => $juser->name, "email" => $juser->email);
 			}

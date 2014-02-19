@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Auth_Domain');
-ximport('Hubzero_Auth_Link');
 jimport('joomla.plugin.plugin');
 
 require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.0' . DS . 'CAS.php');
@@ -234,7 +232,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		{
 			$username = phpCAS::getUser();
 
-			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'pucas', null, $username);
+			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
 			$hzal->email = $username . '@purdue.edu';
 
 			$response->auth_link = $hzal;
@@ -306,10 +304,10 @@ class plgAuthenticationPUCAS extends JPlugin
 			// Get unique username
 			$username = phpCAS::getUser();
 
-			$hzad = Hubzero_Auth_Domain::getInstance('authentication', 'pucas', '');
+			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'pucas', '');
 
 			// Create the link
-			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
+			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This purdue cas account is already linked to another hub account
 				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
@@ -318,7 +316,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			}
 			else
 			{
-				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'pucas', null, $username);
+				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
 				$hzal->user_id = $juser->get('id');
 				$hzal->email   = phpCAS::getAttribute('email');
 				$hzal->update();

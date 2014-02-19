@@ -27,15 +27,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Auth;
 
 /**
- * Short description for 'Hubzero_Auth_Link'
+ * Short description for 'Hubzero\Auth\Link'
  * 
  * Long description (if any) ...
  */
-class Hubzero_Auth_Link
+class Link
 {
 
 	/**
@@ -106,65 +105,65 @@ class Hubzero_Auth_Link
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     void
+	 * @return	 void
 	 */
 	private function __construct()
-    {
-    }
+	{
+	}
 
 	/**
 	 * Short description for 'clear'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     void
+	 * @return	 void
 	 */
-    public function clear()
-    {
-        $cvars = get_class_vars(__CLASS__);
+	public function clear()
+	{
+		$cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = array();
+		$this->_updatedkeys = array();
 
-        foreach ($cvars as $key=>$value)
-        {
-            if ($key{0} != '_')
-            {
-                unset($this->$key);
+		foreach ($cvars as $key=>$value)
+		{
+			if ($key{0} != '_')
+			{
+				unset($this->$key);
 
-                $this->$key = null;
-            }
-        }
+				$this->$key = null;
+			}
+		}
 
-        $this->_updateAll = false;
-        $this->_updatedkeys = array();
-    }
+		$this->_updateAll = false;
+		$this->_updatedkeys = array();
+	}
 
 	/**
 	 * Short description for 'logDebug'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $msg Parameter description (if any) ...
-	 * @return     void
+	 * @param	  unknown $msg Parameter description (if any) ...
+	 * @return	 void
 	 */
-    private function logDebug($msg)
-    {
-        $xlog =  Hubzero_Factory::getLogger();
-        $xlog->debug($msg);
-    }
+	private function logDebug($msg)
+	{
+		$xlog =  \Hubzero_Factory::getLogger();
+		$xlog->debug($msg);
+	}
 
 	/**
 	 * Short description for 'getInstance'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $auth_domain_id Parameter description (if any) ...
-	 * @param      unknown $username Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	  unknown $auth_domain_id Parameter description (if any) ...
+	 * @param	  unknown $username Parameter description (if any) ...
+	 * @return	 mixed Return description (if any) ...
 	 */
 	public static function getInstance($auth_domain_id, $username)
 	{
-		$hzal = new Hubzero_Auth_Link();
+		$hzal = new self();
 		$hzal->auth_domain_id = $auth_domain_id;
 		$hzal->username = $username;
 
@@ -183,460 +182,460 @@ class Hubzero_Auth_Link
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	  unknown $id Parameter description (if any) ...
+	 * @return	 mixed Return description (if any) ...
 	 */
-    public static function find_by_id($id)
-    {
-	$hzal = new Hubzero_Auth_Link();
+	public static function find_by_id($id)
+	{
+	$hzal = new self();
 	$hzal->id = $id;
 
-        $hzal->read();
+		$hzal->read();
 
-        if (empty($hzal->auth_domain_id))
+		if (empty($hzal->auth_domain_id))
 		return false;
 
-        return $hzal;
+		return $hzal;
 
-    }
+	}
 
 	/**
 	 * Short description for 'createInstance'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $auth_domain_id Parameter description (if any) ...
-	 * @param      unknown $username Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	  unknown $auth_domain_id Parameter description (if any) ...
+	 * @param	  unknown $username Parameter description (if any) ...
+	 * @return	 mixed Return description (if any) ...
 	 */
-    public function createInstance($auth_domain_id,$username)
-    {
-        if (empty($auth_domain_id) || empty($username))
-        {
-            return false;
-        }
+	public function createInstance($auth_domain_id,$username)
+	{
+		if (empty($auth_domain_id) || empty($username))
+		{
+			return false;
+		}
 
-        $instance = new Hubzero_Auth_Link();
+		$instance = new self();
 
-        $instance->auth_domain_id = $auth_domain_id;
-        $instance->username = $username;
+		$instance->auth_domain_id = $auth_domain_id;
+		$instance->username = $username;
 
-        $instance->create();
+		$instance->create();
 
-        if (!$instance->id)
-        {
-            return false;
-        }
+		if (!$instance->id)
+		{
+			return false;
+		}
 
-        return $instance;
-    }
+		return $instance;
+	}
 
 	/**
 	 * Short description for 'create'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	 boolean Return description (if any) ...
 	 */
-    public function create()
-    {
-        $db =  JFactory::getDBO();
+	public function create()
+	{
+		$db =  \JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db))
+		{
+			return false;
+		}
 
-        if (is_numeric($this->id))
-        {
-            $query = "INSERT INTO #__auth_link (id,user_id,auth_domain_id,username,email,password,params) VALUES ( "
-            	. $db->Quote($this->id) .
-                "," . $db->Quote($this->user_id) .
-                "," . $db->Quote($this->auth_domain_id) .
-                "," . $db->Quote($this->username) .
-            	"," . $db->Quote($this->email) .
-            	"," . $db->Quote($this->password) .
-            	"," . $db->Quote($this->params) .
+		if (is_numeric($this->id))
+		{
+			$query = "INSERT INTO #__auth_link (id,user_id,auth_domain_id,username,email,password,params) VALUES ( "
+				. $db->Quote($this->id) .
+				"," . $db->Quote($this->user_id) .
+				"," . $db->Quote($this->auth_domain_id) .
+				"," . $db->Quote($this->username) .
+				"," . $db->Quote($this->email) .
+				"," . $db->Quote($this->password) .
+				"," . $db->Quote($this->params) .
 				");";
 
-            $db->setQuery($query);
+			$db->setQuery($query);
 
-            $result = $db->query();
+			$result = $db->query();
 
-            if ($result !== false || $db->getErrorNum() == 1062)
-            {
-                return true;
-            }
-        }
-        else
-        {
-            $query = "INSERT INTO #__auth_link (user_id,auth_domain_id,username,email,password,params) VALUES ( "
-            	. $db->Quote($this->user_id) .
-                "," . $db->Quote($this->auth_domain_id) .
-                "," . $db->Quote($this->username) .
-            	"," . $db->Quote($this->email) .
-            	"," . $db->Quote($this->password) .
-            	"," . $db->Quote($this->params) .
+			if ($result !== false || $db->getErrorNum() == 1062)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			$query = "INSERT INTO #__auth_link (user_id,auth_domain_id,username,email,password,params) VALUES ( "
+				. $db->Quote($this->user_id) .
+				"," . $db->Quote($this->auth_domain_id) .
+				"," . $db->Quote($this->username) .
+				"," . $db->Quote($this->email) .
+				"," . $db->Quote($this->password) .
+				"," . $db->Quote($this->params) .
 				");";
 
-            $db->setQuery($query);
+			$db->setQuery($query);
 
-            $result = $db->query();
+			$result = $db->query();
 
-            if ($result === false && $db->getErrorNum() == 1062)
-            {
-                $query = "SELECT id FROM #__auth_link WHERE " .
-                	"auth_domain_id=" . $db->Quote($this->auth_domain_id) . " AND " .
-                	"user_id=" . $db->Quote($this->user_id) . ";";
+			if ($result === false && $db->getErrorNum() == 1062)
+			{
+				$query = "SELECT id FROM #__auth_link WHERE " .
+					"auth_domain_id=" . $db->Quote($this->auth_domain_id) . " AND " .
+					"user_id=" . $db->Quote($this->user_id) . ";";
 
-                $db->setQuery($query);
+				$db->setQuery($query);
 
-                $result = $db->loadResult();
+				$result = $db->loadResult();
 
-                if ($result == null)
-                {
-                    return false;
-                }
+				if ($result == null)
+				{
+					return false;
+				}
 
-                $this->id = $result;
-                return true;
-            }
-            else if ($result !== false)
-            {
-                $this->id = $db->insertid();
-                return true;
-            }
-        }
+				$this->id = $result;
+				return true;
+			}
+			else if ($result !== false)
+			{
+				$this->id = $db->insertid();
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	/**
 	 * Short description for 'read'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	 boolean Return description (if any) ...
 	 */
 	public function read()
-    {
-        $db = JFactory::getDBO();
+	{
+		$db = \JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db))
+		{
+			return false;
+		}
 
-        if (is_numeric($this->id))
-        {
-            $query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE id=" .
-                $db->Quote($this->id) . ";";
-        }
-        else if (is_numeric($this->user_id))
-        {
-            $query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
-                " user_id=" . $db->Quote($this->user_id) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";";
-        }
-        else if (is_string($this->username))
-        {
-        	$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
-                " username=" . $db->Quote($this->username) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";";
+		if (is_numeric($this->id))
+		{
+			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE id=" .
+				$db->Quote($this->id) . ";";
+		}
+		else if (is_numeric($this->user_id))
+		{
+			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
+				" user_id=" . $db->Quote($this->user_id) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";";
+		}
+		else if (is_string($this->username))
+		{
+			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
+				" username=" . $db->Quote($this->username) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";";
 
-        }
+		}
 
-        if (empty($query)) {
-        	return false;
-        }
+		if (empty($query)) {
+			return false;
+		}
 
-        $db->setQuery($query);
+		$db->setQuery($query);
 
-        $result = $db->loadAssoc();
+		$result = $db->loadAssoc();
 
-        if (empty($result))
-        {
-            return false;
-        }
+		if (empty($result))
+		{
+			return false;
+		}
 
-        $this->clear();
+		$this->clear();
 
-        foreach ($result as $key=>$value)
-        {
-            $this->__set($key, $value);
-        }
+		foreach ($result as $key=>$value)
+		{
+			$this->__set($key, $value);
+		}
 
-        $this->_updatedkeys = array();
+		$this->_updatedkeys = array();
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Short description for 'update'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      boolean $all Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	  boolean $all Parameter description (if any) ...
+	 * @return	 boolean Return description (if any) ...
 	 */
- 	function update($all = false)
-    {
-        $db =  JFactory::getDBO();
+	function update($all = false)
+	{
+		$db =  \JFactory::getDBO();
 
-        $query = "UPDATE #__auth_link SET ";
+		$query = "UPDATE #__auth_link SET ";
 
-        $classvars = get_class_vars(__CLASS__);
+		$classvars = get_class_vars(__CLASS__);
 
-        $first = true;
+		$first = true;
 
-        foreach ($classvars as $property=>$value)
-        {
-            if (($property{0} == '_'))
-            {
-                continue;
-            }
+		foreach ($classvars as $property=>$value)
+		{
+			if (($property{0} == '_'))
+			{
+				continue;
+			}
 
-            if (!$all && !in_array($property, $this->_updatedkeys))
-            {
-                continue;
-            }
+			if (!$all && !in_array($property, $this->_updatedkeys))
+			{
+				continue;
+			}
 
-            if (!$first)
-            {
-                $query .= ',';
-            }
-            else
-            {
-                $first = false;
-            }
+			if (!$first)
+			{
+				$query .= ',';
+			}
+			else
+			{
+				$first = false;
+			}
 
-            $value = $this->__get($property);
+			$value = $this->__get($property);
 
-            if ($value === null)
-            {
-                $query .= "`$property`=NULL";
-            }
-            else
-            {
-                $query .= "`$property`=" . $db->Quote($value);
-            }
-        }
+			if ($value === null)
+			{
+				$query .= "`$property`=NULL";
+			}
+			else
+			{
+				$query .= "`$property`=" . $db->Quote($value);
+			}
+		}
 
-        $query .= " WHERE `id`=" . $db->Quote($this->__get('id')) . ";";
+		$query .= " WHERE `id`=" . $db->Quote($this->__get('id')) . ";";
 
-        if ($first == true)
-        {
-            $query = '';
-        }
+		if ($first == true)
+		{
+			$query = '';
+		}
 
-        $db->setQuery($query);
+		$db->setQuery($query);
 
-        if (!empty($query))
-        {
-            $result = $db->query();
+		if (!empty($query))
+		{
+			$result = $db->query();
 
-            if ($result === false)
-            {
-                return false;
-            }
-        }
+			if ($result === false)
+			{
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Short description for 'delete'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	 boolean Return description (if any) ...
 	 */
 	public function delete()
-    {
-        $db = JFactory::getDBO();
+	{
+		$db = \JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db))
+		{
+			return false;
+		}
 
-        if (!isset($this->id))
-        {
-            $db->setQuery("SELECT id FROM #__auth_link WHERE user_id=" .
-                $db->Quote($this->user_id) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";");
+		if (!isset($this->id))
+		{
+			$db->setQuery("SELECT id FROM #__auth_link WHERE user_id=" .
+				$db->Quote($this->user_id) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";");
 
-            $this->id = $db->loadResult();
-        }
+			$this->id = $db->loadResult();
+		}
 
-        if (empty($this->id))
-        {
-            return false;
-        }
+		if (empty($this->id))
+		{
+			return false;
+		}
 
-        $db->setQuery("DELETE FROM #__auth_link WHERE id= " . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM #__auth_link WHERE id= " . $db->Quote($this->id) . ";");
 
-        if (!$db->query())
-        {
-            return false;
-        }
+		if (!$db->query())
+		{
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Short description for '__get'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param	  string $property Parameter description (if any) ...
+	 * @return	 string Return description (if any) ...
 	 */
 	public function __get($property = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-            {
-                $property = '(null)';
-            }
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
+		{
+			if (empty($property))
+			{
+				$property = '(null)';
+			}
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        if (isset($this->$property))
-        {
-            return $this->$property;
-        }
+		if (isset($this->$property))
+		{
+			return $this->$property;
+		}
 
-        if (array_key_exists($property, get_object_vars($this)))
-        {
-            return null;
-        }
+		if (array_key_exists($property, get_object_vars($this)))
+		{
+			return null;
+		}
 
-        $this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
+		$this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
 
-        return null;
-    }
+		return null;
+	}
 
 	/**
 	 * Short description for '__set'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * @param	  string $property Parameter description (if any) ...
+	 * @param	  unknown $value Parameter description (if any) ...
+	 * @return	 void
 	 */
-    public function __set($property = null, $value = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-            {
-                $property = '(null)';
-            }
+	public function __set($property = null, $value = null)
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
+		{
+			if (empty($property))
+			{
+				$property = '(null)';
+			}
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        $this->$property = $value;
+		$this->$property = $value;
 
-        if (!in_array($property, $this->_updatedkeys))
-            $this->_updatedkeys[] = $property;
-    }
+		if (!in_array($property, $this->_updatedkeys))
+			$this->_updatedkeys[] = $property;
+	}
 
 	/**
 	 * Short description for '__isset'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param	  string $property Parameter description (if any) ...
+	 * @return	 string Return description (if any) ...
 	 */
-    public function __isset($property = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-                $property = '(null)';
+	public function __isset($property = null)
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
+		{
+			if (empty($property))
+				$property = '(null)';
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        return isset($this->$property);
-    }
+		return isset($this->$property);
+	}
 
 	/**
 	 * Short description for '__unset'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     void
+	 * @param	  string $property Parameter description (if any) ...
+	 * @return	 void
 	 */
-    public function __unset($property = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-                $property = '(null)';
+	public function __unset($property = null)
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
+		{
+			if (empty($property))
+				$property = '(null)';
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+		$this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
 
-        unset($this->$property);
-    }
+		unset($this->$property);
+	}
 
 	/**
 	 * Short description for '_error'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $message Parameter description (if any) ...
-	 * @param      integer $level Parameter description (if any) ...
-	 * @return     void
+	 * @param	  string $message Parameter description (if any) ...
+	 * @param	  integer $level Parameter description (if any) ...
+	 * @return	 void
 	 */
-    private function _error($message, $level = E_USER_NOTICE)
-    {
-        $caller = next(debug_backtrace());
+	private function _error($message, $level = E_USER_NOTICE)
+	{
+		$caller = next(debug_backtrace());
 
-        switch ($level)
-        {
-            case E_USER_NOTICE:
-                echo "Notice: ";
-                break;
-            case E_USER_ERROR:
-                echo "Fatal error: ";
-                break;
-            default:
-                echo "Unknown error: ";
-                break;
-        }
+		switch ($level)
+		{
+			case E_USER_NOTICE:
+				echo "Notice: ";
+				break;
+			case E_USER_ERROR:
+				echo "Fatal error: ";
+				break;
+			default:
+				echo "Unknown error: ";
+				break;
+		}
 
-        echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
-    }
+		echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
+	}
 
 	/**
 	 * Return array of linked accounts associated with a given user id
 	 * Also include auth domain name for easy display of domain name
 	 * 
-	 * @param      int $user_id - id of user to return accounts for
-	 * @return     array Return - array of auth link entries for the given user_id
+	 * @param	  int $user_id - id of user to return accounts for
+	 * @return	 array Return - array of auth link entries for the given user_id
 	 */
 	public static function find_by_user_id($user_id = null)
 	{
-		if(empty($user_id))
+		if (empty($user_id))
 		{
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		if(empty($db))
+		if (empty($db))
 		{
 			return false;
 		}
@@ -648,7 +647,7 @@ class Hubzero_Auth_Link
 
 		$result = $db->loadAssocList();
 
-		if(empty($result))
+		if (empty($result))
 		{
 			return false;
 		}
@@ -660,19 +659,19 @@ class Hubzero_Auth_Link
 	 * Return array of linked accounts associated with a given email address
 	 * Also include auth domain name for easy display of domain name
 	 * 
-	 * @param      string $email - email address to match accounts against
-	 * @return     array Return - array of auth link entries for the given user_id
+	 * @param	  string $email - email address to match accounts against
+	 * @return	 array Return - array of auth link entries for the given user_id
 	 */
 	public static function find_by_email($email = null, $exclude = array())
 	{
-		if(empty($email))
+		if (empty($email))
 		{
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		if(empty($db))
+		if (empty($db))
 		{
 			return false;
 		}
@@ -680,7 +679,7 @@ class Hubzero_Auth_Link
 		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
 		$sql .= " WHERE l.auth_domain_id = d.id AND l.email = " . $db->Quote($email);
 
-		if(!empty($exclude[0]))
+		if (!empty($exclude[0]))
 		{
 			foreach($exclude as $e)
 			{
@@ -692,7 +691,7 @@ class Hubzero_Auth_Link
 
 		$result = $db->loadAssocList();
 
-		if(empty($result))
+		if (empty($result))
 		{
 			return false;
 		}
@@ -705,55 +704,55 @@ class Hubzero_Auth_Link
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	  unknown $uid Parameter description (if any) ...
+	 * @return	 boolean Return description (if any) ...
 	 */
 	public static function delete_by_user_id($uid = null)
-    	{
-    		if (empty($uid))
-    			return true;
+	{
+		if (empty($uid))
+			return true;
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-        	if (empty($db))
-        	{
-            		return false;
-        	}
+		if (empty($db))
+		{
+				return false;
+		}
 
-	    	$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->Quote($uid) . ";");
+		$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->Quote($uid) . ";");
 
-        	if (!$db->query())
-        	{
-   	        	return false;
-        	}
+		if (!$db->query())
+		{
+			return false;
+		}
 
-	        return true;
-    	}
+		return true;
+	}
 
 	/**
 	 * Short description for 'find_or_create'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      unknown $authenticator Parameter description (if any) ...
-	 * @param      unknown $domain Parameter description (if any) ...
-	 * @param      unknown $username Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	  unknown $type Parameter description (if any) ...
+	 * @param	  unknown $authenticator Parameter description (if any) ...
+	 * @param	  unknown $domain Parameter description (if any) ...
+	 * @param	  unknown $username Parameter description (if any) ...
+	 * @return	 mixed Return description (if any) ...
 	 */
-    public static function find_or_create($type,$authenticator,$domain,$username)
+	public static function find_or_create($type,$authenticator,$domain,$username)
 	{
-    		$hzad = Hubzero_Auth_Domain::find_or_create($type,$authenticator,$domain);
+		$hzad = Domain::find_or_create($type,$authenticator,$domain);
 
- 	   	if (!is_object($hzad))
-    			return false;
+		if (!is_object($hzad))
+			return false;
 
-	    	if (empty($username))
-    			return false;
+		if (empty($username))
+			return false;
 
-	    	$hzal = new Hubzero_Auth_Link();
-    		$hzal->username = $username;
-	    	$hzal->auth_domain_id = $hzad->id;
+		$hzal = new self();
+		$hzal->username = $username;
+		$hzal->auth_domain_id = $hzad->id;
 
 		$hzal->read();
 
@@ -768,8 +767,8 @@ class Hubzero_Auth_Link
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $user_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	  unknown $user_id Parameter description (if any) ...
+	 * @return	 boolean Return description (if any) ...
 	 */
 	public function find_trusted_emails( $user_id )
 	{
@@ -779,7 +778,7 @@ class Hubzero_Auth_Link
 		if (!is_numeric($user_id))
 			return false;
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 			return false;
@@ -788,14 +787,14 @@ class Hubzero_Auth_Link
 
 		$db->setQuery($sql);
 
-        $result = $db->loadResultArray();
+		$result = $db->loadResultArray();
 
-        if (empty($result))
-        {
-            return false;
-        }
+		if (empty($result))
+		{
+			return false;
+		}
 
-        return $result;
+		return $result;
 	}
 }
 

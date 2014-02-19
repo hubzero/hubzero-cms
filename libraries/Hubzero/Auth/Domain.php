@@ -27,15 +27,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\Auth;
 
 /**
- * Short description for 'Hubzero_Auth_Domain'
+ * Short description for 'Hubzero\Auth\Domain'
  * 
  * Long description (if any) ...
  */
-class Hubzero_Auth_Domain
+class Domain
 {
 
 	/**
@@ -135,7 +134,7 @@ class Hubzero_Auth_Domain
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  Hubzero_Factory::getLogger();
+		$xlog =  \Hubzero_Factory::getLogger();
 		$xlog->debug($msg);
 	}
 
@@ -151,7 +150,7 @@ class Hubzero_Auth_Domain
 	 */
 	public static function getInstance($type, $authenticator, $domain)
 	{
-		$hzad = new Hubzero_Auth_Domain();
+		$hzad = new self();
 		$hzad->type = $type;
 		$hzad->authenticator = $authenticator;
 		$hzad->domain = $domain;
@@ -177,7 +176,7 @@ class Hubzero_Auth_Domain
 	 */
 	public static function find_by_id($id)
 	{
-		$hzad = new Hubzero_Auth_Domain();
+		$hzad = new self();
 		$hzad->id = $id;
 
 		$hzad->read();
@@ -195,7 +194,7 @@ class Hubzero_Auth_Domain
 			return false;
 		}
 
-		$instance = new Hubzero_Auth_Domain();
+		$instance = new self();
 		$instance->type = $type;
 		$instance->authenticator = $authenticator;
 		$instance->domain = $domain;
@@ -218,7 +217,7 @@ class Hubzero_Auth_Domain
 	 */
 	public function create()
 	{
-		$db =  JFactory::getDBO();
+		$db =  \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -248,7 +247,7 @@ class Hubzero_Auth_Domain
 			$db->setQuery($query);
 
 			$result = $db->query();
-			var_dump($db);
+			//var_dump($db);
 			if ($result === false && $db->getErrorNum() == 1062)
 			{
 				$query = "SELECT id FROM #__auth_domain WHERE authenticator=" .
@@ -285,7 +284,7 @@ class Hubzero_Auth_Domain
 	 */
 	public function read()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -337,7 +336,7 @@ class Hubzero_Auth_Domain
 	 */
 	function update($all = false)
 	{
-		$db =  JFactory::getDBO();
+		$db =  \JFactory::getDBO();
 
 		$query = "UPDATE #__auth_domain SET ";
 
@@ -415,7 +414,7 @@ class Hubzero_Auth_Domain
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -604,7 +603,7 @@ class Hubzero_Auth_Domain
 	 */
 	public static function find_or_create($type,$authenticator,$domain=null)
 	{
-		$hzad = new Hubzero_Auth_Domain();
+		$hzad = new self();
 		$hzad->type = $type;
 		$hzad->authenticator = $authenticator;
 		$hzad->domain = $domain;

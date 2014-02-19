@@ -273,7 +273,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$full_name  = $first_name . ' ' . $last_name;
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'linkedin', null, $username);
+			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'linkedin', null, $username);
 			$hzal->email = (string) $profile->{'email-address'};
 
 			// Set response variables
@@ -372,10 +372,10 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$li_id      = $profile->{'id'};
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$hzad = Hubzero_Auth_Domain::getInstance('authentication', 'linkedin', '');
+			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'linkedin', '');
 
 			// Create the link
-			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
+			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This linkedin account is already linked to another hub account
 				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
@@ -384,7 +384,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			}
 			else
 			{
-				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'linkedin', null, $username);
+				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'linkedin', null, $username);
 				$hzal->user_id = $juser->get('id');
 				$hzal->email = (string) $profile->{'email-address'};
 				$hzal->update();

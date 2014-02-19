@@ -222,7 +222,7 @@ class plgAuthenticationTwitter extends JPlugin
 			$username = (string) $account->id;
 
 			// Create the hubzero auth link
-			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'twitter', null, $username);
+			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'twitter', null, $username);
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -296,10 +296,10 @@ class plgAuthenticationTwitter extends JPlugin
 			// Get unique username
 			$username = (string) $account->id;
 
-			$hzad = Hubzero_Auth_Domain::getInstance('authentication', 'twitter', '');
+			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'twitter', '');
 
 			// Create the link
-			if (Hubzero_Auth_Link::getInstance($hzad->id, $username))
+			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This twitter account is already linked to another hub account
 				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
@@ -309,7 +309,7 @@ class plgAuthenticationTwitter extends JPlugin
 			}
 			else
 			{
-				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'twitter', null, $username);
+				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'twitter', null, $username);
 				$hzal->user_id = $juser->get('id');
 				$hzal->update();
 			}

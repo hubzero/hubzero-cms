@@ -205,15 +205,13 @@ class UsersControllerUser extends UsersController
 			// redirect to a page indicating this and offering complete signout
 			if(isset($juser->auth_link_id) && $juser->auth_link_id && empty($authenticator))
 			{
-				ximport('Hubzero_Auth_Link');
-				ximport('Hubzero_Auth_Domain');
 				$auth_domain_name = '';
-				$auth_domain      = Hubzero_Auth_Link::find_by_id($juser->auth_link_id);
+				$auth_domain      = \Hubzero\Auth\Link::find_by_id($juser->auth_link_id);
 
 				if (is_object($auth_domain))
 				{
 					$auth_domain_id   = $auth_domain->auth_domain_id;
-					$auth_domain_name = Hubzero_Auth_Domain::find_by_id($auth_domain_id)->authenticator;
+					$auth_domain_name = \Hubzero\Auth\Domain::find_by_id($auth_domain_id)->authenticator;
 				}
 
 				// Redirect to user third party signout view
