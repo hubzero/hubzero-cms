@@ -70,13 +70,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 		if ($course->access('manage'))
 		{
-			$url = 'index.php?option=com_courses'
-				. '&controller=offering'
-				. '&gid=' . $course->get('alias')
-				. '&offering=' . $offering->get('alias')
-				. ($offering->section()->get('alias') != '__default' ? ':'
-				. $offering->section()->get('alias') : '')
-				. '&active=outline&action=build';
+			$url = $offering->link() . '&active=outline&action=build';
 
 			$html = '<a class="btn edit icon-edit" href="' . JRoute::_($url) . '">Build outline</a>';
 		}
