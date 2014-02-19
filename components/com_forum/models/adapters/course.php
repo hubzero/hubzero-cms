@@ -63,7 +63,7 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 		$course = CoursesModelCourse::getInstance($offering->get('course_id'));
 
 		$this->_segments['gid']      = $course->get('alias');
-		$this->_segments['offering'] = $offering->get('alias') . ($offering->section()->get('alias') != '__default' ? ':' . $offering->section()->get('alias') : '');
+		$this->_segments['offering'] = $offering->alias();
 		$this->_segments['active']   = 'discussions';
 		if (JRequest::getVar('active') == 'outline')
 		{

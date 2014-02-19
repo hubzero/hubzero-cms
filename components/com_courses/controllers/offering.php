@@ -155,7 +155,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	 */
 	public function loginTask($message = '')
 	{
-		$rtrn = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') !== '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&task=' . $this->_task, false, true));
+		$rtrn = base64_encode(JRoute::_($this->course->offering()->link() . '&task=' . $this->_task, false, true));
 		$link = str_replace('&amp;', '&', JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $rtrn));
 		$this->setRedirect(
 			$link,
@@ -283,7 +283,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			// Yes! Already enrolled
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') !== '__default' ? ':' . $offering->section()->get('alias') : '')),
+				JRoute::_($offering->link()),
 				JText::_('You are already enrolled in this course')
 			);
 			return;
@@ -351,7 +351,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 							}
 						}
 						$this->setRedirect(
-							JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($section->get('alias') !== '__default' ? ':' . $section->get('alias') : '') . '&task=enroll&code=' . $code)
+							JRoute::_($offering->link() . '&task=enroll&code=' . $code)
 						);
 						return;
 					}
@@ -395,7 +395,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 		if ($enrolled)
 		{
-			$link = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') !== '__default' ? ':' . $offering->section()->get('alias') : '');
+			$link = $offering->link();
 
 			JPluginHelper::importPlugin('courses');
 			$data = JDispatcher::getInstance()->trigger('onCourseEnrolled', array(

@@ -321,7 +321,7 @@ window.addEvent('domready', function(){
 		<div id="page-datetime" class="tab">
 		<?php if ($this->offering->units()->total() > 0) { ?>
 			<div class="col width-100">
-				<?php if (!$this->row->exists() && $this->row->get('alias') != '__default') { ?>
+				<?php if (!$this->row->exists() && !$this->row->get('is_default')) { ?>
 				<p class="info"><?php echo JText::_('Dates and times are initially inherited from the default section for this offering.'); ?></p>
 				<?php } ?>
 				<script src="<?php echo $base; ?>/media/system/js/jquery.js"></script>

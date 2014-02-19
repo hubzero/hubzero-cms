@@ -434,12 +434,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			//push the stylesheet to the view
 			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
 
-			$this->base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=' . $this->_name;
+			$this->base = $this->offering->link() . '&active=' . $this->_name;
 
 			$pathway = JFactory::getApplication()->getPathway();
 			$pathway->addItem(
 				JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
-				'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->_name
+				$this->base
 			);
 
 			switch ($action)
