@@ -79,7 +79,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<![endif]-->
 	</head>
 	<body>
-		<?php Hubzero_Module_Helper::displayModules('notices'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('notices'); ?>
 		<div id="top">
 			<a name="top"></a>
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
@@ -91,7 +91,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<div class="clear"></div>
 		</div><!-- / #top -->
 	
-		<?php Hubzero_Module_Helper::displayModules('helppane'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('helppane'); ?>
 	
 		<div id="header">
 			<div id="header-wrap">
@@ -120,19 +120,19 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <?php } ?>
 				</ul>
 		
-				<?php Hubzero_Module_Helper::displayModules('search'); ?>
+				<?php \Hubzero\Module\Helper::displayModules('search'); ?>
 			</div><!-- / #header-wrap -->
 		</div><!-- / #header -->
 	
 		<div id="nav">
 			<a name="nav"></a>
 			<h2>Navigation</h2>
-			<?php Hubzero_Module_Helper::displayModules('user3'); ?>
+			<?php \Hubzero\Module\Helper::displayModules('user3'); ?>
 			<div class="clear"></div>
 		</div><!-- / #nav -->
 
 		<div id="trail">
-			<?php Hubzero_Module_Helper::displayModules('breadcrumbs'); ?>
+			<?php \Hubzero\Module\Helper::displayModules('breadcrumbs'); ?>
 		</div><!-- / #trail -->
 
 		<div id="wrap">
@@ -186,7 +186,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<div id="footer">
 			<a name="footer"></a>
 			<!-- Start footer modules output -->
-			<?php Hubzero_Module_Helper::displayModules('footer'); ?>
+			<?php \Hubzero\Module\Helper::displayModules('footer'); ?>
 			<!-- End footer modules output -->
 		</div><!-- / #footer -->
 		<jdoc:include type="modules" name="endpage" />

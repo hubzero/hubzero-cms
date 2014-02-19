@@ -58,8 +58,8 @@ $v = $browser->major();
 		<![endif]-->
 	</head>
 	<body>
-		<?php Hubzero_Module_Helper::displayModules('notices'); ?>
-		<?php Hubzero_Module_Helper::displayModules('helppane'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('notices'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('helppane'); ?>
 		<div id="top">
 			<div class="inner-wrap">
 				<div class="inner">
@@ -68,8 +68,8 @@ $v = $browser->major();
 							<li><a href="#content"><?php echo JText::_('TPL_HUBBASIC_SKIP'); ?></a></li>
 							<li><a href="<?php echo $this->baseurl; ?>/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
-						<?php Hubzero_Module_Helper::displayModules('search'); ?>
-					<?php if (Hubzero_Module_Helper::countModules('helppane')) : ?>
+						<?php \Hubzero\Module\Helper::displayModules('search'); ?>
+					<?php if (\Hubzero\Module\Helper::countModules('helppane')) : ?>
 						<p id="tab">
 							<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
 								<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
@@ -122,14 +122,14 @@ $v = $browser->major();
 							</ul><!-- / #account -->
 							<div id="nav">
 								<a name="nav"></a>
-								<?php Hubzero_Module_Helper::displayModules('user3'); ?>
+								<?php \Hubzero\Module\Helper::displayModules('user3'); ?>
 							</div><!-- / #nav -->
 						</div><!-- / .inner -->
 					</div><!-- / #masthead -->
 
 					<div id="sub-masthead">
 						<div id="trail">
-							<?php /* Hubzero_Module_Helper::displayModules('breadcrumbs'); */ ?>
+							<?php /* \Hubzero\Module\Helper::displayModules('breadcrumbs'); */ ?>
 						</div>
 					</div><!-- / #sub-masthead -->
 				</div><!-- / .inner -->
@@ -200,9 +200,9 @@ $v = $browser->major();
 
 		<div id="footer">
 			<a name="footer" id="footer-anchor"></a>
-			<?php Hubzero_Module_Helper::displayModules('footer'); ?>
+			<?php \Hubzero\Module\Helper::displayModules('footer'); ?>
 		</div><!-- / #footer -->
 
-		<?php Hubzero_Module_Helper::displayModules('endpage'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('endpage'); ?>
 	</body>
 </html>

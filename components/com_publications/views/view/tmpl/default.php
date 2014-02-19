@@ -182,8 +182,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 		// Show what's popular
 		if ($tab == 'about') {
-			ximport('Hubzero_Module_Helper');
-			$html .= Hubzero_Module_Helper::renderModules('extracontent');
+			$html .= \Hubzero\Module\Helper::renderModules('extracontent');
 		}		
 		$html .= ' </div><!-- / .aside extracontent -->'."\n";		
 		

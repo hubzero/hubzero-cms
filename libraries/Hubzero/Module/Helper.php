@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Module;
 
 /**
  * Helper Class to render and display modules as needed.
  */
-class Hubzero_Module_Helper
+class Helper
 {
 	/**
 	 * Count the modules based on the given condition
@@ -53,8 +52,8 @@ class Hubzero_Module_Helper
 		{
 			// odd parts (modules)
 			$name = strtolower($words[$i]);
-			//$words[$i] = ((isset($this->_buffer['modules'][$name])) && ($this->_buffer['modules'][$name] === false)) ? 0 : count(JModuleHelper::getModules($name));
-			$words[$i] = count(JModuleHelper::getModules($name));
+			//$words[$i] = ((isset($this->_buffer['modules'][$name])) && ($this->_buffer['modules'][$name] === false)) ? 0 : count(\JModuleHelper::getModules($name));
+			$words[$i] = count(\JModuleHelper::getModules($name));
 		}
 
 		$str = 'return ' . implode(' ', $words) . ';';
@@ -97,9 +96,9 @@ class Hubzero_Module_Helper
 	 */
 	public static function renderModule($name, $style=-1)
 	{
-		$module = JModuleHelper::getModule($name);
+		$module = \JModuleHelper::getModule($name);
 		$params = array('style' => $style);
-		$contents = JModuleHelper::renderModule($module, $params);
+		$contents = \JModuleHelper::renderModule($module, $params);
 
 		return $contents;
 	}
@@ -113,12 +112,12 @@ class Hubzero_Module_Helper
 	 */
 	public static function renderModules($position, $style=-2)
 	{
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$renderer = $document->loadRenderer('module');
 		$params   = array('style' => $style);
 
 		$contents = '';
-		foreach (JModuleHelper::getModules($position) as $mod)
+		foreach (\JModuleHelper::getModules($position) as $mod)
 		{
 			if ($mod->showtitle != 0) 
 			{
@@ -139,17 +138,17 @@ class Hubzero_Module_Helper
 	public function getParams($id)
 	{
 		//database object
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		//select module params based on name passed in
-		$sql = "SELECT params FROM #__modules WHERE id='" . $id . "' AND published=1";
+		$sql = "SELECT params FROM `#__modules` WHERE id='" . $id . "' AND published=1";
 		$db->setQuery($sql);
 		$params = $db->loadResult();
 
-		$paramsClass = 'JParameter';
+		$paramsClass = '\\JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$paramsClass = 'JRegistry';
+			$paramsClass = '\\JRegistry';
 		}
 
 		//parse params

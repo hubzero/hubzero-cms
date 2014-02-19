@@ -64,8 +64,8 @@ $v = $browser->major();
 		<![endif]-->
 	</head>
 	<body>
-		<?php Hubzero_Module_Helper::displayModules('notices'); ?>
-		<?php Hubzero_Module_Helper::displayModules('helppane'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('notices'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('helppane'); ?>
 
 		<div id="top">
 			<div id="masthead">
@@ -120,21 +120,21 @@ $v = $browser->major();
 					</div><!-- / #account -->
 
 					<div id="nav" role="menu">
-						<?php Hubzero_Module_Helper::displayModules('user3'); ?>
+						<?php \Hubzero\Module\Helper::displayModules('user3'); ?>
 					</div><!-- / #nav -->
 				</div><!-- / .inner -->
 			</div><!-- / #masthead -->
 
 			<div id="sub-masthead">
 				<div class="inner">
-				<?php if (Hubzero_Module_Helper::countModules('helppane')) : ?>
+				<?php if (\Hubzero\Module\Helper::countModules('helppane')) : ?>
 					<p id="tab">
 						<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
 							<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
 						</a>
 					</p>
 				<?php endif; ?>
-					<?php Hubzero_Module_Helper::displayModules('search'); ?>
+					<?php \Hubzero\Module\Helper::displayModules('search'); ?>
 					<div id="trail">
 						<span class="pathway"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
 					</div><!-- / #trail -->
@@ -222,10 +222,10 @@ $v = $browser->major();
 			</div><!-- / #content -->
 
 			<div id="footer">
-				<?php Hubzero_Module_Helper::displayModules('footer'); ?>
+				<?php \Hubzero\Module\Helper::displayModules('footer'); ?>
 			</div><!-- / #footer -->
 		</div><!-- / #wrap -->
 
-		<?php Hubzero_Module_Helper::displayModules('endpage'); ?>
+		<?php \Hubzero\Module\Helper::displayModules('endpage'); ?>
 	</body>
 </html>

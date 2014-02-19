@@ -169,7 +169,7 @@ class plgContentXhubtags extends JPlugin
 			$style[2] = $this->params->def('style', 'none');
 		}
 
-		return Hubzero_Module_Helper::renderModules($position[2], $style[2]);
+		return \Hubzero\Module\Helper::renderModules($position[2], $style[2]);
 	}
 
 	/**

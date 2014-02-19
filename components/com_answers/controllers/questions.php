@@ -1433,7 +1433,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$mid = JRequest::getInt("m", 0);
 
 		//get module params
-		$params = Hubzero_Module_Helper::getParams($mid);
+		$params = \Hubzero\Module\Helper::getParams($mid);
 
 		//include feed lib
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');

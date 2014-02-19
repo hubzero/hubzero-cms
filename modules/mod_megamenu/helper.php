@@ -303,8 +303,7 @@ class MegaMenuTree extends JTree
 		{
 			case 'separator' :
 				if (preg_match('/(.*)\[module\((.*)\)\](.*)/', $tmp->name, $position)) {
-					ximport('Hubzero_Module_Helper');
-					$html = '<div class="megamenu-item">' . htmlentities(Hubzero_Module_Helper::renderModules($position[2])) . '</div>';
+					$html = '<div class="megamenu-item">' . htmlentities(\Hubzero\Module\Helper::renderModules($position[2])) . '</div>';
                 } else {
 					$html = '<span class="separator">'.$image.$tmp->name.'</span>';
 				}
@@ -313,10 +312,9 @@ class MegaMenuTree extends JTree
 
 			case 'url' :
 				if (preg_match('/(.*)\[module\((.*)\)\](.*)/', $tmp->name, $position)) {
-					ximport('Hubzero_Module_Helper');
 					//$tmp->name = preg_replace('/(.*)\[module\((.*)\)\](.*)/', "$1 $2", $tmp->name);
 					$tmp->name = trim(str_replace('[module(' . $position[2] . ')]', '', $tmp->name));
-					$append = '<div class="megamenu-item">' . htmlentities(Hubzero_Module_Helper::renderModules($position[2])) . '</div>';
+					$append = '<div class="megamenu-item">' . htmlentities(\Hubzero\Module\Helper::renderModules($position[2])) . '</div>';
 				}
 				if ((strpos($tmp->link, 'index.php?') !== false) && (strpos($tmp->link, 'Itemid=') === false)) {
 					$tmp->url = $tmp->link.'&amp;Itemid='.$tmp->id;

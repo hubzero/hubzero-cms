@@ -411,7 +411,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// build html to return
 		$html  = '<h2>'.JText::_('Login').'</h2>';
-		$html .= Hubzero_Module_Helper::renderModule('mod_login');
+		$html .= \Hubzero\Module\Helper::renderModule('mod_login');
 		return $html;
 	}
 	

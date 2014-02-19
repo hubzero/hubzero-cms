@@ -43,7 +43,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="warning"><?php echo $this->msg; ?></p>
 <?php } ?>
 <?php
-ximport('Hubzero_Module_Helper');
-Hubzero_Module_Helper::displayModules('force_mod');
+\Hubzero\Module\Helper::displayModules('force_mod');
 ?>
 </div><!-- / .main section -->

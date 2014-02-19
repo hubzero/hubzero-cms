@@ -302,8 +302,7 @@ if ($mode != 'preview')
 		// Show what's popular
 		if ($this->tab == 'about') 
 		{
-			ximport('Hubzero_Module_Helper');
-			echo Hubzero_Module_Helper::renderModules('extracontent');
+			echo \Hubzero\Module\Helper::renderModules('extracontent');
 		}
 
 ?>

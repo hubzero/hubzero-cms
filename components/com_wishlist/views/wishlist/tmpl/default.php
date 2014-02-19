@@ -167,8 +167,7 @@ if ($this->admin && !$this->getError()) {
 	 && count($this->wishlist->items) >= 10 
 	 && $this->wishlist->category == 'general' 
 	 && $this->filters['filterby'] == 'all') {
-		ximport('Hubzero_Module_Helper');
-		echo Hubzero_Module_Helper::renderModules('wishvoters');
+		echo \Hubzero\Module\Helper::renderModules('wishvoters');
 	}
 ?>
 		</div><!-- / .aside -->
