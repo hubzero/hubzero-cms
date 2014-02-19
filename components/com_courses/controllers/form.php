@@ -50,9 +50,6 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	{
 		$this->getCourseInfo();
 
-		$section = $this->course->offering()->section()->get('alias');
-		$section = ($section != '__default' && !empty($section)) ? ":{$section}" : '';
-
 		// Get the courses member
 		$this->juser  = JFactory::getUser();
 		$this->member = $this->course->offering()->section()->member($this->juser->get('id'))->get('id');
@@ -67,7 +64,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		}
 
 		// Set the base path
-		$this->base = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}&offering={$this->course->offering()->get('alias')}{$section}";
+		$this->base = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}&offering={$this->course->offering()->alias()}";
 
 		parent::execute();
 	}

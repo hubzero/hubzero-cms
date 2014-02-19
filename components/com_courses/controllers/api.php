@@ -1292,7 +1292,7 @@ class CoursesControllerApi extends \Hubzero\Api\Controller
 
 		$course_alias   = $matches[1];
 		$offering_alias = $matches[2];
-		$section_alias  = '__default';
+		$section_alias  = null;
 
 		if (strpos($offering_alias, ":"))
 		{
