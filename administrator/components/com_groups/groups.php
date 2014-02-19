@@ -62,11 +62,6 @@ else
 	require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'group.php');
 }
 
-// Hubzero Libraries
-ximport('Hubzero_Group');
-ximport('Hubzero_Group_Helper');
-ximport('Hubzero_User_Helper');
-
 // Include tables
 require_once JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php';
 require_once JPATH_COMPONENT . DS . 'tables' . DS . 'reason.php';

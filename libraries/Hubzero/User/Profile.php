@@ -1540,7 +1540,7 @@ class Hubzero_User_Profile extends \Hubzero\Base\Object
 		if (!isset($groups))
 		{
 			$groups = array('applicants'=>array(), 'invitees'=>array(), 'members'=>array(), 'managers'=>array(), 'all'=>array());
-			$groups['all'] = Hubzero_User_Helper::getGroups($this->get('uidNumber'), 'all', 1);
+			$groups['all'] = \Hubzero\User\Helper::getGroups($this->get('uidNumber'), 'all', 1);
 			
 			if ($groups['all'])
 			{

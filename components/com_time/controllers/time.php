@@ -329,7 +329,7 @@ class TimeController extends \Hubzero\Component\SiteController
 		$accessgroup = isset($this->config->parameters['accessgroup']) ? trim($this->config->parameters['accessgroup']) : 'time';
 
 		// Check if they're a member of admin group
-		$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
+		$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 		if ($ugs && count($ugs) > 0)
 		{
 			foreach ($ugs as $ug)

@@ -298,11 +298,6 @@ class ToolsHelperUtils
 	 */
 	public static function getToolAccess( $tool, $login = '')
 	{
-		//import needed HUBzero libraries
-		ximport('Hubzero_Geo');
-		ximport('Hubzero_Factory');
-		ximport('Hubzero_User_Helper');
-		
 		//include tool models
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
@@ -354,7 +349,7 @@ class ToolsHelperUtils
 		$toolgroups = $database->loadObjectList();
 		
 		//get users groups
-		$xgroups = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
+		$xgroups = \Hubzero\User\Helper::getGroups( $juser->get('id'), 'members' );
 
 		// Check if the user is in any groups for this app
 		$ingroup = false;
@@ -465,9 +460,6 @@ class ToolsHelperUtils
 	 */
 	public static function getToolExportAccess( $export_control )
 	{
-		//include needed HUBzero libraries
-		ximport('Hubzero_Factory');
-		
 		//instaniate objects
 		$export_access = new stdClass;
 		$xlog = Hubzero_Factory::getLogger();

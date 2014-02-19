@@ -124,12 +124,11 @@ class SupportModelConditions extends JObject
 		);
 
 		// Groups
-		ximport('Hubzero_User_Helper');
 		$items = array(
 			$this->_value('*', JText::_('(any of mine)'), true)
 		);
 		$juser = JFactory::getUser();
-		if (($xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members'))) 
+		if (($xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members'))) 
 		{
 			foreach ($xgroups as $xgroup)
 			{

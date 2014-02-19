@@ -190,12 +190,11 @@ switch ($this->level)
 			default: $html .= ' class="public"'; break;
 		}
 		$html .= '><a href="'.$sef.'">'.$this->escape(stripslashes($resource->title)).'</a></h4>';
-		$html .= '<p>'.Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 400, 0).' &nbsp; <a href="'.$sef.'">'.JText::_('COM_RESOURCES_LEARN_MORE').'</a></p>';
+		$html .= '<p>'.\Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 400).' &nbsp; <a href="'.$sef.'">'.JText::_('COM_RESOURCES_LEARN_MORE').'</a></p>';
 
 		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) {
-			ximport('Hubzero_User_Helper');
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = ResourcesControllerResources::getUsersGroups($xgroups);
 		} else {

@@ -118,15 +118,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$mytags = $mt->get_tag_string($profile->get("uidNumber"));
 
 			//get users groups
-			$this->view->mygroups['members'] = Hubzero_User_Helper::getGroups($profile->get("uidNumber"), 'members', 1);
-			$this->view->mygroups['invitees'] = Hubzero_User_Helper::getGroups($profile->get("uidNumber"), 'invitees', 1);
-			$this->view->mygroups['applicants'] = Hubzero_User_Helper::getGroups($profile->get("uidNumber"), 'applicants', 1);
+			$this->view->mygroups['members'] = \Hubzero\User\Helper::getGroups($profile->get("uidNumber"), 'members', 1);
+			$this->view->mygroups['invitees'] = \Hubzero\User\Helper::getGroups($profile->get("uidNumber"), 'invitees', 1);
+			$this->view->mygroups['applicants'] = \Hubzero\User\Helper::getGroups($profile->get("uidNumber"), 'applicants', 1);
 			$this->view->mygroups = array_filter($this->view->mygroups);
 
 			//get groups user may be interested in
 			$this->view->interestinggroups = Hubzero_Group_Helper::getGroupsMatchingTagString(
 				$mytags, 
-				Hubzero_User_Helper::getGroups($profile->get("uidNumber"))
+				\Hubzero\User\Helper::getGroups($profile->get("uidNumber"))
 			);
 		}
 

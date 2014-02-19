@@ -29,9 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_User_Helper');
-ximport("\Hubzero\User\Profile\Helper");
-
 $juser = JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
 $user_messaging = $this->config->get('user_messaging', 0);
@@ -51,7 +48,7 @@ switch( $user_messaging )
 		$mssaging = false;
 		break;
 	case 1:
-		$common = Hubzero_User_Helper::getCommonGroups( $juser->get("id"), $this->profile->get('uidNumber') );
+		$common = \Hubzero\User\Helper::getCommonGroups( $juser->get("id"), $this->profile->get('uidNumber') );
 		if (count($common) > 0) {
 			$messaging = true;
 		}

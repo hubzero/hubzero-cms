@@ -596,7 +596,8 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'parsed':
-				if (($content = $this->get('description.parsed')))
+				$content = $this->get('description.parsed', null);
+				if ($content !== null)
 				{
 					if ($shorten)
 					{

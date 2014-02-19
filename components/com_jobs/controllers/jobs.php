@@ -1864,7 +1864,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 			$admingroup = $this->config->get('admingroup', '');
 			if ($admingroup) 
 			{
-				$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
+				$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 				if ($ugs && count($ugs) > 0) 
 				{
 					foreach ($ugs as $ug)

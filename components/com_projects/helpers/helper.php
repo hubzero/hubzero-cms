@@ -1215,7 +1215,7 @@ class ProjectsHelper extends JObject {
 		if ($group)
 		{
 			// Check if they're a member of this group
-			$ugs = Hubzero_User_Helper::getGroups($juser->get('id'));
+			$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
 			if ($ugs && count($ugs) > 0) 
 			{
 				foreach ($ugs as $ug)

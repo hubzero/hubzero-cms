@@ -88,8 +88,6 @@ $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 			</thead>
 			<tbody>
 <?php
-		ximport('Hubzero_User_Helper');
-
 		$managers = $this->course->managers(array(), true);
 		if (count($managers) > 0) 
 		{

@@ -329,9 +329,8 @@ class ResourcesModelResource extends JObject
 
 			if (($admingroup = trim($tconfig->get('admingroup', '')))) 
 			{
-				ximport('Hubzero_User_Helper');
 				// Check if they're a member of admin group
-				$ugs = Hubzero_User_Helper::getGroups($juser->get('id'));
+				$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
 				if ($ugs && count($ugs) > 0) 
 				{
 					$admingroup = strtolower($admingroup);
@@ -448,8 +447,7 @@ class ResourcesModelResource extends JObject
 				}
 
 				// Get the groups the user has access to
-				ximport('Hubzero_User_Helper');
-				$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 				$usersgroups = array();
 				if (!empty($xgroups)) 
 				{

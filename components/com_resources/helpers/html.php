@@ -274,7 +274,6 @@ class ResourcesHtml
 	 */
 	public static function niceidformat($someid)
 	{
-		ximport('Hubzero_View_Helper_Html');
 		return Hubzero_View_Helper_Html::niceidformat($someid);
 	}
 
@@ -1189,7 +1188,6 @@ class ResourcesHtml
 					'filepath' => $config->get('uploadpath'),
 					'domain'   => ''
 				);
-				ximport('Hubzero_Wiki_Parser');
 				$p = Hubzero_Wiki_Parser::getInstance();
 				$maintext = $p->parse($maintext, $wikiconfig);
 			}
@@ -2069,11 +2067,6 @@ class ResourcesHtml
 					}
 				}
 
-				// Import a few things to look up the tool
-				ximport('Hubzero_Tool');
-				ximport('Hubzero_Tool_Version');
-				ximport('Hubzero_User_Helper');
-
 				// Create some tool objects
 				$hztv = Hubzero_Tool_Version::getInstance($resource->tool);
 				$ht = Hubzero_Tool::getInstance($hztv->toolid);
@@ -2083,7 +2076,7 @@ class ResourcesHtml
 				}
 
 				// Get current users groups
-				$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
+				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
 				$ingroup = false;
 				$groups = array();
 				if ($xgroups) 
@@ -2459,7 +2452,6 @@ class ResourcesHtml
 				break;
 
 				default:
-					ximport('Hubzero_View_Helper_Html');
 					$fs = ($fsize) ? $fs : Hubzero_View_Helper_Html::formatSize($fs);
 				break;
 			}
@@ -2479,7 +2471,6 @@ class ResourcesHtml
 	 */
 	public static function formatsize($file_size)
 	{
-		ximport('Hubzero_View_Helper_Html');
 		return Hubzero_View_Helper_Html::formatSize($file_size);
 	}
 

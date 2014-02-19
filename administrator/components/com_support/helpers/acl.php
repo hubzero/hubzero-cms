@@ -88,8 +88,7 @@ class SupportACL extends JObject
 
 		if (!$this->_juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Helper');
-			$this->_user_groups = Hubzero_User_Helper::getGroups($this->_juser->get('id'));
+			$this->_user_groups = \Hubzero\User\Helper::getGroups($this->_juser->get('id'));
 		}
 	}
 
@@ -216,9 +215,8 @@ class SupportACL extends JObject
 		{
 			if ($this->_juser->get('id') != $aro_foreign_key) 
 			{
-				ximport('Hubzero_User_Helper');
 				$this->_juser = JUser::getInstance($aro_foreign_key);
-				$this->_user_groups = Hubzero_User_Helper::getGroups($this->_juser->get('id'));
+				$this->_user_groups = \Hubzero\User\Helper::getGroups($this->_juser->get('id'));
 			}
 		}
 	}

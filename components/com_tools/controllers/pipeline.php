@@ -1782,7 +1782,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		$admingroup = $this->config->get('admingroup', '');
 
-		ximport('Hubzero_Group');
 		$group = Hubzero_Group::getInstance($admingroup);
 		if (is_object($group)) 
 		{
@@ -2536,9 +2535,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// otherwise superadmins can only act if they are also a member of the component admin group
 		if (($admingroup = trim($this->config->get('admingroup', '')))) 
 		{
-			ximport('Hubzero_User_Helper');
 			// Check if they're a member of admin group
-			$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
+			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 			if ($ugs && count($ugs) > 0) 
 			{
 				$admingroup = strtolower($admingroup);

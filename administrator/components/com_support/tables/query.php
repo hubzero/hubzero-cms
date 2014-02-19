@@ -393,8 +393,7 @@ class SupportQuery extends JTable
 
 				if ($expr->fldval == 'group') 
 				{
-					ximport('Hubzero_User_Helper');
-					$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
+					$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
 					$expr->val = '';
 					if ($xgroups) 
 					{

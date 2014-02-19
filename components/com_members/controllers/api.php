@@ -99,7 +99,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 
 		if ($result === false)	return $this->not_found();
 		
-		$groups = Hubzero_User_Helper::getGroups( $result->get('uidNumber'), 'members', 0);
+		$groups = \Hubzero\User\Helper::getGroups( $result->get('uidNumber'), 'members', 0);
 		
 		$g = array();
 		foreach($groups as $k => $group)

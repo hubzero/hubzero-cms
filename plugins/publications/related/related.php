@@ -107,9 +107,7 @@ class plgPublicationsRelated extends JPlugin
 			} 
 			else 
 			{
-				ximport('Hubzero_User_Helper');
-
-				$ugs = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
+				$ugs = \Hubzero\User\Helper::getGroups( $juser->get('id'), 'members' );
 				$groups = array();
 				if ($ugs && count($ugs) > 0) 
 				{
@@ -183,10 +181,7 @@ class plgPublicationsRelated extends JPlugin
 		$database->setQuery( $query );
 		$related = $database->loadObjectList();
 		
-		ximport('Hubzero_View_Helper_Html');
-		
 		// Instantiate a view
-		ximport('Hubzero_Plugin_View');
 		if ($miniview) 
 		{
 			$view = new Hubzero_Plugin_View(

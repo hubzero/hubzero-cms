@@ -699,7 +699,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		);
 
 		// Load some needed libraries
-		if (Hubzero_User_Helper::isXDomainUser($this->juser->get('id'))) 
+		if (\Hubzero\User\Helper::isXDomainUser($this->juser->get('id'))) 
 		{
 			JError::raiseError(403, JText::_('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT'));
 			return;

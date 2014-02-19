@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-	ximport('Hubzero_User_Helper');
-	ximport('Hubzero_Geo');
-
 	$html  = '<div id="content-header" class="full">'."\n";
 	$html .= "\t".'<h2>'.JText::_('COM_REGISTER_'.strtoupper($this->task)).'</h2>'."\n";
 	$html .= '</div><!-- / #content-header -->'."\n";

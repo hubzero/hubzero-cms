@@ -415,9 +415,8 @@ class SupportTicket extends JTable
 		}
 		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != '')) 
 		{
-			ximport('Hubzero_User_Helper');
 			$juser = JFactory::getUser();
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
+			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
 			$groups = '';
 			if ($xgroups) 
 			{

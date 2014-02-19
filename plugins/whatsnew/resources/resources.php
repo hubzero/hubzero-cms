@@ -162,7 +162,7 @@ class plgWhatsnewResources extends JPlugin
 		}
 
 		$juser = JFactory::getUser();
-		$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+		$filters['usergroups'] = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 
 		// Get categories
 		$categories = $this->_cats;

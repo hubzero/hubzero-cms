@@ -553,7 +553,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 				
 		// Get groups user has access to
-		$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
+		$xgroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'all');
 		$usersgroups = $this->getGroupProperty($xgroups);
 
 		// Extra authorization for restricted publications
@@ -2553,7 +2553,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			// Get the groups the user has access to
 			if (empty($usersgroups)) 
 			{
-				$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
+				$xgroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'all');
 				$usersgroups = $this->getGroupProperty($xgroups);
 			}
 		} 

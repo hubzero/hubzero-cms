@@ -28,15 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Hubzero\User;
 
 /**
- * Short description for 'Hubzero_User_Helper'
- * 
- * Long description (if any) ...
+ * Helper class for users
  */
-class Hubzero_User_Helper
+class Helper
 {
 
 	/**
@@ -90,13 +87,12 @@ class Hubzero_User_Helper
 	 */
 	public static function getXDomainId($domain)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
 
-		$query = 'SELECT domain_id FROM #__xdomains WHERE ' .
-			 '#__xdomains.domain=' . $db->Quote($domain) . ';';
+		$query = 'SELECT domain_id FROM `#__xdomains` WHERE domain=' . $db->Quote($domain) . ';';
 
 		$db->setQuery( $query );
 
@@ -119,7 +115,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getXDomainUserId($domain_username, $domain)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return $domain_username;
@@ -149,7 +145,7 @@ class Hubzero_User_Helper
 	 */
 	public static function deleteXDomainUserId($id)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($id))
 			return false;
@@ -202,7 +198,7 @@ class Hubzero_User_Helper
 	 */
 	public static function createXDomain($domain)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
@@ -242,7 +238,7 @@ class Hubzero_User_Helper
 	 */
 	public static function setXDomainUserId($domain_username, $domain, $uidNumber)
 	{
-		return Hubzero_User_Helper::mapXDomainUser($domain_username, $domain, $uidNumber);
+		return self::mapXDomainUser($domain_username, $domain, $uidNumber);
 	}
 
 	/**
@@ -257,7 +253,7 @@ class Hubzero_User_Helper
 	 */
 	public static function mapXDomainUser($domain_username, $domain, $uidNumber)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($domain))
 			return 0;
@@ -308,7 +304,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getGroups($uid, $type='all', $cat = null)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$g = '';
 		if ($cat == 1) {
@@ -358,7 +354,7 @@ class Hubzero_User_Helper
 	 */
 	public static function removeUserFromGroups( $uid )
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		$tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
 		
 		foreach ($tables as $table)
@@ -383,7 +379,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getCourses($uid, $type='all', $cat = null)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$g = '';
 		if ($cat == 1) {
@@ -436,8 +432,7 @@ class Hubzero_User_Helper
 	 */
 	public static function getCommonGroups( $uid, $pid )
 	{
-		ximport('Hubzero_User_Profile');
-		$uprofile = Hubzero_User_Profile::getInstance($uid);
+		$uprofile = \Hubzero_User_Profile::getInstance($uid);
 		
 		// Get the groups the visiting user
 		$xgroups = (is_object($uprofile)) ? $uprofile->getGroups('all') : array();
@@ -452,7 +447,7 @@ class Hubzero_User_Helper
 		}
 
 		// Get the groups of the profile
-		$pprofile = Hubzero_User_Profile::getInstance($pid);
+		$pprofile = \Hubzero_User_Profile::getInstance($pid);
 		$pgroups = (is_object($pprofile)) ? $pprofile->getGroups('all') : array();
 		// Get the groups the user has access to
 		$profilesgroups = array();
@@ -471,6 +466,5 @@ class Hubzero_User_Helper
 		//return common groups
 		return $common;
 	}
-	
 }
 

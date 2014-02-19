@@ -230,13 +230,11 @@ if (count($this->rows) > 0)
 	$messaging = false;
 	if ($this->config->get('user_messaging') > 0 && !$juser->get('guest')) 
 	{
-		ximport('Hubzero_User_Helper');
-
 		switch ($this->config->get('user_messaging'))
 		{
 			case 1:
 				// Get the groups the visiting user
-				$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 				$usersgroups = array();
 				if (!empty($xgroups)) 
 				{
@@ -345,7 +343,7 @@ if (count($this->rows) > 0)
 			{
 				case 1:
 					// Get the groups of the profile
-					$pgroups = Hubzero_User_Helper::getGroups($row->uidNumber, 'all');
+					$pgroups = \Hubzero\User\Helper::getGroups($row->uidNumber, 'all');
 					// Get the groups the user has access to
 					$profilesgroups = array();
 					if (!empty($pgroups)) 

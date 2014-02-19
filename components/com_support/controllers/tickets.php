@@ -848,7 +848,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	{
 		if (!$this->juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Profile');
 			$profile = new Hubzero_User_Profile();
 			$profile->load($this->juser->get('id'));
 			$emailConfirmed = $profile->get('emailConfirmed');
@@ -876,8 +875,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		if (!$this->juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Profile');
-
 			$profile = new Hubzero_User_Profile();
 			$profile->load($this->juser->get('id'));
 
@@ -935,7 +932,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Probably redundant after the change to call JRequest::_cleanVar change above, It is a bit hard to 
 		// tell if the Joomla  _cleanvar function does enough to allow us to remove the purifyText call
-		ximport('Hubzero_View_Helper_Html');
 		$reporter = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $reporter);
 		//$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
 
@@ -1084,7 +1080,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$source_region  = 'unknown';
 		$source_country = 'unknown';
 
-		ximport('Hubzero_Geo');
 		$gdb = Hubzero_Geo::getGeoDBO();
 		if (is_object($gdb)) 
 		{
@@ -3270,8 +3265,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 		}
 
-		ximport('Hubzero_Group');
-
 		if (strstr($group, ',')) 
 		{
 			$groups = explode(',', $group);
@@ -3378,10 +3371,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$group = trim($this->config->get('group'));
 		if ($group or $toolgroup) 
 		{
-			ximport('Hubzero_User_Helper');
-
 			// Check if they're a member of this group
-			$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
+			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 			if ($ugs && count($ugs) > 0) 
 			{
 				foreach ($ugs as $ug)

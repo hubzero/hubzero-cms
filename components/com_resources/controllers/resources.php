@@ -1301,7 +1301,6 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		if ($this->model->inGroup()) 
 		{
 			// Alter the pathway to reflect a group owned resource
-			ximport('Hubzero_Group');
 			$group = Hubzero_Group::getInstance($this->model->resource->group_owner);
 
 			if ($group)
@@ -2779,8 +2778,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				}
 			}
 
-			ximport('Hubzero_User_Helper');
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = self::getUsersGroups($xgroups);
 		} 

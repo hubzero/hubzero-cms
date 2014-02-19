@@ -1236,7 +1236,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$reviewer = false;
 		if (!$this->juser->get('guest') && $authorized != 1) 
 		{			
-			$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
+			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 			if($ugs && count($ugs) > 0)
 			{
 				$sdata_group 	= $this->config->get('sdata_group', '');

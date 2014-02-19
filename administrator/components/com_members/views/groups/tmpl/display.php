@@ -69,12 +69,10 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="paramlist admintable">
 			<tbody>
 <?php
-		ximport('Hubzero_User_Helper');
-
-		$applicants = Hubzero_User_Helper::getGroups($this->id, 'applicants');
-		$invitees = Hubzero_User_Helper::getGroups($this->id, 'invitees');
-		$members = Hubzero_User_Helper::getGroups($this->id, 'members');
-		$managers = Hubzero_User_Helper::getGroups($this->id, 'managers');
+		$applicants = \Hubzero\User\Helper::getGroups($this->id, 'applicants');
+		$invitees = \Hubzero\User\Helper::getGroups($this->id, 'invitees');
+		$members = \Hubzero\User\Helper::getGroups($this->id, 'members');
+		$managers = \Hubzero\User\Helper::getGroups($this->id, 'managers');
 
 		$applicants = (is_array($applicants)) ? $applicants : array();
 		$invitees   = (is_array($invitees))   ? $invitees   : array();

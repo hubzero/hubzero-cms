@@ -429,7 +429,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->row->load($this->view->id);
 
 		// Get groups
-		ximport('Hubzero_User_Profile');
 		$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 		$this->view->groups = $profile->getGroups('members');
 
@@ -634,8 +633,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 		if (!$this->juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Helper');
-			$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$this->view->usersgroups = $this->_getUsersGroups($xgroups);
 		} 

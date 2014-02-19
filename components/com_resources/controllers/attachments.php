@@ -318,7 +318,6 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 		if ($size > $sizeLimit) 
 		{
-			ximport('Hubzero_View_Helper_Html');
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
 			echo json_encode(array(
 				'error' => JText::sprintf('File is too large. Max file upload size is %s', $max)

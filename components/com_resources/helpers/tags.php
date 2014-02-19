@@ -130,8 +130,7 @@ class ResourcesTags extends TagsHandler
 
 		if (!$juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Helper');
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 			if ($xgroups != '') 
 			{
 				$usersgroups = self::getUsersGroups($xgroups);
@@ -333,8 +332,7 @@ class ResourcesTags extends TagsHandler
 
 		if (!$juser->get('guest')) 
 		{
-			ximport('Hubzero_User_Helper');
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 			if ($xgroups != '') 
 			{
 				$usersgroups = self::getUsersGroups($xgroups);

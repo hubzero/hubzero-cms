@@ -568,7 +568,7 @@ class TimeControllerApi extends Hubzero_Api_Controller
 
 		// Check if they're a member of the admin group
 		JLoader::import('Hubzero.User.Helper');
-		$ugs = Hubzero_User_Helper::getGroups($user_id);
+		$ugs = \Hubzero\User\Helper::getGroups($user_id);
 		if ($ugs && count($ugs) > 0)
 		{
 			foreach ($ugs as $ug)

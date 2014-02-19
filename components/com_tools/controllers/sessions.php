@@ -1033,7 +1033,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 		
 		//get users groups
-		$this->view->mygroups = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members', 1 );
+		$this->view->mygroups = \Hubzero\User\Helper::getGroups( $this->juser->get('id'), 'members', 1 );
 
 		// Push styles to the document
 		$this->_getStyles($this->_option, 'assets/css/tools.css');
@@ -1533,8 +1533,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 	 */
 	private function _getToolAccess($tool, $login='')
 	{
-		ximport('Hubzero_User_Helper');
-		ximport('Hubzero_Geo');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
@@ -1578,7 +1576,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			//$xlog->debug("mw::_getToolAccess($tool,$login) WARNING: no tool member groups");
 		}
 
-		$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'members');
+		$xgroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'members');
 		if (empty($xgroups)) 
 		{
 			//$xlog->debug("mw::_getToolAccess($tool,$login) WARNING: user not in any groups");

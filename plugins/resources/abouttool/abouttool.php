@@ -120,7 +120,7 @@ class plgResourcesAbouttool extends JPlugin
 
 			/*if (!$view->juser->get('guest')) 
 			{
-				$xgroups = Hubzero_User_Helper::getGroups($view->juser->get('id'), 'all');
+				$xgroups = \Hubzero\User\Helper::getGroups($view->juser->get('id'), 'all');
 				// Get the groups the user has access to
 				$view->usersgroups = $this->_getUsersGroups($xgroups);
 			} 

@@ -88,8 +88,6 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		ximport('Hubzero_User_Profile');
-
 		// Incoming authors
 		$authid = JRequest::getInt('authid', 0, 'post');
 		$authorsNewstr = trim(JRequest::getVar('new_authors', '', 'post'));

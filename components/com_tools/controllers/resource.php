@@ -230,8 +230,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		//$accesses = array('Public', 'Registered', 'Special', 'Protected', 'Private');
 		//$lists = array();
 		//$lists['access'] = ToolsHelperHtml::selectAccess($accesses, $row->access);
-		//ximport('Hubzero_User_Helper');
-		//$groups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'members');
+		//$groups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'members');
 
 		// get authors
 		$objA = new ToolAuthor($this->database);
@@ -563,7 +562,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 		if (!$this->juser->get('guest')) 
 		{
-			$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = $this->_getUsersGroups($xgroups);
 		} 
@@ -740,7 +739,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		if (($admingroup = trim($this->config->get('admingroup', '')))) 
 		{
 			// Check if they're a member of admin group
-			$ugs = Hubzero_User_Helper::getGroups($this->juser->get('id'));
+			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 			if ($ugs && count($ugs) > 0) 
 			{
 				$admingroup = strtolower($admingroup);

@@ -109,10 +109,10 @@ class plgMembersGroups extends JPlugin
 			'metadata'=>''
 		);
 
-		$applicants = $member->getGroups('applicants'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'applicants', 1);
-		$invitees   = $member->getGroups('invitees'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'invitees', 1);
-		$members    = $member->getGroups('members'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'members', 1);
-		$managers   = $member->getGroups('managers'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'managers', 1);
+		$applicants = $member->getGroups('applicants'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'applicants', 1);
+		$invitees   = $member->getGroups('invitees'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'invitees', 1);
+		$members    = $member->getGroups('members'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'members', 1);
+		$managers   = $member->getGroups('managers'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'managers', 1);
 
 		$applicants = (is_array($applicants)) ? $applicants : array();
 		$invitees   = (is_array($invitees))   ? $invitees   : array();

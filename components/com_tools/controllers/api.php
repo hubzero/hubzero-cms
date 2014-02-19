@@ -80,10 +80,6 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
 		
-		//include needed tool libraries
-		ximport('Hubzero_Tool');
-		ximport('Hubzero_Tool_Version');
-		
 		//instantiate database object
 		$database = JFactory::getDBO();
 		
