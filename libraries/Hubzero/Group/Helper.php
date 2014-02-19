@@ -217,7 +217,6 @@ class Hubzero_Group_Helper
 		$totalCount = 0;
 		
 		//import wiki parser
-		ximport('Hubzero_Wiki_Parser');
 		$p = Hubzero_Wiki_Parser::getInstance();
 		
 		//loop through each group
