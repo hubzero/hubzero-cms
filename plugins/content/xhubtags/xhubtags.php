@@ -75,6 +75,11 @@ class plgContentXhubtags extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
+		if (($article instanceof \Hubzero\Base\Object) || $context != 'com_content.article')
+		{
+			return;
+		}
+
 		// simple performance check to determine whether bot should process further
 		if (strpos($article->text, '{xhub') === false) 
 		{
