@@ -201,7 +201,7 @@ class Hubzero_View_Helper_Html
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
 		if (($val >= 1) && (($current_time - $new_time) > 0)) 
 		{
-			$text .= Hubzero_View_Helper_Html::timeAgoo($new_time);
+			$text .= self::timeAgoo($new_time);
 		}
 
 		return $text;
@@ -217,9 +217,9 @@ class Hubzero_View_Helper_Html
 	{
 		if (strstr($timestamp, '-'))
 		{
-			$timestamp = Hubzero_View_Helper_Html::mkt($timestamp);
+			$timestamp = self::mkt($timestamp);
 		}
-		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
+		$text = self::timeAgoo($timestamp);
 
 		$parts = explode(' ', $text);
 
@@ -260,9 +260,9 @@ class Hubzero_View_Helper_Html
 	public static function thumbit($thumb)
 	{
 		jimport('joomla.filesystem.file');
-		$ext = JFile::getExt($thumb);
+		$ext = \JFile::getExt($thumb);
 
-		return JFile::stripExt($thumb) . '_thumb.' . $ext;
+		return \JFile::stripExt($thumb) . '_thumb.' . $ext;
 	}
 
 	/**
@@ -297,10 +297,10 @@ class Hubzero_View_Helper_Html
 		$path = JPATH_ROOT . $path;
 
 		//$file_name_arr = explode(DS, $path);
-	    //$type = end($file_name_arr);
+		//$type = end($file_name_arr);
 
 		jimport('joomla.filesystem.file');
-		$type = JFile::getExt($path);
+		$type = \JFile::getExt($path);
 
 		$fs = '';
 
@@ -323,7 +323,7 @@ class Hubzero_View_Helper_Html
 					$fs = ''; 
 				break;
 				default:
-					$fs = Hubzero_View_Helper_Html::formatSize($fs);
+					$fs = self::formatSize($fs);
 				break;
 			}
 
@@ -384,7 +384,7 @@ class Hubzero_View_Helper_Html
 		$ret = 0;
 		foreach (glob($path . "/*") as $fn)
 		{
-			$ret += Hubzero_View_Helper_Html::filesize_r($fn);
+			$ret += self::filesize_r($fn);
 		}
 		return $ret;
 	}

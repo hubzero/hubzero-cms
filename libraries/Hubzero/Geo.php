@@ -90,7 +90,7 @@ class Hubzero_Geo
 	{
 		$countries = array();
 
-		if (!($gdb = Hubzero_Geo::getGeoDBO()))
+		if (!($gdb = self::getGeoDBO()))
 		{
 			return $countries;
 		}
@@ -124,7 +124,7 @@ class Hubzero_Geo
 	 */
 	public static function getCountriesByContinent($continent='')
 	{
-		if (!$continent || !($gdb = Hubzero_Geo::getGeoDBO())) 
+		if (!$continent || !($gdb = self::getGeoDBO())) 
 		{
 			return array();
 		}
@@ -141,7 +141,7 @@ class Hubzero_Geo
 	 */
 	public static function getCodesByNames($names=array())
 	{
-		if (!($gdb = Hubzero_Geo::getGeoDBO())) 
+		if (!($gdb = self::getGeoDBO())) 
 		{
 			return array();
 		}
@@ -167,7 +167,7 @@ class Hubzero_Geo
 		$code = '';
 		if ($name) 
 		{
-			if (!($gdb = Hubzero_Geo::getGeoDBO()))
+			if (!($gdb = self::getGeoDBO()))
 			{
 				return $code;
 			}
@@ -189,7 +189,7 @@ class Hubzero_Geo
 		$name = '';
 		if ($code) 
 		{
-			if (!($gdb = Hubzero_Geo::getGeoDBO()))
+			if (!($gdb = self::getGeoDBO()))
 			{
 				return $name;
 			}
@@ -211,7 +211,7 @@ class Hubzero_Geo
 		$country = '';
 		if ($ip) 
 		{
-			if (!($gdb = Hubzero_Geo::getGeoDBO()))
+			if (!($gdb = self::getGeoDBO()))
 			{
 				return $country;
 			}
@@ -234,7 +234,7 @@ class Hubzero_Geo
 		$d1nation = false;
 		if ($country) 
 		{
-			if (!($gdb = Hubzero_Geo::getGeoDBO()))
+			if (!($gdb = self::getGeoDBO()))
 			{
 				return $d1nation;
 			}
@@ -260,7 +260,7 @@ class Hubzero_Geo
 		$e1nation = false;
 		if ($country) 
 		{
-			if (!($gdb = Hubzero_Geo::getGeoDBO()))
+			if (!($gdb = self::getGeoDBO()))
 			{
 				return $e1nation;
 			}
@@ -287,7 +287,7 @@ class Hubzero_Geo
 		$iplocation = false;
 		if ($ip && $location) 
 		{
-			if (!($gdb = Hubzero_Geo::getGeoDBO()))
+			if (!($gdb = self::getGeoDBO()))
 			{
 				return $iplocation;
 			}
