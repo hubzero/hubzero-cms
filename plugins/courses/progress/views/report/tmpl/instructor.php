@@ -31,9 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = 'index.php?option='.$this->option.'&controller=offering&active=progress&gid='.$this->course->get('alias');
-$base .= '&offering='.$this->course->offering()->get('alias');
-$base .= ($this->course->offering()->section()->get('alias') != '__default') ? ':'.$this->course->offering()->section()->get('alias') : '';
+$base = $this->course->offering()->link() . '&active=progress';
 ?>
 
 <script id="progress-template-main" type="text/x-handlebars-template">
@@ -61,7 +59,7 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 					<textarea name="description" cols="50" rows="2">{{gradepolicy.description}}</textarea>
 				</div>
 				<button type="submit">Submit</button>
-				<a class="restore-defaults" href="<?php echo JRoute::_($base. '&active=progress&action=restoredefaults') ?>">Restore Defaults</a>
+				<a class="restore-defaults" href="<?php echo JRoute::_($base. '&action=restoredefaults') ?>">Restore Defaults</a>
 			{{else}}
 				<p class="warning">Sorry, you do not have permission to edit the grade policy for this course</p>
 			{{/if}}
@@ -126,7 +124,7 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 				<div class="extended-info">
 					<div class="picture">
 						<img src="<?php echo Juri::base(); ?>{{this.full}}" />
-						<a class="more-details" href="<?php echo JRoute::_($base.'&active=progress&id=') ?>{{this.user_id}}">More details</a>
+						<a class="more-details" href="<?php echo JRoute::_($base.'&id=') ?>{{this.user_id}}">More details</a>
 					</div>
 					<div class="extended-info-extra">
 						<h6>Joined Course</h6>

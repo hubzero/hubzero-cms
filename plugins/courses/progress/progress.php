@@ -119,8 +119,7 @@ class plgCoursesProgress extends JPlugin
 
 		$this->member = $course->offering()->section()->member(JFactory::getUser()->get('id'));
 		$this->course = $course;
-		$this->base   = 'index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
-		$this->base  .= ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
+		$this->base   = $course->offering()->link();
 		$this->db     = JFactory::getDBO();
 
 		// Instantiate a vew
@@ -457,8 +456,8 @@ class plgCoursesProgress extends JPlugin
 			)
 		);
 
-		$section  = ($this->course->offering()->section()->get('alias') != '__default') ? '.'.$this->course->offering()->section()->get('alias') : '';
-		$filename = $this->course->get('alias') . $section . '.gradebook.csv';
+		$section  = $this->course->offering()->section()->get('alias');
+		$filename = $this->course->get('alias') . '.' . $section . '.gradebook.csv';
 
 		// Set content type headers
 		header("Content-type: application/csv");

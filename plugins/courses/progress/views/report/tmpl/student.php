@@ -362,7 +362,7 @@ $progress_timeline .= '</div>';
 			a certificate of completion.
 		</p>
 		<p>
-			<a class="claim-item" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=certificate&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '')); ?>">
+			<a class="claim-item" href="<?php echo JRoute::_($this->course->offering()->link() . '&controller=certificate'); ?>">
 				<?php echo JText::_('Download your certificate!'); ?>
 			</a>
 		</p>
