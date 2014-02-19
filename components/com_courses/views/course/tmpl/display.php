@@ -42,25 +42,123 @@ $action = strtolower(JRequest::getWord('action', ''));
 
 $this->js('courses.overview.js');
 ?>
-<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
-	<h2>
-		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-	</h2>
-	<?php if ($this->course->get('logo')) { ?>
-	<p class="course-identity">
-		<img src="<?php echo JURI::base(true); ?>/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
-	</p>
-	<?php } ?>
-	<p id="page_identity">
-		<a class="icon-browse browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
+<div id="content-header">
+	<h2><?php echo JText::_('COM_COURSES'); ?></h2>
+</div>
+<div id="content-header-extra">
+	<p>
+		<a class="btn icon-browse browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
 			<?php echo JText::_('Course catalog'); ?>
 		</a>
 	</p>
 </div>
 
-<div class="course section intro">
+<div class="course section intro<?php echo ($this->course->get('logo')) ? ' with-identity' : ''; ?>">
 	<div class="aside">
-	<?php
+		<p class="course-identity">
+		<?php if ($this->course->get('logo')) { ?>
+			<img src="/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+		<?php } else { ?>
+			<span></span>
+		<?php } ?>
+		</p>
+	</div><!-- / .aside -->
+	<div class="subject">
+		<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
+				<label for="field_title">
+					<input type="text" name="course[title]" id="field_title" value="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+				</label>
+
+				<label for="field_blurb">
+					<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
+				</label>
+
+				<label for="actags">
+					<?php echo JText::_('Tags'); ?>
+
+					<?php 
+					JPluginHelper::importPlugin( 'hubzero' );
+					$dispatcher = JDispatcher::getInstance();
+					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))) );
+					$tf = implode("\n", $tf);
+
+					if ($tf) {
+						echo $tf;
+					} else { ?>
+						<input type="text" name="tags" id="actags" value="<?php echo $this->escape($this->couse->tags('string')); ?>" />
+					<?php } ?>
+
+					<span class="hint">These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content. <?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
+				</label>
+
+				<p class="submit">
+					<input type="submit" class="btn btn-success" value="<?php echo JText::_('Save'); ?>" />
+					<a class="btn btn-secondary" href="<?php echo JRoute::_($this->course->link()); ?>">
+						<?php echo JText::_('Cancel'); ?>
+					</a>
+				</p>
+
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="course" />
+				<input type="hidden" name="task" value="save" />
+
+				<?php echo JHTML::_('form.token'); ?>
+
+				<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+				<input type="hidden" name="course[id]" value="<?php echo $this->escape($this->course->get('id')); ?>" />
+				<input type="hidden" name="course[alias]" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+			</form>
+		<?php } else { ?>
+			<?php if ($this->course->access('edit', 'course')) { ?>
+				<div class="manager-options">
+					<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=blurb'); ?>">
+						<?php echo JText::_('Edit'); ?>
+					</a>
+					<span><strong>Title &amp; Short description</strong></span>
+				</div>
+			<?php } ?>
+			<div id="course-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
+				<h2>
+					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+				</h2>
+				
+				<!-- <p id="page_identity">
+					<a class="icon-browse browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
+						<?php echo JText::_('Course catalog'); ?>
+					</a>
+				</p> -->
+			</div>
+			<p>
+				<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
+			</p>
+
+			<?php echo $this->course->tags('cloud'); ?>
+		<?php } ?>
+	</div><!-- / .subject -->
+	<div class="clear"></div>
+</div><!-- / .course section intro -->
+
+<?php if ($this->course->access('edit', 'course') && !$offerings->total()) { ?>
+<div class="course section intro offering-help">
+	<div class="aside">
+		<p>
+			<a class="icon-add btn" id="add-offering" href="<?php echo JRoute::_($this->course->link() . '&task=newoffering'); ?>"><?php echo JText::_('Create an offering'); ?></a>
+		</p>
+	</div><!-- / .aside -->
+	<div class="subject">
+		<p>
+			<strong>This course needs an offering!</strong></p>
+			An offering is a collection of materials (lectures, quizzes, etc.) that represents a version or edition of a course. Generally, a significant change in course materials would be considered a new offering.
+		</p>
+	</div><!-- / .subject -->
+	<div class="clear"></div>
+</div><!-- / .course section intro offering-help -->
+<?php } ?>
+
+<div class="course section">
+	<div class="aside">
+<?php
 $c = 0;
 if ($offerings->total())
 {
@@ -112,7 +210,7 @@ if ($offerings->total())
 					$mng = $offering->get('id');
 
 					// Get the default section
-					$dflt = $offering->section('__default');
+					$dflt = $offering->section('!!default!!');
 					if (!$dflt->exists())
 					{
 						// No default? Get the first in the list
@@ -243,87 +341,6 @@ if (!$c)
 	<?php
 }
 ?>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
-				<label for="field_blurb">
-					<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
-				</label>
-
-				<label for="actags">
-					<?php echo JText::_('Tags'); ?>
-
-					<?php 
-					JPluginHelper::importPlugin( 'hubzero' );
-					$dispatcher = JDispatcher::getInstance();
-					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))) );
-					$tf = implode("\n", $tf);
-
-					if ($tf) {
-						echo $tf;
-					} else { ?>
-						<input type="text" name="tags" id="actags" value="<?php echo $this->escape($this->couse->tags('string')); ?>" />
-					<?php } ?>
-
-					<span class="hint">These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content. <?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
-				</label>
-
-				<p class="submit">
-					<input type="submit" class="btn btn-success" value="<?php echo JText::_('Save'); ?>" />
-					<a class="btn btn-secondary" href="<?php echo JRoute::_($this->course->link()); ?>">
-						<?php echo JText::_('Cancel'); ?>
-					</a>
-				</p>
-
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="course" />
-				<input type="hidden" name="task" value="save" />
-
-				<?php echo JHTML::_('form.token'); ?>
-
-				<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
-				<input type="hidden" name="course[id]" value="<?php echo $this->escape($this->course->get('id')); ?>" />
-				<input type="hidden" name="course[alias]" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
-			</form>
-		<?php } else { ?>
-			<?php if ($this->course->access('edit', 'course')) { ?>
-				<div class="manager-options">
-					<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=blurb'); ?>">
-						<?php echo JText::_('Edit'); ?>
-					</a>
-					<span><strong>Short description</strong></span>
-				</div>
-			<?php } ?>
-			<p>
-				<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
-			</p>
-
-			<?php echo $this->course->tags('cloud'); ?>
-		<?php } ?>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .course section intro -->
-
-<?php if ($this->course->access('edit', 'course') && !$c) { ?>
-<div class="course section intro offering-help">
-	<div class="aside">
-		<p>
-			<a class="icon-add btn" id="add-offering" href="<?php echo JRoute::_($this->course->link() . '&task=newoffering'); ?>"><?php echo JText::_('Create an offering'); ?></a>
-		</p>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<p>
-			<strong>This course needs an offering!</strong></p>
-			An offering is a collection of materials (lectures, quizzes, etc.) that represents a version or edition of a course. Generally, a significant change in course materials would be considered a new offering.
-		</p>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .course section intro offering-help -->
-<?php } ?>
-
-<div class="course section">
-	<div class="aside">
 		<?php
 		if ($this->course->access('edit', 'course')) 
 		{
@@ -345,8 +362,6 @@ if (!$c)
 				<?php echo (count($instructors) > 1) ? JText::_('About the Instructors') : JText::_('About the Instructor'); ?>
 			</h3>
 			<?php
-			ximport('Hubzero_View_Helper_Html');
-
 			foreach ($instructors as $i)
 			{
 				$view = new JView(array(
@@ -400,7 +415,7 @@ if (!$c)
 					$name = key($cat);
 					if ($name != '') 
 					{
-						$url = JRoute::_($this->course->link() . '&active=' . $name);
+						$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
 
 						if (strtolower($name) == $this->active) 
 						{
