@@ -43,7 +43,6 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-ximport('Hubzero_User_Profile');
 $profile = Hubzero_User_Profile::getInstance($this->row->get('user_id'));
 
 $js = '';

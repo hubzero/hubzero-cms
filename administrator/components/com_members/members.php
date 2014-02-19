@@ -65,8 +65,6 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'password_blac
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'quotas_classes.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'users_quotas.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'members.php');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_User_Profile');
 
 $controllerName = JRequest::getCmd('controller', 'members');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

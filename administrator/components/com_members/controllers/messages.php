@@ -249,7 +249,6 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		// Do we have any IDs?
 		if (!empty($ids)) 
 		{
-			ximport('\Hubzero\Message\Notify');
 			$notify = new \Hubzero\Message\Notify($this->database);
 
 			// Loop through each ID and delete the necessary items

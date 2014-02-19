@@ -266,7 +266,6 @@ class ToolAuthor extends  JTable
 		{
 			return false;
 		}
-		ximport('Hubzero_User_Profile');
 
 		if ($authors) 
 		{

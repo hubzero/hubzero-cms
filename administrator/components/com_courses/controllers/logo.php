@@ -116,7 +116,6 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		}
 		if ($size > $sizeLimit) 
 		{
-			ximport('Hubzero_View_Helper_Html');
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
 			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
 			return;
@@ -183,7 +182,6 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		ximport('Hubzero_View_Helper_Html');
 		$this_size = filesize($file);
 		list($width, $height, $type, $attr) = getimagesize($file);
 
@@ -234,7 +232,6 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		$curfile = JRequest::getVar('curfile', '');
 
 		// Build upload path
-		//$dir  = Hubzero_View_Helper_Html::niceidformat($id);
 		$dir = $id;
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $dir;
 

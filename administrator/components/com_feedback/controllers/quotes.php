@@ -197,8 +197,6 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		$username = trim(JRequest::getVar('username', ''));
 		if ($username)
 		{
-			ximport('Hubzero_User_Profile');
-
 			$profile = new Hubzero_User_Profile();
 			$profile->load($username);
 

@@ -1138,8 +1138,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 		}
 
-		ximport('Hubzero_Group');
-
 		if (strstr($group, ','))
 		{
 			$groups = explode(',', $group);

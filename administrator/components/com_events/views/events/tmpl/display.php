@@ -236,7 +236,6 @@ $row = &$this->rows[$i];
 					
 					<?php if($row->scope == 'group') : ?>
 						<?php
-							ximport('Hubzero_Group');
 							$group = Hubzero_Group::getInstance( $row->scope_id );
 							if (is_object($group))
 							{

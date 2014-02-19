@@ -65,7 +65,6 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// Build upload path
-		ximport('Hubzero_View_Helper_Html');
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
 
 		if (!is_dir($path))

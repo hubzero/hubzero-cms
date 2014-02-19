@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Group');
-
 /**
  * Table class for wishlist owner group
  */
@@ -82,8 +80,6 @@ class WishlistOwnerGroup extends JTable
 	 */
 	public function get_owner_groups($listid, $controlgroup='', $wishlist=null, $native=0, $groups = array())
 	{
-		ximport('Hubzero_Group');
-
 		if ($listid === NULL) 
 		{
 			return false;
@@ -165,8 +161,6 @@ class WishlistOwnerGroup extends JTable
 	 */
 	 public function delete_owner_group($listid, $groupid, $admingroup)
 	 {
-	 	ximport('Hubzero_Group');
-
 		if ($listid === NULL or $groupid === NULL) 
 		{
 			return false;

@@ -98,7 +98,6 @@ public function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
-ximport('Hubzero_View_Helper_Html');
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {

@@ -108,8 +108,6 @@ class SupportControllerTaggroups extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 		
 		$this->view->setLayout('edit');
-		
-		ximport('Hubzero_Group');
 
 		if (is_object($row))
 		{
@@ -149,8 +147,6 @@ class SupportControllerTaggroups extends \Hubzero\Component\AdminController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-
-		ximport('Hubzero_Group');
 
 		$taggroup = JRequest::getVar('taggroup', array(), 'post');
 

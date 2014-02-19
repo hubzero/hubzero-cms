@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Venue') : JText::_('New Venue'));
 
-JToolBarHelper::title(JText::_('Tools').': <small><small>[ ' . $text . ' ]</small></small>', 'tools.png');
+JToolBarHelper::title(JText::_('Tools').': ' . $text, 'tools.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 								<option value="three">three</option>
 <?php
 							$found = array('one', 'two', 'three');
-							ximport('Hubzero_Geo');
+
 							if ($countries = Hubzero_Geo::getcountries()) 
 							{
 								foreach ($countries as $country)

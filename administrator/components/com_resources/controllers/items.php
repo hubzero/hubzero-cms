@@ -779,7 +779,6 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if ($this->view->row->standalone == 1)
 		{
 			// Get groups
-			ximport('Hubzero_Group');
 			$filters = array();
 			$filters['authorized'] = 'admin';
 			$filters['fields'] = array('cn','description','published','gidNumber','type');
@@ -1788,7 +1787,6 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$rid = JRequest::getInt('rid', 0);
 
 		// Get the member's info
-		ximport('Hubzero_User_Profile');
 		$profile = new Hubzero_User_Profile();
 		$profile->load($this->view->id);
 

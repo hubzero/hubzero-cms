@@ -313,7 +313,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 		
 		//Import the wiki parser
-		ximport('Hubzero_Wiki_Parser');
 		$this->view->parser = Hubzero_Wiki_Parser::getInstance();
 
 		$this->view->wikiconfig = array(
@@ -1317,7 +1316,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$u = JRequest::getInt('u', 0);
 
 		// Get the member's info
-		ximport('Hubzero_User_Profile');
 		$profile = Hubzero_User_Profile::getInstance($u);
 
 		if (!$profile->get('name'))

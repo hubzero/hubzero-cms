@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 ini_set('memory_limit', '512M');
 
-ximport('Hubzero_User_Profile');
-
 /**
  * Script for fixing names
  */

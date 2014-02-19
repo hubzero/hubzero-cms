@@ -39,8 +39,6 @@ JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
 JToolBarHelper::help('tickets.html', true);
 
-ximport('Hubzero_User_Profile');
-
 JHTML::_('behavior.tooltip');
 ?>
 
@@ -205,8 +203,6 @@ JHTML::_('behavior.tooltip');
 					</tfoot>
 					<tbody>
 			<?php
-			ximport('Hubzero_View_Helper_Html');
-
 			$k = 0;
 			$database = JFactory::getDBO();
 			$sc = new SupportComment($database);

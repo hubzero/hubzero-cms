@@ -175,8 +175,6 @@ class WishlistOwner extends JTable
 	 */
 	public function get_owners($listid, $admingroup, $wishlist='', $native=0, $wishid=0, $owners = array())
 	{
-		ximport('Hubzero_Group');
-
 		if ($listid === NULL) 
 		{
 			return false;

@@ -68,8 +68,6 @@ include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'acl.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 
-ximport('Hubzero_User_Profile');
-
 $controllerName = JRequest::getCmd('controller', 'tickets');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {

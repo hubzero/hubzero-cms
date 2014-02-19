@@ -130,7 +130,6 @@ if (0) {
 	$mainframe->triggerEvent('onAfterRender');
 } // ( 0 )
 
-//ximport('Hubzero_User_Profile');
 for($i=0;$i<20;$i++) {
 	echo "_______________________________________________\n";
 }

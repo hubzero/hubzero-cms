@@ -765,8 +765,6 @@ class CitationsCitation extends JTable
 			} 
 			else 
 			{
-				ximport('Hubzero_Geo');
-
 				$query .= " AND ca.cid=r.id AND";
 
 				$multi = 0;

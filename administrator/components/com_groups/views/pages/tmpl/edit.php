@@ -159,7 +159,6 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 						<td class="key"><label for="field-privacy"><?php echo JText::_('Privacy'); ?>:</label></td>
 						<td>
 							<?php
-								ximport("Hubzero_Group_Helper");
 								$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
 								switch($access)
 								{

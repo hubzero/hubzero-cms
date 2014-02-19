@@ -69,7 +69,6 @@ defined('_JEXEC') or die('Restricted access');
 
 	if ($this->file && file_exists(JPATH_ROOT . $this->path . DS . $this->file)) 
 	{
-		ximport('Hubzero_View_Helper_Html');
 		$this_size = filesize(JPATH_ROOT . $this->path . DS . $this->file);
 		list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $this->path . DS . $this->file);
 ?>

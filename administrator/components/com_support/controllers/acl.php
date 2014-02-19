@@ -184,8 +184,6 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 				break;
 
 				case 'group':
-					ximport('Hubzero_Group');
-					
 					$group = Hubzero_Group::getInstance($row->foreign_key);
 					if (!is_object($group))
 					{

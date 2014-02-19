@@ -83,7 +83,6 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// Build upload path
-		ximport('Hubzero_View_Helper_Html');
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
 
 		if (!is_dir($path))
@@ -192,7 +191,6 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// Build the file path
-		ximport('Hubzero_View_Helper_Html');
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
 
 		if (!file_exists($path . DS . $row->picture) or !$row->picture)
@@ -241,7 +239,6 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		// Do have an ID or do we need to get one?
 		$this->view->id = ($id) ? $id : JRequest::getInt('id', 0);
 
-		ximport('Hubzero_View_Helper_Html');
 		$this->view->dir = Hubzero_View_Helper_Html::niceidformat($this->view->id);
 
 		// Do we have a file or do we need to get one?

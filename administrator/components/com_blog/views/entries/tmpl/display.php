@@ -80,7 +80,6 @@ function submitbutton(pressbutton)
 
 <?php if ($this->filters['scope'] == 'group') { ?>
 		<?php
-		ximport('Hubzero_Group');
 		$filters = array();
 		$filters['authorized'] = 'admin';
 		$filters['fields'] = array('cn','description','published','gidNumber','type');

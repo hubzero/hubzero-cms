@@ -55,9 +55,6 @@ class GroupCreated extends SystemHelperScript
 	 */
 	public function run()
 	{
-		// import group library
-		ximport('Hubzero_Group');
-
 		// select all logs where group was created
 		$sql = "SELECT * FROM #__xgroups_log WHERE action='group_created'";
 		$this->_db->setQuery($sql);

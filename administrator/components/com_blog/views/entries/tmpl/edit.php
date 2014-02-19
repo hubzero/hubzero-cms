@@ -80,7 +80,6 @@ function submitbutton(pressbutton)
 					<td class="key">
 						<label for="field-group_id"><?php echo JText::_('Group'); ?>:</label><br />
 						<?php
-						ximport('Hubzero_Group');
 						$filters = array();
 						$filters['authorized'] = 'admin';
 						$filters['fields'] = array('cn','description','published','gidNumber','type');
