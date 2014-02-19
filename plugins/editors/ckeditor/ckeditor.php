@@ -139,9 +139,9 @@ class plgEditorCkeditor extends JPlugin
 			}
 		}
 		$params['class'][] = 'ckeditor-content';
-
+		
 		// build config & json encode
-		$config = json_encode($this->_buildConfig(in_array('minimal', $params['class'])));
+		$config = json_encode($this->_buildConfig($params['class']));
 
 		// fix script and php protected source
 
@@ -199,7 +199,7 @@ class plgEditorCkeditor extends JPlugin
 	 *
 	 * @return  object stdClass
 	 */
-	private function _buildConfig($minimal=false)
+	private function _buildConfig($classes = array())
 	{
 		// store params in local var for easier accessing
 		$params = $this->params;
@@ -211,7 +211,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->hubzeroAutogrow_autoStart     = true;
 		$config->hubzeroAutogrow_minHeight     = 200;
 		$config->hubzeroAutogrow_maxHeight     = 1000;
-		$config->toolbarCanCollapse            = ($minimal ? false : true);
+		$config->toolbarCanCollapse            = true;
 		$config->extraPlugins                  = 'tableresize,hubzeroautogrow,hubzeroequation,hubzerogrid,codemirror';
 		$config->removePlugins                 = 'resize';
 		$config->resize_enabled                = false;
@@ -242,16 +242,26 @@ class plgEditorCkeditor extends JPlugin
 			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
 			array('HubzeroAutoGrow')
 		);
-		if ($minimal)
+
+		// if minimal toolbar
+		if (in_array('minimal', $classes))
 		{
 			$config->toolbar                   = array(
 				array('Link', 'Unlink', 'Anchor'),
 				array('Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
-				array('NumberedList', 'BulletedList'),
-				array('HubzeroAutoGrow')
+				array('NumberedList', 'BulletedList')
 			);
+			$config->toolbarCanCollapse = false;
+			$config->hubzeroAutogrow_autoStart = false;
 		}
 
+		// if no footer
+		if (in_array('no-footer', $classes))
+		{
+			$config->removePlugins = 'elementspath';
+		}
+
+		// setup codemirror
 		$config->codemirror = new stdClass;
 		$config->codemirror->autoFormatOnModeChange = false;
 
