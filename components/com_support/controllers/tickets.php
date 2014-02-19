@@ -2081,8 +2081,12 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		//$params =  JComponentHelper::getParams($this->_option);
 		$allowEmailResponses = $this->config->get('email_processing');
+		if (!file_exists("/etc/hubmail_gw.conf"))
+		{
+			$allowEmailResponses = false;
+		}
 
-		if ($allowEmailResponses and file_exists("/etc/hubmail_gw.conf"))
+		if ($allowEmailResponses)
 		{
 			$encryptor = new Hubzero_EmailToken();
 		}
