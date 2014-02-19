@@ -359,7 +359,6 @@ class JRouterSite extends JRouter
 
 				if ( ($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
 				{
-					ximport('Hubzero_Group');
 					$suri = JURI::getInstance();
 					$group = Hubzero_Group::getInstance($rhostname);
 
