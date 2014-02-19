@@ -157,7 +157,7 @@ $k = 0;
 //$filterstring  = '&amp;pid=' . $this->pid;
 //$filterstring .= ($this->filters['sort'])   ? '&amp;sort=' . $this->filters['sort']     : '';
 //$filterstring .= '&amp;status=' . $this->filters['status'];
-
+$juser = JFactory::getUser();
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
@@ -262,9 +262,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// See if it's checked out or not
-	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
+	if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != $juser->get('id'))
 	{
-		$checked = JHTML::_('grid.checkedOut', $row, $i);
+		//$checked = JHTML::_('grid.checkedOut', $row, $i);
+		$checked = JHtml::_('image', 'admin/checked_out.png', null, null, true);
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				 ? JText::_('Checked out') . ': ' . JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')) . '<br />'
 				 : '';
@@ -286,10 +287,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit')) { ?>
+<?php if ((($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != $juser->get('id')) || !$canDo->get('core.edit')) { ?>
 					<span class="editlinktip hasTip" title="<?php echo JText::_('Publish Information');?>::<?php echo $info; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>
+					<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
 <?php } else { ?>
 					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('Publish Information');?>::<?php echo $info; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
