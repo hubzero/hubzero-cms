@@ -37,7 +37,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' .
 /**
  * API controller class for forum posts
  */
-class ForumControllerApi extends Hubzero_Api_Controller
+class ForumControllerApi extends \Hubzero\Api\Controller
 {
 	/**
 	 * Execute a request

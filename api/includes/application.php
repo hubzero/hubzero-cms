@@ -51,8 +51,8 @@ class Hubzero_API extends JApplication
 		$this->provider = null;
 		$this->_authn = array();
 		
-		$this->request = new Hubzero_Api_Request();
-		$this->response = new Hubzero_Api_Response();
+		$this->request = new \Hubzero\Api\Request();
+		$this->response = new \Hubzero\Api\Response();
 		$this->output = '';
 		JFactory::getSession()->restart();
 		$this->checkSession();
@@ -133,8 +133,8 @@ class Hubzero_API extends JApplication
 		$this->unregister_globals();
 		$this->fix_http_headers();
 		
-		$this->request = new Hubzero_Api_Request();
-		$this->response = new Hubzero_Api_Response();
+		$this->request = new \Hubzero\Api\Request();
+		$this->response = new \Hubzero\Api\Response();
 		$this->output = '';
         
         parent::__construct($config);

@@ -52,12 +52,12 @@ class TimeApiControllerTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that instance extends Hubzero_Api_Controller
+	 * Test that instance extends \Hubzero\Api\Controller
 	 *
 	 * @group com_time
 	 */
 	function testExtendsHubzeroApiController()
 	{
-		$this->assertTrue($this->instance instanceof Hubzero_Api_Controller);
+		$this->assertTrue($this->instance instanceof \Hubzero\Api\Controller);
 	}
 }

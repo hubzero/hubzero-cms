@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . 
 /**
  * API controller class for support tickets
  */
-class BlogControllerApi extends Hubzero_Api_Controller
+class BlogControllerApi extends \Hubzero\Api\Controller
 {
 	/**
 	 * Execute a request

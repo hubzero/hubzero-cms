@@ -28,12 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Hubzero\Api;
+
 /**
- * Short description for 'Hubzero_Api_Controller'
- * 
- * Long description (if any) ...
+ * API controller class
  */
-class Hubzero_Api_Controller
+class Controller
 {
 	/**
 	 * Description for '_response'

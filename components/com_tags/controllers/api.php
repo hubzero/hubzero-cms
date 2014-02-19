@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * API controller class for support tickets
  */
-class TagsControllerApi extends Hubzero_Api_Controller
+class TagsControllerApi extends \Hubzero\Api\Controller
 {
 	/**
 	 * Execute a request

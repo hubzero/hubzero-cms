@@ -28,12 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Hubzero\Api;
+
+use Hubzero\Api\Response\Xml;
+
 /**
- * Short description for 'Hubzero_API_Response'
- * 
- * Long description (if any) ...
+ * API response class
  */
-class Hubzero_API_Response
+class Response
 {
 
 	/**
@@ -357,18 +359,18 @@ class Hubzero_API_Response
 
 		list($name , $value) = explode(':',$string,2);
 
-        $name   = trim($name);
-        $value  = trim($value);
+		$name   = trim($name);
+		$value  = trim($value);
 
-        if (empty($value))
+		if (empty($value))
 			return false;
 
 		if ($replace == true)
 			$this->removeHeader($name);
 
-        $this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
+		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 
-        return true;
+		return true;
 	}
 
 	/**
@@ -412,7 +414,7 @@ class Hubzero_API_Response
 		{
 			if ($name == $header['name'])
 			{
-            	unset($this->_headers[$key]);
+				unset($this->_headers[$key]);
 			}
 		}
 
@@ -492,7 +494,7 @@ class Hubzero_API_Response
 
 		@header($this->_http_version . ' ' . $this->_status_code . ' ' . $this->_reason . "\n");
 
-		foreach($this->_headers as $header)
+		foreach ($this->_headers as $header)
 			@header($header['name'] . ': ' . $header['value'], $header['replace']);
 
 		if (PHP_SAPI == 'cli')
@@ -594,7 +596,8 @@ class Hubzero_API_Response
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
 	 */
-	function prependBody($content) {
+	function prependBody($content) 
+	{
 		array_unshift($this->_body, (string) $content);
 	}
 
@@ -606,7 +609,8 @@ class Hubzero_API_Response
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
 	 */
-	function appendBody($content) {
+	function appendBody($content) 
+	{
 		array_push($this->_body, (string) $content);
 	}
 
@@ -620,12 +624,14 @@ class Hubzero_API_Response
 	 */
 	function getBody($toArray = false)
 	{
-		if ($toArray) {
+		if ($toArray) 
+		{
 			return $this->_body;
 		}
 
 		ob_start();
-		foreach ($this->_body as $content) {
+		foreach ($this->_body as $content) 
+		{
 			echo $content;
 		}
 		return ob_get_clean();
@@ -685,30 +691,30 @@ class Hubzero_API_Response
 			'php' => 'application/php',
 		);
 
-  		$accept = array();
+		$accept = array();
 
-  		foreach (explode(',', $input) as $header)
-  		{
-    		$result = preg_split('/;\s*q=/', $header);
+		foreach (explode(',', $input) as $header)
+		{
+			$result = preg_split('/;\s*q=/', $header);
 
-    		$type = isset($result[0]) ? $result[0] : null;
+			$type = isset($result[0]) ? $result[0] : null;
 
-    		$q = isset($result[1]) ? $result[1] : 1;
+			$q = isset($result[1]) ? $result[1] : 1;
 
-    		if (isset($_types[$type]))
-    		{
-    			$type = $_types[$type];
-    		}
+			if (isset($_types[$type]))
+			{
+				$type = $_types[$type];
+			}
 
-    		if (!empty($type))
-    		{
-      			$accept[$type] = $q;
-    		}
-  		}
+			if (!empty($type))
+			{
+				$accept[$type] = $q;
+			}
+		}
 
-  		arsort($accept);
+		arsort($accept);
 
-  		return $accept;
+		return $accept;
 	}
 
 	/**
@@ -721,25 +727,25 @@ class Hubzero_API_Response
 	 */
 	private function _parse_encoding($input)
 	{
-  		$accept = array();
+		$accept = array();
 
-  		foreach (explode(',', $input) as $header)
-  		{
-    		$result = preg_split('/;\s*q=/', $header);
+		foreach (explode(',', $input) as $header)
+		{
+			$result = preg_split('/;\s*q=/', $header);
 
-    		$type = isset($result[0]) ? $result[0] : null;
+			$type = isset($result[0]) ? $result[0] : null;
 
-    		$q = isset($result[1]) ? $result[1] : 1;
+			$q = isset($result[1]) ? $result[1] : 1;
 
-    		if (!empty($type))
-    		{
-      			$accept[$type] = $q;
-    		}
-  		}
+			if (!empty($type))
+			{
+				$accept[$type] = $q;
+			}
+		}
 
-  		arsort($accept);
+		arsort($accept);
 
-  		return $accept;
+		return $accept;
 	}
 
 	/**
@@ -1006,7 +1012,7 @@ class Hubzero_API_Response
 		$best_score = '';
 		$score = null;
 
-		foreach($accept as $client_type=>$client_value)
+		foreach ($accept as $client_type => $client_value)
 		{
 			if (isset($provide[$client_type]))
 			{
@@ -1123,7 +1129,7 @@ class Hubzero_API_Response
 
 		if ($suppress_response_codes)
 		{
-			$response = new stdClass();
+			$response = new \stdClass();
 			$response->status = $status;
 			$response->reason = $reason;
 			$response->message = $message;
@@ -1218,7 +1224,7 @@ class Hubzero_API_Response
 		}
 		else if ($content_type == "application/xml")
 		{
-			echo \Hubzero\Api\Response\Xml::encode($response);
+			echo Xml::encode($response);
 		}
 		else if ($content_type == 'application/json')
 		{

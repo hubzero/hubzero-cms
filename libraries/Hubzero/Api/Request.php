@@ -28,15 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Hubzero\Api;
+
 /**
- * Short description for 'Hubzero_API_Request'
- * 
- * Long description (if any) ...
+ * API request class
  */
-class Hubzero_API_Request
+class Request
 {
-
-
 	/**
 	 * Description for 'suppress_response_codes'
 	 * 
