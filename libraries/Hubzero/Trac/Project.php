@@ -104,7 +104,7 @@ class Project
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  \Hubzero_Factory::getLogger();
+		$xlog =  \JFactory::getLogger();
 		$xlog->debug($msg);
 	}
 
@@ -458,7 +458,7 @@ class Project
 	 */
 	public function __get($property = null)
 	{
-		$xlog =  Hubzero_Factory::getLogger();
+		$xlog =  JFactory::getLogger();
 
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
 		{

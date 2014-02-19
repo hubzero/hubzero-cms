@@ -194,7 +194,7 @@ class ToolsModelTool
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  Hubzero_Factory::getLogger();
+		$xlog =  JFactory::getLogger();
 		$xlog->debug($msg);
 	}
 
@@ -488,7 +488,7 @@ class ToolsModelTool
 	function _mysql_update($all = false)
 	{
 		$db =  JFactory::getDBO();
-		$xlog =  Hubzero_Factory::getLogger();
+		$xlog =  JFactory::getLogger();
 
 		$query = "UPDATE #__tool SET ";
 
@@ -1459,7 +1459,7 @@ class ToolsModelTool
 	public static function validate(&$tool, &$err, $id)
 	{
 		$db =  JFactory::getDBO();
-		$xlog =  Hubzero_Factory::getLogger();
+		$xlog =  JFactory::getLogger();
 
 		$query = "SELECT t.id FROM #__tool AS t WHERE LOWER(t.toolname)=LOWER(" .  $db->Quote($tool['toolname']) . ") ";
 
@@ -1602,7 +1602,7 @@ class ToolsModelTool
 	public static function validateVersion($newversion, &$err, $id)
 	{
 		$db =  JFactory::getDBO();
-		$xlog =  Hubzero_Factory::getLogger();
+		$xlog =  JFactory::getLogger();
 
 		$err = '';
 

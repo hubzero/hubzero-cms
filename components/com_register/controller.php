@@ -100,7 +100,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
 
-		$xprofile = Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 		$jsession = JFactory::getSession();
 
 		// Get the return URL
@@ -404,7 +404,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return $this->_show_registration_form($xregistration, 'proxycreate');
 		}
 
-		$xprofile = Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 
 		// Get some settings
 		$jconfig = JFactory::getConfig();
@@ -545,7 +545,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 		// Instantiate a new registration object
 		$xregistration = new RegisterModelRegistration();
 
-		$xprofile    = Hubzero_Factory::getProfile();
+		$xprofile    = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 		$jsession = JFactory::getSession();
 
 		$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
@@ -1382,7 +1382,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
 		$email_confirmed = $xprofile->get('emailConfirmed');
@@ -1476,7 +1476,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
 		$email_confirmed = $xprofile->get('emailConfirmed');
@@ -1632,7 +1632,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
@@ -1730,7 +1730,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 	 */
 	protected function unconfirmed()
 	{
-		$xprofile = Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
 		// Incoming

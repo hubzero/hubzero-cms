@@ -264,7 +264,7 @@ class plgCronSupport extends JPlugin
 		$database->setQuery($sql);
 		if (!$database->query())
 		{
-			$logger = \Hubzero_Factory::getLogger();
+			$logger = \JFactory::getLogger();
 			$logger->logError('CRON query failed: ' . $database->getErrorMsg());
 		}
 
@@ -815,7 +815,7 @@ class plgCronSupport extends JPlugin
 			$message->addPart($html, 'text/html');
 
 			//set mail
-			$logger = \Hubzero_Factory::getLogger();
+			$logger = \JFactory::getLogger();
 			if (!$message->send())
 			{
 				//$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));

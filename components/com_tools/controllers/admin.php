@@ -394,7 +394,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		$result = true;
 
-		$xlog = Hubzero_Factory::getLogger();
+		$xlog = JFactory::getLogger();
 		$xlog->debug("publish(): checkpoint 1:$result");
 
 		// get config
@@ -696,7 +696,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 	 */
 	protected function _finalizeTool(&$out = '')
 	{
-		$xlog = Hubzero_Factory::getLogger();
+		$xlog = JFactory::getLogger();
 
 		$xlog->debug("finalizeTool(): checkpoint 1");
 

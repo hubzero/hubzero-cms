@@ -179,7 +179,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		{
 			$xreg = new RegisterModelRegistration();
 			$juser =  JFactory::getUser(); 
-			$xprofile = Hubzero_Factory::getProfile();
+			$xprofile = Hubzero_User_Profile::getInstance($juser->get('id'));
 
 			if (is_object($xprofile)) 
 			{

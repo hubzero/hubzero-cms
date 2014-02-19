@@ -2396,8 +2396,8 @@ class plgProjectsPublications extends JPlugin
 			$managers = $objO->getIds($this->_project->id, 1, 1);
 			if (!empty($managers))
 			{
-				$profile = Hubzero_Factory::getProfile();
-				$profile->load( $this->_uid );
+				$profile = Hubzero_User_Profile::getInstance($this->_uid);
+
 				$juri = JURI::getInstance();
 				
 				$sef = JRoute::_('index.php?option=' . $this->_option . a 
@@ -2736,7 +2736,7 @@ class plgProjectsPublications extends JPlugin
 			}
 			
 			// Get dc:contibutor
-			$profile = Hubzero_Factory::getProfile();
+			$profile = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
 			$owner 	 = $this->_project->owned_by_user ? $this->_project->owned_by_user : $this->_project->created_by_user;
 			if($profile->load( $owner ))
 			{
@@ -2818,7 +2818,7 @@ class plgProjectsPublications extends JPlugin
 				$this->_msg .= ' <a href="'.JRoute::_('index.php?option=com_publications' . a . 
 					    'id=' . $pid ) .'">'. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT').'</a>';
 
-				$pubtitle = Hubzero_View_Helper_Html::shortenText($row->title, 100, 0);
+				$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
 				$action .= ' '.$row->version_label.' ';
 				$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.html_entity_decode($pubtitle).'"';
 				$action  = htmlentities($action, ENT_QUOTES, "UTF-8");
@@ -2835,8 +2835,8 @@ class plgProjectsPublications extends JPlugin
 				}
 				
 				// Notify administrator of a new publication
-				$profile = Hubzero_Factory::getProfile();
-				$profile->load( $this->_uid );
+				$profile = Hubzero_User_Profile::getInstance($this->_uid);
+
 				$juri = JURI::getInstance();
 				
 				$sef = JRoute::_('index.php?option=com_publications' . a . 'id=' . $pid );
@@ -5531,8 +5531,8 @@ class plgProjectsPublications extends JPlugin
 			$gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
 			
 			// Get author profile (for Git comments)
-			$profile = Hubzero_Factory::getProfile();
-			$profile->load( $this->_uid );
+			$profile = Hubzero_User_Profile::getInstance($this->_uid);
+
 			$name = $profile->get('name');
 			$email = $profile->get('email');
 			$author = escapeshellarg($name.' <'.$email.'> ');				

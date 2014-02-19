@@ -236,7 +236,7 @@ class plgGroupsMemberOptions extends JPlugin
 		$database = JFactory::getDBO();
 		
 		//get hubzero logger
-		$logger =  Hubzero_Factory::getLogger();
+		$logger =  JFactory::getLogger();
 		
 		//get group
 		$group = Hubzero_Group::getInstance( $gidNumber );

@@ -106,7 +106,7 @@ class Ldap
 		{
 			if ($debug)
 			{
-				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($conn));
+				\JFactory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($conn));
 			}
 
 			return false;
@@ -114,14 +114,14 @@ class Ldap
 
 		if ($debug)
 		{
-			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) success. ");
+			\JFactory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) success. ");
 		}
 
 		if (@ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3) == false)
 		{
 			if ($debug)
 			{
-				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
+				\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
 			}
 
 			$conn = false;
@@ -130,14 +130,14 @@ class Ldap
 
 		if ($debug)
 		{
-			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
+			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
 		}
 
 		if (@ldap_set_option($conn, LDAP_OPT_RESTART, 1) == false)
 		{
 			if ($debug)
 			{
-				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
+				\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
 			}
 
 			$conn = false;
@@ -146,14 +146,14 @@ class Ldap
 
 		if ($debug)
 		{
-			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
+			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
 		}
 
 		if (!@ldap_set_option($conn, LDAP_OPT_REFERRALS, false))
 		{
 			if ($debug)
 			{
-				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
+				\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
 			}
 
 			$conn = false;
@@ -162,7 +162,7 @@ class Ldap
 
 		if ($debug)
 		{
-			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
+			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
 		}
 
 		if ($negotiate_tls)
@@ -171,7 +171,7 @@ class Ldap
 			{
 				if ($debug)
 				{
-					\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
+					\JFactory::getLogger()->debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
 				}
 
 				$conn = false;
@@ -180,7 +180,7 @@ class Ldap
 
 			if ($debug)
 			{
-				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_start_tls() success.");
+				\JFactory::getLogger()->debug("getLDO(): ldap_start_tls() success.");
 			}
 		}
 
@@ -192,7 +192,7 @@ class Ldap
 
 			if ($debug)
 			{
-				\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
+				\JFactory::getLogger()->debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
 			}
 
 			$conn = false;
@@ -201,7 +201,7 @@ class Ldap
 
 		if ($debug)
 		{
-			\Hubzero_Factory::getLogger()->debug("getLDO(): ldap_bind() success.");
+			\JFactory::getLogger()->debug("getLDO(): ldap_bind() success.");
 		}
 
 		return $conn;

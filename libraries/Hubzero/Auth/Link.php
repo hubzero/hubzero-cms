@@ -148,7 +148,7 @@ class Link
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  \Hubzero_Factory::getLogger();
+		$xlog =  \JFactory::getLogger();
 		$xlog->debug($msg);
 	}
 

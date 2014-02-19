@@ -558,6 +558,54 @@ abstract class JFactory
 	}
 
 	/**
+	 * [!] HUBZERO - Moved from Hubzero Factory
+	 * 
+	 * Get the debug logger, creating it if it doesn't exist
+	 * 
+	 * @return     object
+	 */
+	public static function &getLogger()
+	{
+		static $instance;
+
+		if (!($instance instanceof \Hubzero\Log\Writer))
+		{
+			$instance = new \Hubzero\Log\Writer(
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+				\JDispatcher::getInstance()
+			);
+
+			$instance->useDailyFiles('/var/log/hubzero/cmsdebug.log');
+		}
+
+		return $instance;
+	}
+
+	/**
+	 * [!] HUBZERO - Moved from Hubzero Factory
+	 * 
+	 * Get the auth logger, creating it if it doesn't exist
+	 * 
+	 * @return     object
+	 */
+	public static function &getAuthLogger()
+	{
+		static $instance;
+
+		if (!($instance instanceof \Hubzero\Log\Writer))
+		{
+			$instance = new \Hubzero\Log\Writer(
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+				\JDispatcher::getInstance()
+			);
+
+			$instance->useDailyFiles('/var/log/hubzero/cmsauth.log', 0, 'info');
+		}
+
+		return $instance;
+	}
+
+	/**
 	 * Create a configuration object
 	 *
 	 * @param   string  $file       The path to the configuration file.

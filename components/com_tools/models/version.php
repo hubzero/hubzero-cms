@@ -343,7 +343,7 @@ class ToolsModelVersion
 	 */
 	private function logDebug($msg)
 	{
-		$xlog = \Hubzero_Factory::getLogger();
+		$xlog = \JFactory::getLogger();
 		$xlog->debug($msg);
 	}
 
@@ -691,7 +691,7 @@ class ToolsModelVersion
 	private function _mysql_update($all = false)
 	{
 		$db = \JFactory::getDBO();
-		$xlog = \Hubzero_Factory::getLogger();
+		$xlog = \JFactory::getLogger();
 
 		$xlog->debug('_mysql_update() start');
 		$query = "UPDATE #__tool_version SET ";
@@ -946,7 +946,7 @@ class ToolsModelVersion
 	 */
 	public function update()
 	{
-		$xlog = \Hubzero_Factory::getLogger();
+		$xlog = \JFactory::getLogger();
 
 		$xlog->debug("update");
 
@@ -1039,7 +1039,7 @@ class ToolsModelVersion
 	 */
 	public function delete()
 	{
-		$xlog = \Hubzero_Factory::getLogger();
+		$xlog = \JFactory::getLogger();
 
 		$result = true;
 
@@ -1066,7 +1066,7 @@ class ToolsModelVersion
 	 */
 	public function __get($property = null)
 	{
-		$xlog = \Hubzero_Factory::getLogger();
+		$xlog = \JFactory::getLogger();
 
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{

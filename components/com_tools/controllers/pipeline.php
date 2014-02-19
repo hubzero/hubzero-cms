@@ -985,7 +985,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	public function saveTask()
 	{
-		$xlog = Hubzero_Factory::getLogger();
+		$xlog = JFactory::getLogger();
 
 		$exportmap  = array(
 			'@OPEN'   => null,
@@ -1585,7 +1585,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xlog = Hubzero_Factory::getLogger();
+		$xlog = JFactory::getLogger();
 
 		$newstate    = JRequest::getVar('newstate', '');
 		$priority    = JRequest::getVar('priority', 3);
@@ -1900,7 +1900,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	protected function _newUpdateTicket($toolid, $ticketid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1)
 	{
-		$xlog = Hubzero_Factory::getLogger();
+		$xlog = JFactory::getLogger();
 		$xlog->debug(__FUNCTION__ . '() started');
 
 		$summary = '';

@@ -711,7 +711,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	 */
 	public function transfer($sourceid, $destid, $rid)
 	{
-		$xlog = Hubzero_Factory::getLogger();
+		$xlog = JFactory::getLogger();
 		$xlog->debug(__FUNCTION__ . '()');
 
 		// Get resource information

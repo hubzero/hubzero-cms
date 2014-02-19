@@ -28,8 +28,7 @@ JToolBarHelper::cancel();
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 // Get creator profile
-$profile = Hubzero_Factory::getProfile();
-$profile->load( $this->obj->created_by_user );
+$profile = Hubzero_User_Profile::getInstance($this->obj->created_by_user);
 
 // Determine status & options
 $status = '';

@@ -129,7 +129,6 @@ define('JPATH_CONFIGURATION',     JPATH_ROOT);
 require_once(JPATH_LIBRARIES . DS . 'loader.php');
 jimport('joomla.common.abstract.object');
 jimport('joomla.factory');
-ximport('Hubzero_Factory');
 */
 // End Joomla 1.5 Core Compatibility Support *njk*
 
@@ -146,8 +145,6 @@ include_once($mosConfig_absolute_path . "/language/".$mosConfig_lang.".php");
 $database = new database($mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix);
 $database->debug($mosConfig_debug);
 */
-
-ximport('Hubzero_User_Profile');
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'economy.php');

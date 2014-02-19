@@ -54,7 +54,7 @@ function GroupsBuildRoute(&$query)
 	if(!empty($query['gid']))
 	{
 		//log regardless
-		Hubzero_Factory::getLogger()->debug("Group JRoute Build Path sending gid instead of cn: " . $_SERVER['REQUEST_URI'] );
+		JFactory::getLogger()->debug("Group JRoute Build Path sending gid instead of cn: " . $_SERVER['REQUEST_URI'] );
 		
 		$segments[] = $query['gid'];
 		unset($query['gid']);

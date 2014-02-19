@@ -363,7 +363,7 @@ abstract class Model extends Object
 			return;
 		}
 
-		$logger = \Hubzero_Factory::getLogger();
+		$logger = \JFactory::getLogger();
 		$logger->$type($message);
 	}
 
