@@ -122,18 +122,33 @@ $this->js('courses.overview.js');
 				<h2>
 					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 				</h2>
-				
-				<!-- <p id="page_identity">
-					<a class="icon-browse browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
-						<?php echo JText::_('Course catalog'); ?>
-					</a>
-				</p> -->
 			</div>
 			<p>
 				<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
 			</p>
 
 			<?php echo $this->course->tags('cloud'); ?>
+
+			<?php if ($this->course->get('group_id')) { ?>
+				<div class="course-group">
+					<?php
+					$group = Hubzero_Group::getInstance($this->course->get('group_id'));
+					?>
+					<p class="course-group-descripion">
+						<?php echo JText::_('Brought to you by:'); ?>
+					</p>
+					<h3 class="course-group-title">
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+							<?php echo $this->escape(stripslashes($group->get('description'))); ?>
+						</a>
+					</h3>
+					<p class="course-group-img">
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+							<img src="<?php echo $group->getLogo(); ?>" width="50" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?> group image" />
+						</a>
+					</p>
+				</div>
+			<?php } ?>
 		<?php } ?>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
