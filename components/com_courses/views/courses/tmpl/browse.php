@@ -231,7 +231,9 @@ $juser = JFactory::getUser();
 							<?php
 								}
 							?>
-								<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
+								<span class="entry-content">
+									<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
+								</span>
 							</td>
 						</tr>
 				<?php 
