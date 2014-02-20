@@ -128,7 +128,7 @@ foreach ($this->related as $line)
 							</tbody>
 						</table>
 					</div>
-					<?php echo Hubzero_View_Helper_Html::shortenText( stripslashes($line->introtext) ); ?>
+					<?php echo \Hubzero\Utility\String::truncate( stripslashes($line->introtext), 300 ); ?>
 				</div>
 <?php } else { ?>
 				<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>
