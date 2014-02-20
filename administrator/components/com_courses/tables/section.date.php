@@ -182,6 +182,17 @@ class CoursesTableSectionDate extends JTable
 			$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
+
+			// Make sure the record doesn't already exist
+			$query  = "SELECT id FROM $this->_tbl WHERE scope=" . $this->_db->Quote($this->scope) . " AND scope_id=" . $this->_db->Quote($this->scope_id);
+			$query .= " AND section_id=" . $this->_db->Quote($this->section_id);
+			$query .= " LIMIT 1";
+
+			$this->_db->setQuery($query);
+			if ($id = $this->_db->loadResult())
+			{
+				$this->id = $id;
+			}
 		}
 
 		return true;
