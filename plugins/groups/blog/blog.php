@@ -443,10 +443,10 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');
-				$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($item->description));
+				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
 				if ($this->params->get('feed_entries') == 'partial') 
 				{
-					$item->description = Hubzero_View_Helper_Html::shortenText($item->description, 300, 0);
+					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 				}
 
 				// Load individual item creator class

@@ -61,7 +61,7 @@ switch ($this->which)
 			$goto  = 'alias=' . $row->alias;
 			$owned_by = '';
 			if($row->owned_by_group) {
-				$owned_by .= JText::_('PLG_GROUPS_GROUP').' <a href="">'.Hubzero_View_Helper_Html::shortenText($row->groupname, 40, 0).'</a> | ';
+				$owned_by .= JText::_('PLG_GROUPS_GROUP').' <a href="">'.\Hubzero\Utility\String::truncate($row->groupname, 40).'</a> | ';
 			}
 			else if($row->created_by_user == $juser->get('id')) {
 				//$owned_by .= JText::_('PLG_GROUPS_ME');
