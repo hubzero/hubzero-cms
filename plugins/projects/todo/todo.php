@@ -612,7 +612,7 @@ class plgProjectsTodo extends JPlugin
 		if ($newlist != '' && $newcolor != '') 
 		{			
 			$new = 0;
-			$newlist = Hubzero_View_Helper_Html::purifyText(trim($newlist));
+			$newlist = \Hubzero\Utility\Sanitize::stripAll(trim($newlist));
 			if (!$objTD->getListName($this->_project->id, $newcolor)) 
 			{
 				$objTD 				= new ProjectTodo( $this->_database );

@@ -258,7 +258,7 @@ class plgProjectsBlog extends JPlugin
 		$entry = trim(JRequest::getVar( 'blogentry', '' ));
 		
 		// Text clean-up
-		$entry = Hubzero_View_Helper_Html::purifyText($entry);	
+		$entry = \Hubzero\Utility\Sanitize::stripAll($entry);	
 				
 		// Instantiate project microblog entry
 		$objM = new ProjectMicroblog( $this->_database );
@@ -678,7 +678,7 @@ class plgProjectsBlog extends JPlugin
 			if ($aLog)
 			{
 				$aLog = rtrim(stripslashes($aLog));
-				$aLog = Hubzero_View_Helper_Html::purifyText($aLog);
+				$aLog = \Hubzero\Utility\Sanitize::stripAll($aLog);
 				$body = $aLog;
 			}
 		}
@@ -811,7 +811,7 @@ class plgProjectsBlog extends JPlugin
 		$parent_activity = JRequest::getInt( 'parent_activity', 0, 'post' );
 
 		// Clean-up
-		$comment = Hubzero_View_Helper_Html::purifyText($comment);
+		$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 
 		// Instantiate comment
 		$objC = new ProjectComment( $this->_database );

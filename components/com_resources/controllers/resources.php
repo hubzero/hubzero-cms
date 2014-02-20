@@ -1826,7 +1826,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$link = DS . ltrim(JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id), DS);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($row->introtext)));
+				$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->introtext)));
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 

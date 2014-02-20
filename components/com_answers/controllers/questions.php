@@ -1486,9 +1486,9 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 
 			//set feed item attibs and add item to feed
 			$item 				= new JFeedItem();
-			$item->title 		= html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($question['subject'])));
+			$item->title 		= html_entity_decode(\Hubzero\Utility\Sanitize::stripAll(stripslashes($question['subject'])));
 			$item->link 		= $link;
-			$item->description 	= html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($question['question'])));
+			$item->description 	= html_entity_decode(\Hubzero\Utility\Sanitize::stripAll(stripslashes($question['question'])));
 			$item->date        	= date("r", strtotime($question['created']));
 			$item->category   	= 'Recent Question';
 			$item->author     	= $author;

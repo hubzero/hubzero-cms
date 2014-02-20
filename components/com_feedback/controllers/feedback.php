@@ -254,7 +254,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		}
 
 		// Code cleaner for xhtml transitional compliance
-		$row->quote = Hubzero_View_Helper_Html::purifyText($row->quote);
+		$row->quote = \Hubzero\Utility\Sanitize::stripAll($row->quote);
 		$row->quote = str_replace('<br>', '<br />', $row->quote);
 		$row->date  = JFactory::getDate()->toSql();
 		$row->picture = basename($row->picture);

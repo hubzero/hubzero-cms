@@ -488,7 +488,7 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 		// Format posted info
 		$details  = JText::_('COM_STORE_SHIP_TO') . ':' . "\r\n";
 		$details .= $shipping['name'] . "\r\n";
-		$details .= Hubzero_View_Helper_Html::purifyText($shipping['address']) . "\r\n";
+		$details .= \Hubzero\Utility\Sanitize::stripAll($shipping['address']) . "\r\n";
 		$details .= JText::_('COM_STORE_COUNTRY') . ': ' . $shipping['country'] . "\r\n";
 		$details .= '----------------------------------------------------------' . "\r\n";
 		$details .= JText::_('COM_STORE_CONTACT') . ': ' . "\r\n";
@@ -499,7 +499,7 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 		$details .= $email . "\r\n";
 		$details .= '----------------------------------------------------------' . "\r\n";
 		$details .= JText::_('COM_STORE_DETAILS').': ';
-		$details .= ($shipping['comments']) ? "\r\n" . (Hubzero_View_Helper_Html::purifyText($shipping['comments'])) : 'N/A';
+		$details .= ($shipping['comments']) ? "\r\n" . (\Hubzero\Utility\Sanitize::stripAll($shipping['comments'])) : 'N/A';
 
 		// Register a new order
 		$order = new Order($this->database);
