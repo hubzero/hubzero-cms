@@ -31,6 +31,43 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php';
+
 $juri    = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 ?>
+
+Instructor Digest Course Update: <?php echo $this->course->get('title'); ?>
+
+=======================
+
+Enrollments
+<?php echo $this->enrollments; ?> total
+<?php echo $this->passing; ?> passing
+<?php echo $this->failing; ?> failing
+
+=======================
+
+Discussion Topics
+<?php echo $this->posts_cnt; ?> total
+<?php echo $this->latest_cnt; ?> new
+
+=======================
+
+Latest Discussions:
+<?php if (count($this->latest) > 0) : ?>
+<?php foreach ($this->latest as $post) : ?>
+----------------------------------------
+<?php $postObj = ForumModelPost::getInstance($post->id); ?>
+<?php echo JFactory::getUser($post->created_by)->get('name'); ?> | created: <?php echo JHTML::_('date', $post->created, 'M j, Y g:i:s a') . "\n"; ?>
+<?php echo $postObj->content('raw') . "\n"; ?>
+----------------------------------------
+
+<?php endforeach; ?>
+<?php else : ?>
+No new comments to display
+
+<?php endif; ?>
+<?php echo $juri->root(); ?> sent this email because you are the primary instructor of a course. Visit our <?php echo $juri->root(); ?>legal/privacy and our <?php echo $juri->root(); ?>support pages if you have any questions.
