@@ -4849,7 +4849,7 @@ class plgProjectsFiles extends JPlugin
 		
 		// Get files
 		$out = $this->_git->getFiles($path, $subdir);
-		
+				
 		// Return count
 		if ($get_count)
 		{
@@ -5031,9 +5031,16 @@ class plgProjectsFiles extends JPlugin
 			$objRFile = new ProjectRemoteFile ($database);
 			$converted = $objRFile->getFileCount($obj->id, '', '1');
 		}
+				
+		// Load component configs
+		$config = JComponentHelper::getParams( 'com_projects' );
 		
 		// Get project path
-		$path = $this->getProjectPath($identifier, $case);
+		$path = ProjectsHelper::getProjectPath(
+			$identifier, 
+			$config->get('webpath', 0),
+			$config->get('offroot', 0)
+		);
 	
 		// Get local file count
 		$count = $this->getFiles($path, '', false, 1);
