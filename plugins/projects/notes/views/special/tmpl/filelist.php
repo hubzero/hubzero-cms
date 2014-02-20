@@ -136,8 +136,6 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_View_Helper_Html');
-	ximport('Hubzero_User_Profile');
 	jimport('joomla.filesystem.file');
 
 	$dateFormat = '%d %b %Y';

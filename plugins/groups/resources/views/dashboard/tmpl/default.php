@@ -32,8 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->results) {
-	ximport('Hubzero_View_Helper_Html');
-
 	include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
 
 	plgGroupsResources::documents();
@@ -151,7 +149,7 @@ if ($this->results) {
 								</tbody>
 							</table>
 						</div>
-						<?php echo Hubzero_View_Helper_Html::shortenText( $line->itext ); ?>
+						<?php echo \Hubzero\Utility\String::truncate($line->itext, 300); ?>
 					</div>
 				</td>
 				<td class="type"><?php echo $line->area; ?></td>

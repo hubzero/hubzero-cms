@@ -483,7 +483,6 @@ class plgProjectsNotes extends JPlugin
 		ob_end_clean();
 
 		// Output HTML (wrap for notes)
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'projects',
@@ -627,7 +626,6 @@ class plgProjectsNotes extends JPlugin
 			);
 			
 			// Output HTML
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'=>'projects',
@@ -679,7 +677,6 @@ class plgProjectsNotes extends JPlugin
 	 */
 	protected function _createDefaultPage( $pagename = '', $scope = '', $pagePrefix = '' )
 	{
-		ximport('Hubzero_Plugin_View');
 		$juser = JFactory::getUser();
 		
 		// Compose default tool page
@@ -745,7 +742,7 @@ class plgProjectsNotes extends JPlugin
 			'filepath' => '',
 			'domain'   => $this->_group
 		);
-		ximport('Hubzero_Wiki_Parser');
+
 		$p = Hubzero_Wiki_Parser::getInstance();
 		$revision->pagehtml = $p->parse($revision->pagetext, $wikiconfig);
 		$revision->store();
@@ -843,10 +840,6 @@ class plgProjectsNotes extends JPlugin
 	 */
 	public function browser()
 	{
-		// Enable views
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
-				
 		// Incoming
 		$ajax 		= JRequest::getInt('ajax', 0);
 		$primary 	= JRequest::getInt('primary', 1);
@@ -960,7 +953,6 @@ class plgProjectsNotes extends JPlugin
 		$document->setTitle( JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->_project->title) . ' - ' . stripslashes($page->title) );	
 				
 		// Instantiate a new view
-		ximport('Hubzero_Plugin_View');	
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'	=>'projects',

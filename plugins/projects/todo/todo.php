@@ -160,10 +160,6 @@ class plgProjectsTodo extends JPlugin
 			// Load component configs
 			$this->_config = JComponentHelper::getParams( 'com_projects' );
 			
-			// Enable views
-			ximport('Hubzero_View_Helper_Html');
-			ximport('Hubzero_Plugin_View');
-			
 			// Get JS and css
 			$document = JFactory::getDocument();
 			$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');

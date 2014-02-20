@@ -86,9 +86,6 @@ class GroupEventMacro extends WikiMacro
 		//get the group
 		$cn = JRequest::getVar('cn');
 		
-		//import the Hubzero Group Library
-		ximport('Hubzero_Group');
-		
 		//get the group object based on gid
 		$group = Hubzero_Group::getInstance($cn);
 		

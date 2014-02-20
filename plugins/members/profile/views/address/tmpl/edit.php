@@ -74,7 +74,6 @@ defined('_JEXEC') or die('Restricted access');
 		<label>
 			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_COUNTRY'); ?>
 			<?php
-				ximport('Hubzero_Geo');
 				$countries = Hubzero_Geo::getcountries();
 			?>
 			<select name="address[addressCountry]" id="addressCountry">

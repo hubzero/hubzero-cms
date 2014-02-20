@@ -135,12 +135,10 @@ class plgPublicationsWishlist extends JPlugin
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.plan.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS 
-			. 'tables' . DS . 'wishlist.owner.group.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.group.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.rank.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.attachment.php' );
-		ximport('Hubzero_View_Helper_Html');
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php' );
 		
 		// Configure controller
@@ -231,7 +229,6 @@ class plgPublicationsWishlist extends JPlugin
 
 				// HTML output
 				// Instantiate a view
-				ximport('Hubzero_Plugin_View');
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'=>'publications',
@@ -262,8 +259,7 @@ class plgPublicationsWishlist extends JPlugin
 		$metadata = '';
 
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
-		{		
-			ximport('Hubzero_Plugin_View');
+		{
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'publications',

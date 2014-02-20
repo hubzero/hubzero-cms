@@ -136,7 +136,6 @@ $canedit = (
 				<td>
 					<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>:
 					<?php 	
-						ximport('Hubzero_Wiki_Editor');
 						$editor = Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('notes', 'notes', $this->pub->release_notes, '', '35', '20'); 
 					?></label>

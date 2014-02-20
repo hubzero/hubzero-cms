@@ -414,7 +414,6 @@ if ($results)
 							$i++;
 						}
 
-						ximport('Hubzero_Geo');
 						$codes = Hubzero_Geo::getCodesByNames($names);
 
 						$cls = 'even';

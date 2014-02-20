@@ -77,7 +77,6 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			'controls' => ''
 		);
 
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',

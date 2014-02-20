@@ -447,7 +447,6 @@ class plgResourcesUsage extends JPlugin
 				$names[] = $row->name;
 			}
 
-			ximport('Hubzero_Geo');
 			$codes = Hubzero_Geo::getCodesByNames($names);
 
 			$i = 0;

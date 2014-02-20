@@ -170,10 +170,6 @@ class plgProjectsFiles extends JPlugin
 			// Load language file
 			$this->loadLanguage();
 			
-			// Enable views
-			ximport('Hubzero_View_Helper_Html');
-			ximport('Hubzero_Plugin_View');
-			
 			$database = JFactory::getDBO();
 								
 			// Get joomla libraries

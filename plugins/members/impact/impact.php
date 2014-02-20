@@ -123,8 +123,6 @@ class plgMembersImpact extends JPlugin
 			'metadata' => ''
 		);
 
-		ximport('Hubzero_View_Helper_Html');
-
 		// Add stylesheet
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
@@ -163,7 +161,6 @@ class plgMembersImpact extends JPlugin
 	protected function _view($uid = 0) 
 	{
 		// Build the final HTML		
-		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',

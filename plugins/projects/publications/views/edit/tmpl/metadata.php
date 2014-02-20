@@ -57,7 +57,6 @@ $elements 	= new PublicationsElements($data, $customFields);
 $fields 	= $elements->render();
 $schema 	= $elements->getSchema();
 
-ximport('Hubzero_Wiki_Editor');
 $editor = Hubzero_Wiki_Editor::getInstance();
 
 $canedit = (

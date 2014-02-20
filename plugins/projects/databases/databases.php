@@ -224,10 +224,6 @@ class plgProjectsDatabases extends JPlugin
 			$this->_uid = $juser->get('id');
 		}
 
-		// Enable views
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
-		
 		// Publishing?
 		if ($action == 'browser')
 		{

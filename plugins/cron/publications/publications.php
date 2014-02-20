@@ -72,16 +72,16 @@ class plgCronPublications extends JPlugin
 	public function sendAuthorStats( $params = null )
 	{
 		$database = JFactory::getDBO();
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 						
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_publications');
 				
 		// Get some params
 		$limit 	 = $pconfig->get('limitStats', 5);
 		$image 	 = $pconfig->get('email_image', '');
 
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('com_publications', JPATH_BASE);
 		
 		// Is logging enabled?
@@ -137,9 +137,6 @@ class plgCronPublications extends JPlugin
 		{
 			return true;
 		}
-						
-		ximport('Hubzero_Plugin_View');
-		ximport('Hubzero_View_Helper_Html');
 		
 		// Set email config
 		$from = array();

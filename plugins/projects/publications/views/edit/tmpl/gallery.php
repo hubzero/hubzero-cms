@@ -120,7 +120,6 @@ else
 								<li class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo 'i-missing'; } ?>" id="clone-file::<?php echo urlencode($shot->filename); ?>">
 									<?php								
 										// Screenshot HTML
-										ximport('Hubzero_Plugin_View');
 										$view = new Hubzero_Plugin_View(
 											array(
 												'folder'=>'projects',

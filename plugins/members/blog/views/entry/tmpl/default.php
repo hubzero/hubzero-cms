@@ -218,7 +218,6 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 						$replyto = $this->row->comment(JRequest::getInt('reply', 0));
 						if ($replyto->exists()) 
 						{
-							ximport('Hubzero_View_Helper_Html');
 							$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 							if (!$replyto->get('anonymous')) 
 							{

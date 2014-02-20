@@ -29,9 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('Hubzero_Group');
-ximport('Hubzero_User_Profile');
-
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $juser = $this->juser;
 ?>

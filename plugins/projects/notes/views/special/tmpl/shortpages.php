@@ -107,8 +107,6 @@ $pageNav = new JPagination(
 <?php
 if ($rows) 
 {
-	ximport('Hubzero_User_Profile');
-
 	$dateFormat = '%d %b %Y';
 	$tz = 0;
 	if (version_compare(JVERSION, '1.6', 'ge'))

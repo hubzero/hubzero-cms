@@ -115,7 +115,6 @@ class plgPublicationsVersions extends JPlugin
 			$versions = $objV->getVersions( $publication->id, $filters = array('public' => 1));
 
 			// Instantiate a view
-			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'=>'publications',

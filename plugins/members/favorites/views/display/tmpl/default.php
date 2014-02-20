@@ -127,8 +127,6 @@ foreach ($this->cats as $cat)
 
 		<div class="container-block">
 <?php
-ximport('Hubzero_View_Helper_Html');
-
 $foundresults = false;
 $dopaging = false;
 $html = '';
@@ -265,7 +263,7 @@ foreach ($this->results as $category)
 				$html .= "\t\t" . '<p class="title"><a href="'.$row->href.'">'.$this->escape(stripslashes($row->title)).'</a></p>' . "\n";
 				if ($row->text) 
 				{
-					$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(stripslashes($row->text)) . "\n";
+					$html .= "\t\t".\Hubzero\Utility\String::truncate(stripslashes($row->text)) . "\n";
 				}
 				$html .= "\t" . '</li>' . "\n";
 			}

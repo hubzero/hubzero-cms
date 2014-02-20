@@ -218,7 +218,6 @@ class plgXMessageHandler extends JPlugin
 		{
 			// Load plugins
 			$dispatcher = JDispatcher::getInstance();
-			ximport('Hubzero_User_Profile');
 
 			$mconfig = JComponentHelper::getParams('com_members');
 

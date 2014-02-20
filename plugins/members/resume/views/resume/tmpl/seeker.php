@@ -47,7 +47,6 @@ defined('_JEXEC') or die('Restricted access');
 	// Get the configured upload path
 		$base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);
 
-		ximport('Hubzero_View_Helper_Html');
 		$path = $base_path . DS . Hubzero_View_Helper_Html::niceidformat($this->seeker->uid);
 
 		if (!is_dir(JPATH_ROOT . $path)) 

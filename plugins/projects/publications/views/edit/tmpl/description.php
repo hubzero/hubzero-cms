@@ -159,7 +159,6 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 								echo $this->parser->parse( stripslashes($this->row->description), $this->wikiconfig );
 							?>
 							<?php } else { 
-								ximport('Hubzero_Wiki_Editor');
 								$editor = Hubzero_Wiki_Editor::getInstance();
 								echo $editor->display('description', 'description', $this->row->description, '', '35', '20'); 
 							} ?>

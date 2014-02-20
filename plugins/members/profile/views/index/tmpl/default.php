@@ -754,7 +754,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -848,7 +847,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -955,7 +953,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -1047,7 +1044,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -1128,7 +1124,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -1269,7 +1264,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -1396,7 +1390,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
@@ -1508,7 +1501,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="value"><?php echo $mailPreferenceValue; ?></div>
 						<br class="clear" />
 						<?php
-							ximport('Hubzero_Plugin_View');
 							$editview = new Hubzero_Plugin_View(
 								array(
 									'folder'  => 'members',
