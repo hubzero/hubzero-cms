@@ -130,7 +130,7 @@ else { ?>
 							</tbody>
 						</table>
 					</div>
-					<?php echo Hubzero_View_Helper_Html::shortenText( stripslashes($line->abstract) ); ?>
+					<?php echo \Hubzero\Utility\String::truncate( stripslashes($line->abstract), 300 ); ?>
 				</div>
 <?php } ?>
 			</td>
