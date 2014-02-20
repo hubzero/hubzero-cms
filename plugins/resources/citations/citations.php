@@ -121,7 +121,7 @@ class plgResourcesCitations extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'citations',
@@ -146,7 +146,7 @@ class plgResourcesCitations extends JPlugin
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'citations',
@@ -163,7 +163,7 @@ class plgResourcesCitations extends JPlugin
 				$url = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=citations');
 			}
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'citations',

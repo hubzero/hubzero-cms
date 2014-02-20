@@ -58,7 +58,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -151,7 +151,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 				$action = $act;
 			}
 
-			$this->view = new Hubzero_Plugin_View(
+			$this->view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'courses',
 					'element' => $this->_name,

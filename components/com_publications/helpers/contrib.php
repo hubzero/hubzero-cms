@@ -43,7 +43,7 @@ class PublicationContribHelper
 	 */	
 	public function drawStatusBar($item, $step = NULL, $showSubSteps = false, $review = 0)
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'publications',

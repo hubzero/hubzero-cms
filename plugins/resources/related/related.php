@@ -157,7 +157,7 @@ class plgResourcesRelated extends JPlugin
 		// Instantiate a view
 		if ($miniview) 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'related',
@@ -168,7 +168,7 @@ class plgResourcesRelated extends JPlugin
 		} 
 		else 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'related',

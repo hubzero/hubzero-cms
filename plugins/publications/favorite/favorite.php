@@ -139,7 +139,7 @@ class plgPublicationsFavorite extends JPlugin
 					$cls = 'faved';
 				}
 
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'publications',
 						'element' => 'favorite',

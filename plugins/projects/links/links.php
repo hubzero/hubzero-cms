@@ -416,7 +416,7 @@ class plgProjectsLinks extends JPlugin
 		}
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'links',

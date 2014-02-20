@@ -217,7 +217,7 @@ class plgResourcesWishlist extends JPlugin
 				}
 				// HTML output
 				// Instantiate a view
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'resources',
 						'element' => 'wishlist',
@@ -249,7 +249,7 @@ class plgResourcesWishlist extends JPlugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'wishlist',

@@ -57,7 +57,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			</p>
 		</div><!-- / .attribution -->
 		<?php
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->name,

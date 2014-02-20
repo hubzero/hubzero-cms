@@ -131,7 +131,7 @@ class plgPublicationsSupportingDocs extends JPlugin
 		$jconfig = JFactory::getConfig();
 				
 		// Instantiate a view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'publications',
 				'element'=>'supportingdocs',

@@ -195,7 +195,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		);
 
 		// Instantiate a view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'messages',
@@ -255,7 +255,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'messages',
@@ -299,7 +299,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_MESSAGES_SEND'));
 
 		// Instantiate a vew
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'messages',

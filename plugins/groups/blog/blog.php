@@ -292,7 +292,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _browse()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -504,7 +504,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _entry()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -614,7 +614,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -797,7 +797,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => $this->_name,
@@ -935,7 +935,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,

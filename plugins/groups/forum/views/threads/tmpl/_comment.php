@@ -188,7 +188,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => 'forum',

@@ -149,7 +149,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			}
 
 			//html for the messages
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => 'messages',
@@ -215,7 +215,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Push some scripts to the template
 		\Hubzero\Document\Assets::addPluginScript('members', 'messages');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',
@@ -284,7 +284,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Push some scripts to the template
 		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',
@@ -352,7 +352,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Push some scripts to the template
 		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',
@@ -427,7 +427,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Push some scripts to the template
 		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',
@@ -500,7 +500,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$xmc = new \Hubzero\Message\Component($database);
 		$components = $xmc->getRecords();
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',
@@ -590,7 +590,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	private function create($database, $option, $member) 
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',
@@ -677,7 +677,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $xmessage->component);
 		}
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',

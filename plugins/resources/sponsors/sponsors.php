@@ -77,7 +77,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$this->database = JFactory::getDBO();
 
 		// Instantiate a view
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => 'sponsors',
@@ -182,7 +182,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function defaultTask()
 	{
 		// Instantiate a view
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => 'sponsors',
@@ -264,7 +264,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	 */
 	public function editTask($row=null)
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => 'sponsors',

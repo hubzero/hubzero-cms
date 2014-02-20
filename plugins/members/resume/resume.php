@@ -443,7 +443,7 @@ class plgMembersResume extends JPlugin
 		$jobstats = new JobStats($database);
 		$stats = $jobstats->getStats($member->get('uidNumber'), 'seeker');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,

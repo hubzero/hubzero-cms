@@ -210,7 +210,7 @@ $juser = JFactory::getUser();
 			else 
 			{
 				//echo $this->showSeeker($seeker[0], $this->emp, 0, $this->option);
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'members',
 						'element' => 'resume',

@@ -337,7 +337,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _followers()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -428,7 +428,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _collections()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -523,7 +523,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _collection()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -736,7 +736,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _posts()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -823,7 +823,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _post()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -915,7 +915,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$type = 'file';
 			}
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => $this->_name,
@@ -926,7 +926,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => $this->_name,
@@ -1122,7 +1122,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$item_id = $post->get('item_id');
 			}
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => $this->_name,
@@ -1336,7 +1336,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => $this->_name,
@@ -1531,7 +1531,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -1672,7 +1672,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => $this->_name,
@@ -1738,7 +1738,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,

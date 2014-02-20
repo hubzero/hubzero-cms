@@ -88,7 +88,7 @@ if (!$this->getError()) {
 			}
 
 			// Display list item with file data
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'files',

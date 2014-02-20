@@ -407,7 +407,7 @@ class plgProjectsFiles extends JPlugin
 		if (!$this->path)
 		{
 			// Output error
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'	=>'projects',
 					'element'	=>'files',
@@ -438,7 +438,7 @@ class plgProjectsFiles extends JPlugin
 		$do  	= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';	
 								
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder' 	=> 'projects',
 				'element' 	=> 'files',
@@ -565,7 +565,7 @@ class plgProjectsFiles extends JPlugin
 		}
 														
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'files',
@@ -911,7 +911,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',
@@ -1860,7 +1860,7 @@ class plgProjectsFiles extends JPlugin
 			: JRoute::_($route . a . 'active=files');
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',
@@ -2071,7 +2071,7 @@ class plgProjectsFiles extends JPlugin
 		if ($this->_task == 'delete') 
 		{
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'files',
@@ -2211,7 +2211,7 @@ class plgProjectsFiles extends JPlugin
 		if ($this->_task == 'move') 
 		{
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'files',
@@ -2449,7 +2449,7 @@ class plgProjectsFiles extends JPlugin
 		if ($this->_task == 'share') 
 		{			
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'files',
@@ -2823,7 +2823,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=> 'projects',
 				'element'	=> 'files',
@@ -2981,7 +2981,7 @@ class plgProjectsFiles extends JPlugin
 		}		
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=> 'projects',
 				'element'	=> 'files',
@@ -3390,7 +3390,7 @@ class plgProjectsFiles extends JPlugin
 				$this->setError(JText::_('COM_PROJECTS_ERROR_FILE_INFO_NOT_FOUND'));
 
 				// Output error
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'projects',
 						'element'=>'files',
@@ -3440,7 +3440,7 @@ class plgProjectsFiles extends JPlugin
 			}
 						
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'files',
@@ -3703,7 +3703,7 @@ class plgProjectsFiles extends JPlugin
 		$formats = $compiler->getFormatsArray();
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',
@@ -4294,7 +4294,7 @@ class plgProjectsFiles extends JPlugin
 	public function diskspace( $option, $project, $case, $by, $action, $config, $tool )
 	{
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',
@@ -4415,7 +4415,7 @@ class plgProjectsFiles extends JPlugin
 		$status = $this->_git->gitStatus($this->path);
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',
@@ -4450,7 +4450,7 @@ class plgProjectsFiles extends JPlugin
 	public function showTrash()  
 	{		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',
@@ -5364,7 +5364,7 @@ class plgProjectsFiles extends JPlugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',

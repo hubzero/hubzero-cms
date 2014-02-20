@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $base = $this->offering->link() . '&active=pages';
 
-$view = new Hubzero_Plugin_View(
+$view = new \Hubzero\Plugin\View(
 	array(
 		'folder'  => 'courses',
 		'element' => 'pages',

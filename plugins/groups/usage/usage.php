@@ -176,7 +176,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$doc->addScriptDeclaration($script);
 
 			//import and create view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => 'usage',

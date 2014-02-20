@@ -450,7 +450,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	public function sections()
 	{
 		// Instantiate a vew
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -652,7 +652,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function categories()
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -743,7 +743,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function search()
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -832,7 +832,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -1016,7 +1016,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function threads()
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -1083,7 +1083,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function editthread($post=null)
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -1793,7 +1793,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,

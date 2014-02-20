@@ -140,7 +140,7 @@ class plgMembersGroups extends JPlugin
 		{
 			\Hubzero\Document\Assets::addPluginStylesheet('members', 'groups');
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => 'groups',

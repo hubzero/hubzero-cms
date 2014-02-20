@@ -27,13 +27,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\Plugin;
+
+use Hubzero\View\View as AbstractView;
+use Hubzero\Document\Assets;
+use ReflectionClass;
+use Exception;
 
 /**
  * Base class for a plugin View
  */
-class Hubzero_Plugin_View extends \Hubzero\View\View
+class View extends AbstractView
 {
 	/**
 	 * Layout name
@@ -180,7 +184,7 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		if (empty($folder))
 		{
-			$r = new \ReflectionClass($this);
+			$r = new ReflectionClass($this);
 			if ($r->inNamespace())
 			{
 				$bits = explode('\\', __NAMESPACE__);
@@ -192,7 +196,7 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 			}
 			else
 			{
-				throw new \Exception(\JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
+				throw new Exception(\JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
 			}
 		}
 
@@ -213,7 +217,7 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		if (empty($element))
 		{
-			$r = new \ReflectionClass($this);
+			$r = new ReflectionClass($this);
 			if ($r->inNamespace())
 			{
 				$bits = explode('\\', __NAMESPACE__);
@@ -230,7 +234,7 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 			}
 			else
 			{
-				throw new \Exception(\JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
+				throw new Exception(\JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
 			}
 		}
 
@@ -296,7 +300,8 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		if ($folder === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
-			return \JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			return $this;
 		}
 
 		if ($stylesheet && substr($stylesheet, -4) != '.css')
@@ -306,11 +311,11 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		if ($folder == 'system')
 		{
-			return \Hubzero\Document\Assets::addSystemStylesheet($stylesheet);
+			Assets::addSystemStylesheet($stylesheet);
+			return $this;
 		}
 
-		\Hubzero\Document\Assets::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
-
+		Assets::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
 		return $this;
 	}
 
@@ -337,16 +342,17 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 
 		if ($folder == 'system')
 		{
-			return \Hubzero\Document\Assets::addSystemScript($script);
+			Assets::addSystemScript($script);
+			return $this;
 		}
 
 		if ($folder === true || strstr($script, '(') || strstr($script, ';'))
 		{
-			return \JFactory::getDocument()->addScriptDeclaration($script);
+			\JFactory::getDocument()->addScriptDeclaration($script);
+			return $this;
 		}
 
-		\Hubzero\Document\Assets::addPluginScript($folder, $element, $script, $type, $defer, $async);
-
+		Assets::addPluginScript($folder, $element, $script, $type, $defer, $async);
 		return $this;
 	}
 
@@ -360,7 +366,7 @@ class Hubzero_Plugin_View extends \Hubzero\View\View
 	public function view($layout, $name=null)
 	{
 		// If we were passed only a view model, just render it.
-		if ($layout instanceof \Hubzero\View\View) 
+		if ($layout instanceof AbstractView) 
 		{
 			return $layout;
 		}

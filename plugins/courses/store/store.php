@@ -77,7 +77,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			'controls' => ''
 		);
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,

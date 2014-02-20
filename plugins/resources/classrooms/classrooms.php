@@ -201,7 +201,7 @@ class plgResourcesClassrooms extends JPlugin
 			\Hubzero\Document\Assets::addComponentStylesheet('com_usage');
 
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'usage',

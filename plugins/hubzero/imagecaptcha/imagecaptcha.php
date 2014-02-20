@@ -160,7 +160,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		//$document->addScript(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.js');
 		//$document->addStyleSheet(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.css');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'hubzero',
 				'element' => 'imagecaptcha',

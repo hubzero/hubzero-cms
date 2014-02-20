@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 					if ($this->params->get('comments_votable', 1))
 					{
-						$view = new Hubzero_Plugin_View(
+						$view = new \Hubzero\Plugin\View(
 							array(
 								'folder'  => 'hubzero',
 								'element' => 'comments',
@@ -172,7 +172,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 				if ($this->comment->replies) 
 				{
-					$view = new Hubzero_Plugin_View(
+					$view = new \Hubzero\Plugin\View(
 						array(
 							'folder'  => 'hubzero',
 							'element' => 'comments',

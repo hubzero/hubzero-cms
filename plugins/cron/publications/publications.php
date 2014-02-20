@@ -168,7 +168,7 @@ class plgCronPublications extends JPlugin
 			}
 						
 			// Plain text
-			$eview = new Hubzero_Plugin_View(
+			$eview = new \Hubzero\Plugin\View(
 				array(
 					'folder'	=>'cron',
 					'element'	=>'publications',

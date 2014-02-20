@@ -148,7 +148,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseBeforeOutline($course, $offering)
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -172,7 +172,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	public function onCourseDashboard($course, $offering)
 	{
 		// Instantiate a vew
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -205,7 +205,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		// Get course members based on their status
 		// Note: this needs to happen *after* any potential actions ar performed above
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -249,7 +249,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,

@@ -116,7 +116,7 @@ class plgResourcesVersions extends JPlugin
 			\Hubzero\Document\Assets::addPluginStylesheet('resources', 'versions');
 
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'versions',

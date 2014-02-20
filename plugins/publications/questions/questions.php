@@ -160,7 +160,7 @@ class plgPublicationsQuestions extends JPlugin
 			$rows = $a->getResults( $filters );
 			
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'publications',
 					'element'=>'questions',

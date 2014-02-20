@@ -106,7 +106,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 		{
 			\Hubzero\Document\Assets::addComponentStylesheet('com_usage');
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => 'usage',

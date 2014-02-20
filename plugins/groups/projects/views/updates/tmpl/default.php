@@ -67,7 +67,7 @@ $gid = $this->group->get('gidNumber');
 			<div id="latest_activity" class="infofeed">
 			<?php 
 				// Display item list
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'groups',
 						'element'=>'projects',

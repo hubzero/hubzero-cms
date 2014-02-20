@@ -150,7 +150,7 @@ else
 	<?php if ($this->params->get('publications_public', 0)) 
 	{ 
 		// Show team		
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -165,7 +165,7 @@ else
 	<?php if ($this->params->get('files_public', 0)) 
 	{ 
 		// Show team	
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'files',
@@ -180,7 +180,7 @@ else
 	<?php if ($this->params->get('notes_public', 0)) 
 	{ 
 		// Show team	
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'notes',
@@ -195,7 +195,7 @@ else
 	<?php if ($this->params->get('team_public', 0)) 
 	{ 
 		// Show team	
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'team',

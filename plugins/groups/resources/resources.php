@@ -158,7 +158,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			require_once JPATH_BASE.'/components/com_hubgraph/client.php';
 			$hgConf = HubgraphConfiguration::instance();
 			if ($hgConf->isOptionEnabled('com_groups')) {
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'   => 'groups',
 						'element'  => 'resources',
@@ -308,7 +308,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		{
 			case 'html':
 				// Instantiate a vew
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'groups',
 						'element' => 'resources',

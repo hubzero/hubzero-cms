@@ -147,7 +147,7 @@ class plgTimeOverview extends \Hubzero\Plugin\Plugin
 		$records = new TimeRecords($this->db);
 		
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'overview',

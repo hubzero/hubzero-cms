@@ -138,7 +138,7 @@ class plgPublicationsCitations extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'publications',
 					'element'=>'citations',

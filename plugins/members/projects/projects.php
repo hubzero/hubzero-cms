@@ -173,7 +173,7 @@ class plgMembersProjects extends JPlugin
 	protected function _view($which = 'all') 
 	{
 		// Build the final HTML		
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'projects',
@@ -231,7 +231,7 @@ class plgMembersProjects extends JPlugin
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
 
 		// Build the final HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'projects',

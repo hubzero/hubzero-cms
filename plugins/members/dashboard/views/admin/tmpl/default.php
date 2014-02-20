@@ -86,7 +86,7 @@ function submitbutton(pressbutton)
 					<div id="available">
 <?php
 					// Instantiate a view
-					$view = new Hubzero_Plugin_View(
+					$view = new \Hubzero\Plugin\View(
 						array(
 							'folder'  => 'members',
 							'element' => 'dashboard',

@@ -51,7 +51,7 @@ if ($this->comments && $this->comments->total() > 0)
 
 	foreach ($this->comments as $comment) 
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'forum',

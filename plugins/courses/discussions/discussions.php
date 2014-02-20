@@ -522,7 +522,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -805,7 +805,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$thread->total = 0;
 		$thread->html = null;
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -912,7 +912,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$filters['search'] = null;
 			$filters['parent'] = $post->get('id');
 
-			$cview = new Hubzero_Plugin_View(
+			$cview = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'courses',
 					'element' => $this->_name,
@@ -978,7 +978,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 									 ? $row->created 
 									 : $threads->lastchange;
 
-				$cview = new Hubzero_Plugin_View(
+				$cview = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'courses',
 						'element' => $this->_name,
@@ -1037,7 +1037,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 				$results[$key]->replies = null;
 
-				$cview = new Hubzero_Plugin_View(
+				$cview = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'courses',
 						'element' => $this->_name,
@@ -1200,7 +1200,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
 
 		// Instantiate a vew
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -1458,7 +1458,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
 
 		// Instantiate a vew
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -1549,7 +1549,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate a vew
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -1766,7 +1766,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -1865,7 +1865,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -2087,7 +2087,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
@@ -2307,7 +2307,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function editthread($post=null)
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,

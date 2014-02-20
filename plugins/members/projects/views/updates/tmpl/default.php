@@ -63,7 +63,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		<div id="latest_activity" class="infofeed">
 		<?php 
 			// Display item list
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'members',
 					'element'=>'projects',

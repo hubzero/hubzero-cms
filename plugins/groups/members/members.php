@@ -195,7 +195,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				// Get group members based on their status
 				// Note: this needs to happen *after* any potential actions ar performed above
 
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'groups',
 						'element' => 'members',
@@ -614,7 +614,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'members',
@@ -776,7 +776,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'members',
@@ -889,7 +889,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'members',
@@ -999,7 +999,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	
 	public function editRole()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'members',
@@ -1164,7 +1164,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'members',

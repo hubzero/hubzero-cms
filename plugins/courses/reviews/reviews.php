@@ -112,7 +112,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		{
 			\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
 
-			$this->view = new Hubzero_Plugin_View(
+			$this->view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'courses',
 					'element' => $this->_name,
@@ -164,7 +164,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'html' || $rtrn == 'metadata') 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'courses',
 					'element' => $this->_name,

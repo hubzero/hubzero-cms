@@ -73,7 +73,7 @@ $juser = $this->juser;
 			<?php if($this->which == 'all')  { 
 				
 				// Show owned projects first
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'groups',
 						'element'=>'projects',
@@ -89,7 +89,7 @@ $juser = $this->juser;
 				echo $view->loadTemplate();
 			}	
 				// Show rows
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'groups',
 						'element'=>'projects',

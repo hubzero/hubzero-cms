@@ -101,7 +101,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 			\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard');
 
-			$this->view = new Hubzero_Plugin_View(
+			$this->view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => 'dashboard',
@@ -339,7 +339,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 				}
 
 				// Instantiate a view
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'members',
 						'element' => 'dashboard',
@@ -402,7 +402,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate a view
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'dashboard',
@@ -429,7 +429,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$ids = JRequest::getVar('mids', '');
 
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'dashboard',
@@ -532,7 +532,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	protected function getmodule($extras=false, $act='')
 	{
 		// Instantiate a view
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'dashboard',
@@ -834,7 +834,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function defaultTask()
 	{
 		// Instantiate a view
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'dashboard',
@@ -932,7 +932,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	 */
 	public function selectTask()
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'dashboard',

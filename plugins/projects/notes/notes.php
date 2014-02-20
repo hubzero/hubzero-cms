@@ -483,7 +483,7 @@ class plgProjectsNotes extends JPlugin
 		ob_end_clean();
 
 		// Output HTML (wrap for notes)
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'notes',
@@ -626,7 +626,7 @@ class plgProjectsNotes extends JPlugin
 			);
 			
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'notes',
@@ -680,7 +680,7 @@ class plgProjectsNotes extends JPlugin
 		$juser = JFactory::getUser();
 		
 		// Compose default tool page
-		$eview = new Hubzero_Plugin_View(
+		$eview = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'tools',
@@ -851,7 +851,7 @@ class plgProjectsNotes extends JPlugin
 		}
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'notes',
@@ -953,7 +953,7 @@ class plgProjectsNotes extends JPlugin
 		$document->setTitle( JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->_project->title) . ' - ' . stripslashes($page->title) );	
 				
 		// Instantiate a new view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'notes',

@@ -111,7 +111,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			$this->offering = $offering;
 			$this->database = JFactory::getDBO();
 
-			$this->view = new Hubzero_Plugin_View(
+			$this->view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'courses',
 					'element' => $this->_name,
@@ -179,7 +179,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,

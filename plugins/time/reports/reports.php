@@ -144,7 +144,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 	private function _view()
 	{
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'reports',
@@ -176,7 +176,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 	private function _create_bill()
 	{
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder' =>'time',
 				'element'=>'reports',
@@ -206,7 +206,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 	private function _view_bill()
 	{
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder' =>'time',
 				'element'=>'reports',

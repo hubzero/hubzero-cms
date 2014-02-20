@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div><!-- / .aside -->
 		<div class="subject thread">
 		<?php if ($this->comments) {
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'hubzero',
 					'element' => 'comments',

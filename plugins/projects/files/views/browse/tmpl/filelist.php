@@ -114,7 +114,7 @@ $lastsync = '';
 	<?php if (!$this->tool) { ?>
 		<?php 
 			// NEW: connections to external services
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'files',
@@ -231,7 +231,7 @@ $lastsync = '';
 						$dir = $item['item'];
 						
 						// Folder view
-						$view = new Hubzero_Plugin_View(
+						$view = new \Hubzero\Plugin\View(
 							array(
 								'folder'=>'projects',
 								'element'=>'files',
@@ -269,7 +269,7 @@ $lastsync = '';
 						}
 						
 						// Document view
-						$view = new Hubzero_Plugin_View(
+						$view = new \Hubzero\Plugin\View(
 							array(
 								'folder'=>'projects',
 								'element'=>'files',
@@ -295,7 +295,7 @@ $lastsync = '';
 					elseif ($type == 'remote')
 					{						
 						// Remote file
-						$view = new Hubzero_Plugin_View(
+						$view = new \Hubzero\Plugin\View(
 							array(
 								'folder'=>'projects',
 								'element'=>'files',

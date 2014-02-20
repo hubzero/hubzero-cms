@@ -215,7 +215,7 @@ class Plugin extends \JPlugin
 	 */
 	/*public function view($name, $layout='default')
 	{
-		$view = new \Hubzero_Plugin_View(
+		$view = new View(
 			array(
 				'folder'  => $this->_type,
 				'element' => $this->_name,

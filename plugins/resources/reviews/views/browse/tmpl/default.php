@@ -66,7 +66,7 @@ $juser = JFactory::getUser();
 <?php
 if ($this->reviews->total() > 0)
 {
-	$view = new Hubzero_Plugin_View(
+	$view = new \Hubzero\Plugin\View(
 		array(
 			'folder'  => 'resources',
 			'element' => 'reviews',
@@ -95,7 +95,7 @@ if (!$juser->get('guest'))
 	$myreview = $this->h->myreview;
 	if (is_object($myreview)) 
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => 'reviews',

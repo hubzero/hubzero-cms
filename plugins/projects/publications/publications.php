@@ -404,7 +404,7 @@ class plgProjectsPublications extends JPlugin
 		$filters['dev']   	 		= 1; // get dev versions
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -493,7 +493,7 @@ class plgProjectsPublications extends JPlugin
 		}
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -546,7 +546,7 @@ class plgProjectsPublications extends JPlugin
 		$base = JRequest::getVar('base', 'files');
 			
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -693,7 +693,7 @@ class plgProjectsPublications extends JPlugin
 			return false;
 		}
 				
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -879,7 +879,7 @@ class plgProjectsPublications extends JPlugin
 		}
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -1272,7 +1272,7 @@ class plgProjectsPublications extends JPlugin
 		}
 		else
 		{
-			 $view = new Hubzero_Plugin_View(
+			 $view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'publications',
@@ -1567,7 +1567,7 @@ class plgProjectsPublications extends JPlugin
 		// Need to ask for new version label	
 		else 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'publications',
@@ -1662,7 +1662,7 @@ class plgProjectsPublications extends JPlugin
 		$row->loadVersion($pid, $version);
 					
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -3089,7 +3089,7 @@ class plgProjectsPublications extends JPlugin
 		}
 		else 
 		{	
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'publications',
@@ -3174,7 +3174,7 @@ class plgProjectsPublications extends JPlugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -3393,7 +3393,7 @@ class plgProjectsPublications extends JPlugin
 		$options = array('download', 'tardownload', 'inlineview', 'invoke', 'video', 'external');
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -3694,7 +3694,7 @@ class plgProjectsPublications extends JPlugin
 		$move 		= JRequest::getInt('move', 0);
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -3751,7 +3751,7 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -4464,7 +4464,7 @@ class plgProjectsPublications extends JPlugin
 		}
 	
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -4639,7 +4639,7 @@ class plgProjectsPublications extends JPlugin
 		if ($src) 
 		{
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'publications',
@@ -4988,7 +4988,7 @@ class plgProjectsPublications extends JPlugin
 		array_unique($attached);
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -5056,7 +5056,7 @@ class plgProjectsPublications extends JPlugin
 		$objV = new PublicationVersion( $this->_database );	
 		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -5119,7 +5119,7 @@ class plgProjectsPublications extends JPlugin
 		// Get user info
 		$juser = JFactory::getUser();
 		
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
@@ -5669,7 +5669,7 @@ class plgProjectsPublications extends JPlugin
 	protected function pubDiskSpace( $option, $project, $action, $config)
 	{
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',

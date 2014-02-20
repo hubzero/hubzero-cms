@@ -219,7 +219,7 @@ class plgMembersContributions extends JPlugin
 				$active = '';
 			}
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => 'contributions',

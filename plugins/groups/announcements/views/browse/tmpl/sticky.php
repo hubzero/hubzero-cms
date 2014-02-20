@@ -39,7 +39,7 @@ $this->js();
 	<div class="scontainer">
 		<?php foreach ($this->rows as $row) : ?>
 			<?php
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'groups',
 						'element' => 'announcements',

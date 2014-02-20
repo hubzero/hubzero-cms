@@ -169,7 +169,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="value"><?php echo $this->escape($this->profile->get('name')); ?></div>
 					<br class="clear" />
 					<?php
-						$editview = new Hubzero_Plugin_View(
+						$editview = new \Hubzero\Plugin\View(
 							array(
 								'folder'  => 'members',
 								'element' => 'profile',
@@ -292,7 +292,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$organization_alt = (!in_array($this->profile->get("organization"), $orgs)) ? $this->escape($this->profile->get('organization')) : "";
 							$organizations_text = "<input type=\"text\" name=\"orgtext\" class=\"input-text\" value=\"{$organization_alt}\" />";
 
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -368,7 +368,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 							$organization_types .= "</select>"; 
 
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -423,7 +423,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -494,7 +494,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="value"><?php echo $url; ?></div>
 						<br class="clear" />
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -557,7 +557,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="value"><?php echo $tel; ?></div>
 						<br class="clear" />
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -621,7 +621,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -690,7 +690,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<br class="clear" />
 					
 					<?php
-						$editview = new Hubzero_Plugin_View(
+						$editview = new \Hubzero\Plugin\View(
 							array(
 								'folder'  => 'members',
 								'element' => 'profile',
@@ -754,7 +754,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -847,7 +847,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -953,7 +953,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -1044,7 +1044,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -1124,7 +1124,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -1264,7 +1264,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -1390,7 +1390,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',
@@ -1501,7 +1501,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="value"><?php echo $mailPreferenceValue; ?></div>
 						<br class="clear" />
 						<?php
-							$editview = new Hubzero_Plugin_View(
+							$editview = new \Hubzero\Plugin\View(
 								array(
 									'folder'  => 'members',
 									'element' => 'profile',

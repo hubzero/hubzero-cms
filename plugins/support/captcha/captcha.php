@@ -468,7 +468,7 @@ class plgSupportCaptcha extends JPlugin
 
 		\Hubzero\Document\Assets::addPluginStyleSheet('support', 'captcha');
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder' => 'support',
 				'element' => 'captcha',

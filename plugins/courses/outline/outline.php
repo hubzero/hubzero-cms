@@ -132,7 +132,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 			$this->course = $course;
 			$action = strtolower(JRequest::getWord('action', ''));
 
-			$this->view = new Hubzero_Plugin_View(
+			$this->view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'courses',
 					'element' => $this->_name,

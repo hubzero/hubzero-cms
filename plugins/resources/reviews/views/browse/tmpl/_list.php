@@ -39,7 +39,7 @@ if (isset($this->comments) && $this->comments instanceof \Hubzero\Base\ItemList)
 
 	foreach ($this->comments as $comment) 
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => 'reviews',

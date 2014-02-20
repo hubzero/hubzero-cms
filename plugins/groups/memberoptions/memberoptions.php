@@ -141,7 +141,7 @@ class plgGroupsMemberOptions extends JPlugin
 	{
 		// HTML output
 		// Instantiate a view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'groups',
 				'element'=>'memberoptions',

@@ -128,7 +128,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 	{
 		// HTML output
 		// Instantiate a view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'courses',
 				'element'=>'memberoptions',

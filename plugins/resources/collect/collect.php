@@ -100,7 +100,7 @@ class plgResourcesCollect extends JPlugin
 				\Hubzero\Document\Assets::addPluginScript('resources', $this->_name);
 				\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
 
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'resources',
 						'element' => $this->_name,
@@ -198,7 +198,7 @@ class plgResourcesCollect extends JPlugin
 		// No board ID selected so present repost form
 		if (!$collection_id && !$collection_title)
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => $this->_name,

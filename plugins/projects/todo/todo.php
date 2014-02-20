@@ -308,7 +308,7 @@ class plgProjectsTodo extends JPlugin
 		shuffle($unused);
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'todo',
@@ -364,7 +364,7 @@ class plgProjectsTodo extends JPlugin
 		if ($todoid && $objTD->loadTodo($this->_project->id, $todoid) && $objTD->state != 2 ) 
 		{
 			// Show to-do item with comments
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'todo',

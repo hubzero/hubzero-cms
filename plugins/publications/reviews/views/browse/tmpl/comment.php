@@ -89,7 +89,7 @@ if ($this->reply->anonymous != 1)
 	// Add the reply form if needed
 	if ($this->level < 3 && !$this->juser->get('guest')) 
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'publications',
 				'element' => 'reviews',

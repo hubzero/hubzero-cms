@@ -157,7 +157,7 @@ class plgResourcesQuestions extends JPlugin
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => $this->_name,
@@ -183,7 +183,7 @@ class plgResourcesQuestions extends JPlugin
 		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
 
 		// Instantiate a view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => $this->_name,
@@ -243,7 +243,7 @@ class plgResourcesQuestions extends JPlugin
 
 		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => $this->_name,

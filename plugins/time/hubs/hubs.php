@@ -145,7 +145,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		$hubs = new TimeHubs($this->db);
 
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'hubs',
@@ -194,7 +194,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 	private function _edit($hub=null, $contacts=null)
 	{
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'hubs',
@@ -266,7 +266,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 	private function _read_only()
 	{
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'hubs',

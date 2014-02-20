@@ -64,7 +64,7 @@ $this->js();
 			<?php if ($this->total > 0) : ?>
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
-						$view = new Hubzero_Plugin_View(
+						$view = new \Hubzero\Plugin\View(
 							array(
 								'folder'  => 'groups',
 								'element' => 'announcements',

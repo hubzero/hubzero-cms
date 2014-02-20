@@ -84,7 +84,7 @@ class plgHubzeroComments extends JPlugin
 
 		include_once __DIR__ . '/comment.php';
 
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'hubzero',
 				'element' => 'comments',

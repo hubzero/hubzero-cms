@@ -209,7 +209,7 @@ class plgMembersFavorites extends JPlugin
 
 			\Hubzero\Document\Assets::addPluginStylesheet('members', 'favorites');
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => 'favorites',

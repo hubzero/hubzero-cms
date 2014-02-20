@@ -206,7 +206,7 @@ class plgProjectsBlog extends JPlugin
 	public function view() 
 	{		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'blog',
@@ -426,7 +426,7 @@ class plgProjectsBlog extends JPlugin
 	public function updateFeed()
 	{		
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'blog',
@@ -784,7 +784,7 @@ class plgProjectsBlog extends JPlugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'blog',

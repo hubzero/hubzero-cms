@@ -129,7 +129,7 @@ class plgMembersCourses extends JPlugin
 
 			\Hubzero\Document\Assets::addPluginStylesheet('members', $this->_name);
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => 'courses',

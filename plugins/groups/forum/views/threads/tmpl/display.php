@@ -131,7 +131,7 @@ $this->thread->set('category', $this->category->get('alias'));
 			<?php
 			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
 			{
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'  => 'groups',
 						'element' => 'forum',

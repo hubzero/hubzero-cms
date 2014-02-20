@@ -179,7 +179,7 @@ class plgResourcesReviews extends JPlugin
 			} 
 
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'reviews',
@@ -214,7 +214,7 @@ class plgResourcesReviews extends JPlugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'resources',
 					'element'=>'reviews',
@@ -550,7 +550,7 @@ class PlgResourcesReviewsHelper extends JObject
 		{
 			$response = $rev->getRating($id, $juser->get('id'));
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'reviews',
@@ -699,7 +699,7 @@ class PlgResourcesReviewsHelper extends JObject
 
 		// Message
 		$juser = JFactory::getUser();
-		$eview = new Hubzero_Plugin_View(
+		$eview = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
 				'element' => 'reviews',

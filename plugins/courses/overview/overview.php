@@ -85,7 +85,7 @@ class plgCoursesOverview extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,

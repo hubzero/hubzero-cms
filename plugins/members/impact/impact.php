@@ -161,7 +161,7 @@ class plgMembersImpact extends JPlugin
 	protected function _view($uid = 0) 
 	{
 		// Build the final HTML		
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'impact',

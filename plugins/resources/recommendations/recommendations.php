@@ -101,7 +101,7 @@ class plgResourcesRecommendations extends JPlugin
 		// Instantiate a view
 		if ($miniview) 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'recommendations',
@@ -114,7 +114,7 @@ class plgResourcesRecommendations extends JPlugin
 		{
 			\Hubzero\Document\Assets::addPluginScript('resources', 'recommendations');
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'recommendations',

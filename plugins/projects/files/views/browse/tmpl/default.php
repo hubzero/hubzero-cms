@@ -107,7 +107,7 @@ $services = $this->connect->getActive();
 	<?php if (!$this->tool) { ?>
 		<?php 
 			// NEW: connections to external services
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'files',
@@ -222,7 +222,7 @@ $services = $this->connect->getActive();
 						if (!$remote) 
 						{ 	
 							// Local file
-							$view = new Hubzero_Plugin_View(
+							$view = new \Hubzero\Plugin\View(
 								array(
 									'folder'=>'projects',
 									'element'=>'files',
@@ -247,7 +247,7 @@ $services = $this->connect->getActive();
 					elseif ($combined['type'] == 'remote')
 					{
 						// Google file
-						$view = new Hubzero_Plugin_View(
+						$view = new \Hubzero\Plugin\View(
 							array(
 								'folder'=>'projects',
 								'element'=>'files',

@@ -156,7 +156,7 @@ if ($this->reviews)
 					// Display thumbs voting
 					$html .= "\t\t".'<p id="reviews_'.$review->id.'" class="'.$this->option.'">'."\n";
 					//$html .= $this->rateitem($review, $juser, $this->option, $this->publication->id)."\n";
-					$view = new Hubzero_Plugin_View(
+					$view = new \Hubzero\Plugin\View(
 						array(
 							'folder'=>'publications',
 							'element'=>'reviews',
@@ -199,7 +199,7 @@ if ($this->reviews)
 			// Add the comment form
 			if ($reply) {
 				//$html .= $this->addcomment($review->id, 0, $juser, $this->option, $addcomment, $this->publication->id);
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'publications',
 						'element'=>'reviews',
@@ -233,7 +233,7 @@ if ($this->reviews)
 					}
 					$html .= '" id="c'.$reply->id.'r">';
 					//$html .= $this->comment($reply, $juser, $this->option, $this->publication->id, $addcomment, 1, $abuse, $o, $admin)."\n";
-					$view = new Hubzero_Plugin_View(
+					$view = new \Hubzero\Plugin\View(
 						array(
 							'folder'=>'publications',
 							'element'=>'reviews',
@@ -264,7 +264,7 @@ if ($this->reviews)
 							}
 							$html .= '" id="c'.$r->id.'r">';
 							//$html .= $this->comment($r, $juser, $this->option, $this->publication->id, $addcomment, 2, $abuse, $o, $admin)."\n";
-							$view = new Hubzero_Plugin_View(
+							$view = new \Hubzero\Plugin\View(
 								array(
 									'folder'=>'publications',
 									'element'=>'reviews',
@@ -296,7 +296,7 @@ if ($this->reviews)
 									}
 									$html .= '" id="c'.$rr->id.'r">';
 									//$html .= $this->comment($rr, $juser, $this->option, $this->publication->id, $addcomment, 3, $abuse, $o, $admin)."\n";
-									$view = new Hubzero_Plugin_View(
+									$view = new \Hubzero\Plugin\View(
 										array(
 											'folder'=>'publications',
 											'element'=>'reviews',
@@ -343,7 +343,7 @@ if ($this->getError()) { ?>
 if (!$juser->get('guest')) {
 	$myreview = $this->h->myreview;
 	if (is_object($myreview)) {
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'publications',
 				'element'=>'reviews',

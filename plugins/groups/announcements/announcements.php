@@ -67,7 +67,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	public function onBeforeGroup( $group, $authorized )
 	{
 		//creat view object
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -242,7 +242,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		// Get course members based on their status
 		// Note: this needs to happen *after* any potential actions ar performed above
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
@@ -300,7 +300,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	private function _edit()
 	{
 		//create view object
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,

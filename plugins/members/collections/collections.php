@@ -297,7 +297,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _followers()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -389,7 +389,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _following()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -467,7 +467,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _collections()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -557,7 +557,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _collection()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -782,7 +782,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _feed()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -870,7 +870,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _posts()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -960,7 +960,7 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _post()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -1057,7 +1057,7 @@ class plgMembersCollections extends JPlugin
 				$type = 'file';
 			}
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => $this->_name,
@@ -1068,7 +1068,7 @@ class plgMembersCollections extends JPlugin
 		}
 		else
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => $this->_name,
@@ -1260,7 +1260,7 @@ class plgMembersCollections extends JPlugin
 				$item_id = $post->get('item_id');
 			}
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => $this->_name,
@@ -1473,7 +1473,7 @@ class plgMembersCollections extends JPlugin
 			}
 
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => $this->_name,
@@ -1669,7 +1669,7 @@ class plgMembersCollections extends JPlugin
 			return;
 		}
 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -1802,7 +1802,7 @@ class plgMembersCollections extends JPlugin
 			}
 
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => $this->_name,

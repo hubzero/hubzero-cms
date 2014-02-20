@@ -227,7 +227,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function display()
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'calendar',
@@ -448,7 +448,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 		
 		//create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'calendar',
@@ -760,7 +760,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function details()
 	{
 		//create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'calendar',
@@ -1209,7 +1209,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function register()
 	{
 		//create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'calendar',
@@ -1417,7 +1417,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($eventsEvent->email != '')
 		{
 			//build message to send to event admin
-			$email = new Hubzero_Plugin_View(
+			$email = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'groups',
 					'element' => 'calendar',
@@ -1467,7 +1467,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function registrants()
 	{
 		//create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'calendar',
@@ -1623,7 +1623,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function calendars()
 	{
 		//create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'calendar',
@@ -1680,7 +1680,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$calendarId = JRequest::getVar('calendar_id','');
 		
 		//create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'calendar',

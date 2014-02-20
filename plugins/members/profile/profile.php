@@ -164,7 +164,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$document->addScript("/media/system/js/jquery.fileuploader.js");
 		}
 
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'profile',
@@ -361,7 +361,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function editAddress()
 	{
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'profile',

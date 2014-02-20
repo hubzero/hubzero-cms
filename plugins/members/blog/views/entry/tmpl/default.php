@@ -174,7 +174,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
 				<?php 
-					$view = new Hubzero_Plugin_View(
+					$view = new \Hubzero\Plugin\View(
 						array(
 							'folder'  => 'members',
 							'element' => 'blog',

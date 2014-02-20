@@ -178,7 +178,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			else 
 			{
 				// Instantiate a view
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'publications',
 						'element'=>'reviews',
@@ -215,7 +215,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'publications',
 					'element'=>'reviews',
@@ -605,7 +605,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			if ($ajax) 
 			{
 				$response = $rev->getRating( $rid, $juser->get('id'));
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'publications',
 						'element'=>'reviews',
@@ -768,7 +768,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		
 		// Message
 		$juser = JFactory::getUser();
-		$eview = new Hubzero_Plugin_View(
+		$eview = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'publications',
 				'element'=>'reviews',

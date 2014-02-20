@@ -52,7 +52,7 @@ $serials = "{$col1};{$col2};{$col3}";
 					<fieldset id="available">
 						<?php
 						// Instantiate a view
-						$view = new Hubzero_Plugin_View(
+						$view = new \Hubzero\Plugin\View(
 							array(
 								'folder'  => 'members',
 								'element' => 'dashboard',

@@ -184,7 +184,7 @@ class plgPublicationsRelated extends JPlugin
 		// Instantiate a view
 		if ($miniview) 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'publications',
 					'element'=>'related',
@@ -195,7 +195,7 @@ class plgPublicationsRelated extends JPlugin
 		} 
 		else 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'publications',
 					'element'=>'related',

@@ -196,7 +196,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	private function _view()
 	{
 		// Setup our view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'account',
@@ -399,7 +399,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$change = JRequest::getVar('change', '', 'post');
 
 		// Create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'account',
@@ -517,7 +517,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$change    = JRequest::getVar('change', '', 'post');
 
 		// Create the view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'account',

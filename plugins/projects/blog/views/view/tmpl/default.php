@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<?php
 		// New update form
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'blog',
@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div id="latest_activity" class="infofeed">
 	<?php 
 		// Display item list
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'blog',

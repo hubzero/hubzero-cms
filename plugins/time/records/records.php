@@ -143,7 +143,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		$records = new TimeRecords($this->db);
 
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'records',
@@ -184,7 +184,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 	private function _edit($record=null)
 	{
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'records',
@@ -298,7 +298,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		$record = new TimeRecords($this->db);
 
 		// Create a new plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'time',
 				'element'=>'records',

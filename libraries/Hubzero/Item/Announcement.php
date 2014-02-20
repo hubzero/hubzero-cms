@@ -30,6 +30,9 @@
 
 namespace Hubzero\Item;
 
+use Hubzero\Plugin\View;
+use Hubzero\Mail\Message;
+
 /**
  * Hubzero Announcement Model Class
  */
@@ -381,7 +384,7 @@ class Announcement extends \JTable
 		}
 
 		// create view object
-		$eview = new \Hubzero_Plugin_View(
+		$eview = new View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'announcements',
@@ -411,7 +414,7 @@ class Announcement extends \JTable
 		$subject = $group->get('description') . ' Group Announcement';
 
 		// create message object
-		$message = new \Hubzero\Mail\Message();
+		$message = new Message();
 
 		// set message details and send
 		$message->setSubject($subject)

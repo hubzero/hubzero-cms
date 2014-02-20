@@ -111,7 +111,7 @@ class plgResourcesShare extends JPlugin
 		if ($sharewith == 'email') 
 		{
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'share',
@@ -142,7 +142,7 @@ class plgResourcesShare extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
 			// Instantiate a view
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => 'share',

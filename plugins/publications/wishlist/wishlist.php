@@ -229,7 +229,7 @@ class plgPublicationsWishlist extends JPlugin
 
 				// HTML output
 				// Instantiate a view
-				$view = new Hubzero_Plugin_View(
+				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'publications',
 						'element'=>'wishlist',
@@ -260,7 +260,7 @@ class plgPublicationsWishlist extends JPlugin
 
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'publications',
 					'element' => 'wishlist',

@@ -858,7 +858,7 @@ class ProjectsHtml
 	public static function toolDevHeader( $option, $config, $project, $tool, $active, $bcrumb = '')
 	{
 		// tool-only tab menu 
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'tools',

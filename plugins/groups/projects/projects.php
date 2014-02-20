@@ -219,7 +219,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$filters['sortdir']  = JRequest::getVar('sortdir', 'DESC');
 
 		// Build the final HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'projects',
@@ -281,7 +281,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
 
 		// Build the final HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'projects',
@@ -486,7 +486,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		}
 
 		//create plugin view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'groups',
 				'element' => 'projects',

@@ -38,7 +38,7 @@ if ($this->comments) { ?>
 
 		foreach ($this->comments as $comment) 
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'hubzero',
 					'element' => 'comments',

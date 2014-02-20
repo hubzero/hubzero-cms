@@ -260,7 +260,7 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _browse() 
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -429,7 +429,7 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _entry() 
 	{
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -540,7 +540,7 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Instantiate view
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,
@@ -680,7 +680,7 @@ class plgMembersBlog extends JPlugin
 			}
 
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'members',
 					'element' => $this->_name,
@@ -843,7 +843,7 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => $this->_name,

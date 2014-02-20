@@ -170,7 +170,7 @@ class plgProjectsDatabases extends JPlugin
 		if (get_class($db_rw) == 'JException' || get_class($db_ro) == 'JException')
 		{
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'databases',
@@ -297,7 +297,7 @@ class plgProjectsDatabases extends JPlugin
 		}
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'databases',
@@ -390,7 +390,7 @@ class plgProjectsDatabases extends JPlugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'databases',
@@ -451,7 +451,7 @@ class plgProjectsDatabases extends JPlugin
 		}
 
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'databases',

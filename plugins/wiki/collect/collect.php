@@ -88,7 +88,7 @@ class plgWikiCollect extends JPlugin
 			\Hubzero\Document\Assets::addPluginScript('wiki', $this->_name);
 			\Hubzero\Document\Assets::addPluginStylesheet('wiki', $this->_name);
 
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'wiki',
 					'element' => $this->_name,
@@ -153,7 +153,7 @@ class plgWikiCollect extends JPlugin
 		// No board ID selected so present repost form
 		if (!$collection_id && !$collection_title)
 		{
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'wiki',
 					'element' => $this->_name,

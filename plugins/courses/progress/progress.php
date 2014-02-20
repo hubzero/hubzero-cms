@@ -123,7 +123,7 @@ class plgCoursesProgress extends JPlugin
 		$this->db     = JFactory::getDBO();
 
 		// Instantiate a vew
-		$this->view = new Hubzero_Plugin_View(
+		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
 				'element' => $active,

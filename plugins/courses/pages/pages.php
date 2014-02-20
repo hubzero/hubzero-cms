@@ -144,7 +144,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 				$action = $act;
 			}
 
-			$this->view = new Hubzero_Plugin_View(
+			$this->view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => $this->_type,
 					'element' => $this->_name,

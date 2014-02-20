@@ -249,7 +249,7 @@ class plgProjectsTeam extends JPlugin
 		$setup  = $this->_task == 'setup' ? 1 : 0;
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'team',
@@ -327,7 +327,7 @@ class plgProjectsTeam extends JPlugin
 		}
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'team',
@@ -660,7 +660,7 @@ class plgProjectsTeam extends JPlugin
 		if ($this->_task == 'delete') 
 		{
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'team',
@@ -774,7 +774,7 @@ class plgProjectsTeam extends JPlugin
 		else 
 		{
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'team',
@@ -853,7 +853,7 @@ class plgProjectsTeam extends JPlugin
 		if ($this->_task == 'changerole') 
 		{
 			// Output HTML
-			$view = new Hubzero_Plugin_View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'projects',
 					'element'=>'team',
@@ -972,7 +972,7 @@ class plgProjectsTeam extends JPlugin
 		}
 		
 		// Message body for HUB user
-		$eview = new Hubzero_Plugin_View(
+		$eview = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'team',
@@ -1072,7 +1072,7 @@ class plgProjectsTeam extends JPlugin
 		}
 				
 		// Output HTML
-		$view = new Hubzero_Plugin_View(
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
 				'element'=>'team',
