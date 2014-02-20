@@ -259,6 +259,7 @@
 #page_identity a {
 	display: block;
 	min-width: 150px;
+	max-width: 165px;
 	min-height: 100px;
 	background: #f8f8f8;
 	text-align: center;
