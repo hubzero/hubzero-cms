@@ -284,8 +284,8 @@ class ProjectComment extends JTable
 			return false;
 		}
 		
-		$comment = Hubzero_View_Helper_Html::shortenText($comment, 250, 0);
-		$comment = Hubzero_View_Helper_Html::purifyText($comment);
+		$comment = \Hubzero\Utility\String::truncate($comment, 250);
+		$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 			
 		$this->itemid 			= $itemid;
 		$this->tbl 	  			= $tbl;

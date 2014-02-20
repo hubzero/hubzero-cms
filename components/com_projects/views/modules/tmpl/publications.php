@@ -39,11 +39,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } else { ?>
 	<ul>
 		<?php foreach($this->items as $pub) { 
-			$status = PublicationHelper::getPubStateProperty($pub, 'status', 0);					
+			$status = PublicationHelper::getPubStateProperty($pub, 'status', 0);
 		?>
 	<li>
 		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=publications') . '/?pid=' . $pub->id; ?>" title="<?php echo $pub->title; ?>">
-		<?php echo Hubzero_View_Helper_Html::shortenText($pub->title, 50, 0); ?></a>
+		<?php echo \Hubzero\Utility\String::truncate($pub->title, 50); ?></a>
 		 <span class="block faded mini">
 			<span>v. <?php echo $pub->version_label; ?> (<?php echo $status; ?>)</span>
 		</span>

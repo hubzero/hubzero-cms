@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		?>
 	<li>
 		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias. a . 'active=todo' . a . 'action=view').'/?todoid='.$todo->id; ?>" title="<?php echo htmlentities($todo->content); ?>">
-		<?php echo Hubzero_View_Helper_Html::shortenText($todo->content, 35, 0); ?></a>
+		<?php echo \Hubzero\Utility\String::truncate($todo->content, 35); ?></a>
 		 <span class="block faded mini">
 			<?php if($todo->assignedname) { ?>
 			<span><?php echo ProjectsHtml::shortenName($todo->assignedname); ?></span> | 

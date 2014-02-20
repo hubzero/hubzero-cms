@@ -34,7 +34,7 @@ $url = JRoute::_($route . a . 'pid=' . $this->pub->id);
 	<div id="content-header">
 		<h2><?php echo $this->title; ?></h2>
 	</div>
-	<h3 class="prov-header"><a href="<?php echo $route; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $url; ?>"> "<?php echo Hubzero_View_Helper_Html::shortenText($this->pub->title, 65, 0); ?>"</a> &raquo; <?php echo JText::_('COM_PROJECTS_PROVISIONED_PROJECT'); ?></h3>
+	<h3 class="prov-header"><a href="<?php echo $route; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $url; ?>"> "<?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?>"</a> &raquo; <?php echo JText::_('COM_PROJECTS_PROVISIONED_PROJECT'); ?></h3>
 	<div class="status-msg">
 	<?php 
 		// Display error or success message

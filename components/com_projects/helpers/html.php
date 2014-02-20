@@ -776,7 +776,7 @@ class ProjectsHtml
 		<div class="pthumb"><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo ProjectsHtml::getThumbSrc($view->project->id, $view->project->alias, $view->project->picture, $view->config); ?>" alt="<?php echo $view->project->title; ?>" /></a></div>
 		<?php } ?>
 		<div class="ptitle">
-			<h2><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo Hubzero_View_Helper_Html::shortenText($view->project->title, 50, 0); ?> <span>(<?php echo $view->project->alias; ?>)</span></a></h2>
+			<h2><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo \Hubzero\Utility\String::truncate($view->project->title, 50); ?> <span>(<?php echo $view->project->alias; ?>)</span></a></h2>
 			<?php if($back)  { ?>
 			<h3 class="returnln"><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></h3>
 			<?php } else { ?>
@@ -1348,7 +1348,7 @@ class ProjectsHtml
 				
 			if($shorten)
 			{
-				$note   = Hubzero_View_Helper_Html::shortenText($note, $shorten, 0);
+				$note   = \Hubzero\Utility\String::truncate($note, $shorten);
 			}
 			if($showmeta)
 			{

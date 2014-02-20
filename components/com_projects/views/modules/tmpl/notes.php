@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		?>
 	<li>
 		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=notes' . a . 'scope='.$note->scope . a . 'pagename=' . $note->pagename); ?>" title="<?php echo htmlentities($note->title); ?>">
-		<?php echo Hubzero_View_Helper_Html::shortenText($note->title, 35, 0); ?></a>
+		<?php echo \Hubzero\Utility\String::truncate($note->title, 35); ?></a>
 	   </li><?php } ?>
 	</ul><?php } ?>
 </div>

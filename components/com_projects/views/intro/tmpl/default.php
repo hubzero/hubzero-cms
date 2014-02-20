@@ -91,7 +91,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 				?>
 				<li <?php if($setup) { echo 'class="s-dev"'; } else if($row->state == 0) { echo 'class="s-inactive"'; } else if($row->state == 5) { echo 'class="s-pending"'; } ?>>
 					<?php  if(!$setup && $row->private) { ?><span class="s-private">&nbsp;</span><?php }  ?>	
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto); ?>"><img src="<?php echo $thumb; ?>" alt="" /><span class="block"><?php echo Hubzero_View_Helper_Html::shortenText(ProjectsHtml::cleanText($row->title), 30, 0); ?></span></a><?php if($setup) { ?><span class="s-complete"><?php echo JText::_('COM_PROJECTS_COMPLETE_SETUP'); ?></span><?php } else if($row->state == 0) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_INACTIVE'); ?></span> <?php } else if($row->state == 5) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_PENDING'); ?></span> <?php } ?>
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto); ?>"><img src="<?php echo $thumb; ?>" alt="" /><span class="block"><?php echo \Hubzero\Utility\String::truncate(ProjectsHtml::cleanText($row->title), 30); ?></span></a><?php if($setup) { ?><span class="s-complete"><?php echo JText::_('COM_PROJECTS_COMPLETE_SETUP'); ?></span><?php } else if($row->state == 0) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_INACTIVE'); ?></span> <?php } else if($row->state == 5) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_PENDING'); ?></span> <?php } ?>
 				<?php if($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?>	
 				</li>
 				<?php }	?>

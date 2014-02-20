@@ -2018,7 +2018,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 						$obj->picture = $this->_getPictureName ( $tempid, $temp = 1 );
 					}
 				}
-				$obj->title = Hubzero_View_Helper_Html::shortenText($title, 250, 0);
+				$obj->title = \Hubzero\Utility\String::truncate($title, 250);
 				$obj->about = rtrim(\Hubzero\Utility\Sanitize::clean($about));
 				$obj->type 	= $type;
 				
@@ -2503,7 +2503,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Save new alias & title
 		if (!$this->getError()) 
 		{
-			$obj->title 		= Hubzero_View_Helper_Html::shortenText($title, 250, 0);
+			$obj->title 		= \Hubzero\Utility\String::truncate($title, 250);
 			$obj->alias 		= $name;
 			$obj->state 		= 0;
 			$obj->setup_stage 	= $setup_complete - 1;
@@ -2955,8 +2955,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			// Save comment
 			if (trim($comment) != '')
 			{
-				$comment = Hubzero_View_Helper_Html::shortenText($comment, 500, 0);
-				$comment = Hubzero_View_Helper_Html::purifyText($comment);
+				$comment = \Hubzero\Utility\String::truncate($comment, 500);
+				$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 				if (!$approve)
 				{
 					$cbase  .= '<nb:' . $reviewer . '>' . $comment . $meta . '</nb:' . $reviewer . '>';	
@@ -3423,7 +3423,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				JRoute::_('index.php?option=com_groups')
 			);
 			$pathway->addItem(
-				Hubzero_View_Helper_Html::shortenText($group->get('description'), 50, 0),
+				\Hubzero\Utility\String::truncate($group->get('description'), 50),
 				JRoute::_('index.php?option=com_groups' . a . 'cn=' . $group->cn)
 			);
 			$pathway->addItem(
