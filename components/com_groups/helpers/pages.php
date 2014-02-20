@@ -495,8 +495,7 @@ class GroupsHelperPages
 			);
 			
 			// create wiki parser
-			ximport('Hubzero_Wiki_Parser');
-			$wikiParser =& Hubzero_Wiki_Parser::getInstance();
+			$wikiParser = Hubzero_Wiki_Parser::getInstance();
 			
 			// parse content
 			$content = $wikiParser->parse($content, $wikiConfig, $fullparse);

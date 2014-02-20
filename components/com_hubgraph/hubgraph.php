@@ -1,12 +1,12 @@
-<? defined('JPATH_BASE') or die(); 
+<?php
+defined('JPATH_BASE') or die(); 
 
 class Wiki
 {
-private static $parser = NULL;
+	private static $parser = NULL;
 
 	public static function parse($str) {
 		if (is_null(self::$parser)) {
-			ximport('Hubzero_Wiki_Parser');
 			self::$parser = new Hubzero_Wiki_Parser();
 		}
 

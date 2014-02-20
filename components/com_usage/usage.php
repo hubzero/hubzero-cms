@@ -42,7 +42,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 jimport('joomla.application.component.helper');
-ximport('Hubzero_View_Helper_Html');
 
 // Include scripts
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php');

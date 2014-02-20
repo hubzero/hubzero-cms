@@ -120,7 +120,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<label for="field_about">
 						<?php echo JText::_('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>: 
 						<?php
-							ximport('Hubzero_Wiki_Editor');
 							$editor = Hubzero_Wiki_Editor::getInstance();
 							echo $editor->display('about', 'field_about', $wish->about, 'minimal', '50', '10');
 						?>

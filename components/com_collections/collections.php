@@ -39,8 +39,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'manager');
 }
 
-ximport('Hubzero_View_Helper_Html');
-
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'collections.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'collections'));

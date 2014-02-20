@@ -138,8 +138,7 @@ else
 						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PUBLIC'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
 
 						<?php
-							ximport('Hubzero_Wiki_Editor');
-							$editor =& Hubzero_Wiki_Editor::getInstance();
+							$editor = Hubzero_Wiki_Editor::getInstance();
 							echo $editor->display('public_desc', 'public_desc', stripslashes($this->group->get('public_desc')), '', '50', '8');
 						?>
 						<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>

@@ -56,7 +56,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		'filepath' => '',
 		'domain'   => ''
 	);
-	ximport('Hubzero_Wiki_Parser');
+
 	$p = Hubzero_Wiki_Parser::getInstance();
 	$maintext = $p->parse(stripslashes($job->description), $wikiconfig);
 

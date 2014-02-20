@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'quotes.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'selectedquotes.php');
-ximport('Hubzero_View_Helper_Html');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'feedback'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

@@ -116,7 +116,6 @@ $goto  = 'alias=' . $this->project->alias;
 										<td>
 											<span class="clear"></span>	
 											<?php
-												ximport('Hubzero_Wiki_Editor');
 												$editor = Hubzero_Wiki_Editor::getInstance();
 												echo $editor->display('about', 'about', $this->project->about, '', '10', '25');
 											?>
@@ -149,10 +148,10 @@ $goto  = 'alias=' . $this->project->alias;
 					<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_PROJECT') . ' ' . JText::_('COM_PROJECTS_OWNER'); ?>:</h5>	
 					<?php 	if($this->project->owned_by_group) {	
 							$group = Hubzero_Group::getInstance( $this->project->owned_by_group );			
-							$ownedby = '<a href="/groups/'.$group->get('cn').'">'.JText::_('COM_PROJECTS_GROUP').' '.$group->get('cn').'</a>';
+							$ownedby = '<a href="'.JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')).'">'.JText::_('COM_PROJECTS_GROUP').' '.$group->get('cn').'</a>';
 						}
 						else {
-						 $ownedby = '<a href="/members/'.$this->project->owned_by_user.'">'.$this->project->fullname.'</a>';	
+						 $ownedby = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $this->project->owned_by_user).'">'.$this->project->fullname.'</a>';	
 					} echo '<span class="mini">' . $ownedby . '</span>'; ?>
 					<?php  
 							break;

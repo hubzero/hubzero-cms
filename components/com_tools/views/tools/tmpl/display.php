@@ -81,8 +81,6 @@ if ($juser->get('guest')) {
 <?php 
 $cls = 'even';
 if (count($this->apps) > 0) {
-	ximport('Hubzero_View_Helper_Html');
-	
 	foreach ($this->apps as $project) 
 	{
 		//if ($project->state == 1 || $project->state == 3) {

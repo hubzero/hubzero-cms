@@ -30,8 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-ximport('Hubzero_View_Helper_Html');
 ?>
 	<div id="small-page">
 		<div class="databrowser">

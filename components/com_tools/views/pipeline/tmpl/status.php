@@ -32,8 +32,6 @@ $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#',
 $project_path 	= $this->config->get('project_path', '/tools/');
 $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 
-ximport('Hubzero_View_Helper_Html');
-
 // get status name
 ToolsHelperHtml::getStatusName($this->status['state'], $state);
 ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);

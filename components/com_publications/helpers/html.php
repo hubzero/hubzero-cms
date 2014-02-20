@@ -1141,7 +1141,6 @@ class PublicationsHtml
 		// Show group if group project
 		if ($publication->project_group) 
 		{
-			ximport('Hubzero_Group');
 			$group = new Hubzero_Group();
 			if (Hubzero_Group::exists($publication->project_group)) 
 			{
@@ -1515,7 +1514,6 @@ class PublicationsHtml
 				break;
 
 				default:
-					ximport('Hubzero_View_Helper_Html');
 					$fs = ($fsize) ? $fs : PublicationsHtml::formatSize($fs);
 				break;
 			}
@@ -1535,7 +1533,6 @@ class PublicationsHtml
 	 */
 	public static function formatsize($file_size)
 	{
-		ximport('Hubzero_View_Helper_Html');
 		return Hubzero_View_Helper_Html::formatSize($file_size);
 	}
 	

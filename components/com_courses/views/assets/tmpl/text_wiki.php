@@ -40,7 +40,6 @@ $wikiconfig = array(
 	'domain'   => $this->course->get('alias') 
 );
 
-ximport('Hubzero_Wiki_Parser');
 $p = Hubzero_Wiki_Parser::getInstance();
 ?>
 
@@ -50,6 +49,6 @@ $p = Hubzero_Wiki_Parser::getInstance();
 
 <div class="wiki-page-body">
 	<p>
-		<?= $p->parse(stripslashes($this->asset->content), $wikiconfig) ?>
+		<?php echo $p->parse(stripslashes($this->asset->content), $wikiconfig) ?>
 	</p>
 </div>

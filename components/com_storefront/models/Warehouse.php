@@ -561,7 +561,6 @@ class StorefrontModelWarehouse
 		}
 		
 		// Create a StorefrontModelProduct
-		//ximport('Hubzero_Storefront_Product');
 		
 		if ($productType == 'product')
 		{
@@ -982,7 +981,6 @@ class StorefrontModelWarehouse
 	public function getCoupon($code) 
 	{
 		// Create a StorefrontModelCoupon
-		//ximport('Hubzero_Storefront_Coupon');
 		
 		if ($productType == 'product')
 		{

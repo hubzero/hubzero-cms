@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//helper lib
-ximport('Hubzero_View_Helper_Html');
-
 //citation params
 $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");

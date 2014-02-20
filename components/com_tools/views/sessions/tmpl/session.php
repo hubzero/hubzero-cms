@@ -183,8 +183,6 @@ if (!$this->app->sess) {
 			<div class="col span8">
 				<p class="share-member-photo" id="shareform">
 					<?php
-					ximport('Hubzero_User_Profile');
-
 					$jxuser = new Hubzero_User_Profile();
 					$jxuser->load($juser->get('id'));
 					?>
@@ -255,8 +253,6 @@ if (!$this->app->sess) {
 							</td>
 						</tr>
 				<?php } else {
-					ximport('Hubzero_View_Helper_Html');
-					
 					$config = JComponentHelper::getParams('com_members');
 					$thumb = $config->get('webpath');
 					$thumb = DS . trim($thumb, DS);

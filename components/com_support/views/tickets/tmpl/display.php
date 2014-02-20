@@ -244,7 +244,6 @@ $users = array();
 
 $cls = 'even';
 
-ximport('Hubzero_View_Helper_Html');
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];

@@ -32,7 +32,6 @@ $wiki_config = JComponentHelper::getParams( 'com_wiki' );
 $weed = DS . 'wiki' . DS . $this->masterscope . DS . $this->page->pagename . DS;
 
 // Transform the wikitext to HTML
-ximport('Hubzero_Wiki_Parser');
 $p = Hubzero_Wiki_Parser::getInstance();
 
 $wikiconfig = array(

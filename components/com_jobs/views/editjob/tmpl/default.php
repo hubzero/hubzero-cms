@@ -148,7 +148,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label>
 				&nbsp;
 			<?php 
-				ximport('Hubzero_Wiki_Editor');
 				$editor = Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('description', 'description', $job->description, 'no-image-macro no-file-macro', '10', '25');
 			?>

@@ -175,7 +175,6 @@ defined('_JEXEC') or die('Restricted access');
 			{
 				if ($this->replyto->get('id')) 
 				{
-					ximport('Hubzero_View_Helper_Html');
 					$name = JText::_('COM_KB_ANONYMOUS');
 					$xuser = Hubzero_User_Profile::getInstance($this->replyto->get('created_by'));
 					if (!$this->replyto->get('anonymous')) 

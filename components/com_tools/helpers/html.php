@@ -806,7 +806,6 @@ class ToolsHelperHtml
 				case 'ASF':
 				case 'SWF': $fs = ''; break;
 				default:
-					ximport('Hubzero_View_Helper_Html');
 					$fs = Hubzero_View_Helper_Html::formatsize($fs);
 				break;
 			}

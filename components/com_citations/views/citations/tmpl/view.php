@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import user profile lib
-ximport('Hubzero_User_Profile');
-
 //remove $this 
 $juser = $this->juser;
 $config = $this->config;

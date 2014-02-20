@@ -41,11 +41,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL('com_groups', 'manage', 'users', 'manager');
 }
 
-// import needed HUBzero libs
-ximport('Hubzero_Group');
-ximport('Hubzero_Group_Helper');
-ximport('Hubzero_Group_InviteEmail');
-
 // include tables
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php';

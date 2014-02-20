@@ -988,8 +988,6 @@ class WikiTablePage extends JTable
 			{
 				if (!isset($filters['authorized']) || (isset($filters['authorized']) && $filters['authorized'] !== 'admin')) 
 				{
-					ximport('Hubzero_User_Profile');
-
 					$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 					$ugs = (is_object($profile)) ? $profile->getGroups('members') : array();
 					

@@ -329,7 +329,6 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			{
 				if ($replyto->exists()) 
 				{
-					ximport('Hubzero_View_Helper_Html');
 					$name = JText::_('COM_BLOG_ANONYMOUS');
 					if (!$replyto->get('anonymous')) 
 					{

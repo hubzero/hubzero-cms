@@ -30,8 +30,6 @@ $live_site = rtrim(JURI::base(),'/');
 $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
 $project_path 	= $this->config->get('project_path', '/tools/');
 $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
-
-ximport('Hubzero_View_Helper_Html');
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

@@ -39,7 +39,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL('com_tags', 'manage', 'users', 'manager');
 }
 
-ximport('Hubzero_View_Helper_Html');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cloud.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'tags'));

@@ -56,7 +56,6 @@ class PublicationsElementTextarea extends PublicationsElement
 
 		//$editor = JFactory::getEditor();
 		
-		ximport('Hubzero_Wiki_Editor');
 		$editor = Hubzero_Wiki_Editor::getInstance();
 
 		return '<span class="field-wrap">' . $editor->display($control_name.'['.$name.']', $control_name.'-'.$name, $value, $class, $cols, $rows) . '</span>';

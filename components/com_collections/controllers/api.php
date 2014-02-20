@@ -296,25 +296,6 @@ class CollectionsControllerApi extends \Hubzero\Api\Controller
 				$obj->type        = 'collection';
 				$obj->posted      = $entry->created();
 				$obj->author      = $entry->creator('name');
-
-				/*switch ($collection->get('object_type'))
-				{
-					case 'member':
-						$url = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
-					break;
-
-					case 'group':
-						ximport('Hubzero_Group');
-						$group = new Hubzero_Group();
-						$group->read($collection->get('object_id'));
-						$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
-					break;
-					
-					default:
-						$url = 'index.php?option=com_collections&task=all&id=' . $collection->get('id');
-					break;
-				}
-				$obj->url         = $base . DS . ltrim(JRoute::_($url), DS);*/
 				$obj->url         = $base . DS . ltrim(JRoute::_($collection->link()), DS);
 
 				$obj->files       = $collection->count('file');

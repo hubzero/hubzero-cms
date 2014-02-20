@@ -245,7 +245,6 @@ class StorefrontModelSku
 	*/
 	public function setTimeToLive($ttl)
 	{
-		ximport('Hubzero_Storefront_Memberships');
 		StorefrontModelMemberships::checkTtl($ttl);
 		
 		$this->data->meta['ttl'] = $ttl;

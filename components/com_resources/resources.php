@@ -54,8 +54,6 @@ require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php');
 
-ximport('Hubzero_View_Helper_Html');
-
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'resources'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {

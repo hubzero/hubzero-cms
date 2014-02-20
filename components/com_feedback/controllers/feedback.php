@@ -162,7 +162,6 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Push some styles to the template
 		$this->_getStyles();
 
-		ximport('Hubzero_User_Profile');
 		$this->view->user = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 
 		if (!is_object($row))

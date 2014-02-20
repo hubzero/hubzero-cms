@@ -41,7 +41,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 include_once(JPATH_ROOT . DS . 'libraries/joomla/html/html/select.php');
 jimport('joomla.application.component.helper');
-ximport('Hubzero_View_Helper_Html');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'period.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'results'));

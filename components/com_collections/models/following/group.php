@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following' . DS . 'abstract.php');
-ximport('Hubzero_Group');
 
 /**
  * Model class for following a group

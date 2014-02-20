@@ -39,10 +39,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'manager');
 }
 
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Geo');
-ximport('Hubzero_User_Profile');
-
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'store.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'order.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'orderitem.php');

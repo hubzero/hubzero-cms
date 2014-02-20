@@ -177,7 +177,6 @@ if ($this->page->get('id'))
 					<label>
 						<strong>Privacy:</strong> <span class="required">Required</span>
 						<?php
-							ximport("Hubzero_Group_Helper");
 							$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
 							switch($access)
 							{

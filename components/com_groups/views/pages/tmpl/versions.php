@@ -80,9 +80,8 @@ $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&contr
 							}
 							else if ($pageVersion->get('created_by') != null && is_numeric($pageVersion->get('created_by')))
 							{
-								ximport('Hubzero_User_Profile');
 								$profile = Hubzero_User_Profile::getInstance( $pageVersion->get('created_by') );
-								$created_by = '<a href="/members/'.$profile->get('uidNumber').'">'.$profile->get('name').'</a>';
+								$created_by = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber')).'">'.$profile->get('name').'</a>';
 							}
 						?>
 						<div class="created">
@@ -109,9 +108,8 @@ $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&contr
 							}
 							else if ($pageVersion->get('approved_by') != null && is_numeric($pageVersion->get('approved_by')))
 							{
-								ximport('Hubzero_User_Profile');
 								$profile = Hubzero_User_Profile::getInstance( $pageVersion->get('approved_by') );
-								$approved_by = '<a href="/members/'.$profile->get('uidNumber').'">'.$profile->get('name').'</a>';
+								$approved_by = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber')).'">'.$profile->get('name').'</a>';
 							}
 						?>
 						<div class="approved">

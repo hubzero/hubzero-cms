@@ -105,7 +105,6 @@ class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 		// If action is 'add', make sure that course id/alias is unique
 		if ($action == 'add')
 		{
-			ximport('Hubzero_Storefront_Warehouse');
 			$warehouse = new StorefrontModelWarehouse();
 			$courseIdExists = $warehouse->getCourseByAlias($this->getCourseId());
 			
