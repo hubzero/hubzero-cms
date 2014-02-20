@@ -174,22 +174,15 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
 				<?php 
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder'  => 'members',
-							'element' => 'blog',
-							'name'    => 'comments',
-							'layout'  => '_list'
-						)
-					);
-					$view->parent     = 0;
-					$view->cls        = 'odd';
-					$view->depth      = 0;
-					$view->option     = $this->option;
-					$view->comments   = $this->row->comments('list');
-					$view->config     = $this->config;
-					$view->base       = $this->row->link();
-					$view->display();
+					$this->view('_list', 'comments')
+					     ->set('parent', 0)
+					     ->set('cls', 'odd')
+					     ->set('depth', 0)
+					     ->set('option', $this->option)
+					     ->set('comments', $this->row->comments('list'))
+					     ->set('config', $this->config)
+					     ->set('base', $this->row->link())
+					     ->display();
 				?>
 			<?php } else { ?>
 				<p class="no-comments">
