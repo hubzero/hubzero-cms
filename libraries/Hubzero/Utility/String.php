@@ -541,4 +541,29 @@ class String
 
 		return $safe;
 	}
+
+	/**
+	 * Format a number by prefixing a character to a specificed length.
+	 * 
+	 * @param      integer $value  Number to format
+	 * @param      integer $length Final string length
+	 * @param      integer $prfx   Character to prepend
+	 * @return     string
+	 */
+	public static function pad($value, $length = 5, $prfx = 0)
+	{
+		$pre = '';
+
+		if (is_numeric($value) && $value < 0) 
+		{
+			$pre = 'n';
+			$value = abs($value);
+		}
+
+		while (strlen($value) < $length)
+		{
+			$value = $prfx . "$value";
+		}
+		return $pre . $value;
+	}
 }
