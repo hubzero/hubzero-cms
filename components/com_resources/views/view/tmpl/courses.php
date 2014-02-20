@@ -373,7 +373,7 @@ if ($mode != 'preview')
 						}
 						$html .= '>'.$child->title.'</a>';
 						if ($child->type != 31) {
-							//$html .= ($child->introtext) ? '<br />'.Hubzero_View_Helper_Html::shortenText(stripslashes($child->introtext),200,0) : '';
+							//$html .= ($child->introtext) ? '<br />'.\Hubzero\Utility\String::truncate(stripslashes($child->introtext),200) : '';
 						}
 					}
 					$html .= '</td>'."\n";
@@ -439,7 +439,7 @@ if ($mode != 'preview')
 						if ($child->type != 31 && $child->introtext) { 
 							$html .= "\t\t".'<tr class="'.$o.'">'."\n";
 							$html .= "\t\t\t".'<td colspan="6">';
-							$html .= Hubzero_View_Helper_Html::shortenText(stripslashes($child->introtext),200,0) . '<br /><br />';
+							$html .= \Hubzero\Utility\String::truncate(stripslashes($child->introtext),200) . '<br /><br />';
 							$html .= "\t\t\t".'</td>'."\n";
 							$html .= "\t\t".'</tr>'."\n";
 						}

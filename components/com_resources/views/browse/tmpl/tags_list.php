@@ -110,7 +110,7 @@ switch ($this->level)
 			//$database = JFactory::getDBO();
 			foreach ($tools as $tool)
 			{
-				$tool->title = Hubzero_View_Helper_Html::shortenText($tool->title, 40, 0);
+				$tool->title = \Hubzero\Utility\String::truncate($tool->title, 40);
 
 				$supported = null;
 				if ($this->bits['supportedtag']) {

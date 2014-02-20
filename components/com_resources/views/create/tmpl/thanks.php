@@ -99,7 +99,7 @@ if ($this->resource->id)
 					<tr>
 						<th scope="row"><?php echo JText::_('Title'); ?></th>
 						<td>
-							<?php echo ($this->resource->title) ? $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->resource->title), 150, 0)) : JText::_('(none)'); ?>
+							<?php echo ($this->resource->title) ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->title), 150)) : JText::_('(none)'); ?>
 						</td>
 					</tr>
 					<tr>

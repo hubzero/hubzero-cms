@@ -128,9 +128,9 @@ if ($this->helper->contributors && $this->params->get('show_authors')) {
 
 $html .= "\t\t".'<p class="details">'.implode(' <span>|</span> ',$info).'</p>'."\n";
 if ($this->line->introtext) {
-	$html .= "\t\t".Hubzero_View_Helper_Html::shortenText( stripslashes($this->line->introtext) )."\n";
+	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->introtext), 300 )."\n";
 } else if ($this->line->fulltxt) {
-	$html .= "\t\t".Hubzero_View_Helper_Html::shortenText( stripslashes($this->line->fulltxt) )."\n";
+	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->fulltxt), 300 )."\n";
 }
 $html .= "\t".'</li>'."\n";
 echo $html;

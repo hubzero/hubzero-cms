@@ -140,8 +140,8 @@ if ($mode != 'preview')
 ?>
 					<p class="ataglance">
 						<?php echo $this->model->resource->introtext 
-								? Hubzero_View_Helper_Html::shortenText(stripslashes($this->model->resource->introtext), 255, 0) 
-								: Hubzero_View_Helper_Html::shortenText(stripslashes($this->model->resource->fulltxt), 255, 0);
+								? \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->introtext), 255) 
+								: \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->fulltxt), 255);
 						?>
 					</p>
 

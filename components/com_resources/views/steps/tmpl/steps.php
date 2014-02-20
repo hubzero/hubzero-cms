@@ -75,7 +75,7 @@ if ($this->resource->id)
 					<?php echo ($this->resource->getTypeTitle()) ? $this->escape(stripslashes($this->resource->getTypeTitle())) : JText::_('(none)'); ?>
 				</td>
 				<td>
-					<?php echo ($this->resource->title) ? $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->resource->title), 150, 0)) : JText::_('(none)'); ?>
+					<?php echo ($this->resource->title) ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->title), 150)) : JText::_('(none)'); ?>
 				</td>
 				<td>
 					<?php echo $attachments; ?> attachment(s)
