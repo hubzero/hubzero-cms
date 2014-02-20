@@ -875,7 +875,7 @@ class PublicationHelper extends JObject
 		$pubUrl    = JRoute::_($url . a . 'pid=' . $pub->id) .'?version=' . $pub->version_number;
 		?>
 		<div id="plg-header">
-			<h3 class="publications c-header"><a href="<?php echo $url; ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo Hubzero_View_Helper_Html::shortenText($pub->title, 65, 0); ?>"<?php if ($append) { echo '</a>'; } ?></span>
+			<h3 class="publications c-header"><a href="<?php echo $url; ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->title, 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
 			<?php if ($append) { echo $append; } ?>
 			</h3>
 		</div>
@@ -894,7 +894,7 @@ class PublicationHelper extends JObject
 	{
 	?>
 		<h3 class="prov-header">
-			<a href="<?php echo $url; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo Hubzero_View_Helper_Html::shortenText($pub->title, 65, 0); ?>"
+			<a href="<?php echo $url; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo \Hubzero\Utility\String::truncate($pub->title, 65); ?>"
 			<?php if ($append) { echo $append; } ?>
 		</h3>
 	<?php	

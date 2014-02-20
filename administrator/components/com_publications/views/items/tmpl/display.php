@@ -157,7 +157,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<span class="<?php echo $class; ?>"><?php echo $status; ?></span>
 				</td>
 				<td>
-					<a href="index.php?option=com_projects&amp;task=edit&amp;id[]=<?php echo $row->project_id; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($row->project_title, 50, 0);  ?></a>
+					<a href="index.php?option=com_projects&amp;task=edit&amp;id[]=<?php echo $row->project_id; ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=versions&amp;id=<?php echo $row->id;  echo $filterstring; ?>"><?php echo $this->escape($row->versions); ?></a>

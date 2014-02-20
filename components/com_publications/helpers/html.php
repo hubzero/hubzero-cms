@@ -1000,7 +1000,7 @@ class PublicationsHtml
 				? ' <a href="' . JRoute::_('index.php?option=com_projects&alias=' 
 				. $publication->project_alias) .'">' 
 				: ' <strong>';
-			$project.= Hubzero_View_Helper_Html::shortenText($publication->project_title, 50, 0);
+			$project.= \Hubzero\Utility\String::truncate($publication->project_title, 50);
 			$project.= $authorized == 1 ? '</a>' : '</strong>';			
 		}
 			

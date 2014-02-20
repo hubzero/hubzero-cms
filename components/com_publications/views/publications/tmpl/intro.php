@@ -73,7 +73,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<li>
 					<span class="pub-thumb"><img src="<?php echo $pubthumb; ?>" alt=""/></span>
 					<span class="pub-details">
-						<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 100, 0); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 100); ?></a>
 						<span class="block details"><?php echo implode(' <span>|</span> ', $info); ?></span>
 					</span>
 				</li>	
@@ -101,7 +101,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<li>
 					<span class="pub-thumb"><img src="<?php echo $pubthumb; ?>" alt=""/></span>
 					<span class="pub-details">
-						<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 100, 0); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 100); ?></a>
 						<span class="block details"><?php echo implode(' <span>|</span> ', $info); ?></span>
 					</span>
 				</li>	

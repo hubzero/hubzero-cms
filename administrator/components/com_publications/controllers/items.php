@@ -592,7 +592,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				
 		// Save title, abstract and description
 		$row->title 		= $title ? $title : $row->title;
-		$row->abstract 		= $abstract ? Hubzero_View_Helper_Html::shortenText($abstract, 250, 0) : $row->abstract;
+		$row->abstract 		= $abstract ? \Hubzero\Utility\String::truncate($abstract, 250) : $row->abstract;
 		$row->description 	= $description ? $description : $row->description;
 		$row->metadata 		= $metadata ? $metadata : $row->metadata;	
 		$row->published_up 	= $published_up ? $published_up : $row->published_up;
@@ -625,7 +625,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 		
 		// Email config
-		$pubtitle 	= Hubzero_View_Helper_Html::shortenText($row->title, 100, 0);
+		$pubtitle 	= \Hubzero\Utility\String::truncate($row->title, 100);
 		$subject 	= JText::_('Version') . ' ' . $row->version_label . ' ' 
 					. JText::_('COM_PUBLICATIONS_OF') . ' ' . JText::_('publication') . ' "' . $pubtitle . '" ';
 		$sendmail 	= 0;
@@ -748,8 +748,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
 					$objC = new ProjectComment( $this->database );
 					
-					$comment = Hubzero_View_Helper_Html::shortenText($message, 250, 0);
-					$comment = Hubzero_View_Helper_Html::purifyText($comment);
+					$comment = \Hubzero\Utility\String::truncate($message, 250);
+					$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 					
 					$objC->itemid = $aid;
 					$objC->tbl = 'activity';

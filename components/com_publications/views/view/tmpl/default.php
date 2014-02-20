@@ -104,7 +104,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	
 	// Display mini abstract
 	$html .= '<p class="ataglance">';
-	$html .= $publication->abstract ? Hubzero_View_Helper_Html::shortenText(stripslashes($publication->abstract), 250, 0) : '';
+	$html .= $publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250) : '';
 	$html .= '</p>'."\n";
 	
 	// Show published date and category
