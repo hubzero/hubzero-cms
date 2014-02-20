@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-			<span><span><?php echo Hubzero_View_Helper_Html::timeAgo($row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+			<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 		</li>
 		<?php
 	}
@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-			<span><span><?php echo Hubzero_View_Helper_Html::timeAgo($row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+			<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 		</li>
 		<?php
 	}
@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-			<span><span><?php echo Hubzero_View_Helper_Html::timeAgo($row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+			<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 		</li>
 		<?php
 	}

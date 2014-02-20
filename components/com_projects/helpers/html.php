@@ -172,7 +172,7 @@ class ProjectsHtml
 	 */
 	public static function timeAgo($timestamp, $utc = true) 
 	{
-		$timestamp = Hubzero_View_Helper_Html::mkt($timestamp);
+		$timestamp = strtotime($timestamp);
 		
 		// Get current time
 		$current_time = $utc ? strtotime(JFactory::getDate()) : strtotime(date('c'));

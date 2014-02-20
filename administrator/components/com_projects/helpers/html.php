@@ -155,8 +155,7 @@ class ProjectsHtml
 	 */
 	public static function timeAgo($timestamp) 
 	{
-		$timestamp = Hubzero_View_Helper_Html::mkt($timestamp);
-		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
+		$text = JHTML::_('date.relative', $timestamp);
 		
 		$parts = explode(' ',$text);
 

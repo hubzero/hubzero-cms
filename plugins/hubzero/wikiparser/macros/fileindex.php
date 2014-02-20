@@ -103,7 +103,7 @@ class FileIndexMacro extends WikiMacro
 				}
 				if ($row->created && $row->created != '0000-00-00 00:00:00')
 				{
-					$html .= Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt(JHTML::_('date', $row->created, JFactory::getDBO()->getDateFormat()))) . '. ';
+					$html .= JHTML::_('date.relative', JHTML::_('date', $row->created, JFactory::getDBO()->getDateFormat())) . '. ';
 				}
 				$html .= ($row->description) ? '<span>"' . stripslashes($row->description) . '"</span>' : '';
 				$html .= '</li>' . "\n";

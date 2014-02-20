@@ -61,8 +61,7 @@ if ($this->rows) {
 		$filters['state']  = 0;
 		
 		$row->reports = $ra->getCount( $filters );		
-		$row->created = Hubzero_View_Helper_Html::mkt($row->created);
-		$row->when = Hubzero_View_Helper_Html::timeAgo($row->created);
+		$row->when = JHTML::_('date.relative', $row->created);
 		$row->points = $row->points ? $row->points : 0;
 		
 		if (!$row->reports && $i<= $this->limit) {

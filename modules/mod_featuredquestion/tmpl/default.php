@@ -45,7 +45,7 @@ if ($this->getError()) { ?>
 			}
 		}
 
-		$when = Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt($this->row->created));
+		$when = JHTML::_('date.relative', $this->row->created);
 ?>
 	<div class="<?php echo $this->cls; ?>">
 		<h3><?php echo JText::_('MOD_FEATUREDQUESTION'); ?></h3>

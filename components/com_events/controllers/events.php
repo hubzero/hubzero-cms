@@ -1034,7 +1034,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$pages = $page->loadPages($event->id);
 
 		// Check if registration is still open
-		$registerby = Hubzero_View_Helper_Html::mkt($event->registerby);
+		$registerby = strtotime($event->registerby);
 		$now = time();
 
 		$register = array();

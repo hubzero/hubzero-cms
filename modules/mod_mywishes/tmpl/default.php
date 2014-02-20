@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		foreach ($this->rows1 as $row) 
 		{
-			$when = Hubzero_View_Helper_Html::timeAgo($row->proposed);
+			$when = JHTML::_('date.relative', $row->proposed);
 		?>
 		<li class="wishlist">
 			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->about)), 160); ?>">
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		foreach ($this->rows2 as $row) 
 		{
-			$when = Hubzero_View_Helper_Html::timeAgo($row->proposed);
+			$when = JHTML::_('date.relative', $row->proposed);
 		?>
 		<li class="wishlist">
 			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->about)), 160); ?>">
