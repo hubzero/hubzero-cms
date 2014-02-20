@@ -58,7 +58,7 @@ if (count($this->activities) > 0 ) {
 				<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'.$thumb.'" alt="'.$title.'" /></a>'; ?></td>
 			<td>
 				<span class="rightfloat mini faded<?php echo $timeclass; ?>"><?php echo ProjectsHTML::timeAgo($a->recorded).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?> </span>
-				<span class="project-name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto); ?>"><?php echo Hubzero_View_Helper_Html::shortenText($title, 65, 0); ?></a></span>
+				<span class="project-name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto); ?>"><?php echo \Hubzero\Utility\String::truncate($title, 65); ?></a></span>
 				<div class="mline <?php echo $class; ?><?php if($a->admin) { echo ' admin-action'; } ?>" id="tr_<?php echo $a->id; ?>">
 				<span>
 				<span class="actor"><?php echo $a->admin == 1 ? JText::_('PLG_MEMBERS_PROJECTS_ADMIN') : $a->name; ?></span> <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>	

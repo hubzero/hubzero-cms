@@ -106,7 +106,7 @@ tooltip: true,
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo $pubthumb; ?>" alt=""/>
 					<span class="h-title"><a href="<?php echo JRoute::_('index.php?option=com_publications' . a . 'id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
-					<span class="block mini faded"><?php echo JText::_('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo JText::_('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo Hubzero_View_Helper_Html::shortenText($stat->project_title, 65, 0); ?></a></span></span>
+					<span class="block mini faded"><?php echo JText::_('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo JText::_('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo \Hubzero\Utility\String::truncate($stat->project_title, 65); ?></a></span></span>
 				</td></tr>
 				<tr>
 					<td></td>
