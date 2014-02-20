@@ -474,7 +474,7 @@ class CitationFormat
 		}
 		
 		//output the citation
-		return ($highlight) ? Hubzero_View_Helper_Html::str_highlight($cite, array($highlight)) : $cite;
+		return ($highlight) ? \Hubzero\Utility\String::highlight($cite, $highlight) : $cite;
 	}
 
 	/**
@@ -698,7 +698,7 @@ class CitationFormat
 		if ($citation->eprint) 
 		{
 			$html .= '<span>|</span>';
-			$html .= '<a href="' . Hubzero_View_Helper_Html::ampReplace($citation->eprint) . '">' . JText::_('Electronic Paper') . '</a>';
+			$html .= '<a href="' . JFilterOutput::ampReplace($citation->eprint) . '">' . JText::_('Electronic Paper') . '</a>';
 		}
 		
 		return $html;
