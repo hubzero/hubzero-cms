@@ -92,7 +92,7 @@ foreach ($this->folders as $fullpath => $name)
 								</a>
 							</td>
 							<td class="file-size">
-								<?php //echo Hubzero_View_Helper_Html::formatSize(Hubzero_View_Helper_Html::filesize_r($fullpath)); ?>
+								<?php //echo Hubzero_View_Helper_Html::formatSize(\Hubzero\Filesystem\Filesystem::size($fullpath)); ?>
 							</td>
 <?php if ($dir != '/data' && $dir != '/sessions') { ?>
 							<td>
