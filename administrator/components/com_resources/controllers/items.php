@@ -932,7 +932,9 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			{
 				if ($k == 'timeof')
 				{
-					$v = trim($v) ? JFactory::getDate()->toSql() : NULL;
+					$v = trim($v) 
+						? JFactory::getDate($v, JFactory::getConfig()->get('offset'))->toSql() 
+						: NULL;
 				}
 				$txta->set($k, $v);
 			}
