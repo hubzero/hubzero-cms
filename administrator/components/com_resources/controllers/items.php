@@ -930,10 +930,10 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$txta = new $paramsClass('');
 			foreach ($attribs as $k => $v)
 			{
-				/*if ($k == 'timeof')
+				if ($k == 'timeof')
 				{
-					$v = JFactory::getDate($v, JFactory::getConfig()->get('offset'))->toSql();
-				}*/
+					$v = trim($v) ? JFactory::getDate()->toSql() : NULL;
+				}
 				$txta->set($k, $v);
 			}
 			$row->attribs = $txta->toString();
