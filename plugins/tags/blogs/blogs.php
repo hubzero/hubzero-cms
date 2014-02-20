@@ -219,7 +219,7 @@ class plgTagsBlogs extends JPlugin
 		$html .= '</p>'."\n";
 		if ($row->ftext) 
 		{
-			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "</p>\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . rtrim($juri->base(), DS) . DS . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";

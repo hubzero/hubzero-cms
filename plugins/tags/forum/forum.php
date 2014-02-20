@@ -239,7 +239,7 @@ class plgTagsForum extends JPlugin
 		$html .= "\t\t" . '<p class="details">' . JText::_('PLG_TAGS_FORUM') . ' &rsaquo; ' . stripslashes($row->data2) . ' &rsaquo; ' . stripslashes($row->data1) . '</p>' . "\n";
 		if ($row->ftext) 
 		{
-			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "</p>\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
