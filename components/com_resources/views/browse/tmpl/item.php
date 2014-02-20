@@ -127,11 +127,13 @@ if ($this->helper->contributors && $this->params->get('show_authors')) {
 }
 
 $html .= "\t\t".'<p class="details">'.implode(' <span>|</span> ',$info).'</p>'."\n";
+$html .= "\t".'<p>'."\n";
 if ($this->line->introtext) {
-	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->introtext), 300 )."\n";
+	$html .= "\t\t".\Hubzero\Utility\String::truncate( \Hubzero\Utility\Sanitize::stripAll(stripslashes($this->line->introtext)), 300 )."\n";
 } else if ($this->line->fulltxt) {
-	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->fulltxt), 300 )."\n";
+	$html .= "\t\t".\Hubzero\Utility\String::truncate( \Hubzero\Utility\Sanitize::stripAll(stripslashes($this->line->fulltxt)), 300 )."\n";
 }
+$html .= "\t".'</p>'."\n";
 $html .= "\t".'</li>'."\n";
 echo $html;
 ?>
