@@ -84,7 +84,7 @@ if (count($this->activities) > 0 ) {
 						
 						$shorten = (strlen($longComment) > 250) ? 1 : 0;
 						$shortComment = $shorten 
-							? Hubzero_View_Helper_Html::shortenText($longComment, 250, 0) : $longComment;
+							? \Hubzero\Utility\String::truncate($longComment, 250) : $longComment;
 						
 						$longComment = ProjectsHtml::replaceUrls($longComment, 'external');
 						$shortComment = ProjectsHtml::replaceUrls($shortComment, 'external');

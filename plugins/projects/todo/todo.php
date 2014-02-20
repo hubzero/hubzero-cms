@@ -484,8 +484,8 @@ class plgProjectsTodo extends JPlugin
 		{						
 			$content 			= rtrim(stripslashes($content));
 			$objTD->content 	= $content ? $content : $objTD->content;
-			$objTD->content 	= Hubzero_View_Helper_Html::purifyText($objTD->content);
-			$objTD->content 	= Hubzero_View_Helper_Html::shortenText($objTD->content, 200, 0);
+			$objTD->content 	= \Hubzero\Utility\Sanitize::stripAll($objTD->content);
+			$objTD->content 	= \Hubzero\Utility\String::truncate($objTD->content, 200);
 			$objTD->color 		= $listcolor ? $listcolor : $objTD->color;
 			$objTD->color 		= $listcolor == 'none' ? '' : $objTD->color;
 			$objTD->assigned_to = $assigned;
@@ -919,8 +919,8 @@ class plgProjectsTodo extends JPlugin
 			$objC->itemid = $itemid;
 			$objC->tbl = 'todo';
 			$objC->parent_activity = $parent_activity;
-			$comment = Hubzero_View_Helper_Html::shortenText($comment, 250, 0);
-			$objC->comment = Hubzero_View_Helper_Html::purifyText($comment);
+			$comment = \Hubzero\Utility\String::truncate($comment, 250, 0);
+			$objC->comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 			$objC->created = JFactory::getDate()->toSql();
 			$objC->created_by = $this->_uid;
 			if (!$objC->store()) 

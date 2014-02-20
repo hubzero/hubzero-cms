@@ -81,7 +81,7 @@ $goto  = 'alias=' . $this->project->alias;
 	<h3 class="todo"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=todo'); ?>"><?php echo $this->title; ?></a>
 	<?php if($this->item->todolist) { ?> &raquo; <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=todo').'/?list='.$this->item->color; ?>"><span class="indlist <?php echo 'pin_'.$this->item->color; ?>"><?php echo $this->item->todolist; ?></span></a> <?php } ?>		
 	<?php if($this->item->state == 1) { ?> &raquo; <span class="indlist completedtd"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo').'/?state=1'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_COMPLETED')); ?></a></span> <?php } ?>
-	&raquo; <span class="itemname"><?php echo Hubzero_View_Helper_Html::shortenText($this->item->content, 60, 0); ?></span>
+	&raquo; <span class="itemname"><?php echo \Hubzero\Utility\String::truncate($this->item->content, 60); ?></span>
 	</h3>
 </div>
 	<?php

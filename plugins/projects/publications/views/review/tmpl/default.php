@@ -268,7 +268,7 @@ else if ($this->authorized == 3)
 			<div id="authorslist">
 			<?php echo $this->helper->showContributors( $this->authors, true ); ?>
 			</div>
-			<?php echo $this->pub->abstract ? '<p>'.Hubzero_View_Helper_Html::shortenText(stripslashes($this->pub->abstract), 250, 0).'</p>'  : ''; ?>
+			<?php echo $this->pub->abstract ? '<p>'.\Hubzero\Utility\String::truncate(stripslashes($this->pub->abstract), 250).'</p>'  : ''; ?>
 		 </div>
 			<?php if($show_gallery) { ?>
 			<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY')); ?></p>

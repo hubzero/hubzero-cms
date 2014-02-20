@@ -160,14 +160,14 @@ $parentScope = $this->scope . DS . $this->pagename;
 					    foreach ($note as $level => $parent) {
 						 foreach ($parent as $entry) { ?>
 							<li <?php if($entry->pagename == $this->pagename) { echo 'class="active"'; } ?>>
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$entry->scope.a.'pagename='.$entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($entry->title, 35, 0); ?></a>
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$entry->scope.a.'pagename='.$entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?></a>
 							</li>
 							<?php 
 								// Third level of notes
 								if(isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) { 
 									foreach($thirdlevel[$entry->pagename] as $subpage) { ?>
 									<li <?php if($subpage->pagename == $this->pagename) { echo 'class="active"'; } ?>>
-										<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$subpage->scope.a.'pagename='.$subpage->pagename); ?>" class="note wikilevel_3"><?php echo Hubzero_View_Helper_Html::shortenText($subpage->title, 35, 0); ?></a>
+										<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$subpage->scope.a.'pagename='.$subpage->pagename); ?>" class="note wikilevel_3"><?php echo \Hubzero\Utility\String::truncate($subpage->title, 35); ?></a>
 									</li>		
 							<?php	}
 							 } ?>	

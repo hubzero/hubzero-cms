@@ -60,6 +60,6 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 		. a . 'asset='.urlencode($file['name']); ?>" 
 		 title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a></td>
 		<?php if ($this->publishing) { ?>
-		<td class="shrinked"><?php if($file['pid'] && $file['pub_title']) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=publications' . a . 'alias=' . $this->project->alias . a . 'pid='.$file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo Hubzero_View_Helper_Html::shortenText($file['pub_title'], 20, 0); ?></a><?php } ?></td>
+		<td class="shrinked"><?php if($file['pid'] && $file['pub_title']) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=publications' . a . 'alias=' . $this->project->alias . a . 'pid='.$file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
 		<?php } ?>
 	</tr>

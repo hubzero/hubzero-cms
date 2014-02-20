@@ -586,7 +586,7 @@ class plgProjectsBlog extends JPlugin
 		}
 		
 		$shorten = ($body && strlen($body) > 250) ? 1 : 0;
-		$shortBody = $shorten ? Hubzero_View_Helper_Html::shortenText($body, 250, 0) : $body;
+		$shortBody = $shorten ? \Hubzero\Utility\String::truncate($body, 250) : $body;
 		
 		// Embed links
 		$body 	   = ProjectsHtml::replaceUrls($body, 'external');

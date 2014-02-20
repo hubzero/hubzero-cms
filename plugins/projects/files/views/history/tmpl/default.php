@@ -181,7 +181,7 @@ if (!$this->getError())
 						<div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], array('A', 'M'))) 
 						{	
 							$over = strlen($version['content']) >= $charLimit ? 1 : 0;
-							$content = $over ? Hubzero_View_Helper_Html::shortenText($version['content'], $charLimit, 0, 1) : $version['content'];
+							$content = $over ? strip_Tags(\Hubzero\Utility\String::truncate($version['content'], $charLimit)) : $version['content'];
 							echo '<div class="short-txt" id="short-' . $i . '"><pre>' . $content . '</pre>';
 							if ($over)
 							{

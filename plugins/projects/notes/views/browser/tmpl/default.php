@@ -98,7 +98,7 @@ $p_url = JRoute::_($route . a . 'active=notes');
 				foreach ($parent as $entry) 
 				{ ?>
 					<?php if ($level == 1) { ?>
-					<li class="c-click notes toplevel" id="note::<?php echo $entry->id; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($entry->title, 35, 0); ?>
+					<li class="c-click notes toplevel" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?>
 					<?php } ?>
 					
 					<?php if ($level == 2) { 
@@ -108,7 +108,7 @@ $p_url = JRoute::_($route . a . 'active=notes');
 							echo '<ol>';
 						}
 					?>
-					<li class="c-click notes wikilevel_2" id="note::<?php echo $entry->id; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($entry->title, 35, 0); ?></li>
+					<li class="c-click notes wikilevel_2" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?></li>
 					<?php 	
 						if ($p2 == count($parent))
 						{
@@ -123,7 +123,7 @@ $p_url = JRoute::_($route . a . 'active=notes');
 						// Third level of notes
 						if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) { 
 							foreach ($thirdlevel[$entry->pagename] as $subpage) { ?>
-							<li class="c-click notes wikilevel_3" id="note::<?php echo $subpage->id; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($subpage->title, 35, 0); ?></li>
+							<li class="c-click notes wikilevel_3" id="note::<?php echo $subpage->id; ?>"><?php echo \Hubzero\Utility\String::truncate($subpage->title, 35); ?></li>
 								
 					<?php $shown[] = $subpage->id;	}
 					 } ?>

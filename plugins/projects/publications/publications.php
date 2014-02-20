@@ -1548,7 +1548,7 @@ class plgProjectsPublications extends JPlugin
 					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED');	
 					
 					// Record activity
-					$pubtitle = Hubzero_View_Helper_Html::shortenText($new->title, 100, 0);
+					$pubtitle = \Hubzero\Utility\String::truncate($new->title, 100);
 					$action  = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION').' '.$new->version_label.' ';
 					$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.$pubtitle.'"';
 					$objAA = new ProjectActivity ( $this->_database );
@@ -2158,7 +2158,7 @@ class plgProjectsPublications extends JPlugin
 								$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_MISSING_REQUIRED_INFO') );
 							}
 							$row->title 		= $title;
-							$row->abstract 		= $abstract ? Hubzero_View_Helper_Html::shortenText($abstract, 250, 0) : $title;
+							$row->abstract 		= $abstract ? \Hubzero\Utility\String::truncate($abstract, 250) : $title;
 							$row->description 	= $description ? $description : $title;						
 						}						
 					}
@@ -2983,7 +2983,7 @@ class plgProjectsPublications extends JPlugin
 		{
 			if (!$this->getError()) 
 			{
-				$pubtitle = Hubzero_View_Helper_Html::shortenText($row->title, 100, 0);
+				$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
 				$objAA = new ProjectActivity ( $this->_database );
 				
 				if ($pub->state == 1) 
