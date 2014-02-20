@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php foreach($this->team as $owner) 
 			{ 
 				// Get profile thumb image 			
-				$profile = Hubzero_User_Profile::getInstance($owner->userid);
+				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 				$thumb = $profile->getPicture();
 			?>
 			<li>

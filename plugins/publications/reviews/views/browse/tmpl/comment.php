@@ -42,7 +42,7 @@ if (!$this->parser)
 
 // Set the name of the reviewer
 $name = JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS');
-$juseri = new Hubzero_User_Profile();
+$juseri = new \Hubzero\User\Profile();
 if ($this->reply->anonymous != 1) 
 {
 	$name = JText::_('PLG_PUBLICATION_REVIEWS_UNKNOWN');

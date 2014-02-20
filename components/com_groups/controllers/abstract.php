@@ -314,6 +314,6 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		}
 		
 		// check if user has permissions
-		return Hubzero_User_Profile::userHasPermissionForGroupAction($group, $task);
+		return \Hubzero\User\Profile::userHasPermissionForGroupAction($group, $task);
 	}
 }

@@ -183,7 +183,7 @@ if (!$this->app->sess) {
 			<div class="col span8">
 				<p class="share-member-photo" id="shareform">
 					<?php
-					$jxuser = new Hubzero_User_Profile();
+					$jxuser = new \Hubzero\User\Profile();
 					$jxuser->load($juser->get('id'));
 					?>
 					<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
@@ -265,7 +265,7 @@ if (!$this->app->sess) {
 					{
 						if ($row->viewuser != $juser->get('username')) 
 						{ 
-							$user = Hubzero_User_Profile::getInstance($row->viewuser);
+							$user = \Hubzero\User\Profile::getInstance($row->viewuser);
 
 							$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
 

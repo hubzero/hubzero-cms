@@ -262,7 +262,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$groupManagers = array();
 			foreach ($this->group->get('managers') as $manager)
 			{
-				if ($profile = Hubzero_User_Profile::getInstance($manager))
+				if ($profile = \Hubzero\User\Profile::getInstance($manager))
 				{
 					$groupManagers[$profile->get('email')] = $profile->get('name');
 				}
@@ -1287,7 +1287,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		if (!$this->juser->get('guest')) 
 		{
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($this->juser->get('id'));
 
 			$view->register['first_name']  = $profile->get('givenName');

@@ -68,7 +68,7 @@ if ($this->post->exists()) {
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 				<?php
-				$jxuser = new Hubzero_User_Profile();
+				$jxuser = new \Hubzero\User\Profile();
 				$jxuser->load($juser->get('id'));
 				?>
 				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />

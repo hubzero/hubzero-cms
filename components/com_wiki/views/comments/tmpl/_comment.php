@@ -16,10 +16,10 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$name = JText::_('COM_WIKI_ANONYMOUS');
-	$huser = new Hubzero_User_Profile;
+	$huser = new \Hubzero\User\Profile;
 	if (!$this->comment->get('anonymous')) 
 	{
-		$huser = $this->comment->creator(); //Hubzero_User_Profile::getInstance($this->comment->get('created_by'));
+		$huser = $this->comment->creator(); //\Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
 		if (is_object($huser) && $huser->get('name')) 
 		{
 			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';

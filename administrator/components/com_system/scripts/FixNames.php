@@ -89,7 +89,7 @@ class FixNames extends SystemHelperScript
 	 */
 	private function _fixName($name)
 	{
-		$xprofile = new Hubzero_User_Profile();
+		$xprofile = new \Hubzero\User\Profile();
 
 		if ($xprofile->load($name) === false)
 		{

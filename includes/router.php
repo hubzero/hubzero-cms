@@ -165,7 +165,7 @@ class JRouterSite extends JRouter
 				}
 			}
 
-			$xprofile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 
 			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{

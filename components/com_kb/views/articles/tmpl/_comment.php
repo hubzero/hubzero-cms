@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$name = JText::_('COM_KB_ANONYMOUS');
-	$huser = new Hubzero_User_Profile;
+	$huser = new \Hubzero\User\Profile;
 	if (!$this->comment->get('anonymous')) 
 	{
 		$huser = $this->comment->creator();

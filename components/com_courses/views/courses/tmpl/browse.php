@@ -220,7 +220,7 @@ $juser = JFactory::getUser();
 									$names = array();
 									foreach ($instructors as $i)
 									{
-										$instructor = Hubzero_User_Profile::getInstance($i->get('user_id'));
+										$instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
 
 										$names[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $i->get('user_id')) . '">' . $this->escape(stripslashes($instructor->get('name'))) . '</a>';
 									}

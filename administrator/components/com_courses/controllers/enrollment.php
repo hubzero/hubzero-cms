@@ -175,7 +175,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of 'manager' for a specific course
 	 * 
-	 * @param      object $profile Hubzero_User_Profile
+	 * @param      object $profile \Hubzero\User\Profile
 	 * @return     void
 	 */
 	public function displayTask($course=null)

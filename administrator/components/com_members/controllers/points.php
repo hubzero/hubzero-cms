@@ -469,7 +469,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 				foreach ($users as $user)
 				{
-					$validuser = Hubzero_User_Profile::getInstance($user);
+					$validuser = \Hubzero\User\Profile::getInstance($user);
 					if ($user && $validuser) 
 					{
 						$BTL = new \Hubzero\Bank\Teller($this->database, $user);

@@ -384,7 +384,7 @@ if (!$c)
 					'layout' => '_instructor'
 				));
 				$view->biolength  = 200;
-				$view->instructor = Hubzero_User_Profile::getInstance($i->get('user_id'));
+				$view->instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
 				$view->display();
 			}
 			?>

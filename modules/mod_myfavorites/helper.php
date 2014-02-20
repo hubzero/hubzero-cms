@@ -70,7 +70,7 @@ class modMyFavorites extends \Hubzero\Module\Module
 
 		$option = 'com_members';
 
-		$member = Hubzero_User_Profile::getInstance($juser->get('id'));
+		$member = \Hubzero\User\Profile::getInstance($juser->get('id'));
 
 		// Get the search result totals
 		$totals = $dispatcher->trigger('onMembersFavorites', array(

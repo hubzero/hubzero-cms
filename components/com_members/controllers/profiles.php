@@ -82,7 +82,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function incremOptOutTask()
 	{
-		$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		if (!$profile)
 		{
 			return;
@@ -115,7 +115,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$restrict = '';
 		/*if ($this->_authorize() !== 'admin')
 		{
-			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 			$xgroups = $profile->getGroups('all');
 			$usersgroups = array();
 			if (!empty($xgroups)) 
@@ -496,7 +496,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->authorized = $this->_authorize($id);
 
 		// Get the member's info
-		$profile = Hubzero_User_Profile::getInstance($id);
+		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		// Ensure we have a member
 		if (!is_object($profile) || (!$profile->get('name') && !$profile->get('surname'))) 
@@ -671,7 +671,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Initiate profile class
-		$profile = Hubzero_User_Profile::getInstance($id);
+		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		// Ensure we have a member
 		if (!$profile->get('name')) 
@@ -920,7 +920,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->_getStyles();
 
 		// Initiate profile class
-		$profile = Hubzero_User_Profile::getInstance($id);
+		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		// Ensure we have a member
 		if (!$profile->get('name'))
@@ -1120,7 +1120,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 * Show a form for editing a profile
 	 * 
 	 * @param      object $xregistration RegisterModelRegistration
-	 * @param      object $profile       Hubzero_User_Profile
+	 * @param      object $profile       \Hubzero\User\Profile
 	 * @return     void
 	 */
 	public function editTask($xregistration=null, $profile=null)
@@ -1184,7 +1184,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($profile)) 
 		{
-			$profile = Hubzero_User_Profile::getInstance($id);
+			$profile = \Hubzero\User\Profile::getInstance($id);
 		}
 
 		// Ensure we have a member
@@ -1343,7 +1343,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$a = JRequest::getVar('access', array(), 'post');
 
 		// Load the profile
-		$profile = Hubzero_User_Profile::getInstance($id);
+		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		$oldemail = $profile->get('email');
 
@@ -1652,7 +1652,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (is_array($p)) 
 		{
 			// Load the profile
-			$profile = Hubzero_User_Profile::getInstance($id);
+			$profile = \Hubzero\User\Profile::getInstance($id);
 
 			foreach ($p as $k=>$v)
 			{
@@ -1736,7 +1736,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				{
 					if ($user) 
 					{
-						$xprofile = Hubzero_User_Profile::getInstance($prevuser);
+						$xprofile = \Hubzero\User\Profile::getInstance($prevuser);
 
 						$users[$prevuser] = $user;
 						$users[$prevuser]['name'] = $xprofile->get('name');
@@ -1751,7 +1751,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			}
 			if ($user) 
 			{
-				$xprofile = Hubzero_User_Profile::getInstance($prevuser);
+				$xprofile = \Hubzero\User\Profile::getInstance($prevuser);
 
 				$users[$prevuser] = $user;
 				$users[$prevuser]['name'] = $xprofile->get('name');

@@ -164,9 +164,9 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!($this->_creator instanceof Hubzero_User_Profile))
+		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			$this->_creator = Hubzero_User_Profile::getInstance($this->get('user_id'));
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('user_id'));
 		}
 		if ($property)
 		{

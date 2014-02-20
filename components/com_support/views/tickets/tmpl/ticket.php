@@ -42,7 +42,7 @@ $unknown = 1;
 $name = JText::_('Unknown');
 $usertype = JText::_('Unknown');
 
-$submitter = new Hubzero_User_Profile();
+$submitter = new \Hubzero\User\Profile();
 if ($this->row->login) 
 {
 	//$juseri = JUser::getInstance($comment->created_by);
@@ -293,7 +293,7 @@ $cc = array();
 
 			$name = JText::_('Unknown');
 			$cite = $name;
-			$juseri = Hubzero_User_Profile::getInstance($comment->created_by);
+			$juseri = \Hubzero\User\Profile::getInstance($comment->created_by);
 			$anon = 1;
 			if ($comment->created_by) 
 			{
@@ -410,7 +410,7 @@ $cc = array();
 				<span class="comment-anchor"><a name="commentform"></a></span>
 			<?php
 				if (!$juser->get('guest')) {
-					$jxuser = new Hubzero_User_Profile();
+					$jxuser = new \Hubzero\User\Profile();
 					$jxuser->load($juser->get('id'));
 					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, 0);
 				} else {

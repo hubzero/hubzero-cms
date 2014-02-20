@@ -244,7 +244,7 @@ class AnswersEconomy extends JObject
 		// Reward others
 		$ba_user = JUser::getInstance($BA_owner);
 
-		//$ba_user = Hubzero_User_Profile::getInstance($BA_owner);
+		//$ba_user = \Hubzero\User\Profile::getInstance($BA_owner);
 		if (is_object($ba_user) && $ba_user->get('id')) 
 		{
 			// Reward other responders
@@ -252,7 +252,7 @@ class AnswersEconomy extends JObject
 			{
 				foreach ($eligible as $e)
 				{
-					$auser = Hubzero_User_Profile::getInstance($e);
+					$auser = \Hubzero\User\Profile::getInstance($e);
 					if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id')) 
 					{
 						$BTL_A = new \Hubzero\Bank\Teller($this->_db , $auser->get('id'));

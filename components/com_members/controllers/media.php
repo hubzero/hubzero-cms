@@ -73,7 +73,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//load profile from id
-		$this->view->profile = Hubzero_User_Profile::getInstance($id);
+		$this->view->profile = \Hubzero\User\Profile::getInstance($id);
 
 		//instantiate view and pass needed vars
 		$this->view->setLayout('upload');
@@ -121,7 +121,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		//get the id and load profile
 		$id = JRequest::getVar('id', 0);
-		$profile = Hubzero_User_Profile::getInstance($id);
+		$profile = \Hubzero\User\Profile::getInstance($id);
 		if (!$profile)
 		{
 			return;
@@ -251,7 +251,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//load the user profile
-		$profile = Hubzero_User_Profile::getInstance($id);
+		$profile = \Hubzero\User\Profile::getInstance($id);
 		if (!$profile)
 		{
 			echo json_encode(array('error' => 'Unable to locate user profile.'));
@@ -390,7 +390,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = Hubzero_User_Profile::getInstance($id);
+			$profile = \Hubzero\User\Profile::getInstance($id);
 			$profile->set('picture', $file['name']);
 			if (!$profile->update()) 
 			{
@@ -486,7 +486,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = Hubzero_User_Profile::getInstance($id);
+			$profile = \Hubzero\User\Profile::getInstance($id);
 			$profile->set('picture', '');
 			if (!$profile->update()) 
 			{
@@ -600,7 +600,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//Load member profile
-		$member = Hubzero_User_Profile::getInstance($id);
+		$member = \Hubzero\User\Profile::getInstance($id);
 
 		// check to make sure we have member profile
 		if (!$member) 

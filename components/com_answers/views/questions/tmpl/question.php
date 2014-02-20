@@ -327,7 +327,7 @@ if (!$this->question->get('anonymous'))
 				<p class="comment-member-photo">
 					<span class="comment-anchor"></span>
 					<?php
-						$jxuser = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+						$jxuser = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 						if (!$this->juser->get('guest')) {
 							$anon = 0;
 						} else {

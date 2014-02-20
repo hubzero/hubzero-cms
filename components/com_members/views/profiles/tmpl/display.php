@@ -141,7 +141,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$i = 0;
 		foreach ($rows as $row)
 		{
-			$contributor = Hubzero_User_Profile::getInstance($row->uidNumber);
+			$contributor = \Hubzero\User\Profile::getInstance($row->uidNumber);
 			if (!$contributor || !$contributor->get('uidNumber'))
 			{
 				continue;

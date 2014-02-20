@@ -30,6 +30,8 @@
 
 namespace Hubzero\User\Profile;
 
+use Hubzero\User\Profile;
+
 /**
  * Profile helper class
  */
@@ -111,11 +113,11 @@ class Helper
 
 		if ($member instanceof \JUser)
 		{
-			$member = \Hubzero_User_Profile::getInstance($member->get('id'));
+			$member = Profile::getInstance($member->get('id'));
 		}
 		else if (is_numeric($member) || is_string($member))
 		{
-			$member = \Hubzero_User_Profile::getInstance($member);
+			$member = Profile::getInstance($member);
 		}
 
 		$thumb = '';

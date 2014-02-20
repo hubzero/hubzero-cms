@@ -49,7 +49,7 @@ class modReportProblems extends \Hubzero\Module\Module
 		$this->verified = 0;
 		if (!$this->juser->get('guest')) 
 		{
-			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
 			{
 				$this->verified = 1;

@@ -454,7 +454,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$announcement->load( $id );
 		
 		//load created by user profile
-		$profile = Hubzero_User_Profile::getInstance( $announcement->created_by );
+		$profile = \Hubzero\User\Profile::getInstance( $announcement->created_by );
 		
 		//make sure we are the one who created it
 		if ($announcement->created_by != $this->juser->get('id'))

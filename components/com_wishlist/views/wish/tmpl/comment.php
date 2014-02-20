@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Set the name of the reviewer
 $name = JText::_('COM_WISHLIST_ANONYMOUS');
-$ruser = Hubzero_User_Profile::getInstance($this->reply->created_by);
+$ruser = \Hubzero\User\Profile::getInstance($this->reply->created_by);
 if ($this->reply->anonymous != 1) 
 {
 	$name = $this->reply->name;

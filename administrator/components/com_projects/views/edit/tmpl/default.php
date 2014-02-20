@@ -28,7 +28,7 @@ JToolBarHelper::cancel();
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 // Get creator profile
-$profile = Hubzero_User_Profile::getInstance($this->obj->created_by_user);
+$profile = \Hubzero\User\Profile::getInstance($this->obj->created_by_user);
 
 // Determine status & options
 $status = '';
@@ -171,7 +171,7 @@ function submitbutton(pressbutton)
 								}		
 							}
 							else {
-								$profile = Hubzero_User_Profile::getInstance($this->obj->owned_by_user);
+								$profile = \Hubzero\User\Profile::getInstance($this->obj->owned_by_user);
 								$ownedby = $profile->get('name') ? $profile->get('name') : JText::_('COM_PROJECTS_INFO_UNKNOWN_USER'); 
 								$ownedby = '<span class="i_user">'.$ownedby.'</span>';		
 

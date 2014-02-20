@@ -204,7 +204,7 @@ class plgSupportCaptcha extends JPlugin
 
 		if (!$juser->get('guest')) 
 		{
-			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
 			{
 				$this->_verified = true;

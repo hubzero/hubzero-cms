@@ -112,7 +112,7 @@ if ($this->reviews)
 
 		// Set the name of the reviewer
 		$name = JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS');
-		$ruser = new Hubzero_User_Profile();
+		$ruser = new \Hubzero\User\Profile();
 		$ruser->load( $review->created_by );
 		if ($review->anonymous != 1) {
 			$name = JText::_('PLG_PUBLICATION_REVIEWS_UNKNOWN');

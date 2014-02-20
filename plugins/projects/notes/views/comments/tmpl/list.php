@@ -59,7 +59,7 @@ if (count($this->comments) > 0) {
 	foreach ($this->comments as $comment)
 	{
 		$author = JText::_('WIKI_AUTHOR_ANONYMOUS');
-		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
+		$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
 
 		if ($comment->anonymous != 1) {
 			$author = JText::_('WIKI_AUTHOR_UNKNOWN');

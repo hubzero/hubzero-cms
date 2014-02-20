@@ -50,7 +50,7 @@ $juser = JFactory::getUser();
 		<form action="<?php echo JRoute::_($this->offering->link() . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<?php
-				$jxuser = new Hubzero_User_Profile();
+				$jxuser = new \Hubzero\User\Profile();
 				$jxuser->load($juser->get('id'));
 				?>
 				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />

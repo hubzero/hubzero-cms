@@ -62,7 +62,7 @@ $k = 0;
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	$wuser = Hubzero_User_Profile::getInstance( $row->uid );
+	$wuser = \Hubzero\User\Profile::getInstance( $row->uid );
 	if (is_object($wuser)) {
 		$name = $wuser->get('name');
 	} else {

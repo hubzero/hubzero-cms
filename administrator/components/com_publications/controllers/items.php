@@ -874,7 +874,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Get dc:contibutor
 		$project = new Project($this->database);
 		$project->load($objP->project_id);
-		$profile = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 		$owner 	 = $project->owned_by_user ? $project->owned_by_user : $project->created_by_user;
 		if ($profile->load( $owner ))
 		{
@@ -1316,7 +1316,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$u = JRequest::getInt('u', 0);
 
 		// Get the member's info
-		$profile = Hubzero_User_Profile::getInstance($u);
+		$profile = \Hubzero\User\Profile::getInstance($u);
 
 		if (!$profile->get('name'))
 		{

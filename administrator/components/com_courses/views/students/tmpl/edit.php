@@ -43,7 +43,7 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-$profile = Hubzero_User_Profile::getInstance($this->row->get('user_id'));
+$profile = \Hubzero\User\Profile::getInstance($this->row->get('user_id'));
 
 $js = '';
 

@@ -56,7 +56,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		// Load the profile
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($id);
 
 		// Incoming host
@@ -102,7 +102,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		// Load the profile
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($id);
 
 		// Incoming host
@@ -138,7 +138,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Display host entries for a member
 	 * 
-	 * @param      object $profile Hubzero_User_Profile
+	 * @param      object $profile \Hubzero\User\Profile
 	 * @return     void
 	 */
 	public function displayTask($profile=null)
@@ -150,7 +150,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 		{
 			$id = JRequest::getInt('id', 0, 'get');
 
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($id);
 		}
 

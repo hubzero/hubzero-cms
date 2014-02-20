@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	$name = JText::_('PLG_RESOURCES_REVIEWS_ANONYMOUS');
-	$huser = new Hubzero_User_Profile;
+	$huser = new \Hubzero\User\Profile;
 	if (!$this->comment->get('anonymous')) 
 	{
 		$huser = $this->comment->creator();

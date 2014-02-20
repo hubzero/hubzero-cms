@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 						$anonymous = 1;
 						if (!$this->juser->get('guest')) 
 						{
-							$jxuser = new Hubzero_User_Profile();
+							$jxuser = new \Hubzero\User\Profile();
 							$jxuser->load($this->juser->get('id'));
 							$anonymous = 0;
 						}
@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 						$name = JText::_('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous) 
 						{
-							$xuser = new Hubzero_User_Profile();
+							$xuser = new \Hubzero\User\Profile();
 							$xuser->load($reply->created_by);
 							if (is_object($xuser) && $xuser->get('name')) 
 							{

@@ -1040,7 +1040,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$register = array();
 		if (!$this->juser->get('guest')) 
 		{
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($this->juser->get('id'));
 
 			$register['firstname']   = $profile->get('givenName');

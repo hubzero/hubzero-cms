@@ -98,7 +98,7 @@ class modMyTickets extends \Hubzero\Module\Module
 		$this->rows1 = $rows1;
 		$this->rows2 = $rows2;
 
-		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 		$xgroups = $profile->getGroups('members');
 
 		$groups = '';

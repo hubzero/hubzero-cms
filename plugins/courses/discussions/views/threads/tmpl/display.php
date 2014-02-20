@@ -162,7 +162,7 @@ $base = $this->offering->link() . '&active=forum';
 				<?php
 				$juser = JFactory::getUser();
 				$anon = 1;
-				$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
+				$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
 				if (!$juser->get('guest')) 
 				{
 					$anon = 0;

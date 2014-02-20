@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 	$huser = '';
 	if (!$this->comment->get('anonymous')) 
 	{
-		$huser = Hubzero_User_Profile::getInstance($this->comment->get('created_by'));
+		$huser = \Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
 		if (is_object($huser) && $huser->get('name')) 
 		{
 			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';

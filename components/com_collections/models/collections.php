@@ -447,7 +447,7 @@ class CollectionsModel extends JObject
 			case 'groups':
 				$collections = array();
 
-				$member = Hubzero_User_Profile::getInstance($juser->get('id'));
+				$member = \Hubzero\User\Profile::getInstance($juser->get('id'));
 
 				$usergroups = $member->getGroups('members');
 				if ($usergroups)

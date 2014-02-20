@@ -32,6 +32,7 @@ namespace Hubzero\Item;
 
 use Hubzero\Plugin\View;
 use Hubzero\Mail\Message;
+use Hubzero\User\Profile;
 
 /**
  * Hubzero Announcement Model Class
@@ -377,7 +378,7 @@ class Announcement extends \JTable
 		$groupMembers = array();
 		foreach ($group->get('members') as $member)
 		{
-			if ($profile = \Hubzero_User_Profile::getInstance($member))
+			if ($profile = Profile::getInstance($member))
 			{
 				$groupMembers[$profile->get('email')] = $profile->get('name');
 			}

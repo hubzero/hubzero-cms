@@ -848,7 +848,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	{
 		if (!$this->juser->get('guest')) 
 		{
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($this->juser->get('id'));
 			$emailConfirmed = $profile->get('emailConfirmed');
 			if (($emailConfirmed == 1) || ($emailConfirmed == 3)) 
@@ -875,7 +875,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		if (!$this->juser->get('guest')) 
 		{
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($this->juser->get('id'));
 
 			if (is_object($profile)) 
@@ -2500,7 +2500,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 							// reply-to address contains encrypted information that is user specific
 							foreach ($watch as $uid)
 							{
-								$user = Hubzero_User_Profile::getInstance($uid);
+								$user = \Hubzero\User\Profile::getInstance($uid);
 								$uidNumber = $user->get('uidNumber');
 
 								// The reply-to address contains the reply token

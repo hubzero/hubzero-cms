@@ -125,7 +125,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($id);
 			$profile->set('picture', $file['name']);
 			if (!$profile->update()) 
@@ -224,7 +224,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($id);
 			$profile->set('picture', '');
 			if (!$profile->update()) 

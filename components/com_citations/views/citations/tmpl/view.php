@@ -38,7 +38,7 @@ $database = $this->database;
 $citation = $this->citation;
 
 //load user profile
-$profile = Hubzero_User_Profile::getInstance( $citation->uid );
+$profile = \Hubzero\User\Profile::getInstance( $citation->uid );
 
 //get citation type
 $ct = new CitationsType($database);

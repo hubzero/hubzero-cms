@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
 		$cls .= ' author';
 	}
 
-	$xuser = new Hubzero_User_Profile();
+	$xuser = new \Hubzero\User\Profile();
 	$xuser->load($this->comment->created_by);
 
 	$rtrn = $this->url ? $this->url : JRequest::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');

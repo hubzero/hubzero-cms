@@ -319,7 +319,7 @@ class ToolAuthor extends  JTable
 				$rc->loadAssociation($authid, $rid, 'resources');
 				if (!$rc->authorid) 
 				{
-					$xprofile = new Hubzero_User_Profile();
+					$xprofile = new \Hubzero\User\Profile();
 					$xprofile->load($authid);
 
 					// New record
@@ -354,7 +354,7 @@ class ToolAuthor extends  JTable
 				}
 				else 
 				{
-					$xprofile = new Hubzero_User_Profile();
+					$xprofile = new \Hubzero\User\Profile();
 					$xprofile->load($authid);
 
 					$name         = $xprofile->get('name');
@@ -383,7 +383,7 @@ class ToolAuthor extends  JTable
 	 */
 	private function _author_check($id)
 	{
-		$xprofile = Hubzero_User_Profile::getInstance($id);
+		$xprofile = \Hubzero\User\Profile::getInstance($id);
 		if ($xprofile->get('givenName') == '' 
 		 && $xprofile->get('middleName') == '' 
 		 && $xprofile->get('surname') == '') 

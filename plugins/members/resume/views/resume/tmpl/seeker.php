@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	$jt = new JobType($database);
 	$jc = new JobCategory($database);
 
-	$profile = Hubzero_User_Profile::getInstance($this->seeker->uid);
+	$profile = \Hubzero\User\Profile::getInstance($this->seeker->uid);
 
 	$jobtype = $jt->getType($this->seeker->sought_type, strtolower(JText::_('PLG_MEMBERS_RESUME_TYPE_ANY')));
 	$jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(JText::_('PLG_MEMBERS_RESUME_CATEGORY_ANY')));

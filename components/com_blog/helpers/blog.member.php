@@ -39,7 +39,7 @@ class BlogHelperMember
 	/**
 	 * Get user's profile picture
 	 * 
-	 * @param      object  $member    Hubzero_User_Profile
+	 * @param      object  $member    \Hubzero\User\Profile
 	 * @param      integer $anonymous Anonymous user?
 	 * @return     string 
 	 */

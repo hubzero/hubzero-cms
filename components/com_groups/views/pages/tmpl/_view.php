@@ -74,8 +74,8 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 			$currentVersion   = $this->version;
 			$createdDate      = ($firstVersion->get('created')) ? JHTML::_('date', $firstVersion->get('created'), 'D F n, Y') : JText::_('n/a');
 			$modifiedDate     = ($currentVersion->get('created')) ? JHTML::_('date', $currentVersion->get('created'), 'D F n, Y g:i a') : JText::_('n/a');
-			$createdProfile   = Hubzero_User_Profile::getInstance( $firstVersion->get("created_by") );
-			$modifiedProfile  = Hubzero_User_Profile::getInstance( $currentVersion->get("created_by") );
+			$createdProfile   = \Hubzero\User\Profile::getInstance( $firstVersion->get("created_by") );
+			$modifiedProfile  = \Hubzero\User\Profile::getInstance( $currentVersion->get("created_by") );
 			$createdBy        = (is_object($createdProfile)) ? $createdProfile->get('name') : JText::_('System');
 			$modifiedBy       = (is_object($modifiedProfile)) ? $modifiedProfile->get('name') : JText::_('System');
 			

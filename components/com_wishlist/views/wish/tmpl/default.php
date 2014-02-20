@@ -47,7 +47,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		
 if ($this->wishlist && $this->wish) {
 			// What name should we dispay for the submitter?
-			$user = new Hubzero_User_Profile();
+			$user = new \Hubzero\User\Profile();
 			$user->load($this->wish->proposed_by);
 			$name = JText::_('ANONYMOUS');
 			if ($this->wish->anonymous != 1) {

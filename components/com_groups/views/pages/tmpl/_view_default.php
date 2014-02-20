@@ -101,7 +101,7 @@ $memberAccess = Hubzero_Group_Helper::getPluginAccess($this->group, 'members');
 			$counter = 1;
 			foreach ($members as $k => $member) : ?>
 			<?php
-				$profile = Hubzero_User_Profile::getInstance($member);
+				$profile = \Hubzero\User\Profile::getInstance($member);
 				if ($counter <= 12 && is_object($profile)) :
 			?>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$profile->get('uidNumber')); ?>" class="member" title="Go to <?php echo stripslashes($profile->get('name')); ?>'s Profile.">

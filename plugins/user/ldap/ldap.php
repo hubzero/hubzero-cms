@@ -80,7 +80,7 @@ class plgUserLdap extends JPlugin
 	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param object holds the new profile data (Hubzero_User_Profile)
+	 * @param object holds the new profile data (\Hubzero\User\Profile)
 	 */
 	public function onAfterStoreProfile($user)
 	{
@@ -91,7 +91,7 @@ class plgUserLdap extends JPlugin
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param object holds the new profile data (Hubzero_User_Profile)
+	 * @param object holds the new profile data (\Hubzero\User\Profile)
 	 */
 	public function onAfterDeleteProfile($user)
 	{

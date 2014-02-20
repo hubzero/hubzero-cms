@@ -2396,7 +2396,7 @@ class plgProjectsPublications extends JPlugin
 			$managers = $objO->getIds($this->_project->id, 1, 1);
 			if (!empty($managers))
 			{
-				$profile = Hubzero_User_Profile::getInstance($this->_uid);
+				$profile = \Hubzero\User\Profile::getInstance($this->_uid);
 
 				$juri = JURI::getInstance();
 				
@@ -2736,7 +2736,7 @@ class plgProjectsPublications extends JPlugin
 			}
 			
 			// Get dc:contibutor
-			$profile = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 			$owner 	 = $this->_project->owned_by_user ? $this->_project->owned_by_user : $this->_project->created_by_user;
 			if($profile->load( $owner ))
 			{
@@ -2835,7 +2835,7 @@ class plgProjectsPublications extends JPlugin
 				}
 				
 				// Notify administrator of a new publication
-				$profile = Hubzero_User_Profile::getInstance($this->_uid);
+				$profile = \Hubzero\User\Profile::getInstance($this->_uid);
 
 				$juri = JURI::getInstance();
 				
@@ -3832,7 +3832,7 @@ class plgProjectsPublications extends JPlugin
 						}
 						else
 						{
-							$profile = Hubzero_User_Profile::getInstance($uid);
+							$profile = \Hubzero\User\Profile::getInstance($uid);
 							$view->author->givenName 		= $profile->get('givenName');
 							$view->author->surname 			= $profile->get('surname');
 							$view->author->picture 			= $profile->get('picture');
@@ -3930,7 +3930,7 @@ class plgProjectsPublications extends JPlugin
 			// Check that profile exists
 			if ($uid)
 			{
-				$profile = Hubzero_User_Profile::getInstance($uid);
+				$profile = \Hubzero\User\Profile::getInstance($uid);
 				$uid = $profile->get('uidNumber') ? $uid : 0;				
 			}
 	
@@ -5531,7 +5531,7 @@ class plgProjectsPublications extends JPlugin
 			$gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
 			
 			// Get author profile (for Git comments)
-			$profile = Hubzero_User_Profile::getInstance($this->_uid);
+			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
 
 			$name = $profile->get('name');
 			$email = $profile->get('email');

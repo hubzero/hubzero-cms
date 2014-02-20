@@ -296,7 +296,7 @@ if (count($this->rows) > 0)
 					$id = $row->uidNumber;
 
 					// Load their bio
-					$profile = new Hubzero_User_Profile();
+					$profile = new \Hubzero\User\Profile();
 					$profile->load($row->uidNumber);
 					$txt = $profile->getBio('parsed');
 

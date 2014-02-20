@@ -75,7 +75,7 @@ if ($this->pub->doi)
 }
 
 // Get creator name
-$profile = Hubzero_User_Profile::getInstance($this->pub->created_by);
+$profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 ?>

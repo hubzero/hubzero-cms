@@ -328,7 +328,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$groupInvitees = array();
 		foreach ($invitees as $invitee)
 		{
-			if ($profile = Hubzero_User_Profile::getInstance($invitee))
+			if ($profile = \Hubzero\User\Profile::getInstance($invitee))
 			{
 				$groupInvitees[$profile->get('email')] = $profile->get('name');
 			}
@@ -584,7 +584,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$managers = array();
 		foreach ($this->view->group->get('managers') as $m)
 		{
-			$profile = Hubzero_User_Profile::getInstance( $m );
+			$profile = \Hubzero\User\Profile::getInstance( $m );
 			if ($profile)
 			{
 				$managers[$profile->get('email')] = $profile->get('name');
@@ -855,7 +855,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$managers = array();
 		foreach ($this->view->group->get('managers') as $m)
 		{
-			$profile = Hubzero_User_Profile::getInstance( $m );
+			$profile = \Hubzero\User\Profile::getInstance( $m );
 			if ($profile)
 			{
 				$managers[$profile->get('email')] = $profile->get('name');

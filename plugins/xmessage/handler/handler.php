@@ -224,7 +224,7 @@ class plgXMessageHandler extends JPlugin
 			// Get all the sender's groups
 			if ($mconfig->get('user_messaging', 1) == 1 && !$bypassGroupsCheck)
 			{
-				$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+				$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 				$xgroups = $profile->getGroups('all');
 				$usersgroups = array();
 				if (!empty($xgroups)) 
@@ -255,7 +255,7 @@ class plgXMessageHandler extends JPlugin
 				$methods = $notify->getRecords($uid, $type);
 
 				//$user = JUser::getInstance($uid);
-				$user = Hubzero_User_Profile::getInstance($uid);
+				$user = \Hubzero\User\Profile::getInstance($uid);
 				if (!is_object($user) || !$user->get('username')) 
 				{
 					continue;

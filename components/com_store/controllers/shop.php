@@ -414,7 +414,7 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 
 		// Output HTML
 		$this->view->juser = $this->juser;
-		$this->view->xprofile = new Hubzero_User_Profile;
+		$this->view->xprofile = new \Hubzero\User\Profile;
 		$this->view->xprofile->load($this->juser->get('id'));
 		$this->view->posted = array();
 
@@ -689,7 +689,7 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 		$this->view->items = $items;
 		$this->view->infolink = $this->infolink;
 		$this->view->juser = $this->juser;
-		$this->view->xprofile = new Hubzero_User_Profile;
+		$this->view->xprofile = new \Hubzero\User\Profile;
 		$this->view->xprofile->load($this->juser->get('id'));
 
 		if ($this->getError()) 

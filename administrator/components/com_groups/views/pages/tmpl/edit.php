@@ -218,7 +218,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 						<th><?php echo JText::_('Created By'); ?></th>
 						<td>
 							<?php
-								$profile = Hubzero_User_Profile::getInstance($this->firstversion->get('created_by'));
+								$profile = \Hubzero\User\Profile::getInstance($this->firstversion->get('created_by'));
 								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
 							?>
 						</td>
@@ -231,7 +231,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 						<th><?php echo JText::_('Last Modified By'); ?></th>
 						<td>
 							<?php
-								$profile = Hubzero_User_Profile::getInstance($this->version->get('created_by'));
+								$profile = \Hubzero\User\Profile::getInstance($this->version->get('created_by'));
 								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
 							?>
 						</td>
@@ -258,7 +258,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 								<td><?php echo $version->get('version'); ?></td>
 								<td>
 									<?php
-										$profile = Hubzero_User_Profile::getInstance($version->get('created_by'));
+										$profile = \Hubzero\User\Profile::getInstance($version->get('created_by'));
 										echo 'by: ' . ((is_object($profile)) ? $profile->get('name') : JText::_('System'));
 										echo '<br /> on: ' . JHTML::_('date', $version->get('created'));
 									?>
@@ -267,7 +267,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 									<?php
 										if ($version->get('approved'))
 										{
-											$profile = Hubzero_User_Profile::getInstance($version->get('approved_by'));
+											$profile = \Hubzero\User\Profile::getInstance($version->get('approved_by'));
 											echo 'by: ' . ((is_object($profile)) ? $profile->get('name') : JText::_('System'));
 											echo '<br /> on: ' . JHTML::_('date', $version->get('approved_on'));
 										}

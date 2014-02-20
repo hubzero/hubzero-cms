@@ -9,8 +9,8 @@ JToolBarHelper::cancel();
 
 $editor = JFactory::getEditor();
 
-$xprofilec = Hubzero_User_Profile::getInstance($this->row->created_by);
-$xprofilem = Hubzero_User_Profile::getInstance($this->row->modified_by);
+$xprofilec = \Hubzero\User\Profile::getInstance($this->row->created_by);
+$xprofilem = \Hubzero\User\Profile::getInstance($this->row->modified_by);
 $userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
 $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 

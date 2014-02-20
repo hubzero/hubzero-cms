@@ -367,7 +367,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 						// Replace ~/ prefix with user's home directory
 						if (strncmp($value,"~/",2) === 0)
 						{
-							$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+							$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		
 							$homeDirectory = rtrim($xprofile->get('homeDirectory'),"/");
 	
@@ -557,7 +557,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$jobs = $ms->getCount($this->juser->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$remain = $xprofile->get('jobsAllowed') - $jobs;
 
 		// Have they reached their session quota?

@@ -154,7 +154,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			</div>
 
 			<?php 
-			$author = Hubzero_User_Profile::getInstance($this->row->get('created_by'));
+			$author = \Hubzero\User\Profile::getInstance($this->row->get('created_by'));
 			if (is_object($author) && $author->get('name')) 
 			{
 			?>
@@ -229,7 +229,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-						$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
+						$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
 						$anon = 1;
 						if (!$juser->get('guest')) 
 						{
@@ -246,7 +246,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 							if (!$replyto->get('anonymous')) 
 							{
-								$xuser = Hubzero_User_Profile::getInstance($replyto->get('created_by'));
+								$xuser = \Hubzero\User\Profile::getInstance($replyto->get('created_by'));
 								if (is_object($xuser) && $xuser->get('name')) 
 								{
 									$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $replyto->get('created_by')) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';

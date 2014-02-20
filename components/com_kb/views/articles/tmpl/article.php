@@ -176,7 +176,7 @@ defined('_JEXEC') or die('Restricted access');
 				if ($this->replyto->get('id')) 
 				{
 					$name = JText::_('COM_KB_ANONYMOUS');
-					$xuser = Hubzero_User_Profile::getInstance($this->replyto->get('created_by'));
+					$xuser = \Hubzero\User\Profile::getInstance($this->replyto->get('created_by'));
 					if (!$this->replyto->get('anonymous')) 
 					{
 						if (is_object($xuser) && $xuser->get('name')) 

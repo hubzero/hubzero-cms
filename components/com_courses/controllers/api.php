@@ -1157,7 +1157,7 @@ class CoursesControllerApi extends \Hubzero\Api\Controller
 			$this->errorMessage(404, 'User was not found');
 			return;
 		}
-		$user = Hubzero_User_Profile::getInstance($user_email[0]);
+		$user = \Hubzero\User\Profile::getInstance($user_email[0]);
 		if ($user === false)
 		{
 			$this->errorMessage(404, 'User was not found');
@@ -1424,7 +1424,7 @@ class CoursesControllerApi extends \Hubzero\Api\Controller
 
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
-		$user = Hubzero_User_Profile::getInstance($userid);
+		$user = \Hubzero\User\Profile::getInstance($userid);
 		//make sure we have a user
 		if ($user === false)
 		{

@@ -163,7 +163,7 @@ class UsersModelReset extends JModelForm
 		}
 
 		// Initiate profile classs
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load( $id );
 
 		if (\Hubzero\User\Helper::isXDomainUser($user->get('id'))) {

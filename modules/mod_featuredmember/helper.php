@@ -153,7 +153,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 				}
 
 				// Load their bio
-				$this->profile = Hubzero_User_Profile::getInstance($this->row->uidNumber);
+				$this->profile = \Hubzero\User\Profile::getInstance($this->row->uidNumber);
 
 				if (trim(strip_tags($this->profile->get('bio'))) == '') 
 				{
@@ -175,7 +175,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 				$this->id    = $this->row->created_by_alias;
 				$this->txt   = $this->row->introtext;
 
-				$this->profile = Hubzero_User_Profile::getInstance($id);
+				$this->profile = \Hubzero\User\Profile::getInstance($id);
 				$this->row->picture = $this->profile->get('picture');
 
 				// Check if the article has been saved in the feature history
@@ -192,7 +192,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 			{
 				if (!isset($this->profile) && !is_object($this->profile)) 
 				{
-					$this->profile = Hubzero_User_Profile::getInstance($this->row->uidNumber);
+					$this->profile = \Hubzero\User\Profile::getInstance($this->row->uidNumber);
 				}
 
 				$paramsClass = 'JParameter';

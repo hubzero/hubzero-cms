@@ -60,7 +60,7 @@ class BlogModelAdapterMember extends BlogModelAdapterAbstract
 		$this->_segments['id']     = $scope_id;
 		$this->_segments['active'] = 'blog';
 
-		$this->_item = Hubzero_User_Profile::getInstance($scope_id);
+		$this->_item = \Hubzero\User\Profile::getInstance($scope_id);
 
 		$config = new JRegistry(
 			JPluginHelper::getPlugin('members', 'blog')->params

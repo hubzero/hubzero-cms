@@ -43,7 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<label for="uid">
 			<input type="hidden" name="uid" value="<?php echo $this->escape($this->uid); ?>" id="uid" />
 			<?php
-				$u = new Hubzero_User_Profile();
+				$u = new \Hubzero\User\Profile();
 				$u->load($this->uid);
 
 				$current_roles = array();

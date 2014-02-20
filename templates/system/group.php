@@ -41,7 +41,7 @@ $return = DS . trim(str_replace(JURI::base(),'', JURI::current()), DS);
 				<div class="col span6 omega">
 					<div id="account" role="navigation">
 						<?php if (!$juser->get('guest')) : ?>
-							<?php $profile = Hubzero_User_Profile::getInstance($juser->get('id')); ?>
+							<?php $profile = \Hubzero\User\Profile::getInstance($juser->get('id')); ?>
 							<ul class="menu loggedin">
 								<li>
 									<div id="account-info">

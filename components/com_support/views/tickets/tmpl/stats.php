@@ -611,7 +611,7 @@ function getMonthName($month)
 					$closeddata = implode(',', $c);
 				}
 				$anon = 0;
-				$profile = Hubzero_User_Profile::getInstance($user->id);
+				$profile = \Hubzero\User\Profile::getInstance($user->id);
 				if (!$profile) 
 				{
 					$anon = 1;

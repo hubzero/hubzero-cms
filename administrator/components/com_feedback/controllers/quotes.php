@@ -197,7 +197,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		$username = trim(JRequest::getVar('username', ''));
 		if ($username)
 		{
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($username);
 
 			$this->view->row->fullname = $profile->get('name');

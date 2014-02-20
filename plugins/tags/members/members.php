@@ -192,7 +192,7 @@ class plgTagsMembers extends JPlugin
 	 */
 	public static function out($row)
 	{
-		$member = Hubzero_User_Profile::getInstance($row->id);
+		$member = \Hubzero\User\Profile::getInstance($row->id);
 
 		if (strstr($row->href, 'index.php')) 
 		{

@@ -429,7 +429,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->row->load($this->view->id);
 
 		// Get groups
-		$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$this->view->groups = $profile->getGroups('members');
 
 		// Output HTML

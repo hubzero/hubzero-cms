@@ -520,7 +520,7 @@ class ResourcesResource extends JTable
 		} 
 		else if (!$juser->get('guest')) 
 		{
-			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			$xgroups = (is_object($profile)) ? $profile->getGroups('all') : array();
 			if ($xgroups != '') 
 			{
@@ -836,7 +836,7 @@ class ResourcesResource extends JTable
 			{
 				if (!isset($filters['usergroups'])) 
 				{
-					$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+					$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 					$xgroups = $profile->getGroups('all');
 				} 
 				else 

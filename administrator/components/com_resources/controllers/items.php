@@ -1787,7 +1787,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$rid = JRequest::getInt('rid', 0);
 
 		// Get the member's info
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($this->view->id);
 
 		if (!is_object($profile) || !$profile->get('uidNumber'))

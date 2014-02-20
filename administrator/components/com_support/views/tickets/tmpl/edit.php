@@ -40,7 +40,7 @@ JToolBarHelper::help('ticket.html', true);
 
 $juser = JFactory::getUser();
 
-$user = new Hubzero_User_Profile();
+$user = new \Hubzero\User\Profile();
 
 $user->load($juser->get('id'));
 $unknown = true;
@@ -48,7 +48,7 @@ $name = '';
 $usertype = JText::_('Unknown');
 $notify = array();
 
-$submitter = new Hubzero_User_Profile();
+$submitter = new \Hubzero\User\Profile();
 
 if ($this->row->login) 
 {
@@ -87,7 +87,7 @@ if (!$name)
 	$notify[] = $name;
 }
 
-$owner = new Hubzero_User_Profile();
+$owner = new \Hubzero\User\Profile();
 if ($this->row->owner)
 {
 	$owner->load($this->row->owner);
@@ -127,7 +127,7 @@ if ($this->row->id) {
 		}*/
 		
 		/*$name = $this->escape($this->row->name);
-		$xuser = new Hubzero_User_Profile();
+		$xuser = new \Hubzero\User\Profile();
 		if ($this->row->login) {
 			$xuser->load($this->row->login);
 			if (is_object($xuser) && $xuser->get('name')) {
@@ -271,7 +271,7 @@ if ($this->row->id) {
 			
 			<ol class="comments">
 <?php
-			$useri = new Hubzero_User_Profile();
+			$useri = new \Hubzero\User\Profile();
 			foreach ($this->comments as $comment)
 			{
 				if ($comment->access == 1) {

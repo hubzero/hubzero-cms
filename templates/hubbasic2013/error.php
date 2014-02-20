@@ -78,7 +78,7 @@ $v = $browser->major();
 
 					<div id="account" role="navigation">
 					<?php if (!$juser->get('guest')) { 
-							$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+							$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 					?>
 						<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 							<li>

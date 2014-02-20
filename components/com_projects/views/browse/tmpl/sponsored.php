@@ -153,7 +153,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= JHTML::_('date', $row->created, $dateFormat, $tz);
 			$html .= '</td>'.n;
 			$html .= '<td class="mini faded">' . '<a href="/members/'.$row->created_by_user.'">'.$row->authorname.'</a>' ;
-			$profile = Hubzero_User_Profile::getInstance($row->created_by_user);
+			$profile = \Hubzero\User\Profile::getInstance($row->created_by_user);
 			if($profile)
 			{
 				$html .= '<span class="block">'. $profile->get('email').'</span>';

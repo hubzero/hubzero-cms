@@ -127,7 +127,7 @@ class plgMembersResume extends JPlugin
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) 
 		{
-			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0) 
 			{
@@ -163,7 +163,7 @@ class plgMembersResume extends JPlugin
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) 
 		{
-			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0) 
 			{
@@ -373,7 +373,7 @@ class plgMembersResume extends JPlugin
 	 */
 	public function getThumb($uid)
 	{
-		$profile = Hubzero_User_Profile::getInstance($uid);
+		$profile = \Hubzero\User\Profile::getInstance($uid);
 
 		return \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 	}

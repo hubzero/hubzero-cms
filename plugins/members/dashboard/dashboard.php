@@ -1114,7 +1114,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	 */
 	protected function addmoduleTask()
 	{
-		$this->member = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
+		$this->member = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 		if ($this->addmodule() == 'ERROR')
 		{
 			return 'ERROR';

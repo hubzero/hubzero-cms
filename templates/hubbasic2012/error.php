@@ -87,7 +87,7 @@ $v = $browser->major();
 							</h1>
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 							<?php if (!$juser->get('guest')) { 
-									$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+									$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 							?>
 								<li id="account-info">
 									<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />

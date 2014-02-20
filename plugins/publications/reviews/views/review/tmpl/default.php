@@ -41,7 +41,7 @@ if ($this->review->id) {
 			<p class="comment-member-photo">
 <?php
 			if (!$this->juser->get('guest')) {
-				$jxuser = new Hubzero_User_Profile();
+				$jxuser = new \Hubzero\User\Profile();
 				$jxuser->load( $this->juser->get('id') );
 				$thumb = plgPublicationsReviews::getMemberPhoto($jxuser, 0);
 			} else {

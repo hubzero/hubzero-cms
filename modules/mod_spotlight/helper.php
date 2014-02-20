@@ -374,7 +374,7 @@ class modSpotlight extends \Hubzero\Module\Module
 				}
 
 				// Load their bio
-				$profile = Hubzero_User_Profile::getInstance($row->uidNumber);
+				$profile = \Hubzero\User\Profile::getInstance($row->uidNumber);
 
 				$mconfig = JComponentHelper::getParams('com_members');
 
@@ -424,7 +424,7 @@ class modSpotlight extends \Hubzero\Module\Module
 			case 'blog':
 				$thumb = trim($this->params->get('default_blogpic', '/modules/mod_spotlight/default.gif'));
 
-				$profile = Hubzero_User_Profile::getInstance($row->created_by);
+				$profile = \Hubzero\User\Profile::getInstance($row->created_by);
 
 				if ($getid)
 				{

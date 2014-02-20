@@ -107,7 +107,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->interestinggroups = array();
 		
 		//get the users profile
-		$profile = Hubzero_User_Profile::getInstance($this->juser->get("id"));
+		$profile = \Hubzero\User\Profile::getInstance($this->juser->get("id"));
 		
 		//if we have a users profile load their groups and groups matching their tags
 		if (is_object($profile))
@@ -1005,7 +1005,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$managers = array();
 			foreach ($group->get('managers') as $m)
 			{
-				$profile = Hubzero_User_Profile::getInstance( $m );
+				$profile = \Hubzero\User\Profile::getInstance( $m );
 				if ($profile)
 				{
 					$managers[$profile->get('email')] = $profile->get('name');
@@ -1315,7 +1315,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$groupMembers = array();
 		foreach ($members as $member)
 		{
-			$profile = Hubzero_User_Profile::getInstance( $member );
+			$profile = \Hubzero\User\Profile::getInstance( $member );
 			if ($profile)
 			{
 				$groupMembers[$profile->get('email')] = $profile->get('name');

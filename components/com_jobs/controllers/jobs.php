@@ -573,7 +573,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Get the member's info
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($uid);
 
 		// load Employer
@@ -669,7 +669,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$uid = $uid ? $uid : $this->juser->get('id');
 
 		// Get the member's info
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($uid);
 
 		// are we renewing?
@@ -958,7 +958,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		}
 
 		// Get the member's info
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($uid);
 
 		// load Employer
@@ -1693,7 +1693,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$job->admins = $code ? $jobadmin->getAdmins($job->id) : array($this->juser->get('id'));
 
 		// Get the member's info
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($uid);
 
 		// load Employer

@@ -174,7 +174,7 @@ class Helper
 	 */
 	public static function isXDomainUser($uid)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = 'SELECT uidNumber FROM #__xdomain_users WHERE #__xdomain_users.uidNumber=' . $db->Quote($uid);
 
@@ -432,7 +432,7 @@ class Helper
 	 */
 	public static function getCommonGroups( $uid, $pid )
 	{
-		$uprofile = \Hubzero_User_Profile::getInstance($uid);
+		$uprofile = Profile::getInstance($uid);
 		
 		// Get the groups the visiting user
 		$xgroups = (is_object($uprofile)) ? $uprofile->getGroups('all') : array();
@@ -447,7 +447,7 @@ class Helper
 		}
 
 		// Get the groups of the profile
-		$pprofile = \Hubzero_User_Profile::getInstance($pid);
+		$pprofile = Profile::getInstance($pid);
 		$pgroups = (is_object($pprofile)) ? $pprofile->getGroups('all') : array();
 		// Get the groups the user has access to
 		$profilesgroups = array();

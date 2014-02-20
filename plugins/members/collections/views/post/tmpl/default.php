@@ -147,7 +147,7 @@ if ($item->get('comments'))
 	<?php
 	foreach ($item->comments() as $comment)
 	{
-		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
+		$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
 		?>
 			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">

@@ -197,7 +197,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-					$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
+					$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
 					$anon = 1;
 					if (!$juser->get('guest')) 
 					{
@@ -214,7 +214,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 							if (!$replyto->get('anonymous')) 
 							{
-								$xuser = Hubzero_User_Profile::getInstance($replyto->get('created_by'));
+								$xuser = \Hubzero\User\Profile::getInstance($replyto->get('created_by'));
 								if (is_object($xuser) && $xuser->get('name')) 
 								{
 									$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $replyto->get('created_by')) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';

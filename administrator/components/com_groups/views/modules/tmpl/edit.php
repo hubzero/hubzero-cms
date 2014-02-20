@@ -159,7 +159,7 @@ function submitbutton(pressbutton)
 						<th><?php echo JText::_('Created By'); ?></th>
 						<td>
 							<?php
-								$profile = Hubzero_User_Profile::getInstance($this->module->get('created_by'));
+								$profile = \Hubzero\User\Profile::getInstance($this->module->get('created_by'));
 								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
 							?>
 						</td>
@@ -184,7 +184,7 @@ function submitbutton(pressbutton)
 								$modified_by = '--';
 								if ($this->module->get('modified_by') != null)
 								{
-									$profile = Hubzero_User_Profile::getInstance($this->module->get('modified_by'));
+									$profile = \Hubzero\User\Profile::getInstance($this->module->get('modified_by'));
 									$modified_by = (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
 								}
 								echo $modified_by;

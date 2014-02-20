@@ -53,7 +53,7 @@ if (!$this->juser->get('guest')) {
 						<span class="comment-anchor"></span>
 					<?php
 						if (!$this->juser->get('guest')) {
-							$jxuser = new Hubzero_User_Profile();
+							$jxuser = new \Hubzero\User\Profile();
 							$jxuser->load($this->juser->get('id'));
 							$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, 0);
 						} else {

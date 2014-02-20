@@ -41,7 +41,7 @@ $shown = array();
 				foreach($this->team as $owner) {
 					
 					// Get profile thumb image 				
-					$profile = Hubzero_User_Profile::getInstance($owner->userid);
+					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 					
 					if(in_array($owner->userid, $this->exclude)) {

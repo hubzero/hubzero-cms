@@ -325,7 +325,7 @@ JHTML::_('behavior.tooltip');
 									</span>
 			<?php } ?>
 			<?php if ($row->owner) { 
-						$owner = Hubzero_User_Profile::getInstance($row->owner);
+						$owner = \Hubzero\User\Profile::getInstance($row->owner);
 						$picture = \Hubzero\User\Profile\Helper::getMemberPhoto($owner, 0);
 			?>
 									<span class="ticket-owner hasTip" title="<?php echo JText::_('Assigned to'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($owner->get('username'))); ?><br /><?php echo ($owner->get('organization')) ? $this->escape(stripslashes($owner->get('organization'))) : '[organization unknown]'; ?>">

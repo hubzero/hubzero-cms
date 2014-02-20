@@ -557,7 +557,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		jimport('joomla.user.helper');
 
 		// Initiate profile classs
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($this->user->get('id'));
 
 		// Fire the onBeforeStoreUser trigger

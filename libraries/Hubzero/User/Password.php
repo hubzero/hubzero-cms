@@ -254,7 +254,7 @@ class Password
 		}
 		else
 		{
-			$hzp = \Hubzero_User_Profile::getInstance($instance);
+			$hzp = Profile::getInstance($instance);
 			
 			if (is_object($hzp))
 			{
@@ -701,7 +701,7 @@ class Password
 		}
 		else if ($alltables)
 		{
-			$profile = \Hubzero_User_Profile::getInstance($user);
+			$profile = Profile::getInstance($user);
 			
 			if (is_object($profile) && ($profile->get('userPassword') != ''))
 			{

@@ -231,7 +231,7 @@ class plgUserXusers extends JPlugin
 	 */
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
-		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
+		$xprofile = \Hubzero\User\Profile::getInstance($user['id']);
 
 		if (!is_object($xprofile)) {
 						
@@ -300,7 +300,7 @@ class plgUserXusers extends JPlugin
 				}
 			}
 			
-			$xprofile = new Hubzero_User_Profile();
+			$xprofile = new \Hubzero\User\Profile();
 			
 			$xprofile->set('gidNumber', $params->get('gidNumber', '100'));
 			$xprofile->set('gid', $params->get('gid', 'users'));
@@ -326,7 +326,7 @@ class plgUserXusers extends JPlugin
 			$result = $xprofile->create();
 
 			if (!$result) {
-				return JError::raiseError('500', 'xHUB Internal Error: Unable to create Hubzero_User_Profile record');
+				return JError::raiseError('500', 'xHUB Internal Error: Unable to create \Hubzero\User\Profile record');
 			}
 		}
 		else {
@@ -428,7 +428,7 @@ class plgUserXusers extends JPlugin
 	 */
 	public function onAfterDeleteUser($user, $succes, $msg)
 	{
-		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
+		$xprofile = \Hubzero\User\Profile::getInstance($user['id']);
 		
 		// remove user from groups
 		\Hubzero\User\Helper::removeUserFromGroups($user['id']);

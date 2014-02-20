@@ -87,7 +87,7 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php if ($this->authorized == 'manager') : ?>
 			<dd class="entry-author">
 				<?php
-					$profile = Hubzero_User_Profile::getInstance($this->announcement->created_by);
+					$profile = \Hubzero\User\Profile::getInstance($this->announcement->created_by);
 					if (is_object($profile) && $profile->get('name') != '')
 					{
 						echo $this->escape($profile->get('name'));

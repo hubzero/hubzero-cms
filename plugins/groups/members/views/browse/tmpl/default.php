@@ -222,7 +222,7 @@ $option = 'com_groups';
 								}
 								$guser = $this->groupusers[($i+$this->start)];
 
-								$u = Hubzero_User_Profile::getInstance($guser);	
+								$u = \Hubzero\User\Profile::getInstance($guser);	
 								if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser)) 
 								{
 									$inviteemail = true;

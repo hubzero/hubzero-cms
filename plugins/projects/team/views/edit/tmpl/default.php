@@ -122,7 +122,7 @@ $dispatcher = JDispatcher::getInstance();
 <?php foreach ($this->team as $owner) 
 	{
 					// Get profile thumb image 			
-					$profile = Hubzero_User_Profile::getInstance($owner->userid);
+					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 					
 					$username = $owner->username ? $owner->username : $owner->invited_email;

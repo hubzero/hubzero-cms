@@ -141,7 +141,7 @@ if ($item->get('comments'))
 { 
 	foreach ($item->comments() as $comment)
 	{
-		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
+		$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
 ?>
 		<div class="commnts">
 			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">

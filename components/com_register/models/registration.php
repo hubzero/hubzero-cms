@@ -1052,7 +1052,7 @@ class RegisterModelRegistration
 			if($task == 'edit')
 			{
 				$corigin_incoming = (in_array('countryorigin', $field_to_check)) ? true : false;
-				$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+				$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			}
 			else
 			{

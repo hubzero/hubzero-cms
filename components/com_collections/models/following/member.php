@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
 {
 	/**
-	 * Hubzero_User_Profile
+	 * \Hubzero\User\Profile
 	 * 
 	 * @var object
 	 */
@@ -76,7 +76,7 @@ class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
 	{
 		//$this->_db = JFactory::getDBO();
 
-		$this->_obj = Hubzero_User_Profile::getInstance($oid);
+		$this->_obj = \Hubzero\User\Profile::getInstance($oid);
 
 		$this->_baselink = 'index.php?option=com_members&id=' . $this->_obj->get('uidNumber') . '&active=collections';
 	}

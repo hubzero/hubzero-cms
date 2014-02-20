@@ -51,7 +51,7 @@ if($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' && $thi
 $deletable = ($this->project->role == 1 or $this->item->created_by == $this->uid) ? 1 : 0;
 
 // Get actors' names
-$profile = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
+$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 $closedby = '';
 $author = '';
 

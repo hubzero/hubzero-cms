@@ -30,6 +30,10 @@
 
 namespace Hubzero\Password;
 
+use Hubzero\User\Profile;
+use Hubzero\User\Password\History;
+use Hubzero\User\Password;
+
 class Rule
 {
 	public static function getRules($group = null, $all = false)
@@ -214,7 +218,7 @@ class Rule
 			{
 				if ($name == null) 
 				{
-					$xuser = \Hubzero_User_Profile::getInstance($user);
+					$xuser = Profile::getInstance($user);
 
 					if (!is_object($xuser)) 
 					{
@@ -271,7 +275,7 @@ class Rule
 				$date = new \DateTime('now');
 				$date->modify("-" . $rule['value'] . "day");
 
-				$phist = \Hubzero\User\Password\History::getInstance($user);
+				$phist = History::getInstance($user);
 				if (!is_object($phist)) {
 					continue;
 				}
@@ -281,7 +285,7 @@ class Rule
 				}
 			}
 			else if ($rule['rule'] == 'notRepeat') {
-				if (\Hubzero\User\Password::passwordMatches($user, $password, true)) {
+				if (Password::passwordMatches($user, $password, true)) {
 					$fail[] = $rule['failuremsg'];
 				}
 			}

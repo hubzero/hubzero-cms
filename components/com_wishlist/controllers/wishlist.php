@@ -1366,7 +1366,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 			$name = JText::_('COM_WISHLIST_UNKNOWN');
 			$login = JText::_('COM_WISHLIST_UNKNOWN');
-			$ruser = Hubzero_User_Profile::getInstance($objWish->proposed_by);
+			$ruser = \Hubzero\User\Profile::getInstance($objWish->proposed_by);
 			if (is_object($ruser)) 
 			{
 				$name  = $ruser->get('name');
@@ -1925,7 +1925,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 					$name = JText::_('COM_WISHLIST_UNKNOWN');
 					$login = JText::_('COM_WISHLIST_UNKNOWN');
-					$ruser = Hubzero_User_Profile::getInstance($objWish->proposed_by);
+					$ruser = \Hubzero\User\Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) 
 					{
 						$name = $ruser->get('name');
@@ -2208,7 +2208,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 					$name = JText::_('COM_WISHLIST_UNKNOWN');
 					$login = JText::_('COM_WISHLIST_UNKNOWN');
-					$ruser = Hubzero_User_Profile::getInstance($objWish->proposed_by);
+					$ruser = \Hubzero\User\Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) 
 					{
 						$name  = $ruser->get('name');
@@ -2827,7 +2827,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 				$name = JText::_('UNKNOWN');
 				$login = JText::_('UNKNOWN');
-				$ruser = Hubzero_User_Profile::getInstance($row->created_by);
+				$ruser = \Hubzero\User\Profile::getInstance($row->created_by);
 				if (is_object($ruser)) 
 				{
 					$name = $ruser->get('name');

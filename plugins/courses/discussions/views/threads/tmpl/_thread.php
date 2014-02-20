@@ -76,7 +76,7 @@ if (!$this->thread->thread)
 							$huser = '';
 							if (!$this->thread->anonymous) 
 							{
-								$huser = Hubzero_User_Profile::getInstance($this->thread->created_by);
+								$huser = \Hubzero\User\Profile::getInstance($this->thread->created_by);
 								if (is_object($huser) && $huser->get('name')) 
 								{
 									$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->thread->created_by) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';

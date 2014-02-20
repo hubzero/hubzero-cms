@@ -1056,7 +1056,7 @@ class plgProjectsDatabases extends JPlugin
 			$commit_message = 'Updated file ' . escapeshellarg($file);
 
 			// Modified By
-			$profile = Hubzero_User_Profile::getInstance($this->_uid);
+			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
 		
 			$name = $profile->get('name');
 			$email = $profile->get('email');

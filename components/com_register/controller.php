@@ -100,7 +100,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
 
-		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$jsession = JFactory::getSession();
 
 		// Get the return URL
@@ -117,7 +117,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 
 		$username = JRequest::getVar('username',$xprofile->get('username'),'get');
 
-		$target_xprofile = Hubzero_User_Profile::getInstance($username);
+		$target_xprofile = \Hubzero\User\Profile::getInstance($username);
 
 		$admin = $this->juser->authorize($this->_option, 'manage');
 		$self = ($xprofile->get('username') == $username);
@@ -404,7 +404,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return $this->_show_registration_form($xregistration, 'proxycreate');
 		}
 
-		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 
 		// Get some settings
 		$jconfig = JFactory::getConfig();
@@ -448,7 +448,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 		$target_juser->save();
 
 		// Attempt to retrieve the new user
-		$target_xprofile = Hubzero_User_Profile::getInstance($target_juser->get('id'));
+		$target_xprofile = \Hubzero\User\Profile::getInstance($target_juser->get('id'));
 		$result = is_object($target_xprofile);
 
 		// Did we successully create an account?
@@ -545,7 +545,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 		// Instantiate a new registration object
 		$xregistration = new RegisterModelRegistration();
 
-		$xprofile    = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile    = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$jsession = JFactory::getSession();
 
 		$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
@@ -911,7 +911,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 					$hubHomeDir = rtrim($params->get('homedir'), '/');
 					
 					// Attempt to get the new user
-					$xprofile = Hubzero_User_Profile::getInstance($user->get('id'));
+					$xprofile = \Hubzero\User\Profile::getInstance($user->get('id'));
 
 					$result = is_object($xprofile);
 					
@@ -1382,7 +1382,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
 		$email_confirmed = $xprofile->get('emailConfirmed');
@@ -1394,7 +1394,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 		{
 			$confirm = RegisterHelperUtility::genemailconfirm();
 
-			$xprofile = new Hubzero_User_Profile();
+			$xprofile = new \Hubzero\User\Profile();
 			$xprofile->load($login);
 			$xprofile->set('emailConfirmed', $confirm);
 			$xprofile->update();
@@ -1476,7 +1476,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
 		$email_confirmed = $xprofile->get('emailConfirmed');
@@ -1516,7 +1516,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 				else 
 				{
 					// New email submitted - attempt to save it
-					$xprofile = Hubzero_User_Profile::getInstance($login);
+					$xprofile = \Hubzero\User\Profile::getInstance($login);
 					if ($xprofile) 
 					{
 						$dtmodify = JFactory::getDate()->toSql();
@@ -1545,7 +1545,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 						// Attempt to send a new confirmation code
 						$confirm = RegisterHelperUtility::genemailconfirm();
 
-						$xprofile = new Hubzero_User_Profile();
+						$xprofile = new \Hubzero\User\Profile();
 						$xprofile->load($login);
 						$xprofile->set('emailConfirmed', $confirm);
 						$xprofile->update();
@@ -1632,7 +1632,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
@@ -1664,7 +1664,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 			}
 			
 			//load user profile
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load($xprofile->get('username'));
 			
 			//check to see if we have a return param
@@ -1730,7 +1730,7 @@ class RegisterController extends \Hubzero\Component\SiteController
 	 */
 	protected function unconfirmed()
 	{
-		$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
 		// Incoming

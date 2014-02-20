@@ -437,7 +437,7 @@ class plgMembersCourses extends JPlugin
 		}
 
 		// Do we have a member ID?
-		if ($member instanceof Hubzero_User_Profile) 
+		if ($member instanceof \Hubzero\User\Profile) 
 		{
 			if (!$member->get('uidNumber')) 
 			{

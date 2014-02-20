@@ -191,7 +191,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->profile = new Hubzero_User_Profile();
+		$this->view->profile = new \Hubzero\User\Profile();
 		$this->view->profile->load($id);
 
 		$this->view->password = \Hubzero\User\Password::getInstance($id);
@@ -250,7 +250,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$p = JRequest::getVar('profile', array(), 'post', 'none', 2);
 
 		// Load the profile
-		$profile = new Hubzero_User_Profile();
+		$profile = new \Hubzero\User\Profile();
 		$profile->load($id);
 
 		// Set the new info
@@ -498,7 +498,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 				$assoc->deleteAssociations();
 
 				// Remove the profile
-				$profile = new Hubzero_User_Profile();
+				$profile = new \Hubzero\User\Profile();
 				$profile->load($id);
 				$profile->delete();
 			}
@@ -558,7 +558,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the profile
-			$profile = new Hubzero_User_Profile();
+			$profile = new \Hubzero\User\Profile();
 			$profile->load(intval($id));
 
 			if ($state) 

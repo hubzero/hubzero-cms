@@ -70,7 +70,7 @@ class GroupsHelperPages
 		
 		foreach ($approvers as $approver)
 		{
-			$profile = Hubzero_User_Profile::getInstance( $approver );
+			$profile = \Hubzero\User\Profile::getInstance( $approver );
 			if ($profile)
 			{
 				$emails[$profile->get('email')] = $profile->get('name');
@@ -162,7 +162,7 @@ class GroupsHelperPages
 		// get all manager email addresses
 		foreach ($group->get('managers') as $m)
 		{
-			$profile = Hubzero_User_Profile::getInstance( $m );
+			$profile = \Hubzero\User\Profile::getInstance( $m );
 			if ($profile)
 			{
 				$managers[$profile->get('email')] = $profile->get('name');

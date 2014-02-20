@@ -121,7 +121,7 @@ class plgMembersWiki extends JPlugin
 		}
 
 		// Do we have a member ID?
-		if (get_class($member) == 'Hubzero_User_Profile') 
+		if ($member instanceof \Hubzero\User\Profile) 
 		{
 			if (!$member->get('uidNumber')) 
 			{
@@ -265,7 +265,7 @@ class plgMembersWiki extends JPlugin
 		}
 
 		// Do we have a member ID?
-		if (get_class($member) == 'Hubzero_User_Profile') 
+		if (get_class($member) == '\Hubzero\User\Profile') 
 		{
 			if (!$member->get('uidNumber')) 
 			{

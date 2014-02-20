@@ -118,7 +118,7 @@ if ($rows)
 	foreach ($rows as $row)
 	{
 		$name = JText::_('(unknown)');
-		$xprofile = Hubzero_User_Profile::getInstance($row->created_by);
+		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
 		if (is_object($xprofile))
 		{
 			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($xprofile->get('name'))) . '</a>';

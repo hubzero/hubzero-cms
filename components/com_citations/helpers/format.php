@@ -874,7 +874,7 @@ class CitationFormat
 		$html = "\t" . '<p>';
 		if (CitationFormat::keyExistsOrIsNotEmpty('author', $row)) 
 		{
-			$xprofile = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
+			$xprofile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 			$app   = JFactory::getApplication();
 			$auths = explode(';', $row->author);
 			$a = array();
