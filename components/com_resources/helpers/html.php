@@ -2454,7 +2454,7 @@ class ResourcesHtml
 				break;
 
 				default:
-					$fs = ($fsize) ? $fs : Hubzero_View_Helper_Html::formatSize($fs);
+					$fs = ($fsize) ? $fs : \Hubzero\Utility\Number::formatBytes($fs, 2);
 				break;
 			}
 
@@ -2473,7 +2473,7 @@ class ResourcesHtml
 	 */
 	public static function formatsize($file_size)
 	{
-		return Hubzero_View_Helper_Html::formatSize($file_size);
+		return \Hubzero\Utility\Number::formatBytes($file_size, 2);
 	}
 
 	/**

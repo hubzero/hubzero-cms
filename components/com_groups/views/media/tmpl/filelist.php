@@ -118,7 +118,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 				
 				// formatted results
 				$extension           = $fileInfo['extension'];
-				$formattedFilesize   = Hubzero_View_Helper_Html::formatSize( $filesize );
+				$formattedFilesize   = \Hubzero\Utility\Number::formatBytes( $filesize );
 				$formattedDimensions = $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px';
 				$formattedModified   = date('m/d/Y g:ia', $modified);
 				

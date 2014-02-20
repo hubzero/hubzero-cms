@@ -1533,7 +1533,7 @@ class PublicationsHtml
 	 */
 	public static function formatsize($file_size)
 	{
-		return Hubzero_View_Helper_Html::formatSize($file_size);
+		return \Hubzero\Utility\Number::formatBytes($file_size);
 	}
 	
 	/**

@@ -143,7 +143,7 @@ if ($rows)
 		$fsize = JText::_('(unknown)');
 		if (is_file(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename))
 		{
-			$fsize = Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename));
+			$fsize = \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename));
 		}
 
 		$name = JText::_('(unknown)');

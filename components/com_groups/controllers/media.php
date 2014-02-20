@@ -480,7 +480,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// file is under file size limit
 		if ($file['size'] > $sizeLimit)
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			$returnObj->error   = true;
 			$returnObj->message = 'File is too large. Max file upload size is ' . $max;
 			return $returnObj;
@@ -655,7 +655,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 		if ($size > $sizeLimit) 
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
 			return;
 		}

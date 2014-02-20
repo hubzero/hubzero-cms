@@ -92,7 +92,7 @@ foreach ($this->folders as $fullpath => $name)
 								</a>
 							</td>
 							<td class="file-size">
-								<?php //echo Hubzero_View_Helper_Html::formatSize(\Hubzero\Filesystem\Filesystem::size($fullpath)); ?>
+								<?php //echo \Hubzero\Utility\Number::formatBytes(\Hubzero\Filesystem\Filesystem::size($fullpath)); ?>
 							</td>
 <?php if ($dir != '/data' && $dir != '/sessions') { ?>
 							<td>
@@ -118,7 +118,7 @@ foreach ($this->docs as $fullpath => $name)
 								<?php echo $name; ?>
 							</td>
 							<td class="file-size">
-								<?php echo Hubzero_View_Helper_Html::formatSize(filesize($fullpath)); ?>
+								<?php echo \Hubzero\Utility\Number::formatBytes(filesize($fullpath)); ?>
 							</td>
 							<td>
 								<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $name; ?>');" title="<?php echo JText::_('DELETE'); ?>">

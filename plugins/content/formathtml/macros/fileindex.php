@@ -96,7 +96,7 @@ class FileIndex extends Macro
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
-				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero_View_Helper_Html::formatSize(filesize($fpath)) : '-- file not found --') . ') ';
+				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \\Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
 				$huser = \JUser::getInstance($row->created_by);
 				if ($huser->get('id'))
 				{

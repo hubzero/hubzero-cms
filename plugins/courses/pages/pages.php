@@ -493,7 +493,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 		if ($size > $sizeLimit) 
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			ob_clean();
 			header('Content-type: text/plain');
 			echo json_encode(array('error' => JText::sprintf('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARG', $max)));

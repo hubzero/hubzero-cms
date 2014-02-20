@@ -110,14 +110,14 @@ if ($assets->total() > 0)
 					<span class="file-meta">
 						<span class="file-size">
 				<?php if ($asset->get('type') != 'link') { ?>
-							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
+							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 				<?php } else { ?>
 							<?php echo JText::_('COM_COLLECTIONS_ASSET_TYPE_LINK'); ?>
 				<?php } ?>
 						</span>
 				<?php if ($asset->get('description')) { ?>
 						<span class="file-description">
-							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
+							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 						</span>
 				<?php } ?>
 					</span>
