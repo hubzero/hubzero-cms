@@ -469,7 +469,7 @@ class ToolsHelperUtils
 		$export_control = strtolower( $export_control );
 		
 		//get the users country based on ip address
-		$country = Hubzero_Geo::ipcountry( $ip );
+		$country = \Hubzero\Geocode\Geocode::ipcountry( $ip );
 		
 		//if we dont know the users location and its a restricted to we have to deny access
 		if (empty($country) && in_array($export_control, array('us', 'd1', 'pu')))
@@ -481,7 +481,7 @@ class ToolsHelperUtils
 		}
 		
 		//if the user is in an E1 nation
-		if (Hubzero_Geo::is_e1nation(Hubzero_Geo::ipcountry($ip))) 
+		if (\Hubzero\Geocode\Geocode::is_e1nation(Hubzero_Geo::ipcountry($ip))) 
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = 'This tool may not be accessed from your current location due to E1 export/license restrictions.';
@@ -493,7 +493,7 @@ class ToolsHelperUtils
 		switch ($export_control)
 		{
 			case 'us':
-				if (Hubzero_Geo::ipcountry( $ip ) != 'us') 
+				if (\Hubzero\Geocode\Geocode::ipcountry( $ip ) != 'us') 
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed from within the U.S. due to export/licensing restrictions.';
@@ -503,7 +503,7 @@ class ToolsHelperUtils
 			break;
 
 			case 'd1':
-				if (Hubzero_Geo::is_d1nation( Hubzero_Geo::ipcountry( $ip ) )) 
+				if (\Hubzero\Geocode\Geocode::is_d1nation( Hubzero_Geo::ipcountry( $ip ) )) 
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';
@@ -513,7 +513,7 @@ class ToolsHelperUtils
 			break;
 
 			case 'pu':
-				if (!Hubzero_Geo::is_iplocation( $ip, $export_control )) 
+				if (!\Hubzero\Geocode\Geocode::is_iplocation( $ip, $export_control )) 
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.';

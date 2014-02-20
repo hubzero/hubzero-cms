@@ -790,7 +790,7 @@ class CitationsCitation extends JTable
 				}
 				if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) 
 				{
-					$countries = Hubzero_Geo::getCountriesByContinent('na');
+					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('na');
 					$c = implode("','",$countries);
 					if ($multi) 
 					{
@@ -801,7 +801,7 @@ class CitationsCitation extends JTable
 				}
 				if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) 
 				{
-					$countries = Hubzero_Geo::getCountriesByContinent('eu');
+					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('eu');
 					$c = implode("','", $countries);
 					if ($multi) 
 					{
@@ -812,7 +812,7 @@ class CitationsCitation extends JTable
 				}
 				if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1) 
 				{
-					$countries = Hubzero_Geo::getCountriesByContinent('as');
+					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('as');
 					$c = implode("','", $countries);
 					if ($multi) 
 					{

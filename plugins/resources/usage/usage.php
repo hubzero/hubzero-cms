@@ -447,7 +447,7 @@ class plgResourcesUsage extends JPlugin
 				$names[] = $row->name;
 			}
 
-			$codes = Hubzero_Geo::getCodesByNames($names);
+			$codes = \Hubzero\Geocode\Geocode::getCodesByNames($names);
 
 			$i = 0;
 			foreach ($countries as $row)

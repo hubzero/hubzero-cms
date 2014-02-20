@@ -157,7 +157,7 @@ function submitbutton(pressbutton)
 							$out .= "\t\t\t\t".' <option value="">(select from list)</option>'."\n";
 							//$countries = getcountries();
 
-							$countries = Hubzero_Geo::getcountries();
+							$countries = \Hubzero\Geocode\Geocode::getcountries();
 							foreach ($countries as $country)
 							{
 								$out .= "\t\t\t\t".' <option value="' . htmlentities($country['name']) . '"';

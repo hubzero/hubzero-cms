@@ -65,8 +65,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<select name="country" id="country">
 						<option value=""><?php echo JText::_('(select from list)'); ?></option>
 <?php 
-	$countries = Hubzero_Geo::getcountries();
-	$mycountry = (isset($this->posted['country'])) ? $this->posted['country'] : Hubzero_Geo::getcountry($this->xprofile->get('countryresident'));
+	$countries = \Hubzero\Geocode\Geocode::getcountries();
+	$mycountry = (isset($this->posted['country'])) ? $this->posted['country'] : \Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'));
 	foreach ($countries as $country)
 	{
 ?>

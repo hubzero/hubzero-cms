@@ -658,7 +658,7 @@ defined('_JEXEC') or die('Restricted access');
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 			if (!$this->registration['countryorigin']) {
-				$userCountry = Hubzero_Geo::ipcountry(JRequest::ip());
+				$userCountry = \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip());
 				$this->registration['countryorigin'] = $userCountry;
 			}
 
@@ -688,7 +688,7 @@ defined('_JEXEC') or die('Restricted access');
 				$html .= "\t\t\t\t\t".'<option value="">'.JText::_('COM_REGISTER_FORM_SELECT_FROM_LIST').'</option>'."\n";
 			}
 
-			$countries = Hubzero_Geo::getcountries();
+			$countries = \Hubzero\Geocode\Geocode::getcountries();
 			if ($countries) {
 				foreach ($countries as $country)
 				{
@@ -714,7 +714,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			if (!$this->registration['countryresident']) {
 				if (!isset($userCountry) || !$userCountry) {
-					$userCountry = Hubzero_Geo::ipcountry(JRequest::ip());
+					$userCountry = \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip());
 				}
 				$this->registration['countryresident'] = $userCountry;
 			}
@@ -743,7 +743,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 			if (!isset($countries) || !$countries) {
-				$countries = Hubzero_Geo::getcountries();
+				$countries = \Hubzero\Geocode\Geocode::getcountries();
 			}
 			if ($countries) {
 				foreach ($countries as $country) {

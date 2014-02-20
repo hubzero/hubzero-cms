@@ -1080,7 +1080,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$source_region  = 'unknown';
 		$source_country = 'unknown';
 
-		$gdb = Hubzero_Geo::getGeoDBO();
+		$gdb = \Hubzero\Geocode\Geocode::getGeoDBO();
 		if (is_object($gdb)) 
 		{
 			$gdb->setQuery("SELECT countrySHORT, countryLONG, ipREGION, ipCITY FROM ipcitylatlong WHERE INET_ATON('$ip') BETWEEN ipFROM and ipTO");

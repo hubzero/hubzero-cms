@@ -414,7 +414,7 @@ if ($results)
 							$i++;
 						}
 
-						$codes = Hubzero_Geo::getCodesByNames($names);
+						$codes = \Hubzero\Geocode\Geocode::getCodesByNames($names);
 
 						$cls = 'even';
 						//$pie = array();

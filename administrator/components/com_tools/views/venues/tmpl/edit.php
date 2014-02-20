@@ -91,7 +91,7 @@ function submitbutton(pressbutton)
 <?php
 							$found = array('one', 'two', 'three');
 
-							if ($countries = Hubzero_Geo::getcountries()) 
+							if ($countries = \Hubzero\Geocode\Geocode::getcountries()) 
 							{
 								foreach ($countries as $country)
 								{

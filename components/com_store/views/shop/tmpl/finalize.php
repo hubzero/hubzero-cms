@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="address2" value="<?php echo (isset($this->posted['address2'])) ? $this->escape($this->posted['address2']) : ''; ?>" />
 				<input type="hidden" name="city" value="<?php echo (isset($this->posted['city'])) ? $this->escape($this->posted['city']) : ''; ?>" />
 				<input type="hidden" name="state" value="<?php echo (isset($this->posted['state'])) ? $this->escape($this->posted['state']) : ''; ?>" />
-				<input type="hidden" name="country" value="<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(Hubzero_Geo::getcountry($this->xprofile->get('countryresident'))); ?>" />
+				<input type="hidden" name="country" value="<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(\Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'))); ?>" />
 				<input type="hidden" name="postal" value="<?php echo (isset($this->posted['postal'])) ? $this->escape($this->posted['postal']) : ''; ?>" />
 				<input type="hidden" name="phone" value="<?php echo (isset($this->posted['phone'])) ? $this->escape($this->posted['phone']) : ''; ?>" />
 				<input type="hidden" name="email" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : $this->juser->get('email'); ?>" />
@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				 
 <?php echo (isset($this->posted['address'])) ? $this->escape($this->posted['address']) : ''; ?>
 
-<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(Hubzero_Geo::getcountry($this->xprofile->get('countryresident'))); ?></pre>
+<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(\Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'))); ?></pre>
 				<p><a class="actionlink" href="javascript:void(0);" id="change_address"><?php echo JText::_('COM_STORE_CHANGE_ADDRESS'); ?></a></p>
 			</fieldset>
 			<fieldset>

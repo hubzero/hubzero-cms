@@ -374,7 +374,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	if ($this->registration->Citizenship != REG_HIDE
 	 || $this->registration->Residency != REG_HIDE) {
-		$countries = Hubzero_Geo::getcountries();
+		$countries = \Hubzero\Geocode\Geocode::getcountries();
 	}
 
 	if ($this->registration->Citizenship != REG_HIDE) {

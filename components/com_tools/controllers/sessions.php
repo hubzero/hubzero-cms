@@ -1475,7 +1475,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		$ip = JRequest::ip();
 
-		$country = Hubzero_Geo::ipcountry($ip);
+		$country = \Hubzero\Geocode\Geocode::ipcountry($ip);
 
 		if (empty($country) && in_array($exportcontrol, array('us', 'd1', 'pu')))
 		{
@@ -1484,7 +1484,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return false;
 		}
 
-		if (Hubzero_Geo::is_e1nation(Hubzero_Geo::ipcountry($ip))) 
+		if (\Hubzero\Geocode\Geocode::is_e1nation(Hubzero_Geo::ipcountry($ip))) 
 		{
 			$this->setError('This tool may not be accessed from your current location due to E1 export/license restrictions.');
 			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
@@ -1494,7 +1494,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		switch ($exportcontrol)
 		{
 			case 'us':
-				if (Hubzero_Geo::ipcountry($ip) != 'us') 
+				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us') 
 				{
 					$this->setError('This tool may only be accessed from within the U.S. due to export/licensing restrictions.');
 					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
@@ -1503,7 +1503,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			break;
 
 			case 'd1':
-				if (Hubzero_Geo::is_d1nation(Hubzero_Geo::ipcountry($ip))) 
+				if (\Hubzero\Geocode\Geocode::is_d1nation(Hubzero_Geo::ipcountry($ip))) 
 				{
 					$this->setError('This tool may not be accessed from your current location due to export/license restrictions.');
 					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
@@ -1512,7 +1512,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			break;
 
 			case 'pu':
-				if (!Hubzero_Geo::is_iplocation($ip, $exportcontrol)) 
+				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol)) 
 				{
 					$this->setError('This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.');
 					$xlog->debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
