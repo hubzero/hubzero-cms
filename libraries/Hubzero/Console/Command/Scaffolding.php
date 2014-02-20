@@ -32,6 +32,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Console\Config;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -145,6 +146,36 @@ class Scaffolding implements CommandInterface
 				$this->output->error('Error: Sorry, scaffolding doesn\'t know how to create a ' . $this->type);
 			}
 		}
+
+		// Get author name and email - we'll go ahaed and retrieve for all create calls
+		$user_name  = Config::get('user_name');
+		$user_email = Config::get('user_email');
+
+		if (!$user_name || !$user_email)
+		{
+			$this->output
+				 ->addSpacer()
+				 ->addLine('You can specify your name and email via:')
+				 ->addLine(
+				 	'muse configure --name="John Doe"',
+				 	array(
+				 		'indentation' => '2',
+				 		'color'       => 'blue'
+				 	)
+				 )
+				 ->addLine(
+				 	'muse configure --email=john.doe@gmail.com',
+				 	array(
+				 		'indentation' => '2',
+				 		'color'       => 'blue'
+				 	)
+				 )
+				 ->addSpacer()
+				 ->error("Error: failed to retrieve author name and/or email.");
+		}
+
+		$obj->addReplacement('author_name', $user_name)
+			->addReplacement('author_email', $user_email);
 
 		// Call the construct method
 		$obj->construct();
@@ -327,6 +358,8 @@ class Scaffolding implements CommandInterface
 	/**
 	 * Write contents out to file
 	 *
+	 * @param  (string) $path - location of file to put contents
+	 * @param  (string) $contents - contents to write to file
 	 * @return void
 	 **/
 	private function putContents($path, $contents)
@@ -346,6 +379,7 @@ class Scaffolding implements CommandInterface
 	/**
 	 * Scan template folder for files to iterate through
 	 *
+	 * @param  (string) $path - path of folder to scan
 	 * @return void
 	 **/
 	private function scanFolder($path)
@@ -374,9 +408,10 @@ class Scaffolding implements CommandInterface
 	/**
 	 * Make a given string plural...trying to account for as many english language constructs as possible
 	 *
+	 * @param  (string) $string - incoming string
 	 * @return (string) $string - plural form of given string
 	 **/
-	public static function makePlural($string)
+	private static function makePlural($string)
 	{
 		$plural = array(
 			array( '/(quiz)$/i',               "$1zes"   ),
