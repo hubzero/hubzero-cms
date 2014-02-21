@@ -304,36 +304,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 */	
 	public function getMemberPhoto( $member, $anonymous = 0 )
 	{
-		$config = JComponentHelper::getParams( 'com_members' );
-		
-		if (!$anonymous && $member->get('picture')) 
-		{
-			$thumb  = $config->get('webpath');
-			$thumb = DS . trim($thumb, DS);
-			$thumb .= DS.\Hubzero\Utility\String::pad($member->get('uidNumber')) . DS . $member->get('picture');
-			
-			$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
-		} 
-		else 
-		{
-			$thumb = '';
-		}
-		
-		$dfthumb = $config->get('defaultpic');
-		if (substr($dfthumb, 0, 1) != DS) 
-		{
-			$dfthumb = DS.$dfthumb;
-		}
-		$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
-		
-		if ($thumb && is_file(JPATH_ROOT.$thumb)) 
-		{
-			return $thumb;
-		} 
-		elseif (is_file(JPATH_ROOT.$dfthumb)) 
-		{
-			return $dfthumb;
-		}
+		return $member->getPicture($anonymous);
 	}
 }
 

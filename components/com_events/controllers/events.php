@@ -1213,24 +1213,24 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		if ($register) 
 		{
 			$register = array_map('trim', $register);
-			$register = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $register);
+			$register = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $register);
 
 			$validemail = $this->_validEmail($register['email']);
 		}
 		if ($arrival) 
 		{
 			$arrival = array_map('trim', $arrival);
-			$arrival = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $arrival);
+			$arrival = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $arrival);
 		}
 		if ($departure) 
 		{
 			$departure = array_map('trim', $departure);
-			$departure = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $departure);
+			$departure = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $departure);
 		}
 		if ($dietary) 
 		{
 			$dietary = array_map('trim', $dietary);
-			$dietary = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $dietary);
+			$dietary = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $dietary);
 		}
 
 		if ($register['firstname'] && $register['lastname'] && ($validemail == 1)) 

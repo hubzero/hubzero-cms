@@ -253,14 +253,6 @@ if (!$this->app->sess) {
 							</td>
 						</tr>
 				<?php } else {
-					$config = JComponentHelper::getParams('com_members');
-					$thumb = $config->get('webpath');
-					$thumb = DS . trim($thumb, DS);
-
-					$dfthumb = $config->get('defaultpic');
-					$dfthumb = DS . ltrim($dfthumb, DS);
-					$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
-					
 					foreach ($this->shares as $row)
 					{
 						if ($row->viewuser != $juser->get('username')) 
@@ -270,14 +262,7 @@ if (!$this->app->sess) {
 							$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
 
 							// User picture
-							$uthumb = '';
-							if ($user->get('picture')) 
-							{
-								$uthumb = $thumb . DS . \Hubzero\Utility\String::pad($user->get('uidNumber')) . DS . $user->get('picture');
-								$uthumb = Hubzero_View_Helper_Html::thumbit($uthumb);
-							}
-
-							$p = ($uthumb && is_file(JPATH_ROOT . $uthumb)) ? $uthumb : $dfthumb;
+							$p = $user->getPicture();
 						?>
 						<tr>
 							<th class="entry-img">

@@ -376,46 +376,12 @@ class modSpotlight extends \Hubzero\Module\Module
 				// Load their bio
 				$profile = \Hubzero\User\Profile::getInstance($row->uidNumber);
 
-				$mconfig = JComponentHelper::getParams('com_members');
-
-				if (isset($row->picture) && $row->picture != '')
-				{
-					// Yes - so build the path to it
-					$thumb  = DS . trim($mconfig->get('webpath'), DS);
-					$thumb .= DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
-
-					// No - use default picture
-					if (is_file(JPATH_ROOT . $thumb))
-					{
-						// Build a thumbnail filename based off the picture name
-						$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
-
-						if (!is_file(JPATH_ROOT . $thumb))
-						{
-							// Create a thumbnail image
-							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-							$ih = new MembersImgHandler();
-							$ih->set('image', $row->picture);
-							$ih->set('path', JPATH_ROOT . $mconfig->get('webpath') . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS);
-							$ih->set('maxWidth', 50);
-							$ih->set('maxHeight', 50);
-							$ih->set('cropratio', '1:1');
-							$ih->set('outputName', $ih->createThumbName());
-						}
-					}
-				}
-				// No - use default picture
-				if (!$thumb || !is_file(JPATH_ROOT . $thumb))
-				{
-					$thumb = DS . trim($mconfig->get('defaultpic'), DS);
-				}
-
 				$title = $row->name;
 				if (!trim($title))
 				{
 					$title = $row->givenName . ' ' . $row->surname;
 				}
-				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->uidNumber) . '"><img width="30" height="30" src="' . $thumb . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
+				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->uidNumber) . '"><img width="30" height="30" src="' . $profile->getPicture() . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
 				$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->uidNumber) . '">' . $title . '</a></span>, ' . $row->organization . "\n";
 				$out .= ' - ' . JText::_('Contributions') . ': ' . $this->_countContributions($row->uidNumber) . "\n";
 				$out .= '<div class="clear"></div>'."\n";

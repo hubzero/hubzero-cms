@@ -224,7 +224,7 @@ if (count($this->rows) > 0)
 	$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
 
 	$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
-	$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
+	$dfthumb = \Hubzero\User\Profile\Helper::thumbit($dfthumb);
 
 	// User messaging
 	$messaging = false;
@@ -319,7 +319,7 @@ if (count($this->rows) > 0)
 			$new_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . 'thumb.png';
 			
 			$old_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
-			$old_thumb = Hubzero_View_Helper_Html::thumbit($old_thumb);
+			$old_thumb = \Hubzero\User\Profile\Helper::thumbit($old_thumb);
 		}
 
 		if ($new_thumb && is_file(JPATH_ROOT . $new_thumb)) 

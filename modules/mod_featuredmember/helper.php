@@ -234,49 +234,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 				}
 			}
 
-			// Do we have a picture?
-			$thumb = '';
-			if (isset($this->row->picture) && $this->row->picture != '') 
-			{
-				// Yes - so build the path to it
-				$thumb  = DS . trim($config->get('webpath', '/site/members'), DS);
-				$thumb .= DS . \Hubzero\Utility\String::pad($this->row->uidNumber) . DS . $this->row->picture;
-
-				// No - use default picture
-				if (is_file(JPATH_ROOT . $thumb)) 
-				{
-					// Build a thumbnail filename based off the picture name
-					$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
-
-					if (!is_file(JPATH_ROOT . $thumb)) 
-					{
-						// Create a thumbnail image
-						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-
-						$ih = new MembersImgHandler();
-						$ih->set('image', $this->row->picture);
-						$ih->set('path', JPATH_ROOT . DS . trim($config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($this->row->uidNumber) . DS);
-						$ih->set('maxWidth', 50);
-						$ih->set('maxHeight', 50);
-						$ih->set('cropratio', '1:1');
-						$ih->set('outputName', $ih->createThumbName());
-						if (!$ih->process()) 
-						{
-							$this->setError($ih->getError());
-						}
-					}
-				}
-			}
-
-			// No - use default picture
-			if (!is_file(JPATH_ROOT . $thumb)) 
-			{
-				$thumb = DS . ltrim($config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
-				// Build a thumbnail filename based off the picture name
-				$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
-			}
-
-			$this->thumb   = $thumb;
+			$this->thumb   = $this->profile->getPicture();
 			$this->filters = $filters;
 
 			require(JModuleHelper::getLayoutPath($this->module->module));

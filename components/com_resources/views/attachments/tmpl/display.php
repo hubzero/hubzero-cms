@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access');
 						<span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>">
 							<?php echo $this->escape($child->title); ?>
 						</span> 
-						<?php echo ($isFile) ? Hubzero_View_Helper_Html::getFileAttribs($url, $base) : '<span class="caption">' . $url . '</span>'; ?>
+						<?php echo ($isFile) ? ResourcesHtml::getFileAttribs($url, $base) : '<span class="caption">' . $url . '</span>'; ?>
 					</td>
 					<td class="u">
 						<?php

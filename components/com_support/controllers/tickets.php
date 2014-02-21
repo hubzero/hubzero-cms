@@ -932,8 +932,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Probably redundant after the change to call JRequest::_cleanVar change above, It is a bit hard to 
 		// tell if the Joomla  _cleanvar function does enough to allow us to remove the purifyText call
-		$reporter = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $reporter);
-		//$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
+		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
+		//$problem  = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $problem);
 
 		// Make sure email address is valid
 		$validemail = $this->_isValidEmail($reporter['email']);
