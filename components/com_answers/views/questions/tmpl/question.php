@@ -473,7 +473,7 @@ if (!$this->question->get('anonymous'))
 		
 		<?php if ($this->juser->get('username') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
 			<div class="container">
-			<p class="info"><?php echo JText::_('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE'); ?></p>
+				<p class="info"><?php echo JText::_('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE') . ($this->question->config('banking') ? ' ' . JText::_('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE_POINTS') : ''); ?></p>
 			</div><!-- / .container -->
 		<?php } ?>
 		</div><!-- / .aside -->
