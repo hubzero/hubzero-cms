@@ -174,7 +174,7 @@ class EventsCalendar extends JTable
 	{
 		//get refresh interval
 		$params = \Hubzero\Plugin\Plugin::getParams('calendar','groups');
-		$refreshInterval = $params->get('import_subscription_interval', 60);
+		$interval = $params->get('import_subscription_interval', 60);
 		
 		//get all group calendars
 		$calendars = $this->getCalendars( $group );
@@ -195,7 +195,7 @@ class EventsCalendar extends JTable
 			// get datetimes needed to refresh
 			$now             = JFactory::getDate();
 			$lastRefreshed   = JFactory::getDate($calendar->last_fetched_attempt);
-			$refreshInterval = new DateInterval("PT{$refreshInterval}M");
+			$refreshInterval = new DateInterval("PT{$interval}M");
 
 			// add refresh interval to last refreshed
 			$lastRefreshed->add($refreshInterval);
