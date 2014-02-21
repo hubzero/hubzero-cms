@@ -100,8 +100,6 @@ class Migration extends Scaffolding
 
 		// Open in editor
 		system("{$editor} {$destination} > `tty`");
-
-		$this->output->addLine("New migration script '{$destination}' successfully created!", 'success');
 	}
 
 	/**

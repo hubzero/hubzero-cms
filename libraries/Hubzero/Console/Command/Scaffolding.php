@@ -379,7 +379,11 @@ class Scaffolding implements CommandInterface
 		{
 			$newfile = preg_replace("/%=([[:alpha:]_]*)=%/", $this->replacements[$matches[1]], $info['filename']);
 			rename($path, $info['dirname'] . DS . $newfile . '.' . $info['extension']);
+
+			$path = $info['dirname'] . DS . $newfile . '.' . $info['extension'];
 		}
+
+		$this->output->addLine("Creating {$path}", 'success');
 	}
 
 	/**
