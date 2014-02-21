@@ -48,7 +48,8 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			'name' => 'usage',
 			'title' => JText::_('USAGE'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => $this->params->get('display_tab', 1)
+			'display_menu_tab' => $this->params->get('display_tab', 1),
+			'icon' => 'f080'
 		);
 		return $area;
 	}

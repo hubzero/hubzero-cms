@@ -54,7 +54,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'name' => 'calendar',
 			'title' => JText::_('PLG_GROUPS_CALENDAR'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => $this->params->get('display_tab', 1)
+			'display_menu_tab' => $this->params->get('display_tab', 1),
+			'icon' => 'f073'
 		);
 		return $area;
 	}

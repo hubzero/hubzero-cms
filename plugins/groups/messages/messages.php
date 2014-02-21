@@ -54,7 +54,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			'name' => 'messages',
 			'title' => JText::_('PLG_GROUPS_MESSAGES'),
 			'default_access' => $this->params->get('plugin_access','members'),
-			'display_menu_tab' => $this->params->get('display_tab', 1)
+			'display_menu_tab' => $this->params->get('display_tab', 1),
+			'icon' => '2709'
 		);
 		return $area;
 	}

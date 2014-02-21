@@ -54,7 +54,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			'name' => $this->_name,
 			'title' => JText::_('COM_GROUPS_ANNOUNCEMENTS'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => $this->params->get('display_tab', 1)
+			'display_menu_tab' => $this->params->get('display_tab', 1),
+			'icon' => 'f095'
 		);
 		return $area;
 	}

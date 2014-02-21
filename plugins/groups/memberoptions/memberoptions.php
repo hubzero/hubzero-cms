@@ -70,7 +70,8 @@ class plgGroupsMemberOptions extends JPlugin
 			'name' => 'memberoptions',
 			'title' => JText::_('GROUP_MEMBEROPTIONS'),
 			'default_access' => 'registered', 
-			'display_menu_tab' => $this->params->get('display_tab', 0)
+			'display_menu_tab' => $this->params->get('display_tab', 0),
+			'icon' => '2699'
 		);
 
 		return $area;
