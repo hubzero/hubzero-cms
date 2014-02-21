@@ -427,7 +427,7 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		}
 
 		// Build the file path
-		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $dir;
 
 		if (!file_exists($path . DS . $file) or !$file) 
@@ -501,7 +501,7 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		$this->view->file = $course->get('logo');
 
 		// Build the file path
-		$this->view->dir  = $id; //Hubzero_View_Helper_Html::niceidformat($id);
+		$this->view->dir  = $id; //\Hubzero\Utility\String::pad($id);
 		$this->view->path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->view->dir;
 
 		// Set any errors

@@ -257,7 +257,7 @@ class SelectedQuotes extends JTable
 		}
 
 		// Build the file path
-		$dir  = Hubzero_View_Helper_Html::niceidformat($this->id);
+		$dir  = \Hubzero\Utility\String::pad($this->id);
 		$path = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
 
 		if (!file_exists($path . DS . $this->picture) or !$this->picture) 

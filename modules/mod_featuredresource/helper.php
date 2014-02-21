@@ -397,7 +397,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
-		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir_id = \Hubzero\Utility\String::pad($id);
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}

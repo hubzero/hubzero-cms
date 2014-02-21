@@ -215,8 +215,8 @@ class PublicationsHtml
 			$base = substr($base, 0, (strlen($base) - 1));
 		}
 		
-		$pub_dir =  Hubzero_View_Helper_Html::niceidformat( $pid );
-		$version_dir =  Hubzero_View_Helper_Html::niceidformat( $vid );
+		$pub_dir =  \Hubzero\Utility\String::pad( $pid );
+		$version_dir =  \Hubzero\Utility\String::pad( $vid );
 		$path = $base.DS.$pub_dir.DS.$version_dir;
 		$path = $filedir ? $path.DS.$filedir : $path;
 		$path = $root ? JPATH_ROOT.$path : $path;

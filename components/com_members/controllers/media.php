@@ -128,7 +128,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//define upload directory and make sure its writable
-		$uploadDirectory = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id) . DS;
+		$uploadDirectory = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id) . DS;
 
 		if (!is_dir($uploadDirectory))
 		{
@@ -332,7 +332,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Build upload path
-		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		if (!is_dir($path)) 
@@ -454,7 +454,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Build the file path
-		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		if (!file_exists($path . DS . $file) or !$file) 
@@ -523,7 +523,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->file = $file;
 
 		// Build the file path
-		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		// Output HTML

@@ -40,7 +40,7 @@ $picture->width = 'n/a';
 $picture->height = 'n/a';
 
 //get user id in nice format
-$uid = Hubzero_View_Helper_Html::niceidformat( $this->profile->get("uidNumber") );
+$uid = \Hubzero\Utility\String::pad( $this->profile->get("uidNumber") );
 
 //get profile pic and path to picture
 $pic = $this->profile->get("picture");

@@ -310,7 +310,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		{
 			$thumb  = $config->get('webpath');
 			$thumb = DS . trim($thumb, DS);
-			$thumb .= DS.Hubzero_View_Helper_Html::niceidformat($member->get('uidNumber')) . DS . $member->get('picture');
+			$thumb .= DS.\Hubzero\Utility\String::pad($member->get('uidNumber')) . DS . $member->get('picture');
 			
 			$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
 		} 

@@ -2151,7 +2151,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 				$base_path = DS . trim($base_path, DS);
 			}
 			
-			$base_path .= DS . Hubzero_View_Helper_Html::niceidformat($this->juser->get('id'));
+			$base_path .= DS . \Hubzero\Utility\String::pad($this->juser->get('id'));
 			
 			$i = 0;
 						

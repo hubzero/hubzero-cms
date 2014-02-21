@@ -382,7 +382,7 @@ class modSpotlight extends \Hubzero\Module\Module
 				{
 					// Yes - so build the path to it
 					$thumb  = DS . trim($mconfig->get('webpath'), DS);
-					$thumb .= DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS . $row->picture;
+					$thumb .= DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
 
 					// No - use default picture
 					if (is_file(JPATH_ROOT . $thumb))
@@ -396,7 +396,7 @@ class modSpotlight extends \Hubzero\Module\Module
 							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
 							$ih = new MembersImgHandler();
 							$ih->set('image', $row->picture);
-							$ih->set('path', JPATH_ROOT . $mconfig->get('webpath') . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS);
+							$ih->set('path', JPATH_ROOT . $mconfig->get('webpath') . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS);
 							$ih->set('maxWidth', 50);
 							$ih->set('maxHeight', 50);
 							$ih->set('cropratio', '1:1');
@@ -762,7 +762,7 @@ class modSpotlight extends \Hubzero\Module\Module
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
-		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir_id = \Hubzero\Utility\String::pad($id);
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}

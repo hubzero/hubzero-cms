@@ -66,7 +66,7 @@ class BlogModelAdapterMember extends BlogModelAdapterAbstract
 			JPluginHelper::getPlugin('members', 'blog')->params
 		);
 
-		$id = Hubzero_View_Helper_Html::niceidformat($this->get('scope_id'));
+		$id = \Hubzero\Utility\String::pad($this->get('scope_id'));
 
 		$this->set('path', str_replace('{{uid}}', $id, $config->get('uploadpath', '/site/members/{{uid}}/blog')));
 		$this->set('scope', $this->get('scope_id') . '/blog');

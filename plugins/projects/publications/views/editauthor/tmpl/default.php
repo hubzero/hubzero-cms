@@ -78,7 +78,7 @@ $thumb = '';
 					
 if($this->author->picture && $this->author->user_id) {
 	$curthumb = $ih->createThumbName($this->author->picture);
-	$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($this->author->user_id).DS.$curthumb;
+	$thumb = $path.DS.\Hubzero\Utility\String::pad($this->author->user_id).DS.$curthumb;
 }
 if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
 	$thumb = $default_thumb;

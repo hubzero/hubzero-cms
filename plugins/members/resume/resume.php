@@ -585,7 +585,7 @@ class plgMembersResume extends JPlugin
 		$base_path = $this->params->get('webpath', '/site/members');
 		$base_path = DS . trim($base_path, DS);
 
-		$dir = Hubzero_View_Helper_Html::niceidformat($uid);
+		$dir = \Hubzero\Utility\String::pad($uid);
 
 		$listdir = $base_path . DS . $dir;
 

@@ -133,8 +133,8 @@ class PublicationHelper extends JObject
 		
 		$base = DS . trim($base, DS);
 
-		$pub_dir 		=  Hubzero_View_Helper_Html::niceidformat( $pid );
-		$version_dir 	=  Hubzero_View_Helper_Html::niceidformat( $vid );
+		$pub_dir 		=  \Hubzero\Utility\String::pad( $pid );
+		$version_dir 	=  \Hubzero\Utility\String::pad( $vid );
 		$path 			= $base . DS . $pub_dir . DS . $version_dir;
 		$path 			= $filedir ? $path . DS . $filedir : $path;
 		$path 			= $root ? JPATH_ROOT . $path : $path;
@@ -247,7 +247,7 @@ class PublicationHelper extends JObject
 		{
 			foreach ($rows as $row)
 			{
-				$path = DS . $base . DS . Hubzero_View_Helper_Html::niceidformat( $row->id );
+				$path = DS . $base . DS . \Hubzero\Utility\String::pad( $row->id );
 				$used = $used + PublicationHelper::computeDiskUsage($path, JPATH_ROOT, false);
 			}
 		}

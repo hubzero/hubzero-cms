@@ -1886,7 +1886,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$dir_year  = JFactory::getDate()->format('Y');
 			$dir_month = JFactory::getDate()->format('m');
 		}
-		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir_id = \Hubzero\Utility\String::pad($id);
 
 		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 

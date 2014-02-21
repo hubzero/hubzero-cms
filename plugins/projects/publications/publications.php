@@ -5445,7 +5445,7 @@ class plgProjectsPublications extends JPlugin
 		$mconfig = JComponentHelper::getParams( 'com_members' );
 			
 		// Build upload path
-		$dir  = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
+		$dir  = \Hubzero\Utility\String::pad( $this->_uid );
 		$path = JPATH_ROOT;
 		if (substr($mconfig->get('webpath', '/site/members'), 0, 1) != DS) 
 		{

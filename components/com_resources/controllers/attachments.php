@@ -960,7 +960,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			$g = array_pop($bits);
 			foreach ($bits as $bit)
 			{
-				if ($bit == '/' || $bit == $year || $bit == $month || $bit == Hubzero_View_Helper_Html::niceidformat($id)) 
+				if ($bit == '/' || $bit == $year || $bit == $month || $bit == \Hubzero\Utility\String::pad($id)) 
 				{
 					$b .= ($bit != DS) ? DS . $bit : '';
 				} 
@@ -1143,7 +1143,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			$dir_year  = JFactory::getDate()->format('Y');
 			$dir_month = JFactory::getDate()->format('m');
 		}
-		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir_id = \Hubzero\Utility\String::pad($id);
 
 		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 

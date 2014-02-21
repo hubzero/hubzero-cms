@@ -240,7 +240,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 			{
 				// Yes - so build the path to it
 				$thumb  = DS . trim($config->get('webpath', '/site/members'), DS);
-				$thumb .= DS . Hubzero_View_Helper_Html::niceidformat($this->row->uidNumber) . DS . $this->row->picture;
+				$thumb .= DS . \Hubzero\Utility\String::pad($this->row->uidNumber) . DS . $this->row->picture;
 
 				// No - use default picture
 				if (is_file(JPATH_ROOT . $thumb)) 
@@ -255,7 +255,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 
 						$ih = new MembersImgHandler();
 						$ih->set('image', $this->row->picture);
-						$ih->set('path', JPATH_ROOT . DS . trim($config->get('webpath', '/site/members'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($this->row->uidNumber) . DS);
+						$ih->set('path', JPATH_ROOT . DS . trim($config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($this->row->uidNumber) . DS);
 						$ih->set('maxWidth', 50);
 						$ih->set('maxHeight', 50);
 						$ih->set('cropratio', '1:1');

@@ -87,7 +87,7 @@ $shown = array();
 							$thumb = '';					
 							if($member->picture) {
 								$curthumb = $ih->createThumbName($member->picture);
-								$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($member->user_id).DS.$curthumb;
+								$thumb = $path.DS.\Hubzero\Utility\String::pad($member->user_id).DS.$curthumb;
 							}
 							if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
 								$thumb = $default_thumb;

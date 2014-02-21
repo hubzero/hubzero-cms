@@ -83,7 +83,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// Build upload path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
 
 		if (!is_dir($path))
 		{
@@ -191,7 +191,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
 
 		if (!file_exists($path . DS . $row->picture) or !$row->picture)
 		{
@@ -239,7 +239,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		// Do have an ID or do we need to get one?
 		$this->view->id = ($id) ? $id : JRequest::getInt('id', 0);
 
-		$this->view->dir = Hubzero_View_Helper_Html::niceidformat($this->view->id);
+		$this->view->dir = \Hubzero\Utility\String::pad($this->view->id);
 
 		// Do we have a file or do we need to get one?
 		$this->view->file = ($file) ? $file : JRequest::getVar('file', '');

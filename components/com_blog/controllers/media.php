@@ -345,7 +345,7 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 				$plugin = JPluginHelper::getPlugin('members', 'blog');
 				$params = new $paramClass($plugin->params);
 				$p = $params->get('uploadpath');
-				$p = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($id), $p);
+				$p = str_replace('{{uid}}', \Hubzero\Utility\String::pad($id), $p);
 			break;
 
 			case 'group':

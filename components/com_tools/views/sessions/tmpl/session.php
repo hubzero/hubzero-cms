@@ -273,7 +273,7 @@ if (!$this->app->sess) {
 							$uthumb = '';
 							if ($user->get('picture')) 
 							{
-								$uthumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($user->get('uidNumber')) . DS . $user->get('picture');
+								$uthumb = $thumb . DS . \Hubzero\Utility\String::pad($user->get('uidNumber')) . DS . $user->get('picture');
 								$uthumb = Hubzero_View_Helper_Html::thumbit($uthumb);
 							}
 

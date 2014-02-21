@@ -316,9 +316,9 @@ if (count($this->rows) > 0)
 		$old_thumb = '';
 		if ($row->picture) 
 		{
-			$new_thumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS . 'thumb.png';
+			$new_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . 'thumb.png';
 			
-			$old_thumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS . $row->picture;
+			$old_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
 			$old_thumb = Hubzero_View_Helper_Html::thumbit($old_thumb);
 		}
 

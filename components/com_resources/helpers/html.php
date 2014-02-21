@@ -274,7 +274,7 @@ class ResourcesHtml
 	 */
 	public static function niceidformat($someid)
 	{
-		return Hubzero_View_Helper_Html::niceidformat($someid);
+		return \Hubzero\Utility\String::pad($someid);
 	}
 
 	/**

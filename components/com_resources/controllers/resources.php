@@ -2459,7 +2459,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Build the download path
 		$path = JPATH_ROOT . $this->config->get('webpath', '/site/resources');
 		$date = $row->created;
-		$dir_resid = Hubzero_View_Helper_Html::niceidformat($row->id);
+		$dir_resid = \Hubzero\Utility\String::pad($row->id);
 		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs)) 
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);

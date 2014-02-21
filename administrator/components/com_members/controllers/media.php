@@ -66,7 +66,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		$curfile = JRequest::getVar('curfile', '');
 
 		// Build upload path
-		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		if (!is_dir($path)) 
@@ -189,7 +189,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// Build the file path
-		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		if (!file_exists($path . DS . $file) or !$file) 
@@ -266,7 +266,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		$this->view->file = $file;
 
 		// Build the file path
-		$this->view->dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$this->view->dir  = \Hubzero\Utility\String::pad($id);
 		$this->view->path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $this->view->dir;
 
 		// Set any errors

@@ -71,11 +71,11 @@ $lastMonth = date('M Y', strtotime("-1 month"));
 if ($this->profilePic) 
 {
 	$profileThumb = $ih->createThumbName($this->profilePic);
-	$profileThumb = $pPath . DS . Hubzero_View_Helper_Html::niceidformat($this->juser->get('id')) . DS . $profileThumb;
+	$profileThumb = $pPath . DS . \Hubzero\Utility\String::pad($this->juser->get('id')) . DS . $profileThumb;
 	
 	if (!is_file(JPATH_ROOT . DS . $profileThumb))
 	{
-		$profileThumb = $pPath . DS . Hubzero_View_Helper_Html::niceidformat($this->juser->get('id')) . DS . 'thumb.png';
+		$profileThumb = $pPath . DS . \Hubzero\Utility\String::pad($this->juser->get('id')) . DS . 'thumb.png';
 	}
 	
 	if (!is_file(JPATH_ROOT . DS . $profileThumb))

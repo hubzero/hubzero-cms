@@ -482,7 +482,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 				$id = intval($id);
 				
 				// Delete any associated pictures
-				$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
+				$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id);
 				if (!file_exists($path . DS . $file) or !$file) 
 				{
 					$this->setError(JText::_('FILE_NOT_FOUND'));

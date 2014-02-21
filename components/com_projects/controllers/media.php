@@ -94,7 +94,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else 
 		{
-			$dir = Hubzero_View_Helper_Html::niceidformat( $useid );
+			$dir = \Hubzero\Utility\String::pad( $useid );
 		}
 		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 		$path  = $prefix . $webdir;
@@ -271,7 +271,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$dir = Hubzero_View_Helper_Html::niceidformat( $useid );
+			$dir = \Hubzero\Utility\String::pad( $useid );
 		}
 		
 		// Incoming file
@@ -373,7 +373,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$dir = Hubzero_View_Helper_Html::niceidformat( $useid );
+			$dir = \Hubzero\Utility\String::pad( $useid );
 		}
 				
 		// Build the file path

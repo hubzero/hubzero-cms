@@ -3288,7 +3288,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Get web directory
 		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 		
-		$from_dir =  Hubzero_View_Helper_Html::niceidformat( $temid );
+		$from_dir =  \Hubzero\Utility\String::pad( $temid );
 		
 		// Get alias
 		if (intval($pid))

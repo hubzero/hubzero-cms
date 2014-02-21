@@ -31,7 +31,7 @@ $file = '';
 if ($this->row->picture) 
 {
 	// Build upload path
-	$file  = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($this->user->get('id'));
+	$file  = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($this->user->get('id'));
 	$file .= DS . trim($this->row->picture, DS);
 }
 
