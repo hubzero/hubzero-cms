@@ -52,7 +52,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="members">Only Group Members</option>
 					<option value="nobody">Disabled/Off</option>
 				</field>
-				<param name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Calendar' in group menu.">
+				<field name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Calendar' in group menu.">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
