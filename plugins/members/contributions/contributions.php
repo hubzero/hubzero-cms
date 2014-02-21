@@ -184,7 +184,7 @@ class plgMembersContributions extends JPlugin
 			{
 				// No sub-categories - this should be easy
 				$cats[$i]['title'] = $t;
-				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
+				$cats[$i]['total'] = (isset($totals[$i]) && !is_array($totals[$i])) ? $totals[$i] : 0;
 			}
 
 			// Add to the overall total
