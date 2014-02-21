@@ -87,8 +87,30 @@ class Configure implements CommandInterface
 
 		if (!isset($name) && !isset($email))
 		{
-			$this->output->addLine('Please specify the item that you want to configure.', 'warning');
-			return;
+			if ($this->output->isInteractive())
+			{
+				$option = $this->output->getResponse('What do you want to configure [name|email] ?');
+
+				if (in_array($option, array('email', 'name')))
+				{
+					$$option = $this->output->getResponse("What do you want your {$option} to be?");
+				}
+				else if (empty($option))
+				{
+					$this->output->error("Please specify what option you want to set.");
+				}
+				else
+				{
+					$this->output->error("The {$option} option is not currently supported.");
+				}
+			}
+			else
+			{
+				$this->output = $this->output->getHelpOutput();
+				$this->help();
+				$this->output->render();
+				return;
+			}
 		}
 
 		$config = array();
