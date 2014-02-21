@@ -191,7 +191,7 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
 			'id'        => $id,
-			'size'      => Hubzero_View_Helper_Html::formatsize($this_size),
+			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
 			'width'     => $width,
 			'height'    => $height
 		));

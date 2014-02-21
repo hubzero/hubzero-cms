@@ -81,7 +81,7 @@ $app = JFactory::getApplication();
 					</tr>
 					<tr>
 						<td><?php echo JText::_('SIZE'); ?>:</td>
-						<td><?php echo Hubzero_View_Helper_Html::formatsize($this_size); ?></td>
+						<td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
 					</tr>
 					<tr>
 						<td><?php echo JText::_('WIDTH'); ?>:</td>

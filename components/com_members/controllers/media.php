@@ -293,7 +293,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$result = array();
 		$result['src']    = $dir . $file;
 		$result['name']   = $file;
-		$result['size']   = Hubzero_View_Helper_Html::formatsize($size);
+		$result['size']   = \Hubzero\Utility\Number::formatBytes($size);
 		$result['width']  = $width . ' <abbr title="pixels">px</abbr>';
 		$result['height'] = $height . ' <abbr title="pixels">px</abbr>';
 

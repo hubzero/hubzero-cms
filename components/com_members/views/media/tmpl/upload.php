@@ -54,7 +54,7 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 	 
 	$picture->src = $path . $pic;
 	$picture->name = $pic;
-	$picture->size = Hubzero_View_Helper_Html::formatsize( $size );
+	$picture->size = \Hubzero\Utility\Number::formatBytes( $size );
 	$picture->width = $width . " <abbr title=\"pixels\">px</abbr>";
 	$picture->height = $height . " <abbr title=\"pixels\">px</abbr>";
 }
