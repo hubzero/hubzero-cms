@@ -91,10 +91,10 @@ class Application
 			$this->output->error($e->getMessage());
 		}
 
-		// Check for interactive flag and set on output accordingly
-		if ($this->arguments->getOpt('interactive'))
+		// Check for interactivity flag and set on output accordingly
+		if ($this->arguments->getOpt('non-interactive'))
 		{
-			$this->output->makeInteractive();
+			$this->output->makeNonInteractive();
 		}
 
 		$class = $this->arguments->get('class');
