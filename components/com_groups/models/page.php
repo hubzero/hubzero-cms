@@ -204,7 +204,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		
 		// make sure alias isnt a reserved term
 		$group   = Hubzero_Group::getInstance( $this->get('gidNumber') );
-		$plugins = Hubzero_Group_Helper::getPluginAccess( $group );
+		$plugins = \Hubzero\User\Group\Helper::getPluginAccess( $group );
 		$reserved = array_keys($plugins);
 		if (in_array($alias, $reserved))
 		{

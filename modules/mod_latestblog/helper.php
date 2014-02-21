@@ -81,7 +81,7 @@ class modLatestBlog extends \Hubzero\Module\Module
 				$group = $gf->item();
 				if (is_object($group)) 
 				{
-					$blog_access = Hubzero_Group_Helper::getPluginAccess($group, 'blog');
+					$blog_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'blog');
 
 					if ($blog_access == 'nobody' 
 					 || ($blog_access == 'registered' && $juser->get('guest')) 

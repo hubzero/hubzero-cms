@@ -124,17 +124,17 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->view->mygroups = array_filter($this->view->mygroups);
 
 			//get groups user may be interested in
-			$this->view->interestinggroups = Hubzero_Group_Helper::getGroupsMatchingTagString(
+			$this->view->interestinggroups = \Hubzero\User\Group\Helper::getGroupsMatchingTagString(
 				$mytags, 
 				\Hubzero\User\Helper::getGroups($profile->get("uidNumber"))
 			);
 		}
 
 		//get the popular groups
-		$this->view->populargroups = Hubzero_Group_Helper::getPopularGroups(3);
+		$this->view->populargroups = \Hubzero\User\Group\Helper::getPopularGroups(3);
 		
 		//get featured groups
-		$this->view->featuredgroups = Hubzero_Group_Helper::getFeaturedGroups($this->config->get('intro_featuredgroups_list', ''));
+		$this->view->featuredgroups = \Hubzero\User\Group\Helper::getFeaturedGroups($this->config->get('intro_featuredgroups_list', ''));
 		
 		//set some vars for view
 		$this->view->config = $this->config;
@@ -768,7 +768,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		));
 
 		// Get plugin access
-		$this->view->group_plugin_access = Hubzero_Group_Helper::getPluginAccess($this->view->group);
+		$this->view->group_plugin_access = \Hubzero\User\Group\Helper::getPluginAccess($this->view->group);
 		
 		// build the title
 		$this->_buildTitle();
@@ -1565,7 +1565,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if ($this->active == 'wiki') 
 		{
 			//get access level for wiki
-			$access = Hubzero_Group_Helper::getPluginAccess($group, 'wiki');
+			$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'wiki');
 			
 			//check to make sure user has access to wiki section
 			if (($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) 
@@ -1609,7 +1609,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		elseif ($this->active == 'blog')
 		{
 			//get access setting of group blog
-			$access = Hubzero_Group_Helper::getPluginAccess($group, 'blog');
+			$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'blog');
 			
 			//make sure user has access to blog
 			if (($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) 
@@ -1619,7 +1619,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 			
 			//make sure we have a group id of the proper length
-			$groupID = Hubzero_Group_Helper::niceidformat($group->get('gidNumber'));
+			$groupID = \Hubzero\User\Group\Helper::niceidformat($group->get('gidNumber'));
 			
 			//buld path to blog folder
 			$base_path = $this->config->get('uploadpath') . DS . $groupID . DS . 'blog';
@@ -1631,7 +1631,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		else 
 		{
 			//get access level for overview or other group pages
-			$access = Hubzero_Group_Helper::getPluginAccess($group, 'overview');
+			$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
 			
 			//check to make sure we can access it
 			if (($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) 

@@ -177,7 +177,7 @@ if ($this->page->get('id'))
 					<label>
 						<strong>Privacy:</strong> <span class="required">Required</span>
 						<?php
-							$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
+							$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
 							switch($access)
 							{
 								case 'anyone':		$name = "Any HUB Visitor";		break;

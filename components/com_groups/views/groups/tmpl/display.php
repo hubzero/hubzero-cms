@@ -150,7 +150,7 @@ defined('_JEXEC') or die('Restricted access');
 					<div class="clearfix top">
 						<?php
 							$mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : array();
-							echo Hubzero_Group_Helper::listGroups('My Groups',$this->config,$mygroups_members,2,true,true,0); ?>
+							echo \Hubzero\User\Group\Helper::listGroups('My Groups',$this->config,$mygroups_members,2,true,true,0); ?>
 					</div>
 				</div><!-- / .col span9 omega -->
 			</div><!-- / .grid -->
@@ -165,7 +165,7 @@ defined('_JEXEC') or die('Restricted access');
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
 					<div class="clearfix top">
-						<?php echo Hubzero_Group_Helper::listGroups('Interesting Groups',$this->config,$this->interestinggroups,2,true,false,150); ?>
+						<?php echo \Hubzero\User\Group\Helper::listGroups('Interesting Groups',$this->config,$this->interestinggroups,2,true,false,150); ?>
 					</div>
 				</div><!-- / .col span9 omega -->
 			</div><!-- / .grid -->
@@ -179,7 +179,7 @@ defined('_JEXEC') or die('Restricted access');
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
 				<div class="clearfix top">
-					<?php echo Hubzero_Group_Helper::listGroups('Popular Groups',$this->config,$this->populargroups,2,true,false,150); ?>
+					<?php echo \Hubzero\User\Group\Helper::listGroups('Popular Groups',$this->config,$this->populargroups,2,true,false,150); ?>
 				</div>
 			</div><!-- / .col span9 omega -->
 		</div><!-- / .grid -->
@@ -192,7 +192,7 @@ defined('_JEXEC') or die('Restricted access');
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
 				<div class="clearfix top">
-					<?php echo Hubzero_Group_Helper::listGroups('Featured Groups',$this->config,$this->featuredgroups,2,true,false,150); ?>
+					<?php echo \Hubzero\User\Group\Helper::listGroups('Featured Groups',$this->config,$this->featuredgroups,2,true,false,150); ?>
 				</div>
 			</div><!-- / .col span9 omega -->
 		</div><!-- / .grid -->

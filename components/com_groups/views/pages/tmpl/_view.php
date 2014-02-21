@@ -46,7 +46,7 @@ if ($versions->fetch('version', $nextVersion))
 }
 
 // get page privacy level
-$overviewPageAccess = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
+$overviewPageAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
 $pagePrivacy = ($this->page->get('privacy') == 'default') ? $overviewPageAccess : $this->page->get('privacy');
 
 // check to make sure user has access this page

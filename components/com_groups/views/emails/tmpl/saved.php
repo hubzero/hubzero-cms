@@ -439,7 +439,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																			'display_menu_tab' => true
 																		));
 																		
-																		$access = Hubzero_Group_Helper::getPluginAccess($this->group);
+																		$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
 																		
 																		foreach ($group_plugins as $plugin)
 																		{

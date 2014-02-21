@@ -55,7 +55,7 @@ class modLatestGroups extends \Hubzero\Module\Module
 		$this->morelink = $this->params->get('morelink', '');
 		
 		// Get popular groups
-		$popularGroups = Hubzero_Group_Helper::getPopularGroups();
+		$popularGroups = \Hubzero\User\Group\Helper::getPopularGroups();
 
 		$counter = 0;
 		$groupsToDisplay = array();

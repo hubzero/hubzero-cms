@@ -85,7 +85,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->database   = JFactory::getDBO();
 		
 		// get plugin access
-		$access = Hubzero_Group_Helper::getPluginAccess($group, 'announcements');
+		$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'announcements');
 		
 		//if set to nobody make sure cant access
 		//check if guest and force login if plugin access is registered or members

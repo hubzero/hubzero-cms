@@ -107,7 +107,7 @@ class modLatestDiscussions extends \Hubzero\Module\Module
 				$group = Hubzero_Group::getInstance($post->get('scope_id'));
 				if (is_object($group)) 
 				{
-					$forum_access = Hubzero_Group_Helper::getPluginAccess($group, 'forum');
+					$forum_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
 
 					if ($forum_access == 'nobody' 
 					 || ($forum_access == 'registered' && $juser->get('guest')) 

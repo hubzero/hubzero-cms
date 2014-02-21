@@ -52,7 +52,7 @@ class GroupsHelperView
 			$tab = JRequest::getVar('active', 'overview');
 			
 			//get group plugin access
-			$pluginAccess = Hubzero_Group_Helper::getPluginAccess( $group );
+			$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess( $group );
 			
 			// If active tab not overview and an not one of available tabs
 			if ($tab != 'overview' && !in_array($tab, array_keys($pluginAccess))) 
@@ -155,7 +155,7 @@ class GroupsHelperView
 			$start  = JRequest::getInt('limitstart', 0);
 		
 			//get group plugin access
-			$pluginAccess = Hubzero_Group_Helper::getPluginAccess( $group );
+			$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess( $group );
 		
 			// Limit the records if we're on the overview page
 			$limit = ($limit == 0) ? 'all' : $limit;
@@ -240,7 +240,7 @@ class GroupsHelperView
 		$view->sections        = self::getSections();
 		$view->sectionsContent = self::getSectionsContent( $group );
 		$view->pages           = $pages;
-		$view->pluginAccess    = Hubzero_Group_Helper::getPluginAccess( $group );
+		$view->pluginAccess    = \Hubzero\User\Group\Helper::getPluginAccess( $group );
 		
 		// return template
 		return $view->loadTemplate();
@@ -312,7 +312,7 @@ class GroupsHelperView
 			$userHasAccess = true;
 
 			//get overview page access
-			$overviewPageAccess = Hubzero_Group_Helper::getPluginAccess($group, 'overview');
+			$overviewPageAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
 
 			//if user isnt logged in and access level is set to registered users or members only
 			if ($juser->get('guest') && ($overviewPageAccess == 'registered' || $overviewPageAccess == 'members')) 

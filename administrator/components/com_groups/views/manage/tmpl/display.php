@@ -146,7 +146,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	
 	//get group invite emails
-	$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail($database);
+	$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($database);
 	$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
 	
 	//get group membership

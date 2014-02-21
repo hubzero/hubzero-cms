@@ -126,7 +126,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		if ($this->view->filters['status'] == '' || $this->view->filters['status'] == 'invitee')
 		{
 			//get group invite emails
-			$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail( $this->database );
+			$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail( $this->database );
 			$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
 
 			//add invite emails to list
@@ -762,7 +762,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		//remove any invite emails
 		if (count($useremails) > 0)
 		{
-			$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail( $this->database );
+			$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail( $this->database );
 			$hubzeroGroupInviteEmail->removeInvites( $this->group->get('gidNumber'), $useremails );
 		}
 

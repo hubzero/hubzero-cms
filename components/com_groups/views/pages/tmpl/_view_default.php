@@ -60,7 +60,7 @@ if ($displaySystemUsers == 'no')
 $isMember = (in_array($this->juser->get('id'), $this->group->get('members'))) ? true : false;
 
 //get the members plugin access for this group
-$memberAccess = Hubzero_Group_Helper::getPluginAccess($this->group, 'members');
+$memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'members');
 ?>
 
 <div class="group-content-header">
