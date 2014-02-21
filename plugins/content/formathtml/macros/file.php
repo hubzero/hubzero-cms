@@ -648,7 +648,7 @@ class File extends Macro
 					$html = '<a class="attachment" rel="' . $attr['rel'] . '" href="' . $attr['href'] . '" title="' . $attr['alt'] . '">' . $attr['desc'] . '</a>';
 					if ($size !== null)
 					{
-						$html .= ' (<span class="file-atts">' . \\Hubzero\Utility\Number::formatBytes($size);
+						$html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
 						if (isset($attr['created_by']))
 						{
 							$user = \JUser::getInstance($attr['created_by']);
