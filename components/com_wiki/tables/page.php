@@ -169,7 +169,7 @@ class WikiPage extends JTable
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($type, $prefix = 'JTable', $config = array()) //($pagename=NULL, $scope='')
+	public static function getInstance($type, $prefix = 'JTable', $config = array()) //($pagename=NULL, $scope='')
 	{
 		static $instances;
 
