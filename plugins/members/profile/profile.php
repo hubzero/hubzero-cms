@@ -51,7 +51,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	public function &onMembersAreas($user, $member)
 	{
 		$areas = array(
-			'profile' => JText::_('PLG_MEMBERS_PROFILE')
+			'profile' => JText::_('PLG_MEMBERS_PROFILE'),
+			'icon' => 'f007'
 		);
 		return $areas;
 	}

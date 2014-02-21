@@ -116,21 +116,9 @@
 		opacity: 1;
 		background: none;
 	}
-	#page_menu li .dashboard:before { content: "\f009"; }
-	#page_menu li .profile:before { content: "\f007"; }
-	#page_menu li .account:before { content:"\f085"; }
-	#page_menu li .contributions:before { content:" \f02d"; }
-	#page_menu li .groups:before { content: "\f042"; }
-	#page_menu li .points:before { content: "\f006"; }
-	#page_menu li .usage:before { content: "\f080"; }
-	#page_menu li .favorites:before { content: "\2665"; }
-	#page_menu li .messages:before { content: "\2709"; }
-	#page_menu li .resume:before { left: -16px; content: "\f016"; }
-	#page_menu li .blog:before { content: "\f075"; } 
-	#page_menu li .snippet:before { content: "\f08e"; }
-	#page_menu li .courses:before { content: "\f09c"; }
-	#page_menu li .collections:before { content: "\f005"; }
-
+	#page_menu li a:before {
+		content: attr(data-icon);
+	}
 	#page_menu li a:hover {
 		border-bottom:none;
 		color:#444;

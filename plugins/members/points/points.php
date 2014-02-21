@@ -59,6 +59,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['points'] = JText::_('PLG_MEMBERS_POINTS');
+			$areas['icon'] = 'f006';
 		}
 
 		return $areas;

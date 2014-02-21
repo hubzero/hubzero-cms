@@ -68,6 +68,7 @@ class plgMembersGroups extends JPlugin
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['groups'] = JText::_('PLG_MEMBERS_GROUPS');
+			$areas['icon'] = 'f042';
 		}
 
 		return $areas;

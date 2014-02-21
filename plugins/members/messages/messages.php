@@ -57,6 +57,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['messages'] = JText::_('PLG_MEMBERS_MESSAGES');
+			$areas['icon'] = '2709';
 		}
 
 		return $areas;

@@ -57,6 +57,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['dashboard'] = JText::_('PLG_MEMBERS_DASHBOARD');
+			$areas['icon'] = 'f009';
 		}
 
 		return $areas;

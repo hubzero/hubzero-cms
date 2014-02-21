@@ -68,6 +68,7 @@ class plgMembersCollections extends JPlugin
 		//if ($user->get('id') == $member->get('uidNumber'))
 		//{
 			$areas['collections'] = JText::_('PLG_MEMBERS_' . strtoupper($this->_name));
+			$areas['icon'] = 'f005';
 		//}
 
 		return $areas;

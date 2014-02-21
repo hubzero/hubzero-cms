@@ -63,6 +63,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['account'] = JText::_('PLG_MEMBERS_ACCOUNT');
+			$areas['icon'] = 'f085';
 		}
 
 		return $areas;

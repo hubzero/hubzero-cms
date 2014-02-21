@@ -66,6 +66,7 @@ class plgMembersCourses extends JPlugin
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['courses'] = JText::_('PLG_MEMBERS_COURSES');
+			$areas['icon'] = 'f09c';
 		}
 		return $areas;
 	}

@@ -80,8 +80,8 @@ class plgMembersProjects extends JPlugin
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['projects'] = JText::_('PLG_MEMBERS_PROJECTS');
+			$areas['icon'] = 'f03f';
 		}
-
 		return $areas;
 	}
 

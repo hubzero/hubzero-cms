@@ -23,9 +23,6 @@
 		border: 4px solid #f7f7f7;
 		padding-top: 0;
 	}
-	#page_menu li .projects:before {
-		content: "\f03f";
-	}
 	.container h3 a {
 		color: #333;
 	}

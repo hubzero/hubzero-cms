@@ -59,7 +59,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		$areas = array('usage' => JText::_('PLG_MEMBERS_USAGE'));
+		$areas = array('usage' => JText::_('PLG_MEMBERS_USAGE'), 'icon' => 'f080');
 		return $areas;
 	}
 

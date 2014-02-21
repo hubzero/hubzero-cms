@@ -86,6 +86,7 @@ class plgMembersResume extends JPlugin
 		if ($user->get('id') == $member->get('uidNumber') || $this->isEmployer($user, $member))
 		{
 			$areas['resume'] = JText::_('PLG_MEMBERS_RESUME');
+			$areas['icon'] = 'f016';
 		}
 
 		return $areas;

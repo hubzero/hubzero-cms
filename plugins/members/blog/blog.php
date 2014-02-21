@@ -58,6 +58,7 @@ class plgMembersBlog extends JPlugin
 	public function &onMembersAreas($user, $member)
 	{
 		$areas['blog'] = JText::_('PLG_MEMBERS_BLOG');
+		$areas['icon'] = 'f075';
 		return $areas;
 	}
 

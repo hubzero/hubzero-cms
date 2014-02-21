@@ -88,6 +88,7 @@ class plgMembersImpact extends JPlugin
 			if ($this->_stats)
 			{
 				$areas['impact'] = JText::_('PLG_MEMBERS_IMPACT');
+				$areas['icon'] = '';
 			}
 		}
 

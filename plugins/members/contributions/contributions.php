@@ -64,6 +64,7 @@ class plgMembersContributions extends JPlugin
 	public function &onMembersAreas($user, $member)
 	{
 		$areas['contributions'] = JText::_('PLG_MEMBERS_CONTRIBUTIONS');
+		$areas['icon'] = 'f02d';
 		return $areas;
 	}
 

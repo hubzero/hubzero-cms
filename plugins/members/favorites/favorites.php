@@ -60,7 +60,8 @@ class plgMembersFavorites extends JPlugin
 	public function &onMembersAreas($user, $member)
 	{
 		$areas = array(
-			'favorites' => JText::_('PLG_MEMBERS_FAVORITES')
+			'favorites' => JText::_('PLG_MEMBERS_FAVORITES'),
+			'icon' => '2665'
 		);
 		return $areas;
 	}
