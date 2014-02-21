@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Shop helper functions
  * 
  */
-class Hubzero_Storefront_Helper
+class StorefrontHelper
 {
 
 }

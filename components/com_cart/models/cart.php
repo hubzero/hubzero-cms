@@ -1271,7 +1271,7 @@ class CartModelCart
 				$itemCoupon = false;
 			}
 			
-			$coupon = Hubzero_Storefront_Coupons::getCouponInfo($cn->cnId, $itemCoupon); // Load objects for itemCoupons only
+			$coupon = StorefrontModelCoupons::getCouponInfo($cn->cnId, $itemCoupon); // Load objects for itemCoupons only
 						
 			// check if coupon applies and if it does, get the perk info 			
 			/*
@@ -1537,7 +1537,7 @@ class CartModelCart
 	 */
 	public function removeCoupon($cnId)
 	{		
-		$coupons = new Hubzero_Storefront_Coupons;
+		$coupons = new StorefrontModelCoupons;
 				
 		// If user is logged in return coupon back to the coupons pool.
 		$juser = JFactory::getUser();

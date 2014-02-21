@@ -175,8 +175,6 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 	 */
 	protected function save($course, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
-		/* @var $course Hubzero_Course */
-
 		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
 		
 		//instantaite database object

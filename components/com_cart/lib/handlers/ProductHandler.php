@@ -65,7 +65,7 @@ class Cart_ProductHandler
 		// Get product type info
 		$ptId = $this->item['info']->ptId;
 		
-		$warehouse = new Hubzero_Storefront_Warehouse();
+		$warehouse = new StorefrontModelWarehouse();
 		
 		$ptIdIndo = $warehouse->getProductTypeInfo($ptId);
 		
@@ -126,7 +126,7 @@ class Course_Type_Handler extends Type_Handler
 	
 	public function handle()
 	{
-		$ms = new Hubzero_Storefront_Memberships();
+		$ms = new StorefrontModelMemberships();
 		
 		// Get current registration
 		$membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
@@ -136,7 +136,7 @@ class Course_Type_Handler extends Type_Handler
 		$courseId = $this->item['meta']['courseId'];
 		
 		// Initialize static cart
-		$cart = new Hubzero_Cart(NULL, true);
+		$cart = new CartModelCart(NULL, true);
 		
 		// Get user id
 		$userId = $cart->getCartUser($this->crtId);
@@ -198,7 +198,7 @@ class Membership_Model_Handler extends Model_Handler
 	
 	public function handle()
 	{
-		$ms = new Hubzero_Storefront_Memberships();
+		$ms = new StorefrontModelMemberships();
 		
 		// Get new expiraton date
 		$productMembership = $ms->getNewExpirationInfo($this->crtId, $this->item);

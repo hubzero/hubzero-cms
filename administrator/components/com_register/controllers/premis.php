@@ -148,7 +148,7 @@ class RegisterControllerPremis extends \Hubzero\Component\AdminController
 					$courses['add'] = $data[6];
 					$courses['drop'] = $data[7];
 					
-					$return = Hubzero_Register_Premis::doRegistration($user, $courses);
+					$return = RegisterHelperPremis::doRegistration($user, $courses);
 					if ($return['status'] == 'ok')
 					{
 						$line['msg'] = $return['message'];

@@ -1484,7 +1484,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return false;
 		}
 
-		if (\Hubzero\Geocode\Geocode::is_e1nation(Hubzero_Geo::ipcountry($ip))) 
+		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip))) 
 		{
 			$this->setError('This tool may not be accessed from your current location due to E1 export/license restrictions.');
 			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
@@ -1503,7 +1503,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			break;
 
 			case 'd1':
-				if (\Hubzero\Geocode\Geocode::is_d1nation(Hubzero_Geo::ipcountry($ip))) 
+				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip))) 
 				{
 					$this->setError('This tool may not be accessed from your current location due to export/license restrictions.');
 					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");

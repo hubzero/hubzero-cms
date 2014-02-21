@@ -54,7 +54,7 @@ if ($offering->exists())
 
 	if ($params->get('store_product_id', 0))
 	{
-		$warehouse = new Hubzero_Storefront_Warehouse();
+		$warehouse = new StorefrontModelWarehouse();
 		// Get course by pID returned with $course->add() above
 		try 
 		{

@@ -208,7 +208,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 
-		// Instantiate an Hubzero_Course object
+		// Instantiate a Course object
 		$model = CoursesModelUnit::getInstance($fields['id']);
 
 		if (!$model->bind($fields))

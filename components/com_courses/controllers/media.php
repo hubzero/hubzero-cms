@@ -500,7 +500,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 		}
 
-		$course = Hubzero_Course::getInstance($listdir);
+		$course = CoursesModelCourse::getInstance($listdir);
 
 		// Output HTML
 		$this->view->config = $this->config;
@@ -597,7 +597,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function downloadTask($filename)
 	{
 		//get the course
-		$course = Hubzero_Course::getInstance($this->gid);
+		$course = CoursesModelCourse::getInstance($this->gid);
 
 		//authorize
 		$authorized = $this->_authorize();

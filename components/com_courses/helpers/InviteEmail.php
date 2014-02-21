@@ -32,11 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'Hubzero_Course_Invite_Email'
- * 
- * Long description (if any) ...
+ * Course invite table class
  */
-Class Hubzero_Course_Invite_Email extends JTable
+Class CoursesHelperInviteEmail extends JTable
 {
 
 	/**

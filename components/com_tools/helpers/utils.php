@@ -481,7 +481,7 @@ class ToolsHelperUtils
 		}
 		
 		//if the user is in an E1 nation
-		if (\Hubzero\Geocode\Geocode::is_e1nation(Hubzero_Geo::ipcountry($ip))) 
+		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip))) 
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = 'This tool may not be accessed from your current location due to E1 export/license restrictions.';
@@ -503,7 +503,7 @@ class ToolsHelperUtils
 			break;
 
 			case 'd1':
-				if (\Hubzero\Geocode\Geocode::is_d1nation( Hubzero_Geo::ipcountry( $ip ) )) 
+				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry( $ip ))) 
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';

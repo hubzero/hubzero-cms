@@ -95,7 +95,7 @@ class plgMembersResume extends JPlugin
 	 * Check if a user has employer authorization
 	 * 
 	 * @param      object $user       JUser
-	 * @param      object $member     Hubzero_User_PRofile
+	 * @param      object $member     \Hubzero\User\Profile
 	 * @return     integer 1 = authorized, 0 = not
 	 */
 	public function isEmployer($user=null, $member=null)
@@ -268,7 +268,7 @@ class plgMembersResume extends JPlugin
 	 * 
 	 * @param      object  $database JDatabase
 	 * @param      string  $option   Component name
-	 * @param      object  $member   Hubzero_User_PRofile
+	 * @param      object  $member   \Hubzero\User\Profile
 	 * @param      string  $task     Task to perform
 	 * @param      integer $emp      Is user employer?
 	 * @return     string
@@ -328,7 +328,7 @@ class plgMembersResume extends JPlugin
 	 * 
 	 * @param      object  $database JDatabase
 	 * @param      string  $option   Component name
-	 * @param      object  $member   Hubzero_User_PRofile
+	 * @param      object  $member   \Hubzero\User\Profile
 	 * @param      integer $emp      Is user employer?
 	 * @return     string
 	 */
@@ -607,7 +607,7 @@ class plgMembersResume extends JPlugin
 	 * 
 	 * @param      object $database JDatabase
 	 * @param      string $option   Component name
-	 * @param      object $member   Hubzero_User_PRofile
+	 * @param      object $member   \Hubzero\User\Profile
 	 * @return     string
 	 */
 	public function upload($database, $option, $member)
@@ -713,7 +713,7 @@ class plgMembersResume extends JPlugin
 	 * 
 	 * @param      object  $database JDatabase
 	 * @param      string  $option   Component name
-	 * @param      object  $member   Hubzero_User_PRofile
+	 * @param      object  $member   \Hubzero\User\Profile
 	 * @param      integer $emp      Is user employer?
 	 * @return     string
 	 */
