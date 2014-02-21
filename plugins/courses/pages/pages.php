@@ -54,7 +54,8 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			'name' => $this->_name,
 			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
 			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true
+			'display_menu_tab' => true,
+			'icon' => 'f05a'
 		);
 		return $area;
 	}

@@ -128,9 +128,9 @@
 		padding: 0;
 		border: none;
 	}
-	/*#page_menu li a:after,*/
+	/*#page_menu li a:after,
 	#page_menu li small.page_menu-before,
-	#page_menu li a:before,
+	#page_menu li a:before,*/
 	#page_menu li span:before,
 	#page_menu li span:after {
 		content: "";
@@ -147,24 +147,6 @@
 		opacity: 1;
 		background: none;
 	}
-	#page_menu li .outline:before { content: "\f0ae"; }
-	#page_menu li .members:before { content: "\f007"; }
-	#page_menu li .wiki:before { content: "\f072"; }
-	#page_menu li .announcements:before { content: "\f095"; }
-	#page_menu li .messages:before { content: "\2709"; }
-	#page_menu li .forum:before,
-	#page_menu li .discussions:before { content: "\f086"; }
-	#page_menu li .syllabus:before { content: "\f05a"; } /*  \f0cb \f071*/
-	#page_menu li .wishlist:before { content: "\f078"; }
-	#page_menu li .calendar:before { content: "\f073"; }
-	#page_menu li .usage:before { content: "\f080"; }
-	#page_menu li .projects:before { content: "\f03f"; }
-	#page_menu li .progress:before { content: "\f012"; } /* \f091 */
-	#page_menu li .dashboard:before { content: "\f083"; }
-	#page_menu li .notes:before { content: "\270D"; }
-	#page_menu li .pages:before { content: "\f05a"; } /* \f016 */
-	#page_menu li .guide:before { content: "\f059"; }
-
 	#page_menu li.protected {
 		background: none;
 		position: relative;
@@ -415,6 +397,8 @@
 		font-size: 2em;
 		-webkit-font-smoothing: antialiased;
 		text-align: center;
+		content: attr(data-icon);
+		font-family: 'Fontcons';
 	}
 
 /* [!] HACKS - IE 7 and older */
@@ -448,12 +432,12 @@
 	#page_menu li .discussions {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#xf086;</small>' + this.innerHTML);
 	}
-	#page_menu li a.page:before {
+	/*#page_menu li a.page:before {
 		content: "\f016";
 	}
 	#page_menu li a.tools:before {
 		content: "\2692";
-	}
+	}*/
 	#page_menu li:after,
 	#page_menu li a:after {
 		position: absolute;
