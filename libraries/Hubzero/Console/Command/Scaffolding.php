@@ -118,7 +118,13 @@ class Scaffolding implements CommandInterface
 		}
 		else
 		{
-			$this->output->addLine('Scaffolding help doc...coming soon');
+			$this->output = $this->output->getHelpOutput();
+			$this
+				->output
+				->addOverview(
+					'Create a new item scaffold. There are currently no arguments available.
+					Type "muse scaffolding help [scaffolding type]" for more details.');
+			$this->output->render();
 		}
 	}
 
