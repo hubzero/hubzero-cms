@@ -163,13 +163,13 @@ class Arguments
 				if (strpos($this->raw[$i], "=") !== false)
 				{
 					$parts = explode("=", $this->raw[$i], 2);
-					$key   = str_replace("-", "", $parts[0]);
+					$key   = preg_replace("/^([-]{1,2})/", "", $parts[0]);
 					$value = ($parts[1]);
 				}
 				// Args with a dash but no equals sign will be considered TRUE if present
 				elseif (strpos($this->raw[$i], "-") !== false)
 				{
-					$key   = str_replace("-", "", $this->raw[$i]);
+					$key   = preg_replace("/^([-]{1,2})/", "", $this->raw[$i]);
 					$value = true;
 				}
 				// Otherwise, we'll just save the arg as a single word and individual commands may use them
