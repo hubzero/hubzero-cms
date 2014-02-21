@@ -194,7 +194,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Get a record count
-		$this->view->total = Hubzero_Group::find( $this->view->filters );
+		$this->view->total = \Hubzero\User\Group::find( $this->view->filters );
 		
 		// Filters for returning results
 		$this->view->filters['limit']		= JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
@@ -203,7 +203,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->filters['fields']		= array('cn', 'description', 'published', 'gidNumber', 'type', 'public_desc', 'join_policy');
 
 		// Get a list of all groups
-		$this->view->groups = Hubzero_Group::find( $this->view->filters );
+		$this->view->groups = \Hubzero\User\Group::find( $this->view->filters );
 		$this->view->authorized = $this->_authorize();
 		
 		
@@ -240,7 +240,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Load the group object
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// check to make sure we were able to load group
 		if (!is_object($this->view->group) || !$this->view->group->get('gidNumber') || !$this->view->group->get('cn'))
@@ -543,7 +543,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// method that called handleSuperGroupError with call_user_func
 		ob_start();
 		$template = new GroupsHelperTemplate();
-		$template->set('group', Hubzero_Group::getInstance(JRequest::getVar('cn', '')))
+		$template->set('group', \Hubzero\User\Group::getInstance(JRequest::getVar('cn', '')))
 			     ->set('tab', JRequest::getVar('active','overview'))
 			     ->set('error', $error )
 			     ->parse()
@@ -574,7 +574,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 * Build default home page object,
 	 * Check to see if group have a home page override
 	 * 
-	 * @param    object    $group    Hubzero_Group Object
+	 * @param    object    $group    \Hubzero\User\Group Object
 	 * @param    array     $pages    \Hubzero\Base\ItemList
 	 * @return   object
 	 */
@@ -616,7 +616,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	/**
 	 * Get Default Home Page
 	 *
-	 * @param    Object    $group    Hubzero_Group Object
+	 * @param    Object    $group    \Hubzero\User\Group Object
 	 * @return   String
 	 */
 	public function getDefaultHomePage( $group )
@@ -680,8 +680,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//are we creating a new group?
 		if($this->_task == 'new')
 		{
-			// Instantiate an Hubzero_Group object
-			$this->view->group = new Hubzero_Group();
+			// Instantiate an \Hubzero\User\Group object
+			$this->view->group = new \Hubzero\User\Group();
 			
 			// set some group vars for view
 			$this->view->group->set('cn', JRequest::getVar('suggested_cn', ''));
@@ -702,7 +702,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			// Load the group page
-			$this->view->group = Hubzero_Group::getInstance( $this->cn );
+			$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 
 			// Ensure we found the group info
 			if (!$this->view->group || !$this->view->group->get('gidNumber')) 
@@ -832,13 +832,13 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//are we editing or creating
 		if($g_gidNumber)
 		{
-			$group = Hubzero_Group::getInstance( $g_gidNumber );
+			$group = \Hubzero\User\Group::getInstance( $g_gidNumber );
 			$this->_task = 'edit';
 		}
 		else
 		{
 			$this->_task = 'new';
-			$group = new Hubzero_Group();
+			$group = new \Hubzero\User\Group();
 		}
 		
 		// Check for any missing info
@@ -860,7 +860,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		{
 			$this->setNotification(JText::_('COM_GROUPS_SAVE_ERROR_INVALID_ID'), 'error');
 		}
-		if ($this->_task == 'new' && Hubzero_Group::exists( $g_cn, true )) 
+		if ($this->_task == 'new' && \Hubzero\User\Group::exists( $g_cn, true )) 
 		{
 			$this->setNotification(JText::_('COM_GROUPS_SAVE_ERROR_ID_TAKEN'), 'error');
 		}
@@ -1104,7 +1104,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
@@ -1197,7 +1197,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
@@ -1497,7 +1497,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	/**
 	 * Get a group's availability
 	 * 
-	 * @param      object $group Hubzero_Group
+	 * @param      object $group \Hubzero\User\Group
 	 * @return     string
 	 */
 	public function groupavailabilityTask( $group = NULL )
@@ -1512,7 +1512,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Ensure the data passed is valid
-		if (($group == 'new' || $group == 'browse') || (!$this->_validCn($group)) || (Hubzero_Group::exists($group, true))) 
+		if (($group == 'new' || $group == 'browse') || (!$this->_validCn($group)) || (\Hubzero\User\Group::exists($group, true))) 
 		{
 			$availability = false;
 		}
@@ -1542,7 +1542,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	public function downloadTask( $filename = "" )
 	{
 		//get the group
-		$group = Hubzero_Group::getInstance( $this->cn );
+		$group = \Hubzero\User\Group::getInstance( $this->cn );
 
 		//authorize
 		$authorized = $this->_authorize();

@@ -77,7 +77,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
@@ -145,7 +145,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
@@ -462,7 +462,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
@@ -640,7 +640,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
@@ -764,7 +764,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->view->group = Hubzero_Group::getInstance( $this->cn );
+		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber')) 

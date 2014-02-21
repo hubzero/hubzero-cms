@@ -1482,7 +1482,7 @@ class Profile extends Object
 	/**
 	 * Check to see if user has permission to perform task
 	 *
-	 * @param     $group     Hubzero_Group Object
+	 * @param     $group     \Hubzero\User\Group Object
 	 * @param     $action    Group Action to perform
 	 * @return    bool
 	 */

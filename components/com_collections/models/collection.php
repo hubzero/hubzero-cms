@@ -567,7 +567,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		switch ($this->get('object_type'))
 		{
 			case 'group':
-				$group = Hubzero_Group::getInstance($this->get('object_id'));
+				$group = \Hubzero\User\Group::getInstance($this->get('object_id'));
 				$href = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
 			break;
 

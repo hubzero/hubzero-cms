@@ -57,10 +57,10 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 	{
 		$this->set('scope_id', $scope_id);
 
-		$this->_item = Hubzero_Group::getInstance($scope_id);
-		if (!($this->_item instanceof Hubzero_Group))
+		$this->_item = \Hubzero\User\Group::getInstance($scope_id);
+		if (!($this->_item instanceof \Hubzero\User\Group))
 		{
-			$this->_item = new Hubzero_Group();
+			$this->_item = new \Hubzero\User\Group();
 		}
 
 		$this->_segments['cn']     = $this->_item->get('cn');

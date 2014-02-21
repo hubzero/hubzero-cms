@@ -784,7 +784,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$filters['fields'] = array('cn','description','published','gidNumber','type');
 			$filters['type'] = array(1,3);
 			$filters['sortby'] = 'description';
-			$groups = Hubzero_Group::find($filters);
+			$groups = \Hubzero\User\Group::find($filters);
 
 			// Build <select> of groups
 			$this->view->lists['groups'] = ResourcesHtml::selectGroup($groups, $this->view->row->group_owner);

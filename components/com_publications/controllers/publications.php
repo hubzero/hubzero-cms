@@ -2300,7 +2300,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			
 			if ($creatorgroup) 
 			{	
-				$cgroup = Hubzero_Group::getInstance($creatorgroup);
+				$cgroup = \Hubzero\User\Group::getInstance($creatorgroup);
 				if ($cgroup)
 				{
 					if (!$cgroup->is_member_of('members',$this->juser->get('id')) &&

@@ -264,7 +264,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			'fields' => array('gidNumber','description'),
 			'type' => array('hub','project','partner','course')
 		);
-		$this->view->groups = Hubzero_Group::find( $filters );
+		$this->view->groups = \Hubzero\User\Group::find( $filters );
 		
 		//getting vars from do import
 		$this->view->emailBox = $this->emailBox;
@@ -365,7 +365,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		//do we have an email group
 		if ($this->emailGroup != '' || $this->emailGroup != 0)
 		{
-			$hg = Hubzero_Group::getInstance( $this->emailGroup );
+			$hg = \Hubzero\User\Group::getInstance( $this->emailGroup );
 			$emailGroupEmails = $hg->getEmails( 'members' );
 		}
 		

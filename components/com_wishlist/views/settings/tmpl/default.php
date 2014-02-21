@@ -130,7 +130,7 @@ defined('_JEXEC') or die('Restricted access');
 				$k=1;
 				for ($i=0, $n=count($wishlist->groups); $i < $n; $i++) 
 				{
-					$instance = Hubzero_Group::getInstance($wishlist->groups[$i]);
+					$instance = \Hubzero\User\Group::getInstance($wishlist->groups[$i]);
 					$cn = $instance->get('cn');
 					$members = $instance->get('members');
 					$managers = $instance->get('managers');

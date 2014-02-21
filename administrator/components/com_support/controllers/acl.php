@@ -184,7 +184,7 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 				break;
 
 				case 'group':
-					$group = Hubzero_Group::getInstance($row->foreign_key);
+					$group = \Hubzero\User\Group::getInstance($row->foreign_key);
 					if (!is_object($group))
 					{
 						JError::raiseError(500, JText::_('Cannot find group'));

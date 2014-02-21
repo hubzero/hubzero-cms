@@ -236,7 +236,7 @@ $row = &$this->rows[$i];
 					
 					<?php if($row->scope == 'group') : ?>
 						<?php
-							$group = Hubzero_Group::getInstance( $row->scope_id );
+							$group = \Hubzero\User\Group::getInstance( $row->scope_id );
 							if (is_object($group))
 							{
 								echo "Group: <a href='" . JRoute::_('index.php?option=com_events&group_id=' . $group->get('gidNumber')) . "'>" . $group->get('description') . "</a>";

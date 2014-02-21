@@ -59,7 +59,7 @@ class GroupsModelPageArchive extends JObject
 	private $_db = NULL;
 	
 	/**
-	 * Hubzero_Group
+	 * \Hubzero\User\Group
 	 * 
 	 * @var object
 	 */
@@ -73,7 +73,7 @@ class GroupsModelPageArchive extends JObject
 	public function __construct()
 	{
 		$this->_db    = JFactory::getDBO();
-		$this->_group = Hubzero_Group::getInstance( JRequest::getVar('cn', '') );
+		$this->_group = \Hubzero\User\Group::getInstance( JRequest::getVar('cn', '') );
 	}
 	
 	/**

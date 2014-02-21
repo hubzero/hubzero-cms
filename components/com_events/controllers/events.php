@@ -682,7 +682,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		//is this a group rescricted event
 		if ($row->scope == 'group')
 		{
-			$group = Hubzero_Group::getInstance( $row->scope_id );
+			$group = \Hubzero\User\Group::getInstance( $row->scope_id );
 			
 			//if we have a group and we are a member
 			if (is_object($group))

@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 		$filters['fields'] = array('cn','description','published','gidNumber','type');
 		$filters['type'] = array(1,3);
 		$filters['sortby'] = 'description';
-		$groups = Hubzero_Group::find($filters);
+		$groups = \Hubzero\User\Group::find($filters);
 		
 		$html  = '<label for="filter_group_id">' . JText::_('Group') . ':</label> '."\n";
 		$html .= '<select name="group_id" id="filter_group_id">'."\n";

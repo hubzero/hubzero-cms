@@ -984,10 +984,10 @@ class plgProjectsPublications extends JPlugin
 			case 'access':						
 				// Sys group
 				$cn = $this->_config->get('group_prefix', 'pr-').$this->_project->alias;
-				$view->sysgroup = new Hubzero_Group();
-				if (Hubzero_Group::exists($cn)) 
+				$view->sysgroup = new \Hubzero\User\Group();
+				if (\Hubzero\User\Group::exists($cn)) 
 				{
-					$view->sysgroup = Hubzero_Group::getInstance( $cn );
+					$view->sysgroup = \Hubzero\User\Group::getInstance( $cn );
 				}
 				
 				// Is access restricted?
@@ -1218,7 +1218,7 @@ class plgProjectsPublications extends JPlugin
 				$row->severity	= 'normal';
 				
 				$admingroup = $this->_config->get('admingroup', '');
-				$group = Hubzero_Group::getInstance($admingroup);
+				$group = \Hubzero\User\Group::getInstance($admingroup);
 				$row->group = $group ? $group->get('cn') : '';
 
 				if (!$row->store()) 
@@ -1760,10 +1760,10 @@ class plgProjectsPublications extends JPlugin
 		
 		// Sys group
 		$cn = $this->_config->get('group_prefix', 'pr-').$this->_project->alias;
-		$view->sysgroup = new Hubzero_Group();
-		if (Hubzero_Group::exists($cn)) 
+		$view->sysgroup = new \Hubzero\User\Group();
+		if (\Hubzero\User\Group::exists($cn)) 
 		{
-			$view->sysgroup = Hubzero_Group::getInstance( $cn );
+			$view->sysgroup = \Hubzero\User\Group::getInstance( $cn );
 		}
 		
 		// Is access restricted?
@@ -2204,10 +2204,10 @@ class plgProjectsPublications extends JPlugin
 						
 						// Sys group
 						$cn = $this->_config->get('group_prefix', 'pr-').$this->_project->alias;
-						$sysgroup = new Hubzero_Group();
-						if (Hubzero_Group::exists($cn)) 
+						$sysgroup = new \Hubzero\User\Group();
+						if (\Hubzero\User\Group::exists($cn)) 
 						{
-							$sysgroup = Hubzero_Group::getInstance( $cn );
+							$sysgroup = \Hubzero\User\Group::getInstance( $cn );
 						}
 
 						$paccess = new PublicationAccess( $this->_database );
@@ -2848,7 +2848,7 @@ class plgProjectsPublications extends JPlugin
 				if ($notify)
 				{
 					$admingroup = $this->_config->get('admingroup', '');
-					$group = Hubzero_Group::getInstance($admingroup);
+					$group = \Hubzero\User\Group::getInstance($admingroup);
 					$admins = array();
 					
 					if ($admingroup && $group)

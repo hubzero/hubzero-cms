@@ -786,7 +786,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 				// Is a group set?
 				if (trim($this->get('group_cn', ''))) 
 				{
-					$group = Hubzero_Group::getInstance($this->get('group_cn'));
+					$group = \Hubzero\User\Group::getInstance($this->get('group_cn'));
 
 					// Is this a group manager?
 					if ($group->is_member_of('managers', $juser->get('id'))) 

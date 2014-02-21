@@ -783,7 +783,7 @@ class ProjectsHtml
 			<h3 <?php if($underline) { echo 'class="returnln"'; } ?>><?php echo $start .' '.JText::_('COM_PROJECTS_BY').' '; 
 			if($view->project->owned_by_group) 
 			{	
-				$group = Hubzero_Group::getInstance( $view->project->owned_by_group );	
+				$group = \Hubzero\User\Group::getInstance( $view->project->owned_by_group );	
 				if($group) 
 				{
 					echo ' '.JText::_('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';

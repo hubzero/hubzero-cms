@@ -704,7 +704,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		//do we want to share with a group
 		if (isset($group) && $group != 0)
 		{
-			$hg = Hubzero_Group::getInstance( $group );
+			$hg = \Hubzero\User\Group::getInstance( $group );
 			$members = $hg->get('members');
 			
 			//merge group members with any passed in username field

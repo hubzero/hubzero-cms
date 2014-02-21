@@ -87,7 +87,7 @@ class GroupEventMacro extends WikiMacro
 		$cn = JRequest::getVar('cn');
 		
 		//get the group object based on gid
-		$group = Hubzero_Group::getInstance($cn);
+		$group = \Hubzero\User\Group::getInstance($cn);
 		
 		//check to make sure we have a valid group
 		if (!is_object($group)) 

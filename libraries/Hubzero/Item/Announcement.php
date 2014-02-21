@@ -33,6 +33,7 @@ namespace Hubzero\Item;
 use Hubzero\Plugin\View;
 use Hubzero\Mail\Message;
 use Hubzero\User\Profile;
+use Hubzero\User\Group;
 
 /**
  * Hubzero Announcement Model Class
@@ -372,7 +373,7 @@ class Announcement extends \JTable
 		}
 
 		// load group
-		$group = \Hubzero_Group::getInstance($announcement->scope_id);
+		$group = Group::getInstance($announcement->scope_id);
 
 		// get all group members
 		$groupMembers = array();

@@ -40,7 +40,7 @@ class GroupsHelperView
 	/**
 	 * Get Active Group Tab
 	 *
-	 * @param    $group    Hubzero_Group Object
+	 * @param    $group    \Hubzero\User\Group Object
 	 * @return   string
 	 */
 	public static function getTab( $group )
@@ -105,7 +105,7 @@ class GroupsHelperView
 	/**
 	 * Get "Before" group content
 	 *
-	 * @param    $group         Hubzero_Group Object
+	 * @param    $group         \Hubzero\User\Group Object
 	 * @param    $authorized    Authorization level
 	 * @return   array
 	 */
@@ -189,7 +189,7 @@ class GroupsHelperView
 	/**
 	 * Display Active Tab Title, next to group name
 	 *
-	 * @param    $group    Hubzero_Group Object
+	 * @param    $group    \Hubzero\User\Group Object
 	 * @return   string
 	 */
 	public static function displayTab( $group )
@@ -250,7 +250,7 @@ class GroupsHelperView
 	/**
 	 * Display "Before" group content
 	 *
-	 * @param    $group         Hubzero_Group Object
+	 * @param    $group         \Hubzero\User\Group Object
 	 * @param    $authorized    Authorization level
 	 * @return   void
 	 */

@@ -103,7 +103,7 @@ class plgSupportForum extends JPlugin
 					break;
 
 					case 'group':
-						$group = Hubzero_Group::getInstance($row->scope_id);
+						$group = \Hubzero\User\Group::getInstance($row->scope_id);
 						$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=forum&scope=' . $row->section . '/' . $row->category . '/' . $parent;
 					break;
 

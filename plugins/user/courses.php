@@ -46,7 +46,7 @@ class plgUserCourses extends \Hubzero\Plugin\Plugin
 	public function onAfterStoreCourse($course)
 	{
 		// Get a new group object
-		$group = new Hubzero_Group();
+		$group = new \Hubzero\User\Group();
 
 		// If the course doesn't have a group id set, then we need to create a new group
 		if(!$course->get('group_id'))

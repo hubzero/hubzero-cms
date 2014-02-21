@@ -31,9 +31,10 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\User\Group;
 
 /**
- * Wiki macro class for dipslaying group events
+ * Macro class for dipslaying group events
  */
 class GroupEvent extends Macro
 {
@@ -65,63 +66,70 @@ class GroupEvent extends Macro
 	{
 		//get the args passed in
 		$args = explode(',', $this->args);
-		
+
 		//parse each arg into key value pair
 		foreach($args as $a) 
 		{
 			$kv[] = explode('=', trim($a));
 		}
-		
+
 		//set final args
 		foreach ($kv as $k) 
 		{
 			$arg[$k[0]] = (isset($k[1])) ? $k[1] : $k[0];
 		}
-		
+
 		//set a default
 		//$default_events = 3;
-		
+
 		//get the user defined # of events
 		//$num_events = (isset($arg['number']) && is_numeric($arg['number']) && $arg['number'] > 0) ? $arg['number'] : $default_events;
-		
+
 		//get the group
 		$cn = \JRequest::getVar('cn');
-		
+
 		//get the group object based on gid
-		$group = \Hubzero_Group::getInstance($cn);
-		
+		$group = Group::getInstance($cn);
+
 		//check to make sure we have a valid group
 		if (!is_object($group)) 
 		{
 			return '[This macro is designed for Groups only]';
 		}
-		
+
 		//array of filters
 		$filters = array(
 			'id' => (isset($arg['id'])) ? $arg['id'] : null,
 			'limit' => (isset($arg['number'])) ? $arg['number'] : 3
 		);
-		
+
 		//get group events
-		$events =  $this->getGroupEvents( $group, $filters );
-		
+		$events =  $this->getGroupEvents($group, $filters);
+
 		//create the html container
 		$html  = '<div class="upcoming_events">';
-		
+
 		//display the title
 		$html .= (isset($arg['title']) && $arg['title'] != '') ? '<h3>' . $arg['title'] . '</h3>' : '';
-		
+
 		//render the events
-		$html .= $this->renderEvents( $group, $events );
+		$html .= $this->renderEvents($group, $events);
 		
 		//close the container
 		$html .= '</div>';
-		
+
 		//return rendered events
 		return $html;
 	}
-	
-	private function getGroupEvents( $group, $filters = array() )
+
+	/**
+	 * Get a list of events for a group
+	 * 
+	 * @param      object $group
+	 * @param      array  $filters
+	 * @return     array
+	 */
+	private function getGroupEvents($group, $filters = array())
 	{
 		//instantiate database
 		$database = \JFactory::getDBO();
@@ -138,16 +146,16 @@ class GroupEvent extends Macro
 		{
 			$sql .= " AND id=" . $database->Quote( $filters['id'] );
 		}
-		
+
 		//add ordering
 		$sql .= " ORDER BY publish_up ASC";
-		
+
 		//do we have a limit set
 		if (isset($filters['number']))
 		{
 			$sql .= " LIMIT " . $filters['number'];
 		}
-		
+
 		//return result
 		$database->setQuery($sql);
 		return $database->loadObjectList();
@@ -159,7 +167,7 @@ class GroupEvent extends Macro
 	 * @param      array     Array of group events
 	 * @return     string 
 	 */
-	private function renderEvents( $group, $events )
+	private function renderEvents($group, $events)
 	{
 		$content = '';
 		if (count($events) > 0) 
@@ -168,7 +176,7 @@ class GroupEvent extends Macro
 			{
 				//build link
 				$link = \JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
-				
+
 				//build date
 				$date = '';
 				$publishUp   = strtotime($event->publish_up);
@@ -187,14 +195,14 @@ class GroupEvent extends Macro
 				{
 					$date  = \JFactory::getDate($publishUp)->format('m/d/Y @ g:i a');
 				}
-				
+
 				//shorten content
 				$details = nl2br($event->content);
 				if (strlen($details) > 150) 
 				{
 					$details = substr($details, 0, 150) . '...';
 				}
-				
+
 				//create list
 				$content .= '<div class="event">';
 				$content .= '<strong><a class=" title" href="' . $link . '">' . stripslashes($event->title) . '</a></strong>';
@@ -207,7 +215,7 @@ class GroupEvent extends Macro
 		{
 			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . \JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
 		}
-		
+
 		return $content;
 	}
 }

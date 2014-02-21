@@ -62,7 +62,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->group = Hubzero_Group::getInstance( $this->cn );
+		$this->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->group || !$this->group->get('gidNumber')) 

@@ -177,7 +177,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	/**
 	 * Check to see if group owns module
 	 *
-	 * @param     $group     Hubzero_Group Object
+	 * @param     $group     \Hubzero\User\Group Object
 	 * @return    BOOL
 	 */
 	public function belongsToGroup( $group )

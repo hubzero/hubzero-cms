@@ -143,7 +143,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 				switch ($s->scope)
 				{
 					case 'group':
-						$group = Hubzero_Group::getInstance($s->scope_id);
+						$group = \Hubzero\User\Group::getInstance($s->scope_id);
 						$ky = $s->scope;
 						if ($group)
 						{

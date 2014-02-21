@@ -376,7 +376,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 				break;
 			
 			case 'group':
-				$group = Hubzero_Group::getInstance($wishlist->referenceid);
+				$group = \Hubzero\User\Group::getInstance($wishlist->referenceid);
 				if ($group)
 				{
 					$title = JText::_('Group') . ' "' . $group->get('cn') . '"';
@@ -447,7 +447,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 				break;
 			
 			case 'group':
-				$group = Hubzero_Group::getInstance($wishlist->referenceid);
+				$group = \Hubzero\User\Group::getInstance($wishlist->referenceid);
 				$pathway->addItem('Groups','index.php?option=com_groups');
 				$pathway->addItem($group->get('description'),
 				 	'index.php?option=com_groups&cn='.$group->get('cn'));
@@ -582,9 +582,9 @@ class WishlistController extends \Hubzero\Component\SiteController
 			else if (!$id && $cat == 'group') 
 			{
 				// create private list for group
-				if (Hubzero_Group::exists($refid)) 
+				if (\Hubzero\User\Group::exists($refid)) 
 				{
-					$group = Hubzero_Group::getInstance($refid);
+					$group = \Hubzero\User\Group::getInstance($refid);
 					$id = $obj->createlist($cat, $refid, 0, $group->cn 
 						. ' '.JText::_('COM_WISHLIST_NAME_GROUP'));
 				}
@@ -943,7 +943,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 				if ($wishlist->category=='group') 
 				{
-					$group = Hubzero_Group::getInstance($wishlist->referenceid);
+					$group = \Hubzero\User\Group::getInstance($wishlist->referenceid);
 					$wishlist->cn = $group->cn;
 				}
 			}
@@ -2080,9 +2080,9 @@ class WishlistController extends \Hubzero\Component\SiteController
 			// Get group id from cn
 			if ($category == 'group') 
 			{
-				if (Hubzero_Group::exists($cn)) 
+				if (\Hubzero\User\Group::exists($cn)) 
 				{
-					$group = Hubzero_Group::getInstance($cn);
+					$group = \Hubzero\User\Group::getInstance($cn);
 					$refid = $group->gidNumber;
 				}
 				else 
@@ -2115,9 +2115,9 @@ class WishlistController extends \Hubzero\Component\SiteController
 			else if ($category == 'group' && !$newlist) 
 			{
 				// create private list for group
-				if (Hubzero_Group::exists($refid)) 
+				if (\Hubzero\User\Group::exists($refid)) 
 				{
-					$group = Hubzero_Group::getInstance($refid);
+					$group = \Hubzero\User\Group::getInstance($refid);
 					$newlist = $obj->createlist($cat, $refid, 0, $group->cn . ' ' . JText::_('COM_WISHLIST_GROUP'));
 				}
 			}

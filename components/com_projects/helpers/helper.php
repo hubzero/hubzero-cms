@@ -506,7 +506,7 @@ class ProjectsHelper extends JObject {
 		// Get profile of author group
 		if ($project->owned_by_group) 
 		{
-			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );	
+			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group );	
 		}
 		$body = array();
 		$body['plaintext'] 	= $eview->loadTemplate();
@@ -1201,15 +1201,15 @@ class ProjectsHelper extends JObject {
 		// Get authorized group	
 		if ($reviewer == 'sensitive' && $sdata_group)
 		{
-			$group = Hubzero_Group::getInstance($sdata_group);
+			$group = \Hubzero\User\Group::getInstance($sdata_group);
 		}
 		elseif ($reviewer == 'sponsored' && $ginfo_group)
 		{
-			$group = Hubzero_Group::getInstance($ginfo_group);
+			$group = \Hubzero\User\Group::getInstance($ginfo_group);
 		}
 		elseif ($reviewer == 'general' && $admingroup)
 		{
-			$group = Hubzero_Group::getInstance($admingroup);
+			$group = \Hubzero\User\Group::getInstance($admingroup);
 		}
 			
 		if ($group)

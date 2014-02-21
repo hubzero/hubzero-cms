@@ -553,7 +553,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$objO->removeOwners ( $id, '', 0, $permanent, '', $all = 1 );
 		
 		// Erase owner group
-		$group = new Hubzero_Group();
+		$group = new \Hubzero\User\Group();
 		$group->read( $prgroup );
 		if ($group) 
 		{

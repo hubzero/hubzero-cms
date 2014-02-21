@@ -58,7 +58,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		}
 		
 		// load group object
-		$this->group = Hubzero_Group::getInstance( $this->gid );
+		$this->group = \Hubzero\User\Group::getInstance( $this->gid );
 		
 		// run parent execute
 		parent::execute();

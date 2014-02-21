@@ -468,7 +468,7 @@ class Helper
 	public static function getPluginAccess($group, $get_plugin = '')
 	{
 		// make sure we have a Hubzero group
-		if (!($group instanceof \Hubzero_Group))
+		if (!($group instanceof Group))
 		{
 			return;
 		}
@@ -567,7 +567,7 @@ class Helper
 		$db = \JDatabase::getInstance();
 
 		// make sure we have a group object
-		if (!$group = \Hubzero_Group::getInstance(\JRequest::getVar('cn', '')))
+		if (!$group = Group::getInstance(\JRequest::getVar('cn', '')))
 		{
 			return $db;
 		}

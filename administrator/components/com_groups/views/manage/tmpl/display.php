@@ -131,7 +131,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$group = new Hubzero_Group();
+	$group = new \Hubzero\User\Group();
 	//$group->gidNumber = $row->gidNumber;
 	//$group->cn = $row->cn;
 	$group->read($row->gidNumber);

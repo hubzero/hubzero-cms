@@ -147,7 +147,7 @@ $goto  = 'alias=' . $this->project->alias;
 					</div>
 					<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_PROJECT') . ' ' . JText::_('COM_PROJECTS_OWNER'); ?>:</h5>	
 					<?php 	if($this->project->owned_by_group) {	
-							$group = Hubzero_Group::getInstance( $this->project->owned_by_group );			
+							$group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );			
 							$ownedby = '<a href="'.JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')).'">'.JText::_('COM_PROJECTS_GROUP').' '.$group->get('cn').'</a>';
 						}
 						else {

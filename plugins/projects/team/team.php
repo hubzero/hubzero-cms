@@ -984,7 +984,7 @@ class plgProjectsTeam extends JPlugin
 		// Get profile of author group
 		if ($this->_project->owned_by_group) 
 		{			
-			$eview->nativegroup = Hubzero_Group::getInstance( $this->_project->owned_by_group);
+			$eview->nativegroup = \Hubzero\User\Group::getInstance( $this->_project->owned_by_group);
 		}
 		
 		$eview->option 			= $this->_option;

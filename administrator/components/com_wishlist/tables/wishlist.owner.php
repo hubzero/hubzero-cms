@@ -213,7 +213,7 @@ class WishlistOwner extends JTable
 			foreach ($groups as $g)
 			{
 				// Load the group
-				$group = Hubzero_Group::getInstance($g);
+				$group = \Hubzero\User\Group::getInstance($g);
 				if ($group && $group->get('gidNumber'))
 				{
 					$members  = $group->get('members');

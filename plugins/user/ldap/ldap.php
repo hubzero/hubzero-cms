@@ -124,7 +124,7 @@ class plgUserLdap extends JPlugin
 	/**
 	 * Method is called after group data is stored in the database
 	 *
-	 * @param object holds the new group data (Hubzero_Group)
+	 * @param object holds the new group data (\Hubzero\User\Group)
 	 */
 	public function onAfterStoreGroup($group)
 	{
@@ -135,7 +135,7 @@ class plgUserLdap extends JPlugin
 	/**
 	 * Method is called after group data is deleted from the database
 	 *
-	 * @param object holds the new group data (Hubzero_Group)
+	 * @param object holds the new group data (\Hubzero\User\Group)
 	 */
 	public function onAfterDeleteGroup($group)
 	{

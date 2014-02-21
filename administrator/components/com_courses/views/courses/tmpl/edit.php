@@ -105,7 +105,7 @@ function submitbutton(pressbutton)
 								'type'       => array(1, 3),
 								'sortby'     => 'description'
 							);
-							$groups = Hubzero_Group::find($filters);
+							$groups = \Hubzero\User\Group::find($filters);
 							if ($groups)
 							{
 								foreach ($groups as $group)

@@ -360,7 +360,7 @@ class JRouterSite extends JRouter
 				if ( ($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
 				{
 					$suri = JURI::getInstance();
-					$group = Hubzero_Group::getInstance($rhostname);
+					$group = \Hubzero\User\Group::getInstance($rhostname);
 
 					if (!empty($group) && ($group->type == 3)) // only special groups get internal redirection abilities
 					{

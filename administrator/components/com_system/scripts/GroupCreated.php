@@ -63,7 +63,7 @@ class GroupCreated extends SystemHelperScript
 		foreach ($logs as $log)
 		{
 			echo $log['gid'];
-			$group = Hubzero_Group::getInstance($log['gid']);
+			$group = \Hubzero\User\Group::getInstance($log['gid']);
 			if (is_object($group))
 			{
 				$group->set('created', $log['timestamp']);

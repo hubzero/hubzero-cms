@@ -1173,7 +1173,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if (empty($gid))
 		{
-			$hzg = new Hubzero_Group();
+			$hzg = new \Hubzero\User\Group();
 			$hzg->cn =  $group_prefix . strtolower($tool['toolname']);
 			$hzg->create();
 			$hzg->set('type', 2);
@@ -1183,7 +1183,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$hzg = Hubzero_Group::getInstance($gid);
+			$hzg = \Hubzero\User\Group::getInstance($gid);
 		}
 		$hzg->set('members', $tool['developers']);
 
@@ -1782,7 +1782,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		$admingroup = $this->config->get('admingroup', '');
 
-		$group = Hubzero_Group::getInstance($admingroup);
+		$group = \Hubzero\User\Group::getInstance($admingroup);
 		if (is_object($group)) 
 		{
 			$members  = $group->get('members');

@@ -3276,7 +3276,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			{
 				foreach ($groups as $g)
 				{
-					$hzg = Hubzero_Group::getInstance(trim($g));
+					$hzg = \Hubzero\User\Group::getInstance(trim($g));
 
 					if ($hzg->get('gidNumber')) 
 					{
@@ -3305,7 +3305,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		} 
 		else 
 		{
-			$hzg = Hubzero_Group::getInstance($group);
+			$hzg = \Hubzero\User\Group::getInstance($group);
 
 			if ($hzg && $hzg->get('gidNumber')) 
 			{

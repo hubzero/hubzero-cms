@@ -68,7 +68,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 		
 		// Load the group page
-		$this->group = Hubzero_Group::getInstance( $this->cn );
+		$this->group = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		// Ensure we found the group info
 		if (!$this->group || !$this->group->get('gidNumber')) 
@@ -191,7 +191,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	private function _buildFolderTreeHtml( $tree )
 	{
 		//load group object
-		$hubzeroGroup = Hubzero_Group::getInstance( $this->cn );
+		$hubzeroGroup = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		$html = '<ul>';
 		foreach ($tree as $treeLevel)
@@ -218,7 +218,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	private function _buildFolderTreeSelect( $tree )
 	{
 		// load group object
-		$hubzeroGroup = Hubzero_Group::getInstance( $this->cn );
+		$hubzeroGroup = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		$html  = '<select class="" name="folder">';
 		if ($hubzeroGroup->get('type') == 3)
@@ -233,7 +233,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	private function _buildFolderTreeSelectOptionList( $tree )
 	{
 		// load group object
-		$hubzeroGroup = Hubzero_Group::getInstance( $this->cn );
+		$hubzeroGroup = \Hubzero\User\Group::getInstance( $this->cn );
 		
 		$options = '';
 		foreach ($tree as $treeLevel)

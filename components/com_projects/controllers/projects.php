@@ -766,7 +766,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			
 			if ($creatorgroup) 
 			{	
-				$cgroup = Hubzero_Group::getInstance($creatorgroup);
+				$cgroup = \Hubzero\User\Group::getInstance($creatorgroup);
 				if ($cgroup)
 				{
 					if (!$cgroup->is_member_of('members',$this->juser->get('id')) &&
@@ -799,7 +799,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		if ($this->_gid) 
 		{
 			// Load the group page
-			$group = Hubzero_Group::getInstance( $this->_gid );
+			$group = \Hubzero\User\Group::getInstance( $this->_gid );
 
 			// Ensure we found the group info
 			if (!is_object($group) || (!$group->get('gidNumber') && !$group->get('cn')) ) 
@@ -1133,7 +1133,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$group = NULL;
 		if ($project->owned_by_group) 
 		{
-			$group = Hubzero_Group::getInstance( $project->owned_by_group );
+			$group = \Hubzero\User\Group::getInstance( $project->owned_by_group );
 			
 			// Was owner group deleted?
 			if (!$group) 
@@ -2138,7 +2138,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 
 							$admingroup = $this->config->get('ginfo_group', '');
 
-							if (Hubzero_Group::getInstance($admingroup))
+							if (\Hubzero\User\Group::getInstance($admingroup))
 							{
 								$admins = $this->_getGroupMembers($admingroup);
 
@@ -3006,7 +3006,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					? $this->config->get('sdata_group', '') 
 					: $this->config->get('ginfo_group', '');
 					
-				if (Hubzero_Group::getInstance($admingroup))
+				if (\Hubzero\User\Group::getInstance($admingroup))
 				{
 					$admins = $this->_getGroupMembers($admingroup);
 					$admincomment = $comment 
@@ -3591,7 +3591,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$admins = array();
 		if ($admingroup) 
 		{
-			$group = Hubzero_Group::getInstance($admingroup);
+			$group = \Hubzero\User\Group::getInstance($admingroup);
 			if ($group) 
 			{
 				$gidNumber = $group->get('gidNumber');
@@ -3952,7 +3952,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Get profile of author group
 		if ($project->owned_by_group) 
 		{
-			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );
+			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group );
 		}
 		
 		// Send out message/email

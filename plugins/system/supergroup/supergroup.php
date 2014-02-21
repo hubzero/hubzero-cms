@@ -73,7 +73,7 @@ class plgSystemSupergroup extends JPlugin
 		}
 		
 		// load group object
-		$group  = Hubzero_Group::getInstance( $cn );
+		$group  = \Hubzero\User\Group::getInstance( $cn );
 		
 		// make sure we have all the needed stuff
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
@@ -159,7 +159,7 @@ class plgSystemSupergroup extends JPlugin
 		$active = JRequest::getVar('active', '');
 		
 		// load group object
-		$group  = Hubzero_Group::getInstance( $cn );
+		$group  = \Hubzero\User\Group::getInstance( $cn );
 		
 		// make sure we have all the needed stuff
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))

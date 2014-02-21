@@ -57,7 +57,7 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 	{
 		$this->set('scope_id', $scope_id);
 
-		$group = Hubzero_Group::getInstance($scope_id);
+		$group = \Hubzero\User\Group::getInstance($scope_id);
 
 		$this->_segments['cn']     = $group->get('cn');
 		$this->_segments['active'] = 'collections';

@@ -131,7 +131,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		if ($this->cn)
 		{
 			//load group
-			$group = Hubzero_Group::getInstance( $this->cn );
+			$group = \Hubzero\User\Group::getInstance( $this->cn );
 			if ($group)
 			{
 				$pathway->addItem(
@@ -223,7 +223,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		
 		if ($this->cn) 
 		{
-			$group = Hubzero_Group::getInstance( $this->cn );
+			$group = \Hubzero\User\Group::getInstance( $this->cn );
 			if(is_object($group))
 			{
 				$this->_title = JText::_('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
@@ -289,7 +289,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	protected function _authorize($checkOnlyMembership = true)
 	{
 		//load the group
-		$group = Hubzero_Group::getInstance( $this->cn );
+		$group = \Hubzero\User\Group::getInstance( $this->cn );
 		if (!is_object($group))
 		{
 			return false;
@@ -307,7 +307,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	public function _authorizedForTask( $task )
 	{
 		//load the group
-		$group = Hubzero_Group::getInstance( $this->cn );
+		$group = \Hubzero\User\Group::getInstance( $this->cn );
 		if (!is_object($group))
 		{
 			return false;

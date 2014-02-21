@@ -188,7 +188,7 @@ class plgGroupsMemberOptions extends JPlugin
 	 */
 	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
-		/* @var $group Hubzero_Group */
+		/* @var $group \Hubzero\User\Group */
 
 		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
 		
@@ -239,7 +239,7 @@ class plgGroupsMemberOptions extends JPlugin
 		$logger =  JFactory::getLogger();
 		
 		//get group
-		$group = Hubzero_Group::getInstance( $gidNumber );
+		$group = \Hubzero\User\Group::getInstance( $gidNumber );
 		
 		//is auto-subscribe on for discussion forum
 		$discussion_email_autosubscribe = $group->get('discussion_email_autosubscribe');

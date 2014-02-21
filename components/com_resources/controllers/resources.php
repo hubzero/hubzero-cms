@@ -1301,7 +1301,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		if ($this->model->inGroup()) 
 		{
 			// Alter the pathway to reflect a group owned resource
-			$group = Hubzero_Group::getInstance($this->model->resource->group_owner);
+			$group = \Hubzero\User\Group::getInstance($this->model->resource->group_owner);
 
 			if ($group)
 			{

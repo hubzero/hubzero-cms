@@ -69,7 +69,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		}
 
 		// Load the group page
-		$group = new Hubzero_Group();
+		$group = new \Hubzero\User\Group();
 		$group->read($this->view->filters['gid']);
 
 		if (!$this->_authorize($group)) 
@@ -175,7 +175,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->view->group = new Hubzero_Group();
+		$this->view->group = new \Hubzero\User\Group();
 		$this->view->group->read($gid);
 
 		// Set any errors
@@ -216,7 +216,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		// Set a flag for emailing any changes made
@@ -315,7 +315,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		// Set a flag for emailing any changes made
@@ -389,7 +389,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		// Set a flag for emailing any changes made
@@ -469,7 +469,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		$users = array();
@@ -541,7 +541,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		// Get all managers of this group
@@ -629,7 +629,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		// Get all the group's managers
@@ -714,7 +714,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		$authorized = $this->authorized;
@@ -798,7 +798,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = JRequest::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new Hubzero_Group();
+		$this->group = new \Hubzero\User\Group();
 		$this->group->read($gid);
 
 		// An array for the users we're going to deny

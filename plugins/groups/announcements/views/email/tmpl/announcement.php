@@ -35,7 +35,7 @@ $juri    = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
 // get the group
-$group = Hubzero_Group::getInstance( $this->announcement->scope_id );
+$group = \Hubzero\User\Group::getInstance( $this->announcement->scope_id );
 $groupLink = rtrim($juri->base(), DS) . DS . 'groups' . DS . $group->get('cn');
 
 // define color

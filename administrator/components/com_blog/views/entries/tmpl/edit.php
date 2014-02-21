@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 						$filters['fields'] = array('cn','description','published','gidNumber','type');
 						$filters['type'] = array(1,3);
 						$filters['sortby'] = 'description';
-						$groups = Hubzero_Group::find($filters);
+						$groups = \Hubzero\User\Group::find($filters);
 						
 						$html  = '<select name="fields[group_id]" id="field-group_id">'."\n";
 						$html .= '<option value="0"';

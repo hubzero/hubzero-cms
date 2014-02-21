@@ -90,7 +90,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$group = Hubzero_Group::getInstance($resource->group_owner);
+		$group = \Hubzero\User\Group::getInstance($resource->group_owner);
 		if (!$group || !$group->get('gidNumber'))
 		{
 			return $arr;

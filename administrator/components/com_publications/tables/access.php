@@ -226,7 +226,7 @@ class PublicationAccess extends JTable
 				continue;
 			}
 			
-			$group = Hubzero_Group::getInstance( $a);
+			$group = \Hubzero\User\Group::getInstance( $a);
 			$gid = $group ? $group->get('gidNumber') : 0;
 			
 			if (!$gid or $this->existsEntry($vid, $gid)) 

@@ -162,7 +162,7 @@ function submitbutton(pressbutton)
 					<td class="key"><?php echo JText::_('COM_PROJECTS_OWNER'); ?>:</td>
 					<td>	
 						<?php 	if($this->obj->owned_by_group) {	
-								$group = Hubzero_Group::getInstance( $this->obj->owned_by_group );
+								$group = \Hubzero\User\Group::getInstance( $this->obj->owned_by_group );
 								if($group) {
 									$ownedby = '<span class="i_group">'.$group->get('cn').'</span>';	
 								}	

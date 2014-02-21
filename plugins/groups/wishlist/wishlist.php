@@ -210,9 +210,9 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			if (!$id) 
 			{
 				// create private list for group
-				if (Hubzero_Group::exists($gid)) 
+				if (\Hubzero\User\Group::exists($gid)) 
 				{
-					$group = Hubzero_Group::getInstance($gid);
+					$group = \Hubzero\User\Group::getInstance($gid);
 					$id = $obj->createlist($category, $gid, 0, $cn . ' ' . JText::_('WISHLIST_NAME_GROUP'));
 				}
 			}

@@ -57,7 +57,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			return;
 		}
 		
-		$this->group = Hubzero_Group::getInstance( $this->gid );
+		$this->group = \Hubzero\User\Group::getInstance( $this->gid );
 		
 		parent::execute();
 	}

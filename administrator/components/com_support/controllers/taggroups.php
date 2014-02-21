@@ -126,7 +126,7 @@ class SupportControllerTaggroups extends \Hubzero\Component\AdminController
 		$this->view->tag = new TagsTableTag($this->database);
 		$this->view->tag->load($this->view->row->tagid);
 
-		$this->view->group = Hubzero_Group::getInstance($this->view->row->groupid);
+		$this->view->group = \Hubzero\User\Group::getInstance($this->view->row->groupid);
 
 		// Set any errors
 		if ($this->getError())
@@ -176,7 +176,7 @@ class SupportControllerTaggroups extends \Hubzero\Component\AdminController
 		$group = trim(JRequest::getVar('group', '', 'post'));
 
 		// Attempt to load the group
-		$hzg = Hubzero_Group::getInstance($group);
+		$hzg = \Hubzero\User\Group::getInstance($group);
 
 		// Set the group ID
 		if ($hzg->get('gidNumber'))

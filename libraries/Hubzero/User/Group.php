@@ -28,19 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Hubzero\User;
+
+use Hubzero\Utility\Validate;
 
 jimport('joomla.application.component.helper');
 jimport('joomla.plugin.helper');
 
 /**
- * Short description for 'Hubzero_Group'
+ * Short description for '\Hubzero\User\Group'
  * Long description (if any) ...
 */
-class Hubzero_Group
+class Group
 {
-	
 	/**
 	 * Description for 'gidNumber'
 	 *
@@ -281,7 +281,7 @@ class Hubzero_Group
 
 			// No matches
 			// Create group object
-			$hzg = new Hubzero_Group();
+			$hzg = new self();
 
 			if ($hzg->read($group) === false)
 			{
@@ -307,7 +307,7 @@ class Hubzero_Group
 	 */
 	public function create()
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -329,7 +329,7 @@ class Hubzero_Group
 				$cn = '_gid' . $gidNumber;
 			}
 
-			$query = "INSERT INTO #__xgroups (gidNumber,cn) VALUES (" . $db->Quote($gidNumber) . "," . $db->Quote($cn) . ");";
+			$query = "INSERT INTO `#__xgroups` (gidNumber,cn) VALUES (" . $db->Quote($gidNumber) . "," . $db->Quote($cn) . ");";
 
 			$db->setQuery($query);
 
@@ -342,7 +342,7 @@ class Hubzero_Group
 		}
 		else
 		{
-			$query = "INSERT INTO #__xgroups (cn) VALUES (" . $db->Quote($cn) . ");";
+			$query = "INSERT INTO `#__xgroups` (cn) VALUES (" . $db->Quote($cn) . ");";
 
 			$db->setQuery($query);
 
@@ -350,7 +350,7 @@ class Hubzero_Group
 
 			if ($result === false && $db->getErrorNum() == 1062) // row exists
 			{
-				$query = "SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($cn) . ";";
+				$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($cn) . ";";
 
 				$db->setQeury($query);
 
@@ -373,11 +373,9 @@ class Hubzero_Group
 			}
 		}
 
-		JPluginHelper::importPlugin('user');
-
 		//trigger the onAfterStoreGroup event
-		$dispatcher =  JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterStoreGroup', array($this));
+		\JPluginHelper::importPlugin('user');
+		\JDispatcher::getInstance()->trigger('onAfterStoreGroup', array($this));
 
 		return $this->gidNumber;
 	}
@@ -394,7 +392,7 @@ class Hubzero_Group
 	{
 		$this->clear();
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -403,7 +401,7 @@ class Hubzero_Group
 
 		if (!is_null($name))
 		{
-			if (\Hubzero\Utility\Validate::positiveInteger($name))
+			if (Validate::positiveInteger($name))
 			{
 				$this->gidNumber = $name;
 			}
@@ -418,11 +416,11 @@ class Hubzero_Group
 
 		if (is_numeric($this->gidNumber))
 		{
-			$query = "SELECT * FROM #__xgroups WHERE gidNumber = " . $db->Quote($this->gidNumber) . ";";
+			$query = "SELECT * FROM `#__xgroups` WHERE gidNumber = " . $db->Quote($this->gidNumber) . ";";
 		}
 		else
 		{
-			$query = "SELECT * FROM #__xgroups WHERE cn = " . $db->Quote($this->cn) . ";";
+			$query = "SELECT * FROM `#__xgroups` WHERE cn = " . $db->Quote($this->cn) . ";";
 		}
 
 		$db->setQuery($query);
@@ -471,7 +469,7 @@ class Hubzero_Group
 	 */
 	public function update()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -488,7 +486,7 @@ class Hubzero_Group
 			return true;
 		}
 
-		$query = "UPDATE #__xgroups SET ";
+		$query = "UPDATE `#__xgroups` SET ";
 
 		$classvars = get_class_vars(__CLASS__);
 
@@ -589,7 +587,7 @@ class Hubzero_Group
 
 			if (in_array($property, array('members', 'managers')))
 			{
-				$query = "SELECT uidNumber FROM #__xgroups_members WHERE gidNumber=" . $this->gidNumber;
+				$query = "SELECT uidNumber FROM `#__xgroups_members` WHERE gidNumber=" . $this->gidNumber;
 				$db->setQuery($query);
 
 				// compile current list of members in this group
@@ -634,7 +632,7 @@ class Hubzero_Group
 			{
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
 				{
-					$query = "DELETE m FROM #__xgroups_$property AS m WHERE " . " m.gidNumber=" . 
+					$query = "DELETE m FROM `#__xgroups_$property` AS m WHERE " . " m.gidNumber=" . 
 						$db->Quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
 				}
 			}
@@ -649,8 +647,8 @@ class Hubzero_Group
 
 		// After SQL is done and has no errors, fire off onGroupUserEnrolledEvents 
 		// for every user added to this group
-		JPluginHelper::importPlugin('groups');
-		$dispatcher =  JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('groups');
+		$dispatcher = \JDispatcher::getInstance();
 
 		foreach ($aNewUserGroupEnrollments as $userid)
 		{
@@ -659,10 +657,9 @@ class Hubzero_Group
 
 		if ($affected > 0)
 		{
-			JPluginHelper::importPlugin('user');
+			\JPluginHelper::importPlugin('user');
 			
 			//trigger the onAfterStoreGroup event
-			$dispatcher =  JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterStoreGroup', array($this));
 		}
 
@@ -678,7 +675,7 @@ class Hubzero_Group
 	 */
 	public function delete()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -687,7 +684,7 @@ class Hubzero_Group
 
 		if (!is_numeric($this->gidNumber))
 		{
-			$db->setQuery("SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($this->cn) . ";");
+			$db->setQuery("SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($this->cn) . ";");
 
 			$gidNumber = $db->loadResult();
 
@@ -699,7 +696,7 @@ class Hubzero_Group
 			$this->gidNumber = $gidNumber;
 		}
 
-		$db->setQuery("DELETE FROM #__xgroups WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 
 		$result = $db->query();
 
@@ -708,20 +705,18 @@ class Hubzero_Group
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__xgroups_applicants WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_applicants` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__xgroups_invitees WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_invitees` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__xgroups_managers WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_managers` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__xgroups_members WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_members` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
-
-		JPluginHelper::importPlugin('user');
 
 		//trigger the onAfterStoreGroup event
-		$dispatcher =  JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterStoreGroup', array($this));
+		\JPluginHelper::importPlugin('user');
+		\JDispatcher::getInstance()->trigger('onAfterStoreGroup', array($this));
 
 		return true;
 	}
@@ -750,7 +745,7 @@ class Hubzero_Group
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db =  JFactory::getDBO();
+				$db = \JFactory::getDBO();
 
 				if (is_object($db))
 				{
@@ -960,7 +955,7 @@ class Hubzero_Group
 	 */
 	private function _userids($users)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -994,7 +989,7 @@ class Hubzero_Group
 
 		$set = implode($usernames, ",");
 
-		$sql = "SELECT id FROM #__users WHERE username IN ($set);";
+		$sql = "SELECT id FROM `#__users` WHERE username IN ($set);";
 
 		$db->setQuery($sql);
 
@@ -1050,9 +1045,9 @@ class Hubzero_Group
 	 */
 	static function iterate($func)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$query = "SELECT cn FROM #__xgroups;";
+		$query = "SELECT cn FROM `#__xgroups`;";
 
 		$db->setQuery($query);
 
@@ -1080,7 +1075,7 @@ class Hubzero_Group
 	 */
 	static public function exists($group, $check_system = false)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($group))
 		{
@@ -1101,18 +1096,18 @@ class Hubzero_Group
 		}
 		
 		// check reserved
-		if (\Hubzero\Utility\Validate::reserved('group', $group))
+		if (Validate::reserved('group', $group))
 		{
 			return true;
 		}
 
 		if (is_numeric($group))
 		{
-			$query = 'SELECT gidNumber FROM #__xgroups WHERE gidNumber=' . $db->Quote($group);
+			$query = 'SELECT gidNumber FROM `#__xgroups` WHERE gidNumber=' . $db->Quote($group);
 		}
 		else
 		{
-			$query = 'SELECT gidNumber FROM #__xgroups WHERE cn=' . $db->Quote($group);
+			$query = 'SELECT gidNumber FROM `#__xgroups` WHERE cn=' . $db->Quote($group);
 		}
 
 		$db->setQuery($query);
@@ -1139,7 +1134,7 @@ class Hubzero_Group
 	 */
 	static function find($filters = array())
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		// Type 0 - System Group
 		// Type 1 - HUB Group
@@ -1315,7 +1310,7 @@ class Hubzero_Group
 
 		$field = implode(',', $filters['fields']);
 
-		$query = "SELECT $field FROM #__xgroups $where_clause";
+		$query = "SELECT $field FROM `#__xgroups` $where_clause";
 
 		if (isset($filters['sortby']) && $filters['sortby'] != '')
 		{
@@ -1378,7 +1373,7 @@ class Hubzero_Group
 		
 		if (!is_numeric($uid))
 		{
-			$uidNumber = JUserHelper::getUserId($uid);
+			$uidNumber = \JUserHelper::getUserId($uid);
 		}
 		else
 		{
@@ -1450,7 +1445,7 @@ class Hubzero_Group
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -1483,8 +1478,8 @@ class Hubzero_Group
 		{
 			return false;
 		}
-		
-		if($q == '')
+
+		if ($q == '')
 		{
 			return false;
 		}
@@ -1492,7 +1487,7 @@ class Hubzero_Group
 		$table = '#__xgroups_' . $tbl;
 		$user_table = '#__users';
 
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u 
 					WHERE t.gidNumber={$db->Quote($this->gidNumber)} 
@@ -1501,8 +1496,7 @@ class Hubzero_Group
 		$db->setQuery($query);
 		return $db->loadResultArray();
 	}
-	
-	
+
 	/**
 	 * Is a group a super group?
 	 *
@@ -1512,8 +1506,7 @@ class Hubzero_Group
 	{
 		return ($this->get('type') == 3) ? true : false;
 	}
-	
-	
+
 	/**
 	 * Return a groups logo
 	 *
@@ -1522,27 +1515,28 @@ class Hubzero_Group
 	public function getLogo()
 	{
 		// get user
-		$juser = JFactory::getUser();
-		
+		$juser = \JFactory::getUser();
+
 		//default logo
-		$default_logo = DS.'components'.DS.'com_groups'.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
+		$default_logo = DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'img' . DS . 'group_default_logo.png';
 
 		//logo link - links to group overview page
-		$link = JRoute::_('index.php?option=com_groups&cn='.$this->get('cn'));
+		$link = \JRoute::_('index.php?option=com_groups&cn=' . $this->get('cn'));
 
 		//path to group uploaded logo
-		$path = '/site/groups/'.$this->get('gidNumber').DS.'uploads'.DS.$this->get('logo');
+		$path = '/site/groups/' . $this->get('gidNumber') . DS . 'uploads' . DS . $this->get('logo');
 
 		//if logo exists and file is uploaded use that logo instead of default
-		$src = ($this->get('logo') != '' && is_file(JPATH_ROOT.$path)) ? $path : $default_logo;
-		
+		$src = ($this->get('logo') != '' && is_file(JPATH_ROOT . $path)) ? $path : $default_logo;
+
 		//check to make sure were a member to show logo for hidden group
 		$members_and_invitees = array_merge($this->get('members'), $this->get('invitees'));
-		if( $this->get('discoverability') == 1 && !in_array($juser->get("id"), $members_and_invitees) )
+		if ($this->get('discoverability') == 1 
+		 && !in_array($juser->get('id'), $members_and_invitees))
 		{
 			$src = $default_logo;
 		}
-		
+
 		return $src;
 	}
 }

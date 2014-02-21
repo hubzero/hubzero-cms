@@ -852,10 +852,10 @@ class ProjectOwner extends JTable
 		if ($alias) 
 		{
 			$cn = $prefix . $alias;
-			$group = new Hubzero_Group();
-			if (Hubzero_Group::exists($cn)) 
+			$group = new \Hubzero\User\Group();
+			if (\Hubzero\User\Group::exists($cn)) 
 			{
-				$group = Hubzero_Group::getInstance( $cn );
+				$group = \Hubzero\User\Group::getInstance( $cn );
 			}
 			else 
 			{								
@@ -863,7 +863,7 @@ class ProjectOwner extends JTable
 				$group->set('cn',$cn);			
 				$group->set('gidNumber', 0);		
 				$group->create();
-				$group = Hubzero_Group::getInstance( $cn );
+				$group = \Hubzero\User\Group::getInstance( $cn );
 			}
 			$members  = $this->getIds ( $alias, $role = '0', 1 );
 			$managers = $this->getIds ( $alias, $role = '1', 1 );
@@ -1173,7 +1173,7 @@ class ProjectOwner extends JTable
 		// Group members added
 		if ($groupid && !$userid) 
 		{
-			$group = Hubzero_Group::getInstance( $groupid);
+			$group = \Hubzero\User\Group::getInstance( $groupid);
 			$gidNumber = $group ? $group->get('gidNumber') : 0;
 			
 			if ($gidNumber) 

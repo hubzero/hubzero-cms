@@ -118,7 +118,7 @@ class GroupsHelperPages
 		));
 		$eview->option     = JRequest::getCmd('option', 'com_groups');;
 		$eview->controller = JRequest::getCmd('controller', 'groups');
-		$eview->group      = Hubzero_Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
+		$eview->group      = \Hubzero\User\Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
 		$eview->object     = $object;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
@@ -153,8 +153,8 @@ class GroupsHelperPages
 			$title = JText::sprintf('Module "%s" Approved', $object->get('title'));
 		}
 		
-		// get Hubzero_Group object
-		$group = Hubzero_Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
+		// get \Hubzero\User\Group object
+		$group = \Hubzero\User\Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
 		
 		// array to hold manager emails
 		$managers = array();
@@ -387,7 +387,7 @@ class GroupsHelperPages
 	/**
 	 * Display Group Page
 	 *
-	 * @param    Object    $group    Hubzero_Group Object
+	 * @param    Object    $group    \Hubzero\User\Group Object
 	 * @param    Object    $page     GroupsModelPage Object
 	 * @return   String
 	 */
@@ -471,7 +471,7 @@ class GroupsHelperPages
 	/**
 	 * Parse Wiki content
 	 *
-	 * @param    Object    $group        Hubzero_Group Object
+	 * @param    Object    $group        \Hubzero\User\Group Object
 	 * @param    String    $content      Content to parse
 	 * @param    BOOL      $fullparse    Fully parse wiki content
 	 * @return   String
@@ -573,7 +573,7 @@ class GroupsHelperPages
 	{
 		// get groups
 		$gidNumber = $page->get('gidNumber');
-		$group     = Hubzero_Group::getInstance($gidNumber);
+		$group     = \Hubzero\User\Group::getInstance($gidNumber);
 		
 		//get config
 		$config = JComponentHelper::getParams('com_groups');

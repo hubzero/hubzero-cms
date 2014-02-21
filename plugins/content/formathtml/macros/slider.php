@@ -31,6 +31,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\User\Group;
 
 /**
  * macro class for displaying an image slider
@@ -78,7 +79,7 @@ class Slider extends Macro
 		$gid = \JRequest::getVar('gid');
 
 		//get the group object based on gid
-		$group = \Hubzero_Group::getInstance($gid);
+		$group = Group::getInstance($gid);
 
 		//check to make sure we have a valid group
 		if (!is_object($group)) 
@@ -102,7 +103,7 @@ class Slider extends Macro
 			if (strpos($slide, 'http') === false) 
 			{
 				$slide = trim($slide);
-				
+
 				//check if internal file actually exists
 				if (is_file(JPATH_ROOT . $base_url . DS . $slide)) 
 				{

@@ -62,7 +62,7 @@ class modLatestGroups extends \Hubzero\Module\Module
 		foreach ($popularGroups as $g)
 		{
 			// Get the group
-			$group = Hubzero_Group::getInstance($g->gidNumber);
+			$group = \Hubzero\User\Group::getInstance($g->gidNumber);
 			
 			// Check join policy
 			$joinPolicy = $group->get('join_policy');

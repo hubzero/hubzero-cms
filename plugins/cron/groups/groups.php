@@ -88,7 +88,7 @@ class plgCronGroups extends JPlugin
 		foreach ($groupFolders as $groupFolder)
 		{
 			//load group object for each folder
-			$hubzeroGroup = Hubzero_Group::getInstance(trim($groupFolder));
+			$hubzeroGroup = \Hubzero\User\Group::getInstance(trim($groupFolder));
 			
 			//if we dont have a group object delete folder
 			if (!is_object($hubzeroGroup))

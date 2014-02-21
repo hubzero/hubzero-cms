@@ -76,7 +76,7 @@ class SliderMacro extends WikiMacro
 		$gid = JRequest::getVar('gid');
 
 		//get the group object based on gid
-		$group = Hubzero_Group::getInstance($gid);
+		$group = \Hubzero\User\Group::getInstance($gid);
 
 		//check to make sure we have a valid group
 		if (!is_object($group)) 

@@ -234,7 +234,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		// make sure that the group for each forum post has the right privacy setting
 		foreach ($group_forum as $k => $gf) 
 		{
-			$group = Hubzero_Group::getInstance($gf['scope_id']);
+			$group = \Hubzero\User\Group::getInstance($gf['scope_id']);
 			if (is_object($group)) 
 			{
 				$forum_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
@@ -307,7 +307,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 				} 
 				else 
 				{
-					$group = Hubzero_Group::getInstance($row['scope_id']);
+					$group = \Hubzero\User\Group::getInstance($row['scope_id']);
 					$link = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=forum&scope=' .  $categories[$row['category_id']]->section . '/' . $categories[$row['category_id']]->alias . '/' . ($row['parent'] ? $row['parent'] : $row['id']);
 				}
 				$link = JRoute::_($link);

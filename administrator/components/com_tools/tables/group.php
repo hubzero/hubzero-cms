@@ -124,9 +124,9 @@ class ToolGroup extends  JTable
 		}
 
 		$members = ToolsHelperUtils::transform($members, 'uidNumber');
-		$group = new Hubzero_Group();
+		$group = new \Hubzero\User\Group();
 
-		if (Hubzero_Group::exists($devgroup)) 
+		if (\Hubzero\User\Group::exists($devgroup)) 
 		{
 			$group->read($devgroup);
 			$existing_members = ToolsHelperUtils::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
@@ -194,7 +194,7 @@ class ToolGroup extends  JTable
 		{
 			foreach ($newgroups as $newgroup) 
 			{
-				if (Hubzero_Group::exists($newgroup) && !in_array($newgroup, $membergroups)) 
+				if (\Hubzero\User\Group::exists($newgroup) && !in_array($newgroup, $membergroups)) 
 				{
 					// create an entry in tool_groups table
 					$this->save($newgroup, $toolid, '0');
@@ -227,7 +227,7 @@ class ToolGroup extends  JTable
 		{
 			foreach ($groups as $group) 
 			{
-				if (Hubzero_Group::exists($group)) 
+				if (\Hubzero\User\Group::exists($group)) 
 				{
 					if ($id) 
 					{ 

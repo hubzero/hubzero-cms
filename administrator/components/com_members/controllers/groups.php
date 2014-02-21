@@ -74,7 +74,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 		}
 
 		// Load the group page
-		$group = Hubzero_Group::getInstance($gid);
+		$group = \Hubzero\User\Group::getInstance($gid);
 
 		// Add the user to the group table
 		$group->add($tbl, array($id));
@@ -118,7 +118,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 		$filters['sortby'] = 'title';
 
 		// Get a list of all groups
-		$this->view->rows = Hubzero_Group::find($filters);
+		$this->view->rows = \Hubzero\User\Group::find($filters);
 
 		// Set any errors
 		if ($this->getError()) 

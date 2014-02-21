@@ -132,7 +132,7 @@ $this->js('courses.overview.js');
 			<?php if ($this->course->get('group_id')) { ?>
 				<div class="course-group">
 					<?php
-					$group = Hubzero_Group::getInstance($this->course->get('group_id'));
+					$group = \Hubzero\User\Group::getInstance($this->course->get('group_id'));
 					?>
 					<p class="course-group-descripion">
 						<?php echo JText::_('Brought to you by:'); ?>

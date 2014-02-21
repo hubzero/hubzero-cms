@@ -602,7 +602,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$specialgroup = $this->config->get('specialgroup', '');
 		if ($specialgroup)
 		{
-			$sgroup = Hubzero_Group::getInstance($specialgroup);
+			$sgroup = \Hubzero\User\Group::getInstance($specialgroup);
 			if (!$sgroup)
 			{
 				$specialgroup = '';

@@ -1141,10 +1141,10 @@ class PublicationsHtml
 		// Show group if group project
 		if ($publication->project_group) 
 		{
-			$group = new Hubzero_Group();
-			if (Hubzero_Group::exists($publication->project_group)) 
+			$group = new \Hubzero\User\Group();
+			if (\Hubzero\User\Group::exists($publication->project_group)) 
 			{
-				$group = Hubzero_Group::getInstance( $publication->project_group );
+				$group = \Hubzero\User\Group::getInstance( $publication->project_group );
 				$html .= ' | '.JText::_('COM_PUBLICATIONS_PUBLICATION_BY_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('description').'</a>';
 			}
 		}

@@ -170,7 +170,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	/**
 	 * Check to see if group owns page
 	 *
-	 * @param     $group     Hubzero_Group Object
+	 * @param     $group     \Hubzero\User\Group Object
 	 * @return    BOOL
 	 */
 	public function belongsToGroup( $group )
@@ -203,7 +203,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$alias = preg_replace("/[^-_a-z0-9]+/", "", $alias);
 		
 		// make sure alias isnt a reserved term
-		$group   = Hubzero_Group::getInstance( $this->get('gidNumber') );
+		$group   = \Hubzero\User\Group::getInstance( $this->get('gidNumber') );
 		$plugins = \Hubzero\User\Group\Helper::getPluginAccess( $group );
 		$reserved = array_keys($plugins);
 		if (in_array($alias, $reserved))

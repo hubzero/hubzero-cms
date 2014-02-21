@@ -174,7 +174,7 @@ if ($this->groups) {
 	foreach ($this->groups as $group)
 	{
 		//
-		$g = Hubzero_Group::getInstance($group->gidNumber);
+		$g = \Hubzero\User\Group::getInstance($group->gidNumber);
 		$invitees = $g->get('invitees');
 		$applicants = $g->get('applicants');
 		$members = $g->get('members');

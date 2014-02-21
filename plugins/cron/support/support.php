@@ -292,7 +292,7 @@ class plgCronSupport extends JPlugin
 
 		if (is_object($params) && $params->get('support_ticketreminder_group'))
 		{
-			$group = Hubzero_Group::getInstance($params->get('support_ticketreminder_group'));
+			$group = \Hubzero\User\Group::getInstance($params->get('support_ticketreminder_group'));
 
 			if ($group)
 			{

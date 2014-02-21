@@ -770,7 +770,7 @@ class plgProjectsNotes extends JPlugin
 		
 		if ($this->_project->owned_by_group)
 		{
-			$group = Hubzero_Group::getInstance( $this->_project->owned_by_group );
+			$group = \Hubzero\User\Group::getInstance( $this->_project->owned_by_group );
 		}
 		
 		// Add group

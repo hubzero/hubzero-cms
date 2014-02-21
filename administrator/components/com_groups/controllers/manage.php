@@ -115,7 +115,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$this->view->filters['created'] = JRequest::getVar('created', '');
 
 		// Get a record count
-		$this->view->total = Hubzero_Group::find($this->view->filters);
+		$this->view->total = \Hubzero\User\Group::find($this->view->filters);
 
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
@@ -138,7 +138,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$this->view->rows = null;
 		if ($this->view->total > 0)
 		{
-			$this->view->rows = Hubzero_Group::find($this->view->filters);
+			$this->view->rows = \Hubzero\User\Group::find($this->view->filters);
 		}
 
 		// Initiate paging
@@ -199,7 +199,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// determine task
 		$task = ($id == '') ? 'create' : 'edit';
 
-		$this->view->group = new Hubzero_Group();
+		$this->view->group = new \Hubzero\User\Group();
 		$this->view->group->read($id);
 		
 		// make sure we are organized
@@ -254,8 +254,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$g = JRequest::getVar('group', array(), 'post');
 		$g = $this->_multiArrayMap('trim', $g);
 
-		// Instantiate an Hubzero_Group object
-		$group = new Hubzero_Group();
+		// Instantiate an \Hubzero\User\Group object
+		$group = new \Hubzero\User\Group();
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -319,7 +319,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		//only check if cn exists if we are creating or have changed the cn
 		if ($this->_task == 'new' || $group->get('cn') != $g['cn'])
 		{
-			if (Hubzero_Group::exists($g['cn'], true))
+			if (\Hubzero\User\Group::exists($g['cn'], true))
 			{
 				$this->setError(JText::_('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
 			}
@@ -418,7 +418,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	/**
 	 * Generate default template files for special groups
 	 *
-	 * @param     object $group Hubzero_Group
+	 * @param     object $group \Hubzero\User\Group
 	 * @return    void
 	 */
 	private function _handleSuperGroup($group)
@@ -514,7 +514,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = Hubzero_Group::getInstance($id);
+				$group = \Hubzero\User\Group::getInstance($id);
 
 				// Ensure we found the group info
 				if (!$group)
@@ -625,7 +625,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = new Hubzero_Group();
+				$group = new \Hubzero\User\Group();
 				$group->read($id);
 
 				// Ensure we found the group info
@@ -680,7 +680,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = new Hubzero_Group();
+				$group = new \Hubzero\User\Group();
 				$group->read($id);
 
 				// Ensure we found the group info
@@ -732,7 +732,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = new Hubzero_Group();
+				$group = new \Hubzero\User\Group();
 				$group->read($id);
 
 				// Ensure we found the group info
@@ -802,7 +802,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	 * Authorization check
 	 * Checks if the group is a system group and the user has super admin access
 	 *
-	 * @param     object $group Hubzero_Group
+	 * @param     object $group \Hubzero\User\Group
 	 * @return    boolean True if authorized, false if not.
 	 */
 	protected function authorize($task, $group=null)
