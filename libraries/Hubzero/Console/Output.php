@@ -64,7 +64,7 @@ class Output
 	 *
 	 * @var string
 	 **/
-	private $isInteractive = false;
+	private $isInteractive = true;
 
 	/**
 	 * Render out stored output to command line
@@ -202,6 +202,23 @@ class Output
 	}
 
 	/**
+	 * Get response from the user
+	 *
+	 * @param  (string) $prompt - question to ask user
+	 * @return $response
+	 **/
+	public function getResponse($prompt)
+	{
+		$prompt = trim($prompt);
+		$this->addString("{$prompt} ");
+
+		$response = fgets(STDIN);
+		$response = trim($response);
+
+		return $response;
+	}
+
+	/**
 	 * Shortcut function to print an error, render the error, and halt execution
 	 *
 	 * @param  (string) $message - line of text used in error
@@ -334,6 +351,16 @@ class Output
 	public function makeInteractive()
 	{
 		$this->isInteractive = true;
+	}
+
+	/**
+	 * Make output pooled
+	 *
+	 * @return void
+	 **/
+	public function makeNonInteractive()
+	{
+		$this->isInteractive = false;
 	}
 
 	/**
