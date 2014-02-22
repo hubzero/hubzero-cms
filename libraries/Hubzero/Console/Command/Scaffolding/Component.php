@@ -47,7 +47,7 @@ class Component extends Scaffolding
 	 **/
 	public function construct()
 	{
-		// Extension
+		// Get component name from user input
 		$name = null;
 		if ($this->arguments->getOpt('n') || $this->arguments->getOpt('name') || $this->arguments->getOpt(4))
 		{
@@ -55,19 +55,28 @@ class Component extends Scaffolding
 			$name = ($this->arguments->getOpt(4)) ? $this->arguments->getOpt(4) : $name;
 			$name = ($this->arguments->getOpt('n')) ? $this->arguments->getOpt('n') : $name;
 			$name = ($this->arguments->getOpt('name')) ? $this->arguments->getOpt('name') : $name;
-
 			$name = strtolower($name);
-
-			if (is_dir(JPATH_ROOT . DS . 'components' . DS . 'com_' . $name))
-			{
-				$this->output->error("Error: the component name provided ({$name}) seems to already exists.");
-			}
 		}
 		else
 		{
-			$this->output->error("Error: a component name should be provided.");
+			// If name wasn't provided, and we're in interactive mode...ask for it
+			if ($this->output->isInteractive())
+			{
+				$name = $this->output->getResponse('What do you want the component name to be?');
+			}
+			else
+			{
+				$this->output->error("Error: a component name should be provided.");
+			}
 		}
 
+		// Make sure component doesn't already exist
+		if (is_dir(JPATH_ROOT . DS . 'components' . DS . 'com_' . $name))
+		{
+			$this->output->error("Error: the component name provided ({$name}) seems to already exists.");
+		}
+
+		// Make component
 		$this->addTemplateFile("{$this->getType()}.tmpl", JPATH_ROOT . DS . 'components' . DS . 'com_' . $name)
 			 ->addReplacement('component_name', $name)
 			 ->make();
