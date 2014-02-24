@@ -66,11 +66,11 @@ class Hubzero_Wiki_Parser extends JObservable
 			$database = JFactory::getDBO();
 			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
-				$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikiparser%' ORDER BY published DESC LIMIT 1");
+				$database->setQuery("SELECT element FROM #__plugins WHERE folder='wiki' AND published=1 AND element LIKE 'parser%' ORDER BY published DESC LIMIT 1");
 			}
 			else
 			{
-				$database->setQuery("SELECT element FROM #__extensions WHERE folder='hubzero' AND type='plugin' AND enabled=1 AND element LIKE 'wikiparser%' ORDER BY enabled DESC LIMIT 1");
+				$database->setQuery("SELECT element FROM #__extensions WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'parser%' ORDER BY enabled DESC LIMIT 1");
 			}
 			$parser = $database->loadResult();
 		}
@@ -204,7 +204,7 @@ class Hubzero_Wiki_Parser extends JObservable
 
 		// Build the path to the needed parser plugin
 		$name = $input->clean($this->_name, 'cmd');
-		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . DS . $name . '.php';
+		$path = JPATH_SITE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
 		if (!JFile::exists($path)) 
 		{
@@ -216,7 +216,7 @@ class Hubzero_Wiki_Parser extends JObservable
 		require_once $path;
 
 		// Get the plugin
-		$plugin = JPluginHelper::getPlugin('hubzero', $this->_name);
+		$plugin = JPluginHelper::getPlugin('wiki', $this->_name);
 		if (is_string($plugin->params))
 		{
 			$paramsClass = 'JParameter';
@@ -229,7 +229,7 @@ class Hubzero_Wiki_Parser extends JObservable
 		$plugin->params->loadArray($config);
 
 		// Build parser plugin classname
-		$name = 'plgHubzero' . $this->_name;
+		$name = 'plgWiki' . $this->_name;
 		if ($this->_parser = new $name($this, (array)$plugin)) 
 		{
 			// Load plugin parameters

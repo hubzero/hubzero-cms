@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * HUBzero plugin class for displaying a WYSIWYG wiki editor
+ * Wiki plugin class for displaying a WYSIWYG wiki editor
  */
-class plgHubzeroWikiEditorWykiwyg extends JPlugin
+class plgWikiEditorwykiwyg extends JPlugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
@@ -64,8 +64,8 @@ class plgHubzeroWikiEditorWykiwyg extends JPlugin
 	{
 		if ($this->_pushscripts) 
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('hubzero', 'wikieditorwykiwyg');
-			\Hubzero\Document\Assets::addPluginScript('hubzero', 'wikieditorwykiwyg');
+			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
+			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name);
 
 			$this->_pushscripts = false;
 		}

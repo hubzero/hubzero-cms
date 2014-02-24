@@ -27,17 +27,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension version="1.7" type="plugin" group="hubzero">
-	<name>HUBzero - Wiki Editor Wykiwyg</name>
+<extension version="1.7" type="plugin" group="wiki">
+	<name>Wiki - Editor Wykiwyg</name>
 	<author>Shawn Rice</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Creates a wysiwyg textarea with an editing toolbar for wiki syntax shortcuts</description>
 	<files>
-		<filename plugin="wikieditorwykiwyg">wikieditorwykiwyg.php</filename>
+		<filename plugin="editorwykiwyg">editorwykiwyg.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_hubzero_wikieditorwykiwyg.ini</language>
+		<language tag="en-GB">en-GB.plg_wiki_editorwykiwyg.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

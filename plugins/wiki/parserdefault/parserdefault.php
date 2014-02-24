@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * HUBzero plugin class for displaying the wiki parser
+ * Wiki plugin class for loading the default parser
  */
-class plgHubzeroWikiparser extends JPlugin
+class plgWikiParserdefault extends JPlugin
 {
 	/**
 	 * Holds the parser for re-use

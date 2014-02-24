@@ -18,17 +18,17 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<extension version="1.5" type="plugin" group="hubzero">
-	<name>HUBzero - Wiki Parser</name>
+<extension version="1.5" type="plugin" group="wiki">
+	<name>Wiki - Default Parser</name>
 	<author>Shawn Rice</author>
-	<copyright>Copyright 2005-2010 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<copyright>Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<description>Loads a wiki parser and performs any called actions on text passed to it</description>
 	<files>
-		<filename plugin="wikiparser">wikiparser.php</filename>
+		<filename plugin="parserdefault">parserdefault.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_hubzero_wikiparser.ini</language>
+		<language tag="en-GB">en-GB.plg_wiki_parserdefault.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

@@ -64,7 +64,7 @@ class WikiHelperEditor extends JObservable
 		if (!$editor) 
 		{
 			$database = JFactory::getDBO();
-			$database->setQuery("SELECT element FROM `#__extensions` WHERE folder='hubzero' AND type='plugin' AND enabled=1 AND element LIKE 'wikieditor%' ORDER BY enabled DESC LIMIT 1");
+			$database->setQuery("SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'editor%' ORDER BY enabled DESC LIMIT 1");
 
 			$editor = $database->loadResult();
 		}
@@ -286,7 +286,7 @@ class WikiHelperEditor extends JObservable
 
 		// Build the path to the needed editor plugin
 		$name = JFilterInput::getInstance()->clean($this->_name, 'cmd');
-		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . DS . $name . '.php';
+		$path = JPATH_SITE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
 		if (!JFile::exists($path)) 
 		{
@@ -304,13 +304,13 @@ class WikiHelperEditor extends JObservable
 		}
 
 		// Get the plugin
-		$plugin = JPluginHelper::getPlugin('hubzero', $this->_name);
+		$plugin = JPluginHelper::getPlugin('wiki', $this->_name);
 		$params = new $paramsClass($plugin->params);
 		$params->loadArray($config);
 		$plugin->params = $params;
 
 		// Build editor plugin classname
-		$name = 'plgHubzero' . $this->_name;
+		$name = 'plgWiki' . $this->_name;
 		if ($this->_editor = new $name($this, (array)$plugin)) 
 		{
 			// Load plugin parameters

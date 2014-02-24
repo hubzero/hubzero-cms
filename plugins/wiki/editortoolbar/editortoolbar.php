@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * HUBzero plugin class for displaying a wiki editor toolbar
  */
-class plgHubzeroWikiEditorToolbar extends JPlugin
+class plgWikiEditortoolbar extends JPlugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
@@ -66,8 +66,8 @@ class plgHubzeroWikiEditorToolbar extends JPlugin
 	{
 		if ($this->_pushscripts) 
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('hubzero', 'wikieditortoolbar');
-			\Hubzero\Document\Assets::addPluginScript('hubzero', 'wikieditortoolbar');
+			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
+			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name);
 
 			$this->_pushscripts = false;
 		}
