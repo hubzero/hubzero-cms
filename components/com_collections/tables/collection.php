@@ -326,15 +326,15 @@ class CollectionsTableCollection extends JTable
 
 		$where = array();
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']) && $filters['state'] >= 0) 
 		{
 			$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
 		}
-		if (isset($filters['access'])) 
+		if (isset($filters['access']) && $filters['access'] >= 0) 
 		{
 			$where[] = "b.access=" . $this->_db->Quote(intval($filters['access']));
 		}
-		if (isset($filters['is_default'])) 
+		if (isset($filters['is_default']) && $filters['is_default'] >= 0) 
 		{
 			$where[] = "b.is_default=" . $this->_db->Quote(intval($filters['is_default']));
 		}

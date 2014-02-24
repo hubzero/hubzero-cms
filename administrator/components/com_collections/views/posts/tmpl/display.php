@@ -30,7 +30,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_COLLECTIONS'), 'generic.png');
+$canDo = CollectionsHelperPermissions::getActions('post');
+
+JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . JText::_('COM_COLLECTIONS_POSTS'), 'collection.png');
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -45,14 +60,112 @@ function submitbutton(pressbutton)
 }
 </script>
 
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<p>Nothing here yet.</p>
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+
+		<input type="hidden" name="collection_id" value="<?php echo $this->filters['collection_id']; ?>" />
+	</fieldset>
+	<div class="clr"></div>
+
+	<table class="adminlist">
+		<thead>
+			<tr>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->total(); ?>);" /></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_POSTED'), 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_POSTEDBY'), 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_ORIGINAL'), 'original', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="5">
+					<?php 
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total, 
+						$this->filters['start'], 
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
+				</td>
+			</tr>
+		</tfoot>
+		<tbody>
+<?php
+$k = 0;
+$i = 0;
+foreach ($this->rows as $row)
+{
+	switch ($row->get('original'))
+	{
+		case 1:
+			$class = 'publish';
+			$task = 'unoriginal';
+			$alt = JText::_('COM_COLLECTIONS_IS_ORIGINAL');
+			break;
+
+		case 0:
+			$class = 'unpublish';
+			$task = 'original';
+			$alt = JText::_('COM_COLLECTIONS_IS_NOT_ORIGINAL');
+			break;
+	}
+?>
+			<tr class="<?php echo "row$k"; ?>">
+				<td>
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+				</td>
+				<td>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_COLLECTIONS_EDIT_CATEGORY'); ?>">
+						<span><?php echo $row->item()->description('clean', 75); ?></span>
+					</a>
+				<?php } else { ?>
+					<span>
+						<span><?php echo $row->item()->description('clean', 75); ?></span>
+					</span>
+				<?php } ?>
+				</td>
+				<td>
+					<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+				</td>
+				<td>
+					<span class="glyph member">
+						<?php echo $this->escape($row->creator('name')); ?>
+					</span>
+				</td>
+				<td>
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::sprintf('COM_COLLECTIONS_SET_TASK', $task);?>">
+						<span><?php echo $alt; ?></span>
+					</a>
+				<?php } else { ?>
+					<span class="state <?php echo $class; ?>">
+						<span><?php echo $alt; ?></span>
+					</span>
+				<?php } ?>
+				</td>
+			</tr>
+<?php
+	$i++;
+	$k = 1 - $k;
+}
+?>
+		</tbody>
+	</table>
+
+	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

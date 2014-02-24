@@ -469,7 +469,28 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 				}
 			break;
 
+			case 'followers':
+				if (!isset($this->_counts[$what]))
+				{
+					//$follow = new CollectionsModelFollowing($this->get('id'), 'collection');
+					//$this->_counts[$what] = $follow->count('followers');
+					$tbl = new CollectionsTableFollowing($this->_db);
+					$this->_counts[$what] = $tbl->count(array(
+						'following_type' => 'collection',
+						'following_id'   => $this->get('id')
+					));
+				}
+				return $this->_counts[$what];
+			break;
+
 			case 'post':
+				if ($this->get('posts', null) == null)
+				{
+					$this->set('posts', $this->posts(array(
+						'count' => true,
+						'collection_id' => $this->get('id'))
+					));
+				}
 				return (int) $this->get('posts', 0);
 			break;
 
@@ -592,61 +613,53 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	public function description($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
 				$content = $this->get('description.parsed', null);
-				if ($content !== null)
+				if ($content == null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => $this->get('option', JRequest::getCmd('option')),
+						'scope'    => $this->get('scope', 'collection'),
+						'pagename' => $this->get('alias'),
+						'pageid'   => 0,
+						'filepath' => $this->get('path', '/site/collections'),
+						'domain'   => ''
+					);
+
+					$content = stripslashes($this->get('description'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('description.parsed', $this->get('description'));
+					$this->set('description', $content);
+
+					return $this->description($as, $shorten);
 				}
-
-				$config = array(
-					'option'   => $this->get('option', JRequest::getCmd('option')),
-					'scope'    => $this->get('scope', 'collection'),
-					'pagename' => $this->get('alias'),
-					'pageid'   => 0,
-					'filepath' => $this->get('path', '/site/collections'),
-					'domain'   => ''
-				);
-
-				$content = stripslashes($this->get('description'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('description.parsed', $this->get('description'));
-				$this->set('description', $content);
-
-				return $this->description($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->description('description.parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('description'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 }

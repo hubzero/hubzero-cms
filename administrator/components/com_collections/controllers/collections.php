@@ -43,6 +43,103 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	 */
 	public function displayTask()
 	{
+		// Get configuration
+		$config = JFactory::getConfig();
+		$app = JFactory::getApplication();
+
+		// Get filters
+		$this->view->filters = array(
+			'state'  => -1,
+			'access' => -1
+		);
+		$this->view->filters['object_type']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.object_type', 
+			'object_type', 
+			''
+		);
+		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
+			'title'
+		));
+		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
+			'ASC'
+		));
+		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
+			''
+		)));
+
+		// Get paging variables
+		$this->view->filters['limit']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limit', 
+			'limit', 
+			$config->getValue('config.list_limit'), 
+			'int'
+		);
+		$this->view->filters['start']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart', 
+			'limitstart', 
+			0, 
+			'int'
+		);
+
+		$obj = new CollectionsModel();
+
+		// Get record count
+		$this->view->filters['count'] = true;
+		$this->view->total = $obj->collections($this->view->filters);
+
+		// Get records
+		$this->view->filters['count'] = false;
+		$this->view->rows  = $obj->collections($this->view->filters);
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Create a new collection
+	 * 
+	 * @return     void
+	 */
+	public function addTask()
+	{
+		$this->editTask();
+	}
+
+	/**
+	 * Edit a collection
+	 * 
+	 * @return     void
+	 */
+	public function editTask($row=null)
+	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else 
+		{
+			// Incoming
+			$id = JRequest::getVar('id', array(0));
+
+			if (is_array($id) && !empty($id)) 
+			{
+				$id = $id[0];
+			}
+
+			// Load category
+			$this->view->row = new CollectionsModelCollection($id);
+		}
+
 		// Set any errors
 		if ($this->getError()) 
 		{
@@ -54,6 +151,252 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 
 		// Output the HTML
 		$this->view->display();
+	}
+
+	/**
+	 * Save a category and come back to the edit form
+	 * 
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save an entry
+	 * 
+	 * @param      boolean $redirect Redirect after save?
+	 * @return     void
+	 */
+	public function saveTask($redirect=true)
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+
+		// Initiate extended database class
+		$row = new CollectionsModelCollection($fields['id']);
+		if (!$row->bind($fields)) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		// Store new content
+		if (!$row->store(true)) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		// Process tags
+		$row->tag(trim(JRequest::getVar('tags', '')));
+
+		if ($redirect)
+		{
+			// Set the redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Collection saved!')
+			);
+			return;
+		}
+
+		$this->editTask($row);
+	}
+
+	/**
+	 * Delete one or more entries
+	 * 
+	 * @return     void
+	 */
+	public function deleteTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		if (count($ids) > 0) 
+		{
+			// Loop through all the IDs
+			foreach ($ids as $id)
+			{
+				$entry = new CollectionsModelCollection(intval($id));
+				// Delete the entry
+				if (!$entry->delete())
+				{
+					$this->addComponentMessage($entry->getError(), 'error');
+				}
+			}
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Entries deleted!')
+		);
+	}
+
+	/**
+	 * Set the access level of an article to 'public'
+	 * 
+	 * @return     void
+	 */
+	public function accesspublicTask()
+	{
+		return $this->accessTask(0);
+	}
+
+	/**
+	 * Set the access level of an article to 'registered'
+	 * 
+	 * @return     void
+	 */
+	public function accessregisteredTask()
+	{
+		return $this->accessTask(1);
+	}
+	
+	/**
+	 * Set the access level of an article to 'special'
+	 * 
+	 * @return     void
+	 */
+	public function accessspecialTask()
+	{
+		return $this->accessTask(2);
+	}
+
+	/**
+	 * Set the access level of an article
+	 * 
+	 * @param      integer $access Access level to set
+	 * @return     void
+	 */
+	public function accessTask($access=0)
+	{
+		// Incoming
+		$id = JRequest::getInt('id', 0);
+
+		// Make sure we have an ID to work with
+		if (!$id) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_COLLECTIONS_NO_ID'),
+				'error'
+			);
+			return;
+		}
+
+		// Load the article
+		$row = new CollectionsModelCollection($id);
+		$row->set('access', $access);
+
+		// Check and store the changes
+		if (!$row->store()) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				$row->getError(),
+				'error'
+			);
+			return;
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
+	}
+
+	/**
+	 * Calls stateTask to publish entries
+	 * 
+	 * @return     void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+
+	/**
+	 * Calls stateTask to unpublish entries
+	 * 
+	 * @return     void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Sets the state of one or more entries
+	 * 
+	 * @param      integer The state to set entries to
+	 * @return     void
+	 */
+	public function stateTask($state=0)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array(0));
+
+		// Check for a resource
+		if (count($ids) < 1) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::sprintf('Select an entry to %s', $this->_task),
+				'error'
+			);
+			return;
+		}
+
+		// Loop through all the IDs
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			// Load the article
+			$row = new CollectionsModelCollection(intval($id));
+			$row->set('state', $state);
+
+			// Store new content
+			if (!$row->store()) 
+			{
+				$this->addComponentMessage($row->getError(), 'error');
+				continue;
+			}
+			$success++;
+		}
+
+		switch ($this->_task)
+		{
+			case 'publish':
+				$message = JText::sprintf('%s Item(s) successfully Published', $success);
+			break;
+			case 'unpublish':
+				$message = JText::sprintf('%s Item(s) successfully Unpublished', $success);
+			break;
+			case 'archive':
+				$message = JText::sprintf('%s Item(s) successfully Archived', $success);
+			break;
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			$message
+		);
 	}
 
 	/**

@@ -58,6 +58,7 @@ else
 
 // Include scripts
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'collections.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = JRequest::getCmd('controller', 'collections');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

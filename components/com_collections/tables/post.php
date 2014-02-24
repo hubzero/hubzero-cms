@@ -199,11 +199,11 @@ class CollectionsTablePost extends JTable
 		{
 			$where[] = "p.item_id=" . $this->_db->Quote($filters['item_id']);
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']) && $filters['state'] >= 0) 
 		{
 			$where[] = "i.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['access'])) 
+		if (isset($filters['access']) && $filters['access'] >= 0) 
 		{
 			$where[] = "i.access=" . $this->_db->Quote($filters['access']);
 			$where[] = "c.access=" . $this->_db->Quote($filters['access']);

@@ -197,9 +197,9 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 			}
 
 			$this->_data = new CollectionsModelItem($oid);
-			if ($d = $this->get('description'))
+			if ($d = $this->description('raw'))
 			{
-				$this->_data->set('description', $d);
+				$this->_data->set('description', $this->get('description'));
 			}
 		}
 
@@ -405,7 +405,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('description.parsed'));
+				$content = strip_tags($this->description('parsed'));
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);

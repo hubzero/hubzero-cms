@@ -679,7 +679,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('description.parsed'));
+				$content = strip_tags($this->description('parsed'));
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);

@@ -38,7 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Table class for forum posts
  */
-class CollectionsModel extends JObject
+class CollectionsModel extends \Hubzero\Base\Object
 {
 	/**
 	 * Object type [member, group, etc.]
@@ -229,8 +229,14 @@ class CollectionsModel extends JObject
 	 */
 	public function collections($filters=array())
 	{
-		$filters['object_id']   = $this->_object_id;
-		$filters['object_type'] = $this->_object_type;
+		if ($this->_object_id)
+		{
+			$filters['object_id']   = $this->_object_id;
+		}
+		if ($this->_object_type)
+		{
+			$filters['object_type'] = $this->_object_type;
+		}
 		if (!isset($filters['state']))
 		{
 			$filters['state'] = 1;
