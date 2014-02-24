@@ -528,57 +528,58 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('question_parsed') !== null)
+				$content = $this->get('question_parsed', null);
+
+				if ($content == null)
 				{
-					$content = $this->get('question_parsed');
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => 'com_answers',
+						'scope'    => 'question',
+						'pagename' => $this->get('id'),
+						'pageid'   => 0,
+						'filepath' => '',
+						'domain'   => ''
+					);
+
+					$content = stripslashes($this->get('question'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('question_parsed', $this->get('question'));
+					$this->set('question', $content);
+
+					return $this->content($as, $shorten);
 				}
 
-				$config = array(
-					'option'   => 'com_answers',
-					'scope'    => 'question',
-					'pagename' => $this->get('id'),
-					'pageid'   => 0,
-					'filepath' => '',
-					'domain'   => ''
-				);
-
-				$content = stripslashes($this->get('question'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('question_parsed', $this->get('question'));
-				$this->set('question', $content);
-
-				return $this->content('parsed', $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
-				return $this->get('question');
+				$content = stripslashes($this->get('question'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+
+		return $content;
 	}
 
 	/**
@@ -591,57 +592,58 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	public function subject($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('subject_parsed') !== null)
+				$content = $this->get('subject_parsed', null);
+
+				if ($content == null)
 				{
-					$content = $this->get('subject_parsed');
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => 'com_answers',
+						'scope'    => 'question',
+						'pagename' => $this->get('id'),
+						'pageid'   => 0,
+						'filepath' => '',
+						'domain'   => ''
+					);
+
+					$content = stripslashes($this->get('subject'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						'com_answers.question.subject',
+						&$this,
+						&$config
+					));
+
+					$this->set('subject_parsed', $this->get('subject'));
+					$this->set('subject', $content);
+
+					return $this->subject($as, $shorten);
 				}
 
-				$config = array(
-					'option'   => 'com_answers',
-					'scope'    => 'question',
-					'pagename' => $this->get('id'),
-					'pageid'   => 0,
-					'filepath' => '',
-					'domain'   => ''
-				);
-
-				$content = stripslashes($this->get('subject'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					'com_answers.question.subject',
-					&$this,
-					&$config
-				));
-
-				$this->set('subject_parsed', $this->get('subject'));
-				$this->set('subject', $content);
-
-				return $this->subject('parsed');
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->subject('parsed'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
-				return $this->get('subject');
+				$content = stripslashes($this->get('subject'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+
+		return $content;
 	}
 
 	/**
