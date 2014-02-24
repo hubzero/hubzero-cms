@@ -110,7 +110,7 @@ class plgContentFormatwiki extends JPlugin
 			{
 				// Are we converting the format?
 				// Only apply the wiki format if not. Saves us an extra DB call.
-				if (!$this->params->get('convertFormat'))
+				if (!$this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model)
 				{
 					$content = '<!-- {FORMAT:WIKI} -->' . $content;
 					$article->set($key, $content);
@@ -142,7 +142,7 @@ class plgContentFormatwiki extends JPlugin
 		$results = $dispatcher->trigger('onWikiParseText', array($content, $params, $params['fullparse'], true));
 		$content = implode('', $results);
 
-		if ($this->params->get('convertFormat'))
+		if ($this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model)
 		{
 			$content = '<!-- {FORMAT:HTML} -->' . $content;
 			$article->set($key, $content);
