@@ -528,7 +528,11 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					$data['Version']       = '1';
 					$data['BadgeImageUrl'] = rtrim(JURI::root(), DS) . DS . trim($badgeObj->get('img_url'), DS);
 
-					$provider_badge_id = $badgesProvider->createBadge($data);
+					try {
+						$provider_badge_id = $badgesProvider->createBadge($data);
+					} catch (Exception $e) {
+						$this->setError($e->getMessage());
+					}
 
 					if ($provider_badge_id)
 					{
