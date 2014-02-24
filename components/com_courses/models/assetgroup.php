@@ -93,6 +93,13 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	public $_siblings = null;
 
 	/**
+	 * Params
+	 * 
+	 * @var object
+	 */
+	private $_params = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
