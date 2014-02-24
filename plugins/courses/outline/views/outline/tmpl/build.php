@@ -43,18 +43,6 @@ $base = $this->course->offering()->link();
 
 <div id="dialog-confirm" class="dialog">This is a dialog box</div>
 
-<div class="content-box-overlay"></div>
-
-<div class="content-box">
-	<h3 class="content-box-header">
-		<span>Create a note</span>
-		<div class="content-box-close"></div>
-	</h3>
-	<div class="content-box-inner">
-		<div class="loading-bar"></div>
-	</div>
-</div>
-
 <div class="error-box">
 	<p class="error-close"></p>
 	<p class="error-message">There was an error</p>

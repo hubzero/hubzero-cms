@@ -232,6 +232,10 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, 'build.css');
 		\Hubzero\Document\Assets::addPluginScript('courses', $this->_name, 'build');
 
+		// Add Content box plugin
+		\Hubzero\Document\Assets::addSystemScript('contentbox');
+		\Hubzero\Document\Assets::addSystemStylesheet('contentbox.css');
+
 		// Add underscore
 		\Hubzero\Document\Assets::addSystemScript('underscore-min');
 		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');

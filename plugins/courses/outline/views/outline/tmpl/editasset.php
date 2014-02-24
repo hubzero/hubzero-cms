@@ -133,8 +133,7 @@ $tool_path = $config->get('tool_path');
 		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
 		<input type="hidden" name="id" value="<?= $asset->get('id') ?>" />
 
-		<input type="submit" value="Submit" class="submit" />
 		<input type="button" value="Cancel" class="cancel" />
-
+		<input type="submit" value="Submit" class="submit" />
 	</form>
 </div>

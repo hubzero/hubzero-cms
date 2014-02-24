@@ -136,7 +136,7 @@ $asset = new CoursesModelAsset($id);
 		<input type="hidden" name="id" id="asset_id" value="<?= $id ?>" />
 		<input type="hidden" name="type" value="wiki" />
 
-		<input type="submit" value="Submit" class="wiki-submit" />
+		<input type="submit" value="Submit" class="wiki-submit submit" />
 		<input type="button" value="Cancel" class="cancel" />
 
 	</form>
