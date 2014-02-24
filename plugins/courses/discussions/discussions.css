@@ -283,7 +283,7 @@
 	.comment-add label {
 		display: block;
 	}
-	.comment-add label span {
+	.comment-add label span.label-text {
 		display: none;
 	}
 	.comment-add .cancelreply {
@@ -839,6 +839,9 @@
 	}
 	.comments-panel .comment-content #commentform {
 		padding-top: 0;
+	}
+	#commentform label span.label-text {
+		display: none;
 	}
 	.comments-toolbar span {
 		margin-left: 1.5em;

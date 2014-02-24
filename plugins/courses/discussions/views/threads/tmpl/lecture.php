@@ -151,9 +151,8 @@ $base = $this->course->offering()->link();
 
 							<label for="field_comment">
 								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
-								<textarea name="fields[comment]" id="field_comment" cols="35" rows="5"></textarea>
 								<?php
-								//echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
+								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 								?>
 							</label>
 

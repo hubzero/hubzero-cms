@@ -77,8 +77,8 @@ if ($this->comments && is_array($this->comments))
 		     ->set('cls', $cls)
 		     ->set('base', $this->base)
 		     ->set('attach', $this->attach)
-		     ->set('course', $this->course)
 		     ->set('search', $this->search)
+		     ->set('course', $this->course)
 		     ->display();
 	}
 }

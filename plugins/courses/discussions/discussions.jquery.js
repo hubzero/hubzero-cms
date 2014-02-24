@@ -167,7 +167,7 @@ if (!HUB.Plugins) {
 	});
 })(jQuery);
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
@@ -340,7 +340,20 @@ HUB.Plugins.CoursesForum = {
 							}
 
 							// Append thread data and fade it in
-							thread.html(data.thread.html).hide().fadeIn();
+							//thread.html(data.thread.html).hide().fadeIn();
+							// hide thread
+							thread.hide();
+
+							// set the inner html (not jQuery way)
+							thread.get(0).innerHTML = data.thread.html;
+
+							// find all scripts in this html and eval them
+							thread.find('script').each(function(){
+								eval($(this).html());
+							});
+
+							// fade in
+							thread.fadeIn();
 
 							// Apply plugins to loaded content
 							jQuery(document).trigger('ajaxLoad');
@@ -407,7 +420,14 @@ HUB.Plugins.CoursesForum = {
 							header.text(data.thread.total + ' comments');
 
 							// Append data and fade it in
-							thread.html(data.thread.html).hide().fadeIn();
+							//thread.html(data.thread.html).hide().fadeIn();
+							thread.hide();
+							thread.get(0).innerHTML = data.thread.html;
+							thread.find('script').each(function(){
+								eval($(this).html());
+							});
+							thread.fadeIn();
+
 							// Apply plugins to loaded content
 							jQuery(document).trigger('ajaxLoad');
 						} else {
@@ -512,7 +532,14 @@ HUB.Plugins.CoursesForum = {
 										console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
 									}
 									// Append data and fade it in
-									thread.html(data.thread.html).hide().fadeIn();
+									//thread.html(data.thread.html).hide().fadeIn();
+									thread.hide();
+									thread.get(0).innerHTML = data.thread.html;
+									thread.find('script').each(function(){
+										eval($(this).html());
+									});
+									thread.fadeIn();
+
 									// Apply plugins to loaded content
 									jQuery(document).trigger('ajaxLoad');
 								});
@@ -612,7 +639,14 @@ HUB.Plugins.CoursesForum = {
 					header.text(data.thread.total + ' comments');
 
 					// Append data and fade it in
-					thread.html(data.thread.html).hide().fadeIn();
+					//thread.html(data.thread.html).hide().fadeIn();
+					thread.hide();
+					thread.get(0).innerHTML = data.thread.html;
+					thread.find('script').each(function(){
+						eval($(this).html());
+					});
+					thread.fadeIn();
+
 					// Apply plugins to loaded content
 					jQuery(document).trigger('ajaxLoad');
 				});
@@ -808,5 +842,7 @@ HUB.Plugins.CoursesForum = {
 }
 
 jQuery(document).ready(function($){
+	_DEBUG = document.getElementById('system-debug') ? true : false;
+
 	HUB.Plugins.CoursesForum.initialize();
 });

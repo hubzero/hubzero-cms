@@ -34,13 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	else
 	{
-		/*$base = preg_replace('/search=(.*?)($|&)/', '', $this->base);
-		$comment  = $this->parser->parse(stripslashes($this->comment->comment), $this->wikiconfig, false);
-		$comment .= $this->attach->getAttachment(
-			$this->comment->get('id'), 
-			str_replace('outline', 'discussions', $base) . '&unit=download&b=' . $this->comment->thread . '&file=', 
-			$this->config
-		);*/
 		$comment = $this->comment->content('parsed');
 		if ($this->search)
 		{
@@ -77,11 +70,6 @@ defined('_JEXEC') or die('Restricted access');
 						<span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
 					<?php } ?>
 				</a>
-			<?php /*if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id') && !$this->course->offering()->member($this->comment->get('created_by'))->get('student')) { ?>
-				<span class="role <?php echo strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')); ?>">
-					<?php echo $this->escape(stripslashes($this->course->offering()->member($this->comment->get('created_by'))->get('role_title'))); ?>
-				</span>
-			<?php }*/ ?>
 			<?php if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id')) { ?>
 				<?php if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student')) { ?>
 				<span class="role <?php echo strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')); ?>">
