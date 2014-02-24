@@ -165,7 +165,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					$archiveDate  = $this->year;
 					$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
 					$archiveDate .= '-01 00:00:00';
-					echo JHTML::_('date', $archiveDate, 'M Y');
+					echo JFactory::getDate($archiveDate)->format('M Y');
 				} ?>
 				<?php
 				if ($this->config->get('feeds_enabled', 1)) {
