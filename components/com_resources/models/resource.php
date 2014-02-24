@@ -36,7 +36,7 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_r
 /**
  * Information retrieval for items/info linked to a resource
  */
-class ResourcesModelResource extends JObject
+class ResourcesModelResource extends \Hubzero\Base\Object
 {
 	/**
 	 * Resource ID
@@ -1166,5 +1166,82 @@ class ResourcesModelResource extends JObject
 		}
 
 		return $this->revisions;
+	}
+
+	/**
+	 * Get the content of the record. 
+	 * Optional argument to determine how content should be handled
+	 *
+	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
+	 * clean  - parses content and then strips tags
+	 * raw    - as is, no parsing
+	 * 
+	 * @param      string  $as      Format to return content in [parsed, clean, raw]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function description($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+		$options = array();
+
+		if ($this->get('description', null) == null)
+		{
+			$content = stripslashes($this->resource->fulltxt);
+			$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+
+			$this->set('description', trim($content));
+		}
+
+		switch ($as)
+		{
+			case 'parsed':
+				$content = $this->get('description_parsed', null);
+
+				if ($content == null)
+				{
+					$config = array(
+						'option'   => JRequest::getCmd('option', 'com_resources'),
+						'scope'    => 'resources' . DS . $this->resource->id,
+						'pagename' => 'resources',
+						'pageid'   => $this->resource->id,
+						'filepath' => $this->params->get('uploadpath'),
+						'domain'   => ''
+					);
+
+					$content = $this->get('description');
+					\JPluginHelper::importPlugin('content');
+					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+						'com_resources.resource.description',
+						&$this,
+						&$config
+					));
+					$this->set('description_parsed', $this->get('description'));
+					$this->set('description', $content);
+
+					return $this->description($as, $shorten);
+				}
+
+				$options['html'] = true;
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('parsed'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('description'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+
+		return $content;
 	}
 }
