@@ -375,9 +375,30 @@ class Scaffolding implements CommandInterface
 		$info = pathinfo($path);
 
 		// See if we need to do var replacement in actual filename
-		if (preg_match("/%=([[:alpha:]_]*)=%/", $info['filename'], $matches) && isset($this->replacements[$matches[1]]))
+		if (preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $info['filename'], $matches) && isset($this->replacements[$matches[1]]))
 		{
-			$newfile = preg_replace("/%=([[:alpha:]_]*)=%/", $this->replacements[$matches[1]], $info['filename']);
+			$newfile = str_replace($matches[0], $this->replacements[$matches[1]], $info['filename']);
+
+			if (isset($matches[2]))
+			{
+				$modifier = substr($matches[2], 1);
+				switch ($modifier)
+				{
+					// Upper case first character
+					case 'ucf':
+						$newfile = ucfirst($newfile);
+						break;
+					// Upper case first character and plural
+					case 'ucfp':
+						$newfile = ucfirst($this->makePlural($newfile));
+						break;
+					// Plural form
+					case 'p':
+						$newfile = $this->makePlural($newfile);
+						break;
+				}
+			}
+
 			rename($path, $info['dirname'] . DS . $newfile . '.' . $info['extension']);
 
 			$path = $info['dirname'] . DS . $newfile . '.' . $info['extension'];

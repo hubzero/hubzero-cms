@@ -37,7 +37,7 @@ $option = JRequest::getCmd('option', 'com_%=component_name=%');
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . '%=component_name=%.php');
 
 // Get controller name
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'entries'));
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', '%=component_name+p=%'));
 require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $className = '%=component_name+ucf=%Controller' . ucfirst(strtolower($controllerName));
 

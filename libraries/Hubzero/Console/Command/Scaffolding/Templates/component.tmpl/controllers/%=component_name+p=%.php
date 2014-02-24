@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * %=component_name+ucf=% controller class for entries
  */
-class %=component_name+ucf=%ControllerEntries extends \Hubzero\Component\SiteController
+class %=component_name+ucf=%Controller%=component_name+ucfp=% extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
