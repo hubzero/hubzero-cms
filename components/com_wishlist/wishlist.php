@@ -53,6 +53,7 @@ require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'wishlist.php');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wish.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 // Instantiate controller

@@ -201,7 +201,7 @@ if ($this->wishlist && $this->wish) {
 		<?php } else { ?>
 			<div class="entry wish" id="w<?php echo $this->wish->id; ?>">
 				<p class="entry-member-photo">
-					<span class="entry-anchor"><!-- <a name="w<?php echo $this->wish->id; ?>"></a> --></span>
+					<span class="entry-anchor"></span>
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($user, $this->wish->anonymous); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p><!-- / .wish-member-photo -->
 
@@ -234,18 +234,9 @@ if ($this->wishlist && $this->wish) {
 				<?php if ($this->wish->about) { ?>
 					<div class="entry-long">
 						<?php 
-						$wikiconfig = array(
-							'option'   => $this->option,
-							'scope'    => 'wishlist',
-							'pagename' => 'wishlist',
-							'pageid'   => $this->wish->id,
-							'filepath' => '',
-							'domain'   => $this->wish->id
-						);
+						$wish = new WishlistModelWish($this->wish);
 
-						$p = Hubzero_Wiki_Parser::getInstance();
-
-						echo $p->parse($this->wish->about, $wikiconfig);
+						echo $wish->content('parsed');
 						?>
 					</div><!-- / .wish-details -->
 				<?php } ?>
@@ -736,110 +727,31 @@ if ($this->wishlist && $this->wish) {
 			</p>
 		</div><!-- / .aside -->
 		<div class="subject">
-			<?php if (isset($this->wish->replies)) {
-						$o = 'even';
-						if (count($this->wish->replies) > 0) {
-							$html = '<ol class="comments pass1">'."\n";
-							foreach ($this->wish->replies as $reply) 
-							{
-								$o = ($o == 'odd') ? 'even' : 'odd';
-								if ($reply->state==4) {
-									// comment removed by author
-									$html .= '<li class="comment '.$o.' comment-removed">'.JText::_('COM_WISHLIST_COMMENT_REMOVED_BY_AUTHOR');
-								} else {
-									// Comment
-									$html .= '<li class="comment '.$o;
-									if ($this->abuse && $reply->reports > 0) {
-										$html .= ' abusive';
-									}
-									$html .= '" id="c'.$reply->id.'r">'."\n";
-			
-									$view = new JView(array('name'=>'wish', 'layout'=>'comment'));
-									$view->option = $this->option;
-									$view->reply = $reply;
-									$view->juser = $this->juser;
-									$view->listid = $this->wishlist->id;
-									$view->wishid = $this->wish->id;
-									$view->wishauthor = $this->wish->proposed_by;
-									$view->level = 1;
-									$view->abuse = $this->abuse;
-									$view->addcomment = $this->addcomment;
-									$html .= $view->loadTemplate();
-								}
-								
-								// Another level? 
-								if (count($reply->replies) > 0) {
-									$html .= '<ol class="comments pass2">'."\n";
-									foreach ($reply->replies as $r) 
-									{
-										$o = ($o == 'odd') ? 'even' : 'odd';
-										if ($r->state==4) {
-											// comment removed by author
-											$html .= '<li class="comment '.$o.' comment-removed">'.JText::_('COM_WISHLIST_COMMENT_REMOVED_BY_AUTHOR');
-										} else {
-											$html .= '<li class="comment '.$o;
-											if ($this->abuse && $r->reports > 0) {
-												$html .= ' abusive';
-											}
-											$html .= '" id="c'.$r->id.'r">'."\n";
-											
-											$view = new JView(array('name'=>'wish', 'layout'=>'comment'));
-											$view->option = $this->option;
-											$view->reply = $r;
-											$view->juser = $this->juser;
-											$view->listid = $this->wishlist->id;
-											$view->wishid = $this->wish->id;
-											$view->wishauthor = $this->wish->proposed_by;
-											$view->level = 2;
-											$view->abuse = $this->abuse;
-											$view->addcomment = $this->addcomment;
-											$html .= $view->loadTemplate();
-										}
-		
-										// Yet another level?? 
-										if (count($r->replies) > 0) {
-											$html .= '<ol class="comments pass3">'."\n";
-											foreach ($r->replies as $rr) 
-											{
-												$o = ($o == 'odd') ? 'even' : 'odd';
-												if ($rr->state==4) {
-													// comment removed by author
-													$html .= '<li class="comment '.$o.' comment-removed">'.JText::_('COM_WISHLIST_COMMENT_REMOVED_BY_AUTHOR');
-													$html .= '</li>'."\n";
-												} else {
-													$html .= t.'<li class="comment '.$o;
-													if ($this->abuse && $rr->reports > 0) {
-														$html .= ' abusive';
-													}
-													$html .= '" id="c'.$rr->id.'r">'."\n";
-													$view = new JView(array('name'=>'wish', 'layout'=>'comment'));
-													$view->option = $this->option;
-													$view->reply = $rr;
-													$view->juser = $this->juser;
-													$view->listid = $this->wishlist->id;
-													$view->wishid = $this->wish->id;
-													$view->wishauthor = $this->wish->proposed_by;
-													$view->level = 3;
-													$view->abuse = $this->abuse;
-													$view->addcomment = $this->addcomment;
-													$html .= $view->loadTemplate();
-													$html .= '</li>'."\n";
-												}
-											}
-											$html .= '</ol><!-- end pass3 -->'."\n";
-										}
-										$html .= '</li>'."\n";
-									}
-									$html .= '</ol><!-- end pass2 -->'."\n";
-								}
-								$html .= '</li>'."\n";
-							}
-							$html .= '</ol><!-- end pass1 -->'."\n";
-						}
-						echo $html;
-					}
-			?>
-			<?php if (!isset($this->wish->replies) or count($this->wish->replies)==0) {?>
+			<?php 
+			if (isset($this->wish->replies)) 
+			{
+				$view = new JView(
+					array(
+						'name'    => 'wish',
+						'layout'  => '_list'
+					)
+				);
+				$view->parent     = 0;
+				$view->cls        = 'odd';
+				$view->depth      = 0;
+				$view->option     = $this->option;
+				$view->wish       = $this->wish;
+				$view->comments   = $this->wish->replies;
+				$view->listid     = $this->wishlist->id;
+				$view->wishid     = $this->wish->id;
+				$view->listcategory = $this->wishlist->category;
+				$view->listreference = $this->wishlist->referenceid;
+				$view->base       = 'index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id;
+				$view->config     = JComponentHelper::getParams('com_wishlist');
+				$view->display();
+			} 
+			else 
+			{ ?>
 			<p>
 				<?php echo JText::_('COM_WISHLIST_NO_COMMENTS'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id); ?>"><?php echo JText::_('COM_WISHLIST_MAKE_A_COMMENT'); ?></a>.
 			</p>
@@ -847,18 +759,75 @@ if ($this->wishlist && $this->wish) {
 		</div><!-- / .subject -->
 	</div><!-- / .below section -->
 
-		<?php 
-		// Add Comment
-		$view = new JView(array('name'=>'wish', 'layout'=>'addcomment'));
-		$view->option = $this->option;
-		$view->refid = $this->wish->id;
-		$view->wishid = $this->wish->id;
-		$view->juser = $this->juser;
-		$view->level = 0;
-		$view->listid = $this->wishlist->id;
-		$view->addcomment = $this->addcomment;
-		echo $view->loadTemplate();
-		?>
+<?php if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->id) { ?>
+	<div class="below section">
+		<h3>
+			<?php echo JText::_('COM_WISHLIST_ACTION_ADD_COMMENT'); ?>
+		</h3>
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
+			<div class="aside">
+
+			</div><!-- / .aside -->
+			<div class="subject">
+				<p class="comment-member-photo">
+					<span class="comment-anchor"></span>
+					<?php
+						$jxuser = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+					?>
+					<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
+				</p>
+				<fieldset>
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="listid" value="<?php echo $this->wishlist->id; ?>" />
+					<input type="hidden" name="wishid" value="<?php echo $this->wish->id; ?>" />
+					<input type="hidden" name="task" value="savereply" />
+					<input type="hidden" name="referenceid" value="<?php echo $this->wish->id; ?>" />
+					<input type="hidden" name="cat" value="wish" />
+
+					<input type="hidden" name="item_id" value="<?php echo $this->wish->id; ?>" />
+					<input type="hidden" name="item_type" value="wish" />
+					<input type="hidden" name="parent" value="" />
+
+					<label for="comment<?php echo $this->wish->id; ?>">
+						<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
+						<?php
+						echo JFactory::getEditor()->display('content', '', '', '', 35, 4, false, 'comment' . $this->wish->id, null, null, array('class' => 'minimal no-footer'));
+						?>
+					</label>
+					
+					<fieldset>
+						<div class="grouping">
+							<label>
+								 <?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
+								<input type="file" name="upload" />
+							</label>
+							<label>
+								 <?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
+								<input type="text" name="description" value="" />
+							</label>
+						</div>
+					</fieldset>
+
+					<label id="comment-anonymous-label">
+						<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" /> 
+						<?php echo JText::_('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
+					</label>
+
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('COM_WISHLIST_POST_COMMENT'); ?>" />
+					</p>
+
+					<div class="sidenote">
+						<p>
+							<strong><?php echo JText::_('COM_WISHLIST_COMMENT_KEEP_POLITE'); ?></strong>
+						</p>
+					</div>
+				</fieldset>
+			</div><!-- / .subject -->
+			<div class="clear"></div>
+		</form>
+	</div><!-- / .below section -->
+<?php } ?>
 
 <?php if ($this->admin) {  // let advisory committee view this too ?>
 	<div class="below section" id="section-plan">
@@ -885,21 +854,27 @@ if ($this->wishlist && $this->wish) {
 			</div><!-- / .aside -->
 			<div class="subject" id="full_plan">
 				<p class="plan-member-photo">
-					<span class="plan-anchor"><!-- <a name="planform"></a> --></span>
+					<span class="plan-anchor"></span>
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p>
 				<fieldset>
 			<?php if ($this->wish->action=='editplan') { ?>
-					<label>
-					<?php echo JText::_('COM_WISHLIST_WISH_ASSIGNED_TO'); ?>:
-					<?php echo $this->wish->assignlist; ?>
-					</label>
-					<label for="publish_up" id="publish_up-label">
-						<?php echo JText::_('COM_WISHLIST_DUE'); ?> (<?php echo JText::_('COM_WISHLIST_OPTIONAL'); ?>)
-						<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $due ? JHTML::_('date', $this->wish->due, $dateFormat, $tz) : ''; ?>" />
-					</label>
-				
-					<?php if($this->wish->plan) { ?>
+					<div class="grid">
+						<div class="col span6">
+							<label>
+								<?php echo JText::_('COM_WISHLIST_WISH_ASSIGNED_TO'); ?>:
+								<?php echo $this->wish->assignlist; ?>
+							</label>
+						</div>
+						<div class="col span6 omega">
+							<label for="publish_up" id="publish_up-label">
+								<?php echo JText::_('COM_WISHLIST_DUE'); ?> (<?php echo JText::_('COM_WISHLIST_OPTIONAL'); ?>)
+								<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $due ? JHTML::_('date', $this->wish->due, $dateFormat, $tz) : ''; ?>" />
+							</label>
+						</div>
+					</div>
+
+					<?php if ($this->wish->plan) { ?>
 					<label class="newrev" for="create_revision">
 						<input type="checkbox" class="option" name="create_revision" id="create_revision" value="1" />
 						<?php echo JText::_('COM_WISHLIST_PLAN_NEW_REVISION'); ?>
@@ -909,9 +884,12 @@ if ($this->wishlist && $this->wish) {
 					<?php } ?>
 					<label>
 						<?php echo JText::_('COM_WISHLIST_ACTION_INSERT_TEXT'); ?> 
-						<textarea name="pagetext" id="pagetext" rows="40" cols="35"><?php echo isset($this->wish->plan->pagetext) ? $this->escape($this->wish->plan->pagetext) : ''; ?></textarea>
+						<?php
+						$plan = new WishlistModelPlan($this->wish->plan);
+						echo JFactory::getEditor()->display('pagetext', $this->escape($plan->content('raw')), '', '', 35, 40, false, 'pagetext', null, null, array('class' => 'minimal no-footer'));
+						?>
 					</label>
-					
+
 					<input type="hidden" name="pageid" value="<?php echo isset($this->wish->plan->id) ? $this->wish->plan->id : ''; ?>" />
 					<input type="hidden" name="version" value="<?php echo isset($this->wish->plan->version) ? $this->wish->plan->version : 1; ?>" />
 					<input type="hidden" name="wishid" value="<?php echo $this->wish->id; ?>" />
@@ -949,7 +927,7 @@ if ($this->wishlist && $this->wish) {
 								<?php echo ($due) ? $due : JText::_('COM_WISHLIST_DUE_NEVER'); ?>
 							</a>
 						</p>
-					<?php } ?>		
+					<?php } ?>
 			<?php } else { ?>
 				<?php if ($this->wish->status==0 or $this->wish->status==6) { ?>
 					<p>
@@ -966,17 +944,8 @@ if ($this->wishlist && $this->wish) {
 							<?php echo JText::_('COM_WISHLIST_PLAN_LAST_EDIT').' '.JHTML::_('date', $this->wish->plan->created, JText::_('DATE_FORMAT_HZ1')).' at '.JHTML::_('date',$this->wish->plan->created, JText::_('TIME_FORMAT_HZ1')).' '.JText::_('by').' '.$this->wish->plan->authorname;?>
 						</p>
 						<?php
-							$wikiconfig = array(
-								'option'   => $this->option,
-								'scope'    => 'wishlist'.DS.$this->wishlist->id,
-								'pagename' => $this->wishlist->id,
-								'pageid'   => $this->wishlist->id,
-								'filepath' => '',
-								'domain'   => '' 
-							);
-							$p = Hubzero_Wiki_Parser::getInstance();
-
-							echo $p->parse($this->wish->plan->pagetext, $wikiconfig);
+							$plan = new WishlistModelPlan($this->wish->plan);
+							echo $plan->content('parsed');
 						?>
 					</div>
 			<?php } ?>

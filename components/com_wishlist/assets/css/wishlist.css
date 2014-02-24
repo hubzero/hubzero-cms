@@ -551,12 +551,6 @@
 		position: relative;
 		display: block;
 	}
-	#planform label span {
-		position: absolute;
-		top: 1.5em;
-		right: 0;
-		display: none;
-	}
 	#planform .grouping {
 		position: relative;
 		margin-left: -3em;

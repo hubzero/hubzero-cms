@@ -890,10 +890,10 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 			// Get comments
 			$wish->replies = $this->getComments($wishid, 0, 'wish', 0, $abuse = true, 
-				$wishlist->owners, $this->_admin);
+			$wishlist->owners, $this->_admin);
 
 			// Do some text cleanup
-			$wish->subject = stripslashes($wish->subject);
+			/*$wish->subject = stripslashes($wish->subject);
 			$wish->subject = str_replace('&quote;', '&quot;', $wish->subject);
 			$wish->subject = htmlspecialchars($wish->subject);
 
@@ -903,7 +903,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 			{
 				$wish->about = str_replace("<br />", '', $wish->about);
 				$wish->about = nl2br($wish->about);
-			}
+			}*/
 
 			// Build owners drop-down for assigning wishes
 			$wish->assignlist = $this->userSelect('assigned', $wishlist->owners, $wish->assigned, 1);
@@ -1306,18 +1306,11 @@ class WishlistController extends \Hubzero\Component\SiteController
 		// We don't want to create a whole new revision if just the tags were changed
 		if ($old->pagetext != $page->pagetext or (!$create_revision && $pageid)) 
 		{
-			// Transform the wikitext to HTML
-			$wikiconfig = array(
-				'option'   => $this->_option,
-				'scope'    => 'wishlist' . DS . $wishlist->id,
-				'pagename' => $objWish->id,
-				'pageid'   => $objWish->id,
-				'filepath' => '',
-				'domain'   => ''
-			);
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'plan.php');
 
-			$p = Hubzero_Wiki_Parser::getInstance();
-			$page->pagehtml = $p->parse($page->pagetext, $wikiconfig);
+			$plan = new WishlistModelPlan($page);
+
+			$page->pagehtml = $plan->content('parsed');
 
 			// Store content
 			if (!$page->store()) 
@@ -3219,7 +3212,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 			foreach ($comments as $comment)
 			{
-				$database->setQuery("SELECT count(*) FROM `#__abuse_reports` AS RR WHERE RR.referenceid=" . $comment->id . " AND RR.state=0 AND RR.category='wish'");
+				/*$database->setQuery("SELECT count(*) FROM `#__abuse_reports` AS RR WHERE RR.referenceid=" . $comment->id . " AND RR.state=0 AND RR.category='wish'");
 				$comment->reports = $database->loadResult();
 
 				$comment->content = stripslashes($comment->content);
@@ -3235,7 +3228,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 					}
 					$comment->content    = $attach->parse($comment->content);
 					$comment->attachment = $attach->description;
-				}
+				}*/
 
 				// get authors excluding current commentator
 				if ($comment->created_by != $juser->get('id')) 

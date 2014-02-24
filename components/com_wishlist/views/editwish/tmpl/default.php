@@ -60,8 +60,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$wish->subject = $this->escape($wish->subject);
 
 		$wish->about = trim(stripslashes($wish->about));
-		$wish->about = preg_replace('/<br\\s*?\/??>/i', '', $wish->about);
-		$wish->about = WishlistHtml::txt_unpee($wish->about);
 ?>
 	<div id="content-header">
 		<h2><?php echo $this->escape($this->title); ?></h2>
@@ -120,8 +118,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<label for="field_about">
 						<?php echo JText::_('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>: 
 						<?php
-							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('about', 'field_about', $wish->about, 'minimal', '50', '10');
+						$model = new WishlistModelWish($wish);
+
+						echo JFactory::getEditor()->display('about', $this->escape($model->content('raw')), '', '', 35, 10, false, 'field_about', null, null, array('class' => 'minimal no-footer'));
 						?>
 					</label>
 					<label>
