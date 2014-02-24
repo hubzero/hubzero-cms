@@ -65,7 +65,7 @@ class ContentAssetHandler extends AssetHandler
 		$assetObj = new CoursesTableAsset($this->db);
 
 		// Grab the incoming content
-		$content = JRequest::getVar('content', '');
+		$content = JRequest::getVar('content', '', 'default', 'none', 2);
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
@@ -143,11 +143,11 @@ class ContentAssetHandler extends AssetHandler
 		$assetObj->load(JRequest::getInt('id'));
 
 		// Grab the incoming content
-		$content = JRequest::getVar('content', '');
+		$content = JRequest::getVar('content', '', 'default', 'none', 2);
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$this->asset['title']      = (!empty($this->asset['title']))   ? $this->asset['title']   : substr($content, 0, 25);
+		$this->asset['title']      = (!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25));
 		$this->asset['type']       = (!empty($this->asset['type']))    ? $this->asset['type']    : 'text';
 		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content';
 		$this->asset['content']    = (!empty($this->asset['content'])) ? $this->asset['content'] : $content;

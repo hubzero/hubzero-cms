@@ -49,7 +49,10 @@ $asset = new CoursesModelAsset($id);
 		</p>
 
 		<label for="content">Content: </label>
-		<?php echo Hubzero_Wiki_Editor::getInstance()->display('content', 'content', $asset->get('content'), '', '35', '10'); ?>
+		<?php
+		$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $asset->get('content'));
+		echo \JFactory::getEditor()->display('content', $content, '', '', 35, 10, false, 'content', null, null, array('class' => 'minimal no-footer'));
+		?>
 
 <?php // @TODO: implement asset insertion to wiki body! ?>
 

@@ -666,7 +666,7 @@ class CoursesControllerApi extends \Hubzero\Api\Controller
 		}
 
 		// If we have content
-		if($content = JRequest::getVar('content', false))
+		if($content = JRequest::getVar('content', false, 'default', 'none', 2))
 		{
 			$asset->set('content', $content);
 		}
