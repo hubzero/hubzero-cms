@@ -76,10 +76,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php }
 		$html = '';
 
+		$model = new JobsModelJob($job);
+
 		$job->title = trim(stripslashes($job->title));
-		$job->description = trim(stripslashes($job->description));
-		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
-		$job->description = $jobsHtml->txt_unpee($job->description);
+		$job->description = $model->content('raw');
 		$job->companyLocation = $id ? $job->companyLocation : $employer->companyLocation;
 		$job->companyLocationCountry = $id ? $job->companyLocationCountry : $this->escape($hubzero_Geo->getcountry($profile->get('countryresident')));
 		$job->companyName = $id ? $job->companyName : $employer->companyName;
@@ -147,10 +147,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<legend><?php echo JText::_('COM_JOBS_EDITJOB_JOB_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span></legend>
 			<label>
 				&nbsp;
-			<?php 
-				$editor = Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('description', 'description', $job->description, 'no-image-macro no-file-macro', '10', '25');
-			?>
+				<?php
+				echo \JFactory::getEditor()->display('description', $this->escape($job->description), '', '', 50, 25, false, 'description');
+				?>
 			</label>
 		</fieldset>
 

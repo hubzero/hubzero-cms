@@ -185,23 +185,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= t.t.t.'</tr>'."\n";
 			$html .= t.t.t.'</thead>'."\n";
 
-			$wikiconfig = array(
-				'option'   => $this->option,
-				'scope'    => 'jobs.browse',
-				'pagename' => 'jobs',
-				'pageid'   => 1,
-				'filepath' => '',
-				'domain'   => ''
-			);
-			$p = Hubzero_Wiki_Parser::getInstance();
-
 			$maxscore = $filters['search'] && $jobs[0]->keywords > 0 ? $jobs[0]->keywords : 1;
 
 			$html .= t.t.t.'<tbody>'."\n";
 			for ($i=0, $n=count( $jobs ); $i < $n; $i++)
 			{
-				//$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
-				$txt = $p->parse(stripslashes($jobs[$i]->description), $wikiconfig);
+				$model = new JobsModelJob($jobs[$i]);
+
+				//$txt = $model->content('parsed');
 				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, 'd&\nb\sp;M&\nb\sp;y') : 'ASAP';
 				if($jobs[$i]->closedate !='0000-00-00 00:00:00' && $jobs[$i]->closedate < $now)
 				{
@@ -241,7 +232,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 				$html .= t.t.t.'<tr>'."\n";
 				$html .= t.t.t.t.'<td class="jobtitle">'."\n";
-				$html .= t.t.t.t.'<a href="'.JRoute::_('index.php?option='.$option.'&task=job'.a.'code='.$jobs[$i]->code).'" title="'.\Hubzero\Utility\String::truncate($txt, 250).'">';
+				$html .= t.t.t.t.'<a href="'.JRoute::_('index.php?option='.$option.'&task=job'.a.'code='.$jobs[$i]->code).'" title="'.$model->content('clean', 250).'">';
 				$html .= $jobs[$i]->title.'</a>'."\n";
 				$html .= t.t.t.t.'</td>'."\n";
 				if ($this->admin && !$this->emp && !$this->mini) {

@@ -47,18 +47,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, JText::_('DATE_FORMAT_HZ1')) : 'N/A';
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, JText::_('DATE_FORMAT_HZ1')) : 'N/A';
 
-	// Transform the wikitext to HTML
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => 'job'.DS.$job->code,
-		'pagename' => 'jobs',
-		'pageid'   => $job->code,
-		'filepath' => '',
-		'domain'   => ''
-	);
+	$model = new JobsModelJob($job);
 
-	$p = Hubzero_Wiki_Parser::getInstance();
-	$maintext = $p->parse(stripslashes($job->description), $wikiconfig);
+	$maintext = $model->content('parsed');
 
 	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 

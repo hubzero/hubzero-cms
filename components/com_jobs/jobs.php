@@ -42,6 +42,8 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'service.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'models' . DS . 'job.php');
+
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'admin.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'application.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
