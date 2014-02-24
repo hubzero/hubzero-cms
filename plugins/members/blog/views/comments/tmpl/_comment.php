@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="id" value="<?php echo $juser->get('id'); ?>" />
+						<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 						<input type="hidden" name="active" value="blog" />
 						<input type="hidden" name="task" value="view" />
 						<input type="hidden" name="action" value="savecomment" />
@@ -123,6 +123,7 @@ defined('_JEXEC') or die('Restricted access');
 			     ->set('depth', $this->depth)
 			     ->set('cls', $cls)
 			     ->set('base', $this->base)
+			     ->set('member', $this->member)
 			     ->display();
 		}
 		?>

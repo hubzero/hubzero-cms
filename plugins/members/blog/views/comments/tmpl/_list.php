@@ -46,6 +46,7 @@ if ($this->comments && $this->comments instanceof \Hubzero\Base\ItemList)
 		     ->set('depth', $this->depth)
 		     ->set('cls', $cls)
 		     ->set('base', $this->base)
+		     ->set('member', $this->member)
 		     ->display();
 	}
 } 

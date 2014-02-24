@@ -182,6 +182,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					     ->set('comments', $this->row->comments('list'))
 					     ->set('config', $this->config)
 					     ->set('base', $this->row->link())
+					     ->set('member', $this->member)
 					     ->display();
 				?>
 			<?php } else { ?>
