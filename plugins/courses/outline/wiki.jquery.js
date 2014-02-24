@@ -61,4 +61,10 @@ jQuery(document).ready(function($) {
 	}, function() {
 		$(this).siblings('.wiki-files-upload').css('opacity', 0.7);
 	});
+
+	$('.edit-form').submit(function ( e ) {
+		for ( var instance in CKEDITOR.instances ) {
+			CKEDITOR.instances[instance].updateElement();
+		}
+	});
 });
