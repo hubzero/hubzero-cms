@@ -29,7 +29,7 @@
 
 namespace Hubzero\Badges;
 
-use Hubzero\Badges\Provider\AbstractProvider;
+use Hubzero\Badges\Provider\ProviderInterface;
 use Hubzero\Badges\Exception\InvalidProviderException;
 use Hubzero\Badges\Exception\ProviderNotFoundException;
 
@@ -61,12 +61,12 @@ class Wallet
 			throw new ProviderNotFoundException(\JText::sprntf('Invalid badges provider of "%s".', $provider));
 		}
 
-		if (!($cls instanceof ProviderInterface))
+		$this->_provider = new $cls($requestType);
+
+		if (!($this->_provider instanceof ProviderInterface))
 		{
 			throw new InvalidProviderException(\JText::sprintf('Invalid badges provider of "%s". Provider must implement ProviderInterface', $provider));
 		}
-
-		$this->_provider = new $cls($this->get('scope_id'));
 	}
 
 	/**
