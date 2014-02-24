@@ -53,6 +53,7 @@ if ($this->comments && $this->comments instanceof \Hubzero\ItemList)
 		$view->depth      = $this->depth;
 		$view->cls        = $cls;
 		$view->base       = $this->base;
+		$view->member     = $this->member;
 		$view->display();
 	}
 } 

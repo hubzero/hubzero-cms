@@ -191,6 +191,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					$view->comments   = $this->row->comments('list');
 					$view->config     = $this->config;
 					$view->base       = $this->row->link();
+					$view->member     = $this->member;
 					$view->display();
 				?>
 			<?php } else { ?>
