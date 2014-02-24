@@ -27,7 +27,7 @@ class plgContentEmailcloak extends JPlugin
 	public function onContentPrepare($context, &$row, &$params, $page = 0)
 	{
 		// Don't run this plugin when the content is being indexed
-		if ($context == 'com_finder.indexer') {
+		if ($context == 'com_finder.indexer' || $row instanceof \Hubzero\Base\Object) {
 			return true;
 		}
 
