@@ -291,7 +291,9 @@ class ForumModelPost extends ForumModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				if ($content = $this->get('content_parsed'))
+				$content = $this->get('content_parsed', null);
+
+				if ($content !== null)
 				{
 					if ($shorten)
 					{
