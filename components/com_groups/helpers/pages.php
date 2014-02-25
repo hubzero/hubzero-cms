@@ -483,24 +483,26 @@ class GroupsHelperPages
 		{
 			// create path
 			$path = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
-			
+
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+
 			// build wiki config
 			$wikiConfig = array(
 				'option'   => 'com_groups',
 				'scope'    => '',
 				'pagename' => $group->get('cn'),
-				'pageid'   => $group->get('gidNumber').DS.'uploads',
-				'filepath' => $path,
+				'pageid'   => 0,
+				'filepath' => $path . DS . $group->get('gidNumber') . DS . 'uploads',
 				'domain'   => $group->get('cn')
 			);
-			
+
 			// create wiki parser
-			$wikiParser = Hubzero_Wiki_Parser::getInstance();
-			
+			$wikiParser = WikiHelperParser::getInstance();
+
 			// parse content
-			$content = $wikiParser->parse($content, $wikiConfig, $fullparse);
+			$content = $wikiParser->parse("\n" . $content, $wikiConfig, $fullparse);
 		}
-		
+
 		//return content
 		return $content;
 	}

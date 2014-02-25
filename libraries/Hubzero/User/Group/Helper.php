@@ -206,14 +206,11 @@ class Helper
 
 		//var to hold html
 		$html = '';
-		
+
 		//var to hold count
 		$count = 0;
 		$totalCount = 0;
-		
-		//import wiki parser
-		$p = \Hubzero_Wiki_Parser::getInstance();
-		
+
 		//loop through each group
 		foreach($groups as $group)
 		{
@@ -224,16 +221,6 @@ class Helper
 
 			//var to hold group description
 			$description = "";
-			
-			//build the wiki config
-			$wikiconfig = array(
-				'option'   => 'com_groups',
-				'scope'    => $hg->cn . DS . 'wiki',
-				'pagename' => 'group',
-				'pageid'   => $hg->gidNumber,
-				'filepath' => $config->get('uploadpath'),
-				'domain'   => $hg->cn
-			);
 
 			//get the column were on
 			switch ($count)
@@ -255,11 +242,11 @@ class Helper
 			//if we want to display private description and if we have a private description
 			if ($display_private_description && $hg->private_desc)
 			{
-				$description = $p->parse("\n" . stripslashes($hg->private_desc), $wikiconfig, true, true);
+				$description = $hg->getDescription('parsed', 0, 'private');
 			}
 			elseif ($hg->public_desc)
 			{
-				$description = $p->parse("\n" . stripslashes($hg->public_desc), $wikiconfig, true, true);
+				$description = $hg->getDescription('parsed', 0, 'public');
 			}
 
 			//are we a group manager

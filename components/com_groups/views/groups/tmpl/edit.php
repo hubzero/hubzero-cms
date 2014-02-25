@@ -138,17 +138,15 @@ else
 						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PUBLIC'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
 
 						<?php
-							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('public_desc', 'public_desc', stripslashes($this->group->get('public_desc')), '', '50', '8');
+							$editor = \JFactory::getEditor();
+							echo $editor->display('public_desc', $this->escape($this->group->getDescription('raw', 0, 'public')), '', '', 35, 8, false, 'public_desc', null, null, array('class' => 'minimal no-footer'));
 						?>
-						<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 					</label>
 					<label for="private_desc">
 						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PRIVATE'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
 						<?php
-							echo $editor->display('private_desc', 'private_desc', stripslashes($this->group->get('private_desc')), '', '50', '8');
+							echo $editor->display('private_desc', $this->escape($this->group->getDescription('raw', 0, 'private')), '', '', 35, 8, false, 'private_desc', null, null, array('class' => 'minimal no-footer'));
 						?>
-						<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 					</label>
 				</fieldset>
 				

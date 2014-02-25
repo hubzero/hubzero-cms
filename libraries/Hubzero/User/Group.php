@@ -30,35 +30,36 @@
 
 namespace Hubzero\User;
 
+use Hubzero\Base\Object;
 use Hubzero\Utility\Validate;
+use Hubzero\Utility\String;
 
 jimport('joomla.application.component.helper');
 jimport('joomla.plugin.helper');
 
 /**
- * Short description for '\Hubzero\User\Group'
- * Long description (if any) ...
+ * Group model
 */
-class Group
+class Group extends Object
 {
 	/**
-	 * Description for 'gidNumber'
+	 * Group ID
 	 *
-	 * @var string
+	 * @var integer
 	 */
 	private $gidNumber = null;
 	
 	/**
-	 * Description for 'cn'
+	 * Group alias
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $cn = null;
 	
 	/**
-	 * Description for 'description'
+	 * Group title
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $description = null;
 	
@@ -72,14 +73,14 @@ class Group
 	/**
 	 * Description for 'approved'
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $approved = null;
 	
 	/**
-	 * Description for 'type'
+	 * Group type
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $type = null;
 	
@@ -928,7 +929,7 @@ class Group
 	 * @param unknown $key Parameter description (if any) ...
 	 * @return unknown Return description (if any) ...
 	 */
-	public function get($key)
+	public function get($key, $default=null)
 	{
 		return $this->__get($key);
 	}
@@ -1538,5 +1539,60 @@ class Group
 		}
 
 		return $src;
+	}
+
+	/**
+	 * Get the content of the entry
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @param      string  $type    Type to get [public, private]
+	 * @return     string
+	 */
+	public function getDescription($as='parsed', $shorten=0, $type='public')
+	{
+		$options = array();
+
+		switch (strtolower($as))
+		{
+			case 'parsed':
+				$config = array(
+					'option'   => 'com_groups',
+					'scope'    => '', //$this->get('cn') . DS . 'wiki',
+					'pagename' => $this->get('cn'),
+					'pageid'   => 0, //$this->get('gidNumber'),
+					'filepath' => \JComponentHelper::getParams('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
+					'domain'   => $this->get('cn'),
+					'camelcase' => 0
+				);
+
+				\JPluginHelper::importPlugin('content');
+				\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+					'com_groups.group.' . $type . '_desc',
+					&$this,
+					&$config
+				));
+				$content = $this->get($type . '_desc');
+
+				$options = array('html' => true);
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->getDescription('parsed', 0, $type));
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get($type . '_desc'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = String::truncate($content, $shorten, $options);
+		}
+
+		return $content;
 	}
 }

@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri    =& JURI::getInstance();
-$jconfig =& JFactory::getConfig();
+$juri    = JURI::getInstance();
+$jconfig = JFactory::getConfig();
 
 // build urls
 $base      = rtrim(str_replace('administrator', '', $juri->base()), DS);

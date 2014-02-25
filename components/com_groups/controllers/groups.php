@@ -632,19 +632,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$view->group = $group;
 		
 		// get group desc
-		$publicDesc  = $view->group->get('public_desc');
-		$privateDesc = $view->group->get('private_desc');
+		$view->publicDesc  = $view->group->getDescription('parsed', 0, 'public');
+		$view->privateDesc = $view->group->getDescription('parsed', 0, 'private');
 		
 		// make sure we have a public desc
-		if ($publicDesc == '')
+		if ($view->publicDesc == '')
 		{
-			$publicDesc = $view->group->get('description');
+			$view->publicDesc = $view->group->get('description');
 		}
-		
-		// parse descriptions
-		$view->publicDesc  = GroupsHelperPages::parseWiki($view->group, $publicDesc, false);
-		$view->privateDesc = GroupsHelperPages::parseWiki($view->group, $privateDesc, false);
-		
+
 		// return template
 		return $view->loadTemplate();
 	}
