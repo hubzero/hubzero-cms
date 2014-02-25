@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(__DIR__ . DS . 'announcement.php');
+
 /**
  * Group Announcements
  */
@@ -364,7 +366,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 		
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 		
 		// email announcement

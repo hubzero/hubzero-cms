@@ -69,7 +69,7 @@ $this->js();
 			<label for="field_content">
 				<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
-					echo Hubzero_Wiki_Editor::getInstance()->display('fields[content]', 'field_content', $this->escape(stripslashes($this->announcement->get('content'))), 'minimal no-footer', '35', '5');
+				echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->announcement->get('content'))), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 

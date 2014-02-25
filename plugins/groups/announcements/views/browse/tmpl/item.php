@@ -31,43 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//wiki parser setup
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => 'groups',
-	'pagename' => $this->group->get('cn'),
-	'pageid'   => 0,
-	'filepath' => JPATH_ROOT . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber'),
-	'domain'   => '' 
-);
+// Default to unpublished
+$class = 'unpublished';
 
-$p = Hubzero_Wiki_Parser::getInstance();
-
-//class of announcement 
-$class        = 'unpublished';
-$now          = JFactory::getDate()->toUnix();
-$publish_up   = JFactory::getDate($this->announcement->publish_up)->toUnix();
-$publish_down = JFactory::getDate($this->announcement->publish_down)->toUnix();
-if (($now >= $publish_up || $this->announcement->publish_up == '0000-00-00 00:00:00') 
- && ($now <= $publish_down || $this->announcement->publish_down == '0000-00-00 00:00:00'))
+// Is the announcement available?
+// Checks that the announcement is:
+//   * exists
+//   * published (not deleted)
+//   * publish up before now
+//   * publish down after now
+if ($this->announcement->isAvailable())
 {
 	$class = 'published';
 }
 
-//are we high priority
-if ($this->announcement->priority)
+// Is it high priority?
+if ($this->announcement->get('priority'))
 {
 	$class .= ' high';
 }
 
-//are we high priority
-if ($this->announcement->sticky)
+// Is it sticky?
+if ($this->announcement->get('sticky'))
 {
 	$class .= ' sticky';
 }
 
 //did the user already close this
-$closed = JRequest::getWord('group_announcement_' . $this->announcement->id, '', 'cookie');
+$closed = JRequest::getWord('group_announcement_' . $this->announcement->get('id'), '', 'cookie');
 if ($closed == 'closed' && $this->showClose == true)
 {
 	return;
@@ -79,15 +70,15 @@ if ($closed == 'closed' && $this->showClose == true)
 		<span class="unpublished-message"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_NOT_ACTIVE'); ?></span>
 	<?php endif; ?>
 	<div class="announcement">
-		<?php echo $p->parse(stripslashes($this->announcement->content), $wikiconfig); ?>
+		<?php echo $this->announcement->content('parsed'); ?>
 		<dl class="entry-meta">
 			<dt class="entry-id">
-				<?php echo $this->announcement->id; ?>
+				<?php echo $this->announcement->get('id'); ?>
 			</dt> 
 		<?php if ($this->authorized == 'manager') : ?>
 			<dd class="entry-author">
 				<?php
-					$profile = \Hubzero\User\Profile::getInstance($this->announcement->created_by);
+					$profile = $this->announcement->creator();
 					if (is_object($profile) && $profile->get('name') != '')
 					{
 						echo $this->escape($profile->get('name'));
@@ -96,22 +87,22 @@ if ($closed == 'closed' && $this->showClose == true)
 			</dd>
 		<?php endif; ?>
 			<dd class="time">
-				<time datetime="<?php echo $this->announcement->created; ?>">
-					<?php echo JHTML::_('date', $this->announcement->created, JText::_('TIME_FORMAT_HZ1')); ?>
+				<time datetime="<?php echo $this->announcement->published(); ?>">
+					<?php echo $this->announcement->published('time'); ?>
 				</time>
 			</dd>
 			<dd class="date">
-				<time datetime="<?php echo $this->announcement->created; ?>">
-					<?php echo JHTML::_('date', $this->announcement->created, JText::_('DATE_FORMAT_HZ1')); ?>
+				<time datetime="<?php echo $this->announcement->published(); ?>">
+					<?php echo $this->announcement->published('date'); ?>
 				</time>
 			</dd>
 		<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
 			<dd class="entry-options">
-				<?php if ($this->juser->get('id') == $this->announcement->created_by) : ?>
-					<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=edit&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
+				<?php if ($this->juser->get('id') == $this->announcement->get('created_by')) : ?>
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->announcement->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
 						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 					</a>
-					<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=delete&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->announcement->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
 						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>
 					</a>
 				<?php endif; ?>
@@ -119,7 +110,7 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php endif; ?>
 		</dl>
 	<?php if ($this->showClose) : ?>
-		<a class="close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements'); ?>" data-id="<?php echo $this->announcement->id; ?>" data-duration="30" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
+		<a class="close" href="<?php echo JRoute::_($this->announcement->link()); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
 			<span><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
 		</a>
 	<?php endif; ?>

@@ -40,5 +40,5 @@ $groupLink = rtrim($juri->base(), DS) . DS . 'groups' . DS . $group->get('cn');
 
 echo JText::_('Group Announcement') . ' - ' . $group->get('description') . "\n";
 echo '-------------------------------------------------------' . "\n\n";
-echo $this->announcement->content  . "\n\n";
+echo strip_tags($this->announcement->content)  . "\n\n";
 echo $groupLink . DS . 'announcements';

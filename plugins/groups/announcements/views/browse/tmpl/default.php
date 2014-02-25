@@ -76,7 +76,7 @@ $this->js();
 						$view->group        = $this->group;
 						$view->juser        = $this->juser;
 						$view->authorized   = $this->authorized;
-						$view->announcement = $row;
+						$view->announcement = new GroupsModelAnnouncement($row);
 						$view->showClose    = false;
 						$view->display();
 					?>
