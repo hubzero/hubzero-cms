@@ -85,13 +85,16 @@ class ForumModelCategory extends ForumModelAbstract
 
 		if ($oid)
 		{
-			if (is_numeric($oid))
+			if (is_numeric($oid) || is_string($oid))
 			{
-				$this->_tbl->load($oid);
-			}
-			else if (is_string($oid))
-			{
-				$this->_tbl->loadByAlias($oid, $section_id);
+				if ($section_id)
+				{
+					$this->_tbl->loadByAlias($oid, $section_id);
+				}
+				else
+				{
+					$this->_tbl->load($oid);
+				}
 			}
 			else if (is_object($oid) || is_array($oid))
 			{
