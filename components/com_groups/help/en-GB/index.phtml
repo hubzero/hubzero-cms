@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // get super groups
-$super = Hubzero_Group::find(array(
+$super = \Hubzero\User\Group::find(array(
 	'fields' => array('COUNT(*)'),
 	'type' => array('super')
 ));
