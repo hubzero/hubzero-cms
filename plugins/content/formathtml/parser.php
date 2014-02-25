@@ -234,7 +234,7 @@ class Parser
 	 */
 	private function strip($text)
 	{
-		$text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/iU', array(&$this, '_dataPush'), $text);
+		$text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', array(&$this, '_dataPush'), $text);
 
 		$text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', array(&$this, '_dataPush'), $text);
 
@@ -299,7 +299,7 @@ class Parser
 	{
 		foreach ($this->_tokens as $tag => $vals)
 		{
-			$text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
+			$text = preg_replace_callback('/<(' . $tag . ') (.+?)><\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
 			$this->_tokens[$tag] = array();
 		}
 
