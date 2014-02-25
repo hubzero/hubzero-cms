@@ -536,6 +536,16 @@ class WikiParser
 			$href = 'mailto:' . $this->obfuscate($url);
 		}
 
+		if ($prfx == '://')
+		{
+			$href = $prfx . $href;
+			$prfx = '';
+		}
+		if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file)/i', $href) && substr($href, 0, strlen('://')) != '://')
+		{
+			$href = 'http://' . $href;
+		}
+
 		$this->_data['links'][] = array(
 			'link'     => $whole, 
 			'url'      => $href, 
