@@ -70,6 +70,12 @@ class Component extends Scaffolding
 			}
 		}
 
+		$install_dir = JPATH_ROOT . DS . 'components';
+		if ($this->arguments->getOpt('install-dir') && strlen(($this->arguments->getOpt('install-dir'))) > 0)
+		{
+			$install_dir = JPATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS);
+		}
+
 		// Make sure component doesn't already exist
 		if (is_dir(JPATH_ROOT . DS . 'components' . DS . 'com_' . $name))
 		{
@@ -77,7 +83,7 @@ class Component extends Scaffolding
 		}
 
 		// Make component
-		$this->addTemplateFile("{$this->getType()}.tmpl", JPATH_ROOT . DS . 'components' . DS . 'com_' . $name)
+		$this->addTemplateFile("{$this->getType()}.tmpl", $install_dir . DS . 'com_' . $name)
 			 ->addReplacement('component_name', $name)
 			 ->make();
 	}
@@ -99,6 +105,13 @@ class Component extends Scaffolding
 				as the next word following the command as shown here: 
 				"muse scaffolding create component awesome"',
 				'Example: -n=awesome, --name=awesomer'
+			)
+			->addArgument(
+				'--install-dir: installation directory',
+				'Directory in which the component should be installed. Can be helpful
+				when installing a component in some sort of subsite or alternate
+				configuration. Scaffolding with use JPATH_ROOT as the default.',
+				'Example: --install-dir=site/groups/1987'
 			);
 	}
 }
