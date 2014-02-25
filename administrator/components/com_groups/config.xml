@@ -90,11 +90,6 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field type="spacer" />
-		<field name="page_modules" type="list" default="0" label="Group Modules" description="Allow standard HUB groups to use page modules. Feature meant to be used with only super groups.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
 	</fieldset>
 	
 	<fieldset name="intro" label="Intro Page">
@@ -154,6 +149,16 @@ HUBzero is a registered trademark of Purdue University.
 	</fieldset>
 	<fieldset name="pages" label="Pages">
 		<field name="approvers" type="textarea" default="" label="Page Approvers" description="Users allowed to approve group pages containing php and/or scripts. Comma seperated list of usernames." size="50" />
+		<field name="page_modules" type="list" default="0" label="Group Modules" description="Allow standard HUB groups to use page modules. Feature meant to be used with only super groups.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
+	<fieldset name="super" label="Super">
+		<field name="super_components" type="list" default="0" label="Super Group Components" description="Allow Super Group Components">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 	</fieldset>
 </config>
 
