@@ -511,54 +511,49 @@ class KbModelArticle extends \Hubzero\Base\Model
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($content = $this->get('fulltxt.parsed'))
+				$content = $this->get('fulltxt.parsed', null);
+
+				if ($content == null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array();
+
+					$content = stripslashes($this->get('fulltxt'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('fulltxt.parsed', $this->get('fulltxt'));
+					$this->set('fulltxt', $content);
+
+					return $this->content($as, $shorten);
 				}
 
-				$config = array();
-
-				$content = stripslashes($this->get('fulltxt'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('fulltxt.parsed', $this->get('fulltxt'));
-				$this->set('fulltxt', $content);
-
-				return $this->content($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('fulltxt'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 
 	/**
