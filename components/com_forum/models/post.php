@@ -287,70 +287,63 @@ class ForumModelPost extends ForumModelAbstract
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
 				$content = $this->get('content_parsed', null);
 
-				if ($content !== null)
+				if ($content == null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => 'com_forum',
+						'scope'    => 'forum',
+						'pagename' => 'forum',
+						'pageid'   => $this->get('thread'),
+						'filepath' => '',
+						'domain'   => $this->get('thread')
+					);
+
+					$attach = new ForumTableAttachment($this->_db);
+
+					$content = stripslashes($this->get('comment'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('content_parsed', $this->get('comment'));
+					$this->set('content_parsed', $this->get('content_parsed') . $attach->getAttachment(
+						$this->get('id'), 
+						$this->link('download'), 
+						$this->_config
+					));
+					$this->set('comment', $content);
+
+					return $this->content($as, $shorten);
 				}
 
-				$config = array(
-					'option'   => 'com_forum',
-					'scope'    => 'forum',
-					'pagename' => 'forum',
-					'pageid'   => $this->get('thread'),
-					'filepath' => '',
-					'domain'   => $this->get('thread')
-				);
-
-				$attach = new ForumTableAttachment($this->_db);
-
-				$content = stripslashes($this->get('comment'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('content_parsed', $this->get('comment'));
-				$this->set('content_parsed', $this->get('content_parsed') . $attach->getAttachment(
-					$this->get('id'), 
-					$this->link('download'), 
-					$this->_config
-				));
-				$this->set('comment', $content);
-
-				return $this->content($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = $this->get('comment');
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 }
 
