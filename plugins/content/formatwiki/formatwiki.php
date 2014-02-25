@@ -125,22 +125,25 @@ class plgContentFormatwiki extends JPlugin
 
 		$content = preg_replace('/^(<!-- \{FORMAT:WIKI\} -->)/i', '', $content);
 
-		$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('hubzero');
-
-		if (!isset($params['fullparse']))
+		if (trim($content))
 		{
-			$params['fullparse'] = true;
-		}
+			$dispatcher = JDispatcher::getInstance();
+			JPluginHelper::importPlugin('wiki');
 
-		if ($this->params->get('convertFormat'))
-		{
-			$params['macros'] = false;
-		}
+			if (!isset($params['fullparse']))
+			{
+				$params['fullparse'] = true;
+			}
 
-		// Trigger the onFinderBeforeSave event.
-		$results = $dispatcher->trigger('onWikiParseText', array($content, $params, $params['fullparse'], true));
-		$content = implode('', $results);
+			if ($this->params->get('convertFormat'))
+			{
+				$params['macros'] = false;
+			}
+
+			// Trigger the onFinderBeforeSave event.
+			$results = $dispatcher->trigger('onWikiParseText', array($content, $params, $params['fullparse'], true));
+			$content = implode('', $results);
+		}
 
 		if ($this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model)
 		{
@@ -148,8 +151,6 @@ class plgContentFormatwiki extends JPlugin
 			$article->set($key, $content);
 			$article->store(false);
 		}
-
-		//return $content;
 
 		$article->set($key, $content);
 	}
