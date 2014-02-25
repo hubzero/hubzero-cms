@@ -122,14 +122,14 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 			
 			<div id="page_main">
 				<div id="page_header">
-					<h2><a href="/groups/<?php echo $this->group->get("cn"); ?>"><?php echo $this->group->get('description'); ?></a></h2>
-					<span class="divider">►</span>
+					<h2><a href="<?php echo $link; ?>"><?php echo $this->group->get('description'); ?></a></h2>
+					<span class="divider">&#9658;</span>
 					<h3>
 						<?php echo GroupsHelperView::displayTab( $this->group ); ?>
 					</h3>
 					
 					<?php
-						if($this->tab == 'overview') : 
+						if ($this->tab == 'overview') : 
 							$gt = new GroupsTags( $database );
 							echo $gt->get_tag_cloud(0,0,$this->group->get('gidNumber'));
 						endif;
@@ -137,7 +137,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 				</div><!-- /#page_header -->
 				<div id="page_notifications">
 					<?php
-						foreach($this->notifications as $notification)
+						foreach ($this->notifications as $notification)
 						{
 							echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 						}
