@@ -179,7 +179,7 @@ class Object
 	 * @param   mixed   $value     The value of the property to set.
 	 * @return  object
 	 */
-	public function set($property, $value = null)
+	public function set($property, $value)
 	{
 		$this->$property = $value;
 		return $this; // So we can do method chaining!
