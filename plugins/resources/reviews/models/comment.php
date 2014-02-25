@@ -326,7 +326,7 @@ class ResourcesModelComment extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_base))
 		{
-			$this->_base = 'index.php?option=com_resources&id=' . $this->get('item_id') . '&active=resources';
+			$this->_base = 'index.php?option=com_resources&id=' . $this->get('item_id') . '&active=reviews';
 		}
 		$link = $this->_base;
 
