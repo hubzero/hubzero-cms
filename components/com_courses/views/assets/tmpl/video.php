@@ -366,7 +366,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							<?php foreach ($presentation->media as $source): ?>
 								<source src="<?php echo $content_folder . DS . $source->source; ?>" />
 							<?php endforeach; ?>
-							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>"></a>
+							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) { echo $presentation->duration; } ?>"></a>
 						</audio>
 					<?php endif; ?>
 				</div>
