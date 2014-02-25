@@ -254,7 +254,7 @@ function popratings()
 						<label>Synopsis (250 chars. max):</label>
 						<?php
 						if($canedit) {
-							echo $editor->display('abstract', htmlentities(stripslashes($this->row->abstract), ENT_COMPAT, 'UTF-8'), '100%', '50px', '45', '10', false);
+							echo $editor->display('abstract', $this->escape(stripslashes($this->row->abstract)), '100%', '50px', '45', '10', false);
 						}
 						else {
 							echo stripslashes($this->row->abstract);
@@ -266,11 +266,14 @@ function popratings()
 					<td>
 						<label>Abstract/Description</label>
 						<?php
-						if ($canedit) {
-							echo $editor->display('description', htmlentities(stripslashes($this->row->description), ENT_COMPAT, 'UTF-8'), '100%', '200px', '45', '10', false);
+						$model = new PublicationsModelPublication($this->row);
+						if ($canedit)
+						{ 
+							echo $editor->display('description', $this->escape($model->description('raw')), '', '', 35, 10, false, 'description', null, null, array('class' => 'minimal no-footer'));
 						}
-						else {
-							echo $this->parser->parse( stripslashes($this->row->description), $this->wikiconfig );
+						else
+						{
+							echo $model->description('parsed');
 						}
 						?>
 					</td>
@@ -294,7 +297,7 @@ function popratings()
 					<td>
 						<label><?php echo JText::_('Release Notes'); ?>  - <?php echo JText::_('Version').' '.$this->row->version_label; ?> (Release #<?php echo $this->row->version_number; ?>)</label>
 						<?php
-						echo $editor->display('release_notes', htmlentities(stripslashes($this->row->release_notes), ENT_COMPAT, 'UTF-8'), '100%', '200px', '45', '10', false);
+						echo $editor->display('release_notes', $this->escape($model->notes('raw')), '100%', '200px', '45', '10', false, 'release_notes', null, null, array('class' => 'minimal no-footer'));
 						?>
 					</td>
 				</tr>

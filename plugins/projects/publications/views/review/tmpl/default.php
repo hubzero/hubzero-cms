@@ -251,14 +251,27 @@ else if ($this->authorized == 3)
 			PublicationContribHelper::drawStatusBar($this, NULL, false, 1);	
 		}
 		
+		$model = new PublicationsModelPublication($this->pub);
 		$description = '';
 		if ($this->pub->description) 
 		{
-			$description = $this->parser->parse( stripslashes($this->pub->description), $this->wikiconfig );
+			$description = $model->description('parsed');
 		}
 		
 		// Process metadata
-		$metadata = PublicationsHtml::processMetadata($this->pub->metadata, $this->_category, $this->parser, $this->wikiconfig, 0);
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+
+		$parser = WikiHelperParser::getInstance();
+		$wikiconfig = array(
+			'option'   => $this->option,
+			'scope'    => '',
+			'pagename' => 'projects',
+			'pageid'   => '',
+			'filepath' => '',
+			'domain'   => ''
+		);
+
+		$metadata = PublicationsHtml::processMetadata($this->pub->metadata, $this->_category, $parser, $wikiconfig, 0);
 	
 		?>
 		<div class="two columns first">
@@ -301,7 +314,7 @@ else if ($this->authorized == 3)
 			<?php
 				// Show notes
 				if ($this->pub->release_notes) {
-					echo $this->parser->parse( $this->pub->release_notes, $this->wikiconfig );
+					echo $model->notes('parsed');
 				}
 				else {
 					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';

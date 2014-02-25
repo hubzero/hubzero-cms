@@ -54,11 +54,6 @@ class PublicationsElementTextarea extends PublicationsElement
 		// convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 
-		//$editor = JFactory::getEditor();
-		
-		$editor = Hubzero_Wiki_Editor::getInstance();
-
-		return '<span class="field-wrap">' . $editor->display($control_name.'['.$name.']', $control_name.'-'.$name, $value, $class, $cols, $rows) . '</span>';
-
+		return '<span class="field-wrap">' . JFactory::getEditor()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => 'minimal no-footer')) . '</span>';
 	}
 }

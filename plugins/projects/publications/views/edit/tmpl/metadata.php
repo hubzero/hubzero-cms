@@ -57,8 +57,6 @@ $elements 	= new PublicationsElements($data, $customFields);
 $fields 	= $elements->render();
 $schema 	= $elements->getSchema();
 
-$editor = Hubzero_Wiki_Editor::getInstance();
-
 $canedit = (
 	$this->pub->state == 3 
 	|| $this->pub->state == 4 
@@ -124,12 +122,23 @@ $canedit = (
 						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NO_METADATA_COLLECTED'); ?></p>
 					<?php } ?>
 			<?php } else { 
-				
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+
+				$parser = WikiHelperParser::getInstance();
+				$wikiconfig = array(
+					'option'   => $this->option,
+					'scope'    => '',
+					'pagename' => 'projects',
+					'pageid'   => '',
+					'filepath' => '',
+					'domain'   => ''
+				);
+
 				$metadata = $this->htmlHelper->processMetadata(
 					$this->row->metadata, 
 					$this->_category,  
-					$this->parser, 
-					$this->wikiconfig,
+					$parser, 
+					$wikiconfig,
 					0
 				);					
 			?>

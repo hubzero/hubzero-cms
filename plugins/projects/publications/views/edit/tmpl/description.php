@@ -154,14 +154,17 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 									<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 							</label>								
 							<span class="clear"></span>
-							<?php if ($noedit) { ?>
 							<?php 
-								echo $this->parser->parse( stripslashes($this->row->description), $this->wikiconfig );
+							$model = new PublicationsModelPublication($this->row);
+							if ($noedit) 
+							{
+								echo $model->description('parsed');
+							}
+							else
+							{ 
+								echo \JFactory::getEditor()->display('description', $this->escape($model->description('raw')), '', '', 35, 20, false, 'description', null, null, array('class' => 'minimal no-footer'));
+							}
 							?>
-							<?php } else { 
-								$editor = Hubzero_Wiki_Editor::getInstance();
-								echo $editor->display('description', 'description', $this->row->description, '', '35', '20'); 
-							} ?>
 						</td>
 					</tr>
 				  </tbody>

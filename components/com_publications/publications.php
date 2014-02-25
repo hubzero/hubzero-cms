@@ -56,6 +56,8 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.p
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+
 require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'usage.php' );
 require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
 require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );

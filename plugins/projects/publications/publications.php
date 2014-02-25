@@ -33,6 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+
 /**
  * Project publications
  */
@@ -1078,21 +1080,10 @@ class plgProjectsPublications extends JPlugin
 				
 				// Get types
 				$rt = new PublicationCategory( $this->_database );
-				$view->categories = $rt->getContribCategories();										
+				$view->categories = $rt->getContribCategories();
 				break;
 		}
-		
-		// Import the wiki parser
-		$view->parser = Hubzero_Wiki_Parser::getInstance();
-		$view->wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => '',
-			'pagename' => 'projects',
-			'pageid'   => '',
-			'filepath' => '',
-			'domain'   => ''
-		);
-						
+
 		// Get type info
 		$view->_category = new PublicationCategory( $this->_database );
 		$view->_category->load($pub->category);
@@ -1778,17 +1769,6 @@ class plgProjectsPublications extends JPlugin
 		// Get JS
 		$document = JFactory::getDocument();
 		$document->addScript('components' . DS . 'com_publications' . DS . 'publications.js');
-		
-		// Import the wiki parser
-		$view->parser = Hubzero_Wiki_Parser::getInstance();
-		$view->wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => '',
-			'pagename' => 'projects',
-			'pageid'   => '',
-			'filepath' => '',
-			'domain'   => ''
-		);
 
 		// Output HTML
 		$view->option 		= $this->_option;
@@ -4207,8 +4187,10 @@ class plgProjectsPublications extends JPlugin
 		// Convert
 		if ($raw) 
 		{
-			$p = Hubzero_Wiki_Parser::getInstance();
-			
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+
+			$p = WikiHelperParser::getInstance();
+
 			// import the wiki parser
 			$wikiconfig = array(
 				'option'   => $this->_option,

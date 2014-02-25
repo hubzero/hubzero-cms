@@ -312,18 +312,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->pub_allowed = 0;
 		}
 		
-		//Import the wiki parser
-		$this->view->parser = Hubzero_Wiki_Parser::getInstance();
-
-		$this->view->wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => '',
-			'pagename' => 'publications',
-			'pageid'   => '',
-			'filepath' => '',
-			'domain'   => ''
-		);
-		
 		// Get tags on this item
 		$tagsHelper = new PublicationTags( $this->database);
 		$this->view->lists['tags'] = $tagsHelper->get_tag_string($id, 0, 0, NULL, 0, 1);

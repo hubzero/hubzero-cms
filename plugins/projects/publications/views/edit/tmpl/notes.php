@@ -102,18 +102,26 @@ $canedit = (
 				<?php if($this->pub->state != 1 && !$this->move && $this->publication_allowed && $canedit) { echo '<span class="btn-hint"><a href="'.$this->url.'/?section=version">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT').'</a></span>'; } ?>
 			</span>
 			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>: </h5>
-			<?php if($canedit) { ?>
-			<textarea name="notes" id="pub_notes" cols="40" rows="15" class="pubinput"><?php echo $this->pub->release_notes; ?></textarea>
-			<?php } else { 				
-					// Show notes
-					if ($this->pub->release_notes) {
-						echo $this->parser->parse( $this->pub->release_notes, $this->wikiconfig );
-					}
-					else {
-						echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
-					}
-			 } ?>
-		 </div>
+			<?php 
+			$model = new PublicationsModelPublication($this->pub);
+			if ($canedit) 
+			{
+				echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 15, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
+			}
+			else 
+			{
+				// Show notes
+				if ($notes = $model->notes('parsed')) 
+				{
+					echo $notes;
+				}
+				else 
+				{
+					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+				}
+			}
+			?>
+			</div>
 		</div>
 	</div>
 </div>
@@ -128,28 +136,33 @@ $canedit = (
 		<?php echo '<span class="btn-hint"><a href="'.$this->url.'/?section=version">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT').'</a></span>'; ?>
 		</span>
 		<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
-		<?php if($canedit) { ?>
+		<?php
+		$model = new PublicationsModelPublication($this->pub);
+		if ($canedit) { ?>
 		<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NOTES_WRITE_NOTES'); ?></p>
 		<table class="tbl-panel">
 			<tbody>
-			<tr>
-				<td>
-					<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>:
-					<?php 	
-						$editor = Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('notes', 'notes', $this->pub->release_notes, '', '35', '20'); 
-					?></label>
-				</td>
-			</tr>
-		  </tbody>
+				<tr>
+					<td>
+						<label>
+							<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>:
+							<?php 
+							echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 20, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
+							?>
+						</label>
+					</td>
+				</tr>
+			</tbody>
 		</table>
 		<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_NOTES'); ?></p>
-		<?php } else { 				
+		<?php } else {
 				// Show notes
-				if ($this->pub->release_notes) {
-					echo $this->parser->parse( $this->pub->release_notes, $this->wikiconfig );
+				if ($notes = $model->notes('parsed')) 
+				{
+					echo $notes;
 				}
-				else {
+				else 
+				{
 					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}
 		 } ?>

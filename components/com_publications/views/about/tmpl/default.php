@@ -21,12 +21,9 @@ if ($this->publication->abstract)
 
 $description = '';
 if ($this->publication->description) 
-{	
-	// No HTML, need to parse
-	if ($this->publication->description == strip_tags($this->publication->description)) 
-	{
-	    $description = $this->parser->parse( stripslashes($this->publication->description), $this->wikiconfig );	
-	}
+{
+	$model = new PublicationsModelPublication($this->publication);
+	$description = $model->description('parsed');
 }
 
 // Start display

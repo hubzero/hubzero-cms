@@ -697,18 +697,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$body = '';
 		if ($tab == 'about') 
 		{
-			//Import the wiki parser
-			$parser = Hubzero_Wiki_Parser::getInstance();
-
-			$wikiconfig = array(
-				'option'   => $this->_option,
-				'scope'    => '',
-				'pagename' => 'projects',
-				'pageid'   => '',
-				'filepath' => '',
-				'domain'   => ''
-			);
-
 			// Build the HTML of the "about" tab
 			$view = new JView( array('name'=>'about') );
 			$view->option 		= $this->_option;
@@ -722,8 +710,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$view->sections 	= $sections;
 			$view->authors 		= $authors;
 			$view->params 		= $params;
-			$view->parser 		= $parser;
-			$view->wikiconfig 	= $wikiconfig;
 			$body = $view->loadTemplate();
 			
 			// Log page view (public pubs only)
