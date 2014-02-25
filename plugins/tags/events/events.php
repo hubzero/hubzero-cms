@@ -174,7 +174,7 @@ class plgTagsEvents extends JPlugin
 	 * 
 	 * @return     void
 	 */
-	public function documents()
+	public static function documents()
 	{
 		\Hubzero\Document\Assets::addComponentStylesheet('com_events');
 	}
