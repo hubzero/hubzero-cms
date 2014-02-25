@@ -98,11 +98,13 @@ if ($this->review->id) {
 
 				<label for="review_comments">
 					<?php echo JText::_('PLG_PUBLICATION_REVIEWS_FORM_COMMENTS');
-		if ($this->banking) {
-			echo ' ( <span class="required">'.JText::_('PLG_PUBLICATION_REVIEWS_REQUIRED').'</span> '.JText::_('PLG_PUBLICATION_REVIEWS_FOR_ELIGIBILITY').' <a href="'.$this->infolink.'">'.JText::_('PLG_PUBLICATION_REVIEWS_EARN_POINTS').'</a> )';
-		}
-		?>
-					<textarea name="comment" id="review_comments" rows="7" cols="35"><?php echo $this->review->comment; ?></textarea>
+					if ($this->banking) {
+						echo ' ( <span class="required">'.JText::_('PLG_PUBLICATION_REVIEWS_REQUIRED').'</span> '.JText::_('PLG_PUBLICATION_REVIEWS_FOR_ELIGIBILITY').' <a href="'.$this->infolink.'">'.JText::_('PLG_PUBLICATION_REVIEWS_EARN_POINTS').'</a> )';
+					}
+					?>
+					<?php
+					echo JFactory::getEditor()->display('comment', $this->review->comment, '', '', 35, 10, false, 'review_comments', null, null, array('class' => 'minimal no-footer'));
+					?>
 				</label>
 
 				<label id="review-anonymous-label">
@@ -117,7 +119,7 @@ if ($this->review->id) {
 						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+						URLs (starting with http://) or email addresses will automatically be linked.
 					</p>
 				</div>
 			</fieldset>

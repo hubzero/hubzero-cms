@@ -159,9 +159,11 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
+			include_once(__DIR__ . '/models/review.php');
+
 			\Hubzero\Document\Assets::addPluginStylesheet('publications', 'reviews');
 			\Hubzero\Document\Assets::addPluginScript('publications', 'reviews');
-			
+
 			// Did they perform an action?
 			// If so, they need to be logged in first.
 			if (!$h->loggedin) 
@@ -445,7 +447,7 @@ class PlgPublicationsReviewsHelper extends JObject
 
 		// Perform some text cleaning, etc.
 		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
-		$row->content    = nl2br($row->content);
+		//$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created    = $when;
 		$row->state      = 0;
@@ -691,7 +693,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		// Perform some text cleaning, etc.
 		$row->id        = JRequest::getInt( 'reviewid', 0 );
 		$row->comment   = \Hubzero\Utility\Sanitize::stripAll($row->comment);
-		$row->comment   = nl2br($row->comment);
+		//$row->comment   = nl2br($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
 		$row->created_by = $juser->get('id');
