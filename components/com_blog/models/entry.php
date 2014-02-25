@@ -545,64 +545,59 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($content = $this->get('content_parsed'))
+				$content = $this->get('content_parsed', null);
+
+				if ($content == null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+					$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
+
+					$config = array(
+						'option'   => $this->_adapter()->get('option'),
+						'scope'    => $this->_adapter()->get('scope') . '/' . $scope,
+						'pagename' => $this->get('alias'),
+						'pageid'   => 0, //$this->get('id'),
+						'filepath' => $this->_adapter()->get('path'),
+						'domain'   => ''
+					);
+
+					$content = stripslashes($this->get('content'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('content_parsed', $this->get('content'));
+					$this->set('content', $content);
+
+					return $this->content($as, $shorten);
 				}
 
-				$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
-
-				$config = array(
-					'option'   => $this->_adapter()->get('option'),
-					'scope'    => $this->_adapter()->get('scope') . '/' . $scope,
-					'pagename' => $this->get('alias'),
-					'pageid'   => 0, //$this->get('id'),
-					'filepath' => $this->_adapter()->get('path'),
-					'domain'   => ''
-				);
-
-				$content = stripslashes($this->get('content'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('content_parsed', $this->get('content')); //implode('', $content));
-				$this->set('content', $content);
-
-				return $this->content($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('content'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 
 	/**
