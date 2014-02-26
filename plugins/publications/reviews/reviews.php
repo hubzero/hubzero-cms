@@ -189,22 +189,15 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				);
 			}
 			
-			// Thumbs voting CSS & JS
-			$voting = $this->_params->get('voting');
-			if ($voting) 
-			{
-				\Hubzero\Document\Assets::addComponentStylesheet('com_answers', 'assets/css/vote.css');
-			}
-			
 			// Pass the view some info
-			$view->option = $option;
-			$view->publication = $publication;
-			$view->reviews = $reviews;
-			$view->voting = $voting;
-			$view->h = $h;
-			$view->banking = $this->banking;
-			$view->infolink = $this->infolink;
-			$view->voting = $voting;
+			$view->option 		= $option;
+			$view->publication 	= $publication;
+			$view->reviews 		= $reviews;
+			$view->voting 		= $this->params->get('voting', 1);
+			$view->h 			= $h;
+			$view->banking 		= $this->banking;
+			$view->infolink 	= $this->infolink;
+			$view->config   	= $this->params;
 			if ($h->getError()) 
 			{
 				$view->setError( $h->getError() );

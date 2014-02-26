@@ -80,6 +80,32 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 
 		return $instances[$key];
 	}
+	
+	/**
+	 * Set a property
+	 * 
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
+	 * @return     void
+	 */
+	public function __set($property, $value)
+	{
+		$this->_data[$property] = $value;
+	}
+
+	/**
+	 * Get a property
+	 * 
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
+	 */
+	public function __get($property)
+	{
+		if (isset($this->_data[$property])) 
+		{
+			return $this->_data[$property];
+		}
+	}
 
 	/**
 	 * Return a formatted timestamp
@@ -144,7 +170,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	{
 		$as = strtolower($as);
 		$options = array();
-
+		
 		switch ($as)
 		{
 			case 'parsed':
@@ -170,8 +196,11 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 
 					$this->set('description.parsed', $this->get('description'));
 					$this->set('description', $content);
-
-					return $this->description($as, $shorten);
+					
+					if ($this->get('description.parsed', null) != null)
+					{
+						return $this->description($as, $shorten);
+					}					
 				}
 
 				$options['html'] = true;
@@ -238,7 +267,10 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 					$this->set('release_notes.parsed', $this->get('release_notes'));
 					$this->set('release_notes', $content);
 
-					return $this->notes($as, $shorten);
+					if ($this->get('release_notes.parsed', null) != null)
+					{
+						return $this->notes($as, $shorten);
+					}
 				}
 
 				$options['html'] = true;

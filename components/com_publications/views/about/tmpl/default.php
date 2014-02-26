@@ -20,9 +20,9 @@ if ($this->publication->abstract)
 }
 
 $description = '';
+$model = new PublicationsModelPublication($this->publication);	
 if ($this->publication->description) 
 {
-	$model = new PublicationsModelPublication($this->publication);
 	$description = $model->description('parsed');
 }
 
@@ -56,8 +56,7 @@ $citations = NULL;
 if ($this->params->get('show_metadata')) 
 {
 	// Process metadata
-	$metadata = PublicationsHtml::processMetadata($this->publication->metadata, 
-		$this->publication->_category, $this->parser, $this->wikiconfig);
+	$metadata = PublicationsHtml::processMetadata($this->publication->metadata, $this->publication->_category);
 	$html .= $metadata['html'] ? $metadata['html'] : '';
 	$citations = $metadata['citations'];
 }
@@ -118,9 +117,7 @@ if ($this->params->get('show_tags'))
 // Show version notes
 if ($this->params->get('show_notes') && $this->publication->release_notes) 
 {
-	$notes = $this->parser->parse( stripslashes($this->publication->release_notes), $this->wikiconfig );
-	$html .= PublicationsHtml::tableRow( JText::_('COM_PUBLICATIONS_VERSION')
-	. ' ' . $this->publication->version_label . ' ' . JText::_('COM_PUBLICATIONS_NOTES'),$notes);	
+	$description = $model->notes('parsed');
 }
 
 // Page end

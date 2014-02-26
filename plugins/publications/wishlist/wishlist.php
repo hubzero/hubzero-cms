@@ -209,10 +209,7 @@ class plgPublicationsWishlist extends JPlugin
 			if ($rtrn != 'metadata') 
 			{
 				// Add the CSS to the template
-				WishlistController::_getStyles();
-				
-				// Thumbs voting CSS & JS
-				WishlistController::_getStyles('com_answers', 'vote.css');
+				\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wishlist');
 				
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);

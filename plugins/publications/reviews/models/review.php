@@ -44,7 +44,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 * 
 	 * @var object
 	 */
-	protected $_tbl_name = 'PublicationsReview';
+	protected $_tbl_name = 'PublicationReview';
 
 	/**
 	 * Model context
@@ -309,29 +309,29 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 				$this->set('comment_parsed', $this->get('comment'));
 				$this->set('comment', $content);
 
-				return $this->content($as, $shorten);
+				if ($this->get('comment_parsed', null) != null)
+				{
+					return $this->content($as, $shorten);
+				}
+				
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('comment_parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('comment'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+		
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 
 	/**

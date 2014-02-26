@@ -669,12 +669,10 @@ class PublicationsHtml
 	 * 
 	 * @param      string  $metadata  	Pub metadata
 	 * @param      object  $category  	Category
-	 * @param      object  $parser  	Wiki parser instance
-	 * @param      array   $wikiconfig 	Array with wiki config
 	 * @param      int     $table 		Show in html table?
 	 * @return     array
 	 */	
-	public static function processMetadata( $metadata, $category, $parser, $wikiconfig, $table = 1 ) 
+	public static function processMetadata( $metadata, $category, $table = 1 ) 
 	{	
 		$html 		= '';
 		$citations 	= '';
@@ -715,10 +713,7 @@ class PublicationsHtml
 					$citations = $data[$field->name];
 				} 
 				elseif ($value = $elements->display($field->type, $data[$field->name])) 
-				{
-					// Parse wiki format if not HTML already
-					$value = $value == strip_tags($value) ? $parser->parse( $value, $wikiconfig ) : $value;
-					
+				{					
 					if ($table) 
 					{
 						$html .= $publicationsHtml->tableRow( $field->label, $value );	
