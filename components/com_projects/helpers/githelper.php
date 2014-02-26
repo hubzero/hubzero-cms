@@ -622,14 +622,14 @@ class ProjectsGitHelper extends JObject
 	 * 
 	 * @param      string	$path			Repo path
 	 * @param      string	$subdir			Local directory path
-	 * @param      boolean	$showDeleted	Show/hide deleted files
+	 * @param      boolean	$showUntracked	Show/hide untracked files
 	 *
 	 * @return     array
 	 */
-	public function getFiles ($path = '', $subdir = '', $showDeleted = false) 
+	public function getFiles ($path = '', $subdir = '', $showUntracked = false) 
 	{
-		$call = $showDeleted 
-			? ' ls-files --deleted '
+		$call = $showUntracked 
+			? ' ls-files --others --exclude-standard ' . escapeshellarg($subdir)
 			: ' ls-files --exclude-standard ' . escapeshellarg($subdir);
 		
 		// Get Git status

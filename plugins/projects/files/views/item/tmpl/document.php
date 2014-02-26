@@ -36,21 +36,31 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 			
 ?>
 	<tr class="mini faded mline">
-		<td><input type="checkbox" value="<?php echo urlencode($file['name']); ?>" name="asset[]" class="checkasset js <?php if($this->publishing && $file['pid']) { echo 'publ'; } ?>" /></td>
+		<td>
+			<?php if($file['untracked'] == 0) { ?>
+			<input type="checkbox" value="<?php echo urlencode($file['name']); ?>" name="asset[]" class="checkasset js <?php if($this->publishing && $file['pid']) { echo 'publ'; } ?>" />
+			<?php } ?>
+		</td>
 		<td class="top_valign nobsp">
 			<img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" />
 			<a href="<?php echo $this->url 
 			. '/?' . $this->do . '=download' . a . 'subdir='.urlencode($this->subdir) 
 			. a . 'file='.urlencode($file['name']); ?>" 
-			class="preview file:<?php echo urlencode($file['name']); ?>" id="edit-c-<?php echo $c; ?>">
+			<?php if($file['untracked'] == 0) { ?>
+			class="preview file:<?php echo urlencode($file['name']); ?>" <?php } ?> id="edit-c-<?php echo $c; ?>">
 			<?php echo ProjectsHtml::shortenFileName($file['name'], 50); ?></a>
 			
+			<?php if($file['untracked'] == 0) { ?>
 			<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span>
-			
+			<?php } else { ?>
+				<span class="fileoptions"><?php echo JText::_('untracked file'); ?></span>
+			<?php } ?>
 		</td>
 		<td class="shrinked"></td>
 		<td class="shrinked"><?php echo $file['size']; ?></td>
-		<td class="shrinked"><a href="<?php echo $this->url . '/?' . $this->do . '=history' . a . 'subdir='.urlencode($this->subdir) . a . 'asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('COM_PROJECTS_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a></td>
+		<td class="shrinked"><?php if($file['untracked'] == 0) { ?>
+		<a href="<?php echo $this->url . '/?' . $this->do . '=history' . a . 'subdir='.urlencode($this->subdir) . a . 'asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('COM_PROJECTS_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+		<?php } ?></td>
 		<td class="shrinked pale"><?php if($me) { echo JText::_('COM_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
 		</td>
 		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir) 

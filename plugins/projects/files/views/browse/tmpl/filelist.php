@@ -87,7 +87,7 @@ $lastsync = '';
 			$lastsync = $this->rSync['status'] == 'complete' ? date("c") : $this->params->get($service . '_sync', '');
 			if ($lastsync)
 			{
-				$lastsync = '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo(strtotime($lastsync), false) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' ;
+				$lastsync = '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo($lastsync, false) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' ;
 			}
 			?>
 	<input type="hidden" name="service-<?php echo $service; ?>" id="service-<?php echo $service; ?>" value="<?php echo !empty($this->connections) && isset($this->connections[$service]) ? 1 : 0; ?>" />	

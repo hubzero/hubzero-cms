@@ -4829,7 +4829,7 @@ class plgProjectsFiles extends JPlugin
 	 */
 	public function getFiles ($path = '', $subdir = '', $norecurse = true, 
 		$get_count = false, $limit = 0, $rand = 0, 
-		$sortby = '', $sortdir = 'ASC', $limited = false) 
+		$sortby = '', $sortdir = 'ASC', $limited = false, $showUntracked = true) 
 	{					
 		// Check path format
 		$subdir = trim($subdir, DS);
@@ -4849,11 +4849,18 @@ class plgProjectsFiles extends JPlugin
 		
 		// Get files
 		$out = $this->_git->getFiles($path, $subdir);
+		
+		// Show untracked files?
+		$untracked = array();
+		if ($showUntracked)
+		{
+			$untracked = $this->_git->getFiles($path, $subdir, true);
+		}
 				
 		// Return count
 		if ($get_count)
 		{
-			return count($out);
+			return (count($out) + count($untracked));
 		}
 		
 		// Get pub associations	
@@ -4911,6 +4918,7 @@ class plgProjectsFiles extends JPlugin
 					else
 					{
 						$file = $this->getFileInfo($fpath, $path, $fullpath, $get_count, $norecurse);
+						$file['untracked'] = 0;
 						
 						// Skip uncommitted files
 						if (!$file['date'])
@@ -4931,7 +4939,45 @@ class plgProjectsFiles extends JPlugin
 				}						
 			}
 		}
-	
+		
+		// Go through untracked files
+		if ($limited == false && count($untracked) > 0)
+		{
+			foreach ($untracked as $ut)
+			{
+				if ($limit && $i >= $limit) 
+				{
+					break;
+				}
+				
+				$dirname = dirname($ut);
+				if ($dirname != '.' && $dirname != $subdir) 
+				{
+					continue;
+				}
+
+				$file 						= array();
+				$file['name']				= basename($ut);
+				$file['fpath']				= $ut;
+				$file['ext']				= ProjectsHtml::getFileAttribs( basename($ut), $fullpath, 'ext' );
+				$file['date']  				= NULL;
+				$file['author'] 			= NULL;
+				$file['email'] 				= NULL;
+				$file['bytes']				= filesize($this->prefix . $fullpath . DS . $ut);
+				$file['size']				= ProjectsHtml::formatSize($file['bytes']);
+				$file['untracked'] 			= 1;				
+				$file['pid'] 				= '';
+				$file['pub_title'] 			= '';
+				$file['pub_version'] 		= '';
+				$file['pub_version_label'] 	= '';
+				$file['pub_num']			= 0;
+
+				$files[] =  $file;
+
+				$i++;
+			}
+		}
+			
 		return $files;			
 	}
 		

@@ -857,6 +857,16 @@
 		color: green;
 	}
 	
+/* Untracked files
+--------------------------------------------- */
+	table.listing tbody tr.mline .fileoptions {
+		display: none;
+		margin-left: 3em;
+	}
+	table.listing tbody tr.mline:hover .fileoptions {
+		display: inline;
+	}
+	
 /* Renaming & tex files
 --------------------------------------------- */
 	.rename, .tex-menu {
@@ -865,6 +875,7 @@
 		padding: 0.2em 2em;
 		margin-left: 1em;
 	}
+
 	table.listing tbody tr.mline:hover .rename,
 	table.listing tbody tr.i-selected .rename,
 	table.listing tbody tr.mline:hover .tex-menu,
