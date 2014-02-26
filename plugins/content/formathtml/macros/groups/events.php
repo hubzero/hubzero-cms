@@ -82,9 +82,7 @@ class Events extends GroupsMacro
 
 		//get group events
 		$events =  $this->getGroupEvents($this->group, $filters);
-echo '<pre>';
-print_r($events);
-echo '</pre>';
+
 		//create the html container
 		$html  = '<div class="upcoming_events">';
 
