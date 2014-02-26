@@ -353,7 +353,7 @@ class Parser
 		$this->macros = array();
 
 		// Get macros [[name(args)]]
-		return preg_replace_callback('/\[\[(?P<macroname>[\w]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
+		return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
 	}
 
 	/**
@@ -368,15 +368,20 @@ class Parser
 
 		if (isset($matches[1]) && $matches[1] != '') 
 		{
-			$matches[1] = strtolower($matches[1]);
-			$macroname = __NAMESPACE__ . '\\Macros\\' . ucfirst($matches[1]);
+			// split macro by . (dot) char
+			$macroPieces = explode('.', strtolower($matches[1]));
+
+			// build namespaced macro name
+			$macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
+
+			//build macro path
+			$macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
 
 			if (!isset($_macros[$matches[1]])) 
 			{
-				$path = __DIR__;
-				if (is_file($path . DS . 'macros' . DS . $matches[1] . '.php')) 
+				if (is_file($macropath)) 
 				{
-					include_once($path . DS . 'macros' . DS . $matches[1] . '.php');
+					include_once($macropath);
 				}
 				else 
 				{
