@@ -28,16 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Plugins\Content\Formathtml\Macros;
+namespace Plugins\Content\Formathtml\Macros\Groups;
 
-use Plugins\Content\Formathtml\Macro;
-use Hubzero\User\Group;
+require_once JPATH_ROOT.'/plugins/content/formathtml/macros/groups.php';
+
+use Plugins\Content\Formathtml\Macros\GroupsMacro;
 
 /**
- * Macro class for dipslaying group events
+ * Group events Macro
  */
-class GroupEvent extends Macro
+class Events extends GroupsMacro
 {
+	/**
+	 * Allow macro in partial parsing?
+	 * 
+	 * @var string
+	 */
+	public $allowPartial = true;
+
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * 
@@ -46,14 +54,8 @@ class GroupEvent extends Macro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Displays group events";
-		$txt['html'] = '<p>Displays group events.</p>';
-		$txt['html'] = '<p>Examples:</p>
-							<ul>
-								<li><code>[[Groupevent(number=3)]]</code> - Displays the next three group events</li>
-								<li><code>[[Groupevent(title=Group Events, number=2)]]</code> - Adds title above event list. Displays 2 events.</li>
-								<li><code>[[Groupevent(id=123)]]</code> - Displays single group event with ID # 123</li>
-							</ul>';
+		$txt['wiki'] = 'Inserts an anchor into a page.';
+		$txt['html'] = '<p>Inserts an anchor into a page.</p>';
 		return $txt['html'];
 	}
 
@@ -64,56 +66,33 @@ class GroupEvent extends Macro
 	 */
 	public function render()
 	{
-		//get the args passed in
-		$args = explode(',', $this->args);
-
-		//parse each arg into key value pair
-		foreach($args as $a) 
+		// check if we can render
+		if (!parent::canRender())
 		{
-			$kv[] = explode('=', trim($a));
+			return \JText::_('[This macro is designed for Groups only]');
 		}
 
-		//set final args
-		foreach ($kv as $k) 
-		{
-			$arg[$k[0]] = (isset($k[1])) ? $k[1] : $k[0];
-		}
-
-		//set a default
-		//$default_events = 3;
-
-		//get the user defined # of events
-		//$num_events = (isset($arg['number']) && is_numeric($arg['number']) && $arg['number'] > 0) ? $arg['number'] : $default_events;
-
-		//get the group
-		$cn = \JRequest::getVar('cn');
-
-		//get the group object based on gid
-		$group = Group::getInstance($cn);
-
-		//check to make sure we have a valid group
-		if (!is_object($group)) 
-		{
-			return '[This macro is designed for Groups only]';
-		}
+		// get args
+		$args = $this->getArgs();
 
 		//array of filters
 		$filters = array(
-			'id' => (isset($arg['id'])) ? $arg['id'] : null,
-			'limit' => (isset($arg['number'])) ? $arg['number'] : 3
+			'limit' => (isset($args['number'])) ? $args['number'] : 3
 		);
 
 		//get group events
-		$events =  $this->getGroupEvents($group, $filters);
-
+		$events =  $this->getGroupEvents($this->group, $filters);
+echo '<pre>';
+print_r($events);
+echo '</pre>';
 		//create the html container
 		$html  = '<div class="upcoming_events">';
 
 		//display the title
-		$html .= (isset($arg['title']) && $arg['title'] != '') ? '<h3>' . $arg['title'] . '</h3>' : '';
+		$html .= (isset($args['title']) && $args['title'] != '') ? '<h3>' . $args['title'] . '</h3>' : '';
 
 		//render the events
-		$html .= $this->renderEvents($group, $events);
+		$html .= $this->renderEvents($this->group, $events);
 		
 		//close the container
 		$html .= '</div>';
@@ -151,11 +130,11 @@ class GroupEvent extends Macro
 		$sql .= " ORDER BY publish_up ASC";
 
 		//do we have a limit set
-		if (isset($filters['number']))
+		if (isset($filters['limit']))
 		{
-			$sql .= " LIMIT " . $filters['number'];
+			$sql .= " LIMIT " . $filters['limit'];
 		}
-
+		
 		//return result
 		$database->setQuery($sql);
 		return $database->loadObjectList();
@@ -219,3 +198,4 @@ class GroupEvent extends Macro
 		return $content;
 	}
 }
+
