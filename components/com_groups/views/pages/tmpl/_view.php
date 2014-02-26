@@ -66,7 +66,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 		</div>
 	<?php endif; ?>
 	
-	<?php echo $this->version->get('content'); ?>
+	<?php echo $this->version->content('parsed'); ?>
 	
 	<div class="group-page-toolbar grid">
 		<?php

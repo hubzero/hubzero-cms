@@ -49,6 +49,13 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	 * @var string
 	 */
 	protected $_tbl_name = 'GroupsTablePageVersion';
+
+	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_groups.page_version.content';
 	
 	/**
 	 * Constructor
@@ -106,6 +113,74 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Get the content of the page version
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function content($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+		$options = array();
+
+		switch ($as)
+		{
+			case 'parsed':
+				$content = $this->get('content_parsed', null);
+				if ($content == null)
+				{
+					// get group
+					$group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', ''));
+
+					// get base path 
+					$basePath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+
+					// build config
+					$config = array(
+						'option'   => JRequest::getCmd('option', 'com_groups'),
+						'scope'    => '',
+						'pagename' => $group->get('cn'),
+						'pageid'   => 0,
+						'filepath' => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
+						'domain'   => $group->get('cn')
+					);
+
+					$content = stripslashes($this->get('content'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('content_parsed', $this->get('content'));
+					$this->set('content', $content);
+
+					return $this->content($as, $shorten);
+				}
+
+				$options['html'] = true;
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('parsed'));
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('content'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 	
 	/**
