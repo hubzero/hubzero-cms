@@ -762,27 +762,17 @@ class JLanguage extends JObject
 			}
 
 			// Load overrides
-			if ($basePath == JPATH_BASE)
+			// Only load overrides if the original file was loaded
+			if ($result)
 			{
-				$app = JFactory::getApplication();
-				$basePath = JPATH_BASE . DS . 'templates' . DS . $app->getTemplate();
+				$basePath = JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate();
 
-				$pathOverride = JLanguage::getLanguagePath($basePath, $lang);
+				$pathOverride = self::getLanguagePath($basePath, $lang);
 				$filenameOverride = ($extension == 'joomla') ? $lang : $lang . '.' . $extension;
 				$filenameOverride = $pathOverride . DS . $filenameOverride . '.ini';
+
 				// Load the language file
 				$resultOverride = $this->loadLanguage($filenameOverride, $extension);
-
-				// Check if there was a problem with loading the file
-				if ($resultOverride === false)
-				{
-					// No strings, which probably means that the language file does not exist
-					$pathOverride = JLanguage::getLanguagePath($basePath, $this->default);
-					$filenameOverride = ($extension == 'joomla') ? $this->default : $this->default . '.' . $extension;
-					$filenameOverride = $pathOverride . DS . $filenameOverride . '.ini';
-
-					$resultOverride = $this->loadLanguage($filename, $extension, false);
-				}
 			}
 		}
 
