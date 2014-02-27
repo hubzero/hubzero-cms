@@ -822,33 +822,23 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$eventsEvent = new EventsEvent( $this->database );
 		$eventsEvent->load( $eventId );
 		
-		//get current timezone offset
-		$currentOffset   = date('O');
-		$currentModifier = substr($currentOffset, 0, 1);
-		$currentOffset   = trim(substr($currentOffset, 1), 0);
+		// get event timezone setting
+		// use this in "DTSTART;TZID=" 
+		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($eventsEvent->time_zone);
+		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 		
-		//get event timezone 
-		$timezone      = $eventsEvent->time_zone;
-		$timezone      = (substr($eventsEvent->time_zone, 0, 1) == '-') ? $timezone : '+' . $timezone;
+		// get publish up/down dates in UTC
+		$publishUp   = new DateTime($eventsEvent->publish_up, new DateTimezone('UTC'));
+		$publishDown = new DateTime($eventsEvent->publish_down, new DateTimezone('UTC'));
 		
-		//get the event offset
-		$eventModifier = substr($timezone, 0, 1);
-		$eventOffset   = substr($timezone, 1);
-		
-		//are we on daylight savings time
-		if(date('I') == 1)
-		{
-			$eventOffset -= 1;
-		}
-		
-		//calculate offset based on current timezone
-		$realOffset = ($currentModifier.$currentOffset) - ($eventModifier.$eventOffset);
-		$realOffset = (substr($realOffset,0,1) != '-') ? '+'.$realOffset : $realOffset;
-		
-		//get gmt time with timezone
-		$publishUp   = strtotime($realOffset . ' HOURS', strtotime($eventsEvent->publish_up));
-		$publishDown = strtotime($realOffset . ' HOURS', strtotime($eventsEvent->publish_down));
-		
+		// Set eastern timezone as publish up/down date timezones
+		// since all event date/times are stores relative to eastern 
+		// ----------------------------------------------------------------------------------
+		// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
+		// adjust date/time display according to that timezone and their systems timezone setting
+		$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+		$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+
 		//event vars
 		$id       = $eventsEvent->id;
 		$title    = $eventsEvent->title;
@@ -856,8 +846,6 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$url      = $eventsEvent->extra_info;
 		$location = $eventsEvent->adresse_info;
 		$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-		$start    = gmdate('Ymd', $publishUp).'T'.gmdate('His', $publishUp).'Z';
-		$end      = gmdate('Ymd', $publishDown).'T'.gmdate('His', $publishDown).'Z';
 		$created  = gmdate('Ymd', strtotime($eventsEvent->created)) . 'T' . gmdate('His', strtotime($eventsEvent->created)) . 'Z';
 		$modified = gmdate('Ymd', strtotime($eventsEvent->modified)) . 'T' . gmdate('His', strtotime($eventsEvent->modified)) . 'Z';
 		
@@ -869,14 +857,14 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$output .= "BEGIN:VEVENT\r\n";
 		$output .= "UID:{$id}\r\n";
 		$output .= "DTSTAMP:{$now}\r\n";
-		$output .= "DTSTART:{$start}\r\n";
+		$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
 		if($eventsEvent->publish_down != '' && $eventsEvent->publish_down != '0000-00-00 00:00:00')
 		{
-			$output .= "DTEND:{$end}\r\n";
+			$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
 		}
 		else
 		{
-			$output .= "DTEND:{$start}\r\n";
+			$output .= "DTEND;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
 		}
 		$output .= "CREATED:{$created}\r\n";
 		$output .= "LAST-MODIFIED:{$modified}\r\n";
@@ -892,7 +880,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		}
 		$output .= "END:VEVENT\r\n";
 		$output .= "END:VCALENDAR\r\n";
-		
+
 		//set the headers for output
 		header('Content-type: text/calendar; charset=utf-8');
 		header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', strtolower($title)) . '_export.ics');
@@ -1023,40 +1011,29 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			$sequence = 0;
 			$uid      = $event->id;
 			$title    = $event->title;
-			$content  = str_replace("\n", '\n', $event->content);
+			$content  = str_replace("\r\n", '\n', $event->content);
 			$location = $event->adresse_info;
 			$url      = $event->extra_info;
+
+			// get event timezone setting
+			// use this in "DTSTART;TZID=" 
+			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->time_zone);
+			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
+		
+			// get publish up/down dates in UTC
+			$publishUp   = new DateTime($event->publish_up, new DateTimezone('UTC'));
+			$publishDown = new DateTime($event->publish_down, new DateTimezone('UTC'));
+		
+			// Set eastern timezone as publish up/down date timezones
+			// since all event date/times are stores relative to eastern 
+			// ----------------------------------------------------------------------------------
+			// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
+			// adjust date/time display according to that timezone and their systems timezone setting
+			$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+			$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
 			
-			//get current timezone offset
-			$currentOffset   = date('O');
-			$currentModifier = substr($currentOffset, 0, 1);
-			$currentOffset   = trim(substr($currentOffset, 1), 0);
-			
-			//get event timezone 
-			$timezone      = $event->time_zone;
-			$timezone      = (substr($event->time_zone, 0, 1) == '-') ? $timezone : '+' . $timezone;
-			
-			//get the event offset
-			$eventModifier = substr($timezone, 0, 1);
-			$eventOffset   = substr($timezone, 1);
-			
-			//are we on daylight savings time
-			if(date('I') == 1)
-			{
-				$eventOffset -= 1;
-			}
-			
-			//calculate offset based on current timezone
-			$realOffset = ($currentModifier.$currentOffset) - ($eventModifier.$eventOffset);
-			$realOffset = (substr($realOffset,0,1) != '-') ? '+'.$realOffset : $realOffset;
-			
-			//get gmt time with timezone
-			$publishUp   = strtotime($realOffset . ' HOURS', strtotime($event->publish_up));
-			$publishDown = strtotime($realOffset . ' HOURS', strtotime($event->publish_down));
-			
+			// create now, created, and modified vars
 			$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-			$start    = gmdate('Ymd', $publishUp) . 'T' . gmdate('His', $publishUp) . 'Z';
-			$end      = gmdate('Ymd', $publishDown) . 'T' . gmdate('His', $publishDown) . 'Z';
 			$created  = gmdate('Ymd', strtotime($event->created)) . 'T' . gmdate('His', strtotime($event->created)) . 'Z';
 			$modified = gmdate('Ymd', strtotime($event->modified)) . 'T' . gmdate('His', strtotime($event->modified)) . 'Z';
 			
@@ -1064,14 +1041,14 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			$output .= "UID:{$uid}\r\n";
 			$output .= "SEQUENCE:{$sequence}\r\n";
 			$output .= "DTSTAMP:{$now}Z\r\n";
-			$output .= "DTSTART:{$start}\r\n";
+			$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
 			if($event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
 			{
-				$output .= "DTEND:{$end}\r\n";
+				$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
 			}
 			else
 			{
-				$output .= "DTEND:{$start}\r\n";
+				$output .= "DTEND;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
 			}
 			$output .= "CREATED:{$created}\r\n";
 			$output .= "LAST-MODIFIED:{$modified}\r\n";
@@ -1092,7 +1069,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		
 		//close calendar
 		$output .= "END:VCALENDAR";
-		
+
 		//set headers and output
 		header('Content-type: text/calendar; charset=utf-8');
 		header('Content-Disposition: attachment; filename="'. '[' . JFactory::getConfig()->getValue('sitename') . '] Group Calendar: ' . $this->group->get('description') .'.ics"');
