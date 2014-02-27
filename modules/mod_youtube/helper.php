@@ -317,7 +317,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 				//write to the cache folder
 				if (!is_dir($cachePath)) 
 				{
-					JFolder::create($cachePath, 0777);
+					JFolder::create($cachePath);
 				}
 				$f = json_encode($feed);
 				JFile::write($cacheFile, $f);

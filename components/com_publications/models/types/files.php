@@ -493,7 +493,7 @@ class typeFiles extends JObject
 		// Create new version path
 		if (!is_dir( $newpath )) 
 		{
-			if (!JFolder::create( $newpath, 0775 )) 
+			if (!JFolder::create( $newpath )) 
 			{
 				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return '<p class="error">' . $this->getError() . '</p>';
@@ -653,7 +653,7 @@ class typeFiles extends JObject
 		// Create new version path
 		if (!is_dir( $newpath )) 
 		{
-			if (!JFolder::create( $newpath, 0775 )) 
+			if (!JFolder::create( $newpath )) 
 			{
 				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return '<p class="error">' . $this->getError() . '</p>';

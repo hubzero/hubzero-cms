@@ -467,7 +467,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path)) 
 			{
 				ob_clean();
 				header('Content-type: text/plain');
@@ -591,7 +591,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path)) 
 			{
 				$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
 				return $this->_files();

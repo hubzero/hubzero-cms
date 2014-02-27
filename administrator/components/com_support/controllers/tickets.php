@@ -1318,7 +1318,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		if (!is_dir($file_path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($file_path, 0777))
+			if (!JFolder::create($file_path))
 			{
 				$this->setError(JText::_('COM_SUPPORT_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return '';

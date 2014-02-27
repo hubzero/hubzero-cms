@@ -3309,7 +3309,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Make sure the path exist
 		if (!is_dir( $to_path )) 
 		{
-			if (!JFolder::create( $to_path, 0775 )) 
+			if (!JFolder::create( $to_path )) 
 			{
 				return false;
 			}

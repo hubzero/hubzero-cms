@@ -939,7 +939,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path)) 
 			{
 				JError::raiseError(500, JText::_('COM_CITATIONS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;

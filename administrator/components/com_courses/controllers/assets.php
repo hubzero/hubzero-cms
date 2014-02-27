@@ -382,7 +382,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path, 0777))
+				if (!JFolder::create($path))
 				{
 					$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH').' '.$path);
 					$this->editTask($row);

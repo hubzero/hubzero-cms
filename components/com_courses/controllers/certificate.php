@@ -91,7 +91,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 			if (!is_dir($dir))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($dir, 0755))
+				if (!JFolder::create($dir))
 				{
 					JError::raiseError(500, JText::_('Failed to create folder to store receipts'));
 					return;
