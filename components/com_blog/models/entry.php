@@ -550,9 +550,9 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('content_parsed', null);
+				$content = $this->get('content.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
 					$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
@@ -566,14 +566,14 @@ class BlogModelEntry extends \Hubzero\Base\Model
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('content'));
+					$content = (string) stripslashes($this->get('content', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
 						&$config
 					));
 
-					$this->set('content_parsed', $this->get('content'));
+					$this->set('content.parsed', (string) $this->get('content', ''));
 					$this->set('content', $content);
 
 					return $this->content($as, $shorten);

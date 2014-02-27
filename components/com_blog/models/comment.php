@@ -282,9 +282,9 @@ class BlogModelComment extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('content_parsed', null);
+				$content = $this->get('content.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => $this->get('option', JRequest::getCmd('option')),
@@ -295,14 +295,14 @@ class BlogModelComment extends \Hubzero\Base\Model
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('content'));
+					$content = (string) stripslashes($this->get('content', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
 						&$config
 					));
 
-					$this->set('content_parsed', $this->get('content'));
+					$this->set('content.parsed', (string) $this->get('content', ''));
 					$this->set('content', $content);
 
 					return $this->content($as, $shorten);
@@ -312,7 +312,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('content_parsed'));
+				$content = strip_tags($this->content('parsed'));
 			break;
 
 			case 'raw':
