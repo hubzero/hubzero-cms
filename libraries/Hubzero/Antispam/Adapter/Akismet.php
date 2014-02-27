@@ -162,9 +162,9 @@ class Akismet extends AbstractAdapter
 			'PHP_SELF'
 		),
 		'querystring' => array(
-			'url'
-			'version'
-			'apiPort'
+			'url',
+			'version',
+			'apiPort',
 			'apiKey',
 			'akismetServer',
 			'akismetVersion'
