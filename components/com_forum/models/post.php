@@ -292,9 +292,9 @@ class ForumModelPost extends ForumModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('content_parsed', null);
+				$content = $this->get('content.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => 'com_forum',
@@ -307,15 +307,15 @@ class ForumModelPost extends ForumModelAbstract
 
 					$attach = new ForumTableAttachment($this->_db);
 
-					$content = stripslashes($this->get('comment'));
+					$content = (string) stripslashes($this->get('comment', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
 						&$config
 					));
 
-					$this->set('content_parsed', $this->get('comment'));
-					$this->set('content_parsed', $this->get('content_parsed') . $attach->getAttachment(
+					$this->set('content.parsed', (string) $this->get('comment', ''));
+					$this->set('content.parsed', $this->get('content.parsed') . $attach->getAttachment(
 						$this->get('id'), 
 						$this->link('download'), 
 						$this->_config
