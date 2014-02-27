@@ -119,7 +119,7 @@ class WishlistModelComment extends WishlistModelAbstract
 
 				$this->set('reports', $ra->getCount(array(
 					'id'       => $this->get('id'), 
-					'category' => 'wish',
+					'category' => 'wishcomment',
 					'state'    => 0
 				)));
 
