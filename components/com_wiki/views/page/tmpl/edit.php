@@ -258,8 +258,8 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 	<?php if ($this->sub) { ?>
 		<div class="field-wrap">
 			<div class="grid">
-				<div class="col span-half" id="file-uploader" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-					<div>
+				<div class="col span-half" id="file-manager" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+					<div id="file-uploader">
 						<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->scope; ?>&amp;pagename=<?php echo $this->page->pagename; ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 					</div>
 					<div id="file-uploader-list"></div>

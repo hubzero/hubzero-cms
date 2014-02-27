@@ -531,15 +531,25 @@
 		max-width: 180px;
 		word-wrap: break-word;
 	}
+	#attachments tbody tr td:last-child {
+		width: 1em;
+	}
 	#attachments .delete {
 		padding-left: 0;
 		background: transparent;
 		border: none;
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		white-space: nowrap;
 	}
-	#attachments .delete:before {
+	#attachments .delete span {
+		display: none;
+	}
+	/*#attachments .delete:before {
 		display: none;
 		content: "";
-	}
+	}*/
 /* Admonitions */
 	div.admon-caution, 
 	div.admon-important, 
