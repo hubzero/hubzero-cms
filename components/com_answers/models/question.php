@@ -533,9 +533,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('question_parsed', null);
+				$content = $this->get('question.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => 'com_answers',
@@ -546,14 +546,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('question'));
+					$content = (string) stripslashes($this->get('question', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
 						&$config
 					));
 
-					$this->set('question_parsed', $this->get('question'));
+					$this->set('question.parsed', (string) $this->get('question', ''));
 					$this->set('question', $content);
 
 					return $this->content($as, $shorten);
@@ -597,9 +597,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('subject_parsed', null);
+				$content = $this->get('subject.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => 'com_answers',
@@ -610,14 +610,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('subject'));
+					$content = (string) stripslashes($this->get('subject', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						'com_answers.question.subject',
 						&$this,
 						&$config
 					));
 
-					$this->set('subject_parsed', $this->get('subject'));
+					$this->set('subject.parsed', (string) $this->get('subject', ''));
 					$this->set('subject', $content);
 
 					return $this->subject($as, $shorten);
