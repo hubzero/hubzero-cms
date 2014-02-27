@@ -32,7 +32,7 @@ namespace Hubzero\Password;
 
 class Blacklist
 {
-	public function inBlacklist($word)
+	public static function inBlacklist($word)
 	{
 		$db =  \JFactory::getDBO();
 
@@ -55,7 +55,7 @@ class Blacklist
 		return $result;
 	}
 
-	public function simple_l33t($word)
+	public static function simple_l33t($word)
 	{
 		$subs = array( 
 			'4' => 'A', 
@@ -92,7 +92,7 @@ class Blacklist
 		return strtolower($word2);
 	}
 
-	private function l33t($word)
+	private static function l33t($word)
 	{
 		$subs = array( 
 			'][\\//][' => 'M',
@@ -281,7 +281,7 @@ class Blacklist
 		return $word2;
 	}
 
-	private function normalize_word($word)
+	private static function normalize_word($word)
 	{
 		$nword = '';
 
@@ -307,7 +307,7 @@ class Blacklist
 		return $nword;
 	}
 
-	public function basedOnBlacklist($word)
+	public static function basedOnBlacklist($word)
 	{
 		$db =  \JFactory::getDBO();
 
@@ -355,7 +355,7 @@ class Blacklist
 		return $result; // returns true if char belongs to class
 	}
 
-	public function nameBlacklist($word,$givenName,$middleName,$surname)
+	public static function nameBlacklist($word,$givenName,$middleName,$surname)
 	{
 		$word = self::normalize_word($word);
 		$givenName = self::normalize_word($givenName);
@@ -391,7 +391,7 @@ class Blacklist
 		return false;
 	}
 
-	public function usernameBlacklist($word,$username)
+	public static function usernameBlacklist($word,$username)
 	{
 		$word = self::normalize_word($word);
 		$username = self::normalize_word($username);

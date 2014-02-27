@@ -34,7 +34,7 @@ class CharacterClass
 {
 	static $classes = null;
 
-	private function init()
+	private static function init()
 	{
 		$classes[] = array('id' => '1', 'name' => 'uppercase', 'regex' => '[A-Z]',                                       'flag' => '1');
 		$classes[] = array('id' => '2', 'name' => 'numeric',   'regex' => '[0-9]',                                       'flag' => '1');
@@ -46,7 +46,7 @@ class CharacterClass
 		self::$classes = $classes;
 	}
 
-	public function match($char = null)
+	public static function match($char = null)
 	{
 		$result = array();
 
