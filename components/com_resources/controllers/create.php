@@ -726,7 +726,9 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->access	   = 0;
 
 		$row->fulltxt   = trim($row->fulltxt);
-		$row->introtext = ($row->fulltxt ? \Hubzero\Utility\String::truncate($row->fulltxt, 500) : $row->fulltxt);
+		$row->introtext = $row->introtext 
+						? \Hubzero\Utility\String::truncate(strip_tags($row->introtext), 500) 
+						: \Hubzero\Utility\String::truncate(strip_tags($row->fulltxt), 500);
 		$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt

@@ -1196,9 +1196,9 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('description_parsed', null);
+				$content = $this->get('description.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => JRequest::getCmd('option', 'com_resources'),
@@ -1209,14 +1209,14 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 						'domain'   => ''
 					);
 
-					$content = $this->get('description');
+					$content = (string) $this->get('description', '');
 					\JPluginHelper::importPlugin('content');
 					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
 						'com_resources.resource.description',
 						&$this,
 						&$config
 					));
-					$this->set('description_parsed', $this->get('description'));
+					$this->set('description.parsed', (string) $this->get('description', ''));
 					$this->set('description', $content);
 
 					return $this->description($as, $shorten);
@@ -1226,7 +1226,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('parsed'));
+				$content = strip_tags($this->description('parsed'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 
