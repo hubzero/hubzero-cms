@@ -183,13 +183,18 @@ class Assets
 		$paths[] = DS . 'media' . DS . 'system' . DS . 'css' . DS . $stylesheet;
 
 		// Run through each path until we find one that works
-		foreach ($paths as $path)
+		foreach ($paths as $i => $path)
 		{
-			if (file_exists(JPATH_SITE . $path)) 
+			$base = JPATH_ROOT;
+			if ($i == 0)
+			{
+				$base = JPATH_SITE;
+			}
+			if (file_exists($base . $path)) 
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $media, $attribs);
+				$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime($base . $path), $type, $media, $attribs);
 				break;
 			}
 		}
@@ -230,11 +235,11 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists(JPATH_SITE . $path)) 
+			if (file_exists(JPATH_ROOT . $path)) 
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
-				$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $defer, $async);
+				$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime(JPATH_ROOT . $path), $type, $defer, $async);
 				break;
 			}
 		}
