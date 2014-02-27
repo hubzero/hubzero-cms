@@ -963,9 +963,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if ($remove = JRequest::getInt('remove', 0))
 		{
-			if (!$view->item->removeAsset($remove))
+			if (!$view->entry->item()->removeAsset($remove))
 			{
-				$view->setError($view->item->getError());
+				$view->setError($view->entry->item()->getError());
 			}
 		}
 
