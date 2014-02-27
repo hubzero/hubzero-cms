@@ -282,15 +282,10 @@ class CollectionsTableCollection extends JTable
 
 		$tbl = new CollectionsTableCollection($this->_db);
 		$tbl->load($this->alias, $this->object_id, $this->object_type);
-		if ($this->id && $tbl->id && $tbl->id != $this->id)
-		{
-			$this->setError(JText::_('A collection with this name already exists.'));
-			return false;
-		}
 
 		if (!$this->id) 
 		{
-			if ($tbl->id)
+			if ($tbl->id && $tbl->state != 2)
 			{
 				$this->setError(JText::_('A collection with this name already exists.'));
 				return false;
@@ -300,6 +295,16 @@ class CollectionsTableCollection extends JTable
 			$this->created    = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 			$this->state      = 1;
+		}
+		else
+		{
+			if ($tbl->id 
+			 && $tbl->id != $this->id 
+			 && $tbl->state != 2)
+			{
+				$this->setError(JText::_('A collection with this name already exists.'));
+				return false;
+			}
 		}
 
 		return true;
