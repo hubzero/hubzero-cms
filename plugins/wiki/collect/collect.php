@@ -97,7 +97,7 @@ class plgWikiCollect extends JPlugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->option = 'com_wiki';
+			$view->option = JRequest::getCmd('option', 'com_wiki');
 			$view->page = $page;
 			return $view->loadTemplate();
 		}
@@ -115,7 +115,7 @@ class plgWikiCollect extends JPlugin
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
 
-		$this->option   = 'com_wiki';
+		$this->option   = JRequest::getCmd('option', 'com_wiki');
 		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
 
