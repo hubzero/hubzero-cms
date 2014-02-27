@@ -319,7 +319,7 @@ class Validate
 			'clamav',
 			'condor',
 			'crontab',
-			'ctapiusers'
+			'ctapiusers',
 			'daemon',
 			'dbus',
 			'debian-exim',
