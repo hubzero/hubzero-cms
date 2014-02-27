@@ -105,27 +105,27 @@ class WhatsnewPeriod extends JObject
 		$this->period = $this->_period;
 
 		// Determine last week and last month date
-		$today = time();
+		//$today = time();
 		switch ($this->period)
 		{
 			case 'week':
-				$this->endTime   = $today;
-				$this->startTime = $this->endTime - (7*24*60*60);
+				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
+				$this->startTime = JFactory::getDate('-1 week')->toSql(); //$this->endTime - (7*24*60*60);
 			break;
 
 			case 'month':
-				$this->endTime   = $today;
-				$this->startTime = $this->endTime - (31*24*60*60);
+				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
+				$this->startTime = JFactory::getDate('-1 month')->toSql(); //$this->endTime - (31*24*60*60);
 			break;
 
 			case 'quarter':
-				$this->endTime   = $today;
-				$this->startTime = $this->endTime - (3*31*24*60*60);
+				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
+				$this->startTime = JFactory::getDate('-3 months')->toSql(); //$this->endTime - (3*31*24*60*60);
 			break;
 
 			case 'year':
-				$this->endTime   = $today;
-				$this->startTime = $this->endTime - (365*24*60*60);
+				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
+				$this->startTime = JFactory::getDate('-1 year')->toSql(); //$this->endTime - (365*24*60*60);
 			break;
 
 			default:
@@ -142,13 +142,15 @@ class WhatsnewPeriod extends JObject
 					$this->endTime   = strtotime('08/31/' . $this->period);
 					$this->startTime = strtotime('09/01/' . ($this->period-1));
 				}
+				$this->endTime   = date("Y-m-d H:i:s", $this->endTime);
+				$this->startTime = date("Y-m-d H:i:s", $this->startTime);
 			break;
 		}
 
-		$this->cStartDate = date("Y-m-d H:i:s", $this->startTime);
-		$this->dStartDate = date("Y-m-d", $this->startTime);
-		$this->cEndDate   = date("Y-m-d H:i:s", $this->endTime);
-		$this->dEndDate   = date("Y-m-d", $this->endTime);
+		$this->cStartDate = $this->startTime; //date("Y-m-d H:i:s", $this->startTime);
+		$this->dStartDate = substr($this->startTime, 0, strlen('0000-00-00')); //date("Y-m-d", $this->startTime);
+		$this->cEndDate   = $this->endTime; //date("Y-m-d H:i:s", $this->endTime);
+		$this->dEndDate   = substr($this->endTime, 0, strlen('0000-00-00')); //date("Y-m-d", $this->endTime);
 	}
 }
 
