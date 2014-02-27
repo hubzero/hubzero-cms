@@ -200,6 +200,7 @@ class plgProjectsNotes extends JPlugin
 			// Import some needed libraries
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
 
 			$pagename = trim(JRequest::getVar('pagename', ''));
 			$scope = trim(JRequest::getVar( 'scope', '' ));
@@ -743,7 +744,7 @@ class plgProjectsNotes extends JPlugin
 			'domain'   => $this->_group
 		);
 
-		$p = Hubzero_Wiki_Parser::getInstance();
+		$p = WikiHelperParser::getInstance();
 		$revision->pagehtml = $p->parse($revision->pagetext, $wikiconfig);
 		$revision->store();
 		

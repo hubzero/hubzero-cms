@@ -53,7 +53,7 @@ if (count($this->comments) > 0) {
 		'filepath' => '',
 		'domain'   => $this->page->group_cn
 	);
-	$parser = Hubzero_Wiki_Parser::getInstance();
+	$parser = WikiHelperParser::getInstance();
 
 	$html .= '<ol class="comments">'."\n";
 	foreach ($this->comments as $comment)

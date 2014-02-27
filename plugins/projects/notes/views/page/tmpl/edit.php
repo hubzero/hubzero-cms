@@ -211,7 +211,7 @@ if ($templates) {
 			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>: 
 			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 			<?php
-			echo Hubzero_Wiki_Editor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '40');
+			echo WikiHelperEditor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '40');
 			?>
 			<!-- <span id="pagetext-overlay"><span>Drop file here to include in page</span></span> -->
 		</label>

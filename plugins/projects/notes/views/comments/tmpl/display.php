@@ -221,7 +221,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<label>
 					<?php echo JText::_('COM_WIKI_FIELD_COMMENTS'); ?>:
 					<?php
-					$editor = Hubzero_Wiki_Editor::getInstance();
+					$editor = WikiHelperEditor::getInstance();
 					echo $editor->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), '', '35', '15');
 					?>
 				</label>

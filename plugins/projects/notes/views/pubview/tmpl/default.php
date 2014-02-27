@@ -29,7 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $wiki_config = JComponentHelper::getParams( 'com_wiki' ); 
 			
 // Transform the wikitext to HTML
-$p = Hubzero_Wiki_Parser::getInstance();
+$p = WikiHelperParser::getInstance();
 
 $wikiconfig = array(
 	'option'   => 'com_projects',
