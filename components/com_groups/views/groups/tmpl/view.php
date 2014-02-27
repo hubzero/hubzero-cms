@@ -201,11 +201,8 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 							default: $discoverability = JText::_('Visible'); break;
 						}
 						
-						// Get the group creation date
-						$gl = new XGroupLog( $database );
-						$gl->getLog( $this->group->get('gidNumber'), 'first' );
-
-						$created = JHTML::_('date', $gl->timestamp, JText::_('DATE_FORMAT_HZ1'));
+						// use created date
+						$created = JHTML::_('date', $this->group->get('created'), JText::_('DATE_FORMAT_HZ1'));
 					?>
 					<div class="group-info">
 						<ul>
