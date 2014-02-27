@@ -656,7 +656,7 @@ class PlgResourcesReviewsHelper extends JObject
 		// Perform some text cleaning, etc.
 		$row->id        = JRequest::getInt('reviewid', 0);
 		$row->comment   = \Hubzero\Utility\Sanitize::clean($row->comment);
-		$row->comment   = nl2br($row->comment);
+		//$row->comment   = nl2br($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
 

@@ -277,61 +277,56 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if (($content = $this->get('comment_parsed')))
+				$content = $this->get('comment.parsed', null);
+
+				if ($content === null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => $this->get('option', \JRequest::getCmd('option', 'com_resources')),
+						'scope'    => 'reviews',
+						'pagename' => $this->get('resource_id'),
+						'pageid'   => 0,
+						'filepath' => '',
+						'domain'   => ''
+					);
+
+					$content = (string) stripslashes($this->get('comment', ''));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('comment.parsed', (string) $this->get('comment', ''));
+					$this->set('comment', $content);
+
+					return $this->content($as, $shorten);
 				}
 
-				$config = array(
-					'option'   => $this->get('option', JRequest::getCmd('option')),
-					'scope'    => 'review',
-					'pagename' => $this->get('resource_id'),
-					'pageid'   => 0,
-					'filepath' => '',
-					'domain'   => ''
-				);
-
-				$content = stripslashes($this->get('comment'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('comment_parsed', $this->get('comment'));
-				$this->set('comment', $content);
-
-				return $this->content($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('comment_parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
+				$content = strip_tags($this->content('comment.parsed'));
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('comment'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 
 	/**
