@@ -176,7 +176,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 			case 'parsed':
 				$content = $this->get('description.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => 'com_publications',
@@ -187,20 +187,17 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('description'));
+					$content = (string) stripslashes($this->get('description', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						'com_publications.publication.description',
 						&$this,
 						&$config
 					));
 
-					$this->set('description.parsed', $this->get('description'));
+					$this->set('description.parsed', (string) $this->get('description', ''));
 					$this->set('description', $content);
-					
-					if ($this->get('description.parsed', null) != null)
-					{
-						return $this->description($as, $shorten);
-					}					
+
+					return $this->description($as, $shorten);
 				}
 
 				$options['html'] = true;
@@ -246,7 +243,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 			case 'parsed':
 				$content = $this->get('release_notes.parsed', null);
 
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => 'com_publications',
@@ -257,20 +254,17 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('release_notes'));
+					$content = (string) stripslashes($this->get('release_notes', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						'com_publications.publication.release_notes',
 						&$this,
 						&$config
 					));
 
-					$this->set('release_notes.parsed', $this->get('release_notes'));
+					$this->set('release_notes.parsed', (string) $this->get('release_notes', ''));
 					$this->set('release_notes', $content);
 
-					if ($this->get('release_notes.parsed', null) != null)
-					{
-						return $this->notes($as, $shorten);
-					}
+					return $this->notes($as, $shorten);
 				}
 
 				$options['html'] = true;
