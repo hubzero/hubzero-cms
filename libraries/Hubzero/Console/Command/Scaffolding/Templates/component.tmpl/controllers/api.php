@@ -31,7 +31,7 @@
 /**
  * API controller class for %=component_name=% component
  */
-class %=component_name+ucf=%ControllerApi extends \Hubzero\Api\Controller
+class %=component_name+ucf=%ControllerApi extends \Hubzero\Component\ApiController
 {
 	/**
 	 * Execute a request

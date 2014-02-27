@@ -1,7 +1,7 @@
 <?php
 JLoader::import('Hubzero.Api.Controller');
 
-class BillboardsControllerApi extends \Hubzero\Api\Controller
+class BillboardsControllerApi extends \Hubzero\Component\ApiController
 {
 	function execute()
 	{

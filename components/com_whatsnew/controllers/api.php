@@ -1,7 +1,7 @@
 <?php
 JLoader::import('Hubzero.Api.Controller');
 
-class WhatsnewControllerApi extends \Hubzero\Api\Controller
+class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 {
 	function execute()
 	{
@@ -11,15 +11,47 @@ class WhatsnewControllerApi extends \Hubzero\Api\Controller
 		switch($this->segments[0]) 
 		{
 			case 'index':		$this->index();			break;
-			default:			$this->not_found();
+			default:			$this->service();
 		}
 	}
 	
 	
-	private function not_found()
+	private function service()
 	{
-		$response = $this->getResponse();
-		$response->setErrorMessage(404,'Not Found');
+		$response = new stdClass();
+		$response->component = 'whatsnew';
+		$response->tasks = array(
+			'index' => array(
+				'description' => JText::_('Get a list of new content.'),
+				'parameters'  => array(
+					'period' => array(
+						'description' => JText::_('Time period to search for records.'),
+						'type'        => 'string',
+						'default'     => 'year',
+						'accepts'     => array('year', 'quarter', 'month', 'week')
+					),
+					'order' => array(
+						'description' => JText::_('Direction to sort results by.'),
+						'type'        => 'string',
+						'default'     => 'desc',
+						'accepts'     => array('asc', 'desc')
+					),
+					'limit' => array(
+						'description' => JText::_('Number of result to return.'),
+						'type'        => 'integer',
+						'default'     => '25'
+					),
+					'limitstart' => array(
+						'description' => JText::_('Number of where to start returning results.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+				),
+			),
+		);
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
 	}
 	
 	

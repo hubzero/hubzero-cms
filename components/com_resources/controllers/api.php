@@ -37,7 +37,7 @@ JLoader::import('Hubzero.Api.Controller');
 /**
  * API controller class for resources
  */
-class ResourcesControllerApi extends \Hubzero\Api\Controller
+class ResourcesControllerApi extends \Hubzero\Component\ApiController
 {
 	/**
 	 * Execute a request

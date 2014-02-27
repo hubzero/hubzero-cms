@@ -1,7 +1,7 @@
 <?php
 JLoader::import('Hubzero.Api.Controller');
 
-class ToolsControllerApi extends \Hubzero\Api\Controller
+class ToolsControllerApi extends \Hubzero\Component\ApiController
 {
 	function execute()
 	{

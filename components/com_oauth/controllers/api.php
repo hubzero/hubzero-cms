@@ -38,7 +38,7 @@ JLoader::import('Hubzero.Api.Controller');
  * 
  * Long description (if any) ...
  */
-class OauthControllerApi extends \Hubzero\Api\Controller
+class OauthControllerApi extends \Hubzero\Component\ApiController
 {
 
 	/**

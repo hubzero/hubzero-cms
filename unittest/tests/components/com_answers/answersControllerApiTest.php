@@ -42,12 +42,12 @@ class AnswersControllerApiTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that instance extends \Hubzero\Api\Controller
+	 * Test that instance extends \Hubzero\Component\ApiController
 	 *
 	 * @group com_answers
 	 */
 	function testExtendsHubzeroApiController()
 	{
-		$this->assertTrue($this->instance instanceof \Hubzero\Api\Controller);
+		$this->assertTrue($this->instance instanceof \Hubzero\Component\ApiController);
 	}
 }
