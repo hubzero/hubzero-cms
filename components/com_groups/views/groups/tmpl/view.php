@@ -85,19 +85,9 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 							case 0:
 							default: $discoverability = JText::_('Visible'); break;
 						}
-						
-						// get group logger to get created log entry
-						$logger     = GroupsModelLogArchive::getInstance();
-						$createdLog = $logger->logs('list', array(
-							'gidNumber' => $this->group->get('gidNumber'),
-							'orderby'   => 'timestamp ASC'
-						), true)->first();
-						
-						// format created date
-						if ($createdLog)
-						{
-							$created = JHTML::_('date', $createdLog->get('timestamp'), JText::_('DATE_FORMAT_HZ1'));
-						}
+
+						// use created date
+						$created = JHTML::_('date', $this->group->get('created'), JText::_('DATE_FORMAT_HZ1'));
 					?>
 					<div class="group-info">
 						<ul>
