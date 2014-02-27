@@ -98,7 +98,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 					</label>
 		<?php } ?>
 				</div><!-- / .col span-half -->
-				<div class="col span-half">
+				<div class="col span-half omega">
 		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 					<div id="link-adder" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 						<noscript>
