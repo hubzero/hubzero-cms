@@ -40,20 +40,9 @@ $html  = '';
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 $this->project->about = rtrim(stripslashes(ProjectsHtml::cleanText($this->project->about)));
 
-// Transform the wikitext to HTML
-$p = Hubzero_Wiki_Parser::getInstance();
+$project = new ProjectsModelProject($this->project);
 
-//import the wiki parser
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => $this->project->alias.DS.'notes',
-	'pagename' => 'projects',
-	'pageid'   => $this->project->id,
-	'filepath' => $this->config->get('webpath'),
-	'domain'   => $this->project->alias
-);
-
-$this->project->about = $p->parse( $this->project->about, $wikiconfig );
+$this->project->about = $project->about('parsed');
 
 $privacy = $this->project->private ? JText::_('COM_PROJECTS_PROJECT_PRIVATE_SEARCH') : JText::_('COM_PROJECTS_PROJECT_PUBLIC_SEARCH');
 $typetitle = $this->project->projecttype;

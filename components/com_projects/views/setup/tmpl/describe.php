@@ -115,9 +115,9 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	//$html .= t.t.t.'<span class="hint rightfloat">'.JText::_('COM_PROJECTS_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('COM_PROJECTS_WIKI_FORMATTING').'</a> '.JText::_('COM_PROJECTS_WIKI_TO_COMPOSE').'</span> '.n;
 	$html .= t.t.t.'<span class="clear"></span>'.n;
 	if($this->project->id) {
+		$project = new ProjectsModelProject($this->project);
 		//$html .= t.t.t.'<p id="previewit" class="previewit showaslink">'.JText::_('COM_PROJECTS_PREVIEW').'</p>'.n;
-		$editor = Hubzero_Wiki_Editor::getInstance();
-		$html .= $editor->display('about', 'about', $this->project->about, '', '10', '25');
+		$html .= \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
 	}
 	else {
 		$html .= t.t.t.'<textarea name="about" id="about" rows="10" cols="25">'.$this->project->about.'</textarea>'.n;	

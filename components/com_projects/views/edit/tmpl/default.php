@@ -116,8 +116,8 @@ $goto  = 'alias=' . $this->project->alias;
 										<td>
 											<span class="clear"></span>	
 											<?php
-												$editor = Hubzero_Wiki_Editor::getInstance();
-												echo $editor->display('about', 'about', $this->project->about, '', '10', '25');
+												$project = new ProjectsModelProject($this->project);
+												echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
 											?>
 											<?php if(!JPluginHelper::isEnabled('projects', 'apps') && !$this->publishing) { ?>
 												<input type="hidden"  name="type" value="<?php echo $this->project->type; ?>" />

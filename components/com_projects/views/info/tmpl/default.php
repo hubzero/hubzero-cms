@@ -39,20 +39,9 @@ $goto = $this->goto;
 
 $view->project->about = rtrim(stripslashes(ProjectsHtml::cleanText($view->project->about)));
 
-// Transform the wikitext to HTML
-$p = Hubzero_Wiki_Parser::getInstance();
+$project = new ProjectsModelProject($view->project);
 
-//import the wiki parser
-$wikiconfig = array(
-	'option'   => $view->option,
-	'scope'    => $view->project->alias.DS.'notes',
-	'pagename' => 'projects',
-	'pageid'   => $view->project->id,
-	'filepath' => $view->config->get('webpath'),
-	'domain'   => $view->project->alias
-);
-
-$view->project->about = $p->parse( $view->project->about, $wikiconfig );
+$view->project->about = $project->about('parsed');
 $privacy = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
 
 ?>

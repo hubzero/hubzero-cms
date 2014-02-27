@@ -1967,7 +1967,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Incoming
 		$name 		= trim(JRequest::getVar( 'name', '', 'post' ));
 		$title 		= trim(JRequest::getVar( 'title', '', 'post' ));
-		$about 		= trim(JRequest::getVar( 'about', '', 'post' ));
+		$about 		= trim(JRequest::getVar( 'about', '', 'post', 'none', 2 ));
 		$type 		= JRequest::getInt( 'type', 1, 'post' );
 		$private 	= JRequest::getInt( 'private', 1, 'post' );	
 		$restricted = JRequest::getVar( 'restricted', '', 'post' );
@@ -3666,7 +3666,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Convert
 		if ($raw) 
 		{
-			$p = Hubzero_Wiki_Parser::getInstance();
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+
+			$p = WikiHelperParser::getInstance();
 			
 			//import the wiki parser
 			$wikiconfig = array(
