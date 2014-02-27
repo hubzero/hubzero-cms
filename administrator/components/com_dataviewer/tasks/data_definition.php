@@ -110,6 +110,6 @@ function dv_data_definition()
 		<input name="update" type="hidden" value="true" />
 		<input name="dd_text" type="hidden" value="" />
 	</form>
-<?
+<?php
 }
 ?>
