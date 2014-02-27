@@ -522,14 +522,14 @@ class KbModelArticle extends \Hubzero\Base\Model
 				{
 					$config = array();
 
-					$content = stripslashes($this->get('fulltxt'));
+					$content = (string) stripslashes($this->get('fulltxt', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
 						&$config
 					));
 
-					$this->set('fulltxt.parsed', $this->get('fulltxt'));
+					$this->set('fulltxt.parsed', (string) $this->get('fulltxt', ''));
 					$this->set('fulltxt', $content);
 
 					return $this->content($as, $shorten);
