@@ -1,29 +1,6 @@
 <?php
 defined('JPATH_BASE') or die(); 
 
-class Wiki
-{
-	private static $parser = NULL;
-
-	public static function parse($str) {
-		if (is_null(self::$parser)) {
-			self::$parser = new Hubzero_Wiki_Parser();
-		}
-
-		/// @TODO: could stand to be less hacky and awful
-		$wikiconfig = array(
-			'option'   => 'com_components/com_forms',
-			'scope'    => 'images',
-			'pagename' => 'form_images',
-			'pageid'   => 0,
-			'filepath' => '/site/forms',
-			'domain'   => ''
-		);
-		$wikiConfig = array();
-		return preg_replace('#<a rel="lightbox".*?>(.*?)</a>#', '$1', preg_replace('/Image:/', '', self::$parser->parse($str, $wikiconfig)));
-	}
-}
-
 /*
 [!] - (zooley) Added NotFoundError class because PHP was throwing 
 	fatal error that the class was not found (irony?).

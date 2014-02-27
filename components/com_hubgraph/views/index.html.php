@@ -1,4 +1,6 @@
-<? defined('JPATH_BASE') or die(); 
+<?php
+
+defined('JPATH_BASE') or die(); 
 if (!defined('HG_INLINE')) {
 	$doc->setTitle('Search');
 }
@@ -184,7 +186,7 @@ window.searchBase = '<?= $base ?>';
 								<? endif; ?>
 							</td>
 							<td>
-								<?= Wiki::parse(h($cont['bio'])) ?>
+								<?= h($cont['bio']) ?>
 								<? if ($cont['tags']): ?>
 									<ul class="tags">
 										<? foreach ($cont['tags'] as $tag): ?>
