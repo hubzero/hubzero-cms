@@ -268,7 +268,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path)) 
 			{
 				echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY')));
 				return;
@@ -399,7 +399,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path)) 
 			{
 				$this->setError(JText::_('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY'));
 				$this->displayTask();

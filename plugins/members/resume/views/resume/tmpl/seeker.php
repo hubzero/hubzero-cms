@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
 		if (!is_dir(JPATH_ROOT . $path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $path, 0777)) 
+			if (!JFolder::create(JPATH_ROOT . $path)) 
 			{
 				$path = '';
 			}

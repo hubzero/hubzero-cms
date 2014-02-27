@@ -533,7 +533,7 @@ class Hubzero_Image extends JObject
 
 			if ($make_paths)
 			{
-				JFolder::create($info['dirname'], 0770);
+				JFolder::create($info['dirname']);
 			}
 
 			if (!is_dir($info['dirname']) && $make_paths == false)

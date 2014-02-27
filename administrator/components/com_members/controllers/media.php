@@ -74,7 +74,7 @@ class MembersControllerMedia extends Hubzero_Controller
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0750)) 
+			if (!JFolder::create($path)) 
 			{
 				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);

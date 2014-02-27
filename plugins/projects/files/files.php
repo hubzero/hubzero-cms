@@ -535,7 +535,7 @@ class plgProjectsFiles extends JPlugin
 
 		if (!is_dir( JPATH_ROOT . $path )) 
 		{
-			if (!JFolder::create( JPATH_ROOT . $path, 0775 )) 
+			if (!JFolder::create( JPATH_ROOT . $path )) 
 			{
 				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -2302,7 +2302,7 @@ class plgProjectsFiles extends JPlugin
 			if ($newdir && !file_exists( $this->prefix . $path . DS . $newdir )) 
 			{
 				// Create new directory
-				if (!JFolder::create( $this->prefix . $path . DS . $newdir, 0775 )) 
+				if (!JFolder::create( $this->prefix . $path . DS . $newdir )) 
 				{
 					$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				}
@@ -3661,7 +3661,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			jimport('joomla.filesystem.folder');
 			
-			if (!JFolder::create( JPATH_ROOT . DS . $outputDir, 0774 )) 
+			if (!JFolder::create( JPATH_ROOT . DS . $outputDir )) 
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -4111,7 +4111,7 @@ class plgProjectsFiles extends JPlugin
 			if (!file_exists( $to_path )) 
 			{
 				jimport('joomla.filesystem.folder');
-				JFolder::create( JPATH_ROOT. $to_path, 0775 );
+				JFolder::create( JPATH_ROOT. $to_path );
 			}
 			
 			// Get file extention
@@ -4189,7 +4189,7 @@ class plgProjectsFiles extends JPlugin
 		// Check that we have our temp directiry
 		if (!is_dir( $this->prefix . $base_path )) 
 		{
-			if (!JFolder::create( $this->prefix . $base_path, 0775 )) 
+			if (!JFolder::create( $this->prefix . $base_path )) 
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_TEMP_PATH') );
 				return false;
@@ -5006,7 +5006,7 @@ class plgProjectsFiles extends JPlugin
 			*/
 			
 			// Create path
-			if (!JFolder::create( $this->prefix. $path, 0775 )) 
+			if (!JFolder::create( $this->prefix. $path )) 
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') ) . $this->prefix. $path ;
 			}
@@ -6044,7 +6044,7 @@ class plgProjectsFiles extends JPlugin
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
 				if ($remote['status'] != 'D' && $local_dir && !JFolder::exists( $this->prefix . $path . DS . $local_dir ))
 				{
-					if (JFolder::create( $this->prefix . $path . DS . $local_dir, 0775 )) 
+					if (JFolder::create( $this->prefix . $path . DS . $local_dir )) 
 					{
 						$created = $this->_git->makeEmptyFolder($path, $local_dir);				
 						$commitMsg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($local_dir);
@@ -6184,7 +6184,7 @@ class plgProjectsFiles extends JPlugin
 						// Add item from remote to local (new)
 						if ($remote['type'] == 'folder')
 						{
-							if (JFolder::create( $this->prefix . $path . DS . $filename, 0775 )) 
+							if (JFolder::create( $this->prefix . $path . DS . $filename )) 
 							{
 								$created = $this->_git->makeEmptyFolder($path, $filename);				
 								$commitMsg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($filename);

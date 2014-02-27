@@ -159,7 +159,7 @@ class BlogControllerMedia extends Hubzero_Controller
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path)) 
 			{
 				$this->setError(JText::_('COM_BLOG_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();

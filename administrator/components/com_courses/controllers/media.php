@@ -115,7 +115,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path)) 
 			{
 				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
 				return;
@@ -232,7 +232,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 				if (!is_dir($path . DS . $foldername))
 				{
 					jimport('joomla.filesystem.folder');
-					if (!JFolder::create($path . DS . $foldername, 0777))
+					if (!JFolder::create($path . DS . $foldername))
 					{
 						$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
@@ -250,7 +250,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path, 0777))
+				if (!JFolder::create($path))
 				{
 					$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 					$this->displayTask();

@@ -601,7 +601,7 @@ class plgMembersResume extends JPlugin
 		if (!is_dir(JPATH_ROOT . $listdir)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $listdir, 0777)) 
+			if (!JFolder::create(JPATH_ROOT . $listdir)) 
 			{
 				return false;
 			}

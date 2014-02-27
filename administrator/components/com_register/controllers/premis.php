@@ -94,7 +94,7 @@ class RegisterControllerPremis extends Hubzero_Controller
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if(!JFolder::create( $path, 0777 )) {
+			if(!JFolder::create( $path )) {
 				// error
 			}
 		}
