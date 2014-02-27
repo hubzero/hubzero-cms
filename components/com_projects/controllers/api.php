@@ -317,4 +317,4 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessage( $object );
 	}
 }
-             
+
