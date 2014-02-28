@@ -360,9 +360,11 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$this->version->set('approved_by', $this->juser->get('id'));
 		
 		// if we have php or script tags we must get page approved by admin
-		if (strpos($this->version->get('content'), '<?') !== false ||
-			strpos($this->version->get('content'), '<?php') !== false ||
-			strpos($this->version->get('content'), '<script') !== false)
+		// check the $newContent var since its already been purified 
+		// and has has php/script tags removed if not super group
+		if (strpos($newContent, '<?') !== false ||
+			strpos($newContent, '<?php') !== false ||
+			strpos($newContent, '<script') !== false)
 		{
 			$this->version->set('approved', 0);
 			$this->version->set('approved_on', NULL);

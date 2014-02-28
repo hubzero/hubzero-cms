@@ -192,38 +192,28 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	 */
 	public static function purify( $content, $trustedContent = false )
 	{
-		// load html purifier
-		require_once JPATH_ROOT . DS . 'vendor' . DS .'ezyang' . DS . 'htmlpurifier' . DS . 'library' . DS . 'HTMLPurifier.auto.php';
-		
-		// create config
-		$config = HTMLPurifier_Config::createDefault();
-		$config->set('AutoFormat.Linkify', true);
-		$config->set('AutoFormat.RemoveEmpty', true);
-		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', true);
-		$config->set('Output.CommentScriptContents', false);
-		$config->set('Output.TidyFormat', true);
-		$config->set('Cache.SerializerPath', JPATH_ROOT . DS . 'cache' . DS . 'htmlpurifier');
-		
+		// array to hold options
+		$options = array();
+
 		//create array of custom filters
 		$filters = array(
 			new HTMLPurifier_Filter_GroupInclude()
 		);
-		
+
 		// is this trusted content
 		if ($trustedContent)
 		{
-			$config->set('CSS.Trusted', true);
-			$config->set('HTML.Trusted', true);
+			$options['CSS.Trusted'] = true;
+			$options['HTML.Trusted'] = true;
 			
 			$filters[] = new HTMLPurifier_Filter_ExternalScripts();
 			$filters[] = new HTMLPurifier_Filter_Php();
 		}
-		
-		// set filter configs
-		$config->set('Filter.Custom', $filters);
-		
-		// purify and return
-		$purifier = new HTMLPurifier( $config );
-		return $purifier->purify( $content );
+
+		// add our custom filters
+		$options['Filter.Custom'] = $filters;
+
+		// run hubzero html sanitize
+		return \Hubzero\Utility\Sanitize::html($content, $options);
 	}
 }
