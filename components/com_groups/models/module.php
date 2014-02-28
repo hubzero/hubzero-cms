@@ -43,6 +43,13 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	 * @var string
 	 */
 	protected $_tbl_name = 'GroupsTableModule';
+
+	/**
+	 * Model context
+	 * 
+	 * @var string
+	 */
+	protected $_context = 'com_groups.module.content';
 	
 	/**
 	 * Menu Items
@@ -257,6 +264,61 @@ class GroupsModelModule extends \Hubzero\Base\Model
 			$this->_tbl->move($dir.'1', "position='".$position."'");
 		}
 	}
+
+	/**
+	 * Get the content of the page version
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function content($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+		$options = array();
+
+		switch ($as)
+		{
+			case 'parsed':
+				$content = $this->get('content_parsed', null);
+				if ($content == null)
+				{
+					// build config
+					$config = array();
+
+					$content = stripslashes($this->get('content'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('content_parsed', $this->get('content'));
+					$this->set('content', $content);
+
+					return $this->content($as, $shorten);
+				}
+
+				$options['html'] = true;
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('parsed'));
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('content'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
+	}
 	
 	/**
 	 * Purify the HTML content via HTML Purifier
@@ -267,36 +329,31 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	 */
 	public static function purify( $content, $trustedContent = false )
 	{
-		// load html purifier
-		require_once JPATH_ROOT . DS . 'vendor' . DS .'ezyang' . DS . 'htmlpurifier' . DS . 'library' . DS . 'HTMLPurifier.auto.php';
-		
-		// create config
-		$config = HTMLPurifier_Config::createDefault();
-		$config->set('AutoFormat.Linkify', true);
-		$config->set('AutoFormat.RemoveEmpty', true);
-		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', true);
-		$config->set('Output.CommentScriptContents', false);
-		$config->set('Output.TidyFormat', true);
-		$config->set('Cache.SerializerPath', JPATH_ROOT . DS . 'cache' . DS . 'htmlpurifier');
-		
+		// array to hold options
+		$options = array();
+
 		//create array of custom filters
-		$filters = array();
-		
+		$filters = array(
+			new HTMLPurifier_Filter_GroupInclude()
+		);
+
 		// is this trusted content
 		if ($trustedContent)
 		{
-			$config->set('CSS.Trusted', true);
-			$config->set('HTML.Trusted', true);
+			$options['CSS.Trusted'] = true;
+			$options['HTML.Trusted'] = true;
 			
 			$filters[] = new HTMLPurifier_Filter_ExternalScripts();
 			$filters[] = new HTMLPurifier_Filter_Php();
 		}
-		
-		// set filter configs
-		$config->set('Filter.Custom', $filters);
-		
-		// purify and return
-		$purifier = new HTMLPurifier( $config );
-		return $purifier->purify( $content );
+
+		// add our custom filters
+		$options['Filter.Custom'] = $filters;
+
+		// turn OFF linkify
+		$options['AutoFormat.Linkify'] = false;
+
+		// run hubzero html sanitize
+		return \Hubzero\Utility\Sanitize::html($content, $options);
 	}
 }

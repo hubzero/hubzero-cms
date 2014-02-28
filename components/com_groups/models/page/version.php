@@ -213,6 +213,9 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 		// add our custom filters
 		$options['Filter.Custom'] = $filters;
 
+		// turn OFF linkify
+		$options['AutoFormat.Linkify'] = false;
+
 		// run hubzero html sanitize
 		return \Hubzero\Utility\Sanitize::html($content, $options);
 	}

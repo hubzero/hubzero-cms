@@ -60,7 +60,7 @@ class GroupsHelperDocumentRendererModules extends GroupsHelperDocumentRenderer
 			// make sure module can be displayed
 			if ($module->displayOnPage($pageid))
 			{
-				$content .= $module->get('content');
+				$content .= $module->content('parsed');
 			}
 		}
 		

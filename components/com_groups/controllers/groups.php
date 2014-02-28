@@ -332,7 +332,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 				$overviewContent = $this->superGroupComponents($this->view->group, $this->view->trueTab);
 			}
 			
-			// do we have component content
+			// do we have group php pages
 			if ($overviewContent == null)
 			{
 				$overviewContent = $this->superGroupPhpPages($this->view->group);
