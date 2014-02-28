@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'helpers' . DS . 'helper.php');
-
 /**
  * Courses controller class for media
  */
@@ -85,7 +83,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$trackingInformation->session_id                  = $session->getId();
 			$trackingInformation->ip_address                  = $ipAddress; 
 			$trackingInformation->object_id                   = $resourceid;
-			$trackingInformation->object_type                 = 'resource';
+			$trackingInformation->object_type                 = 'course';
 			$trackingInformation->object_duration             = $duration;
 			$trackingInformation->current_position            = $time;
 			$trackingInformation->farthest_position           = $time;
@@ -145,7 +143,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$trackingInformationDetailed->session_id                  = $session->getId();
 			$trackingInformationDetailed->ip_address                  = $ipAddress; 
 			$trackingInformationDetailed->object_id                   = $resourceid;
-			$trackingInformationDetailed->object_type                 = 'resource';
+			$trackingInformationDetailed->object_type                 = 'course';
 			$trackingInformationDetailed->object_duration             = $duration;
 			$trackingInformationDetailed->current_position            = $time;
 			$trackingInformationDetailed->farthest_position           = $time;
