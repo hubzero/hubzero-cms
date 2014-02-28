@@ -134,9 +134,9 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		}
 		
 		// save detailed tracking info
-		$trackingInformationDetailed                              = new stdClass;
 		if($event == 'start')
 		{
+			$trackingInformationDetailed                              = new stdClass;
 			$trackingInformationDetailed->user_id                     = $juser->get('id');
 			$trackingInformationDetailed->session_id                  = $session->getId();
 			$trackingInformationDetailed->ip_address                  = $ipAddress; 
@@ -162,7 +162,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			}
 			
 			//check to see if we need to set a new farthest position
-			if($trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
+			if(isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
 			{
 				$trackingInformationDetailed->farthest_position           = $time;
 				$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();
