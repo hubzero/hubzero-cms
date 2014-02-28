@@ -196,6 +196,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	{
 		$progress_calculation = $this->course->config()->get('progress_calculation', 'all');
 
+		$filters = array(
+			'section_id' => $this->course->offering()->section()->get('id'),
+			'member_id'  => $member_id
+		);
+
 		switch ($progress_calculation)
 		{
 			// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
@@ -204,15 +209,13 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				$views = $this->_tbl->getGradedItemCompletions($this->course->get('id'), $member_id);
 			break;
 
+			case 'videos':
+				// Add another filter
+				$filters['asset_type'] = 'video';
 			default:
 				// Get the asset views
 				$assetViews = new CoursesTableAssetViews(JFactory::getDBO());
-				$filters    = array(
-					'section_id' => $this->course->offering()->section()->get('id'),
-					'member_id'  => $member_id
-				);
-
-				$views = $assetViews->find($filters);
+				$views      = $assetViews->find($filters);
 			break;
 		}
 
@@ -243,11 +246,20 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 							'state'      => 1
 						)
 					);
-					// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
-					if ($progress_calculation == 'forms' || $progress_calculation == 'graded')
+
+					switch ($progress_calculation)
 					{
-						$filters['w']['graded'] = true;
+						// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
+						case 'forms':
+						case 'graded':
+							$filters['w']['graded'] = true;
+						break;
+
+						case 'videos':
+							$filters['w']['asset_type'] = 'video';
+						break;
 					}
+
 					$counts[$unit_id] = $asset->count($filters);
 				}
 
