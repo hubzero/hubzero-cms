@@ -72,6 +72,86 @@ class plgCronCourses extends JPlugin
 	 */
 	public function syncPassportBadgeStatus($params=null)
 	{
+		$params = JComponentHelper::getParams('com_courses');
+
+		$badgesHandler  = new Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
+		$badgesProvider = $badgesHandler->getProvider();
+
+		$creds = new \stdClass();
+		$creds->consumer_key    = $params->get('passport_consumer_key');
+		$creds->consumer_secret = $params->get('passport_consumer_secret');
+
+		$badgesProvider->setCredentials($creds);
+
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php';
+		$coursesObj = new CoursesModelCourses();
+		$courses    = $coursesObj->courses();
+
+		if (isset($courses) && count($courses) > 0)
+		{
+			foreach ($courses as $course)
+			{
+				if (!$course->isAvailable())
+				{
+					continue;
+				}
+
+				$students = $course->students();
+				$emails   = array();
+
+				if ($students && count($students) > 0)
+				{
+					foreach ($students as $student)
+					{
+						$emails[] = JFactory::getUser($student->get('user_id'))->get('email');
+					}
+				}
+
+				if (count($emails) > 0)
+				{
+					$assertions = $badgesProvider->getAssertionsByEmailAddress($emails);
+
+					if (isset($assertions) && count($assertions) > 0)
+					{
+						foreach ($assertions as $assertion)
+						{
+							$status = false;
+							if ($assertion->IsPending)
+							{
+								$status = false;
+							}
+							else if ($assertion->IsAccepted)
+							{
+								$status = 'accept';
+							}
+							else
+							{
+								$status = 'deny';
+							}
+
+							if ($status)
+							{
+								preg_match('/validation\/([[:alnum:]-]{20})/', $assertion->EvidenceUrl, $match);
+
+								if (isset($match[1]))
+								{
+									$badge = CoursesModelMemberBadge::loadByToken($match[1]);
+
+									if ($badge && !$badge->get('action'))
+									{
+										$badge->set('action', $status);
+										$badge->set('action_on', JFactory::getDate()->toSql());
+										$badge->store();
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		// Job is no longer active
 		return true;
 	}
