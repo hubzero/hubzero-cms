@@ -95,15 +95,41 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	}
 
 	/**
+	 * Load by validation token
+	 *
+	 * Validation token is a unique hash that allows us to identify a users badge evidence without exposing their user id
+	 * 
+	 * @param      string $token - badge assertion token
+	 * @return     void
+	 */
+	public static function loadByToken($token)
+	{
+		$obj = new CoursesModelMemberBadge();
+		$obj->_tbl->load(array('validation_token' => $token));
+
+		if (isset($obj->_tbl->id))
+		{
+			return $obj;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
 	 * Store member badge
 	 * 
 	 * @return     bool
 	 */
 	public function store($check=true)
 	{
-		// Generate validation token
-		$token = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(21)), 0, 20));
-		$this->set('validation_token', $token);
+		if (!$this->get('validation_token'))
+		{
+			// Generate validation token
+			$token = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(21)), 0, 20));
+			$this->set('validation_token', $token);
+		}
 
 		return parent::store();
 	}
