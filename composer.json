@@ -62,7 +62,8 @@
         "dannytrue/phantomjs": "dev-master",
         "swiftmailer/swiftmailer": "v5.0.2",
         "monolog/monolog": "1.2.*",
-        "willdurand/geocoder": "@stable"
+        "willdurand/geocoder": "@stable",
+	"guzzle/guzzle": "dev-guzzle4"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },
