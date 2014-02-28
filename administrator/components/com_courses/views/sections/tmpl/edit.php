@@ -658,6 +658,7 @@ window.addEvent('domready', function(){
 								<th class="key"><label for="badge-criteria"><?php echo JText::_('Badge Criteria'); ?>:</label></th>
 								<td>
 									<textarea name="badge[criteria]" id="badge-criteria" rows="6" cols="50"><?php echo $this->escape(stripslashes($this->badge->get('criteria_text'))); ?></textarea>
+									<a target="_blank" href="/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria">Preview badge criteria on the front end</a>
 								</td>
 							</tr>
 						</tbody>
