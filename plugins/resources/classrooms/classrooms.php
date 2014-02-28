@@ -93,7 +93,7 @@ class plgResourcesClassrooms extends JPlugin
 			$doc->addScript('/media/system/js/d3.v2.js');
 			$dbh = JFactory::getDBO();
 			$dbh->setQuery(
-				'SELECT DISTINCT sc2.*,
+				'SELECT DISTINCT 
 					sc2.toolname AS tool,
 					sc2.clustersize AS size,
 					YEAR(sc2.cluster_start) AS year,
