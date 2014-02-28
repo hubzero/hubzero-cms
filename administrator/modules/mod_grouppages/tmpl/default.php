@@ -34,11 +34,21 @@ $rows = array();
 foreach ($this->unapprovedPages as $unapprovedPage)
 {
 	$gidNumber = $unapprovedPage->get('gidNumber');
+	if (!isset($rows[$gidNumber]['pages']))
+	{
+		$rows[$gidNumber]['pages'] = 1;
+		continue;
+	}
 	$rows[$gidNumber]['pages']++;
 }
 foreach ($this->unapprovedModules as $unapprovedModule)
 {
 	$gidNumber = $unapprovedModule->get('gidNumber');
+	if (!isset($rows[$gidNumber]['modules']))
+	{
+		$rows[$gidNumber]['modules'] = 1;
+		continue;
+	}
 	$rows[$gidNumber]['modules']++;
 }
 ?>
@@ -68,12 +78,12 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 					</td>
 					<td>
 						<a class="page" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=pages">
-							<?php echo ($row['pages']) ? $row['pages'] : 0; ?>
+							<?php echo (isset($row['pages'])) ? $row['pages'] : 0; ?>
 						</a>
 					</td>
 					<td>
 						<a class="module" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=modules">
-							<?php echo ($row['modules']) ? $row['modules'] : 0; ?>
+							<?php echo (isset($row['modules'])) ? $row['modules'] : 0; ?>
 						</a>
 					</td>
 				</tr>
