@@ -1,0 +1,114 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/members/courses/courses.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Members Courses plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#courses-introduction {
+		width: 32em;
+		margin: 3em auto;
+		background-color: #fff;
+		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+	}
+	#courses-introduction .instructions {
+		padding: 1em 1.4em;
+	}
+	#courses-introduction .questions {
+		padding: 1em 1.4em;
+		background-color: #f0f0f0;
+	}
+/* Category list */
+	.entries small.entry-id-before, 
+	.entries .entry-id:before {
+		content: "\f09c";
+	}
+	.group_courses .section {
+		padding: 10px;
+	}
+	.group_courses .entries tbody th {
+		width: 1.5em;
+	}
+	.user-options + .container {
+		margin-top: 0;
+	}
+	.user-options li {
+		display: inline;
+		margin: 0 0.5em 0 0;
+	}
+	.user-options li a {
+		display: inline-block;
+		background: #fff;
+		color: #888;
+		cursor: pointer;
+		font-weight: normal;
+		line-height: 1em;
+		border: none;
+		margin: 0;
+		padding: 0.75em 1em;
+		text-shadow: 0px 1px 1px #fff;
+		border: 1px solid #e9e9e9;
+		border-bottom: none;
+	}
+	.user-options li a:hover {
+		color: #fff;
+		background-color: #666;
+		border-color: #666;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+	}
+	.user-options li a.active,
+	.user-options li a.active:hover {
+		background: #ececec;
+		border: 1px solid #ececec;
+		border-bottom: none;
+		color: #333;
+	}
+
+	.courses tbody .entry-details,
+	.courses tbody .entry-content {
+		display: block;
+	}
+	.courses tbody .entry-content p,
+	.courses tbody .entry-content div {
+		margin: 0;
+		padding: 0;
+	}
+
+	.entry-state {
+		font-size: 85%;
+		font-weight: bold;
+		display: inline-block;
+		background-color: #6a0;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		margin: 0;
+		padding: 0em 0.4em;
+		color: #fff;
+		white-space: nowrap;
+		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
+	}
+	.published {
+		background-color: #66AA00;
+	}
+	.draft {
+		background-color: #aaa;
+	}
+	.unpublished {
+		background-color: #AA3300;
+	}
