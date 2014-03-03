@@ -81,7 +81,7 @@ class plgContentFormathtml extends JPlugin
 		}
 
 		$content = \Hubzero\Utility\Sanitize::clean($content);
-		//$content = \Hubzero\Utility\Sanitize::html($content);
+		$content = \Hubzero\Utility\Sanitize::html($content);
 
 		if ($this->params->get('applyFormat'))
 		{
