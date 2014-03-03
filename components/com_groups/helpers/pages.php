@@ -449,7 +449,8 @@ class GroupsHelperPages
 		}
 		
 		// parse old wiki content
-		$content = self::parseWiki($group, $version->get('content'));
+		//$content = self::parseWiki($group, $version->get('content'));
+		$content = $version->get('content');
 		
 		// parse php tags and modules
 		$content = self::parse($group, $page, $content);
