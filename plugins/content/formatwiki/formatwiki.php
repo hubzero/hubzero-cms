@@ -106,7 +106,7 @@ class plgContentFormatwiki extends JPlugin
 		else
 		{
 			// Force apply a format?
-			if ($this->params->get('applyFormat') && !preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content))
+			if ($this->params->get('applyFormat') && !preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', trim($content)))
 			{
 				// Are we converting the format?
 				// Only apply the wiki format if not. Saves us an extra DB call.
@@ -125,7 +125,7 @@ class plgContentFormatwiki extends JPlugin
 
 		$content = preg_replace('/^(<!-- \{FORMAT:WIKI\} -->)/i', '', $content);
 
-		if (trim($content))
+		if (trim($content) && !preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', trim($content)))
 		{
 			$dispatcher = JDispatcher::getInstance();
 			JPluginHelper::importPlugin('wiki');
