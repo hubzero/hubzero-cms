@@ -1282,20 +1282,14 @@ HUB.CoursesOutline = {
 			// Show sortable handles, edit and delete on hover
 			$(selector).hoverIntent({
 				over: function () {
-					$(this).find('.sortable-handle').show('slide', 250);
-					$(this).find('.asset-group-edit').show('slide', 250);
-					$(this).not('.add-new').animate({"padding-left":60}, 250);
-					$(this).find('.sortable-assets-handle').show('slide', 250);
-					$(this).find('.asset:not(.nofiles)').animate({"margin-left":30}, 250);
-					$(this).find('.asset-delete, .asset-preview, .asset-edit, .asset-edit-deployment').animate({"opacity":0.8}, 250);
+					$(this).find('.asset-group-controls').show('slide', 250);
+					$(this).find('.asset-group-item-container').animate({"padding-left" : 50}, 250);
+					$(this).addClass('asset-group-item-hover');
 				},
 				out: function () {
-					$(this).find('.sortable-handle').hide('slide', 250);
-					$(this).find('.asset-group-edit').hide('slide', 250);
-					$(this).not('.add-new').animate({"padding-left":10}, 250);
-					$(this).find('.sortable-assets-handle').hide('slide', 250);
-					$(this).find('.asset:not(.nofiles)').animate({"margin-left":10}, 250);
-					$(this).find('.asset-delete, .asset-preview, .asset-edit, .asset-edit-deployment').animate({"opacity":0}, 250);
+					$(this).find('.asset-group-controls').hide('slide', 250);
+					$(this).find('.asset-group-item-container').animate({"padding-left" : 0}, 250);
+					$(this).removeClass('asset-group-item-hover');
 				},
 				timeout: 150,
 				interval: 150
@@ -1335,8 +1329,8 @@ HUB.CoursesOutline = {
 		 */
 		edit: function ( e ) {
 			var $ = HUB.CoursesOutline.jQuery,
-			ag    = $(this).parent('.asset-group-item'),
-			form  = $(this).siblings('.uploadfiles').find('.uploadfiles-form'),
+			ag    = $(this).parents('.asset-group-item'),
+			form  = ag.find('.uploadfiles-form'),
 			src   = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
 			src  += '&scope=assetgroup&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
 
@@ -1501,8 +1495,10 @@ HUB.CoursesOutline = {
 			// Default asset group item template
 			item : [
 				'<li class="asset-group-item" id="assetgroupitem_<%= assetgroup_id %>" style="<%= assetgroup_style %>">',
-					'<div class="sortable-handle"></div>',
-					'<div class="asset-group-edit"></div>',
+					'<div class="asset-group-controls">',
+						'<div class="sortable-handle"></div>',
+						'<div class="asset-group-edit"></div>',
+					'</div>',
 					'<div class="uploadfiles">',
 						'<p>Drag files here to upload</p>',
 						'<p>or</p>',

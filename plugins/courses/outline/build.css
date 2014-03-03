@@ -280,11 +280,40 @@ a.asset-edit-deployment {
 	position: relative;
 	width: 15px;
 	height: 15px;
-	opacity: 0;
 	margin-left: 5px;
 	padding: 0;
 	text-decoration: none;
 	color: #666;
+}
+.asset-group-item .asset-preview,
+.asset-group-item .asset-delete,
+.asset-group-item .asset-edit,
+.asset-group-item .asset-edit-deployment {
+	opacity: 0;
+	filter: alpha(opacity=);
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+	-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=000)';
+
+	-webkit-transition: all .25s ease-in-out;
+	-moz-transition: all .25s ease-in-out;
+	-ms-transition: all .25s ease-in-out;
+	-o-transition: all .25s ease-in-out;
+	transition: all .25s ease-in-out;
+}
+.asset-group-item-hover .asset-preview,
+.asset-group-item-hover .asset-delete,
+.asset-group-item-hover .asset-edit,
+.asset-group-item-hover .asset-edit-deployment {
+	opacity: .8;
+	filter: alpha(opacity=);
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+	-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';
+
+	-webkit-transition: all .25s ease-in-out;
+	-moz-transition: all .25s ease-in-out;
+	-ms-transition: all .25s ease-in-out;
+	-o-transition: all .25s ease-in-out;
+	transition: all .25s ease-in-out;
 }
 .asset-preview:before,
 .asset-delete:before,
@@ -319,9 +348,19 @@ ul {
 	font-weight: normal;
 	color: #555;
 }
+.asset-group-controls {
+	display: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background: transparent;
+	float: left;
+	width: 51px;
+	overflow: hidden;
+}
 .sortable-handle,
 .asset-group-edit {
-	display: none;
 	position: absolute;
 	top: 0;
 	bottom: 50%;
@@ -365,12 +404,11 @@ ul {
 	content: "\270E";
 }
 .sortable-assets-handle {
-	display: none;
 	position: absolute;
 	font-family: "fontcons";
 	top: 0;
 	bottom: 0;
-	left: -20px;
+	left: 0;
 	background: transparent;
 	float: left;
 	width: 15px;
@@ -723,22 +761,22 @@ ul {
 
 /* Asset types */
 .asset {
-	margin-left: 10px;
 	position: relative;
-	padding-left: 40px;
+	padding-left: 60px;
 	border-bottom: 1px dotted #AAA;
+	overflow: hidden;
 }
 .asset:before,
 .asset:after {
 	position: absolute;
 	top: 0;
-	left: 20px;
+	left: 40px;
 	font-family: "fontcons";
 	content: "";
 }
 .asset:before {
 	top: 0;
-	left: 0;
+	left: 20px;
 }
 .assets-list .published:before {
 	color: #49BF0A;
@@ -1055,11 +1093,15 @@ ul {
 .edit-form .eventparams {
 	border: 1px solid #CCCCCC;
 	margin-bottom: 20px;
+	padding: 50px 20px 20px 20px;
+	position: relative;
 }
 .edit-form .eventparams legend {
 	display: block;
-	float: right;
-	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
 	border-bottom: 1px solid #e5e5e5;
 	margin: 0 0 1em 0;
 	padding: 0.8em 1em;
