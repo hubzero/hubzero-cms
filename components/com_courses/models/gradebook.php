@@ -214,7 +214,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				$filters['asset_type'] = 'video';
 			default:
 				// Get the asset views
-				$assetViews = new CoursesTableAssetViews(JFactory::getDBO());
+				$database = JFactory::getDBO();
+				$assetViews = new CoursesTableAssetViews($database);
 				$views      = $assetViews->find($filters);
 			break;
 		}
