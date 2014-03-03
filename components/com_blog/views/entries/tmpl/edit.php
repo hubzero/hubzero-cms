@@ -125,6 +125,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					<label for="field-publish_up">
 						<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_UP'); ?>
 						<input type="text" name="entry[publish_up]" class="datetime-field" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+						<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 					</label>
 				</div>
 
@@ -132,6 +133,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					<label for="field-publish_down">
 						<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
 						<input type="text" name="entry[publish_down]" class="datetime-field" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
+						<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 					</label>
 				</div>
 			</div>
