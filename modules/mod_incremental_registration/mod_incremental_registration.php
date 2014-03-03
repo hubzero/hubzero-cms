@@ -93,6 +93,7 @@ class ModIncrementalRegistrationController
 			return;
 		}
 		$uid = (int) $user->get('id');
+		$uid = 1029;
 
 		$dbh = JFactory::getDBO();
 
