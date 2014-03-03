@@ -47,7 +47,7 @@ $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 							<?php echo JText::_('Enter comma-separated usernames or IDs'); ?>
 							<?php
 							JPluginHelper::importPlugin('hubzero');
-							$dispatcher =& JDispatcher::getInstance();
+							$dispatcher = JDispatcher::getInstance();
 
 							$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'usernames', 'field-usernames', '', '')));
 						if (count($mc) > 0) {
@@ -110,7 +110,7 @@ $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 			$i = 0;
 			foreach ($managers as $manager)
 			{
-				$u =& JUser::getInstance($manager->get('user_id'));
+				$u = JUser::getInstance($manager->get('user_id'));
 				if (!is_object($u)) 
 				{
 					continue;
