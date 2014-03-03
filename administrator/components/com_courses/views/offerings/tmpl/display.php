@@ -86,11 +86,11 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Title'); ?></th>
-				<th scope="col"><?php echo JText::_('Starts'); ?></th>
-				<th scope="col"><?php echo JText::_('Ends'); ?></th>
-				<th scope="col"><?php echo JText::_('Published'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Starts'), 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Ends'), 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Published'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('Sections'); ?></th>
 				<th scope="col"><?php echo JText::_('Enrollment'); ?></th>
 				<th scope="col"><?php echo JText::_('Units'); ?></th>
@@ -263,6 +263,9 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

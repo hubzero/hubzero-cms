@@ -337,7 +337,7 @@ class CoursesTableSection extends JTable
 		{
 			$filters['sort'] = 'os.title';
 		}
-		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), 'ASC', 'DESC')) 
+		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}

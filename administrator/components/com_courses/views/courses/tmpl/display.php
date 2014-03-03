@@ -81,10 +81,10 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Title'); ?></th>
-				<th scope="col"><?php echo JText::_('Alias'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Alias', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COURSES_PUBLISHED'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('Cert.'); ?></th>
 				<th scope="col"><?php echo JText::_('Managers'); ?></th>
 				<th scope="col"><?php echo JText::_('Offerings'); ?></th>
@@ -232,6 +232,9 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>
