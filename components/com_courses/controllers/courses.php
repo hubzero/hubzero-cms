@@ -194,6 +194,15 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		$this->view->filters['state']  = 1;
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'title'));
+		$this->view->filters['group']  = JRequest::getVar('group', '');
+		if ($this->view->filters['group'])
+		{
+			$group = \Hubzero\User\Group::getInstance($this->view->filters['group']);
+			if ($group)
+			{
+				$this->view->filters['group_id'] = $group->get('gidNumber');
+			}
+		}
 		if (!in_array($this->view->filters['sortby'], array('alias', 'title', 'popularity')))
 		{
 			$this->view->filters['sortby'] = 'title';

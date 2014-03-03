@@ -92,6 +92,7 @@ $juser = JFactory::getUser();
 					$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 					$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 					$url .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
+					$url .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
 
 					$tags = $this->model->parseTags($this->filters['tag']);
 					foreach ($tags as $tag)
@@ -111,11 +112,33 @@ $juser = JFactory::getUser();
 				<?php } ?>
 			</div><!-- / .container -->
 
+			<?php if ($this->filters['group']) { ?>
+				<div class="course-group">
+					<?php
+					$group = \Hubzero\User\Group::getInstance($this->filters['group']);
+					?>
+					<p class="course-group-descripion">
+						<?php echo JText::_('Brought to you by:'); ?>
+					</p>
+					<h3 class="course-group-title">
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+							<?php echo $this->escape(stripslashes($group->get('description'))); ?>
+						</a>
+					</h3>
+					<p class="course-group-img">
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+							<img src="<?php echo $group->getLogo(); ?>" width="50" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?> group image" />
+						</a>
+					</p>
+				</div>
+			<?php } ?>
+
 			<div class="container">
 				<?php
 				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 				$qs .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
 				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
+				$qs .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
 				?>
 				<ul class="entries-menu order-options">
 					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="Sort by title">&darr; Title</a></li>
@@ -128,6 +151,7 @@ $juser = JFactory::getUser();
 				$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 				$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 				$url .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
+				$url .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
 
 				$html  = '<a href="' . JRoute::_($url) . '"';
 				if ($this->filters['index'] == '') 
