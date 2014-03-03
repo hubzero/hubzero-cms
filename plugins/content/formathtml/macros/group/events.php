@@ -28,16 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Plugins\Content\Formathtml\Macros\Groups;
+namespace Plugins\Content\Formathtml\Macros\Group;
 
-require_once JPATH_ROOT.'/plugins/content/formathtml/macros/groups.php';
+require_once JPATH_ROOT.'/plugins/content/formathtml/macros/group.php';
 
-use Plugins\Content\Formathtml\Macros\GroupsMacro;
+use Plugins\Content\Formathtml\Macros\GroupMacro;
 
 /**
  * Group events Macro
  */
-class Events extends GroupsMacro
+class Events extends GroupMacro
 {
 	/**
 	 * Allow macro in partial parsing?
@@ -54,8 +54,14 @@ class Events extends GroupsMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = 'Inserts an anchor into a page.';
-		$txt['html'] = '<p>Inserts an anchor into a page.</p>';
+		$txt['wiki'] = "Displays group events";
+		$txt['html'] = '<p>Displays group events.</p>';
+		$txt['html'] = '<p>Examples:</p>
+							<ul>
+								<li><code>[[Group.Events()]]</code></li>
+								<li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>å
+							</ul>';
+
 		return $txt['html'];
 	}
 
@@ -86,9 +92,6 @@ class Events extends GroupsMacro
 		//create the html container
 		$html  = '<div class="upcoming_events">';
 
-		//display the title
-		$html .= (isset($args['title']) && $args['title'] != '') ? '<h3>' . $args['title'] . '</h3>' : '';
-
 		//render the events
 		$html .= $this->renderEvents($this->group, $events);
 		
@@ -117,12 +120,6 @@ class Events extends GroupsMacro
 				AND scope=" . $database->quote('group') . "
 				AND scope_id=" . $database->Quote($group->get('gidNumber')) . " 
 				AND state=1";
-		
-		//do we have an ID set
-		if (isset($filters['id']))
-		{
-			$sql .= " AND id=" . $database->Quote( $filters['id'] );
-		}
 
 		//add ordering
 		$sql .= " ORDER BY publish_up ASC";

@@ -37,7 +37,7 @@ use Hubzero\User\Group;
  * Group Macro Base Class
  * Extends basic macro class
  */
-class GroupsMacro extends Macro
+class GroupMacro extends Macro
 {
 	/**
 	 * Group
