@@ -64,7 +64,12 @@ class plgAuthenticationPUCAS extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -106,7 +111,12 @@ class plgAuthenticationPUCAS extends JPlugin
 
 		$status = array();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -154,7 +164,12 @@ class plgAuthenticationPUCAS extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -220,7 +235,12 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -232,7 +252,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		{
 			$username = phpCAS::getUser();
 
-			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
+			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'pucas', null, $username);
 			$hzal->email = $username . '@purdue.edu';
 
 			$response->auth_link = $hzal;
@@ -291,7 +311,12 @@ class plgAuthenticationPUCAS extends JPlugin
 		// Get the user
 		$juser = JFactory::getUser();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
