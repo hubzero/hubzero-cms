@@ -69,11 +69,6 @@ class plgContentFormathtml extends JPlugin
 		elseif (strstr($content, '</'))
 		{
 			// Force apply a format?
-			/*if ($this->params->get('applyFormat'))
-			{
-				$content = '<!-- {FORMAT:HTML} -->' . $content;
-			}
-			else*/
 			if (!$this->params->get('applyFormat'))
 			{
 				return;
@@ -81,7 +76,11 @@ class plgContentFormathtml extends JPlugin
 		}
 
 		$content = \Hubzero\Utility\Sanitize::clean($content);
-		$content = \Hubzero\Utility\Sanitize::html($content);
+
+		if ($this->params->get('sanitizeBefore', 1))
+		{
+			$content = \Hubzero\Utility\Sanitize::html($content);
+		}
 
 		if ($this->params->get('applyFormat'))
 		{

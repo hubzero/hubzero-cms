@@ -57,6 +57,10 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
+				<field name="sanitizeBefore" type="list" default="1" label="Sanitize HTML" description="Run content through an HTML sanitizer before saving?">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
