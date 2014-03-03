@@ -547,6 +547,9 @@
 	.entry-content th {
 		background-color: #f7f7f7;
 	}
+	.entry-content hr {
+		clear: left;
+	}
 
 	.entry-content fieldset {
 		border: 1px solid #ccc;
