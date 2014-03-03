@@ -23,7 +23,8 @@ if (!jq) {
 
 jQuery(document).ready(function(jq) {
 	var $ = jq,
-		timer = null;
+		timer = null,
+	      imgBase = '/media/media/images/';
 
 	if ($('#curl').length > 0) {
 		$('#curl')
@@ -31,11 +32,11 @@ jQuery(document).ready(function(jq) {
 				if (timer) {
 					clearInterval(timer);
 				}
-				$('#curl-img').attr('src', '/modules/mod_incremental_registration/images/bigcurl.png');
+				$('#curl-img').attr('src', imgBase+'bigcurl.png');
 			})
 			.on('mouseout', function() {
 				timer = setTimeout(function() {
-					$('#curl-img').attr('src', '/modules/mod_incremental_registration/images/smallcurl.png');
+					$('#curl-img').attr('src', imgBase+'smallcurl.png');
 				}, 800);
 			});
 	}

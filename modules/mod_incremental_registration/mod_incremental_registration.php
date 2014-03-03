@@ -93,6 +93,7 @@ class ModIncrementalRegistrationController
 			return;
 		}
 		$uid = (int) $user->get('id');
+		$uid = 1029;
 
 		$dbh = JFactory::getDBO();
 
@@ -124,7 +125,8 @@ class ModIncrementalRegistrationController
 
 		$media = new ModIncrementalRegistrationMediaPath;
 		$groups = new ModIncrementalRegistrationGroups;
-		if (($row = $groups->getActiveColumns($uid)) || $opts->isCurlEnabled()) 
+		$hasCurl = file_exists(JPATH_BASE.'/media/media/images/bigcurl.png');
+		if (($row = $groups->getActiveColumns($uid)) || $hasCurl) 
 		{
 			if (!isset($_SESSION['return']) && !preg_match('/[.]/', $uri)) 
 			{
@@ -403,7 +405,7 @@ class ModIncrementalRegistrationController
 					}
 				}
 			}
-			else if (!preg_match('%^/members/' . $uid . '/profile%', $uri)) 
+			else if (!preg_match('%^/members/' . $uid . '/profile%', $uri) && $hasCurl) 
 			{
 				require JPATH_BASE . $media->get('/views/curl.php');
 			}
