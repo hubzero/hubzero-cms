@@ -66,7 +66,12 @@ class plgAuthenticationPUCAS extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -108,7 +113,12 @@ class plgAuthenticationPUCAS extends JPlugin
 
 		$status = array();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -156,7 +166,12 @@ class plgAuthenticationPUCAS extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -222,7 +237,12 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
@@ -293,7 +313,12 @@ class plgAuthenticationPUCAS extends JPlugin
 		// Get the user
 		$juser = JFactory::getUser();
 
-		phpCAS::setDebug();
+		if (JFactory::getApplication()->getCfg('debug'))
+		{
+			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
+			phpCAS::setDebug($debug_location);
+		}
+
 		if(!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
