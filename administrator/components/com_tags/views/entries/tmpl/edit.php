@@ -100,10 +100,9 @@ if ($this->getError())
 			</table>
 		</fieldset>
 <?php
-		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
-		//$logger = new TagsTableLog(JFactory::getDBO());
-		$logs = $this->tag->logs('list'); //$logger->getLogs($this->tag->get('id'));
-		if ($logs)
+	if ($this->tag->exists())
+	{
+		if ($logs = $this->tag->logs('list'))
 		{
 ?>
 		<h4><?php echo JText::_('Activity log'); ?></h4>
@@ -179,6 +178,7 @@ if ($this->getError())
 		</ul>
 <?php 
 		}
+	}
 ?>
 	</div>
 	<div class="col width-40 fltrt">
