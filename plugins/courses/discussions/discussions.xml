@@ -48,6 +48,10 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
 		<param name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
+		<param name="default_discussions_category" type="list" default="0" label="Asset Group Discussions" description="Global default setting for allowing discussion threads on an asset group.">
+			<option value="0">Off</option>
+			<option value="1">On</option>
+		</param>
 	</params>
 	<params group="onSectionEdit">
 		<param name="discussions_threads" type="list" default="all" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
@@ -73,6 +77,10 @@ HUBzero is a registered trademark of Purdue University.
 				<field type="spacer" />
 				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="The number of records to display at a time."/>
 				<field name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
+				<field name="default_discussions_category" type="list" default="0" label="Asset Group Discussions" description="Global default setting for allowing discussion threads on an asset group.">
+					<option value="0">Off</option>
+					<option value="1">On</option>
+				</field>
 			</fieldset>
 			<fieldset group="onSectionEdit">
 				<field name="discussions_threads" type="list" default="all" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">

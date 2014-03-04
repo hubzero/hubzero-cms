@@ -235,7 +235,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					{
 						$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
 					}
-					echo '<li class="asset-group-item"><a class="asset ' . $a.get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+					echo '<li class="asset-group-item"><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 				}
 ?>
 				</ul>
