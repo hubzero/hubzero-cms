@@ -91,13 +91,6 @@ class CollectionsModelItem extends \Hubzero\Model
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
-	 */
-	/**
-	 * Constructor
-	 * 
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
