@@ -165,24 +165,10 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->view->row_sponsors = $cs->getCitationSponsor($this->view->row->id);
 			
 			//get the citations tags
-			$sql = "SELECT t.*
-					FROM #__tags_object to1 
-					INNER JOIN #__tags t ON t.id = to1.tagid 
-					WHERE to1.tbl='citations' 
-					AND to1.objectid=" . $this->database->quote( $id ) . "
-					AND to1.label=''";
-			$this->database->setQuery($sql);
-			$this->view->tags = $this->database->loadAssocList();
+			$this->view->tags = CitationFormat::citationTags($this->view->row, JFactory::getDBO(), false);
 
 			//get the badges
-			$sql = "SELECT t.*
-					FROM #__tags_object to1 
-					INNER JOIN #__tags t ON t.id = to1.tagid 
-					WHERE to1.tbl='citations' 
-					AND to1.objectid=" . $this->database->quote( $id ) . "
-					AND to1.label='badge'";
-			$this->database->setQuery($sql);
-			$this->view->badges = $this->database->loadAssocList();
+			$this->view->badges = CitationFormat::citationBadges($this->view->row, JFactory::getDBO(), false);
 			
 			//parse citation params
 			$this->view->params = new $paramsClass($this->view->row->params);
