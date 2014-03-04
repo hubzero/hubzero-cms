@@ -95,49 +95,38 @@ class CollectionsModelItem extends \Hubzero\Model
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	/*public function __construct($oid=null)
+	/**
+	 * Constructor
+	 * 
+	 * @param      integer $id  Resource ID or alias
+	 * @param      object  &$db JDatabase
+	 * @return     void
+	 */
+	public function __construct($oid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
 		$this->_tbl = new CollectionsTableItem($this->_db);
 
-		if (is_numeric($oid) || is_string($oid))
+		if ($oid)
 		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-			if (isset($oid->reposts))
+			if (is_numeric($oid) || is_string($oid))
 			{
-				$this->set('reposts', $oid->reposts);
+				if (substr($oid, 0, 3) == 'tmp')
+				{
+					$this->_tbl->loadByDescription($oid);
+				}
+				else
+				{
+					$this->_tbl->load($oid);
+				}
 			}
-			if (isset($oid->comments))
+			else if (is_object($oid) || is_array($oid))
 			{
-				$this->set('comments', $oid->comments);
-			}
-			if (property_exists($oid, 'voted'))
-			{
-				$this->set('voted', ($oid->voted ? $oid->voted : 0));
+				$this->bind($oid);
 			}
 		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-			if (isset($oid['reposts']))
-			{
-				$this->set('reposts', $oid['reposts']);
-			}
-			if (isset($oid['comments']))
-			{
-				$this->set('comments', $oid['comments']);
-			}
-			if (isset($oid['voted']))
-			{
-				$this->set('voted', $oid['voted']);
-			}
-		}
-	}*/
+	}
 
 	/**
 	 * Returns a reference to a collections item instance
