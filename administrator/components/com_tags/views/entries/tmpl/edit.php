@@ -35,7 +35,7 @@ $canDo = TagsHelper::getActions();
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('TAGS') . ': <small><small>[ ' . $text . ' ]</small></small>', 'tags.png');
+JToolBarHelper::title(JText::_('TAGS') . ': ' . $text, 'tags.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -100,10 +100,9 @@ if ($this->getError())
 			</table>
 		</fieldset>
 <?php
-		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
-		//$logger = new TagsTableLog(JFactory::getDBO());
-		$logs = $this->tag->logs('list'); //$logger->getLogs($this->tag->get('id'));
-		if ($logs)
+	if ($this->tag->exists())
+	{
+		if ($logs = $this->tag->logs('list'))
 		{
 ?>
 		<h4><?php echo JText::_('Activity log'); ?></h4>
@@ -111,8 +110,7 @@ if ($this->getError())
 			<?php
 			foreach ($logs as $log)
 			{
-				//$user = JUser::getInstance($log->actorid);
-				$actor = $this->escape(stripslashes($log->actor('name'))); //$this->escape(stripslashes($user->get('name')))
+				$actor = $this->escape(stripslashes($log->actor('name')));
 			?>
 			<li>
 				<?php
@@ -179,6 +177,7 @@ if ($this->getError())
 		</ul>
 <?php 
 		}
+	}
 ?>
 	</div>
 	<div class="col width-40 fltrt">
