@@ -22,6 +22,9 @@ jQuery(document).ready(function(jq){
 		container = $('#posts');
 
 		if (container.length > 0) {
+			// Set overlays for lightboxed elements
+			$('a.img-link').fancybox();
+
 			container.masonry({
 				itemSelector: '.post'
 			});

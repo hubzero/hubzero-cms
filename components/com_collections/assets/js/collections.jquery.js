@@ -23,6 +23,9 @@ jQuery(document).ready(function(jq){
 
 		// Are there any posts?
 		if (container.length > 0) {
+			// Set overlays for lightboxed elements
+			$('a.img-link').fancybox();
+
 			// Masonry
 			container.masonry({
 				itemSelector: '.post'
