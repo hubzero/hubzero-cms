@@ -68,7 +68,7 @@ $base = 'index.php?option=' . $this->option;
 
 <form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
 	<div class="main section">
-		<div id="posts">
+		<div id="posts" data-base="<?php echo JURI::base(true); ?>">
 <?php 
 if ($this->rows->total() > 0) 
 {

@@ -85,7 +85,7 @@ $base = 'index.php?option=' . $this->option;
 	</fieldset>
 
 	<div class="main section">
-		<div id="posts">
+		<div id="posts" data-base="<?php echo JURI::base(true); ?>">
 <?php 
 if ($this->rows->total() > 0) 
 {
