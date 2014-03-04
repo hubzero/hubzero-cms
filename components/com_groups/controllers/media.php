@@ -160,13 +160,13 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// create base group folder
 		if (!JFolder::exists($path))
 		{
-			JFolder::create($path, 0774);
+			JFolder::create($path);
 		}
 		
 		// create uploads file
 		if (!JFolder::exists($path.DS.'uploads'))
 		{
-			JFolder::create($path.DS.'uploads', 0774);
+			JFolder::create($path.DS.'uploads');
 		}
 	}
 	
@@ -491,7 +491,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$groupUploadsFolder = $this->path . DS . 'uploads';
 		if (!is_dir($groupFolder))
 		{
-			if (!JFolder::create($groupFolder, 0777)) 
+			if (!JFolder::create($groupFolder)) 
 			{
 				$returnObj->error   = true;
 				$returnObj->message = JText::_('UNABLE_TO_CREATE_UPLOAD_PATH');
@@ -500,7 +500,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 		if (!is_dir($groupUploadsFolder))
 		{
-			if (!JFolder::create($groupUploadsFolder, 0777)) 
+			if (!JFolder::create($groupUploadsFolder)) 
 			{
 				$returnObj->error   = true;
 				$returnObj->message = JText::_('UNABLE_TO_CREATE_UPLOAD_PATH');
@@ -635,7 +635,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		//make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!JFolder::create($uploadDirectory, 0777))
+			if (!JFolder::create($uploadDirectory))
 			{
 				echo json_encode(array('error' => "Server error. Unable to create upload directory."));
 				return;
@@ -1004,7 +1004,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 		
 		// create folder
-		JFolder::create( $newFolder, 0774 );
+		JFolder::create( $newFolder);
 		
 		// output return folder
 		echo $returnFolder;

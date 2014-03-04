@@ -6897,7 +6897,7 @@ class plgProjectsFiles extends JPlugin
 		if (!is_dir( $this->prefix. $path )) 
 		{			
 			// Create path
-			if (!JFolder::create( $this->prefix. $path, 0775 )) 
+			if (!JFolder::create( $this->prefix. $path )) 
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') ) . $this->prefix. $path ;
 			}
@@ -6928,7 +6928,7 @@ class plgProjectsFiles extends JPlugin
 
 		if (!is_dir( JPATH_ROOT . $path )) 
 		{
-			if (!JFolder::create( JPATH_ROOT . $path, 0775 )) 
+			if (!JFolder::create( JPATH_ROOT . $path )) 
 			{
 				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;

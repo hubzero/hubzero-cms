@@ -39,7 +39,7 @@ class Migration20140108233319ComGroups extends Base
 			if (!is_dir( $groupUploadFolder ))
 			{
 				// create uploads folder
-				if (!\JFolder::create( $groupUploadFolder, 0774 ))
+				if (!\JFolder::create( $groupUploadFolder ))
 				{
 					$return = new \stdClass();
 					$return->error = new \stdClass();
