@@ -353,6 +353,10 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				{
 					// Yes, we are
 					$newtag = new TagsModelTag($tag_new);
+					if (!$newtag->exists())
+					{
+						$newtag->set('raw_tag', $tag_new);
+					}
 					if (!$newtag->store(true))
 					{
 						$this->setError($newtag->getError());
@@ -363,6 +367,12 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				{
 					// No, we're merging into an existing tag
 					$mtag = $tag_exist;
+				}
+
+				if ($this->getError())
+				{
+					JError::raiseError(500, $this->getError());
+					return;
 				}
 
 				foreach ($ids as $id)
@@ -377,6 +387,11 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 					{
 						$this->setError($oldtag->getError());
 					}
+				}
+
+				if ($this->getError())
+				{
+					echo $this->getError();
 				}
 
 				$this->setRedirect(
@@ -468,6 +483,10 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				{
 					// Yes, we are
 					$newtag = new TagsModelTag($tag_new);
+					if (!$newtag->exists())
+					{
+						$newtag->set('raw_tag', $tag_new);
+					}
 					if (!$newtag->store(true))
 					{
 						$this->setError($newtag->getError());
