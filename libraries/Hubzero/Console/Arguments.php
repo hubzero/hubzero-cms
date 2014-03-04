@@ -169,8 +169,24 @@ class Arguments
 				// Args with a dash but no equals sign will be considered TRUE if present
 				elseif (strpos($this->raw[$i], "-") !== false)
 				{
-					$key   = preg_replace("/^([-]{1,2})/", "", $this->raw[$i]);
-					$value = true;
+					// Try to catch clumped arguments (ex: -if as shorthand for -i -f)
+					if (preg_match("/^-([[:alpha:]]{2,})/", $this->raw[$i], $matches))
+					{
+						if (isset($matches[1]))
+						{
+							foreach (str_split($matches[1], 1) as $k)
+							{
+								$this->opts[$k] = true;
+							}
+						}
+
+						return;
+					}
+					else
+					{
+						$key   = preg_replace("/^([-]{1,2})/", "", $this->raw[$i]);
+						$value = true;
+					}
 				}
 				// Otherwise, we'll just save the arg as a single word and individual commands may use them
 				else
