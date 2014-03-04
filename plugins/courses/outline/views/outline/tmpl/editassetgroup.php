@@ -69,10 +69,20 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 
 		foreach ($plugins as $plugin)
 		{
+			$p = JPluginHelper::getPlugin('courses', $plugin['name']);
+			$default = new JRegistry($p->params);
+
 			$param = new $paramsClass(
 				(is_object($data) ? $data->toString() : $data),
 				JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . ($pth ? DS . $plugin['name'] : '') . '.xml'
 			);
+			foreach ($default->toArray() as $k => $v)
+			{
+				if (substr($k, 0, strlen('default_')) == 'default_')
+				{
+					$param->def(substr($k, strlen('default_')), $default->get($k, $v));
+				}
+			}
 			$out = $param->render('params', 'onAssetgroupEdit');
 			if (!$out) 
 			{
