@@ -50,7 +50,7 @@ class plgProjectsLinks extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Load plugin parameters
-		$this->_plugin 		= JPluginHelper::getPlugin( 'projects', 'tools' );
+		$this->_plugin 		= JPluginHelper::getPlugin( 'projects', 'links' );
 		$this->_params 		= new JParameter($this->_plugin->params);
 		
 		// Load component configs
