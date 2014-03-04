@@ -298,7 +298,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$assetGroup->set('description', JRequest::getVar('description', $assetGroup->get('description')));
 
 		// When creating a new asset group
-		if(!$id)
+		if (!$id)
 		{
 			$assetGroup->set('unit_id', JRequest::getInt('unit_id', 0));
 			$assetGroup->set('parent', JRequest::getInt('parent', 0));
@@ -306,8 +306,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$assetGroup->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
-		if ($params = JRequest::getVar('params', false, 'post'))
-		{
+		//if ($params = JRequest::getVar('params', false, 'post'))
+		//{
 			$paramsClass = 'JParameter';
 			$mthd        = 'bind';
 			if (version_compare(JVERSION, '1.6', 'ge'))
@@ -317,10 +317,39 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			}
 
 			$p = new $paramsClass('');
-			$p->$mthd($params);
+
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('folder AS type, element AS name, params')
+				->from('#__extensions')
+				->where('enabled >= 1')
+				->where('type =' . $db->Quote('plugin'))
+				->where('state >= 0')
+				->where('folder =' . $db->Quote('courses'))
+				->order('ordering');
+
+			if ($plugins = $db->setQuery($query)->loadObjectList())
+			{
+				foreach ($plugins as $plugin)
+				{
+					$default = new $paramsClass($plugin->params);
+					foreach ($default->toArray() as $k => $v)
+					{
+						if (substr($k, 0, strlen('default_')) == 'default_')
+						{
+							$p->set(substr($k, strlen('default_')), $default->get($k, $v));
+						}
+					}
+				}
+			}
+
+			if ($params = JRequest::getVar('params', false, 'post'))
+			{
+				$p->$mthd(JRequest::getVar('params', array(), 'post'));
+			}
 
 			$assetGroup->set('params', $p->toString());
-		}
+		//}
 
 		// Save the asset group
 		if (!$assetGroup->store())
@@ -343,7 +372,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				'offering_alias'   => $this->offering_alias
 			),
 			$status['code'],
-			$status['text']);
+			$status['text']
+		);
 	}
 
 	/**
