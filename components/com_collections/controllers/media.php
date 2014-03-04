@@ -143,11 +143,12 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			{
 				$item->set('state', 0);
 				$item->set('description', $listdir);
-				if ($item->store())
+				if (!$item->store())
 				{
-					$listdir = $item->get('id');
+					$this->setError($item->getError());
 				}
 			}
+			$listdir = $item->get('id');
 		}
 
 		// Create database entry
