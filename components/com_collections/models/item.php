@@ -89,6 +89,39 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	private $_comments = null;
 
 	/**
+	 * Constructor
+	 * 
+	 * @param      integer $id  Resource ID or alias
+	 * @param      object  &$db JDatabase
+	 * @return     void
+	 */
+	public function __construct($oid=null)
+	{
+		$this->_db = JFactory::getDBO();
+
+		$this->_tbl = new CollectionsTableItem($this->_db);
+
+		if ($oid)
+		{
+			if (is_numeric($oid) || is_string($oid))
+			{
+				if (substr($oid, 0, 3) == 'tmp')
+				{
+					$this->_tbl->loadByDescription($oid);
+				}
+				else
+				{
+					$this->_tbl->load($oid);
+				}
+			}
+			else if (is_object($oid) || is_array($oid))
+			{
+				$this->bind($oid);
+			}
+		}
+	}
+
+	/**
 	 * Returns a reference to a collections item instance
 	 *
 	 * @param      mixed $oid Integer or string

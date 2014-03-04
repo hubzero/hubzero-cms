@@ -184,6 +184,21 @@ class CollectionsTableItem extends JTable
 	}
 
 	/**
+	 * Load a record and bind to $this
+	 * 
+	 * @param      string $oid Description
+	 * @return     boolean True on success
+	 */
+	public function loadByDescription($oid=NULL)
+	{
+		$fields = array(
+			'description' => trim((string) $oid)
+		);
+
+		return parent::load($fields);
+	}
+
+	/**
 	 * Load a record by its alias and bind data to $this
 	 * 
 	 * @param      string $oid Record alias
