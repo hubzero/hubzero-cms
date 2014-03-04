@@ -303,8 +303,8 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$assetGroup->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
-		//if ($params = JRequest::getVar('params', false, 'post'))
-		//{
+		if (($params = JRequest::getVar('params', false, 'post')) || !$id)
+		{
 			$paramsClass = 'JParameter';
 			$mthd        = 'bind';
 			if (version_compare(JVERSION, '1.6', 'ge'))
@@ -340,13 +340,13 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 				}
 			}
 
-			if ($params = JRequest::getVar('params', false, 'post'))
+			if ($params)
 			{
-				$p->$mthd(JRequest::getVar('params', array(), 'post'));
+				$p->$mthd($params);
 			}
 
 			$assetGroup->set('params', $p->toString());
-		//}
+		}
 
 		// Save the asset group
 		if (!$assetGroup->store())
