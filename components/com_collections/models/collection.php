@@ -619,7 +619,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		{
 			case 'parsed':
 				$content = $this->get('description.parsed', null);
-				if ($content == null)
+				if ($content === null)
 				{
 					$config = array(
 						'option'   => $this->get('option', JRequest::getCmd('option')),
@@ -630,14 +630,14 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('description'));
+					$content = stripslashes((string) $this->get('description', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
 						&$config
 					));
 
-					$this->set('description.parsed', $this->get('description'));
+					$this->set('description.parsed', (string) $this->get('description', ''));
 					$this->set('description', $content);
 
 					return $this->description($as, $shorten);
@@ -646,7 +646,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->description('description.parsed'));
+				$content = strip_tags($this->description('parsed'));
 			break;
 
 			case 'raw':

@@ -368,62 +368,54 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 	public function description($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
 				$content = $this->get('description.parsed', null);
-				if ($content !== null)
+				if ($content === null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => $this->get('option', JRequest::getCmd('option', 'com_collections')),
+						'scope'    => 'collections',
+						'pagename' => 'collections',
+						'pageid'   => 0,
+						'filepath' => '',
+						'domain'   => 'collection'
+					);
+
+					$content = stripslashes((string) $this->get('description', ''));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('description.parsed', (string) $this->get('description', ''));
+					$this->set('description', $content);
+
+					return $this->description($as, $shorten);
 				}
-
-				$config = array(
-					'option'   => $this->get('option', JRequest::getCmd('option')),
-					'scope'    => 'collections',
-					'pagename' => 'collections',
-					'pageid'   => 0,
-					'filepath' => '',
-					'domain'   => 'collection'
-				);
-
-				$content = stripslashes($this->get('description'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('description.parsed', $this->get('description'));
-				$this->set('description', $content);
-
-				return $this->description($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->description('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('description'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten);
+		}
+		return $content;
 	}
 }
 
