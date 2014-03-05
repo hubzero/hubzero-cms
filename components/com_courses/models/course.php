@@ -793,6 +793,27 @@ class CoursesModelCourse extends CoursesModelAbstract
 	}
 
 	/**
+	 * Get a course logo
+	 *
+	 * @return     string
+	 */
+	public function logo()
+	{
+		$path = '';
+
+		if ($file = $this->get('logo'))
+		{
+			$path = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('id') . '/' . $file;
+			if (file_exists(JPATH_ROOT . $path))
+			{
+				$path = \JURI::base(true) . $path;
+			}
+		}
+
+		return $path;
+	}
+
+	/**
 	 * Get the content of the entry
 	 * 
 	 * @param      string  $as      Format to return state in [text, number]
@@ -802,61 +823,54 @@ class CoursesModelCourse extends CoursesModelAbstract
 	public function description($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($content = $this->get('description.parsed'))
+				$content = $this->get('description.parsed', null);
+				if ($content === null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => 'com_courses',
+						'scope'    => '',
+						'pagename' => $this->get('alias'),
+						'pageid'   => 0, //$this->get('id'),
+						'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS),
+						'domain'   => $this->get('alias')
+					);
+
+					$content = stripslashes((string) $this->get('description', ''));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						'com_courses.course.description',
+						&$this,
+						&$config
+					));
+
+					$this->set('description.parsed', (string) $this->get('description', ''));
+					$this->set('description', $content);
+
+					return $this->description($as, $shorten);
 				}
-
-				$config = array(
-					'option'   => 'com_courses',
-					'scope'    => '',
-					'pagename' => $this->get('alias'),
-					'pageid'   => 0, //$this->get('id'),
-					'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS),
-					'domain'   => $this->get('alias')
-				);
-
-				$content = stripslashes($this->get('description'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					'com_courses.course.description',
-					&$this,
-					&$config
-				));
-
-				$this->set('description.parsed', $this->get('description'));
-				$this->set('description', $content);
-
-				return $this->description($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('description'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 }
 

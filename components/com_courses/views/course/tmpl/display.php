@@ -56,8 +56,8 @@ $this->js('courses.overview.js');
 <div class="course section intro<?php echo ($this->course->get('logo')) ? ' with-identity' : ''; ?>">
 	<div class="aside">
 		<p class="course-identity">
-		<?php if ($this->course->get('logo')) { ?>
-			<img src="/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+		<?php if ($logo = $this->course->logo()) { ?>
+			<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
 		<?php } else { ?>
 			<span></span>
 		<?php } ?>
