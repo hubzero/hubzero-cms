@@ -200,6 +200,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				case 'savecalendar':     $arr['html'] = $this->saveCalendar();       break;
 				case 'deletecalendar':   $arr['html'] = $this->deleteCalendar();     break;
 				case 'refreshcalendar':  $arr['html'] = $this->refreshCalendar();    break;
+				case 'events':           $this->events();                            break;
 				default:                 $arr['html'] = $this->display();            break;
 			}
 		}
@@ -236,157 +237,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				'layout'  => 'display'
 			)
 		);
-		
-		//refresh calendars
-		$eventsCalendar = new EventsCalendar( $this->database );
-		$eventsCalendar->refreshAll( $this->group );
-		
-		//get calendar sync errors
-		$syncErrors = array_filter($eventsCalendar->getErrors());
-		if (count($syncErrors) > 0 && $eventsCalendar->failed_attempts > 3)
-		{
-			//set message to display to user
-			$this->setError( JText::_('Unable to sync the following group calendar(s). The group Managers have been notified. <br /> - ' . implode('<br /> - ', $syncErrors)));
-			
-			//build message sent to managers
-			$subject  = JText::_('Group Calendar Subscription Sync Issue');
-			$plain    = 'There is an issue with the following group calendar subscriptions:' . "\n";
-			$plain   .= '---------------------------------------------------------------------------------------------------' . "\n\n";
-			$plain   .= " - " . implode( "\n - ", $syncErrors);
-			
-			// build from details
-			$config = JFactory::getConfig();
-			$from['name'] = $this->group->get('description') . " Group on " . $config->getValue("fromname");
-			$from['email'] = $config->getValue("mailfrom");
-			
-			// get all group members
-			$groupManagers = array();
-			foreach ($this->group->get('managers') as $manager)
-			{
-				if ($profile = \Hubzero\User\Profile::getInstance($manager))
-				{
-					$groupManagers[$profile->get('email')] = $profile->get('name');
-				}
-			}
-			
-			// create message object
-			$message = new \Hubzero\Mail\Message();
-		
-			// set message details and send
-			$message->setSubject($subject)
-					->addFrom($from['email'], $from['name'])
-					->setTo($groupManagers)
-					->addPart($plain, 'text/plain')
-					->send();
-		}
-		
-		// An array of the names of the days of the week
-		$days_of_week = array(
-			JText::_('PLG_GROUPS_CALENDAR_SUNDAY_SHORT'),
-			JText::_('PLG_GROUPS_CALENDAR_MONDAY_SHORT'),
-			JText::_('PLG_GROUPS_CALENDAR_TUESDAY_SHORT'),
-			JText::_('PLG_GROUPS_CALENDAR_WEDNESDAY_SHORT'),
-			JText::_('PLG_GROUPS_CALENDAR_THURSDAY_SHORT'),
-			JText::_('PLG_GROUPS_CALENDAR_FRIDAY_SHORT'),
-			JText::_('PLG_GROUPS_CALENDAR_SATURDAY_SHORT')
-		);
-		
-		//class to determine if we allow double click to create
-		$class = ($this->params->get('allow_quick_create', 1) && in_array($this->juser->get('id'), $this->group->get('members'))) ? 'quick-create' : 'no-quick-create';
-		
-		// Create Calendar
-		$calendarHTML = "<div id=\"calendar\" class=\"{$class}\">";
-		$calendarHTML .= "<table>"."\n";
-		$calendarHTML .= "<thead>"."\n";
-		$calendarHTML .= "<tr>"."\n";
-		
-		foreach ($days_of_week as $day_of_week) 
-		{
-			$calendarHTML .= "<th>".$day_of_week."</th>"."\n";
-		}
-
-		$calendarHTML .= "</tr>"."\n";
-		$calendarHTML .= "</thead>"."\n";
-
-		//create the calendar days
-		$calendarHTML .= "<tbody>"."\n";
-		$calendarHTML .= "<tr class=\"calendar-row\">"."\n";
-
-		// Fix to fill in end days out of month correctly
-		$running_day = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->format('w');
-		$days_in_month = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->format('t');
-		$today = JHTML::_('date', JFactory::getDate(),'Y-m-d');
-		
-		$days_in_this_week = 1;
-		$day_counter = 0;
-		$dates_array = array();
-
-		for ($x = 0; $x < $running_day; $x++) 
-		{
-			$calendarHTML .= '<td class="no-date">&nbsp;</td>' ."\n";
-			$days_in_this_week++;
-		}
-
-		for ($list_day = 1; $list_day <= $days_in_month; $list_day++) 
-		{
-			$day = mktime(0,0,0,$this->month,$list_day,$this->year);
-			$weekend = JFactory::getDate($day)->format("D");
-			$class = ($weekend == 'Sat' || $weekend == 'Sun') ? ' weekend' : '';
-			
-			//check to see if today
-			$class .= (JFactory::getDate($day)->format("Y-m-d") == $today) ? ' today' : '';
-			
-			$dateString = $this->year . '-' . $this->month . '-' . JFactory::getDate($day)->format('d') . ' 08:00:00';
-			$calendarHTML .= "<td id=\"box-{$list_day}\" class=\"{$class}\" data-date=\"{$dateString}\">";
-			$calendarHTML .= "<div class=\"day\">{$list_day}</div>";
-			
-			//get any group events
-			$events = $this->_getEvents($list_day, $this->month, $this->year, $this->calendar);
-			
-			//display any events	
-			$calendarHTML .= "<ul>";
-			
-			foreach ($events as $event) 
-			{
-				$event_url = JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
-				$calendarHTML .= "<li class=\"{$event->event_calendar_color}\">";
-				$calendarHTML .= "<a class=\"event\" href=\"{$event_url}\">".$event->title."</a>";
-				$calendarHTML .= "</li>";
-			}
-			
-			$calendarHTML .= "</ul>";
-			
-		    $calendarHTML.= '</td>';
-			if ($running_day == 6) 
-			{
-				$calendarHTML.= '</tr>';
-				if (($day_counter+1) != $days_in_month) 
-				{
-					$calendarHTML.= '<tr class="calendar-row">';
-				}
-				$running_day = -1;
-				$days_in_this_week = 0;
-			}
-
-			$days_in_this_week++;
-			$running_day++;
-			$day_counter++;
-		}
-
-		/* finish the rest of the days in the week */
-		if ($days_in_this_week < 8) 
-		{
-			for ($x = 1; $x <= (8 - $days_in_this_week); $x++) 
-			{
-				$calendarHTML.= '<td class="no-date"> </td>';
-			}
-		}
-
-		//Finish off the table
-		$calendarHTML .= "</tr>"."\n";
-		$calendarHTML .= "</tbody>"."\n";
-		$calendarHTML .= "</table>"."\n";
-		$calendarHTML .= "</div>"."\n";
 
 		//push the calendar content to view
 		$view->month        = $this->month;
@@ -398,16 +248,19 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->option       = $this->option;
 		$view->group        = $this->group;
 		$view->params       = $this->params;
-		$view->calendarHTML = $calendarHTML;
 		
 		//get calendars
-		
+		$eventsCalendar = new EventsCalendar( $this->database );
 		$view->calendars = $eventsCalendar->getCalendars( $this->group );
 		
 		//add ddslick lib
-		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
+		//\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
+		//\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 		
+		\Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.css');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.print.css', 'text/css', 'print');
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -416,6 +269,60 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			}
 		}
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * [events description]
+	 * @return [type] [description]
+	 */
+	public function events()
+	{
+		$events = array();
+
+		$start = JRequest::getInt('start', 0);
+		$end   = JRequest::getInt('end', 0);
+
+		//$start = date("Y-m-d H:i:s", $start);
+		//$start = JFactory::getDate($start)->format('Y-m-d H:i:s');
+		$start = JHTML::_('date', $start, "Y-m-d H:i:s");
+		$end   = JHTML::_('date', $end, "Y-m-d H:i:s");
+		
+		// get raw events
+		$rawEvents = $this->_getEvents($start, $end);
+		
+		foreach ($rawEvents as $rawEvent)
+		{
+			$e = array(
+				'id'     => $rawEvent->id,
+				'title'  => $rawEvent->title,
+				'allDay' => false,
+				'start'  => JFactory::getDate($rawEvent->publish_up)->toUnix(),
+				'url'    => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id=' . $rawEvent->id)
+			);
+
+			if ($rawEvent->publish_down != '0000-00-00 00:00:00')
+			{
+				$e['end'] = JFactory::getDate($rawEvent->publish_down)->toUnix();
+			}
+
+			switch ($rawEvent->event_calendar_color)
+			{
+				case 'blue':
+					$e['backgroundColor'] = '#1679C4';
+					$e['textColor']       = '#FFFFFF';
+					break;
+				default:
+					$e['backgroundColor'] = '#666';
+					$e['textColor']       = '#000';
+			}
+
+			array_push($events, $e);
+		}
+
+
+
+		echo json_encode($events);
+		exit();
 	}
 	
 	
@@ -1836,11 +1743,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 * @param      integer $year  Year to display for
 	 * @return     array
 	 */
-	private function _getEvents($day, $month, $year, $calendar = 0)
+	private function _getEvents($start, $end, $calendar = 0)
 	{
-		$start = JFactory::getDate(mktime(0,0,0,$month,$day,$year))->format("Y-m-d H:i:s");
-		$end = JFactory::getDate(mktime(23,59,59,$month,$day,$year))->format("Y-m-d H:i:s");
-
 		$database = JFactory::getDBO();
 		$sql = "SELECT e.*, ec.title AS event_calendar_title, ec.color AS event_calendar_color
 				FROM #__events AS e
@@ -1857,6 +1761,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$sql .= " AND ec.id=" . $database->quote( $calendar );
 		}
+
+		// order
+		$sql .= " ORDER BY e.publish_up ASC";
 		
 		$database->setQuery($sql);
 		return $database->loadObjectList();

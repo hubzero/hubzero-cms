@@ -27,17 +27,41 @@ HUB.Plugins.GroupCalendar = {
 	jQuery: jq,
 	
 	initialize: function() {
+		HUB.Plugins.GroupCalendar.calendar();
 		//fancy calendar picker
-		HUB.Plugins.GroupCalendar.calendarPicker();
+		//HUB.Plugins.GroupCalendar.calendarPicker();
 		
 		//double click to create event
-		HUB.Plugins.GroupCalendar.quickEventCreate();
+		//HUB.Plugins.GroupCalendar.quickEventCreate();
 		
 		//edit event js
 		HUB.Plugins.GroupCalendar.editEvent();
 		
 		//handle subscribe url changing
 		HUB.Plugins.GroupCalendar.subscribeUrl();
+	},
+
+	calendar: function()
+	{
+		if (!$('#calendar').length)
+		{
+			return;
+		}
+
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'title prev,next',
+				center: '',
+				right: 'month,agendaWeek,agendaDay today'
+			},
+			weekMode: 'variable',
+			eventSources: [
+				"/groups/smoakey/calendar?action=events"
+			],
+			dayClick: function(date, allDay, jsEvent, view) {
+    			
+   			}
+		});
 	},
 	
 	calendarPicker: function()

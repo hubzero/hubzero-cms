@@ -51,130 +51,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 <?php endif; ?>
 
-<div class="" id="calendar-box">
-	<form id="goto_date" name="goto_date" action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar'); ?>" method="get">
-		<div id="calendar-nav">
-			<div class="date-title">
-				<?php echo date("F Y", mktime(0,0,0,$this->month,1,$this->year)); ?>
-			</div>
-			<select name="month" id="month-picker">
-				<?php 
-					for($i=1, $n=12; $i<=$n; $i++)
-					{
-						$sel = ($i == $this->month) ? 'selected' : '';
-						$val = (strlen((string)$i) == 1) ? '0' . $i : $i;
-						echo "<option {$sel} value=\"{$val}\">" . date("F",mktime(0,0,0,$i,1,2020)) . "</option>";
-					}
-				?>
-			</select>
-			<select name="year" id="year-picker">
-				<?php
-					$year_start = date("Y");
-					$year_end = $year_start + 15;
-					for ($i=($year_start-1); $i<$year_end; $i++) 
-					{
-						$sel = ($i == $this->year) ? 'selected' : '';
-						echo "<option {$sel} value=\"{$i}\">" . date("Y",mktime(0,0,0,1,1,$i)) . "</option>";
-					}
-				?>
-			</select>
-			<noscript>
-				<input type="submit" value="Go" />
-			</noscript>
-			<!--[if IE 8]>
-				<input type="submit" value="Go" />
-			<![endif]-->
-			
-			<label>
-				<!--[if IE 8]>
-					<input type="submit" value="Go" />
-				<![endif]-->
-				<select name="calendar" id="calendar-picker">
-					<option value="0"><?php echo JText::_('All Calendars'); ?></option>
-					<?php foreach ($this->calendars as $calendar) : ?>
-						<?php $sel = ($calendar->id == $this->calendar) ? 'selected="selected"' : ''; ?>
-						<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->color) ? strtolower($calendar->color) : 'gray'; ?>.png" value="<?php echo $calendar->id; ?>"><?php echo $calendar->title; ?></option>
-					<?php endforeach; ?>
-				</select>
-			</label>
-			
-			<br class="clear" />
-		</div>
-		
-		<?php echo $this->calendarHTML; ?>	
-		<?php
-			$thisCalendar            = new stdClass;
-			$thisCalendar->id        = 0;
-			$thisCalendar->published = 1;
-			$thisCalendar->title     = "All Calendars";
-			foreach($this->calendars as $calendar)
-			{
-				if ($calendar->id == $this->calendar)
-				{
-					$thisCalendar = $calendar;
-				}
-			}
-		?>
-		<?php if ($this->params->get('allow_subscriptions', 1)) : ?>
-			<div id="subscribe-nav">
-				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=groups&extension=calendar&page=subscriptions') ;?>">
-					<?php echo JText::_('Need Help?'); ?>
-				</a>
-				<div class="title">
-					<?php echo JText::_('Subscribe'); ?>
-				</div>
-			</div>
-			<div id="subscribe">
-				
-				<p class="info">
-					<?php echo JText::_('If you are prompted to enter a username & password when subscribing to a calendar, enter your HUB credentials.'); ?>
-				</p>
-				<br />
-				<p><strong><?php echo JText::_('Select the calendars you wish to subscribe to:'); ?></strong></p>
-				
-				<label>
-					<input type="checkbox" value="0" checked="checked" />
-					<img src="/plugins/groups/calendar/images/swatch-gray.png" />
-					<?php echo JText::_('Uncategorized Events'); ?>
-				</label>
-				<?php $cals = array(0); ?>
-				<?php foreach ($this->calendars as $calendar) : ?>
-					<?php
-						$enabled = false;
-						if ($calendar->published == 1)
-						{
-							$enabled = true;
-							$cals[] = $calendar->id;
-						}
-					?>
-					<label <?php echo (!$enabled) ? 'class="disabled"' : '' ?>>
-						<input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?> name="subscribe[]"  type="checkbox" value="<?php echo $calendar->id; ?>" />
-						<?php if ($calendar->color) : ?>
-							<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" />
-						<?php else : ?>
-							<img src="/plugins/groups/calendar/images/swatch-gray.png" />
-						<?php endif; ?>
-						<?php echo $calendar->title; ?>
-						<?php
-							if(!$enabled)
-							{
-								echo JText::_('(Calendar is not publishing events.)');
-							}
-						?>
-					</label>
-				<?php endforeach; ?>
-				
-				<?php
-					$link = $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn') . DS . 'calendar' . DS . 'subscribe' . DS . implode(',', $cals) . '.ics';
-					$httpsLink = 'https://' . $link;
-					$webcalLink = 'webcal://' . $link;
-				?>
-				<br />
-				<label id="subscribe-link"><strong><?php echo JText::_('Click the subscribe button to the right or add the link below to add as a calendar subscription:'); ?></strong>
-					<input type="text" value="<?php echo $httpsLink; ?>" /> 
-					<a class="btn feed download https" href="<?php echo $httpsLink; ?>">Download</a>
-					<a class="btn feed subscribe-webcal webcal" href="<?php echo $webcalLink; ?>">Subscribe</a>
-				</label>
-			</div>
-		<?php endif; ?>
-</div><!-- / subject -->
+<div id="calendar"></div>
+
+<?php
+	if ($this->params->get('allow_subscriptions', 1))
+	{
+		$this->view('subscribe')
+			->set('calendar', $this->calendar)
+			->set('calendars', $this->calendars)
+			->set('group', $this->group)
+			->display();
+	}
+?>

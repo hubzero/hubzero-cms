@@ -13,7 +13,11 @@
 
 */
 
-/* Calendar Nav */
+#calendar table {
+	border-bottom: none;
+}
+
+/* 
 #page_main .group_calendar {
 	overflow: visible;
 	margin-top: 0px;
@@ -178,7 +182,6 @@
 	left: 100px; 
 	}
 	
-/* Calender Colors */
 #calendar ul .red a { color: #c52337; }
 #calendar ul .red a:before { color: #c52337; }
 #calendar ul .red a.active, #calendar ul .red a:hover { background: #c52337; color: #FFFFFF; }
@@ -213,6 +216,7 @@
 #calendar ul .brown a:before { color: #993f0d; }
 #calendar ul .brown a.active, #calendar ul .brown a:hover { background: #993f0d; color: #FFFFFF; }
 #calendar ul .brown a.active:before, #calendar ul .brown a:hover:before { color: #FFFFFF; }
+*/
 
 #subscribe-nav {
 	border: 1px solid #cfcfcf;
