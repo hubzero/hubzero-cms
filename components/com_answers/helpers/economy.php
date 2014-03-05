@@ -64,7 +64,7 @@ class AnswersEconomy extends JObject
 	{
 		// get all closed questions
 		$sql = "SELECT q.id, q.created_by AS q_owner, a.created_by AS a_owner
-				FROM #__answers_questions AS q LEFT JOIN #__answers_responses AS a ON q.id=a.qid AND a.state=1
+				FROM #__answers_questions AS q LEFT JOIN #__answers_responses AS a ON q.id=a.question_id AND a.state=1
 				WHERE q.state=1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
