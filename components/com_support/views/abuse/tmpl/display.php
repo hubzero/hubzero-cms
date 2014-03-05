@@ -83,7 +83,7 @@ if ($this->report) {
 			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="category" value="<?php echo $this->escape($this->report->parent_category); ?>" />
+			<input type="hidden" name="category" value="<?php echo $this->escape($this->cat); ?>" />
 			<input type="hidden" name="referenceid" value="<?php echo $this->escape($this->refid); ?>" />
 			<input type="hidden" name="link" value="<?php echo $this->escape($this->report->href); ?>" />
 

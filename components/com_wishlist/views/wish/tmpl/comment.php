@@ -94,7 +94,7 @@ if ($this->reply->comment)
 		<a class="icon-reply reply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=reply&cat=wishcomment&id=' . $this->listid . '&refid=' . $this->reply->id . '&wishid=' . $this->wishid); ?>" id="rep_<?php echo $this->reply->id; ?>"><?php echo JText::_('COM_WISHLIST_REPLY'); ?></a>
 <?php } ?>
 <?php if ($this->abuse) { ?>
-		<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->reply->id . '&parent=' . $this->wishid); ?>"><?php echo JText::_('COM_WISHLIST_REPORT_ABUSE'); ?></a>
+		<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=wishcomment&id=' . $this->reply->id . '&parent=' . $this->wishid); ?>"><?php echo JText::_('COM_WISHLIST_REPORT_ABUSE'); ?></a>
 <?php } ?>
 <?php if ($this->juser->get('id') == $this->reply->added_by) { ?>
 		<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=deletereply&replyid=' . $this->reply->id); ?>"><?php echo JText::_('COM_WISHLIST_DELETE_COMMENT'); ?></a>
