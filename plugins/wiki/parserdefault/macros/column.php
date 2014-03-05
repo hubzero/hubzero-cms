@@ -83,7 +83,7 @@ class ColumnMacro extends WikiMacro
 		if (is_numeric($text))
 		{
 			$this->_columns = intval($text);
-			return;
+			return '<div class="grid">' . "\n";
 		}
 
 		if (trim($text) == 'start') 
@@ -94,14 +94,14 @@ class ColumnMacro extends WikiMacro
 			
 			switch ($this->_columns)
 			{
-				case 6: $cls[] = 'six';   break;
-				case 5: $cls[] = 'five';  break;
-				case 4: $cls[] = 'four';  break;
-				case 3: $cls[] = 'three'; break;
-				case 2: $cls[] = 'two';   break;
+				case 6: $cls[] = 'span2';   break;
+				//case 5: $cls[] = 'five';  break;
+				case 4: $cls[] = 'span3';  break;
+				case 3: $cls[] = 'span4'; break;
+				case 2: $cls[] = 'span6';   break;
 				default: break;
 			}
-			switch ($this->_cursor)
+			/*switch ($this->_cursor)
 			{
 				case 6:  $cls[] = 'sixth';  break;
 				case 5:  $cls[] = 'fifth';  break;
@@ -110,6 +110,10 @@ class ColumnMacro extends WikiMacro
 				case 2:  $cls[] = 'second'; break;
 				case 1:
 				default: $cls[] = 'first';  break;
+			}*/
+			if ($this->_cursor == $this->_columns)
+			{
+				$cls[] = 'omega';
 			}
 			
 			$atts = array();
@@ -141,10 +145,10 @@ class ColumnMacro extends WikiMacro
 		}
 		elseif (trim($text) == 'end') 
 		{
-			$div  = '</div>';
+			$div  = '</div><!-- / .col -->';
 			if ($this->_cursor == $this->_columns)
 			{
-				$div .= "\n" . '<div class="clear"><!-- columns --></div>';
+				$div .= "\n" . '</div><!-- / .grid -->';
 				$this->_cursor = 0;
 			}
 		}
