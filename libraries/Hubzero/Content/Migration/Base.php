@@ -84,6 +84,68 @@ class Base
 	}
 
 	/**
+	 * Try to get the root credentials from the .my.cnf file
+	 *
+	 * @return (mixed) $return - array of creds or false on failure
+	 **/
+	private function getRootCredentials()
+	{
+		$conf_file = DS . 'root' . DS . '.my.cnf';
+
+		if (file_exists($conf_file))
+		{
+			$conf = parse_ini_file($conf_file, true);
+			$user = $conf['client']['user'];
+			$pw   = $conf['client']['password'];
+
+			if ($user && $pw)
+			{
+				return array('user' => $user, 'password' => $pw);
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Try to run commands as MySql root user
+	 *
+	 * @return (bool) $success - if successfully upgraded to root access
+	 **/
+	public function runAsRoot()
+	{
+		if ($creds = $this->getRootCredentials())
+		{
+			// Instantiate a config object
+			$jconfig = new \JConfig();
+
+			$db = \JDatabase::getInstance(
+				array(
+					'driver'   => 'pdo',
+					'host'     => $jconfig->host,
+					'user'     => $creds['user'],
+					'password' => $creds['password'],
+					'database' => $jconfig->db,
+					'prefix'   => 'jos_'
+				)
+			);
+
+			// Test the connection
+			if (!$db->connected())
+			{
+				return false;
+			}
+			else
+			{
+				$this->db = $db;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Add, as needed, the component to the appropriate table, depending on the Joomla version
 	 *
 	 * @param $name           - (string) component name
