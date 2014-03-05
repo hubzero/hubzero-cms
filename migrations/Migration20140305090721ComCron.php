@@ -18,7 +18,7 @@ class Migration20140305090721ComCron extends Base
 		// add publish_up
 		if (!$this->db->tableHasField('#__cron_jobs', 'publish_up'))
 		{
-			$query .= "ALTER TABLE `#__cron_jobs` ADD `publish_up` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
+			$query = "ALTER TABLE `#__cron_jobs` ADD `publish_up` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -26,7 +26,7 @@ class Migration20140305090721ComCron extends Base
 		// add publish_down
 		if (!$this->db->tableHasField('#__cron_jobs', 'publish_down'))
 		{
-			$query .= "ALTER TABLE `#__cron_jobs` ADD `publish_down` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
+			$query = "ALTER TABLE `#__cron_jobs` ADD `publish_down` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -40,7 +40,7 @@ class Migration20140305090721ComCron extends Base
 		// drop publish_up
 		if ($this->db->tableHasField('#__cron_jobs', 'publish_up'))
 		{
-			$query .= "ALTER TABLE `#__cron_jobs` DROP COLUMN `publish_up`;";
+			$query = "ALTER TABLE `#__cron_jobs` DROP COLUMN `publish_up`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -48,7 +48,7 @@ class Migration20140305090721ComCron extends Base
 		// drop publish_down
 		if ($this->db->tableHasField('#__cron_jobs', 'publish_down'))
 		{
-			$query .= "ALTER TABLE `#__cron_jobs` DROP COLUMN `publish_down`;";
+			$query = "ALTER TABLE `#__cron_jobs` DROP COLUMN `publish_down`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
