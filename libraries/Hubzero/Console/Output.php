@@ -286,7 +286,7 @@ class Output
 	{
 		$style = array(
 			'format'      => '0',
-			'color'       => ' ',
+			'color'       => '',
 			'indentation' => $this->defaultIndentation
 		);
 
