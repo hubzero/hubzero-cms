@@ -598,7 +598,7 @@ class WikiParser
 		$scope     = $this->get('scope');
 
 		// Flag to NOT link contents
-		if ($href[0] == '!') 
+		if (substr($href, 0, 1) == '!') 
 		{
 			$whole = trim($whole, '[]');
 			$whole = ltrim($whole, '!');
