@@ -102,6 +102,9 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		));
 		$this->view->filters['state'] = array(0, 1, 2);
 
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+
 		$p = new WikiModelBook();
 
 		// Get record count
@@ -155,10 +158,10 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 		
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
-		if (is_array($ids) && !empty($ids)) 
+		$id = JRequest::getVar('id', array(0));
+		if (is_array($id) && !empty($id)) 
 		{
-			$id = $ids[0];
+			$id = $id[0];
 		}
 
 		if (is_object($row))
@@ -171,7 +174,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 			$this->view->row = new WikiModelPage(intval($id));
 		}
 
-		if (!$id) 
+		if (!$this->view->row->exists()) 
 		{
 			// Creating new
 			$this->view->row->set('created_by', $this->juser->get('id'));
@@ -191,11 +194,22 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save changes to an entry
+	 * Save changes to an entry and go back to edit form
 	 * 
 	 * @return     void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save changes to an entry
+	 * 
+	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
+	 * @return     void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -240,11 +254,18 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		$row->tag($page['tags']);
 
-		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Page successfully saved')
-		);
+		if ($redirect)
+		{
+			// Set the redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Page successfully saved')
+			);
+		}
+
+		JRequest::setVar('id', $row->get('id'));
+
+		$this->editTask($row);
 	}
 
 	/**

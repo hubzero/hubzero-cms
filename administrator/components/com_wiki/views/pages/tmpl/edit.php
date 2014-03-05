@@ -10,11 +10,13 @@ JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page').': ' . $text, '
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
+	JToolBarHelper::apply();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -107,12 +109,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('PARAMETERS'); ?></span></legend>
 
 			<?php 
-			//$paramsClass = 'JRegistry';
-			//if (version_compare(JVERSION, '1.6', 'lt'))
-			//{
-				$paramsClass = 'JParameter';
-			//}
-			$params = new $paramsClass($this->row->get('params'), JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
+			$params = new JParameter($this->row->get('params'), JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
 			echo $params->render();
 			?>
 
