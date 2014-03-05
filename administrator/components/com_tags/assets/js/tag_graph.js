@@ -1,8 +1,9 @@
 var jq = jQuery.noConflict();
 
-jQuery(function($)
+jQuery(function(jq)
 {
-	var w = 960,
+	var $ = jq,
+	    w = 960,
 	    h = 600;
 
 	var tag_editors = function(json)
