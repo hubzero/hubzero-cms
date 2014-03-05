@@ -312,7 +312,7 @@ if ($this->admin && !$this->getError()) {
 							<th class="<?php echo $status; ?>">
 								<span class="entry-id"><?php echo $item->id; ?></span>
 							</th>
-							<td>
+							<td<?php if ($item->reports) { echo ' colspan="' . ($this->wishlist->banking ? 4 : 3) . '"'; } ?>>
 						<?php if (!$item->reports) { ?>
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid .'&wishid='.$item->id . $filters); ?>"><?php echo $item->subject; ?></a><br />
 								<span class="entry-details">
