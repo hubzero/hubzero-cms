@@ -234,9 +234,16 @@ class plgCitationEndnote extends JPlugin
 					}
 				}
 			}
+			// make sure all tags are separated by comma
+			if (isset($cite['tags']))
+			{
+				$cite['tags'] = str_replace("\n", ',', $cite['tags']);
+				$cite['tags'] = str_replace(',,', ',', $cite['tags']);
+			}
+
 			$final_citations[] = $cite;
 		}
-		
+
 		//check for duplicates
 		for ($i = 0; $i < count($final_citations); $i++) 
 		{
