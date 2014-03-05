@@ -38,6 +38,8 @@ JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page Revision') . ': '
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
+	JToolBarHelper::apply();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 
