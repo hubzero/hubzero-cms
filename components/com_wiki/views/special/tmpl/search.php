@@ -114,7 +114,7 @@ $pageNav = new JPagination(
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="page" />
 				<input type="hidden" name="pagename" value="Special:Search" />
-				<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
+				<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
 	</form>
