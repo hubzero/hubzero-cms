@@ -36,6 +36,18 @@ class Migration20140113135231ComSearch extends Base
 			$query = "UPDATE `#__extensions` SET `folder`='search' WHERE `folder`='ysearch' AND `type`='plugin';";
 			$this->db->setQuery($query);
 			$this->db->query();
+
+			$query = "SELECT `extension_id`, `name`, `element`, `folder` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='search';";
+			$this->db->setQuery($query);
+			if ($results = $this->db->loadObjectList())
+			{
+				foreach ($results as $result)
+				{
+					$query = "UPDATE `#__extensions` SET `name`=" . $this->db->quote('plg_' . $result->folder . '_' . $result->element) . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+			}
 		}
 	}
 
@@ -67,6 +79,18 @@ class Migration20140113135231ComSearch extends Base
 			$query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='component' AND `element`='com_search';";
 			$this->db->setQuery($query);
 			$this->db->query();
+
+			$query = "SELECT `extension_id`, `name`, `element`, `folder` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='ysearch';";
+			$this->db->setQuery($query);
+			if ($results = $this->db->loadObjectList())
+			{
+				foreach ($results as $result)
+				{
+					$query = "UPDATE `#__extensions` SET `name`=" . $this->db->quote('plg_' . $result->folder . '_' . $result->element) . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+			}
 		}
 	}
 }
