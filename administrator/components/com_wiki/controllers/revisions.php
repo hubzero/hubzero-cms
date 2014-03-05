@@ -158,10 +158,10 @@ class WikiControllerRevisions extends Hubzero_Controller
 		$this->view->setLayout('edit');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
-		if (is_array($ids) && !empty($ids)) 
+		$id = JRequest::getVar('id', array(0));
+		if (is_array($id) && !empty($id)) 
 		{
-			$id = $ids[0];
+			$id = $id[0];
 		}
 
 		$pageid = JRequest::getInt('pageid', 0);
@@ -301,6 +301,9 @@ class WikiControllerRevisions extends Hubzero_Controller
 			);
 			return;
 		}
+
+		JRequest::setVar('id', $row->id);
+		JRequest::setVar('pageid', $row->pageid);
 
 		$this->editTask($row);
 	}
