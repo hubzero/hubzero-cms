@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for ...
  **/
-class Migration20140205090721ComCron extends Base
+class Migration20140305090721ComCron extends Base
 {
 	/**
 	 * Up
