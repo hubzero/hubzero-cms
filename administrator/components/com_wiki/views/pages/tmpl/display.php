@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo ($this->filters['search'] == '') ? htmlentities($this->filters['search']) : ''; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		
 		<label for="filter_group"><?php echo JText::_('Group'); ?>:</label>
 		<select name="group" id="filter_group">

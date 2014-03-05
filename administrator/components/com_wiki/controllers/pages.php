@@ -103,6 +103,9 @@ class WikiControllerPages extends Hubzero_Controller
 			''
 		));
 
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+
 		$p = new WikiPage($this->database);
 
 		// Get record count
@@ -156,10 +159,10 @@ class WikiControllerPages extends Hubzero_Controller
 		$this->view->setLayout('edit');
 		
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
-		if (is_array($ids) && !empty($ids)) 
+		$id = JRequest::getVar('id', array(0));
+		if (is_array($id) && !empty($id)) 
 		{
-			$id = $ids[0];
+			$id = $id[0];
 		}
 
 		if (is_object($row))
@@ -172,24 +175,27 @@ class WikiControllerPages extends Hubzero_Controller
 			$this->view->row = new WikiPage($this->database);
 			$this->view->row->loadById($id);
 		}
-		
+
+		$this->view->row->authors = '';
+
 		if (!$id) 
 		{
 			// Creating new
 			$this->view->row->created_by = $this->juser->get('id');
 		}
-
-		$wpa = new WikiPageAuthor($this->database);
-		$auths = $wpa->getAuthors($this->view->row->id);
-		$this->view->row->authors = '';
-		if (count($auths) > 0) 
+		else
 		{
-			$autharray = array();
-			foreach ($auths as $auth)
+			$wpa = new WikiPageAuthor($this->database);
+			$auths = $wpa->getAuthors($this->view->row->id);
+			if ($auths && count($auths) > 0) 
 			{
-				$autharray[] = $auth->username;
+				$autharray = array();
+				foreach ($auths as $auth)
+				{
+					$autharray[] = $auth->username;
+				}
+				$this->view->row->authors = implode(', ', $autharray);
 			}
-			$this->view->row->authors = implode(', ', $autharray);
 		}
 
 		$this->view->creator = JUser::getInstance($this->view->row->created_by);
@@ -271,13 +277,6 @@ class WikiControllerPages extends Hubzero_Controller
 			$row->params = $pparams->toString();
 		}
 
-		if (!$row->updateAuthors($page['authors'])) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-
 		// Check content
 		if (!$row->check()) 
 		{
@@ -294,9 +293,16 @@ class WikiControllerPages extends Hubzero_Controller
 			return;
 		}
 
+		if (!$row->updateAuthors($page['authors'])) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
 		// Log the change
 		$log = new WikiLog($this->database);
-		$log->pid = $page->id;
+		$log->pid = $row->id;
 		$log->uid = $this->juser->get('id');
 		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action = ($page['id']) ? 'page_edited' : 'page_created';
@@ -315,6 +321,8 @@ class WikiControllerPages extends Hubzero_Controller
 			);
 			return;
 		}
+
+		JRequest::setVar('id', $row->id);
 
 		$this->editTask($row);
 	}
