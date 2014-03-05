@@ -57,6 +57,12 @@ class ForumModelAdapterGroup extends ForumModelAdapterAbstract
 	{
 		$group = \Hubzero\User\Group::getInstance($scope_id);
 
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group();
+			$group->set('cn', '_unknown_');
+		}
+
 		$this->_segments['cn']     = $group->get('cn');
 		$this->_segments['active'] = 'forum';
 
