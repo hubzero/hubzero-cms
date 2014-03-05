@@ -127,6 +127,8 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 		$this->_tbl = new WikiTablePage($this->_db);
 
+		$pagename = '';
+
 		if ($oid)
 		{
 			if (is_numeric($oid))
@@ -136,14 +138,16 @@ class WikiModelPage extends \Hubzero\Base\Model
 			else if (is_string($oid))
 			{
 				$this->_tbl->load($oid, $scope);
+				$pagename = $oid;
 			}
 			else if (is_object($oid) || is_array($oid))
 			{
 				$this->bind($oid);
+				$pagename = (is_object($oid) ? $oid->pagename : $oid['pagename']);
 			}
 		}
 
-		$space = strtolower(strstr($this->get('pagename', $oid), ':', true));
+		$space = strtolower(strstr($this->get('pagename', $pagename), ':', true));
 		$space = $space ? $space : '';
 		$this->set('namespace', $space);
 
