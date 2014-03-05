@@ -56,6 +56,7 @@ if ($this->page->exists())
 		'layout'    => 'submenu'
 	));
 	$view->option = $this->option;
+	$view->controller = $this->controller;
 	$view->page   = $this->page;
 	$view->task   = $this->task;
 	$view->config = $this->config;

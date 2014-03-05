@@ -32,6 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
+
+if (!isset($this->controller))
+{
+	$this->controller = JRequest::getWord('controller', 'page');
+}
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
