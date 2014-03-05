@@ -26,17 +26,17 @@ class Migration20140224112212PlgWiki extends Base
 		*/
 
 		/* We do an update instead of the above remove/add so as to preserve state and params */
-		$query = "UPDATE `#__extensions` SET `folder`='wiki', `element`='parserdefault' WHERE `folder`='hubzero' AND `type`='plugin' AND `element`='wikiparser'";
+		$query = "UPDATE `#__extensions` SET `folder`='wiki', `element`='parserdefault', `name`='plg_wiki_parserdefault' WHERE `folder`='hubzero' AND `type`='plugin' AND `element`='wikiparser'";
 
 		$this->db->setQuery($query);
 		$this->db->query();
 
-		$query = "UPDATE `#__extensions` SET `folder`='wiki', `element`='editortoolbar' WHERE `folder`='hubzero' AND `type`='plugin' AND `element`='wikieditortoolbar'";
+		$query = "UPDATE `#__extensions` SET `folder`='wiki', `element`='editortoolbar', `name`='plg_wiki_editortoolbar' WHERE `folder`='hubzero' AND `type`='plugin' AND `element`='wikieditortoolbar'";
 
 		$this->db->setQuery($query);
 		$this->db->query();
 
-		$query = "UPDATE `#__extensions` SET `folder`='wiki', `element`='editorwykiwyg' WHERE `folder`='hubzero' AND `type`='plugin' AND `element`='wikieditorwykiwyg'";
+		$query = "UPDATE `#__extensions` SET `folder`='wiki', `element`='editorwykiwyg', `name`='plg_wiki_editorwykiwyg' WHERE `folder`='hubzero' AND `type`='plugin' AND `element`='wikieditorwykiwyg'";
 
 		$this->db->setQuery($query);
 		$this->db->query();
@@ -58,17 +58,17 @@ class Migration20140224112212PlgWiki extends Base
 		*/
 
 		/* We do an update instead of the above remove/add so as to preserve state and params */
-		$query = "UPDATE `#__extensions` SET `folder`='hubzero', `element`='wikiparser' WHERE `folder`='wiki' AND `type`='plugin' AND `element`='parserdefault'";
+		$query = "UPDATE `#__extensions` SET `folder`='hubzero', `element`='wikiparser', `name`='plg_hubzero_wikiparser' WHERE `folder`='wiki' AND `type`='plugin' AND `element`='parserdefault'";
 
 		$this->db->setQuery($query);
 		$this->db->query();
 
-		$query = "UPDATE `#__extensions` SET `folder`='hubzero', `element`='wikieditortoolbar' WHERE `folder`='wiki' AND `type`='plugin' AND `element`='editortoolbar'";
+		$query = "UPDATE `#__extensions` SET `folder`='hubzero', `element`='wikieditortoolbar', `name`='plg_hubzero_wikieditortoolbar' WHERE `folder`='wiki' AND `type`='plugin' AND `element`='editortoolbar'";
 
 		$this->db->setQuery($query);
 		$this->db->query();
 
-		$query = "UPDATE `#__extensions` SET `folder`='hubzero', `element`='wikieditorwykiwyg' WHERE `folder`='wiki' AND `type`='plugin' AND `element`='editorwykiwyg'";
+		$query = "UPDATE `#__extensions` SET `folder`='hubzero', `element`='wikieditorwykiwyg', `name`='plg_hubzero_wikieditorwykiwyg' WHERE `folder`='wiki' AND `type`='plugin' AND `element`='editorwykiwyg'";
 
 		$this->db->setQuery($query);
 		$this->db->query();
