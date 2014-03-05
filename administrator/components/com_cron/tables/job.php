@@ -142,6 +142,20 @@ class CronTableJob extends JTable
 	var $params     = NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $publish_up     = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $publish_down     = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -210,6 +224,16 @@ class CronTableJob extends JTable
 			$this->modified_by = $juser->get('id');
 		}
 
+		if (!$this->publish_up)
+		{
+			$this->publish_up = '0000-00-00 00:00:00';
+		}
+
+		if (!$this->publish_down)
+		{
+			$this->publish_down = '0000-00-00 00:00:00';
+		}
+
 		return true;
 	}
 
@@ -237,6 +261,14 @@ class CronTableJob extends JTable
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$where[] = "LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+		}
+
+		if (isset($filters['available']) && $filters['available']) 
+		{
+			$now = JFactory::getDate()->toSql();
+
+			$where[] = "(c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $this->_db->Quote($now) . ")";
+			$where[] = "(c.publish_down = '0000-00-00 00:00:00' OR c.publish_down > " . $this->_db->Quote($now) . ")";
 		}
 
 		if (count($where) > 0)

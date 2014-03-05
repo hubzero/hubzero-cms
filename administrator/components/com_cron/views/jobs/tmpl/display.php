@@ -68,18 +68,20 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Last Run', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Active', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Next Run', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JText::_('Recurrence'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Starts'), 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Ends'), 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Active', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Last Run', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Next Run', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JText::_('Recurrence'); ?></th> -->
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -160,7 +162,12 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo $this->escape($row->get('last_run')); ?></time>
+						<time><?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_up'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(no date set)'); ?></time>
+					</span>
+				</td>
+				<td>
+					<span class="datetime">
+						<time><?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?></time>
 					</span>
 				</td>
 				<td>
@@ -170,14 +177,19 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo $this->escape($row->get('next_run')); ?></time>
+						<time><?php echo $this->escape($row->get('last_run')); ?></time>
 					</span>
 				</td>
 				<td>
+					<span class="datetime">
+						<time><?php echo $this->escape($row->get('next_run')); ?></time>
+					</span>
+				</td>
+				<!-- <td>
 					<span class="recurrence">
 						<span><?php echo $row->get('recurrence'); ?></span>
 					</span>
-				</td>
+				</td> -->
 			</tr>
 <?php
 		$k = 1 - $k;

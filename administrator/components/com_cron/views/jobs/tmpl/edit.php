@@ -47,6 +47,11 @@ if (intval($this->row->get('created')) <> 0)
 	$create_date = JHTML::_('date', $this->row->get('created'));
 }
 
+$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+
+$document = JFactory::getDocument();
+$document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');
+
 jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
 ?>
@@ -237,22 +242,6 @@ window.addEvent('domready', Fields.initialise);
 							}
 						}
 ?>
-							</select>
-						</td>
-					</tr>
-					<!-- <tr>
-						<td class="key"><label for="field-event"><?php echo JText::_('Event'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[event]" id="field-event" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('event'))); ?>" />
-						</td>
-					</tr> -->
-					<tr>
-						<td class="key"><label for="field-state"><?php echo JText::_('State'); ?>:</label></td>
-						<td>
-							<select name="fields[state]" id="field-state">
-								<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
 							</select>
 						</td>
 					</tr>
@@ -514,6 +503,57 @@ window.addEvent('domready', Fields.initialise);
 <?php } ?>
 				</tbody>
 			</table>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<th class="key"><label for="field-state"><?php echo JText::_('State'); ?>:</label></th>
+						<td>
+							<select name="fields[state]" id="field-state">
+								<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
+								<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
+								<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><label for="field-publish_up"><?php echo JText::_('Start running'); ?>:</label></th>
+						<td>
+							<input type="text" name="fields[publish_up]" id="field-publish_up" class="datetime-field" value="<?php echo $this->escape(($this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><label for="field-publish_down"><?php echo JText::_('Stop running'); ?>:</label></th>
+						<td>
+							<input type="text" name="fields[publish_down]" id="field-publish_down" class="datetime-field" value="<?php echo $this->escape(($this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<script src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
+			<script src="components/com_cron/assets/js/jquery-ui-timepicker-addon.js"></script>
+			<script type="text/javascript">
+				jQuery(document).ready(function(jq){
+					var $ = jq;
+					$('.datetime-field').datetimepicker({  
+						duration: '',
+						showTime: true,
+						constrainInput: false,
+						stepMinutes: 1,
+						stepHours: 1,
+						altTimeField: '',
+						time24h: true,
+						dateFormat: 'yy-mm-dd',
+						timeFormat: 'HH:mm:00'
+					});
+				});
+				</script>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

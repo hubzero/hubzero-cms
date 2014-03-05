@@ -74,21 +74,22 @@ class CronControllerJobs extends \Hubzero\Component\SiteController
 		$model = new CronModelJobs();
 
 		$filters = array(
-			'state'    => 1,
-			'next_run' => JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m-d H:i:s')
+			'state'     => 1,
+			'available' => true,
+			'next_run'  => JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m-d H:i:s')
 		);
 
 		$output = new stdClass;
 		$output->jobs = array();
 
-		if (($results = $model->jobs('list', $filters)))
+		if ($results = $model->jobs('list', $filters))
 		{
 			JPluginHelper::importPlugin('cron');
 			$dispatcher = JDispatcher::getInstance();
 
 			foreach ($results as $job)
 			{
-				if ($job->get('active'))
+				if ($job->get('active') || !$job->isAvailable())
 				{
 					continue;
 				}
