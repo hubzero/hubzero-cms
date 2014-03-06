@@ -319,7 +319,7 @@ class Hubzero_Validate
 	 * @param      string $login Username to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
-	public function validlogin($login)
+	static public function validlogin($login)
 	{
 		if (preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $login)) 
 		{
@@ -341,7 +341,7 @@ class Hubzero_Validate
 	 * @param      string $password Password to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
-	public function validpassword($password)
+	static public function validpassword($password)
 	{
 		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$#i", $password)) 
 		{
@@ -356,7 +356,7 @@ class Hubzero_Validate
 	 * @param      string $email Address to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
-	public function validemail($email)
+	static public function validemail($email)
 	{
 		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) 
 		{
@@ -371,7 +371,7 @@ class Hubzero_Validate
 	 * @param      string $url URL to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
-	public function validurl($url)
+	static public function validurl($url)
 	{
 		//if (preg_match("/(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))/i", $url)) 
 		if (filter_var($url, FILTER_VALIDATE_URL))
@@ -387,7 +387,7 @@ class Hubzero_Validate
 	 * @param      string $phone Phone number to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
-	public function validphone($phone)
+	static public function validphone($phone)
 	{
 		if (preg_match('#^[\ \#\*\+\:\,\.0-9-]*$#i', $phone)) 
 		{
@@ -402,7 +402,7 @@ class Hubzero_Validate
 	 * @param      string $text Text to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
-	public function validtext($text)
+	static public function validtext($text)
 	{
 		if (!strchr($text, "	")) 
 		{
@@ -417,8 +417,8 @@ class Hubzero_Validate
 	 * @param      string $org Organization type
 	 * @return     boolean True if organization is an allowed type
 	 */
-	public function validateOrgType($org)
-    {
+	static public function validateOrgType($org)
+	{
 		$orgtypes = array(
 			'university',
 			'universityundergraduate',
