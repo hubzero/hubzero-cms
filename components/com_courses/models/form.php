@@ -323,6 +323,7 @@ class PdfForm
 				$im->resizeImage(582,0, Imagick::FILTER_MITCHELL, 1);
 				$im->sharpenImage(5, 0.5);
 				$im->borderImage('white', 15, 15);
+				$im->paintTransparentImage($im->getImagePixelColor(0,0), 0.0, 0);
 				$im->writeImage($this->base . $fid . DS . ($this->pages + 1) . '.png');
 			}
 		}
