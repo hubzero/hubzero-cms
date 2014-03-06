@@ -355,7 +355,7 @@ class TagsTableTag extends JTable
 	{
 		if (isset($filters['count']) && $filters['count']) 
 		{
-			$query = "SELECT count(*)";
+			$query = "SELECT count(DISTINCT t.id)";
 		} 
 		else 
 		{
