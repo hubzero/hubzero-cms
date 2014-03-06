@@ -169,7 +169,7 @@ class plgTagsCitations extends JPlugin
 	 * 
 	 * @return     array
 	 */
-	public function getTypes()
+	public static function getTypes()
 	{
 		static $types;
 		
@@ -225,7 +225,8 @@ class plgTagsCitations extends JPlugin
 			case 'both':   $citations_label_class = 'both-label';   break;
 		}
 		
-		$citationsFormat = new CitationsFormat( JFactory::getDBO() );
+		$database = JFactory::getDBO();
+		$citationsFormat = new CitationsFormat($database);
 		$template = $citationsFormat->getDefaultFormat()->format;
 
 		$formatter = new CitationFormat();
