@@ -333,5 +333,15 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 		}
 		return null;
 	}
+
+	public function lists($key, $default = null)
+	{
+		$results = array();
+		foreach ($this->_data as $data)
+		{
+			array_push($results, $data->get($key));
+		}
+		return $results;
+	}
 }
 

@@ -38,7 +38,7 @@ $thisCalendar->published = 1;
 $thisCalendar->title     = "All Calendars";
 foreach($this->calendars as $calendar)
 {
-	if ($calendar->id == $this->calendar)
+	if ($calendar->get('id') == $this->calendar)
 	{
 		$thisCalendar = $calendar;
 	}
@@ -69,20 +69,20 @@ foreach($this->calendars as $calendar)
 	<?php foreach ($this->calendars as $calendar) : ?>
 		<?php
 			$enabled = false;
-			if ($calendar->published == 1)
+			if ($calendar->get('published') == 1)
 			{
 				$enabled = true;
-				$cals[] = $calendar->id;
+				$cals[] = $calendar->get('id');
 			}
 		?>
 		<label <?php echo (!$enabled) ? 'class="disabled"' : '' ?>>
-			<input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?> name="subscribe[]"  type="checkbox" value="<?php echo $calendar->id; ?>" />
-			<?php if ($calendar->color) : ?>
-				<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" />
+			<input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?> name="subscribe[]"  type="checkbox" value="<?php echo $calendar->get('id'); ?>" />
+			<?php if ($calendar->get('color')) : ?>
+				<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->get('color'); ?>.png" />
 			<?php else : ?>
 				<img src="/plugins/groups/calendar/images/swatch-gray.png" />
 			<?php endif; ?>
-			<?php echo $calendar->title; ?>
+			<?php echo $calendar->get('title'); ?>
 			<?php
 				if(!$enabled)
 				{

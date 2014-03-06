@@ -16,6 +16,58 @@
 #calendar table {
 	border-bottom: none;
 }
+#calendar .fc-loading {
+	margin-top: 5px;
+}
+#calendar .fc-loading:before {
+	content: 'Loading Events...';
+	font-style: italic;
+	background: rgba(234, 206, 41, 0.75);
+	padding: 5px 10px;
+}
+#calendar .fc-event {
+	background-color: rgba(102, 102, 102, 0.2);
+	border-color: #666;
+	color: #333;
+}
+#calendar .fc-event-time {
+	margin-right: 3px;
+}
+#calendar .fc-event-yellow {
+	background-color: rgba(234, 206, 41, 0.2);
+	border-color: #eace29;
+	color: #333;
+}
+#calendar .fc-event-red {
+	background-color: rgba(197, 35, 55, 0.2);
+	border-color: #c52337;
+	color: #333;
+}
+#calendar .fc-event-orange {
+	background-color: rgba(246, 101, 29, 0.2);
+	border-color: #f6651d;
+	color: #333;
+}
+#calendar .fc-event-green {
+	background-color: rgba(88, 177, 27, 0.2);
+	border-color: #58b11b;
+	color: #333;
+}
+#calendar .fc-event-blue {
+	background-color: rgba(22, 121, 196, 0.2);
+	border-color: #1679c4;
+	color: #333;
+}
+#calendar .fc-event-brown {
+	background-color: rgba(153, 63, 13, 0.2);
+	border-color: #993f0d;
+	color: #333;
+}
+#calendar .fc-event-purple {
+	background-color: rgba(132, 50, 136, 0.2);
+	border-color: #843288;
+	color: #333;
+}
 
 /* 
 #page_main .group_calendar {

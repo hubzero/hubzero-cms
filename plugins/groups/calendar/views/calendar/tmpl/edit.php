@@ -84,8 +84,8 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 						<select name="event[calendar_id]" id="event-calendar-picker">
 							<option value=""><?php echo JText::_('- Select Calendar for Event &mdash;'); ?></option>
 							<?php foreach ($this->calendars as $calendar) : ?>
-								<?php $sel = ($calendar->id == $this->event->calendar_id) ? 'selected="selected"' : ''; ?>
-								<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->color) ? $calendar->color : 'gray'; ?>.png" value="<?php echo $calendar->id; ?>"><?php echo $calendar->title; ?></option>
+								<?php $sel = ($calendar->get('id') == $this->event->calendar_id) ? 'selected="selected"' : ''; ?>
+								<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
 							<?php endforeach; ?>
 						</select>
 

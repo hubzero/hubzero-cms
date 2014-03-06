@@ -714,5 +714,87 @@ class EventsEvent extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Find all events matching filters
+	 * 
+	 * @param      array   $filters
+	 * @return     array
+	 */
+	public function find( $filters = array() )
+	{
+		$sql  = "SELECT * FROM {$this->_tbl}";
+		$sql .= $this->_buildQuery( $filters );
+		
+		$this->_db->setQuery($sql);
+		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Get count of events matching filters
+	 * 
+	 * @param      array   $filters
+	 * @return     int
+	 */
+	public function count( $filters = array() )
+	{
+		$sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
+		$sql .= $this->_buildQuery( $filters );
+		
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
+	}
+	
+	/**
+	 * Build query string for getting list or count of events
+	 * 
+	 * @param      array   $filters
+	 * @return     string
+	 */
+	private function _buildQuery( $filters = array() )
+	{
+		// var to hold conditions
+		$where = array();
+		$sql   = '';
+		
+		// scope 
+		if (isset($filters['scope']))
+		{
+			$where[] = "scope=" . $this->_db->quote( $filters['scope'] );
+		}
+
+		// scope_id
+		if (isset($filters['scope_id']))
+		{
+			$where[] = "scope_id=" . $this->_db->quote( $filters['scope_id'] );
+		}
+
+		// calendar_id
+		if (isset($filters['calendar_id']))
+		{
+			if ($filters['calendar_id'] == 'null')
+			{
+				$where[] = "calendar_id IS NULL";
+			}
+			else
+			{
+				$where[] = "calendar_id=" . $this->_db->quote( $filters['calendar_id'] );
+			}
+		}
+		
+		// published
+		if (isset($filters['state']) && is_array($filters['state']))
+		{
+			$where[] = "state IN (" . implode(',', $filters['state']) . ")";
+		}
+		
+		// if we have and conditions
+		if (count($where) > 0)
+		{
+			$sql = " WHERE " . implode(" AND ", $where);
+		}
+		
+		return $sql;
+	}
 }
 

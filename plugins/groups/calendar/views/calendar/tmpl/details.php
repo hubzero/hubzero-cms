@@ -50,12 +50,12 @@ $month = date("m", strtotime($this->event->publish_up));
 <div class="event-title-bar">
 	<span class="event-title">
 		<?php echo $this->event->title; ?>
-		<?php if (isset($this->calendar[0])) : ?>
-			<span>&ndash;&nbsp;<?php echo $this->calendar[0]->title; ?></span>
+		<?php if (isset($this->calendar)) : ?>
+			<span>&ndash;&nbsp;<?php echo $this->calendar->get('title'); ?></span>
 		<?php endif; ?>
 	</span>
 	<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
-		<?php if (!isset($this->calendar[0]) || !$this->calendar[0]->readonly) : ?>
+		<?php if (!isset($this->calendar) || !$this->calendar->get('readonly')) : ?>
 			<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
 				Delete
 			</a> 

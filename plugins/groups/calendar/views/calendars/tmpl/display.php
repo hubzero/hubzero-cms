@@ -67,17 +67,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if (count($this->calendars) > 0) : ?>
 			<?php foreach ($this->calendars as $calendar) : ?>
 				<tr>
-					<td><?php echo $calendar->title; ?></td>
+					<td><?php echo $calendar->get('title'); ?></td>
 					<td>
-						<?php if ($calendar->color): ?>
-							<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" />
+						<?php if ($calendar->get('color')): ?>
+							<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->get('color'); ?>.png" />
 						<?php else: ?>
 							<img src="/plugins/groups/calendar/images/swatch-gray.png" />
 						<?php endif; ?>
 					</td>
 					<td>
 						<?php
-							if ($calendar->published == 1)
+							if ($calendar->get('published') == 1)
 							{
 								echo '<span class="yes">Yes</span>';
 							}
@@ -88,15 +88,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 						?>
 					</td>
 					<td>
-						<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=editcalendar&calendar_id=' . $calendar->id); ?>">
+						<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=editcalendar&calendar_id=' . $calendar->get('id')); ?>">
 							Edit
 						</a> &nbsp;|
-						<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=deletecalendar&calendar_id=' . $calendar->id); ?>">
+						<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=deletecalendar&calendar_id=' . $calendar->get('id')); ?>">
 							Delete
 						</a>
-						<?php if ($calendar->url) : ?>
+						<?php if ($calendar->get('url')) : ?>
 							 &nbsp;|
-							<a class="refresh" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=refreshcalendar&calendar_id=' . $calendar->id); ?>">
+							<a class="refresh" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=refreshcalendar&calendar_id=' . $calendar->get('id')); ?>">
 								Refresh
 							</a>
 						<?php endif; ?>	
@@ -104,22 +104,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</tr>
 				<tr>
 					<td colspan="4">
-						<?php if ($calendar->url) : ?>
+						<?php if ($calendar->get('url')) : ?>
 							<span class="calendar-url">
 								<span>Calendar URL:</span>
-								<?php echo $calendar->url; ?>
+								<?php echo $calendar->get('url'); ?>
 							</span>
 							<br />
 							<span class="calendar-url">
 								<span>Last Fetched:</span>
 								<?php 
-									if ($calendar->last_fetched == '' || $calendar->last_fetched == '0000-00-00 00:00:00')
+									if ($calendar->get('last_fetched') == '' || $calendar->get('last_fetched') == '0000-00-00 00:00:00')
 									{
 										echo 'Never';
 									}
 									else
 									{
-										echo JHTML::_('date', $calendar->last_fetched, 'm/d/Y @ g:ia');
+										echo JHTML::_('date', $calendar->get('last_fetched'), 'm/d/Y @ g:ia');
 									}
 								?>
 							</span>

@@ -28,6 +28,7 @@ HUB.Plugins.GroupCalendar = {
 	
 	initialize: function() {
 		HUB.Plugins.GroupCalendar.calendar();
+
 		//fancy calendar picker
 		//HUB.Plugins.GroupCalendar.calendarPicker();
 		
@@ -55,13 +56,29 @@ HUB.Plugins.GroupCalendar = {
 				right: 'month,agendaWeek,agendaDay today'
 			},
 			weekMode: 'variable',
-			eventSources: [
-				"/groups/smoakey/calendar?action=events"
-			],
-			dayClick: function(date, allDay, jsEvent, view) {
-    			
-   			}
+			eventSources: [],
+			loading: function( isLoading, view ) {
+				if (isLoading)
+				{
+					$('.fc-header-center').html('<div class="fc-loading"></div>');
+				}
+				else
+				{
+					$('.fc-header-center').html('');
+				}
+			},
+			dayClick: function(date, allDay, jsEvent, view) {}
 		});
+
+		// async load sources
+		$.getJSON('/groups/smoakey/calendar/eventsources', function(sources) {
+			jQuery.each(sources, function(index, source) {
+				$('#calendar').fullCalendar('addEventSource', source);
+			});
+		});
+
+		//async refresh calendars
+		
 	},
 	
 	calendarPicker: function()

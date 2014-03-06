@@ -50,11 +50,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<legend><?php echo JText::_('Group Calendar'); ?></legend>
 		
 		<label><?php echo JText::_('Title:'); ?> <span class="required">Required</span>
-			<input type="text" name="calendar[title]" value="<?php echo $this->calendar->title; ?>" />
+			<input type="text" name="calendar[title]" value="<?php echo $this->calendar->get('title'); ?>" />
 		</label>
 		
 		<label><?php echo JText::_('URL:'); ?> <span class="optional">Optional</span>
-			<input type="text" name="calendar[url]" value="<?php echo $this->calendar->url; ?>" />
+			<input type="text" name="calendar[url]" value="<?php echo $this->calendar->get('url'); ?>" />
 			<span class="hint"><?php echo JText::_('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span>
 		</label>
 		
@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<select name="calendar[color]">
 				<option value="">- Select Color &mdash;</option>
 				<?php foreach($colors as $color) : ?>
-					<?php $sel = ($this->calendar->color == $color) ? 'selected="selected"' : ''; ?>
+					<?php $sel = ($this->calendar->get('color') == $color) ? 'selected="selected"' : ''; ?>
 					<option <?php echo $sel; ?> value="<?php echo $color; ?>"><?php echo ucfirst($color); ?></option>
 				<?php endforeach; ?>
 			</select>
@@ -71,8 +71,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		<label><?php echo JText::_('Publish Events to Subscribers?:'); ?>
 			<select name="calendar[published]">
-				<option value="1">Yes</option>
-				<option <?php echo ($this->calendar->published == 0) ? 'selected="selected"' : ''; ?> value="0">No</option>
+				<option <?php echo ($this->calendar->get('published') == 1) ? 'selected="selected"' : ''; ?>value="1">Yes</option>
+				<option value="0">No</option>
 			</select>
 		</label>
 	</fieldset>
@@ -85,5 +85,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="calendar" />
 	<input type="hidden" name="action" value="savecalendar" />
-	<input type="hidden" name="calendar[id]" value="<?php echo $this->calendar->id; ?>" />
+	<input type="hidden" name="calendar[id]" value="<?php echo $this->calendar->get('id'); ?>" />
 </form>
