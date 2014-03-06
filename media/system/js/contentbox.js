@@ -80,8 +80,12 @@
 			close : function () {
 				settings.element.find('iframe').remove();
 				$('.content-box-body-wrap').removeClass('content-box-body-wrap-active');
-				settings.element.hide('slide', {'direction':'down'}, 500);
 				$('.content-box-overlay').removeClass('content-box-overlay-active');
+				settings.element.hide('slide', {'direction':'down'}, 500, function () {
+					settings.element.remove();
+					$('.content-box-overlay').remove();
+					$('.content-box-body-wrap').children().first().unwrap();
+				});
 
 				// Release background scrolling
 				$('html, body').css({
