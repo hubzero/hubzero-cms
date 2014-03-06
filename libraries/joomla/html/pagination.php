@@ -118,6 +118,7 @@ class JPagination extends JObject
 		$this->set('pages.middle', ceil($displayedPages / 2));
 
 		$start_loop = $this->get('pages.current') - $this->get('pages.middle') + 1;
+		$start_loop = ($start_loop < 1 ? 1 : $start_loop);
 		$stop_loop  = $this->get('pages.current') + $displayedPages - $this->get('pages.middle');
 
 		$i = $start_loop;

@@ -423,7 +423,7 @@ echo $html;
 					$this->filters['limit']
 				);
 
-				$pageNav->setAdditionalUrlParam('task', 'view');
+				$pageNav->setAdditionalUrlParam('task', '');
 				$pageNav->setAdditionalUrlParam('tag', $this->tagstring);
 				$pageNav->setAdditionalUrlParam('active', $this->active);
 				$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
