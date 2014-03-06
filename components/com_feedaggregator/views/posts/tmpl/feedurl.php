@@ -119,17 +119,36 @@ img { display:block; margin-bottom:10px; }
 	
 <!-- Help Dialog -->
 <div style="display:none">		
-	<div class="postpreview" id="helpbox">
+	<div id="helpbox">
 	<h1>Feed Aggregator Info</h1>
-	<p>In order to have the ability to access the administrative/managerial functions of the Feed Aggregator,
-the user must be added to a group with an access level higher than a registered user. For instance, the user must be either
-an author, editor, or publisher.</p>
+	<p>A brief quick-start guide for using the Feed Aggregator Component.</p>
+	<h2 id="userPermTitle" class="helpExpander">User Permissions</h2>
+	<p class="helpbox"><?php echo JText::_('COM_FEEDAGGREGATOR_HELP_USERPERMS1')?></p>
+		<p class="helpbox">
+		<?php echo JText::_('COM_FEEDAGGREGATOR_HELP_USERPERMS2')?>
+			<ol>
+			<li>Login into the administrative dashboard.</li>
+			<li>Click on 'User Manager' under the Users menu.</li>
+			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step1-usermanager.png">
+			<li>Check the box next to the user you would like to promote.
+			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step2-usermanager.png">
+			</li>
+			<li>In the drop-down box, select the permission level for the user.
+				<ul><li>This user can be an author, editor, or publisher.</li></ul>
+			</li>
+			<li>Click on the 'Process' button to save the permission level</li>
+			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step3-usermanager.png">
+			<li>The user will now have access to sort posts from the feeds.</li>
+			</ol></p>
 	</div>
 </div>
 
+<!--  Generate Feed -->
 <div style="display:none">		
 	<div class="postpreview" id="feedbox">
-	<p>Generates URL to visit.</p>
+	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER')?></h2>
+	<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?>
+	<p><a href="<?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?>"><?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?></a></p>
 	</div>
 </div>
 

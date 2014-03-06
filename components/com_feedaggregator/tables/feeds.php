@@ -78,11 +78,15 @@ class FeedAggregatorTableFeeds extends JTable
 	
 	var $created_by = NULL;
 	
+	
+	var $enabled = NULL;
+	
 	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
 	 * @return     void
+	 *
 	 */
 	public function __construct(&$db)
 	{
@@ -99,10 +103,16 @@ class FeedAggregatorTableFeeds extends JTable
 	public function getById($id = NULL)
 	{
 		$query = 'SELECT * FROM '.$this->_tbl.' WHERE id = '.$id.';';
-		
 		$this->_db->setQuery($query);
 	
-		return $this->_db->loadObjectList();
+		return $this->_db->loadObject();
+	}
+	
+	public function updateActive($id, $status)
+	{
+		$query = 'UPDATE jos_feedaggregator_feeds SET enabled='.$status.' WHERE id = '.$id.';';
+		$this->_db->setQuery($query);
+		return $this->_db->query();
 	}
 
 }

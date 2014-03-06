@@ -30,146 +30,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-//ximport('Hubzero_Document');
-
 ?>
-
-<script type="text/javascript">
-jQuery(document).ready(function() 
-{	
-	jQuery('.fancybox-inline').fancybox();
-
-	jQuery('.actionBtn').click(function()
-	{
-		var x = jQuery(this).attr('id');
-		var record_id = x.split("-").pop();
-		var action = x.split("-");
-		action = action[0];
-		 if(action == 'remove')
-		 {
-			jQuery("#row-"+record_id).attr('style','background-color:red');
-		 	jQuery("#row-"+record_id).remove();
-		 	jQuery.fancybox.close();
-		 	removedItems.push(record_id);
-		 }
-		 else
-		 {
-			 jQuery.fancybox.close();
-			 jQuery.post("<?php echo JRoute::_('index.php?option=' . $this->option . '&task=updateStatus&no_html=1'); ?>",
-			         {'id': record_id,
-		         	  'action': action },
-				     function(data) 
-				     {
-			         });
-     		 if(action == "mark")
-				{
-     				jQuery('#status-'+record_id).text('under review');
-	         		jQuery('#status-'+record_id).attr('style','color: purple');
-	     						
-				}
-			else if(action == "approve")
-			{
-	         		 jQuery('#status-'+record_id).text('approved');	
-	         		 jQuery('#status-'+record_id).attr('style','color: green');
-			}
-			 
-		 }
-		
-	});
-	
-}); 
-
-</script>
-
-<style>
-img { display:block; margin-bottom:10px; }
-.postpreview p { word-wrap:break-word;}
-.postpreview h1 { font-family: san-serif; font-size: x-large; }
-.postpreview { padding: 20px;}
-</style>
-
-<style>
-.myButton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	background-color:#bedbfa;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #84bbf3;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #528ecc;
-}
-.myButton:hover {
-	background-color:#80b5ea;
-}
-.myButton:active {
-	position:relative;
-	top:1px;
-}
-
-.actionBtn {
-	-moz-box-shadow:inset 0px 1px 0px 0px #cae3fc;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #cae3fc;
-	box-shadow:inset 0px 1px 0px 0px #cae3fc;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #4197ee) );
-	background:-moz-linear-gradient( center top, #79bbff 5%, #4197ee 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#4197ee');
-	background-color:#79bbff;
-	-webkit-border-top-left-radius:0px;
-	-moz-border-radius-topleft:0px;
-	border-top-left-radius:0px;
-	-webkit-border-top-right-radius:0px;
-	-moz-border-radius-topright:0px;
-	border-top-right-radius:0px;
-	-webkit-border-bottom-right-radius:0px;
-	-moz-border-radius-bottomright:0px;
-	border-bottom-right-radius:0px;
-	-webkit-border-bottom-left-radius:0px;
-	-moz-border-radius-bottomleft:0px;
-	border-bottom-left-radius:0px;
-	text-indent:0;
-	border:1px solid #469df5;
-	display:inline-block;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:11px;
-	font-weight:bold;
-	font-style:normal;
-	height:28px;
-	line-height:28px;
-	/*width:100px;*/
-	text-decoration:none;
-	text-align:center;
-	text-shadow:1px 1px 0px #287ace;
-	margin: 5px;
-	padding-bottom: 12px;
-}
-.actionBtn:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4197ee), color-stop(1, #79bbff) );
-	background:-moz-linear-gradient( center top, #4197ee 5%, #79bbff 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4197ee', endColorstr='#79bbff');
-	background-color:#4197ee;
-}.actionBtn:active {
-	position:relative;
-	top:1px;
-}
-	
-.feedtable td
-{
-padding-top: 10px;
-margin-top: 10px;
-}
-</style>
 
 <div id="content-header">
 <h2><?php echo $this->title; ?></h2>
@@ -194,8 +55,7 @@ margin-top: 10px;
 <div class="main section">
 <form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 <div id="page-main" style="padding-bottom:50px;">
-<a href="#helpbox" style="float:right" class="myButton fancybox-inline">Help</a>
-<a href="#helpbox" style="background-color: green;" class="myButton fancybox-inline">Generate RSS Feed</a>
+<a href="#feedbox" style="background-color: green;" class="fancybox-inline myButton">Generate RSS Feed</a>
 <br><br>
 
 <?php if (count($this->posts) > 0):?>
@@ -207,7 +67,7 @@ margin-top: 10px;
 <li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=approved'); ?>"><?php echo JText::_('Approved'); ?></a></li>
 <li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=removed'); ?>"><?php echo JText::_('Removed'); ?></a></li>
 </ul>
-<select style="float:right;" name="timesort" id="timesort">
+<!-- <select style="float:right;" name="timesort" id="timesort">
 <option value="0">--</option>
 <option value="day">Past 24 hours</option>
 <option value="week">Past Week</option>
@@ -215,16 +75,9 @@ margin-top: 10px;
 <option value="quarter">Past Quarter</option>
 <option value="year">Past Year</option>
 <option value="greater">> 1 Year</option>
-</select>
+</select> -->
 	<table class="ideas entries feedtable">
-	<caption>Showing all posts</caption>
-		<!--<thead class="table-head">
-			  <th><a href="#">Name</a></th>
-			<th scope="col"><a href="#">Published</a></th>
-			<th scope="col"><a href="#">Source</a></th>
-			<th scope="col"><a href="#">Status</a></th>
-			<th scope="col">Actions</th>
-		</thead> -->
+	<caption>Showing <?php echo $this->filters['filterby'];?> posts</caption>
 		<tbody>	
 			<?php foreach($this->posts as $post): ?>
 			<?php if(($post->status != "removed" AND $this->filters['filterby'] != "removed") OR 
@@ -280,21 +133,11 @@ margin-top: 10px;
 	</table>
 	</div> <!--  / .container  -->
 	
-<!-- Help Dialog -->
-<div style="display:none">		
-	<div class="postpreview" id="helpbox">
-	<h1>Feed Aggregator Info</h1>
-	<p>In order to have the ability to access the administrative/managerial functions of the Feed Aggregator,
-the user must be added to a group with an access level higher than a registered user. For instance, the user must be either
-an author, editor, or publisher.</p>
-	</div>
-</div>
 <?php 
-//$this->pageNav->setAdditionalUrlParam('q', $this->filters['q']);
-//$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-//$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-//$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);
-echo $this->pageNav->getListFooter(); 
+if($this->fromfeed != TRUE)
+{
+echo $this->pageNav->getListFooter();
+} 
 ?>
 <?php elseif($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
 <p>There are no posts here.</p>
@@ -304,5 +147,15 @@ echo $this->pageNav->getListFooter();
 <a href="<?php echo JRoute::_('index.php?&filterby=new'); ?>"><?php echo JText::_('View New Posts'); ?></a>
 <?php endif; ?>
 </form>
+
+<!--  Generate Feed -->
+<div style="display:none">		
+	<div class="postpreview" id="feedbox">
+	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER')?></h2>
+	<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?>
+	<p><a href="<?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?>"><?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?></a></p>
+	</div>
+</div>
+
 </div><!-- /.main section -->
 </div> <!--  main page -->

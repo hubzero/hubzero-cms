@@ -55,6 +55,10 @@ class FeedAggregatorModelFeeds extends \Hubzero\Base\Model
 		return $this->_tbl->getById($id);
 	}
 	
+	public function updateActive($id, $status)
+	{
+		return $this->_tbl->updateActive($id, $status);
+	}
 }
 
 

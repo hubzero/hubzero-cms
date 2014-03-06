@@ -43,6 +43,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$paramsClass = 'JRegistry';
 }
 ?>
+
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
@@ -52,10 +53,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <?php if ($this->getErrors()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" id="hubForm">
+<form method="post" id="hubForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . ' &task=save'); ?>">
 <div class="explaination">
 <p>
-Something informative about feeds and how they incorporate into your published feed.
+<?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFO_ASIDE')?>
 </p>
 </div>
 	<fieldset>
@@ -63,11 +64,10 @@ Something informative about feeds and how they incorporate into your published f
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 		<input type="hidden" name="id" value="<?php echo $feed->id; ?>">
-		<input type="hidden" name="created_by" value="<?php echo $this->user->id; ?>">
 		<input type="hidden" name="task" value="save" />
 			
 			<label for="feed-title">
-				<?php //echo JText::_('COM_GROUPS_CN'); ?>Feed Name
+				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?>
 				<span class="required">required</span>
 				<input type="text" name="name" id="feedTitle" size="25" value="<?php echo $feed->name; ?>"/>
 			</label>
@@ -82,8 +82,8 @@ Something informative about feeds and how they incorporate into your published f
 				<?php //echo JText::_('COM_GROUPS_CN'); ?>Description
 				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo $feed->description; ?>" /> 
 			</label>
-			<span><p align="left">Auto Approve<input type="checkbox" name="autoapprove">
-			</p></span>
+			<!--  <span><p style="float:left";>Auto Approve<input type="checkbox" id="autoApproveCheckbox" name="autoapprove">
+			</p></span> -->
 		</fieldset>
 	<p class="submit">
 		<input type="submit" name="submit" value="Submit<?php //echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />

@@ -55,21 +55,30 @@ ximport('Hubzero_Document');
 	<form class="contentForm">
 	<table class="entries">
 		<thead class="table-head">
-				<th scope="col"><a href="#">Name</a></th>
-				<th scope="col"><a href="#">URL</a></th>
-				<th scope="col"><a href="#">Actions</a></th>
+				<th scope="col">Name</th>
+				<th scope="col">URL</th>
+				<th scope="col">Actions</th>
 		</thead>
 		<tbody>	
 <?php foreach($this->feeds as $feed): ?>
 			<tr class='shade-table'>
 			<td><?php echo $feed->name; ?></td>
 			<td><a href="<?php echo $feed->url; ?>"><?php echo $feed->url; ?></a></td>
-			<td><a href="index.php?option=com_feedaggregator&controller=posts&task=PostsById&id=<?php echo $feed->id; ?>">View Posts</a> <a href="index.php?option=com_feedaggregator&controller=feeds&task=edit&id=<?php echo $feed->id;?>">Edit</a><a href="#">Disable</a></td>
+			<td><a href="index.php?option=com_feedaggregator&controller=posts&task=PostsById&id=<?php echo $feed->id; ?>">View Posts</a> 
+				<a href="index.php?option=com_feedaggregator&controller=feeds&task=edit&id=<?php echo $feed->id;?>">Edit</a>
+				<?php if($feed->enabled == '1'):?>
+					<font style="color:red"><a href="index.php?option=com_feedaggregator&controller=feeds&task=status&action=disable&id=<?php echo $feed->id;?>">Disable</a></font>
+				<?php elseif($feed->enabled == '0'): ?>
+					<b><a href="index.php?option=com_feedaggregator&controller=feeds&task=status&action=enable&id=<?php echo $feed->id;?>">Enable</a></b>
+				<?php endif; ?>
+			</td>
 			</tr>			
 <?php endforeach; ?>
 	</table>
 <?php else: ?>
-<p>There are no feeds.</p>
+<p align="center">There are no feeds here.</br>
+<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
+</p>
 <?php endif; ?>
 	</div>
 	</form>
