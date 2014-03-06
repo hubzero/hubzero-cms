@@ -190,10 +190,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
+		$db   = JFactory::getDBO();
 		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
 
 		// Attempt to load an associated category
-		$category = new ForumTableCategory(JFactory::getDBO());
+		$category = new ForumTableCategory($db);
 		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
 
 		// Was a category found?
@@ -207,7 +208,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			}
 
 			// Mark all threads in category as deleted
-			$thread = new ForumTablePost(JFactory::getDBO());
+			$thread = new ForumTablePost($db);
 			$thread->setStateByCategory($category->get('id'), 2);
 		}
 
@@ -234,7 +235,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$section = new ForumTableSection(JFactory::getDBO());
+		$db      = JFactory::getDBO();
+		$section = new ForumTableSection($db);
 		$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
 		if ($section->id && $section->state != 2)
 		{
@@ -263,7 +265,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$section = new ForumTableSection(JFactory::getDBO());
+		$db      = JFactory::getDBO();
+		$section = new ForumTableSection($db);
 		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
 		if ($section->id)
 		{
@@ -283,7 +286,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				}
 				$section->setStateBySection($section->id, 2);
 
-				$thread = new ForumTablePost(JFactory::getDBO());
+				$thread = new ForumTablePost($db);
 				$thread->setStateByCategory($ids, 2);
 			}
 		}
