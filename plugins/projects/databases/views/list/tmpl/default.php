@@ -28,7 +28,7 @@ $document = JFactory::getDocument();
 
 ?>
 <div id="prj-db-list">
-	<div class="addnew" style="float: right;"><a href="/projects/<?=$this->project->alias?>/databases/create#content"><?php echo JText::_('PLG_PROJECTS_DATA_START'); ?></a></div>
+	<div class="addnew" style="float: right;"><a href="/projects/<?php echo $this->project->alias; ?>/databases/create#content"><?php echo JText::_('PLG_PROJECTS_DATA_START'); ?></a></div>
 	<div id="plg-header">
 		<h3 class="databases">Databases</h3>
 	</div>
@@ -52,7 +52,7 @@ $document = JFactory::getDocument();
 		</thead>
 		<tbody>
 		<?php
-			foreach ($this->list as $r):
+			foreach ($this->list as $r) {
 				if ($r['source_dir'] != '')
 				{
 					$full_path = htmlspecialchars($r['source_dir'] . DS . $r['source_file']);
@@ -89,27 +89,27 @@ $document = JFactory::getDocument();
 				}
 		?>
 			<tr class="mini faded">
-				<td title="<?=htmlspecialchars($r['description']);?>" data-db-title="<?=htmlspecialchars($r['title']);?>"  data-db-id="<?=$r['id'];?>">
-					<a target="_blank" href="/<?=$this->dataviewer?>/view/<?=$this->project->alias?>:dsl/<?=$r['database_name']?>/"><?=$r['title']?></a>
-					<span class="db-update" title="Click to edit the Title & Description"></span>
+				<td title="<?php echo htmlspecialchars($r['description']); ?>" data-db-title="<?php echo htmlspecialchars($r['title']); ?>"  data-db-id="<?php echo $r['id']; ?>">
+					<a target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->project->alias; ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $r['title']; ?></a>
+					<span class="db-update" title="Click to edit the Title &amp; Description"></span>
 				</td>
-				<td <?=$file_extra?>>
-					<?=$file_name?>
-				</td>
-				<td>
-					<?=$r['created']?>
+				<td <?php  echo $file_extra; ?>>
+					<?php  echo $file_name; ?>
 				</td>
 				<td>
-					<a target="_blank" href="/members/<?=$r['created_by']?>"><?=$r['name']?></a>
+					<?php echo $r['created']; ?>
 				</td>
 				<td>
-					<?=$recreate?>
+					<a target="_blank" href="/members/<?php echo $r['created_by']; ?>"><?php echo $r['name']; ?></a>
 				</td>
 				<td>
-					<a href="/projects/<?=$this->project->alias?>/databases/delete/?db_id=<?=$r['id']?>" class="delete-db">Delete</a>
+					<?php echo $recreate; ?>
+				</td>
+				<td>
+					<a href="/projects/<?php echo $this->project->alias; ?>/databases/delete/?db_id=<?php echo $r['id']; ?>" class="delete-db">Delete</a>
 				</td>
 			</tr>
-		<?endforeach;?>
+		<? } ?>
 		</tbody>
 	</table>
 
@@ -152,8 +152,8 @@ $document = JFactory::getDocument();
 		echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_DATA_NO_DATA_FOUND').' <span class="addnew"><a href="'.JRoute::_('index.php?option='.$this->option.a.'active=databases'.a. 'alias=' . $this->project->alias . a . 'action=create#content').'" >'.JText::_('PLG_PROJECTS_DATA_START').'</a></span></p>');
 	} ?>
 </div>
-<div id="prj-db-update-dialog" title="Update Title & Description" style="display: none;">
-	<form id="prj-db-update-form" method="post" action="<?=JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=update')?>">
+<div id="prj-db-update-dialog" title="Update Title &amp; Description" style="display: none;">
+	<form id="prj-db-update-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=update'); ?>">
 		<input type="hidden" name="db_id" />
 		<label for="db_title" >Title:</label><br />
 		<input type="text" name="db_title" style="width: 550px;" /><br /><br />
