@@ -288,6 +288,7 @@ function CoursesParseRoute($segments)
 			|| $segments[2] == 'form.layout'
 			|| $segments[2] == 'form.upload'
 			|| $segments[2] == 'form.deploy'
+			|| $segments[2] == 'form.asset'
 			|| $segments[2] == 'form.showDeployment'
 			|| $segments[2] == 'form.complete')
 		{

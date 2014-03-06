@@ -221,7 +221,7 @@ class PdfForm
 	 *
 	 * @return void
 	 **/
-	public function eachPage($fun)
+	public function eachPage($fun, $alt_base=null)
 	{
 		if (!$this->id)
 		{
@@ -250,7 +250,14 @@ class PdfForm
 
 		foreach ($images as $img)
 		{
-			$fun($base.'/'.$img, ++$idx);
+			$path = $base . DS . $img;
+
+			if (isset($alt_base))
+			{
+				$path = JRoute::_($alt_base . '&task=form.asset&id='.$this->getId().'&file='.$img, false);
+			}
+
+			$fun($path, ++$idx);
 		}
 	}
 
@@ -575,6 +582,45 @@ class PdfForm
 		}
 
 		return $rv;
+	}
+
+	/**
+	 * Return page image content
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getPageImage()
+	{
+		// Build path to file
+		$filename = JRequest::getVar('file', '');
+		$filename = urldecode($filename);
+		$filename = $this->base . $this->getId() . DS . ltrim($filename, DS);
+
+		// Ensure the file exist
+		if (!file_exists($filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		$xserver = new \Hubzero\Content\Server();
+		$xserver->filename($filename);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false);
+
+		if (!$xserver->serve())
+		{
+			// Should only get here on error
+			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
+		}
+		else
+		{
+			exit;
+		}
+
+		return;
 	}
 
 	/**

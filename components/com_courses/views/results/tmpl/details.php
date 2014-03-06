@@ -68,6 +68,6 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 				endforeach;
 			endif; ?>
 		</li>
-	<? }); ?>
+	<? }, $this->base); ?>
 	</ol>
 </div>

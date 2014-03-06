@@ -205,6 +205,19 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	}
 
 	/**
+	 * Get image asset
+	 * 
+	 * @return     void
+	 */
+	public function assetTask()
+	{
+		// Check authorization
+		$this->authorize();
+		$pdf = new PdfForm(JRequest::getInt('id', 0));
+		$pdf->getPageImage();
+	}
+
+	/**
 	 * PDF layout view, annotate rendered images
 	 * 
 	 * @return     void
@@ -224,6 +237,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 		$this->view->pdf      = new PdfForm($this->assertFormId());
 		$this->view->title    = $this->view->pdf->getTitle();
+		$this->view->base     = $this->base;
 		$this->view->readonly = JRequest::getInt('readonly', false);
 		$this->view->display();
 	}

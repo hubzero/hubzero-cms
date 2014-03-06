@@ -51,7 +51,7 @@
 					}
 				} 
 				echo '</li>';
-		}); ?>
+		}, $this->base); ?>
 	</ol>
 	<div class="navbar">
 		<ol id="page-tabs">
