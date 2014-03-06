@@ -70,7 +70,7 @@ class CollectionsTags extends TagsHandler
 
 		$ids = array_map('intval', $ids);
 
-		$sql  = "SELECT t.tag, t.raw_tag, t.admin, COUNT(*) as count, rt.objectid
+		$sql  = "SELECT t.tag, t.raw_tag, t.admin, rt.objectid
 				FROM " . $tt->getTableName() . " AS t 
 				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='$this->_tbl' 
 				WHERE rt.objectid IN (" . implode(',', $ids) . ") ";
@@ -88,8 +88,7 @@ class CollectionsTags extends TagsHandler
 				$sql .= "AND t.admin=0 ";
 			break;
 		}
-		$sql .= "GROUP BY raw_tag
-				ORDER BY raw_tag ASC";
+		$sql .= "ORDER BY raw_tag ASC";
 		$this->_db->setQuery($sql);
 		$items = $this->_db->loadObjectList();
 		
