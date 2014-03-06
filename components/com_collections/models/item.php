@@ -107,7 +107,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			{
 				if (substr($oid, 0, 3) == 'tmp')
 				{
-					$this->_tbl->loadByDescription($oid);
+					$this->_tbl->loadByTitle($oid);
 				}
 				else
 				{
@@ -598,7 +598,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			if (!is_dir($path)) 
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path)) 
+				if (!JFolder::create($path, 0777)) 
 				{
 					$this->setError(JText::_('Error uploading. Unable to create path.'));
 					return false;
