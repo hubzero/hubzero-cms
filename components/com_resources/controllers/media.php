@@ -134,7 +134,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		}
 		
 		// save detailed tracking info
-		if($event == 'start')
+		if($event == 'start' || !$trackingInformationDetailed)
 		{
 			$trackingInformationDetailed                              = new stdClass;
 			$trackingInformationDetailed->user_id                     = $juser->get('id');
