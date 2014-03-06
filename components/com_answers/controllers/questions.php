@@ -1133,7 +1133,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$eview->juser    = $this->juser;
 		$eview->question = $question;
 		$eview->row      = $row;
-		$eview->id       = $response['qid'];
+		$eview->id       = $response['question_id'];
 		$eview->boundary = $from['multipart'];
 
 		$message['plaintext'] = $eview->loadTemplate();
