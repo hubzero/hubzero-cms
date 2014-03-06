@@ -132,7 +132,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 		}
 		
 		// save detailed tracking info
-		if($event == 'start')
+		if($event == 'start' || !$trackingInformationDetailed)
 		{
 			$trackingInformationDetailed                              = new stdClass;
 			$trackingInformationDetailed->user_id                     = $juser->get('id');
