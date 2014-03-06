@@ -824,7 +824,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		
 		// get event timezone setting
 		// use this in "DTSTART;TZID=" 
-		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($eventsEvent->time_zone);
+		$tzInfo = Hubzero_Event_Helper::getTimezoneNameAndAbbreviation($eventsEvent->time_zone);
 		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 		
 		// get publish up/down dates in UTC
@@ -1017,7 +1017,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 
 			// get event timezone setting
 			// use this in "DTSTART;TZID=" 
-			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->time_zone);
+			$tzInfo = Hubzero_Event_Helper::getTimezoneNameAndAbbreviation($event->time_zone);
 			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 		
 			// get publish up/down dates in UTC
