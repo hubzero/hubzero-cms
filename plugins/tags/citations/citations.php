@@ -244,9 +244,9 @@ class plgTagsCitations extends JPlugin
 		}
 		else
 		{
-			$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . H\Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 50)) . '">';
+			$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 50)) . '">';
 		}
-		$html .= \Hubzero\Utility\String::truncate(H\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 200);
+		$html .= \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 200);
 		$html .= '</a></p>'."\n";
 		$html .= '<p class="details '. $citations_label_class . '">' . JText::_('PLG_TAGS_CITATION');
 		if ($config->get('citation_label', 'number') != 'none') 
