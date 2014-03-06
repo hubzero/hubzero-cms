@@ -194,7 +194,7 @@ class plgTagsCitations extends JPlugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
 		$row->author    = isset($row->alias)  ? $row->alias  : '';
 		$row->booktitle = isset($row->itext)  ? $row->itext  : '';
