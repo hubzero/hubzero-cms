@@ -63,7 +63,7 @@
         "swiftmailer/swiftmailer": "v5.0.2",
         "monolog/monolog": "1.2.*",
         "willdurand/geocoder": "@stable",
-	"guzzle/guzzle": "dev-guzzle4"
+		"guzzle/guzzle": "3.8.*@dev"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },
