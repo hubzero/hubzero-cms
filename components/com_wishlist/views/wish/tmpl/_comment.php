@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="listid" value="<?php echo $this->listid; ?>" />
 						<input type="hidden" name="wishid" value="<?php echo $this->wishid; ?>" />
 						<input type="hidden" name="task" value="savereply" />
-						<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
+						<input type="hidden" name="referenceid" value="<?php echo $this->listreference; ?>" />
 						<input type="hidden" name="cat" value="wish" />
 
 						<?php echo JHTML::_('form.token'); ?>
