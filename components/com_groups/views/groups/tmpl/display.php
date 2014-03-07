@@ -142,7 +142,7 @@ defined('_JEXEC') or die('Restricted access');
 	
 	<?php if(!$this->juser->get("guest")) : ?>
 		<?php if($this->config->get("intro_mygroups", 1)) : ?>
-			<div class="grid">
+			<div class="grid mygroups">
 				<div class="col span3">
 					<h2><?php echo JText::_('COM_GROUPS_INTRO_MY_GROUPS_TITLE'); ?></h2>
 				</div><!-- / .col span3 -->
@@ -159,7 +159,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<?php if(!$this->juser->get("guest")) : ?>
 		<?php if($this->config->get("intro_interestinggroups", 1)) : ?>
-			<div class="grid">
+			<div class="grid interestinggroups">
 				<div class="col span3">
 					<h2><?php echo JText::_('COM_GROUPS_INTRO_INTERESTING_GROUPS_TITLE'); ?></h2>
 				</div><!-- / .col span3 -->
@@ -173,7 +173,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php endif; ?>
 
 	<?php if($this->config->get("intro_populargroups", 1)) : ?>
-		<div class="grid">
+		<div class="grid populargroups">
 			<div class="col span3">
 				<h2><?php echo JText::_('COM_GROUPS_INTRO_POPULAR_GROUPS_TITLE'); ?></h2>
 			</div><!-- / .col span3 -->
@@ -186,7 +186,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php endif; ?>
 	
 	<?php if($this->config->get("intro_featuredgroups", 1) && count($this->featuredgroups) > 0) : ?>
-		<div class="grid">
+		<div class="grid featuredgroups">
 			<div class="col span3">
 				<h2><?php echo JText::_('COM_GROUPS_INTRO_FEATURED_GROUPS_TITLE'); ?></h2>
 			</div><!-- / .col span3 -->
