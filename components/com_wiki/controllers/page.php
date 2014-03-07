@@ -746,10 +746,15 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->editTask();
 				return;
 			}
+
+			$this->page->set('version_id', $this->revision->get('id'));
+			$this->page->set('modified', $this->revision->get('created'));
+		}
+		else
+		{
+			$this->page->set('modified', \JFactory::getDate()->toSql());
 		}
 
-		$this->page->set('version_id', $this->revision->get('id'));
-		$this->page->set('modified', $this->revision->get('created'));
 		if (!$this->page->store(true)) 
 		{
 			// This really shouldn't happen.
@@ -1003,7 +1008,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 
 		// Redirect to the newly named page
 		$this->setRedirect(
-			JRoute::_($page->link())
+			JRoute::_($this->page->link())
 		);
 	}
 }

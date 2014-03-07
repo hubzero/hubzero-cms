@@ -946,7 +946,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 		// Check that no other pages are using the new title
 		$p = new WikiModelPage($newpagename, $this->get('scope'));
-		if ($p->exist()) 
+		if ($p->exists()) 
 		{
 			$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . JText::_('CHOOSE_ANOTHER_PAGENAME'));
 			return false;
