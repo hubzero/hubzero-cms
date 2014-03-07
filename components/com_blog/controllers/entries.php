@@ -605,7 +605,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Build some basic RSS document information
 		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
-		$doc->title .= ($filters['year'])  ? ': ' . $year : '';
+		$doc->title .= ($filters['year'])  ? ': ' . $filters['year'] : '';
 		$doc->title .= ($filters['month']) ? ': ' . sprintf("%02d", $filters['month']) : '';
 
 		$doc->description = JText::sprintf('COM_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));

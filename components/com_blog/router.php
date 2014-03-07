@@ -120,7 +120,14 @@ function BlogParseRoute($segments)
 	}
 	if (isset($segments[1])) 
 	{
-		$vars['month'] = $segments[1];
+		if ($segments[1] == 'feed.rss') 
+		{
+			$vars['task'] = 'feed';
+		}
+		else 
+		{
+			$vars['month'] = $segments[1];
+		}
 	}
 	if (isset($segments[2])) 
 	{
@@ -136,7 +143,11 @@ function BlogParseRoute($segments)
 	}
 	if (isset($segments[3])) 
 	{
-		if ($segments[3] == 'comments.rss') 
+		if ($segments[2] == 'feed.rss') 
+		{
+			$vars['task'] = 'feed';
+		} 
+		else if ($segments[3] == 'comments.rss') 
 		{
 			$vars['task'] = 'comments';
 		}
