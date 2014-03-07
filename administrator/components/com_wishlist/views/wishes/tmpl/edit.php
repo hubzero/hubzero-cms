@@ -128,7 +128,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<?php if ($this->plan->id) { ?>
 					<tr>
-						<th class="key"><label for="plan-create_revision"><?php echo JText::_('PLAN_NEW_REVISION'); ?></label></th>
+						<th class="key"><label for="plan-create_revision"><?php echo JText::_('COM_WISHLIST_PLAN_NEW_REVISION'); ?></label></th>
 						<td>
 							<input type="checkbox" class="option" name="plan[create_revision]" id="plan-create_revision" value="1" />
 						</td>
