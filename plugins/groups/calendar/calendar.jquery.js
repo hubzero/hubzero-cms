@@ -71,7 +71,7 @@ HUB.Plugins.GroupCalendar = {
 		});
 
 		// async load sources
-		$.getJSON('/groups/smoakey/calendar/eventsources', function(sources) {
+		$.getJSON($('#calendar').attr('data-sources'), function(sources) {
 			jQuery.each(sources, function(index, source) {
 				$('#calendar').fullCalendar('addEventSource', source);
 			});

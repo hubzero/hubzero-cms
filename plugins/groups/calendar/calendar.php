@@ -305,7 +305,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// add uncategorized source
 		$source            = new stdClass;
-		$source->title     = $calendar->get('title');
+		$source->title     = 'Uncategorized';
 		$source->url       = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=null');
 		$source->className = 'fc-event-default';
 		array_push($sources, $source);
