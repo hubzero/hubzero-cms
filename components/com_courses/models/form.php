@@ -244,13 +244,12 @@ class PdfForm
 		closedir($dir);
 		natsort($images);
 
-		$base = preg_replace('#^'.preg_quote(JPATH_BASE).'#', '', $base);
-
 		$idx = 0;
-
 		foreach ($images as $img)
 		{
-			$fun($base.'/'.$img, ++$idx);
+			$key  = hash('md5', $base . DS . $img);
+			$path = '/api/courses/form/image?id='.$this->getId().'&file='.$img.'&key='.$key;
+			$fun($path, ++$idx);
 		}
 	}
 

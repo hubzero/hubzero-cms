@@ -95,6 +95,15 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				}
 			break;
 
+			// Forms
+			case 'form':
+				switch ($this->segments[1])
+				{
+					case 'image': $this->formImage();        break;
+					default:      $this->method_not_found(); break;
+				}
+			break;
+
 			// Passport
 			case 'passport':                $this->passport();             break;
 
@@ -1137,7 +1146,55 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// Return message
 		$this->setMessage(array('form_id' => $formId), 200, 'OK');
 	}
-	
+
+	/**
+	 * Get form image
+	 * 
+	 * @return 200 OK on success
+	 */
+	private function formImage()
+	{
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php';
+
+		$id = JRequest::getInt('id', 0);
+
+		$filename = JRequest::getVar('file', '');
+		$filename = urldecode($filename);
+		$filename = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . ltrim($filename, DS);
+
+		// Ensure the file exist
+		if (!file_exists($filename)) 
+		{
+			// Return message
+			$this->setMessage('Image not found', 404, 'Not Found');
+			return;
+		}
+
+		// Add silly simple security check
+		$key  = JRequest::getString('key', false);
+		$hash = hash('md5', $filename);
+
+		if ($key !== $hash)
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Not Authorized');
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		header("HTTP/1.1 200 OK");
+		$xserver = new \Hubzero\Content\Server();
+		$xserver->filename($filename);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false);
+
+		if (!$xserver->serve())
+		{
+			// Return message
+			$this->setMessage('Failed to serve the image', 500, 'Server Error');
+			return;
+		}
+	}
+
 	/**
 	 * Passport badges. Placeholder for now.
 	 * 
