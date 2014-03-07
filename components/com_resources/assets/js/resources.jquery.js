@@ -132,11 +132,11 @@ HUB.Resources = {
 				href += '&tmpl=component';
 			}
 			
-			mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
-			if (!mobile) {
+			//mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
+			//if (!mobile) {
 				event.preventDefault();
 		 		HUBpresenter_window = window.open(href,'name','height=650,width=1100');
-			}
+			//}
 		});
 		
 		//html5 video open

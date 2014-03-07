@@ -1551,7 +1551,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 			$sections[] = array(
 				'html'     => $body, 
-				'metadata' => ''
+				'metadata' => '',
+				'area' => 'watch'
 			);
 			$tab = 'watch';
 		}
