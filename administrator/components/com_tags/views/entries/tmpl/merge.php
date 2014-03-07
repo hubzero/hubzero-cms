@@ -71,47 +71,18 @@ function submitbutton(pressbutton)
 			</ul>
 		</fieldset>
 	</div>
-	<div class="col width-50">
+	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MERGE_TO'); ?></span></legend>
 			
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="existingtag"><?php echo JText::_('EXISTING_TAG'); ?>:</label></td>
-						<td>
-							<select name="existingtag" id="existingtag">
-								<option value=""><?php echo JText::_('OPT_SELECT'); ?></option>
-								<?php
-								foreach ($this->rows as $row)
-								{
-									echo '<option value="' . $row->get('id') . '">' . $this->escape(stripslashes($row->get('raw_tag'))) . '</option>' . "\n";
-								}
-								?>
-							</select>
-						</td>
-					</tr>
-<?php
-	if (count($this->tags) > 1) {
-?>
-					<tr>
-						<td colspan="2"><?php echo JText::_('OR'); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="newtag"><?php echo JText::_('NEW_TAG'); ?>:</label></td>
+						<td class="key"><label for="newtag"><?php echo JText::_('Tag'); ?>:</label></td>
 						<td><input type="text" name="newtag" id="newtag" size="25" value="" /></td>
 					</tr>
 				</tbody>
 			</table>
-<?php
-	} else {
-?>
-				</tbody>
-			</table>
-			<input type="hidden" name="newtag" id="newtag" value="" />
-<?php
-	}
-?>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

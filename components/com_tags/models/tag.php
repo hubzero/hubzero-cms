@@ -373,9 +373,13 @@ class TagsModelTag extends \Hubzero\Model
 	 */
 	public function objects($rtrn='list', $filters=array(), $clear=false)
 	{
-		if (!isset($filters['tag_id']))
+		if (isset($filters['tag_id']))
 		{
-			$filters['tag_id'] = (int) $this->get('id');
+			$filters['tagid'] = $filters['tag_id'];
+		}
+		if (!isset($filters['tagid']))
+		{
+			$filters['tagid'] = (int) $this->get('id');
 		}
 		if (!isset($filters['start']))
 		{
