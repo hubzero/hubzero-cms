@@ -531,6 +531,19 @@ class Wish extends JTable
 			$sql .= " GROUP BY ws.id ";
 		}
 
+		if (isset($filters['sort']))
+		{
+			if (!$filters['sort']) 
+			{
+				$filters['sort'] = 'title';
+			}
+			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+			{
+				$filters['sort_Dir'] = 'ASC';
+			}
+			$sort =  $filters['sort'] . " " . $filters['sort_Dir'];
+		}
+
 		$sql .= "\n ORDER BY " . $sort;
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 
