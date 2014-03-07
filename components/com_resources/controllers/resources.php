@@ -1557,7 +1557,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 			$sections[] = array(
 				'html'     => $body, 
-				'metadata' => ''
+				'metadata' => '',
+				'area' => 'watch'
 			);
 			$tab = 'watch';
 		}
