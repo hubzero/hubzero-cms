@@ -72,18 +72,21 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
-		
-		<label for="filter-type"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> 
-		<select name="type" id="filter-type">
-			<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
-			<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('general'); ?></option>
-			<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('group'); ?></option>
-			<option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('resource'); ?></option>
-		</select>
-		
-		<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
+		<div class="col width-50 fltlft">
+			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label> 
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		</div>
+		<div class="col width-50 fltrt" style="text-align: right;">
+			<label for="filter-category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> 
+			<select name="category" id="filter-category">
+				<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
+				<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('general'); ?></option>
+				<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('group'); ?></option>
+				<option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('resource'); ?></option>
+			</select>
+
+			<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
