@@ -104,7 +104,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 
 		if ($arr['metadata']['count'] <= 0)
 		{
-			if ($result = $this->book->scribe($option)) 
+			if ($result = $book->scribe($option)) 
 			{
 				$this->setError($result);
 			}
