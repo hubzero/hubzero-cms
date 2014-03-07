@@ -154,7 +154,7 @@ if ($this->post->exists()) {
 					<div class="grid">
 						<div class="col span-half">
 							<label for="upload">
-								<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:
+								<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php if ($this->post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($this->post->attachment()->get('filename'))) . '</strong>'; } ?>
 								<input type="file" name="upload" id="upload" />
 							</label>
 						</div>
@@ -166,6 +166,11 @@ if ($this->post->exists()) {
 						</div>
 						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($this->post->attachment()->get('id'))); ?>" />
 					</div>
+					<?php if ($this->post->attachment()->exists()) { ?>
+						<p class="warning">
+							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE_WARNING'); ?>
+						</p>
+					<?php } ?>
 				</fieldset>
 
 				<label for="field-anonymous" id="comment-anonymous-label">
