@@ -774,7 +774,7 @@ class EventsEvent extends JTable
 		{
 			if ($filters['calendar_id'] == 'null')
 			{
-				$where[] = "calendar_id IS NULL";
+				$where[] = "calendar_id IS NULL OR calendar_id=0";
 			}
 			else
 			{
