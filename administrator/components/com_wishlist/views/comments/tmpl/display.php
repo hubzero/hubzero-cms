@@ -76,6 +76,7 @@ function submitbutton(pressbutton)
 
 	<table class="adminlist">
 		<thead>
+<?php if ($this->filters['wish'] > 0) { ?>
 			<tr>
 				<th colspan="7">
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist->id; ?>">
@@ -85,6 +86,7 @@ function submitbutton(pressbutton)
 					<?php echo $this->escape(stripslashes($this->wish->subject)); ?>
 				</th>
 			</tr>
+<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_COMMENT_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -138,7 +140,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$aalt = JText::_('Not anonymous');
 	}
 
-	$comment = substr($row->content, 0, 50);
+	$comment = substr(strip_tags(stripslashes($row->content)), 0, 50);
 	if (strlen($row->content) >= 50) 
 	{
 		$comment .= '...';
@@ -155,11 +157,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->prfx; ?>
 <?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>" title="<?php echo JText::_('COM_WISHLIST_EDIT_COMMENT'); ?>">
-						<span><?php echo $this->escape(stripslashes($comment)); ?></span>
+						<span><?php echo $this->escape($comment); ?></span>
 					</a>
 <?php } else { ?>
 					<span>
-						<span><?php echo $this->escape(stripslashes($comment)); ?></span>
+						<span><?php echo $this->escape($comment); ?></span>
 					</span>
 <?php } ?>
 				</td>

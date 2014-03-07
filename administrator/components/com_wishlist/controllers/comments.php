@@ -110,7 +110,15 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Get records
 		//$comments1 = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
-		$comments1 = $obj->find(array('item_id' => $this->view->filters['wish'], 'item_type' => 'wish', 'parent' => 0), 1);
+		$filters = array(
+			'item_type' => 'wish',
+			'parent' => 0
+		);
+		if ($this->view->filters['wish'] > 0)
+		{
+			$filters['item_id'] = $this->view->filters['wish'];
+		}
+		$comments1 = $obj->find($filters, 1);
 		$comments = array();
 		if (count($comments1) > 0) 
 		{
