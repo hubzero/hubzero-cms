@@ -372,6 +372,13 @@ class Scaffolding implements CommandInterface
 	{
 		file_put_contents($path, $contents);
 
+		// See if we have a .tmpl at the end that we need to remove.
+		if (substr($path, -5) == '.tmpl')
+		{
+			rename($path, substr($path, 0, -5));
+			$path = substr($path, 0, -5);
+		}
+
 		$info = pathinfo($path);
 
 		// See if we need to do var replacement in actual filename
