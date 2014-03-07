@@ -40,8 +40,10 @@ jQuery(function($) {
 				$('.placeholder').attr('disabled', 'disabled');
 				over = true;
 
+				var btn = $('button[type="submit"]');
+				btn.removeClass('btn-primary').addClass('btn-warning icon-warning');
 				$('html, body').animate({
-					scrollTop : ($('button[type="submit"]').offset().top)
+					scrollTop : (btn.offset().top)
 				});
 			} else if (window.timeLeft < 60) {
 				$('#time-left').addClass('ending-soon');

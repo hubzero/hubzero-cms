@@ -54,7 +54,7 @@ $incomplete = $this->incomplete;
 			<input type="hidden" name="task" value="submit" />
 			<input type="hidden" name="crumb" value="<?= $this->dep->getCrumb() ?>" />
 			<input type="hidden" name="attempt" value="<?= $this->resp->getAttemptNumber() ?>" />
-			<button type="submit">Submit</button>
+			<button class="btn btn-primary" type="submit">Submit</button>
 		</p>
 	</fieldset>
 	</form>
