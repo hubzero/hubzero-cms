@@ -251,7 +251,7 @@ class EventsCalendar extends JTable
 		//read calendar file
 		$iCalReader = new iCalReader( $calendarUrl );
 		$incomingEvents = $iCalReader->events();
-		
+
 		//make uid keys for array
 		//makes it easier to diff later on
 		foreach($incomingEvents as $k => $incomingEvent)
@@ -306,7 +306,7 @@ class EventsCalendar extends JTable
 			//set event vars
 			$eventsEvent->title        = (isset($incomingEvent['SUMMARY'])) ? $incomingEvent['SUMMARY'] : '';
 			$eventsEvent->content      = (isset($incomingEvent['DESCRIPTION'])) ? $incomingEvent['DESCRIPTION'] : '';
-			$eventsEvent->content      = stripslashes(str_replace('\n', "\n", $e->content));
+			$eventsEvent->content      = stripslashes(str_replace('\n', "\n", $eventsEvent->content));
 			$eventsEvent->adresse_info = (isset($incomingEvent['LOCATION'])) ? $incomingEvent['LOCATION'] : '';
 			$eventsEvent->extra_info   = (isset($incomingEvent['URL;VALUE=URI'])) ? $incomingEvent['URL;VALUE=URI'] : '';
 			$eventsEvent->modified     = JFactory::getDate()->toSql();
