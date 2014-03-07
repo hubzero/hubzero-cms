@@ -45,7 +45,7 @@ $incomplete = $this->incomplete;
 				endforeach;
 			endif; ?>
 		</li>
-	<? }, $this->base); ?>
+	<? }); ?>
 	</ol>
 	<fieldset>
 		<p>
