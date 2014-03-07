@@ -199,7 +199,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;wish=<?php echo $row->id; ?>">
-						<span><?php echo $this->escape(stripslashes($row->comments)); ?></span>
+						<span><?php echo $this->escape(stripslashes($row->numreplies)); ?></span>
 					</a>
 				</td>
 			</tr>
