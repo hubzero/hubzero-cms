@@ -381,11 +381,11 @@ class plgGroupsUsage extends Hubzero_Plugin
 
 		if ($pageid != '') 
 		{
-			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gid`=" . $database->quote($gid) . " AND `datetime` > " . $database->quote($start) . " AND `datetime` < " . $database->quote($end) . " AND `pid`=" . $database->Quote($pageid) . " ORDER BY `datetime` ASC";
+			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gid`=" . $database->quote($gid) . " AND `datetime` > " . $database->quote($start) . " AND `datetime` < " . $database->quote($end) . " AND `pid`=" . $database->Quote($pageid) . " GROUP BY ip ORDER BY `datetime` ASC";
 		} 
 		else 
 		{
-			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gid`=" . $database->quote($gid) . " AND `datetime` > " . $database->quote($start) . " AND `datetime` < " . $database->quote($end) . " ORDER BY `datetime` ASC";
+			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gid`=" . $database->quote($gid) . " AND `datetime` > " . $database->quote($start) . " AND `datetime` < " . $database->quote($end) . " GROUP BY ip ORDER BY `datetime` ASC";
 		}
 		$database->setQuery($query);
 		$views = $database->loadAssocList();
