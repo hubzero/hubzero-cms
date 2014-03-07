@@ -98,7 +98,8 @@ if ($this->groupboards)
 
 		<label for="field_description">
 			<?php echo JText::_('PLG_RESOURCES_COLLECT_ADD_DESCRIPTION'); ?>
-			<?php echo \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+			<?php //echo \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+			<textarea name="description" id="field_description" cols="35" rows="5" class="minimal no-footer"></textarea>
 		</label>
 	</fieldset>
 
