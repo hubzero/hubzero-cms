@@ -317,7 +317,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 
 				// Get all tags
 				$cloud = new TagsModelCloud();
-				$this->view->rows = $cloud->tags('list');
+				//$this->view->rows = $cloud->tags('list');
 
 				// Set any errors
 				if ($this->getError()) 
@@ -447,7 +447,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 
 				// Get all tags
 				$cloud = new TagsModelCloud();
-				$this->view->rows = $cloud->tags('list');
+				//$this->view->rows = $cloud->tags('list');
 
 				// Set any errors
 				if ($this->getError()) 

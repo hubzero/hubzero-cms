@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<p><?php echo JText::_('PIERCED_EXPLANATION'); ?></p>
 	
-	<div class="col width-50">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('PIERCING'); ?></span></legend>
 			
@@ -77,23 +77,6 @@ function submitbutton(pressbutton)
 			
 			<table class="admintable">
 				<tbody>
-					<tr>
-						<td class="key"><label for="existingtag"><?php echo JText::_('EXISTING_TAG'); ?>:</label></td>
-						<td>
-							<select name="existingtag" id="existingtag">
-								<option value=""><?php echo JText::_('OPT_SELECT'); ?></option>
-								<?php
-								foreach ($this->rows as $row)
-								{
-									echo '<option value="' . $row->get('id') . '">' . $this->escape(stripslashes($row->get('raw_tag'))) . '</option>' . "\n";
-								}
-								?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><?php echo JText::_('OR'); ?></td>
-					</tr>
 					<tr>
 						<td class="key"><label for="newtag"><?php echo JText::_('NEW_TAG'); ?>:</label></td>
 						<td><input type="text" name="newtag" id="newtag" size="25" value="" /></td>
