@@ -726,7 +726,15 @@
 	text-shadow: none;
 	border: 1px solid #000;
 	box-shadow: none;
+	height: 2.9em;
+}
+html.chrome #group_options .dropdown-toggle {
 	height: 3em;
+}
+@-moz-document url-prefix() {
+	#group_options .dropdown-toggle {
+		height: 3em;
+	}
 }
 #group_options .dropdown-toggle:hover {
 	background: #222;
