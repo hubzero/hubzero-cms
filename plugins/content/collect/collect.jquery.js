@@ -159,6 +159,8 @@ if (!jq) {
 	var jq = $;
 }
 
+var scrp = null;
+
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
@@ -177,6 +179,14 @@ jQuery(document).ready(function(jq){
 				var href = $(this).attr('href').nohtml();
 				$(this).attr('href', href);
 				//console.log(href);
+			},
+			afterLoad: function(current, previous) {
+				scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
+				current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
+			},
+			beforeShow: function() {
+				scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
+				eval(scrp);
 			},
 			afterShow: function() {
 				var el = this.element;

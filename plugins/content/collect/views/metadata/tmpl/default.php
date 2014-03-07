@@ -36,6 +36,8 @@ if (!$url)
 {
 	$url = JRoute::_('index.php?option=com_content&id=' . $this->article->alias);
 }
+
+$foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
 ?>
 
 <p id="fav" class="fav">
