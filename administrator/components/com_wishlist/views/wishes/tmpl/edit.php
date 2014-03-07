@@ -81,6 +81,11 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
+	<?php if ($this->messages) { ?>
+		<?php foreach ($this->messages as $message) { ?>
+			<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
+		<?php } ?>
+	<?php } ?>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_DETAILS'); ?></span></legend>
@@ -88,7 +93,7 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<th class="key"><label for="field-wishlist"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label></th>
+						<th class="key"><label for="field-wishlist"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> <span class="required">required</span></th>
 						<td>
 							<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('fieldassigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
 								<option value="0"<?php echo ($this->row->wishlist == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('[none]'); ?></option>
@@ -101,7 +106,7 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-subject"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>:</label></th>
+						<th class="key"><label for="field-subject"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>:</label> <span class="required">required</span></th>
 						<td><input type="text" name="fields[subject]" id="field-subject" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->subject)); ?>" /></td>
 					</tr>
 					<tr>

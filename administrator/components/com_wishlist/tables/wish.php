@@ -191,14 +191,14 @@ class Wish extends JTable
 		$this->subject = trim($this->subject);
 		if ($this->subject == '') 
 		{
-			$this->setError(JText::_('WISHLIST_ERROR_NO_SUBJECT'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_SUBJECT'));
 			return false;
 		}
 
 		$this->wishlist = intval($this->wishlist);
 		if (!$this->wishlist) 
 		{
-			$this->setError(JText::_('WISHLIST_ERROR_NO_LIST'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_LIST'));
 			return false;
 		}
 

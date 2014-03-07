@@ -278,6 +278,8 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 			}
 		}
 
+		$this->view->messages = $this->getComponentMessage();
+
 		// Output the HTML
 		$this->view->display();
 	}
