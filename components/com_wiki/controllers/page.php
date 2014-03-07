@@ -1248,7 +1248,6 @@ class WikiControllerPage extends Hubzero_Controller
 
 		// Load the page, reset the name, and save
 		$page->pagename = $newpagename;
-		$page->_tbl_key = 'id';
 
 		if (!$page->check()) 
 		{
