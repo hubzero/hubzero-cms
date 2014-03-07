@@ -51,7 +51,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 <?php endif; ?>
 
-<div id="calendar" data-sources="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=eventsources'); ?>"></div>
+<div id="calendar" 
+	data-base="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>" 
+	data-month="<?php echo $this->month; ?>" 
+	data-year="<?php echo $this->year; ?>"></div>
 
 <?php
 	if ($this->params->get('allow_subscriptions', 1))

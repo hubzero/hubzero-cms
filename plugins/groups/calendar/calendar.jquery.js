@@ -44,12 +44,21 @@ HUB.Plugins.GroupCalendar = {
 
 	calendar: function()
 	{
-		if (!$('#calendar').length)
+		var $calendar = $('#calendar'),
+			$base     = $calendar.attr('data-base'),
+			$month    = $calendar.attr('data-month') - 1,
+			$year     = $calendar.attr('data-year');
+
+		// make sure we have the calendar
+		if (!$calendar.length)
 		{
 			return;
 		}
 
-		$('#calendar').fullCalendar({
+		// setup full calendar
+		$calendar.fullCalendar({
+			month: $month,
+			year: $year,
 			header: {
 				left: 'title prev,next',
 				center: '',
@@ -67,19 +76,31 @@ HUB.Plugins.GroupCalendar = {
 					$('.fc-header-center').html('');
 				}
 			},
+			viewRender: function(view, element) {
+				var dateString = $calendar.fullCalendar('getDate'),
+					date = $.fullCalendar.formatDate( dateString, 'yyyy/MM' );
+
+				//write date change to history
+				if (window.history && window.history.pushState)
+				{
+					window.history.pushState(null,null, $base + '/' + date);
+				}
+			},
 			dayClick: function(date, allDay, jsEvent, view) {}
 		});
 
 		// async load sources
-		$.getJSON($('#calendar').attr('data-sources'), function(sources) {
+		$.getJSON($base + '/eventsources', function(sources) {
 			jQuery.each(sources, function(index, source) {
-				$('#calendar').fullCalendar('addEventSource', source);
+				$calendar.fullCalendar('addEventSource', source);
 			});
 		});
 
 		//async refresh calendars
 		
 	},
+
+
 	
 	calendarPicker: function()
 	{

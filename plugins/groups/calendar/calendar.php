@@ -161,6 +161,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			
 			//get the request vars
 			$this->month    = JRequest::getInt('month', JFactory::getDate()->format("m") ,'get');
+			$this->month    = (strlen($this->month) == 1) ? '0'.$this->month : $this->month;
 			$this->year     = JRequest::getInt('year', JFactory::getDate()->format("Y"), 'get');
 			$this->calendar = JRequest::getInt('calendar', 0, 'get');
 			
