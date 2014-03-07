@@ -316,7 +316,8 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$row->private = (isset($fields['private']) && $fields['private']) ? 1 : 0;
+		$row->anonymous = (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0;
+		$row->private   = (isset($fields['private']) && $fields['private']) ? 1 : 0;
 
 		// Check content
 		if (!$row->check()) 
