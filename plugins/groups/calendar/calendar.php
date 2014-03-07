@@ -201,6 +201,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				case 'savecalendar':     $arr['html'] = $this->saveCalendar();       break;
 				case 'deletecalendar':   $arr['html'] = $this->deleteCalendar();     break;
 				case 'refreshcalendar':  $arr['html'] = $this->refreshCalendar();    break;
+				case 'refreshcalendars': $this->refreshCalendars();                  break;
 				case 'eventsources':     $this->eventSources();                      break;
 				case 'events':           $this->events();                            break;
 				default:                 $arr['html'] = $this->display();            break;
@@ -258,6 +259,26 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'scope_id'  => $this->group->get('gidNumber'),
 			'published' => array(1)
 		));
+
+		$jconfig = JFactory::getConfig();
+
+		// event calendar model
+		$eventsCalendar = EventsModelCalendar::getInstance();
+
+		//define our filters	
+		$view->filters = array(
+			'scope'    => 'group',
+			'scope_id' => $this->group->get('gidNumber'),
+			'orderby'  => 'publish_up DESC'
+		);
+
+		// get events count
+		$view->eventsCount = $eventsCalendar->events('count', $view->filters);
+
+		// get events for no js
+		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->events = $eventsCalendar->events('list', $view->filters);
 		
 		//add ddslick lib
 		//\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
@@ -307,7 +328,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// add uncategorized source
 		$source            = new stdClass;
 		$source->title     = 'Uncategorized';
-		$source->url       = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=null');
+		$source->url       = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=0');
 		$source->className = 'fc-event-default';
 		array_push($sources, $source);
 
@@ -1738,8 +1759,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// get the calendar
 		$calendar = EventsModelcalendar::getInstance($calendarId);
 		
-		//refresh Calendar if we can
-		if (!$calendar->refresh())
+		// refresh Calendar (force refresh even if we dont need to yet)
+		if (!$calendar->refresh(true))
 		{
 			$this->setError( JText::sprintf('Unable to sync the group calendar "%s". Please verify the calendar subscription URL is valid.', $calendar->getError()) );
 			return $this->calendars();
@@ -1752,41 +1773,42 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'passed'
 		);
 	}
-	
-	/**
-	 * Get events for a specific date
-	 * 
-	 * @param      integer $day   Day to display for
-	 * @param      integer $month Month to display for
-	 * @param      integer $year  Year to display for
-	 * @return     array
-	 */
-	private function _getEvents($start, $end, $calendar = 0)
-	{
-		$database = JFactory::getDBO();
-		$sql = "SELECT e.*, ec.title AS event_calendar_title, ec.color AS event_calendar_color
-				FROM #__events AS e
-				LEFT JOIN #__events_calendars AS ec
-				ON e.calendar_id = ec.id
-				WHERE (e.publish_up >= " . $database->Quote( $start )." AND e.publish_up <=" . $database->Quote( $end ) . " 
-					OR e.publish_down >= " . $database->Quote( $start )." AND e.publish_down <=" . $database->Quote( $end ) . " 
-					OR e.publish_up <= " . $database->Quote( $start )." AND e.publish_down >= " . $database->Quote( $end ) . ")
-				AND e.scope=" . $database->quote( 'group' ) . " 
-				AND e.scope_id=" . $database->Quote( $this->group->get('gidNumber') ) . " 
-				AND e.state=1";
-		
-		if (is_numeric($calendar) && $calendar != '' && $calendar != 0)
-		{
-			$sql .= " AND ec.id=" . $database->quote( $calendar );
-		}
 
-		// order
-		$sql .= " ORDER BY e.publish_up ASC";
-		
-		$database->setQuery($sql);
-		return $database->loadObjectList();
+	/**
+	 * Refresh all Calendars
+	 *
+	 * Should only be called via ajax
+	 * 
+	 * @return string
+	 */
+	private function refreshCalendars()
+	{
+		//get calendars
+		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$calendars = $eventsCalendarArchive->calendars('list', array(
+			'scope'     => 'group',
+			'scope_id'  => $this->group->get('gidNumber'),
+			'published' => array(1)
+		));
+
+		// array to hold refreshed cals
+		$refreshed = array();
+
+		// refresh each calendar
+		// dont force refresh if we havent made it to the next refresh interval
+		$calendars->map(function($calendar) use (&$refreshed) {
+			// if we refreshed lets add it 
+			// to our array of refreshed
+			if ($calendar->refresh(false))
+			{
+				$refreshed[] = $calendar->get('id');
+			}
+		});
+
+		// return refreshed count
+		echo json_encode(array('refreshed' => count($refreshed)));
+		exit();
 	}
-	
 	
 	/**
 	 * Get all future events for this group cal

@@ -107,47 +107,4 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 			break;
 		}
 	}
-
-	/**
-	 * Refresh all calendars
-	 *
-	 * @param   $group    Hubzero\User\Group Object
-	 */
-	public function refreshAll( $group )
-	{
-		//get refresh interval
-		$params = \Hubzero\Plugin\Plugin::getParams('calendar','groups');
-		$interval = $params->get('import_subscription_interval', 60);
-		
-		//get all group calendars
-		$calendars = $this->getCalendars( $group );
-		
-		//loop through each calendar to see if we need to refresh it
-		foreach ($calendars as $calendar)
-		{
-			// load the calendar
-			$eventsCalendar = new EventsCalendar($this->_db);
-			$eventsCalendar->load($calendar->id);
-
-			// check if subscription
-			if (!$eventsCalendar->isSubscription())
-			{
-				continue;
-			}
-
-			// get datetimes needed to refresh
-			$now             = JFactory::getDate();
-			$lastRefreshed   = JFactory::getDate($calendar->last_fetched_attempt);
-			$refreshInterval = new DateInterval("PT{$interval}M");
-
-			// add refresh interval to last refreshed
-			$lastRefreshed->add($refreshInterval);
-
-			//is it time to refresh?
-			if ($now >= $lastRefreshed)
-			{
-				$this->refresh( $group, $calendar->id );
-			}
-		}
-	}
 }

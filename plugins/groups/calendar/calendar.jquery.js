@@ -94,18 +94,33 @@ HUB.Plugins.GroupCalendar = {
 			jQuery.each(sources, function(index, source) {
 				$calendar.fullCalendar('addEventSource', source);
 			});
+
+			// refresh calendars after sources are loaded
+			HUB.Plugins.GroupCalendar.refreshCalendars();
 		});
 
-		//async refresh calendars
-		
+		//$('.fc-header-right').appent()
 	},
 
+	refreshCalendars: function()
+	{
+		var $calendar = $('#calendar'),
+			$base     = $calendar.attr('data-base');
 
+		//async refresh calendars
+		$.post($base + '/refreshcalendars', function(data) {
+			if (data.refreshed > 0)
+			{
+				$calendar.fullCalendar('refetchEvents');
+			}
+		}, 'json');
+	},
 	
 	calendarPicker: function()
 	{
 		var $ = this.jQuery;
 		
+		/*
 		//refresh cal on change
 		$(".group_calendar").on('change', '#month-picker, #year-picker', function(event) {
 			if (!$('html').hasClass('ie8'))
@@ -127,6 +142,7 @@ HUB.Plugins.GroupCalendar = {
 				}
 			});
 		}
+		*/
 	},
 	
 	quickEventCreate: function()
@@ -179,10 +195,10 @@ HUB.Plugins.GroupCalendar = {
 		});
 		
 		//adjust url and subscribe button url when editing calendar choices
-		$('.group_calendar').on('click', '#subscribe input[type=checkbox]', function(event) {
+		$('.group_calendar').on('click', '.subscribe-content input[type=checkbox]', function(event) {
 			var calendars = [],
 				calendarParamString = '';
-			$('#subscribe :checkbox:checked').map(function() { 
+			$('.subscribe-content :checkbox:checked').map(function() { 
 				calendars.push( $(this).val() );
 			});
 			

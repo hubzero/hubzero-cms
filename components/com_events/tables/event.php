@@ -772,7 +772,7 @@ class EventsEvent extends JTable
 		// calendar_id
 		if (isset($filters['calendar_id']))
 		{
-			if ($filters['calendar_id'] == 'null')
+			if ($filters['calendar_id'] == '0')
 			{
 				$where[] = "calendar_id IS NULL OR calendar_id=0";
 			}
@@ -791,7 +791,20 @@ class EventsEvent extends JTable
 		// if we have and conditions
 		if (count($where) > 0)
 		{
-			$sql = " WHERE " . implode(" AND ", $where);
+			$sql .= " WHERE " . implode(" AND ", $where);
+		}
+
+		// specify order?
+		if (isset($filters['orderby']))
+		{
+			$sql .= " ORDER BY " . $filters['orderby']; 
+		}
+
+		// limit and start
+		if (isset($filters['limit']))
+		{
+			$start = (isset($filters['start'])) ? $filters['start'] : 0;
+			$sql .= " LIMIT " . $start . ", " . $filters['limit'];
 		}
 		
 		return $sql;

@@ -96,4 +96,25 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		
 		return $instances[$key];
 	}
+
+	/**
+	 * Return link to event
+	 * 
+	 * @return string
+	 */
+	public function link()
+	{
+		$group = Hubzero\User\Group::getInstance($this->get('scope_id'));
+		return JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active=calendar&action=details&event_id='.$this->get('id'));
+	}
+
+	/**
+	 * Returns calendar for event
+	 * 
+	 * @return object 
+	 */
+	public function calendar()
+	{
+		return EventsModelCalendar::getInstance($this->get('calendar_id'));
+	}
 }

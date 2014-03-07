@@ -61,6 +61,13 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 	private $_events = null;
 
 	/**
+	 * Events Count
+	 * 
+	 * @var int
+	 */
+	private $_events_count = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      mixed     Object Id
@@ -119,6 +126,13 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 	{
 		switch (strtolower($rtrn))
 		{
+			case 'count':
+				if (!$this->_events_count || $clear)
+				{
+					$tbl = new EventsEvent($this->_db);
+					$this->_events_count = $tbl->count( $filters );
+				}
+				return $this->_events_count;
 			case 'list':
 			default:
 				if (!($this->_events instanceof \Hubzero\Base\ItemList) || $clear)
@@ -151,12 +165,30 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 	/**
 	 * Refresh a Specific Group Calendar
 	 */
-	public function refresh()
+	public function refresh($force = false)
 	{
 		// only refresh subscriptions
 		if (!$this->isSubscription())
 		{
 			$this->setError($this->get('title'));
+			return false;
+		}
+
+		// get refresh interval
+		$params = \Hubzero\Plugin\Plugin::getParams('calendar','groups');
+		$interval = $params->get('import_subscription_interval', 60);
+		
+		// get datetimes needed to refresh
+		$now             = JFactory::getDate();
+		$lastRefreshed   = JFactory::getDate($this->get('last_fetched_attempt'));
+		$refreshInterval = new DateInterval("PT{$interval}M");
+
+		// add refresh interval to last refreshed
+		$lastRefreshed->add($refreshInterval);
+		
+		// if we havent passed our need to refresh date stop
+		if ($now < $lastRefreshed && !$force)
+		{
 			return false;
 		}
 
