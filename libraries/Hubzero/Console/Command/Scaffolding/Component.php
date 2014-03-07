@@ -76,6 +76,11 @@ class Component extends Scaffolding
 			$install_dir = JPATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS);
 		}
 
+		if (substr($name, 0, 3) == 'com')
+		{
+			$name = substr($name, 4);
+		}
+
 		// Make sure component doesn't already exist
 		if (is_dir(JPATH_ROOT . DS . 'components' . DS . 'com_' . $name))
 		{
