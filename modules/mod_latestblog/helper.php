@@ -44,6 +44,8 @@ class modLatestBlog extends \Hubzero\Module\Module
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
 
+		$juser = JFactory::getUser();
+
 		$this->pullout   = $this->params->get('pullout', 'yes');
 		$this->feedlink  = $this->params->get('feedlink', 'yes');
 		$this->limit     = $this->params->get('limit', 5);
@@ -53,7 +55,7 @@ class modLatestBlog extends \Hubzero\Module\Module
 			'start'    => 0,
 			'scope'    => $this->params->get('blog', 'site'),
 			'group_id' => 0,
-			'state'    => 1
+			'state'    => (!$juser->get('guest') ? 'registered' : 'public')
 		);
 		if ($filters['scope'] == 'both' || $filters['scope'] == 'group')
 		{
@@ -69,8 +71,6 @@ class modLatestBlog extends \Hubzero\Module\Module
 
 		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
 		{
-			$juser = JFactory::getUser();
-
 			//make sure that the group for each blog post has the right privacy setting
 			foreach ($rows as $k => $gf)
 			{
