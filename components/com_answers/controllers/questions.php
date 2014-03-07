@@ -360,23 +360,25 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			// no vote change;
 		}
 
-		if (!$row->store()) 
+		if (!$row->store(false)) 
 		{
 			$this->setError($row->getError());
 			return;
 		}
 
 		// Record user's vote (old way)
-		$al->rid     = $row->get('id');
+		$al->response_id = $row->get('id');
 		$al->ip      = $ip;
 		$al->helpful = $vote;
 		if (!$al->check()) 
 		{
+			echo $al->getError();
 			$this->setError($al->getError());
 			return;
 		}
 		if (!$al->store()) 
 		{
+			echo $al->getError();
 			$this->setError($al->getError());
 			return;
 		}
@@ -395,11 +397,13 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$v->helpful     = $vote;
 			if (!$v->check()) 
 			{
+				echo $v->getError();
 				$this->setError($v->getError());
 				return;
 			}
 			if (!$v->store()) 
 			{
+				echo $v->getError();
 				$this->setError($v->getError());
 				return;
 			}
