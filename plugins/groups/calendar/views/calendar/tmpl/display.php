@@ -56,6 +56,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 	data-month="<?php echo $this->month; ?>" 
 	data-year="<?php echo $this->year; ?>"></div>
 
+<select name="calendar" id="calendar-picker">
+	<option value="0"><?php echo JText::_('All Calendars'); ?></option>
+	<?php foreach ($this->calendars as $calendar) : ?>
+		<?php $sel = ($calendar->get('id') == $this->calendar) ? 'selected="selected"' : ''; ?>
+		<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
+	<?php endforeach; ?>
+</select>
+
+
 <noscript>
 	<div class="subject group-calendar-subject">
 		<div class="container">

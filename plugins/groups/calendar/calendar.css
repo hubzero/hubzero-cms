@@ -19,6 +19,16 @@
 #calendar .fc-loading {
 	margin-top: 5px;
 }
+#calendar .fc-header-left,
+#calendar .fc-header-right {
+	width: 40%;
+}
+#calendar .fc-header-right .fs-dropdown {
+	display: inline-block;
+	text-align: left;
+	max-width: 200px;
+	margin-right: 10px;
+}
 #calendar .fc-loading:before {
 	content: 'Loading Events...';
 	font-style: italic;

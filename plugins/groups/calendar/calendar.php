@@ -280,10 +280,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 		$view->events = $eventsCalendar->events('list', $view->filters);
 		
-		//add ddslick lib
-		//\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
-		//\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
+		// add hub fancyselect lib
+		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 		
+		// add full calendar lib
 		\Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
 		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.css');
 		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.print.css', 'text/css', 'print');
@@ -365,13 +366,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// loop through each event to return it
 		foreach ($rawEvents as $rawEvent)
 		{
-			$event         = new stdClass;
-			$event->id     = $rawEvent->get('id');
-			$event->title  = $rawEvent->get('title');
-			$event->allDay = false;
-			$event->url    = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id=' . $rawEvent->get('id'));
-			$event->start  = JFactory::getDate($rawEvent->get('publish_up'))->toUnix();
-
+			$event            = new stdClass;
+			$event->id        = $rawEvent->get('id');
+			$event->title     = $rawEvent->get('title');
+			$event->allDay    = false;
+			$event->url       = $rawEvent->link();
+			$event->start     = JFactory::getDate($rawEvent->get('publish_up'))->toUnix();
+			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-'.$rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
 				$event->end = JFactory::getDate($rawEvent->get('publish_down'))->toUnix();

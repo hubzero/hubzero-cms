@@ -30,7 +30,7 @@ HUB.Plugins.GroupCalendar = {
 		HUB.Plugins.GroupCalendar.calendar();
 
 		//fancy calendar picker
-		//HUB.Plugins.GroupCalendar.calendarPicker();
+		HUB.Plugins.GroupCalendar.calendarPicker();
 		
 		//double click to create event
 		//HUB.Plugins.GroupCalendar.quickEventCreate();
@@ -44,6 +44,8 @@ HUB.Plugins.GroupCalendar = {
 
 	calendar: function()
 	{
+		var $ = this.jQuery;
+
 		var $calendar = $('#calendar'),
 			$base     = $calendar.attr('data-base'),
 			$month    = $calendar.attr('data-month') - 1,
@@ -86,6 +88,10 @@ HUB.Plugins.GroupCalendar = {
 					window.history.pushState(null,null, $base + '/' + date);
 				}
 			},
+			eventAfterAllRender: function(view) {
+				// filter events
+				HUB.Plugins.GroupCalendar.filterEvents();
+			},
 			dayClick: function(date, allDay, jsEvent, view) {}
 		});
 
@@ -99,11 +105,14 @@ HUB.Plugins.GroupCalendar = {
 			HUB.Plugins.GroupCalendar.refreshCalendars();
 		});
 
-		//$('.fc-header-right').appent()
+		// add calendar picker to header
+		$('.fc-header-right').prepend($('#calendar-picker'));
 	},
 
 	refreshCalendars: function()
 	{
+		var $ = this.jQuery;
+
 		var $calendar = $('#calendar'),
 			$base     = $calendar.attr('data-base');
 
@@ -119,30 +128,31 @@ HUB.Plugins.GroupCalendar = {
 	calendarPicker: function()
 	{
 		var $ = this.jQuery;
-		
-		/*
-		//refresh cal on change
-		$(".group_calendar").on('change', '#month-picker, #year-picker', function(event) {
-			if (!$('html').hasClass('ie8'))
-			{
-				HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
-			}
-		});
-		
+	
 		//fancy select box for cal picker
 		if ($('#calendar-picker').length)
 		{
 			$('#calendar-picker').HUBfancyselect({
 				onSelected: function() {
-					//refresh calendar
-					if (!$('html').hasClass('ie8'))
-					{
-						HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
-					}
+					HUB.Plugins.GroupCalendar.filterEvents();
 				}
 			});
 		}
-		*/
+	},
+
+	filterEvents: function()
+	{
+		var value = $('#calendar-picker').val();
+		
+		if (value == 0)
+		{
+			$('.fc-event').show();
+		}
+		else
+		{
+			$('.fc-event').hide();
+			$('.calendar-' + value).show();
+		}
 	},
 	
 	quickEventCreate: function()
