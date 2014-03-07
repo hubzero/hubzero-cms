@@ -123,7 +123,7 @@ class Vote extends JTable
 			$this->voter = ($this->voter) ? $this->voter : JFactory::getUser()->get('id');
 		}
 
-		if (!\Hubzero\Utility\Validate::iIp($this->ip))
+		if (!\Hubzero\Utility\Validate::ip($this->ip))
 		{
 			$this->setError(JText::_('Invalid IP address'));
 			return false;
