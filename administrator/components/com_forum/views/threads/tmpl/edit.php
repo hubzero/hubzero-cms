@@ -43,6 +43,8 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
+$post = new ForumModelPost($this->row);
+
 $create_date = NULL;
 if (intval( $this->row->created ) <> 0) 
 {
@@ -134,7 +136,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="field-comment"><?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?></label></td>
-						<td><textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->comment)); ?></textarea></td>
+						<td><textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape($post->content('raw')); ?></textarea></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-anonymous"><?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?></label></td>
@@ -148,6 +150,37 @@ function submitbutton(pressbutton)
 <?php } ?>
 				</tbody>
 			</table>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('COM_FORUM_LEGEND_ATTACHMENTS'); ?></span></legend>
+
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td>
+							<label for="upload">
+								<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?> <?php if ($post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($post->attachment()->get('filename'))) . '</strong>'; } ?><br />
+								<input type="file" name="upload" id="upload" />
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="field-attach-descritpion">
+								<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?><br />
+								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($post->attachment()->get('description'))); ?>" />
+							</label>
+							<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($post->attachment()->get('id'))); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<?php if ($post->attachment()->exists()) { ?>
+				<p class="warning">
+					<?php echo JText::_('COM_FORUM_FIELD_FILE_WARNING'); ?>
+				</p>
+			<?php } ?>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
@@ -193,7 +226,7 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Parameters'); ?></span></legend>
 
