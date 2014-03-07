@@ -419,7 +419,6 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		if ($this->view->row->parent)
 		{
-			echo $this->view->row->category_id;
 			$filters = array(
 				'category_id' => $this->view->row->category_id,
 				'sort'        => 'title',
@@ -571,6 +570,8 @@ class ForumControllerThreads extends Hubzero_Controller
 			}
 		}
 
+		$this->uploadTask(($model->thread ? $model->thread : $model->id), $model->id);
+
 		$msg = JText::_('Thread Successfully Saved');
 		$p = '';
 		if (($parent = JRequest::getInt('parent', 0)))
@@ -585,6 +586,92 @@ class ForumControllerThreads extends Hubzero_Controller
 			$msg,
 			'message'
 		);
+	}
+
+	/**
+	 * Uploads a file to a given directory and returns an attachment string
+	 * that is appended to report/comment bodies
+	 * 
+	 * @param      string $listdir Directory to upload files to
+	 * @return     string A string that gets appended to messages
+	 */
+	public function uploadTask($listdir, $post_id)
+	{
+		if (!$listdir) 
+		{
+			$this->setError(JText::_('COM_FORUM_NO_UPLOAD_DIRECTORY'));
+			return;
+		}
+
+		$row = new ForumTableAttachment($this->database);
+		$row->load(JRequest::getInt('attachment', 0));
+		$row->description = trim(JRequest::getVar('description', ''));
+		$row->post_id = $post_id;
+		$row->parent = $listdir;
+
+		// Incoming file
+		$file = JRequest::getVar('upload', '', 'files', 'array');
+		if (!$file['name']) 
+		{
+			if ($row->id)
+			{
+				if (!$row->check()) 
+				{
+					$this->setError($row->getError());
+				}
+				if (!$row->store()) 
+				{
+					$this->setError($row->getError());
+				}
+			}
+			return;
+		}
+
+		// Construct our file path
+		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS . $listdir;
+		if ($post_id)
+		{
+			$path .= DS . $post_id;
+		}
+
+		// Build the path if it doesn't exist
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path, 0777)) 
+			{
+				$this->setError(JText::_('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return;
+			}
+		}
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = strtolower(JFile::getExt($file['name']));
+
+		// Perform the upload
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		{
+			$this->setError(JText::_('COM_FORUM_ERROR_UPLOADING'));
+			return;
+		} 
+		else 
+		{
+			// File was uploaded
+			// Create database entry
+			$row->filename = $file['name'];
+
+			if (!$row->check()) 
+			{
+				$this->setError($row->getError());
+			}
+			if (!$row->store()) 
+			{
+				$this->setError($row->getError());
+			}
+		}
 	}
 
 	/**
