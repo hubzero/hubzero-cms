@@ -78,7 +78,7 @@ function submitbutton(pressbutton) {
 			<tr>
 				<th colspan="6">
 					#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> - 
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->filters['qid']; ?>" title="Edit this question">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->question->get('id'); ?>" title="Edit this question">
 						<?php echo $this->escape($this->question->subject('clean')); ?>
 					</a>
 				</th>
