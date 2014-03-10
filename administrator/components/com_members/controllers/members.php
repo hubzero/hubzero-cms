@@ -149,6 +149,8 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	 */
 	public function addTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
 		// Set any errors
 		if ($this->getError()) 
 		{
@@ -160,6 +162,95 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		// Output the HTML
 		$this->view->display();
+	}
+
+	/**
+	 * Create a new user
+	 * 
+	 * @param      integer $redirect Redirect to main listing?
+	 * @return     void
+	 */
+	public function newTask($redirect=1)
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming profile edits
+		$p = JRequest::getVar('profile', array(), 'post', 'none', 2);
+
+		// Initialize new usertype setting
+		$usersConfig = JComponentHelper::getParams('com_users');
+		$newUsertype = $usersConfig->get('new_usertype');
+		if (!$newUsertype) 
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('id')
+				->from('#__usergroups')
+				->where('title = "Registered"');
+			$db->setQuery($query);
+			$newUsertype = $db->loadResult();
+		}
+
+		$name  = trim($p['givenName']).' ';
+		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
+		$name .= trim($p['surname']);
+
+		$date = JFactory::getDate();
+		$user = JUser::getInstance();
+		$user->set('username', trim($p['username']));
+		$user->set('name', $name);
+		$user->set('email', trim($p['email']));
+		$user->set('id', 0);
+		$user->set('groups', array($newUsertype));
+		$user->set('registerDate', $date->toMySQL());
+		$user->set('password', trim($p['password']));
+		$user->set('password_clear', trim($p['password']));
+		$user->save();
+		$user->set('password_clear', '');
+
+		// Attempt to get the new user
+		$profile = \Hubzero\User\Profile::getInstance($user->get('id'));
+		$result  = is_object($profile);
+
+		// Did we successfully create an account?
+		if ($result)
+		{
+			// Set the new info
+			$profile->set('givenName', trim($p['givenName']));
+			$profile->set('middleName', trim($p['middleName']));
+			$profile->set('surname', trim($p['surname']));
+			$profile->set('name', $name);
+			$profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
+			$profile->set('public', 0);
+			$profile->set('password', '');
+			$result = $profile->store();
+		}
+
+		if ($result)
+		{
+			$result = \Hubzero\User\Password::changePassword($profile->get('uidNumber'), $p['password']);
+			// Set password back here in case anything else down the line is looking for it
+			$profile->set('password', $p['password']);
+			$profile->store();
+		}
+
+		// Did we successfully create/update an account?
+		if (!$result)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				$profile->getError(),
+				'error'
+			);
+			return;
+		}
+
+		// Redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option='.$this->_option.'&controller='.$this->_controller.'&task=edit&id[]='.$profile->get('uidNumber'), false),
+			JText::_('MEMBER_SAVED')
+		);
 	}
 
 	/**
