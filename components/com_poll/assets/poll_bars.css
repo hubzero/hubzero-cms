@@ -59,7 +59,6 @@
 	.graph .bar { 
 		display: block;
 		position: relative;
-		background: #B1D632; 
 		text-align: center; 
 		color: #333; 
 		height: 2em; 
@@ -69,30 +68,14 @@
 		position: absolute;
 		left: 1em;
 	}
-	.graph .color1 {
-		background: #B1D632;
-	}
-	.graph .color2 {
-		background: #BBADFF;
-	}
-	.graph .color3 {
-		background: #DAB7D7;
-	}
-	.graph .color4 {
-		background: #FFB430;
-	}
-	.graph .color5 {
-		background: #E2998B;
-	}
 
+.polls_color_1{ background-color: #DDC0C0 }
 
-.polls_color_1{ background-color: #8D1B1B; border: 2px ridge #B22222; }
+.polls_color_2{ background-color: #D1C8F0 }
 
-.polls_color_2{ background-color: #6740E1; border: 2px ridge #4169E1; }
+.polls_color_3{ background-color: #DADADA;  }
 
-.polls_color_3{ background-color: #8D8D8D; border: 2px ridge #D2D2D2; }
+.polls_color_4{ background-color: #EDDBBA; }
 
-.polls_color_4{ background-color: #CC8500; border: 2px ridge #FFA500; }
-
-.polls_color_5{ background-color: #5B781E; border: 2px ridge #6B8E23; }
+.polls_color_5{ background-color: #CFD7C0; }
 
