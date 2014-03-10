@@ -90,7 +90,20 @@ class Base
 	 **/
 	private function getRootCredentials()
 	{
+		$secrets   = DS . 'etc'  . DS . 'hubzero.secrets';
 		$conf_file = DS . 'root' . DS . '.my.cnf';
+
+		if (file_exists($secrets))
+		{
+			$conf = parse_ini_file($secrets);
+			$user = 'root';
+			$pw   = $conf['MYSQL-ROOT'];
+
+			if ($user && $pw)
+			{
+				return array('user' => $user, 'password' => $pw);
+			}
+		}
 
 		if (file_exists($conf_file))
 		{
