@@ -537,9 +537,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Incoming posted data
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+		$id = (isset($fields['id'])) ? $fields['id'] : null;
 
 		// Instantiate a new table row and bind the incoming data
-		$section = new ForumModelSection($fields['id']);
+		$section = new ForumModelSection($id);
 		if (!$section->bind($fields))
 		{
 			$this->setRedirect(
