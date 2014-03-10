@@ -896,7 +896,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$row->publish_up = JFactory::getDate($row->publish_up, JFactory::getConfig()->get('offset'))->toSql();
 		
 		// publish down
-		if (!$row->published_down || trim($row->published_down) == '0000-00-00 00:00:00' 
+		if (!$row->publish_down || trim($row->publish_down) == '0000-00-00 00:00:00' 
 			|| trim($row->publish_down) == 'Never')
 		{
 			$row->publish_down = '0000-00-00 00:00:00';
