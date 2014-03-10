@@ -102,6 +102,13 @@ class KbModelArticle extends \Hubzero\Base\Model
 	private $_params = null;
 
 	/**
+	 * User object
+	 * 
+	 * @var object
+	 */
+	private $_creator = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
