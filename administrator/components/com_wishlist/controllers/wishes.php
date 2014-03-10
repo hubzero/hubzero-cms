@@ -83,7 +83,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
 			'filter_order', 
-			'title'
+			'subject'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir', 
