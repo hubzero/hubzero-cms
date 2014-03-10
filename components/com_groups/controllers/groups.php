@@ -862,8 +862,11 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Get the logo
-		$logo_parts = explode("/",$customization['logo']);
-		$logo = array_pop($logo_parts);
+		if (isset($customization['logo']))
+		{
+			$logo_parts = explode("/",$customization['logo']);
+			$logo = array_pop($logo_parts);
+		}
 
 		// Plugin settings
 		$plugin_access = '';
