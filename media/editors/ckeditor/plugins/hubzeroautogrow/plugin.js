@@ -161,11 +161,11 @@
 	function getIframeHeight( iframe, event )
 	{
 		// get needed dimensions
-		var newHeight = iframe.contents().find("html").height(),
+		var newHeight  = iframe.contents().find("html").height(),
 			lineHeight = parseInt(iframe.contents().find("body").css('line-height'));
 		
 		// add extra if we just hit return (Not sure why??)
-		if (event.name == 'key' && event.data.keyCode == 13)
+		if (event.name == 'key' && event.data.keyCode == 13 && !isNaN(lineHeight))
 		{
 			newHeight += lineHeight;
 		}

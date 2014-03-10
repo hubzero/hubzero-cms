@@ -212,7 +212,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->hubzeroAutogrow_minHeight     = 200;
 		$config->hubzeroAutogrow_maxHeight     = 1000;
 		$config->toolbarCanCollapse            = true;
-		$config->extraPlugins                  = 'tableresize,hubzeroautogrow,hubzeroequation,hubzerogrid,codemirror';
+		$config->extraPlugins                  = 'tableresize,hubzeroautogrow,hubzeroequation,hubzerogrid';
 		$config->removePlugins                 = 'resize';
 		$config->resize_enabled                = false;
 		$config->emailProtection               = 'encode';
@@ -275,12 +275,7 @@ class plgEditorCkeditor extends JPlugin
 		if ($params->get('sourceViewButton'))
 		{
 			array_unshift($config->toolbar[0], 'Source', '-');
-		}
-
-		// source syntax highlighting - using codemirror
-		if ($params->get('sourceViewSyntaxHighlighing') === false)
-		{
-			$config->extraPlugins = str_replace(',codemirror', '', $config->extraPlugins);
+			$config->extraPlugins .= ',codemirror';
 		}
 
 		// autogrow auto-start
