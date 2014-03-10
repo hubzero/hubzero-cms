@@ -169,7 +169,7 @@ jQuery(document).ready(function(jq){
 			},
 			beforeLoad: function() {
 				var rid = $('#rid').val();
-				$(this).attr('href', '/index.php?option=com_resources&task=plugin&trigger=onResourcesFavorite&no_html=1&rid='+rid);	
+				$(this).attr('href', '/index.php?option=com_resources&task=plugin&trigger=onResourcesFavorite&active=collect&no_html=1&rid='+rid);	
 			},
 			afterLoad: function(current, previous) {
 				scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);

@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=plugin&trigger=onResourcesFavorite&no_html=1&rid=' . $this->resource->id); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=plugin&trigger=onResourcesFavorite&active=collect&no_html=1&rid=' . $this->resource->id); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('PLG_RESOURCES_COLLECT'); ?></legend>
 

@@ -148,6 +148,11 @@ class plgResourcesFavorite extends JPlugin
 	 */
 	public function onResourcesFavorite($option)
 	{
+		if (JRequest::getWord('active', '') != 'favorite')
+		{
+			return;
+		}
+
 		$rid = JRequest::getInt('rid', 0);
 
 		$arr = array('html' => '');

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <p class="favorite">
-	<a id="fav-this" class="<?php echo $this->cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&action=favorite'); ?>">
+	<a id="favr-this" class="<?php echo $this->cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&action=favorite'); ?>">
 		<?php echo $this->txt; ?>
 	</a>
 </p>

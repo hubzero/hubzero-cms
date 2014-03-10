@@ -131,6 +131,10 @@ class plgResourcesCollect extends JPlugin
 	 */
 	public function onResourcesFavorite($option)
 	{
+		if (JRequest::getWord('active', '') != 'collect')
+		{
+			return;
+		}
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');

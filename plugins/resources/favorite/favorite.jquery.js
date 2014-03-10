@@ -160,15 +160,15 @@ HUB.Plugins.ResourcesFavorite = {
 		var $ = this.jQuery;
 		
 		// Add to favorites
-		var fav = $('#fav-this');
+		var fav = $('#favr-this');
 		if ($(fav)) {
 			$(fav).bind('click', function(e) {
 				e.preventDefault();
 				
 				var rid = $('#rid').val();
-				$.get('index.php?option=com_resources&task=plugin&trigger=onResourcesFavorite&no_html=1&rid='+rid, {}, function(data) {
-					$('#fav-this').html(data);
-					
+				$.get('index.php?option=com_resources&task=plugin&trigger=onResourcesFavorite&active=favorite&no_html=1&rid='+rid, {}, function(data) {
+					$('#favr-this').html(data);
+
 					if ($(fav).hasClass('faved')) {
 						$(fav).removeClass('faved');
 						var img = '/components/com_resources/assets/img/broken-heart.gif';
