@@ -27,9 +27,9 @@ jimport( 'joomla.application.component.view');
  */
 class PollViewPoll extends JView
 {
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 
 		$db		= JFactory::getDBO();
 		$user 	= JFactory::getUser();
