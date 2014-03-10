@@ -815,7 +815,7 @@ class EventsControllerEvents extends Hubzero_Controller
 			for ($i=0, $n=count($fields); $i < $n; $i++)
 			{
 				// Explore the text and pull out all matches
-				array_push($fields[$i], $this->parseTag($row->content, $fields[$i][0]));
+				array_push($fields[$i], self::parseTag($row->content, $fields[$i][0]));
 
 				// Clean the original text of any matches
 				$row->content = str_replace('<ef:' . $fields[$i][0] . '>' . end($fields[$i]) . '</ef:' . $fields[$i][0] . '>', '', $row->content);
@@ -1582,7 +1582,7 @@ class EventsControllerEvents extends Hubzero_Controller
 			for ($i=0, $n=count($fields); $i < $n; $i++)
 			{
 				// Explore the text and pull out all matches
-				array_push($fields[$i], $this->parseTag($row->content, $fields[$i][0]));
+				array_push($fields[$i], self::parseTag($row->content, $fields[$i][0]));
 
 				// Clean the original text of any matches
 				$row->content = str_replace('<ef:' . $fields[$i][0] . '>' . end($fields[$i]) . '</ef:' . $fields[$i][0] . '>', '', $row->content);
@@ -2185,7 +2185,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function parseTag($text, $tag)
+	public static function parseTag($text, $tag)
 	{
 		preg_match("#<ef:" . $tag . ">(.*?)</ef:" . $tag . ">#s", $text, $matches);
 		if (count($matches) > 0) 
