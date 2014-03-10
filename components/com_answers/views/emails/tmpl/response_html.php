@@ -232,7 +232,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 											<thead>
 												<tr>
 													<th colspan="2" style="font-weight: normal; border-bottom: 1px solid #c8e3c2; padding: 8px; text-align: left" align="left">
-														<?php echo $this->escape(stripslashes($this->question->get('subject'))); ?>
+														<?php echo $this->question->subject('parsed'); ?>
 													</th>
 												</tr>
 											</thead>
