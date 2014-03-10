@@ -206,7 +206,7 @@ class PollController extends JController
 			$row = JTable::getInstance('poll', 'Table');
 			$row->checkin( $cid[0] );
 		}
-		$mainframe->redirect( 'index.php?option=com_poll' );
+		$this->setRedirect( 'index.php?option=com_poll' );
 	}
 
 	/**
