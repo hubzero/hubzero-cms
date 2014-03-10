@@ -62,7 +62,7 @@ class Migration20140305142845Core extends Base
 			$return = new \stdClass();
 			$return->error = new \stdClass();
 			$return->error->type = 'fatal';
-			$return->error->message = 'The timezone conversion appears to have already run. You should confirm this and mark this migration as run if necessary';
+			$return->error->message = 'The timezone conversion appears to have already run. You should confirm this and mark this migration as run if necessary (muse migration -fm --file=Migration20140305142845Core.php)';
 
 			return $return;
 		}
