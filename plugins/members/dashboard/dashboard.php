@@ -173,7 +173,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$this->modules = $mp->loadPosition($this->member->get('uidNumber'), $this->params->get('position', 'myhub'));
 
 		// No preferences found
-		if (trim($myhub->prefs) == '') 
+		if (trim($myhub->prefs) == '' && (!$myhub->modified || $myhub->modified == '0000-00-00 00:00:00'))
 		{
 			// Create a default set of preferences
 			$myhub->uid = $this->member->get('uidNumber');
