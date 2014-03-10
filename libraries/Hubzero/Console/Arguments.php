@@ -180,7 +180,7 @@ class Arguments
 							}
 						}
 
-						return;
+						continue;
 					}
 					else
 					{
