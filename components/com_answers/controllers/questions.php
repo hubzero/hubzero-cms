@@ -740,6 +740,10 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$tags   = JRequest::getVar('tags', '');
+		if (!isset($fields['reward']))
+		{
+			$fields['reward'] = 0;
+		}
 
 		// If offering a reward, do some checks
 		if ($fields['reward']) 
