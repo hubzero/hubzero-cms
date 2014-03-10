@@ -39,7 +39,7 @@ class PollController extends JController
 
 	}
 
-	function display( )
+	function display($cachable = false, $urlparams = false)
 	{
 		switch($this->getTask())
 		{
@@ -122,7 +122,7 @@ class PollController extends JController
 			}
 		}
 
-		switch ($this->_task)
+		switch (JRequest::getVar('task', 'save'))
 		{
 			case 'apply':
 				$msg = JText::_( 'Changes to Poll saved' );

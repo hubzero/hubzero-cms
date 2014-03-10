@@ -88,7 +88,7 @@
 
 		$link 		= JRoute::_( 'index.php?option=com_poll&view=poll&task=edit&cid[]='. $row->id );
 
-		$checked 	= JHTML::_('grid.checkedout',   $row, $i );
+		//$checked 	= JHTML::_('grid.checkedout',   $row, $i );
 		//$published 	= JHTML::_('grid.published', $row, $i );
 		
 		$task  = $row->published ? 'unpublish' : 'publish';
@@ -104,10 +104,14 @@
 				<?php echo $this->pagination->getRowOffset( $i ); ?>
 			</td>
 			<td>
-				<?php echo $checked; ?>
+				<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) { ?>
+					<span> </span>
+				<?php } else { ?>
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+				<?php } ?>
 			</td>
 			<td>
-			<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
+			<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) {
 				echo $row->title;
 			} else {
 				?>

@@ -113,7 +113,9 @@ class PollViewPolls extends JView
 		// search filter
 		$lists['search']= $search;
 
-		$this->assignRef('user',		JFactory::getUser());
+		$user = JFactory::getUser();
+
+		$this->assignRef('user',		$user);
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('items',		$rows);
 		$this->assignRef('pagination',	$pagination);
