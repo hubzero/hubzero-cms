@@ -269,7 +269,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 			break;
 
 			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
+				$link = 'index.php?option=com_support&task=reportabuse&category=answer&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
 			break;
 
 			case 'permalink':
