@@ -342,7 +342,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 									<?php echo $this->escape($row->name); echo ($lnk) ? ' (<a href="' . $lnk . '">' . $this->escape($row->login) . '</a>)' : ''; ?>
 								</span>
 								<span class="ticket-datetime">
-									@ <time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
+									@ <time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JFactory::getDBO()->getDateFormat()); ?></time>
 								</span>
 		<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 								<span class="ticket-activity">
