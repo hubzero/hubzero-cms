@@ -946,7 +946,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$question->load($id);
 
 		// Check if user is authorized to delete
-		if ($question->created_by != $this->juser->get('username')) 
+		if ($question->created_by != $this->juser->get('id')) 
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=3')
