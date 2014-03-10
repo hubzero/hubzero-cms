@@ -125,7 +125,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="col span9 omega">
 			<div class="grid">
 <?php
-	$c = new MembersProfile(JFactory::getDBO());
+	$db = JFactory::getDBO();
+	$c = new MembersProfile($db);
 	
 	$filters = array(
 		'limit'  => 4,
