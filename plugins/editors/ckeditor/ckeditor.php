@@ -324,6 +324,35 @@ class plgEditorCkeditor extends JPlugin
 		{
 			$config->contentsCss = $params->get('contentCss');
 		}
+		else
+		{
+			$doc         = JFactory::getDocument();
+			$app         = JFactory::getApplication();
+			$css         = array();
+			$siteCss    = '/cache/site.css';
+			$templateCss = '/templates/'.$app->getTemplate().'/css/main.css';
+
+			// do we have a site.css
+			if (file_exists(JPATH_ROOT . $siteCss))
+			{
+				array_push($css, $siteCss);
+			}
+
+			// do we have a template main.css
+			if (file_exists(JPATH_ROOT . $templateCss))
+			{
+				array_push($css, $templateCss);
+			}
+			
+			// add already added stylesheets
+			foreach ($doc->_styleSheets as $sheet => $attribs)
+			{
+				array_push($css, $sheet);
+			}
+
+			// set the content css
+			$config->contentsCss = $css;
+		}
 
 		// file browsing
 		if ($params->get('fileBrowserBrowseUrl'))

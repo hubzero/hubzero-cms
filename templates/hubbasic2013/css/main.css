@@ -36,6 +36,11 @@
 		min-width: 960px;
 		text-rendering: optimizeLegibility;
 	}
+	.ckeditor-body {
+		padding: 10px;
+		min-width: inherit;
+		background: #FFF !important;
+	}
 
 /* Inputs */
 	input[type=text],
