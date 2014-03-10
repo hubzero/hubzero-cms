@@ -230,6 +230,8 @@ JHTML::_('behavior.tooltip');
 				$alltags = $st->checkTags($ids);
 			}
 
+			$tsformat = JFactory::getDBO()->getDateFormat();
+
 			for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			{
 				$row = &$this->rows[$i];
@@ -303,7 +305,7 @@ JHTML::_('behavior.tooltip');
 										<?php echo $row->name; echo ($row->login) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $this->escape($row->login) . '">' . $this->escape($row->login) . '</a>)' : ''; ?>
 									</span>
 									<span class="ticket-datetime">
-										@ <time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
+										@ <time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $tsformat); ?></time>
 									</span>
 			<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 									<span class="ticket-activity">
