@@ -300,8 +300,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * [eventSources description]
-	 * @return [type] [description]
+	 * Output event sources. For caledar
+	 * 
+	 * @return string
 	 */
 	private function eventSources()
 	{
@@ -339,11 +340,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * [events description]
-	 * @return [type] [description]
+	 * Returns events for a source.
+	 * Ajax only and returns json.
+	 * 
+	 * @return string
 	 */
 	public function events()
 	{
+		// array to hold events
 		$events = array();
 
 		// get request params
@@ -360,7 +364,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$rawEvents = $eventsCalendar->events('list', array(
 			'scope' => 'group',
 			'scope_id' => $this->group->get('gidNumber'),
-			'calendar_id' => $calendarId
+			'calendar_id' => $calendarId,
+			'state' => array(1)
 		));
 		
 		// loop through each event to return it
@@ -430,7 +435,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getInt('event_id', 0, 'get');
 
 		//load event data
-		$view->event    = new EventsEvent( $this->database );
+		$view->event = new EventsModelEvent($eventId);
 		
 		//get calendars
 		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
@@ -440,15 +445,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'published' => array(1),
 			'readonly'  => 0
 		));
-		
-		//if we have an event id we are in edit mode
-		if (isset($eventId) && $eventId != '') 
-		{
-			//load the event obj based on event id passed in
-			$view->event->load( $eventId );
 
+		// do we have access to edit
+		if ($view->event->get('id'))
+		{
 			//check to see if user has the correct permissions to edit
-			if ($this->juser->get('id') != $view->event->created_by && $this->authorized != 'manager') 
+			if ($this->juser->get('id') != $view->event->get('created_by') && $this->authorized != 'manager') 
 			{
 				//do not have permission to edit the event
 				$this->redirect(
@@ -458,20 +460,20 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				);
 				return;
 			}
-			
-			//is this a readonly event
-			$cal = $eventsCalendar->getCalendars( $this->group, $view->event->calendar_id );
-			if (isset($cal[0]) && $cal[0]->readonly)
+
+			// make sure this event is editable
+			$eventCalendar = $view->event->calendar();
+			if ($eventCalendar->isSubscription())
 			{
 				$this->redirect(
-					JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$view->event->id),
+					JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$view->event->get('id')),
 					JText::_('You cannot edit imported events from remote calendar subscriptions.'),
 					'error'
 				);
 				return;
 			}
 		}
-
+	
 		//push some vars to the view
 		$view->month      = $this->month;
 		$view->year       = $this->year;
@@ -483,7 +485,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		
 		//load com_events params file for registration fields
 		$view->registrationFields = new JParameter(
-			$view->event->params, 
+			$view->event->get('params'), 
 			JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
 		);
 		
@@ -585,16 +587,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$event['registerby'] = '0000-00-00 00:00:00';
 		}
-
-		//instantiate new event object
-		$eventsEvent = new EventsEvent( $this->database );
-		$eventsEvent->bind( $event );
 		
-		//check to make sure we have valid info
-		if (!$eventsEvent->check())
+		//instantiate new event object
+		$eventsModelEvent = new EventsModelEvent();
+
+		// attempt to bind
+		if (!$eventsModelEvent->bind($event))
 		{
-			$this->setError($eventsEvent->getError());
-			$this->event = $eventsEvent;
+			$this->setError($eventsModelEvent->getError());
+			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
 
@@ -602,7 +603,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($event['publish_up'] == '')
 		{
 			$this->setError('You must enter an event start, an end date is optional.');
-			$this->event = $eventsEvent;
+			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
 
@@ -612,7 +613,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			if (strtotime($event['publish_up']) >= strtotime($event['publish_down'])) 
 			{
 				$this->setError('You must an event end date greater than the start date.');
-				$this->event = $eventsEvent;
+				$this->event = $eventsModelEvent;
 				return $this->edit();
 			}
 		}
@@ -621,7 +622,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($registration && isset($event['email']) && $event['email'] != '' && !filter_var($event['email'], FILTER_VALIDATE_EMAIL))
 		{
 			$this->setError('You must enter a valid email address for the events registration admin email.');
-			$this->event = $eventsEvent;
+			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
 		
@@ -630,15 +631,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError('You must enter a valid event registration deadline to require registration.');
 			JRequest::setVar('includeRegistration', 1);
-			$this->event = $eventsEvent;
+			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
 
-		//save event
-		if (!$eventsEvent->save( $event ))
+		//check to make sure we have valid info
+		if (!$eventsModelEvent->store(true))
 		{
 			$this->setError('An error occurred when trying to edit the event. Please try again.');
-			$this->event = $eventsEvent;
+			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
 
@@ -656,7 +657,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	
 		//inform user and redirect
 		$this->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsEvent->id),
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsModelEvent->get('id')),
 			$message,
 			'passed'
 		);
@@ -674,13 +675,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 
 		//load event data
-		$eventsEvent = new EventsEvent( $this->database );
-		$eventsEvent->load( $eventId );
+		$eventsModelEvent = new EventsModelEvent($eventId);
 
-		//check to see if user has the right permissions to delete
-		if ($this->juser->get('id') != $eventsEvent->created_by && $this->authorized != 'manager') 
+		// check to see if user has the right permissions to delete
+		if ($this->juser->get('id') != $eventsModelEvent->get('created_by') && $this->authorized != 'manager') 
 		{
-			//do not have permission to edit the event
+			// do not have permission to delete the event
 			$this->redirect(
 				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
 				JText::_('You do not have the correct permissions to delete this event.'),
@@ -688,15 +688,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			);
 			return;
 		}
-		
-		//is this event deletable?
-		$eventsCalendar = new EventsCalendar( $this->database );
-		$cal = $eventsCalendar->getCalendars( $this->group, $eventsEvent->calendar_id );
-		if (isset($cal[0]) && $cal[0]->readonly)
+
+		// make sure this event is editable
+		$eventCalendar = $eventsModelEvent->calendar();
+		if ($eventCalendar->isSubscription())
 		{
-			//do not have permission to edit the event
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$eventsEvent->id),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$eventsModelEvent->get('id')),
 				JText::_('You cannot delete imported events from remote calendar subscriptions.'),
 				'error'
 			);
@@ -704,10 +702,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 		
 		//make as disabled
-		$eventsEvent->state = 0;
+		$eventsModelEvent->set('state', 0);
 
 		//save changes
-		if (!$eventsEvent->save($eventsEvent))
+		if (!$eventsModelEvent->store(true))
 		{
 			$this->redirect(
 				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
@@ -747,15 +745,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 
 		//load event data
-		$view->event = new EventsEvent( $this->database );
-		$view->event->load( $eventId );
+		$view->event = new EventsModelEvent( $eventId );
 
 		//get registrants count
 		$eventsRespondent = new EventsRespondent( array('id' => $eventId ) );
 		$view->registrants = $eventsRespondent->getCount();
 
 		//get calendar
-		$view->calendar = EventsModelCalendar::getInstance($view->event->calendar_id);
+		$view->calendar = EventsModelCalendar::getInstance($view->event->get('calendar_id'));
 
 		//push some vars to the view
 		$view->month      = $this->month;
@@ -790,17 +787,16 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 		
 		//load event
-		$eventsEvent = new EventsEvent( $this->database );
-		$eventsEvent->load( $eventId );
+		$eventsModelEvent = new EventsModelEvent( $eventId );
 		
 		// get event timezone setting
 		// use this in "DTSTART;TZID=" 
-		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($eventsEvent->time_zone);
+		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($eventsModelEvent->get('time_zone'));
 		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 		
 		// get publish up/down dates in UTC
-		$publishUp   = new DateTime($eventsEvent->publish_up, new DateTimezone('UTC'));
-		$publishDown = new DateTime($eventsEvent->publish_down, new DateTimezone('UTC'));
+		$publishUp   = new DateTime($eventsModelEvent->get('publish_up'), new DateTimezone('UTC'));
+		$publishDown = new DateTime($eventsModelEvent->get('publish_down'), new DateTimezone('UTC'));
 		
 		// Set eastern timezone as publish up/down date timezones
 		// since all event date/times are stores relative to eastern 
@@ -811,14 +807,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
 
 		//event vars
-		$id       = $eventsEvent->id;
-		$title    = $eventsEvent->title;
-		$desc     = str_replace("\n", '\n', $eventsEvent->content);
-		$url      = $eventsEvent->extra_info;
-		$location = $eventsEvent->adresse_info;
+		$id       = $eventsModelEvent->get('id');
+		$title    = $eventsModelEvent->get('title');
+		$desc     = str_replace("\n", '\n', $eventsModelEvent->get('content'));
+		$url      = $eventsModelEvent->get('extra_info');
+		$location = $eventsModelEvent->get('adresse_info');
 		$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-		$created  = gmdate('Ymd', strtotime($eventsEvent->created)) . 'T' . gmdate('His', strtotime($eventsEvent->created)) . 'Z';
-		$modified = gmdate('Ymd', strtotime($eventsEvent->modified)) . 'T' . gmdate('His', strtotime($eventsEvent->modified)) . 'Z';
+		$created  = gmdate('Ymd', strtotime($eventsModelEvent->get('created'))) . 'T' . gmdate('His', strtotime($eventsModelEvent->get('created'))) . 'Z';
+		$modified = gmdate('Ymd', strtotime($eventsModelEvent->get('modified'))) . 'T' . gmdate('His', strtotime($eventsModelEvent->get('modified'))) . 'Z';
 		
 		//create ouput
 		$output  = "BEGIN:VCALENDAR\r\n";
@@ -829,7 +825,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$output .= "UID:{$id}\r\n";
 		$output .= "DTSTAMP:{$now}\r\n";
 		$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-		if($eventsEvent->publish_down != '' && $eventsEvent->publish_down != '0000-00-00 00:00:00')
+		if($eventsModelEvent->get('publish_down') != '' && $eventsModelEvent->get('publish_down') != '0000-00-00 00:00:00')
 		{
 			$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
 		}
@@ -917,53 +913,16 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//loop through and get each calendar
 		foreach ($calendarIds as $k => $calendarId)
 		{
-			if ($calendarId != 0)
-			{
-				//load calendar object
-				$eventsCalendar = new EventsCalendar( $this->database );
-				$eventsCalendar->load( $calendarId );
-				
-				//make sure we have a valid calendar
-				if (!is_object($eventsCalendar) || $eventsCalendar->id == '' || $eventsCalendar->scope_id == '')
-				{
-					unset($calendarIds[$k]);
-				}
-				
-				//make sure the calender is published
-				if (!$eventsCalendar->published)
-				{
-					unset($calendarIds[$k]);
-				}
-				
-				//make its our groups calendar
-				if ($eventsCalendar->scope_id != $this->group->get('gidNumber'))
-				{
-					unset($calendarIds[$k]);
-				}
-				
-				//get events for this calendar
-				$sql = "SELECT *
-				        FROM #__events AS e
-				        WHERE state=1
-				        AND calendar_id=" . $this->database->quote( $calendarId ) . "
-				        AND scope=" . $this->database->quote( 'group' ) . "
-				        AND scope_id=" . $this->database->quote( $this->group->get('gidNumber') );
-				$this->database->setQuery( $sql );
-				$e = $this->database->loadObjectList();
-				$events = array_merge($events, $e);
-			}
-			else
-			{
-				//get events for this calendar
-				$sql = "SELECT *
-				        FROM #__events AS e
-				        WHERE state=1
-				        AND (calendar_id=0 OR calendar_id IS NULL)
-				        AND scope=" . $this->database->quote( 'group' ) . "
-				        AND scope_id=" . $this->database->quote( $this->group->get('gidNumber') );
-				$this->database->setQuery( $sql );
-				$events = array_merge($events, $this->database->loadObjectList());
-			}
+			$eventsCalendar = new EventsModelCalendar();
+			$rawEvents = $eventsCalendar->events('list', array(
+				'scope'       => 'group',
+				'scope_id'    => $this->group->get('gidNumber'),
+				'calendar_id' => $calendarId,
+				'state'       => array(1)
+			));
+			$e = iterator_to_array($rawEvents);
+			
+			$events = array_merge($events, $e);
 		}
 		
 		//create output
@@ -980,20 +939,20 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		foreach ($events as $event)
 		{
 			$sequence = 0;
-			$uid      = $event->id;
-			$title    = $event->title;
-			$content  = str_replace("\r\n", '\n', $event->content);
-			$location = $event->adresse_info;
-			$url      = $event->extra_info;
+			$uid      = $event->get('id');
+			$title    = $event->get('title');
+			$content  = str_replace("\r\n", '\n', $event->get('content'));
+			$location = $event->get('adresse_info');
+			$url      = $event->get('extra_info');
 
 			// get event timezone setting
 			// use this in "DTSTART;TZID=" 
-			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->time_zone);
+			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
 			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 		
 			// get publish up/down dates in UTC
-			$publishUp   = new DateTime($event->publish_up, new DateTimezone('UTC'));
-			$publishDown = new DateTime($event->publish_down, new DateTimezone('UTC'));
+			$publishUp   = new DateTime($event->get('publish_up'), new DateTimezone('UTC'));
+			$publishDown = new DateTime($event->get('publish_down'), new DateTimezone('UTC'));
 		
 			// Set eastern timezone as publish up/down date timezones
 			// since all event date/times are stores relative to eastern 
@@ -1005,15 +964,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			
 			// create now, created, and modified vars
 			$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-			$created  = gmdate('Ymd', strtotime($event->created)) . 'T' . gmdate('His', strtotime($event->created)) . 'Z';
-			$modified = gmdate('Ymd', strtotime($event->modified)) . 'T' . gmdate('His', strtotime($event->modified)) . 'Z';
+			$created  = gmdate('Ymd', strtotime($event->get('created'))) . 'T' . gmdate('His', strtotime($event->get('created'))) . 'Z';
+			$modified = gmdate('Ymd', strtotime($event->get('modified'))) . 'T' . gmdate('His', strtotime($event->get('modified'))) . 'Z';
 			
 			$output .= "BEGIN:VEVENT\r\n";
 			$output .= "UID:{$uid}\r\n";
 			$output .= "SEQUENCE:{$sequence}\r\n";
 			$output .= "DTSTAMP:{$now}Z\r\n";
 			$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-			if($event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
+			if($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
 			{
 				$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
 			}
@@ -1169,18 +1128,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','');
 
 		//load event data
-		$view->event = new EventsEvent( $this->database );
-		$view->event->load( $eventId );
+		$view->event = new EventsModelEvent( $eventId );
 
 		//get registrants count
 		$eventsRespondent = new EventsRespondent( array('id' => $eventId ) );
 		$view->registrants = $eventsRespondent->getCount();
 
 		//do we have a registration deadline
-		if (!isset($view->event->registerby) || $view->event->registerby == '' || $view->event->registerby == '0000-00-00 00:00:00')
+		if ($view->event->get('registerby') == '' || $view->event->get('registerby') == '0000-00-00 00:00:00')
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->id),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
 				JText::_('This event does not have registration.'),
 				'warning'
 			);
@@ -1189,7 +1147,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//make sure registration is open
 		$now        = JFactory::getDate()->toUnix();
-		$registerby = JFactory::getDate($view->event->registerby)->toUnix();
+		$registerby = JFactory::getDate($view->event->get('registerby'))->toUnix();
 		
 		if ($registerby >= $now)
 		{
@@ -1197,7 +1155,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$password = JRequest::getVar('passwrd', '', 'post');
 
 			//is the event restricted
-			if (isset($view->event->restricted) && $view->event->restricted != '' && $view->event->restricted != $password && !isset($this->register))
+			if ($view->event->get('restricted') != '' && $view->event->get('restricted') != $password && !isset($this->register))
 			{
 				//if we entered a password and it was bad lets tell the user
 				if (isset($password) && $password != '')
@@ -1230,7 +1188,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//add params to view
 		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
-		$view->params = new $paramsClass( $view->event->params );
+		$view->params = new $paramsClass( $view->event->get('params') );
 
 		if (!$this->juser->get('guest')) 
 		{

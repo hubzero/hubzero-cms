@@ -37,14 +37,14 @@ $includeRegistration = JRequest::getVar('includeRegistration', 0);
 //set button and form title
 $formTitle = JText::_('Add Group Event');
 $submitBtn = JText::_('Submit New Event');
-if($this->event->id)
+if($this->event->get('id'))
 {
 	$formTitle = JText::_('Edit Group Event');
 	$submitBtn = JText::_('Update Event');
 }
 
 $showImport = false;
-if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this->event->id == 0))
+if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 {
 	$showImport = true;
 }
@@ -57,7 +57,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 <ul id="page_options">
 	<li>
 		<?php if (JRequest::getVar('action') == 'edit') : ?>
-			<a class="icon-prev btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=details&event_id='.$this->event->id); ?>">
+			<a class="icon-prev btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=details&event_id='.$this->event->get('id')); ?>">
 				<?php echo JText::_('Back to Event'); ?>
 			</a>
 		<?php else : ?>
@@ -76,7 +76,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 				<legend><?php echo $formTitle; ?></legend>
 
 				<label><?php echo JText::_('Title:'); ?> <span class="required">Required</span>
-					<input type="text" name="event[title]" id="event_title" value="<?php echo $this->event->title; ?>" />
+					<input type="text" name="event[title]" id="event_title" value="<?php echo $this->event->get('title'); ?>" />
 				</label>
 
 				<?php if (count($this->calendars) > 0 || $this->authorized == 'manager') : ?>
@@ -84,7 +84,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 						<select name="event[calendar_id]" id="event-calendar-picker">
 							<option value=""><?php echo JText::_('- Select Calendar for Event &mdash;'); ?></option>
 							<?php foreach ($this->calendars as $calendar) : ?>
-								<?php $sel = ($calendar->get('id') == $this->event->calendar_id) ? 'selected="selected"' : ''; ?>
+								<?php $sel = ($calendar->get('id') == $this->event->get('calendar_id')) ? 'selected="selected"' : ''; ?>
 								<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
 							<?php endforeach; ?>
 						</select>
@@ -98,21 +98,21 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 				<?php endif; ?>
 
 				<label><?php echo JText::_('Details:'); ?> <span class="optional">Optional</span>
-					<textarea name="content" id="event_content" rows="10"><?php echo $this->event->content; ?></textarea>
+					<textarea name="content" id="event_content" rows="10"><?php echo $this->event->get('content'); ?></textarea>
 					<span class="hint"><?php echo JText::_('Limited HTML allowed (a, iframe, strong, em, u)'); ?></span>
 				</label>
 
 				<label><?php echo JText::_('Location:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="event[adresse_info]" id="event_location" value="<?php echo $this->event->adresse_info; ?>" />
+					<input type="text" name="event[adresse_info]" id="event_location" value="<?php echo $this->event->get('adresse_info'); ?>" />
 				</label>
 
 				<label><?php echo JText::_('Contact:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="event[contact_info]" value="<?php echo $this->event->contact_info; ?>" />
+					<input type="text" name="event[contact_info]" value="<?php echo $this->event->get('contact_info'); ?>" />
 					<span class="hint">Accepts names and email addresses. (ex. John Doe john_doe@domain.com)</span>
 				</label>
 
 				<label><?php echo JText::_('Website:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="event[extra_info]" id="event_website" value="<?php echo $this->event->extra_info; ?>" />
+					<input type="text" name="event[extra_info]" id="event_website" value="<?php echo $this->event->get('extra_info'); ?>" />
 				</label>
 
 				<fieldset>
@@ -122,7 +122,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 					<label><?php echo JText::_('Start:'); ?> <span class="required">Required</span>
 						<?php
 							$start      = JRequest::getVar('start', '', 'get');
-							$publish_up = ($this->event->publish_up) ? $this->event->publish_up : $start;
+							$publish_up = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
 							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 							{
 								$publish_up = JHTML::_('date', $publish_up, 'm/d/Y @ g:i a');
@@ -134,7 +134,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 					<label><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
 						<?php
 							$end          = JRequest::getVar('end', '', 'get');
-							$publish_down = ($this->event->publish_down) ? $this->event->publish_down : $end;
+							$publish_down = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
 							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 							{
 								$publish_down = JHTML::_('date', $publish_down, 'm/d/Y @ g:i a');
@@ -145,7 +145,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 
 					<label><?php echo JText::_('Timezone:'); ?> <span class="optional">Optional</span>
 						<?php
-							$timezone = ($this->event->time_zone) ? $this->event->time_zone : -5;
+							$timezone = ($this->event->get('time_zone')) ? $this->event->get('time_zone') : -5;
 							echo EventsHtml::buildTimeZoneSelect($timezone, ''); 
 						?>
 					</label>
@@ -157,7 +157,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 					<legend><?php echo JText::_('Registration Settings'); ?></legend>
 
 					<label id="include-registration-toggle">
-						<?php $ckd = (($this->event->registerby != '0000-00-00 00:00:00' && $this->event->registerby != '') || $includeRegistration) ? 'checked="checked"' : ''; ?>
+						<?php $ckd = (($this->event->get('registerby') != '0000-00-00 00:00:00' && $this->event->get('registerby') != '') || $includeRegistration) ? 'checked="checked"' : ''; ?>
 						<input class="option" type="checkbox" id="include-registration" name="include-registration" value="1" <?php echo $ckd; ?> /> 
 						<?php echo JText::_('Include registration for this event.'); ?>
 					</label>
@@ -166,9 +166,9 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 						<label><?php echo JText::_('Deadline:'); ?> <span class="required">Required for Registration Tab to Appear</span>
 							<?php
 								$register_by = '';
-								if (isset($this->event->registerby) && $this->event->registerby != '' && $this->event->registerby != '0000-00-00 00:00:00')
+								if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00')
 								{
-									$register_by = JHTML::_('date', $this->event->registerby, 'm/d/Y @ g:i a');
+									$register_by = JHTML::_('date', $this->event->get('registerby'), 'm/d/Y @ g:i a');
 								}
 							?>
 							<input type="text" name="event[registerby]" id="event_registerby" value="<?php echo $register_by; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
@@ -176,14 +176,14 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 						</label>
 
 						<label><?php echo JText::_('Event Admin Email:'); ?> <span class="optional">Optional</span>
-							<input type="text" name="event[email]" value="<?php echo $this->event->email; ?>" />
+							<input type="text" name="event[email]" value="<?php echo $this->event->get('email'); ?>" />
 							<span class="hint">
 								<?php echo JText::_('A copy of event registrations will get sent to this event\'s admin email address.'); ?>
 							</span>
 						</label>
 
 						<label><?php echo JText::_('Password:'); ?> <span class="optional">Optional</span>
-							<input type="text" name="event[restricted]" value="<?php echo $this->event->restricted; ?>" />
+							<input type="text" name="event[restricted]" value="<?php echo $this->event->get('restricted'); ?>" />
 							<span class="hint">
 								<?php echo JText::_('If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.') ; ?>
 							</span>
@@ -201,7 +201,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 			<input type="hidden" name="active" value="calendar" />
 			<input type="hidden" name="action" value="save" />
-			<input type="hidden" name="event[id]" value="<?php echo $this->event->id; ?>" />
+			<input type="hidden" name="event[id]" value="<?php echo $this->event->get('id'); ?>" />
 			<br class="clear" />
 			<p class="submit">
 				<input type="submit" name="event_submit" value="<?php echo $submitBtn; ?>" />

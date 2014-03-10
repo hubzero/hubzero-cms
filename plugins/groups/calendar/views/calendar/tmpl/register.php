@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$year  = date("Y", strtotime($this->event->publish_up));
-$month = date("m", strtotime($this->event->publish_up));
+$year  = date("Y", strtotime($this->event->get('publish_up')));
+$month = date("m", strtotime($this->event->get('publish_up')));
 ?>
 
 <?php if($this->getError()) { ?>
@@ -49,13 +49,13 @@ $month = date("m", strtotime($this->event->publish_up));
 
 <div class="event-title-bar">
 	<span class="event-title">
-		<?php echo $this->event->title; ?>
+		<?php echo $this->event->get('title'); ?>
 	</span>
-	<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
-		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
+	<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
+		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
 			Delete
 		</a> 
-		<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->id); ?>">
+		<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
 			Edit
 		</a>
 	<?php endif; ?>
@@ -64,19 +64,19 @@ $month = date("m", strtotime($this->event->publish_up));
 <div class="event-sub-menu">
 	<ul>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->id); ?>">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->get('id')); ?>">
 				<span><?php echo JText::_('Details'); ?></span>
 			</a>
 		</li>
-		<?php if (isset($this->event->registerby) && $this->event->registerby != '' && $this->event->registerby != '0000-00-00 00:00:00') : ?>
+		<?php if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
 			<li class="active">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->id); ?>">
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>">
 					<span><?php echo JText::_('Register'); ?></span>
 				</a>
 			</li>
-			<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
+			<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->get('id')); ?>">
 						<span><?php echo JText::_('Registrants ('.$this->registrants.')'); ?></span>
 					</a>
 				</li>
@@ -86,7 +86,7 @@ $month = date("m", strtotime($this->event->publish_up));
 	<div class="clear"></div>
 </div>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->id); ?>" id="hubForm" method="post" class="full">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>" id="hubForm" method="post" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Name &amp; Title'); ?></legend>
 		
@@ -363,7 +363,7 @@ $month = date("m", strtotime($this->event->publish_up));
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="calendar" />
 	<input type="hidden" name="action" value="doregister" />
-	<input type="hidden" name="event_id" value="<?php echo $this->event->id; ?>" />
+	<input type="hidden" name="event_id" value="<?php echo $this->event->get('id'); ?>" />
 	
 	<p class="submit">
 		<input type="submit" name="event_submit" value="Submit" />

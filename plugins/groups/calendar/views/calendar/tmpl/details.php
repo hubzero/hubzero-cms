@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$year  = date("Y", strtotime($this->event->publish_up));
-$month = date("m", strtotime($this->event->publish_up));
+$year  = date("Y", strtotime($this->event->get('publish_up')));
+$month = date("m", strtotime($this->event->get('publish_up')));
 ?>
 
 <?php if($this->getError()) { ?>
@@ -49,17 +49,17 @@ $month = date("m", strtotime($this->event->publish_up));
 
 <div class="event-title-bar">
 	<span class="event-title">
-		<?php echo $this->event->title; ?>
+		<?php echo $this->event->get('title'); ?>
 		<?php if (isset($this->calendar)) : ?>
 			<span>&ndash;&nbsp;<?php echo $this->calendar->get('title'); ?></span>
 		<?php endif; ?>
 	</span>
-	<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
+	<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 		<?php if (!isset($this->calendar) || !$this->calendar->get('readonly')) : ?>
-			<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
+			<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
 				Delete
 			</a> 
-			<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->id); ?>">
+			<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
 				Edit
 			</a>
 		<?php endif; ?>
@@ -69,20 +69,20 @@ $month = date("m", strtotime($this->event->publish_up));
 <div class="event-sub-menu">
 	<ul>
 		<li class="active">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->id); ?>">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->get('id')); ?>">
 				<span><?php echo JText::_('Details'); ?></span>
 			</a>
 		</li>
 		
-		<?php if (isset($this->event->registerby) && $this->event->registerby != '' && $this->event->registerby != '0000-00-00 00:00:00') : ?>
+		<?php if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->id); ?>">
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>">
 					<span><?php echo JText::_('Register'); ?></span>
 				</a>
 			</li>
-			<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
+			<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->get('id')); ?>">
 						<span><?php echo JText::_('Registrants ('.$this->registrants.')'); ?></span>
 					</a>
 				</li>
@@ -94,15 +94,15 @@ $month = date("m", strtotime($this->event->publish_up));
 
 <table class="group-event-details">
 	<tbody>
-		<?php if ($this->event->publish_down != '0000-00-00 00:00:00') : ?>
+		<?php if ($this->event->get('publish_down') != '0000-00-00 00:00:00') : ?>
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php $tz = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
-					<?php echo JHTML::_('date', $this->event->publish_up, 'l, F d, Y @ g:i a'); ?>
+					<?php $tz = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation( $this->event->get('time_zone') ); ?>
+					<?php echo JHTML::_('date', $this->event->get('publish_up'), 'l, F d, Y @ g:i a'); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 					&mdash;
-					<?php echo JHTML::_('date', $this->event->publish_down, 'l, F d, Y @ g:i a'); ?>
+					<?php echo JHTML::_('date', $this->event->get('publish_down'), 'l, F d, Y @ g:i a'); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 				</td>
 			</tr>
@@ -110,42 +110,42 @@ $month = date("m", strtotime($this->event->publish_up));
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
-					<?php echo JHTML::_('date', $this->event->publish_up, 'l, F d, Y'); ?>
+					<?php echo JHTML::_('date', $this->event->get('publish_up'), 'l, F d, Y'); ?>
 				</td>
 				<th class="time"></th>
 				<td>
-					<?php echo JHTML::_('date', $this->event->publish_up, JText::_('TIME_FORMAT_HZ1')); ?>
-					<?php $tz = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation( $this->event->time_zone ); ?>
+					<?php echo JHTML::_('date', $this->event->get('publish_up'), JText::_('TIME_FORMAT_HZ1')); ?>
+					<?php $tz = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation( $this->event->get('time_zone') ); ?>
 					<abbr title="<?php echo $tz['name']; ?>"><?php echo $tz['abbreviation']; ?></abbr>
 				</td>
 			</tr>
 		<?php endif; ?>
 		
-		<?php if (isset($this->event->adresse_info) && $this->event->adresse_info != '') : ?>
+		<?php if ($this->event->get('adresse_info') != '') : ?>
 			<tr>
 				<th class="location"></th>
-				<td colspan="3"><?php echo $this->event->adresse_info; ?></td>
+				<td colspan="3"><?php echo $this->event->get('adresse_info'); ?></td>
 			</tr>
 		<?php endif; ?>
 		
-		<?php if (isset($this->event->contact_info) && $this->event->contact_info != '') : ?>
+		<?php if ($this->event->get('contact_info') != '') : ?>
 			<tr>
 				<th class="author"></th>
-				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->contact_info ); ?></td>
+				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->get('contact_info') ); ?></td>
 			</tr>
 		<?php endif; ?>
 		
-		<?php if (isset($this->event->extra_info) && $this->event->extra_info != '') : ?>
+		<?php if ($this->event->get('extra_info') != '') : ?>
 			<tr>
 				<th class="url"></th>
-				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->extra_info ); ?></td>
+				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->get('extra_info') ); ?></td>
 			</tr>
 		<?php endif; ?>
 		
-		<?php if (isset($this->event->content) && $this->event->content != '') : ?>
+		<?php if ($this->event->get('content') != '') : ?>
 			<tr>
 				<th class="details"></th>
-				<td colspan="3"><?php echo nl2br($this->event->content); ?></td>
+				<td colspan="3"><?php echo nl2br($this->event->get('content')); ?></td>
 			</tr>
 		<?php endif; ?>
 		
@@ -155,7 +155,7 @@ $month = date("m", strtotime($this->event->publish_up));
 		<tr>
 			<th class="download"></th>
 			<td colspan="4">
-				<a class="btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=export&event_id='.$this->event->id); ?>"><?php echo JText::_('Export to My Calendar (ics)'); ?></a>
+				<a class="btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=export&event_id='.$this->event->get('id')); ?>"><?php echo JText::_('Export to My Calendar (ics)'); ?></a>
 			</td>
 		</tr>
 	</tbody>
