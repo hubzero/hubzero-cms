@@ -65,6 +65,7 @@ class WikiModelAdapterGroups extends WikiModelAdapterAbstract
 		switch (strtolower($type))
 		{
 			case 'base':
+				unset($segments['pagename']);
 				return $this->_base . '?' . (string) $this->_build($segments);
 			break;
 
