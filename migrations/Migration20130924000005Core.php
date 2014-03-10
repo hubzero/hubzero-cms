@@ -356,7 +356,7 @@ class Migration20130924000005Core extends Base
 			$templates = array_diff(scandir(JPATH_ROOT . DS . 'templates'), array(".", "..", "system"));
 			foreach ($templates as $t)
 			{
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}';";
+				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
 				$this->db->setQuery($query);
 				if ($this->db->loadResult())
 				{
@@ -378,7 +378,7 @@ class Migration20130924000005Core extends Base
 			$templates = array_diff(scandir(JPATH_ROOT . DS . 'administrator' . DS . 'templates'), array(".", "..", "system"));
 			foreach ($templates as $t)
 			{
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}';";
+				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
 				$this->db->setQuery($query);
 				if ($this->db->loadResult())
 				{
