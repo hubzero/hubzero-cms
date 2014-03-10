@@ -60,7 +60,7 @@ class Migration20140305142845Core extends Hubzero_Migration
 			$return = new stdClass();
 			$return->error = new stdClass();
 			$return->error->type = 'fatal';
-			$return->error->message = 'The timezone conversion appears to have already run. You should confirm this and mark this migration as run if necessary';
+			$return->error->message = 'The timezone conversion appears to have already run. You should confirm this and mark this migration as run if necessary (/docroot/bin/migration.php -fm --file=Migration20140305142845Core.php)';
 
 			return $return;
 		}
