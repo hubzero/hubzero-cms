@@ -60,8 +60,7 @@ class plgMembersWiki extends JPlugin
 	public function &onMembersContributionsAreas()
 	{
 		$areas = array(
-			'wiki' => JText::_('PLG_MEMBERS_WIKI'),
-			'icon' => 'f072'
+			'wiki' => JText::_('PLG_MEMBERS_WIKI')
 		);
 		return $areas;
 	}
