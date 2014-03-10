@@ -15,14 +15,25 @@ class Migration20140305130635Core extends Hubzero_Migration
 	{
 		function getRootDB()
 		{
+			$secrets   = DS . 'etc'  . DS . 'hubzero.secrets';
 			$conf_file = DS . 'root' . DS . '.my.cnf';
+
+			if (file_exists($secrets))
+			{
+				$conf = parse_ini_file($secrets);
+				$user = 'root';
+				$pw   = $conf['MYSQL-ROOT'];
+			}
 
 			if (file_exists($conf_file))
 			{
 				$conf = parse_ini_file($conf_file, true);
 				$user = $conf['client']['user'];
 				$pw   = $conf['client']['password'];
+			}
 
+			if (isset($user) && isset($pw))
+			{
 				// Instantiate a config object
 				$jconfig = new JConfig();
 
