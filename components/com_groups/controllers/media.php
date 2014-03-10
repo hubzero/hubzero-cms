@@ -240,7 +240,8 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		{
 			$value = str_replace('/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
 			$text  = str_repeat('&lfloor;', substr_count($value, '/'));
-			$text .= ' ' . array_pop(explode('/', $value));
+			$parts = explode('/', $value);
+			$text .= ' ' . array_pop($parts);
 			
 			$options .= '<option value="'.$value.'">' . $text.'</option>';
 			if (@is_array($treeLevel['children']))
