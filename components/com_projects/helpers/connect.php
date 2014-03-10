@@ -776,35 +776,32 @@ class ProjectsConnectHelper extends JObject {
 		$uid = $uid ? $uid : $this->_uid;
 		$email = $this->getStoredParam($service . '_email', $uid);
 
-		if (!$email)
+		if ($service == 'google')
 		{
-			if ($service == 'google')
+			// Start service client
+			$client = $this->startClient($service, $uid);
+			if (!$client)
 			{
-				// Start service client
-				$client = $this->startClient($service, $uid);
-				if (!$client)
-				{
-					return false;
-				}
-				
-				$oauth2 = new Google_Oauth2Service($client);
-				try
-				{
-					$user = $oauth2->userinfo->get();
-					$email = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
-					$name = utf8_encode($user['name']);
-					
-					// Save params for project team member
-					$this->storeParam($service . '_email', $email, $uid);
-					$this->storeParam($service . '_name', $name, $uid);
-					$this->storeParam($service . '_userid', $user['id'], $uid);					
-				}
-				catch (Exception $e)
-				{
-					$this->setError('Failed to retrieve remote service profile information');
-					return false;
-				}				
+				return false;
 			}
+			
+			$oauth2 = new Google_Oauth2Service($client);
+			try
+			{
+				$user = $oauth2->userinfo->get();
+				$email = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+				$name = utf8_encode($user['name']);
+				
+				// Save params for project team member
+				$this->storeParam($service . '_email', $email, $uid);
+				$this->storeParam($service . '_name', $name, $uid);
+				$this->storeParam($service . '_userid', $user['id'], $uid);					
+			}
+			catch (Exception $e)
+			{
+				$this->setError('Failed to retrieve remote service profile information');
+				return false;
+			}				
 		}
 		
 		return true;		
