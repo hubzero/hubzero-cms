@@ -27,18 +27,16 @@ HUB.Plugins.GroupCalendar = {
 	jQuery: jq,
 	
 	initialize: function() {
+		// create calendar
 		HUB.Plugins.GroupCalendar.calendar();
 
-		//fancy calendar picker
+		// fancy calendar picker
 		HUB.Plugins.GroupCalendar.calendarPicker();
 		
-		//double click to create event
-		//HUB.Plugins.GroupCalendar.quickEventCreate();
-		
-		//edit event js
+		// edit event js
 		HUB.Plugins.GroupCalendar.editEvent();
 		
-		//handle subscribe url changing
+		// handle subscribe url changing
 		HUB.Plugins.GroupCalendar.subscribeUrl();
 	},
 
@@ -49,7 +47,8 @@ HUB.Plugins.GroupCalendar = {
 		var $calendar = $('#calendar'),
 			$base     = $calendar.attr('data-base'),
 			$month    = $calendar.attr('data-month') - 1,
-			$year     = $calendar.attr('data-year');
+			$year     = $calendar.attr('data-year'),
+			_click    = null;
 
 		// make sure we have the calendar
 		if (!$calendar.length)
@@ -61,6 +60,9 @@ HUB.Plugins.GroupCalendar = {
 		$calendar.fullCalendar({
 			month: $month,
 			year: $year,
+			selectable: true,
+			selectHelper: true,
+			unselectAuto: true,
 			header: {
 				left: 'title prev,next',
 				center: '',
@@ -92,7 +94,47 @@ HUB.Plugins.GroupCalendar = {
 				// filter events
 				HUB.Plugins.GroupCalendar.filterEvents();
 			},
-			dayClick: function(date, allDay, jsEvent, view) {}
+			dayClick: function(date, allDay, jsEvent, view) {
+				var start = $.fullCalendar.formatDate( date, 'yyyy-MM-dd HH:mm:00' );
+				if (_click)
+				{
+					var diff = jsEvent.timeStamp - _click;
+					if (diff < 300)
+					{
+						_click = null;
+						window.location.href = $base + '/add?start=' + start;
+					}
+				}
+				_click = jsEvent.timeStamp;
+			},
+			select: function(startDate, endDate, allDay, jsEvent, view)
+			{
+				var start, end,
+					viewName   = view.name,
+					startYear  = startDate.getUTCFullYear(),
+					startMonth = HUB.Plugins.GroupCalendar.pad(startDate.getUTCMonth()+1,2),
+					startDay   = HUB.Plugins.GroupCalendar.pad(startDate.getUTCDate(),2),
+					startHours = HUB.Plugins.GroupCalendar.pad(startDate.getUTCHours(),2),
+					startMins  = HUB.Plugins.GroupCalendar.pad(startDate.getUTCMinutes(),2),
+					endYear    = endDate.getUTCFullYear(),
+					endMonth   = HUB.Plugins.GroupCalendar.pad(endDate.getUTCMonth()+1,2),
+					endDay     = HUB.Plugins.GroupCalendar.pad(endDate.getUTCDate(),2),
+					endHours   = HUB.Plugins.GroupCalendar.pad(endDate.getUTCHours(),2),
+					endMins    = HUB.Plugins.GroupCalendar.pad(endDate.getUTCMinutes(),2);
+
+				// build event start and end
+				start = startYear + '-' + startMonth + '-' + startDay + ' ' + startHours + ':' + startMins + ':00';
+				end   = endYear + '-' + endMonth + '-' + endDay + ' ' + endHours + ':' + endMins + ':00';
+
+				// month select handled by dayclick event
+				if (viewName == 'month' && start == end)
+				{
+					return;
+				}
+				
+				// go to edit
+				window.location.href = $base + '/add?start=' + start + '&end=' + end;
+			}
 		});
 
 		// async load sources
@@ -107,6 +149,11 @@ HUB.Plugins.GroupCalendar = {
 
 		// add calendar picker to header
 		$('.fc-header-right').prepend($('#calendar-picker'));
+	},
+
+	pad: function(value, length)
+	{
+    	return (value.toString().length < length) ? HUB.Plugins.GroupCalendar.pad("0"+value, length):value;
 	},
 
 	refreshCalendars: function()
@@ -155,46 +202,6 @@ HUB.Plugins.GroupCalendar = {
 		}
 	},
 	
-	quickEventCreate: function()
-	{
-		var $ = this.jQuery;
-		
-		//quick create event - double click
-		$('#calendar.quick-create').disableSelection();
-		$('.group_calendar')
-			.on('click', '#calendar.quick-create tbody .calendar-row td:not(.no-date)', function(event) {
-				var clickedElement = (event.srcElement) ? event.srcElement : event.target,
-					clickedElementType = $(clickedElement).prop('tagName').toLowerCase();
-				
-				if (clickedElementType == 'td')
-				{
-					event.preventDefault();
-					$('.calendar-row td').removeClass('active');
-					$(clickedElement).addClass('active');
-				}
-			})
-			.on('dblclick', '#calendar.quick-create tbody .calendar-row td:not(.no-date)', function(event) {
-				event.preventDefault();
-				
-				//get the current location
-				var redirectPath = '',
-					redirectHref = '',
-					protocol = window.location.protocol,
-					host = window.location.host,
-					path = window.location.pathname
-					start = $(this).attr('data-date');
-				
-				//get needed part of path
-				redirectPath = path.replace(/calendar\/[\d]{4}\/[\d]{2}/gi, 'calendar')
-				
-				//create href for adding event
-				redirectLocation = protocol + '//' + host + redirectPath + '/add?start=' + start;
-				
-				//redirect user
-				window.location.href = redirectLocation;
-			});
-	},
-	
 	subscribeUrl: function()
 	{
 		var $ = this.jQuery;
@@ -238,47 +245,6 @@ HUB.Plugins.GroupCalendar = {
 			$('#subscribe-link input[type=text]').val('https://' + newSubscribeUrl);
 			$('#subscribe-link a.https').attr('href', 'https://' + newSubscribeUrl)
 			$('#subscribe-link a.webcal').attr('href', 'webcal://' + newSubscribeUrl)
-		});
-	},
-	
-	refresh: function( callback )
-	{
-		var $ = this.jQuery;
-		
-		//show activity indicator
-		$("#calendar-box").css('position', 'relative').append('<div id="calendar-update" />');
-		
-		//get values of month and year pickers
-		var monthVal = $('#month-picker').val(),
-			yearVal = $('#year-picker').val(),
-			calendarVal = $('#calendar-picker').val();
-		
-		var protocol = window.location.protocol,
-			host = window.location.host,
-			path = window.location.pathname;
-		
-		//build new url
-		newUrl = protocol + '//' + host + path.replace(/calendar\/[\d]{4}\/[\d]{2}/gi, 'calendar') + '/' + yearVal + '/' + monthVal;
-		if(calendarVal != '' && calendarVal != 0)
-		{
-			newUrl += '?calendar=' + calendarVal;
-		}
-		
-		//write date change to history
-		if (window.history && window.history.pushState)
-		{
-			window.history.pushState(null,null, newUrl);
-		}
-		
-		//load new cal
-		$(".group_calendar").load( newUrl + ' .group_calendar > *', function(){
-			$("#calendar-box").css('position', 'static').find("#calendar-update").remove();
-			
-			if (typeof callback == 'function')
-			{
-				callback();
-			}
-			return false;
 		});
 	},
 	

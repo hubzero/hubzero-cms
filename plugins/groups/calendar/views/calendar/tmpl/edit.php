@@ -121,19 +121,23 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 					</legend>
 					<label><?php echo JText::_('Start:'); ?> <span class="required">Required</span>
 						<?php
-							$start = JRequest::getVar('start', date('Y-m-d 08:00:00'), 'get');
+							$start      = JRequest::getVar('start', '', 'get');
 							$publish_up = ($this->event->publish_up) ? $this->event->publish_up : $start;
-							$publish_up = JHTML::_('date', $publish_up, 'm/d/Y @ g:i a');
+							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
+							{
+								$publish_up = JHTML::_('date', $publish_up, 'm/d/Y @ g:i a');
+							}
 						?>
 						<input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $publish_up; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
 					</label>
 
 					<label><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
 						<?php
-							$publish_down = '';
-							if (isset($this->event->publish_down) && $this->event->publish_down != '' && $this->event->publish_down != '0000-00-00 00:00:00')
+							$end          = JRequest::getVar('end', '', 'get');
+							$publish_down = ($this->event->publish_down) ? $this->event->publish_down : $end;
+							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down = JHTML::_('date', $this->event->publish_down, 'm/d/Y @ g:i a');
+								$publish_down = JHTML::_('date', $publish_down, 'm/d/Y @ g:i a');
 							}
 						?>
 						<input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $publish_down; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />

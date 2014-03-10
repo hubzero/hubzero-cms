@@ -51,10 +51,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 <?php endif; ?>
 
+<?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array($this->juser->get('id'), $this->group->get('members'))) ? true : 0; ?>
 <div id="calendar" 
 	data-base="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>" 
 	data-month="<?php echo $this->month; ?>" 
-	data-year="<?php echo $this->year; ?>"></div>
+	data-year="<?php echo $this->year; ?>"
+	data-event-quickcreate="<?php echo $quickCreate; ?>"></div>
 
 <select name="calendar" id="calendar-picker">
 	<option value="0"><?php echo JText::_('All Calendars'); ?></option>
