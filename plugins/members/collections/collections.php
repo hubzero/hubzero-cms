@@ -1436,7 +1436,7 @@ class plgMembersCollections extends JPlugin
 	private function _delete()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		//JRequest::checkToken() or jexit('Invalid Token');
 
 		// Login check
 		if ($this->juser->get('guest')) 
@@ -1466,7 +1466,7 @@ class plgMembersCollections extends JPlugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel) 
+		if (!$process || !$confirmdel || !JRequest::checkToken()) 
 		{
 			if ($process && !$confirmdel) 
 			{
