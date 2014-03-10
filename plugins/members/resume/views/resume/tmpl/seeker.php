@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	$resume = is_file(JPATH_ROOT . $path . DS . $this->seeker->filename) ? $path . DS . $this->seeker->filename : '';
 ?>
-	<div class="aboutme<?php echo $this->seeker->mine && $list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
+	<div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
 		<div class="thumb">
 			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile); ?>" alt="<?php echo $this->seeker->name; ?>" />
 		</div>
