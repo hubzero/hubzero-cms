@@ -190,7 +190,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 
 		// Does a page exist for the given pagename?
-		if (!$this->page->exists()) 
+		if (!$this->page->exists() || $this->page->isDeleted()) 
 		{
 			// No! Ask if they want to create a new page
 			$this->view->setLayout('doesnotexist');
