@@ -104,7 +104,7 @@ $pageNav = new JPagination(
 ?>
 <div class="wikipage-search" style="margin-top: 2em">
 
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:Search'); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="post">
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 			<fieldset class="entry-search">
