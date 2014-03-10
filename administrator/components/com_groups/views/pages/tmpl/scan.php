@@ -102,7 +102,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<td class="lines"><?php echo $lineCode; ?></td>
 				<td class="code">
-					<?php echo highlight_string($content); ?>
+					<?php highlight_string($content); ?>
 				</td>
 			</tr>
 		</table>

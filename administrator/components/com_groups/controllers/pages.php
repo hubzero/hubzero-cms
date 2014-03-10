@@ -381,6 +381,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$content = explode("\n", $currentVersion->get('content'));
 		
 		// get any issues
+		$issues = new stdClass;
 		$issues->count = 0;
 		foreach ($flags as $lang => $flag)
 		{
@@ -390,6 +391,10 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			$minor    = implode('|', $flag['minor']);
 			
 			// do case insensitive search for any flags
+			if (!isset($issues->$lang))
+			{
+				$issues->$lang = new stdClass;
+			}
 			$issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : array();
 			$issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : array();
 			$issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : array();

@@ -54,8 +54,12 @@ class GroupsHelperDocumentRendererGoogleAnalytics extends GroupsHelperDocumentRe
 			$js = "
 				<script>
 					setTimeout(function(){
+						if (typeof ga == 'undefined')
+						{
+							return;
+						}
 						ga('create', '" . $account . "', 'auto', {'name': '" . $name . "'});
-						ga('" . $name . ".send', 'pageview');
+						ga('" . $name . ".send', 'pageview');	
 					}, 200);
 				</script>";
 		}
