@@ -1820,6 +1820,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		// New entry or existing?
 		if ($row->id) 
 		{
+			$state = 'edit';
+
 			// Existing - update modified info
 			$row->modified = strftime("%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
 			if ($this->juser->get('id')) 
@@ -1829,6 +1831,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		} 
 		else 
 		{
+			$state = 'add';
+			
 			// New - set created info
 			$row->created = strftime("%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
 			if ($this->juser->get('id')) 
