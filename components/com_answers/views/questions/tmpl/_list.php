@@ -47,6 +47,7 @@ if (isset($this->comments) && $this->comments instanceof \Hubzero\Base\ItemList)
 				'layout'  => '_comment'
 			)
 		);
+		$view->item_id    = $this->item_id;
 		$view->option     = $this->option;
 		$view->comment    = $comment;
 		$view->config     = $this->config;

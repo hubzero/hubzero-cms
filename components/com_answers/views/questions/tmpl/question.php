@@ -402,6 +402,7 @@ if (!$this->question->get('anonymous'))
 					'layout'  => '_list'
 				)
 			);
+			$view->item_id    = 0;
 			$view->parent     = 0;
 			$view->cls        = 'odd';
 			$view->depth      = 0;
@@ -452,6 +453,7 @@ if (!$this->question->get('anonymous'))
 					'layout'  => '_list'
 				)
 			);
+			$view->item_id    = 0;
 			$view->parent     = 0;
 			$view->cls        = 'odd';
 			$view->depth      = 0;
