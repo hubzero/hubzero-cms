@@ -969,7 +969,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		} 
 		else 
 		{
-			$log_action = 'group_edited';
+			$log_action   = 'group_edited';
+			$log_comments = '';
 		}
 
 		// log invites
