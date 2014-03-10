@@ -55,8 +55,8 @@ $no_show = array("errors","duplicate");
 	
 	<ul id="steps">
 		<li><a href="/citations/import" class="passed">Step 1<span>Upload citations file</span></a></li>
-		<li><a href="/citations/import_review" class="active">Step 2<span>Preview imported citations</span></a></li>
-		<li><a href="#">Step 3<span>Browse uploaded citations</span></a></li>
+		<li><a class="active">Step 2<span>Preview imported citations</span></a></li>
+		<li><a>Step 3<span>Browse uploaded citations</span></a></li>
 	</ul><!-- / #steps -->
 	
 	<form method="post" action="<?php echo JRoute::_('index.php?option='. $this->option . '&task=import_save'); ?>">

@@ -44,8 +44,8 @@ defined('_JEXEC') or die('Restricted access');
 	
 	<ul id="steps">
 		<li><a href="/citations/import" class="active">Step 1<span>Upload citations file</span></a></li>
-		<li><a href="/citations/import_review" class="">Step 2<span>Preview imported citations</span></a></li>
-		<li><a href="#">Step 3<span>Browse uploaded citations</span></a></li>
+		<li><a>Step 2<span>Preview imported citations</span></a></li>
+		<li><a>Step 3<span>Browse uploaded citations</span></a></li>
 	</ul><!-- / #steps -->
 
 	<form id="hubForm" enctype="multipart/form-data" method="post" action="<?php echo JRoute::_('index.php?option='. $this->option . '&task=import_upload'); ?>">

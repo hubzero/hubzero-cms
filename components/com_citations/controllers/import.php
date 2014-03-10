@@ -215,8 +215,18 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		// get the citations
 		$p1 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_attention_' . $sessionid . '.txt';
 		$p2 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
-		$citations_require_attention    = unserialize(JFile::read($p1));
-		$citations_require_no_attention = unserialize(JFile::read($p2));
+		$citations_require_attention    = null;
+		$citations_require_no_attention = null;
+		if (file_exists($p1))
+		{
+			$citations_require_attention    = unserialize(JFile::read($p1));
+		}
+		if (file_exists($p2))
+		{
+			$citations_require_no_attention = unserialize(JFile::read($p2));
+		}
+		
+		
 
 		// make sure we have some citations
 		if (!$citations_require_attention && !$citations_require_no_attention) 

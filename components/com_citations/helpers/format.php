@@ -483,7 +483,7 @@ class CitationFormat
 	 * @param 	string		Format Type
 	 * @return  String		Formats Template
 	 */
-	public function getDefaultFormat($format)
+	public function getDefaultFormat($format = 'apa')
 	{
 		return $this->_default_format[$format];
 	}
