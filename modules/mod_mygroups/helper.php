@@ -72,7 +72,7 @@ class modMyGroups extends \Hubzero\Module\Module
 		switch ($type)
 		{
 			case 'all':
-				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY cn ASC";
+				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY description ASC";
 			break;
 			case 'applicants':
 				$query = $query1;
