@@ -139,11 +139,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 <?php if ($row->authorid > 0) { ?>
 					<a class="state <?php echo $scls; ?>" href="index.php?option=com_members&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->authorid; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
 					</a>
 <?php } else { ?>
 					<span class="state <?php echo $scls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
 					</span>
 <?php } ?>
 				</td>
