@@ -934,6 +934,11 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			{
 				if ($k == 'timeof')
 				{
+					if (strtotime(trim($v)) === false)
+					{
+						$v = NULL;
+					}
+					
 					$v = trim($v) 
 						? JFactory::getDate($v, JFactory::getConfig()->get('offset'))->toSql() 
 						: NULL;
