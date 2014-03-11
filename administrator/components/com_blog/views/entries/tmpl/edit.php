@@ -113,7 +113,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<td class="key" colspan="2">
-						<label for="field-title"><?php echo JText::_('Title'); ?>:</label><br />
+						<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required">required</span></label><br />
 						<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 					</td>
 				</tr>
@@ -125,13 +125,13 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<td class="key" colspan="2">
-						<label for="field-content"><?php echo JText::_('Content'); ?></label><br />
+						<label for="field-content"><?php echo JText::_('Content'); ?>: <span class="required">required</span></label><br />
 						<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td class="key" colspan="2">
-						<label for="field-tags"><?php echo JText::_('Tags'); ?></label><br />
+						<label for="field-tags"><?php echo JText::_('Tags'); ?>:</label><br />
 						<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 					</td>
 				</tr>
