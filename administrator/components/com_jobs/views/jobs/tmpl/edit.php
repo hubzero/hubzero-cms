@@ -125,29 +125,51 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="jobForm" name="jobForm">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::sprintf('Job #%s', $this->row->code); ?></span></legend>
+			<legend><span><?php echo JText::_('Company'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<th class="key"><label for="title"><?php echo JText::_('Title'); ?>:</label></th>
-						<td><input type="text" name="title" id="title" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="companyName"><?php echo JText::_('Company Name'); ?>:</label></th>
-						<td><input type="text" name="companyName" id="companyName" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyName)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="companyWebsite"><?php echo JText::_('Company URL'); ?>:</label></th>
-						<td><input type="text" name="companyWebsite" id="companyWebsite" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyWebsite)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="companyLocation"><?php echo JText::_('Company Location'); ?> <br />(<?php echo JText::_('City, State'); ?>):</label></th>
-						<td><input type="text" name="companyLocation" id="companyLocation" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyLocation)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="companyLocationCountry"><?php echo JText::_('Country'); ?>:</label></th>
 						<td>
+							<label for="companyName"><?php echo JText::_('Name'); ?>: <span class="required">required</span></label><br />
+							<input type="text" name="companyName" id="companyName" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyName)); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="companyWebsite"><?php echo JText::_('URL'); ?>:</label><br />
+							<input type="text" name="companyWebsite" id="companyWebsite" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyWebsite)); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="companyLocation"><?php echo JText::_('Location'); ?>: <span class="required">required</span></label><br />
+							<input type="text" name="companyLocation" id="companyLocation" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyLocation)); ?>" />
+							<span class="hint"><?php echo JText::_('City, State'); ?></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Job'); ?></span></legend>
+
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td>
+							<label for="cid"><?php echo JText::_('Category'); ?>:</label><br />
+							<?php echo JobsHtml::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?>
+						</td>
+						<td>
+							<label for="type"><?php echo JText::_('Type'); ?>:</label><br />
+							<?php echo JobsHtml::formSelect('type', $this->types, $this->row->type, '', ''); ?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<label for="companyLocationCountry"><?php echo JText::_('Country'); ?>:</label><br />
 						<?php if ($usonly) { ?>
 							<?php echo JText::_('United States'); ?>
 							<p class="hint"><?php echo JText::_('Only US-based jobs can be advertised on this site.'); ?></p>
@@ -168,57 +190,48 @@ function submitbutton(pressbutton)
 								$out .= '>' . $this->escape($country->name) . '</option>'."\n";
 							}
 							$out .= "\t\t\t".'</select>'."\n";
-						 	echo $out;
-						 ?>
-						 <?php } ?>
+							echo $out;
+						?>
+						<?php } ?>
 						</td>
 					</tr>
-					 <tr>
-						<th class="key"><label for="description"><?php echo JText::_('Job Description'); ?>:</label></th>
-						<td>
-							<p class="hint"><?php echo JText::_('Wiki formatting is enabled.'); ?></p>
+					<tr>
+						<td colspan="2">
+							<label for="title"><?php echo JText::_('Title'); ?>: <span class="required">required</span></label><br />
+							<input type="text" name="title" id="title" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<label for="description"><?php echo JText::_('Description'); ?>:</label><br />
 							<textarea name="description" id="description"  cols="55" rows="30"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
+							<span class="hint"><?php echo JText::_('Wiki formatting is enabled.'); ?></span>
 						</td>
 					</tr>
-				</tbody>
-			</table>
-		</fieldset>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Job Specifics'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
 					<tr>
-						<th class="key"><label for="cid"><?php echo JText::_('Job Category'); ?>:</label></th>
-						<td><?php echo JobsHtml::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="type"><?php echo JText::_('Job Type'); ?>:</label></th>
-						<td><?php echo JobsHtml::formSelect('type', $this->types, $this->row->type, '', ''); ?></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="startdate"><?php echo JText::_('Position Start Date'); ?>:</label></th>
 						<td>
-							<p class="hint"><?php echo JText::_('Date format: yyyy-mm-dd.'); ?></p>
+							<label for="startdate"><?php echo JText::_('Position Start Date'); ?>:</label><br />
 							<input type="text" name="startdate" id="startdate" size="60" maxlength="10" value="<?php echo $startdate; ?>" />
+							<span class="hint"><?php echo JText::_('Date format: yyyy-mm-dd.'); ?></span>
 						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="closedate"><?php echo JText::_('Applications Due'); ?>:</label></th>
 						<td>
-							<p class="hint"><?php echo JText::_('Date format: yyyy-mm-dd.'); ?>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo JText::_('- Will default to \'ASAP\' when left blank'); ?></p>
+							<label for="closedate"><?php echo JText::_('Applications Due'); ?>:</label><br />
 							<input type="text" name="closedate" id="closedate" size="60" maxlength="10" value="<?php echo $closedate; ?>" />
+							<span class="hint"><?php echo JText::_('Date format: yyyy-mm-dd.'); ?><br /><?php echo JText::_('Defaults to \'ASAP\' when left blank'); ?></span>
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><label for="applyExternalUrl"><?php echo JText::_('External URL <br />for a job application <br />(optional)'); ?>:</label></th>
-						<td>
-							<p class="hint"><?php echo JText::_('Include http://'); ?></p>
+						<td colspan="2">
+							<label for="applyExternalUrl"><?php echo JText::_('External URL for a job application'); ?>:</label><br />
 							<input type="text" name="applyExternalUrl" size="60" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->applyExternalUrl)); ?>" />
+							<span class="hint"><?php echo JText::_('Include http://'); ?></span>
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><label><?php echo JText::_('Allow internal application'); ?>:</label></th>
-						<td><input type="checkbox" class="option" name="applyInternal"  size="10" maxlength="10" value="1" <?php if ($this->row->applyInternal) { echo 'checked="checked"'; } ?>  /></td>
+						<td colspan="2">
+							<input type="checkbox" class="option" name="applyInternal"  size="10" maxlength="10" value="1" <?php if ($this->row->applyInternal) { echo 'checked="checked"'; } ?>  />
+							<label><?php echo JText::_('Allow internal application'); ?></label>
+						</td>
 					</tr>
 				</tbody>
 			</table>
