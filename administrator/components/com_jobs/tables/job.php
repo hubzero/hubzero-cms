@@ -344,6 +344,8 @@ class Job extends JTable
 			case 'status':    	$sort .= 'j.status ' . $sortdir . ' ';
 								break;
 			case 'title':    	$sort .= 'j.title ' . $sortdir . ' ';
+								break;			
+			case 'location':    $sort .= 'j.companyName ' . $sortdir . ', j.companyLocation ' . $sortdir;
 								break;
 			case 'adminposting':$sort .= 'j.employerid ' . $sortdir . ' ';
 								break;

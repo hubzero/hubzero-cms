@@ -73,7 +73,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			'filter_order', 
 			'added'
 		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir', 
 			'filter_order_Dir', 
 			'DESC'
