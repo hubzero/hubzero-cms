@@ -47,9 +47,9 @@ $usonly = $this->config->get('usonly');
 $this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : htmlentities(JText::_('United States'));
 $this->row->code = !$this->isnew ? $this->row->code : JText::_('N/A (new job)');
 
-$startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->startdate, 'Y-M-d') : '';
-$closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->closedate, 'Y-M-d') : '';
-$opendate = ($this->row->opendate && $this->row->opendate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->opendate, 'Y-M-d') : '';
+$startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $this->row->startdate, 'Y-M-d') : '';
+$closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $this->row->closedate, 'Y-M-d') : '';
+$opendate  = ($this->row->opendate  && $this->row->opendate  !='0000-00-00 00:00:00')  ? JHTML::_('date', $this->row->opendate, 'Y-M-d')  : '';
 
 $status = (!$this->isnew) ? $this->row->status : 4; // draft mode
 
@@ -157,14 +157,15 @@ function submitbutton(pressbutton)
 							$out .= "\t\t\t\t".' <option value="">(select from list)</option>'."\n";
 							//$countries = getcountries();
 
-							$countries = \Hubzero\Geocode\Geocode::getcountries();
+							$countries = \Hubzero\Geocode\Geocode::countries();
 							foreach ($countries as $country)
 							{
-								$out .= "\t\t\t\t".' <option value="' . htmlentities($country['name']) . '"';
-								if ($country['name'] == $this->row->companyLocationCountry) {
+								$out .= "\t\t\t\t".' <option value="' . $this->escape($country->name) . '"';
+								if ($country->name == $this->row->companyLocationCountry) 
+								{
 									$out .= ' selected="selected"';
 								}
-								$out .= '>' . $this->escape($country['name']) . '</option>'."\n";
+								$out .= '>' . $this->escape($country->name) . '</option>'."\n";
 							}
 							$out .= "\t\t\t".'</select>'."\n";
 						 	echo $out;

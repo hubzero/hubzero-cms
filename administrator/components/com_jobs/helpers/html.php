@@ -48,7 +48,7 @@ class JobsHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function error( $msg, $tag='p' )
+	public static function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -62,7 +62,7 @@ class JobsHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function warning( $msg, $tag='p' )
+	public static function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -75,7 +75,7 @@ class JobsHtml
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function alert( $msg )
+	public static function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
@@ -91,7 +91,7 @@ class JobsHtml
 	 * @param      string $class Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function formSelect($name, $array, $value, $class='')
+	public static function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
 		$out .= ($class) ? ' class="'.$class.'" style"width:100%;">'."\n" : '>'."\n";
@@ -114,7 +114,7 @@ class JobsHtml
 	 * @param      unknown $pee Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function txt_unpee($pee)
+	public static function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);
