@@ -90,8 +90,9 @@ class VideoAssetHandler extends FileAssetHandler
 					// Remove original archive
 					JFile::delete($asset['target_path']);
 
-					// Remove MACOSX dirs if there
+					// Remove MACOSX dirs if there and set permissions
 					JFolder::delete($asset['upload_path'] . '__MACOSX');
+					JPath::setPermissions($asset['upload_path'], '0664', '0775');
 				}
 				else
 				{
