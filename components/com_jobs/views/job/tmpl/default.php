@@ -120,7 +120,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= t.'<div id="jobinfo">'."\n";
 		$html .= t.t.'<h3><span>'.JText::_('COM_JOBS_JOB_REFERENCE_CODE').': '.$job->code.'</span>'.$job->title.' - ';
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName;
-		$html .= ', '.$job->companyLocation.', '.$job->companyLocationCountry.'</h3>'."\n";
+		$html .= ', '.$job->companyLocation;
+		$html .= $job->companyLocationCountry ? ', ' . strtoupper($job->companyLocationCountry) : '';
+		$html .= '</h3>'."\n";
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= t.t.'<div class="apply"><p>'."\n";
 		if($job->applied) {

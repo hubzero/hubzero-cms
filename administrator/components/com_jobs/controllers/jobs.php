@@ -356,28 +356,33 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('Jobs');
 
-			$juri = JURI::getInstance();
-
-			$sef = JRoute::_('index.php?option='.$this->_option.'&id='. $job->id);
-			if (substr($sef,0,1) == '/') {
-				$sef = substr($sef,1,strlen($sef));
+			$juri 	 = JURI::getInstance();
+			$jconfig = JFactory::getConfig();
+			
+			$base 	 = rtrim($juri->base(), DS);
+			if (substr($base, -13) == 'administrator')
+			{
+				$base 		= substr($base, 0, strlen($base)-13);
 			}
+			$sef 		= 'jobs/job/' . $job->code;
+			$link 		= rtrim($base, DS) . DS . trim($sef, DS);
 
 			// start email message
 			$emailbody .= $subject.':'."\r\n";
-			$emailbody .= '----------------------------------------------------------'."\r\n";
-			$emailbody .= $statusmsg;
+			$emailbody .= $statusmsg."\r\n";
+			$emailbody  .= JText::_('Job Ad:') . ' ' . $link."\r\n";
 			if ($message) 
 			{
-				$emailbody .= "\r\n";
+				$emailbody .= "\n";
+				$emailbody .= '----------------------------------------------------------'."\r\n";
+				$emailbody .= "\n" . JText::_('Message from Administrator:') . "\n";
 				$emailbody .= $message;
 			}
-			// Link to job ad
-			$emailbody  .= "\r\n".JText::_('View job ad:').' '.$jconfig->getValue('config.sitename') . DS . 'jobs' . DS . $id;
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option))) 
+			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject, 
+				$emailbody, $from, array($job->addedBy), $this->_option))) 
 			{
 				$this->setError(JText::_('Failed to message users.'));
 			}
