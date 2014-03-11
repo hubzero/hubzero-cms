@@ -575,7 +575,7 @@ abstract class JFactory
 				\JDispatcher::getInstance()
 			);
 
-			$instance->useDailyFiles('/var/log/hubzero/cmsdebug.log');
+			$instance->useFiles('/var/log/hubzero/cmsdebug.log', 'debug');
 		}
 
 		return $instance;
@@ -599,7 +599,7 @@ abstract class JFactory
 				\JDispatcher::getInstance()
 			);
 
-			$instance->useDailyFiles('/var/log/hubzero/cmsauth.log', 0, 'info');
+			$instance->useFiles('/var/log/hubzero/cmsauth.log', 'info');
 		}
 
 		return $instance;
