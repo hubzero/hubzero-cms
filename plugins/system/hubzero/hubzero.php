@@ -208,7 +208,7 @@ class plgSystemHubzero extends JPlugin
 	 * @param	   unknown $response Parameter description (if any) ...
 	 * @return	   boolean 
 	 */
-	public function onLoginFailure($response)
+	public function onUserLoginFailure($response)
 	{
 		Hubzero_Factory::getAuthLogger()->logAuth($_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
 		apache_note('auth','invalid');
