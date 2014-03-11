@@ -85,16 +85,16 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.t.'<input name="name" maxlength="20" id="name" type="text" value="'.$this->project->alias.'" /></label>'.n;
 	$html .= t.t.t.'<p class="hint">'.JText::_('COM_PROJECTS_HINTS_NAME').'</p>'.n;
 	$html .= t.'<div id="moveon" class="nogo">'.n;
-	$html .= t.t.t.'<p class="submitarea"><input type="submit" value="'.JText::_('COM_PROJECTS_SAVE_AND_CONTINUE').'" class="btn disabled" disabled="disabled" /></p>'.n;
+	$html .= t.t.t.'<p class="submitarea"><input type="submit" value="'.JText::_('COM_PROJECTS_SAVE_AND_CONTINUE').'" class="btn-submit disabled" disabled="disabled" /></p>'.n;
 	$html .= t.'</div>'.n;
 	$html .= t.'<div id="describe">'.n;
 	$html .= t.t.'<h2>'.JText::_('COM_PROJECTS_DESCRIBE_PROJECT').'</h2>'.n;
 	$html .= t.t.'<p class="question">'.JText::_('COM_PROJECTS_QUESTION_DESCRIBE_NOW_OR_LATER').'</p>'.n;
 	$html .= t.t.'<p>'.n;
-	$html .= t.t.t.'<span class="btn yesbtn">';
+	$html .= t.t.t.'<span class="btn-submit yesbtn">';
 	$html .= '<a href="index.php?option='.$this->option.a.'task=setup'.a.'id='.$this->project->id.a.'extended=1#ext" id="next_desc">'.JText::_('COM_PROJECTS_QUESTION_DESCRIBE_YES').'</a>';
 	$html .= '</span>'.n;
-	$html .= t.t.t.'<span class="btn nobtn">';
+	$html .= t.t.t.'<span class="btn-submit nobtn">';
 	$html .= '<a href="index.php?option='.$this->option.a.'task=setup'.a.'id='.$this->project->id.a.'gonext=1" id="next_step">'.JText::_('COM_PROJECTS_QUESTION_DESCRIBE_NO').'</a>';
 	$html .= '</span>'.n;
 	$html .= t.t.'</p>'.n;
@@ -137,7 +137,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= $this->project->private == 0 ? 'checked="checked"' : '';
 	$html .=' /> '.JText::_('COM_PROJECTS_PRIVACY_EDIT_PUBLIC').'</label>'.n;
 	$html .= t.t.t.'<input type="hidden" name="type" value="1" />'.n;	
-	$html .= t.t.t.'<p class="submitarea"><input type="submit" value="'.JText::_('COM_PROJECTS_SAVE_AND_CONTINUE').'" class="btn" /></p>'.n;
+	$html .= t.t.t.'<p class="submitarea"><input type="submit" value="'.JText::_('COM_PROJECTS_SAVE_AND_CONTINUE').'" class="btn-submit" /></p>'.n;
 	$html .= t.t.'</fieldset>'.n;
 	$html .= t.t.'</div>'.n;
 	$html .= t.' </form>'.n;	

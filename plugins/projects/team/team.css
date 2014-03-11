@@ -118,6 +118,10 @@
 		color: #999;
 		margin: 1em 0 1em 0;
 	}
+	#setup .status-msg {
+		margin-top: -2em;
+		margin-bottom: 2em;
+	}
 	
 /* Publication authors listing
 --------------------------------------------- */

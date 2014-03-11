@@ -57,9 +57,7 @@ $html  = '';
 		<div class="pinfo">
 			<div class="two columns first">
 			<p class="info_title"><span class="block italic"><?php echo $this->typetitle.' '.strtolower(JText::_('COM_PROJECTS_PROJECT')); ?>:</span> <?php echo $this->project->title; ?> (<span class="aliasname"><?php echo $this->project->alias; ?></span>)</p>
-			<?php if ($this->project->about && $this->project->about != '') { ?>
-			<p class="mini"><?php echo \Hubzero\Utility\String::truncate($this->project->about, 100); ?></p>
-			<?php } ?>
+			
 			<p class="actionlink"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=setup'.a.$goto).'/?step=0'; ?>">&laquo; <?php echo JText::_('COM_PROJECTS_CHANGE_THIS_INFO'); ?></a></p>
 			</div>
 			<div class="two columns second">

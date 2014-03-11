@@ -38,6 +38,7 @@ $html  = '';
 <div id="content-header" class="full">
 	<h2><?php echo $title; ?> <?php if($this->gid && is_object($this->group)) { ?> <?php echo JText::_('COM_PROJECTS_FOR').' '.ucfirst(JText::_('COM_PROJECTS_GROUP')); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'cn='.$this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
 </div><!-- / #content-header -->
+
 <div class="main section" id="setup">
 	<ul id="status-bar" class="moving">
 		<li <?php if($this->stage == 0) { echo 'class="active"'; } ?>><?php if($this->project->setup_stage > 0 && $this->stage != 0) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=setup'.a.$goto).'/?step=0'; ?>"<?php if($this->project->setup_stage >= 1) { echo ' class="c_passed"'; } ?>><?php } ?><?php echo JText::_('COM_PROJECTS_DESCRIBE_PROJECT'); ?><?php if($this->project->setup_stage > 0 && $this->stage != 0) { ?></a><?php } ?></li>
@@ -49,24 +50,23 @@ $html  = '';
 		<div class="pthumb"><img src="<?php echo $this->thumb_src; ?>" alt="" /></div>
 		<div class="pinfo">
 			<p class="info_title"><span class="block italic"><?php echo $this->typetitle.' '.strtolower(JText::_('COM_PROJECTS_PROJECT')); ?>:</span> <?php echo $this->project->title; ?> (<span class="aliasname"><?php echo $this->project->alias; ?></span>)</p>
-			<?php if ($this->project->about && $this->project->about != '') { ?>
-			<p class="mini"><?php echo \Hubzero\Utility\String::truncate($this->project->about, 100); ?></p>
-			<?php } ?>
+			
 			<p class="actionlink"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=setup'.a.$goto).'/?step=0'; ?>">&laquo; <?php echo JText::_('COM_PROJECTS_CHANGE_THIS_INFO'); ?></a></p>
 		</div>
 		<div class="clear"></div>
 	</div>
-		<div class="status-msg">
-		<?php 
+		
+	<?php 
+		$html .= t.'<div class="status-msg">'.n;
+
 			// Display error or success message
 			if ($this->getError()) { 
-				echo ('<p class="witherror">' . $this->getError().'</p>');
+				$html .= '<p class="witherror">' . $this->getError().'</p>';
 			}
-			else if($this->msg) {
-				echo ('<p>' . $this->msg . '</p>');
-			} ?>
-		</div>
-	<?php 
+			elseif ($this->msg) {
+				$html .= '<p>' . $this->msg . '</p>';
+			} 
+		$html .= t.'</div>'.n;
 		$html .= t.' <form id="hubForm" method="post" action="index.php">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_ROLES').'</h4>'.n;
@@ -87,6 +87,7 @@ $html  = '';
 			$html .= t.t.'<p>'.JText::_('COM_PROJECTS_HOWTO_GROUP_EXPLAIN').'</p>'.n;			
 		}
 		$html .= t.'</div>'.n;
+
 		$html .= t.t.'<fieldset class="wider">'.n;
 		$html .= t.t.t.'<input type="hidden"  name="task" value="setup" />'.n;
 		$html .= t.t.t.'<input type="hidden"  name="step" value="1" />'.n;
