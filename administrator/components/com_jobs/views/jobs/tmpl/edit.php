@@ -211,13 +211,11 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<label for="startdate"><?php echo JText::_('Position Start Date'); ?>:</label><br />
-							<input type="text" name="startdate" id="startdate" size="60" maxlength="10" value="<?php echo $startdate; ?>" />
-							<span class="hint"><?php echo JText::_('Date format: yyyy-mm-dd.'); ?></span>
+							<?php echo JHTML::_('calendar', $startdate, 'startdate', 'startdate', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 						</td>
 						<td>
 							<label for="closedate"><?php echo JText::_('Applications Due'); ?>:</label><br />
-							<input type="text" name="closedate" id="closedate" size="60" maxlength="10" value="<?php echo $closedate; ?>" />
-							<span class="hint"><?php echo JText::_('Date format: yyyy-mm-dd.'); ?><br /><?php echo JText::_('Defaults to \'ASAP\' when left blank'); ?></span>
+							<?php echo JHTML::_('calendar', $closedate, 'closedate', 'closedate', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 						</td>
 					</tr>
 					<tr>
