@@ -138,116 +138,13 @@ if ($mode != 'preview')
 		// get launch button
 		$firstChild = $this->model->children(0);
 
-		$children = $this->model->children('standalone');
-
-		$iTunes = 0;
-		$supdocs = 0;
-		$totaldocs = 0;
-		$realdocs = 0;
-		$fctype = is_object($firstChild) ? ResourcesHtml::getFileExtension($firstChild->path) : '';
-
-		$html = '';
-
-		// Single out featured children resources
-		if ($children) 
-		{
-			$supln  = '<ul class="supdocln">'."\n";
-			$supli  = array();
-
-			foreach ($children as $child)
-			{
-				if ($child->access == 0 
-				 || ($child->access == 1 && !$juser->get('guest'))) 
-				{
-					$totaldocs++;
-
-					// exclude first child
-					$realdocs = $totaldocs;
-
-					$ftype = ResourcesHtml::getFileExtension($child->path);
-					$url = ResourcesHtml::processPath($this->option, $child, $this->model->resource->id);
-
-					$title = ($child->logicaltitle)
-							? stripslashes($child->logicaltitle)
-							: stripslashes($child->title);
-
-					$child->title = $this->escape(stripslashes($child->title));
-					//$child->title = str_replace('"', '&quot;', $child->title);
-					//$child->title = str_replace('&amp;', '&', $child->title);
-					//$child->title = str_replace('&', '&amp;', $child->title);
-					//$child->title = str_replace('&amp;quot;', '&quot;', $child->title);
-
-					$linktitle = ($child->title == $title) ? $title : $title . ' - ' . $child->title;
-
-				 	//if (strtolower($fctype) != strtolower($ftype) or $this->resource->type == 6) 
-					//{
-						// iTunes?
-						if (strtolower($child->title) !=  preg_replace('/itunes u/', '', strtolower($child->title))) 
-						{
-							$supli[] = ' <li><a class="itunes" href="'.$url.'" title="'.$linktitle.'">'.JText::_('iTunes U').'</a></li>'."\n";
-						}
-
-						// PDF slides?
-						if (strtolower($ftype) == 'pdf' && $title == 'Presentation Slides') 
-						{
-							$supli[] = ' <li><a class="pdf" href="'.$url.'" title="'.$linktitle.'">'.JText::_('Slides').'</a></li>'."\n";
-						}
-
-						// Audio podcast?
-						if (strtolower($ftype) == 'mp3' && strtolower($title) !=  preg_replace('/audio/', '', strtolower($title))) 
-						{
-							$supli[] = ' <li><a class="mp3" href="'.$url.'" title="'.$linktitle.'">'.JText::_('Audio').'</a></li>'."\n";
-						}
-
-						// Video podcast?
-						if (strtolower($ftype) == 'mp4' && strtolower($title) !=  preg_replace('/video/', '', strtolower($title))) 
-						{
-							$supli[] = ' <li><a class="mp4" href="'.$url.'" title="'.$linktitle.'">'.JText::_('Video').'</a></li>'."\n";
-						}
-
-						// High Res video?
-						if (strtolower($ftype) == 'mov' && strtolower($title) !=  preg_replace('/video/', '', strtolower($title))) 
-						{
-							$supli[] = ' <li><a class="mov" href="'.$url.'" title="'.$linktitle.'">'.JText::_('Video').'</a></li>'."\n";
-						}
-
-						// Syllabus?
-						if (strtolower($ftype) == 'pdf' && strtolower($title) !=  preg_replace('/syllabus/', '', strtolower(stripslashes($title)))) 
-						{
-							$supli[] = ' <li><a class="pdf" href="'.$url.'" title="'.$linktitle.'">'.JText::_('Syllabus').'</a></li>'."\n";
-						}
-					//}
-				}
-			}
-
-			$supdocs = count( $supli ) > 2 ? 2 : count( $supli );
-			$otherdocs = $realdocs - $supdocs;
-			$otherdocs = ($supdocs + $otherdocs) == 3  ? 0 : $otherdocs;
-
-			for ($i=0; $i < count( $supli ); $i++)
-			{
-				$supln .=  $i < 2 ? $supli[$i] : '';
-				$supln .=  $i == 2 && !$otherdocs ? $supli[$i] : '';
-			}
-
-			// View more link?
-			if ($supdocs > 0 && $otherdocs > 0) 
-			{
-				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
-			} 
-			else if (!$supdocs && $realdocs > 0 && $this->tab != 'play' && is_object($firstChild)) 
-			{
-				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
-			}
-
-			$supln .= '</ul>'."\n";
-			$supdocs = $supdocs && $this->tab != 'play'  ? $supln : 0;
-		}
-
-		// Show icons of other available formats
-		if ($supdocs) {
-			$html .= "\t\t\t".$supdocs."\n";
-		}
+		// Display some supporting documents
+		$children = $this->model->children('!standalone');
+				
+		// Sort out supporting docs
+		$html .= $children && count($children) > 1
+			   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children ) 
+			   : '';
 		
 		echo $html;
 		
