@@ -75,6 +75,9 @@ if ($this->row->id) {
 // Instantiate the sliders object
 jimport('joomla.html.pane');
 $tabs = JPane::getInstance('sliders');
+
+$time = $this->attribs->get('timeof', '');
+$time = strtotime($time) === false ? NULL : $time;
 ?>
 
 <script type="text/javascript">
@@ -194,13 +197,13 @@ function popratings()
 					<td><input type="text" name="attrib[location]" id="attrib[location]" size="25" maxlength="250" value="<?php echo $this->attribs->get('location', ''); ?>" /></td>
 					<th class="key"><label for="attrib[timeof]">Time:</label></th>
 					<td>
-						<input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo $this->attribs->get('timeof', '') ? JHTML::_('date', $this->attribs->get('timeof', ''), 'Y-m-d H:i:s') : ''; ?>" /></td>
+						<input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo $time ? JHTML::_('date', $time, 'Y-m-d H:i:s') : ''; ?>" placeholder="<?php echo JHTML::_('date', time(), 'Y-m-d H:i:s'); ?>" /></td>
 				</tr>
 				<tr>
 					<th class="key"><label for="attrib_canonical">Canonical:</label></th>
 					<td colspan="3">
 						<input type="text" name="attrib[canonical]" id="attrib_canonical" size="25" maxlength="250" value="<?php echo $this->attribs->get('canonical', ''); ?>" />
-						<span class="hint">URL to a canonical version of this resource. Tells search engiens to prefer the item entered here.</span>
+						<span class="hint">URL to a canonical version of this resource. Tells search engines to prefer the item entered here.</span>
 					</td>
 				</tr>
 <?php } else { ?>

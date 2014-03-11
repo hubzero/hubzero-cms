@@ -937,6 +937,11 @@ class ResourcesControllerItems extends Hubzero_Controller
 			{
 				if ($k == 'timeof')
 				{
+					if (strtotime(trim($v)) === false)
+					{
+						$v = NULL;
+					}
+					
 					$v = trim($v) 
 						? JFactory::getDate($v, JFactory::getConfig()->get('offset'))->toSql() 
 						: NULL;

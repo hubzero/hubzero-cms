@@ -2667,7 +2667,7 @@ class plgProjectsPublications extends JPlugin
 		if ($pubdate)
 		{
 			$date = explode('-', $pubdate);
-			print_r($date);
+
 			if (count($date) == 3) 
 			{
 				$year 	= $date[0];
