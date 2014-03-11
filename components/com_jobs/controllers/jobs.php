@@ -1521,7 +1521,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : JText::_('COM_JOBS_JOBS_DEFAULT_COUNTRY') ;
+		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : NULL;
 
 		// Save new information
 		if (!$min) 
