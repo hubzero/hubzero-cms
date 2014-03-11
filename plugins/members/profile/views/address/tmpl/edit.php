@@ -74,13 +74,13 @@ defined('_JEXEC') or die('Restricted access');
 		<label>
 			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_COUNTRY'); ?>
 			<?php
-				$countries = \Hubzero\Geocode\Geocode::getcountries();
+				$countries = \Hubzero\Geocode\Geocode::countries();
 			?>
 			<select name="address[addressCountry]" id="addressCountry">
 				<option value=""><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_SELECT_COUNTRY'); ?></option>
 				<?php foreach ($countries as $country) : ?>
-					<?php $sel = ($country['name'] == $this->address->addressCountry) ? 'selected="selected"' : ''; ?>
-					<option <?php echo $sel; ?> value="<?php echo $country['name']; ?>"><?php echo $this->escape($country['name']); ?></option>
+					<?php $sel = ($country->name == $this->address->addressCountry) ? 'selected="selected"' : ''; ?>
+					<option <?php echo $sel; ?> value="<?php echo $country->name; ?>"><?php echo $this->escape($country->name); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</label>
