@@ -95,7 +95,9 @@ window.addEvent('domready', function(){
 					<ul id="submenu" class="member">
 						<li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
 						<li><a href="#" onclick="return false;" id="demographics">Demographics</a></li>
-						<li><a href="#" onclick="return false;" id="password">Password</a></li>
+						<?php if (is_object($this->password)) : ?>
+							<li><a href="#" onclick="return false;" id="password">Password</a></li>
+						<?php endif; ?>
 						<li><a href="#" onclick="return false;" id="groups">Groups</a></li>
 						<li><a href="#" onclick="return false;" id="hosts">Hosts</a></li>
 					</ul>
@@ -337,7 +339,9 @@ window.addEvent('domready', function(){
 			</table>
 		</fieldset>
 			</div>
-			<div id="page-password" class="tab">
+
+		<?php if (is_object($this->password)) : ?>
+		<div id="page-password" class="tab">
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('PASSWORD'); ?></span></legend>
@@ -389,7 +393,8 @@ window.addEvent('domready', function(){
 			</table>
 		</fieldset>
 
-			</div>
+		</div>
+		<?php endif; ?>
 			<div id="page-groups" class="tab">
 				<fieldset class="adminform">
 					<legend><span><?php echo JText::_('GROUPS'); ?></span></legend>

@@ -395,39 +395,42 @@ class MembersControllerMembers extends Hubzero_Controller
 
 		$passinfo = Hubzero_User_Password::getInstance($id);
 
-		// Do we have shadow info to change?
-		$shadowMax     = JRequest::getInt('shadowMax', false, 'post');
-		$shadowWarning = JRequest::getInt('shadowWarning', false, 'post');
-		$shadowExpire  = JRequest::getVar('shadowExpire', '', 'post');
-
-		if ($shadowMax || $shadowWarning || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
+		if (is_object($passinfo))
 		{
-			if ($shadowMax)
-			{
-				$passinfo->set('shadowMax', $shadowMax);
-			}
-			if ($shadowExpire || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
-			{
-				if (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}/", $shadowExpire))
-				{
-					$shadowExpire = strtotime($shadowExpire) / 86400;
-					$passinfo->set('shadowExpire', $shadowExpire);
-				}
-				elseif (preg_match("/[0-9]+/", $shadowExpire))
-				{
-					$passinfo->set('shadowExpire', $shadowExpire);
-				}
-				elseif (empty($shadowExpire))
-				{
-					$passinfo->set('shadowExpire', NULL);
-				}
-			}
-			if ($shadowWarning)
-			{
-				$passinfo->set('shadowWarning', $shadowWarning);
-			}
+			// Do we have shadow info to change?
+			$shadowMax     = JRequest::getInt('shadowMax', false, 'post');
+			$shadowWarning = JRequest::getInt('shadowWarning', false, 'post');
+			$shadowExpire  = JRequest::getVar('shadowExpire', '', 'post');
 
-			$passinfo->update();
+			if ($shadowMax || $shadowWarning || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
+			{
+				if ($shadowMax)
+				{
+					$passinfo->set('shadowMax', $shadowMax);
+				}
+				if ($shadowExpire || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
+				{
+					if (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}/", $shadowExpire))
+					{
+						$shadowExpire = strtotime($shadowExpire) / 86400;
+						$passinfo->set('shadowExpire', $shadowExpire);
+					}
+					elseif (preg_match("/[0-9]+/", $shadowExpire))
+					{
+						$passinfo->set('shadowExpire', $shadowExpire);
+					}
+					elseif (empty($shadowExpire))
+					{
+						$passinfo->set('shadowExpire', NULL);
+					}
+				}
+				if ($shadowWarning)
+				{
+					$passinfo->set('shadowWarning', $shadowWarning);
+				}
+
+				$passinfo->update();
+			}
 		}
 
 		// Get the user's interests (tags)
