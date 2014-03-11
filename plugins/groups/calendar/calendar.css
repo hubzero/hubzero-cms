@@ -78,6 +78,30 @@
 	border-color: #843288;
 	color: #333;
 }
+#calendar .fc-event:hover {
+	background-color: #ccc;
+}
+#calendar .fc-event-yellow:hover {
+	background-color: #f4eab0;
+}
+#calendar .fc-event-green:hover {
+	background-color: #c6e8af;
+}
+#calendar .fc-event-blue:hover {
+	background-color: #a8cde8;
+}
+#calendar .fc-event-red:hover {
+	background-color: #eaaab2;
+}
+#calendar .fc-event-orange:hover {
+	background-color: #f3bfa5;
+}
+#calendar .fc-event-brown:hover {
+	background-color: #e3bba6;
+}
+#calendar .fc-event-purple:hover {
+	background-color: #dab1dd;
+}
 
 /* Events List */
 .group-calendar-subject {

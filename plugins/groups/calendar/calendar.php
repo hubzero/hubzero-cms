@@ -313,8 +313,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
-			'scope_id'  => $this->group->get('gidNumber'),
-			'published' => array(1)
+			'scope_id'  => $this->group->get('gidNumber')
 		));
 		
 		// add each calendar to the sources
@@ -913,7 +912,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//loop through and get each calendar
 		foreach ($calendarIds as $k => $calendarId)
 		{
-			$eventsCalendar = new EventsModelCalendar();
+			$eventsCalendar = new EventsModelCalendar($calendarId);
+
+			if (!$eventsCalendar->get('published') && $calendarId != 0)
+			{
+				continue;
+			}
+
 			$rawEvents = $eventsCalendar->events('list', array(
 				'scope'       => 'group',
 				'scope_id'    => $this->group->get('gidNumber'),
@@ -1531,8 +1536,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
-			'scope_id'  => $this->group->get('gidNumber'),
-			'published' => array(1)
+			'scope_id'  => $this->group->get('gidNumber')
 		));
 
 		//create the view
