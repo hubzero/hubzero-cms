@@ -713,7 +713,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids  = JRequest::getVar('mid',array(0));
+		$mids  = JRequest::getVar('mid', array());
 
 		if (count($mids) > 0) 
 		{
@@ -739,9 +739,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$xseen->store(true);
 				}
 			}
+			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your archive.", "passed");
+		}
+		else
+		{
+			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your archive.", "passed");
 		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit));
 	}
 
@@ -757,7 +761,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids = JRequest::getVar('mid',array(0));
+		$mids = JRequest::getVar('mid', array());
 
 		if (count($mids) > 0) 
 		{
@@ -768,13 +772,18 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
 				$recipient->state = 0;
-				if (!$recipient->store()) {
+				if (!$recipient->store()) 
+				{
 					$this->setError($recipient->getError());
 				}
 			}
+			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your inbox.", "passed");
+		}
+		else
+		{
+			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your inbox.", "passed");
 		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
@@ -790,7 +799,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids  = JRequest::getVar('mid',array(0));
+		$mids  = JRequest::getVar('mid', array());
 
 		if (count($mids) > 0) 
 		{
@@ -818,9 +827,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$this->setError($recipient->getError());
 				}
 			}
+			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your trash.", "passed");
+		}
+		else
+		{
+			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your trash.", "passed");
 		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit));
 	}
 
@@ -856,7 +869,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids  = JRequest::getVar('mid', array(0));
+		$mids  = JRequest::getVar('mid', array());
 
 		if (count($mids) > 0) 
 		{
@@ -871,9 +884,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$this->setError($recipient->getError());
 				}
 			}
+			$this->addPluginMessage('You have successfully deleted <b><u>' . count($mids) . '</u></b> message(s).', 'passed');
+		}
+		else
+		{
+			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		$this->addPluginMessage('You have successfully deleted <b><u>' . count($mids) . '</u></b> message(s).', 'passed');
 		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
@@ -889,7 +906,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$ids   = JRequest::getVar('mid', array(0));
+		$ids   = JRequest::getVar('mid', array());
 
 		if (count($ids) > 0) 
 		{
@@ -905,9 +922,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$xseen->store(true);
 				}
 			}
+			$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as read.', 'passed');
+		}
+		else
+		{
+			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as read.', 'passed');
 		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
@@ -923,17 +944,22 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$ids   = JRequest::getVar('mid',array(0));
+		$ids   = JRequest::getVar('mid', array());
 
 		if (count($ids) > 0) 
 		{
-			$sql = "DELETE FROM #__xmessage_seen WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
+			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
 			$database = JFactory::getDBO();
 			$database->setQuery($sql);
 			$database->query();
+
+			$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as unread.', 'passed');
+		}
+		else
+		{
+			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as unread.', 'passed');
 		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
