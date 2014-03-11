@@ -92,7 +92,7 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required">*</span></label><br />
+						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required">required</span></label><br />
 							<select name="fields[section]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
 							<?php foreach ($this->sections as $section) { ?>
 								<option value="<?php echo $section->get('id'); ?>"<?php echo ($this->row->get('section') == $section->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
@@ -113,7 +113,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required">*</span></label><br />
+							<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required">required</span></label><br />
 							<input type="text" name="fields[title]" id="field-title" size="100" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 						</td>
 					</tr>
@@ -123,13 +123,13 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="field-fulltxt"><?php echo JText::_('COM_KB_BODY'); ?>: <span class="required">*</span></label><br />
+							<label for="field-fulltxt"><?php echo JText::_('COM_KB_BODY'); ?>: <span class="required">required</span></label><br />
 							<?php echo $editor->display('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), '', '', '60', '30'); ?>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label><?php echo JText::_('COM_KB_TAGS'); ?>: <span class="required">*</span></label><br />
+							<label><?php echo JText::_('COM_KB_TAGS'); ?>: <span class="required">required</span></label><br />
 							<textarea name="tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 						</td>
 					</tr>
