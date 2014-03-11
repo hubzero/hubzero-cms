@@ -912,6 +912,10 @@
 		display: block;
 		width: 90%;
 	}
+	.td-comment label,
+	.td-comment textarea {
+		display: block;
+	}
 	.pinboard h4.comment-blurb {
 		*padding-left: 18px !important;
 		*background: url("/components/com_projects/assets/img/icons/comment.png") 0 2px no-repeat;
