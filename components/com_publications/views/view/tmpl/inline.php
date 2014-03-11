@@ -30,13 +30,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
+
 <div id="abox-content">
 <?php
+/*
 if (!is_file(JPATH_ROOT . $this->url))
 {
 	echo '<p class="error">'.JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
 	return;
 }
+*/
 
 $oWidth = '780';
 $oHeight= '480';
@@ -118,11 +121,29 @@ else if (in_array(strtolower($this->ext), $docs) && $this->googleView)
 }
 else
 
-// View in html5-browser 
-{ ?>
-	<p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
-	</p>
-	<iframe class="filer" style="-webkit-transform:scale(0.9);-moz-transform-scale(0.9);" id="embedded-content" width="100%" height="<?php echo $height; ?>" src="<?php echo $this->url; ?>"></iframe>
-<?php }
-?>
+		// View in html5-browser 
+		{ ?>
+			<p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
+			</p>
+		<?php }
+
+	if (strtolower($this->ext) == 'wmv') { ?>
+	<object type="video/x-ms-wmv" 
+		  data="<?php echo $this->url; ?>" width="100%" height="<?php echo $height; ?>">
+		  <param name="src" value="<?php echo $this->url; ?>" />
+		  <param name="autostart" value="true" />
+		  <param name="controller" value="true" />
+	</object>
+<?php } else { 
+	 ?>
+	<div class="video-container">
+		<object width="100%" height="<?php echo $height; ?>">
+		<param name="allowfullscreen" value="true" />
+		<param name="allowscriptaccess" value="always" />
+		<param name="movie" value="<?php echo $this->url; ?>" />
+		<param name="scale" value="aspect" />
+		<embed src="<?php echo $this->url; ?>" scale="aspect"></embed>
+		</object>
+	</div>
+<?php } ?>
 </div>
