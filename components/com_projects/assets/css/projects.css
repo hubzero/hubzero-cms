@@ -1820,11 +1820,6 @@
 		background: #f6f7f9;
 		font-size: 85%;
 	}
-	#abox-content p.anote, .anote {
-		font-size: 85%;
-		color: #999;
-		margin: -1em 0 1em 0;
-	}
 	#sbox-content {
 		background: #FFFFFF;
 	}
@@ -3106,7 +3101,7 @@
 		height: 16px;
 		font-size: 16px;
 		font-family: 'Fontcons';
-		color: #4ab454; 
+		color: #000; 
 		margin-right: 0.2em;
 		font-weight: normal;
 	}

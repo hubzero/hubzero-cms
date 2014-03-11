@@ -114,7 +114,9 @@
 		border-bottom: 1px dotted #CCC;
 	}
 	#abox-content p.anote {
-		margin-top: 1em;
+		font-size: 85%;
+		color: #999;
+		margin: 1em 0 1em 0;
 	}
 	
 /* Publication authors listing
