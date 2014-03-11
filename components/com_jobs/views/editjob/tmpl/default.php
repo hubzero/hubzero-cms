@@ -84,7 +84,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$job->companyLocationCountry = $id ? $job->companyLocationCountry : $this->escape($hubzero_Geo->getcountry($profile->get('countryresident')));
 		$job->companyName = $id ? $job->companyName : $employer->companyName;
 		$job->companyWebsite = $id ? $job->companyWebsite : $employer->companyWebsite;
-		$usonly = (isset($this->config->parameters['usonly'])) ? $this->config->parameters['usonly'] : 0;
+		$usonly = $this->config->get('usonly', 0);
 ?>
 <div class="main section">
 	<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
@@ -109,7 +109,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('COM_JOBS_EDITJOB_JOB_LOCATION'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<input name="companyLocation" maxlength="190" id="companyLocation" type="text" value="<?php echo $this->escape(stripslashes($job->companyLocation)); ?>" />
 			</label>
-		<?php if (!$usonly && !empty($countries)) { ?>
+		<?php if ($usonly == 0 && !empty($countries)) { ?>
 			<label for="companyLocationCountry">
 				<?php echo JText::_('COM_JOBS_EDITJOB_COUNTRY'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<select name="companyLocationCountry" id="companyLocationCountry">
