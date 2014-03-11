@@ -1786,7 +1786,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . " 
 				AND scope_id=".$this->group->get('gidNumber')." 
 				AND state=1 
-				AND (publish_up >='".JFactory::getDate()->toSql()."' OR publish_up >='".JFactory::getDate()->toSql()."')";
+				AND (publish_up >='".JFactory::getDate()->toSql()."' OR publish_down >='".JFactory::getDate()->toSql()."')";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
