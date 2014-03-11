@@ -43,6 +43,8 @@ JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
+
+$selected = null;
 ?>
 <script type="text/javascript">
 var categories = new Array;
@@ -95,6 +97,12 @@ function submitbutton(pressbutton)
 						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required">required</span></label><br />
 							<select name="fields[section]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
 							<?php foreach ($this->sections as $section) { ?>
+								<?php
+								if ($this->row->get('section') == $section->get('id'))
+								{
+									$selected = $section;
+								}
+								?>
 								<option value="<?php echo $section->get('id'); ?>"<?php echo ($this->row->get('section') == $section->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
 							<?php } ?>
 							</select>
