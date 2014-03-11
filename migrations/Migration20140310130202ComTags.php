@@ -28,12 +28,12 @@ class Migration20140310130202ComTags extends Hubzero_Migration
 					$db->setQuery($query);
 					if ($tags = $db->loadObjectList())
 					{
-						if ($tag->id == $result->id)
-						{
-							continue;
-						}
 						foreach ($tags as $tag)
 						{
+							if ($tag->id == $result->id)
+							{
+								continue;
+							}
 							$oldtag = new TagsModelTag($tag->id);
 							if (!$oldtag->mergeWith($result->id))
 							{
