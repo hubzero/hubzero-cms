@@ -335,7 +335,7 @@
 	}
 
 /* Hide the sidebar if the page is too narrow */
-@media only screen and (max-width: 1064px) {
+@media only screen and (max-width: 1080px) {
 	.member_blog .aside,
 	.member_blog .subject {
 		float: none;
