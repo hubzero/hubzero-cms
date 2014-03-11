@@ -110,8 +110,6 @@ class KbTableCategory extends JTable
 			return false;
 		}
 
-		$this->access = 0;
-
 		if (!$this->alias)
 		{
 			$this->alias = str_replace(' ', '-', strtolower($this->title));
@@ -122,6 +120,10 @@ class KbTableCategory extends JTable
 		$this->description = trim($this->description);
 		$this->section     = intval($this->section);
 		$this->state       = intval($this->state);
+		if (!$this->id)
+		{
+			$this->access = $this->access ? $this->access : 0;
+		}
 		$this->access      = intval($this->access);
 
 		return true;

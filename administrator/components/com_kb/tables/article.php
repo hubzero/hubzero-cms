@@ -201,11 +201,11 @@ class KbTableArticle extends JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
-		$this->access = 0;
-
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
+			$this->access = $this->access ? $this->access : 0;
+
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
