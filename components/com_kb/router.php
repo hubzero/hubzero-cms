@@ -160,6 +160,14 @@ function kbParseRoute($segments)
 				$category->loadAlias($title1);
 			}
 
+			if (!$category->id)
+			{
+				$vars['alias'] = $title2;
+				$vars['task'] = 'article';
+				$vars['category'] = $title1;
+				return $vars;
+			}
+
 			$article = new KbTableArticle($db);
 			$article->loadAlias($title2, $category->id);
 
@@ -184,6 +192,10 @@ function kbParseRoute($segments)
 			else 
 			{
 				$vars['task'] = 'article';
+				if ($vars['alias'])
+				{
+					$vars['category'] = $vars['alias'];
+				}
 				$vars['alias'] = urldecode($segments[2]);
 				$vars['alias'] = str_replace(':', '-', $vars['alias']);
 			}
