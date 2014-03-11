@@ -40,6 +40,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('job.html', true);
 
 $create_date = NULL;
 if (intval($this->row->get('created')) <> 0) 
