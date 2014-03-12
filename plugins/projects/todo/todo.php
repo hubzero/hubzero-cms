@@ -919,7 +919,7 @@ class plgProjectsTodo extends JPlugin
 			$objC->itemid = $itemid;
 			$objC->tbl = 'todo';
 			$objC->parent_activity = $parent_activity;
-			$comment = \Hubzero\Utility\String::truncate($comment, 250, 0);
+			$comment = \Hubzero\Utility\String::truncate($comment, 250);
 			$objC->comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 			$objC->created = JFactory::getDate()->toSql();
 			$objC->created_by = $this->_uid;
