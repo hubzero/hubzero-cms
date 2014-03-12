@@ -48,6 +48,12 @@ $types = array(
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
+<?php
+	foreach ($this->notifications as $notification) 
+	{
+		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+	}
+?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><span class="required">*</span> = <?php echo JText::_('COM_FEATURES_REQUIRED_FIELD'); ?></p>
@@ -57,24 +63,28 @@ $types = array(
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="note" value="<?php echo $this->escape($this->row->note); ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="fields[note]" value="<?php echo $this->escape($this->row->note); ?>" />
 
-			<label>
+			<?php echo JHTML::_('form.token'); ?>
+
+			<label for="field-objectid">
 				<?php echo JText::_('COM_FEATURES_OBJECT_ID'); ?>: <span class="required">*</span>
-				<input type="text" name="objectid" value="<?php echo $this->escape($this->row->objectid); ?>" />
+				<input type="text" name="fields[objectid]" id="field-objectid" value="<?php echo $this->escape($this->row->objectid); ?>" />
 			</label>
-			<label>
+
+			<label for="field-tbl">
 				<?php echo JText::_('COM_FEATURES_OBJECT_TYPE'); ?>: <span class="required">*</span>
-				<select name="tbl" id="tbl">
+				<select name="fields[tbl]" id="field-tbl">
 				<?php foreach ($types as $avalue => $alabel) { ?>
 					<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->tbl || $alabel == $this->row->tbl) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
 				<?php } ?>
 				</select>
 			</label>
-			<label>
+
+			<label for="field-featured">
 				<?php echo JText::_('COM_FEATURES_FEATURED_DATE'); ?>: YYYY-MM-DD <span class="required">*</span>
-				<input type="text" name="featured" value="<?php echo $this->escape($this->row->featured); ?>" />
+				<input type="text" name="fields[featured]" id="field-featured" value="<?php echo $this->escape($this->row->featured); ?>" />
 			</label>
 		</fieldset>
 		<p class="submit">

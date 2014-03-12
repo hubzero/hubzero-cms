@@ -198,6 +198,8 @@ class FeaturesControllerItems extends \Hubzero\Component\SiteController
 			}
 		}
 
+		$this->view->notifications = $this->getComponentMessage();
+
 		$this->view->display();
 	}
 
@@ -208,6 +210,9 @@ class FeaturesControllerItems extends \Hubzero\Component\SiteController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Check if they are authorized to make changes
 		if (!$this->config->get('access-manage-component')) 
 		{
@@ -216,6 +221,8 @@ class FeaturesControllerItems extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
+
+		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Instantiate an object and bind the incoming data
 		$row = new FeaturesHistory($this->database);

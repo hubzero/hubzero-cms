@@ -101,7 +101,7 @@ class FeaturesHistory extends JTable
 			$this->setError(JText::_('Please provide an Object ID.'));
 		}
 
-		if (!$this->getError())
+		if ($this->getError())
 		{
 			return false;
 		}

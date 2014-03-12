@@ -178,7 +178,7 @@ if (count($this->rows) > 0)
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
-					$html .= '<p class="title"><a href="' . JRoute::_($href) . '">' . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
+					$html .= '<p class="title"><a href="' . JRoute::_($href) . '">' . $this->escape(strip_tags(stripslashes($row->title))) . '</a></p>' . "\n";
 					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) {
 						$html .= ' <span>|</span> <a class="delete" href="' . JRoute::_('index.php?option=' . $this->option . '&task=delete&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_DELETE') . '</a>' . "\n";
@@ -222,7 +222,7 @@ if (count($this->rows) > 0)
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
-					$html .= '<p class="title"><a href="' . JRoute::_($href) . '">' . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
+					$html .= '<p class="title"><a href="' . JRoute::_($href) . '">' . $this->escape(strip_tags(stripslashes($row->title))) . '</a></p>' . "\n";
 					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) 
 					{
@@ -267,7 +267,7 @@ if (count($this->rows) > 0)
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
-					$html .= '<p class="title"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) . '">' . $this->escape(stripslashes($row->subject)) . '</a></p>' . "\n";
+					$html .= '<p class="title"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) . '">' . $this->escape(strip_tags(stripslashes($row->subject))) . '</a></p>' . "\n";
 					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) 
 					{
@@ -333,7 +333,7 @@ if (count($this->rows) > 0)
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
-					$html .= '<p class="title"><a href="' . JRoute::_('index.php?option=com_members&id='.$id) . '">' . stripslashes($title) . '</a></p>' . "\n";
+					$html .= '<p class="title"><a href="' . JRoute::_('index.php?option=com_members&id='.$id) . '">' . strip_tags(stripslashes($title)) . '</a></p>' . "\n";
 					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) 
 					{
