@@ -92,6 +92,9 @@ if ($canDo->get('core.edit'))
 		</tfoot>
 		<tbody>
 <?php
+$db = JFactory::getDBO();
+$tbl = new JTableExtension($db);
+
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -102,7 +105,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	//$link = 'index.php?option=com_plugins&view=plugin&layout=edit&extension_id=' . $row->id . '&component=' . $row->folder;
 
 	$access 	= JHTML::_('grid.access', $row, $i);
-	$checked 	= JHTML::_('grid.checkedout', $row, $i);
+	//$checked 	= JHTML::_('grid.checkedout', $row, $i);
 	$published 	= JHTML::_('grid.published', $row, $i);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
@@ -141,7 +144,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php
-					if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
+					if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
 						echo $this->escape($row->name);
 					} else {
 				?>
@@ -151,7 +154,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<?php } ?>
 				</td>
 				<td>
-				<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
+				<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
 					<span class="state <?php echo $cls; ?>">
 					<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>

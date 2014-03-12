@@ -78,6 +78,9 @@ JToolBarHelper::unpublishList();
 		</tfoot>
 		<tbody>
 <?php
+$db = JFactory::getDBO();
+$tbl = new JTableExtension($db);
+
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -86,7 +89,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$link = JRoute::_( 'index.php?option=com_plugins&task=plugin.edit&extension_id='.$row->id.'&component=resources' );
 
 	$access 	= JHTML::_('grid.access', $row, $i);
-	$checked 	= JHTML::_('grid.checkedout', $row, $i);
+	//$checked 	= JHTML::_('grid.checkedout', $row, $i);
 	$published 	= JHTML::_('grid.published', $row, $i);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
@@ -122,34 +125,34 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php
-					if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
+				<?php
+					if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) {
 						echo $this->escape($row->name);
 					} else {
-?>
+				?>
 					<a class="editlinktip hasTip" href="<?php echo $link; ?>" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
+				<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
 					<span class="state <?php echo $cls; ?>">
-<?php 		if (version_compare(JVERSION, '1.6', 'lt')) { ?>
+					<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
-<?php 		} else { ?>
+					<?php } else { ?>
 						<span class="text"><?php echo $alt; ?></span>
-<?php 		} ?>
+					<?php } ?>
 					</span>
-<?php } else { ?>
+				<?php } else { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('Set this to %s',$task);?>">
-<?php 		if (version_compare(JVERSION, '1.6', 'lt')) { ?>
+					<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
-<?php 		} else { ?>
+					<?php } else { ?>
 						<span class="text"><?php echo $alt; ?></span>
-<?php 		} ?>
+					<?php } ?>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td class="order">
 					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'Move Up', $row->ordering); ?></span>
@@ -161,11 +164,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $access; ?>
 				</td>
 				<td nowrap="nowrap">
-<?php if (in_array($row->element, $this->manage)) { ?>
+				<?php if (in_array($row->element, $this->manage)) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
 						<span><?php echo JText::_('Manage'); ?></span>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->element); ?>
