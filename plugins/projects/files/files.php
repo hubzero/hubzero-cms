@@ -3091,9 +3091,16 @@ class plgProjectsFiles extends JPlugin
 			}
 			else
 			{
-				//$ret = exec('find ' . escapeshellarg($newpath));
+				// Get extensions
+				$newExt = explode('.', $newname);
+				$newExt = count($newExt) > 1 ? end($newExt) : '';
+				
+				$oldExt = explode('.', $oldname);
+				$oldExt = count($oldExt) > 1 ? end($oldExt) : '';
+				
+				// Do not remove extension
+				$newpath = $newExt ? $newpath : $newpath . '.' . $oldExt;
 
-				//if (!empty($ret))
 				if (file_exists($newpath))
 				{
 					$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
