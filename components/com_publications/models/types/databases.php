@@ -627,6 +627,10 @@ class typeDatabases extends JObject
 				
 		// Get helper
 		$helper = new PublicationHelper($this->_database, $row->id, $row->publication_id);
+		
+		// Load component configs
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$base_path 	= $pubconfig->get('webpath');
 						
 		foreach ($attachments as $att)
 		{
