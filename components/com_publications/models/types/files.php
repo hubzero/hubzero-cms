@@ -709,7 +709,7 @@ class typeFiles extends JObject
 				if (!is_file($hfile))
 				{
 					$handle = fopen($hfile, 'w');
-					fwrite($handle, $file_hash);
+					fwrite($handle, $objAtt->content_hash);
 					fclose($handle);
 					chmod($hfile, 0644);
 				}
