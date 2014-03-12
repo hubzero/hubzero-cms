@@ -91,7 +91,7 @@ if (!$no_html) { ?>
 <p class="comment-voting voting">
 <?php } ?>
 	<span class="vote-like<?php echo $lcls; ?>">
-	<?php if ($this->item->vote || $juser->get('id') == $this->item->created_by) { ?>
+	<?php if ($juser->get('guest') || $this->item->vote || $juser->get('id') == $this->item->created_by) { ?>
 		<span class="vote-button <?php echo ($this->item->positive > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 			<?php echo $this->item->positive; ?><span> <?php echo JText::_('PLG_COURSES_REVIEWS_VOTE_LIKE'); ?></span>
 		</span>
@@ -102,7 +102,7 @@ if (!$no_html) { ?>
 	<?php } ?>
 	</span>
 	<span class="vote-dislike<?php echo $dcls; ?>">
-	<?php if ($this->item->vote || $juser->get('id') == $this->item->created_by) { ?>
+	<?php if ($juser->get('guest') || $this->item->vote || $juser->get('id') == $this->item->created_by) { ?>
 		<span class="vote-button <?php echo ($this->item->negative > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
 			<?php echo $this->item->negative; ?><span> <?php echo JText::_('PLG_COURSES_REVIEWS_VOTE_DISLIKE'); ?></span>
 		</span>
