@@ -115,7 +115,7 @@
 	
 	/* Publication status
 	--------------------------------------------- */
-	.draft, .published, .unpublished, .expired, .pending, .posted, .archived, .ready {
+	.draft, .published, .unpublished, .expired, .pending, .posted, .archived, .ready, .new {
 		padding: 0.2em 0.5em;
 	}
 	.archived:before,
@@ -169,19 +169,18 @@
 		color: green;
 	}			
 	td.status {
-		width: 100px;
-	}
-	.status span, .v-status span {
-		padding-left: 2em;
+		width: 150px;
 	}
 	.v-status span {
+		padding-left: 2em;
+	}
+	.v-status span, .status span {
 		width: auto;
 	}
 	.status a span {
 		color: #666;
 		border: none;
-	}
-	
+	}	
 	.hasassoc,
 	.noassoc { 
 		padding: 0;

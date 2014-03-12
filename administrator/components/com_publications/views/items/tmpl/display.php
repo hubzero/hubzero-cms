@@ -153,8 +153,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $row->version_label; ?>
 				</td>
-				<td class="status">
-					<span class="<?php echo $class; ?>"><?php echo $status; ?></span>
+				<td>
+					<span class="<?php echo $class; ?>"></span>
 				</td>
 				<td>
 					<a href="index.php?option=com_projects&amp;task=edit&amp;id[]=<?php echo $row->project_id; ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
