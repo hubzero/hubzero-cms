@@ -310,6 +310,19 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Redirect to login page
+	 *
+	 * @return    void
+	 */
+	protected function _login() 
+	{
+		$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_($this->obj->link() . '&active=reviews', false, true), 'server'));
+		$this->redirect(
+			JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
+		);
+	}
+
+	/**
 	 * Vote on a comment
 	 *
 	 * @return    void
