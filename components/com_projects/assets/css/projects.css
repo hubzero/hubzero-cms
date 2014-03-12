@@ -42,6 +42,10 @@
 	}
 	#content-header-extra {
 		width: 50%;
+		z-index: 1000;
+	}
+	#content-header-extra a {
+		border: none;
 	}
 	.com_projects input {
 		background: #FFFFFF;
