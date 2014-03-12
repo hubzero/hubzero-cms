@@ -286,7 +286,7 @@ class plgContentXhubtags extends JPlugin
 
 		if (empty($component) && empty($module))
 		{
-			return substr(Hubzero_Document::getHubImage($file[2]),1);
+			return ''; //substr(Hubzero_Document::getHubImage($file[2]),1);
 		}
 		else if (!empty($component))
 		{
