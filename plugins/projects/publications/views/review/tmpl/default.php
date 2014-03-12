@@ -132,14 +132,14 @@ $append .= '</span>';
 
 <?php if ($canpublish) { ?>
 <p class="mini"><?php echo ($this->row->state == 1) 
-	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW_SUMMARY_BELOW')) 
-	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SUMMARY_BELOW')); ?>
+	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW_SUMMARY_BELOW')) . ' '
+	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SUMMARY_BELOW')) . ' '; ?>
 	<?php if($this->row->state != 1 && !$this->publication_allowed) {
-		echo ' <span class="urgency block">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_MISSING_PARTS').'</span>'; 
+		echo ' <span class="urgency block">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_MISSING_PARTS').'</span> '; 
 	}
 	elseif ($this->publication_allowed) 
 	{
-		if($post)
+		if ($post)
 		{
 			echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL_POST'); 	
 		}
