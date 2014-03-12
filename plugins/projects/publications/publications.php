@@ -2139,7 +2139,7 @@ class plgProjectsPublications extends JPlugin
 							}
 							$row->title 		= $title;
 							$row->abstract 		= $abstract ? \Hubzero\Utility\String::truncate($abstract, 250) : $title;
-							$row->description 	= $description ? $description : $title;						
+							$row->description 	= $description;						
 						}						
 					}
 					
@@ -2624,7 +2624,6 @@ class plgProjectsPublications extends JPlugin
 		if ($pubdate)
 		{
 			$date = explode('-', $pubdate);
-			print_r($date);
 			if (count($date) == 3) 
 			{
 				$year 	= $date[0];

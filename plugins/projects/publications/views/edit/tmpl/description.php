@@ -151,7 +151,6 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 						<td colspan="2">
 							<label>
 								<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_COMPOSE_FULL_ABSTRACT'); ?>: 
-									<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 							</label>								
 							<span class="clear"></span>
 							<?php 
