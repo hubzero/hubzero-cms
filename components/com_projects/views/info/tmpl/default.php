@@ -37,8 +37,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $view = $this->info;
 $goto = $this->goto;
 
-$view->project->about = rtrim(stripslashes(ProjectsHtml::cleanText($view->project->about)));
-
 $project = new ProjectsModelProject($view->project);
 
 $view->project->about = $project->about('parsed');
