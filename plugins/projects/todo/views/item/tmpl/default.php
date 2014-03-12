@@ -68,7 +68,7 @@ if($this->item->state == 1) {
 }
 
 // Due?
-$due = ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' ) ? JHTML::_('date', $this->item->duedate, $dateFormat, $tz) : '';
+$due = ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' ) ? JHTML::_('date', strtotime($this->item->duedate), 'm/d/Y') : '';
 
 // Author name
 $profile->load( $this->item->created_by );	
@@ -108,7 +108,7 @@ $goto  = 'alias=' . $this->project->alias;
 					<?php if(count($this->lists) > 0 ) { ?>
 						<label><?php echo ucfirst(JText::_('COM_PROJECTS_TODO_CHOOSE_LIST')); ?>:
 							<select name="list">
-								<option value="" <?php if($this->item->color == '') echo 'selected="selected"'?>><?php echo JText::_('COM_PROJECTS_ADD_TO_NO_LIST'); ?></option>
+								<option value="none" <?php if($this->item->color == '') echo 'selected="selected"'?>><?php echo JText::_('COM_PROJECTS_ADD_TO_NO_LIST'); ?></option>
 							<?php foreach($this->lists as $list) { 
 							?>
 								<option value="<?php echo $list->color; ?>" <?php if($list->color == $this->item->color) echo 'selected="selected"'?>><?php echo stripslashes($list->todolist); ?></option>
@@ -127,7 +127,7 @@ $goto  = 'alias=' . $this->project->alias;
 						</select>
 					</label>
 					<label><?php echo ucfirst(JText::_('COM_PROJECTS_DUE')); ?>
-						<input type="text" name="due" id="dued" class="duebox" value="<?php echo $due; ?>" />
+						<input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $due; ?>" />
 					</label>
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" />
 					<?php } else if($this->item->state == 1) { ?>

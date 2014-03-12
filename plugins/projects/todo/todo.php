@@ -486,8 +486,7 @@ class plgProjectsTodo extends JPlugin
 			$objTD->content 	= $content ? $content : $objTD->content;
 			$objTD->content 	= \Hubzero\Utility\Sanitize::stripAll($objTD->content);
 			$objTD->content 	= \Hubzero\Utility\String::truncate($objTD->content, 200);
-			$objTD->color 		= $listcolor ? $listcolor : $objTD->color;
-			$objTD->color 		= $listcolor == 'none' ? '' : $objTD->color;
+			$objTD->color 		= $listcolor == 'none' ? '' : $listcolor ;
 			$objTD->assigned_to = $assigned;
 			$objTD->state 		= $state;
 			
@@ -535,7 +534,7 @@ class plgProjectsTodo extends JPlugin
 			$objTD->priority = $todoid ? $objTD->priority : $neworder;
 			
 			// Get list name
-			$objTD->todolist = $objTD->getListName($this->_project->id, $objTD->color);
+			$objTD->todolist = $listcolor == 'none' ? NULL : $objTD->getListName($this->_project->id, $objTD->color);
 			
 			// Store content
 			if (!$objTD->store()) 
