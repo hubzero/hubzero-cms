@@ -30,7 +30,7 @@ $tz = null;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'b d, Y';
+	$dateFormat = 'M d, Y';
 	$tz = false;
 }
 
