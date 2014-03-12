@@ -187,12 +187,8 @@
 		border-radius: 0;
 		padding: 0 !important;
 	}
-	.btncancel {
-		padding: 0 1em !important;
-	}
 	.btncancel a {
 		color: #666;
-		padding: 0 !important;
 	}
 	.btnaction, input[type="submit"].btnaction {
 		font-size: 1em;

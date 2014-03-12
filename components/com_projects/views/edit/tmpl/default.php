@@ -134,7 +134,7 @@ $goto  = 'alias=' . $this->project->alias;
 							</table>
 							<p class="submitarea">
 								<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
-								<span class="btn btncancel"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto); ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+								<span class="btn-submit btncancel"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto . '&active=info'); ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
 							</p>
 						</div><!-- / .basic info -->
 					<?php  
