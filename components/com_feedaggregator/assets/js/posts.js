@@ -18,7 +18,6 @@ jQuery(document).ready(function()
 		         	  'action': action },
 				     function(data) 
 				     {
-						   
 			         });
 	         
 		 }

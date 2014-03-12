@@ -31,7 +31,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 //this is a quick and dirty way to get the one single object
-$feed = $this->feed[0];
+if(isset($feed[0]) == TRUE)
+{
+	$feed = $this->feed[0];
+}
+else
+{
+	$feed = '';
+}
 
 jimport('joomla.html.editor');
 
@@ -63,24 +70,25 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<legend>Feed Information</legend>
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-		<input type="hidden" name="id" value="<?php echo $feed->id; ?>">
+		<input type="hidden" name="id" value="<?php echo (is_object($feed) ? $feed->id : ''); ?>">
+		<input type="hidden" name="enabled" value="<?php echo (isset($feed->enabled) ? $feed->enabled : '1'); ?>">
 		<input type="hidden" name="task" value="save" />
 			
 			<label for="feed-title">
 				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?>
 				<span class="required">required</span>
-				<input type="text" name="name" id="feedTitle" size="25" value="<?php echo $feed->name; ?>"/>
+				<input type="text" name="name" id="feedTitle" size="25" value="<?php echo (is_object($feed) ? $feed->name : ''); ?>"/>
 			</label>
 					
 			<label for="url">
 				<?php //echo JText::_('COM_GROUPS_CN'); ?>Feed URL
 				<span class="required">required</span>
-				<input type="text" name="url" id="feedURL" size="50" value="<?php echo $feed->url; ?>" />
+				<input type="text" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $feed->url : ''); ?>" />
 			</label>
 			
 			<label for="description">
 				<?php //echo JText::_('COM_GROUPS_CN'); ?>Description
-				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo $feed->description; ?>" /> 
+				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $feed->description : ''); ?>" /> 
 			</label>
 			<!--  <span><p style="float:left";>Auto Approve<input type="checkbox" id="autoApproveCheckbox" name="autoapprove">
 			</p></span> -->

@@ -177,7 +177,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		}
 	}
 	
-	public function updateStatustask()
+	public function updateStatusTask()
 	{
 		$id = JRequest::getVar('id', '');
 		$action = JRequest::getVar('action', '');
@@ -198,8 +198,9 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$action_id = 3;
 		} //end switch
 		
+		
 		$model->updateStatus($id, $action_id);
-		echo $action;	
+		echo $action_id;	
 		exit();
 	}
 	

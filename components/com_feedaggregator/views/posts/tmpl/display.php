@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="content-header">
 <h2><?php echo $this->title; ?></h2>
+
 </div>
 
 <div id="content-header-extra">
