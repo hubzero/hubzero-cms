@@ -125,7 +125,7 @@ class CoursesControllerCertificate extends Hubzero_Controller
 
 			$xserver = new Hubzero_Content_Server();
 			$xserver->filename($file);
-			$xserver->serve_inline($file);
+			$xserver->serve_attachment($file); // Firefox and Chrome fail if served inline
 			exit;
 		}
 
