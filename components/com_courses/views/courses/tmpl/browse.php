@@ -264,7 +264,7 @@ $juser = JFactory::getUser();
 					} // for loop 
 				} else { ?>
 						<tr>
-							<td colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
+							<td colspan="2<?php //echo ($this->authorized) ? '4' : '3'; ?>">
 								<p class="warning"><?php echo JText::_('No results found'); ?></p>
 							</td>
 						</tr>
