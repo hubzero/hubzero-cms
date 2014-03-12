@@ -2019,7 +2019,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					}
 				}
 				$obj->title = \Hubzero\Utility\String::truncate($title, 250);
-				$obj->about = rtrim(\Hubzero\Utility\Sanitize::clean($about));
+				$obj->about = rtrim($about);
 				$obj->type 	= $type;
 				
 				// save advanced permissions
