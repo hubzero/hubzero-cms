@@ -1023,9 +1023,8 @@
 		padding-left: 0.5em;
 		margin-top: 2em;
 		margin-bottom: 1em;
-		background: #edf3e5;
-		border-top: 1px dotted #000;
-		border-bottom: 1px dotted #000;
+		margin-right: 2em;
+		background: #d8dcd3;
 	}
 	#setup #hubForm {
 		min-width: 850px;
@@ -1059,6 +1058,17 @@
 	.cautionaction p {
 		padding: 0 !important;
 		margin: 0.5em 0 1em !important;
+	}
+	#setup div {
+		border: none !important;
+	}
+	#setup .aside p {
+		margin: 0;
+	}
+	#hubForm fieldset {
+		color: #777;
+		background: #F5F7F2;
+		border: 2px solid #DEE4CD;
 	}
 
 /* Setup - describe project

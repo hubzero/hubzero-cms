@@ -55,7 +55,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 <?php
 
 	$html .= t.' <form id="hubForm" method="post" action="index.php">'.n;
-	$html .= t.'<div class="explaination">'.n;
+	$html .= t.'<div class="aside">'.n;
 	$html .= t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_NAME_PROJECT').'</h4>'.n;
 	$html .= t.t.'<p>'.JText::_('COM_PROJECTS_HOWTO_NAME_PROJECT').'</p>'.n;
 	$html .= t.'</div>'.n;	
@@ -102,7 +102,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.'</fieldset>'.n;
 	$html .= t.t.'<div class="clear"></div>'.n;
 	$html .= t.t.'<div id="describearea">'.n;
-	$html .= t.t.'<div class="explaination">'.n;
+	$html .= t.t.'<div class="aside">'.n;
 	$html .= t.t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_DESC').'</h4>'.n;
 	$html .= t.t.t.'<p>'.JText::_('COM_PROJECTS_HOWTO_DESC_PROJECT').'</p>'.n;
 	$html .= t.t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_THUMB').'</h4>'.n;

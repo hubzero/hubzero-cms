@@ -80,7 +80,7 @@ $html  = '';
 	</div>
 	<form id="hubForm" method="post" action="index.php">
 			<?php if($this->config->get('grantinfo', 0)) { ?>
-			<div class="explaination">
+			<div class="aside">
 				<h4><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANTINFO_WHY'); ?></h4>
 				<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANTINFO_BECAUSE'); ?></p>
 			</div>
@@ -103,7 +103,7 @@ $html  = '';
 			</fieldset>
 			<div class="clear"></div>
 			<?php } ?>
-		<div class="explaination">
+		<div class="aside">
 			<?php if($this->config->get('restricted_data', 0)) { ?>
 			<h4><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE'); ?></h4>
 			<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE_EXPLAIN'); ?> </p>
