@@ -70,14 +70,12 @@ if ($this->getError()) {
 	</div>
 	</form>
 	<div class="clear"></div>
-	<div id="gallery-preview">
+	
 	<?php if($this->type == 'image') { ?>
+	<div id="gallery-preview">
 		<img src="<?php echo $this->gallery_path.DS.$this->file; ?>" />
-	<?php } else if($this->type == 'video') { ?>	
-		<embed src="<?php echo $this->gallery_path.DS.$this->file; ?>" autoplay="true" />
-	<p class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_VIDEO_PLAYBACK'); ?></p>
-	<?php } ?>
 	</div>
+	<?php }  ?>
 	<?php } ?>
 <?php } ?>
 </div>

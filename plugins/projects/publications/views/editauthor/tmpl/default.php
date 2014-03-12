@@ -59,19 +59,8 @@ if(preg_match($regex, $firstname))
 $ih = new ProjectsImgHandler();
 $mconfig = JComponentHelper::getParams( 'com_members' );
 
-$path  = $mconfig->get('webpath');
-if (substr($path, 0, 1) != DS) {
-	$path = DS.$path;
-}
-if (substr($path, -1, 1) == DS) {
-	$path = substr($path, 0, (strlen($path) - 1));
-}
-
-// Get default profile thumb
-$default_thumb = $mconfig->get('defaultpic');
-if (substr($default_thumb, 0, 1) != DS) {
-	$default_thumb = DS.$default_thumb;
-}
+$path  			= DS .trim($mconfig->get('webpath'), DS);
+$default_thumb 	= DS . trim($mconfig->get('defaultpic'), DS);
 
 // Get profile thumb image 
 $thumb = '';
@@ -84,9 +73,14 @@ if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
 	$thumb = $default_thumb;
 }
 
+$base = rtrim(JURI::getInstance()->base(true), '/');
+
 ?>
+
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_AUTHOR'); ?></h3>
+<h3><?php echo $this->author->id 
+	? JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_AUTHOR')
+	: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ADD_AUTHOR'); ?></h3>
 <?php
 // Display error  message
 if ($this->getError()) { 
@@ -111,6 +105,8 @@ if ($this->getError()) {
 				<?php } ?>
 			</fieldset>
 			<div class="author-edit">
+				
+				<?php if ($this->author->id) { ?>
 				<div class="profile-info">
 					<p><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $name; ?>" />
 						<span>
@@ -118,7 +114,8 @@ if ($this->getError()) {
 						<?php echo $this->author->username ? $this->author->p_name.' ('.$this->author->username.')' : $name.' (unconfirmed)';  ?></span>
 					</p>
 				</div>
-			
+				<?php } ?>
+
 				<label class="display_inline">
 					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_FIRST_NAME')); ?>*:</span>
 					<input type="text" name="firstName" value="<?php echo $firstname;  ?>" maxlength="255" />
