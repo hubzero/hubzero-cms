@@ -213,7 +213,7 @@ class plgUsageOverview extends JPlugin
 			$sparkline .= '<span class="sparkline">' . "\n";
 			foreach ($results as $result)
 			{
-				$height = round(($result->value / $highest)*100);
+				$height = $highest ? round(($result->value / $highest)*100) : 0;
 				$sparkline .= "\t" . '<span class="index">';
 				$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . trim($this->_fmt_result($result->value, $result->valfmt)) . '">';
 				$sparkline .= trim($this->_fmt_result($result->value, $result->valfmt));
