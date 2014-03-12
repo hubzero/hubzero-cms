@@ -279,7 +279,7 @@ $bdcolor = '#e1e1e1';
 																		background-size: 30px 30px;">
 											<thead>
 												<tr>
-													<th colspan="<?php echo $showThumb ? 3 : 2; ?>" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
+													<th <?php echo $showThumb ? 'colspan="2"' : ''; ?> style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
 														<?php echo $subtitle; ?>
 													</th>
 												</tr>
@@ -293,17 +293,17 @@ $bdcolor = '#e1e1e1';
 														</div>
 													</td>
 													<?php } ?>
-													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">														
-														<?php echo $this->project->alias; ?>
-													</td>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Title:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->title; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em; font-weight: bold; font-size: 1.3em" align="left"><?php echo $this->project->title; ?></td>
 																</tr>
 																<tr>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Alias:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->alias; ?></td>
+																</tr>																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>

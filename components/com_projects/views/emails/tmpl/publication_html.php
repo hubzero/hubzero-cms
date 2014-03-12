@@ -318,7 +318,7 @@ if ($showThumb)
 																		background-size: 30px 30px;">
 											<thead>
 												<tr>
-													<th colspan="<?php echo $showThumb ? 3 : 2; ?>" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
+													<th <?php echo $showThumb ? 'colspan="2"' : ''; ?> style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
 														<?php echo $subtitle; ?>
 													</th>
 												</tr>
@@ -332,9 +332,6 @@ if ($showThumb)
 														</div>
 													</td>
 													<?php } ?>
-													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">														
-														<?php echo $label; ?>
-													</td>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
