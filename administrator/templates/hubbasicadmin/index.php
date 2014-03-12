@@ -151,14 +151,14 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</div><!-- / #toolbar-box -->
 				
 				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">
+					<!-- Notifications begins -->
+					<jdoc:include type="message" />
+					<!-- Notifications ends -->
 					<?php if (!JRequest::getInt('hidemainmenu') && $this->countModules('submenu')): ?>
 					<nav role="navigation" class="sub-navigation">
 						<jdoc:include type="modules" name="submenu" />
 					</nav><!-- / .sub-navigation -->
 					<?php endif; ?>
-					<!-- Notifications begins -->
-					<jdoc:include type="message" />
-					<!-- Notifications ends -->
 					<!-- Content begins -->
 					<jdoc:include type="component" />
 					<!-- Content ends -->
