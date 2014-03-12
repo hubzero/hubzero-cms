@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$this->comment->set('item_type', 'review');
-	$this->comment->set('parent', $this->comment->get('id'));
+	//$this->comment->set('parent', $this->comment->get('id'));
 
 	if ($this->comment->isReported())
 	{
@@ -100,21 +100,57 @@ defined('_JEXEC') or die('Restricted access');
 			</p>
 			<?php } ?>
 
+	<?php if (JRequest::getWord('action') == 'edit' && JRequest::getInt('comment') == $this->comment->get('id')) { ?>
+			<form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
+				<fieldset>
+					<legend><span><?php echo JText::_('PLG_RESOURCES_REVIEWS_EDIT'); ?></span></legend>
+
+					<input type="hidden" name="comment[id]" value="<?php echo $this->comment->get('id'); ?>" />
+					<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
+					<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
+					<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('parent'); ?>" />
+					<input type="hidden" name="comment[created]" value="<?php echo $this->comment->get('created'); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo $this->comment->get('created_by'); ?>" />
+
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="id" value="<?php echo $this->resource->id; ?>" />
+					<input type="hidden" name="active" value="reviews" />
+					<input type="hidden" name="action" value="savereply" />
+
+					<?php echo JHTML::_('form.token'); ?>
+
+					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+						<span class="label-text"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>
+						<?php
+						echo JFactory::getEditor()->display('comment[content]', $this->comment->content('raw'), '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
+						?>
+					</label>
+
+					<label id="comment-anonymous-label" for="comment-anonymous">
+						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
+					</label>
+
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_SUBMIT'); ?>" /> 
+					</p>
+				</fieldset>
+			</form>
+	<?php } else { ?>
 			<?php echo $comment; ?>
 
 			<p class="comment-options">
-			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
-				<?php if ($this->config->get('access-delete-thread')) { ?>
+		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
+			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
+				<?php /*if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!-- 
 						--><?php echo JText::_('PLG_RESOURCES_REVIEWS_DELETE'); ?><!-- 
 					--></a>
-				<?php } ?>
-				<?php if ($this->config->get('access-edit-thread')) { ?>
+				<?php }*/ ?>
 					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!-- 
 						--><?php echo JText::_('PLG_RESOURCES_REVIEWS_EDIT'); ?><!-- 
 					--></a>
-				<?php } ?>
-			<?php }*/ ?>
+			<?php } ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
@@ -131,6 +167,7 @@ defined('_JEXEC') or die('Restricted access');
 					--><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?><!-- 
 				--></a>
 			<?php } ?>
+		<?php } ?>
 			</p>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
@@ -147,7 +184,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
-						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('parent'); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('resource_id') ? 0 : $this->comment->get('id')); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 
@@ -178,6 +215,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 			</div><!-- / .addcomment -->
 		<?php } ?>
+	<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3)) 

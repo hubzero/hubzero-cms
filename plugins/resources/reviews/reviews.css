@@ -19,3 +19,17 @@
 	ol.comments .comment-options a.active:before {
 		content: "\2716";
 	}
+	ol.comments .edit,
+	ol.comments .delete {
+		float: right;
+	}
+	ol.comments form legend,
+	ol.comments span.label-text {
+		display: none;
+	}
+	ol.comments form .submit {
+		clear: both;
+		margin: -1.5em 0 0 0;
+		padding: 0;
+		text-align: right;
+	}

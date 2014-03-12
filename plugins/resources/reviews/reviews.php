@@ -427,9 +427,9 @@ class PlgResourcesReviewsHelper extends JObject
 		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
 		//$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created    = JFactory::getDate()->toSql();
-		$row->state      = 0;
-		$row->created_by = $juser->get('id');
+		$row->created    = ($row->id ? $row->created : JFactory::getDate()->toSql());
+		$row->state      = ($row->id ? $row->state : 0);
+		$row->created_by = ($row->id ? $row->created_by : $juser->get('id'));
 
 		// Check for missing (required) fields
 		if (!$row->check()) 
@@ -441,7 +441,6 @@ class PlgResourcesReviewsHelper extends JObject
 		// Save the data
 		if (!$row->store()) 
 		{
-			echo $row->getError(); die();
 			$this->setError($row->getError());
 			return;
 		}
