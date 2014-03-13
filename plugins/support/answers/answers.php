@@ -62,26 +62,33 @@ class plgSupportAnswers extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') 
+		if ($category != 'answer' && $category != 'question') // && $category != 'answercomment' 
 		{
 			return null;
 		}
 
+		$query = '';
+
 		switch ($category)
 		{
 			case 'answer':
-				$query  = "SELECT r.id, r.answer as text, NULL as subject, r.created";
+				$query .= "SELECT r.id, r.answer as text, NULL as subject, r.created";
 				$query .= ", r.anonymous as anon, r.created_by as author, 'answer' as parent_category, NULL as href";
 				$query .= " FROM #__answers_responses AS r";
 				$query .= " WHERE r.state!=2 AND r.id=" . $refid;
 			break;
 
 			case 'question':
-				$query  = "SELECT q.id, q.subject as text, q.created_by as author, q.question as subject, q.created";
+				$query .= "SELECT q.id, q.subject as text, q.created_by as author, q.question as subject, q.created";
 				$query .= ", 'question' as parent_category, q.anonymous as anon, NULL as href";
 				$query .= " FROM #__answers_questions AS q";
 				$query .= " WHERE q.id=" . $refid;
 			break;
+		}
+
+		if (!$query)
+		{
+			return null;
 		}
 
 		$database = JFactory::getDBO();
@@ -122,32 +129,32 @@ class plgSupportAnswers extends JPlugin
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
-		if ($category == 'answercomment') 
+		/*if ($category == 'answer') 
 		{
-			$pdata = $this->parent($parentid);
-			$category = $pdata->category;
-			$refid = $pdata->referenceid;
+			$pdata    = $this->parent($parentid);
+			$category = $pdata->get('item_type');
+			$refid    = $pdata->get('item_id');
 
-			if ($pdata->category == 'answercomment') 
+			if ($pdata->get('item_type') == 'answer') 
 			{
 				// Yet another level?
-				$pdata = $this->parent($pdata->referenceid);
-				$category = $pdata->category;
-				$refid = $pdata->referenceid;
+				$pdata    = $this->parent($pdata->get('parent'));
+				$category = $pdata->get('item_type');
+				$refid    = $pdata->get('item_id');
 
-				if ($pdata->category == 'answercomment') 
+				if ($pdata->get('item_type') == 'answer') 
 				{
 					// Yet another level?
-					$pdata = $this->parent($pdata->referenceid);
-					$category = $pdata->category;
-					$refid = $pdata->referenceid;
+					$pdata    = $this->parent($pdata->get('parent'));
+					$category = $pdata->get('item_type');
+					$refid    = $pdata->get('item_id');
 				}
 			}
-		}
+		}*/
 
 		if ($category == 'answer') 
 		{
-			$database->setQuery("SELECT qid FROM `#__answers_responses` WHERE id=" . $refid);
+			$database->setQuery("SELECT question_id FROM `#__answers_responses` WHERE id=" . $refid);
 		 	return $database->loadResult();
 		}
 
@@ -191,15 +198,15 @@ class plgSupportAnswers extends JPlugin
 		{
 			case 'answer':
 				return JText::sprintf('Answer to question #%s', $parentid);
-         	break;
+			break;
 
 			case 'question':
 				return JText::sprintf('Question #%s', $parentid);
-         	break;
+			break;
 
 			case 'answercomment':
 				return JText::sprintf('Comment to an answer for question #%s', $parentid);
-         	break;
+			break;
 		}
 	}
 
