@@ -2698,7 +2698,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$objAA = new ProjectActivity ( $this->database );
 		
 		// Is user in special admin group to view advanced stats?
-		$admin = ProjectsHelper::checkReviewerAuth($reviewer, $this->config);
+		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);
 							
 		// Get all test projects
 		$testProjects = $obj->getTestProjects();
