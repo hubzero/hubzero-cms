@@ -120,6 +120,6 @@ if($this->docs) {
 	echo $dls; 
 ?>
 <?php } else { ?>
-	<p class="nocontent"><?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
+	<p class="noresults"><?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
 <?php } ?>
 </div><!-- / .supportingdocs -->
