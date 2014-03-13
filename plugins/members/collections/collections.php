@@ -1755,7 +1755,7 @@ class plgMembersCollections extends JPlugin
 
 		// Redirect to collection
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $row->get('alias')));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=all')); // . $row->get('alias')
 	}
 
 	/**

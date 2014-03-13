@@ -65,7 +65,7 @@ else
 
 		<label for="field-description">
 			<?php echo JText::_('Description'); ?> <span class="optional"><?php echo JText::_('optional'); ?></span>
-			<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea>
+			<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 
@@ -85,7 +85,7 @@ else
 
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
-		<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>">
+		<a class="btn btn-secondary" href="<?php echo JRoute::_($base . '&task=all'); ?>">
 			<?php echo JText::_('Cancel'); ?>
 		</a>
 	</p>
