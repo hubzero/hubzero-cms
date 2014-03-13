@@ -61,10 +61,7 @@ if (count($this->notifications) > 0)
 		<h3>Questions?</h3>
 		<ul>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_kb&section=courses&alias=faq'); ?>">Courses FAQ</a>
-			</li>
-			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_kb&section=courses&alias=guide'); ?>">Course Guidelines</a>
+				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">Need Help?</a>
 			</li>
 		</ul>
 	</div><!-- / .aside -->
