@@ -263,7 +263,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -274,6 +274,8 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 			$this->editTask($row);
 			return;
 		}
+
+		$row->anonymous = (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0;
 
 		// Check content
 		if (!$row->check()) 
@@ -340,6 +342,143 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish,
 			JText::_('Item(s) successfully removed')
+		);
+	}
+
+	/**
+	 * Calls stateTask to publish entries
+	 * 
+	 * @return     void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+	
+	/**
+	 * Calls stateTask to unpublish entries
+	 * 
+	 * @return     void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Set the state of an entry
+	 * 
+	 * @param      integer $state State to set
+	 * @return     void
+	 */
+	public function stateTask($state=0)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$wish = JRequest::getInt('wish', 0);
+		$ids = JRequest::getVar('id', array());
+
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''),
+				($state == 1 ? JText::_('COM_WISHLIST_SELECT_PUBLISH') : JText::_('COM_WISHLIST_SELECT_UNPUBLISH')),
+				'error'
+			);
+			return;
+		}
+
+		// Update record(s)
+		foreach ($ids as $id)
+		{
+			// Updating a category
+			$row = new \Hubzero\Item\Comment($this->database);
+			$row->load($id);
+			$row->status = $state;
+			$row->store();
+		}
+
+		// Set message
+		switch ($state)
+		{
+			case '-1': 
+				$message = JText::sprintf('COM_WISHLIST_ARCHIVED', count($ids));
+			break;
+			case '1':
+				$message = JText::sprintf('COM_WISHLIST_PUBLISHED', count($ids));
+			break;
+			case '0':
+				$message = JText::sprintf('COM_WISHLIST_UNPUBLISHED', count($ids));
+			break;
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''),
+			$message
+		);
+	}
+
+	/**
+	 * Calls stateTask to publish entries
+	 * 
+	 * @return     void
+	 */
+	public function publicizeTask()
+	{
+		$this->anonTask(0);
+	}
+	
+	/**
+	 * Calls stateTask to unpublish entries
+	 * 
+	 * @return     void
+	 */
+	public function anonymizeTask()
+	{
+		$this->anonTask(1);
+	}
+
+	/**
+	 * Set the state of an entry
+	 * 
+	 * @param      integer $state State to set
+	 * @return     void
+	 */
+	public function anonTask($state=0)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$wish = JRequest::getInt('wish', 0);
+		$ids = JRequest::getVar('id', array());
+
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : '')
+			);
+			return;
+		}
+
+		// Update record(s)
+		foreach ($ids as $id)
+		{
+			// Updating a category
+			$row = new \Hubzero\Item\Comment($this->database);
+			$row->load($id);
+			$row->anonymous = $state;
+			$row->store();
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : '')
 		);
 	}
 
