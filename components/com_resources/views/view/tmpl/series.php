@@ -300,7 +300,7 @@ $juser = JFactory::getUser();
 				<a name="series"></a>
 				<?php echo JText::_('In This Series'); ?>
 			</h3>
-			<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->_option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
+			<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
 				<div class="aside">
 					<fieldset class="controls">
 						<label for="sortby">
