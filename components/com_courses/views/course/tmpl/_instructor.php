@@ -49,6 +49,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</p>
 	</div><!-- / .course-instructor-content cf -->
 
+	<?php 
+	$params = new JRegistry($this->instructor->get('params'));
+	if ($params->get('access_bio') == 0 // public
+	 || ($params->get('access_bio') == 1 && !JFactory::getUser()->get('guest')) // registered members
+	) {
+	?>
 	<div class="course-instructor-bio">
 		<?php if ($this->instructor->get('bio')) { ?>
 			<?php echo $this->instructor->getBio('parsed'); ?>
@@ -56,4 +62,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<em><?php echo JText::_('This instructor has yet to write their bio.'); ?></em>
 		<?php } ?>
 	</div>
+	<?php } ?>
 </div><!-- / .course-instructor -->
