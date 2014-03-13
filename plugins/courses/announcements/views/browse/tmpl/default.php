@@ -131,7 +131,7 @@ $base = $this->offering->link() . '&active=announcements';
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 		<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 		<input type="hidden" name="active" value="announcements" />
-		<input type="hidden" name="option" value="<?php echo $option; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 	</form>
 </div><!--/ #course_members -->
