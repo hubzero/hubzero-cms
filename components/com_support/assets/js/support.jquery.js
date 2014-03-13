@@ -127,7 +127,7 @@ HUB.Support = {
 			}
 		});
 
-		$('a.delete').each(function(i, el) {
+		/*$('a.delete').each(function(i, el) {
 			$(el).on('click', function(e) {
 				var res = confirm('Are you sure you wish to delete this item?');
 				if (!res) {
@@ -135,7 +135,7 @@ HUB.Support = {
 				}
 				return res;
 			});
-		});
+		});*/
 	},
 
 	addDeleteQueryEvent: function() {
