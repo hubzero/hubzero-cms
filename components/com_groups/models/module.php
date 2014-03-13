@@ -103,7 +103,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 		{
 			case 'list':
 			default:
-				if (!($this->_menu_items instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_menu_items instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					if ($results = $tbl->getMenu( $filters ))
 					{
@@ -116,7 +116,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 					{
 						$results = array();
 					}
-					$this->_menu_items = new \Hubzero\Base\ItemList($results);
+					$this->_menu_items = new \Hubzero\Base\Model\ItemList($results);
 				}
 				return $this->_menu_items;
 			break;

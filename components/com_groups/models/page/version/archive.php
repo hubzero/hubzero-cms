@@ -82,7 +82,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_versions instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_versions instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					// make sure we have page id
 					if (!isset($filters['pageid']))
@@ -97,7 +97,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 							$results[$key] = new GroupsModelPageVersion($result);
 						}
 					}
-					$this->_versions = new \Hubzero\Base\ItemList($results);
+					$this->_versions = new \Hubzero\Base\Model\ItemList($results);
 				}
 				return $this->_versions;
 			break;

@@ -88,7 +88,7 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 		{
 			case 'list':
 			default:
-				if (!($this->_logs instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_logs instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					$tbl = new GroupsTableLog($this->_db);
 					if ($results = $tbl->find( $filters ))
@@ -98,7 +98,7 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 							$results[$key] = new GroupsModelLog($result);
 						}
 					}
-					$this->_logs = new \Hubzero\Base\ItemList($results);
+					$this->_logs = new \Hubzero\Base\Model\ItemList($results);
 				}
 				return $this->_logs;
 			break;

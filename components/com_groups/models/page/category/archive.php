@@ -72,7 +72,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_categories instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_categories instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					$tbl = new GroupsTablePageCategory($this->_db);
 					if ($results = $tbl->find( $filters ))
@@ -82,7 +82,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 							$results[$key] = new GroupsModelPageCategory($result);
 						}
 					}
-					$this->_categories = new \Hubzero\Base\ItemList($results);
+					$this->_categories = new \Hubzero\Base\Model\ItemList($results);
 				}
 				return $this->_categories;
 			break;

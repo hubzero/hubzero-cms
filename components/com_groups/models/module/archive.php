@@ -125,7 +125,7 @@ class GroupsModelModuleArchive extends JObject
 						}
 					}
 				}
-				return new \Hubzero\Base\ItemList($unapproved);
+				return new \Hubzero\Base\Model\ItemList($unapproved);
 			break;
 			case 'list':
 			default:
@@ -137,7 +137,7 @@ class GroupsModelModuleArchive extends JObject
 						$results[$key] = new GroupsModelModule($result);
 					}
 				}
-				$this->_modules = new \Hubzero\Base\ItemList($results);
+				$this->_modules = new \Hubzero\Base\Model\ItemList($results);
 				return $this->_modules;
 			break;
 		}

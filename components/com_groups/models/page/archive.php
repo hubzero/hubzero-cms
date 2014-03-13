@@ -137,11 +137,11 @@ class GroupsModelPageArchive extends JObject
 						}
 					}
 				}
-				return new \Hubzero\Base\ItemList($unapproved);
+				return new \Hubzero\Base\Model\ItemList($unapproved);
 			break;
 			case 'list':
 			default:
-				if (!($this->_pages instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_pages instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					$tbl = new GroupsTablePage($this->_db);
 					if ($results = $tbl->find( $filters ))
@@ -151,7 +151,7 @@ class GroupsModelPageArchive extends JObject
 							$results[$key] = new GroupsModelPage($result);
 						}
 					}
-					$this->_pages = new \Hubzero\Base\ItemList($results);
+					$this->_pages = new \Hubzero\Base\Model\ItemList($results);
 				}
 				return $this->_pages;
 			break;
