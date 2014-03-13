@@ -58,7 +58,7 @@ class SupportUtilities
 
 			if ($replyto)
 			{
-				$message->setSubject($replyto, $from['name']);
+				$message->addReplyTo($replyto, $from['name']);
 			}
 			else
 			{
