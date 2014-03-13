@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th class="key"><label for="field-about"><?php echo JText::_('COM_WISHLIST_DESCRIPTION'); ?>:</label></th>
-						<td><textarea name="fields[about]" id="field-about" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->row->about)); ?></textarea></td>
+						<td><textarea name="fields[about]" id="field-about" cols="35" rows="30"><?php echo $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->about))); ?></textarea></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-tags"><?php echo JText::_('COM_WISHLIST_TAGS'); ?>:</label></th>
@@ -148,9 +148,7 @@ function submitbutton(pressbutton)
 								<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->due != '' && $this->row->due != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
 								<?php echo JText::_('COM_WISHLIST_DUE_ON'); ?>
 							</label>
-							<label for="field-due">
-								<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="10" value="<?php echo $this->escape($this->row->due); ?>" />
-							</label>
+							<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="19" value="<?php echo $this->escape($this->row->due); ?>" />
 						</td>
 					</tr>
 					<tr>

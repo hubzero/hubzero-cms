@@ -211,7 +211,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		$this->view->ownerassignees[-1] = array();
 		$none = new stdClass;
 		$none->id = '-1';
-		$none->name = JText::_('Select Category');
+		$none->name = JText::_('Select ...');
 		$this->view->ownerassignees[-1][] = $none;//JHTML::_('select.option', '-1', JText::_( 'Select Category' ), 'id', 'title');
 
 		$this->view->assignees = null;
@@ -228,6 +228,12 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 				}
 				$this->view->ownerassignees[$list->id] = array();
 
+				$none = new stdClass;
+				$none->id = '0';
+				$none->name = JText::_('[none]');
+
+				$this->view->ownerassignees[$list->id][] = $none;
+
 				$owners = $objOwner->get_owners($list->id, $this->admingroup, $list);
 				if (count($owners['individuals']) > 0) 
 				{
@@ -236,11 +242,6 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 					
 					$users = $this->database->loadObjectList();
 
-					$none = new stdClass;
-					$none->id = '0';
-					$none->name = JText::_('[none]');
-
-					$this->view->ownerassignees[$list->id][] = $none;
 					foreach ($users as $row2) 
 					{
 						$this->view->ownerassignees[$list->id][] = $row2;//JHTML::_('select.option', $row2->id, $row2->name, 'id', 'title');
@@ -306,7 +307,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -338,7 +339,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		}
 
 		//$create_revision = JRequest::getInt('create_revision', 0, 'post');
-		$plan = JRequest::getVar('plan', array(), 'post');
+		$plan = JRequest::getVar('plan', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$page = new WishlistPlan($this->database);
