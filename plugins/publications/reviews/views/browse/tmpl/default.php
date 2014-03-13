@@ -66,7 +66,7 @@ if ($this->reviews->total() > 0)
 }
 else
 {
-	echo '<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
+	echo '<p class="noresults">'.JText::_('PLG_PUBLICATION_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
 }
 
 // Display the review form if needed
