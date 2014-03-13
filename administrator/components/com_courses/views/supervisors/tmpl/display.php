@@ -30,7 +30,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$roles = $this->model->roles(array('alias' => '!student'));
+$course = CoursesModelCourse::getInstance($this->model->get('course_id'));
+$roles = $course->offering(0)->roles(array('alias' => '!student'));
+$offerings = $course->offerings();
+
+//$roles = $this->model->roles(array('alias' => '!student'));
 /*$r = array();
 foreach ($roles as $key => $role)
 {
@@ -59,6 +63,21 @@ foreach ($roles as $key => $role)
 <?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
 <?php } ?>
+						<?php 
+						foreach ($offerings as $offering) 
+						{
+							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+							if (!$oroles || !count($oroles))
+							{
+								continue;
+							}
+						?>
+							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+							<?php foreach ($oroles as $role) { ?>
+								<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+							<?php } ?>
+							</optgroup>
+						<?php } ?>
 						</select>
 					</td>
 					<td>
@@ -133,6 +152,21 @@ foreach ($roles as $key => $role)
 <?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 <?php } ?>
+						<?php 
+						foreach ($offerings as $offering) 
+						{
+							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+							if (!$oroles || !count($oroles))
+							{
+								continue;
+							}
+						?>
+							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+							<?php foreach ($oroles as $role) { ?>
+								<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+							<?php } ?>
+							</optgroup>
+						<?php } ?>
 						</select>
 					</td>
 				</tr>

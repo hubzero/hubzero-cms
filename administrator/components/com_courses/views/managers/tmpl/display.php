@@ -31,6 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
+$offerings = $this->course->offerings();
 ?>
 <?php if ($this->getError()) { ?>
 	<dl id="system-message">
@@ -51,9 +52,24 @@ $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 					</td>
 					<td>
 						<select name="role">
-<?php foreach ($roles as $role) { ?>
+						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
-<?php } ?>
+						<?php } ?>
+						<?php 
+						foreach ($offerings as $offering) 
+						{
+							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+							if (!$oroles || !count($oroles))
+							{
+								continue;
+							}
+						?>
+							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+							<?php foreach ($oroles as $role) { ?>
+								<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+							<?php } ?>
+							</optgroup>
+						<?php } ?>
 						</select>
 					</td>
 					<td>
@@ -120,9 +136,24 @@ $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 					</td>
 					<td>
 						<select name="entries[<?php echo $i; ?>][role_id]" onchange="update();">
-<?php foreach ($roles as $role) { ?>
+						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
-<?php } ?>
+						<?php } ?>
+						<?php 
+						foreach ($offerings as $offering) 
+						{
+							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+							if (!$oroles || !count($oroles))
+							{
+								continue;
+							}
+						?>
+							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+							<?php foreach ($oroles as $role) { ?>
+								<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+							<?php } ?>
+							</optgroup>
+						<?php } ?>
 						</select>
 					</td>
 				</tr>

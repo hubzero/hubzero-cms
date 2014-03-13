@@ -67,7 +67,7 @@ JToolBarHelper::help('roles.html', true);
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Title'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Offering ID'), 'offering_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Total'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo JText::_('Permissions'); ?></th>
+				<!-- <th scope="col"><?php echo JText::_('Permissions'); ?></th> -->
 			</tr>
 			<!-- <tr>
 				<th scope="col"><?php echo JText::_('Manage enrollment'); ?></th>
@@ -77,7 +77,7 @@ JToolBarHelper::help('roles.html', true);
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -124,9 +124,9 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td>
 					<?php echo $row->total; ?>
 				</td>
-				<td>
+				<!-- <td>
 
-				</td>
+				</td> -->
 			</tr>
 <?php
 	$k = 1 - $k;

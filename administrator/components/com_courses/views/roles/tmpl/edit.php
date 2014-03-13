@@ -63,7 +63,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" id="item-form" name="adminForm">
-	<div class="col width-70 fltrt">
+	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
