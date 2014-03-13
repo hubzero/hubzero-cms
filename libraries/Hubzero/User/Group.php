@@ -1538,7 +1538,7 @@ class Group extends Object
 			$src = $default_logo;
 		}
 
-		return $src;
+		return \JURI::base(true) . $src;
 	}
 
 	/**
