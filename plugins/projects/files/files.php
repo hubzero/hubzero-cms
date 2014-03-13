@@ -5151,6 +5151,15 @@ class plgProjectsFiles extends JPlugin
 		$diskSpace = 0;
 		$commits = 0;
 		$usage = 0;
+		
+		$config = JComponentHelper::getParams( 'com_projects' );
+		$prefix = $config->get('offroot', 0) ? '' : JPATH_ROOT ;
+		
+		// Make sure Git helper is included
+		$this->getGitHelper();
+		
+		$this->_project = new Project($this->_database);
+		$this->_project->provisioned = 0;
 
 		// Publication space
 		if ($get == 'pubspace')
@@ -5168,29 +5177,27 @@ class plgProjectsFiles extends JPlugin
 				$kb = str_replace('.', '', trim($out[0]));
 				$used = $kb * 1024;
 			}
-
+			
 			return $used;
 		}
 
 		foreach ($aliases as $alias)
 		{
+			$this->_project->alias = $alias;
 			$path = $this->getProjectPath($alias, 'files');
 
 			// Make sure there is .git directory
-			if (!is_dir($this->prefix . $path . DS . '.git'))
+			if (!is_dir($prefix . $path . DS . '.git'))
 			{
 				continue;
 			}
 
 			if ($get == 'diskspace')
 			{
-				$diskSpace = $diskSpace + $this->getDiskUsage($path, $this->prefix, $this->_usageGit);
+				$diskSpace = $diskSpace + $this->getDiskUsage($path, $prefix, $this->_usageGit);
 			}
 			elseif ($get == 'commitCount')
-			{
-				// Make sure Git helper is included
-				$this->getGitHelper();
-
+			{	
 				$nf = $this->_git->callGit( $path, 'ls-files --full-name ');
 
 				if ($nf && substr($nf[0], 0, 5) != 'fatal')
