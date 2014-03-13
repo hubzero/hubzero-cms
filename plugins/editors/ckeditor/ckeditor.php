@@ -151,7 +151,10 @@ class plgEditorCkeditor extends JPlugin
 		$config = str_replace('"\/<group:include([^\\\\\/]*)\\\\\/>\/g"', '/<group:include([^\\/]*)\\/>/g', $config);
 
 		// script to actually make ckeditor
-		$script = '<script type="text/javascript">jQuery(document).ready(function(){ jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });</script>';
+		$script  = '<script type="text/javascript">';
+		$script .= 'jQuery(document).ready(function(){ jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
+		$script .= 'jQuery(document).on("ajaxLoad", function() { jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
+		$script .= '</script>';
 
 		$params['class'] = implode(' ', $params['class']);
 
