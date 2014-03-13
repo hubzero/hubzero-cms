@@ -1,131 +1,142 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
-<h3>
+<h3 class="section-header">
 	<a name="questions"></a>
-	<span><a href="/answers/question/new/?tag=<?php echo $this->filters['rawtag']; ?>" class="add"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION_ABOUT_PUBLICATION'); ?></a></span>
-	<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?> 
+	<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
 </h3>
-<?php
-if ($this->rows) {
-	\Hubzero\Document\Assets::addComponentStylesheet('com_answers');		
-	
-	/*if ($this->count > 0 && ($this->count > $this->limit)) {
-		$tag = ($this->publication->type== 7) ? 'tool'.$this->publication->alias : 'publication'.$this->publication->id;
-		$title .= ' (<a href="'.JRoute::_('index.php?option=com_answers&task=search&?tag='.$tag.'&sortby=withinplugin').'">'.JText::_('PLG_PUBLICATION_QUESTIONS_VIEW_ALL') .' '.$this->count.'</a>)';
-	} else {
-		$title .= ' ('.$this->count.')';
-	}*/
-?>
-	<ul class="questions plugin">
-<?php
-	$i=1;
-	$database = JFactory::getDBO();
+<div class="container">
+	<p class="section-options">
+		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions&action=new'); ?>"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
+	</p>
+	<table class="questions entries" summary="Questions submitted by the community">
+		<caption>
+			<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?> 
+			<span>(<?php echo ($this->rows) ? count($this->rows) : '0'; ?>)</span>
+		</caption>
+		<tbody>
+<?php if ($this->rows) { ?>
+	<?php
+		$i = 1;
 
-	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
-	$tagging = new AnswersTags( $database );
-	
-	// Check for abuse reports on an item
-	$ra = new ReportAbuse( $database );
-	
-	foreach ($this->rows as $row) 
-	{
-		// Incoming
-		$filters = array();
-		$filters['id']  = $row->id;
-		$filters['category']  = 'question';
-		$filters['state']  = 0;
-		
-		$row->reports = $ra->getCount( $filters );		
-		$row->when = JHTML::_('date.relative', $row->created);
-		$row->points = $row->points ? $row->points : 0;
-		
-		if (!$row->reports && $i<= $this->limit) {
-			$i++;	
-			$link_on = JRoute::_('index.php?option=com_answers&task=question&id='.$row->id);
+		$juser = JFactory::getUser();
 
-			$tags = $tagging->get_tag_cloud( 0, 0, $row->id );
-			
-			$alt_r = JText::sprintf('PLG_PUBLICATION_QUESTIONS_RESPONSES_TO_THIS_QUESTION', $row->rcount);
-			$alt_v = JText::sprintf('PLG_PUBLICATION_QUESTIONS_RECOMMENDATION_AS_A_GOOD_QUESTION', $row->helpful);
+		foreach ($this->rows as $row)
+		{
+			if ($i > $this->limit) 
+			{
+				break;
+			}
+
+			$row = new AnswersModelQuestion($row);
+
+			$i++;
 
 			// author name
 			$name = JText::_('PLG_PUBLICATION_QUESTIONS_ANONYMOUS');
-			if ($row->anonymous == 0) {
-				$juser = JUser::getInstance( $row->created_by );
-				if (is_object($juser)) {
-					$name = $juser->get('name');
-				} else {
+			if (!$row->get('anonymous')) 
+			{
+				$user = JUser::getInstance($row->get('created_by'));
+				if (is_object($user)) 
+				{
+					$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';
+				} 
+				else 
+				{
 					$name = JText::_('PLG_PUBLICATION_QUESTIONS_UNKNOWN');
 				}
 			}
 
-			if ($row->question != '') {
-				$fulltext = htmlspecialchars(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->question)));
-			} else {
-			 	$fulltext = stripslashes($row->subject);
-			}
-			
-			$cls  = (isset($row->reward) && $row->reward == 1 && $this->banking) ? ' hasreward' : '';
-			$cls .= ($row->state == 1) ? ' answered' : '';
-?>
-		<li class="reg<?php echo $cls; ?>">
-			<div class="ensemble_left">
-				<h4><a href="<?php echo $link_on; ?>" title="<?php echo $fulltext; ?>"><?php echo stripslashes($row->subject); ?></a></h4>
-				<p class="supplemental"><?php echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name); ?> - <?php echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_TIME_AGO',$row->when); ?></p>
-			</div>
-			<div class="ensemble_right">
-				<div class="statusupdate">
-					<p>
-						<?php echo $row->rcount; ?><span class="responses_<?php echo ($row->rcount == 0) ? 'no' : 'yes'; ?>"><a href="<?php echo $link_on; ?>#answers" title="<?php echo $alt_r; ?>">&nbsp;</a></span> 
-						<?php echo $row->helpful; ?> <span class="votes_<?php echo ($row->helpful == 0) ? 'no' : 'yes'; ?>"><a href="<?php echo $link_on; ?>?vote=1" title="<?php echo $alt_v; ?>">&nbsp;</a></span>
-					</p>
-<?php if ($row->state==1) { ?>
-					<span class="update_answered"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ANSWERED'); ?></span>
-<?php } ?>
-				</div>
-				<div class="rewardarea">
-<?php if (isset($row->reward) && $row->reward == 1 && $this->banking) { ?>
-					<p>+ <?php echo $row->points; ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_THERE_IS_A_REWARD',$row->points); ?>">&nbsp;</a></p>
-<?php } ?>
-				</div>
-			</div>
-			<div style="clear:left">&nbsp;</div>
-		</li>
-<?php 	} else if ($row->reports && $i<= $this->limit) { ?>
-		<li class="reg under_review">
-			<h4 class="review"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></h4>
-			<p class="supplemental"><?php echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name); ?> - <?php echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_TIME_AGO',$row->when); ?></p>
-		</li>
-<?php
-		}
-	}
-?>
-	</ul>
+			$cls  = ($row->get('state') == 1) ? 'answered' : '';
+			$cls  = ($row->isReported())      ? 'flagged'  : $cls;
+			$cls .= ($row->get('created_by') == $juser->get('username')) ? ' mine' : '';
+	?>
+			<tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
+				<th>
+					<span class="entry-id"><?php echo $row->get('id'); ?></span>
+				</th>
+				<td>
+				<?php if (!$row->isReported()) { ?>
+					<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a><br />
+				<?php } else { ?>
+					<span class="entry-title"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
+				<?php } ?>
+					<span class="entry-details">
+						<?php echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name); ?> <span class="entry-date-at">@</span> 
+						<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="entry-date-on">on</span> 
+						<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
+						<span class="entry-details-divider">&bull;</span>
+						<span class="entry-state">
+							<?php echo ($row->get('state') == 1) ? JText::_('Closed') : JText::_('Open'); ?>
+						</span>
+						<span class="entry-details-divider">&bull;</span>
+						<span class="entry-comments">
+							<a href="<?php echo JRoute::_($row->link() . '#answers'); ?>" title="<?php echo JText::sprintf('There are %s responses to this question.', $row->get('rcount')); ?>">
+								<?php echo $row->get('rcount'); ?>
+							</a>
+						</span>
+					</span>
+				</td>
+			<?php if ($this->banking) { ?>
+				<td class="reward">
+				<?php if ($row->get('reward') == 1 && $this->banking) { ?>
+					<span class="entry-reward"><?php echo $row->get('points'); ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)); ?>">Points</a></span>
+				<?php } ?>
+				</td>
+			<?php } ?>
+				<td class="voting">
+					<span class="vote-like">
+					<?php if ($juser->get('guest')) { ?>
+						<span class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: Please login to vote.">
+							<?php echo $row->get('helpful', 0); ?><span> Like</span>
+						</span>
+					<?php } else { ?>
+						<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
+							<?php echo $row->get('helpful', 0); ?><span> Like</span>
+						</a>
+					<?php } ?>
+					</span>
+				</td>
+			</tr>
+	<?php } ?>
 <?php } else { ?>
-	<p class="nocontent"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_NO_QUESTIONS_FOUND'); ?></p>
+			<tr class="noresults">
+				<td colspan="<?php echo ($this->banking) ? '4' : '3'; ?>">
+					<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_NO_QUESTIONS_FOUND'); ?>
+				</td>
+			</tr>
 <?php } ?>
+		</tbody>
+	</table>
+	<div class="clearfix"></div>
+</div><!-- / .container -->

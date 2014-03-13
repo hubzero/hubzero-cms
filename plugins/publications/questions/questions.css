@@ -13,295 +13,64 @@
 
 */
 
-	/*.metadata .answer { 
-		background: url("images/qanda.gif") 0 50% no-repeat;
-}*/
-	.com_resources .section h3.plugin-header {
-		display: none !important;
-		}
-	.clearfix {
-		border: 1px solid transparent;
-		}
-	.clearfix:after {
-		content: "."; 
-		display: block; 
-		height: 0; 
-		clear: left; 
-		visibility: hidden;
-		}
-/* Content blocks */
-	.container {
-		margin: 1em 0;
-		padding: 0;
-		border: 10px solid #f4f4f4;
-		background: #f4f4f4;
-		}
-/* Entries (table) */
-	.entries {
-		border: 2px solid #e9e9e9;
-		border-top: none;
-		background-color: #fff;
-		margin: 0;
-		padding: 0;
-		}
-	.entries caption {
-		font-size: 115%;
-		background: #f8f8f8 url("../../../components/com_answers/images/light-stripes.png");
-		border: 2px solid #e9e9e9;
-		border-bottom: 1px solid #e9e9e9;
-		margin-right: -2px; /* Fix 2px issue */
-		}
-	.container-block h4 span,
-	.entries caption span {
-		color: #aaa;
-		}
-	.entries caption a {
-		float: right;
-		font-size: 85%;
-		}
-	.entries thead th {
-		text-align: left;
-		background-color: #f9d800;
-		}
-	.entries tbody td {
-		text-align: left;
-		border: none;
-		border-bottom: 1px solid #eee;
-		padding: 10px;
-		}
-	.entries tbody th {
-		width: 5px;
-		text-align: center;
-		border: none;
-		border-bottom: 1px solid #eee;
-		}
-	.entry-details {
-		font-size: 85%;
-		color: #999;
-		}
-	.entry-details a {
-		color: #666;
-		border-bottom: 1px dotted #999;
-		}
-	.entry-details a:hover {
-		color: #ff6600;
-		border-bottom: 1px solid #ff6600;
-		}
-	.entry-details-divider {
-		/*color: #666;*/
-		margin-left: 0.5em;
-		margin-right: 0.5em;
-		}
+
+	.metadata p.answer:before { 
+		content: "\f086";
+	}
+	.subject #hubForm.full fieldset {
+		padding-left: 0;
+	}
+	.section-options {
+		text-align: right;
+	}
+
+/* Entries */
 	.entry-state {
 		text-transform: uppercase;
-		}
+	}
 	.entry-comments {
 		padding-right: 16px;
-		background: url("../../../components/com_answers/images/bullets_small.png") no-repeat right -428px;
-		}
+		background: url("/components/com_answers/assets/img/bullets_small.png") no-repeat right -428px;
+	}
 	.entries .reward {
 		text-align: right;
-		}
-		
+	}
+	
 	.entries .entry-id {
 		display: none;
-		}
+	}
 	.questions tbody th {
-		background: url("../../../components/com_answers/images/question.png") right 15px no-repeat;
-		}
+		background: url("/components/com_answers/assets/img/question.png") right 15px no-repeat;
+	}
 	.questions tbody tr.answered th {
-		background: url("../../../components/com_answers/images/question_answered.png") right 15px no-repeat;
-		}
+		background: url("/components/com_answers/assets/img/question_answered.png") right 15px no-repeat;
+	}
 	.questions tbody tr.flagged th {
-		background: url("../../../components/com_answers/images/question_answered.png") right 15px no-repeat;
-		}
+		background: url("/components/com_answers/assets/img/question_answered.png") right 15px no-repeat;
+	}
 	.questions tbody tr.answered {
-		background: #fcf9ff url("../../../components/com_answers/images/light-stripes.png");
-		}
+		background: #fcf9ff url("/components/com_answers/assets/img/light-stripes.png");
+	}
 	.questions tbody tr.mine {
-		background: #ffe url("../../../components/com_answers/images/light-stripes.png");
-		}
+		background: #ffe url("/components/com_answers/assets/img/light-stripes.png");
+	}
 	.questions tbody tr.flagged {
-		background: #FFF2EF url("../../../components/com_answers/images/light-stripes.png");
-		}
-	.entries tbody td.voting,
-	.voting {
-		text-align: right;
-		white-space: nowrap;
-		}
-	p.voting {
-		float: right;
-		min-width: 10em;
-		margin: 0.7em 0 0.7em 0;
-		padding: 0;
-		}
+		background: #FFF2EF url("/components/com_answers/assets/img/light-stripes.png");
+	}
+
 	.container-block .entry-details {
 		padding: 0.7em 0 0.7em 0;
-		}
+	}
 	.entry-popularity {
 		display: none;
-		}
-/* Voting */
-	.vote-button {
-		display: inline-block;
-		zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
-		*display: inline;
-		vertical-align: baseline;
-		margin: 0 2px;
-		outline: none;
-		cursor: pointer;
-		text-align: center;
-		text-decoration: none;
-		font: 11px/100% Arial, Helvetica, sans-serif;
-		padding: 0.2em 0.75em 0.275em 0.75em;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		-webkit-border-radius: .5em; 
-		-moz-border-radius: .5em;
-		border-radius: .5em;
-		opacity: 0.8;
-		}
-	.chosen .vote-button,
-	.vote-button:hover {
-		text-decoration: none;
-		opacity: 1;
-		}
-	.vote-button:active {
-		position: relative;
-		top: 1px;
-		opacity: 1;
-		}
-	.vote-like,
-	.vote-dislike {
-		margin: 0;
-		padding: 0;
-		}
-	.vote-like .vote-button {
-		margin-right: 0;
-		/*-moz-border-radius-bottomright: 0;
-		-moz-border-radius-topright: 0;
-		-webkit-border-bottom-right-radius: 0;
-		-webkit-border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		border-top-right-radius: 0;*/
-		}
-	.vote-dislike .vote-button {
-		margin-left: -5px;
-		-moz-border-radius-bottomleft: 0;
-		-moz-border-radius-topleft: 0;
-		-webkit-border-bottom-left-radius: 0;
-		-webkit-border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-		border-top-left-radius: 0;
-		}
-	/* neutral (gray base colors) */
-	.vote-button,
-	a.vote-button {
-		color: #aaa;
-		border: solid 1px #b7b7b7;
-		background: #fff;
-		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
-		background: -moz-linear-gradient(top,  #fff,  #ededed);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
-		}
-	.vote-button:hover,
-	a.vote-button:hover {
-		color: #606060;
-		border: solid 1px #b7b7b7;
-		background: #ededed;
-		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
-		background: -moz-linear-gradient(top,  #fff,  #dcdcdc);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
-		}
-	.vote-button:active,
-	a.vote-button:active {
-		border: solid 1px #b7b7b7;
-		color: #999;
-		background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
-		background: -moz-linear-gradient(top,  #ededed,  #fff);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
-		}
-	/* dislike (rose) */
-	.chosen .dislike,
-	.voting:hover a.dislike,
-	.entries tr:hover a.dislike {
-		color: #fae7e9;
-		border: solid 1px #b73948;
-		background: #da5867;
-		background: -webkit-gradient(linear, left top, left bottom, from(#f16c7c), to(#bf404f));
-		background: -moz-linear-gradient(top,  #f16c7c,  #bf404f);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f16c7c', endColorstr='#bf404f');
-		}
-	.chosen .dislike:hover,
-	.voting:hover a.dislike:hover,
-	.entries tr:hover a.dislike:hover {
-		border: solid 1px #b73948;
-		background: #ba4b58;
-		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
-		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
-		}
-	.chosen .dislike:active,
-	.voting:hover a.dislike:active,
-	.entries tr:hover a.dislike:active {
-		border: solid 1px #b73948;
-		color: #dca4ab;
-		background: -webkit-gradient(linear, left top, left bottom, from(#bf404f), to(#f16c7c));
-		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
-		}
-	/* like (green) */
-	.chosen .like,
-	.voting:hover a.like,
-	.entries tr:hover a.like {
-		color: #e8f0de;
-		border: solid 1px #538312;
-		background: #64991e;
-		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
-		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
-		}
-	.chosen .like:hover,
-	.voting:hover a.like:hover,
-	.entries tr:hover a.like:hover {
-		border: solid 1px #538312;
-		background: #538018;
-		background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
-		background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
-		}
-	.chosen .like:active,
-	.voting:hover a.like:active,
-	.entries tr:hover a.like:active {
-		border: solid 1px #538312;
-		color: #a9c08c;
-		background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
-		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
-		}
-	/* thumbs up/down image */
-	.vote-button span {
-		display: inline-block;
-		width: 14px;
-		height: 14px;
-		overflow: hidden;
-		text-indent: -55em;
-		padding: 0;
-		margin: 0 0 0 3px;
-		}
-	.vote-like .neutral span,
-	.like span {
-		background: url("../../../components/com_answers/images/thumbs.png") 0 0 no-repeat;
-		}
-	.vote-dislike .neutral span,
-	.dislike span {
-		background: url("../../../components/com_answers/images/thumbs.png") 0 -14px no-repeat;
-		}
+	}
+
 /* Rewards */
 	.entry-reward {
 		white-space: nowrap;
 		color: #999;
 		font-size: 85%;
-		}
+	}
 	.entry-reward a {
 		background: url("images/coin.gif") 0 0 no-repeat;
 		width: 16px;
@@ -309,9 +78,7 @@
 		display: inline-block;
 		overflow: hidden;
 		text-indent: 55em;
-		}
-		
-/* IE 7 hacks */
+	}
 
-/* IE 6 hacks */
+/* IE 7 hacks */
 
