@@ -2671,7 +2671,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 					}
 
 					// average values
-					$imp = ($votesplit && $divisor) ? $imp/$divisor: $imp/$num;
+					$imp = ($votesplit && $divisor) ? $imp/$divisor : ($num ? $imp/$num : 0);
 					$eff = ($num - $skipped) != 0 ? $eff/($num - $skipped) : 0;
 					$weight_i = ($num - $skipped) != 0 ? $weight_i : 7;
 
