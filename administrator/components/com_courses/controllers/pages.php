@@ -209,6 +209,8 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			}
 		}
 
+		$this->view->notifications = $this->getComponentMessage();
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -234,7 +236,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// load the request vars
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// instatiate course page object for saving
 		$row = new CoursesTablePage($this->database);
