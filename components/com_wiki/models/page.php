@@ -1038,9 +1038,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 		// Remove files
 		jimport('joomla.filesystem.folder');
 		$path = JPATH_ROOT . DS . trim($this->config('filepath', '/site/wiki'), DS);
-		if (!JFolder::delete($path . DS . $this->get('id'))) 
+		if (is_dir($path . DS . $this->get('id')))
 		{
-			$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
+			if (!JFolder::delete($path . DS . $this->get('id'))) 
+			{
+				$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
+			}
 		}
 
 		// Remove record from the database
