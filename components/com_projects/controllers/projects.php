@@ -2748,10 +2748,12 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$view->guest 		= $this->juser->get('guest');
 		$view->stats		= $obj->getStats($period, $admin, $this->config, $testProjects, $this->_publishing);
 		$view->publishing	= $this->_publishing;
+		
 		if ($this->getError()) 
 		{
 			$view->setError( $this->getError() );
 		}
+		
 		$view->msg = isset($this->_msg) ? $this->_msg : '';
 		$view->display();
 		return;		
