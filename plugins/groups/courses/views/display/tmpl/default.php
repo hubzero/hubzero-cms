@@ -71,7 +71,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				foreach ($this->results as $course)
 				{
 			?>
-					<tr class="course<?php echo ($cls) ? ' ' . $cls : ''; ?>">
+					<tr class="course">
 						<th>
 							<span class="entry-id"><?php echo $course->get('id'); ?></span>
 						</th>
