@@ -223,7 +223,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 			break;
 		}
 
-		$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
+		$pdt = strftime('Y', $dt) . '-' . strftime('m', $dt) . '-' . strftime('d', $dt) . ' 00:00:00';
 		$today = JFactory::getDate()->toSql();
 
 		if ($this->param('close_comments') != 'now' && $today < $pdt)
