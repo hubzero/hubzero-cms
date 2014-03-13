@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 		$comment  = $this->comment->content('parsed');
 	}
 
-	$this->comment->set('category', 'kb');
+	//$this->comment->set('category', 'kb');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
@@ -139,7 +139,7 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_KB_ENTER_COMMENTS'); ?></span>
 							<?php
-							echo JFactory::getEditor()->display('comment[comment]', '', '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
+							echo JFactory::getEditor()->display('comment[content]', '', '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 

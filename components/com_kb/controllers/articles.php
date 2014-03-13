@@ -431,7 +431,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		if (!$row->vote($vote, $this->juser->get('id'))) 
 		{
 			$this->setError($row->getError());
-			return;
 		}
 
 		if (JRequest::getInt('no_html', 0)) 
@@ -504,7 +503,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		}
 
 		$this->setRedirect(
-			$row->link() . '#comments'
+			JRoute::_($row->link() . '#comments')
 		);
 	}
 

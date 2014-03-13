@@ -340,6 +340,14 @@ class KbModelComment extends \Hubzero\Base\Model
 			$this->_base = 'index.php?option=com_kb';
 		}
 		$link  = $this->_base;
+		if (!$this->get('section'))
+		{
+			$article = KbModelArticle::getInstance($this->get('entry_id'));
+
+			$this->set('section', $article->get('calias'));
+			$this->set('category', $article->get('ccalias'));
+			$this->set('article', $article->get('alias'));
+		}
 		$link .= '&section=' . $this->get('section');
 		$link .= ($this->get('category')) ? '&category= '. $this->get('category') : '';
 		$link .= '&alias=' . $this->get('article');

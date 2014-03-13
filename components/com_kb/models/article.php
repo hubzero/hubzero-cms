@@ -143,6 +143,20 @@ class KbModelArticle extends \Hubzero\Base\Model
 			}
 		}
 
+		if (!$this->get('calias'))
+		{
+			$section = KbModelCategory::getInstance($this->get('section'));
+
+			$this->set('calias', $section->get('alias'));
+
+			if ($this->get('category'))
+			{
+				$category = KbModelCategory::getInstance($this->get('category'));
+
+				$this->set('ccalias', $section->get('alias'));
+			}
+		}
+
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{

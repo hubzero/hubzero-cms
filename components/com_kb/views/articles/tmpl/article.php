@@ -128,11 +128,7 @@ defined('_JEXEC') or die('Restricted access');
 	</h3>
 
 	<div class="aside">
-	<?php if ($this->article->commentsOpen()) { ?>
-		<p>
-			<a class="icon-add add btn" href="#post-comment"><?php echo JText::_('COM_KB_ADD_COMMENT'); ?></a>
-		</p>
-	<?php } ?>
+
 	</div>
 	<div class="subject">
 		<?php
