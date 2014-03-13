@@ -33,6 +33,7 @@ namespace Hubzero\Base;
 use SeekableIterator;
 use Countable;
 use ArrayAccess;
+use Closure;
 
 /**
  * Iterator class
@@ -44,21 +45,21 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * 
 	 * @var array
 	 */
-	private $_pos = 0;
+	protected $_pos = 0;
 
 	/**
 	 * Current array count
 	 * 
 	 * @var array
 	 */
-	private $_total = 0;
+	protected $_total = 0;
 
 	/**
 	 * Container for data
 	 * 
 	 * @var array
 	 */
-	private $_data = array();
+	protected $_data = array();
 
 	/**
 	 * Constructor
@@ -314,34 +315,21 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 		unset($this->_data[$offset]);
 		$this->_total = count($this->_data);
 	}
-	
+
 	/**
-	 * Fetch Item with key equal to value
-	 *
-	 * @param  $key    Object Key
-	 * @param  $value  Object Value
-	 * @return mixed 
+	 * Run a map over each of the items
+	 * 
+	 * @param  Closure  $callback
+	 * @return array
 	 */
-	public function fetch($key, $value)
+	public function map(Closure $callback)
 	{
-		foreach ($this->_data as $data)
-		{
-			if ($data->get($key) == $value)
-			{
-				return $data;
-			}
-		}
-		return null;
+		return (array_map($callback, $this->_data));
 	}
 
-	public function lists($key, $default = null)
+	public function merge()
 	{
-		$results = array();
-		foreach ($this->_data as $data)
-		{
-			array_push($results, $data->get($key));
-		}
-		return $results;
+
 	}
 }
 
