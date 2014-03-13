@@ -132,6 +132,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$alt = JText::_('COM_WISHLIST_TRASHED');
 		break;
 		case 0:
+		default;
 			$class = 'unpublish';
 			$task = 'publish';
 			$alt = JText::_('COM_WISHLIST_UNPUBLISHED');
