@@ -136,6 +136,10 @@ Class CoursesTablePage extends JTable
 			return false;
 		}
 
+		$this->course_id = intval($this->course_id);
+		$this->offering_id = intval($this->offering_id);
+		$this->section_id = intval($this->section_id);
+
 		if (!$this->url)
 		{
 			$this->url = strtolower(str_replace(' ', '_', trim($this->title)));
@@ -144,6 +148,19 @@ Class CoursesTablePage extends JTable
 
 		if (!$this->id)
 		{
+			$sql = "SELECT id FROM $this->_tbl 
+					WHERE course_id=" . $this->_db->Quote($this->course_id) . " 
+					AND offering_id=" . $this->_db->Quote($this->offering_id) . " 
+					AND section_id=" . $this->_db->Quote($this->section_id) . " 
+					AND url=" . $this->_db->Quote($this->url) . " 
+					LIMIT 1";
+			$this->_db->setQuery($sql);
+			if ($this->_db->loadResult())
+			{
+				$this->setError(JText::sprintf('A page with the alias "%s" already exist.', $this->url));
+				return false;
+			}
+
 			$high = $this->getHighestPageOrder($this->course_id, $this->offering_id);
 			$this->ordering = ($high + 1);
 			$this->active = 1;

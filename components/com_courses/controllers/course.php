@@ -771,7 +771,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		{
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_($course->link()),
+				JRoute::_($course->link() . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
 				$model->getError(),
 				'error'
 			);
@@ -782,7 +782,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		{
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_($course->link()),
+				JRoute::_($course->link() . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
 				$model->getError(),
 				'error'
 			);
