@@ -1379,7 +1379,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$encryptor = new \Hubzero\Mail\Token();
 				// The reply-to address contains the token 
 				$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
-				$from['replytoemail'] = 'htc-' . $token;
+				$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 			}
 
 			if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
