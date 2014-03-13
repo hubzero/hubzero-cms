@@ -828,6 +828,8 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		$model = $this->course->page(JRequest::getVar('active', ''));
 
+		$msg = null;
+
 		if ($model->exists())
 		{
 			$model->set('active', 0);
