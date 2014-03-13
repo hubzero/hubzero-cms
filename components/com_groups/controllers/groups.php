@@ -862,6 +862,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// Get the logo
+		$logo = '';
 		if (isset($customization['logo']))
 		{
 			$logo_parts = explode("/",$customization['logo']);
@@ -887,7 +888,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$group->set('discoverability', $g_discoverability);
 			$group->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
 			$group->set('logo', $logo);
-			$ggroup->set('plugins', $plugin_access);
+			$group->set('plugins', $plugin_access);
 			
 			$this->lid = $lid;
 			$this->group = $group;
@@ -941,6 +942,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$gt->tag_object($this->juser->get('id'), $group->get('gidNumber'), $tags, 1, 1);
 
 		// Rename the temporary upload directory if it exist
+		$log_comments = '';
+
 		if ($this->_task == 'new') 
 		{
 			if ($lid != $group->get('gidNumber')) 
@@ -970,7 +973,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		else 
 		{
 			$log_action   = 'group_edited';
-			$log_comments = '';
 		}
 
 		// log invites
