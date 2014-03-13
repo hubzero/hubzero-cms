@@ -94,11 +94,32 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							<span class="entry-details">
 								Instructors: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span>
 							</span>
+							<span class="entry-content">
+								<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
+							</span>
+						</td>
+						<td>
 						<?php
 							}
 						?>
-							<span class="entry-content">
-								<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
+							<span class="<?php 
+							switch ($course->get('state')) 
+							{
+								case 3: echo 'draft'; break;
+								case 2: echo 'trashed'; break;
+								case 1: echo 'published'; break;
+								case 0: echo 'unpublished'; break;
+							} 
+							?> entry-state">
+							<?php 
+							switch ($course->get('state')) 
+							{
+								case 3: echo JText::_('PLG_GROUPS_COURSES_STATE_DRAFT'); break;
+								case 2: echo JText::_('PLG_GROUPS_COURSES_STATE_DELETED'); break;
+								case 1: echo JText::_('PLG_GROUPS_COURSES_STATE_PUBLISHED'); break;
+								case 0: echo JText::_('PLG_GROUPS_COURSES_STATE_UNPUBLISHED'); break;
+							} 
+							?>
 							</span>
 						</td>
 					</tr>
@@ -128,11 +149,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <?php } else { ?>
 	<div id="courses-introduction">
 		<div class="instructions">
-			<ol>
-				<li><?php echo JText::sprintf('PLG_GROUPS_COURSES_BUILD', JRoute::_('index.php?option=com_courses')); ?></li>
-				<li><?php echo JText::_('PLG_GROUPS_COURSES_PUBLISH'); ?></li>
-				<li><?php echo JText::_('PLG_GROUPS_COURSES_TEACH'); ?></li>
-			</ol>
+			<p><?php echo JText::_('PLG_GROUPS_COURSES_NONE'); ?></p>
 		</div><!-- / .instructions -->
 		<div class="questions">
 			<p><strong><?php echo JText::_('PLG_GROUPS_COURSES_WHAT_ARE_COURSES'); ?></strong></p>
