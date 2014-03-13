@@ -175,17 +175,14 @@ $row = &$this->rows[$i];
 				<td>
 <?php
 	$now = JFactory::getDate()->toSql();
+	$alt = JText::_('Unpublished');
 	if ($now <= $row->publish_up && $row->state == "1") {
-		$img = 'publish_y.png';
 		$alt = JText::_('Pending');
 	} else if (($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
-		$img = 'publish_g.png';
 		$alt = JText::_('Published');
 	} else if ($now > $row->publish_down && $row->state == "1") {
-		$img = 'publish_r.png';
 		$alt = JText::_('Expired');
 	} elseif ($row->state == "0") {
-		$img = 'publish_x.png';
 		$alt = JText::_('Unpublished');
 	}
 
@@ -210,7 +207,7 @@ $row = &$this->rows[$i];
 	if ($times) { 
 ?>
 					<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
-						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
+						<span><?php echo $alt; ?></span>
 					</a>
 <?php } ?>
 				</td>
