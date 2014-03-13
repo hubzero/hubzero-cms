@@ -81,14 +81,17 @@ class plgSupportComments extends JPlugin
 							$rows[$key]->href = JRoute::_('index.php?option=com_citations&task=view&id=' . $parent . '&area=reviews');
 						break;
 
+						case 'review':
 						case 'reviewcomment':
 							$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $parent . '&active=reviews');
 						break;
 
+						case 'answer':
 						case 'answercomment':
 							$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $parent);
 						break;
 
+						case 'wish':
 						case 'wishcomment':
 							$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
 						break;

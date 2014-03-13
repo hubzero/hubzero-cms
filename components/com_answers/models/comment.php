@@ -81,6 +81,28 @@ class AnswersModelComment extends AnswersModelAbstract
 	private $_base = null;
 
 	/**
+	 * Was the entry reported?
+	 * 
+	 * @return     boolean True if reported, False if not
+	 */
+	public function isReported()
+	{
+		if ($this->get('reports', -1) > 0)
+		{
+			return true;
+		}
+		// Reports hasn't been set
+		if ($this->get('reports', -1) == -1) 
+		{
+			if ($this->get('state') == 3)
+			{
+				$this->set('reports', 1);
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Get a list or count of comments
 	 * 
 	 * @param      string  $rtrn    Data format to return
