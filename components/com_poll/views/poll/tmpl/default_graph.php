@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</div>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($vote->text)); ?>
+					<?php echo stripslashes($vote->text); ?>
 				</td>
 				<td class="votes">
 					<?php echo $this->escape($vote->hits); ?>
