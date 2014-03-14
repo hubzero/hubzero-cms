@@ -117,7 +117,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 				$ra = new ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
 					'id'       => $this->get('id'), 
-					'category' => 'review'
+					'category' => 'pubreview'
 				));
 				$this->set('reports', $val);
 				if ($this->get('reports') > 0)
