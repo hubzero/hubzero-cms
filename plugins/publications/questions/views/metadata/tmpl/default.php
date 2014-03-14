@@ -48,10 +48,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		?>
 	</a>
-
-	<?php if ($this->publication->cat_alias == 'tool') : ?>
-		(<a href="/answers/question/new/?tag=tool:<?php echo $this->publication->alias; ?>"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
-	<?php else : ?>
-		(<a href="/answers/question/new/?tag=publication:<?php echo $this->publication->id; ?>"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
-	<?php endif; ?>
+	(<a href="/publications/<?php echo $this->publication->id; ?>/questions/?action=new"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 </p>
