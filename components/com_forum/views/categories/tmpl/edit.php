@@ -83,7 +83,6 @@ $juser = JFactory::getUser();
 				<label for="field-description">
 					<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>
 					<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description'))); ?></textarea>
-					<span class="hint"><?php echo JText::_('COM_FORUM_CATEGORY_WIKI_HINT'); ?></span>
 				</label>
 			</fieldset>
 			<div class="clear"></div>
