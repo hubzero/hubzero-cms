@@ -71,7 +71,7 @@ class plgSupportPublications extends JPlugin
 
 		if ($category == 'pubreview') 
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.user_id as author, 
+			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.created_by as author, 
 						NULL as subject, 'pubreview' as parent_category, rr.anonymous as anon 
 						FROM #__publication_ratings AS rr 
 						WHERE rr.id=" . $refid;
