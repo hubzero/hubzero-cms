@@ -135,7 +135,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 				return $this->_events_count;
 			case 'list':
 			default:
-				if (!($this->_events instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_events instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					$tbl = new EventsEvent($this->_db);
 					if ($results = $tbl->find( $filters ))
@@ -145,7 +145,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 							$results[$key] = new EventsModelEvent($result);
 						}
 					}
-					$this->_events = new \Hubzero\Base\ItemList($results);
+					$this->_events = new \Hubzero\Base\Model\ItemList($results);
 				}
 				return $this->_events;
 			break;
