@@ -506,7 +506,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$objP->load($id);
 				
 		// If publication not found, raise error
-		if(!$pub) {
+		if (!$pub) 
+		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
@@ -529,6 +530,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				
 		// Checkin resource
 		$objP->checkin();
+		
+		// Get pub project
+		$project = new Project($this->database);
+		$project->load($pub->project_id);
 		
 		// Incoming updates
 		$title 			= trim(JRequest::getVar( 'title', '', 'post' )); 
@@ -569,7 +574,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				{
 					foreach ($fields as $f) 
 					{
-						if ($f[0] == $tagname && end($f) == 1) {
+						if ($f[0] == $tagname && end($f) == 1) 
+						{
 							echo PublicationsHtml::alert(JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
 							exit();
 						}
@@ -674,7 +680,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						else 
 						{
 							// Update DOI with latest information
-							if(!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
+							if (!PublicationUtilities::updateDoi($row->doi, $row, 
+								$authors, $this->config, $metadata, $doierr))
 							{
 								$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
 							}						
@@ -722,11 +729,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			.JText::_('COM_PUBLICATIONS_OF').' '.strtolower(JText::_('publication')).' "'
 			.$pubtitle.'" ';
 			
+			// Build return url
+			$link 	= '/projects/' . $project->alias . '/publications/' 
+					. $id . '/?version=' . $row->version_number;
+			
 			if ($action != 'message' && !$this->getError()) 
 			{
 				$aid = $objAA->recordActivity( $pub->project_id, $this->juser->get('id'), 
-					$activity, $id, $pubtitle, JRoute::_('index.php?option=' . $this->_option 
-					 . '&id='.$id).'/?v='.$row->version_number, 'publication', 0, $admin = 1 );
+					$activity, $id, $pubtitle, $link, 'publication', 0, $admin = 1 );
 				$sendmail = $this->config->get('email') ? 1 : 0;
 				
 				// Append comment to activity
@@ -749,11 +759,15 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					$objC->store();
 					
 					// Get new entry ID
-					if (!$objC->id) {
+					if (!$objC->id) 
+					{
 						$objC->checkin();
 					}
+					
 					$objAA = new ProjectActivity ( $this->database );
-					if ( $objC->id ) {
+					
+					if ( $objC->id ) 
+					{
 						$what = JText::_('COM_PROJECTS_AN_ACTIVITY');
 						$curl = '#tr_'.$aid; // same-page link
 						$caid = $objAA->recordActivity( $pub->project_id, $this->juser->get('id'),
@@ -761,7 +775,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 							. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1 );
 						
 						// Store activity ID
-						if($caid) {
+						if ($caid) 
+						{
 							$objC->activityid = $aid;
 							$objC->store();
 						}
@@ -808,11 +823,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Send email
 		if ($sendmail && !$this->getError()) 
-		{
-			// Get pub project
-			$project = new Project($this->database);
-			$project->load($objP->project_id);
-			
+		{			
 			$this->_emailContributors($row, $project, $subject, $message, $notify, $action);	
 		}
 		
