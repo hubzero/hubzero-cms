@@ -151,6 +151,14 @@ class plgSupportAnswers extends JPlugin
 				}
 			}
 		}*/
+		if ($category == 'answercomment') 
+		{
+			$database->setQuery("SELECT item_id FROM `#__item_comments` WHERE id=" . $refid);
+			$response = $database->loadResult();
+
+			$database->setQuery("SELECT question_id FROM `#__answers_responses` WHERE id=" . $response);
+			return $database->loadResult();
+		}
 
 		if ($category == 'answer') 
 		{
