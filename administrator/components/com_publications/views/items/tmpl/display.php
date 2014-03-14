@@ -154,7 +154,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->version_label; ?>
 				</td>
 				<td>
-					<span class="<?php echo $class; ?>"></span>
+					<span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
 				</td>
 				<td>
 					<a href="index.php?option=com_projects&amp;task=edit&amp;id[]=<?php echo $row->project_id; ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
