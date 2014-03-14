@@ -395,7 +395,7 @@ function submitbutton(pressbutton)
 	</div>
 		<input type="hidden" name="id" value="<?php echo $this->obj->id; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="task" value="save" />
+		<input type="hidden" name="task" value="apply" />
 
 		<div class="clr"></div>
 		<?php echo JHTML::_( 'form.token' ); ?>		

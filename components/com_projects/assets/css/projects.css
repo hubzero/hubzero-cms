@@ -217,6 +217,7 @@
 	
 	.btn-submit a {
 		border: none;
+		color: black;
 	}
 		
 /* Left-menu layout
@@ -3024,11 +3025,6 @@
 	
 /* Back-end 
 --------------------------------------------- */
-	#system-message .message {
-		background: none;
-		width: auto;
-		padding: 0;
-	}
 	.editform td.key {
 		padding-left: 1em;
 		width: 20%;
