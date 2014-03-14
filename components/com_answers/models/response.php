@@ -157,6 +157,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 						foreach ($results as $key => $result)
 						{
 							$results[$key] = new AnswersModelComment($result);
+							$results[$key]->set('question_id', $this->get('question_id'));
 						}
 					}
 					else

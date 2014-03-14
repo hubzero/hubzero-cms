@@ -174,6 +174,7 @@ class AnswersModelComment extends AnswersModelAbstract
 						foreach ($results as $key => $result)
 						{
 							$results[$key] = new AnswersModelComment($result);
+							$results[$key]->set('question_id', $this->get('question_id'));
 						}
 					}
 					else
@@ -261,6 +262,12 @@ class AnswersModelComment extends AnswersModelAbstract
 	{
 		if (!isset($this->_base))
 		{
+			if (!$this->get('question_id'))
+			{
+				$answer = AnswersModelResponse::getInstance($this->get('item_id'));
+
+				$this->set('question_id', $answer->get('question_id'));
+			}
 			$this->_base = 'index.php?option=com_answers&task=question&id=' . $this->get('question_id');
 		}
 		$link = $this->_base;
