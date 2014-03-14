@@ -41,14 +41,11 @@ if ($this->page->get('id')) {
 	$lid = JRequest::getInt( 'lid', $num, 'post' );
 }
 
-// get templates
-//$templates = $this->book->templates();
-
 // Incoming
 $scope   = JRequest::getVar('scope', '');
 $tool 	 = JRequest::getVar( 'tool', '', 'request', 'object' );	
 $project = JRequest::getVar( 'project', '', 'request', 'object' );
-$canDelete = JRequest::getVar('candelete', 0);	
+$canDelete = JRequest::getVar('candelete', 0);
 
 ?>
 <div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
@@ -68,7 +65,6 @@ if ($this->page->get('id')) {
 	$view->controller = $this->controller;
 	$view->page   = $this->page;
 	$view->task   = $this->task;
-	//$view->config = $this->config;
 	$view->sub    = $this->sub;
 	$view->display();
 } 
@@ -110,93 +106,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->get('pagename')); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
 	<fieldset>
-		<?php //if ($templates) { ?>
-		<div class="group">
 
-		<label for="templates">
-			<?php echo JText::_('Template'); ?>:
-			<select name="tplate" id="templates">
-				<option value="tc"><?php echo JText::_('Select a template...'); ?></option>
-<?php
-/*$hi = array();
-
-if ($templates) {
-	$database = JFactory::getDBO();
-	$temprev = new WikiTableRevision($database);
-
-	foreach ($templates as $template)
-	{
-		$temprev->loadByVersion($template->id);
-
-		//$temprev->pagetext = str_replace('"','&quot;', $temprev->pagetext);
-		//$temprev->pagetext = str_replace('&quote;','&quot;', $temprev->pagetext);
-
-		$tplt = new WikiTablePage($database);
-		$tplt->id = $template->id;
-		
-		$tmpltags = $tplt->getTags();
-		if (count($tmpltags) > 0) {
-			$tagarray = array();
-			foreach ($tmpltags as $tag)
-			{
-				$tagarray[] = $tag['raw_tag'];
-			}
-			if (strtolower($this->tplate) == strtolower($template->pagename)) {
-				$this->tags = implode(', ', $tagarray);
-			}
-			$tmpltags = $tagarray;
-		}
-		$tmpltags = implode(', ', $tmpltags);
-
-		echo "\t".'<option value="t'.$template->id.'"';
-		if (strtolower($this->tplate) == strtolower($template->pagename)
-		 || strtolower($this->tplate) == 't' . $template->id) {
-			echo ' selected="selected"';
-			if (!$this->page->id) {
-				$this->revision->pagetext = stripslashes($temprev->pagetext);
-			}
-		}
-		echo '>'.$this->escape(stripslashes($template->pagename)).'</option>'."\n";
-
-		$j  = '<input type="hidden" name="t'.$template->id.'" id="t'.$template->id.'" value="'.$this->escape(stripslashes($temprev->pagetext)).'" />'."\n";
-		$j .= '<input type="hidden" name="t'.$template->id.'_tags" id="t'.$template->id.'_tags" value="'.$this->escape(stripslashes($tmpltags)).'" />'."\n";
-
-		$hi[] = $j;
-	}
-}*/
-					$hi = array();
-
-					foreach ($this->book->templates('list', array(), true) as $template)
-					{
-						$tmpltags = $template->tags('string');
-						if (strtolower($this->tplate) == strtolower($template->get('pagename'))) 
-						{
-							$tags = $tmpltags;
-						}
-
-						echo "\t".'<option value="t'.$template->get('id').'"';
-						if (strtolower($this->tplate) == strtolower($template->get('pagename'))
-						 || strtolower($this->tplate) == 't' . $template->get('id')) 
-						{
-							echo ' selected="selected"';
-							if (!$this->page->exists()) 
-							{
-								$this->revision->set('pagetext', stripslashes($template->revision()->get('pagetext')));
-							}
-						}
-						echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>'."\n";
-
-						$j  = '<input type="hidden" name="t'.$template->get('id').'" id="t'.$template->get('id').'" value="'.$this->escape(stripslashes($template->revision()->get('pagetext'))).'" />'."\n";
-						$j .= '<input type="hidden" name="t'.$template->get('id').'_tags" id="t'.$template->get('id').'_tags" value="'.$this->escape(stripslashes($tmpltags)).'" />'."\n";
-
-						$hi[] = $j;
-					}
-?>			</select>
-			<?php echo implode("\n", $hi); ?>
-		</label>
-		</div>
-	<?php //} ?>
-		
 	<?php if ($this->page->access('edit')) { ?>
 		<label for="title">
 			<?php echo JText::_('COM_WIKI_FIELD_TITLE'); ?>:

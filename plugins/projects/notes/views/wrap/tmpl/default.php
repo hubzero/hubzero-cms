@@ -180,24 +180,6 @@ $parentScope = $this->scope . DS . $this->pagename;
 			<?php } ?>
 			</ul>
 		</div>
-		<?php /* if(count($notes) > 1) { ?>
-		<p class="rightfloat reorder"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=reorder'; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_NOTES_REORDER'); ?></a></p>
-		<?php } */ ?>
-		<?php 
-		if ($this->templates && !$toolOpt) { ?>
-		 <div class="sidebox">
-			<h4><?php echo ucfirst(JText::_('COM_PROJECTS_NOTES_TEMPLATES')); ?></h4>
-			<ul>	
-		<?php
-			foreach ($this->templates as $template)
-			{
-		?>
-			<li <?php if($template->pagename == $this->pagename) { echo 'class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$template->scope.'&pagename='.$template->pagename); ?>" class="wikitemplate"><?php echo stripslashes($template->pagename); ?></a></li>
-		<?php } ?>
-			<li  class="addnew"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new&pagename=Template:New'; ?>"><?php echo JText::_('COM_PROJECTS_NOTES_ABOUT_TEMPLATES_START'); ?></a></li>
-			 </ul>
-		 </div>
-		<?php } ?>
 	</div>
 	<?php } ?>
 	<?php if ($side) { ?>
