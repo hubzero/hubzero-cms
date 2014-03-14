@@ -92,4 +92,30 @@ class plgSupportKb extends JPlugin
 		}
 		return $rows;
 	}
+
+	/**
+	 * Retrieves a row from the database
+	 * 
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @param      string $message  If the element has a parent element
+	 * @return     array
+	 */
+	public function deleteReportedItem($refid, $parent, $category, $message)
+	{
+		if ($category != 'kb') 
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
+
+		$comment = new KbModelComment($refid);
+		$comment->set('state', 3);
+
+		$comment->store(false);
+
+		return '';
+	}
 }

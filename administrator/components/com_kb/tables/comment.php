@@ -100,6 +100,13 @@ class KbTableComment extends JTable
 	var $nothelpful = NULL;
 
 	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $state = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -148,6 +155,7 @@ class KbTableComment extends JTable
 		$this->helpful    = intval($this->helpful);
 		$this->nothelpful = intval($this->nothelpful);
 		$this->anonymous  = intval($this->anonymous);
+		$this->state      = intval($this->state);
 
 		return true;
 	}
@@ -203,7 +211,7 @@ class KbTableComment extends JTable
 		{
 			$sql = "SELECT c.* FROM $this->_tbl AS c ";
 		}
-		$sql .= "WHERE c.entry_id=" . $this->_db->Quote($entry_id) . " AND c.parent=" . $this->_db->Quote($parent) . " ORDER BY created ASC";
+		$sql .= "WHERE c.entry_id=" . $this->_db->Quote($entry_id) . " AND c.parent=" . $this->_db->Quote($parent) . " AND c.state=" . $this->_db->Quote(1) . " ORDER BY created ASC";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
