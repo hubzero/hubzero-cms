@@ -458,9 +458,9 @@ class CoursesControllerSections extends Hubzero_Controller
 				{
 					$this->setError("Image must be square.");
 				}
-				else if ($dimensions[0] < 460)
+				else if ($dimensions[0] < 450)
 				{
-					$this->setError("Image should be at least 460px.");
+					$this->setError("Image should be at least 450px.");
 				}
 				else
 				{

@@ -123,7 +123,7 @@ class Hubzero_Badges_Passport_BadgesProvider
 	 *						$data['Description']   = 'Badge description';
 	 *						$data['CriteriaUrl']   = 'Badge criteria URL';
 	 *						$data['Version']       = 'Version';
-	 *						$data['BadgeImageUrl'] = 'URL of the badge image: square at least 460px x 460px';
+	 *						$data['BadgeImageUrl'] = 'URL of the badge image: square at least 450px x 450px';
 	 * @return  int			Freshly created badge ID
 	 */
 	public function createBadge($data)
