@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<label for="field-content"><?php echo JText::_('COM_WISHLIST_COMMENT'); ?>:</label><br />
-							<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
+							<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))); ?></textarea>
 						</td>
 					</tr>
 				</tbody>
@@ -136,9 +136,9 @@ function submitbutton(pressbutton)
 						<td><input type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo $this->row->anonymous ? 'checked="checked"' : ''; ?> /></td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-status"><?php echo JText::_('COM_WISHLIST_STATUS'); ?>:</label></th>
+						<th class="key"><label for="field-state"><?php echo JText::_('COM_WISHLIST_STATUS'); ?>:</label></th>
 						<td>
-							<select name="fields[status]" id="field-status">
+							<select name="fields[state]" id="field-state">
 								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('unpublished'); ?></option>
 								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('published'); ?></option>
 								<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('deleted'); ?></option>
