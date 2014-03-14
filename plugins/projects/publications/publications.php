@@ -5318,7 +5318,7 @@ class plgProjectsPublications extends JPlugin
 					
 				$assoc 	= new CitationsAssociation($this->_database);
 				$filters = array('tbl' => 'publication', 'oid' => $row->publication_id);
-				$checked['citations'] = ($assoc->getCount($filters) > 1) ? 1 : 0;		
+				$checked['citations'] = ($assoc->getCount($filters) > 0) ? 1 : 0;		
 			}
 			elseif ($value == 'notes')
 			{
