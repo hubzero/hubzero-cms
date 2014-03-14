@@ -640,7 +640,9 @@ class TagsControllerTags extends Hubzero_Controller
 		$app = JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
+		$this->view->filters = array(
+			'admin' => 0
+		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
