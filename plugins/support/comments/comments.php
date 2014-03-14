@@ -86,6 +86,11 @@ class plgSupportComments extends JPlugin
 							$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $parent . '&active=reviews');
 						break;
 
+						case 'pubreview':
+						case 'pubreviewcomment':
+							$rows[$key]->href = JRoute::_('index.php?option=com_publications&id=' . $parent . '&active=reviews');
+						break;
+
 						case 'answer':
 						case 'answercomment':
 							$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $parent);

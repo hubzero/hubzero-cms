@@ -196,7 +196,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['item_type']))
 		{
-			$filters['item_type'] = 'review';
+			$filters['item_type'] = 'pubreview';
 		}
 		if (!isset($filters['parent']))
 		{
@@ -360,7 +360,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 			break;
 
 			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('item_id');
+				$link = 'index.php?option=com_support&task=reportabuse&category=pubreview&id=' . $this->get('id') . '&parent=' . $this->get('publication_id');
 			break;
 
 			case 'permalink':

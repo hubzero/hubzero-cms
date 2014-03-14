@@ -39,10 +39,25 @@ foreach ($this->reviews as $k => $review)
 }
 $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 ?>
-<h3>
-	<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=reviews&action=addreview#reviewform'); ?>" class="add"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?></a></span>
+<h3 class="section-header">
 	<?php echo JText::_('PLG_PUBLICATION_REVIEWS'); ?>
 </h3>
+<p class="section-options">
+	<?php if ($juser->get('guest')) { ?>
+			<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
+				<?php echo JText::_('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?>
+			</a>
+	<?php } else { ?>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews&action=addreview#reviewform'); ?>" class="icon-add add btn">
+				<?php echo JText::_('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?>
+			</a>
+	<?php } ?>
+</p>
+
+<?php if ($this->getError()) { ?>
+	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
+<?php } ?>
+
 <?php
 if ($this->reviews->total() > 0)
 {

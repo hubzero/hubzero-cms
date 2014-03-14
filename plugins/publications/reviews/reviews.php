@@ -394,47 +394,40 @@ class PlgPublicationsReviewsHelper extends JObject
 	 * Save a reply
 	 * 
 	 * @return     void
-	 */	
+	 */
 	private function savereply()
-	{	
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$juser = JFactory::getUser();
-		
+
 		// Is the user logged in?
 		if ($juser->get('guest')) 
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
 			return;
 		}
-		
+
 		// Incoming
-		$id       = JRequest::getInt('referenceid', 0 );
-		$rid      = JRequest::getInt('rid', 0 );
-		$category = JRequest::getVar('category', '' );
-		$when     = JFactory::getDate()->toSql();
-		
+		$id      = JRequest::getInt('id', 0 );
+
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
-		
+		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
+
 		if (!$id) 
 		{
 			// Cannot proceed
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
 			return;
 		}
-		
-		if (!$category) 
-		{
-			// Cannot proceed
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_CATEGORY') );
-			return;
-		}
 
 		$database = JFactory::getDBO();
 
-		$row = new \Hubzero\Item\Comment( $database );
-		if (!$row->bind( $_POST )) 
+		$row = new \Hubzero\Item\Comment($database);
+		if (!$row->bind($comment)) 
 		{
-			$this->setError( $row->getError() );
+			$this->setError($row->getError());
 			return;
 		}
 
@@ -442,24 +435,25 @@ class PlgPublicationsReviewsHelper extends JObject
 		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
 		//$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created    = $when;
-		$row->state      = 0;
-		$row->created_by = $juser->get('id');
+		$row->created    = ($row->id ? $row->created : JFactory::getDate()->toSql());
+		$row->state      = ($row->id ? $row->state : 0);
+		$row->created_by = ($row->id ? $row->created_by : $juser->get('id'));
 
 		// Check for missing (required) fields
 		if (!$row->check()) 
 		{
-			$this->setError( $row->getError() );
+			$this->setError($row->getError());
 			return;
 		}
+
 		// Save the data
 		if (!$row->store()) 
 		{
-			$this->setError( $row->getError() );
+			$this->setError($row->getError());
 			return;
 		}
 	}
-	
+
 	/**
 	 * Delete a reply
 	 * 
@@ -469,24 +463,24 @@ class PlgPublicationsReviewsHelper extends JObject
 	{
 		$database = JFactory::getDBO();
 		$publication = $this->publication;
-		
+
 		// Incoming
 		$replyid = JRequest::getInt( 'refid', 0 );
-		
+
 		// Do we have a review ID?
 		if (!$replyid) 
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
 			return;
 		}
-		
+
 		// Do we have a publication ID?
 		if (!$publication->id) 
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
-		
+
 		// Delete the review
 		$reply = new \Hubzero\Item\Comment($database);
 
@@ -500,30 +494,30 @@ class PlgPublicationsReviewsHelper extends JObject
 		}
 		$reply->delete($replyid);
 	}
-	
+
 	/**
 	 * Rate an item
 	 * 
 	 * @return     void
 	 */	
 	public function rateitem()
-	{		
+	{
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
-				
+
 		$id   = JRequest::getInt( 'refid', 0 );
 		$ajax = JRequest::getInt( 'ajax', 0 );
 		$cat  = JRequest::getVar( 'category', 'review' );
 		$vote = JRequest::getVar( 'vote', '' );
 		$ip   = JRequest::ip();
 		$rid  = JRequest::getInt( 'rid', 0, 'get' );
-				
+
 		if (!$id) 
 		{
-			// Cannot proceed		
+			// Cannot proceed
 			return;
 		}
-	
+
 		// Is the user logged in?
 		if ($juser->get('guest')) 
 		{
@@ -566,7 +560,7 @@ class PlgPublicationsReviewsHelper extends JObject
 					return;
 				}
 			}
-							
+
 			// update display
 			if ($ajax) 
 			{
@@ -584,7 +578,7 @@ class PlgPublicationsReviewsHelper extends JObject
 				$view->display();
 			} 
 			else 
-			{				
+			{
 				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$rid.'&active=reviews');
 			}
 		}
