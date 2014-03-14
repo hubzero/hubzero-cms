@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_forum/access.xml
+@file           administrator/components/com_blog/access.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,7 +28,7 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <access component="com_blog">
-	<entry name="component">
+	<section name="component">
 		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
 		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
 		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
@@ -36,18 +36,25 @@ HUBzero is a registered trademark of Purdue University.
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
-		
+
 		<action name="core.create.entry" title="entry :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete.entry" title="entry :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit.entry" title="entry :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state.entry" title="entry :: Edit State" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own.entry" title="entry :: Edit Own" description="JACTION_EDITOWN_COMPONENT_DESC" />
-	</entry>
-	<entry name="entry">
+	</section>
+	<section name="entry">
 		<action name="core.create" title="JACTION_CREATE" description="COM_CATEGORIES_ACCESS_CREATE_DESC" />
 		<action name="core.delete" title="JACTION_DELETE" description="COM_CATEGORIES_ACCESS_DELETE_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="COM_CATEGORIES_ACCESS_EDIT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_CATEGORIES_ACCESS_EDITSTATE_DESC" />
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_CATEGORIES_ACCESS_EDITOWN_DESC" />
-	</entry>
+	</section>
+	<section name="comment">
+		<action name="core.create" title="JACTION_CREATE" description="COM_CATEGORIES_ACCESS_CREATE_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="COM_CATEGORIES_ACCESS_DELETE_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="COM_CATEGORIES_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_CATEGORIES_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_CATEGORIES_ACCESS_EDITOWN_DESC" />
+	</section>
 </access>

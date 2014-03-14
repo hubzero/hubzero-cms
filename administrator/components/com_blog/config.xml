@@ -72,6 +72,9 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="partial">Partial</option>
 		</field>
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_blog" section="component" />
+	</fieldset>
 	<params>
 		<param name="title" type="text" menu="hide" default="" label="Blog Title" description="A Title for your blog" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
