@@ -140,6 +140,7 @@ if ($this->admin && !$this->getError()) {
 		} // end if ($tags)
 	} // end if ($this->wishlist->category == 'general')
 	
+	$html = '';
 	if (isset($this->wishlist->resource) && $this->wishlist->category == 'resource') {
 		$html  = '<p>'.JText::sprintf('COM_WISHLIST_THIS_LIST_IS_FOR_RES', strtolower(substr($this->wishlist->resource->typetitle,0,strlen($this->wishlist->resource->typetitle) - 1)).' '.JText::_('COM_WISHLIST_RESOURCE_ENTITLED').' <a href="'.JRoute::_('index.php?option=com_resources&id='.$this->wishlist->referenceid).'">'.$this->escape($this->wishlist->resource->title).'</a>').'.</p>';
 	} else if ($this->wishlist->description) {
