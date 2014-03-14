@@ -398,7 +398,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 			// Updating a category
 			$row = new \Hubzero\Item\Comment($this->database);
 			$row->load($id);
-			$row->status = $state;
+			$row->state = $state;
 			$row->store();
 		}
 
