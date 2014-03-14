@@ -638,7 +638,9 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$app = JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
+		$this->view->filters = array(
+			'admin' => 0
+		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
@@ -718,7 +720,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->_getStyles();
 
 		// Push scripts to the document
-		$this->_getScripts('assets/js/tags');
+		$this->_getScripts(); //'assets/js/tags');
 
 		$this->view->config = $this->config;
 
