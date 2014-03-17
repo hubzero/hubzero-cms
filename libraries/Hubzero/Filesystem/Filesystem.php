@@ -126,10 +126,14 @@ class Filesystem
 	{
 		$paths = is_array($paths) ? $paths : func_get_args();
 
-		foreach ($paths as $path) 
+		$success = true;
+
+		foreach ($paths as $path)
 		{
-			@unlink($path);
+			if (!@unlink($path)) $success = false;
 		}
+
+		return $success;
 	}
 
 	/**
@@ -288,7 +292,7 @@ class Filesystem
 
 		if (is_dir($directory))
 		{
-			// Loop through all files and separate them into arrays of images, folders, and other
+			// Loop through all files and collect all the folders
 			$dirIterator = new DirectoryIterator($directory);
 			foreach ($dirIterator as $file)
 			{
@@ -333,14 +337,14 @@ class Filesystem
 	 */
 	public function copyDirectory($directory, $destination, $options = null)
 	{
-		if ( ! $this->isDirectory($directory)) return false;
+		if (!$this->isDirectory($directory)) return false;
 
 		$options = $options ?: FilesystemIterator::SKIP_DOTS;
 
 		// If the destination directory does not actually exist, we will go ahead and
 		// create it recursively, which just gets the destination prepared to copy
 		// the files over. Once we make the directory we'll proceed the copying.
-		if ( ! $this->isDirectory($destination))
+		if (!$this->isDirectory($destination))
 		{
 			$this->makeDirectory($destination, 0777, true);
 		}
@@ -358,7 +362,7 @@ class Filesystem
 			{
 				$path = $item->getPathname();
 
-				if ( ! $this->copyDirectory($path, $target, $options)) return false;
+				if (!$this->copyDirectory($path, $target, $options)) return false;
 			}
 
 			// If the current items is just a regular file, we will just copy this to the new
@@ -366,7 +370,7 @@ class Filesystem
 			// and return false, so the developer is aware that the copy process failed.
 			else
 			{
-				if ( ! $this->copy($item->getPathname(), $target)) return false;
+				if (!$this->copy($item->getPathname(), $target)) return false;
 			}
 		}
 
