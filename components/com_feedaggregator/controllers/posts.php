@@ -168,7 +168,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		}
 		else if(JFactory::getUser()->id == FALSE) // have person login
 		{
-				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server') . '/?filterby=all';
 				$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
 				JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
