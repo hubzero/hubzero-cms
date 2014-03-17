@@ -276,7 +276,7 @@ class WikiTablePage extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s ORDER BY state ASC LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			$res = $this->bind($result);
@@ -557,12 +557,19 @@ class WikiTablePage extends JTable
 		{
 			$g = new WikiTablePage($this->_db);
 			$g->loadByTitle($this->pagename, $this->scope);
-			//$g = WikiTablePage::getInstance($this->pagename, $this->scope);
 			if ($g->exist()) 
 			{
 				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
+
+			$g->load($this->pagename, $this->scope);
+			if ($g->exist()) 
+			{
+				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
+				return false;
+			}
+
 			$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
 			$this->modified = JFactory::getDate()->toSql();
