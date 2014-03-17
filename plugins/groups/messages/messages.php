@@ -432,6 +432,20 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			}
 		}
 		
+		// add invite emails if sending to invitees
+		if ($action == 'group_invitees_message')
+		{
+			// Get invite emails
+			$db = JFactory::getDBO();
+			$group_inviteemails = new \Hubzero\User\Group\InviteEmail($db);
+			$current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
+
+			foreach ($current_inviteemails as $current_inviteemail)
+			{
+				$recipients[$current_inviteemail] = $current_inviteemail;
+			}
+		}
+
 		// define from details
 		$config = JFactory::getConfig();
 		$from = array(
