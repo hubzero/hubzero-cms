@@ -628,13 +628,17 @@ class CitationsCitation extends JTable
 				$query .= " AND";
 				$multi = 0;
 				$o = 0;
-				foreach ($filter['reftype'] as $g)
+				if (isset($filter['reftype']))
 				{
-					if ($g == 1) 
+					foreach ($filter['reftype'] as $g)
 					{
-						$multi++;
+						if ($g == 1) 
+						{
+							$multi++;
+						}
 					}
 				}
+				
 				if ($multi) 
 				{
 					$query .= " (";
