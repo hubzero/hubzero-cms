@@ -165,7 +165,7 @@ class WishlistPlan extends JTable
 
 		$query  = "SELECT *, xp.name AS authorname ";
 		$query .= "FROM #__wishlist_implementation AS p ";
-		$query .= "JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
+		$query .= "LEFT JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
 		$query .= "WHERE p.wishid = " . $this->_db->Quote($wishid) . " ORDER BY p.created DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

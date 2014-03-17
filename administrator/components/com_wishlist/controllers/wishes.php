@@ -340,6 +340,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 
 		//$create_revision = JRequest::getInt('create_revision', 0, 'post');
 		$plan = JRequest::getVar('plan', array(), 'post', 'none', 2);
+		$plan['create_revision'] = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
 
 		// Initiate extended database class
 		$page = new WishlistPlan($this->database);
@@ -365,9 +366,16 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 			$page->id = 0;
 		}
 
+		if (!$page->check()) 
+		{
+			$this->addComponentMessage($page->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
 		if (!$page->store()) 
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->addComponentMessage($page->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
