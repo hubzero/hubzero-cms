@@ -56,9 +56,9 @@ defined('_JEXEC') or die('Restricted access');
 				$view->id     = '';
 				if (!$juser->get('guest')) 
 				{
-					if ($this->comment->get('created_by') == $juser->get('username')) 
+					$view->vote = $this->comment->get('vote');
+					if ($this->comment->get('created_by') == $juser->get('id')) 
 					{
-						$view->vote = $this->comment->get('vote');
 						$view->id   = $this->comment->get('id');
 					}
 				}
