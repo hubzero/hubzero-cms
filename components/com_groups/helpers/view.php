@@ -458,6 +458,10 @@ class GroupsHelperView
 		$stylesheets = array();
 		foreach ($ss as $s)
 		{
+			if ($s->attributes()->media == 'print')
+			{
+				continue;
+			}
 			$stylesheets[] = (string) $s->attributes()->href;
 		}
 		
