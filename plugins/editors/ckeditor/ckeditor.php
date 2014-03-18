@@ -49,6 +49,9 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onInit()
 	{
+		// add ckeditor stylesheet
+		Hubzero\Document\Assets::addPluginStylesheet('editors', 'ckeditor');
+
 		// add ckeditor
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::base(true) . '/' . $this->_basePath . 'ckeditor.js' );
@@ -144,7 +147,6 @@ class plgEditorCkeditor extends JPlugin
 		$config = json_encode($this->_buildConfig($params['class']));
 
 		// fix script and php protected source
-
 		//$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
 		$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
 		$config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
@@ -155,7 +157,7 @@ class plgEditorCkeditor extends JPlugin
 		$script .= 'jQuery(document).ready(function(){ jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
 		$script .= 'jQuery(document).on("ajaxLoad", function() { jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
 		$script .= '</script>';
-
+		
 		$params['class'] = implode(' ', $params['class']);
 
 		$atts = array();
@@ -215,11 +217,12 @@ class plgEditorCkeditor extends JPlugin
 		$config->hubzeroAutogrow_minHeight     = 200;
 		$config->hubzeroAutogrow_maxHeight     = 1000;
 		$config->toolbarCanCollapse            = true;
-		$config->extraPlugins                  = 'tableresize,hubzeroautogrow,hubzeroequation,hubzerogrid';
+		$config->extraPlugins                  = 'tableresize,iframedialog,hubzeroautogrow,hubzeroequation,hubzerogrid,hubzeromacro,hubzerohighlight';
 		$config->removePlugins                 = 'resize';
 		$config->resize_enabled                = false;
 		$config->emailProtection               = 'encode';
 		$config->protectedSource               = array('/<group:include([^\\/]*)\\/>/g');
+		$config->extraAllowedContent           = 'mark(*)[*]';
 		$config->disableNativeSpellChecker     = false;
 		$config->scayt_autoStartup             = true;
 		$config->scayt_contextCommands         = 'all';
@@ -243,7 +246,7 @@ class plgEditorCkeditor extends JPlugin
 			'/',
 			array('Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
 			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
-			array('HubzeroAutoGrow')
+			array('HubzeroAutoGrow', 'HubzeroMacro')
 		);
 
 		// if minimal toolbar
