@@ -56,8 +56,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $(document).ready(function(){
 	var history = window.history;
-	console.log(history);
-	
 	if (history.length > 1)
 	{
 		$('.back').show();
