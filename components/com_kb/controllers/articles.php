@@ -440,7 +440,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 			$this->view->item = $row;
 			$this->view->type = $type;
 			$this->view->vote = $vote;
-			$this->view->id   = $id;
+			$this->view->id   = ''; //$id;
 			if ($this->getError()) 
 			{
 				$this->view->setError($this->getError());
