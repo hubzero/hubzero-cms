@@ -379,7 +379,7 @@ class PublicationHelper extends JObject
 			if (count($names) > 0) 
 			{
 				$html = '<p>' . ucfirst(JText::_('By')) . ' ';
-				$html .= count($names) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
+				$html .= count($names) > 1 && count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
 				$html .= '</p>';
 			}
 			if ($showorgs && count($orgs) > 0) 
@@ -428,9 +428,9 @@ class PublicationHelper extends JObject
 					continue;
 				}
 				if ($contributor->lastName || $contributor->firstName) 
-				{
-					$name = stripslashes($contributor->firstName) .' ';
-					$name .= stripslashes($contributor->lastName);
+				{					
+					$name  = stripslashes($contributor->lastName);
+					$name .= ', ' . substr(stripslashes($contributor->firstName), 0, 1) . '.';
 				} 
 				else 
 				{

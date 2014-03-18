@@ -86,11 +86,14 @@ if ($this->params->get('show_citation') && $this->publication->state == 1)
 		$jconfig = JFactory::getConfig();
 		$site = trim( $jconfig->getValue('config.live_site'), DS);
 		
-		$cite->url 		= $site . DS . 'publications' . DS . $this->publication->id . '?v='.$this->version;
+		$cite->doi 		= $this->publication->doi ? $this->publication->doi : '';
+		$cite->url 		= $cite->doi 
+							? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), DS) . DS . $cite->doi
+							: NULL;
 		$cite->type 	= '';
 		$cite->pages 	= '';
 		$cite->author 	= $this->helper->getUnlinkedContributors( $this->authors);
-		$cite->doi 		= $this->publication->doi ? $this->publication->doi : '';
+		$cite->publisher= $this->config->get('doi_publisher', '' );
 		
 		if ($this->params->get('show_citation') == 2) {
 			$citations = '';

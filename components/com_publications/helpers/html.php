@@ -636,8 +636,10 @@ class PublicationsHtml
 		
 		$cconfig  = JComponentHelper::getParams( 'com_citations' );
 		
+		$template = "{AUTHORS} ({YEAR}). <b>{TITLE/CHAPTER}</b>. <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b> {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}. {PUBLISHER}. doi:{DOI}";
+		
 		$formatter = new CitationFormat();
-		$formatter->setTemplate('ieee');
+		$formatter->setTemplate($template);
 
 		$html  = '<p>'.JText::_('COM_PUBLICATIONS_CITATION_INSTRUCTIONS').'</p>'."\n";
 		$html .= $citations;
@@ -645,7 +647,21 @@ class PublicationsHtml
 		{
 			$html .= '<ul class="citations results">'."\n";
 			$html .= "\t".'<li>'."\n";
-			$html .= $formatter->formatCitation($cite, false, true, $cconfig);
+			
+			$formatted = $formatter->formatCitation($cite, false, true, $cconfig);
+			
+			$formatted = str_replace('"', '', $formatted);
+			if ($cite->doi && $cite->url)
+			{
+				$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">' 
+					. 'doi:' . $cite->doi . '</a>', $formatted);
+			}
+			else
+			{
+				$formatted = str_replace('doi:', '', $formatted);
+			}
+			
+			$html .= $formatted;
 			if ($version != 'dev') 
 			{
 				$html .= "\t\t".'<p class="details">'."\n";
