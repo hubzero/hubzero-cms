@@ -31,9 +31,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 //this is a quick and dirty way to get the one single object
-if(isset($feed[0]) == TRUE)
+if(isset($this->feed) == TRUE)
 {
-	$feed = $this->feed[0];
+	$feed = $this->feed;
 }
 else
 {
@@ -73,28 +73,28 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<input type="hidden" name="id" value="<?php echo (is_object($feed) ? $feed->id : ''); ?>">
 		<input type="hidden" name="enabled" value="<?php echo (isset($feed->enabled) ? $feed->enabled : '1'); ?>">
 		<input type="hidden" name="task" value="save" />
-			
+
 			<label for="feed-title">
 				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?>
 				<span class="required">required</span>
-				<input type="text" name="name" id="feedTitle" size="25" value="<?php echo (is_object($feed) ? $feed->name : ''); ?>"/>
+				<input type="text" class="required-field" name="name" id="feedTitle" size="25" value="<?php echo (is_object($feed) ? $feed->name : ''); ?>"/>
 			</label>
-					
+
 			<label for="url">
 				<?php //echo JText::_('COM_GROUPS_CN'); ?>Feed URL
 				<span class="required">required</span>
-				<input type="text" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $feed->url : ''); ?>" />
+				<input type="text" class="required-field" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $feed->url : ''); ?>" />
 			</label>
-			
+
 			<label for="description">
 				<?php //echo JText::_('COM_GROUPS_CN'); ?>Description
-				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $feed->description : ''); ?>" /> 
+				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $feed->description : ''); ?>" />
 			</label>
 			<!--  <span><p style="float:left";>Auto Approve<input type="checkbox" id="autoApproveCheckbox" name="autoapprove">
 			</p></span> -->
 		</fieldset>
 	<p class="submit">
-		<input type="submit" name="submit" value="Submit<?php //echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />
+		<input type="submit" id="submitBtn" class="btn" name="formsubmitBtn" value="Submit<?php //echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />
 	</p>
 <?php echo JHTML::_('form.token'); ?>
 </form>

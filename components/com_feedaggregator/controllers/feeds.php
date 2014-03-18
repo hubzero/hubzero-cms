@@ -37,10 +37,10 @@ require_once(JPATH_ROOT.DS."components".DS."com_feedaggregator".DS."models".DS."
  *  Feed Aggregator controller class
  */
 class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
-{	
+{
 	public function displayTask()
 	{
-		
+
 		$userId = $this->juser->id;
 		$authlevel = JAccess::getAuthorisedViewLevels($userId);
 		$access_level = 3; //author_level
@@ -49,7 +49,7 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 			$model = new FeedAggregatorModelFeeds;
 			$feeds = $model->loadAll();
 			$this->view->feeds = $feeds;
-				
+
 			$this->view->title =  JText::_('Feed Aggregator');
 			$this->view->display();
 		}
@@ -72,7 +72,7 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		}
 
 	}
-	
+
 	public function editTask()
 	{
 		//isset ID kinda deal
@@ -80,27 +80,30 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		$model = new FeedAggregatorModelFeeds;
 		$feed = $model->loadbyId($id);
 		$this->view->feed = $feed;
-		
+
+
 		$this->view->user = $this->juser;
-		
+
 		//$this->view->setLayout('edit');
+		$this->_getScripts('assets/js/feeds');
 		$this->view->title = JText::_('Edit Feeds');
 		$this->view->display();
 	}
-	
+
 	public function newTask()
 	{
+		$this->_getScripts('assets/js/feeds');
 		$this->view->setLayout('edit');
 		$this->view->title = JText::_('Add Feed');
 		$this->view->display();
 	}
-	
+
 	public function statusTask()
 	{
 		$id = JRequest::getInt('id');
 		$action = JRequest::getVar('action');
 		$model = new FeedAggregatorModelFeeds();
-		
+
 		if($action == 'enable')
 		{
 			$model->updateActive($id, 1);
@@ -123,33 +126,66 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Feed Enable/Disable Failed.', 'warning')
+					JText::_('Feed Enable/Disable Failed.', 'error')
 			);
 		}
 	}
-	
+
 	public function saveTask()
 	{
 		//do a JRequest instead of a bind()
 		$db = JFactory::getDBO();
 		$feed = new FeedAggregatorModelFeeds;
-		$fields = JRequest::get('post');
-		$feed->bind($fields);
-		
-		if($feed->store())
+
+		//get the URL first in order to validate
+		//$feed->url = JRequest::getVar('url');
+		$feed->set('url', JRequest::getVar('url'));
+		/*
+		echo '<pre>';
+		echo($feed);
+		echo '</pre>';
+		echo '<pre>';
+		echo($feed->get('url'));
+		echo '</pre>';
+		die;
+		*/
+		$feed->set('name', JRequest::getVar('name'));
+		$feed->set('id', JRequest::getVar('id'));
+		$feed->set('enabled', JRequest::getVar('enabled'));
+		$feed->set('description', JRequest::getVar('description'));
+
+		//validate url
+		if(!filter_var($feed->get('url'), FILTER_VALIDATE_URL))
 		{
-			// Output messsage and redirect
+			$this->feed = $feed;
+			//redirect
 			$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Feed Information Updated.')
-					);
+						'/feedaggregator?controller=feeds&task=new',
+						JText::_('Invalid URL. Please make sure it is correct.'), 'warning'
+				);
+
 		}
 		else
 		{
-			$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Feed Information Update Failed.', 'warning')
-			);
+
+			if($feed->store())
+			{
+				// Output messsage and redirect
+				$this->setRedirect(
+						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						JText::_('Feed Information Updated.')
+				);
+			}
+			else
+			{
+				$this->setRedirect(
+						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						JText::_('Feed Information Update Failed.', 'warning')
+				);
+			}
+
 		}
+
+
 	}
-} 
+}

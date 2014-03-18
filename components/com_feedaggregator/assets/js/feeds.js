@@ -20,6 +20,8 @@ jQuery(document).ready(function()
 			if(jQuery(this).val() == '')
 			{
 				submitToken = 0;
+				jQuery(this).attr('style', 'background-color: #FFD6CC;');
+
 			}
 			else if(jQuery(this).val() != '')
 			{

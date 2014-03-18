@@ -64,12 +64,12 @@ ximport('Hubzero_Document');
 			<tr class='shade-table'>
 			<td><?php echo $feed->name; ?></td>
 			<td><a href="<?php echo $feed->url; ?>"><?php echo $feed->url; ?></a></td>
-			<td><a href="index.php?option=com_feedaggregator&controller=posts&task=PostsById&id=<?php echo $feed->id; ?>">View Posts</a> 
-				<a href="index.php?option=com_feedaggregator&controller=feeds&task=edit&id=<?php echo $feed->id;?>">Edit</a>
+			<td><a class="btn" href="index.php?option=com_feedaggregator&controller=posts&task=PostsById&id=<?php echo $feed->id; ?>">View Posts</a> 
+				<a class="btn" href="index.php?option=com_feedaggregator&controller=feeds&task=edit&id=<?php echo $feed->id;?>">Edit</a>
 				<?php if($feed->enabled == '1'):?>
-					<font style="color:red"><a href="index.php?option=com_feedaggregator&controller=feeds&task=status&action=disable&id=<?php echo $feed->id;?>">Disable</a></font>
+					<font style="color:red"><a class="btn" href="index.php?option=com_feedaggregator&controller=feeds&task=status&action=disable&id=<?php echo $feed->id;?>">Disable</a></font>
 				<?php elseif($feed->enabled == '0'): ?>
-					<b><a href="index.php?option=com_feedaggregator&controller=feeds&task=status&action=enable&id=<?php echo $feed->id;?>">Enable</a></b>
+					<b><a class="btn" href="index.php?option=com_feedaggregator&controller=feeds&task=status&action=enable&id=<?php echo $feed->id;?>">Enable</a></b>
 				<?php endif; ?>
 			</td>
 			</tr>			

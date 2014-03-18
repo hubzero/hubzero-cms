@@ -117,16 +117,20 @@ defined('_JEXEC') or die('Restricted access');
 				?>				
 				</td>
 				
-				<td><input type="button" class="actionBtn" value="Approve" id="approve-<?php echo $post->id;?>"> <input type="button" class="actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>"><input type="button" class="actionBtn" value="Remove" id="remove-<?php echo $post->id;?>"></td>
+				<td>
+				<input type="button" class="btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
+				<input type="button" class="btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
+				<input type="button" class="btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
+				</td>
 			</tr>
 			<div style="display:none">
 				<div class="postpreview" id="content-fancybox<?php echo $post->id;?>">
 						<h1><?php echo $post->title; ?></h1>
 						<p class="description"><?php echo $post->description; ?></p>
 						<p><a target="_blank" href="<?php echo $post->link; ?>">Link to original post.</a></p>
-						<input type="button" class="actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
-						<input type="button" class="actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
-						<input type="button" class="actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
+						<input type="button" class="btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
+						<input type="button" class="btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
+						<input type="button" class="btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
 				</div>
 			</div>
 			<?php endif;?>
