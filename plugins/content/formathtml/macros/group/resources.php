@@ -54,8 +54,13 @@ class Resources extends GroupMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = 'Inserts an anchor into a page.';
-		$txt['html'] = '<p>Inserts an anchor into a page.</p>';
+		$txt['html']  = '<p>Displays group resources.</p>';
+		$txt['html'] .= '<p>Examples:</p>
+							<ul>
+								<li><code>[[Group.Resources()]]</code></li>
+								<li><code>[[Group.Resources(3)]]</code> - Displays the 3 latest group resources</li>
+								<li><code>[[Group.Resources(type=teachingmaterials, 5)]]</code> - Displays the 5 latest group teachingmaterials resources.</li>
+							</ul>';
 		return $txt['html'];
 	}
 

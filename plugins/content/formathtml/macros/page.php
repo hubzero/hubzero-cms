@@ -28,8 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Plugins\Content\Formathtml\Macros;
+
+use Plugins\Content\Formathtml\Macro;
 
 /**
  * macro class for getting a linked title to a wiki page

@@ -56,7 +56,7 @@ class Youtube extends Macro
 							<li><code>[[Youtube(FgfGOEpZEOw, 100%)]] - width of 100%</code></li>
 						</ul>
 						<p>Displays:</p>
-						<iframe src="http://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0"></iframe>';
+						<iframe src="https://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0"></iframe>';
 
 		return $txt['html'];
 	}

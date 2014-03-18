@@ -54,12 +54,11 @@ class Events extends GroupMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Displays group events";
-		$txt['html'] = '<p>Displays group events.</p>';
-		$txt['html'] = '<p>Examples:</p>
+		$txt['html']  = '<p>Displays group events.</p>';
+		$txt['html'] .= '<p>Examples:</p>
 							<ul>
 								<li><code>[[Group.Events()]]</code></li>
-								<li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>å
+								<li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>
 							</ul>';
 
 		return $txt['html'];
