@@ -79,5 +79,32 @@ class CoursesModelManager extends CoursesModelMember
 			}
 		}
 	}
+
+	/**
+	 * Returns a reference to a wiki page object
+	 *
+	 * This method must be invoked as:
+	 *     $inst = CoursesInstance::getInstance($alias);
+	 *
+	 * @param      string $pagename The page to load
+	 * @param      string $scope    The page scope
+	 * @return     object CoursesModelMember
+	 */
+	static function &getInstance($uid=null, $cid=0, $oid=0, $sid=0)
+	{
+		static $instances;
+
+		if (!isset($instances)) 
+		{
+			$instances = array();
+		}
+
+		if (!isset($instances[$oid . '_' . $uid])) 
+		{
+			$instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
+		}
+
+		return $instances[$oid . '_' . $uid];
+	}
 }
 
