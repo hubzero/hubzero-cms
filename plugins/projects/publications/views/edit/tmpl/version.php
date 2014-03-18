@@ -78,6 +78,12 @@ if ($this->pub->doi)
 $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
+$mt = new PublicationMasterType( $this->database );
+$mType = $mt->getType($this->pub->base);
+$typeParams = new JParameter( $mType->params );
+
+$showCitations = $typeParams->get('show_citations', 0);	
+
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
 	<?php echo $this->project->provisioned == 1 
@@ -290,8 +296,10 @@ $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 				.' <strong>'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_USAGE_STATS').'</strong> '
 				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_FOLLOW_FEEDBACK');  ?>
 					<span class="block italic"><a href="<?php echo $this->url . '/?action=stats' . a . 'version='.$this->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE'); ?> &raquo;</a></span></p></li>
+				<?php if ($showCitations) { ?>
 				<li id="next-citation"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_ADD_CITATIONS');  ?>
 					<span class="block italic"><a href="<?php echo $this->url . '/?section=citations' . a . 'version=' . $this->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS'); ?> &raquo;</a></span></p></li>	
+				<?php } ?>
 			<?php } ?>
 			
 			<?php if ($this->row->state == 5) { // pending approval ?>

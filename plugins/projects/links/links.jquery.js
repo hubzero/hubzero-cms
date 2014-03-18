@@ -209,6 +209,10 @@ HUB.ProjectLinks = {
 				}	
 			});					
 		}	
+		else
+		{
+			HUB.ProjectLinks.showElement($('#link-loading'), 'hide');
+		}
 	},
 	
 	isValidURL: function(url)
