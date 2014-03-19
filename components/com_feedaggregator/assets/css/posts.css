@@ -68,3 +68,18 @@ img { display:block; margin-bottom:10px; }
 padding-top: 10px;
 margin-top: 10px;
 }
+
+.approveBtn{
+	color: white; 
+	background-image: linear-gradient(to bottom, #009900, #003D00);	
+}
+
+.reviewBtn{
+	color: white; 
+	background-image: linear-gradient(to bottom, #9900CC, #5C007A);
+}
+
+.removeBtn{
+	color: white; 
+	background-image: linear-gradient(to bottom, #FF0000, #B22400);
+}

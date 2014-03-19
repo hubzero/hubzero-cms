@@ -134,9 +134,31 @@ class FeedAggregatorTablePosts extends JTable
 		return $this->_db->loadResultArray();
 	}
 
-	public function getRowCount()
+	public function getRowCount($status = NULL)
 	{
-		$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status < 3;';
+		if ($status == 0)
+		{			
+			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 0;';
+		}
+		else if($status == 1)
+		{
+			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 1;';
+		}
+		else if($status == 2)
+		{
+			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 2;';
+				
+		}
+		else if($status == 3)
+		{
+			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 3;';
+				
+		}
+		else 
+		{
+			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status < 3;';
+		}
+		
 		$this->_db->setQuery($query);
 		return intval($this->_db->loadResult());
 	}

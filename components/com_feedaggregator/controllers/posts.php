@@ -83,39 +83,51 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				if($this->view->filters['filterby'] == 'all')
 				{
 					$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
+					$this->view->total = intval($model->loadRowCount());
+						
 				}
 				else if($this->view->filters['filterby'] == 'new')
 				{
 					$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],0);
+					$this->view->total = intval($model->loadRowCount(0));
+						
 				}
 				else if($this->view->filters['filterby'] == 'approved')
 				{
 					$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],2);
+					$this->view->total = intval($model->loadRowCount(2));
+						
 				}
 				else if($this->view->filters['filterby'] == 'review')
 				{
 					$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],1);
+					$this->view->total = intval($model->loadRowCount(1));
+						
 				}
 				else if($this->view->filters['filterby'] == 'removed')
 				{
 					$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],3);
+					$this->view->total = intval($model->loadRowCount(3));
 				}
 				else
 				{
 					//load stored posts
 					$model = new FeedAggregatorModelPosts;
 					$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
+					$this->view->total = intval($model->loadRowCount());
 				}
-
-				$this->view->total = intval($model->loadRowCount());
-
+	
 				// Initiate paging
 				jimport('joomla.html.pagination');
 				$this->view->pageNav = new JPagination(
 						$this->view->total,
 						$this->view->filters['start'],
-						$this->view->filters['limit']
+						$this->view->filters['limit'],
+						$this->view->_additionalUrlParams
 				);
+				
+				$this->view->pageNav->setAdditionalUrlParam('filterby', $this->view->filters['filterby']);
+								
 			}
 
 			/*Truncates the title to save screen real-estate. Full version shown in FancyBox*/

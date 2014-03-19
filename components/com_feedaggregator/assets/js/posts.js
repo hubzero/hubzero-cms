@@ -1,10 +1,18 @@
 jQuery(document).ready(function() 
 {	
-	jQuery('.fancybox-inline').fancybox();
+	jQuery('.fancybox-inline').fancybox(
+			{
+				'transitionIn' : 'elastic',
+				'transitionOut' : 'elastic'
+			});
 	
 	jQuery('.actionBtn').click(function()
 	{
 		var x = jQuery(this).attr('id');
+		jQuery(this).each(function()
+				{
+					(this).hide();
+				});
 		var record_id = x.split("-").pop();
 		var action = x.split("-");
 		action = action[0];

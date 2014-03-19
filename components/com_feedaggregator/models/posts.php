@@ -76,9 +76,9 @@ public function loadURLs()
 	return $this->_tbl->getURLs();
 }
 
-public function loadRowCount()
+public function loadRowCount($status = NULL)
 {
-	return intval($this->_tbl->getRowCount());
+	return intval($this->_tbl->getRowCount($status));
 }
 }
 

@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 					($post->status == "removed" AND $this->filters['filterby'] == "removed") OR
 					($this->task == "PostsById")): ?>
 			<tr id="row-<?php echo $post->id; ?>">
-				<td><a class="fancybox-inline" href="#content-fancybox<?php echo $post->id; ?>"><?php echo $post->shortTitle; ?></a></td>
+				<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo $post->shortTitle; ?></a></td>
 				<td><?php echo $post->created; ?>
 				<td><?php echo $post->name;?></td>
 				
@@ -118,9 +118,17 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 				
 				<td>
-				<input type="button" class="btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
-				<input type="button" class="btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
-				<input type="button" class="btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
+				<?php if($post->status != "approved"): ?>
+					<input type="button" class="approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
+				<?php endif; ?>
+				
+				<?php if($post->status != "under review"): ?>
+					<input type="button" style="color: white; background-image: linear-gradient(to bottom, #9900CC, #5C007A);" class="btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
+				<?php endif; ?>
+				
+				<?php if($post->status != "removed"): ?>
+					<input type="button" style="color: white; background-image: linear-gradient(to bottom, #FF0000, #B22400);" class="btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
+				<?php endif; ?>
 				</td>
 			</tr>
 			<div style="display:none">
@@ -128,9 +136,9 @@ defined('_JEXEC') or die('Restricted access');
 						<h1><?php echo $post->title; ?></h1>
 						<p class="description"><?php echo $post->description; ?></p>
 						<p><a target="_blank" href="<?php echo $post->link; ?>">Link to original post.</a></p>
-						<input type="button" class="btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
-						<input type="button" class="btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
-						<input type="button" class="btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
+						<input type="button" class="approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
+						<input type="button" class="reviewBtn btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
+						<input type="button" class="removeBtn btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
 				</div>
 			</div>
 			<?php endif;?>
