@@ -113,10 +113,10 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 				<?php endif; ?>
 				</div><!-- / .inner -->
 			</div><!-- / #content -->
-
+			
 			<div id="footer" class="mobile-footer">
 				<a name="footer" id="footer-anchor"></a>
-				<a href="?tmpl=fullsite">View Full Site</a>
+				<a href="<?php echo $_SERVER['SCRIPT_URI']; ?>?tmpl=fullsite">View Full Site</a>
 			</div><!-- / #footer -->
 		</div><!-- / #wrap -->
 
