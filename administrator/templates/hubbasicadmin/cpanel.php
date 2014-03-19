@@ -185,7 +185,7 @@ $juser = JFactory::getUser();
 					<a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a> &copy; <?php echo date("Y"); ?>. All Rights Reserved.
 				</p>
 				<p class="promotion">
-					<a rel="external" href="http://hubzero.org">Powered by <a href="http://hubzero.org">HUBzero&reg; CMS</a>.</a>
+					Powered by <a rel="external" href="http://hubzero.org">HUBzero&reg; CMS</a>, version <?php echo \Hubzero\Version\Version::VERSION; ?>
 				</p>
 			</section><!-- / .basement -->
 		</footer><!-- / #footer -->
