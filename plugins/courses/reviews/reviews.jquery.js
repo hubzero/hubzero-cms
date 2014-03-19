@@ -46,6 +46,7 @@ jQuery(document).ready(function(jq){
 				e.preventDefault();
 
 				$.get($(this).attr('href').nohtml(), {}, function(data) {
+					$('.tooltip').hide();
 					$(item).closest('.voting').html(data);
 				});
 			});
