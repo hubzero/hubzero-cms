@@ -143,17 +143,18 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 * Get a list of courses
 	 *   Accepts an array of filters to build query from
 	 * 
-	 * @param      array $filters Filters to build query from
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Clear cached results?
 	 * @return     mixed
 	 */
-	public function courses($filters=array())
+	public function courses($filters=array(), $clear=false)
 	{
 		if (isset($filters['count']) && $filters['count'])
 		{
 			return $this->_tbl->getCount($filters);
 		}
 
-		if (!($this->_courses instanceof CoursesModelIterator))
+		if (!($this->_courses instanceof CoursesModelIterator) || $clear)
 		{
 			if (($results = $this->_tbl->getRecords($filters)))
 			{

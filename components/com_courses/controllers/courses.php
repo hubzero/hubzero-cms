@@ -154,10 +154,11 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 				if ($mytags = $mt->get_tag_string($this->juser->get('id')))
 				{
 					$this->view->interestingcourses = $model->courses(array(
-						'tags'  => $mytags, 
+						'tag'   => $mytags, 
+						'tag_any' => true,
 						'limit' => 10, 
 						'state' => 1
-					));
+					), true);
 				}
 			}
 		}
@@ -169,7 +170,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 				'limit' => 3, 
 				'sort'  => 'students', 
 				'state' => 1
-			));
+			), true);
 		}
 
 		// Output HTML

@@ -358,7 +358,7 @@ class CoursesTableCourse extends JTable
 
 		if (isset($filters['tag']) && $filters['tag'] != '') 
 		{
-			$query .= " GROUP BY c.id HAVING uniques=" . count($tags);
+			$query .= " GROUP BY c.id HAVING uniques=" . (isset($filters['tag_any']) && $filters['tag_any'] ? '1' : count($tags));
 		}
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
