@@ -481,6 +481,12 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Push through to the media view
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->listTask();
+		}
+
+		// Push through to the media view
 		$this->displayTask();
 	}
 
@@ -542,6 +548,11 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Push through to the media view
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->listTask();
+		}
+
 		$this->displayTask();
 	}
 
@@ -578,6 +589,8 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	public function listTask()
 	{
+		$this->view->setLayout('list');
+
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 
