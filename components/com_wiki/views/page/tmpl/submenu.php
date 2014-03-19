@@ -78,7 +78,7 @@ if (!isset($this->controller))
 				<span><?php echo JText::_('COM_WIKI_TAB_ARTICLE'); ?></span>
 			</a>
 		</li>
-<?php if ($this->page->get('id') && $this->page->get('namespace') != 'special') { ?>
+<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->get('namespace') != 'special') { ?>
 	<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
 		<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_($this->page->link('edit')); ?>">
