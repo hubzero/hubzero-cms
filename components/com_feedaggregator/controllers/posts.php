@@ -122,8 +122,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$this->view->pageNav = new JPagination(
 						$this->view->total,
 						$this->view->filters['start'],
-						$this->view->filters['limit'],
-						$this->view->_additionalUrlParams
+						$this->view->filters['limit']
 				);
 				
 				$this->view->pageNav->setAdditionalUrlParam('filterby', $this->view->filters['filterby']);
