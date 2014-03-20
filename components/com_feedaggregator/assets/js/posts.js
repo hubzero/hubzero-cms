@@ -11,7 +11,7 @@ jQuery(document).ready(function()
 		var x = jQuery(this).attr('id');
 		jQuery(this).each(function()
 				{
-					(this).addClass("active");
+					jQuery(this).addClass("active");
 				});
 		var record_id = x.split("-").pop();
 		var action = x.split("-");
