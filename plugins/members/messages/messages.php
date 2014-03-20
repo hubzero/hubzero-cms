@@ -736,7 +736,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids  = JRequest::getVar('mid',array(0));
+		$mids  = JRequest::getVar('mid',array());
 
 		if (count($mids) > 0) 
 		{
@@ -780,7 +780,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids = JRequest::getVar('mid',array(0));
+		$mids = JRequest::getVar('mid',array());
 
 		if (count($mids) > 0) 
 		{
@@ -813,7 +813,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids  = JRequest::getVar('mid',array(0));
+		$mids  = JRequest::getVar('mid',array());
 
 		if (count($mids) > 0) 
 		{
