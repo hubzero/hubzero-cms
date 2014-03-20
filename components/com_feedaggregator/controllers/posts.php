@@ -43,6 +43,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 {
 	public function displayTask($posts = NULL)
 	{
+		
 		$this->_getScripts('assets/js/posts');
 		$this->_getStyles();
 		$document = JFactory::getDocument();
@@ -55,6 +56,12 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		{
 			if(isset($posts))
 			{
+				$this->view->filters = array();
+				$this->view->filters['limit']    = JRequest::getInt('limit', 10);
+				$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
+				$this->view->filters['time'] 	= JRequest::getString('timesort', '');
+				$this->view->filters['filterby'] = JRequest::getString('filterby', 'all');
+						
 				$this->setView('posts','display');
 				$this->view->fromfeed = TRUE;
 			}
@@ -79,7 +86,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$posts = array();
 
 				$model = new FeedAggregatorModelPosts;
-
+		
 				if($this->view->filters['filterby'] == 'all')
 				{
 					$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
@@ -111,6 +118,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				}
 				else
 				{
+					
 					//load stored posts
 					$model = new FeedAggregatorModelPosts;
 					$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
@@ -217,12 +225,10 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 
 	public function PostsByIdTask()
 	{
-
 		$id = JRequest::getVar('id', '');
 		$model = new FeedAggregatorModelPosts;
 		$posts = $model->loadPostsByFeedId($id);
 		$this->displayTask($posts);
-
 	}
 
 
@@ -290,7 +296,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				}
 				// Output messsage and redirect
 				$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=posts',
+						'index.php?option=' . $this->_option . '&controller=posts&filterby=all',
 						JText::_('New Posts Retrieved.')
 				);
 			} //end try
