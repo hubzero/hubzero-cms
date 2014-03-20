@@ -30,6 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+if(isset($this->filters['filterby']) != TRUE)
+{
+	$this->filters['filterby'] = 'all';
+}
+
 ?>
 
 <div id="content-header">
