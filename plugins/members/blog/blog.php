@@ -906,14 +906,7 @@ class plgMembersBlog extends JPlugin
 			return $this->_entry();
 		}
 
-		// Get parameters
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$p = new $paramsClass('');
+		$p = new JParameter('');
 		$p->bind(JRequest::getVar('params', '', 'post'));
 
 		$row->params = $p->toString();
@@ -932,8 +925,10 @@ class plgMembersBlog extends JPlugin
 			return $this->_settings();
 		}
 
-		$this->message = JText::_('Settings successfully saved!');
-
-		return $this->_settings();
+		$app = JFactory::getApplication();
+		$app->redirect(
+			JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=settings'),
+			JText::_('Settings successfully saved!')
+		);
 	}
 }
