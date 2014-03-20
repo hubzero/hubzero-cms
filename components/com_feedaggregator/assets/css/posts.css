@@ -71,7 +71,7 @@ margin-top: 10px;
 
 .approveBtn{
 	color: white; 
-	background-image: linear-gradient(to bottom, #009900, #003D00);	
+	background-image: linear-gradient(to bottom, #009900, #003D00);		
 }
 
 .reviewBtn{
@@ -83,3 +83,4 @@ margin-top: 10px;
 	color: white; 
 	background-image: linear-gradient(to bottom, #FF0000, #B22400);
 }
+

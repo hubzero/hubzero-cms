@@ -124,17 +124,11 @@ if(isset($this->filters['filterby']) != TRUE)
 				</td>
 				
 				<td>
-				<?php if($post->status != "approved"): ?>
-					<input type="button" class="approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
-				<?php endif; ?>
+					<input type="button" class="<?php echo ($post->status == "approved" ? 'active' : ''); ?>approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">				
 				
-				<?php if($post->status != "under review"): ?>
-					<input type="button" style="color: white; background-image: linear-gradient(to bottom, #9900CC, #5C007A);" class="btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
-				<?php endif; ?>
+					<input type="button" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?>reviewBtn btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
 				
-				<?php if($post->status != "removed"): ?>
-					<input type="button" style="color: white; background-image: linear-gradient(to bottom, #FF0000, #B22400);" class="btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
-				<?php endif; ?>
+					<input type="button" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?>removeBtn btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
 				</td>
 			</tr>
 			<div style="display:none">
@@ -142,9 +136,9 @@ if(isset($this->filters['filterby']) != TRUE)
 						<h1><?php echo $post->title; ?></h1>
 						<p class="description"><?php echo $post->description; ?></p>
 						<p><a target="_blank" href="<?php echo $post->link; ?>">Link to original post.</a></p>
-						<input type="button" class="approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
-						<input type="button" class="reviewBtn btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
-						<input type="button" class="removeBtn btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
+						<input type="button" class="<?php echo ($post->status == "approved" ? 'active' : ''); ?>approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
+						<input type="button" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?>reviewBtn btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
+						<input type="button" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?>removeBtn btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
 				</div>
 			</div>
 			<?php endif;?>
