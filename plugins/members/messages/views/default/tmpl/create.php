@@ -40,7 +40,7 @@ $disabled = ($this->tos) ? true : false;
 $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', 'members', '', $this->tos, '', $disabled)) );
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option='.$option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset class="hub-mail">
 		<div class="cont">
 			<h3><?php echo JText::_('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
@@ -75,7 +75,7 @@ $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', '
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="task" value="view" />
 	<input type="hidden" name="active" value="messages" />
-	<input type="hidden" name="option" value="<?php echo $option; ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="send" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 </form>
