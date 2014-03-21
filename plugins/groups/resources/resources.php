@@ -150,7 +150,8 @@ class plgGroupsResources extends Hubzero_Plugin
 			if ($juser->get('guest') 
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				$area = JRequest::getWord('area', 'resource');
+				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active.'&area='.$area);
 				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
 				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
 				return;
