@@ -1211,7 +1211,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->title = JText::_('PLG_MEMBERS_PROFILE_DISABILITY');
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
-							$editview->inputs = '<label>' . JText::_('PLG_MEMBERS_PROFILE_DISABILITY') . $disability_html . '</label>';
+							$editview->inputs = '<label for="disability-input">' . JText::_('PLG_MEMBERS_PROFILE_DISABILITY') . $disability_html . '</label>';
 							$editview->access = '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[disability]',$this->params->get('access_disability'),'input-select') . '</label>';
 							$editview->display();
 						?>
@@ -1337,7 +1337,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->title = JText::_('PLG_MEMBERS_PROFILE_HISPANIC');
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
-							$editview->inputs = '<label>' . JText::_('PLG_MEMBERS_PROFILE_HISPANIC') . $hispanic_html . '</label>';
+							$editview->inputs = '<label for="hispanic-input">' . JText::_('PLG_MEMBERS_PROFILE_HISPANIC') . $hispanic_html . '</label>';
 							$editview->access = '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[hispanic]',$this->params->get('access_hispanic'),'input-select') . '</label>';
 							$editview->display();
 						?>
@@ -1445,7 +1445,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->title = JText::_('PLG_MEMBERS_PROFILE_RACE');
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
-							$editview->inputs = '<label for="xxx">' . JText::_('PLG_MEMBERS_PROFILE_RACE') . $race_html.'</label>';
+							$editview->inputs = '<label for="race-input">' . JText::_('PLG_MEMBERS_PROFILE_RACE') . $race_html.'</label>';
 							$editview->access = '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>';
 							$editview->display();
 						?>
