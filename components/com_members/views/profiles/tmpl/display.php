@@ -48,10 +48,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<ul>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>">Forgot your username?</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">Forgot your username?</a>
 			</li>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>">Forgot your password?</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">Forgot your password?</a>
 			</li>
 			<li>
 				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=members'); ?>">Need Help?</a>
