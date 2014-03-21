@@ -356,7 +356,8 @@ class TagsTableObject extends JTable
 				FROM $this->_tbl AS rt 
 				INNER JOIN #__tags AS t ON (rt.tagid = t.id)
 				WHERE rt.objectid=" . $this->_db->Quote($objectid) . " AND rt.tbl=" . $this->_db->Quote($tbl);
-		if (isset($this->label) && $this->label != '')
+		
+		if (isset($this->label))
 		{
 			$sql .= " AND rt.label=" . $this->_db->Quote($this->label); 
 		}
