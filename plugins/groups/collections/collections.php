@@ -670,7 +670,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		}
 		else
 		{
-			return $this->_feed();
+			return $this->_collection();
 		}
 	}
 
@@ -737,7 +737,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		}
 		else
 		{
-			return $this->_feed();
+			return $this->_collection();
 		}
 	}
 
