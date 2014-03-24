@@ -202,7 +202,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			'tag'     => $rv['tag'], 
 			'raw_tag' => $rv['raw_tag']
 		);
-		if (!$rv['new'])
+		if (!$rv['new'] && isset($tag['id']))
 		{
 			$t_idx = 0;
 			$idx_map = array($tag['id'] => $t_idx);
