@@ -63,6 +63,9 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 {
 	$backLink = $_SERVER['HTTP_REFERER'];
 }
+
+$pid = JRequest::getVar( 'publication', '' );
+
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -386,6 +389,12 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 								$this->assocs[$i]->type = NULL;
 								$this->assocs[$i]->tbl = NULL;
 							}
+							if ($i == 0 && $pid)
+							{
+								$this->assocs[$i]->tbl = 'publication';
+								$this->assocs[$i]->oid = $pid;
+							}
+							
 							echo "\t\t\t".'  <tr>'."\n";
 							//echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][type]" value="'.$this->assocs[$i]->type.'" /></td>'."\n";
 							echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]">'."\n";

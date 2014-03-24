@@ -33,6 +33,9 @@ $canedit = 1;
 
 $ptitle = JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS_TO_RELATED');
 
+$config = JComponentHelper::getParams( 'com_citations' );
+$allow_import = $config->get('citation_import', 1);
+
 ?>
 <?php echo $this->project->provisioned == 1 
 			? $this->helper->showPubTitleProvisioned( $this->pub, $this->route, $this->title)
@@ -70,6 +73,9 @@ $ptitle = JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS_TO_RELATED');
 				</div>
 				<div id="citation-preview"></div>
 			</form>
+			<?php if ($allow_import) { ?>
+			<p><?php echo JText::_('<strong>No DOI?</strong> Add citation manually via'); ?> <a href="citations/add?publication=66" target="_blank">this form</a>.</p>
+			<?php } ?>
 			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_CITATIONS_PANEL'); ?></p>
 			
 		 </div>
