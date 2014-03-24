@@ -329,7 +329,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
 			
 			//if we just created campaign go back to edit form so we can add content
-			if (!$newsletter['id'] || $apply)
+			if (!isset($newsletter['id']) || $apply)
 			{
 				$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]=' . $newsletterNewsletter->id;
 			}
