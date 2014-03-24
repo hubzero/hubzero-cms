@@ -62,7 +62,7 @@ class UsersControllerReset extends UsersController
 
 			// Go back to the request form.
 			$message = JText::sprintf('COM_USERS_RESET_REQUEST_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'notice');
+			$this->setRedirect(JRoute::_($route, false), $message, 'error');
 			return false;
 		} else {
 			// The request succeeded.
@@ -122,7 +122,7 @@ class UsersControllerReset extends UsersController
 
 			// Go back to the confirm form.
 			$message = JText::sprintf('COM_USERS_RESET_CONFIRM_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'notice');
+			$this->setRedirect(JRoute::_($route, false), $message, 'error');
 			return false;
 		} else {
 			// Confirm succeeded.
@@ -179,7 +179,7 @@ class UsersControllerReset extends UsersController
 
 			// Go back to the complete form.
 			$message = JText::sprintf('COM_USERS_RESET_COMPLETE_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'notice');
+			$this->setRedirect(JRoute::_($route, false), $message, 'error');
 			return false;
 		} else {
 			// Complete succeeded.
