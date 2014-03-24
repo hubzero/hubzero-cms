@@ -122,7 +122,7 @@ class ResourcesControllerAuthors extends Hubzero_Controller
 			$rc->loadAssociation($authid, $id, 'resources');
 			if ($rc->authorid) 
 			{
-				$this->setError(JText::sprintf('USER_IS_ALREADY_AUTHOR', $authid));
+				$this->setError(JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rc->name));
 			}
 			else 
 			{
@@ -217,7 +217,7 @@ class ResourcesControllerAuthors extends Hubzero_Controller
 				$rcc->loadAssociation($uid, $id, 'resources');
 				if ($rcc->authorid) 
 				{
-					$this->setError(JText::sprintf('USER_IS_ALREADY_AUTHOR', $cid));
+					$this->setError(JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rcc->name));
 					continue;
 				}
 
