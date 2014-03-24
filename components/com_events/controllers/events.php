@@ -410,8 +410,8 @@ class EventsControllerEvents extends Hubzero_Controller
 
 		// Set some dates
 		$select_date = $year . '-' . $month . '-01 00:00:00';
-		$select_date_fin = $year . '-' . $month . '-' . date("t",mktime(0, 0, 0, ($month+1), 0, $year)) . ' 23:59:59';
-
+		$select_date_fin = $year . '-' . $month . '-' . date("t",mktime(0, 0, 0, ($month+1), 0, (int) $year)) . ' 23:59:59';
+		
 		// Set some filters
 		$filters = array();
 		$filters['gid'] = $gid;
