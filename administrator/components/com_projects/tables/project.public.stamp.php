@@ -230,7 +230,6 @@ class ProjectPubStamp extends JTable
 			if ($this->expires && $this->expires < $now)
 			{
 				// Expired - need new entry
-				$this->delete();
 				$new = 1;
 			}
 			else
