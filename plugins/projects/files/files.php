@@ -3172,26 +3172,73 @@ class plgProjectsFiles extends JPlugin
 			return false;
 		}
 		
-		$file = $data->file;
-		$disp = isset($data->disp) ? $data->disp : 'inline';
+		$file 		= $data->file;
+		$disp 		= isset($data->disp) ? $data->disp : 'inline';
+		$limited 	= isset($data->limited) ? $data->limited : 0;
+		$hash 		= isset($data->hash) ? $data->hash : 0;
 		
 		$database = JFactory::getDBO();
+		
+		// Load language file
+		$this->loadLanguage();
 		
 		// Instantiate a project
 		$obj = new Project( $database );
 		
+		$juser = JFactory::getUser();
+		$uid   = $juser->get('id');
+		
 		// Get Project
-		$project = $obj->getProject($projectid);
+		$project = $obj->getProject($projectid, $uid);
+		
+		if (!$project || ($limited == 1 && !$project->owner))
+		{			
+			// Throw error
+			JError::raiseError( 403, JText::_('PLG_PROJECTS_FILES_ERROR_ANAUTHORIZED'));
+			return;
+		}
 		
 		// Load component configs
 		$config = JComponentHelper::getParams('com_projects');
 		
 		// Get project path
-		$path  = ProjectsHelper::getProjectPath($project->alias, 
-				$config->get('webpath'), 1);
-		$prefix = $config->get('offroot', 0) ? '' : JPATH_ROOT;
+		$path  		= ProjectsHelper::getProjectPath($project->alias, 
+					$config->get('webpath'), 1);
+		$prefix 	= $config->get('offroot', 0) ? '' : JPATH_ROOT;
+
+		$deleteTemp = 0;
 		
-		$serve = $prefix . $path . DS . $file;
+		if ($hash)
+		{
+			$tempPath  	= ProjectsHelper::getProjectPath($project->alias, 
+						$config->get('webpath'), 1, 'temp');
+
+			if (!is_dir( $tempPath )) 
+			{			
+				// Create path
+				if (!JFolder::create( $tempPath )) 
+				{
+					// Throw error
+					JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
+					return;
+				}
+			}			
+			
+			// Include Git Helper
+			$this->getGitHelper();
+					
+			$tempName = 'temp-' . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 ) . basename($file);
+			$serve    = $prefix. $tempPath . DS . $tempName;
+			
+			// Get file content
+			$this->_git->getContent($file, $hash, $serve);
+			
+			$deleteTemp = 1;
+		}
+		else
+		{
+			$serve = $prefix . $path . DS . $file;
+		}
 		
 		// Ensure the file exist
 		if (!file_exists($serve)) 
@@ -3207,14 +3254,22 @@ class plgProjectsFiles extends JPlugin
 		$xserver->disposition($disp);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas(basename($file));
-
-		if (!$xserver->serve()) 
+		
+		$result = $xserver->serve();
+		
+		if ($deleteTemp)
+		{
+			// Delete downloaded temp file			
+			JFile::delete($serve);
+		}
+		
+		if (!$result) 
 		{
 			// Should only get here on error
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+			JError::raiseError( 404, JText::_('COM_PROJECTS_SERVER_ERROR') );
 		} 
 		else 
-		{
+		{				
 			exit;
 		}
 
@@ -6599,6 +6654,14 @@ class plgProjectsFiles extends JPlugin
 		
 		// Incoming
 		$this->subdir 	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
+		
+		$juri = JURI::getInstance();
+		$base = rtrim($juri->base(), DS);
+		if (substr($base, -13) == 'administrator')
+		{
+			$base = substr($base, 0, strlen($base)-13);
+		}
+		$this->base = $base;
 				
 		// File actions			
 		switch ($action) 
@@ -6829,9 +6892,9 @@ class plgProjectsFiles extends JPlugin
 		$obj->type			= 'file';
 		$obj->name			= basename($file);
 		$obj->localPath		= $this->subdir ? $this->subdir . DS . $file : $file;
-		$obj->fullPath		= $this->prefix . $this->path . DS . $file;
-		
-		if (!$hash && !file_exists($obj->fullPath) )
+		$fullPath			= $this->prefix . $this->path . DS . $file;
+				
+		if (!$hash && !file_exists($fullPath) )
 		{
 			return false;
 		}
@@ -6841,7 +6904,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		else
 		{
-			$obj->size		= filesize($obj->fullPath);
+			$obj->size		= filesize($fullPath);
 		}
 		
 		$obj->ext			= end(explode('.', $file));
@@ -6855,9 +6918,32 @@ class plgProjectsFiles extends JPlugin
 		$obj->date			= isset($gitData['date']) ? $gitData['date'] : NULL;
 		$obj->author 		= isset($gitData['author']) ? $gitData['author'] : NULL;
 		$obj->email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
-		$obj->md5			= hash_file('md5', $obj->fullPath);
-		$obj->commitHash 	= $hash ? $hash : $this->_git->gitLog($this->path, $obj->localPath, '', 'hash');	
+		$obj->md5			= hash_file('md5', $fullPath);
+		$obj->commitHash 	= $hash ? $hash : $this->_git->gitLog($this->path, $obj->localPath, '', 'hash');
+		
+		// Get public link
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
+		$objSt = new ProjectPubStamp( $this->_database );
+
+		// Build reference for download URL
+		$reference = array(
+			'file' 		=> $obj->localPath,
+			'disp' 		=> 'attachment',
+			'hash' 		=> $obj->commitHash,
+			'limited' 	=> 2
+		);
+		
+		$expires = JFactory::getDate('+15 minutes')->toSql();
+		
+		// Get short lived download URL
+		if ($objSt->registerStamp($this->_project->id, json_encode($reference), 'files', 0, $expires))
+		{
+			$stamp = $objSt->stamp;
+			$obj->downloadUrl = $this->base . DS . 'projects' . DS . 'get?s=' . $stamp;
+		}
+			
 		return $obj;
 	}
 	

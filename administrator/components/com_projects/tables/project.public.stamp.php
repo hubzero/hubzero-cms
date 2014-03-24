@@ -132,13 +132,23 @@ class ProjectPubStamp extends JTable
 		$now = JFactory::getDate()->toSql();
 		
 		$query  = "SELECT * FROM $this->_tbl WHERE stamp='$stamp' ";
-		$query .= " AND (expires IS NULL OR expires <= '$now')";
+		//$query .= " AND (expires IS NULL OR expires <= '$now')";
 		$query .= " LIMIT 1";
 		
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) 
 		{
-			return $this->bind( $result );
+			$this->bind( $result );
+			if ($this->expires && $this->expires < $now)
+			{
+				// Clean up expired value
+				$this->delete();
+				return false;
+			}
+			else
+			{
+				return $this;
+			}
 		} 
 		else 
 		{
@@ -211,24 +221,41 @@ class ProjectPubStamp extends JTable
 			return false;
 		}
 		
+		$now = JFactory::getDate()->toSql();
+		$new = 0;
+		
 		// Load record
 		if ($this->checkStamp( $projectid, $reference, $type ))
-		{
-			if ($listed === NULL && $expires === NULL)
+		{			
+			if ($this->expires && $this->expires < $now)
 			{
-				return true;
+				// Expired - need new entry
+				$this->delete();
+				$new = 1;
 			}
-			
-			// These values may be updated
-			$this->listed	= $listed === NULL ? $this->listed : $listed;	
-			$this->expires	= $expires === NULL ? $this->expires : $expires;
-			
-			if ($this->store())
+			else
 			{
-				return true;
-			}						
+				if ($listed === NULL && $expires === NULL)
+				{
+					return true;
+				}
+
+				// These values may be updated
+				$this->listed	= $listed === NULL ? $this->listed : $listed;	
+				$this->expires	= $expires === NULL ? $this->expires : $expires;
+
+				if ($this->store())
+				{
+					return true;
+				}
+			}
 		}
 		else
+		{
+			$new = 1;
+		}
+		
+		if ($new)
 		{
 			$this->projectid 	= $projectid;
 			$this->reference 	= $reference;
