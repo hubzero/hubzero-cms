@@ -6705,8 +6705,29 @@ class plgProjectsFiles extends JPlugin
 		
 		// Via local copy
 		if ($dataUrl && is_file($dataUrl))
-		{
-			// TBD
+		{			
+			$file 		= ProjectsHtml::makeSafeFile(basename($dataUrl));
+			$localPath	= $this->subdir ? $this->subdir . DS . $file : $file;
+			$fullPath	= $this->prefix . $this->path . DS . $localPath;
+			
+			if (!JFile::copy($dataUrl, $fullPath))
+			{
+				$this->setError(JText::_('Error inserting file into project'));
+				return false;
+			}
+			
+			// Git add & commit
+			$commitMsg 		= '';
+			$this->_git->gitAdd($this->path, $localPath, $commitMsg);
+			$this->_git->gitCommit($this->path, $commitMsg);
+			
+			// Store in session
+			$this->registerUpdate('uploaded', $localPath);
+			
+			// After upload actions	
+			$this->onAfterUpdate();
+			
+			$assets[] = $localPath;
 		}
 		else
 		{
