@@ -232,6 +232,13 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 		$iCalReader = new iCalReader( $calendarUrl );
 		$incomingEvents = $iCalReader->events();
 
+		// check to make sure we have events
+		if (count($incomingEvents) < 1)
+		{
+			$this->setError($this->get('title'));
+			return false;
+		}
+
 		//make uid keys for array
 		//makes it easier to diff later on
 		foreach($incomingEvents as $k => $incomingEvent)
