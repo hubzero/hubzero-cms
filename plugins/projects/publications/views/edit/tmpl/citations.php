@@ -74,7 +74,7 @@ $allow_import = $config->get('citation_import', 1);
 				<div id="citation-preview"></div>
 			</form>
 			<?php if ($allow_import) { ?>
-			<p><?php echo JText::_('<strong>No DOI?</strong> Add citation manually via'); ?> <a href="citations/add?publication=66" target="_blank">this form</a>.</p>
+			<p><?php echo JText::_('<strong>No DOI?</strong> Add citation manually via'); ?> <a href="citations/add?publication=<?php echo $this->pid; ?>" target="_blank">this form</a>.</p>
 			<?php } ?>
 			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_CITATIONS_PANEL'); ?></p>
 			

@@ -64,7 +64,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 	$backLink = $_SERVER['HTTP_REFERER'];
 }
 
-$pid = JRequest::getVar( 'publication', '' );
+$pid = JRequest::getInt( 'publication', 0 );
 
 ?>
 <div id="content-header">
