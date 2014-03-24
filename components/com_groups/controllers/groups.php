@@ -805,7 +805,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// Incoming
 		$g_gidNumber    	= JRequest::getInt('gidNumber', 0, 'post');
-		$g_cn           	= strtolower(trim(JRequest::getVar('cn', '', 'post')));
+		$g_cn           	= trim(JRequest::getVar('cn', '', 'post'));
 		$g_description  	= preg_replace('/\s+/', ' ',trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
 		$g_discoverability	= JRequest::getInt('discoverability', 0, 'post');
 		$g_public_desc  	= trim(JRequest::getVar('public_desc',  '', 'post', 'none', 2));
