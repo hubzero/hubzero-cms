@@ -102,10 +102,12 @@ function submitbutton(pressbutton)
 						<td>
 							<select name="import[file]">
 								<option value=""><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL'); ?></option>
-								<?php foreach ($this->files as $file): ?>
-									<?php $sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
-									<option <?php echo $sel; ?> value="<?php echo $file; ?>"><?php echo $file; ?></option>
-								<?php endforeach; ?>
+								<?php if (isset($this->files)): ?>
+									<?php foreach ($this->files as $file): ?>
+										<?php $sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
+										<option <?php echo $sel; ?> value="<?php echo $file; ?>"><?php echo $file; ?></option>
+									<?php endforeach; ?>
+								<?php endif; ?>
 							</select>
 							<span class="hint">
 								<?php echo JText::sprintf('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()); ?>
@@ -136,7 +138,17 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 		
-		<?php $hooks = json_decode($this->import->get('hooks')); ?>
+		<?php 
+			// parse our hooks
+			$hooks              = json_decode($this->import->get('hooks')); 
+			if (!is_object($hooks))
+			{
+				$hooks = new stdClass;
+			}
+			$hooks->postparse   = (isset($hooks->postparse)) ? $hooks->postparse : array();
+			$hooks->postmap     = (isset($hooks->postmap)) ? $hooks->postmap : array();
+			$hooks->postconvert = (isset($hooks->postconvert)) ? $hooks->postconvert : array();
+		?>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELDSET_HOOKS'); ?></legend>
 			<table class="admintable">
@@ -149,10 +161,12 @@ function submitbutton(pressbutton)
 						</td>
 						<td>	
 							<select name="hooks[postparse][]" multiple>
-								<?php foreach ($hooks->postparse as $hook) : ?>
-									<?php $importHook = $this->hooks->fetch('id', $hook); ?>
-									<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
-								<?php endforeach; ?>
+								<?php if (isset($hooks->postparse)) : ?>
+									<?php foreach ($hooks->postparse as $hook) : ?>
+										<?php $importHook = $this->hooks->fetch('id', $hook); ?>
+										<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+									<?php endforeach; ?>
+								<?php endif; ?>
 								
 								<?php foreach ($this->hooks as $hook): ?>
 									<?php if ($hook->get('type') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)) { continue; } ?>
