@@ -1,26 +1,28 @@
 <?php
 
+use Hubzero\Content\Migration\Base;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script for ...
  **/
-class Migration20140115171149PlgResourcesFindthistext extends Hubzero_Migration
+class Migration20140115171149PlgResourcesFindthistext extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up($db)
 	{
-		self::addPluginEntry('resources','findthistext');
+		$this->addPluginEntry('resources','findthistext');
 	}
 
 	/**
 	 * Down
 	 **/
-	protected static function down($db)
+	public function down($db)
 	{
-		self::deletePluginEntry('resources','findthistext');
+		$this->deletePluginEntry('resources','findthistext');
 	}
 }
