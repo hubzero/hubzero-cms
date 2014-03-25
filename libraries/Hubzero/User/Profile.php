@@ -1470,7 +1470,7 @@ class Profile extends Object
 	 * @param string $gid Parameter description (if any) ...
 	 * @return unknown Return description (if any) ...
 	 */
-	public function getGroupMemberRoles($uid, $gid)
+	public static function getGroupMemberRoles($uid, $gid)
 	{
 		$db = \JFactory::getDBO();
 		$sql = "SELECT r.id, r.name, r.permissions FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.roleid AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
@@ -1486,7 +1486,7 @@ class Profile extends Object
 	 * @param     $action    Group Action to perform
 	 * @return    bool
 	 */
-	public function userHasPermissionForGroupAction( $group, $action )
+	public static function userHasPermissionForGroupAction( $group, $action )
 	{
 		//get user roles
 		$roles = self::getGroupMemberRoles( 
