@@ -465,6 +465,22 @@ class plgGroupsMessages extends Hubzero_Plugin
 		{
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 		}
+
+		// add invite emails if sending to invitees
+		if ($action == 'group_invitees_message')
+		{
+			// Get invite emails
+			$db = JFactory::getDBO();
+			$group_inviteemails = new Hubzero_Group_InviteEmail($db);
+			$current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
+
+			$headers  = 'From: ' . $from['name'] . ' <' . $from['email'] . '>' . "\r\n";
+			$headers .= 'Reply-To: ' . $from['replytoname'] . ' <' . $from['replytoemail'] . '>' . "\r\n";
+			foreach ($current_inviteemails as $current_inviteemail)
+			{
+				mail($current_inviteemail, $subject, $message, $headers);
+			}
+		}
 		
 		// Log the action
 		if ($action) 
