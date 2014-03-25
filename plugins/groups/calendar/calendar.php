@@ -1725,7 +1725,8 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		//add scope and scope id to calendar array
 		$calendar['scope']    = 'group';
 		$calendar['scope_id'] = $this->group->get('gidNumber');
-		
+		$calendar['url']      = trim($calendar['url']);
+
 		//is this a remote calendar url
 		if ($calendar['url'] != '' && filter_var($calendar['url'], FILTER_VALIDATE_URL))
 		{
