@@ -67,8 +67,11 @@ class Migration20140324161600ComResources extends Base
 						) ENGINE=MyISAM DEFAULT CHARSET=latin1;\n";
 		}
 
-		$this->db->setQuery($query);
-		$this->db->query();
+		if ($query != '')
+		{
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 	}
 
 	/**
@@ -96,7 +99,10 @@ class Migration20140324161600ComResources extends Base
 			$query .= "DROP TABLE IF EXISTS `#__resource_import_hooks`;\n";
 		}
 
-		$this->db->setQuery($query);
-		$this->db->query();
+		if ($query != '')
+		{
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 	}
 }
