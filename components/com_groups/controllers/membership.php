@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class GroupsControllerMembership extends GroupsControllerAbstract
 {
-	/**
+	/** 
 	 * Override Execute Method
 	 * 
 	 * @return 	void
@@ -618,6 +618,120 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 	}
 	
+	/**
+	 *  Cancel Membership Task
+	 * 
+	 * @return     
+	 */
+	public function cancelTask()
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask('You must be logged in to cancel group memberships.');
+			return;
+		}
+		
+		//check to make sure we have  cname
+		if(!$this->cn)
+		{
+			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
+		}
+		
+		// Load the group page
+		$this->view->group = Hubzero\User\Group::getInstance( $this->cn );
+		
+		// Ensure we found the group info
+		if (!$this->view->group || !$this->view->group->get('gidNumber')) 
+		{
+			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
+		}
+		
+		//determine params class based on joomla version
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		// Get the group params
+		$gparams = new $paramsClass($this->view->group->get('params'));
+
+		// If membership is managed in seperate place disallow action
+		if ($gparams->get('membership_control', 1) == 0) 
+		{
+			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
+			return;
+		}
+		
+		//get request vars
+		$return = strtolower(trim(JRequest::getVar('return', '', 'get')));
+		
+		// Remove the user from the group
+		$this->view->group->remove('managers', $this->juser->get('id'));
+		$this->view->group->remove('members', $this->juser->get('id'));
+		$this->view->group->remove('applicants', $this->juser->get('id'));
+		$this->view->group->remove('invitees', $this->juser->get('id'));
+		if ($this->view->group->update() === false) 
+		{
+			$this->setNotification(JText::_('GROUPS_ERROR_CANCEL_MEMBERSHIP_FAILED'), 'error');
+		}
+
+		// Log the membership cancellation
+		GroupsModelLog::log(array(
+			'gidNumber' => $this->view->group->get('gidNumber'),
+			'action'    => 'membership_cancelled',
+			'comments'  => array($this->juser->get('id'))
+		));
+
+		// Remove record of reason wanting to join group
+		$reason = new GroupsReason($this->database);
+		$reason->deleteReason($this->juser->get('id'), $this->view->group->get('gidNumber'));
+
+		//get site config
+		$jconfig = JFactory::getConfig();
+
+		// Email subject
+		$subject = JText::sprintf('COM_GROUPS_EMAIL_MEMBERSHIP_CANCELLED_SUBJECT', $this->view->group->get('cn'));
+
+		// Build the e-mail message
+		$eview = new JView(array('name' => 'emails', 'layout' => 'cancelled'));
+		$eview->option = $this->_option;
+		$eview->sitename = $jconfig->getValue('config.sitename');
+		$eview->juser = $this->juser;
+		$eview->group = $this->view->group;
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
+
+		// Get the system administrator e-mail
+		$emailadmin = $jconfig->getValue('config.mailfrom');
+
+		// Build the "from" portion of the e-mail
+		$from = array();
+		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
+		$from['email'] = $jconfig->getValue('config.mailfrom');
+
+		// E-mail the administrator
+		JPluginHelper::importPlugin('xmessage');
+		$dispatcher = JDispatcher::getInstance();
+		if (!$dispatcher->trigger('onSendMessage', array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option)))
+		{
+			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
+		}
+		
+		//if group isnt approved or not published
+		if(!$this->view->group->get('approved') || !$this->view->group->get('published'))
+		{
+			$this->setNotification('You have successfully canceled your group membership.', 'passed');
+			$this->setRedirect( JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=groups') );
+			return;
+		}
+		
+		// Action Complete. Redirect to appropriate page
+		$this->setRedirect( JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=groups') );
+	}
+
 	
 	/**
 	 *  Join Group Method
