@@ -351,7 +351,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				if ($this->authorized == 'manager' 
+				if ($this->authorized == 'member'
+				 || $this->authorized == 'manager' 
 				 || $this->authorized == 'admin')
 				{
 					$view->filters['authorized'] = true;
