@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->authorized == 'manager') { ?>
 <ul id="page_options">
 	<li>
-		<a id="new-group-message" class="icon-email message btn" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>">
+		<a id="new-group-message" class="icon-email message btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>">
 			<span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span>
 		</a>
 	</li>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="section">
 	<div class="container">
-		<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
 			<table class="groups entries" summary="Groups this person is a member of">
 				<caption><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?> <span>(<?php echo count($this->rows); ?>)</span></caption>
 				<thead>
