@@ -172,14 +172,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$jconfig = JFactory::getConfig();
 		
 		//build list of filters
-		$this->view->filters 			= array();
-		$this->view->filters['type']	= array(1, 3);
-		$this->view->filters['limit']	= 'all';
-		$this->view->filters['fields']	= array('COUNT(*)');
-		$this->view->filters['search'] 	= JRequest::getVar('search', '');
-		$this->view->filters['sortby'] 	= strtolower(JRequest::getWord('sortby', 'title'));
-		$this->view->filters['policy'] 	= strtolower(JRequest::getWord('policy', ''));
-		$this->view->filters['index']	= htmlentities(JRequest::getVar('index', ''));
+		$this->view->filters 			  = array();
+		$this->view->filters['type']	  = array(1, 3);
+		$this->view->filters['published'] = 1;
+		$this->view->filters['limit']	  = 'all';
+		$this->view->filters['fields']	  = array('COUNT(*)');
+		$this->view->filters['search'] 	  = JRequest::getVar('search', '');
+		$this->view->filters['sortby'] 	  = strtolower(JRequest::getWord('sortby', 'title'));
+		$this->view->filters['policy'] 	  = strtolower(JRequest::getWord('policy', ''));
+		$this->view->filters['index']	  = htmlentities(JRequest::getVar('index', ''));
 		
 		//make sure we have a valid sort filter
 		if (!in_array($this->view->filters['sortby'], array('alias', 'title')))

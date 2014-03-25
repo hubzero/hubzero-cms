@@ -1271,6 +1271,20 @@ class Group extends Object
 			}
 		}
 		
+		if (isset($filters['published']) && $filters['published'] != '')
+		{
+			if ($where_clause != '')
+			{
+				$where_clause .= " AND";
+			}
+			else
+			{
+				$where_clause .= "WHERE";
+			}
+			
+			$where_clause .= " published=".$filters['published'];
+		}
+
 		if (isset($filters['approved']) && $filters['approved'] != '')
 		{
 			if ($where_clause != '')
