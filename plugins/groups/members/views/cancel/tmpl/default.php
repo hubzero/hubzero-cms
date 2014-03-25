@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
 	<div class="explaination">
 		<p class="info"><?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_EXPLANATION'); ?></p>
 	</div>
