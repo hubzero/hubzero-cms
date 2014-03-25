@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (substr($this->xmessage->type, -8) == '_message') {
 	$u = JUser::getInstance($this->xmessage->created_by);
-	$from = '<a href="'.JRoute::_('index.php?option='.$option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>';
+	$from = '<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>';
 } else {
 	$from = 'System ('.$this->xmessage->component.')';
 }
@@ -49,20 +49,20 @@ if (substr($this->xmessage->type, -8) == '_message') {
 	<ul class="entries-menu">
 		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
 		<?php if($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
-			<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
+			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
 		<?php } ?>
 	</ul>
 	<br class="clear" />
 	<?php endif; ?>
 	
-	<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
 		<fieldset class="hub-mail" style="min-height:200px">
 			<table class="groups entries" summary="Groups this person is a member of">
 				<caption>
 					<?php echo JText::_('PLG_GROUPS_MESSAGE'); ?>
 					<?php if(!$this->no_html) : ?>
 						<span>
-							<small>( <a href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small>
+							<small>( <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small>
 						</span>
 					<?php endif; ?>
 				</caption>
