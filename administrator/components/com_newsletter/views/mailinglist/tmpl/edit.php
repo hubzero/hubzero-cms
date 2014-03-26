@@ -49,7 +49,7 @@ JToolBarHelper::cancel();
 
 <form action="index.php" method="post" name="adminForm">
 	<?php if (!$this->list->id) : ?>
-		<p class="info">You must first create the mailing list to add emails it it.</p>
+		<p class="info">You must first create the mailing list to add emails to it.</p>
 	<?php endif; ?>
 	<fieldset class="adminform">
 		<legend><?php echo $text; ?> Mailing List</legend>
