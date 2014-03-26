@@ -31,6 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $txt = '';
+$html = '';
 $mode = strtolower(JRequest::getWord('mode', ''));
 
 if ($mode != 'preview')
@@ -46,8 +47,8 @@ if ($mode != 'preview')
 	}
 }
 
-    	$thumb = "/site/stats/resource_impact/resource_impact_".$resource->id."_th.gif";
-    	$full = "/site/stats/resource_impact/resource_impact_".$resource->id.".gif";
+    	$thumb = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id."_th.gif";
+    	$full = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id.".gif";
 	if (file_exists(JPATH_ROOT . $thumb)) {
 		$html .= '</br>';
 		$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';
@@ -313,7 +314,25 @@ if ($mode != 'preview')
 									} elseif ($grandchild->logicaltype == 51) {
 										$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 									} else {
-										$supp .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
+										$grandchildParams  = new JParameter($grandchild->params);
+										$grandchildAttribs = new JParameter($grandchild->attribs);
+										$linkAction = $grandchildParams->get( 'link_action', 0 );
+										$width      = $grandchildAttribs->get('width', 640) + 20;
+										$height     = $grandchildAttribs->get('height', 360) + 60;
+										
+										if ($linkAction == 1)
+										{
+											$supp .= '<a rel="external" href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
+										}
+										elseif ($linkAction == 2)
+										{
+											$url = JRoute::_('index.php?option=com_resources&id=' . $child->id . '&resid=' . $grandchild->id . '&task=play');
+											$supp .= '<a class="play '.$width.'x'.$height.'" href="'.$url.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
+										}
+										else
+										{
+											$supp .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
+										}
 									}
 									break;
 							}
