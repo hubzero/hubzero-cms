@@ -46,11 +46,14 @@ if(isset($this->filters['filterby']) != TRUE)
 <div id="content-header-extra">
 <ul id="useroptions">
 	<li>
-	<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
+		<a href="#feedbox" id="generateFeed" class="fancybox-inline btn">Generate RSS Feed</a>
+	</li>
+	<li>
+	<a class="icon-refresh refresh btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
 	</li>
 
 	<li>
-	<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('View Feeds'); ?></a>
+	<a class="icon-view btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('View Feeds'); ?></a>
 	</li>
 	
 	<li class="last">
@@ -59,10 +62,9 @@ if(isset($this->filters['filterby']) != TRUE)
 </ul>
 </div><!-- / #content-header-extra -->
 
-<div class="main section">
+<div class="main section" style="margin-top: -40px;">
 <form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-<div id="page-main" style="padding-bottom:50px;">
-<a href="#feedbox" style="background-color: green;" class="fancybox-inline myButton">Generate RSS Feed</a>
+<div id="page-main">
 <br><br>
 
 <?php if (count($this->posts) > 0):?>
@@ -136,9 +138,12 @@ if(isset($this->filters['filterby']) != TRUE)
 						<h1><?php echo $post->title; ?></h1>
 						<p class="description"><?php echo $post->description; ?></p>
 						<p><a target="_blank" href="<?php echo $post->link; ?>">Link to original post.</a></p>
-						<input type="button" class="<?php echo ($post->status == "approved" ? 'active' : ''); ?>approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">
-						<input type="button" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?>reviewBtn btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
-						<input type="button" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?>removeBtn btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
+						<div style="padding: 40px; text-align: center; z-index: 99;">
+						<hr>
+						<input type="button" class="actionBtn <?php echo ($post->status == "approved" ? 'active' : ''); ?> approveBtn btn " value="Approve" id="approve-prev-<?php echo $post->id;?>">
+						<input type="button" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?> reviewBtn btn actionBtn" value="Mark for Review" id="mark-prev-<?php echo $post->id;?>">
+						<input type="button" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?> removeBtn btn actionBtn" value="Remove" id="remove-prev-<?php echo $post->id;?>">
+						</div>
 				</div>
 			</div>
 			<?php endif;?>

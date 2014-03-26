@@ -1,8 +1,25 @@
-img { display:block; margin-bottom:10px; }
+.postpreview img { 
+display:block;
+margin-right: auto;
+margin-left: auto;
+backround-color: lime;}
 .postpreview p { word-wrap:break-word;}
 .postpreview h1 { font-family: san-serif; font-size: x-large; }
-.postpreview { padding: 20px;
-			 min-width: 400px;
+.postpreview 
+{ 
+	padding: 20px;
+	min-width: 450px;
+	text-align: center;
+}
+
+.fancybox-next
+{
+	max-width: 100px;
+}
+
+.fancybox-prev
+{
+	max-width: 100px;
 }
 
 #helpbox p{
@@ -29,40 +46,15 @@ img { display:block; margin-bottom:10px; }
 	'Impact', 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.myButton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	/* -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb; */
-	/* box-shadow:inset 0px 1px 0px 0px #dcecfb; */
-	background-color:#bedbfa;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #000000; 
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #528ecc;
-}
-.myButton:hover {
-	background-color:#80b5ea;
-		color:#ffffff;
-}
-.myButton:active {
-	position:relative;
-	top:1px;
-	color:#ffffff;
-	
-}
-.myButton:visted {
-	color:#ffffff;
+.main
+{
+	padding-bottom: 50px;
 }
 
-	
+#generateFeed
+{
+	background-color: green;
+}	
 .feedtable td
 {
 padding-top: 10px;

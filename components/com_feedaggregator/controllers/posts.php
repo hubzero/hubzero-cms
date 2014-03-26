@@ -57,7 +57,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 			if(isset($posts))
 			{
 				$this->view->filters = array();
-				$this->view->filters['limit']    = JRequest::getInt('limit', 10);
+				$this->view->filters['limit']    = JRequest::getInt('limit', 25);
 				$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
 				$this->view->filters['time'] 	= JRequest::getString('timesort', '');
 				$this->view->filters['filterby'] = JRequest::getString('filterby', 'all');
@@ -71,7 +71,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$this->view->setLayout('display');
 				// Incoming
 				$this->view->filters = array();
-				$this->view->filters['limit']    = JRequest::getInt('limit', 10);
+				$this->view->filters['limit']    = JRequest::getInt('limit', 25);
 				$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
 				$this->view->filters['time'] 	= JRequest::getString('timesort', '');
 				$this->view->filters['filterby'] = JRequest::getString('filterby', 'all');
@@ -134,7 +134,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				);
 				
 				$this->view->pageNav->setAdditionalUrlParam('filterby', $this->view->filters['filterby']);
-								
+							
 			}
 
 			/*Truncates the title to save screen real-estate. Full version shown in FancyBox*/
@@ -187,7 +187,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		}
 		else if(JFactory::getUser()->id == FALSE) // have person login
 		{
-				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server') . '/?filterby=all';
+				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('/feedaggregator&task=' . $this->_task), 'server') . '/?filterby=all';
 				$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
 				JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
@@ -219,7 +219,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 
 
 		$model->updateStatus($id, $action_id);
-		echo $action_id;
+		echo $action_id."-".$action;
 		exit();
 	}
 
@@ -287,7 +287,6 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 									$post->set('created', strtotime($item->pubDate));
 									$post->set('description', (string) strip_tags($item->description, '<img>'));
 								}
-
 								$post->store();
 							} // end if
 
