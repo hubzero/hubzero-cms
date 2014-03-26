@@ -348,7 +348,7 @@ $option = 'com_groups';
 									{
 										$html .= '<span class="reason" data-title="' . JText::_('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
 										$html .= '<span class="reason-reason">'.stripslashes($row->reason).'</span>';
-										$html .= '<span class="reason-date">'.date("F d, Y @ g:ia", strtotime($row->date)).'</span>';
+										$html .= '<span class="reason-date">'.JHTML::_('date', $row->date, 'F d, Y @ g:ia').'</span>';
 										$html .= '</span>';
 									}
 								} else {
