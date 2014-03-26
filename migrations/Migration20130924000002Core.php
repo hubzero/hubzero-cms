@@ -293,7 +293,7 @@ class Migration20130924000002Core extends Hubzero_Migration
 		}
 	}
 
-	private function rebuildAssets($parentId=1, $leftId=0, $level=0)
+	private static function rebuildAssets($parentId=1, $leftId=0, $level=0)
 	{
 		$database = JFactory::getDbo();
 		$query = $database->getQuery(true);
