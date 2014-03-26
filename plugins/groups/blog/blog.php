@@ -723,7 +723,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$row->get('id')) 
 		{
-			$item = $this->model->entry($row->alias);
+			$item = $this->model->entry($row->get('alias'));
 			if ($item->get('id'))
 			{
 				$this->setError(JText::_('PLG_GROUPS_BLOG_ERROR_ALIAS_EXISTS'));
