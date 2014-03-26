@@ -305,7 +305,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $alt; ?></span>
 					</span>
 <?php } else { ?>
-					<a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="Set this to <?php echo $task;?>">
+					<a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 <?php } ?>
