@@ -692,7 +692,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//make sure we have emails
 		if (count($emails) < 1)
 		{
-			$this->setError('The newsletter mailing list you are attempting to send the newsletter to, has no members. Please add emails to the mailing list and try again.');
+			$this->setError('The newsletter mailing list you are attempting to send the newsletter to has no members. Please add emails to the mailing list and try again.');
 			$this->displayTask();
 			return;
 		}
