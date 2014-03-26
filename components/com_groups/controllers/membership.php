@@ -920,7 +920,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$row->gidNumber = $this->view->group->get('gidNumber');
 		$row->reason    = JRequest::getVar('reason', JText::_('GROUPS_NO_REASON_GIVEN'), 'post');
 		$row->reason    = \Hubzero\Utility\Sanitize::stripAll($row->reason);
-		$row->date      = JFactory::getDate();
+		$row->date      = JFactory::getDate()->toSql();
 
 		// Check and store the reason
 		if (!$row->check()) 
