@@ -1559,6 +1559,9 @@ class plgGroupsCalendar extends Hubzero_Plugin
 					case 'race':
 						$output .= $this->escapeCsv( $race ) . ',';
 						break;
+					case 'registered':
+						$output .= $this->escapeCsv(JHTML::_('date', $registrant->registered, 'Y-m-d H:i:s'));
+						break;
 					default:
 						$output .= $this->escapeCsv($registrant->$field) . ',';
 				}
