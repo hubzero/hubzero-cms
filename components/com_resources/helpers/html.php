@@ -365,9 +365,31 @@ class ResourcesHtml
 						&& !in_array($item, $shown)) 
 					{
 						$class = str_replace(' ', '', strtolower($item));
-						$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' 
-							. $extra . '>'.$item.'</a></li>'."\n";	
-						$shown[] = $item;			
+						$childParams  = new JParameter($child->params);
+						$childAttribs = new JParameter($child->attribs);
+						$linkAction = $childParams->get('link_action', 0);
+						$width      = $childAttribs->get('width', 640) + 20;
+						$height     = $childAttribs->get('height', 360) + 60;
+						
+						if ($linkAction == 1)
+						{
+							$supli[] = ' <li><a class="'.$class.'" rel="external" href="'.$url.'" title="'.$child->title.'"' 
+							. $extra . '>'.$item.'</a></li>'."\n";
+						}
+						elseif ($linkAction == 2)
+						{
+							$class .= ' play';
+							$class .= ' ' . $width . 'x' . $height;
+							$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' 
+							. $extra . '>'.$item.'</a></li>'."\n";
+						}
+						else
+						{
+							$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' 
+							. $extra . '>'.$item.'</a></li>'."\n";
+						}
+
+						$shown[] = $item;
 					}
 				}
 			}
@@ -1854,6 +1876,15 @@ class ResourcesHtml
 					$child->title = str_replace('&', '&amp;', $child->title);
 					$child->title = str_replace('&amp;quot;', '&quot;', $child->title);
 
+					// width & height
+					$attribs = new $paramsClass($child->attribs);
+					$width  = intval($attribs->get('width', 640));
+					$height = intval($attribs->get('height', 360));
+					if ($width > 0 && $height > 0) 
+					{
+						$class .= ' ' . ($width + 20) . 'x' . ($height + 60);
+					}
+
 					// user guide 
 					//$guide = 0;
 					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) 
@@ -2293,8 +2324,8 @@ class ResourcesHtml
 					}
 
 					$attribs = new $paramsClass($firstChild->attribs);
-					$width  = intval($attribs->get('width', 0));
-					$height = intval($attribs->get('height', 0));
+					$width  = intval($attribs->get('width', 640));
+					$height = intval($attribs->get('height', 360));
 					if ($width > 0 && $height > 0) 
 					{
 						$class .= ' ' . ($width + 20) . 'x' . ($height + 60);
