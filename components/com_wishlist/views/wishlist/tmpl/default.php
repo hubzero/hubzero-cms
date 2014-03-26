@@ -93,7 +93,7 @@ if ($this->admin && !$this->getError()) {
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-	<form method="get" action="<?php echo JRoute::_($base); ?>">
+	<form method="get" action="index.php">
 		<div class="aside">
 <?php 
 	// Popular tags
