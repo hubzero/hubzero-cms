@@ -2,7 +2,7 @@
 /**
  * @package		Joomla.Site
  * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -104,6 +104,10 @@ class JHtmlIcon
 
 		$url	= 'index.php?option=com_content&task=article.edit&a_id='.$article->id.'&return='.base64_encode(urlencode($uri));
 		$icon	= $article->state ? 'edit.png' : 'edit_unpublished.png';
+		if (strtotime($article->publish_up) > strtotime(JFactory::getDate()))
+		{
+			$icon = 'edit_unpublished.png';
+		}
 		$text	= JHtml::_('image', 'system/'.$icon, JText::_('JGLOBAL_EDIT'), NULL, true);
 
 		if ($article->state == 0) {

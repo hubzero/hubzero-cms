@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -217,7 +217,7 @@ class plgContentPagebreak extends JPlugin
 		$limitstart = JRequest::getUInt('limitstart', 0);
 		$showall = JRequest::getInt('showall', 0);
 		// TOC header.
-		$row->toc .= '<div id="article-index">';
+		$row->toc = '<div id="article-index">';
 
 		if($this->params->get('article_index')==1)
 		{

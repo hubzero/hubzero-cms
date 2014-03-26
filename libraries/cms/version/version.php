@@ -2,7 +2,7 @@
 /**
  * @package    Joomla.Site
  *
- * @copyright  Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -23,7 +23,7 @@ final class JVersion
 	public $RELEASE = '2.5';
 
 	/** @var  string  Maintenance version. */
-	public $DEV_LEVEL = '17';
+	public $DEV_LEVEL = '18';
 
 	/** @var  string  Development STATUS. */
 	public $DEV_STATUS = 'Stable';
@@ -35,16 +35,16 @@ final class JVersion
 	public $CODENAME = 'Ember';
 
 	/** @var  string  Release date. */
-	public $RELDATE = '18-December-2013';
+	public $RELDATE = '6-February-2014';
 
 	/** @var  string  Release time. */
-	public $RELTIME = '14:30';
+	public $RELTIME = '16:00';
 
 	/** @var  string  Release timezone. */
 	public $RELTZ = 'GMT';
 
 	/** @var  string  Copyright Notice. */
-	public $COPYRIGHT = 'Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.';
+	public $COPYRIGHT = 'Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.';
 
 	/** @var  string  Link text. */
 	public $URL = '<a href="http://www.joomla.org">Joomla!</a> is Free Software released under the GNU General Public License.';

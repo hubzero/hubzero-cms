@@ -2,7 +2,7 @@
 /**
  * @package		Joomla.Site
  * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -174,16 +174,17 @@ abstract class ContentHelperRoute
 				}
 			}
 		}
-		else
+
+		if ($language != '*')
 		{
-			if ($language != '*') {
-				$needles['language'] = '*';
-				return self::_findItem($needles);
-			}
-			$active = $menus->getActive();
-			if ($active && $active->component == 'com_content') {
-				return $active->id;
-			}
+			$needles['language'] = '*';
+			return self::_findItem($needles);
+		}
+
+		$active = $menus->getActive();
+		if ($active && $active->component == 'com_content')
+		{
+			return $active->id;
 		}
 
 		return null;

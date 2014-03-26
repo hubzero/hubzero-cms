@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		Joomla.Installation
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -216,9 +216,7 @@ class JInstallationModelConfiguration extends JModelLegacy
 		}
 
 		// Create random salt/password for the admin user
-		$salt = JUserHelper::genRandomPassword(32);
-		$crypt = JUserHelper::getCryptedPassword($options->admin_password, $salt);
-		$cryptpass = $crypt.':'.$salt;
+		$cryptpass = JUserHelper::hashPassword($options->admin_password);
 
 		// take the admin user id
 		JLoader::register('JInstallationModelDatabase', JPATH_INSTALLATION . '/models/database.php');
