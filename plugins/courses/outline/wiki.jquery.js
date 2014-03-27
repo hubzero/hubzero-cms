@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
 		singleFileUploads: false,
 		add: function ( e, data ) {
 			if ($('.wiki-title').val() === '') {
-				$('.title-error').show();
+				$('.title-error').html('Please provide a title first').show();
 				$('html, body').scrollTop(0);
 			} else {
 				$('.title-error').hide();
@@ -54,6 +54,10 @@ jQuery(document).ready(function($) {
 			if ($('#asset_id').val() === '') {
 				$('#asset_id').val(data.result.assets.assets.asset_id);
 			}
+		},
+		fail: function ( e, data ) {
+			$('.title-error').html(data.jqXHR.responseText).show();
+			$('html, body').scrollTop(0);
 		}
 	})
 	.hover(function() {
