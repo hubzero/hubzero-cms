@@ -1511,6 +1511,9 @@ p.warning {
 #themanager {
 	position: relative;
 }
+#themanager iframe {
+	overflow-y: scroll !important;
+}
 .qq-uploading {
 	position: absolute;
 	top: 0;
