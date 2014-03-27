@@ -720,16 +720,12 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
 		}
 		
-		//if group isnt approved or not published
-		if(!$this->view->group->get('approved') || !$this->view->group->get('published'))
-		{
-			$this->setNotification('You have successfully canceled your group membership.', 'passed');
-			$this->setRedirect( JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=groups') );
-			return;
-		}
-		
 		// Action Complete. Redirect to appropriate page
-		$this->setRedirect( JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=groups') );
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=groups'),
+			'You have successfully canceled your group membership.',
+			'passed'
+		);
 	}
 
 	

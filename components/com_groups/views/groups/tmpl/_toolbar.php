@@ -153,7 +153,7 @@ if ($this->group->isSuperGroup())
 					<?php if($canCancel) : ?>
 						<?php if($membership_control == 1) : ?> 
 							<li>
-								<a class="group-cancel" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
+								<a class="group-cancel cancel_group_membership" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
 									Cancel Group Membership
 								</a>
 							</li>
