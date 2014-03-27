@@ -1171,10 +1171,12 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Add silly simple security check
-		$key  = JRequest::getString('key', false);
-		$hash = hash('md5', $filename);
+		$token      = JRequest::getString('token', false);
+		$session_id = JFactory::getSession()->getId();
+		$secret     = JFactory::getConfig()->getValue('secret');
+		$hash       = hash('sha256', $session_id . ':' . $secret);
 
-		if ($key !== $hash)
+		if ($token !== $hash)
 		{
 			$this->setMessage('You don\'t have permission to do this', 401, 'Not Authorized');
 			return;

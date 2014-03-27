@@ -247,8 +247,10 @@ class PdfForm
 		$idx = 0;
 		foreach ($images as $img)
 		{
-			$key  = hash('md5', $base . DS . $img);
-			$path = '/api/courses/form/image?id='.$this->getId().'&file='.$img.'&key='.$key;
+			$session_id = JFactory::getSession()->getId();
+			$secret     = JFactory::getConfig()->getValue('secret');
+			$token      = hash('sha256', $session_id . ':' . $secret);
+			$path       = '/api/courses/form/image?id='.$this->getId().'&file='.$img.'&token='.$token;
 			$fun($path, ++$idx);
 		}
 	}
