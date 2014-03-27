@@ -47,7 +47,7 @@ class Hubzero_Password_CharacterClass
 		self::$classes = $classes;
 	}
 
-    public function match($char = null)
+	public static function match($char = null)
 	{
 		$result = array();
 
