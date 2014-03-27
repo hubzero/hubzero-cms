@@ -69,8 +69,11 @@ class plgContentCollect extends JPlugin
 		$action = JRequest::getVar('action', '');
 		if ($action && $action == 'collect') 
 		{
-			// Check the user's logged-in status
-			return $this->fav();
+			if (!$this->isHome() || ($this->isHome() && $article->alias == 'home'))
+			{
+				// Check the user's logged-in status
+				return $this->fav();
+			}
 		}
 
 		$arr = array(
@@ -81,7 +84,7 @@ class plgContentCollect extends JPlugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		$juser = JFactory::getUser();
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest') && (!$this->isHome() || ($this->isHome() && $article->alias == 'home'))) 
 		{
 			// Push some scripts to the template
 			ximport('Hubzero_Document');
@@ -102,6 +105,33 @@ class plgContentCollect extends JPlugin
 		}
 
 		return '';
+	}
+
+	/**
+	 * Try to determine if this is the home page
+	 * 
+	 * @return  boolean
+	 */
+	private function isHome()
+	{
+		$url = trim(JRequest::getVar('REQUEST_URI', '', 'server'), '/');
+		if (strstr($url, '?'))
+		{
+			$bits = explode('?', $url);
+			$url = array_shift($bits);
+		}
+		if (strstr($url, '/'))
+		{
+			$bits = explode('/', $url);
+			$url = end($bits);
+		}
+		$url = ($url ? $url : 'home');
+
+		if ($url == 'home')
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
