@@ -575,7 +575,13 @@ abstract class JFactory
 				\JDispatcher::getInstance()
 			);
 
-			$instance->useFiles('/var/log/hubzero/cmsdebug.log', 'debug');
+			$path = self::getConfig()->getValue('config.log_path');
+			if (is_dir('/var/log/hubzero'))
+			{
+				$path = '/var/log/hubzero';
+			}
+
+			$instance->useFiles($path . '/cmsdebug.log', 'debug');
 		}
 
 		return $instance;
@@ -599,7 +605,13 @@ abstract class JFactory
 				\JDispatcher::getInstance()
 			);
 
-			$instance->useFiles('/var/log/hubzero/cmsauth.log', 'info');
+			$path = self::getConfig()->getValue('config.log_path');
+			if (is_dir('/var/log/hubzero'))
+			{
+				$path = '/var/log/hubzero';
+			}
+
+			$instance->useFiles($path . '/cmsauth.log', 'info');
 		}
 
 		return $instance;
