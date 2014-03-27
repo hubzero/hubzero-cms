@@ -116,12 +116,12 @@ class CoursesModelMember extends CoursesModelAbstract
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid . '_' . $uid])) 
+		if (!isset($instances[$oid . '_' . $uid . '_' . $sid])) 
 		{
-			$instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
+			$instances[$oid . '_' . $uid . '_' . $sid] = new self($uid, $cid, $oid, $sid);
 		}
 
-		return $instances[$oid . '_' . $uid];
+		return $instances[$oid . '_' . $uid . '_' . $sid];
 	}
 
 	/**
