@@ -134,8 +134,8 @@ class plgWikiCollect extends JPlugin
 
 			$b->url         = JRoute::_($this->page->link());
 			$b->type        = 'wiki';
-			$b->object_id   = $this->page->id;
-			$b->title       = $this->page->title;
+			$b->object_id   = $this->page->get('id');
+			$b->title       = $this->page->get('title');
 			$b->description = \Hubzero\Utility\String::truncate($this->revision->content('clean'), 300);
 			if (!$b->check()) 
 			{
