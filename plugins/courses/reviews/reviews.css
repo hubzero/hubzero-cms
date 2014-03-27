@@ -95,6 +95,10 @@
 	ol.comments .comment-options a.active:before {
 		content: "\2716";
 	}
+	ol.comments .edit,
+	ol.comments .delete {
+		float: right;
+	}
 	.review-title {
 		display: none;
 	}
@@ -161,7 +165,7 @@
 		display: table;
 		clear: both;
 	}
-	.addcomment label span {
+	.addcomment label span.label-text {
 		display: none;
 	}
 
@@ -170,7 +174,7 @@
 	it doesn’t make the test unnecessarily selective */
 	.rating:not(:checked) > input {
 		position: absolute;
-		top: -9999px;
+		left: -9999px;
 		clip: rect(0,0,0,0);
 	}
 	.rating:not(:checked) > label {

@@ -31,7 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'reviews' . DS . 'tables' . DS . 'review.php');
+//include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'reviews' . DS . 'tables' . DS . 'review.php');
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'reviews' . DS . 'models' . DS . 'comment.php');
 
 /**
  * Resources Plugin class for review
@@ -427,12 +428,27 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	protected function _view() 
 	{
 		// Get comments on this article
-		$this->view->comments = $this->view->tbl->getComments(
+		/*$this->view->comments = $this->view->tbl->getComments(
 			$this->obj_type, 
 			$this->obj->get('id'),
 			0,
 			$this->params->get('comments_limit', 25)
-		);
+		);*/
+		$comments = $this->view->tbl->find(array(
+			'item_type'   => $this->obj_type, 
+			'item_id'     => $this->obj->get('id'),
+			'parent'      => 0,
+			'state'       => 1,
+			'limit'       => $this->params->get('comments_limit', 25)
+		));
+		if ($comments)
+		{
+			foreach ($comments as $k => $comment)
+			{
+				$comments[$k] = new CoursesModelComment($comment);
+			}
+		}
+		$this->view->comments = new \Hubzero\Base\ItemList($comments);
 
 		if ($this->getError()) 
 		{
@@ -465,7 +481,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post');
+		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
 		$row = new \Hubzero\Item\Comment($this->database);

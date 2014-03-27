@@ -40,7 +40,7 @@ $edit = JRequest::getInt('editcomment', 0);
 		<h3 class="review-title">
 			<?php echo JText::_('PLG_COURSES_REVIEWS'); ?>
 		</h3>
-	<?php if ($this->comments) {
+	<?php if ($this->comments->total() > 0) {
 		$this->view('list')
 		     ->set('option', $this->option)
 		     ->set('comments', $this->comments)
@@ -51,7 +51,7 @@ $edit = JRequest::getInt('editcomment', 0);
 		     ->set('url', $this->url)
 		     ->set('cls', 'odd')
 		     ->display();
-	} else if ($this->depth <= 1) { ?>
+	} else if ($this->depth <= 1 && !$this->params->get('access-review-comment')) { ?>
 		<div class="no-reviews">
 			<?php if ($this->obj->isManager()) { ?>
 			<div class="instructions">
@@ -232,9 +232,6 @@ $edit = JRequest::getInt('editcomment', 0);
 					<div class="sidenote">
 						<p>
 							<strong><?php echo JText::_('PLG_COURSES_REVIEWS_KEEP_RELEVANT'); ?></strong>
-						</p>
-						<p>
-							<?php echo JText::sprintf('PLG_COURSES_REVIEWS_CONTENT_NOTE', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting')); ?>
 						</p>
 					</div>
 				</fieldset>
