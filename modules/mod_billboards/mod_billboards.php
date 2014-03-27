@@ -35,7 +35,7 @@ $modBillboardsMultiple = (!empty($modBillboardsMultiple)) ? $modBillboardsMultip
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$modbillboards = new modBillboards($params);
+$modbillboards = new modBillboards($params, $module);
 $modbillboards->multiple_instances = $modBillboardsMultiple;
 $modbillboards->display();
 $modBillboardsMultiple++;
