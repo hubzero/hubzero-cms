@@ -163,6 +163,10 @@ class plgProjectsFiles extends JPlugin
 				
 		$this->_project = $project;	
 		$this->_tool	= NULL;
+		$this->audience = 'internal';
+		
+		// MIME types		
+		$this->mt = new \Hubzero\Content\Mimetypes();
 		
 		// Are we returning HTML?
 		if ($returnhtml) 
@@ -309,11 +313,7 @@ class plgProjectsFiles extends JPlugin
 				case 'upload':
 					$arr['html'] 	= $this->upload(); 
 					break;
-					
-				case 'uattach':
-					$arr['html'] 	= $this->uattach(); 
-					break;			
-				
+									
 				case 'browser': 
 					$arr['html'] 	= $this->browser(); 
 					break;
@@ -362,6 +362,10 @@ class plgProjectsFiles extends JPlugin
 				
 				case 'restore':
 					$arr['html'] 	= $this->restore(); 
+					break;
+					
+				case 'select':
+					$arr['html'] 	= $this->select(); 
 					break;
 									
 				case 'browse':
@@ -526,6 +530,88 @@ class plgProjectsFiles extends JPlugin
 		$view->sizelimit 	= ProjectsHTML::formatSize($this->_params->get('maxUpload', '104857600'));	
 		
 		return $view->loadTemplate();		
+	}
+	
+	/**
+	 * Browser for within publications NEW
+	 * 
+	 * @return     string
+	 */
+	public function select() 
+	{
+		// Incoming
+		$props  = JRequest::getVar( 'p', '' );
+		$ajax   = JRequest::getInt( 'ajax', 0 );
+		$pid    = JRequest::getInt( 'pid', 0 );
+		$vid    = JRequest::getInt( 'vid', 0 );
+		
+		// We do need publication reference
+		
+		if (!$pid && !$vid)
+		{
+			$this->setError(JText::_('COM_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'=>'projects',
+					'element'=>'files',
+					'name'=>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+		
+		// Provisioned project?
+		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
+		$prefix = $prov ? JPATH_ROOT : $this->prefix;
+		
+		// Which layout?
+		$layout = $prov ? 'provisioned' : 'default';
+		
+		// Make sure Git helper is included
+		$this->getGitHelper();
+				
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'files',
+				'name'		=>'selector',
+				'layout'	=> $layout
+			)
+		);
+				
+		// Get file list	
+		if (!$prov)
+		{				
+			$view->items = $this->getList();
+			
+			if (!$ajax)
+			{
+				$document = JFactory::getDocument();
+				$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');	
+			}
+		}
+		
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		
+		// Get messages	and errors	
+		$view->msg = $this->_msg;
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
+		
 	}
 	
 	/**
@@ -5435,7 +5521,7 @@ class plgProjectsFiles extends JPlugin
 		// Incoming
 		$service 	= $service ? $service : JRequest::getVar('service', '');
 		$reauth 	= JRequest::getInt('reauth', 0);
-		$removeData = JRequest::getInt('removedata', 0);
+		$removeData = JRequest::getInt('removedata', 1);
 
 		// Build pub url
 		$route = 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias;							
@@ -5493,8 +5579,7 @@ class plgProjectsFiles extends JPlugin
 				'name'=>'connect'
 			)
 		);
-
-		$view->params 		= new JParameter($this->_project->params);
+		
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
@@ -5505,6 +5590,11 @@ class plgProjectsFiles extends JPlugin
 		$view->title		= $this->_area['title'];
 		$view->services		= $this->_connect->getVar('_services');
 		$view->connect		= $this->_connect;
+		
+		// Get refreshed params
+		$obj = new Project( $this->_database );
+		$obj->load($this->_project->id);
+		$view->params = new JParameter( $obj->params );
 
 		// Get connection details for user
 		$objO = new ProjectOwner( $this->_database );
@@ -5662,7 +5752,6 @@ class plgProjectsFiles extends JPlugin
 		$this->_writeToFile(JText::_('PLG_PROJECTS_FILES_SYNC_ESTABLISH_REMOTE_CONNECT') );		
 
 		// Get service API - allways project creator!
-		$this->_connect->setUser($projectCreator);
 		$this->_connect->getAPI($service, $projectCreator);
 
 		// Collector arrays
@@ -5786,13 +5875,17 @@ class plgProjectsFiles extends JPlugin
 		// Error!
 		if ($lastSyncId > 1 && !$newSyncId)
 		{
+			$this->_writeToFile( '' );
 			$this->_rSync['error'] = 'Oups! Unknown sync error. Please try again at a later time.';
+			$this->lockSync($service, true);
 			return false;
 		}
 
 		if ($this->_connect->getError())
 		{
+			$this->_writeToFile( '' );
 			$this->_rSync['error'] = 'Oups! Sync error: ' . $this->_connect->getError();
+			$this->lockSync($service, true);
 			return false;
 		}
 
@@ -6443,7 +6536,7 @@ class plgProjectsFiles extends JPlugin
 
 			// Report last sync time
 			$msg = $synced && $synced != 1 
-				? '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo(strtotime($synced), false) 
+				? '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo($synced, false) 
 				. ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' 
 				: '';
 			$status = array('status' => 'complete', 'msg' => $msg);
@@ -6637,9 +6730,13 @@ class plgProjectsFiles extends JPlugin
 		
 		$this->_case 	= $case ? $case : 'files';
 		$this->_option  = 'com_projects';
+		$this->audience = 'external';
 		
 		// Include Git Helper
 		$this->getGitHelper();
+		
+		// MIME types		
+		$this->mt = new \Hubzero\Content\Mimetypes();
 				
 		// Get path
 		$this->path = $this->getProjectPath();
@@ -6711,10 +6808,13 @@ class plgProjectsFiles extends JPlugin
 				
 		// Get list of files from repo
 		$docs 	 = $this->_git->getFiles($this->path, $this->subdir);
-		$folders = $this->getFolders($this->path, $this->subdir, $this->prefix);
+		
+		// Get detailed info for all commits (much faster than individual git log)
+		$this->_fileinfo = $this->_git->gitLogAll($this->path);
 	
 		$items 		= array();
 		$sorting 	= array();
+		$parents	= array();
 		
 		if ($docs)
 		{
@@ -6729,22 +6829,24 @@ class plgProjectsFiles extends JPlugin
 				$metadata = $this->getItemMetadata(trim($file));
 				if ($metadata)
 				{
+					// Do we have a parent?
+					if ($metadata->dirname && !in_array($metadata->dirname, $parents))
+					{
+						$obj 				= new stdClass;
+						$obj->type			= 'folder';
+						$obj->name			= basename($metadata->dirname);
+						$obj->localPath		= $metadata->dirname;
+						$obj->dirname 		= dirname($metadata->dirname) == '.' ? NULL : dirname($metadata->dirname);
+						$obj->parents 		= $this->getParents($obj->dirname); 
+						
+						$items[] 			= $obj;
+						$sorting[] 			= strtolower($metadata->dirname);
+						$parents[]			= $metadata->dirname;
+					}
+					
 					$items[] 	= $metadata;
 					$sorting[] 	= strtolower($metadata->localPath);
 				}
-			}
-		}
-		
-		if ($folders)
-		{
-			foreach ($folders as $folder)
-			{
-				$obj 				= new stdClass;
-				$obj->type			= 'folder';
-				$obj->name			= $folder;
-				
-				$items[] 			= $obj;
-				$sorting[] 			= strtolower($folder);
 			}
 		}
 		
@@ -6870,6 +6972,30 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
+	 * Get item parent directories
+	 * 
+	 * @return     mixed
+	 */
+	public function getParents($dirname = '')
+	{
+		$parents = new stdClass;
+		
+		$dirParts = explode('/', $dirname);
+		
+		$i = 1;
+		$collect = '';
+
+		foreach ($dirParts as $part)
+		{
+			$collect .= DS . $part;
+			$parents->$i = trim($collect, DS);
+			$i++;
+		}
+		
+		return $parents;
+	}
+	
+	/**
 	 * Get file metadata
 	 * 
 	 * @return     mixed
@@ -6893,12 +7019,18 @@ class plgProjectsFiles extends JPlugin
 		$obj->name			= basename($file);
 		$obj->localPath		= $this->subdir ? $this->subdir . DS . $file : $file;
 		$fullPath			= $this->prefix . $this->path . DS . $file;
+		
+		// Dir path
+		$obj->dirname 		= dirname($obj->localPath) == '.' ? NULL : dirname($obj->localPath);
+		
+		// Get all parents
+		$obj->parents		= $this->getParents($obj->dirname); 
 				
 		if (!$hash && !file_exists($fullPath) )
 		{
 			return false;
 		}
-		if ($hash)
+		if ($hash && !file_exists($fullPath))
 		{
 			$obj->size 		= $this->_git->gitLog($this->path, $obj->localPath, $hash, 'size');
 		}
@@ -6907,9 +7039,18 @@ class plgProjectsFiles extends JPlugin
 			$obj->size		= filesize($fullPath);
 		}
 		
-		$obj->ext			= end(explode('.', $file));
-
-		$gitData 			= $this->_git->gitLog($this->path, $obj->localPath, $hash, 'combined');
+		$obj->formattedSize = $obj->size ? ProjectsHtml::formatSize($obj->size) : NULL;
+		$obj->ext			= strtolower(end(explode('.', $file)));
+		
+		// Get last commit data
+		if (isset($this->_fileinfo) && $this->_fileinfo && isset($this->_fileinfo[$obj->localPath]))
+		{
+			$gitData = $this->_fileinfo[$obj->localPath];
+		}
+		else
+		{
+			$gitData = $this->_git->gitLog($this->path, $obj->localPath, $hash, 'combined');							
+		}
 		
 		if (!$gitData)
 		{
@@ -6918,30 +7059,44 @@ class plgProjectsFiles extends JPlugin
 		$obj->date			= isset($gitData['date']) ? $gitData['date'] : NULL;
 		$obj->author 		= isset($gitData['author']) ? $gitData['author'] : NULL;
 		$obj->email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
-		$obj->md5			= hash_file('md5', $fullPath);
+		$obj->md5hash		= hash_file('md5', $fullPath);
 		$obj->commitHash 	= $hash ? $hash : $this->_git->gitLog($this->path, $obj->localPath, '', 'hash');
 		
 		// Get public link
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
-
-		$objSt = new ProjectPubStamp( $this->_database );
-
-		// Build reference for download URL
-		$reference = array(
-			'file' 		=> $obj->localPath,
-			'disp' 		=> 'attachment',
-			'hash' 		=> $obj->commitHash,
-			'limited' 	=> 2
-		);
-		
-		$expires = JFactory::getDate('+15 minutes')->toSql();
-		
-		// Get short lived download URL
-		if ($objSt->registerStamp($this->_project->id, json_encode($reference), 'files', 0, $expires))
+		if ($this->audience == 'external')
 		{
-			$stamp = $objSt->stamp;
-			$obj->downloadUrl = $this->base . DS . 'projects' . DS . 'get?s=' . $stamp;
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+
+			$objSt = new ProjectPubStamp( $this->_database );
+
+			// Build reference for download URL
+			$reference = array(
+				'file' 		=> $obj->localPath,
+				'disp' 		=> 'attachment',
+				'hash' 		=> $obj->commitHash,
+				'limited' 	=> 2
+			);
+
+			$expires = JFactory::getDate('+15 minutes')->toSql();
+
+			// Get short lived download URL
+			if ($objSt->registerStamp($this->_project->id, json_encode($reference), 'files', 0, $expires))
+			{
+				$stamp = $objSt->stamp;
+				$obj->downloadUrl = $this->base . DS . 'projects' . DS . 'get?s=' . $stamp;
+			}
+		}
+		else
+		{
+			$obj->fullPath = $fullPath;
+		}
+		
+		// Mime type
+		if (isset($this->mt))
+		{
+			$mTypeParts = explode(';', $this->mt->getMimeType($fullPath));	
+			$obj->mimeType   = ProjectsHtml::fixUpMimeType($obj->name, $mTypeParts[0]);
 		}
 			
 		return $obj;

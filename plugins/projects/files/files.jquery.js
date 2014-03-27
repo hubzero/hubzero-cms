@@ -402,6 +402,7 @@ HUB.ProjectFiles = {
 			{
 				$('#status-msg').css({'opacity':100});
 				$('#status-msg').html('<p class="witherror">' + response.error + '</p>');
+				$('#sync-wrap').removeClass('syncing');
 			}
 			else if (response.message && !response.auto)
 			{
@@ -926,10 +927,21 @@ HUB.ProjectFiles = {
 		// Confirm directory deletion
 		if ($('#disconnect') && HUB.Projects) {
 			$('#disconnect').on('click', function(e) {
-				e.preventDefault();			
-				HUB.Projects.addConfirm($('#disconnect'), 
-				'Are you sure you want to disconnect project from this service?', 
-				'Yes, disconnect and remove remote data', 'No, do not disconnect');
+				e.preventDefault();		
+				
+				if ($('#disconnect').parent().hasClass('creator'))
+				{
+					HUB.Projects.addConfirm($('#disconnect'), 
+					'Are you sure you want to disconnect project from this service?', 
+					'Yes, disconnect and remove remote data', 'No, do not disconnect');	
+				}
+				else
+				{
+					HUB.Projects.addConfirm($('#disconnect'), 
+					'Are you sure you want to disconnect this gmail account from this project?', 
+					'Yes, disconnect', 'No, do not disconnect');
+				}	
+				
 			});
 		}
 	},

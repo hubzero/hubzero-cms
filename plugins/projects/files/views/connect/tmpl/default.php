@@ -43,7 +43,15 @@ $i = 0;
 	<?php foreach ($this->services as $servicename) { 
 		$service 	= $this->connect->getConfigs($servicename, false);	
 		$connected 	= $this->oparams->get($servicename . '_token') ? 1 : 0;
+		
+		$service['active'] 	= $this->params->get($servicename . '_token');
+		
 		$allowed 	= ($creator || $service['active']) ? 1 : 0;	
+		
+		if (!$service['active'])
+		{
+			$connected = 0;
+		}
 		
 		$objO = new ProjectOwner( $this->database );
 		$numConnected = $objO->getConnected($this->project->id, $servicename);	
@@ -80,10 +88,11 @@ $i = 0;
 				<span><?php echo JText::_('COM_PROJECTS_FILES_CONNECT_REMOTE_DIR'); ?>:</span> <span class="prominent darker"><?php echo $service['remote_dir']; ?></span> <?php if ($connected && $openUrl) { ?><span><a href="<?php echo $openUrl; ?>" rel="external">[open]</a></span><?php } ?>
 			</p>
 			
-			<?php if ($creator) { ?>
-				<span class="disconnect">
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a. 'alias=' . $this->project->alias . a . 'active=files') . '?action=disconnect' . a . 'service=' . $servicename . a . 'removedata=1'; ?>" id="disconnect"><?php echo JText::_('COM_PROJECTS_FILES_CONNECT_DISCONNECT'); ?> &raquo;</a>	
-				</span>
+			<?php if ($connected) { ?>
+			<?php $removeData = $creator ? '&removedata=1' : '';  ?>
+			<span class="disconnect <?php echo $creator ? ' creator' : ''; ?>">
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a. 'alias=' . $this->project->alias . a . 'active=files') . '?action=disconnect' . a . 'service=' . $servicename . $removeData; ?>" id="disconnect"><?php echo JText::_('COM_PROJECTS_FILES_CONNECT_DISCONNECT'); ?> &raquo;</a>	
+			</span>
 			<?php } ?>
 			<?php } 
 			 else { ?>

@@ -568,7 +568,7 @@ class ProjectsConnectHelper extends JObject {
 	public function getAPI ($service = 'google', $uid = 0) 
 	{
 		// Do we have API started already?
-		if (isset($this->_api[$service]) && $this->_api[$service])
+		if (isset($this->_api[$service]) && $this->_api[$service] && $uid == $this->_uid)
 		{
 			return $this->_api[$service];
 		}
@@ -1220,6 +1220,7 @@ class ProjectsConnectHelper extends JObject {
 		if ($service == 'google')
 		{
 			$success = ProjectsGoogleHelper::deleteItem ($apiService, $remoteid, $permanent);
+			$success = ProjectsGoogleHelper::deleteAllParents ($apiService, $remoteid);
 			
 			// NEW: simple deletion does not work now when owner different from project creator
 			if (!$success)
@@ -1232,7 +1233,7 @@ class ProjectsConnectHelper extends JObject {
 
 				// Removing parent ID from file so that the file gets removed from project folder
 				//$success = ProjectsGoogleHelper::deleteParent ($apiService, $remoteid, $folderId);
-				$success = ProjectsGoogleHelper::deleteAllParents ($apiService, $remoteid);					
+									
 			}			
 		}
 						
@@ -2296,6 +2297,90 @@ class ProjectsConnectHelper extends JObject {
 	/**
 	 * Disconnect user from service
 	 * 
+	 * @param      string	$service	Service name (google or dropbox)	
+	 *
+	 * @return     JSON string or false
+	 */
+	public function disconnectMember($service, $uid = 0, $remoteid = 0)
+	{		
+		if (!$uid)
+		{
+			return false;
+		}
+		
+		$objO = new ProjectOwner( $this->_db );
+		$objO->loadOwner ($this->_project->id, $uid);
+		
+		$creator = ($this->_project->owned_by_user == $uid) ? 1 : 0;
+		
+		// Get connection email & name
+		$email = $this->getStoredParam($service . '_email', $uid);
+		$name  = $this->getStoredParam($service . '_name', $uid);
+		
+		// Remove token
+		$objO->saveParam ( 
+			$this->_project->id, 
+			$uid, 
+			$param = $service . '_token', 
+			''
+		);
+		
+		// Remove time
+		$objO->saveParam ( 
+			$this->_project->id, 
+			$uid, 
+			$param = $service . '_token_created', 
+			''
+		);
+		
+		// Remove email
+		$objO->saveParam ( 
+			$this->_project->id, 
+			$uid, 
+			$param = $service . '_email', 
+			''
+		);
+		
+		// Remove name
+		$objO->saveParam ( 
+			$this->_project->id, 
+			$uid, 
+			$param = $service . '_name', 
+			''
+		);
+		
+		// Remove user id
+		$objO->saveParam ( 
+			$this->_project->id, 
+			$uid, 
+			$param = $service . '_userid', 
+			''
+		);
+		
+		if (!$email || !$name || !$remoteid)
+		{
+			return;
+		}
+				
+		// Get api
+		$apiService = $this->getAPI($service, $this->_project->owned_by_user);
+
+		if (!$apiService)
+		{
+			$this->setError('API service unavailable');
+			return false;
+		}
+		
+		// Remove permission
+		if ($service == 'google' && !$creator)
+		{
+			ProjectsGoogleHelper::clearPermissions($apiService, array($name => $email), $remoteid);
+		}
+	}
+	
+	/**
+	 * Disconnect user from service
+	 * 
 	 * @param      string	$service	Service name (google or dropbox)
 	 * @param      boolean	$removeData	Remove remote data (when project creator)	
 	 *
@@ -2310,7 +2395,7 @@ class ProjectsConnectHelper extends JObject {
 		}
 		
 		$config = $this->_connect[$service];
-		
+				
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
@@ -2318,49 +2403,43 @@ class ProjectsConnectHelper extends JObject {
 			return false;
 		}
 		
-		$paramname = $service . '_token';
-				
-		// Clean up stored values
-		$objO = new ProjectOwner( $this->_db );
-		$objO->loadOwner ($this->_project->id, $this->_uid);
-		$oparams = new JParameter( $objO->params );
+		$obj = new Project( $this->_db );
+		if (!$obj->loadProject($this->_project->id)) 
+		{
+			$this->setError( JText::_('Oups! There was a problem loading project data.') );
+			return false;
+		}
+								
+		// Get project params
+		$pparams = new JParameter( $this->_project->params );
 		
-		// Remove token
-		$objO->saveParam ( 
-			$this->_project->id, 
-			$this->_uid, 
-			$param = $paramname, 
-			''
-		);
-		
-		// Remove time
-		$objO->saveParam ( 
-			$this->_project->id, 
-			$this->_uid, 
-			$param = $paramname . '_created', 
-			''
-		);
+		// Remove all connection info and remote data
+		$remoteid = $pparams->get($service . '_dir_id');
 		
 		// Project creator?
 		$creator = ($this->_project->owned_by_user == $this->_uid) ? 1 : 0;
-				
+		
+		// Clean up stored values for the disconnecting member
+		$this->disconnectMember($service, $this->_uid, $remoteid);		
+						
 		// Disconnect service if user is project creator
 		if ($creator)
 		{
-			$obj = new Project( $this->_db );
-			if (!$obj->loadProject($this->_project->id)) 
-			{
-				$this->setError( JText::_('Oups! There was a problem loading project data.') );
-				return false;
-			}
-			
-			// Get project params
-			$pparams = new JParameter( $this->_project->params );
-			
-			// Remove all connection info and remote data
-			$remoteid = $pparams->get('google_dir_id');
 			if ($removeData == true && $remoteid)
-			{
+			{				
+				// Disconnect all members
+				$objO = new ProjectOwner( $this->_db );
+				$owners = $objO->getOwners($this->_project->id, $filters = array('connected' => 1));
+				
+				if ($owners)
+				{
+					foreach ($owners as $owner)
+					{
+						// Clean up stored values for the disconnecting member
+						$this->disconnectMember($service, $owner->userid, $remoteid);
+					}
+				}
+				
 				$this->deleteRemoteItem($this->_project->id, $service, $this->_uid, $remoteid, $permanent = true);
 				
 				$obj->saveParam($this->_project->id, $service . '_sync', '');
@@ -2370,6 +2449,7 @@ class ProjectsConnectHelper extends JObject {
 				$obj->saveParam($this->_project->id, $service . '_prev_sync_id', '');
 				$obj->saveParam($this->_project->id, $service . '_sync_lock', '');
 				$obj->saveParam($this->_project->id, $service . '_sync_queue', '');
+				$obj->saveParam($this->_project->id, $service . '_dir_id', '');			
 			}
 			
 			// Clean up token

@@ -94,6 +94,52 @@ class ProjectsGoogleHelper extends JObject
 	}
 	
 	/**
+	 * Clear permission for user
+	 * 
+	 * @return    boolean
+	 */
+	public static function clearPermissions ($apiService, $shared = array(), $itemId ) 
+	{
+		if (!$itemId || empty($shared))
+		{
+			return false;
+		}
+		
+		// Get current permissions
+		$permlist = $apiService->permissions->listPermissions($itemId);
+		
+		// Collect permission names
+		foreach ($permlist['items'] as $p)
+		{
+			$pName = isset($p['name']) ? $p['name'] : NULL;
+			if (!$pName )
+			{
+				continue;
+			}
+			
+			$permissionId = $p['id'];
+			
+			// Go through array of connected users
+			foreach ($shared as $name => $email)
+			{
+				if ($pName == $name)
+				{
+					try 
+					{
+					    $apiService->permissions->delete($itemId, $permissionId);
+					} 
+					catch (Exception $e) 
+					{
+					    // error
+					}					
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * Patch file metadata (SYNC)
 	 * 
 	 * @param    Google_DriveService  	$apiService 	Drive API service instance
