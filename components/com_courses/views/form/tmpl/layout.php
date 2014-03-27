@@ -43,7 +43,7 @@
 						foreach ($group['answers'] as $aidx=>$ans) {
 							echo '<div class="radio-container'.($ans['correct'] ? ' selected' : '').'" style="top: '.($ans['top'] - $group['top'] - 5).'px; left: '.($ans['left'] - $group['left'] - 26).'px;">';
 							echo '<button class="remove">x</button>';
-							echo '<input name="question-saved-'.$qidx.'" value="'.$aidx.'" class="placeholder"'.($ans['correct'] ? ' checked="checked"' : '').' type="radio" />';
+							echo '<input name="question-saved-'.$idx.'-'.$qidx.'" value="'.$aidx.'" class="placeholder"'.($ans['correct'] ? ' checked="checked"' : '').' type="radio" />';
 							echo '</div>';
 						}
 						++$qidx;
