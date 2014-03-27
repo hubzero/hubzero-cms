@@ -13,7 +13,7 @@ class Migration20140115171149PlgResourcesFindthistext extends Base
 	/**
 	 * Up
 	 **/
-	public function up($db)
+	public function up()
 	{
 		$this->addPluginEntry('resources','findthistext');
 	}
@@ -21,7 +21,7 @@ class Migration20140115171149PlgResourcesFindthistext extends Base
 	/**
 	 * Down
 	 **/
-	public function down($db)
+	public function down()
 	{
 		$this->deletePluginEntry('resources','findthistext');
 	}
