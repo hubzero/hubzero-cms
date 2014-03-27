@@ -80,6 +80,9 @@ $pid = JRequest::getInt( 'publication', 0 );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
+	<?php if ($pid) { ?>
+		<h3><?php echo JText::_('COM_CITATIONS_CITATION_FOR'); ?> <?php echo JText::_('COM_CITATIONS_PUBLICATION') . ' #' . $pid; ?></h3>
+	<?php } ?>
 	<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
@@ -350,7 +353,11 @@ $pid = JRequest::getInt( 'publication', 0 );
 			</fieldset><div class="clear"></div>
 		<?php endif; ?>
 		
-		
+		<?php if ($pid) { ?>
+			<input type="hidden" name="assocs[0][oid]" value="<?php echo $pid; ?>" />
+			<input type="hidden" name="assocs[0][tbl]" value="publication" />
+			<input type="hidden" name="assocs[0][id]" value="0" />
+		<?php } else { ?>
 		<div class="explaination">
 			<p><?php echo JText::_('Please enter all the resources the work references.'); ?></p>
 		</div>
@@ -389,14 +396,8 @@ $pid = JRequest::getInt( 'publication', 0 );
 								$this->assocs[$i]->type = NULL;
 								$this->assocs[$i]->tbl = NULL;
 							}
-							if ($i == 0 && $pid)
-							{
-								$this->assocs[$i]->tbl = 'publication';
-								$this->assocs[$i]->oid = $pid;
-							}
 							
 							echo "\t\t\t".'  <tr>'."\n";
-							//echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][type]" value="'.$this->assocs[$i]->type.'" /></td>'."\n";
 							echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]">'."\n";
 							echo ' <option value=""';
 							echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"': '';
@@ -411,13 +412,14 @@ $pid = JRequest::getInt( 'publication', 0 );
 							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" /></td>'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
-							echo "\t\t\t".'  </tr>'."\n";
+							echo "\t\t\t".'  </tr>'."\n";							
 						}
 				?>
 				</tbody>
 			</table>
 			</div>
 		</fieldset><div class="clear"></div>
+		<?php } ?>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CITATIONS_AFFILIATION'); ?></legend>
 			

@@ -74,7 +74,8 @@ $allow_import = $config->get('citation_import', 1);
 				<div id="citation-preview"></div>
 			</form>
 			<?php if ($allow_import) { ?>
-			<p><?php echo JText::_('<strong>No DOI?</strong> Add citation manually via'); ?> <a href="citations/add?publication=<?php echo $this->pid; ?>" target="_blank">this form</a>.</p>
+			<p class="and_or centeralign">OR</p>
+			<p class="centeralign"><a href="citations/add?publication=<?php echo $this->pid; ?>" class="btn-submit" rel="external"><?php echo JText::_('Enter manually'); ?></a></p>
 			<?php } ?>
 			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_CITATIONS_PANEL'); ?></p>
 			
@@ -110,16 +111,6 @@ $allow_import = $config->get('citation_import', 1);
 				<ul id="c-citations" class="c-list">
 					<li id="nosel" <?php if ($this->citations) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_NONE'); ?></li>
 				<?php if ($this->citations) { 
-					/*
-					foreach ($this->citations as $cite) { 
-					?>
-					<li id="citation-<?php echo $cite->id; ?>" class="c-drag">	
-						<span class="c-citation"><?php echo $cite->citation; ?></span>
-						<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>				
-					</li>
-					<?php 				
-					}
-					*/	
 					
 					$formatter = new CitationFormat;
 					$formatter->setTemplate($this->format);
@@ -131,7 +122,11 @@ $allow_import = $config->get('citation_import', 1);
 					?>
 					<li id="citation-<?php echo $cite->id; ?>" class="c-drag">	
 						<span class="c-citation"><?php echo $citeText; ?></span>
-						<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>				
+						
+						<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
+						<?php if (!$cite->formatted) { ?>
+						<span class="c-edit"><a href="<?php echo JRoute::_('index.php?option=com_citations&task=edit&id=' . $cite->id); ?>" rel="external">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>]</a></span>
+						<?php } ?>				
 					</li>
 					<?php 				
 					}				

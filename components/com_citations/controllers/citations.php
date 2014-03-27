@@ -614,9 +614,23 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getInt('id', 0);
+		
+		// Pub author
+		$pubAuthor = false;
+		
+		// Load the associations object
+		$assoc = new CitationsAssociation($this->database);
+		
+		// Get associations
+		if ($id)
+		{
+			$this->view->assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
+			
+			$pubAuthor = $this->isPubAuthor($this->view->assocs);
+		}
 
-		// Non-admins can't edit citations
-		if (!$isAdmin)
+		// Is user authorized to edit citations?
+		if (!$isAdmin && !$pubAuthor)
 		{
 			$id = 0;
 		}
@@ -627,7 +641,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		//make sure title isnt too long
 		$maxTitleLength = 30;
-		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength) ? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;' : $this->view->row->title;
+		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength) 
+						? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;' 
+						: $this->view->row->title;
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
@@ -657,12 +673,10 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$this->_getScripts('assets/js/' . $this->_name);
 		
 		// Instantiate a new view
-		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ' 
+			. JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		$this->view->config = $this->config;
-		
-		// Load the associations object
-		$assoc = new CitationsAssociation($this->database);
-		
+				
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
 		if (!$id) 
@@ -677,10 +691,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			$this->view->badges = array();
 		} 
 		else 
-		{
-			// Get the associations
-			$this->view->assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
-			
+		{			
 			//tags & badges
 			$this->view->tags = CitationFormat::citationTags($this->view->row, $this->database, false);
 			$this->view->badges = CitationFormat::citationBadges($this->view->row, $this->database, false);
@@ -699,6 +710,53 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			}
 		}
 		$this->view->display();
+	}
+	
+	/**
+	 * Determine if user is part of publication project and is allowed to edit citation
+	 * 
+	 * @param      array $assocs
+	 * @return     void
+	 */
+	public function isPubAuthor( $assocs)
+	{
+		if (!$assocs)
+		{
+			return false;
+		}
+		if (!is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_publications' . DS . 'tables' . DS . 'publication.php'))
+		{
+			return false;
+		}
+		
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_publications' . DS . 'tables' . DS . 'publication.php');
+			
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+		
+		// Get connections to publications		
+		foreach ($assocs as $entry)
+		{
+			if ($entry->tbl == 'publication')
+			{
+				$pubID = $entry->oid;
+				$objP = new Publication($this->database);
+				
+				if ($objP->load($pubID))
+				{
+					$objO = new ProjectOwner($this->database);
+					
+					if ($objO->isOwner($this->juser->get('id'), $objP->project_id))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 
 	/**
