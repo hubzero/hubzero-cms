@@ -73,7 +73,7 @@ class SliderMacro extends WikiMacro
 		$id = uniqid();
 
 		//get the group
-		$gid = JRequest::getVar('gid');
+		$gid = JRequest::getVar('cn');
 
 		//import the Hubzero Group Library
 		ximport('Hubzero_Group');
