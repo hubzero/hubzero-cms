@@ -73,7 +73,7 @@ class SliderMacro extends WikiMacro
 		$id = uniqid();
 
 		//get the group
-		$gid = JRequest::getVar('gid');
+		$gid = JRequest::getVar('cn');
 
 		//get the group object based on gid
 		$group = \Hubzero\User\Group::getInstance($gid);
@@ -100,7 +100,7 @@ class SliderMacro extends WikiMacro
 			if (strpos($slide, 'http') === false) 
 			{
 				$slide = trim($slide);
-				
+
 				//check if internal file actually exists
 				if (is_file(JPATH_ROOT . $base_url . DS . $slide)) 
 				{
@@ -119,26 +119,26 @@ class SliderMacro extends WikiMacro
 
 		$html  = '';
 		$html .= '<div class="wiki_slider">';
-			$html .= '<div id="slider_' . $id . '">';
-			foreach ($final_slides as $fs) 
-			{
-				$html .= '<img src="' . $fs . '" alt="" />';
-			}
-			$html .= '</div>';
-			$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
+		$html .= '<div id="slider_' . $id . '">';
+		foreach ($final_slides as $fs) 
+		{
+			$html .= '<img src="' . $fs . '" alt="" />';
+		}
+		$html .= '</div>';
+		$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
 		$html .= '</div>';
 
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins/hubzero/wikiparser/macros/macro-assets/slider/slider.css');
+		$document->addStyleSheet('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css');
 		if (!JPluginHelper::isEnabled('system', 'jquery')) 
 		{
-			$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js');
+			$document->addScript('media/system/js/jquery.js');
 		}
-		$document->addScript('plugins/hubzero/wikiparser/macros/macro-assets/slider/slider.js');
+		$document->addScript('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js');
 		$document->addScriptDeclaration('
 			var $jQ = jQuery.noConflict();
 			
-			$jQ(function() {	
+			$jQ(function() {
 				$jQ("#slider_' . $id . '").cycle({
 					fx: \'scrollHorz\',
 					speed: 450,
