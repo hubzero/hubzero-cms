@@ -1,6 +1,7 @@
 <?
-$pdf = $this->pdf;
-$resp = $this->resp;
+$pdf    = $this->pdf;
+$resp   = $this->resp;
+$dep    = $this->dep;
 $record = $resp->getAnswers();
 ?>
 
@@ -22,7 +23,7 @@ $record = $resp->getAnswers();
 	<p>Completed <?= JHTML::_('date', $resp->getEndTime(), 'r'); ?></p>
 	<p>Score <strong><?= $record['summary']['score'] ?>%</strong></p>
 	<? if ($this->dep->getResultsClosed() == 'details'): ?>
-		<p>More detailed results will be available <?= JHTML::_('date', $resp->getEndTime(), 'r'); ?> (about <?= FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(JFactory::getDate())) ?> from now). Save this link and come back then.</p>
+		<p>More detailed results will be available <?= ($dep->getEndTime()) ? JHTML::_('date', $dep->getEndTime(), 'r') . " (about " . FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(JFactory::getDate())) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
 	<? endif; ?>
 	<? if ($this->dep->getAllowedAttempts() > 1) : ?>
 		<? $attempt = $resp->getAttemptNumber(); ?>
