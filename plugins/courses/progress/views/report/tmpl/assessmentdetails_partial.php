@@ -65,4 +65,6 @@ defined('_JEXEC') or die('Restricted access');
 			<?php endif; ?>
 		</div>
 	<?php endforeach; ?>
+<?php else : ?>
+	<p class="warning">There are no responses to display at this time</p>
 <?php endif; ?>

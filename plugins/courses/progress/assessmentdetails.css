@@ -5,6 +5,9 @@
  * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+.warning {
+	margin: 0 20px;
+}
 .question-box {
 	border-top: 1px solid #CCCCCC;
 	padding: 0 0 20px 0;
