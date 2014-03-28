@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
 						$view->item   = $this->article;
 						$view->type   = 'entry';
 						$view->vote   = $this->vote;
-						$view->id     = $this->article->get('id');
+						$view->id     = 0; //$this->article->get('id');
 						$view->display();
 					?>
 				</p>
