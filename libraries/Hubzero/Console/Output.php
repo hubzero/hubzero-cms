@@ -171,6 +171,24 @@ class Output
 	}
 
 	/**
+	 * Add raw text to output buffer
+	 *
+	 * @param  (string) $text
+	 * @return (object) $this - for method chaining
+	 **/
+	public function addRaw($text)
+	{
+		$this->response[] = array(
+			'message' => $text
+		);
+
+		if ($this->isInteractive())
+		{
+			$this->render(true);
+		}
+	}
+
+	/**
 	 * Helper method to add an array of lines to the output buffer.
 	 *
 	 * Here we're expecting an array, with each entry also containing an
