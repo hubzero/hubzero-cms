@@ -421,7 +421,7 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT DISTINCT b.*, f.following_id AS following, (SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.collection_id=b.id) AS posts";
+		$query = "SELECT DISTINCT b.*, f.following_id AS following, (SELECT COUNT(*) FROM #__collections_items AS i INNER JOIN #__collections_posts AS s ON s.item_id=i.id WHERE s.collection_id=b.id AND i.state=1) AS posts";
 		if (isset($filters['object_type']) && $filters['object_type'] == 'group') 
 		{
 			$query .= ", g.cn AS group_alias";
@@ -459,7 +459,8 @@ class CollectionsTableCollection extends JTable
 		$query = "SELECT b.id, b.type
 				FROM #__collections_items AS b 
 				INNER JOIN #__collections_posts AS s ON s.item_id=b.id
-				WHERE s.collection_id=" . $this->_db->Quote(intval($collection_id));
+				WHERE s.collection_id=" . $this->_db->Quote(intval($collection_id)) . " 
+				AND b.state=1";
 
 		$this->_db->setQuery($query);
 
