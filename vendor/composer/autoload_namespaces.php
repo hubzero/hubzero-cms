@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'When' => array($vendorDir . '/tplaner/when/src'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Hubzero' => array($baseDir . '/libraries'),
