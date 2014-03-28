@@ -159,9 +159,15 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 			foreach ($respondents as $respondent_id => $response)
 			{
 				// Get name and attempt number for this row
-				$query = "SELECT `user_id`, `attempt` FROM `#__courses_members` cm JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id WHERE cr.`id` = '{$respondent_id}'";
+				$query = "SELECT `user_id`, `attempt`, `student` FROM `#__courses_members` cm JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id WHERE cr.`id` = '{$respondent_id}'";
 				$db->setQuery($query);
-				$aux     = $db->loadObject();
+				$aux   = $db->loadObject();
+
+				if (!$aux->student)
+				{
+					continue;
+				}
+
 				$name    = JUser::getInstance($aux->user_id)->get('name');
 				$attempt = $aux->attempt;
 				$fields  = array();
@@ -279,6 +285,17 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 
 			foreach ($results as $response)
 			{
+				// We only want data for students, so check that first
+				$query  = "SELECT `student` FROM `#__courses_members` AS cm, ";
+				$query .= "`#__courses_form_respondents` AS cfr WHERE cm.id = cfr.member_id ";
+				$query .= "AND cfr.id = " . $db->quote($response->respondent_id);;
+				$db->setQuery($query);
+				$student = $db->loadResult();
+				if (!$student)
+				{
+					continue;
+				}
+
 				$question_id = $questions[$response->question_id];
 
 				$letter = (isset($answers[$response->answer_id])) ? $answers[$response->answer_id]['label'] : 'z';
