@@ -141,7 +141,7 @@ if (count($this->rows) > 0) {
 ?>
 				<li<?php echo $cls; ?>>
 					<dl class="event-details">
-						<dt><?php echo JHTML::_('date',$rows['week']['year'].'-'.$rows['week']['month'].'-'.$rows['week']['day'].' 00:00:00', JText::_('DATE_FORMAT_HZ1')); ?></dt>
+						<dt><?php echo JHTML::_('date',$rows['week']['year'].'-'.$rows['week']['month'].'-'.$rows['week']['day'].' 00:00:00', JText::_('DATE_FORMAT_HZ1'), 'UTC'); ?></dt>
 					</dl>
 					<div class="ewrap">
 <?php
