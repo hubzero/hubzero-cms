@@ -569,15 +569,21 @@ HUB.CoursesOutline = {
 										setTimeout(function(){
 											if (!loaded) {
 												$.fancybox.close();
-												var msg  = 'Oops, something went wrong trying to preview this asset. ';
-													msg += 'It may be that preview isn\'t available for this asset, ';
-													msg += 'or that trying again will solve the problem.';
-												HUB.CoursesOutline.message.show(msg, 7500);
+												window.open(t.attr('href'), '_blank');
 											}
-										},10000);
+										},5000);
 									},
-									afterLoad: function() {
+									afterLoad: function( upcoming, current ) {
 										loaded = true;
+
+										// Check to make sure the iframe actually loaded some content...if not, open a new window with the page
+										// Try to account for x-frame-options preventing iframe loading
+										try {
+											var body = $(upcoming.content[0]).contents().find('body').html().length;
+										} catch(err) {
+											window.open(t.attr('href'), '_blank');
+											$.fancybox.close();
+										}
 									}
 								});
 							break;
