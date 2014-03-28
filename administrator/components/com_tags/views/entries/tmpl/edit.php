@@ -116,9 +116,12 @@ if ($this->getError())
 			<li>
 				<?php
 				$data = json_decode($log->get('comments'));
-				if (!isset($data->entries))
+				if (!is_object($data))
 				{
 					$data = new stdClass;
+				}
+				if (!isset($data->entries))
+				{
 					$data->entries = 0;
 				}
 				switch ($log->get('action'))
