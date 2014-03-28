@@ -37,6 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
+	$this->config->set('access-edit-post', false);
 	if ($juser->get('id') == $this->comment->get('created_by'))
 	{
 		$this->config->set('access-edit-post', true);
@@ -91,27 +92,17 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php if (
 						$this->config->get('access-manage-thread')
-						||
-						(!$this->comment->get('parent') && //$this->comment->get('created_by') == $juser->get('id') && 
-							(
-								$this->config->get('access-delete-thread') ||
-								$this->config->get('access-edit-thread')
-							) 
-						)
-						|| 
-						($this->comment->get('parent') && //$this->comment->get('created_by') == $juser->get('id') && 
-							(
-								$this->config->get('access-delete-post') ||
-								$this->config->get('access-edit-post')
-							)
-						)
+					 || $this->config->get('access-delete-thread') 
+					 || $this->config->get('access-edit-thread')
+					 || $this->config->get('access-delete-post') 
+					 || $this->config->get('access-edit-post')
 					) { ?>
 				<?php if ($this->comment->get('parent') && $this->config->get('access-delete-post')) { ?>
 					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!-- 
 						--><?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?><!-- 
 					--></a>
 				<?php } ?>
-				<?php if ((!$this->comment->get('parent') && $this->config->get('access-edit-thread')) || ($this->comment->get('parent') && $this->config->get('access-edit-post'))) { ?>
+				<?php if ($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) { ?>
 					<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!-- 
 						--><?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?><!-- 
 					--></a>
