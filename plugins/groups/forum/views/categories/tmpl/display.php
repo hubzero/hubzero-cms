@@ -154,7 +154,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							<?php } ?>
 								</span>
 							</td>
-						<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) { ?>
+						<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread') || $juser->get('id') == $row->get('created_by')) { ?>
 							<td class="entry-options">
 								<?php if ($row->get('created_by') == $juser->get('id') || $this->config->get('access-edit-thread')) { ?>
 									<a class="icon-edit edit" href="<?php echo JRoute::_($base . '/' . $row->get('id') . '/edit'); ?>">
