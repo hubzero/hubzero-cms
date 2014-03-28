@@ -20,6 +20,12 @@ class Migration20140108233319ComGroups extends Base
 		
 		// define base path
 		$base = JPATH_ROOT . DS . 'site' . DS . 'groups';
+
+		// make sure we have a directory
+		if (!is_dir($base))
+		{
+			return;
+		}
 		
 		// get group folders
 		$groupFolders = \JFolder::folders( $base, '.', false, true );

@@ -18,6 +18,12 @@ class Migration20140325093000ComResources extends Base
 		// make import path if doesnt exist
 		$params = \JComponentHelper::getParams('com_resources');
 		$upload = $params->get('uploadpath', '/site/resources');
+
+    if (!is_dir($upload))
+    {
+      mkdir($upload);
+    }
+
 		$path = JPATH_ROOT . DS . trim($upload, DS) . DS . 'import' . DS;
 		if (!is_dir($path))
 		{
