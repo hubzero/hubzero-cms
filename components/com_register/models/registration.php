@@ -226,7 +226,7 @@ class RegisterModelRegistration
 		$racehawaiian_p = JRequest::getVar('racehawaiian', null, 'post');
 		$racewhite_p = JRequest::getVar('racewhite', null, 'post');
 		$racerefused_p = JRequest::getVar('racerefused', null, 'post');
-		$interests_p = JRequest::getVar('interests',null,'post');
+		//$interests_p = JRequest::getVar('interests',null,'post');
 		
 		//if ($coriginus_p === null) { // field not on form
 		if ($coriginus_p || $corigin_p) { // field not on form
@@ -337,37 +337,37 @@ class RegisterModelRegistration
 			}
 		}
 		
-		if ($interests_p === null) // field not on form
-		{
-			$role = null;
-			$edulevel = null;
-		}
-		else
-		{
-			$role = array();
-			$edulevel = array();
+		// if ($interests_p === null) // field not on form
+		// {
+		// 	$role = null;
+		// 	$edulevel = null;
+		// }
+		// else
+		// {
+		// 	$role = array();
+		// 	$edulevel = array();
 
-			if ( JRequest::getVar('rolestudent', '', 'post') )
-				$role[] = 'student';
+		// 	if ( JRequest::getVar('rolestudent', '', 'post') )
+		// 		$role[] = 'student';
 
-	 		if ( JRequest::getVar('roleeducator', '', 'post') )
-				$role[] = 'educator';
+	 // 		if ( JRequest::getVar('roleeducator', '', 'post') )
+		// 		$role[] = 'educator';
 
-			if ( JRequest::getVar('roleresearcher', '', 'post') )
-				$role[] = 'researcher';
+		// 	if ( JRequest::getVar('roleresearcher', '', 'post') )
+		// 		$role[] = 'researcher';
 
-			if ( JRequest::getVar('roledeveloper', '', 'post') )
-				$role[] = 'developer';
+		// 	if ( JRequest::getVar('roledeveloper', '', 'post') )
+		// 		$role[] = 'developer';
 
-			if ( JRequest::getVar('edulevelk12', '', 'post') )
-				$edulevel[] = 'k12';
+		// 	if ( JRequest::getVar('edulevelk12', '', 'post') )
+		// 		$edulevel[] = 'k12';
 
-			if ( JRequest::getVar('edulevelundergraduate', '', 'post') )
-				$edulevel[] = 'undergraduate';
+		// 	if ( JRequest::getVar('edulevelundergraduate', '', 'post') )
+		// 		$edulevel[] = 'undergraduate';
 
-			if ( JRequest::getVar('edulevelgraduate', '', 'post') )
-				$edulevel[] = 'graduate';
-		}
+		// 	if ( JRequest::getVar('edulevelgraduate', '', 'post') )
+		// 		$edulevel[] = 'graduate';
+		// }
 
 		$name = JRequest::getVar('name', array(), 'post');
 		if (!is_array($name)) {
@@ -387,8 +387,8 @@ class RegisterModelRegistration
 		$this->_registration['countryresident'] = $cresident;
 		$this->_registration['countryorigin']	= $corigin;
 		$this->_registration['nativetribe'] = $racenativetribe;
-		$this->_registration['role'] = $role;
-		$this->_registration['edulevel'] = $edulevel;
+		//$this->_registration['role'] = $role;
+		//$this->_registration['edulevel'] = $edulevel;
 		$this->_registration['hispanic'] = $hispanic;
 		$this->_registration['disability'] = $disability;
 		$this->_registration['race'] = $race;

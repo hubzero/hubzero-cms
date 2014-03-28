@@ -473,6 +473,10 @@ class RegisterController extends \Hubzero\Component\SiteController
 			$result = $target_xprofile->update();
 		}
 
+		// add member interests
+		$mt = new MembersTags($this->database);
+		$mt->tag_object($target_xprofile->get('uidNumber'), $target_xprofile->get('uidNumber'), $xregistration->get('interests'), 1, 1);
+
 		if ($result) 
 		{
 			$result = \Hubzero\User\Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
@@ -946,6 +950,10 @@ class RegisterController extends \Hubzero\Component\SiteController
 						$xprofile->set('password', '');
 						$result = $xprofile->update();
 					}
+
+					// add member interests
+					$mt = new MembersTags($this->database);
+					$mt->tag_object($xprofile->get('uidNumber'), $xprofile->get('uidNumber'), $xregistration->get('interests'), 1, 1);
 
 					if ($result) 
 					{

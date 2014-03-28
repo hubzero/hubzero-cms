@@ -43,6 +43,7 @@ jimport('joomla.application.component.helper');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'registration.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'controller.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 
 // Instantiate controller
 $controller = new RegisterController();

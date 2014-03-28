@@ -573,58 +573,78 @@ defined('_JEXEC') or die('Restricted access');
 		if ($this->registrationInterests != REG_HIDE) {
 			$required = ($this->registrationInterests == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
 			$message = (!empty($this->xregistration->_invalid['interests'])) ? RegistrationHelperHtml::error($this->xregistration->_invalid['interests']) : '';
-			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
+			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
-			if (!is_array($this->registration['edulevel']))
-				$this->registration['edulevel'] = array();
+			// if (!is_array($this->registration['edulevel']))
+			// 	$this->registration['edulevel'] = array();
 
-			if (!is_array($this->registration['role']))
-				$this->registration['role'] = array();
+			// if (!is_array($this->registration['role']))
+			// 	$this->registration['role'] = array();
 
-			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>'.JText::_('What are you interested in?').' '.$required.'</legend>'."\n";
+			// $html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
+			// $html .= "\t\t\t".'<legend>'.JText::_('What are you interested in?').' '.$required.'</legend>'."\n";
 
-			$html .= "\t\t\t".'<p class="hint">'.JText::_('Materials for ... (Check all roles and levels you are interested in.)').'</p>'."\n";
+			// $html .= "\t\t\t".'<p class="hint">'.JText::_('Materials for ... (Check all roles and levels you are interested in.)').'</p>'."\n";
 
-			$html .= "\t\t\t".'<input type="hidden" name="interests" value="unspecified" />'."\n";
+			// $html .= "\t\t\t".'<input type="hidden" name="interests" value="unspecified" />'."\n";
 
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="rolestudent" id="rolestudent" ';
-			if (in_array("student", $this->registration['role']))
-				$html .= 'checked="checked" value="on"';
-			$html .= '/> '.JText::_('Students').'</label>'."\n";
+			// $html .= "\t\t\t".'<label><input type="checkbox" class="option" name="rolestudent" id="rolestudent" ';
+			// if (in_array("student", $this->registration['role']))
+			// 	$html .= 'checked="checked" value="on"';
+			// $html .= '/> '.JText::_('Students').'</label>'."\n";
 
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="roleeducator" id="roleeducator" ';
-			if (in_array("educator", $this->registration['role']))
-				$html .= 'checked="checked" value="on"';
-			$html .= '/> '.JText::_('Educators').'</label>'."\n";
+			// $html .= "\t\t\t".'<label><input type="checkbox" class="option" name="roleeducator" id="roleeducator" ';
+			// if (in_array("educator", $this->registration['role']))
+			// 	$html .= 'checked="checked" value="on"';
+			// $html .= '/> '.JText::_('Educators').'</label>'."\n";
 
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="roleresearcher" id="roleresearcher" ';
-			if (in_array("researcher", $this->registration['role']))
-				$html .= 'checked="checked" value="on"';
-			$html .= '/> '.JText::_('Researchers').'</label>'."\n";
+			// $html .= "\t\t\t".'<label><input type="checkbox" class="option" name="roleresearcher" id="roleresearcher" ';
+			// if (in_array("researcher", $this->registration['role']))
+			// 	$html .= 'checked="checked" value="on"';
+			// $html .= '/> '.JText::_('Researchers').'</label>'."\n";
 
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="roledeveloper" id="roledeveloper" ';
-			if (in_array("developer", $this->registration['role']))
-				$html .= 'checked="checked" value="on"';
-			$html .= '/> '.JText::_('Developers').'</label>'."\n";
+			// $html .= "\t\t\t".'<label><input type="checkbox" class="option" name="roledeveloper" id="roledeveloper" ';
+			// if (in_array("developer", $this->registration['role']))
+			// 	$html .= 'checked="checked" value="on"';
+			// $html .= '/> '.JText::_('Developers').'</label>'."\n";
 
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="edulevelk12" id="edulevelk12" ';
-			if (in_array("k12", $this->registration['edulevel']))
-				$html .= 'checked="checked" value="on"';
-			$html .= '/> '.JText::_('K - 12 (Pre-College)').'</label>'."\n";
+			// $html .= "\t\t\t".'<label><input type="checkbox" class="option" name="edulevelk12" id="edulevelk12" ';
+			// if (in_array("k12", $this->registration['edulevel']))
+			// 	$html .= 'checked="checked" value="on"';
+			// $html .= '/> '.JText::_('K - 12 (Pre-College)').'</label>'."\n";
 
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="edulevelundergraduate" id="edulevelundergraduate" ';
-			if (in_array("undergraduate", $this->registration['edulevel']))
-				$html .= 'checked="checked" value="on"';
-			$html .= '/> '.JText::_('Undergraduate').'</label>'."\n";
+			// $html .= "\t\t\t".'<label><input type="checkbox" class="option" name="edulevelundergraduate" id="edulevelundergraduate" ';
+			// if (in_array("undergraduate", $this->registration['edulevel']))
+			// 	$html .= 'checked="checked" value="on"';
+			// $html .= '/> '.JText::_('Undergraduate').'</label>'."\n";
 
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="edulevelgraduate" id="edulevelgraduate" ';
-			if (in_array("graduate", $this->registration['edulevel']))
-				$html .= 'checked="checked" value="on"';
-			$html .= '/> '.JText::_('Graduate / Professional').'</label>'."\n";
+			// $html .= "\t\t\t".'<label><input type="checkbox" class="option" name="edulevelgraduate" id="edulevelgraduate" ';
+			// if (in_array("graduate", $this->registration['edulevel']))
+			// 	$html .= 'checked="checked" value="on"';
+			// $html .= '/> '.JText::_('Graduate / Professional').'</label>'."\n";
 
-			$html .= ($message) ? "\t\t\t" . $message . "\n" : '';
-			$html .= "\t\t".'</fieldset>'."\n";
+			// $html .= ($message) ? "\t\t\t" . $message . "\n" : '';
+			// $html .= "\t\t".'</fieldset>'."\n";
+			
+			// get tags string
+			$tags = $this->registration['interests'];
+
+			// instantiate tag autocompleter
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher = JDispatcher::getInstance();
+			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'interests', 'actags','',stripslashes($tags))) );
+			
+			// output html input for interests
+			$html .= "\t\t".'<label '.$fieldclass.'>'."\n";
+			$html .= "\t\t\t".JText::_('What are you interested in?').': '.$required."\n";;
+			if (count($tf) > 0) 
+			{
+				$html .= $tf[0];
+			} else 
+			{
+				$html .= "\t\t\t".'<input type="text" name="interests" value="'. $this->escape($tags) .'" />'."\n";
+			}
+			$html .= "\t\t".'</label>'."\n";
 		}
 		$html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 	}
