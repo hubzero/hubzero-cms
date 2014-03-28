@@ -31,14 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$field = strtolower(JRequest::getWord('field', ''));
+$field  = strtolower(JRequest::getWord('field', ''));
+$action = strtolower(JRequest::getWord('action', ''));
 
 $offerings = $this->course->offerings(array(
-	'available' => true, 
+	'available' => false, 
 	'sort'      => 'publish_up'
-));
-
-$action = strtolower(JRequest::getWord('action', ''));
+), true);
 
 $this->js('courses.overview.js');
 ?>
@@ -89,7 +88,7 @@ $this->js('courses.overview.js');
 						<input type="text" name="tags" id="actags" value="<?php echo $this->escape($this->couse->tags('string')); ?>" />
 					<?php } ?>
 
-					<span class="hint">These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content. <?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
+					<span class="hint"><?php echo JText::_('These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content.'); ?> <?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
 				</label>
 
 				<p class="submit">
@@ -115,7 +114,7 @@ $this->js('courses.overview.js');
 					<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=blurb'); ?>">
 						<?php echo JText::_('Edit'); ?>
 					</a>
-					<span><strong>Title &amp; Short description</strong></span>
+					<span><strong><?php echo JText::_('Title &amp; Short description'); ?></strong></span>
 				</div>
 			<?php } ?>
 			<div id="course-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
@@ -163,8 +162,8 @@ $this->js('courses.overview.js');
 	</div><!-- / .aside -->
 	<div class="subject">
 		<p>
-			<strong>This course needs an offering!</strong></p>
-			An offering is a collection of materials (lectures, quizzes, etc.) that represents a version or edition of a course. Generally, a significant change in course materials would be considered a new offering.
+			<strong><?php echo JText::_('This course needs an offering!'); ?></strong></p>
+			<?php echo JText::_('An offering is a collection of materials (lectures, quizzes, etc.) that represents a version or edition of a course. Generally, a significant change in course materials would be considered a new offering.'); ?>
 		</p>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
@@ -173,58 +172,23 @@ $this->js('courses.overview.js');
 
 <div class="course section">
 	<div class="aside">
-<?php
-$c = 0;
-if ($offerings->total())
-{
-	foreach ($offerings as $offering) 
-	{
-		if (!$offering->isAvailable())
+		<?php
+		$c = 0;
+		if ($offerings->total())
 		{
-			continue;
-		}
-		$c++;
+			$now = JFactory::getDate()->toSql();
 
-		$controls = '';
-
-		/*if ($this->sections)
-		{
-			foreach ($this->sections as $section)
+			if ($this->course->isManager())
 			{
-				if (isset($section['controls']) && $section['controls'] != '') 
+				foreach ($offerings as $offering) 
 				{
-					$controls = $section['controls'];
-				}
-			}
-		}*/
+					if ($offering->isDeleted())
+					{
+						continue;
+					}
+					$c++;
 
-		if (!$controls) 
-		{
-			$memberships = $offering->membership();
-			if (!count($memberships))
-			{
-				$memberships[] = new CoursesModelMember(JFactory::getUser()->get('id'), $this->course->get('id'), $offering->get('id'));
-			}
-
-			$mng  = -1;
-			$last = '';
-			foreach ($memberships as $membership)
-			{
-				$cur  = ($membership->get('offering_id') ? $membership->get('offering_id') : $offering->get('id')) . '-';
-				$cur .= ($membership->get('section_id') ? $offering->section($membership->get('section_id'))->get('alias') : $offering->section()->get('alias'));
-
-				if ($cur == $last || $mng == $offering->get('id'))
-				{
-					continue;
-				}
-				$last = $cur;
-
-				// If they're a course level manager
-				if ($membership->get('course_id') && !$membership->get('section_id') && !$membership->get('student'))
-				{
-					$mng = $offering->get('id');
-
-					// Get the default section
+					// Try to load the default section
 					$dflt = $offering->section('!!default!!');
 					if (!$dflt->exists())
 					{
@@ -232,130 +196,148 @@ if ($offerings->total())
 						$dflt = $offering->sections()->fetch('first');
 					}
 					$offering->section($dflt->get('alias'));
-				?>
-			<div class="offering-info">
-				<table>
-					<tbody>
-						<tr>
-							<th scope="row"><?php echo JText::_('Offering:'); ?></th>
-							<td>
-								<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php echo JText::_('Section:'); ?></th>
-							<td>
-								<?php echo $offering->sections()->total() > 1 ? JText::_('--') : $this->escape(stripslashes($dflt->get('title'))); ?>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<?php if ($offering->sections()->total() > 1) { ?>
-				<div class="btn-group-wrap">
-					<div class="btn-group dropdown">
-						<a class="btn" href="<?php echo JRoute::_($offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($dflt->get('title'))); ?></a>
-						<span class="btn dropdown-toggle"></span>
-						<ul class="dropdown-menu">
-						<?php 
-						foreach ($offering->sections() as $section) 
-						{
-							// Skip the default
-							if ($section->get('alias') == $dflt->get('alias'))
-							{
-								continue;
-							}
-							$offering->section($section->get('id'));
-							?>
-							<li>
-								<a href="<?php echo JRoute::_($offering->link()); ?>">
-									<?php echo $this->escape(stripslashes($section->get('title'))); ?>
-								</a>
-							</li>
-							<?php
-						}
-						?>
-						</ul>
-						<div class="clear"></div>
-					</div><!-- /btn-group -->
-				</div>
-				<?php } else { ?>
-				<p>
-					<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-						<?php echo JText::_('Access Course'); ?>
-					</a>
-				</p>
-				<?php } ?>
-			</div><!-- / .offering-info -->
+					?>
+					<div class="offering-info">
+						<table>
+							<tbody>
+								<tr>
+									<th scope="row"><?php echo JText::_('Offering:'); ?></th>
+									<td>
+										<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
+									</td>
+								</tr>
+						<?php if ($offering->sections()->total() > 1) { ?>
+							</tbody>
+						</table>
+						<div class="btn-group-wrap">
+							<div class="btn-group dropdown">
+								<a class="btn" href="<?php echo JRoute::_($offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($dflt->get('title'))); ?></a>
+								<span class="btn dropdown-toggle"></span>
+								<ul class="dropdown-menu">
+								<?php 
+								foreach ($offering->sections() as $section) 
+								{
+									// Skip the default
+									if ($section->get('alias') == $dflt->get('alias') || $section->isDeleted())
+									{
+										continue;
+									}
+									// Set the section
+									$offering->section($section->get('id'));
+									?>
+									<li>
+										<a href="<?php echo JRoute::_($offering->link()); ?>">
+											<?php echo $this->escape(stripslashes($section->get('title'))); ?>
+										</a>
+									</li>
+									<?php
+								}
+								?>
+								</ul>
+								<div class="clear"></div>
+							</div><!-- /btn-group -->
+						</div>
+						<?php } else { ?>
+								<tr>
+									<th scope="row"><?php echo JText::_('Section:'); ?></th>
+									<td>
+										<?php echo $offering->sections()->total() > 1 ? JText::_('--') : $this->escape(stripslashes($dflt->get('title'))); ?>
+									</td>
+								</tr
+							</tbody>
+						</table>
+						<p>
+							<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+								<?php echo JText::_('Access Course'); ?>
+							</a>
+						</p>
+						<?php } ?>
+					</div><!-- / .offering-info -->
 					<?php
 				}
-				else
+			}
+			else
+			{
+				foreach ($offerings as $offering) 
 				{
-					if ($offering->section()->get('enrollment') == 2)
+					if (!$offering->isAvailable())
 					{
-						$now = JFactory::getDate()->toSql();
-
-						foreach ($offering->sections() as $sect)
-						{
-							if (!$sect->get('is_default')
-							 && $sect->get('enrollment') != 2 
-							 && $sect->get('publish_down') == '0000-00-00 00:00:00' || ($sect->get('publish_down') != '0000-00-00 00:00:00' && $sect->get('publish_down') <= $now))
-							{
-								$offering->section($sect->get('alias'));
-								break;
-							}
-						}
+						continue;
 					}
-					?>
-			<div class="offering-info">
-				<table>
-					<tbody>
-						<tr>
-							<th scope="row"><?php echo JText::_('Offering:'); ?></th>
-							<td>
-								<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php echo JText::_('Section:'); ?></th>
-							<td>
-								<?php echo ($membership->get('section_id') ? $this->escape(stripslashes($offering->section($membership->get('section_id'))->get('title'))) : $this->escape(stripslashes($offering->section()->get('title')))); ?>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			<?php if ($offering->access('view', 'section') || $this->course->isStudent()) { //$this->course->isManager() ?>
-				<p>
-					<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-						<?php echo JText::_('Access Course'); ?>
-					</a>
-				</p>
-			<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
-				<p>
-					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-						<?php echo JText::_('Enroll in Course'); ?>
-					</a>
-				</p>
-			<?php } ?>
-			</div><!-- / .offering-info -->
-				<?php
+					$c++;
+
+					foreach ($offering->sections() as $sect)
+					{
+						// If section is in draft mode or not published
+						if ($sect->isDraft() || !$sect->isPublished())
+						{
+							continue;
+						}
+						// If section hasn't started or has ended
+						if (!$sect->started() || $sect->ended())
+						{
+							continue;
+						}
+						// If a publish down time is set and that time happened before now
+						if ($sect->get('publish_down') != '0000-00-00 00:00:00' && $sect->get('publish_down') <= $now)
+						{
+							continue;
+						}
+						// If not already a member and enrollment is closed
+						if (!$offering->section()->isMember() && $offering->section()->get('enrollment') == 2)
+						{
+							continue;
+						}
+
+						$offering->section($sect->get('alias'));
+						?>
+						<div class="offering-info">
+							<table>
+								<tbody>
+									<tr>
+										<th scope="row"><?php echo JText::_('Offering:'); ?></th>
+										<td>
+											<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row"><?php echo JText::_('Section:'); ?></th>
+										<td>
+											<?php echo $this->escape(stripslashes($offering->section()->get('title'))); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						<?php if ($offering->section()->isMember()) { ?>
+							<p>
+								<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+									<?php echo JText::_('Access Course'); ?>
+								</a>
+							</p>
+						<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
+							<p>
+								<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
+									<?php echo JText::_('Enroll in Course'); ?>
+								</a>
+							</p>
+						<?php } ?>
+						</div><!-- / .offering-info -->
+						<?php
+					}
 				}
 			}
-		} else {
-			echo '<div class="offering-info">' . $controls . '</div><!-- / .offering-info -->';
 		}
-	}
-}
-if (!$c)
-{
-	?>
-		<div class="offering-info">
-			<p>
-				<?php echo JText::_('No offerings available.'); ?>
-			</p>
-		</div><!-- / .offering-info -->
-	<?php
-}
-?>
+		if (!$c)
+		{
+			?>
+				<div class="offering-info">
+					<p>
+						<?php echo JText::_('No offerings available.'); ?>
+					</p>
+				</div><!-- / .offering-info -->
+			<?php
+		}
+		?>
 		<?php
 		if ($this->course->access('edit', 'course')) 
 		{
@@ -364,7 +346,7 @@ if (!$c)
 				<a class="icon-edit btn btn-secondary" id="manage-instructors" href="<?php echo JRoute::_($this->course->link() . '&task=instructors'); ?>">
 					<?php echo JText::_('Manage'); ?>
 				</a>
-				<span><strong>Instructors/Managers</strong></span>
+				<span><strong><?php echo JText::_('Instructors/Managers'); ?></strong></span>
 			</div>
 			<?php
 		}
@@ -471,61 +453,61 @@ if (!$c)
 		<?php
 		foreach ($this->notifications as $notification) 
 		{
-			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+			echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 		}
 
 		if (($action == 'addpage' || $action == 'editpage') && $this->course->access('edit', 'course'))
 		{
 			$page = $this->course->page($this->active);
 			?>
-		<div class="inner-section" id="addpage-section">
-			<form action="<?php echo JRoute::_($this->course->link()); ?>" class="form-inplace" method="post">
-				<fieldset>
-					<div class="grid">
-						<div class="col span-half">
-							<label for="field-title">
-								<?php echo JText::_('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_PAGES_REQUIRED'); ?></span>
-								<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($page->get('title'))); ?>" />
-								<span class="hint"><?php echo JText::_('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
-							</label>
+			<div class="inner-section" id="addpage-section">
+				<form action="<?php echo JRoute::_($this->course->link()); ?>" class="form-inplace" method="post">
+					<fieldset>
+						<div class="grid">
+							<div class="col span-half">
+								<label for="field-title">
+									<?php echo JText::_('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_PAGES_REQUIRED'); ?></span>
+									<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($page->get('title'))); ?>" />
+									<span class="hint"><?php echo JText::_('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
+								</label>
+							</div>
+							<div class="col span-half omega">
+								<label for="field-url">
+									<?php echo JText::_('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo JText::_('PLG_COURSES_PAGES_OPTINAL'); ?></span>
+									<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($page->get('url'))); ?>" />
+									<span class="hint"><?php echo JText::_('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
+								</label>
+							</div>
 						</div>
-						<div class="col span-half omega">
-							<label for="field-url">
-								<?php echo JText::_('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo JText::_('PLG_COURSES_PAGES_OPTINAL'); ?></span>
-								<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($page->get('url'))); ?>" />
-								<span class="hint"><?php echo JText::_('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
-							</label>
-						</div>
-					</div>
 
-					<label for="field_description">
-						<?php
-							echo \JFactory::getEditor()->display('page[content]', $this->escape(stripslashes($page->get('content'))), '', '', 35, 50, false, 'field_content');
-						?>
-					</label>
+						<label for="field_description">
+							<?php
+								echo \JFactory::getEditor()->display('page[content]', $this->escape(stripslashes($page->get('content'))), '', '', 35, 50, false, 'field_content');
+							?>
+						</label>
 
-					<p class="submit">
-						<input type="submit" class="btn btn-success" value="<?php echo JText::_('Save'); ?>" />
-						<a class="btn btn-secondary" href="<?php echo JRoute::_($this->course->link()); ?>">
-							<?php echo JText::_('Cancel'); ?>
-						</a>
-					</p>
+						<p class="submit">
+							<input type="submit" class="btn btn-success" value="<?php echo JText::_('Save'); ?>" />
+							<a class="btn btn-secondary" href="<?php echo JRoute::_($this->course->link()); ?>">
+								<?php echo JText::_('Cancel'); ?>
+							</a>
+						</p>
 
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="course" />
-					<input type="hidden" name="task" value="savepage" />
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="course" />
+						<input type="hidden" name="task" value="savepage" />
 
-					<?php echo JHTML::_('form.token'); ?>
+						<?php echo JHTML::_('form.token'); ?>
 
-					<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
-					<input type="hidden" name="page[id]" value="<?php echo $this->escape($page->get('id')); ?>" />
-					<input type="hidden" name="page[alias]" value="<?php echo $this->escape($page->get('alias')); ?>" />
-					<input type="hidden" name="page[course_id]" value="<?php echo $this->course->get('id'); ?>" />
-					<input type="hidden" name="page[section_id]" value="0" />
-					<input type="hidden" name="page[offering_id]" value="0" />
-				</fieldset>
-			</form>
-		</div>
+						<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+						<input type="hidden" name="page[id]" value="<?php echo $this->escape($page->get('id')); ?>" />
+						<input type="hidden" name="page[alias]" value="<?php echo $this->escape($page->get('alias')); ?>" />
+						<input type="hidden" name="page[course_id]" value="<?php echo $this->course->get('id'); ?>" />
+						<input type="hidden" name="page[section_id]" value="0" />
+						<input type="hidden" name="page[offering_id]" value="0" />
+					</fieldset>
+				</form>
+			</div>
 			<?php
 		}
 		elseif ($this->sections)
@@ -545,7 +527,7 @@ if (!$c)
 								<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&active=' . $this->isPage . '&action=editpage'); ?>">
 									<?php echo JText::_('Edit'); ?>
 								</a>
-								<span><strong>Page contents</strong></span>
+								<span><strong><?php echo JText::_('Page contents'); ?></strong></span>
 							</div>
 						<?php } ?>
 						<?php echo $section['html']; ?>

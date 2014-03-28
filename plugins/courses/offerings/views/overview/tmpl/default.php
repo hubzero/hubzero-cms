@@ -44,11 +44,22 @@ $this->css();
 		</thead>
 		<tbody>
 	<?php
-	$offerings = $this->course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true);
+	/*$offerings = $this->course->offerings(array(
+		'state'    => 1, 
+		'sort_Dir' => 'ASC'
+	), true);*/
+	$offerings = $this->course->offerings();
+
 	if ($offerings->total() > 0)
 	{
+		$now = JFactory::getDate()->toSql();
+
 		foreach ($offerings as $offering)
 		{
+			if ($offering->isDeleted())
+			{
+				continue;
+			}
 			if ($this->course->isManager())
 			{
 				$offering->sections(array('available' => false));
@@ -70,11 +81,11 @@ $this->css();
 				?>
 				<td>
 					<?php if ($this->course->isManager()) { ?>
-					<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
 					<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
-					<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
 					<?php } else { ?>
@@ -112,9 +123,32 @@ $this->css();
 			{
 				foreach ($offering->sections() as $section) 
 				{
-					if (!$this->course->isManager() && $section->get('enrollment') == 2)
+					if ($section->isDeleted())
 					{
 						continue;
+					}
+					if (!$this->course->isManager())
+					{
+						// If section is in draft mode or not published
+						if ($section->isDraft() || !$section->isPublished())
+						{
+							continue;
+						}
+						// If section hasn't started or has ended
+						if (!$section->started() || $section->ended())
+						{
+							continue;
+						}
+						// If a publish down time is set and that time happened before now
+						if ($section->get('publish_down') != '0000-00-00 00:00:00' && $section->get('publish_down') <= $now)
+						{
+							continue;
+						}
+						// If not already a member and enrollment is closed
+						if (!$section->isMember() && $section->get('enrollment') == 2)
+						{
+							continue;
+						}
 					}
 					$offering->section($section->get('id'));
 				?>
@@ -126,11 +160,11 @@ $this->css();
 				</th>
 				<td>
 					<?php if ($this->course->isManager()) { ?>
-					<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
-					<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
-					<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+					<?php } else if ($section->isMember()) { ?>
+					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
 					<?php } else { ?>

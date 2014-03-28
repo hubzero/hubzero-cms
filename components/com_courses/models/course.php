@@ -251,7 +251,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * @param      array $filters Filters to build query from
 	 * @return     mixed
 	 */
-	public function offerings($filters=array())
+	public function offerings($filters=array(), $clear=false)
 	{
 		if (!isset($filters['course_id']))
 		{
@@ -267,7 +267,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		// Is the data is not set OR is it not the right type?
-		if (!($this->_offerings instanceof CoursesModelIterator))
+		if (!($this->_offerings instanceof CoursesModelIterator) || $clear)
 		{
 			$tbl = new CoursesTableOffering($this->_db);
 
