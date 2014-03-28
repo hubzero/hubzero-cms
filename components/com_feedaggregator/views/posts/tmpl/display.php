@@ -46,18 +46,18 @@ if(isset($this->filters['filterby']) != TRUE)
 <div id="content-header-extra">
 <ul id="useroptions">
 	<li>
-		<a href="#feedbox" id="generateFeed" class="fancybox-inline btn">Generate RSS Feed</a>
+		<a href="#feedbox" id="generateFeed" class="fancybox-inline icon-feed btn">Generate RSS Feed</a>
 	</li>
 	<li>
-	<a class="icon-refresh refresh btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
+	<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
 	</li>
 
 	<li>
-	<a class="icon-view btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('View Feeds'); ?></a>
+	<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('View Feeds'); ?></a>
 	</li>
 	
 	<li class="last">
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
+		<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
 	</li>
 </ul>
 </div><!-- / #content-header-extra -->

@@ -24,7 +24,7 @@ jQuery(document).ready(function()
 		 if(action == 'remove')
 		 {
 	
-		 	jQuery.post("<?php echo JRoute::_('index.php?option=' . $this->option . '&task=updateStatus&no_html=1'); ?>",
+		 	jQuery.post("/index.php?option=com_feedaggregator&task=updateStatus&no_html=1",
 			         {'id': record_id,
 		         	  'action': action },
 				     function(data) 
@@ -38,7 +38,7 @@ jQuery(document).ready(function()
 		 }
 		 else
 		 {
-			 jQuery.post("<?php echo JRoute::_('index.php?option=' . $this->option . '&task=updateStatus&no_html=1'); ?>",
+			 jQuery.post("/index.php?option=com_feedaggregator&task=updateStatus&no_html=1",
 			         {'id': record_id,
 		         	  'action': action },
 				     function(data) 

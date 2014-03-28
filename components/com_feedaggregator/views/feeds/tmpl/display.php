@@ -41,11 +41,11 @@ ximport('Hubzero_Document');
 <div id="content-header-extra">
 <ul id="useroptions">
 	<li>
-	<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts'); ?>"><?php echo JText::_('View Posts'); ?></a>
+	<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts'); ?>"><?php echo JText::_('View Posts'); ?></a>
 	</li>
 	
 	<li class="last">
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
+		<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
 	</li>
 </ul>
 </div><!-- / #content-header-extra -->
