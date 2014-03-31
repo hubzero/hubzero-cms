@@ -264,7 +264,7 @@
 		border: 1px solid #333;
 	}
 	.post .description {
-		margin: 0;
+		margin: 1em 0 0 0;
 		padding: 0em 1.4em 0em 1.4em;
 		overflow: hidden;
 		word-wrap: break-word;
@@ -274,6 +274,9 @@
 	}
 	.post .description + .tags-wrap {
 		padding-top: 0;
+	}
+	.post .description p:first-child {
+		margin-top: 0;
 	}
 	/* Actions */
 	.post .actions {

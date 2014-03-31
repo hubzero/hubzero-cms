@@ -156,6 +156,9 @@ if ($this->rows->total() > 0)
 						<span class="reposts">
 							<?php echo JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 						</span>
+						<span class="posts">
+							<?php echo JText::sprintf('COM_COLLECTIONS_NUM_POSTS', $row->get('posts', 0)); ?>
+						</span>
 					</p>
 				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">

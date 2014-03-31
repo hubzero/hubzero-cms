@@ -68,7 +68,7 @@ switch ($collection->get('object_type'))
 		<div class="description">
 			<?php echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false); ?>
 		</div>
-		<table summary="Board content counts">
+		<?php /* <table summary="Board content counts">
 			<tbody>
 				<tr>
 					<td>
@@ -82,4 +82,4 @@ switch ($collection->get('object_type'))
 					</td>
 				</tr>
 			</tbody>
-		</table>
+		</table> */ ?>

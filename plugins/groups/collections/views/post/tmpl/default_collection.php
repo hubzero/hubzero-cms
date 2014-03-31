@@ -80,7 +80,7 @@ switch ($collection->get('object_type'))
 			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); 
 			?>
 		</div>
-		<table summary="<?php echo JText::_('Collection content counts'); ?>">
+		<?php /* <table summary="<?php echo JText::_('Collection content counts'); ?>">
 			<tbody>
 				<tr>
 					<!-- <td>
@@ -97,4 +97,4 @@ switch ($collection->get('object_type'))
 					</td>
 				</tr>
 			</tbody>
-		</table>
+		</table> */ ?>
