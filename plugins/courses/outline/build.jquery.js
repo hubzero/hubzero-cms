@@ -1633,7 +1633,15 @@ HUB.CoursesOutline = {
 
 			$(selector).each(HUB.CoursesOutline.unit.resizeProgressBar);
 
-			$(selector + ' .datepicker').datepicker({
+			$(selector + ' .datepicker').datetimepicker({
+				duration: '',
+				showTime: true,
+				constrainInput: false,
+				stepMinutes: 1,
+				stepHours: 1,
+				altTimeField: '',
+				time24h: true,
+				timeFormat: 'HH:mm:00',
 				dateFormat: 'yy-mm-dd'
 			});
 		},
@@ -1689,8 +1697,10 @@ HUB.CoursesOutline = {
 		/*
 		 * Show/hide edit form
 		 */
-		toggleEditForm: function () {
+		toggleEditForm: function ( e ) {
 			var $ = HUB.CoursesOutline.jQuery;
+
+			e.preventDefault();
 
 			var editContainer = $(this).parents('.unit-edit-container');
 			editContainer.find('.unit-edit').slideToggle(500, function () {

@@ -248,6 +248,9 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
 		\Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
 
+		// Use datetime picker, rather than just datepicker
+		\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
+
 		// Setup view
 		$this->view->setLayout('build');
 
