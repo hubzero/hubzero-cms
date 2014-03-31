@@ -524,8 +524,8 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 
 				if (is_object($badgesProvider))
 				{
-					$credentials->consumer_key    = $cconfig->get($badgeObj->get('provider_name').'_consumer_key');
-					$credentials->consumer_secret = $cconfig->get($badgeObj->get('provider_name').'_consumer_secret');;
+					$credentials->consumer_key    = $cconfig->get($badgeObj->get('provider_name').'_consumer_key', false);
+					$credentials->consumer_secret = $cconfig->get($badgeObj->get('provider_name').'_consumer_secret', false);
 					$credentials->issuerId        = $cconfig->get($badgeObj->get('provider_name').'_issuer_id');;
 					$badgesProvider->setCredentials($credentials);
 
@@ -539,24 +539,31 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					$data['Version']       = '1';
 					$data['BadgeImageUrl'] = rtrim(JURI::root(), DS) . DS . trim($badgeObj->get('img_url'), DS);
 
-					try
+					if (!$credentials->consumer_key || !$credentials->consumer_secret)
 					{
-						$provider_badge_id = $badgesProvider->createBadge($data);
-					}
-					catch (Exception $e)
-					{
-						$this->setError($e->getMessage());
-					}
-
-					if ($provider_badge_id)
-					{
-						// We've successfully created a badge, so save that id to the database
-						$badgeObj->bind(array('provider_badge_id'=>$provider_badge_id));
-						$badgeObj->store();
+						$this->setError('You must fill in the courses badge options before attempting to save a badge!');
 					}
 					else
 					{
-						$this->setError('Failed to save badge to provider. Please try saving again or make sure your badge parameters are correct.');
+						try
+						{
+							$provider_badge_id = $badgesProvider->createBadge($data);
+						}
+						catch (Exception $e)
+						{
+							$this->setError($e->getMessage());
+						}
+
+						if ($provider_badge_id)
+						{
+							// We've successfully created a badge, so save that id to the database
+							$badgeObj->bind(array('provider_badge_id'=>$provider_badge_id));
+							$badgeObj->store();
+						}
+						else
+						{
+							$this->setError('Failed to save badge to provider. Please try saving again or make sure your badge parameters are correct.');
+						}
 					}
 				}
 			}
