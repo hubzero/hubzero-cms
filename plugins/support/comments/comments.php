@@ -48,7 +48,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
 		{
 			return null;
 		}
@@ -74,6 +74,12 @@ class plgSupportComments extends JPlugin
 					{
 						case 'collection':
 							$rows[$key]->href = JRoute::_('index.php?option=com_collections&controller=posts&post=' . $parent);
+						break;
+
+						case 'coursescomment':
+							require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
+							$course = CoursesModelCourse::getInstance($parent);
+							$rows[$key]->href = JRoute::_($course->link() . '&active=reviews');
 						break;
 
 						case 'citations':
@@ -118,7 +124,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function onReportItem($refid, $category)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
 		{
 			return null;
 		}
@@ -143,7 +149,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
 		{
 			return null;
 		}
@@ -170,7 +176,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
 		{
 			return null;
 		}
