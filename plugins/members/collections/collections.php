@@ -1477,6 +1477,11 @@ class plgMembersCollections extends JPlugin
 			if ($process && !$confirmdel) 
 			{
 				$this->setError(JText::_('PLG_GROUPS_' . strtoupper($this->_name) . '_ERROR_CONFIRM_DELETION'));
+				if ($no_html)
+				{
+					echo '';
+					exit;
+				}
 			}
 
 			// Output HTML

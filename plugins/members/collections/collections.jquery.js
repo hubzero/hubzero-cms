@@ -137,16 +137,19 @@ jQuery(document).ready(function(jq){
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-					$(this).attr('href', $(this).attr('href').nohtml());	
+					$(this).attr('href', $(this).attr('href').nohtml());
 				},
 				afterShow: function() {
 					var el = this.element;
-					if ($('#hubForm')) {
-						$('#hubForm').submit(function(e) {
+					if ($('#hubForm').length) {
+						$('#hubForm').on('submit', function(e) {
 							e.preventDefault();
 							$.post($(this).attr('action'), $(this).serialize(), function(data) {
 								$.fancybox.close();
-								window.location = data;
+								if (data)
+								{
+									window.location = data;
+								}
 							});
 						});
 					}
