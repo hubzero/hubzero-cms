@@ -141,14 +141,15 @@ foreach ($this->rows as $row)
 		break;
 		case 1:
 			$color_access = 'style="color: red;"';
-			$task_access = 'accessspecial';
+			//$task_access = 'accessspecial';
+			$task_access = 'accessprivate';
 			$row->set('groupname', JText::_('Registered'));
 		break;
-		case 2:
+		/*case 2:
 			$color_access = 'style="color: black;"';
 			$task_access = 'accessprivate';
 			$row->set('groupname', JText::_('Special'));
-		break;
+		break;*/
 		case 4:
 			$color_access = 'style="color: red;"';
 			$task_access = 'accesspublic';

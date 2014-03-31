@@ -195,7 +195,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		}
 
 		// Process tags
-		$row->tag(trim(JRequest::getVar('tags', '')));
+		//$row->tag(trim(JRequest::getVar('tags', '')));
 
 		if ($redirect)
 		{
@@ -263,7 +263,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	{
 		return $this->accessTask(1);
 	}
-	
+
 	/**
 	 * Set the access level of an article to 'special'
 	 * 
@@ -272,6 +272,16 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	public function accessspecialTask()
 	{
 		return $this->accessTask(2);
+	}
+
+	/**
+	 * Set the access level of an article to 'special'
+	 * 
+	 * @return     void
+	 */
+	public function accessprivateTask()
+	{
+		return $this->accessTask(4);
 	}
 
 	/**
