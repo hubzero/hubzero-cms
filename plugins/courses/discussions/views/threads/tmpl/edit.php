@@ -41,6 +41,11 @@ if ($this->post->id) {
 } else {
 	$action = $base . '&unit=' . $this->category->alias;
 }
+
+if (!($this->post instanceof ForumModelPost))
+{
+	$this->post = new ForumModelPost($this->post);
+}
 ?>
 	<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" class="comment-edit" enctype="multipart/form-data" data-thread="<?php echo $this->post->get('thread'); ?>">
 	<?php if (!$no_html) { ?>
@@ -78,9 +83,10 @@ if ($this->post->id) {
 
 			<label for="field_comment">
 				<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
-				<textarea name="fields[comment]" id="field_<?php echo $this->comment->get('id'); ?>_comment" cols="35" rows="5"><?php echo $this->escape($this->post->get('comment')); ?></textarea>
 				<?php
-				//echo \JFactory::getEditor()->display('fields[comment]', $this->escape($this->post->get('comment')), '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
+				/* <textarea name="fields[comment]" id="field_<?php echo $this->post->get('id'); ?>_comment" cols="35" rows="5"><?php echo $this->escape($this->post->content('raw')); ?></textarea> */
+				
+				echo \JFactory::getEditor()->display('fields[comment]', $this->escape($this->post->content('raw')), '', '', 35, 5, false, 'field_' . $this->post->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 		<?php if (!$this->post->get('parent')) { ?>

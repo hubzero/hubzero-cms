@@ -399,7 +399,11 @@ HUB.Plugins.CoursesForum = {
 					parent.find('> p.comment-options').hide();
 					//parent.find('> div.comment-body').html(data).hide().fadeIn();
 					parent.find('> div.comment-body').hide();
-					parent.append($(data).hide().fadeIn());
+					parent.get(0).innerHTML = parent.get(0).innerHTML + data;
+					parent.find('script').each(function(){
+						eval($(this).html());
+					});
+					//parent.append($(data).hide().fadeIn());
 
 					jQuery(document).trigger('ajaxLoad');
 				});

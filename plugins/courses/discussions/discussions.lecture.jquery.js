@@ -345,6 +345,31 @@ HUB.Plugins.CoursesForum = {
 				}
 			})
 			// Add confirm dialog to delete links
+			.on('click', 'a.edit', function (e) {
+				e.preventDefault();
+
+				var el = $(this),
+					srch = container.find('input.search').val();
+
+				if (_DEBUG) {
+					window.console && console.log('called:' + $(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''));
+				}
+				$.get($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''), {}, function(data){
+					var parent = $('#' + el.attr('data-id')).children('div.comment-content');
+
+					parent.find('> p.comment-options').hide();
+					//parent.find('> div.comment-body').html(data).hide().fadeIn();
+					parent.find('> div.comment-body').hide();
+					parent.get(0).innerHTML = parent.get(0).innerHTML + data;
+					parent.find('script').each(function(){
+						eval($(this).html());
+					});
+					//parent.append($(data).hide().fadeIn());
+
+					jQuery(document).trigger('ajaxLoad');
+				});
+			})
+			// Add confirm dialog to delete links
 			.on('click', 'a.delete', function (e) {
 				e.preventDefault();
 				
@@ -430,23 +455,26 @@ HUB.Plugins.CoursesForum = {
 					.on('submit', function(e) {
 						e.preventDefault();
 
-						if ($(this).find('textarea').val() == '') {
-							if (typeof(wykiwygs) != 'undefined' && wykiwygs.length > 0) {
-								for (var i = 0; i < wykiwygs.length; i++) 
-								{
-									if (wykiwygs[i].d) {
-										wykiwygs[i].t.value = wykiwygs[i].makeWiki();
-										wykiwygs[i].e.body.innerHTML = '';
+						if (!frm.hasClass('comment-edit')) {
+							if ($(this).find('textarea').val() == '') {
+								if (typeof(wykiwygs) != 'undefined' && wykiwygs.length > 0) {
+									for (var i = 0; i < wykiwygs.length; i++) 
+									{
+										if (wykiwygs[i].d) {
+											wykiwygs[i].t.value = wykiwygs[i].makeWiki();
+											wykiwygs[i].e.body.innerHTML = '';
+										}
 									}
 								}
 							}
+
+							var b = $(frm.parent().parent()).find('a.reply');
+								b.removeClass('active')
+									.text(b.attr('data-txt-inactive'));
+
+							$(frm.parent()).addClass('hide');
 						}
 
-						var b = $(frm.parent().parent()).find('a.reply');
-							b.removeClass('active')
-								.text(b.attr('data-txt-inactive'));
-
-						$(frm.parent()).addClass('hide');
 						var act = frm.attr('action').split("?")[0];
 
 						$.ajax(act.nohtml() + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'), {
@@ -455,21 +483,44 @@ HUB.Plugins.CoursesForum = {
 							iframe: true,
 							processData: false
 						}).complete(function(response) {
-							if (_DEBUG) {
-								window.console && console.log(response.responseText);
-							}
+							if (frm.hasClass('comment-edit')) {
+								var thrd = frm.attr('data-thread'),
+									srch = container.find('input.search').val();
 
-							var data = jQuery.parseJSON(response.responseText);
+								$.getJSON(cfrm.attr('action').nohtml() + '&action=thread&thread=' + thrd + (srch ? '&search=' + srch : ''), {}, function(data){
+									// Set some data so we know when/where to start pulling new results from
+									if (_DEBUG) {
+										console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+									}
+									// Append data and fade it in
+									//thread.html(data.thread.html).hide().fadeIn();
+									thread.hide();
+									thread.get(0).innerHTML = data.thread.html;
+									thread.find('script').each(function(){
+										eval($(this).html());
+									});
+									thread.fadeIn();
 
-							if (data) {
-								feed.data('thread_last_change', data.thread.lastchange);
-								feed.data('thread', data.thread.lastid);
+									// Apply plugins to loaded content
+									jQuery(document).trigger('ajaxLoad');
+								});
+							} else {
 								if (_DEBUG) {
-									window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+									window.console && console.log(response.responseText);
 								}
 
-								if (data.thread.posts) {
-									plgn.updateComments(data.thread.posts, 'append');
+								var data = jQuery.parseJSON(response.responseText);
+
+								if (data) {
+									feed.data('thread_last_change', data.thread.lastchange);
+									feed.data('thread', data.thread.lastid);
+									if (_DEBUG) {
+										window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+									}
+
+									if (data.thread.posts) {
+										plgn.updateComments(data.thread.posts, 'append');
+									}
 								}
 							}
 						});

@@ -111,6 +111,12 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 			break;
 
 			case 'edit':
+				if ($this->_segments['active'] == 'outline')
+				{
+					$segments['active']   = 'discussions';
+					unset($segments['unit']);
+					unset($segments['b'] );
+				}
 				if ($this->get('thread'))
 				{
 					$segments['action'] = 'edit';
