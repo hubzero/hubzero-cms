@@ -46,8 +46,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<blockquote>
 <pre>An account has been created on your behalf at <?php echo $this->sitename; ?> by <?php echo $this->xprofile->get('name'); ?>.
 
-Your initial new account username is: <?php echo $this->target_juser->get('username'); ?><br />
-Your initial new account password is: <?php echo $this->target_xprofile->get('proxyPassword'); ?><br />
+Your username is: <?php echo $this->target_juser->get('username'); ?><br />
+Your initial password is: <?php echo $this->target_xprofile->get('proxyPassword'); ?><br />
 You must click the following link to confirm your email address and activate your account:
 <?php echo $this->live_site . JRoute::_('index.php?option='.$this->option.'&task=confirm&confirm='. -$this->target_xprofile->get('emailConfirmed')); ?>
 
@@ -55,7 +55,7 @@ You must click the following link to confirm your email address and activate you
 
 After confirming your account, you may click the following link to set a new password:
 
-<?php echo $this->live_site . JRoute::_('index.php?option=com_members&id='.$this->target_juser->get('id').'&task=changepassword'); ?>
+<?php echo $this->live_site . JRoute::_('index.php?option=com_members&id='.$this->target_juser->get('id').'&active=account'); ?>
 </pre>
 	</blockquote>
 	<p>New user's profile page: <a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->target_juser->get('id')); ?>"><?php echo $this->target_juser->get('name'); ?> (<?php echo $this->target_juser->get('username'); ?>)</a></p>
