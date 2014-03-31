@@ -86,7 +86,7 @@ $rows = $this->offering->announcements(array(
 						</legend>
 
 						<label for="field_content">
-							<span><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?></span> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
+							<span class="label-text"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span></span>
 							<?php
 							echo \JFactory::getEditor()->display('fields[content]', '', '', '', 35, 3, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 							?>

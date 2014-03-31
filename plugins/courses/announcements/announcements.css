@@ -249,7 +249,7 @@
 	.sub-section.announcements form legend {
 		display: none;
 	}
-	.sub-section.announcements form label span {
+	.sub-section.announcements form label span.label-text {
 		display: none;
 	}
 	.sub-section.announcements form label textarea {

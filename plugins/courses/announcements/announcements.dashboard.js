@@ -37,7 +37,7 @@ jQuery(document).ready(function(jq){
 				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(response){
 					var json = jQuery.parseJSON(response);
 					if (json.code == 0) {
-						$('<div class="hubzero_notification"></div>')
+						/*$('<div class="hubzero_notification"></div>')
 							.text('Announcement posted.')
 							.hide()
 							.fadeIn()
@@ -45,7 +45,8 @@ jQuery(document).ready(function(jq){
 
 						setTimeout(function(){
 							$('.hubzero_notification').fadeOut();
-						}, 2000);
+						}, 2000);*/
+						window.location.reload();
 					}
 				});
 			});
