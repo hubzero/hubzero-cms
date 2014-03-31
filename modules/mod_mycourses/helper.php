@@ -49,12 +49,15 @@ class modMyCourses extends \Hubzero\Module\Module
 		$db = JFactory::getDBO();
 
 		// Get all groups the user is a member of
-		/*$query1 = "SELECT c.id, c.alias, c.title, c.created AS enrolled, NULL AS starts, NULL AS ends, 'manager' AS role, NULL AS offering_alias, NULL AS offering_title, NULL AS section_alias, NULL AS section_title
+		$query = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default 
 					FROM #__courses AS c 
-					JOIN #__courses_managers AS m ON m.course_id=c.id
-					WHERE m.user_id=" . $uid;*/
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $db->quote($uid);
 
-		$query2 = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default 
+		/*$query2 = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default 
 					FROM #__courses AS c 
 					JOIN #__courses_members AS m ON m.course_id=c.id
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
@@ -103,7 +106,7 @@ class modMyCourses extends \Hubzero\Module\Module
 			case 'ta':
 				$query = $query5;
 			break;
-		}
+		}*/
 
 		$db->setQuery($query);
 
