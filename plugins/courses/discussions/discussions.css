@@ -21,6 +21,12 @@
 		margin: 20px;
 	}
 
+	label .required {
+		text-transform: uppercase;
+		font-size: xx-small;
+		color: red;
+	}
+
 	.ordering-controls {
 		display: block;
 		margin: 0 0 0.2em 0;
@@ -1226,6 +1232,7 @@
 	.entries .edit:before,
 	.entries .delete:before {
 		font-family: "Fontcons";
+		margin-right: 2em;
 	}
 	.entries .edit:before {
 		content: "\270E";

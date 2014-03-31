@@ -85,12 +85,6 @@ $juser = JFactory::getUser();
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 				</p>
-
-				<div class="sidenote">
-					<p>
-						<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_EDIT_HINT'); ?>
-					</p>
-				</div>
 			</fieldset>
 			<input type="hidden" name="fields[alias]" value="<?php echo $this->model->alias; ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->model->id; ?>" />
