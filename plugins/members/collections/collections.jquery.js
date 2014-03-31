@@ -17,6 +17,8 @@ String.prototype.nohtml = function () {
 	}
 };
 
+var scrp = null;
+
 jQuery(document).ready(function(jq){
 	var $ = jq,
 		container = $('#posts');
@@ -101,6 +103,14 @@ jQuery(document).ready(function(jq){
 				},
 				beforeLoad: function() {
 					$(this).attr('href', $(this).attr('href').nohtml());
+				},
+				afterLoad: function(current, previous) {
+					scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
+					current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
+				},
+				beforeShow: function() {
+					scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
+					eval(scrp);
 				},
 				afterShow: function() {
 					var el = this.element;

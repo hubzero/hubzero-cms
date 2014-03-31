@@ -113,6 +113,9 @@ class plgMembersCollections extends JPlugin
 		//are we returning html
 		if ($returnhtml) 
 		{
+			// This needs to be called to ensure scripts are pushed to the document
+			$foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
+
 			// Set some variables so other functions have access
 			$this->option   = $option;
 			$this->database = JFactory::getDBO();

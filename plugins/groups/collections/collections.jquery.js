@@ -17,6 +17,8 @@ String.prototype.nohtml = function () {
 	}
 };
 
+var scrp = null;
+
 jQuery(document).ready(function(jq){
 	var $ = jq,
 		container = $('#posts');
@@ -95,7 +97,15 @@ jQuery(document).ready(function(jq){
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-					$(this).attr('href', $(this).attr('href').nohtml());	
+					$(this).attr('href', $(this).attr('href').nohtml());
+				},
+				afterLoad: function(current, previous) {
+					scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
+					current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
+				},
+				beforeShow: function() {
+					scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
+					eval(scrp);
 				},
 				afterShow: function() {
 					var el = this.element;
