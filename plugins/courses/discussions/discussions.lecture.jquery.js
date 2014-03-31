@@ -502,7 +502,7 @@ HUB.Plugins.CoursesForum = {
 									thread.fadeIn();
 
 									// Apply plugins to loaded content
-									jQuery(document).trigger('ajaxLoad');
+									//jQuery(document).trigger('ajaxLoad');
 								});
 							} else {
 								if (_DEBUG) {

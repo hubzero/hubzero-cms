@@ -307,6 +307,7 @@ HUB.Plugins.CoursesForum = {
 									if (!list.length) {
 										continue;
 									}
+
 									if (list.find('li.comments-none').length) {
 										list.empty();
 									}
@@ -410,7 +411,7 @@ HUB.Plugins.CoursesForum = {
 					});
 					//parent.append($(data).hide().fadeIn());
 
-					jQuery(document).trigger('ajaxLoad');
+					//jQuery(document).trigger('ajaxLoad');
 				});
 			})
 			// Add confirm dialog to delete links
