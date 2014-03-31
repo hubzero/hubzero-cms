@@ -38,7 +38,15 @@ jQuery(document).ready(function(jq){
 		});
 	});
 
-	$('.datepicker').datepicker({
+	$('.datepicker').datetimepicker({
+		duration: '',
+		showTime: true,
+		constrainInput: false,
+		stepMinutes: 1,
+		stepHours: 1,
+		altTimeField: '',
+		time24h: true,
+		timeFormat: 'HH:mm:00',
 		dateFormat: 'yy-mm-dd'
 	});
 });

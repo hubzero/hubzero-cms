@@ -32,7 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $this->css();
-$this->js();
+$this->js('jquery.timepicker.js', 'system')
+     ->js();
 
 $juser = JFactory::getUser();
 ?>
