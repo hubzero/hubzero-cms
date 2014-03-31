@@ -327,7 +327,7 @@ class ForumTablePost extends JTable
 
 		if (!$this->title) 
 		{
-			$this->title = substr($this->comment, 0, 70);
+			$this->title = substr(strip_tags($this->comment), 0, 70);
 			if (strlen($this->title >= 70)) 
 			{
 				$this->title .= '...';

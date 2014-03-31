@@ -54,7 +54,7 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 	</params>
 	<params group="onSectionEdit">
-		<param name="discussions_threads" type="list" default="all" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
+		<param name="discussions_threads" type="list" default="section" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
 			<option value="all">All sections</option>
 			<option value="section">This section only</option>
 		</param>
@@ -83,7 +83,7 @@ HUBzero is a registered trademark of Purdue University.
 				</field>
 			</fieldset>
 			<fieldset group="onSectionEdit">
-				<field name="discussions_threads" type="list" default="all" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
+				<field name="discussions_threads" type="list" default="section" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
 					<option value="all">All sections</option>
 					<option value="section">This section only</option>
 				</field>

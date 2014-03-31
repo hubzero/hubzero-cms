@@ -2440,7 +2440,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$section = JRequest::getVar('section', '');
 		$no_html = JRequest::getInt('no_html', 0);
-		$fields  = JRequest::getVar('fields', array(), 'post');
+		$fields  = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields  = array_map('trim', $fields);
 
 		// Check permissions
