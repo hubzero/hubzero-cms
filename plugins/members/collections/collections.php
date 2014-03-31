@@ -1371,9 +1371,12 @@ class plgMembersCollections extends JPlugin
 
 		$collection = $this->model->collection($post->get('collection_id'));
 
+		$msg = JText::_('Post removed.');
+		$type = 'passed';
 		if (!$post->remove())
 		{
-			$this->setError($post->getError());
+			$msg = $post->getError();
+			$type = 'error';
 		}
 
 		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
@@ -1385,7 +1388,7 @@ class plgMembersCollections extends JPlugin
 		}
 
 		$app = JFactory::getApplication();
-		$app->redirect($route);
+		$app->redirect($route, $msg, $type);
 	}
 
 	/**
@@ -1501,12 +1504,16 @@ class plgMembersCollections extends JPlugin
 			return $view->loadTemplate();
 		}
 
+		$msg = JText::_('Post deleted.');
+		$type = 'passed';
+
 		// Mark the entry as deleted
 		$item = $post->item();
 		$item->set('state', 2);
 		if (!$item->store()) 
 		{
-			$this->setError($item->getError());
+			$msg = $item->getError();
+			$type = 'error';
 		}
 
 		// Redirect to collection
@@ -1519,7 +1526,7 @@ class plgMembersCollections extends JPlugin
 		}
 
 		$app = JFactory::getApplication();
-		$app->redirect($route);
+		$app->redirect($route, $msg, $type);
 	}
 
 	/**

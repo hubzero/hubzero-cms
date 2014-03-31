@@ -1234,9 +1234,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$collection = $this->model->collection($post->get('collection_id'));
 
+		$msg = JText::_('Post removed.');
+		$type = 'passed';
 		if (!$post->remove())
 		{
-			$this->setError($post->getError());
+			$msg = $post->getError();
+			$type = 'error';
 		}
 
 		$route = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
@@ -1248,7 +1251,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$app = JFactory::getApplication();
-		$app->redirect($route);
+		$app->redirect($route, $msg, $type);
 	}
 
 	/**
@@ -1364,12 +1367,16 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
+		$msg = JText::_('Post deleted.');
+		$type = 'passed';
+
 		// Mark the entry as deleted
 		$item = $post->item();
 		$item->set('state', 2);
 		if (!$item->store()) 
 		{
-			$this->setError($item->getError());
+			$msg = $item->getError();
+			$type = 'error';
 		}
 
 		// Redirect to collection
@@ -1382,7 +1389,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$app = JFactory::getApplication();
-		$app->redirect($route);
+		$app->redirect($route, $msg, $type);
 	}
 
 	/**
