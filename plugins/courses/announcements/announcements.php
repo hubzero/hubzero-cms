@@ -303,7 +303,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		$response->code = 0;
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Get the model and bind the data
