@@ -289,6 +289,11 @@
 	font-size: 3em;
 	padding-bottom: 7px;
 }
+@media (max-width: 1050px) {
+	.grades .score {
+		font-size: 2.5em;
+	}
+}
 .grades .current-score .score {
 	color: blue;
 }
