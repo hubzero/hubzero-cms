@@ -108,6 +108,11 @@ class GroupsMembersRole extends JTable
 	{
 		// get role permissions & json decode
 		$permissions = json_decode($this->getPermissions());
-		return $permissions->$permission;
+
+		if (isset($permissions->$permission))
+		{
+			return $permissions->$permission;
+		}
+		return null;	
 	}
 }

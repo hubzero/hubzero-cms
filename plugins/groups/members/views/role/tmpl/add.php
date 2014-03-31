@@ -38,13 +38,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <ul id="page_options">
 	<li>
-		<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>">
+		<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>">
 			<?php echo JText::_('PLG_GROUPS_MEMBERS'); ?>
 		</a>
 	</li>
 </ul>
 
-<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_DETAILS'); ?></legend>
 		<label>

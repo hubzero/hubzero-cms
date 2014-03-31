@@ -1009,12 +1009,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			)
 		);
 		
+		// database object
+		$database = JFactory::getDBO();
+
 		// load role object
-		$view->role = new GroupsMembersRole(JFactory::getDBO());
+		$view->role = new GroupsMembersRole($database);
 		$view->role->load(JRequest::getInt('role', 0));
 		
 		// did we pass role back from save?
-		if ($this->role)
+		if (isset($this->role) && !is_null($this->role))
 		{
 			$view->role = $this->role;
 		}
@@ -1047,8 +1050,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$role['gidNumber']   = $this->group->get('gidNumber');
 		$role['permissions'] = json_encode($role['permissions']);
 		
+		// database object
+		$database = JFactory::getDBO();
+
 		// load role object
-		$this->role = new GroupsMembersRole(JFactory::getDBO());
+		$this->role = new GroupsMembersRole($database);
 		
 		// attempt to save new role
 		if (!$this->role->save($role))
@@ -1221,7 +1227,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "INSERT INTO #__xgroups_member_roles(roleid,uidNumber) VALUES(" . $db->Quote($role) . "," . $db->Quote($uid) . ")";
 		$db->setQuery($sql);
 		$db->query();
