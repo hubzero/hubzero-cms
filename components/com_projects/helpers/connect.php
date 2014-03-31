@@ -482,14 +482,14 @@ class ProjectsConnectHelper extends JObject {
 	 *
 	 * @return     object
 	 */
-	public function startClient ($service = 'google', $uid = 0) 
+	public function startClient ($service = 'google', $uid = 0, $force = false) 
 	{
 		$config = $this->_connect[$service];
 		$uid = $uid ? $uid : $this->_uid;
 		$access_token = 0;
 		
 		// Get access token
-		if ($uid == $this->_uid)
+		if ($uid == $this->_uid && $force == false)
 		{
 			// Do we have a client started already?
 			if (isset($this->_client[$service]) && $this->_client[$service])
@@ -622,7 +622,7 @@ class ProjectsConnectHelper extends JObject {
 	 *
 	 * @return     void
 	 */
-	public function afterConnect ($service = 'google') 
+	public function afterConnect ($service = 'google', $uid = 0) 
 	{
 		if (!in_array($service, $this->_services))
 		{
@@ -640,7 +640,7 @@ class ProjectsConnectHelper extends JObject {
 		}
 		
 		// Get and save acting user access profile info
-		$profile = $this->getAccessProfile($service);
+		$profile = $this->getAccessProfile($service, $uid);
 										
 		$objO = new ProjectOwner( $this->_db );
 		
@@ -779,7 +779,7 @@ class ProjectsConnectHelper extends JObject {
 		if ($service == 'google')
 		{
 			// Start service client
-			$client = $this->startClient($service, $uid);
+			$client = $this->startClient($service, $uid, true);
 			if (!$client)
 			{
 				return false;

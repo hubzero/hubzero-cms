@@ -363,10 +363,13 @@ class plgProjectsFiles extends JPlugin
 				case 'restore':
 					$arr['html'] 	= $this->restore(); 
 					break;
-					
+				
+				/*	
 				case 'select':
+				case 'filter':
 					$arr['html'] 	= $this->select(); 
 					break;
+				*/
 									
 				case 'browse':
 				default: 
@@ -544,27 +547,13 @@ class plgProjectsFiles extends JPlugin
 		$ajax   = JRequest::getInt( 'ajax', 0 );
 		$pid    = JRequest::getInt( 'pid', 0 );
 		$vid    = JRequest::getInt( 'vid', 0 );
+		$filter = urldecode(JRequest::getVar( 'filter', '' ));
 		
-		// We do need publication reference
-		
-		if (!$pid && !$vid)
-		{
-			$this->setError(JText::_('COM_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
-
-			// Output error
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'error'
-				)
-			);
-
-			$view->title  = '';
-			$view->option = $this->_option;
-			$view->setError( $this->getError() );
-			return $view->loadTemplate();
-		}
+		// Parse props for curation
+		$parts   = explode('-', $props);
+		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'content';
+		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 		
 		// Provisioned project?
 		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
@@ -585,7 +574,69 @@ class plgProjectsFiles extends JPlugin
 				'layout'	=> $layout
 			)
 		);
-				
+		
+		// Load classes
+		$objP  			= new Publication( $this->_database );
+		$view->version 	= new PublicationVersion( $this->_database );
+		
+		// Load publication version
+		$view->version->load($vid);
+		if (!$view->version->id)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+		
+		// Get publication
+		$view->publication = $objP->getPublication($view->version->publication_id, 
+			$view->version->version_number, $this->_project->id);
+			
+		if (!$view->publication)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+			
+		// On error
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'=>'projects',
+					'element'=>'files',
+					'name'=>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+		
+		// Load master type
+		$mt   				= new PublicationMasterType( $this->_database );
+		$view->publication->_type   	= $mt->getType($view->publication->base);
+		$view->publication->_project 	= $this->_project;
+		
+		// Get attachments
+		$pContent = new PublicationAttachment( $this->_database );
+		$view->publication->_attachments->primary = $pContent->getAttachments ( $vid, $filters = array('role' => 1) );
+		$view->publication->_attachments->secondary = $pContent->getAttachments ( $vid, $filters = array('role' => '0') );
+
+		// Get curation model
+		$view->publication->_curationModel = new PublicationsCuration($this->_database,
+		 	$view->publication->_type->curation);
+		
+		// Make sure block exists, else use default
+		if (!$view->publication->_curationModel->setBlock( $block, $step ))
+		{
+			$block = 'content';
+			$step  = 1;
+		}
+		
+		// Set pub assoc and load curation
+		$view->publication->_curationModel->setPubAssoc($view->publication);
+						
 		// Get file list	
 		if (!$prov)
 		{				
@@ -603,6 +654,13 @@ class plgProjectsFiles extends JPlugin
 		$view->project 		= $this->_project;
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
+		$view->ajax			= $ajax;
+		$view->task			= $this->_task;
+		$view->element		= $element;
+		$view->block		= $block;
+		$view->step 		= $step;
+		$view->props		= $props;
+		$view->filter		= $filter;
 		
 		// Get messages	and errors	
 		$view->msg = $this->_msg;
@@ -5557,7 +5615,7 @@ class plgProjectsFiles extends JPlugin
 			else
 			{								
 				// Successful authentication				
-				if (!$this->_connect->afterConnect($service))
+				if (!$this->_connect->afterConnect($service, $this->_uid))
 				{
 					$this->setError($this->_connect->getError());
 				}
