@@ -152,11 +152,11 @@ class TitleIndexMacro extends WikiMacro
 					$row->scope = $this->scope;
 				}
 
-				$url  = substr($this->option, 4, strlen($this->option)) . DS;
-				$url .= ($row->scope) ? $row->scope . DS : '';
-				$url .= $row->pagename;
+				$url  = 'index.php?option=' . $this->option;
+				$url .= '&scope=' . $row->scope;
+				$url .= '&pagename=' . $row->pagename;
 
-				$html .= '<li><a href="' . $url . '">';
+				$html .= '<li><a href="' . JRoute::_($url) . '">';
 				$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
 				$html .= '</a></li>' . "\n";
 			}
