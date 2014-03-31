@@ -321,7 +321,15 @@ class plgUsageMaps extends JPlugin
 				$key = $config->get('mapsApiKey');
 				$mappath = $config->get('maps_path');
 
-				include_once(JPATH_ROOT . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php');
+				if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php'))
+				{
+					include_once(JPATH_ROOT . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php');
+				}
+				else
+				{
+					JError::raiseError(500, JText::sprintf('Type "%s" does nto exist.', $type));
+					return;
+				}
 
 				return $html;
 			}
