@@ -52,7 +52,7 @@ else
 		<div class="description">
 			<?php echo $collection->description('parsed'); ?>
 		</div>
-		<table>
+		<?php /* <table>
 			<tbody>
 				<tr>
 					<td>
@@ -66,4 +66,4 @@ else
 					</td>
 				</tr>
 			</tbody>
-		</table>
+		</table> */ ?>
