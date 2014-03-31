@@ -1605,12 +1605,12 @@ class ToolsModelTool
 		$xlog =  JFactory::getLogger();
 
 		$err = '';
-
+		
 		if (empty($newversion))
 		{
 			$err = JText::_('COM_TOOLS_ERR_VERSION_BLANK');
 		}
-		else if (preg_match('#^[a-zA-Z0-9]{3,15}$#',$newversion) == '' && !$id)
+		elseif (!preg_match('#^[_0-9a-zA-Z.:-]+$#i', $newversion))
 		{
 			$err = JText::_('COM_TOOLS_ERR_VERSION_ILLEGAL');
 		}
