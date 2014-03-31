@@ -254,7 +254,7 @@ Class CoursesTablePage extends JTable
 	 */
 	public function count($filters=array())
 	{
-		$query  = "SELECT COUNT(*) ";
+		$query  = "SELECT COUNT(DISTINCT r.`url`) ";
 		$query .= $this->_buildquery($filters);
 
 		$this->_db->setQuery($query);
