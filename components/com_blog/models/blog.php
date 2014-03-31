@@ -227,6 +227,7 @@ class BlogModel extends \Hubzero\Base\Object
 				$filters['start'] = 0;
 				$filters['sort'] = 'publish_up';
 				$filters['sort_Dir'] = 'ASC';
+				$filters['order'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 				$results = $this->_tbl->getRecords($filters);
 				$res = isset($results[0]) ? $results[0] : null;
 				return new BlogModelEntry($res);

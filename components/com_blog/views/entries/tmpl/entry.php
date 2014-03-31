@@ -33,7 +33,28 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
-$first = $this->model->entries('first');
+$filters = array(
+	'scope' => $this->config->get('show_from', 'site'),
+	'state' => 'public',
+	'group_id' => 0,
+	'authorized' => false
+);
+if ($filters['scope'] == 'both')
+{
+	$filters['scope'] = '';
+}
+if (!$juser->get('guest')) 
+{
+	$filters['state'] = 'registered';
+
+	if ($this->config->get('access-manage-component')) 
+	{
+		$filters['state'] = 'all';
+		$filters['authorized'] = true;
+	}
+}
+
+$first = $this->model->entries('first', $filters);
 
 $entry_year  = substr($this->row->get('publish_up'), 0, 4);
 $entry_month = substr($this->row->get('publish_up'), 5, 2);

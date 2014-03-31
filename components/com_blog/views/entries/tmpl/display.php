@@ -33,7 +33,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 
-$first = $this->model->entries('first');
+$filters = array(
+	'scope'      => $this->filters['scope'],
+	'group_id'   => $this->filters['group_id'],
+	'state'      => $this->filters['state'],
+	'authorized' => $this->filters['authorized']
+);
+
+$first = $this->model->entries('first', $filters);
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -99,7 +106,7 @@ $first = $this->model->entries('first');
 						);
 						//if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) {
 						if ($i == $now) {
-							$months = JFactory::getDate()->toFormat("m");
+							$months = JFactory::getDate()->format("m");
 						} else {
 							$months = 12;
 						}
