@@ -135,9 +135,9 @@ class ChildrenMacro extends WikiMacro
 			{
 				$title = ($row->title) ? $row->title : $row->pagename;
 
-				$url  = substr($this->option, 4, strlen($this->option)) . DS;
-				$url .= ($row->scope) ? $row->scope . DS : '';
-				$url .= $row->pagename;
+				$url  = 'index.php?option=' . $this->option;
+				$url .= '&scope=' . $row->scope;
+				$url .= '&pagename=' . $row->pagename;
 
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
@@ -169,7 +169,7 @@ class ChildrenMacro extends WikiMacro
 	private function getChildren($scope)
 	{
 		// Get all pages
-		$sql = "SELECT * FROM #__wiki_page WHERE scope='" . $scope . "' AND `group_cn`='" . $this->domain . "' ORDER BY pagename ASC";
+		$sql = "SELECT * FROM `#__wiki_page` WHERE `scope`=" . $this->_db->quote($scope) . " AND `group_cn`=" . $this->_db->quote($this->domain) . " ORDER BY pagename ASC";
 
 		// Perform query
 		$this->_db->setQuery($sql);

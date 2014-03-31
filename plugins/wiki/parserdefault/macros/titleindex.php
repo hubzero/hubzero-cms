@@ -97,7 +97,7 @@ class TitleIndexMacro extends WikiMacro
 			// Get pages with a prefix
 			if ($this->domain) 
 			{
-				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND p.`group_cn`='" . $this->domain . "'";
+				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND p.`group_cn`=" . $this->_db->quote($this->domain);
 			} 
 			else 
 			{
@@ -109,7 +109,7 @@ class TitleIndexMacro extends WikiMacro
 			// Get all pages
 			if ($this->domain) 
 			{
-				$sql .= "p.`group_cn`='" . $this->domain . "'";
+				$sql .= "p.`group_cn`=" . $this->_db->quote($this->domain);
 			} 
 			else 
 			{

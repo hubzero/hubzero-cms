@@ -140,13 +140,13 @@ class ParentsMacro extends WikiMacro
 
 			$title = ($row->title) ? $row->title : $row->pagename;
 
-			$url  = substr($this->option, 4, strlen($this->option)) . DS;
-			$url .= ($row->scope) ? $row->scope . DS : '';
-			$url .= $row->pagename;
+			$url  = 'index.php?option=' . $this->option;
+			$url .= '&scope=' . $row->scope;
+			$url .= '&pagename=' . $row->pagename;
 
 			// Build the HTML
 			$html .= '<ul>';
-			$html .= '<li><a href="' . $url . '">';
+			$html .= '<li><a href="' . JRoute::_($url) . '">';
 			$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
 			$html .= '</a>';
 			$html .= $this->_buildTree($rows);

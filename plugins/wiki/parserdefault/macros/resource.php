@@ -100,12 +100,12 @@ class ResourceMacro extends WikiMacro
 		{
 			// Yes, then get resource by ID
 			$id = intval($resource);
-			$sql = "SELECT id, title, alias FROM #__resources WHERE id=" . $id;
+			$sql = "SELECT id, title, alias FROM `#__resources` WHERE id=" . $this->_db->quote($id);
 		} 
 		else 
 		{
 			// No, get resource by alias
-			$sql = "SELECT id, title, alias FROM #__resources WHERE alias='" . trim($resource) . "'";
+			$sql = "SELECT id, title, alias FROM `#__resources` WHERE alias=" . $this->_db->quote(trim($resource));
 		}
 
 		// Perform query

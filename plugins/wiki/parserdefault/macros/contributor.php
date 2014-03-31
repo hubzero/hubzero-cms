@@ -68,7 +68,7 @@ class ContributorMacro extends WikiMacro
 		{
 			// Yes, then get contributor by ID
 			$id = intval($et);
-			$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM #__xprofiles WHERE uidNumber=".$id;
+			$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM `#__xprofiles` WHERE uidNumber=".$id;
 			// Perform query
 			$this->_db->setQuery($sql);
 			$a = $this->_db->loadRow();
@@ -111,7 +111,7 @@ class ContributorMacro extends WikiMacro
 				}
 			} else {
 				$bits = explode(' ',$n);
-				$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM #__xprofiles WHERE givenName='" . $bits[0] . "' AND surname='" . end($bits) . "'";
+				$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM `#__xprofiles` WHERE givenName=" . $this->_db->quote($bits[0]) . " AND surname=" . $this->_db->quote(end($bits));
 				// Perform query
 				$this->_db->setQuery($sql);
 				$a = $this->_db->loadRow();
