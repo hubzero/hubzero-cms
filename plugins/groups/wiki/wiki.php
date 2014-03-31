@@ -159,7 +159,11 @@ class plgGroupsWiki extends Hubzero_Plugin
 			if ($juser->get('guest') 
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				$url = $_SERVER['REQUEST_URI'];
+				if (!JURI::isInternal($url))
+				{
+					$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				}
 				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
 				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
 				return;
