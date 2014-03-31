@@ -85,7 +85,7 @@ jQuery(document).ready(function(jq){
 							el.removeClass('unlike')
 								.addClass('like')
 								.children('span')
-								.text(unlike);
+								.text(like);
 						}
 
 						$('#b' + el.attr('data-id') + ' .likes').text(data);
