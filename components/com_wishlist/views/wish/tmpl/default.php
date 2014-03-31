@@ -625,13 +625,14 @@ if ($this->wishlist && $this->wish) {
 		<?php if ($this->wish->action=='move') { ?>
 			<div class="moveitem" id="action">
 				<!-- <a name="action"></a> -->
-				<form class="edit-form" id="moveWish" method="post" action="index.php?option=<?php echo $this->option; ?>">
+				<form class="edit-form" id="moveWish" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option . '&id=' . $this->wishlist->id ); ?>">
 				<?php if ($error) {
 					echo '<p class="error">' . $error . '</p>';
 				} ?>
 					<h4><?php echo JText::_('COM_WISHLIST_WISH_BELONGS_TO'); ?>:</h4>
 					<fieldset>
 						<input type="hidden"  name="task" value="movewish" />
+						<input type="hidden"  name="option" value="<?php echo $this->option ?>" />
 						<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->wishlist->id; ?>" />
 						<input type="hidden" id="wish" name="wish" value="<?php echo $this->wish->id; ?>" />
 						

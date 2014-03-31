@@ -249,7 +249,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 		{
 			$this->_title .= ' - ' . $this->_list_title;
 		}
-		if ($this->_task && !in_array($this->_task, array('wishlist', 'wish'))) 
+		if ($this->_task && in_array($this->_task, array('settings', 'add'))) 
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
