@@ -256,14 +256,14 @@ class typeFiles extends JObject
 						|| in_array('audio', $mimetypes) 
 						|| in_array('image', $mimetypes)) 
 					{
-						$serveas = $original_serveas ? $original_serveas : 'inlineview';
+						$serveas = $original_serveas && $original_serveas != 'tardownload' ? $original_serveas : 'inlineview';
 
 						// Offer choice
 						$choices[] = 'inlineview';
 					}
 					elseif ($googleView && in_array(strtolower($ext), $docs))
 					{
-						$serveas = $original_serveas ? $original_serveas : 'download';
+						$serveas = $original_serveas && $original_serveas != 'tardownload' ? $original_serveas : 'download';
 
 						// Offer choice
 						$choices[] = 'inlineview';
