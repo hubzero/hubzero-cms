@@ -162,12 +162,12 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_up'), JText::_('DATE_FORMAT_HZ1'), false) : JText::_('(no date set)'); ?></time>
+						<time><?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_up'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('(no date set)'); ?></time>
 					</span>
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), JText::_('DATE_FORMAT_HZ1'), false) : JText::_('(never)'); ?></time>
+						<time><?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_down'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?></time>
 					</span>
 				</td>
 				<td>
