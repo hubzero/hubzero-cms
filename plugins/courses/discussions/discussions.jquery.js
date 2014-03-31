@@ -299,6 +299,7 @@ HUB.Plugins.CoursesForum = {
 										// Comment already exists!
 										continue;
 									}
+
 									var list = $('#category' + item.category_id);
 									if (!list.length) {
 										list = $('#categorynew');
@@ -311,7 +312,11 @@ HUB.Plugins.CoursesForum = {
 									}
 									list.prepend($(item.html).hide().fadeIn());
 
-									var count = $('#ct' + item.category_id + ' span.count');
+									if (list.attr('id') == 'categorynew') {
+										var count = $('#newcomments span.count');
+									} else {
+										var count = $('#ct' + item.category_id + ' span.count');
+									}
 									if (count.length > 0) {
 										count.text(parseInt(count.text()) + 1);
 									}

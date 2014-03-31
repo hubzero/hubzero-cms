@@ -162,7 +162,7 @@ if (count($inst) > 0)
 							     ->set('cls', 'odd')
 							     ->set('base', $base)
 							     ->set('course', $this->course)
-							     ->set('prfx', 'new')
+							     ->set('prfx', 'thread')
 							     ->set('active', $this->thread)
 							     ->display();
 							?>
