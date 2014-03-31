@@ -34,7 +34,19 @@ defined('_JEXEC') or die;
 							<?php echo $key;?>
 						</td>
 						<td>
-							<?php echo htmlspecialchars($value, ENT_QUOTES);?>
+							<?php 
+							if (is_array($value))
+							{
+								foreach ($value as $ky => $val)
+								{
+									echo htmlspecialchars($ky, ENT_QUOTES) .' = ' . htmlspecialchars($val, ENT_QUOTES) . '<br />';
+								}
+							}
+							else
+							{
+								echo htmlspecialchars($value, ENT_QUOTES);
+							}
+							?>
 						</td>
 					</tr>
 				<?php endforeach;?>
