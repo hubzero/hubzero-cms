@@ -2499,7 +2499,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$row->author = $helper->ul_contributors;
 
 		// Build the download path
-		$path = JPATH_ROOT . $this->config->get('webpath', '/site/resources');
+		$path = JPATH_ROOT . $this->config->get('cachepath', '/cache/resources');
 		$date = $row->created;
 		$dir_resid = Hubzero_View_Helper_Html::niceidformat($row->id);
 		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs)) 
@@ -2565,7 +2565,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 					$doc .= "\r\n";
 				}
 
-				$file = 'resource' . $id . '.enw';
+				$file = 'resource_' . $id . '.enw';
 				$mime = 'application/x-endnote-refer';
 			break;
 
