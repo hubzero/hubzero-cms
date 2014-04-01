@@ -62,12 +62,12 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.jobs.sort', 
 			'filter_order', 
-			'ordering'
+			'id'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.jobs.sortdir', 
 			'filter_order_Dir', 
-			'DESC'
+			'ASC'
 		));
 
 		$model = new CronModelJobs();
@@ -275,9 +275,6 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 
 		if ($row->get('recurrence'))
 		{
-			//$cron = Cron\CronExpression::factory($row->recurrence);
-			//$row->last_run = $cron->getPreviousRunDate()->format('Y-m-d H:i:s');
-			//$row->next_run = $cron->getNextRunDate()->format('Y-m-d H:i:s');
 			$row->set('next_run', $row->nextRun());
 		}
 
@@ -472,7 +469,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
@@ -483,7 +480,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Select an entry to ' . $action),
+				JText::sprintf('Select an entry to %s', $action),
 				'error'
 			);
 			return;
@@ -503,11 +500,11 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		// set message
 		if ($state == 1) 
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully published');
+			$message = JText::sprintf('%s Item(s) successfully published', count($ids));
 		} 
 		else
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully unpublished');
+			$message = JText::sprintf('%s Item(s) successfully unpublished', count($ids));
 		}
 
 		$this->setRedirect(
