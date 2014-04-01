@@ -214,7 +214,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$sef = str_replace(' ',',',$sef);
 						$sef = str_replace('+',',',$sef);
 						echo $sef;
-					?>" title="COM_TAGS_OPT_SORT_BY_TITLE">
+					?>" title="<?php echo JText::_('COM_TAGS_OPT_SORT_BY_TITLE'); ?>">
 						<?php echo JText::_('COM_TAGS_OPT_TITLE'); ?>
 					</a>
 				</li>
@@ -225,7 +225,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$sef = str_replace(' ',',',$sef);
 						$sef = str_replace('+',',',$sef);
 						echo $sef;
-					?>" title="COM_TAGS_OPT_SORT_BY_DATE">
+					?>" title="<?php echo JText::_('COM_TAGS_OPT_SORT_BY_DATE'); ?>">
 						<?php echo JText::_('COM_TAGS_OPT_DATE'); ?>
 					</a>
 				</li>
