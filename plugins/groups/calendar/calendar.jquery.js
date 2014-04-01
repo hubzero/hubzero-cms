@@ -270,10 +270,6 @@ HUB.Plugins.GroupCalendar = {
 					{
 						$('#event_end_date').datepicker( "option", "minDate", selectedDate );
 					}
-					else
-					{
-						$('#event_start_date').datepicker( "option", "maxDate", selectedDate );
-					}
     			}
 			});
 		}
