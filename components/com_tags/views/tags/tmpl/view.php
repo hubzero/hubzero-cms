@@ -377,7 +377,7 @@ foreach ($this->results as $category)
 				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.\Hubzero\Utility\Sanitize::clean($row->title).'</a></p>'."\n";
 				if ($row->ftext) {
 					$row->ftext = strip_tags($row->ftext);
-					$html .= "\t\t".\Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll($row->ftext), 200)."\n";
+					$html .= "\t\t".'<p>'.\Hubzero\Utility\String::truncate(strip_tags($row->ftext), 200)."</p>\n";
 				}
 				$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 				$html .= "\t".'</li>'."\n";
