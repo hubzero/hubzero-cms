@@ -237,27 +237,6 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	}
 	
 	/**
-	 * Upload files for Import
-	 * 
-	 * @access    public
-	 * @return     void
-	 */
-	public function uploadTask()
-	{
-		//get file
-		$file = JRequest::getVar('import', null, 'files');
-		
-		// make sure we have a file
-		if ($file['size'] < 1)
-		{
-			die('no file');
-		}
-		echo "<pre>";
-		print_r($file);
-		echo "</pre>";
-	}
-	
-	/**
 	 * Delete Import
 	 * 
 	 * @access    public
@@ -328,6 +307,16 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		
 		// create import model object
 		$this->view->import = new \Resources\Model\Import($id);
+
+		//get jquery plugin & parse params
+		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
+		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
+ 
+		//add jquery if we dont have the jquery plugin enabled or not active on admin
+		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
+		{
+			JError::raiseError('500', JText::_('jQuery must be enabled for the administrator side to use the resources importer.'));
+		}
 		
 		// Set any errors
 		if ($this->getErrors())
@@ -352,7 +341,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	public function doRunTask()
 	{
 		// check token
-		//JSession::checkToken() or die( 'Invalid Token' );
+		JSession::checkToken() or die( 'Invalid Token' );
 		
 		// start of import
 		$start = microtime(true);
