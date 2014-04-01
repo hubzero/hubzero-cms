@@ -202,6 +202,15 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		// Make sure the listdir follows YYYY/MM/#
+		$parts = explode('/', $listdir);
+		if (count($parts) < 3)
+		{
+			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
+			$this->displayTask();
+			return;
+		}
+
 		// Incoming sub-directory
 		$subdir = JRequest::getVar('subdir', '');
 
@@ -254,6 +263,15 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 		if (!$listdir)
 		{
 			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
+			$this->displayTask();
+			return;
+		}
+
+		// Make sure the listdir follows YYYY/MM/#
+		$parts = explode('/', $listdir);
+		if (count($parts) < 3)
+		{
+			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
 			$this->displayTask();
 			return;
 		}
