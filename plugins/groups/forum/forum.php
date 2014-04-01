@@ -1186,7 +1186,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$section = JRequest::getVar('section', '');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		$this->_authorize('thread', intval($fields['id']));
@@ -1195,6 +1195,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			//$asset = 'post';
 		}
+
+		if ($fields['id'])
+		{
+			$old = new ForumTablePost($this->database);
+			$old->load(intval($fields['id']));
+			if ($old->created_by == $this->juser->get('id'))
+			{
+				$this->params->set('access-edit-thread', true);
+			}
+		}
+
 		if (($fields['id'] && !$this->params->get('access-edit-thread')) 
 		 || (!$fields['id'] && !$this->params->get('access-create-thread')))
 		{
@@ -1208,12 +1219,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$fields['sticky'] = (isset($fields['sticky'])) ? $fields['sticky'] : 0;
 		$fields['closed'] = (isset($fields['closed'])) ? $fields['closed'] : 0;
-
-		if ($fields['id'])
-		{
-			$old = new ForumTablePost($this->database);
-			$old->load(intval($fields['id']));
-		}
 
 		// Bind data
 		/* @var $model ForumTablePost */
