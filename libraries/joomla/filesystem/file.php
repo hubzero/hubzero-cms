@@ -198,6 +198,11 @@ class JFile
 			// as long as the owner is either the webserver or the ftp
 			if (@unlink($file))
 			{
+				Hubzero_Factory::getLogger()->logDebug(
+					'File deleted: ' . $file . '; ' . 
+					(!JFactory::getUser()->get('guest') ? ' By: ' . JFactory::getUser()->get('username') . '; ' : '') . 
+					'Request: ' . JRequest::getVar('REQUEST_URI', '', 'server')
+				);
 				// Do nothing
 			}
 			elseif ($FTPOptions['enabled'] == 1)
