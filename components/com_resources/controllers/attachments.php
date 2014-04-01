@@ -888,7 +888,6 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	 */
 	public function deleteTask()
 	{
-
 		// Incoming parent ID
 		$pid = JRequest::getInt('pid', 0);
 		if (!$pid) 
@@ -928,12 +927,12 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, '');
 
-		$base   = JPATH_ROOT . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
+		$base  = JPATH_ROOT . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
 		$baseY = $base . '/'. JFactory::getDate($row->created)->format("Y");
 		$baseM = $baseY . '/' . JFactory::getDate($row->created)->format("m");
 
 		// Check if the folder even exists
-		if (!file_exists($path) or !$path) 
+		if (!file_exists($path) or !$path or substr($row->path, 0, strlen('http')) == 'http') 
 		{
 			//$this->setError(JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND'));
 		} 
@@ -957,6 +956,9 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		if (!$this->getError()) 
 		{
+			/*
+			WTF? What is all this for? -- zooley 04/01/2014
+
 			$uploadPath = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 			$year  = substr(trim($row->created), 0, 4);
@@ -982,15 +984,25 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 					$p[] = $bit;
 				}
 			}
+
 			if (count($p) > 1) 
 			{
 				$p = array_reverse($p);
 				foreach ($p as $v)
 				{
+					if (!trim($v))
+					{
+						continue;
+					}
+
 					$npath = JPATH_ROOT . $uploadPath . $b . DS . $v;
 
 					// Check if the folder even exists
-					if (!is_dir($npath) or !$npath) 
+					if (!is_dir($npath) 
+					 or !$npath 
+					 or rtrim($npath, '/') == $base
+					 or rtrim($npath, '/') == $baseY 
+					 or rtrim($npath, '/') == $baseM) 
 					{
 						$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
 					} 
@@ -1004,6 +1016,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 					}
 				}
 			}
+			*/
 
 			// Delete associations to the resource
 			$row->deleteExistence();

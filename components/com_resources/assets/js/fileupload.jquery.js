@@ -61,7 +61,7 @@ jQuery(document).ready(function(jq){
 				});
 			});
 
-			iframe.attr('src', iframe.attr('src') + '&amp;hideform=1&amp;t=');
+			iframe.attr('src', iframe.attr('src') + '&hideform=1&t=');
 		}
 
 		var uploader = new qq.FileUploader({
