@@ -259,7 +259,17 @@ HUB.Plugins.GroupCalendar = {
 			$('#event_start_date, #event_end_date').datetimepicker({
 				controlType: 'slider',
 				dateFormat: 'mm/dd/yy',
-				timeFormat: '@ h:mm tt'
+				timeFormat: '@ h:mm tt',
+				onClose: function( selectedDate ) {
+					if ($(this).attr('id') == 'event_start_date')
+					{
+						$('#event_end_date').datepicker( "option", "minDate", selectedDate );
+					}
+					else
+					{
+						$('#event_start_date').datepicker( "option", "maxDate", selectedDate );
+					}
+    			}
 			});
 		}
 		
