@@ -936,7 +936,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		$baseM = $baseY . '/' . JFactory::getDate($row->created)->format("m");
 
 		// Check if the folder even exists
-		if (!file_exists($path) or !$path) 
+		if (!file_exists($path) or !$path or substr($row->path, 0, strlen('http')) == 'http') 
 		{
 			//$this->setError(JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND'));
 		} 
@@ -960,6 +960,9 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 
 		if (!$this->getError()) 
 		{
+			/*
+			WTF? What is all this for? -- zooley 04/01/2014
+
 			$uploadPath = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 			$year  = substr(trim($row->created), 0, 4);
@@ -1007,6 +1010,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 					}
 				}
 			}
+			*/
 
 			// Delete associations to the resource
 			$row->deleteExistence();
