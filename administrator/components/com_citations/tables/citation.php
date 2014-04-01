@@ -616,6 +616,13 @@ class CitationsCitation extends JTable
 		//reference type check
 		if (isset($filter['reftype'])) 
 		{
+			// make sure its valid
+			if (!is_array($filter['reftype']))
+			{
+				JError::raiseError('404', JText::_('Citations: Invalid search param "reftype"'));
+				return;
+			}
+
 			if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
 			 && (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
 			 && (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
@@ -628,14 +635,11 @@ class CitationsCitation extends JTable
 				$query .= " AND";
 				$multi = 0;
 				$o = 0;
-				if (isset($filter['reftype']))
+				foreach ($filter['reftype'] as $g)
 				{
-					foreach ($filter['reftype'] as $g)
+					if ($g == 1) 
 					{
-						if ($g == 1) 
-						{
-							$multi++;
-						}
+						$multi++;
 					}
 				}
 				
