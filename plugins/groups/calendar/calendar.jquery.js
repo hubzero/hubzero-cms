@@ -96,6 +96,11 @@ HUB.Plugins.GroupCalendar = {
 			},
 			dayClick: function(date, allDay, jsEvent, view) {
 				var start = $.fullCalendar.formatDate( date, 'yyyy-MM-dd HH:mm:00' );
+				if (view.name == 'month')
+				{
+					start = $.fullCalendar.formatDate( date, 'yyyy-MM-dd 12:00:00' );
+				}
+				
 				if (_click)
 				{
 					var diff = jsEvent.timeStamp - _click;
