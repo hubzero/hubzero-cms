@@ -1258,6 +1258,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 			// Build the path
 			$path = ResourcesUtilities::buildUploadPath($listdir, '');
 
+			$base   = JPATH_ROOT . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
+			$baseY = $base . '/'. JFactory::getDate($row->created)->format("Y");
+			$baseM = $baseY . '/' . JFactory::getDate($row->created)->format("m");
+
 			// Check if the folder even exists
 			if (!is_dir($path) or !$path)
 			{
@@ -1265,10 +1269,19 @@ class ResourcesControllerItems extends Hubzero_Controller
 			}
 			else
 			{
-				// Attempt to delete the folder
-				if (!JFolder::delete($path))
+				if ($path == $base 
+				 || $path == $baseY
+				 || $path == $baseM)
 				{
-					$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
+					$this->setError(JText::_('Invalid directory.'));
+				}
+				else
+				{
+					// Attempt to delete the folder
+					if (!JFolder::delete($path))
+					{
+						$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
+					}
 				}
 			}
 

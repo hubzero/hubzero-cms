@@ -204,6 +204,15 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			return;
 		}
 
+		// Make sure the listdir follows YYYY/MM/#
+		$parts = explode('/', $listdir);
+		if (count($parts) < 3)
+		{
+			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
+			$this->displayTask();
+			return;
+		}
+
 		// Incoming sub-directory
 		$subdir = JRequest::getVar('subdir', '');
 
@@ -222,7 +231,8 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		$folder = ResourcesUtilities::normalizePath($folder);
 
 		// Check if the folder even exists
-		if (!is_dir($path . $folder) or !$folder) {
+		if (!is_dir($path . $folder) or !$folder) 
+		{
 			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
 		}
 		else
@@ -256,6 +266,15 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		if (!$listdir)
 		{
 			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
+			$this->displayTask();
+			return;
+		}
+
+		// Make sure the listdir follows YYYY/MM/#
+		$parts = explode('/', $listdir);
+		if (count($parts) < 3)
+		{
+			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
 			$this->displayTask();
 			return;
 		}
