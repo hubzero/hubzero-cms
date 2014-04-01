@@ -381,6 +381,9 @@ a.refresh:before {
 }
 
 /* Event Import */
+form[name=importevent]:before {
+	display:none !important;
+}
 form[name=importevent] fieldset {
 	float: none !important;
 	width: auto !important;
