@@ -54,8 +54,8 @@ class plgEditorCkeditor extends JPlugin
 
 		// add ckeditor
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::base(true) . '/' . $this->_basePath . 'ckeditor.js' );
-		$document->addScript(JURI::base(true) . '/' . $this->_basePath . 'adapters/jquery.js' );
+		$document->addScript(str_replace('/administrator', '', JURI::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
+		$document->addScript(str_replace('/administrator', '', JURI::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
 	}
 
 	/**
@@ -154,10 +154,12 @@ class plgEditorCkeditor extends JPlugin
 
 		// script to actually make ckeditor
 		$script  = '<script type="text/javascript">';
+		$script .= 'if (typeof(jQuery) !== "undefined") {';
 		$script .= 'jQuery(document).ready(function(){ jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
 		$script .= 'jQuery(document).on("ajaxLoad", function() { jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
+		$script .= '}';
 		$script .= '</script>';
-		
+
 		$params['class'] = implode(' ', $params['class']);
 
 		$atts = array();
@@ -168,7 +170,65 @@ class plgEditorCkeditor extends JPlugin
 
 		// output html and script
 		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
+		if (JFactory::getApplication()->isAdmin())
+		{
+			$editor .= $this->_displayButtons($id, $buttons, $asset, $author);
+		}
 		return $editor;
+	}
+
+	/**
+	 *
+	 * @return  string
+	 */
+	private function _displayButtons($name, $buttons, $asset, $author)
+	{
+		// Load modal popup behavior
+		JHtml::_('behavior.modal', 'a.modal-button');
+
+		$args['name'] = $name;
+		$args['event'] = 'onGetInsertMethod';
+
+		$return = '';
+		$results[] = $this->update($args);
+
+		foreach ($results as $result)
+		{
+			if (is_string($result) && trim($result))
+			{
+				$return .= $result;
+			}
+		}
+
+		if (is_array($buttons) || (is_bool($buttons) && $buttons))
+		{
+			$results = $this->_subject->getButtons($name, $buttons, $asset, $author);
+
+			/*
+			 * This will allow plugins to attach buttons or change the behavior on the fly using AJAX
+			 */
+			$return .= "\n<div id=\"editor-xtd-buttons\">\n";
+
+			foreach ($results as $button)
+			{
+				/*
+				 * Results should be an object
+				 */
+				if ( $button->get('name') ) {
+					$modal		= ($button->get('modal')) ? ' class="modal-button"' : null;
+					$href		= ($button->get('link')) ? ' href="'.JURI::base().$button->get('link').'"' : null;
+					$onclick	= ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
+					$title      = ($button->get('title')) ? $button->get('title') : $button->get('text');
+					$return .= '<div class="button2-left"><div class="' . $button->get('name')
+						. '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options')
+						. '">' . $button->get('text') . "</a></div></div>\n";
+				}
+			}
+
+			$return .= "</div>\n";
+		}
+
+		return $return;
 	}
 
 	/**
