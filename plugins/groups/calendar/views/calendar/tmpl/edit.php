@@ -145,7 +145,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 					<label><?php echo JText::_('Timezone:'); ?> <span class="optional">Optional</span>
 						<?php
-							$timezone = ($this->event->get('time_zone')) ? $this->event->get('time_zone') : -5;
+							$timezone = $this->event->get('time_zone');
+							$timezone = (isset($timezone)) ? $timezone: -5;
 							echo EventsHtml::buildTimeZoneSelect($timezone, ''); 
 						?>
 					</label>
