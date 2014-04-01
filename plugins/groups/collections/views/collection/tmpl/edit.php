@@ -77,7 +77,6 @@ $default = $this->params->get('access-plugin');
 	<input type="hidden" name="fields[created]" value="<?php echo $this->entry->get('created'); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $this->entry->get('created_by'); ?>" />
 	<input type="hidden" name="fields[state]" value="<?php echo $this->entry->get('state'); ?>" />
-	<input type="hidden" name="fields[access]" value="<?php echo $this->params->get('access-plugin'); ?>" />
 
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
