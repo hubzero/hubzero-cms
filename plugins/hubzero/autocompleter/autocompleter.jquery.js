@@ -1032,7 +1032,7 @@ HUB.Plugins.Autocomplete = {
 				});
 			}
 
-			var src = $(input).attr('data-source');
+			var src = $(input).attr('data-script');
 			src = src ? src : '/index.php';
 
 			$('#'+id).tokenInput(src + '?option=com_'+option+'&no_html=1&task=autocomplete'+actkn, {
