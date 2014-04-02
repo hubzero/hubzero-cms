@@ -34,7 +34,8 @@ class modFeedHelper
 			$feed->description = $rssDoc->get_description();
 
 			// channel image if exists
-			$feed->image->url = $rssDoc->get_image_url();
+			$feed->image        = new stdClass;
+			$feed->image->url   = $rssDoc->get_image_url();
 			$feed->image->title = $rssDoc->get_image_title();
 
 			// items
