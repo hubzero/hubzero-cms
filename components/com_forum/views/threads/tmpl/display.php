@@ -106,7 +106,8 @@ $this->thread->set('category', $this->category->get('alias'));
 			foreach ($this->thread->attachments() as $attachment) 
 			{
 				$cls = 'file';
-				$title = $attachment->get('description', $attachment->get('filename'));
+				$title = trim($attachment->get('description', $attachment->get('filename')));
+				$title = ($title ? $title : $attachment->get('filename'));
 				if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
 				{
 					$cls = 'img';
@@ -263,9 +264,6 @@ $this->thread->set('category', $this->category->get('alias'));
 				<div class="sidenote">
 					<p>
 						<strong><?php echo JText::_('COM_FORUM_KEEP_POLITE'); ?></strong>
-					</p>
-					<p>
-						<?php echo JText::_('COM_FORUM_WIKI_HINT'); ?>
 					</p>
 				</div>
 			</fieldset>

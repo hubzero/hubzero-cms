@@ -191,9 +191,6 @@ else
 					<p>
 						<strong><?php echo JText::_('COM_FORUM_KEEP_POLITE'); ?></strong>
 					</p>
-					<p>
-						<?php echo JText::_('COM_FORUM_WIKI_HINT'); ?>
-					</p>
 				</div>
 			</fieldset>
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->get('parent'); ?>" />
