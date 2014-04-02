@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<strong><?php echo JText::_( 'Last Vote' ); ?></strong><br />
 		<?php echo ($this->last_vote) ? $this->escape($this->last_vote) : '--'; ?>
 	</p>
+	<p class="warning">This whole thing is wildly inaccurate. Rounding errors, ballot stuffers, dynamic IPs, firewalls. If you're using these numbers to do anything important, you're insane.</p>
 </div><!-- / .aside -->
 <div class="subject">
 <?php if ($this->poll->id) { ?>
