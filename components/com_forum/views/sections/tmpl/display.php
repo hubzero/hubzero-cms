@@ -124,6 +124,7 @@ $juser = JFactory::getUser();
 					<input type="hidden" name="task" value="save" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="sections" />
+					<input type="hidden" name="fields[id]" value="" />
 					<input type="hidden" name="fields[scope]" value="site" />
 					<input type="hidden" name="fields[scope_id]" value="0" />
 					<?php echo JHTML::_('form.token'); ?>
