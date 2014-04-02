@@ -524,8 +524,8 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 
 				if (is_object($badgesProvider))
 				{
-					$credentials->consumer_key    = $cconfig->get($badgeObj->get('provider_name').'_consumer_key', false);
-					$credentials->consumer_secret = $cconfig->get($badgeObj->get('provider_name').'_consumer_secret', false);
+					$credentials->consumer_key    = $cconfig->get($badgeObj->get('provider_name').'_consumer_key', 0);
+					$credentials->consumer_secret = $cconfig->get($badgeObj->get('provider_name').'_consumer_secret', 0);
 					$credentials->issuerId        = $cconfig->get($badgeObj->get('provider_name').'_issuer_id');;
 					$badgesProvider->setCredentials($credentials);
 
