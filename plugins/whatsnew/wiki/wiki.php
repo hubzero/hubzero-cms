@@ -79,8 +79,8 @@ class plgWhatsnewWiki extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onWhatsnewAreas()) 
-			 && !array_intersect($areas, array_keys($this->onWhatsnewAreas()))) 
+			if (!isset($areas[$this->_name])
+			 && !in_array($this->_name, $areas)) 
 			{
 				return array();
 			}
@@ -147,7 +147,7 @@ class plgWhatsnewWiki extends JPlugin
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
 					}
-					$rows[$key]->text = $rows[$key]->itext;
+					$rows[$key]->text = strip_tags($rows[$key]->itext);
 					if ($row->title == '') 
 					{
 						$rows[$key]->title = $rows[$key]->alias;

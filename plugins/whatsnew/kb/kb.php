@@ -79,8 +79,8 @@ class plgWhatsnewKb extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onWhatsnewAreas())
-			 && !array_intersect($areas, array_keys($this->onWhatsnewAreas()))) 
+			if (!isset($areas[$this->_name])
+			 && !in_array($this->_name, $areas)) 
 			{
 				return array();
 			}

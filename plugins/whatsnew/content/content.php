@@ -79,8 +79,8 @@ class plgWhatsnewContent extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onWhatsnewAreas()) 
-			 && !array_intersect($areas, array_keys($this->onWhatsnewAreas()))) 
+			if (!isset($areas[$this->_name])
+			 && !in_array($this->_name, $areas)) 
 			{
 				return array();
 			}
@@ -120,7 +120,7 @@ class plgWhatsnewContent extends JPlugin
 				. " INNER JOIN #__categories AS b ON b.id=c.catid";
 		}
 
-		$c_where = "c.publish_up > '$period->cStartDate' AND c.publish_up < '$period->cEndDate' AND c.state='1'";
+		$c_where = "c.publish_up > " . $database->quote($period->cStartDate) . " AND c.publish_up < " . $database->quote($period->cEndDate) . " AND c.state='1'";
 
 		$order_by  = " ORDER BY publish_up DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
@@ -137,7 +137,7 @@ class plgWhatsnewContent extends JPlugin
 				{
 					if (version_compare(JVERSION, '1.6', 'lt'))
 					{
-						$database->setQuery("SELECT alias, parent FROM #__menu WHERE link='index.php?option=com_content&view=article&id=" . $row->id . "' AND published=1 LIMIT 1");
+						$database->setQuery("SELECT alias, parent FROM #__menu WHERE link='index.php?option=com_content&view=article&id=" . $database->quote($row->id) . "' AND published=1 LIMIT 1");
 						$menuitem = $database->loadRow();
 						if ($menuitem[1]) 
 						{
@@ -181,7 +181,7 @@ class plgWhatsnewContent extends JPlugin
 					{
 						$path = JRoute::_($row->href);
 					}
-					
+					$rows[$key]->text = strip_tags($row->text);
 					$rows[$key]->href = $path;
 				}
 			}
@@ -213,7 +213,7 @@ class plgWhatsnewContent extends JPlugin
 		}
 
 		$database = JFactory::getDBO();
-		$database->setQuery("SELECT alias, parent FROM #__menu WHERE id='$id' LIMIT 1");
+		$database->setQuery("SELECT alias, parent FROM #__menu WHERE id=" . $database->quote($id) . " LIMIT 1");
 		$level = $database->loadRow();
 
 		$aliases[] = $level[0];
