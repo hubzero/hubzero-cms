@@ -549,7 +549,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		}
 		else 
 		{
-			$message = ($model->modified_by) ? JText::_('COM_FORUM_POST_EDITED') : JText::_('COM_FORUM_POST_ADDED');
+			$message = ($model->get('modified_by')) ? JText::_('COM_FORUM_POST_EDITED') : JText::_('COM_FORUM_POST_ADDED');
 		}
 
 		$category = new ForumModelCategory($model->get('category_id'));
