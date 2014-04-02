@@ -91,7 +91,7 @@ class Hubzero_Password_Blacklist
 		return strtolower($word2);
 	}
 
-	private function l33t($word)
+	private static function l33t($word)
 	{
 		$subs = array( 
 			'][\\//][' => 'M',
@@ -280,7 +280,7 @@ class Hubzero_Password_Blacklist
 		return $word2;
 	}
 
-	private function normalize_word($word)
+	private static function normalize_word($word)
 	{
 		$nword = '';
 
