@@ -123,6 +123,6 @@ class Progress extends Output
 	 **/
 	private function backspace($spaces=1)
 	{
-		echo chr(27) . "[<{$spaces}>D";
+		echo chr(27) . "[{$spaces}D";
 	}
 }
