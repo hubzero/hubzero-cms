@@ -54,4 +54,7 @@ HUBzero is a registered trademark of Purdue University.
 		</field>
 		<field name="threading_depth" type="text" default="3" label="Threading level" description="How many levels deep a nested thread can go." />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_forum" section="component" />
+	</fieldset>
 </config>

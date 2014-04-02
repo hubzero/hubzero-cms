@@ -254,11 +254,38 @@ class ForumControllerSections extends Hubzero_Controller
 				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
 				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
 				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+				if ($assetType == 'post' || $assetType == 'thread')
+				{
+					$this->config->set('access-create-' . $assetType, true);
+					$val = $this->juser->authorise('core.create' . $at, $asset);
+					if ($val !== null)
+					{
+						$this->config->set('access-create-' . $assetType, $val);
+					}
+
+					$this->config->set('access-edit-' . $assetType, true);
+					$val = $this->juser->authorise('core.edit' . $at, $asset);
+					if ($val !== null)
+					{
+						$this->config->set('access-edit-' . $assetType, $val);
+					}
+
+					$this->config->set('access-edit-own-' . $assetType, true);
+					$val = $this->juser->authorise('core.edit.own' . $at, $asset);
+					if ($val !== null)
+					{
+						$this->config->set('access-edit-own-' . $assetType, $val);
+					}
+				}
+				else 
+				{
+					$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+					$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
+					$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				}
+
 				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
 			else 
 			{

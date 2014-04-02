@@ -473,7 +473,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Incoming
 		$section = JRequest::getVar('section', '');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		$assetType = 'thread';
@@ -482,11 +482,20 @@ class ForumControllerThreads extends Hubzero_Controller
 			$assetType = 'post';
 		}
 
+		if ($fields['id'])
+		{
+			$old = new ForumModelPost(intval($fields['id']));
+			if ($old->get('created_by') == $this->juser->get('id'))
+			{
+				$this->config->set('access-edit-' . $assetType, true);
+			}
+		}
+
 		$this->_authorize($assetType, intval($fields['id']));
 		if (!$this->config->get('access-edit-' . $assetType) && !$this->config->get('access-create-' . $assetType))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option)))
+				JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -494,11 +503,6 @@ class ForumControllerThreads extends Hubzero_Controller
 		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
 		$fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
 		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
-
-		if ($fields['id'])
-		{
-			$old = new ForumModelPost(intval($fields['id']));
-		}
 
 		// Bind data
 		$model = new ForumModelPost($fields['id']);
@@ -550,7 +554,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 		else 
 		{
-			$message = ($model->modified_by) ? JText::_('COM_FORUM_POST_EDITED') : JText::_('COM_FORUM_POST_ADDED');
+			$message = ($model->get('modified_by')) ? JText::_('COM_FORUM_POST_EDITED') : JText::_('COM_FORUM_POST_ADDED');
 		}
 
 		$category = new ForumModelCategory($model->get('category_id'));
@@ -890,11 +894,38 @@ class ForumControllerThreads extends Hubzero_Controller
 				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
 				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
 				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+				if ($assetType == 'post' || $assetType == 'thread')
+				{
+					$this->config->set('access-create-' . $assetType, true);
+					$val = $this->juser->authorise('core.create' . $at, $asset);
+					if ($val !== null)
+					{
+						$this->config->set('access-create-' . $assetType, $val);
+					}
+
+					$this->config->set('access-edit-' . $assetType, true);
+					$val = $this->juser->authorise('core.edit' . $at, $asset);
+					if ($val !== null)
+					{
+						$this->config->set('access-edit-' . $assetType, $val);
+					}
+
+					$this->config->set('access-edit-own-' . $assetType, true);
+					$val = $this->juser->authorise('core.edit.own' . $at, $asset);
+					if ($val !== null)
+					{
+						$this->config->set('access-edit-own-' . $assetType, $val);
+					}
+				}
+				else 
+				{
+					$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+					$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
+					$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				}
+
 				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
 			else 
 			{
