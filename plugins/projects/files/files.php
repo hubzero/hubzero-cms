@@ -5128,16 +5128,19 @@ class plgProjectsFiles extends JPlugin
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
 
-			chdir(JPATH_ROOT . $base_path);
-			exec('du -sk ', $out);
 			$used = 0;
-
-			if ($out && isset($out[0]))
+			if (is_dir(JPATH_ROOT . $base_path))
 			{
-				$kb = str_replace('.', '', trim($out[0]));
-				$used = $kb * 1024;
-			}
+				chdir(JPATH_ROOT . $base_path);
+				exec('du -sk ', $out);
 
+				if ($out && isset($out[0]))
+				{
+					$kb = str_replace('.', '', trim($out[0]));
+					$used = $kb * 1024;
+				}
+			}
+			
 			return $used;
 		}
 
