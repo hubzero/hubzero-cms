@@ -90,11 +90,11 @@ if ($this->getError())
 					</tr>
 					<tr>
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></th>
-						<td><?php echo $editor->display('fields[description]', stripslashes($this->tag->get('description')), '100%', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('fields[description]', $this->escape(stripslashes($this->tag->get('description'))), '100%', '200px', '50', '10'); ?></td>
 					</tr>
 					<tr>
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('ALIAS'); ?>:</label></th>
-						<td><?php echo $editor->display('fields[substitutions]', stripslashes($this->tag->substitutes('string')), '100%', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('fields[substitutions]', $this->escape(stripslashes($this->tag->substitutes('string', array('limit' => 0)))), '100%', '200px', '50', '10'); ?></td>
 					</tr>
 				</tbody>
 			</table>
