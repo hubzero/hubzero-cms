@@ -326,7 +326,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 			$this->database->execute('UPDATE #__tags SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
 			$tag = $this->get_tag($tid);
 			$preload = $tag['raw_tag'];
-			$normalize = create_function('$a', 'return preg_replace(\'/[^-_a-z0-9]/\', \'\', strtolower($a));'); 
+			$normalize = create_function('$a', 'return preg_replace(\'/[^a-zA-Z0-9]/\', \'\', strtolower($a));'); 
 			// reconcile post data with what we already know about a tag's relationships
 			foreach (array(
 				'labels'   => array(
@@ -351,7 +351,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 				{
 					foreach ($_POST[$type] as $n_tag)
 					{
-						$norm_n_tag = preg_replace('/[^-_a-z0-9]/', '', strtolower($n_tag));
+						$norm_n_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($n_tag));
 
 						// co-occurring tags neither need to be added nor deleted, just remove them from the pool and carry on
 						if (isset($ex[$norm_n_tag]))
@@ -396,7 +396,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 					{
 						JError::raiseError(404, 'Merge target not found');
 					}
-					$this->database->setQuery('SELECT id FROM #__tags WHERE tag = \'' . preg_replace('/[^-_a-z0-9]/', '', strtolower(trim($_POST['merge_tag']))) . '\'');
+					$this->database->setQuery('SELECT id FROM #__tags WHERE tag = \'' . preg_replace('/[^a-zA-Z0-9]/', '', strtolower(trim($_POST['merge_tag']))) . '\'');
 					if (!($merge_id = $this->database->loadResult()))
 					{
 						JError::raiseError(404, 'Merge target not found');
@@ -550,7 +550,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 
 			return $rv;
 		}
-		$norm_tag = preg_replace('/[^-_a-z0-9]/', '', strtolower($tag_str));
+		$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag_str));
 		$this->database->execute('INSERT INTO #__tags(tag, raw_tag) VALUES(\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
 		$id = $this->database->insertid();
 		return array(

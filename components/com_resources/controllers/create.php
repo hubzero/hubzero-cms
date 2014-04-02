@@ -998,7 +998,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			}
 			foreach ($vs as $v) 
 			{
-				$norm_tag = preg_replace('/[^-_a-z0-9]/', '', strtolower($v));
+				$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($v));
 				if (isset($map[$norm_tag])) 
 				{
 					continue;
@@ -1008,7 +1008,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 					INNER JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
 					INNER JOIN #__tags t2 ON t2.id = to1.tagid
 					INNER JOIN #__focus_areas fa ON fa.tag_id = to1.tagid
-					WHERE t.tag = ' . $this->database->quote($v)
+					WHERE t.tag = ' . $this->database->quote($norm_tag)
 				);
 				if (($row = $this->database->loadAssoc())) 
 				{
@@ -1074,7 +1074,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 		foreach ($tags as $tag) 
 		{
-			$norm_tag = preg_replace('/[^-_a-z0-9]/', '', strtolower($tag));
+			$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag));
 
 			if (!$norm_tag || isset($map[$norm_tag])) 
 			{
@@ -1085,7 +1085,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		}
 		foreach ($push as $idx => $tag) 
 		{
-			$this->database->setQuery('SELECT raw_tag FROM #__tags WHERE tag = \'' . $tag[1] . '\'');
+			$this->database->setQuery("SELECT raw_tag FROM `#__tags` WHERE tag = " . $this->database->quote($tag[1]));
 			if (($raw_tag = $this->database->loadResult())) 
 			{
 				$push[$idx][0] = $raw_tag;
