@@ -105,6 +105,7 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 		</tr>
 	</table>
 	</fieldset>
+	<p class="warning">This whole thing is wildly inaccurate. Rounding errors, ballot stuffers, dynamic IPs, firewalls. If you're using these numbers to do anything important, you're insane.</p>
 </div>
 <div class="col width-45 fltrt">
 	<fieldset class="adminform">
