@@ -284,7 +284,7 @@ $this->js('courses.overview.js');
 							continue;
 						}
 						// If not already a member and enrollment is closed
-						if (!$offering->section()->isMember() && $offering->section()->get('enrollment') == 2)
+						if (!$sect->isMember() && $sect->get('enrollment') == 2)
 						{
 							continue;
 						}
