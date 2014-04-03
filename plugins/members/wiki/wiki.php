@@ -113,8 +113,9 @@ class plgMembersWiki extends JPlugin
 
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onMembersContributionsAreas()) 
-			 && !array_intersect($areas, array_keys($this->onMembersContributionsAreas()))) 
+			if (!isset($areas[$this->_name]) 
+			  && !in_array($this->_name, $areas) 
+			  && !array_intersect($areas, array_keys($this->onMembersContributionsAreas())))
 			{
 				return array();
 			}
@@ -259,8 +260,9 @@ class plgMembersWiki extends JPlugin
 
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onMembersFavoritesAreas()) 
-			 && !array_intersect($areas, array_keys($this->onMembersContributionsAreas()))) 
+			if (!isset($areas[$this->_name]) 
+			  && !in_array($this->_name, $areas) 
+			  && !array_intersect($areas, array_keys($this->onMembersContributionsAreas())))
 			{
 				return array();
 			}
