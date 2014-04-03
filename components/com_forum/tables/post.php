@@ -538,7 +538,7 @@ class ForumTablePost extends JTable
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
-		$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id) AS reports ";
+		$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id AND r.state=0) AS reports ";
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= ", a.name AS access_level";
@@ -888,7 +888,7 @@ class ForumTablePost extends JTable
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
-		$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id) AS reports ";
+		$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id AND r.state=0) AS reports ";
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= ", a.name AS access_level";
@@ -1469,14 +1469,14 @@ class ForumTablePost extends JTable
 		// Get the node and children as a tree.
 		/*$query = "SELECT n.*, 
 					0 AS replies, 
-					(SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id) AS reports 
+					(SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports 
 					FROM $this->_tbl AS n, $this->_tbl AS p 
 					WHERE n.lft BETWEEN p.lft AND p.rgt 
 					AND p." . $k . ' = ' . (int) $pk . " 
 					AND n.scope=p.scope 
 					AND n.scope_id=p.scope_id 
 					AND n.object_id=p.object_id ";*/
-		$query = "SELECT n.*, 0 AS replies, (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id) AS reports 
+		$query = "SELECT n.*, 0 AS replies, (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports 
 					FROM $this->_tbl AS n 
 					WHERE n.thread=" . (int) $pk;
 		if (isset($filters['start_at']) && $filters['start_at']) 
