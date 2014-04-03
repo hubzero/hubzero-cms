@@ -67,6 +67,16 @@ class Output
 	private $isInteractive = true;
 
 	/**
+	 * Set the output mode
+	 *
+	 * Assume normal, but minimal and verbose are also options. This isn't setting the format, but it's allowing us to distinguish what
+	 * amount/sorts of data the command should return.  The individual format handler would then format the output appropriately.
+	 *
+	 * @var string
+	 **/
+	private $mode = 'normal';
+
+	/**
 	 * Render out stored output to command line
 	 *
 	 * @param  (bool) $newLine - whether or not to include new line with each response (really only applies to interactive output)
@@ -279,6 +289,26 @@ class Output
 	}
 
 	/**
+	 * Get our output subclass specialized for a certain format
+	 *
+	 * @param  (string) $format
+	 * @return (object) $obj - new Help output class
+	 **/
+	public function getOutputFormatter($format)
+	{
+		$class = __NAMESPACE__ . '\\Output\\' . ucfirst(strtolower($format));
+
+		if (class_exists($class))
+		{
+			return new $class();
+		}
+		else
+		{
+			return $this;
+		}
+	}
+
+	/**
 	 * Get our output subclass specialized for rendering progress tracking
 	 *
 	 * @return (object) $obj - new Progress output class
@@ -389,6 +419,26 @@ class Output
 	public function isInteractive()
 	{
 		return $this->isInteractive;
+	}
+
+	/**
+	 * Set the output mode
+	 *
+	 * @return void
+	 **/
+	public function setMode($mode)
+	{
+		$this->mode = $mode;
+	}
+
+	/**
+	 * Get the output mode
+	 *
+	 * @return void
+	 **/
+	public function getMode()
+	{
+		return $this->mode;
 	}
 
 	/**

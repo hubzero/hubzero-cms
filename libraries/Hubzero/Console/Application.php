@@ -106,6 +106,12 @@ class Application
 			$this->output = $this->output->getHelpOutput();
 		}
 
+		// If the format opt is present, try to use the appropriate output subclass
+		if ($this->arguments->getOpt('format'))
+		{
+			$this->output = $this->output->getOutputFormatter($this->arguments->getOpt('format'));
+		}
+
 		$command = new $class($this->output, $this->arguments);
 
 		$command->{$task}();

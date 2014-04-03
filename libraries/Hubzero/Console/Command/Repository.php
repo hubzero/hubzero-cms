@@ -91,7 +91,18 @@ class Repository implements CommandInterface
 	 **/
 	public function execute()
 	{
-		$this->check();
+		if ($this->arguments->getOpt('mechanism'))
+		{
+			$this->output->addLine($this->mechanism->getName());
+		}
+		else if ($this->arguments->getOpt('version'))
+		{
+			$this->output->addLine(\Hubzero\Version\Version::VERSION);
+		}
+		else
+		{
+			$this->check();
+		}
 	}
 
 	/**
@@ -101,63 +112,100 @@ class Repository implements CommandInterface
 	 **/
 	public function status()
 	{
+		$mode    = $this->output->getMode();
 		$status  = $this->mechanism->status();
 		$message = (!empty($status)) 
 			? 'This repository is managed by ' . $this->mechanism->getName() . ' and has the following divergence:'
 			: 'This repository is managed by ' . $this->mechanism->getName() . ' and is clean';
 
-		$this->output->addLine(
-			$message,
-			array(
-				'color' => 'blue'
-			)
-		);
+		if ($mode != 'minimal')
+		{
+			$this->output->addLine(
+				$message,
+				array(
+					'color' => 'blue'
+				)
+			);
+		}
 
 		if (isset($status['modified']) && count($status['modified']) > 0)
 		{
-			$this->output->addSpacer();
-			$this->output->addLine('Modified files:');
-			foreach ($status['modified'] as $file)
+			if ($mode == 'minimal')
 			{
 				$this->output->addLine(
-					$file,
 					array(
-						'color'       => 'yellow',
-						'indentation' => 2
+						'modified' => $status['modified']
 					)
 				);
+			}
+			else
+			{
+				$this->output->addSpacer();
+				$this->output->addLine('Modified files:');
+				foreach ($status['modified'] as $file)
+				{
+					$this->output->addLine(
+						$file,
+						array(
+							'color'       => 'yellow',
+							'indentation' => 2
+						)
+					);
+				}
 			}
 		}
 
 		if (isset($status['deleted']) && count($status['deleted']) > 0)
 		{
-			$this->output->addSpacer();
-			$this->output->addLine('Deleted files:');
-			foreach ($status['deleted'] as $file)
+			if ($mode == 'minimal')
 			{
 				$this->output->addLine(
-					$file,
 					array(
-						'color'       => 'red',
-						'indentation' => 2
+						'deleted' => $status['deleted']
 					)
 				);
+			}
+			else
+			{
+				$this->output->addSpacer();
+				$this->output->addLine('Deleted files:');
+				foreach ($status['deleted'] as $file)
+				{
+					$this->output->addLine(
+						$file,
+						array(
+							'color'       => 'red',
+							'indentation' => 2
+						)
+					);
+				}
 			}
 		}
 
 		if (isset($status['untracked']) && count($status['untracked']) > 0)
 		{
-			$this->output->addSpacer();
-			$this->output->addLine('Untracked files:');
-			foreach ($status['untracked'] as $file)
+			if ($mode == 'minimal')
 			{
 				$this->output->addLine(
-					$file,
 					array(
-						'color'       => 'blue',
-						'indentation' => 2
+						'untracked' => $status['untracked']
 					)
 				);
+			}
+			else
+			{
+				$this->output->addSpacer();
+				$this->output->addLine('Untracked files:');
+				foreach ($status['untracked'] as $file)
+				{
+					$this->output->addLine(
+						$file,
+						array(
+							'color'       => 'blue',
+							'indentation' => 2
+						)
+					);
+				}
 			}
 		}
 	}
