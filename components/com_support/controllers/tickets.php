@@ -1257,8 +1257,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Only do the following if a comment was posted
 		// otherwise, we're only recording a changelog
-		if ($row->owner) 
-		{
 			$live_site = rtrim(JURI::base(), '/');
 
 			// Build e-mail components
@@ -1328,6 +1326,40 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				'after'  => SupportHtml::getStatus($row->open, $row->status)
 			);
 
+			// Add any CCs to the e-mail list
+			$cc = JRequest::getVar('cc', '');
+			if (trim($cc)) 
+			{
+				$cc = explode(',', $cc);
+				foreach ($cc as $acc)
+				{
+					$acc = trim($acc);
+
+					// Is this a username or email address?
+					if (!strstr($acc, '@')) 
+					{
+						// Username or user ID - load the user
+						$acc = (is_string($acc)) ? strtolower($acc) : $acc;
+						$juser = JUser::getInstance($acc);
+						// Did we find an account?
+						if (is_object($juser)) 
+						{
+							$log['cc'][] = $juser->get('username');
+						} 
+						else 
+						{
+							// Move on - nothing else we can do here
+							continue;
+						}
+					// Make sure it's a valid e-mail address
+					} 
+					else if (SupportUtilities::checkValidEmail($acc)) 
+					{
+						$log['cc'][] = $acc;
+					}
+				}
+			}
+
 			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
 			{
 				$allowEmailResponses = true;
@@ -1336,6 +1368,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$message = array();
 
 			//-------
+		if ($row->owner) 
+		{
 			$from['multipart'] = md5(date('U'));
 
 			$rowc->changelog = $log;
@@ -1394,9 +1428,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					'address' => $juser->get('email')
 				);
 			}
-
+		}
 			// Were there any changes?
-			if (count($log['notifications']) > 0) 
+			if (count($log['notifications']) > 0 
+			 || count($log['cc']) > 0 
+			 || count($log['changes']) > 0) 
 			{
 				$rowc->changelog  = json_encode($log);
 
@@ -1413,7 +1449,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					}
 				}
 			}
-		}
 
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onTicketSubmission', array($row));
@@ -2182,8 +2217,43 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$rowc->comment    = str_replace('<br>', '<br />', $rowc->comment);
 			$rowc->created    = JFactory::getDate()->toSql();
 			$rowc->created_by = JRequest::getVar('username', '');
-			$rowc->changelog  = json_encode($log);
 			$rowc->access     = JRequest::getInt('access', 0);
+
+			// Add any CCs to the e-mail list
+			$cc = JRequest::getVar('cc', '');
+			if (trim($cc)) 
+			{
+				$cc = explode(',', $cc);
+				foreach ($cc as $acc)
+				{
+					$acc = trim($acc);
+
+					// Is this a username or email address?
+					if (!strstr($acc, '@')) 
+					{
+						// Username or user ID - load the user
+						$acc = (is_string($acc)) ? strtolower($acc) : $acc;
+						$juser = JUser::getInstance($acc);
+						// Did we find an account?
+						if (is_object($juser)) 
+						{
+							$log['cc'][] = $juser->get('username');
+						} 
+						else 
+						{
+							// Move on - nothing else we can do here
+							continue;
+						}
+					// Make sure it's a valid e-mail address
+					} 
+					else if (SupportUtilities::checkValidEmail($acc)) 
+					{
+						$log['cc'][] = $acc;
+					}
+				}
+			}
+
+			$rowc->changelog  = json_encode($log);
 
 			if ($rowc->check()) 
 			{
@@ -2389,13 +2459,13 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					}
 
 					// Add any CCs to the e-mail list
-					$cc = JRequest::getVar('cc', '');
-					if (trim($cc)) 
+					//$cc = JRequest::getVar('cc', '');
+					if (count($log['cc'])) 
 					{
-						$cc = explode(',', $cc);
-						foreach ($cc as $acc)
+						//$cc = explode(',', $cc);
+						foreach ($log['cc'] as $acc)
 						{
-							$acc = trim($acc);
+							//$acc = trim($acc);
 
 							// Is this a username or email address?
 							if (!strstr($acc, '@')) 
@@ -2429,7 +2499,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 										'name'    => $juser->get('name'),
 										'address' => $juser->get('email')
 									);
-									$log['cc'][] = $juser->get('username');
+									//$log['cc'][] = $juser->get('username');
 								} 
 								else 
 								{
@@ -2455,7 +2525,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 									'name'    => JText::_('[none]'),
 									'address' => $acc
 								);
-								$log['cc'][] = $acc;
+								//$log['cc'][] = $acc;
 							}
 						}
 					}
