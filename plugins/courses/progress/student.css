@@ -288,6 +288,7 @@
 .grades .score {
 	font-size: 3em;
 	padding-bottom: 7px;
+	padding-left: 2px;
 }
 @media (max-width: 1050px) {
 	.grades .score {
