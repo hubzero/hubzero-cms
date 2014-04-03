@@ -209,7 +209,7 @@
 	input[type="submit"].disabled, input[type="submit"].hover {
 		cursor: default !important;
 		background: #f0f0f0;
-		border: 1px solid #e2e2e2;
+		border: 1px solid #f1f1f1;
 		color: #CCC;
 	}
 	input[type="submit"]:focus, 
@@ -1108,6 +1108,9 @@
 	#describe p.question {
 		margin-top: 0;
 	}
+	#setup #name {
+		text-transform: lowercase;
+	}
 
 /* Setup - info box
 --------------------------------------------- */
@@ -1898,6 +1901,9 @@
 		overflow: scroll;
 		max-height: 300px;
 	}
+	#abox-content .content-wrap {
+		margin: 2em 1em;
+	}
 	
 /* Squezebox 
 --------------------------------------------- */
@@ -2640,6 +2646,7 @@
 		padding: 1em 0 0 0;
 		height: 30px;
 		margin-bottom: -1em;
+		background: none;
 	}
 	.status-msg p {
 		color: #51b126;
