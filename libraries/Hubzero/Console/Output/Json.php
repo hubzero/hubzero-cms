@@ -59,7 +59,7 @@ class Json extends Output
 	public function render($newLine=true)
 	{
 		// Make sure there is something there
-		if (count($this->response) > 0)
+		if (isset($this->response) && count($this->response) > 0)
 		{
 			echo json_encode($this->response);
 
