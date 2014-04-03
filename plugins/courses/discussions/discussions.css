@@ -1314,3 +1314,19 @@
 		*margin-top: -1.5em;
 		*background-position: 0 0;
 	}
+
+@media print {
+	.comments-views {
+		min-height: auto;
+		max-height: 10000px;
+	}
+	.comments-views * {
+		position: static;
+	}
+	.comment-threads {
+		overflow: visible;
+	}
+	.comment-add {
+		display: none;
+	}
+}
