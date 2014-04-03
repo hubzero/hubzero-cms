@@ -1749,7 +1749,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 			$message .= '----------------------------'."\r\n\r\n";
 			if (!$wishid)
 			{
-				$message .= $row->about;
+				$message .= strip_tags($row->about);
 				$message .= "\r\n\r\n";
 			}
 
