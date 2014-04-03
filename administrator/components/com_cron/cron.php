@@ -65,8 +65,15 @@ if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '
 	$controllerName = 'jobs';
 }
 
-JSubMenuHelper::addEntry(JText::_('Jobs'), 'index.php?option=' .  $option . '&controller=jobs', ($controllerName == 'jobs'));
-JSubMenuHelper::addEntry(JText::_('Plugins'), 'index.php?option=' .  $option . '&controller=plugins', ($controllerName == 'plugins'));
+JSubMenuHelper::addEntry(
+	JText::_('Jobs'), 
+	'index.php?option=' .  $option . '&controller=jobs', 
+	($controllerName == 'jobs')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Plugins'), 
+	'index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron'
+);
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CronController' . ucfirst($controllerName);
