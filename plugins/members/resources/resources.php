@@ -149,9 +149,10 @@ class plgMembersResources extends JPlugin
 		if (is_array($areas) && $limit) 
 		{
 			$ars = $this->onMembersContributionsAreas();
-			if (!array_intersect($areas, $ars)
-			 && !array_intersect($areas, array_keys($ars))
-			 && !array_intersect($areas, array_keys($ars['resources']))) 
+			if (!isset($areas[$this->_name]) 
+			 && !in_array($this->_name, $areas) 
+			 && !array_intersect($areas, array_keys($ars['resources'])))
+
 			{
 				return array();
 			}
@@ -503,9 +504,9 @@ class plgMembersResources extends JPlugin
 		if (is_array($areas) && $limit) 
 		{
 			$ars = $this->onMembersFavoritesAreas();
-			if (!array_intersect($areas, $ars)
-			 && !array_intersect($areas, array_keys($ars))
-			 && !array_intersect($areas, array_keys($ars['resources']))) 
+			if (!isset($areas[$this->_name]) 
+			 && !in_array($this->_name, $areas) 
+			 && !array_intersect($areas, array_keys($ars['resources'])))
 			{
 				return array();
 			}
