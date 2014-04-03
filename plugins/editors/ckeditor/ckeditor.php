@@ -321,6 +321,12 @@ class plgEditorCkeditor extends JPlugin
 			$config->hubzeroAutogrow_autoStart = false;
 		}
 
+		// macros popup
+		if (in_array('macros', $classes))
+		{
+			$config->toolbar[] = array('HubzeroMacro');
+		}
+
 		// if no footer
 		if (in_array('no-footer', $classes))
 		{
