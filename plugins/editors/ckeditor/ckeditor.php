@@ -393,12 +393,19 @@ class plgEditorCkeditor extends JPlugin
 		}
 		else
 		{
-			$doc         = JFactory::getDocument();
-			$app         = JFactory::getApplication();
-			$css         = array();
-			$siteCss    = '/cache/site.css';
-			$templateCss = '/templates/'.$app->getTemplate().'/css/main.css';
+			// database & document objects
+			$db  = JFactory::getDBO();
+			$doc = JFactory::getDocument();
 
+			// always get front end template
+			$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`='0' AND `home`='1'");
+			$template = $db->loadResult();
+
+			// vars to hold css	
+			$css         = array();
+			$siteCss     = '/cache/site.css';
+			$templateCss = '/templates/' . $template . '/css/main.css';
+			
 			// do we have a site.css
 			if (file_exists(JPATH_ROOT . $siteCss))
 			{
