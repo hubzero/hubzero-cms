@@ -96,7 +96,7 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 		</div>
 	</div>
 	
-	<div id="member_browser">
+	<div id="member_browser" class="member_browser">
 		<?php
 			$counter = 1;
 			foreach ($members as $k => $member) : ?>
