@@ -1,5 +1,9 @@
-﻿(function() {
-	
+﻿if (!jq) {
+	var jq = $;
+}
+
+(function() {
+	var $ = jq;
 	var codemirrorOn = false,
 		codemirrorInit = false;
 	
