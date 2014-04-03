@@ -107,7 +107,7 @@
 				<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) { ?>
 					<span> </span>
 				<?php } else { ?>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="cid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
 				<?php } ?>
 			</td>
 			<td>

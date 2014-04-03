@@ -7,16 +7,22 @@
 
 	$text = ( $edit ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 
-	JToolBarHelper::title(  JText::_( 'Poll' ).': <small><small>[ ' . $text.' ]</small></small>' );
-	JToolBarHelper::Preview('index.php?option=com_poll&controller=poll&cid[]='.$cid[0]);
+	JToolBarHelper::title(  JText::_( 'Poll' ).': ' . $text, 'poll.png');
+	if ($this->poll->id) 
+	{
+		JToolBarHelper::Preview('index.php?option=com_poll&controller=poll&cid[]='.$cid[0]);
+		JToolBarHelper::spacer();
+	}
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
+	JToolBarHelper::spacer();
 	if ($edit) {
 		// for existing items the button is renamed `close`
 		JToolBarHelper::cancel( 'cancel', 'Close' );
 	} else {
 		JToolBarHelper::cancel();
 	}
+	JToolBarHelper::spacer();
 	JToolBarHelper::help( 'screen.polls.edit' );
 ?>
 
@@ -46,7 +52,7 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 	}
 </script>
 <form action="index.php" method="post" name="adminForm">
-<div class="col width-45">
+<div class="col width-45 fltlft">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'Details' ); ?></legend>
 	<table class="admintable">
@@ -99,9 +105,8 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 		</tr>
 	</table>
 	</fieldset>
-	<p class="warning">This whole thing is wildly inaccurate. Rounding errors, ballot stuffers, dynamic IPs, firewalls. If you're using these numbers to do anything important, you're insane.</p>
 </div>
-<div class="col width-45">
+<div class="col width-45 fltrt">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'Options' ); ?></legend>
 	<table class="admintable">

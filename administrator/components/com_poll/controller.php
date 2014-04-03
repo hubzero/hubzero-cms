@@ -26,9 +26,9 @@ class PollController extends JController
 	/**
 	 * Custom Constructor
 	 */
-	function __construct( $default = array())
+	public function __construct($config = array())
 	{
-		parent::__construct( $default );
+		parent::__construct($config);
 
 		$this->registerTask( 'apply', 		'save');
 		$this->registerTask( 'unpublish', 	'publish');
@@ -39,7 +39,7 @@ class PollController extends JController
 
 	}
 
-	function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = false)
 	{
 		switch($this->getTask())
 		{
@@ -74,7 +74,7 @@ class PollController extends JController
 		parent::display();
 	}
 
-	function save()
+	public function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -139,7 +139,7 @@ class PollController extends JController
 		$this->setRedirect($link, $msg);
 	}
 
-	function remove()
+	public function remove()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -167,12 +167,12 @@ class PollController extends JController
 	* @param integer 0 if unpublishing, 1 if publishing
 	* @param string The current url option
 	*/
-	function publish()
+	public function publish()
 	{
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db 	= JFactory::getDBO();
 		$user 	= JFactory::getUser();
@@ -185,7 +185,9 @@ class PollController extends JController
 		if (count( $cid ) < 1)
 		{
 			$action = $publish ? 'publish' : 'unpublish';
-			JError::raiseError(500, JText::_( 'Select an item to' .$action, true ) );
+			//JError::raiseError(500, JText::_( 'Select an item to' .$action, true ) );
+			$this->setRedirect('index.php?option=com_poll', JText::_( 'Select an item to' .$action, true ));
+			return;
 		}
 
 		$cids = implode( ',', $cid );
@@ -206,7 +208,7 @@ class PollController extends JController
 			$row = JTable::getInstance('poll', 'Table');
 			$row->checkin( $cid[0] );
 		}
-		$mainframe->redirect( 'index.php?option=com_poll' );
+		$this->setRedirect( 'index.php?option=com_poll' );
 	}
 
 	/**
@@ -215,12 +217,12 @@ class PollController extends JController
 	* @param integer 0 if unpublishing, 1 if publishing
 	* @param string The current url option
 	*/
-	function open()
+	public function open()
 	{
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db 	= JFactory::getDBO();
 		$user 	= JFactory::getUser();
@@ -257,7 +259,7 @@ class PollController extends JController
 		$mainframe->redirect( 'index.php?option=com_poll' );
 	}
 
-	function cancel()
+	public function cancel()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );

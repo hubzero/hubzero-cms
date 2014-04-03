@@ -27,25 +27,28 @@ jimport( 'joomla.application.component.view');
  */
 class PollViewPoll extends JView
 {
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 
-		$db		= JFactory::getDBO();
-		$user 	= JFactory::getUser();
+		$db     = JFactory::getDBO();
+		$user   = JFactory::getUser();
 
-		$cid 	= JRequest::getVar( 'cid', array(0), '', 'array' );
+		$cid    = JRequest::getVar( 'cid', array(0), '', 'array' );
 		$option = JRequest::getCmd( 'option');
-		$uid 	= (int) @$cid[0];
-		$edit=JRequest::getVar( 'edit', true );
+		$uid    = (int) @$cid[0];
+		$edit   = JRequest::getVar( 'edit', true );
 
 		$poll = JTable::getInstance('poll', 'Table');
 		// load the row from the db table
-		if($edit)
-		$poll->load( $uid );
+		if ($edit)
+		{
+			$poll->load($uid);
+		}
 
 		// fail if checked out not by 'me'
-		if ($poll->isCheckedOut( $user->get('id') )) {
+		if ($poll->isCheckedOut( $user->get('id') )) 
+		{
 			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'The poll' ), $poll->title );
 			$this->setRedirect( 'index.php?option='. $option, $msg );
 		}
@@ -53,7 +56,7 @@ class PollViewPoll extends JView
 		if ($poll->id == 0)
 		{
 			// defaults
-			$row->published	= 1;
+			$poll->published = 1;
 		}
 
 		$options = array();
