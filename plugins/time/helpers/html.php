@@ -47,12 +47,13 @@ class TimeHtml
 	 * @param  $start        - record number to begin query at (default: 0)
 	 * @return $hlist        - select list of hubs
 	 */
-	public function buildHubsList($tab, $hub_id=0, $active=1, $empty_select=1, $limit=1000, $start=0)
+	public static function buildHubsList($tab, $hub_id=0, $active=1, $empty_select=1, $limit=1000, $start=0)
 	{
+		$db      = JFactory::getDbo();
 		$hlist   = array();
 		$filters = array('limit'=>$limit, 'start'=>$start, 'active'=>$active);
 
-		$hub      = new TimeHubs($this->db);
+		$hub      = new TimeHubs($db);
 		$hubs     = $hub->getRecords($filters);
 		$selected = '';
 
@@ -92,12 +93,13 @@ class TimeHtml
 	 * @param  $start        - record number to begin query at (default: 0)
 	 * @return $tlist        - select list of tasks
 	 */
-	public function buildTasksList($task_id, $tab, $hub_id=null, $active=1, $empty_select=1, $limit=1000, $start=0)
+	public static function buildTasksList($task_id, $tab, $hub_id=null, $active=1, $empty_select=1, $limit=1000, $start=0)
 	{
+		$db    = JFactory::getDbo();
 		$tlist = array();
 		$filters = array('limit'=>$limit, 'start'=>$start, 'hub'=>$hub_id, 'active'=>$active);
 
-		$task = new TimeTasks($this->db);
+		$task = new TimeTasks($db);
 		$tasks = $task->getTasks($filters);
 		$selected = '';
 
@@ -141,7 +143,7 @@ class TimeHtml
 	 * @param  $sl of currently selected support level (default: Classic Support)
 	 * @return $slist
 	 */
-	public function buildSupportLevelList($sl="Classic Support")
+	public static function buildSupportLevelList($sl="Classic Support")
 	{
 		$options[] = JHTML::_('select.option', "Classic Support", "Classic Support", 'value', 'text');
 		$options[] = JHTML::_('select.option', "Standard Support", "Standard Support", 'value', 'text');
@@ -162,7 +164,7 @@ class TimeHtml
 	 * @param  $time of currently selected collection
 	 * @return $tlist
 	 */
-	public function buildTimeListHours($time=1)
+	public static function buildTimeListHours($time=1)
 	{
 		$options[] = JHTML::_('select.option', 0, "0", 'value', 'text');
 		$options[] = JHTML::_('select.option', 1, "1", 'value', 'text');
@@ -186,7 +188,7 @@ class TimeHtml
 	 * @param  $time of currently selected collection
 	 * @return $tlist
 	 */
-	public function buildTimeListMins($time=1)
+	public static function buildTimeListMins($time=1)
 	{
 		$options[] = JHTML::_('select.option', 0,  ":00", 'value', 'text');
 		$options[] = JHTML::_('select.option', 25, ":15", 'value', 'text');
@@ -207,7 +209,7 @@ class TimeHtml
 	 * @param  $empty - what type of item to use for first entry (ex: none, all, etc...)
 	 * @return $ulist
 	 */
-	public function buildUserList($id=0, $tab, $empty=1)
+	public static function buildUserList($id=0, $tab, $empty=1)
 	{
 		// Get group members
 		$query  = "SELECT u.id, u.name";
@@ -217,8 +219,9 @@ class TimeHtml
 		$query .= " WHERE g.cn = 'time'";
 		$query .= " ORDER BY u.name ASC";
 
-		$this->db->setQuery($query);
-		$result = $this->db->loadAssocList();
+		$db = JFactory::getDbo();
+		$db->setQuery($query);
+		$result = $db->loadAssocList();
 
 		// Add 'all' option first
 		if($empty == 1)
@@ -260,7 +263,7 @@ class TimeHtml
 	 * @param  $empty - what type of item to use for first entry (ex: none, all, etc...)
 	 * @return $llist
 	 */
-	public function buildLiaisonList($id=0, $tab, $empty=1)
+	public static function buildLiaisonList($id=0, $tab, $empty=1)
 	{
 		// Get liaisons
 		$query  = "SELECT tu.*, u.name";
@@ -269,8 +272,9 @@ class TimeHtml
 		$query .= " WHERE liaison = 1";
 		$query .= " ORDER BY u.name ASC";
 
-		$this->db->setQuery($query);
-		$result = $this->db->loadAssocList();
+		$db = JFactory::getDbo();
+		$db->setQuery($query);
+		$result = $db->loadAssocList();
 
 		// Add 'all' option first
 		if($empty == 1)
@@ -301,7 +305,7 @@ class TimeHtml
 	 * @param  $empty    - whether to include empty select "all" option
 	 * @return $plist
 	 */
-	public function buildPriorityList($priority=0, $active='task', $empty=0)
+	public static function buildPriorityList($priority=0, $active='task', $empty=0)
 	{
 		// Add 'all' option first
 		if($empty == 1)
@@ -328,7 +332,7 @@ class TimeHtml
 	 * @param  $subs  - array of subordinates
 	 * @return $ulist
 	 */
-	public function buildSubordinatesList($id=0, $subs=array())
+	public static function buildSubordinatesList($id=0, $subs=array())
 	{
 		// First, add current user
 		$options[] = JHTML::_('select.option', JFactory::getUser()->get('id'), JFactory::getUser()->get('name'), 'value', 'text');
@@ -353,14 +357,15 @@ class TimeHtml
 	 * @param  $id of active user
 	 * @return void
 	 */
-	public function getSubordinates($id)
+	public static function getSubordinates($id)
 	{
 		// Get users that current user is a manager of
 		$query  = "SELECT tu.user_id";
 		$query .= " FROM #__time_users as tu";
 		$query .= " WHERE tu.manager_id = " . $id;
 
-		$this->db->setQuery($query);
-		return $result = $this->db->loadResultArray();
+		$db = JFactory::getDbo();
+		$db->setQuery($query);
+		return $result = $db->loadResultArray();
 	}
 }
