@@ -362,15 +362,11 @@ class plgAuthenticationFacebook extends JPlugin
 	public static function getInfo($params)
 	{
 		// Set up the config for the sdk instance
-		$params = explode("\n", trim($params));
-		foreach ($params as $k => $v)
-		{
-			list($key, $value) = explode("=", $v);
-			$p[$key] = $value;
-		}
+		$params = json_decode($params);
+
 		$config           = array();
-		$config['appId']  = $p['app_id'];
-		$config['secret'] = $p['app_secret'];
+		$config['appId']  = $params->app_id;
+		$config['secret'] = $params->app_secret;
 
 		// Create instance and get the facebook user_id
 		$facebook = new Facebook($config);
