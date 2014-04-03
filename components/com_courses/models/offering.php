@@ -1385,5 +1385,45 @@ class CoursesModelOffering extends CoursesModelAbstract
 	{
 		return $this->get('alias') . ($this->section()->get('is_default') ? '' : ':' . $this->section()->get('alias'));
 	}
+
+	/**
+	 * Get the offering logo
+	 *
+	 * @param      string $rtrn Property to return
+	 * @return     string
+	 */
+	public function logo($rtrn='')
+	{
+		$rtrn = strtolower(trim($rtrn));
+
+		// Return just the file name
+		if ($rtrn == 'file')
+		{
+			return $this->params('logo');
+		}
+
+		// Build the path
+		$path = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/offerings/' . $this->get('id');
+
+		// Return just the upload path?
+		if ($rtrn == 'path')
+		{
+			return $path;
+		}
+
+		// Do we have a logo set?
+		if ($file = $this->params('logo'))
+		{
+			// Return the web path to the image
+			$path .= '/' . $file;
+			if (file_exists(JPATH_ROOT . $path))
+			{
+				$path = str_replace('/administrator', '', \JURI::base(true)) . $path;
+			}
+			return $path;
+		}
+
+		return '';
+	}
 }
 

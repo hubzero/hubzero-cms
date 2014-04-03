@@ -177,6 +177,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		}
 
 		$this->view->course = CoursesModelCourse::getInstance($this->view->row->get('course_id'));
+		$this->view->config = $this->config;
 
 		// Set any errors
 		if ($this->getError())

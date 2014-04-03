@@ -64,13 +64,19 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		}
 
 		// Build the path
-		$dir = $id;
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $dir;
+		$type = strtolower(JRequest::getWord('type', ''));
+		$path = $this->_path($type, $id);
 
-		//allowed extensions for uplaod
+		if (!$path)
+		{
+			echo json_encode(array('error' => $this->getError()));
+			return;
+		}
+
+		// allowed extensions for uplaod
 		$allowedExtensions = array('png','jpeg','jpg','gif');
 
-		//max upload size
+		// max upload size
 		$sizeLimit = $this->config->get('maxAllowed', 40000000);
 
 		// get the file
@@ -173,12 +179,36 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Instantiate a model, change some info and save
-		$course = CoursesModelCourse::getInstance($id);
-		$course->set('logo', $filename . '.' . $ext);
-		if (!$course->store()) 
+		switch ($type)
 		{
-			echo json_encode(array('error' => $course->getError()));
+			case 'section':
+				// Instantiate a model, change some info and save
+				$model = CoursesModelSection::getInstance($id);
+				$model->params()->set('logo', $filename . '.' . $ext);
+				$model->set('params', $model->params()->toString());
+			break;
+
+			case 'offering':
+				// Instantiate a model, change some info and save
+				$model = CoursesModelOffering::getInstance($id);
+				$model->params()->set('logo', $filename . '.' . $ext);
+				$model->set('params', $model->params()->toString());
+			break;
+
+			case 'course':
+				// Instantiate a model, change some info and save
+				$model = CoursesModelCourse::getInstance($id);
+				$model->set('logo', $filename . '.' . $ext);
+			break;
+
+			default:
+				echo json_encode(array('error' => JText::_('Invalid type.')));
+				return;
+			break;
+		}
+		if (!$model->store()) 
+		{
+			echo json_encode(array('error' => $model->getError()));
 			return;
 		}
 
@@ -221,6 +251,16 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		// Build the path
+		$type = strtolower(JRequest::getWord('type', ''));
+		$path = $this->_path($type, $id);
+
+		if (!$path)
+		{
+			$this->displayTask('', $id);
+			return;
+		}
+
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
@@ -230,10 +270,6 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 			return;
 		}
 		$curfile = JRequest::getVar('curfile', '');
-
-		// Build upload path
-		$dir = $id;
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $dir;
 
 		if (!is_dir($path)) 
 		{
@@ -259,8 +295,6 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		} 
 		else 
 		{
-			//$ih = new MembersImgHandler();
-
 			// Do we have an old file we're replacing?
 			if (($curfile = JRequest::getVar('currentfile', ''))) 
 			{
@@ -274,49 +308,37 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 						return;
 					}
 				}
-				
-				// Get the old thumbnail name
-				/*$curthumb = $ih->createThumbName($curfile);
-				
-				// Remove old thumbnail
-				if (file_exists($path . DS . $curthumb)) 
-				{
-					if (!JFile::delete($path . DS . $curthumb)) 
-					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
-						$this->displayTask($file['name'], $id);
-						return;
-					}
-				}*/
 			}
 
-			// Instantiate a profile, change some info and save
-			$course = CoursesModelCourse::getInstance($id);
-			$course->set('logo', $file['name']);
-			if (!$course->store()) 
+			switch ($type)
 			{
-				$this->setError($course->getError());
-			}
+				case 'section':
+					$model = CoursesModelSection::getInstance($id);
+					$model->params()->set('logo', $file['name']);
+					$model->set('params', $model->params()->toString());
+				break;
 
-			// Resize the image if necessary
-			/*$ih->set('image', $file['name']);
-			$ih->set('path', $path . DS);
-			$ih->set('maxWidth', 186);
-			$ih->set('maxHeight', 186);
-			if (!$ih->process()) 
-			{
-				$this->setError($ih->getError());
-			}
+				case 'offering':
+					$model = CoursesModelOffering::getInstance($id);
+					$model->params()->set('logo', $file['name']);
+					$model->set('params', $model->params()->toString());
+				break;
 
-			// Create a thumbnail image
-			$ih->set('maxWidth', 50);
-			$ih->set('maxHeight', 50);
-			$ih->set('cropratio', '1:1');
-			$ih->set('outputName', $ih->createThumbName());
-			if (!$ih->process()) 
+				case 'course':
+					$model = CoursesModelCourse::getInstance($id);
+					$model->set('logo', $file['name']);
+				break;
+
+				default:
+					$this->setError(JText::_('Invalid type.'));
+					$this->displayTask($file['name'], $id);
+					return;
+				break;
+			}
+			if (!$model->store()) 
 			{
-				$this->setError($ih->getError());
-			}*/
+				$this->setError($model->getError());
+			}
 
 			$file = $file['name'];
 		}
@@ -351,13 +373,43 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		}
 
 		// Build the path
-		$dir = $id;
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $dir;
+		$type = strtolower(JRequest::getWord('type', ''));
+		$path = $this->_path($type, $id);
+
+		if (!$path)
+		{
+			echo json_encode(array('error' => $this->getError()));
+			return;
+		}
 
 		// Instantiate a model, change some info and save
-		$course = CoursesModelCourse::getInstance($id);
+		switch ($type)
+		{
+			case 'section':
+				$model = CoursesModelSection::getInstance($id);
+				$file = $model->params('logo');
+				$model->params()->set('logo', '');
+				$model->set('params', $model->params()->toString());
+			break;
 
-		$file = $course->get('logo');
+			case 'offering':
+				$model = CoursesModelOffering::getInstance($id);
+				$file = $model->params('logo');
+				$model->params()->set('logo', '');
+				$model->set('params', $model->params()->toString());
+			break;
+
+			case 'course':
+				$model = CoursesModelCourse::getInstance($id);
+				$file = $model->get('logo');
+				$model->set('logo', '');
+			break;
+
+			default:
+				echo json_encode(array('error' => JText::_('Invalid type.')));
+				return;
+			break;
+		}
 
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
@@ -374,10 +426,9 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$course->set('logo', '');
-		if (!$course->store()) 
+		if (!$model->store()) 
 		{
-			echo json_encode(array('error' => $course->getError()));
+			echo json_encode(array('error' => $model->getError()));
 			return;
 		}
 
@@ -427,8 +478,8 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		}
 
 		// Build the file path
-		$dir  = \Hubzero\Utility\String::pad($id);
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $dir;
+		$type = strtolower(JRequest::getWord('type', ''));
+		$path = $this->_path($type, $id);
 
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
@@ -436,8 +487,6 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		} 
 		else 
 		{
-			//$ih = new MembersImgHandler();
-
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file)) 
@@ -447,32 +496,77 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 				return;
 			}
 
-			// Get the file thumbnail name
-			/*$curthumb = $ih->createThumbName($file);
-
-			// Remove the thumbnail
-			if (file_exists($path . DS . $curthumb)) 
+			switch ($type)
 			{
-				if (!JFile::delete($path . DS . $curthumb)) 
-				{
-					$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				case 'section':
+					$model = CoursesModelSection::getInstance($id);
+					$model->params()->set('logo', '');
+					$model->set('params', $model->params()->toString());
+				break;
+
+				case 'offering':
+					$model = CoursesModelOffering::getInstance($id);
+					$model->params()->set('logo', '');
+					$model->set('params', $model->params()->toString());
+				break;
+
+				case 'course':
+					$model = CoursesModelCourse::getInstance($id);
+					$model->set('logo', '');
+				break;
+
+				default:
+					$this->setError(JText::_('Invalid type.'));
 					$this->displayTask($file, $id);
 					return;
-				}
-			}*/
-
-			// Instantiate a profile, change some info and save
-			$course = CoursesModelCourse::getInstance($id);
-			$course->set('logo', '');
-			if (!$course->store()) 
+				break;
+			}
+			if (!$model->store()) 
 			{
-				$this->setError($course->getError());
+				$this->setError($model->getError());
 			}
 
 			$file = '';
 		}
 
 		$this->displayTask($file, $id);
+	}
+
+	/**
+	 * Display a file and its info
+	 * 
+	 * @param      integer $id ID
+	 * @return     string
+	 */
+	protected function _path($type, $id)
+	{
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS;
+
+		switch ($type)
+		{
+			case 'section':
+				$model = CoursesModelSection::getInstance($id);
+				$offering = CoursesModelOffering::getInstance($model->get('offering_id'));
+				$path .= $offering->get('course_id') . DS . 'sections' . DS . $id;
+			break;
+
+			case 'offering':
+				$model = CoursesModelOffering::getInstance($id);
+				$path .= $model->get('course_id') . DS . 'offerings' . DS . $id;
+			break;
+
+			case 'course':
+				$model = CoursesModelCourse::getInstance($id);
+				$path .= $id;
+			break;
+
+			default:
+				$this->setError(JText::_('Invalid type.'));
+				return '';
+			break;
+		}
+
+		return $path;
 	}
 
 	/**
@@ -496,13 +590,36 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		}
 		$this->view->id = $id;
 
-		$course = CoursesModelCourse::getInstance($id);
+		$this->view->type = strtolower(JRequest::getWord('type', ''));
 
 		$this->view->file = $course->get('logo');
 
 		// Build the file path
-		$this->view->dir  = $id; //\Hubzero\Utility\String::pad($id);
-		$this->view->path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->view->dir;
+		$this->view->dir  = $id;
+		$this->view->path = $this->_path($this->view->type, $id);
+
+		switch ($this->view->type)
+		{
+			case 'section':
+				$model = CoursesModelSection::getInstance($id);
+				$this->view->file = $model->params('logo');
+			break;
+
+			case 'offering':
+				$model = CoursesModelOffering::getInstance($id);
+				$this->view->file = $model->params('logo');
+			break;
+
+			case 'course':
+				$model = CoursesModelCourse::getInstance($id);
+				$this->view->file = $model->get('logo');
+			break;
+
+			default:
+				$this->setError(JText::_('Invalid type.'));
+				return;
+			break;
+		}
 
 		// Set any errors
 		if ($this->getError()) 

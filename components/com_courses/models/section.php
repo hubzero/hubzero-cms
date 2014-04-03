@@ -122,6 +122,13 @@ class CoursesModelSection extends CoursesModelAbstract
 	private $_badge = NULL;
 
 	/**
+	 * JRegistry
+	 * 
+	 * @var object
+	 */
+	private $_params = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course offering ID or alias
@@ -767,5 +774,72 @@ class CoursesModelSection extends CoursesModelAbstract
 		$this->set('is_default', 1);
 
 		return $this->store(false);
+	}
+
+	/**
+	 * Get a param value
+	 * 
+	 * @param	   string $key     Property to return
+	 * @param	   mixed  $default Default value to return
+	 * @return     mixed
+	 */
+	public function params($key='', $default=null)
+	{
+		if (!($this->_params instanceof JRegistry))
+		{
+			$this->_params = new JRegistry($this->get('params'));
+		}
+		if ($key)
+		{
+			return $this->_params->get((string) $key, $default);
+		}
+		return $this->_params;
+	}
+
+	/**
+	 * Get the section logo
+	 *
+	 * @param      string $rtrn Property to return
+	 * @return     string
+	 */
+	public function logo($rtrn='')
+	{
+		$rtrn = strtolower(trim($rtrn));
+
+		// Return just the file name
+		if ($rtrn == 'file')
+		{
+			return $this->params('logo');
+		}
+
+		// We need the course ID
+		if (!$this->get('course_id'))
+		{
+			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+			$this->set('course_id', $offering->get('course_id'));
+		}
+
+		// Build the path
+		$path = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/sections/' . $this->get('id');
+
+		// Return just the upload path?
+		if ($rtrn == 'path')
+		{
+			return $path;
+		}
+
+		// Do we have a logo set?
+		if ($file = $this->params('logo'))
+		{
+			// Return the web path to the image
+			$path .= '/' . $file;
+			if (file_exists(JPATH_ROOT . $path))
+			{
+				$path = str_replace('/administrator', '', \JURI::base(true)) . $path;
+			}
+			return $path;
+		}
+
+		return '';
 	}
 }

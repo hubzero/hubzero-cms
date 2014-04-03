@@ -45,6 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 		<input type="hidden" name="task" value="upload" />
 		
 		<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
@@ -74,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 		list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
 ?>
 	  <tr>
-	   <td rowspan="6"><img src="<?php echo '../' . $this->config->get('uploadpath', '/site/courses') . DS . $this->dir . DS . $this->file; ?>" alt="<?php echo JText::_('COM_COURSES_LOGO'); ?>" id="conimage" /></td>
+	   <td rowspan="6"><img src="<?php echo '../' . substr($this->path, strlen(JPATH_ROOT . '/')) . DS . $this->file; ?>" alt="<?php echo JText::_('COM_COURSES_LOGO'); ?>" id="conimage" /></td>
 	   <td><?php echo JText::_('FILE'); ?>:</td>
 	   <td><?php echo $this->file; ?></td>
 	  </tr>
@@ -92,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 	  </tr>
 	  <tr>
 	   <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-	   <td><a href="index3.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=remove&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+	   <td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=remove&amp;type=<?php echo $this->type; ?>&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 	  </tr>
 <?php } else { ?>
 	  <tr>
