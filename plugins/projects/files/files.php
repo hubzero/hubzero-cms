@@ -363,13 +363,11 @@ class plgProjectsFiles extends JPlugin
 				case 'restore':
 					$arr['html'] 	= $this->restore(); 
 					break;
-				
-				/*	
+					
 				case 'select':
 				case 'filter':
 					$arr['html'] 	= $this->select(); 
 					break;
-				*/
 									
 				case 'browse':
 				default: 
@@ -601,9 +599,9 @@ class plgProjectsFiles extends JPlugin
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'error'
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'error'
 				)
 			);
 
@@ -620,8 +618,7 @@ class plgProjectsFiles extends JPlugin
 		
 		// Get attachments
 		$pContent = new PublicationAttachment( $this->_database );
-		$view->publication->_attachments->primary = $pContent->getAttachments ( $vid, $filters = array('role' => 1) );
-		$view->publication->_attachments->secondary = $pContent->getAttachments ( $vid, $filters = array('role' => '0') );
+		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
 
 		// Get curation model
 		$view->publication->_curationModel = new PublicationsCuration($this->_database,
@@ -636,14 +633,14 @@ class plgProjectsFiles extends JPlugin
 		
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);
-						
+		
 		// Get file list	
 		if (!$prov)
 		{				
 			$view->items = $this->getList();
-			
+					
 			if (!$ajax)
-			{
+			{				
 				$document = JFactory::getDocument();
 				$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');	
 			}
@@ -1404,7 +1401,12 @@ class plgProjectsFiles extends JPlugin
 	 */
 	public function save() 
 	{		
-		if (JRequest::getVar('no_html', 0))
+		// Incoming
+		$view = JRequest::getVar('view', 'view'); // where to redirect
+		$json = JRequest::getVar('json', 0); // give response in json?
+		
+		// AJAX uploader
+		if (JRequest::getVar('no_html', 0) && !$json)
 		{
 			return $this->ajaxSave();
 		}
@@ -1593,28 +1595,18 @@ class plgProjectsFiles extends JPlugin
 				}
 			}
 		}
-						
-		$view = JRequest::getVar('view', 'view');
-		$return_status  = JRequest::getVar('return_status', 0);
-		if ($return_status) 
+		
+		// Return status in JSON				
+		if ($json)
 		{
-			// AJAX return
-			if ($this->getError()) 
-			{
-				return 'na';
-			}
-			elseif (!$updated) 
-			{
-				$ext = explode('.', $file);
-				$ext = end($ext);
-				$icon = ProjectsHtml::getFileIcon($ext);
-				return $file. '|' . $icon;
-			}
-			else 
-			{
-				return 'updated';
-			}
-		}	
+			// After upload actions	
+			$this->onAfterUpdate();
+						
+			return json_encode(array(
+				'error'     => $this->getError(),
+				'success'	=> $this->_msg
+			));
+		}
 
 		// Display view
 		if ($view == 'browser') 
@@ -4991,30 +4983,33 @@ class plgProjectsFiles extends JPlugin
 	protected function _readDir($path, $dirpath = '', $filter = '.', $recurse = true, $exclude = array(' .svn', 'CVS'))
 	{
 		$arr = array();
-		$handle = opendir($path);
-
-		while (($file = readdir($handle)) !== false)
+		
+		if ($handle = opendir($path)) 
 		{
-			if (($file != '.') && ($file != '..') && (!in_array($file, $exclude))) 
+			while (false !== ($file = readdir($handle)))
 			{
-				$dir = $path . DS . $file;
-				$isDir = is_dir($dir);
-				if ($isDir) 
+				if (($file != '.') && ($file != '..') && (!in_array($file, $exclude))) 
 				{
-					$arr2 = $this->_readDir($dir, $dirpath);
-					$arr = array_merge($arr, $arr2);
-				} 
-				else 
-				{
-					if (preg_match("/$filter/", $file)) {
-						$file = $path . DS . $file;
-						$file = str_replace($dirpath . DS, '', $file);
-						$arr[] = $file;					
+					$dir = $path . DS . $file;
+					$isDir = is_dir($dir);
+					if ($isDir) 
+					{
+						$arr2 = $this->_readDir($dir, $dirpath);
+						$arr = array_merge($arr, $arr2);
+					} 
+					else 
+					{
+						if (preg_match("/$filter/", $file)) {
+							$file = $path . DS . $file;
+							$file = str_replace($dirpath . DS, '', $file);
+							$arr[] = $file;					
+						}
 					}
 				}
 			}
+			
+			closedir($handle);
 		}
-		closedir($handle);
 		
 		return $arr;
 	}
@@ -6832,7 +6827,11 @@ class plgProjectsFiles extends JPlugin
 			
 			case 'insert':
 				$arr['output'] = $this->insertFile();			
-				break;		
+				break;	
+				
+			case 'rename':
+				$arr['output'] = $this->renameFile();				
+				break;	
 		}
 		
 		// Pass success or error message
@@ -6852,6 +6851,73 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
+	 * Rename
+	 *
+	 * Rename file
+	 * 
+	 * @return     mixed
+	 */
+	public function renameFile()
+	{
+		// Incoming
+		$oldpath  	= urldecode(JRequest::getVar( 'oldpath', '' )); 
+		$newpath   	= urldecode(JRequest::getVar( 'newpath', '' ));
+		
+		if (!$oldpath || !$newpath)
+		{
+			$this->setError(JText::_('Cannot rename without valid paths'));
+			return false;
+		}
+				
+		// Get extensions
+		$newExt = explode('.', $newpath);
+		$newExt = count($newExt) > 1 ? end($newExt) : '';
+		
+		$oldExt = explode('.', $oldpath);
+		$oldExt = count($oldExt) > 1 ? end($oldExt) : '';
+		
+		// Keep original extension (important)
+		$newpath = $newExt ? $newpath : $newpath . '.' . $oldExt;
+		
+		$newdir  = dirname($newpath) == '.' ? '' : dirname($newpath) . DS;
+		$newname = ProjectsHtml::makeSafeFile(basename($newpath));
+		$newpath = $newdir . $newname;		
+	
+		// Compare new and old name
+		if ($newpath == $oldpath)
+		{
+			$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
+			return false;
+		}
+		
+		// If another file with the same name exists in this path
+		if (is_file($this->prefix . $this->path . DS . $newpath))
+		{
+			$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
+			return false;
+		}
+		
+		if (!is_file($this->prefix . $this->path . DS . $oldpath))
+		{
+			$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+			return false;
+		}
+		
+		// Move file
+		$commitMsg = '';
+		$this->_git->gitMove($this->path, $oldpath, $newpath, 'file', $commitMsg);
+		$this->_git->gitCommit($this->path, $commitMsg);
+		
+		// On success return uploaded file metadata
+		if (!$this->getError()) 
+		{
+			return $this->getMetadata( array($newpath) );			
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Get file list
 	 *
 	 * List of items in project or project subdirectory
@@ -6862,7 +6928,8 @@ class plgProjectsFiles extends JPlugin
 	{		
 		// Incoming
 		$sortby  = JRequest::getVar( 'sortby', 'name' ); 
-		$sortdir = JRequest::getVar( 'sortdir', 'ASC' ); 
+		$sortdir = JRequest::getVar( 'sortdir', 'ASC' );
+		$filter  = urldecode(JRequest::getVar( 'filter', '' )); 
 				
 		// Get list of files from repo
 		$docs 	 = $this->_git->getFiles($this->path, $this->subdir);
@@ -6883,12 +6950,25 @@ class plgProjectsFiles extends JPlugin
 				{
 					continue;
 				}
-				
+								
 				$metadata = $this->getItemMetadata(trim($file));
 				if ($metadata)
 				{
+					// Search filter applied
+					$getParents = 1;
+					if ($filter 
+						&& strpos(trim($metadata->name), trim($filter)) === false
+						&& strpos(trim($metadata->dirname), trim($filter)) === false)
+					{
+						continue;
+					}
+					elseif ($filter)
+					{
+						$getParents = 0;
+					}
+					
 					// Do we have a parent?
-					if ($metadata->dirname && !in_array($metadata->dirname, $parents))
+					if ($getParents && $metadata->dirname && !in_array($metadata->dirname, $parents))
 					{
 						$obj 				= new stdClass;
 						$obj->type			= 'folder';
@@ -6900,7 +6980,7 @@ class plgProjectsFiles extends JPlugin
 						$items[] 			= $obj;
 						$sorting[] 			= strtolower($metadata->dirname);
 						$parents[]			= $metadata->dirname;
-					}
+					}					
 					
 					$items[] 	= $metadata;
 					$sorting[] 	= strtolower($metadata->localPath);
