@@ -63,22 +63,26 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" class="editform">
+<form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Details'); ?></span></legend>
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="field-anonymous"><?php echo JText::_('Anonymous'); ?></label></td>
-					<td><input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> /></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="field-content"><?php echo JText::_('Content'); ?></label></td>
-					<td><textarea name="fields[content]" id="field-content" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->content('raw'))); ?></textarea></td>
-				</tr>
-			</tbody>
-		</table>
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td>
+							<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> />
+							<label for="field-anonymous"><?php echo JText::_('Anonymous (commenter\'s name and picture are hidden)'); ?></label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="field-content"><?php echo JText::_('Content'); ?> <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+							<textarea name="fields[content]" id="field-content" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->content('raw'))); ?></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
