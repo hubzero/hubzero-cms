@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import.png');
 
+JToolBarHelper::help('import.html', true);
+JToolBarHelper::spacer();
 JToolBarHelper::custom('run', 'script', 'script', 'Run');
 JToolBarHelper::custom('runtest', 'script', 'script', 'Test Run');
 JToolBarHelper::spacer();
