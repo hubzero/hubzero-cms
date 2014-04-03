@@ -87,7 +87,6 @@ $base = $this->offering->link() . '&active=pages';
 					<?php
 						echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->model->get('content'))), '', '', 35, 50, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 					?>
-					<span class="hint"><?php echo JText::sprintf('PLG_COURSES_PAGES_FIELD_CONTENT_HINT', JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'), JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros')); ?></span>
 				</label>
 
 				<div class="field-wrap">
