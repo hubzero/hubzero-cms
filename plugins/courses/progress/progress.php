@@ -236,32 +236,38 @@ class plgCoursesProgress extends JPlugin
 		$members    = $this->course->offering()->section()->members(array('student'=>1, 'limit'=>$limit, 'start'=>$start));
 		$member_ids = array();
 		$mems       = array();
+		$grades     = null;
+		$progress   = null;
+		$passing    = null;
 
-		foreach ($members as $m)
+		if (count($members) > 0)
 		{
-			$member_ids[] = $m->get('id');
-			$mems[] = array(
-				'id'        => $m->get('id'),
-				'user_id'   => $m->get('user_id'),
-				'name'      => JFactory::getUser($m->get('user_id'))->get('name'),
-				'thumb'     => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, true), DS),
-				'full'      => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, false), DS),
-				'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
-									? JFactory::getDate(strtotime($m->get('enrolled')))->format('M j, Y')
-									: 'unknown'),
-				'lastvisit' => ((JFactory::getUser($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
-									? JFactory::getDate(strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate')))->format('M j, Y')
-									: 'never')
-			);
+			foreach ($members as $m)
+			{
+				$member_ids[] = $m->get('id');
+				$mems[] = array(
+					'id'        => $m->get('id'),
+					'user_id'   => $m->get('user_id'),
+					'name'      => JFactory::getUser($m->get('user_id'))->get('name'),
+					'thumb'     => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, true), DS),
+					'full'      => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, false), DS),
+					'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
+										? JFactory::getDate(strtotime($m->get('enrolled')))->format('M j, Y')
+										: 'unknown'),
+					'lastvisit' => ((JFactory::getUser($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
+										? JFactory::getDate(strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate')))->format('M j, Y')
+										: 'never')
+				);
+			}
+
+			// Refresh the grades
+			$this->course->offering()->gradebook()->refresh($member_ids);
+
+			// Get the grades
+			$grades    = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
+			$progress  = $this->course->offering()->gradebook()->progress($member_ids);
+			$passing   = $this->course->offering()->gradebook()->passing($member_ids);
 		}
-
-		// Refresh the grades
-		$this->course->offering()->gradebook()->refresh($member_ids);
-
-		// Get the grades
-		$grades    = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
-		$progress  = $this->course->offering()->gradebook()->progress($member_ids);
-		$passing   = $this->course->offering()->gradebook()->passing($member_ids);
 
 		echo json_encode(
 			array(
