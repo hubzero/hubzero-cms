@@ -48,7 +48,15 @@ if (isset($manifest) && is_file($manifest))
 	$media_dir  = dirname($manifest);
 	$manifest   = json_decode(file_get_contents($manifest));
 
-	$type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
+	if (is_null($manifest))
+	{
+		$type  = 'none';
+		$error = 'Video manifest does not contain valid JSON';
+	}
+	else
+	{
+		$type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
+	}
 }
 else if (in_array(substr($this->model->get('url'), -3), array('mov', 'mp4', 'm4v', 'ogg', 'ogv', 'webm')))
 {
@@ -450,5 +458,5 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		</video>
 	</div>
 <?php else : ?>
-	<p class="warning">This lecture has no playable videos associated with it</p>
+	<p class="warning"><?php echo (isset($error)) ? $error : 'This lecture has no playable videos associated with it'; ?></p>
 <?php endif; ?>
