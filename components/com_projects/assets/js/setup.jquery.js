@@ -121,22 +121,24 @@ HUB.ProjectSetup = {
 			if ($('#describe') && $('#ptitle')) {
 				var keyupTimerA = '';
 				$('#ptitle').on('keyup', function(e) {
-					if (keyupTimerA) {
-						clearTimeout(keyupTimerA);
-					}
-
 					 var keyupTimerA = setTimeout((function() { 
-						if ($('#ptitle').val().length > 5) {
-							if ($('#verificationarea_title')) {
+						if ($('#ptitle').val().length > 2) {
+							if ($('#verificationarea_title').length) {
 								$('#verificationarea_title').html('<p class="verify_passed">Title looks good &rarr;</p>');
 							}
 						} else {
-							if ($('#verificationarea_title')) {
+							if ($('#verificationarea_title').length) {
 								$('#verificationarea_title').html('<p class="verify_failed">Title too short &rarr;</p>');
 							}
 						}
 						HUB.ProjectSetup.watchInput($('#verified').val(), $('#ptitle').val().length, $('#describe'), $('#moveon'));
 					}), 500);
+				});
+
+				$('#ptitle').on('keydown', function(e) {
+					if (keyupTimerA) {
+						clearTimeout(keyupTimerA);
+					}
 				});
 			}
 			
@@ -162,15 +164,28 @@ HUB.ProjectSetup = {
 		}
 
 		// Verifier for project alias
-		if ($('#verificationarea')) {
-			var keyupTimerB = '';
-			$('#name').on('keyup', function(e) {
+		if ($('#verificationarea').length) {
+			var keyupTimerB = '';			
+
+			$('#name').on('keydown', function(eventInstance) {
 				if (keyupTimerB) {
 					clearTimeout(keyupTimerB);
 				}
 
+				var eventInstance = eventInstance || window.event;
+				var key = eventInstance.keyCode || eventInstance.which;
+
+				// Disallow spaces
+				if (key == 32 )
+				{
+				  	eventInstance.preventDefault(); 
+				}
+			});
+
+			$('#name').on('keyup', function(e) {
+
 				// Clean up entered value
-				$('#name').val(HUB.Projects.cleanupText($('#name').val()));
+				//$(this).val(HUB.Projects.cleanupText($(this).val()));
 
 				$('#verificationarea').empty();
 				var keyupTimerB = setTimeout((function() {  
@@ -244,7 +259,7 @@ HUB.ProjectSetup = {
 	
 	watchInput: function(verified, supplied, elshow, elhide) 
 	{
-		if (verified==1 && supplied > 5) {
+		if (verified==1 && supplied > 2) {
 			elhide.css('display', 'none');
 			elshow.css('display', 'block');
 		} else {

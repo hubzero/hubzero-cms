@@ -1103,6 +1103,9 @@
 	#restricted-choice {
 		padding: 0 1em 1em 1em;
 	}
+	#setup #name {
+		text-transform: lowercase;
+	}
 	
 /* Confirm Invite 
 --------------------------------------------- */
