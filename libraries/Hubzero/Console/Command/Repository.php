@@ -249,13 +249,16 @@ class Repository implements CommandInterface
 		{
 			if ($this->arguments->getOpt('f'))
 			{
-				$this->output->addLine(
-					'Updating the repository...',
-					array(
-						'color' => 'blue'
-					),
-					false
-				);
+				if ($mode != 'minimal')
+				{
+					$this->output->addLine(
+						'Updating the repository...',
+						array(
+							'color' => 'blue'
+						),
+						false
+					);
+				}
 
 				// Create rollback point first
 				$this->mechanism->createRollbackPoint();
@@ -267,12 +270,15 @@ class Repository implements CommandInterface
 				$response = $this->mechanism->update(false, $allowNonFf);
 				if ($response['status'] == 'success')
 				{
-					$this->output->addLine(
-						'complete',
-						array(
-							'color' => 'green'
-						)
-					);
+					if ($mode != 'minimal')
+					{
+						$this->output->addLine(
+							'complete',
+							array(
+								'color' => 'green'
+							)
+						);
+					}
 				}
 				else if ($response['status'] == 'fatal')
 				{
