@@ -32,6 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.policies.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
 
 /**
  * Courses model class for grade book
@@ -55,10 +57,11 @@ class CoursesModelGradePolicies extends CoursesModelAbstract
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
+	 * @param      integer $id  Resource ID
+	 * @param      integer $sid Section ID
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($oid, $sid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -66,6 +69,25 @@ class CoursesModelGradePolicies extends CoursesModelAbstract
 
 		if (is_numeric($oid))
 		{
+			// Check if this is the default section
+			if (!is_null($sid))
+			{
+				$section = new CoursesModelSection($sid);
+
+				if (!$section->get('is_default'))
+				{
+					$config  = JComponentHelper::getParams('com_courses');
+					$canEdit = $config->get('section_grade_policy', true);
+
+					if (!$canEdit)
+					{
+						// We need to find the default section and use that grade policy
+						$offering = new CoursesModelOffering($section->get('offering_id'));
+						$default  = $offering->section('!!default!!');
+						$oid      = $default->get('grade_policy_id');
+					}
+				}
+			}
 			$this->_tbl->load($oid);
 		}
 	}

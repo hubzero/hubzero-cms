@@ -296,7 +296,7 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		// Get the grading policy
-		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 		$policy = new stdClass();
 		$policy->description     = $gradePolicy->get('description');
 		$policy->exam_weight     = $gradePolicy->get('exam_weight') * 100;
@@ -912,18 +912,6 @@ class plgCoursesProgress extends JPlugin
 			$section = $this->course->offering()->section();
 			$section->set('grade_policy_id', $gp->get('id'));
 			$section->store();
-		}
-
-		// If section managers can't edit, then also make the above change for all sections of this course
-		if (!$this->course->config()->get('section_grade_policy', true))
-		{
-			$sections = $this->course->offering()->sections();
-
-			foreach ($sections as $s)
-			{
-				$s->set('grade_policy_id', $gp->get('id'));
-				$s->store();
-			}
 		}
 
 		if (JRequest::getInt('no_html', false))

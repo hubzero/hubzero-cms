@@ -309,7 +309,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		// Get a grade policy object
-		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'));
+		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'), $course->offering()->section()->get('id'));
 
 		// Calculate course grades, start by getting all grades
 		$filters = array('scope'=>'asset', 'member_id'=>$member_id, 'course_id'=>$course_id);
@@ -545,7 +545,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$filters = array('scope'=>'course', 'scope_id'=>$this->course->get('id'));
 
 		// Get a grade policy object
-		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
 		// If section only, add appropriate joins to limit by section
 		if ($section)
@@ -640,7 +640,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	public function isEligibleForRecognition($member_id=null)
 	{
 		// Get a grade policy object
-		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
 		// Get count of graded items taken
 		$results = $this->_tbl->getGradedItemsCompletionCount($this->course->get('id'), $member_id);
