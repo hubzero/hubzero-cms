@@ -244,6 +244,7 @@ class Repository implements CommandInterface
 	 **/
 	public function update()
 	{
+		$mode = $this->output->getMode();
 		if ($this->mechanism->isEligibleForUpdate())
 		{
 			if ($this->arguments->getOpt('f'))
@@ -294,23 +295,37 @@ class Repository implements CommandInterface
 
 				if (!empty($response))
 				{
-					$this->output->addLine('The repository is behind by ' . count($response) . ' updates:');
+					if ($mode != 'minimal')
+					{
+						$this->output->addLine('The repository is behind by ' . count($response) . ' updates:');
+					}
 					$logs = array();
 					foreach ($response as $log)
 					{
-						$logs[] = array(
-							'message' => $log,
-							'type' => array(
-								'indentation' => 2,
-								'color'       => 'blue'
-							)
-						);
+						if ($mode == 'minimal')
+						{
+							$this->output->addLine($log);
+						}
+						else
+						{
+							$logs[] = array(
+								'message' => $log,
+								'type' => array(
+									'indentation' => 2,
+									'color'       => 'blue'
+								)
+							);
+
+							$this->output->addLinesFromArray($logs);
+						}
 					}
-					$this->output->addLinesFromArray($logs);
 				}
 				else
 				{
-					$this->output->addLine('The repository is already up-to-date');
+					if ($mode != 'minimal')
+					{
+						$this->output->addLine('The repository is already up-to-date');
+					}
 				}
 			}
 		}
