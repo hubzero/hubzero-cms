@@ -315,9 +315,12 @@ class Repository implements CommandInterface
 									'color'       => 'blue'
 								)
 							);
-
-							$this->output->addLinesFromArray($logs);
 						}
+					}
+
+					if ($mode != 'minimal')
+					{
+						$this->output->addLinesFromArray($logs);
 					}
 				}
 				else
