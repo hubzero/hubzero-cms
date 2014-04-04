@@ -297,7 +297,7 @@ class Repository implements CommandInterface
 				{
 					if ($mode != 'minimal')
 					{
-						$this->output->addLine('The repository is behind by ' . count($response) . ' updates:');
+						$this->output->addLine('The repository is behind by ' . count($response) . ' update(s):');
 					}
 					$logs = array();
 					foreach ($response as $log)
