@@ -39,7 +39,7 @@ HUB.Plugins.TimeRecords = {
 		var pageCount = 0;
 
 		// Enable infinite scroll
-		$('.container').infinitescroll({
+		/*$('.container').infinitescroll({
 			navSelector     : '.list-footer',
 			nextSelector    : '.list-footer .next a',
 			itemSelector    : '.entries tbody tr',
@@ -67,7 +67,7 @@ HUB.Plugins.TimeRecords = {
 			if(opts.state.currPage >= pageCount) {
 				opts.state.isDone = true;
 			}
-		});
+		});*/
 
 		// Expand the submit button on hover (not necessary, just fun...)
 		if($.isFunction($().hoverIntent)){
@@ -179,7 +179,7 @@ HUB.Plugins.TimeRecords = {
 			}
 		});
 	} // end get_tasks
-}
+};
 
 jQuery(document).ready(function($){
 	HUB.Plugins.TimeRecords.initialize();
