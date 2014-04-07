@@ -18,6 +18,12 @@ function get_conf($db_id)
 	$db_name = $db_id['name'];
 
 	$db_conf_file = "/data/db/$db_name/database.json";
+
+	if (!file_exists($db_conf_file)) {
+		JError::raiseError('400', 'Missiong or Invalid Database', "Config: $db_conf_file");
+		return $db_dv_conf;
+	}
+
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 	$dv_conf['db'] = array_merge($dv_conf['db'], $db_conf['database_ro']);
 
