@@ -194,6 +194,8 @@ HUB.Plugins.GroupCalendar = {
 
 	filterEvents: function()
 	{
+		var $ = this.jQuery;
+		
 		var value = $('#calendar-picker').val();
 		
 		if (value == 0)
