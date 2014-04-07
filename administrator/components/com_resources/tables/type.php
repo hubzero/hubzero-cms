@@ -124,6 +124,37 @@ class ResourcesType extends JTable
 	}
 
 	/**
+	 * Returns a reference to a wiki page object
+	 *
+	 * This method must be invoked as:
+	 *     $page = ResourcesType::getRecordInstance($id);
+	 *
+	 * @param      integer $id The record to load
+	 * @return     object
+	 */
+	public static function getRecordInstance($id)
+	{
+		static $instances;
+
+		if (!isset($instances)) 
+		{
+			$instances = array();
+		}
+
+		if (!isset($instances[$id])) 
+		{
+			$db = JFactory::getDBO();
+
+			$tbl = new self($db);
+			$tbl->load($id);
+
+			$instances[$id] = $tbl;
+		}
+
+		return $instances[$id];
+	}
+
+	/**
 	 * Strip disallowed characters and make lowercase
 	 * 
 	 * @return     string

@@ -1201,12 +1201,14 @@ class ResourcesHtml
 					} 
 					else 
 					{
-						$rt = new ResourcesType($database);
-						$rt->load($child->type);
+						//$rt = new ResourcesType($database);
+						//$rt->load($child->type);
+						$rt = ResourcesType::getRecordInstance($child->type);
 						$tparams = new $paramsClass($rt->params);
 
-						$lt = new ResourcesType($database);
-						$lt->load($child->logicaltype);
+						//$lt = new ResourcesType($database);
+						//$lt->load($child->logicaltype);
+						$lt = ResourcesType::getRecordInstance($child->logicaltype);
 						$ltparams = new $paramsClass($lt->params);
 
 						// Check the link action by child's type
@@ -1375,8 +1377,9 @@ class ResourcesHtml
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
-		$rt = new ResourcesType($database);
-		$rt->load($item->type);
+		//$rt = new ResourcesType($database);
+		//$rt->load($item->type);
+		$rt = ResourcesType::getRecordInstance($item->type);
 		$type = $rt->alias;
 
 		if ($item->standalone == 1) 
@@ -1629,12 +1632,14 @@ class ResourcesHtml
 				$action = '';
 				$xtra   = '';
 
-				$lt = new ResourcesType($database);
-				$lt->load($firstChild->logicaltype);
+				//$lt = new ResourcesType($database);
+				//$lt->load($firstChild->logicaltype);
+				$lt = ResourcesType::getRecordInstance($firstChild->logicaltype);
 				$ltparams = new $paramsClass($lt->params);
 
-				$rt = new ResourcesType($database);
-				$rt->load($firstChild->type);
+				//$rt = new ResourcesType($database);
+				//$rt->load($firstChild->type);
+				$rt = ResourcesType::getRecordInstance($firstChild->type);
 				$tparams = new $paramsClass($rt->params);
 
 				if ($firstChild->logicaltype) 
