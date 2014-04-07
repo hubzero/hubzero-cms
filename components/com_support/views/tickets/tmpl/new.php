@@ -254,7 +254,16 @@ $group = JRequest::getVar("group", "");
 					</select>
 				</label>
 			</div>
-			
+
+			<label>
+				<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php 
+				$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', '')));
+				if (count($mc) > 0) {
+					echo '<span class="hint">'.JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];
+				} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+				<input type="text" name="cc" id="acmembers" value="" size="35" />
+				<?php } ?>
+			</label>
 		</fieldset>
 <?php } ?>
 <?php if (!$this->verified) { ?>

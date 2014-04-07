@@ -497,6 +497,12 @@ if ($this->row->id) {
 							</select>
 						</td>
 					</tr>
+					<tr>
+						<td class="key"><label for="comment-field-message"><?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?></label></td>
+						<td colspan="3">
+							<input type="text" name="cc" id="comment-field-message" value="" />
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<input type="hidden" name="section" value="1" />

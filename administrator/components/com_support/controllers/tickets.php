@@ -594,6 +594,51 @@ class SupportControllerTickets extends Hubzero_Controller
 			$rowc->changelog  = json_encode($log);
 			$rowc->access     = JRequest::getInt('access', 0);
 
+			// Add any CCs to the e-mail list
+			$cc = JRequest::getVar('cc', '', 'post');
+			if (trim($cc))
+			{
+				$cc = explode(',', $cc);
+				$cc = array_map('trim', $cc);
+				foreach ($cc as $acc)
+				{
+					// Check the format accepted [ID, username, Name (username), Name (email)]
+					if (!is_numeric($acc) && strstr($acc, '('))
+					{
+						$acc = trim(preg_replace('/(.+?)\s+\((.+?)\)/i', '$2', $acc));
+					}
+
+					// Is this a username/ID or email address?
+					if (!strstr($acc, '@'))
+					{
+						// Username or user ID - load the user
+						$juser = JUser::getInstance($acc);
+
+						// Did we find an account?
+						if (!is_object($juser))
+						{
+							// Move on - nothing else we can do here
+							continue;
+						}
+
+						$log['cc'][] = $juser->get('username');
+					}
+					// Make sure it's a valid e-mail address
+					elseif (SupportUtilities::checkValidEmail($acc))
+					{
+						// Is the comment private? If so, we do NOT send e-mail to submitter
+						if ($rowc->access != 1 && strtolower($row->email) == strtolower($acc)) 
+						{
+							continue;
+						}
+
+						$log['cc'][] = $acc;
+					}
+				}
+			}
+
+			$rowc->changelog  = json_encode($log);
+
 			if ($rowc->check())
 			{
 				// If we're only recording a changelog, make it private
@@ -666,7 +711,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					}
 					$message['plaintext'] .= $attach->parse($comment) . "\r\n\r\n";
 
-                    // Prepare message to allow email responses to be parsed and added to the ticket
+					// Prepare message to allow email responses to be parsed and added to the ticket
 					if ($allowEmailResponses)
 					{
 						$live_site = rtrim(JURI::base(),'/');
@@ -819,12 +864,12 @@ class SupportControllerTickets extends Hubzero_Controller
 					}
 
 					// Add any CCs to the e-mail list
-					$cc = JRequest::getVar('cc', '', 'post');
-					if (trim($cc))
+					//$cc = JRequest::getVar('cc', '', 'post');
+					if (count($log['cc']))
 					{
-						$cc = explode(',', $cc);
-						$cc = array_map('trim', $cc);
-						foreach ($cc as $acc)
+						//$cc = explode(',', $cc);
+						//$cc = array_map('trim', $cc);
+						foreach ($log['cc'] as $acc)
 						{
 							// Check the format accepted [ID, username, Name (username), Name (email)]
 							if (!is_numeric($acc) && strstr($acc, '('))
@@ -872,7 +917,7 @@ class SupportControllerTickets extends Hubzero_Controller
 										'name'    => $juser->get('name'),
 										'address' => $juser->get('email')
 									);
-									$log['cc'][] = $juser->get('username');
+									//$log['cc'][] = $juser->get('username');
 								}
 							}
 							// Make sure it's a valid e-mail address
@@ -894,7 +939,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									$emails[] = $acc;
 								}
-								$log['cc'][] = $acc;
+								//$log['cc'][] = $acc;
 							}
 						}
 					}
