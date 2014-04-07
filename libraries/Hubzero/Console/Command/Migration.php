@@ -207,8 +207,6 @@ class Migration implements CommandInterface
 			$this->output->error('Error: failed to instantiate new migration object.');
 		}
 
-		// For now, we're just going to force into interactive mode (no reason not to)
-		$this->output->makeInteractive();
 		if ($this->output->isInteractive())
 		{
 			// Register callback function for adding lines interactively
@@ -241,9 +239,54 @@ class Migration implements CommandInterface
 			{
 				if (!$this->output->isInteractive())
 				{
-					$this->output->addLinesFromArray($migration->get('log'));
+					if ($this->output->getMode() == 'minimal')
+					{
+						if (count($migration->get('log')) > 0)
+						{
+							$missed   = array();
+							$pending  = array();
+							$complete = array();
+							foreach ($migration->get('log') as $log)
+							{
+								if (preg_match('/would run up\(\) (Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches))
+								{
+									$pending[] = $matches[1];
+								}
+								if (preg_match('/completed up\(\) in (Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches))
+								{
+									$complete[] = $matches[1];
+								}
+								if (preg_match('/migration up\(\) in (Migration[0-9]{14}[[:alnum:]_]*\.php) has not been run/i', $log['message'], $matches))
+								{
+									$missed[] = $matches[1];
+								}
+							}
+
+							if (count($pending) > 0)
+							{
+								$this->output->addLine(array('pending'  => $pending));
+							}
+							if (count($missed) > 0)
+							{
+								$this->output->addLine(array('missed'   => $missed));
+							}
+							if (count($complete) > 0)
+							{
+								$this->output->addLine(array('complete' => $complete));
+							}
+						}
+					}
+					else
+					{
+						$this->output->addLinesFromArray($migration->get('log'));
+					}
 				}
-				$this->output->addLine('Success: ' . ucfirst($direction) . ' migration complete!', 'success');
+
+				// Final success message
+				if ($this->output->getMode() != 'minimal')
+				{
+					$this->output->addLine('Success: ' . ucfirst($direction) . ' migration complete!', 'success');
+				}
 			}
 		}
 
