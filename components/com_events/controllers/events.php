@@ -687,16 +687,14 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			//if we have a group and we are a member
 			if (is_object($group))
 			{
+				$juser  = JFactory::getUser();
+				$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'calendar');
+				
 				//if we are a member of that group
-				if (in_array($this->juser->get('id'), $group->get('members')))
+				if ($access == 'anyone' || ($access == 'registered' && !$juser->get('guest')) || ($access == 'members' && in_array($this->juser->get('id'), $group->get('members'))))
 				{
-					//get the events publish up month and year so we can jump to that month/year
-					$publishUpDate  = strtotime( $row->publish_up );
-					$publishUpMonth = date("n", $publishUpDate);
-					$publishUpYear  = date("Y", $publishUpDate);
-					
 					//redirect to group calendar
-					$redirect = JRoute::_( 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&month=' . $publishUpMonth . '&year=' . $publishUpYear, false );
+					$redirect = JRoute::_( 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $row->id, false);
 					$this->setRedirect( $redirect );
 					return;
 				}
