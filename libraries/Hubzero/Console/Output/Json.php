@@ -82,7 +82,14 @@ class Json extends Output
 	{
 		$styles  = null;
 		$newLine = true;
-		$this->response[] = $message;
+		if (is_array($message))
+		{
+			$this->response[key($message)] = current($message);
+		}
+		else
+		{
+			$this->response[] = $message;
+		}
 
 		return $this;
 	}
