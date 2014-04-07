@@ -45,10 +45,10 @@ $app = JFactory::getApplication();
 		<tbody>
 			<tr class="row0">
 				<th scope="row">
-					<a href="index.php?option=com_support&amp;task=abusereports">Abuse reports</a>
+					<a href="index.php?option=com_support&amp;controller=abusereports">Abuse reports</a>
 				</th>
 				<td>
-					<a href="index.php?option=com_support&amp;task=abusereports"><?php echo $reports; ?></a>
+					<a href="index.php?option=com_support&amp;controller=abusereports"><?php echo $reports; ?></a>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -87,10 +87,10 @@ $app = JFactory::getApplication();
 			</tr>
 			<tr class="row1">
 				<th scope="row">
-					<a href="../wishlist">Wishes (<?php echo $sitename; ?> list)</a>
+					<a href="index.php?option=com_wishlist">Wishes (<?php echo $sitename; ?> list)</a>
 				</th>
 				<td>
-					<a href="../wishlist"><?php echo $wishes; ?></a>
+					<a href="index.php?option=com_wishlist"><?php echo $wishes; ?></a>
 				</td>
 			</tr>
 		</tbody>
