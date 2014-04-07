@@ -47,7 +47,9 @@ class Json extends Output
 	 **/
 	public function __construct()
 	{
+		// Assume minimal mode and non-interactivity
 		$this->setMode('minimal');
+		$this->makeNonInteractive();
 	}
 
 	/**
