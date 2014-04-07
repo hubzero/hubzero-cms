@@ -512,7 +512,7 @@ class File extends Macro
 				$html .= '<div id="unityPlayer' . $rand . '">
 							<div class="missing">
 								<a href="https://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
-									<img alt="Unity Web Player. Install now!" src="https://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+									<img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
 						</div>' . "\n";
