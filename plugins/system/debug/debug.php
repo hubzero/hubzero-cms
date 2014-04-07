@@ -611,6 +611,11 @@ class plgSystemDebug extends JPlugin
 			{
 				$display = true;
 
+				if ($sKey == 'password_clear')
+				{
+					continue;
+				}
+
 				if (is_array($entries) && $entries)
 				{
 					$display = false;
