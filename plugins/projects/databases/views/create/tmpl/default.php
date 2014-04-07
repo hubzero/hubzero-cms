@@ -24,6 +24,25 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+if ($this->error) {
+?>
+
+<div id="system-message-container">
+<dl id="system-message">
+	<dt class="error">Error</dt>
+	<dd class="error message">
+		<ul>
+			<li><?=$this->error?></li>
+		</ul>
+	</dd>
+</dl>
+
+<?php
+	return;
+}
+
+
 $document = JFactory::getDocument();
 
 $document->addScript('/plugins/projects/databases/res/dataTables/jquery.dataTables.js');

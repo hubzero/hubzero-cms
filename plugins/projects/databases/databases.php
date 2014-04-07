@@ -153,21 +153,21 @@ class plgProjectsDatabases extends JPlugin
 	{
 
 		// Check if the plugin parameters the two mysql accounts are properly set
-		$db_opt_rw['driver'] 		= 'mysqli';
-		$db_opt_rw['host'] 		= $this->_params->get('db_host');
-		$db_opt_rw['user'] 		= $this->_params->get('db_user');
-		$db_opt_rw['password'] 	= $this->_params->get('db_password');
-		$db_opt_rw['prefix'] 		= '';
-		$db_rw =  JDatabase::getInstance($db_opt_rw);
+		$db_opt_rw['driver']    = 'mysqli';
+		$db_opt_rw['host']      = $this->_params->get('db_host');
+		$db_opt_rw['user']      = $this->_params->get('db_user');
+		$db_opt_rw['password']  = $this->_params->get('db_password');
+		$db_opt_rw['prefix']    = '';
+		$db_rw = JDatabase::getInstance($db_opt_rw);
 
-		$db_opt_ro['driver'] 		= 'mysqli';
-		$db_opt_ro['host'] 		= $this->_params->get('db_host');
-		$db_opt_ro['user'] 		= $this->_params->get('db_ro_user');
-		$db_opt_ro['password'] 	= $this->_params->get('db_ro_password');
-		$db_opt_ro['prefix'] 		= '';
-		$db_ro =  JDatabase::getInstance($db_opt_ro);
+		$db_opt_ro['driver']    = 'mysqli';
+		$db_opt_ro['host']      = $this->_params->get('db_host');
+		$db_opt_ro['user']      = $this->_params->get('db_ro_user');
+		$db_opt_ro['password']  = $this->_params->get('db_ro_password');
+		$db_opt_ro['prefix']    = '';
+		$db_ro = JDatabase::getInstance($db_opt_ro);
 
-		if (get_class($db_rw) == 'JException' || get_class($db_ro) == 'JException')
+		if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0)
 		{
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
@@ -419,9 +419,17 @@ class plgProjectsDatabases extends JPlugin
 		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 
-		chdir($path);
-		exec($this->gitpath . ' ls-files --exclude-standard |grep ".csv"', $list);
-		sort($list);
+		$list = array();
+		$error = false;
+
+		if (file_exists($path) && is_dir($path)) {
+			chdir($path);
+			exec($this->gitpath . ' ls-files --exclude-standard |grep ".csv"', $list);
+			sort($list);
+		} else {
+			$error = 'Missing file repository, Please contact the administrator.';
+		}
+
 
 		// Get project database object
 		$objPD = new ProjectDatabase($this->_database);
@@ -462,6 +470,7 @@ class plgProjectsDatabases extends JPlugin
 		$view->project = $this->_project;
 		$view->option = $this->_option;
 		$view->files = $files;
+		$view->error = $error;
 
 		// Get project database object
 		$objPD = new ProjectDatabase($this->_database);

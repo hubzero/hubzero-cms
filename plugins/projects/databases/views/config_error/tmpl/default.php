@@ -24,15 +24,18 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$document = JFactory::getDocument();
-
 ?>
-<div id="prj-db-list">
-	<div id="plg-header">
-		<h3 class="error">CONFIGURATION ERROR</h3>
-	</div>
-	
-	<h3>Please contact the HUB Administrator.</h3>
+
+<div id="system-message-container">
+<dl id="system-message">
+	<dt class="error">Error</dt>
+	<dd class="error message">
+		<ul>
+			<li>CONFIGURATION ERROR</li>
+		</ul>
+	</dd>
+</dl>
+<h3>Please contact the HUB Administrator.</h3>
 	<p>The <strong>projects databases plugin parameters<sup>[**]</sup></strong> need to be updated with the correct mysql server host, usernames and passwords.
 	<br /><br /> 
 	** Administrator Backend -> <a target="_blank" href="/administrator/index.php?option=com_plugins">Plugin Manager</a> -> search for "projects - databases"</p>
