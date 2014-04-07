@@ -345,7 +345,7 @@ class SupportControllerStats extends Hubzero_Controller
 		}
 
 		// Closed tickets
-		$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`, MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(c.created) AS closed
+		/*$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`, MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(c.created) AS closed
 				FROM #__support_comments AS c 
 				LEFT JOIN #__support_tickets AS t ON c.ticket=t.id
 				WHERE t.report!=''
@@ -358,7 +358,25 @@ class SupportControllerStats extends Hubzero_Controller
 		{
 			$sql .= " AND `group`=" . $this->database->Quote($this->view->group);
 		}
-		$sql .= " ORDER BY c.created ASC";
+		$sql .= " ORDER BY c.created ASC";*/
+		$sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
+				FROM #__support_tickets AS t
+				WHERE t.report!=''
+				AND t.type=" . $this->database->Quote($this->view->type) . " AND t.open=0";
+		if (!$this->view->group || $this->view->group == '_none_') 
+		{
+			$sql .= " AND (t.`group`='' OR t.`group` IS NULL)";
+		} 
+		else if ($this->view->group)
+		{
+			$sql .= " AND t.`group`=" . $this->database->Quote($this->view->group);
+		}
+		/*if ($this->view->start && $end)
+		{
+			$sql .= " AND t.closed>='" . $this->view->start . "-01 00:00:00' AND t.closed<'" . $end . "-01 00:00:00'";
+		}*/
+		$sql .= " ORDER BY t.closed ASC";
+
 		$this->database->setQuery($sql);
 		$clsd = $this->database->loadObjectList();
 
