@@ -1852,7 +1852,7 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Redirect to main view
-		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=all');
 
 		if ($no_html)
 		{
