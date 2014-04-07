@@ -276,7 +276,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	else
 	{
-		$checked = JHTML::_('grid.id', $i, $row->id, false, 'id');
+		$checked = JHTML::_('grid.id', $i, $row->child_id, false, 'id');
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -284,7 +284,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $checked; ?>
 				</td>
 				<td>
-					<?php echo $row->id; ?>
+					<?php echo $row->child_id; ?>
 				</td>
 				<td>
 <?php if ((($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != $juser->get('id')) || !$canDo->get('core.edit')) { ?>
@@ -293,7 +293,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 					<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
 <?php } else { ?>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('Publish Information');?>::<?php echo $info; ?>">
+					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('Publish Information');?>::<?php echo $info; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 					<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
@@ -305,7 +305,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $alt; ?></span>
 					</span>
 <?php } else { ?>
-					<a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 <?php } ?>
@@ -316,7 +316,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $row->groupname; ?></span>
 					</span>
 <?php } else { ?>
-					<a class="access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" <?php echo $color_access; ?> title="Change Access">
+					<a class="access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" <?php echo $color_access; ?> title="Change Access">
 						<span><?php echo $row->groupname; ?></span>
 					</a>
 <?php } ?>
