@@ -8,6 +8,20 @@ defined('_JEXEC') or die('Restricted access');
 		$this->comment = new ForumModelPost($this->comment);
 	}
 
+	if ($this->comment->get('reports'))
+	{
+		$this->comment->set('anonymous', 1);
+		$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
+	}
+	else
+	{
+		$comment = $this->comment->content('parsed');
+		if ($this->search)
+		{
+			$comment = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $comment);
+		}
+	}
+
 	$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 	if (!$this->comment->get('anonymous')) 
 	{
@@ -27,19 +41,6 @@ defined('_JEXEC') or die('Restricted access');
 		}
 	}
 	$cls .= ' ' . $this->comment->get('treename');
-
-	if ($this->comment->get('reports'))
-	{
-		$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
-	}
-	else
-	{
-		$comment = $this->comment->content('parsed');
-		if ($this->search)
-		{
-			$comment = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $comment);
-		}
-	}
 
 	if ($this->unit)
 	{
