@@ -351,12 +351,6 @@
 	#system-debug .debug-body .vl {
 		color: #cc915d;
 	}
-	#system-debug .tm-increase {
-		color: #8bbc91;
-	}
-	#system-debug .mmry {
-		color: #cc915d;
-	}
 	#system-debug span.dbgCommand {
 		color: #7a93c4;
 		font-weight: bold;
@@ -369,11 +363,16 @@
 		color: #c1807e;
 		font-weight: bold;
 	}
+	#system-debug .tm,
 	#system-debug .debug-indicator .icon-time {
 		color: #8bbc91;
 	}
+	#system-debug .mmry,
 	#system-debug .debug-indicator .icon-memory {
 		color: #cc915d;
+	}
+	#system-debug .msg {
+		color: #7a93c4;
 	}
 
 	/* 
@@ -415,9 +414,11 @@
 	#system-debug.dark .debug-tab {
 		font-weight: bold;
 	}
+	#system-debug.dark .tm,
 	#system-debug.dark .debug-indicator .icon-time {
 		color: #c9dca0;
 	}
+	#system-debug.dark .mmry,
 	#system-debug.dark .debug-indicator .icon-memory {
 		color: #dec9a0;
 	}
@@ -430,6 +431,7 @@
 		border-top: 1px solid #323232;
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 	}
+	#system-debug.dark .msg,
 	#system-debug.dark .debug-body dt {
 		color: #a7c1de;
 	}
@@ -460,12 +462,6 @@
 	#system-debug.dark .debug-body li:hover {
 		background: #171717;
 		background: rgba(0, 0, 0, 0.2);
-	}
-	#system-debug.dark .tm-increase {
-		color: #c9dca0;
-	}
-	#system-debug.dark .mmry {
-		color: #dec9a0;
 	}
 	#system-debug.dark span.dbgCommand {
 		color: #a7c1de;

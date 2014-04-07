@@ -115,7 +115,7 @@ class JProfiler extends JObject
 		{
 			$current_mem = memory_get_usage() / 1048576;
 			$mark = sprintf(
-				'<code>%s %.3f seconds (+%.3f); %0.2f MB (%s%0.3f) - %s</code>',
+				'<code>%s %.3f seconds (<span class="tm">+%.3f</span>); %0.2f MB (<span class="mmry">%s%0.3f</span>) - <span class="msg">%s</span></code>',
 				$this->_prefix,
 				$current,
 				$current - $this->_previous_time,
@@ -126,7 +126,7 @@ class JProfiler extends JObject
 		}
 		else
 		{
-			$mark = sprintf('<code>%s %.3f seconds (+%.3f) - %s</code>', $this->_prefix, $current, $current - $this->_previous_time, $label);
+			$mark = sprintf('<code>%s %.3f seconds (<span class="tm">+%.3f</span>) - <span class="msg">%s</span></code>', $this->_prefix, $current, $current - $this->_previous_time, $label);
 		}
 
 		$this->_previous_time = $current;
