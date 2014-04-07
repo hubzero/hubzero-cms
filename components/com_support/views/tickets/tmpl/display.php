@@ -72,7 +72,7 @@ $this->css('conditions.css');
 		{ 
 			?>
 				<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-					<a class="common-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
+					<a class="common-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0' . (intval($this->filters['show']) != $query->id ? '&search=' : '')); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
 				<?php if ($this->acl->check('read', 'tickets')) { ?>
@@ -105,7 +105,7 @@ $this->css('conditions.css');
 			<ul id="my-views" class="views">
 			<?php if ($this->acl->check('read', 'tickets')) { ?>
 				<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
-					<a class="my-watchlist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0'); ?>">
+					<a class="my-watchlist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
 						<?php echo $this->escape(JText::_('Watch list')); ?> <span><?php echo $this->watchcount; ?></span>
 					</a>
 				</li>
@@ -113,7 +113,7 @@ $this->css('conditions.css');
 	<?php if (count($this->queries['mine']) > 0) { ?>
 		<?php foreach ($this->queries['mine'] as $query) { ?>
 				<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-					<a class="my-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
+					<a class="my-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0' . (intval($this->filters['show']) != $query->id ? '&search=' : '')); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
 				<?php if ($this->acl->check('read', 'tickets')) { ?>
@@ -135,7 +135,7 @@ $this->css('conditions.css');
 	<?php if (count($this->queries['custom']) > 0) { ?>
 		<?php foreach ($this->queries['custom'] as $query) { ?>
 				<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-					<a class="custom-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
+					<a class="custom-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0' . (intval($this->filters['show']) != $query->id ? '&search=' : '')); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
 					<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" title="<?php echo JText::_('Delete'); ?>">

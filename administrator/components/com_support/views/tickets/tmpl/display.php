@@ -60,7 +60,7 @@ JHTML::_('behavior.tooltip');
 			{ 
 				?>
 					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id; ?>">
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
 							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 						</a>
 						<a class="modal copy" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;tmpl=component&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
@@ -89,14 +89,14 @@ JHTML::_('behavior.tooltip');
 				<h3 data-views="my-views"><span><?php echo JText::_('Mine'); ?></span></h3>
 				<ul id="my-views" class="views">
 					<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
-						<a class="my-watchlist" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=-1&amp;limitstart=0'); ?>">
+						<a class="my-watchlist" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=-1&amp;limitstart=0<?php echo  (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
 							<?php echo $this->escape(JText::_('Watch list')); ?> <span><?php echo $this->watchcount; ?></span>
 						</a>
 					</li>
 		<?php if (count($this->queries['mine']) > 0) { ?>
 			<?php foreach ($this->queries['mine'] as $query) { ?>
 					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id; ?>">
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
 							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 						</a>
 						<a class="modal copy" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;tmpl=component&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
@@ -115,7 +115,7 @@ JHTML::_('behavior.tooltip');
 		<?php if (count($this->queries['custom']) > 0) { ?>
 			<?php foreach ($this->queries['custom'] as $query) { ?>
 					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id; ?>">
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
 							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 						</a>
 						<a class="delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=remove&amp;id[]=<?php echo $query->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Delete'); ?>">
