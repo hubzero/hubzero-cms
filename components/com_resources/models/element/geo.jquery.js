@@ -19,9 +19,16 @@ if (!HUB.Resources) {
 // Resource Geo location
 //----------------------------------------------------------
 
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Resources.Geo = {
+	jQuery: jq,
 //610 Purdue Mall  West Lafayette, IN 47907
 	initialize: function() {
+		var $ = this.jQuery;
+
 		$('.geolocation').each(function(i, el){
 			$(el).on('blur', function() {
 				var field = $(this);
