@@ -9,6 +9,7 @@
 .paging_two_button .fg-button {
 	float: left;
 	cursor: pointer;
+	margin-right: 0;
 	* cursor: hand;
 }
 
