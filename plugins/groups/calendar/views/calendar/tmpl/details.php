@@ -94,26 +94,47 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 
 <table class="group-event-details">
 	<tbody>
-		<?php $timezone = timezone_name_from_abbr('',$this->event->get('time_zone')*3600, NULL); ?>
-		<?php if ($this->event->get('publish_down') != '0000-00-00 00:00:00') : ?>
+		<?php
+			$timezone     = timezone_name_from_abbr('',$this->event->get('time_zone')*3600, NULL);
+			$publish_up   = $this->event->get('publish_up');
+			$publish_down = $this->event->get('publish_down');
+
+			// show alternative event start/ends
+			// used for repeating events
+			$start = JRequest::getInt('start', NULL, 'get');
+			$end   = JRequest::getInt('end', NULL, 'get');
+			if ($start || ($start && $end))
+			{
+				$publish_up   = JFactory::getDate($start)->toSql();
+				$publish_down = JFactory::getDate($end)->toSql();
+			}
+		?>
+		<?php if ($publish_down != '0000-00-00 00:00:00') : ?>
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo JHTML::_('date', $this->event->get('publish_up'), 'l, F d, Y @ g:i a T', $timezone); ?>
+					<?php echo JHTML::_('date', $publish_up, 'l, F d, Y @ g:i a') . JHTML::_('date', $publish_up, ' T', $timezone); ?>
 					&mdash;
-					<?php echo JHTML::_('date', $this->event->get('publish_down'), 'l, F d, Y @ g:i a T', $timezone); ?>
+					<?php echo JHTML::_('date', $publish_down, 'l, F d, Y @ g:i a') . JHTML::_('date', $publish_down, ' T', $timezone); ?>
 				</td>
 			</tr>
 		<?php else : ?>
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
-					<?php echo JHTML::_('date', $this->event->get('publish_up'), 'l, F d, Y'); ?>
+					<?php echo JHTML::_('date', $publish_up, 'l, F d, Y'); ?>
 				</td>
 				<th class="time"></th>
 				<td>
-					<?php echo JHTML::_('date', $this->event->get('publish_up'), 'g:i a T', $timezone); ?>
+					<?php echo JHTML::_('date', $publish_up, 'g:i a') . JHTML::_('date', $publish_up, ' T', $timezone); ?>
 				</td>
+			</tr>
+		<?php endif; ?>
+
+		<?php if ($this->event->get('repeating_rule') != '') : ?>
+			<tr>
+				<th class="repeatig"></th>
+				<td colspan="3"><?php echo $this->event->humanReadableRepeatingRule(); ?></td>
 			</tr>
 		<?php endif; ?>
 		

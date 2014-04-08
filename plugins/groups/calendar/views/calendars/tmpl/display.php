@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<tr>
 			<th><?php echo JText::_('Name'); ?></th>
 			<th><?php echo JText::_('Color'); ?></th>
-			<th><?php echo JText::_('Publish Events to Subscribers?'); ?></th>
+			<th><?php echo JText::_('Publish Events?'); ?></th>
 			<th><?php echo JText::_('Actions'); ?></th>
 		</tr>
 	</thead>

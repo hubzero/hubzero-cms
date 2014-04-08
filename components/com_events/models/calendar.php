@@ -61,6 +61,13 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 	private $_events = null;
 
 	/**
+	 * \Hubzero\Base\ItemList
+	 * 
+	 * @var object
+	 */
+	private $_events_repeating = null;
+
+	/**
 	 * Events Count
 	 * 
 	 * @var int
@@ -133,6 +140,76 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 					$this->_events_count = $tbl->count( $filters );
 				}
 				return $this->_events_count;
+				break;
+			case 'repeating':
+				if (!($this->_events_repeating instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				{
+					// var to hold repeating data
+					$repeats = array();
+
+					// add repeating filters
+					$filters['repeating'] = true;
+
+					// capture publish up/down 
+					// remove for now as we want all events that have a repeating rule
+					$start = JFactory::getDate($filters['publish_up']);
+					$end   = JFactory::getDate($filters['publish_down']);
+					unset($filters['publish_up']);
+					unset($filters['publish_down']);
+
+					// echo '<pre>';
+					// print_r($start);
+					// echo '</pre>';
+					// echo '<pre>';
+					// print_r($end);
+					// echo '</pre>';
+					
+					// find any events that match our filters
+					$tbl = new EventsEvent($this->_db);
+					if ($results = $tbl->find( $filters ))
+					{
+						foreach ($results as $key => $result)
+						{	
+							// get repeating occurrences
+							// wrap in try/catch to prevent 500 error
+							$r = new When\When(); 
+							try
+							{
+								$r->startDate(JFactory::getDate($result->publish_up))
+								  ->until($end)
+								  ->rrule($result->repeating_rule)
+								  ->generateOccurrences();
+							}
+							catch (Exception $e)
+							{}
+
+							// calculate diff so we can create down
+							$diff = new DateInterval('P0Y0DT0H0M');
+							if ($result->publish_down != '0000-00-00 00:00:00')
+							{
+								$diff = date_diff(JFactory::getDate($result->publish_up), JFactory::getDate($result->publish_down));
+							}
+
+							// create new event for each reoccurrence
+							foreach ($r->occurrences as $occurrence)
+							{
+								// dont include the original event
+								if ($occurrence == JFactory::getDate($result->publish_up))
+								{
+									continue;
+								}
+								
+								$event               = clone($result);
+								$event->publish_up   = $occurrence->format('Y-m-d H:i:s');
+								$event->publish_down = $occurrence->add($diff)->format('Y-m-d H:i:s');
+								$repeats[]           = new EventsModelEvent($event);
+							}
+						}
+					}
+					$this->_events_repeating = new \Hubzero\Base\Model\ItemList($repeats);
+				}
+				return $this->_events_repeating;
+				break;
 			case 'list':
 			default:
 				if (!($this->_events instanceof \Hubzero\Base\Model\ItemList) || $clear)
@@ -164,6 +241,8 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 
 	/**
 	 * Refresh a Specific Group Calendar
+	 *
+	 * @param  bool  $force  Force refresh calendar?
 	 */
 	public function refresh($force = false)
 	{

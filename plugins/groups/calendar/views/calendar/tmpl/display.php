@@ -67,67 +67,66 @@ defined('_JEXEC') or die( 'Restricted access' );
 </select>
 
 
-<noscript>
-	<div class="subject group-calendar-subject">
-		<div class="container">
-			<h3><?php echo JText::_('Events List'); ?></h3>
-			<?php if ($this->eventsCount > 0) : ?>
-				<ol class="calendar-entries">
-					<?php foreach ($this->events as $event) : ?>
-						<li>
-							<h4 class="entry-title">
-								<a href="<?php echo $event->link(); ?>">
-									<?php echo $event->get('title'); ?>
-								</a>
-							</h4>
-							<dl class="entry-meta">
-								<dd class="calendar">
-									in <?php echo ($event->calendar()->get('id')) ? $event->calendar()->get('title') : 'Uncategorized'; ?>
+<div class="subject group-calendar-subject event-list">
+	<div class="container">
+		<h3><?php echo JText::_('Events List'); ?></h3>
+		<?php if ($this->eventsCount > 0) : ?>
+			<ol class="calendar-entries">
+				<?php foreach ($this->events as $event) : ?>
+					<li>
+						<h4 class="entry-title">
+							<a href="<?php echo $event->link(); ?>">
+								<?php echo $event->get('title'); ?>
+							</a>
+						</h4>
+						<dl class="entry-meta">
+							<dd class="calendar">
+								in <?php echo ($event->calendar()->get('id')) ? $event->calendar()->get('title') : 'Uncategorized'; ?>
+							</dd>
+							<?php if ($event->get('publish_down') != '0000-00-00 00:00:00') : ?>
+								<dd class="start-and-end">
+									<?php echo JHTML::_('date', $event->get('publish_up'), 'l, F d, Y @ g:i a'); ?>
+									&mdash;
+									<?php echo JHTML::_('date', $event->get('publish_down'), 'l, F d, Y @ g:i a'); ?>
 								</dd>
-								<?php if ($event->get('publish_down') != '0000-00-00 00:00:00') : ?>
-									<dd class="start-and-end">
-										<?php echo JHTML::_('date', $event->get('publish_up'), 'l, F d, Y @ g:i a'); ?>
-										&mdash;
-										<?php echo JHTML::_('date', $event->get('publish_down'), 'l, F d, Y @ g:i a'); ?>
-									</dd>
-								<?php else : ?>
-									<dd class="date">
-										<?php echo JHTML::_('date',  $event->get('publish_up'), 'l, F d, Y'); ?>
-									<dd>
-									<dd class="time">
-										<?php echo JHTML::_('date',  $event->get('publish_up'), JText::_('TIME_FORMAT_HZ1')); ?>
-									<dd>
-								<?php endif; ?>
-							</dl>
-							<div class="entry-content">
-								<p>
-									<?php 
-										$content = strip_tags($event->get('content'));
-										echo ($content) ? Hubzero\Utility\String::truncate($content, 500) : '<em>no content</em>'; 
-									?>
-								</p>
-							</div>
-						</li>
-					<?php endforeach; ?>
-				</ol>
+							<?php else : ?>
+								<dd class="date">
+									<?php echo JHTML::_('date',  $event->get('publish_up'), 'l, F d, Y'); ?>
+								<dd>
+								<dd class="time">
+									<?php echo JHTML::_('date',  $event->get('publish_up'), JText::_('TIME_FORMAT_HZ1')); ?>
+								<dd>
+							<?php endif; ?>
+						</dl>
+						<div class="entry-content">
+							<p>
+								<?php 
+									$content = strip_tags($event->get('content'));
+									echo ($content) ? Hubzero\Utility\String::truncate($content, 500) : '<em>no content</em>'; 
+								?>
+							</p>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ol>
 
-				<?php 
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination(
-						$this->eventsCount, 
-						$this->filters['start'], 
-						$this->filters['limit']
-					);
-					$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-					$pageNav->setAdditionalUrlParam('active', 'calendar');
-					echo $pageNav->getListFooter();
-				?>
-			<?php else : ?>
-				<p class="warning"><?php echo JText::_('PLG_GROUPS_CALENDAR_NO_ENTRIES_FOUND'); ?></p>
-			<?php endif; ?>
-		</div>
+			<?php 
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->eventsCount, 
+					$this->filters['start'], 
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+				$pageNav->setAdditionalUrlParam('active', 'calendar');
+				echo $pageNav->getListFooter();
+			?>
+		<?php else : ?>
+			<p class="warning"><?php echo JText::_('PLG_GROUPS_CALENDAR_NO_ENTRIES_FOUND'); ?></p>
+		<?php endif; ?>
 	</div>
-</noscript>
+</div>
+
 
 <?php
 	if ($this->params->get('allow_subscriptions', 1))

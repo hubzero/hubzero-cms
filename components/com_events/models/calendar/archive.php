@@ -107,4 +107,133 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 			break;
 		}
 	}
+
+	/**
+	 * Subscribe to group calendars
+	 * 
+	 * @return void
+	 */
+	public function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)
+	{
+		// get request varse
+		$calendarIds = JRequest::getVar('calendar_id','','get');
+		$calendarIds = array_map("intval", explode(',', $calendarIds));
+		
+		// array to hold events
+		$events = new \Hubzero\Base\ItemList();
+		
+		// loop through and get each calendar
+		foreach ($calendarIds as $k => $calendarId)
+		{
+			// load calendar model
+			$eventsCalendar = new EventsModelCalendar($calendarId);
+			
+			// make sure calendar is published
+			if (!$eventsCalendar->get('published') && $calendarId != 0)
+			{
+				continue;
+			}
+
+			// get calendar events
+			$rawEvents = $eventsCalendar->events('list', array(
+				'scope'       => $scope,
+				'scope_id'    => $scope_id,
+				'calendar_id' => $calendarId,
+				'state'       => array(1)
+			));
+			
+			// merge with full events list
+			$events = $events->merge($rawEvents);
+		}
+
+		//create output
+		$output  = "BEGIN:VCALENDAR\r\n";
+		$output .= "VERSION:2.0\r\n";
+		$output .= "PRODID:PHP\r\n";
+		$output .= "METHOD:PUBLISH\r\n";
+		$output .= "X-WR-CALNAME:" . $name . "\r\n";
+		$output .= "X-PUBLISHED-TTL:PT15M\r\n";
+		$output .= "X-ORIGINAL-URL:https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\r\n";
+		$output .= "CALSCALE:GREGORIAN\r\n";
+		
+		// loop through events
+		foreach ($events as $event)
+		{
+			$sequence = 0;
+			$uid      = $event->get('id');
+			$title    = $event->get('title');
+			$content  = str_replace("\r\n", '\n', $event->get('content'));
+			$location = $event->get('adresse_info');
+			$url      = $event->get('extra_info');
+
+			// get event timezone setting
+			// use this in "DTSTART;TZID=" 
+			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
+			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
+		
+			// get publish up/down dates in UTC
+			$publishUp   = new DateTime($event->get('publish_up'), new DateTimezone('UTC'));
+			$publishDown = new DateTime($event->get('publish_down'), new DateTimezone('UTC'));
+		
+			// Set eastern timezone as publish up/down date timezones
+			// since all event date/times are stores relative to eastern 
+			// ----------------------------------------------------------------------------------
+			// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
+			// adjust date/time display according to that timezone and their systems timezone setting
+			$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+			$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+			
+			// create now, created, and modified vars
+			$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
+			$created  = gmdate('Ymd', strtotime($event->get('created'))) . 'T' . gmdate('His', strtotime($event->get('created'))) . 'Z';
+			$modified = gmdate('Ymd', strtotime($event->get('modified'))) . 'T' . gmdate('His', strtotime($event->get('modified'))) . 'Z';
+			
+			// start output
+			$output .= "BEGIN:VEVENT\r\n";
+			$output .= "UID:{$uid}\r\n";
+			$output .= "SEQUENCE:{$sequence}\r\n";
+			$output .= "DTSTAMP:{$now}Z\r\n";
+			$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
+			if($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
+			{
+				$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
+			}
+			else
+			{
+				$output .= "DTEND;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
+			}
+
+			// repeating rule
+			if ($event->get('repeating_rule') != '')
+			{
+				$output .= "RRULE:" . $event->get('repeating_rule') . "\r\n";
+			}
+
+			$output .= "CREATED:{$created}\r\n";
+			$output .= "LAST-MODIFIED:{$modified}\r\n";
+			$output .= "SUMMARY:{$title}\r\n";
+			$output .= "DESCRIPTION:{$content}\r\n";
+			// do we have extra info
+			if($url != '' && filter_var($url, FILTER_VALIDATE_URL))
+			{
+				$output .= "URL;VALUE=URI:{$url}\r\n";
+			}
+			// do we have a location
+			if ($location != '')
+			{
+				$output .= "LOCATION:{$location}\r\n";
+			}
+			$output .= "END:VEVENT\r\n";
+		}
+
+		// close calendar
+		$output .= "END:VCALENDAR";
+
+		// set headers and output
+		header('Content-type: text/calendar; charset=utf-8');
+		header('Content-Disposition: attachment; filename="'. $name .'.ics"');
+		header('Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT');
+		echo $output;
+		exit();
+	}
 }

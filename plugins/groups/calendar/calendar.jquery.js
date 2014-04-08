@@ -56,6 +56,9 @@ HUB.Plugins.GroupCalendar = {
 			return;
 		}
 
+		// hide event list
+		$('.event-list').hide();
+
 		// setup full calendar
 		$calendar.fullCalendar({
 			month: $month,
@@ -258,6 +261,9 @@ HUB.Plugins.GroupCalendar = {
 	editEvent: function()
 	{
 		var $ = this.jQuery;
+
+		// handle repeating events details
+		HUB.Plugins.GroupCalendar.repeatingEvents();
 		
 		//show date picker for end and start
 		if ($('#event_start_date, #event_end_date').length)
@@ -348,6 +354,100 @@ HUB.Plugins.GroupCalendar = {
 					$('.upload').removeClass('over');
 				});
 		}
+	},
+
+	repeatingEvents: function()
+	{
+		var $ = this.jQuery;
+
+		// make sure we have repeating events
+		if (!$('fieldset .reccurance').length)
+		{
+			return;
+		}
+
+		// show 
+		$('.reccurance .ends').hide();
+
+		// repeating events end
+		HUB.Plugins.GroupCalendar._repeatingEventsInterval();
+
+		// repeating events end
+		HUB.Plugins.GroupCalendar._repeatingEventsEnd();
+	},
+
+	_repeatingEventsInterval: function()
+	{
+		var $ = this.jQuery;
+
+		// hide all options to start
+		$(".reccurance-options").hide();
+
+		// add event handler for changing reccurance
+		$('select[name="reccurance[freq]"]').on('change', function(event) {
+			if ($(this).val() != '')
+			{
+				$('.reccurance .ends').show();
+			}
+			else
+			{
+				$('.reccurance .ends').hide();
+			}
+			$(".reccurance-options").hide();
+			$('.options-' + $(this).val().toLowerCase()).show();
+		});
+
+		// fire change event if we have a freq set (editing)
+		if ($('select[name="reccurance[freq]"]').val() != '')
+		{
+			$('select[name="reccurance[freq]"]').change();
+		}
+	},
+
+	_repeatingEventsEnd: function()
+	{
+		var $ = this.jQuery;
+
+		// repeating end on date formatter
+		$('.reccurance .on-input').attr('autocomplete', 'OFF');
+		$('.reccurance .on-input').datepicker({
+			controlType: 'slider',
+			dateFormat: 'mm/dd/yy'
+		});
+
+		// disable all inputs
+		HUB.Plugins.GroupCalendar._repeatingEventsDisableEnd();
+
+		// end inputs
+		$('input[name="reccurance[ends][when]"]').on('click', function(event) {
+			// disable all other inputs
+			HUB.Plugins.GroupCalendar._repeatingEventsDisableEnd();
+
+			// focus on next input
+			$(this).parent('label')
+				.find('input[type=text]')
+				.focus();
+		});
+	},
+
+	_repeatingEventsDisableEnd: function()
+	{
+		var $ = this.jQuery;
+
+		$('input[name="reccurance[ends][when]"]').each(function(index) {
+			if (!$(this).is(':checked'))
+			{
+				$(this).parent('label')
+					.find('input[type=text]')
+					.attr('disabled', 'disabled');
+			}
+			else
+			{
+				$(this).parent('label')
+					.find('input[type=text]')
+					.removeAttr('disabled');
+			}
+		});
 	}
 };
 

@@ -117,4 +117,178 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	{
 		return EventsModelCalendar::getInstance($this->get('calendar_id'));
 	}
+
+	/**
+	 * Parses the Events Repeating Rule
+	 * 
+	 * @return array
+	 */
+	public function parseRepeatingRule()
+	{
+		// array to hold final values
+		$repeating = array(
+			'freq'     => '',
+			'interval' => '',
+			'end'      => 'never',
+			'count'    => '',
+			'until'    => ''
+		);
+
+		// split rules
+		$parts = array_map('trim', explode(';', $this->get('repeating_rule')));
+		
+		// loop through each part
+		foreach ($parts as $k => $part)
+		{
+			// freq
+			if (preg_match('/FREQ=([A-Z]*)/u', $part, $matches))
+			{
+				$repeating['freq'] = strtolower($matches[1]);
+				unset($parts[$k]);
+			}
+
+			// interval
+			if (preg_match('/INTERVAL=([0-9]{1,2})/u', $part, $matches))
+			{
+				$repeating['interval'] = strtolower($matches[1]);
+				unset($parts[$k]);
+			}
+
+			// count
+			if (preg_match('/COUNT=([0-9]{1,2})/u', $part, $matches))
+			{
+				$repeating['count'] = strtolower($matches[1]);
+				$repeating['end']   = 'count';
+				unset($parts[$k]);
+			}
+
+			// until
+			if (preg_match('/UNTIL=(.*)/u', $part, $matches))
+			{
+				$date = JFactory::getDate($matches[1]);
+				$repeating['until'] = $date->format('m/d/Y');
+				$repeating['end']   = 'until';
+				unset($parts[$k]);
+			}
+		}
+		
+		return $repeating;
+	}
+
+	/**
+	 * Generate Human Readable Repeating Info
+	 * 
+	 * @return [type] [description]
+	 */
+	public function humanReadableRepeatingRule()
+	{
+		// reable repeating rule
+		$readable = 'Repeats ';
+
+		// get parsed rule
+		$rule = $this->parseRepeatingRule();
+
+		// interval type type
+		if ($rule['interval'] > 1)
+		{
+			$readable .= 'Every ' . $rule['interval'] . ' ' . ucfirst(str_replace('ly', 's', $rule['freq']));
+		}
+		else
+		{
+			$readable .= ucfirst($rule['freq']);
+		}
+		
+		// handle end
+		if ($rule['end'] == 'count')
+		{
+			$readable .= ' For ' . $rule['count'] . ' time(s)';
+		}
+		else if ($rule['end'] == 'until')
+		{
+			$readable .= ' Until ' . $rule['until'];
+		}
+
+		// return
+		return $readable;
+	}
+
+	/**
+	 * Export Event in iCal Format
+	 * 
+	 * @return [type] [description]
+	 */
+	public function export()
+	{
+		// get event timezone setting
+		// use this in "DTSTART;TZID=" 
+		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($this->get('time_zone'));
+		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
+		
+		// get publish up/down dates in UTC
+		$publishUp   = new DateTime($this->get('publish_up'), new DateTimezone('UTC'));
+		$publishDown = new DateTime($this->get('publish_down'), new DateTimezone('UTC'));
+		
+		// Set eastern timezone as publish up/down date timezones
+		// since all event date/times are stores relative to eastern 
+		// ----------------------------------------------------------------------------------
+		// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
+		// adjust date/time display according to that timezone and their systems timezone setting
+		$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+		$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+
+		//event vars
+		$id       = $this->get('id');
+		$title    = $this->get('title');
+		$desc     = str_replace("\n", '\n', $this->get('content'));
+		$url      = $this->get('extra_info');
+		$location = $this->get('adresse_info');
+		$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
+		$created  = gmdate('Ymd', strtotime($this->get('created'))) . 'T' . gmdate('His', strtotime($this->get('created'))) . 'Z';
+		$modified = gmdate('Ymd', strtotime($this->get('modified'))) . 'T' . gmdate('His', strtotime($this->get('modified'))) . 'Z';
+		
+		//create ouput
+		$output  = "BEGIN:VCALENDAR\r\n";
+		$output .= "VERSION:2.0\r\n";
+		$output .= "PRODID:PHP\r\n";
+		$output .= "METHOD:PUBLISH\r\n";
+		$output .= "BEGIN:VEVENT\r\n";
+		$output .= "UID:{$id}\r\n";
+		$output .= "DTSTAMP:{$now}\r\n";
+		$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
+		if($this->get('publish_down') != '' && $this->get('publish_down') != '0000-00-00 00:00:00')
+		{
+			$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
+		}
+		else
+		{
+			$output .= "DTEND;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
+		}
+
+		// repeating rule
+		if ($this->get('repeating_rule') != '')
+		{
+			$output .= "RRULE:" . $this->get('repeating_rule') . "\r\n";
+		}
+
+		$output .= "CREATED:{$created}\r\n";
+		$output .= "LAST-MODIFIED:{$modified}\r\n";
+		$output .= "SUMMARY:{$title}\r\n";
+		$output .= "DESCRIPTION:{$desc}\r\n";
+		if($url != '' && filter_var($url, FILTER_VALIDATE_URL))
+		{
+			$output .= "URL;VALUE=URI:{$url}\r\n";
+		}
+		if ($location != '')
+		{
+			$output .= "LOCATION:{$location}\r\n";
+		}
+		$output .= "END:VEVENT\r\n";
+		$output .= "END:VCALENDAR\r\n";
+		
+		//set the headers for output
+		header('Content-type: text/calendar; charset=utf-8');
+		header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', strtolower($title)) . '_export.ics');
+		echo $output;
+		exit();
+	}
 }

@@ -151,6 +151,91 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						?>
 					</label>
 				</fieldset>
+				<?php 
+					$repeating = $this->event->parseRepeatingRule();
+					$freqs = array(
+						''        => '- None &mdash;',
+						'daily'   => 'Daily',
+						'weekly'  => 'Weekly',
+						'monthly' => 'Monthy',
+						'yearly'  => 'Yearly'
+					);
+				?>
+				<fieldset class="reccurance">
+					<legend>
+						<?php echo JText::_('Repeating Settings'); ?>
+					</legend>
+					<label><?php echo JText::_('Reccurance:'); ?> <span class="optional">Optional</span>
+						<select name="reccurance[freq]">
+							<?php foreach ($freqs as $k => $v) : ?>
+								<?php $sel = ($repeating['freq'] == $k) ? 'selected="selected"' : ''; ?>
+								<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option> 
+							<?php endforeach; ?>
+						</select>
+					</label>
+
+					<div class="reccurance-options options-daily">
+						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
+							<select name="reccurance[interval][daily]" class="daily-days">
+								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+									<?php $sel = ($repeating['freq'] == 'daily' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+								<?php endfor; ?>
+							</select>
+							days
+						</label>
+					</div>
+
+					<div class="reccurance-options options-weekly">
+						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
+							<select name="reccurance[interval][weekly]" class="weekly-weeks">
+								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+									<?php $sel = ($repeating['freq'] == 'weekly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+								<?php endfor; ?>
+							</select>
+							weeks
+						</label>
+					</div>
+
+					<div class="reccurance-options options-monthly">
+						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
+							<select name="reccurance[interval][monthly]" class="monthly-months">
+								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+									<?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+								<?php endfor; ?>
+							</select>
+							months
+						</label>
+					</div>
+
+					<div class="reccurance-options options-yearly">
+						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
+							<select name="reccurance[interval][yearly]" class="yearly-years">
+								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+								<?php $sel = ($repeating['freq'] == 'yearly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+								<?php endfor; ?>
+							</select>
+							years
+						</label>
+					</div>
+
+					<label for="ends" class="ends"><?php echo JText::_('Ends:'); ?> <span class="optional">Optional</span>
+						<label for="never">
+							<input id="never" class="option" type="radio" name="reccurance[ends][when]" value="never" <?php if ($repeating['end'] == 'never') { echo 'checked="checked"'; } ?> /> Never
+						</label>
+						<label for="after">
+							<input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?php if ($repeating['end'] == 'count') { echo 'checked="checked"'; } ?> /> After 
+							<input type="text" name="reccurance[ends][count]" placeholder="5" class="after-input" value="<?php echo $repeating['count']; ?>" /> times
+						</label>
+						<label for="on">
+							<input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?php if ($repeating['end'] == 'until') { echo 'checked="checked"'; } ?> /> On 
+							<input type="text" name="reccurance[ends][until]" placeholder="mm/dd/yyyy" class="on-input no-legacy-placeholder-support" value="<?php echo $repeating['until']; ?>" />
+						</label>
+					</label>
+				</fieldset>
 			</fieldset>
 
 			<?php if ($this->params->get('allow_registrations', 1) && $this->authorized == 'manager') : ?>

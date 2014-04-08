@@ -313,7 +313,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
-			'scope_id'  => $this->group->get('gidNumber')
+			'scope_id'  => $this->group->get('gidNumber'),
+			'published' => array(1)
 		));
 		
 		// add each calendar to the sources
@@ -355,18 +356,34 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$calendarId = JRequest::getInt('calender_id', 'null');
 
 		// format date/times
-		$start = JHTML::_('date', $start, "Y-m-d H:i:s");
-		$end   = JHTML::_('date', $end, "Y-m-d H:i:s");
-
+		$start = JFactory::getDate($start);
+		$end   = JFactory::getDate($end);
+		$end->modify('-1 second');
+		
 		// get calendar events
 		$eventsCalendar = EventsModelCalendar::getInstance();
 		$rawEvents = $eventsCalendar->events('list', array(
-			'scope' => 'group',
-			'scope_id' => $this->group->get('gidNumber'),
-			'calendar_id' => $calendarId,
-			'state' => array(1)
+			'scope'        => 'group',
+			'scope_id'     => $this->group->get('gidNumber'),
+			'calendar_id'  => $calendarId,
+			'state'        => array(1),
+			'publish_up'   => $start->format('Y-m-d H:i:s'),
+			'publish_down' => $end->format('Y-m-d H:i:s')
 		));
-		
+
+		// get repeating events
+		$rawEventsRepeating = $eventsCalendar->events('repeating', array(
+			'scope'        => 'group',
+			'scope_id'     => $this->group->get('gidNumber'),
+			'calendar_id'  => $calendarId,
+			'state'        => array(1),
+			'publish_up'   => $start->format('Y-m-d H:i:s'),
+			'publish_down' => $end->format('Y-m-d H:i:s')
+		));
+
+		// merge events with repeating events
+		$rawEvents = $rawEvents->merge($rawEventsRepeating);
+
 		// loop through each event to return it
 		foreach ($rawEvents as $rawEvent)
 		{
@@ -380,6 +397,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
 				$event->end = JFactory::getDate($rawEvent->get('publish_down'))->toUnix();
+			}
+
+			// add start & end for displaying dates user clicked on
+			// instead of actual event start & end
+			if ($rawEvent->get('repeating_rule') != '')
+			{
+				$event->url .= '?start=' . $event->start;
+				if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
+				{
+					$event->url .= '&end=' . $event->end;
+				}
 			}
 
 			array_push($events, $event);
@@ -541,6 +569,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event['modified']    = JFactory::getDate()->toSql();
 		$event['modified_by'] = $this->juser->get('id');
 
+		// repeating rule
+		$event['repeating_rule'] = $this->_buildRepeatingRule();
+
 		//if we are updating set modified time and actor
 		if (!isset($event['id']) || $event['id'] == 0) 
 		{
@@ -550,7 +581,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// timezone
 		$timezone = new DateTimezone(JFactory::getConfig()->get('offset'));
-		
+
 		//parse publish up date/time
 		if (isset($event['publish_up']) && $event['publish_up'] != '')
 		{
@@ -566,7 +597,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event['publish_down'] = str_replace("@", "", $event['publish_down']);
 			$event['publish_down'] = JFactory::getDate($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
 		}
-
+		
 		//parse register by date/time
 		if (isset($event['registerby']) && $event['registerby'] != '')
 		{
@@ -665,7 +696,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 	}
 	
-	
 	/**
 	 * Delete an event
 	 * 
@@ -725,7 +755,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 	}
 	
-	
 	/**
 	 * Details View for Event
 	 * 
@@ -776,88 +805,27 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load the view
 		return $view->loadTemplate();
 	}
-	
-	
+
 	/**
 	 * Export Event Details
 	 * 
-	 * @return     string
+	 * @return void
 	 */
 	private function export()
 	{
-		//get request varse
+		// get request varse
 		$eventId = JRequest::getVar('event_id','','get');
 		
-		//load event
+		// load & export event
 		$eventsModelEvent = new EventsModelEvent( $eventId );
-		
-		// get event timezone setting
-		// use this in "DTSTART;TZID=" 
-		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($eventsModelEvent->get('time_zone'));
-		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
-		
-		// get publish up/down dates in UTC
-		$publishUp   = new DateTime($eventsModelEvent->get('publish_up'), new DateTimezone('UTC'));
-		$publishDown = new DateTime($eventsModelEvent->get('publish_down'), new DateTimezone('UTC'));
-		
-		// Set eastern timezone as publish up/down date timezones
-		// since all event date/times are stores relative to eastern 
-		// ----------------------------------------------------------------------------------
-		// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
-		// adjust date/time display according to that timezone and their systems timezone setting
-		$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
-		$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
-
-		//event vars
-		$id       = $eventsModelEvent->get('id');
-		$title    = $eventsModelEvent->get('title');
-		$desc     = str_replace("\n", '\n', $eventsModelEvent->get('content'));
-		$url      = $eventsModelEvent->get('extra_info');
-		$location = $eventsModelEvent->get('adresse_info');
-		$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-		$created  = gmdate('Ymd', strtotime($eventsModelEvent->get('created'))) . 'T' . gmdate('His', strtotime($eventsModelEvent->get('created'))) . 'Z';
-		$modified = gmdate('Ymd', strtotime($eventsModelEvent->get('modified'))) . 'T' . gmdate('His', strtotime($eventsModelEvent->get('modified'))) . 'Z';
-		
-		//create ouput
-		$output  = "BEGIN:VCALENDAR\r\n";
-		$output .= "VERSION:2.0\r\n";
-		$output .= "PRODID:PHP\r\n";
-		$output .= "METHOD:PUBLISH\r\n";
-		$output .= "BEGIN:VEVENT\r\n";
-		$output .= "UID:{$id}\r\n";
-		$output .= "DTSTAMP:{$now}\r\n";
-		$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-		if($eventsModelEvent->get('publish_down') != '' && $eventsModelEvent->get('publish_down') != '0000-00-00 00:00:00')
-		{
-			$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
-		}
-		else
-		{
-			$output .= "DTEND;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-		}
-		$output .= "CREATED:{$created}\r\n";
-		$output .= "LAST-MODIFIED:{$modified}\r\n";
-		$output .= "SUMMARY:{$title}\r\n";
-		$output .= "DESCRIPTION:{$desc}\r\n";
-		if($url != '' && filter_var($url, FILTER_VALIDATE_URL))
-		{
-			$output .= "URL;VALUE=URI:{$url}\r\n";
-		}
-		if ($location != '')
-		{
-			$output .= "LOCATION:{$location}\r\n";
-		}
-		$output .= "END:VEVENT\r\n";
-		$output .= "END:VCALENDAR\r\n";
-
-		//set the headers for output
-		header('Content-type: text/calendar; charset=utf-8');
-		header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', strtolower($title)) . '_export.ics');
-		echo $output;
-		exit();
+		$eventsModelEvent->export();
 	}
 	
-	
+	/**
+	 * Subscribe to a calendar
+	 * 
+	 * @return void
+	 */
 	private function subscribe()
 	{
 		//check to see if subscriptions are on
@@ -904,122 +872,18 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				die( JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', 'Calendar') );
 			}
 		}
-		
-		//get request varse
-		$calendarIds = JRequest::getVar('calendar_id','','get');
-		$calendarIds = array_map("intval", explode(',', $calendarIds));
-		
-		//array to hold events
-		$events = array();
-		
-		//loop through and get each calendar
-		foreach ($calendarIds as $k => $calendarId)
-		{
-			$eventsCalendar = new EventsModelCalendar($calendarId);
 
-			if (!$eventsCalendar->get('published') && $calendarId != 0)
-			{
-				continue;
-			}
-
-			$rawEvents = $eventsCalendar->events('list', array(
-				'scope'       => 'group',
-				'scope_id'    => $this->group->get('gidNumber'),
-				'calendar_id' => $calendarId,
-				'state'       => array(1)
-			));
-			$e = iterator_to_array($rawEvents);
-			
-			$events = array_merge($events, $e);
-		}
-		
-		//create output
-		$output  = "BEGIN:VCALENDAR\r\n";
-		$output .= "VERSION:2.0\r\n";
-		$output .= "PRODID:PHP\r\n";
-		$output .= "METHOD:PUBLISH\r\n";
-		$output .= "X-WR-CALNAME:" . '[' . JFactory::getConfig()->getValue('sitename') . '] Group Calendar: ' . $this->group->get('description') . "\r\n";
-		$output .= "X-PUBLISHED-TTL:PT15M\r\n";
-		$output .= "X-ORIGINAL-URL:https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\r\n";
-		$output .= "CALSCALE:GREGORIAN\r\n";
-		
-		//loop through events
-		foreach ($events as $event)
-		{
-			$sequence = 0;
-			$uid      = $event->get('id');
-			$title    = $event->get('title');
-			$content  = str_replace("\r\n", '\n', $event->get('content'));
-			$location = $event->get('adresse_info');
-			$url      = $event->get('extra_info');
-
-			// get event timezone setting
-			// use this in "DTSTART;TZID=" 
-			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
-			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
-		
-			// get publish up/down dates in UTC
-			$publishUp   = new DateTime($event->get('publish_up'), new DateTimezone('UTC'));
-			$publishDown = new DateTime($event->get('publish_down'), new DateTimezone('UTC'));
-		
-			// Set eastern timezone as publish up/down date timezones
-			// since all event date/times are stores relative to eastern 
-			// ----------------------------------------------------------------------------------
-			// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
-			// adjust date/time display according to that timezone and their systems timezone setting
-			$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
-			$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
-			
-			// create now, created, and modified vars
-			$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-			$created  = gmdate('Ymd', strtotime($event->get('created'))) . 'T' . gmdate('His', strtotime($event->get('created'))) . 'Z';
-			$modified = gmdate('Ymd', strtotime($event->get('modified'))) . 'T' . gmdate('His', strtotime($event->get('modified'))) . 'Z';
-			
-			$output .= "BEGIN:VEVENT\r\n";
-			$output .= "UID:{$uid}\r\n";
-			$output .= "SEQUENCE:{$sequence}\r\n";
-			$output .= "DTSTAMP:{$now}Z\r\n";
-			$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-			if($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
-			{
-				$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
-			}
-			else
-			{
-				$output .= "DTEND;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-			}
-			$output .= "CREATED:{$created}\r\n";
-			$output .= "LAST-MODIFIED:{$modified}\r\n";
-			$output .= "SUMMARY:{$title}\r\n";
-			$output .= "DESCRIPTION:{$content}\r\n";
-			//do we have extra info
-			if($url != '' && filter_var($url, FILTER_VALIDATE_URL))
-			{
-				$output .= "URL;VALUE=URI:{$url}\r\n";
-			}
-			//do we have a location
-			if ($location != '')
-			{
-				$output .= "LOCATION:{$location}\r\n";
-			}
-			$output .= "END:VEVENT\r\n";
-		}
-		
-		//close calendar
-		$output .= "END:VCALENDAR";
-
-		//set headers and output
-		header('Content-type: text/calendar; charset=utf-8');
-		header('Content-Disposition: attachment; filename="'. '[' . JFactory::getConfig()->getValue('sitename') . '] Group Calendar: ' . $this->group->get('description') .'.ics"');
-		//header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
-		header('Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT');
-		//header('Cache-Control: no-store, no-cache, must-revalidate');
-		//header('Cache-Control: post-check=0, pre-check=0', false);
-		//header('Pragma: no-cache');
-		echo $output;
-		exit();
+		// load & subscribe to the calendar archive
+		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$subscriptionName = '[' . JFactory::getConfig()->getValue('sitename') . '] Group Calendar: ' . $this->group->get('description');
+		$eventsCalendarArchive->subscribe($subscriptionName, 'group', $this->group->get('gidNumber'));
 	}
 	
+	/**
+	 * Authenticate Subscription Requests
+	 * 
+	 * @return void
+	 */
 	private function authenticateSubscriptionRequest()
 	{
 		$realm = '[' . JFactory::getConfig()->getValue('sitename') . '] Group Calendar: ' . $this->group->get('description');
@@ -1078,7 +942,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		return $user;
 	}
 	
-	
+	/**
+	 * Import iCal File
+	 * 
+	 * @return mixed
+	 */
 	private function import()
 	{
 		//include icalendar file reader
@@ -1777,6 +1645,80 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// return refreshed count
 		echo json_encode(array('refreshed' => count($refreshed)));
 		exit();
+	}
+
+	/**
+	 * Build Repeating rule from input
+	 * 
+	 * @return string
+	 */
+	private function _buildRepeatingRule()
+	{
+		$rules = array();
+
+		// get reccurrance
+		$reccurance = JRequest::getVar('reccurance', array(), 'post');
+
+		// valid frequencies
+		$validFreq = array('daily','weekly','monthly','yearly');
+
+		// make sure we have a frequency and its a valid type
+		if (!isset($reccurance['freq']) || !in_array($reccurance['freq'], $validFreq))
+		{
+			return '';
+		}
+
+		// frequency & interval
+		$freq     = $reccurance['freq'];
+		$interval = (isset($reccurance['interval'][$freq])) ? $reccurance['interval'][$freq] : 1;
+
+		// add the frequency rule
+		$rule[] = 'FREQ=' . strtoupper($freq);
+
+		// make sure we have a valid interval
+		if ($interval < 1 || $interval > 30)
+		{
+			$interval = 1;
+		}
+
+		// add interval rule
+		$rule[] = 'INTERVAL=' . $interval;
+
+		// valid end 
+		$validEnd = array('never','count','until');
+
+		// do we need to add end rules?
+		if (isset($reccurance['ends']['when']) && in_array($reccurance['ends']['when'], $validEnd))
+		{
+			// get the end type
+			$end = $reccurance['ends']['when'];
+
+			// if end is after a count or after date
+			if ($end == 'count')
+			{
+				$count = (isset($reccurance['ends']['count'])) ? $reccurance['ends']['count'] : 1;
+				$rule[] = 'COUNT=' . $count;
+			}
+			elseif ($end == 'until')
+			{
+				// create date object in local timezone
+				$until    = (isset($reccurance['ends']['until'])) ? $reccurance['ends']['until'] : 1;
+				
+				// create date time object where timezoen is configured value
+				// let php convert to UTC when formatting
+				$timezone = new DateTimezone(JFactory::getConfig()->get('offset'));
+				$date = JFactory::getDate($until, $timezone);
+
+				// subtract by 1 second (iCal standard)
+				$date->modify('-1 second');
+
+				//set the rule
+				$rule[] = 'UNTIL=' . $date->format('Ymd\THis\Z');
+			}
+		}
+		
+		// return the full rule
+		return implode(';', $rule);
 	}
 	
 	/**
