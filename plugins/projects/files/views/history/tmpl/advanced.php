@@ -60,7 +60,7 @@ foreach ($this->versions as $version) {
 	}
 }
 
-$endPath = '&raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . ProjectsHtml::shortenFileName($this->file, 40) . '</span></span>';
+$endPath = ' &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . ProjectsHtml::shortenFileName($this->file, 40) . '</span></span>';
 
 $ext = explode('.', $this->file);
 $ext = count($ext) > 1 ? end($ext) : '';
@@ -117,7 +117,7 @@ if ($this->getError()) {
 					
 					if ($allowDiff && !$this->getError()) 
 					{
-						$view->extras = '<input type="submit" id="rundiff" value="Diff Revisions" class="rightfloat" />';
+						$view->extras = '<input type="submit" id="rundiff" value="Diff Revisions" class="btn rightfloat" />';
 					}
 					echo $view->loadTemplate();
 				?>

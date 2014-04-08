@@ -278,8 +278,8 @@ HUB.ProjectTeam = {
 			'<input type="hidden" name="ajax" value="1" />' +
 			'<input type="hidden" name="no_html" value="1" />' +
 			'<input type="hidden" name="owner" value="' + owner + '" />' +
-			'<input type="submit" id="' + save + '" value="save" />' +
-			'<input type="button" class="cancel" id="' + cancel + '" value="cancel" />' +
+			'<input type="submit" class="btn btn-success active" id="' + save + '" value="save" />' +
+			'<input type="button" class="btn btn-cancel" id="' + cancel + '" value="cancel" />' +
 		'</form>');
 				
 		$('#' + cancel).on('click', function(e){

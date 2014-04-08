@@ -149,7 +149,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 			</fieldset>
 			<div>
 				<?php if($canedit) { ?>
-				<span class="c-submit"><input type="submit" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->authors) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->authors) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
 				<?php } ?>
 			</div>
 			<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS')); ?>: </h5>

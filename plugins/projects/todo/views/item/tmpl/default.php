@@ -129,7 +129,7 @@ $goto  = 'alias=' . $this->project->alias;
 					<label><?php echo ucfirst(JText::_('COM_PROJECTS_DUE')); ?>
 						<input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $due; ?>" />
 					</label>
-					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" />
+					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" class="btn" />
 					<?php } else if($this->item->state == 1) { ?>
 						<p class="td-info"><?php echo JText::_('COM_PROJECTS_TODO_CHECKED_OFF').' '.JHTML::_('date', $this->item->closed, $dateFormat, $tz).' '.JText::_('COM_PROJECTS_BY').' '.ProjectsHtml::shortenName($closedby); ?></p>	
 						<p class="td-info"><?php echo JText::_('COM_PROJECTS_TODO_TOOK').' '.$diff.' '.JText::_('COM_PROJECTS_TODO_TO_COMPLETE'); ?></p>	
@@ -171,7 +171,7 @@ $goto  = 'alias=' . $this->project->alias;
 						<input type="hidden" name="active" value="todo" />
 						<input type="hidden" name="itemid" value="<?php echo $this->item->id; ?>" />
 						<input type="hidden" name="parent_activity" value="<?php echo $this->item->activityid; ?>" />
-						<p class="blog-submit"><input type="submit" class="c-submit" id="c-submit" value="<?php echo JText::_('COM_PROJECTS_ADD_COMMENT'); ?>" /></p>
+						<p class="blog-submit"><input type="submit" class="btn" id="c-submit" value="<?php echo JText::_('COM_PROJECTS_ADD_COMMENT'); ?>" /></p>
 				</div>
 			</form>
 		</div>

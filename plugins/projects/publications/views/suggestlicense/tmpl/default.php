@@ -84,11 +84,11 @@ if ($this->getError()) {
 		</label>
 	</div>
 		<p class="submitarea">
-			<input type="submit" id="submit-ajaxform" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
+			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
 			<?php if($this->ajax) { ?>	
-			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else { ?>
-			<span class="btn btncancel"><a href="<?php echo $this->url . '?section=license' . a . 'version=' . $this->version; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+			<a href="<?php echo $this->url . '?section=license' . a . 'version=' . $this->version; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>			
 		</p>
 </form>

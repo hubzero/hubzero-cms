@@ -138,13 +138,11 @@ if (!$this->getError()) {
 		
 		<div id="upload-submit">
 		<p class="submitarea">
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD_NOW'); ?>" class="btn yesbtn" id="f-upload"  />
+			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD_NOW'); ?>" class="btn btn-success active" id="f-upload"  />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<span class="btn btncancel">
-					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
-				</span>
+				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>	
 		</div>

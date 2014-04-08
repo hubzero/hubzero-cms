@@ -227,10 +227,10 @@ $append .= '</span>';
 		<div class="centeralign">
 			<span class="review-question"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_LOOKING_GOOD'); ?></span>
 			<span>
-				<input type="submit" id="submit-review" value="<?php echo $txt; ?>" />
+				<input type="submit" id="submit-review" value="<?php echo $txt; ?>" class="btn btn-success active" />
 			</span>
-			<span class="cancel"><a href="<?php echo $this->url.'/?version='.$this->version; ?>">
-			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_NOW'); ?></a></span>
+			<a href="<?php echo $this->url.'/?version='.$this->version; ?>" class="btn btn-cancel">
+			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_NOW'); ?></a>
 		</div>
 	<?php } ?>
 </div>

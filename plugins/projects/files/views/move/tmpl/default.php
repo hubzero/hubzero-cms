@@ -133,12 +133,12 @@ if (!$this->getError()) {
 			<?php }  ?>
 		</div>
 		<p class="submitarea">
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_MOVE'); ?>" />
+			<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_MOVE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<span class="btn btncancel">
-					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+				<span>
+					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 				</span>
 			<?php } ?>
 		</p>		

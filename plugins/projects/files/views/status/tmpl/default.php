@@ -35,11 +35,9 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 		<?php echo $this->status; ?>
 		<p class="submitarea">
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<span class="btn btncancel">
-					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('Go back'); ?></a>
-				</span>
+				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('Go back'); ?></a>
 			<?php } ?>
 		</p>
 	</fieldset>

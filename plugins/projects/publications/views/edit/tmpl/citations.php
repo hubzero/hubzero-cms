@@ -75,7 +75,7 @@ $allow_import = $config->get('citation_import', 1);
 			</form>
 			<?php if ($allow_import) { ?>
 			<p class="and_or centeralign">OR</p>
-			<p class="centeralign"><a href="citations/add?publication=<?php echo $this->pid; ?>" class="btn-submit" rel="external"><?php echo JText::_('Enter manually'); ?></a></p>
+			<p class="centeralign"><a href="citations/add?publication=<?php echo $this->pid; ?>" class="btn" rel="external"><?php echo JText::_('Enter manually'); ?></a></p>
 			<?php } ?>
 			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_CITATIONS_PANEL'); ?></p>
 			
@@ -102,10 +102,8 @@ $allow_import = $config->get('citation_import', 1);
 					<input type="hidden" name="task" value="submit" />
 					<?php } ?>
 				</fieldset>
-			<span class="c-submit">
-				<?php if($canedit) { ?>
-						<span class="c-submit"><input type="submit" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
-			</span>
+				<?php if ($canedit) { ?>
+						<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 				<?php } ?>
 				<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS'); ?>: </h5>
 				<ul id="c-citations" class="c-list">

@@ -41,7 +41,7 @@ if ($this->subdir && count($desect_path) > 0)
 	}
 } 
 
-$endPath = '&raquo; <span class="subheader"><a href="' . $this->url . '/?' . $this->do . '=history' . a .'asset=' . urlencode($this->file) . a . 'subdir=' . $this->subdir . '">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . ProjectsHtml::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
+$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?' . $this->do . '=history' . a .'asset=' . urlencode($this->file) . a . 'subdir=' . $this->subdir . '">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . ProjectsHtml::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
 
 ?>
 

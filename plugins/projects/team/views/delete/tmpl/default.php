@@ -62,8 +62,8 @@ if (!$this->getError()) {
 		} ?></p>
 		<?php if($self) { ?><p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_WARNING_SELF_DELETE'); ?></p><?php } ?>
 		<p class="submitarea">
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" />
-			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" class="btn" />
+			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 		</p>		
 	</fieldset>
 </form>

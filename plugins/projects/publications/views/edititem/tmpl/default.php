@@ -67,13 +67,13 @@ if ($this->getError()) {
 					<span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
 				</label>
 				<p class="submitarea">
-					<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
+					<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
 					<?php if($this->ajax) { ?>	
-					<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+					<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 					<?php } else { 
 						$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
 					?>
-					<span class="btn btncancel"><a href="<?php echo $rtn; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+					<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 					<?php } ?>
 				</p>
 			</div>		

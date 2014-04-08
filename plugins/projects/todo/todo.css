@@ -215,7 +215,8 @@
 		color: #CCC;
 		margin-right: 0.3em;
 		vertical-align: middle;
-		margin-left: -1em;
+		margin-left: -1.3em;
+		padding: 0.2em;
 	}
 	.tdlists li.newcolor .pin:before {
 		margin-left: -0.5em;
@@ -554,7 +555,6 @@
 	#newtodo input {
 		margin: 0;
 		width: 75%;
-		padding: 0.2em;	
 		margin-right: -1em;
 		margin-left: 30px;
 		border: 1px solid #DEE4CD;
@@ -564,12 +564,7 @@
 		width: auto;
 		display: inline;
 		float: right;
-		padding: 0.1em 0.6em;
-		border: 1px solid #999;
 		margin-right: 0.5em;
-		color: #000;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
 	}
 	.newcolor input.todo-submit {
 		margin: 0;

@@ -84,7 +84,7 @@ $goto  = 'alias=' . $this->project->alias;
 						<span class="pin">&nbsp;</span>
 						<input type="hidden" name="newcolor" value="<?php echo $newcolor; ?>" />
 						<input type="text" name="newlist" value="" maxlength="50" />
-						<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit" />	
+						<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit btn" />	
 					</li>
 				<?php }  ?>
 			</ul>
@@ -148,7 +148,7 @@ $goto  = 'alias=' . $this->project->alias;
 				<span class="showpin"><span class="<?php echo $class; ?>">&nbsp;</span></span>	
 			<?php } ?>
 			<input name="content" type="text" id="todo-content" maxlength="150" value="" />
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit" />	
+			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit btn" />	
 				<label class="hidden" id="td-selector">
 					<?php echo JText::_('COM_PROJECTS_ASSIGNED_TO'); ?>
 				<select name="assigned">

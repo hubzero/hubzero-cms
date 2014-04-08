@@ -133,8 +133,8 @@ $goto  = 'alias=' . $this->project->alias;
 								</tbody>
 							</table>
 							<p class="submitarea">
-								<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
-								<span class="btn-submit btncancel"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto . '&active=info'); ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+								<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
+								<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto . '&active=info'); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
 							</p>
 						</div><!-- / .basic info -->
 					<?php  
@@ -234,8 +234,8 @@ $goto  = 'alias=' . $this->project->alias;
 					<?php } ?>
 					<?php } ?>					
 					<p class="submitarea">
-						<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
-						<span class="btn btncancel"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto); ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+						<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 					</p>
 					<?php 
 						break;

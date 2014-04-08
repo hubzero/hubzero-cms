@@ -260,11 +260,11 @@ $showCitations = $typeParams->get('show_citations', 0);
 				</li>
 				<?php } ?>
 				<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_READY');  ?> <?php if ($this->pubconfig->get('doi_service')) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_DOI');  } ?></p>
-					<p class="centeralign"><span class="<?php echo $this->publication_allowed ? 'btn' : 'btncancel'; ?>"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url.'/?action=publish'. a . 'version='.$this->version; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?><?php if($this->publication_allowed) {  ?></a><?php } ?></span></p>
+				<p class="centeralign"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url.'/?action=publish'. a . 'version='.$this->version; ?>" class="btn btn-success active"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?></a><?php } else { ?><span class="btn disabled"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?></span><?php } ?></p>
 				</li>
 				<?php if($this->row->state != 4 && $this->publication_allowed) { ?>
 				<li id="next-ready"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_SAVE');  ?></p>
-					<p class="centeralign"><span class="<?php echo $this->publication_allowed ? 'btn' : 'btncancel'; ?>"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url . '/?action=post'. a . 'version='.$this->version; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SAVE_REVIEW'); ?><?php if($this->publication_allowed) {  ?></a><?php } ?></span></p>
+					<p class="centeralign"><span class="<?php echo $this->publication_allowed ? 'btn' : 'btn disabled'; ?>"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url . '/?action=post'. a . 'version='.$this->version; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SAVE_REVIEW'); ?><?php if($this->publication_allowed) {  ?></a><?php } ?></span></p>
 				</li>
 				<?php } ?>
 				<li id="next-cancel"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEED_TO_CANCEL').' <a href="'.$this->url.'/?action=cancel' . a . 'version='.$this->version.'">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL').'</a> '.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL_BEFORE');  ?></p></li>				

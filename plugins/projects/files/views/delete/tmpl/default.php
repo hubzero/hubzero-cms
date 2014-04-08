@@ -106,13 +106,11 @@ if (!$this->getError()) {
 		<?php } ?>
 		
 		<p class="submitarea">
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" id="submit-ajaxform" />
+			<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" id="submit-ajaxform" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<span class="btn btncancel">
-					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
-				</span>
+					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>		
 	</fieldset>

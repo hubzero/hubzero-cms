@@ -89,7 +89,7 @@ $crumbs = $draft
 		 ?>
 		<p class="warning"><?php echo $warning; ?></p>
 		<?php } ?>
-		<p><span><input type="submit" class="confirm" value="<?php echo $crumbs; ?>" /></span><span><a href="<?php echo $this->url.'?version='.$this->version; ?>" class="confirm"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a></span></p>
+		<p><span><input type="submit" value="<?php echo $crumbs; ?>" class="btn btn-success active" /></span><span><a href="<?php echo $this->url.'?version='.$this->version; ?>" class="btn btn-cancel"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a></span></p>
 	<?php } ?>
 </form>
 </div>

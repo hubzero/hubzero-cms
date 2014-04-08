@@ -161,63 +161,9 @@
 		margin: 0;
 		padding-top: 0.8em;
 	}
-
-/* Standard Submit Buttons 
---------------------------------------------- */
-	input[type="submit"], 
-	input[type="reset"], 
-	input[type="button"], 
-	.btncancel, 
-	.btn,
-	.btn-submit {
-		padding: 0.2em 0.6em !important;
-		border: 1px solid #999 !important;
-		margin-right: 0.5em;
-		color: #000;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
+	.btn.btn-cancel {
 		background: #FFFFFF;
-	}
-	input[type="submit"].disabled {
-		-webkit-animation: none;
-	}
-	input[type="reset"], .btncancel, input[type="button"] {
-		color: #999;
-		border: 1px solid #CCC;
-	} 
-	input[type="button"].cancel {
-		margin-left: 0.2em;
-		-moz-border-radius: 0;
-		border-radius: 0;
-		padding: 0 !important;
-	}
-	.btncancel a {
-		color: #666;
-	}
-	.btnaction, input[type="submit"].btnaction {
-		font-size: 1em;
-		font-weight: bold;
-		border: 3px solid #000 !important;
-	}
-	input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover,  .btn:hover, .btn-submit:hover {
-		cursor: pointer;
-		background: #e2f6f8;
-		background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e5e5e5), to(#ffffff));
-		background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#e5e5e5), to(#ffffff));
-		background: -moz-linear-gradient(center top, #e5e5e5, #ffffff);
-	}
-	input[type="submit"].disabled, input[type="submit"].hover {
-		cursor: default !important;
-		background: #f0f0f0;
-		border: 1px solid #f1f1f1;
-		color: #CCC;
-	}
-	input[type="submit"]:focus, 
-	input[type="button"]:focus { outline : none; }
-	
-	.btn-submit a {
-		border: none;
-		color: black;
+		border: 1px solid #CCC !important;
 	}
 		
 /* Left-menu layout
@@ -746,33 +692,6 @@
 		padding-top: 2em;
 		padding-bottom: 2em;
 	}		
-	#introduction .emphasized {
-		margin: 2em 0;
-	}
-	#introduction .emphasized a {
-		color: white;
-		border: none;
-		background: black;
-		padding: 0.6em 1em;
-		border-radius: 10px;
-		-moz-border-radius: 10px;
-		-moz-box-shadow: inset 0 0.3em 2em #fff;
-		-webkit-box-shadow: inset 0 0.3em 2em #fff;
-	}
-	#introduction .emphasized a:before {
-		content: "\25B6";
-		width: 12px;
-		height: 12px;
-		font-size: 12px;
-		font-family: 'Fontcons';
-		color: #FFF;
-		margin-right: 0.5em;
-		margin-left: 0;
-		vertical-align: middle;
-	}
-	#introduction .emphasized a:hover, #introduction .emphasized a:focus {
-		background: red;
-	}
 	#introduction .second ul {
 		padding-left: 0;
 		margin-left: 0.5em;

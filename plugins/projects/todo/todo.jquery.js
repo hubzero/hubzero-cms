@@ -167,7 +167,7 @@ HUB.ProjectTodo = {
 
 			if ($(item).val()=='') {
 				$(item).css('color', '#999')
-					.css('height', '20px');
+					.css('height', '40px');
 			}
 			$(item).on('focus', function(e) 
 			{
@@ -182,7 +182,7 @@ HUB.ProjectTodo = {
 				if ($('#td-comment').val() == '') {
 					e.preventDefault();
 					$('#td-comment').css('color', '#999')
-						.css('height', '20px');
+						.css('height', '40px');
 				}
 			});	
 		}
