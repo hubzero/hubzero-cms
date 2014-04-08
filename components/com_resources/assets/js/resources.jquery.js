@@ -50,11 +50,13 @@ HUB.Resources = {
 					var sizeString = this.element.attr('class').split(' ').pop();
 					if (sizeString && sizeString.match(/\d+x\d+/i)) {
 						var sizeTokens = sizeString.split('x');
-						if (parseInt(sizeTokens[0])) {
-							this.width  = parseInt(sizeTokens[0]) - 20;
+						if (parseInt(sizeTokens[0]))
+						{
+							this.width  = parseInt(sizeTokens[0]);
 						}
-						if (parseInt(sizeTokens[1])) {
-							this.height = parseInt(sizeTokens[1]) - 60;
+						if (parseInt(sizeTokens[1]))
+						{
+							this.height = parseInt(sizeTokens[1]);
 						}
 					}
 				}

@@ -367,8 +367,8 @@ class ResourcesHtml
 						$childParams  = new JParameter($child->params);
 						$childAttribs = new JParameter($child->attribs);
 						$linkAction = $childParams->get('link_action', 0);
-						$width      = $childAttribs->get('width', 640) + 20;
-						$height     = $childAttribs->get('height', 360) + 60;
+						$width      = $childAttribs->get('width', 640);
+						$height     = $childAttribs->get('height', 360);
 						
 						if ($linkAction == 1)
 						{
@@ -1321,7 +1321,7 @@ class ResourcesHtml
 					$height = intval($attribs->get('height', 360));
 					if ($width > 0 && $height > 0) 
 					{
-						$class .= ' ' . ($width + 20) . 'x' . ($height + 60);
+						$class .= ' ' . $width . 'x' . $height;
 					}
 
 					// user guide 
@@ -1767,7 +1767,7 @@ class ResourcesHtml
 					$height = intval($attribs->get('height', 360));
 					if ($width > 0 && $height > 0) 
 					{
-						$class .= ' ' . ($width + 20) . 'x' . ($height + 60);
+						$class .= ' ' . $width . 'x' . $height;
 					}
 
 					//$xtra = '';
