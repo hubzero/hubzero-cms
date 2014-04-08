@@ -151,6 +151,12 @@ function submitbutton(pressbutton)
 							<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 						</td>
 					</tr>
+					<tr>
+						<td class="paramlist_key"><label for="field-token">Serial #:</label></th>
+						<td>
+							<input type="text" name="fields[token]" id="field-token" value="<?php echo $this->escape($this->row->get('token')); ?>" />
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>

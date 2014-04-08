@@ -107,6 +107,13 @@ class CoursesTableMember extends JTable
 	var $first_visit = NULL;
 
 	/**
+	 * varchar(23)
+	 * 
+	 * @var string
+	 */
+	var $token = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object
@@ -285,6 +292,26 @@ class CoursesTableMember extends JTable
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if a token exists
+	 * 
+	 * @param      string $token
+	 * @return     integer
+	 */
+	public function tokenExists($token)
+	{
+		if (!$token) 
+		{
+			$this->setError(JText::_('No token provided.'));
+			return 0;
+		}
+
+		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE `token`=" . $this->_db->Quote($token);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
 	}
 
 	/**

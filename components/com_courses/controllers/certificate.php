@@ -118,6 +118,8 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		// If file exists
 		if (is_file($file))
 		{
+			$student->token();
+
 			// Serve up the file
 			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($file);
