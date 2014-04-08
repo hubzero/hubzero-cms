@@ -327,9 +327,22 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 		return (array_map($callback, $this->_data));
 	}
 
+	/**
+	 * Merge Item Lists
+	 * 
+	 * @param  object $data Hubzero\Base\ItemList
+	 * @return Hubzero\Base\ItemList
+	 */
 	public function merge()
 	{
+		foreach (func_get_args() as $list)
+		{
+			if ($list instanceof self)
+			{
+				$this->_data = array_merge($this->_data, $list->_data);		
+			}
+		}
 
+		return new static($this->_data);
 	}
 }
-
