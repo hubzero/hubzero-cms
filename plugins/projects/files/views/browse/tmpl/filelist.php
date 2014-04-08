@@ -68,6 +68,8 @@ $warning 		  = ($inuse > $approachingQuota) ? 1 : 0;
 
 $lastsync = '';
 
+$connected = $this->oparams->get('google_token') ? true : false;
+
 ?>
 <div id="sync_output" class="hidden"></div>
 
@@ -141,7 +143,7 @@ $lastsync = '';
 				<a href="<?php echo $this->url . '/?' . $this->do . '=download' . $subdirlink; ?>" class="fmanage js" id="a-download" title="<?php echo JText::_('COM_PROJECTS_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DOWNLOAD'); ?></span></a>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=move' . $subdirlink; ?>" class="fmanage js" id="a-move" title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_MOVE'); ?></span></a>		
 				<a href="<?php echo $this->url . '/?' . $this->do . '=delete' . $subdirlink; ?>" class="fmanage js" id="a-delete" title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DELETE'); ?></span></a>
-				<?php if ($this->sharing && in_array('google', $this->services)) { ?>
+				<?php if ($this->sharing && in_array('google', $this->services) && $connected) { ?>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=share' . $subdirlink; ?>" id="a-share" title="<?php echo JText::_('COM_PROJECTS_SHARE_TOOLTIP'); ?>" class="fmanage js" ><span><?php echo JText::_('COM_PROJECTS_FILES_SHARE'); ?></span></a>
 				<?php } ?>
 				<?php if ($this->fileparams->get('latex')) { ?>				
