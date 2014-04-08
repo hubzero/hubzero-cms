@@ -161,9 +161,10 @@ class plgProjectsFiles extends JPlugin
 			return $arr;
 		}
 				
-		$this->_project = $project;	
-		$this->_tool	= NULL;
-		$this->audience = 'internal';
+		$this->_project  = $project;	
+		$this->_tool	 = NULL;
+		$this->_audience = 'internal';
+		$this->_data	 = NULL;
 		
 		// MIME types		
 		$this->mt = new \Hubzero\Content\Mimetypes();
@@ -4279,7 +4280,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		$filename = basename($file);	
-		$hashed = $hash ? $ih->createThumbName($filename, '-' . $hash) : NULL;
+		$hashed = $hash ? $ih->createThumbName($filename, '-' . $hash, 'png') : NULL;
 		
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
@@ -6723,15 +6724,20 @@ class plgProjectsFiles extends JPlugin
 	 * @param      string  $identifier 		Project alias OR ID
 	 * @param      string  $action 			Action
 	 * @param      integer $uid 			User ID
+	 * @param      json    $data			Data object
 	 * @param      string  $case			Directory where .git sits ('files' or 'tool:toolname')
+	 * @param      string  $format			
 	 * @return     array   Return array of html
 	 */
-	public function onProjectExternal ( $identifier = NULL, $action = '', $uid = NULL, $case = 'files')
+	public function onProjectExternal ( 
+		$identifier = NULL, $action = '', $uid = NULL, 
+		$data = NULL, $case = 'files', $format = 'json'
+	)
 	{
 		$arr = array(
 			'project' => $identifier,
 			'action'  => $action,
-			'output'  => '',
+			'results' => '',
 			'error'   => false,
 			'message' => ''
 		);
@@ -6781,9 +6787,11 @@ class plgProjectsFiles extends JPlugin
 			return $arr;
 		}
 		
-		$this->_case 	= $case ? $case : 'files';
-		$this->_option  = 'com_projects';
-		$this->audience = 'external';
+		$this->_case 	 = $case ? $case : 'files';
+		$this->_option   = 'com_projects';
+		$this->_audience = 'external';
+		$this->_data	 = $data;
+		$this->_format	 = $format;
 		
 		// Include Git Helper
 		$this->getGitHelper();
@@ -6803,7 +6811,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Incoming
-		$this->subdir 	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
+		$this->subdir 	= isset($this->_data->subdir) ? $this->_data->subdir : trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		$juri = JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
@@ -6818,19 +6826,19 @@ class plgProjectsFiles extends JPlugin
 		{								
 			case 'list':
 			default:
-				$arr['output'] = $this->getList();				
+				$arr['results'] = $this->getList();				
 				break;
 				
 			case 'get':
-				$arr['output'] = $this->getMetadata();				
+				$arr['results'] = $this->getMetadata();				
 				break;
 			
 			case 'insert':
-				$arr['output'] = $this->insertFile();			
+				$arr['results'] = $this->insertFile();			
 				break;	
 				
 			case 'rename':
-				$arr['output'] = $this->renameFile();				
+				$arr['results'] = $this->renameFile();				
 				break;	
 		}
 		
@@ -6843,11 +6851,11 @@ class plgProjectsFiles extends JPlugin
 		else
 		{
 			$arr['message']  =  (isset($this->_msg) && $this->_msg)  
-							? $this->_msg : JText::_('PLG_PROJECTS_FILES_MESSAGE_SUCESS');
+							? $this->_msg : JText::_('PLG_PROJECTS_FILES_MESSAGE_SUCCESS');
 		}
 		
 		// Return data
-		return $arr;		
+		return $format == 'json' ? json_encode($arr) : $arr;		
 	}
 	
 	/**
@@ -6860,8 +6868,8 @@ class plgProjectsFiles extends JPlugin
 	public function renameFile()
 	{
 		// Incoming
-		$oldpath  	= urldecode(JRequest::getVar( 'oldpath', '' )); 
-		$newpath   	= urldecode(JRequest::getVar( 'newpath', '' ));
+		$oldpath  	= isset($this->_data->oldpath) ? $this->_data->oldpath : urldecode(JRequest::getVar( 'oldpath', '' )); 
+		$newpath   	= isset($this->_data->newpath) ? $this->_data->newpath : urldecode(JRequest::getVar( 'newpath', '' ));
 		
 		if (!$oldpath || !$newpath)
 		{
@@ -6927,9 +6935,9 @@ class plgProjectsFiles extends JPlugin
 	public function getList()
 	{		
 		// Incoming
-		$sortby  = JRequest::getVar( 'sortby', 'name' ); 
-		$sortdir = JRequest::getVar( 'sortdir', 'ASC' );
-		$filter  = urldecode(JRequest::getVar( 'filter', '' )); 
+		$sortby  = isset($this->_data->sortby) ? $this->_data->sortby : JRequest::getVar( 'sortby', 'name' ); 
+		$sortdir = isset($this->_data->sortdir) ? $this->_data->sortdir : JRequest::getVar( 'sortdir', 'ASC' );
+		$filter  = isset($this->_data->filter) ? $this->_data->filter : urldecode(JRequest::getVar( 'filter', '' )); 
 				
 		// Get list of files from repo
 		$docs 	 = $this->_git->getFiles($this->path, $this->subdir);
@@ -6944,13 +6952,7 @@ class plgProjectsFiles extends JPlugin
 		if ($docs)
 		{
 			foreach ($docs as $file)
-			{
-				// Skip .gitignore
-				if (basename($file) == '.gitignore')
-				{
-					continue;
-				}
-								
+			{								
 				$metadata = $this->getItemMetadata(trim($file));
 				if ($metadata)
 				{
@@ -6980,6 +6982,11 @@ class plgProjectsFiles extends JPlugin
 						$items[] 			= $obj;
 						$sorting[] 			= strtolower($metadata->dirname);
 						$parents[]			= $metadata->dirname;
+					}
+					
+					if (basename($file) == '.gitignore')
+					{
+						continue;
 					}					
 					
 					$items[] 	= $metadata;
@@ -7002,7 +7009,9 @@ class plgProjectsFiles extends JPlugin
 	public function insertFile()
 	{
 		// Incoming
-		$dataUrl  = JRequest::getVar( 'dataUrl', '' ); // path to local file to copy from		
+		$dataUrl  = isset($this->_data->dataUrl) 
+					? $this->_data->dataUrl
+					: JRequest::getVar( 'dataUrl', '' ); // path to local file to copy from		
 		$results  = array();
 		$assets   = array();
 		
@@ -7078,9 +7087,11 @@ class plgProjectsFiles extends JPlugin
 	{
 		// Clean incoming data
 		$this->cleanData();
+		
+		$assets = isset($this->_data->assets) ? $this->_data->assets : JRequest::getVar( 'asset', '', 'request', 'array' );
 	
 		// Incoming
-		$checked = $checked ? $checked : JRequest::getVar( 'asset', '', 'request', 'array' ); 
+		$checked = $checked ? $checked : $assets; 
 		
 		if (empty($checked))
 		{
@@ -7140,8 +7151,11 @@ class plgProjectsFiles extends JPlugin
 	 */
 	public function getItemMetadata($file = '', $hash = '')
 	{
-		$file = trim($file) ? $file : JRequest::getVar( 'file', '' );
-		$hash = trim($hash) ? $hash : JRequest::getVar( 'hash', '' );
+		$rFile = isset($this->_data->file) ? $this->_data->file : JRequest::getVar( 'file', '' );
+		$rHash = isset($this->_data->hash) ? $this->_data->hash : JRequest::getVar( 'hash', '' );
+		
+		$file = trim($file) ? $file : $rFile;
+		$hash = trim($hash) ? $hash : $rHash;
 		
 		if ($file == '')
 		{
@@ -7201,7 +7215,7 @@ class plgProjectsFiles extends JPlugin
 		$obj->commitHash 	= $hash ? $hash : $this->_git->gitLog($this->path, $obj->localPath, '', 'hash');
 		
 		// Get public link
-		if ($this->audience == 'external')
+		if ($this->_audience == 'external')
 		{
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');

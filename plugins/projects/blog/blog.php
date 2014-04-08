@@ -765,7 +765,7 @@ class plgProjectsBlog extends JPlugin
 			
 			if ($hash)
 			{
-				$hashed = $ih->createThumbName(basename($file), '-' . $hash);
+				$hashed = $ih->createThumbName(basename($file), '-' . $hash, 'png');
 				
 				if (is_file(JPATH_ROOT. $to_path . DS . $hashed))
 				{
