@@ -409,11 +409,20 @@ class JComponentHelper
 
 		self::$components[$option] = $cache->get(array($db, 'loadObject'), null, $option, false);
 
-		if ($error = $db->getErrorMsg() || empty(self::$components[$option]))
+		if ($error = $db->getErrorMsg())// || empty(self::$components[$option]))
 		{
 			// Fatal error.
 			JError::raiseWarning(500, JText::sprintf('JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING', $option, $error));
 			return false;
+		}
+
+		if (empty(self::$components[$option]))
+		{
+			self::$components[$option] = new stdClass;
+			self::$components[$option]->option  = $option;
+			self::$components[$option]->enabled = 1;
+			self::$components[$option]->params  = '';
+			self::$components[$option]->id      = 0;
 		}
 
 		// Convert the params to an object.
