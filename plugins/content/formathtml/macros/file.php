@@ -102,7 +102,7 @@ class File extends Macro
 		}
 
 		// Parse arguments
-        // We expect the 1st argument to be a filename
+		// We expect the 1st argument to be a filename
 		$args   = explode(',', $content);
 		$file   = array_shift($args);
 
@@ -508,11 +508,11 @@ class File extends Macro
 				$juri = \JURI::getInstance();
 				$rand = rand(0, 100000);
 
-				$html  = '<script type="text/javascript" src="https://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js"></script>' . "\n";
+				$html  = '<script type="text/javascript" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js"></script>' . "\n";
 				$html .= '<div id="unityPlayer' . $rand . '">
 							<div class="missing">
-								<a href="https://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
-									<img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+									<img alt="Unity Web Player. Install now!" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
 						</div>' . "\n";
