@@ -576,13 +576,16 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			$event['created']    = JFactory::getDate()->toSql();
 			$event['created_by'] = $this->juser->get('id');
 		}
+
+		// timezone
+		$timezone = new DateTimezone(JFactory::getConfig()->get('offset'));
 		
 		//parse publish up date/time
 		if (isset($event['publish_up']) && $event['publish_up'] != '')
 		{
 			//remove @ symbol
 			$event['publish_up'] = str_replace("@", "", $event['publish_up']);
-			$event['publish_up'] = JFactory::getDate(strtotime($event['publish_up']))->format("Y-m-d H:i:s");
+			$event['publish_up'] = JFactory::getDate($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
 		}
 
 		//parse publish down date/time
@@ -590,7 +593,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		{
 			//remove @ symbol
 			$event['publish_down'] = str_replace("@", "", $event['publish_down']);
-			$event['publish_down'] = JFactory::getDate(strtotime($event['publish_down']))->format("Y-m-d H:i:s");
+			$event['publish_down'] = JFactory::getDate($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
 		}
 
 		//parse register by date/time
@@ -598,7 +601,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		{
 			//remove @ symbol
 			$event['registerby'] = str_replace("@", "", $event['registerby']);
-			$event['registerby'] = JFactory::getDate(strtotime($event['registerby']))->format("Y-m-d H:i:s");
+			$event['registerby'] = JFactory::getDate($event['registerby'], $timezone)->format("Y-m-d H:i:s");
 		}
 
 		//stringify params
