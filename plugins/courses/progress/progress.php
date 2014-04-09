@@ -205,7 +205,7 @@ class plgCoursesProgress extends JPlugin
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
 
-		$this->view->details = CoursesModelFormReport::getLetterResponseCountsForAssetId($this->db, $asset_id);
+		$this->view->details = CoursesModelFormReport::getLetterResponseCountsForAssetId($this->db, $asset_id, $this->course->offering()->section()->get('id'));
 
 		\Hubzero\Document\Assets::addPluginStylesheet('courses', 'progress', 'assessmentdetails.css');
 		\Hubzero\Document\Assets::addPluginScript('courses', 'progress', 'assessmentdetails');
@@ -575,12 +575,15 @@ class plgCoursesProgress extends JPlugin
 				continue;
 			}
 
-			if ($details = CoursesModelFormReport::getLetterResponsesForAssetId($this->db, $asset_id, true))
+			if ($details = CoursesModelFormReport::getLetterResponsesForAssetId($this->db, $asset_id, true, $this->course->offering()->section()->get('id')))
 			{
 				$output = implode(',', $details['headers']) . "\n";
-				foreach ($details['responses'] as $response)
+				if (isset($details['responses']) && count($details['responses']) > 0)
 				{
-					$output .= implode(',', $response) . "\n";
+					foreach ($details['responses'] as $response)
+					{
+						$output .= implode(',', $response) . "\n";
+					}
 				}
 				$zip->addFromString($asset_id . '.responses.csv', $output);
 			}
@@ -593,18 +596,21 @@ class plgCoursesProgress extends JPlugin
 		// Close the zip archive handler
 		$zip->close();
 
-		// Set up the server
-		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename($path);
-		$xserver->saveas('responses.zip');
-		$xserver->disposition('attachment');
-		$xserver->acceptranges(false);
+		if (is_file($path))
+		{
+			// Set up the server
+			$xserver = new \Hubzero\Content\Server();
+			$xserver->filename($path);
+			$xserver->saveas('responses.zip');
+			$xserver->disposition('attachment');
+			$xserver->acceptranges(false);
 
-		// Serve the file
-		$xserver->serve();
+			// Serve the file
+			$xserver->serve();
 
-		// Now delete the file
-		JFile::delete($path);
+			// Now delete the file
+			JFile::delete($path);
+		}
 
 		// All done!
 		exit();

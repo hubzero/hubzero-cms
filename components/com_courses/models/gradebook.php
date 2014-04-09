@@ -146,12 +146,19 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	/**
 	 * Generate summary statistics
 	 * 
+	 * @param      bool  $section - section only?
 	 * @return     array $stats
 	 */
-	public function summaryStats()
+	public function summaryStats($section = true)
 	{
 		// Get the grades themselves
 		$filters = array('scope'=>'asset', 'course_id'=>$this->course->get('course_id'));
+
+		if ($section)
+		{
+			$filters['section_id'] = $this->course->offering()->section()->get('id');
+		}
+
 		$results = $this->_tbl->find($filters);
 		$grades  = array();
 

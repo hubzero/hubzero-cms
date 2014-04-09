@@ -50,9 +50,10 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 	 * @param  object - database object
 	 * @param  int    - asset id
 	 * @param  bool   - whether or not to include header values
+	 * @param  int    - limit to only a certain section
 	 * @return array
 	 **/
-	public static function getLetterResponsesForAssetId($db, $asset_id, $include_headers=true)
+	public static function getLetterResponsesForAssetId($db, $asset_id, $include_headers=true, $section_id=NULL)
 	{
 		// Is it a number?
 		if (!is_numeric($asset_id))
@@ -159,11 +160,16 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 			foreach ($respondents as $respondent_id => $response)
 			{
 				// Get name and attempt number for this row
-				$query = "SELECT `user_id`, `attempt`, `student` FROM `#__courses_members` cm JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id WHERE cr.`id` = '{$respondent_id}'";
+				$query = "SELECT `user_id`, `attempt`, `student`, `section_id` FROM `#__courses_members` cm JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id WHERE cr.`id` = '{$respondent_id}'";
 				$db->setQuery($query);
 				$aux   = $db->loadObject();
 
 				if (!$aux->student)
+				{
+					continue;
+				}
+
+				if (isset($section_id) && $aux->section_id != $section_id)
 				{
 					continue;
 				}
@@ -198,9 +204,10 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 	 *
 	 * @param  obj   - database connection object
 	 * @param  int   - asset id for which to retrieve letter counts
+	 * @param  int   - section id
 	 * @return array - counts of letter responses
 	 **/
-	public static function getLetterResponseCountsForAssetId($db, $asset_id)
+	public static function getLetterResponseCountsForAssetId($db, $asset_id, $section_id=NULL)
 	{
 		if (!is_numeric($asset_id))
 		{
@@ -286,12 +293,17 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 			foreach ($results as $response)
 			{
 				// We only want data for students, so check that first
-				$query  = "SELECT `student` FROM `#__courses_members` AS cm, ";
+				$query  = "SELECT `student`, `section_id` FROM `#__courses_members` AS cm, ";
 				$query .= "`#__courses_form_respondents` AS cfr WHERE cm.id = cfr.member_id ";
 				$query .= "AND cfr.id = " . $db->quote($response->respondent_id);;
 				$db->setQuery($query);
-				$student = $db->loadResult();
-				if (!$student)
+				$student = $db->loadObject();
+				if (!$student->student)
+				{
+					continue;
+				}
+
+				if (isset($section_id) && $student->section_id != $section_id)
 				{
 					continue;
 				}

@@ -128,6 +128,11 @@ class CoursesTableGradeBook extends JTable
 		$query .= " LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id";
 		$query .= " LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id";
 
+		if (isset($filters['section_id']) && $filters['section_id'])
+		{
+			$query .= " LEFT JOIN `#__courses_members` cm ON gb.member_id = cm.id";
+		}
+
 		$where = array();
 
 		if (isset($filters['member_id']) && $filters['member_id'])
@@ -157,6 +162,10 @@ class CoursesTableGradeBook extends JTable
 		if (isset($filters['course_id']) && $filters['course_id'])
 		{
 			$where[] = "ca.course_id = " . $this->_db->Quote($filters['course_id']);
+		}
+		if (isset($filters['section_id']) && $filters['section_id'])
+		{
+			$where[] = "cm.section_id = " . $this->_db->Quote($filters['section_id']);
 		}
 
 		if (count($where) > 0)
