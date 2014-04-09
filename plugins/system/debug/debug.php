@@ -69,16 +69,18 @@ class plgSystemDebug extends JPlugin
 	 */
 	public function onAfterDispatch()
 	{
+		$base = str_replace('/administrator', '', rtrim(\JURI::base(true), '/'));
+
 		// Only if debugging or language debug is enabled
 		if (JDEBUG || \JFactory::getApplication()->getCfg('debug_lang'))
 		{
-			\JHtml::_('stylesheet', 'cms/debug.css', array(), true);
+			JFactory::getDocument()->addStyleSheet($base . '/media/cms/css/debug.css?v=' . filemtime(JPATH_ROOT . '/media/cms/css/debug.css'));
 		}
 
-		/* [!] HUBZERO - Add CSS diagnostics */
+		// [!] HUBZERO - Add CSS diagnostics
 		if (JDEBUG && $this->params->get('css', 0) && is_file(JPATH_SITE . '/media/system/css/diagnostics.css'))
 		{
-			JFactory::getDocument()->addStyleSheet(rtrim(\JURI::base(true), '/') . '/media/system/css/diagnostics.css');
+			JFactory::getDocument()->addStyleSheet($base . '/media/system/css/diagnostics.css?v=' . filemtime(JPATH_ROOT . '/media/system/css/diagnostics.css'));
 		}
 	}
 
