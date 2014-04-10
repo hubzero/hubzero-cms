@@ -49,7 +49,7 @@ $editor = JEditor::getInstance();
 function submitbutton(pressbutton) 
 {
 	if (pressbutton =='resethits') {
-		if (confirm(<?php echo JText::_('COM_KB_RESET_HITS_WARNING'); ?>)){
+		if (confirm("<?php echo JText::_('COM_KB_RESET_HITS_WARNING'); ?>")){
 			submitform(pressbutton);
 			return;
 		} else {
@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
-		alert(<?php echo JText::_('COM_KB_ERROR_MISSING_TITLE'); ?>);
+		alert("<?php echo JText::_('COM_KB_ERROR_MISSING_TITLE'); ?>");
 	} else {
 		submitform(pressbutton);
 	}
