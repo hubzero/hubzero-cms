@@ -48,7 +48,7 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 
 <div id="content-header-extra">
 	<p>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+		<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
 			<?php echo JText::_('Submit a resource'); ?>
 		</a>
 	</p>
