@@ -8,15 +8,13 @@ jQuery(document).ready(function()
 	
 	jQuery('.actionBtn').click(function()
 	{
-		var x = jQuery(this).attr('id');
-		
-		//alert(action[1]);
-		
+		var x = jQuery(this).attr('id');		
 		
 		jQuery(this).each(function()
 				{
 					jQuery(this).addClass("active");
 				});
+		
 		var record_id = x.split("-").pop();
 		var action = x.split("-");
 		action = action[0];

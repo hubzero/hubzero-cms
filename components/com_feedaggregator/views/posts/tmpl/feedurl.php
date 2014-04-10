@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,63 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Document');
-
+$this->js('posts')
+	->css('posts');
 ?>
-
-<script type="text/javascript">
-jQuery(document).ready(function() 
-{	
-	jQuery('.fancybox-inline').fancybox();
-});
-</script>
-
-<style>
-img { display:block; margin-bottom:10px; }
-.postpreview p { word-wrap:break-word;}
-.postpreview h1 { font-family: san-serif; font-size: x-large; }
-.postpreview { padding: 20px;}
-</style>
-
-<style>
-.myButton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	background-color:#bedbfa;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #84bbf3;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #528ecc;
-}
-.myButton:hover {
-	background-color:#80b5ea;
-}
-.myButton:active {
-	position:relative;
-	top:1px;
-}
-.myButton:visted {
- color: white;
- }
-</style>
-
 <div id="content-header">
 <h2><?php echo $this->title; ?></h2>
 </div>
@@ -104,7 +57,7 @@ img { display:block; margin-bottom:10px; }
 		<div class="col span-half omega">
 			<h3>How do I read the aggregated feed?</h3>
 			<p>Registered users may read the feed by simply clicking the button below. <br>The URL is importable into any RSS feed reader.</p>
-			<p><a href="#feedbox" style="color: white; background-color: green;" class="myButton fancybox-inline">Generate RSS Feed</a></p>
+			<p><a href="#feedbox" style="color: white; background-color: green;" class="feed-btn fancybox-inline">Generate RSS Feed</a></p>
 		</div>
 	</div>
 </div>
@@ -115,36 +68,36 @@ img { display:block; margin-bottom:10px; }
 
 <div class="main section">
 <div id="page-main" style="padding-bottom:50px;">
-<br><br>
+<br /><br />
 	
 <!-- Help Dialog -->
-<div style="display:none">		
+<div class="postpreview-container">		
 	<div id="helpbox">
 	<h1>Feed Aggregator Info</h1>
 	<p>A brief quick-start guide for using the Feed Aggregator Component.</p>
 	<h2 id="userPermTitle" class="helpExpander">User Permissions</h2>
 	<p class="helpbox"><?php echo JText::_('COM_FEEDAGGREGATOR_HELP_USERPERMS1')?></p>
-		<p class="helpbox">
 		<?php echo JText::_('COM_FEEDAGGREGATOR_HELP_USERPERMS2')?>
 			<ol>
 			<li>Login into the administrative dashboard.</li>
 			<li>Click on 'User Manager' under the Users menu.</li>
-			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step1-usermanager.png">
-			<li>Check the box next to the user you would like to promote.
-			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step2-usermanager.png">
-			</li>
+			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step1-usermanager.png" />
+			<br />
+			<li>Check the box next to the user you would like to promote.</li>
+			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step2-usermanager.png" />
+			
 			<li>In the drop-down box, select the permission level for the user.
 				<ul><li>This user can be an author, editor, or publisher.</li></ul>
 			</li>
 			<li>Click on the 'Process' button to save the permission level</li>
-			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step3-usermanager.png">
+			<img src="<?php echo JURI::root();?>components/com_feedaggregator/assets/img/step3-usermanager.png" />
 			<li>The user will now have access to sort posts from the feeds.</li>
-			</ol></p>
+			</ol>
 	</div>
 </div>
 
 <!--  Generate Feed -->
-<div style="display:none">		
+<div class="postpreview-container">		
 	<div class="postpreview" id="feedbox">
 	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER')?></h2>
 	<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?>

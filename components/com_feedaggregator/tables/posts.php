@@ -50,32 +50,40 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	var $title = NULL;
 
-
 	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 *
-	 *
-	/**
-	 * date
+	 * int
 	 *
 	 * @var date
 	 */
 	var $created = NULL;
 
 	/**
+	 * varchar(255)
+	 *
+	 * @var varchar
+	 */
+	var $url = NULL;
+
+	/**
+	 * text
+	 *
+	 * @var text
+	 */
+	var $description = NULL;
+
+	/**
 	 * int(11)
 	 *
 	 * @var int
 	 */
-	var $created_by = NULL;
-
-	var $url = NULL;
-
-	var $description = NULL;
-
 	var $feed_id = NULL;
+	
+	/**
+	 * varchar(45)
+	 *
+	 * @var int
+	 */
+	var $status = NULL;
 
 	/**
 	 * Constructor
@@ -88,75 +96,111 @@ class FeedAggregatorTablePosts extends JTable
 		parent::__construct('#__feedaggregator_posts', 'id', $db);
 	}
 
+	/**
+	 * Get all posts with respect to the limit of posts per page
+	 *
+	 * @param      integer $limit number of posts per page
+	 * @param      integer $offset offset for the nth page * limit.
+	 * @return     object list
+	 */
 	public function getAllPosts($limit = 10, $offset = 0)
 	{
-		$query = 'SELECT jos_feedaggregator_posts.id, jos_feedaggregator_posts.title, jos_feedaggregator_posts.created ,jos_feedaggregator_feeds.name, jos_feedaggregator_feeds.url, jos_feedaggregator_posts.url AS `link`, jos_feedaggregator_posts.status, jos_feedaggregator_posts.feed_id, jos_feedaggregator_posts.description FROM `jos_feedaggregator_posts` INNER JOIN `jos_feedaggregator_feeds` on jos_feedaggregator_feeds.id = jos_feedaggregator_posts.feed_id WHERE jos_feedaggregator_posts.status < 3 ORDER BY jos_feedaggregator_posts.created DESC LIMIT '.$offset.', '.$limit.';';
+		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_posts.status < 3 ORDER BY #__feedaggregator_posts.created DESC LIMIT '. (int) $offset.', '. (int) $limit .';';
 		$this->_db->setQuery($query);
 
 		return $this->_db->loadObjectList();
 	}
 	
+	/**
+	 * Get all posts with respect to the limit of posts per page AND status category
+	 *
+	 * @param      integer $limit number of posts per page
+	 * @param      integer $offset offset for the nth page * limit.
+	 * @param      integer $status the category a post (new,apporved,under review, remove)
+	 * @return     object list
+	 */
 	public function getPostsByStatus($limit = 10, $offset = 0, $status = 0)
 	{
-		$query = 'SELECT jos_feedaggregator_posts.id, jos_feedaggregator_posts.title, jos_feedaggregator_posts.created ,jos_feedaggregator_feeds.name, jos_feedaggregator_feeds.url, jos_feedaggregator_posts.url AS `link`, jos_feedaggregator_posts.status, jos_feedaggregator_posts.feed_id, jos_feedaggregator_posts.description FROM `jos_feedaggregator_posts` INNER JOIN `jos_feedaggregator_feeds` on jos_feedaggregator_feeds.id = jos_feedaggregator_posts.feed_id WHERE jos_feedaggregator_posts.status = ' .$status. ' ORDER BY jos_feedaggregator_posts.created DESC LIMIT '.$offset.', '.$limit.';';
+		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_posts.status = ' . (int) $status. ' ORDER BY #__feedaggregator_posts.created DESC LIMIT '. (int) $offset . ', '.  (int) $limit.';';
 		$this->_db->setQuery($query);
 		
 		return $this->_db->loadObjectList();
 	}
-
+	
+	/**
+	 * Get a single post by its ID
+	 *
+	 * @param      integer $limit number of posts per page
+	 * @param      integer $offset offset for the nth page * limit.
+	 * @param      integer $status the category a post (new,apporved,under review, remove)
+	 * @return     object list
+	 */
 	public function getPostById($id = NULL)
 	{
-		$query = 'SELECT jos_feedaggregator_posts.id, jos_feedaggregator_posts.title, jos_feedaggregator_posts.created ,jos_feedaggregator_feeds.name, jos_feedaggregator_feeds.url, jos_feedaggregator_posts.url AS `link`, jos_feedaggregator_posts.status, jos_feedaggregator_posts.feed_id, jos_feedaggregator_posts.description FROM `jos_feedaggregator_posts` INNER JOIN `jos_feedaggregator_feeds` on jos_feedaggregator_feeds.id = jos_feedaggregator_posts.feed_id WHERE jos_feedaggregator_posts.id = '.$id.';';
+		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_posts.id = '. (int) $id .';';
 		$this->_db->setQuery($query);
 
 		return $this->_db->loadObjectList();
 	}
-
+	
+	/**
+	 * Update the status of a single post
+	 *
+	 * @param      integer $id id of the post to be updated
+	 * @param      integer $status corresponding number assigned to status
+	 * @return 	   void
+	 */
 	public function updateStatus($id = NULL, $status = NULL)
 	{
-		$query = 'UPDATE jos_feedaggregator_posts SET status= '.$status.' WHERE jos_feedaggregator_posts.id = '.$id.';';
+		$query = 'UPDATE #__feedaggregator_posts SET status= '. (int) $status.' WHERE #__feedaggregator_posts.id = '.$id.';';
 		$this->_db->setQuery($query);
 		return $this->_db->query();
 	}
 	
+	
+	/**
+	 * Get posts with the specified feed id
+	 *
+	 * @param      integer $id ID of the feed
+	 * @return     object list
+	 */
 	public function getPostsbyFeedId($id = NULL)
 	{
-		$query = 'SELECT jos_feedaggregator_posts.id, jos_feedaggregator_posts.title, jos_feedaggregator_posts.created ,jos_feedaggregator_feeds.name, jos_feedaggregator_feeds.url, jos_feedaggregator_posts.url AS `link`, jos_feedaggregator_posts.status, jos_feedaggregator_posts.feed_id, jos_feedaggregator_posts.description FROM `jos_feedaggregator_posts` INNER JOIN `jos_feedaggregator_feeds` on jos_feedaggregator_feeds.id = jos_feedaggregator_posts.feed_id WHERE jos_feedaggregator_feeds.id= '.$id.';';
+		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_feeds.id= '. (int) $id .';';
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Returns an array of post URLs
+	 *
+	 * @return     array
+	 */
 	public function getURLs()
 	{
-		$query = 'SELECT url FROM jos_feedaggregator_posts';
+		$query = 'SELECT url FROM #__feedaggregator_posts';
 		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
 	}
 
+	
+	/**
+	 *  Counts the number of posts in a specified category.
+	 * @param      integer $status of category
+	 * @return     integer
+	 */
 	public function getRowCount($status = NULL)
 	{
-		if ($status == 0)
-		{			
-			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 0;';
-		}
-		else if($status == 1)
+		
+		$query = 'SELECT COUNT(*) FROM #__feedaggregator_posts WHERE status';
+		if ($status !== null)
 		{
-			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 1;';
+			$query .= '=' . (int) $status;
 		}
-		else if($status == 2)
+		else
 		{
-			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 2;';
-				
-		}
-		else if($status == 3)
-		{
-			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status = 3;';
-				
-		}
-		else 
-		{
-			$query = 'SELECT COUNT(*) FROM jos_feedaggregator_posts WHERE jos_feedaggregator_posts.status < 3;';
+			$query .= '< 3';
 		}
 		
 		$this->_db->setQuery($query);

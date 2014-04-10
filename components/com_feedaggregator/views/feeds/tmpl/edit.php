@@ -39,16 +39,8 @@ else
 {
 	$feed = '';
 }
-
-jimport('joomla.html.editor');
-
-$editor = JEditor::getInstance();
-
-$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
+//load js
+$this->js('feeds');
 ?>
 
 <div id="content-header" class="full">
