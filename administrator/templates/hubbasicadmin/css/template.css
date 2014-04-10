@@ -462,6 +462,26 @@
 	table thead th a.active {
 		color: #333;
 	}
+	table thead th a.sort:after {
+		content: "\2304";
+		font-family: "Fontcons";
+		margin-left: 0.4em;
+		color: #ccc;
+		text-shadow: none;
+		font-weight: normal;
+	}
+	table thead th a.sort:hover:after {
+		color: #000;
+	}
+	table thead th a.desc:after {
+		content: "\2303"; /* \f0d8 */
+	}
+	table thead th a.asc:after {
+		content: "\2304"; /* \f0d7 */
+	}
+	table thead th a.sort.active:after {
+		color: #333;
+	}
 	table thead th img {
 		margin-left: 0.2em;
 	}
@@ -1417,25 +1437,25 @@
 	}
 	.toolbar-box li a span {
 		z-index: 1;
-		overflow: hidden;
-		list-style: none;
-		padding: 0;
+		/*overflow-y: hidden;
+		padding: 24px 0 0 0;
 		margin: 0 auto;
 		display: block;
 		height: 24px;
-		width: 24px;
+		min-width: 24px;
 		border: none;
 		background-repeat: no-repeat;
+		text-indent: 0;*/
 		position: relative;
-		text-indent: 0;
 	}
 	.toolbar-box li a small.fontcon-before,
 	.toolbar-box li a span:before {
-		font-family: 'Fontcons';	
+		font-family: 'Fontcons';
 		font-size: 24px;
-		position: absolute;
+		/*position: absolute;
 		top: 2px;
-		left: 2px;
+		left: 2px;*/
+		display: block;
 		content: "\2588";
 		color: #666;
 		text-decoration: none;
