@@ -3662,7 +3662,7 @@ class plgProjectsFiles extends JPlugin
 		{ 
 			// Which revision are we downloading?
 			$hash 	  = JRequest::getVar('hash', '');
-			$servas   = basename($file);
+			$serveas  = basename($file);
 			
 			// Multiple files selected
 			if ($multifile)
