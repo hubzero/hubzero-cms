@@ -86,15 +86,14 @@ abstract class JHtmlGrid
 			$direction = ($direction == 'desc') ? 'asc' : 'desc';
 		}
 
-		$html = '<a href="#" onclick="Joomla.tableOrdering(\'' . $order . '\',\'' . $direction . '\',\'' . $task . '\');return false;" title="'
-			. JText::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
-		$html .= JText::_($title);
+		$html = '<a href="#" onclick="Joomla.tableOrdering(\'' . $order . '\',\'' . $direction . '\',\'' . $task . '\');return false;" title="' . JText::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '" class="'; //'>';
 
 		if ($order == $selected)
 		{
-			$html .= JHtml::_('image', 'system/' . $images[$index], '', null, true);
+			$html .= 'active ' . ($direction == 'desc' ? 'asc' : 'desc') . ' '; //JHtml::_('image', 'system/' . $images[$index], '', null, true);
 		}
 
+		$html .= 'sort">' . JText::_($title);
 		$html .= '</a>';
 
 		return $html;
