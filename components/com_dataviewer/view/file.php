@@ -46,23 +46,26 @@ function view() {
 	}
 
 	if (is_file($full_path)) {
-		if (!preg_match('/\.(gif|jpe?g|png)$/i', $file_name)) {
+		if (!preg_match('/\.(gif|jpe?g|png|pdf)$/i', $file_name)) {
 			header('Content-Description: File Transfer');
 			header('Content-Type: application/octet-stream');
 			header('Content-Disposition: attachment; filename="' . $file_name . '"');
 			header('Content-Transfer-Encoding: binary');
 		} else {
-			$mime = '';
+			$mime = 'application/octet-stream';
 			switch (strtolower(pathinfo($full_path, PATHINFO_EXTENSION))) {
 				case 'jpeg':
 				case 'jpg':
 					$mime = 'image/jpeg';
 					break;
 				case 'png':
-					$mime =  'image/png';
+					$mime = 'image/png';
 					break;
 				case 'gif':
-					$mime =  'image/gif';
+					$mime = 'image/gif';
+					break;
+				case 'pdf':
+					$mime = 'application/pdf';
 					break;
 			}
 
@@ -73,9 +76,9 @@ function view() {
 
 		header('Content-Length: ' . filesize($full_path));
 		header('Last-Modified: ' . gmdate('D, d M Y H:i:s T', filemtime($full_path)));
-	
+
 		ob_clean();
-		flush();
+		ob_end_flush();
 		readfile($full_path);
 	}
 

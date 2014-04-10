@@ -12077,17 +12077,11 @@
 	
 		"date-asc": function ( x, y )
 		{
-			var x = Date.parse(x.replace(/-/g, '/'));
-			var y = Date.parse(y.replace(/-/g, '/'));
-
 			return x - y;
 		},
 		
 		"date-desc": function ( x, y )
 		{
-			var x = Date.parse(x.replace(/-/g, '/'));
-			var y = Date.parse(y.replace(/-/g, '/'));
-
 			return y - x;
 		},
 		
@@ -12321,4 +12315,3 @@
 }));
 
 }(window, document));
-

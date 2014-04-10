@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -22,8 +22,15 @@ function dv_dataview_list()
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
+	$jdb =  JDatabase::getInstance($db_conf['database_ro']);
+
+
 	JToolBarHelper::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
-	JToolBarHelper::custom(false, 'new', 'new', 'New Dataview', false, false);
+
+	if(!$jdb->getErrorMsg()) {
+		JToolBarHelper::custom(false, 'new', 'new', 'New Dataview', false, false);
+	}
+
 	JToolBarHelper::custom(false, 'back', 'back', 'Go back', false, false );
 
 	$path = "$base/$db_id/applications/$com_name/datadefinitions/";
@@ -122,16 +129,14 @@ function dv_dataview_list()
 
 <?php
 
-	$jdb =  JDatabase::getInstance($db_conf['database_ro']);
-
-	if (get_class($jdb) === 'JException') {
+	if (get_class($jdb) === 'JException' || $jdb->getErrorMsg()) {
 		print "<h3>Invalid Database connection information</h3>";
 		return;
+	} else {
+		$sql = 'SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ' . $jdb->quote($db_conf['database_ro']['database']) . ' GROUP BY TABLE_NAME ORDER BY TABLE_NAME';
+		$jdb->setQuery($sql);
+		$list = $jdb->loadAssocList();
 	}
-
-	$sql = 'SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ' . $jdb->quote($db_conf['database_ro']['database']) . ' GROUP BY TABLE_NAME ORDER BY TABLE_NAME';
-	$jdb->setQuery($sql);
-	$list = $jdb->loadAssocList();
 
 ?>
 

@@ -1,5 +1,5 @@
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -12,13 +12,13 @@ var db_back_link = '/administrator/index.php?option=com_dataviewer';
 
 db.dbJQ = jQuery.noConflict();
 
-(function() {
+(function($) {
 
 	setInterval(function() {
-		db.dbJQ.get('index.php');
+		$.get('index.php');
 	}, 1000 * 60 * 10);
 
-}());
+}(db.dbJQ));
 
 
 db.dbJQ(document).ready(function($) {

@@ -67,6 +67,11 @@ function task_view($db_id)
 
 	$dd = get_dd($db_id);
 
+	if (!$dd) {
+		JError::raiseError('404', 'Invalid DataView', 'Invalid DataView');
+		return;
+	}
+
 	if (!authorize($dd)) {
 		print ('<br /><p class="warning">Sorry, you are not authorized to view this page.</p>');
 		return;
@@ -77,7 +82,6 @@ function task_view($db_id)
 	if (file_exists($file)) {
 		require_once ($file);
 	}
-
 
 	pathway($dd);
 

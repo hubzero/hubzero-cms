@@ -72,16 +72,17 @@ function filter($res, $dd)
 					$data_type = 'numrange';
 					$align = (!$align)? 'right': $align;
 					break;
+				case 'time':
+					$align = (!$align)? 'right' : $align;
+					break;
 				case 'datetime':
 				case 'date':
-				case 'time':
 				case 'timestamp':
 				case 'year':
 					$data_type = 'datetime';
 					$align = (!$align)? 'right': $align;
 					break;
 				case 'cint':
-					//$data_type = 'cnum';
 					$align = (!$align)? 'right': $align;
 					break;
 				default:
@@ -104,7 +105,7 @@ function filter($res, $dd)
 				$tool_tip = htmlentities($dd['cols'][$key]['desc'], ENT_QUOTES, 'UTF-8');
 			}
 
-			$label = '<div class="colum-label-text" title="' . htmlentities($tool_tip) . '">';
+			$label = '<div class="colum-label-text" title="' . htmlentities($tool_tip, ENT_QUOTES, 'UTF-8') . '">';
 			$label .= (isset($dd['cols'][$key]['label']))? $dd['cols'][$key]['label'] : $key;
 			$label .= '</div>';
 
@@ -123,7 +124,7 @@ function filter($res, $dd)
 					$desc = $dd['cols'][$key]['units']['desc'];
 				}
 
-				$label .= '<div data-name="' . $name . '" data-desc="' . $desc . '" data-label="' . $units . '" title="' . htmlentities($desc) . '">[' . $units . ']</div>';
+				$label .= '<div data-name="' . $name . '" data-desc="' . $desc . '" data-label="' . $units . '" title="' . htmlentities($desc, ENT_QUOTES, 'UTF-8') . '">[' . $units . ']</div>';
 			}
 
 			$table['col_labels'][] = (isset($dd['cols'][$key]['label']))? $dd['cols'][$key]['label'] : $key;
@@ -223,7 +224,7 @@ function filter($res, $dd)
 						$title = $dd['cols'][$key]['null_desc'];
 					}
 
-					$val = '<span title="' . htmlentities($title) . '" class="dv-null-dash">' . $val . '</span>';
+					$val = '<span title="' . htmlentities($title, ENT_QUOTES, 'UTF-8') . '" class="dv-null-dash">' . $val . '</span>';
 
 					$null_val = true;
 
@@ -253,7 +254,7 @@ function filter($res, $dd)
 							if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
 								$small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $l;
 								$medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $l;
-								$link_label = '<img class="dv_image dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
+								$link_label = '<img class="dv_image lazy-load dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
 							}
 
 							$val[] = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
@@ -278,7 +279,7 @@ function filter($res, $dd)
 						if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
 							$small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $val;
 							$medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $val;
-							$link_label = '<img class="dv_image dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
+							$link_label = '<img class="dv_image lazy-load dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
 						}
 						$val = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
 					}
@@ -344,14 +345,22 @@ function filter($res, $dd)
 						$medium_img = str_replace($bn, "medium/$bn", $val);
 					}
 
+					if (isset($dd['cols'][$key]['thumb'])) {
+						$small_img = $rec[$dd['cols'][$key]['thumb']] . '"';
+					}
+
+					if (isset($dd['cols'][$key]['medium'])) {
+						$medium_img = $rec[$dd['cols'][$key]['medium']] . '"';
+					}
+
 					if (isset($dd['cols'][$key]['gallery'])) {
 
 						$path = $rec[$dd['cols'][$key]['gallery']];
 						$hash = get_dl_hash($path, 'gallery');
 						$gal_url = "/" . $com_name . '/gallery/' . $hash;
-						$val = '<a target="_blank" class="dv_gallery_link" href="' . $gal_url . '"><img class="dv_image dv_img_preview" src="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
+						$val = '<a target="_blank" class="dv_gallery_link" href="' . $gal_url . '"><img class="dv_image lazy-load dv_img_preview" src="' . $html_path . '/1x1.png" data-original="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
 					} else {
-						$val = '<a target="_blank" href="' . $original_img . '"><img class="dv_image dv_img_preview" src="' . $small_img . '" data-preview-img="' . $medium_img . '"  alt="Preview image for : ' . htmlentities($original_img) . '"/></a>';
+						$val = '<a target="_blank" href="' . $original_img . '"><img class="dv_image lazy-load dv_img_preview" src="' . $html_path . '/1x1.png" data-original="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
 					}
 				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'email') {
 					$val = '<a href="mailto:' . $val . '">' . $val . '</a>';
@@ -495,9 +504,11 @@ function filter($res, $dd)
 					$append_to_url = isset($fv['append_to_url'])? $fv['append_to_url']: '';
 					$fv_data = array_key_exists($fv['data'], $rec)? $rec[$fv['data']]: $fv['data'];
 
+					$url = '/' . $com_name . '/' . $fv['task'] . '/' . $fv['db'] . '/' . $fv_data . '/' . $filter . $append_to_url . '#dv_top';
 					if ($fv_data != NULL) {
-						$val = '<a class="filtered_view" href="/' . $com_name . '/' . $fv['task'] . '/' . $fv['db'] . '/' . $fv_data . '/' . $filter . $append_to_url . '#dv_top" title="Pre-filtered view" target="_blank">' . $val . '</a>';
+						$val = '<a class="filtered_view" href="' . $url . '" title="Pre-filtered view">' . $val . '</a>';
 					}
+					$val .= '<a class="filtered_view dv-link" href="' . $url . '" title="Open in a new window" target="_blank"><i class="icon-external-link"></i></a>';
 				}
 
 				if (isset($dd['cols'][$key]['custom_field_link']) && !$null_val) {
@@ -529,7 +540,7 @@ function filter($res, $dd)
 				}
 
 				if (isset($dd['cols'][$key]['abbr'])) {
-					$title = 'title="' . htmlentities($rec[$dd['cols'][$key]['abbr']]) . '"';
+					$title = 'title="' . htmlentities($rec[$dd['cols'][$key]['abbr']], ENT_QUOTES, 'UTF-8') . '"';
 
 					$val = '<span class="quick_tip hand" ' . $title . '>' . $val . '</span>';
 				}
@@ -653,6 +664,9 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 				$label .= isset($dd['cols'][$key]['ext'])? '.' . $pi['extension']: '';
 			}
 		}
+	} elseif($dd['cols'][$key]['type'] == 'url') {
+		$link = $path;
+		$label = $path;
 	} else {
 		$hash = get_dl_hash($path);
 		$link = '/' . $com_name . '/stream_file/' . $dd['db_id']['id'] . '/?hash=' . $hash;
@@ -673,10 +687,33 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 		$title = $link;
 	}
 
+	$link = str_replace('#', '%23', $link);
+
+	$popup_class = '';
+	$popup_data = '';
+	if (isset($dd['cols'][$key]['popup'])) {
+		$win_name = 'dataviewer_popup';
+		if (isset($dd['cols'][$key]['popup']['name'])) {
+			$win_name = isset($rec[$dd['cols'][$key]['popup']['name']]) ? $rec[$dd['cols'][$key]['popup']['name']] : $dd['cols'][$key]['popup']['name'];
+			$win_name = str_replace(' ', '_', $win_name);
+		}
+
+		$win_features = isset($dd['cols'][$key]['popup']['features']) ? $dd['cols'][$key]['popup']['features'] : '';
+		
+		$popup_data = "data-popup-name='$win_name' data-popup-features='$win_features'";
+		$popup_class = 'dv-popup';
+	}
+
+	$label = htmlentities($label);
+
 	if ($preview != '') {
-		$val = "<a $nowarp title=\"$title\" target=\"_blank\" href=\"" . str_replace('#', '%23', $link) . "\" $preview class=\"dv_img_preview\">$label</a>";
+		$val = "<a $popup_data $nowarp title=\"$title\" href=\"" . $link . "\" $preview class=\"dv_img_preview dv-link $popup_class\">$label</a>";
 	} else {
-		$val = "<a $nowarp title=\"$title\" target=\"_blank\" href=\"" . str_replace('#', '%23', $link) . "\" >$label</a>";
+		$val = "<a $popup_data $nowarp title=\"$title\" href=\"" . $link . "\" class=\"dv-link $popup_class\">$label</a>";
+	}
+
+	if (!isset($dd['cols'][$key]['popup'])) {
+		$val .= "<a title=\"Open in a new window\" target=\"_blank\" href=\"" . $link . "\" class=\"dv-link\" ><i class=\"icon-external-link\"></i></a>";
 	}
 
 	return $val;

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -40,7 +40,7 @@ function dv_list()
 <?php
 
 	$c = 0;
-	
+
 	foreach ($list as $item) {
 		chdir($base);
 		$id = explode('/', $item);

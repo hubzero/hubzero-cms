@@ -5,3 +5,16 @@
 .ui-widget-header {
 	font-size: 0.75em;
 }
+
+/* Table row hover */
+table.adminlist tbody > tr:hover {
+	background: #EEE;
+}
+
+table.adminlist tbody > tr > td:nth-child(1) {
+	border-left: 2px solid transparent;
+}
+
+table.adminlist tbody > tr:hover > td:nth-child(1) {
+	border-left: 2px solid red;
+}
