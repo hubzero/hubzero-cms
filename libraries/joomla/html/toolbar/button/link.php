@@ -42,10 +42,10 @@ class JButtonLink extends JButton
 		$class = $this->fetchIconClass($name);
 		$doTask = $this->_getCommand($url);
 
-		$html = "<a href=\"$doTask\">\n";
+		$html  = "<a href=\"$doTask\" data-title=\"$text\">\n";
 		$html .= "<span class=\"$class\">\n";
-		$html .= "</span>\n";
 		$html .= "$text\n";
+		$html .= "</span>\n";
 		$html .= "</a>\n";
 
 		return $html;
