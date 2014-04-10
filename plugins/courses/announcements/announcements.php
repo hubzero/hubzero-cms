@@ -313,6 +313,21 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			$this->setError($model->getError());
 			return $this->_edit($model);
 		}
+
+		// Incoming dates are in local time. We need to convert to UTC
+		if ($model->get('publish_up') && $model->get('publish_up') != '0000-00-00 00:00:00')
+		{
+			$dt = new JDate($model->get('publish_up'), JFactory::getConfig()->getValue('config.offset'));
+			$model->set('publish_up', $dt->format(JFactory::getDBO()->getDateFormat()));
+		}
+
+		// Incoming dates are in local time. We need to convert to UTC
+		if ($model->get('publish_down') && $model->get('publish_down') != '0000-00-00 00:00:00')
+		{
+			$dt = new JDate($model->get('publish_down'), JFactory::getConfig()->getValue('config.offset'));
+			$model->set('publish_down', $dt->format(JFactory::getDBO()->getDateFormat()));
+		}
+
 		if (!isset($fields['priority']) || !$fields['priority'])
 		{
 			$model->set('priority', 0);

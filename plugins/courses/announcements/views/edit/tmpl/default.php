@@ -57,7 +57,7 @@ $juser = JFactory::getUser();
 			<label for="field_content">
 				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
-				echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->model->get('content'))), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
+				echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->model->content('raw'))), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 
@@ -67,14 +67,14 @@ $juser = JFactory::getUser();
 					<div class="col span-half">
 						<label for="field-publish_up" id="priority-publish_up">
 							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_START'); ?>
-							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($this->model->get('publish_up')); ?>" /> 
+							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape(JHTML::_('date', $this->model->get('publish_up'), JFactory::getDBO()->getDateFormat())); ?>" /> 
 							<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-publish_down" id="priority-publish_down">
 							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_END'); ?>
-							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($this->model->get('publish_down')); ?>" /> 
+							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape(JHTML::_('date', $this->model->get('publish_down'), JFactory::getDBO()->getDateFormat())); ?>" /> 
 							<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
