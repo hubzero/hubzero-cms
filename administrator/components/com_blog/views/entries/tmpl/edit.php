@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.greeting.value == ''){
-		alert(<?php echo JText::_('Error! You must fill in a title!'); ?>);
+		alert("<?php echo JText::_('Error! You must fill in a title!'); ?>");
 	} else {
 		submitform(pressbutton);
 	}

@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if ($('field-content').value == ''){
-		alert(<?php echo JText::_('Error! You must fill in a comment!'); ?>);
+		alert("<?php echo JText::_('Error! You must fill in a comment!'); ?>");
 	} else {
 		submitform(pressbutton);
 	}
