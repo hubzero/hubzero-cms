@@ -58,22 +58,28 @@ class plgSearchEvents extends SearchPlugin
 			$addtl_where[] = "(e.title NOT LIKE '%$forb%' AND e.content NOT LIKE '%$forb%')";
 		}
 
-		$user = JFactory::getUser();
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$addtl_where[] = '(e.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
-		}
-		else 
-		{
-			if ($user->guest)
-			{
-				$addtl_where[] = '(e.access = 0)';
-			}
-			elseif ($user->usertype != 'Super Administrator')
-			{
-				$addtl_where[] = '(e.access = 0 OR e.access = 1)';
-			}
-		}
+		// Commenting out Access check as it was never used and column was removed from table 
+		// during events refactoring
+		// 
+		// @author Chris Smoak
+		// @date   4/20/2014
+		// 
+		// $user = JFactory::getUser();
+		// if (version_compare(JVERSION, '1.6', 'ge'))
+		// {
+		// 	$addtl_where[] = '(e.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
+		// }
+		// else 
+		// {
+		// 	if ($user->guest)
+		// 	{
+		// 		$addtl_where[] = '(e.access = 0)';
+		// 	}
+		// 	elseif ($user->usertype != 'Super Administrator')
+		// 	{
+		// 		$addtl_where[] = '(e.access = 0 OR e.access = 1)';
+		// 	}
+		// }
 
 		$rows = new SearchResultSQL(
 			"SELECT 
