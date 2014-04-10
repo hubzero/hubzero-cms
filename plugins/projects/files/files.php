@@ -535,7 +535,7 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
-	 * Browser for within publications NEW
+	 * Browser within publications NEW
 	 * 
 	 * @return     string
 	 */
@@ -558,9 +558,6 @@ class plgProjectsFiles extends JPlugin
 		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
 		$prefix = $prov ? JPATH_ROOT : $this->prefix;
 		
-		// Which layout?
-		$layout = $prov ? 'provisioned' : 'default';
-		
 		// Make sure Git helper is included
 		$this->getGitHelper();
 				
@@ -569,8 +566,7 @@ class plgProjectsFiles extends JPlugin
 			array(
 				'folder'	=>'projects',
 				'element'	=>'files',
-				'name'		=>'selector',
-				'layout'	=> $layout
+				'name'		=>'selector'
 			)
 		);
 		
@@ -3665,6 +3661,7 @@ class plgProjectsFiles extends JPlugin
 		{ 
 			// Which revision are we downloading?
 			$hash 	  = JRequest::getVar('hash', '');
+			$servas   = basename($file);
 			
 			// Multiple files selected
 			if ($multifile)
@@ -4984,6 +4981,11 @@ class plgProjectsFiles extends JPlugin
 	protected function _readDir($path, $dirpath = '', $filter = '.', $recurse = true, $exclude = array(' .svn', 'CVS'))
 	{
 		$arr = array();
+		
+		if (!is_dir($path))
+		{
+			return $arr;
+		}
 		
 		if ($handle = opendir($path)) 
 		{
