@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,47 +36,47 @@ if(isset($this->filters['filterby']) != TRUE)
 	$this->filters['filterby'] = 'all';
 }
 
+$this->js('posts')
+	->css('posts');
 ?>
 
 <div id="content-header">
-<h2><?php echo $this->title; ?></h2>
-
+	<h2><?php echo $this->title; ?></h2>
 </div>
 
 <div id="content-header-extra">
-<ul id="useroptions">
-	<li>
-		<a href="#feedbox" id="generateFeed" class="fancybox-inline icon-feed btn">Generate RSS Feed</a>
-	</li>
-	<li>
-	<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
-	</li>
-
-	<li>
-	<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('View Feeds'); ?></a>
-	</li>
+	<ul id="useroptions">
+		<li>
+			<a href="#feedbox" id="generateFeed" class="fancybox-inline icon-feed btn">Generate RSS Feed</a>
+		</li>
+		<li>
+		<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
+		</li>
 	
-	<li class="last">
-		<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
-	</li>
-</ul>
+		<li>
+		<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('View Feeds'); ?></a>
+		</li>
+		
+		<li class="last">
+			<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
+		</li>
+	</ul>
 </div><!-- / #content-header-extra -->
 
-<div class="main section" style="margin-top: -40px;">
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+<div class="main section">
+	<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 <div id="page-main">
-<br><br>
 
 <?php if (count($this->posts) > 0):?>
 <div class="container">
-<ul class="entries-menu filter-options">
-<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=all'); ?>"><?php echo JText::_('All'); ?></a></li>
-<li><a class="filter-all<?php if ($this->filters['filterby'] == 'new') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=new'); ?>"><?php echo JText::_('New'); ?></a></li>
-<li><a class="filter-all<?php if ($this->filters['filterby'] == 'review') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=review'); ?>"><?php echo JText::_('Under Review'); ?></a></li>
-<li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=approved'); ?>"><?php echo JText::_('Approved'); ?></a></li>
-<li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=removed'); ?>"><?php echo JText::_('Removed'); ?></a></li>
-</ul>
-<!-- <select style="float:right;" name="timesort" id="timesort">
+	<ul class="entries-menu filter-options">
+		<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=all'); ?>"><?php echo JText::_('All'); ?></a></li>
+		<li><a class="filter-all<?php if ($this->filters['filterby'] == 'new') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=new'); ?>"><?php echo JText::_('New'); ?></a></li>
+		<li><a class="filter-all<?php if ($this->filters['filterby'] == 'review') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=review'); ?>"><?php echo JText::_('Under Review'); ?></a></li>
+		<li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=approved'); ?>"><?php echo JText::_('Approved'); ?></a></li>
+		<li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=removed'); ?>"><?php echo JText::_('Removed'); ?></a></li>
+	</ul>
+<!-- <select name="timesort" id="timesort">
 <option value="0">--</option>
 <option value="day">Past 24 hours</option>
 <option value="week">Past Week</option>
@@ -98,48 +98,46 @@ if(isset($this->filters['filterby']) != TRUE)
 				<td><?php echo $post->name;?></td>
 				
 				<td id="status-<?php echo $post->id; ?>">
-				<?php if($post->status == "under review")
+				<?php if ($post->status == "under review")
 				{
-					echo '<font color="purple">';
+					echo '<div class="review-status">';
 					echo $post->status;
-					echo '</font>';
+					echo '</div>';
 				}
-				else if($post->status == "approved")
+				else if ($post->status == "approved")
 				{
-					echo '<font color="green">';
+					echo '<div class="approve-status">';
 					echo $post->status;
-					echo '</font>';
+					echo '</div>';
 				}
-				else if($post->status == "new")
+				else if ($post->status == "new")
 				{
 					echo '<b>';
 					echo $post->status;
 					echo '</b>';
 				}	
-				else if($post->status == "removed")
+				else if ($post->status == "removed")
 				{
-					echo '<font color="red">';
+					echo '<div class="remove-status">';
 					echo $post->status;
-					echo '</font>';
+					echo '</div>';
 				}								
 				?>				
 				</td>
 				
 				<td>
 					<input type="button" class="<?php echo ($post->status == "approved" ? 'active' : ''); ?>approveBtn btn actionBtn" value="Approve" id="approve-<?php echo $post->id;?>">				
-				
 					<input type="button" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?>reviewBtn btn actionBtn" value="Mark for Review" id="mark-<?php echo $post->id;?>">
-				
 					<input type="button" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?>removeBtn btn actionBtn" value="Remove" id="remove-<?php echo $post->id;?>">
 				</td>
 			</tr>
-			<div style="display:none">
+			<div class="postpreview-container">
 				<div class="postpreview" id="content-fancybox<?php echo $post->id;?>">
 						<h1><?php echo $post->title; ?></h1>
 						<p class="description"><?php echo $post->description; ?></p>
 						<p><a target="_blank" href="<?php echo $post->link; ?>">Link to original post.</a></p>
-						<div style="padding: 40px; text-align: center; z-index: 99;">
-						<hr>
+						<div class="button-container">
+						<hr />
 						<input type="button" class="actionBtn <?php echo ($post->status == "approved" ? 'active' : ''); ?> approveBtn btn " value="Approve" id="approve-prev-<?php echo $post->id;?>">
 						<input type="button" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?> reviewBtn btn actionBtn" value="Mark for Review" id="mark-prev-<?php echo $post->id;?>">
 						<input type="button" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?> removeBtn btn actionBtn" value="Remove" id="remove-prev-<?php echo $post->id;?>">
@@ -152,12 +150,12 @@ if(isset($this->filters['filterby']) != TRUE)
 	</div> <!--  / .container  -->
 	
 <?php 
-if($this->fromfeed != TRUE)
+if ($this->fromfeed != TRUE)
 {
-echo $this->pageNav->getListFooter();
+	echo $this->pageNav->getListFooter();
 } 
 ?>
-<?php elseif($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
+<?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
 <p>There are no posts here.</p>
 <a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
 <?php else: ?>
@@ -167,9 +165,9 @@ echo $this->pageNav->getListFooter();
 </form>
 
 <!--  Generate Feed -->
-<div style="display:none">		
+<div class="postpreview-container">		
 	<div class="postpreview" id="feedbox">
-	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER')?></h2>
+	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER'); ?></h2>
 	<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?>
 	<p><a href="<?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?>"><?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?></a></p>
 	</div>

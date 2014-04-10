@@ -1,10 +1,29 @@
+.page-main{
+	padding-bottom:50px;
+}
+
+.main section{
+	padding-top: -40px;	
+}
+
+.button-container{
+	padding: 40px;
+	text-align: center; 
+	z-index: 99;
+}
+
 .postpreview img { 
-display:block;
-margin-right: auto;
-margin-left: auto;
-backround-color: lime;}
-.postpreview p { word-wrap:break-word;}
-.postpreview h1 { font-family: san-serif; font-size: x-large; }
+	display:block;
+	margin-right: auto;
+	margin-left: auto;
+}
+.postpreview p { 
+	word-wrap:break-word;
+}
+
+.postpreview h1 {
+	font-family: san-serif; font-size: x-large;
+}
 .postpreview 
 { 
 	padding: 20px;
@@ -12,22 +31,29 @@ backround-color: lime;}
 	text-align: center;
 }
 
+.postpreview-container{
+	display: none;
+}
+
 .fancybox-next
 {
 	max-width: 100px;
 }
 
-.fancybox-prev
-{
+.fancybox-prev {
 	max-width: 100px;
 }
 
-#helpbox p{
+#helpbox p {
 	padding-left: 10px;
 	padding-right: 10px;
 }
 
-#helpbox h1{
+#helpbox{
+	padding:20px;
+}
+
+#helpbox h1 {
 	padding-top:10px;
 	padding-right: 10px;
 	padding-left:10px;
@@ -38,7 +64,7 @@ backround-color: lime;}
 	'Impact', 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-#helpbox h2{
+#helpbox h2 {
 	padding-right: 10px;
 	padding-left:10px;
 	font-weight:none;
@@ -46,17 +72,14 @@ backround-color: lime;}
 	'Impact', 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.main
-{
+.main {
 	padding-bottom: 50px;
 }
 
-#generateFeed
-{
+#generateFeed {
 	background-color: green;
 }	
-.feedtable td
-{
+.feedtable td {
 padding-top: 10px;
 margin-top: 10px;
 }
@@ -76,3 +99,52 @@ margin-top: 10px;
 	background-image: linear-gradient(to bottom, #FF0000, #B22400);
 }
 
+.disableBtn{
+	background-color: lime;
+	color:red;
+}
+
+.review-status
+{
+	color: purple;
+}
+
+.remove-status
+{
+	color: red;
+}
+
+.approve-status
+{
+	color: green;
+}
+
+.feed-btn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	background-color:#bedbfa;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #528ecc;
+}
+.feed-btn:hover {
+	background-color:#80b5ea;
+}
+.feed-btn:active {
+	position:relative;
+	top:1px;
+}
+.feed-btn:visted {
+ color: white;
+ }

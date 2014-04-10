@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -38,6 +38,12 @@ require_once(JPATH_ROOT.DS."components".DS."com_feedaggregator".DS."models".DS."
  */
 class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 {
+	
+	/**
+	 * Default component view
+	 *
+	 * @return     void
+	 */
 	public function displayTask()
 	{
 
@@ -70,34 +76,43 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 					'warning'
 			);
 		}
-
 	}
 
+	/**
+	 * Edit source feed form, load appropriate record
+	 *
+	 * @return     void
+	 */
 	public function editTask()
 	{
 		//isset ID kinda deal
 		$id = JRequest::getVar('id');
 		$model = new FeedAggregatorModelFeeds;
 		$feed = $model->loadbyId($id);
+		
 		$this->view->feed = $feed;
-
-
 		$this->view->user = $this->juser;
-
-		//$this->view->setLayout('edit');
-		$this->_getScripts('assets/js/feeds');
 		$this->view->title = JText::_('Edit Feeds');
 		$this->view->display();
 	}
 
+	/**
+	 * Displays empty form for adding source feed
+	 *
+	 * @return     void
+	 */
 	public function newTask()
 	{
-		$this->_getScripts('assets/js/feeds');
 		$this->view->setLayout('edit');
 		$this->view->title = JText::_('Add Feed');
 		$this->view->display();
 	}
 
+	/**
+	 * Enables or disables a source feed
+	 *
+	 * @return     void
+	 */
 	public function statusTask()
 	{
 		$id = JRequest::getInt('id');
@@ -130,7 +145,12 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 			);
 		}
 	}
-
+	
+	/**
+	 * Save Source Feed form
+	 *
+	 * @return     void
+	 */
 	public function saveTask()
 	{
 		//do a JRequest instead of a bind()
@@ -138,17 +158,7 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		$feed = new FeedAggregatorModelFeeds;
 
 		//get the URL first in order to validate
-		//$feed->url = JRequest::getVar('url');
 		$feed->set('url', JRequest::getVar('url'));
-		/*
-		echo '<pre>';
-		echo($feed);
-		echo '</pre>';
-		echo '<pre>';
-		echo($feed->get('url'));
-		echo '</pre>';
-		die;
-		*/
 		$feed->set('name', JRequest::getVar('name'));
 		$feed->set('id', JRequest::getVar('id'));
 		$feed->set('enabled', JRequest::getVar('enabled'));
@@ -167,7 +177,6 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-
 			if($feed->store())
 			{
 				// Output messsage and redirect
@@ -185,7 +194,5 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 			}
 
 		}
-
-
 	}
 }

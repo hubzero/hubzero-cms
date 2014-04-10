@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -44,21 +44,18 @@ class FeedAggregatorTableFeeds extends JTable
 	var $id = NULL;
 
 	/**
-	 * int(11)
+	 * varchar(255)
 	 * 
 	 * @var integer
 	 */
 	var $name = NULL;
 	
-	
-	var $url    = NULL;
-
 	/**
 	 * varchar(255)
-	 * 
-	 * @var string
+	 *
+	 * @var integer
 	 */
-	var $attributes = NULL;
+	var $url    = NULL;
 	
 	/**
 	 * date
@@ -68,17 +65,17 @@ class FeedAggregatorTableFeeds extends JTable
 	var $created = NULL;
 	
 	/**
-	 * int(11)
-	 *
-	 * @var int
+	 * varchar(255)
+	 * 
+	 * @var integer
 	 */
-	
 	var $description = NULL;
-	
-	
-	var $created_by = NULL;
-	
-	
+		
+	/**
+	 * varchar(45)
+	 *
+	 * @var integer
+	 */
 	var $enabled = NULL;
 	
 	/**
@@ -93,24 +90,39 @@ class FeedAggregatorTableFeeds extends JTable
 		parent::__construct('#__feedaggregator_feeds', 'id', $db);
 	}
 	
+	/**
+	*  Returns all source feeds
+	* @return     object list of source feeds
+	*/
 	public function getRecords()
 	{
-		$query = 'SELECT * FROM '.$this->_tbl;
+		$query = 'SELECT * FROM '. $this->_tbl;
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 	
+	/**
+	 *  Returns feed as selected by ID
+	 * @param      integer $id
+	 * @return     object list of feed
+	 */
 	public function getById($id = NULL)
 	{
-		$query = 'SELECT * FROM '.$this->_tbl.' WHERE id = '.$id.';';
+		$query = 'SELECT * FROM '.$this->_tbl.' WHERE id = '. (int) $id.';';
 		$this->_db->setQuery($query);
 	
 		return $this->_db->loadObject();
 	}
 	
+	/**
+	 *  Enables or disables a feed
+	 * @param 	   integer $id of feed
+	 * @param      integer $status of category
+	 * @return     void
+	 */
 	public function updateActive($id, $status)
 	{
-		$query = 'UPDATE jos_feedaggregator_feeds SET enabled='.$status.' WHERE id = '.$id.';';
+		$query = 'UPDATE #__feedaggregator_feeds SET enabled='. (int) $status.' WHERE id = '. (int) $id.';';
 		$this->_db->setQuery($query);
 		return $this->_db->query();
 	}

@@ -41,11 +41,17 @@ use Guzzle\Http\Client;
  */
 class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 {
+	
+	/**
+	 * Default component view
+	 *
+	 * @return     void
+	 */
 	public function displayTask($posts = NULL)
 	{
 		
-		$this->_getScripts('assets/js/posts');
-		$this->_getStyles();
+		//$this->_getScripts('assets/js/posts');
+		//$this->_getStyles();
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'posts.css');
 
@@ -197,6 +203,11 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		}
 	}
 
+	/**
+	 * Updates a post's status
+	 *
+	 * @return     string $action_id."-".$action
+	 */
 	public function updateStatusTask()
 	{
 		$id = JRequest::getVar('id', '');
@@ -224,6 +235,11 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		exit();
 	}
 
+	/**
+	 * Displays posts within a category
+	 *
+	 * @return     void
+	 */
 	public function PostsByIdTask()
 	{
 		$id = JRequest::getVar('id', '');
@@ -232,7 +248,11 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		$this->displayTask($posts);
 	}
 
-
+	/**
+	 * Saves posts from enabled Source Feeds
+	 *
+	 * @return     void
+	 */
 	public function RetrieveNewPostsTask()
 		{
 			$model = new FeedAggregatorModelFeeds;
@@ -306,6 +326,11 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 			}
 		}
 
+	/**
+	 * Generates RSS feed when called by URL
+	 *
+	 * @return     XML document
+	 */
 	public function generateFeedTask()
 	{
 		// Get the approved posts
@@ -346,7 +371,6 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$doc->addItem($item);
 			}
 		}
-
 		// Output the feed
 		echo $doc->render();
 		return;
