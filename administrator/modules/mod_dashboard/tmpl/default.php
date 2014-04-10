@@ -87,10 +87,10 @@ $app = JFactory::getApplication();
 			</tr>
 			<tr class="row1">
 				<th scope="row">
-					<a href="index.php?option=com_wishlist">Wishes (<?php echo $sitename; ?> list)</a>
+					<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $mainlist; ?>">Wishes (<?php echo $sitename; ?> list)</a>
 				</th>
 				<td>
-					<a href="index.php?option=com_wishlist"><?php echo $wishes; ?></a>
+					<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $mainlist; ?>"><?php echo $wishes; ?></a>
 				</td>
 			</tr>
 		</tbody>
