@@ -138,11 +138,11 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</span>
 				<?php } ?>
 				</td>
