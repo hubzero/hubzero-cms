@@ -99,8 +99,8 @@ $this->js('posts')
 <!--  Generate Feed -->
 <div class="postpreview-container">		
 	<div class="postpreview" id="feedbox">
-	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER')?></h2>
-	<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?>
+	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER'); ?></h2>
+	<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?></p>
 	<p><a href="<?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?>"><?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?></a></p>
 	</div>
 </div>
