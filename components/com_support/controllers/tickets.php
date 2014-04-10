@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'comment.php');
 
 /**
  * Manage support tickets
@@ -1934,39 +1935,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$sc = new SupportComment($this->database);
 		$this->view->comments = $sc->getComments($this->acl->check('read', 'private_comments'), $this->view->row->id);
 
-		// Parse comment text for attachment tags
-		$juri = JURI::getInstance();
-
-		$webpath = str_replace('//', '/', $juri->base() . $this->config->get('webpath') . DS . $id);
-		if (isset($_SERVER['HTTPS'])) 
+		foreach ($this->view->comments as $i => $comment)
 		{
-			$webpath = str_replace('http:', 'https:', $webpath);
+			$this->view->comments[$i] = new SupportModelComment($comment);
 		}
-		if (!strstr($webpath, '://')) 
-		{
-			$webpath = str_replace(':/', '://', $webpath);
-		}
-
-		$attach = new SupportAttachment($this->database);
-		$attach->webpath = $webpath;
-		$attach->uppath  = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $id;
-		$attach->output  = 'web';
-		for ($i=0; $i < count($this->view->comments); $i++)
-		{
-			$comment =& $this->view->comments[$i];
-			//$comment->comment = stripslashes($comment->comment);
-			//if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
-			//{
-				$comment->comment = preg_replace("/<br\s?\/>/i", '', $comment->comment);
-				$comment->comment = $this->view->escape($comment->comment);
-				$comment->comment = nl2br($comment->comment);
-				$comment->comment = str_replace("\t", ' &nbsp; &nbsp;', $comment->comment);
-				$comment->comment = preg_replace('/  /', ' &nbsp;', $comment->comment);
-			//}
-			$comment->comment = $attach->parse($comment->comment);
-		}
-//echo $this->view->escape('<p>blofdsaffdas</p>');
-		$this->view->row->report = $attach->parse($this->view->row->report);
 
 		// Get severities
 		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
@@ -2225,8 +2197,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				);
 			}
 
-			$attachment = $this->uploadTask($row->id);
-			$comment .= ($attachment) ? "\n\n" . $attachment : '';
+			//$attachment = $this->uploadTask($row->id, );
+			//$comment .= ($attachment) ? "\n\n" . $attachment : '';
 
 			// Create a new support comment object and populate it
 			$rowc = new SupportComment($this->database);
@@ -2288,6 +2260,14 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					exit();
 				}
 
+				$attach = new SupportAttachment($this->database);
+				if ($tmp = JRequest::getInt('tmp_dir'))
+				{
+					$attach->updateCommentId($tmp, $rowc->id);
+				}
+
+				$attachment = $this->uploadTask($row->id, $rowc->id);
+
 				// Only do the following if a comment was posted
 				// otherwise, we're only recording a changelog
 				if ($comment || $row->owner != $old->owner) 
@@ -2295,7 +2275,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					$jconfig = JFactory::getConfig();
 
 					// Parse comments for attachments
-					$attach = new SupportAttachment($this->database);
 					$attach->webpath = $live_site . $this->config->get('webpath') . DS . $id;
 					$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $id;
 					$attach->output  = 'email';
@@ -3042,7 +3021,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	 * @param      string $listdir Directory to upload files to
 	 * @return     string A string that gets appended to messages
 	 */
-	public function uploadTask($listdir)
+	public function uploadTask($listdir, $comment_id=0)
 	{
 		// Check if they are logged in
 		/*if ($this->juser->get('guest')) 
@@ -3130,6 +3109,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$row->bind(array(
 				'id'          => 0,
 				'ticket'      => $listdir,
+				'comment_id'  => $comment_id,
 				'filename'    => $filename . '.' . $ext,
 				'description' => $description
 			));

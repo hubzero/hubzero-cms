@@ -261,9 +261,9 @@ $cc = array();
 	</div><!-- / .aside -->
 
 	<div class="subject">
-<?php if (count($this->comments) > 0) { ?>
+	<?php if (count($this->comments) > 0) { ?>
 		<ol class="comments">
-<?php
+		<?php
 		$o = 'even';
 		$i = 0;
 		foreach ($this->comments as $comment)
@@ -271,14 +271,14 @@ $cc = array();
 			// Is the comment private?
 			// If so, does the user have access to read private comments?
 			//   If not, skip it
-			if (!$this->acl->check('read', 'private_comments') && $comment->access == 1) 
+			if (!$this->acl->check('read', 'private_comments') && $comment->isPrivate()) 
 			{
 				continue;
 			}
 			$i++;
 
 			// Set the CSS class
-			if ($comment->access == 1) 
+			if ($comment->isPrivate()) 
 			{
 				$access = 'private';
 			} 
@@ -286,109 +286,78 @@ $cc = array();
 			{
 				$access = 'public';
 			}
-			if ($comment->created_by == $this->row->login && $comment->access != 1) 
+			if ($comment->get('created_by') == $this->row->login && !$comment->isPrivate()) 
 			{
 				$access = 'submitter';
 			}
 
 			$name = JText::_('Unknown');
 			$cite = $name;
-			$juseri = \Hubzero\User\Profile::getInstance($comment->created_by);
-			$anon = 1;
-			if ($comment->created_by) 
+
+			if ($comment->creator()) 
 			{
-				if (is_object($juseri) && $juseri->get('name')) 
-				{
-					$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $juseri->get('uidNumber')) . '">' . $this->escape(stripslashes($juseri->get('name'))) . '</a>';
-					$cite = $this->escape(stripslashes($juseri->get('name')));
-					$anon = 0;
-				}
+				$cite = $this->escape(stripslashes($comment->creator('name')));
+				$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $comment->creator('id')) . '">' . $cite . '</a>';
 			}
 
 			$o = ($o == 'odd') ? 'even' : 'odd';
-?>
-			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->id; ?>">
+			?>
+			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->get('id'); ?>">
 				<p class="comment-member-photo">
-					<span class="comment-anchor"></span>
-					<img src="<?php echo $juseri->getPicture($anon); ?>" alt="" />
+					<img src="<?php echo $comment->creator('picture'); ?>" alt="" />
 				</p>
 				<div class="comment-content">
 					<p class="comment-head">
 						<strong>
 							<?php echo $name; ?>
 						</strong>
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '#c' . $comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
-							<span class="time"><time datetime="<?php echo $this->escape($comment->created); ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('on'); ?></span> 
-							<span class="date"><time datetime="<?php echo $this->escape($comment->created); ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+						<a class="permalink" href="<?php echo JRoute::_($comment->link()); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">
+							<span class="comment-date-at">@</span> 
+							<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span> 
+							<span class="comment-date-on"><?php echo JText::_('on'); ?></span> 
+							<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
 						</a>
 					</p><!-- / .comment-head -->
-<?php 		if ($comment->comment) { ?>
+				<?php if ($content = $comment->content('parsed')) { ?>
 					<div class="comment-body" cite="<?php echo $cite; ?>">
-						<p><?php echo $comment->comment; ?></p>
+						<p><?php echo $content; ?></p>
 					</div><!-- / .comment-body -->
-<?php 		} ?>
-				</div><!-- / .comment-content -->
-<?php 
-			$cc = array();
-			if (trim($comment->changelog)) 
-			{
-				$clog = '';
-				if (substr($comment->changelog, 0, 1) == '{')
-				{
-					$logs = json_decode($comment->changelog, true);
-					foreach ($logs as $type => $log)
-					{
-						if (is_array($log) && count($log) > 0)
+				<?php } ?>
+				<?php if ($comment->attachments()->total()) { ?>
+					<div class="comment-attachments">
+						<?php
+						foreach ($comment->attachments() as $attachment)
 						{
-							if ($type == 'cc')
+							if ($attachment->isImage()) 
 							{
-								$cc = $log;
-								continue;
-							}
-							$clog .= '<ul class="' . $type . '">';
-							foreach ($log as $items)
+								if ($attachment->width() > 400) 
+								{
+									$img = '<p><a href="' . JRoute::_($attachment->link()) . '"><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+								} 
+								else 
+								{
+									$img = '<p><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+								}
+								echo $img;
+							} 
+							else 
 							{
-								if ($type == 'changes')
-								{
-									$clog .= '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
-								}
-								else if ($type == 'notifications')
-								{
-									$clog .= '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
-								}
+								echo '<p class="attachment"><a href="' . JRoute::_($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description', $this->get('filename')) . '</a></p>';
 							}
-							$clog .= '</ul>';
 						}
-					}
-				}
-				else
-				{
-					$comment->changelog = str_replace('changelog', 'changes', $comment->changelog);
-					$comment->changelog = str_replace('E-mailed', JText::_('Messaged'), $comment->changelog);
-					$clog .= str_replace('emaillog', 'notifications', $comment->changelog);
-				}
-				if (!$clog) {
-					$clog = '<ul class="changes"><li>No changes made.</li></ul>';
-				}
-?>
-<?php 			if ($clog) { ?>
-					<div class="comment-changelog">
-						<?php echo $clog; ?>
-					</div><!-- / .changelog -->
-<?php 			} ?>
-<?php 		} else { // if (trim($comment->changelog))  ?>
+						?>
+					</div><!-- / .comment-body -->
+				<?php } ?>
+				</div><!-- / .comment-content -->
 				<div class="comment-changelog">
-					<ul class="changes"><li>No changes made.</li></ul>
+					<?php echo $comment->changelog()->render(); ?>
 				</div><!-- / .changelog -->
-<?php 		} ?>
 			</li>
-<?php
-		}  // foreach 
-?>
+		<?php } ?>
 		</ol>
-<?php } else { ?>
+	<?php } else { ?>
 		<p class="no-comments"><?php echo JText::_('No comments found.'); ?></p>
-<?php } ?>
+	<?php } ?>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .below section -->
@@ -558,7 +527,7 @@ $cc = array();
 
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_ATTACHMENTS'); ?></legend>
-					<div class="grouping">
+					<!-- <div class="grouping">
 						<label for="upload">
 							<?php echo JText::_('COMMENT_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
@@ -568,7 +537,25 @@ $cc = array();
 							<?php echo JText::_('COMMENT_FILE_DESCRIPTION'); ?>:
 							<input type="text" name="description" id="field-description" value="" />
 						</label>
+					</div> -->
+
+					<?php 
+					$tmp = ('-' . time());
+					$this->js('jquery.fileuploader.js', 'system');
+					$jbase = rtrim(JURI::getInstance()->base(true), '/');
+					?>
+					<div id="ajax-uploader" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $this->row->id; ?>&amp;comment=<?php echo $tmp; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $this->row->id; ?>&amp;comment=<?php echo $tmp; ?>">
+						<noscript>
+							<label for="upload">
+								<?php echo JText::_('COMMENT_FILE'); ?>:
+								<input type="file" name="upload" id="upload" />
+							</label>
+						</noscript>
 					</div>
+					<div class="field-wrap file-list" id="ajax-uploader-list">
+					</div>
+					<input type="hidden" name="tmp_dir" id="comment-tmp_dir" value="<?php echo $tmp; ?>" />
+					<!-- <script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script> -->
 				</fieldset>
 <?php } //if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
 <?php if ($this->acl->check('create', 'comments') > 0) { ?>

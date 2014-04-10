@@ -65,6 +65,27 @@ class SupportAttachment extends JTable
 	var $description = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $comment_id  = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $created  = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $created_by  = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -82,7 +103,8 @@ class SupportAttachment extends JTable
 	 */
 	public function check()
 	{
-		if ($this->ticket == NULL) 
+		$this->ticket = intval($this->ticket);
+		if (!$this->ticket) 
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_NO_TICKET_ID'));
 			return false;
@@ -91,6 +113,13 @@ class SupportAttachment extends JTable
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_NO_FILENAME'));
 			return false;
+		}
+		$this->comment_id = intval($this->comment_id);
+
+		if (!$this->id)
+		{
+			$this->created_by = JFactory::getUser()->get('id');
+			$this->created = JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -177,11 +206,12 @@ class SupportAttachment extends JTable
 	 * 
 	 * @param      integer $filename File name
 	 * @param      integer $ticket   Ticket ID
+	 * @param      integer $comment  Comment ID
 	 * @return     boolean True on success
 	 */
-	public function deleteAttachment($filename, $ticket)
+	public function deleteAttachment($filename, $ticket, $comment=0)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket) . " AND comment=" . $this->_db->Quote($comment));
 		if (!$this->_db->query()) 
 		{
 			return $this->_db->getErrorMsg();
@@ -223,9 +253,10 @@ class SupportAttachment extends JTable
 	 * 
 	 * @param      integer $filename File name
 	 * @param      integer $ticket   Ticket ID
+	 * @param      integer $comment  Comment ID
 	 * @return     boolean True on success
 	 */
-	public function loadAttachment($filename=NULL, $ticket=NULL)
+	public function loadAttachment($filename=NULL, $ticket=NULL, $comment=0)
 	{
 		if ($filename === NULL) 
 		{
@@ -235,7 +266,116 @@ class SupportAttachment extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket) . " AND comment=" . $this->_db->Quote($comment));
 		return $this->_db->loadObject($this);
+	}
+
+	/**
+	 * Update the comment ID for multiple records
+	 * 
+	 * @param   integer $before Old ID
+	 * @param   integer $after  New ID
+	 * @return  boolean  True on success.
+	 */
+	public function updateCommentId($before, $after)
+	{
+		$this->_db->setQuery("UPDATE $this->_tbl SET comment_id=" . $this->_db->Quote($after) . " WHERE comment_id=" . $this->_db->Quote($before));
+		if (!$this->_db->query()) 
+		{
+			$this->setError($database->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     array
+	 */
+	public function find($what='list', $filters=array())
+	{
+		switch (strtolower($what))
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'all':
+				$filters['limit'] = 0;
+
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query = "SELECT * " . $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort']) 
+				{
+					$filters['sort'] = 'id';
+				}
+				if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+				{
+					$filters['sort_Dir'] = 'ASC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] != 0) 
+				{
+					$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
+	}
+
+	/**
+	 * Build a query from filters passed
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
+	 */
+	private function _buildQuery($filters)
+	{
+		$query  = "FROM $this->_tbl";
+
+		$where = array();
+
+		if (isset($filters['ticket']) && (int) $filters['ticket'] > 0) 
+		{
+			$where[] = "ticket=" . $this->_db->Quote(intval($filters['ticket']));
+		}
+		if (isset($filters['comment_id'])) // && (int) $filters['comment_id'] >= 0) 
+		{
+			$where[] = "comment_id=" . $this->_db->Quote(intval($filters['comment_id']));
+		}
+		if (isset($filters['filename']) && $filters['filename']) 
+		{
+			$where[] = "filename=" . $this->_db->Quote($filters['filename']);
+		}
+		if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+		{
+			$where[] = "created_by=" . $this->_db->Quote(intval($filters['created_by']));
+		}
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$where[] = "(LOWER(filename) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+					OR LOWER(description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		return $query;
 	}
 }

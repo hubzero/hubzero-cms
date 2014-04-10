@@ -575,8 +575,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				);
 			}
 
-			$attachment = $this->uploadTask($row->id);
-			$comment .= ($attachment) ? "\n\n".$attachment : '';
+			//$attachment = $this->uploadTask($row->id);
+			//$comment .= ($attachment) ? "\n\n".$attachment : '';
 
 			// Create a new support comment object and populate it
 			$rowc = new SupportComment($this->database);
@@ -645,6 +645,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					JError::raiseError(500, $rowc->getError());
 					return;
 				}
+
+				$attachment = $this->uploadTask($row->id, $rowc->id);
 
 				// Only do the following if a comment was posted or ticket was reassigned
 				// otherwise, we're only recording a changelog
@@ -1337,7 +1339,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	 * @param  $listdir Sub-directory to upload files to
 	 * @return string   Key to use in comment bodies (parsed into links or img tags)
 	 */
-	public function uploadTask($listdir)
+	public function uploadTask($listdir, $comment = 0)
 	{
 		// Incoming
 		$description = JRequest::getVar('description', '');
@@ -1411,6 +1413,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$row->bind(array(
 				'id'          => 0,
 				'ticket'      => $listdir,
+				'comment_id'  => $comment,
 				'filename'    => $filename . '.' . $ext,
 				'description' => $description
 			));

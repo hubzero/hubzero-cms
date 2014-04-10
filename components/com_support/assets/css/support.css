@@ -1157,3 +1157,102 @@
 	.tooltip {
 		z-index: 600;
 	}
+
+	.qq-uploading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 107px;
+		color: #fff;
+		font-size: 18px;
+		padding: 75px 0 0 0;
+		text-align: center;
+		background: rgba(0,0,0,0.75);
+	}
+	.qq-uploader {
+		position: relative;
+		margin: 1em 0 0 0;
+		padding: 0;
+	}
+	.qq-upload-list {
+		display: none;
+	}
+	.qq-upload-button,
+	.qq-upload-drop-area  {
+		background: #f7f7f7;
+		border: 2px dashed #ddd;
+		text-align: center;
+		color: #bbb;
+		padding: 0;
+		font-size: 1.5em;
+	}
+	/*.asset-uploader:hover {
+		border: 3px solid #333;
+	}*/
+	.asset-uploader .columns {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		text-align: center;
+		padding: 0.8em 0;
+	}
+	.qq-upload-button span,
+	.qq-upload-drop-area span {
+		position: relative;
+		padding-left: 1.5em;
+	}
+	.qq-upload-button span:before,
+	.qq-upload-drop-area span:before {
+		display: block;
+		position: absolute;
+		top: -0.1em;
+		font-family: "Fontcons";
+		font-size: 1.5em;
+		line-height: 1;
+		content: "\f016";
+		left: 0;
+	}
+	.qq-upload-button:hover,
+	.qq-upload-drop-area:hover,
+	.qq-upload-drop-area-active {
+		border: 2px solid #333;
+		color: #333;
+		cursor: pointer;
+	}
+	.qq-upload-drop-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+	.file-list .item-asset {
+		background: #f7f7f7;
+		border-radius: 0.25em;
+		position: relative;
+		margin: 0.5em 0;
+		padding: 0.5em 1em;
+	}
+	.file-list .item-asset .asset-file {
+		margin-right: 4em;
+		display: inline-block;
+		width: 80%;
+	}
+	.file-list .item-asset .delete {
+		font-size: 1.2em;
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		border: none;
+		position: absolute;
+		top: 0.4em;
+		right: 0.6em;
+	}
+	.file-list .item-asset .delete:before {
+		margin-right: 1em;
+		content: "\f014";
+		font-family: "Fontcons";
+	}

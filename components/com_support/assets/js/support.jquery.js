@@ -59,6 +59,39 @@ HUB.Support = {
 			});
 		}
 
+		var attach = $("#ajax-uploader");
+		if (attach.length) {
+			$('#ajax-uploader-list')
+				.on('click', 'a.delete', function (e){
+					e.preventDefault();
+					if ($(this).attr('data-id')) {
+						$.get($(this).attr('href'), {}, function(data) {});
+					}
+					$(this).parent().parent().remove();
+				});
+
+			var uploader = new qq.FileUploader({
+				element: attach[0],
+				action: attach.attr("data-action"),
+				multiple: true,
+				debug: true,
+				template: '<div class="qq-uploader">' +
+							'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+							'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+							'<ul class="qq-upload-list"></ul>' + 
+						'</div>',
+				onSubmit: function(id, file) {
+					//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
+				},
+				onComplete: function(id, file, response) {
+					// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
+					response.html = response.html.replace(/&gt;/g, '>');
+					response.html = response.html.replace(/&lt;/g, '<');
+					$('#ajax-uploader-list').append(response.html);
+				}
+			});
+		}
+
 		// Add customized tooltip (with delay so it doesn't popup when moving mouse down the screen)
 		/*$('.ticket-content').tooltip({
 			position: 'top center',
