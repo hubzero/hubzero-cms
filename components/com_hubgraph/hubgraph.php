@@ -131,7 +131,6 @@ try {
 	}
 }
 catch (Exception $ex) {
-	error_log($ex->getMessage());
 	if (!defined('HG_INLINE')) {
 		header('Location: /ysearch'.(isset($_GET['terms']) ? '?terms='.$_GET['terms'] : ''));
 		exit();
