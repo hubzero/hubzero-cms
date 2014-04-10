@@ -19,9 +19,9 @@ class Migration20140325093000ComResources extends Base
 		$params = \JComponentHelper::getParams('com_resources');
 		$upload = $params->get('uploadpath', '/site/resources');
 
-    if (!is_dir($upload))
+    if (!is_dir(JPATH_ROOT.DS.trim($upload, DS)))
     {
-      mkdir($upload);
+      mkdir(JPATH_ROOT.DS.trim($upload, DS));
     }
 
 		$path = JPATH_ROOT . DS . trim($upload, DS) . DS . 'import' . DS;
