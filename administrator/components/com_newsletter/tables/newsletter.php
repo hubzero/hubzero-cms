@@ -212,6 +212,16 @@ class NewsletterNewsletter extends JTable
 		//add copy to the name
 		$this->name .= ' (copy)';
 		$this->alias .= 'copy';
+
+		// mark unpublished
+		$this->published = 0;
+		$this->sent      = 0;
+
+		// set new created & modified date/by
+		$this->created     = JFactory::getDate()->toSql();
+		$this->created_by  = JFactory::getUser()->get('id');
+		$this->modified    = JFactory::getDate()->toSql();
+		$this->modified_by = JFactory::getUser()->get('id');
 		
 		//save the copy
 		$this->save( $this );
