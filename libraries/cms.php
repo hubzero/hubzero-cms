@@ -32,7 +32,7 @@ if (!defined('JVERSION')) {
 
 // Define the HUBzero version if not already defined.
 if (!defined('HVERSION')) {
-	define('HVERSION', "1.2.1");
+	define('HVERSION', "1.2.3");
 }
 
 // Define the HUBzero branch if not already defined.
