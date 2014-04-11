@@ -9,30 +9,30 @@
 (function() {
 	Joomla = Joomla || {};
 
-	Joomla.JMultiSelect = new Class({
-		initialize : function(table) {
-			this.table = document.id(table);
-			if (this.table) {
-				this.boxes = this.table.getElements('input[type=checkbox]');
-				this.boxes.addEvent('click', function(e){
-					this.doselect(e);
-				}.bind(this));
-			}
-		},
+	Joomla.JMultiSelect = function(table) {
 
-		doselect: function(e) {
-			var current = document.id(e.target);
-			if (e.shift && typeOf(this.last) !== 'null') {
-				var checked = current.getProperty('checked') ? 'checked' : '';
-				var range = [this.boxes.indexOf(current), this.boxes.indexOf(this.last)].sort(function(a, b) {
+		var self = this;
+		this.table = $('#' + table);
+		if (this.table.length) {
+			this.boxes = this.table.find('input[type=checkbox]');
+			this.boxes.on('click', function(e){
+				self.doselect(e);
+			});
+		}
+
+		this.doselect = function(e) {
+			var current = $(e.target);
+			if (e.shiftKey && typeof(this.last) !== 'null') {
+				var checked = current.prop('checked') ? 'checked' : '';
+				var range = [jQuery.inArray(current[0], this.boxes), jQuery.inArray(this.last[0], this.boxes)].sort(function(a, b) {
 					//Shorthand to make sort() sort numerical instead of lexicographic
 					return a-b;
 				});
 				for (var i=range[0]; i <= range[1]; i++) {
-					this.boxes[i].setProperty('checked', checked);
+					$(this.boxes[i]).prop('checked', checked);
 				}
 			}
 			this.last = current;
-		}
-	});
+		};
+	};
 })();

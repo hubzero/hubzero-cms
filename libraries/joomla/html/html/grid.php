@@ -46,8 +46,7 @@ abstract class JHtmlGrid
 
 		if ($toggle)
 		{
-			$html = '<a class="grid_' . $bool . ' hasTip" title="' . $title . '" rel="{id:\'cb' . $i . '\', task:\'' . $task
-				. '\'}" href="#toggle"></a>';
+			$html = '<a class="grid_' . $bool . ' hasTip" title="' . $title . '" rel="{id:\'cb' . $i . '\', task:\'' . $task . '\'}" href="#toggle"></a>';
 		}
 		else
 		{
@@ -117,8 +116,7 @@ abstract class JHtmlGrid
 		}
 		else
 		{
-			return '<input type="checkbox" id="cb' . $rowNum . '" name="' . $name . '[]" value="' . $recId
-				. '" onclick="Joomla.isChecked(this.checked);" title="' . JText::sprintf('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '" />';
+			return '<input type="checkbox" id="cb' . $rowNum . '" name="' . $name . '[]" value="' . $recId . '" onclick="Joomla.isChecked(this.checked);" title="' . JText::sprintf('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '" />';
 		}
 	}
 
@@ -164,8 +162,7 @@ abstract class JHtmlGrid
 		else
 		{
 			$href = '
-			<a href="javascript:void(0);" onclick="return listItemTask(\'cb' . $i . '\',\'' . $task_access . '\')" ' . $color_access . '>
-			' . JText::_($row->groupname) . '</a>';
+			<a href="javascript:void(0);" onclick="return listItemTask(\'cb' . $i . '\',\'' . $task_access . '\')" ' . $color_access . '>' . JText::_($row->groupname) . '</a>';
 		}
 
 		return $href;
@@ -242,9 +239,7 @@ abstract class JHtmlGrid
 		$alt = $value ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
 		$action = $value ? JText::_('JLIB_HTML_UNPUBLISH_ITEM') : JText::_('JLIB_HTML_PUBLISH_ITEM');
 
-		$href = '
-		<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $prefix . $task . '\')" title="' . $action . '">'
-			. JHtml::_('image', 'admin/' . $img, $alt, null, true) . '</a>';
+		$href = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $prefix . $task . '\')" title="' . $action . '">' . JHtml::_('image', 'admin/' . $img, $alt, null, true) . '</a>';
 
 		return $href;
 	}
@@ -301,8 +296,7 @@ abstract class JHtmlGrid
 	public static function order($rows, $image = 'save.png', $task = 'saveorder')
 	{
 		$image = JHtml::_('image','admin/'.$image, JText::_('JLIB_HTML_SAVE_ORDER'), NULL, true);
-		$href = '<a href="javascript:saveorder(' . (count($rows) - 1) . ', \'' . $task . '\')" class="saveorder" title="'
-			. JText::_('JLIB_HTML_SAVE_ORDER') . '">' . $image . '</a>';
+		$href = '<a href="javascript:saveorder(' . (count($rows) - 1) . ', \'' . $task . '\')" class="saveorder" title="' . JText::_('JLIB_HTML_SAVE_ORDER') . '">' . $image . '</a>';
 
 		return $href;
 	}
@@ -328,8 +322,7 @@ abstract class JHtmlGrid
 			$date = JHtml::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_LC1'));
 			$time = JHtml::_('date', $row->checked_out_time, 'H:i');
 
-			$hover = '<span class="editlinktip hasTip" title="' . JText::_('JLIB_HTML_CHECKED_OUT') . '::' . $text . '<br />' . $date . '<br />'
-				. $time . '">';
+			$hover = '<span class="editlinktip hasTip" title="' . JText::_('JLIB_HTML_CHECKED_OUT') . '::' . $text . '<br />' . $date . '<br />' . $time . '">';
 		}
 
 		$checked = $hover . JHtml::_('image', 'admin/checked_out.png', null, null, true) . '</span>';

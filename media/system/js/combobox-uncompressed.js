@@ -1,6 +1,6 @@
 /**
  * @package		Joomla.JavaScript
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -21,19 +21,22 @@ if (typeof(Joomla) === 'undefined') {
 Joomla.combobox = {};
 Joomla.combobox.transform = function(el, options)
 {
+	el = $(el);
 	// Add the editable option to the select.
-	var o = new Element('option', {'class':'custom'}).set('text', Joomla.JText._('ComboBoxInitString', 'type custom...'));
-	o.inject(el, 'top');
-	document.id(el).set('changeType', 'manual');
+	var o = $('<option class="custom">')
+				.attr('text', Joomla.JText._('ComboBoxInitString', 'type custom...'))
+				.prependTo(el);
+
+	el.attr('changeType', 'manual');
 
 	// Add a key press event handler.
-	el.addEvent('keypress', function(e){
+	el.on('keypress', function(e){
 
 		// The change in selected option was browser behavior.
-		if ((this.options.selectedIndex != 0) && (this.get('changeType') == 'auto'))
+		if ((this.options.selectedIndex != 0) && (this.attr('changeType') == 'auto'))
 		{
 			this.options.selectedIndex = 0;
-			this.set('changeType', 'manual');
+			this.attr('changeType', 'manual');
 		}
 
 		// Check to see if the character is valid.
@@ -66,7 +69,7 @@ Joomla.combobox.transform = function(el, options)
 				}
 
 				// Indicate that the change event was manually initiated.
-				this.set('changeType', 'manual');
+				this.attr('changeType', 'manual');
 			}
 
 			// Handle valid characters to add to the editable option.
@@ -86,27 +89,27 @@ Joomla.combobox.transform = function(el, options)
 	});
 
 	// Add a change event handler.
-	el.addEvent('change', function(e){
+	el.on('change', function(e){
 
 		// The change in selected option was browser behavior.
 		if ((this.options.selectedIndex != 0) && (this.get('changeType') == 'auto'))
 		{
 			this.options.selectedIndex = 0;
-			this.set('changeType', 'manual');
+			this.attr('changeType', 'manual');
 		}
 	});
 
 	// Add a keydown event handler.
-	el.addEvent('keydown', function(e){
+	el.on('keydown', function(e){
 
 		// Stop the backspace key from firing the back button of the browser.
 		if (e.code == 8 || e.code == 127) {
 			e.stop();
 
 			// Stopping the keydown event in WebKit stops the keypress event as well.
-			if (Browser.Engine.webkit || Browser.Engine.trident) {
+			/*if (Browser.Engine.webkit || Browser.Engine.trident) {
 				this.fireEvent('keypress', e);
-			}
+			}*/
 		}
 
 		if (this.options.selectedIndex == 0)
@@ -136,7 +139,7 @@ Joomla.combobox.transform = function(el, options)
 	});
 
 	// Add a keyup event handler.
-	el.addEvent('keyup', function(e){
+	el.on('keyup', function(e){
 
 		// If the left or right arrow keys are pressed, return to the editable option.
 		if ((e.key == 'left') || (e.key == 'right')) {
@@ -144,18 +147,18 @@ Joomla.combobox.transform = function(el, options)
 		}
 
 		// The change in selected option was browser behavior.
-		if ((this.options.selectedIndex != 0) && (this.get('changeType') == 'auto'))
+		if ((this.options.selectedIndex != 0) && (this.attr('changeType') == 'auto'))
 		{
 			this.options.selectedIndex = 0;
-			this.set('changeType', 'manual');
+			this.attr('changeType', 'manual');
 		}
 	});
 
 };
 
 // Load the combobox behavior into the Joomla namespace when the document is ready.
-window.addEvent('domready', function(){
-	$$('select.combobox').each(function(el){
+jQuery(document).ready(function($){
+	$('select.combobox').each(function(i, el){
 		Joomla.combobox.transform(el);
 	});
 });

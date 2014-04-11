@@ -37,7 +37,7 @@ abstract class JHtmlBehavior
 	 */
 	public static function framework($extras = false, $debug = null)
 	{
-		$type = $extras ? 'more' : 'core';
+		$type = $extras ? 'ui' : 'core';
 
 		// Only load once
 		if (!empty(self::$loaded[__METHOD__][$type]))
@@ -55,9 +55,10 @@ abstract class JHtmlBehavior
 		if ($type != 'core' && empty(self::$loaded[__METHOD__]['core']))
 		{
 			self::framework(false, $debug);
+			//JHtml::_('stylesheet', 'system/jquery.ui.css', array(), true);
 		}
 
-		JHtml::_('script', 'system/mootools-' . $type . '.js', false, true, false, false, $debug);
+		JHtml::_('script', 'system/jquery' . ($type != 'core' ? '.' . $type : '') . '.js', false, true, false, false, $debug);
 		JHtml::_('script', 'system/core.js', false, true);
 		self::$loaded[__METHOD__][$type] = true;
 
@@ -81,6 +82,9 @@ abstract class JHtmlBehavior
 		JLog::add('JBehavior::mootools is deprecated.', JLog::WARNING, 'deprecated');
 
 		self::framework(true, $debug);
+		JHtml::_('script', 'system/jquery.noconflict.js', false, true, false, false, $debug);
+		JHtml::_('script', 'system/mootools-core.js', false, true, false, false, $debug);
+		JHtml::_('script', 'system/mootools-more.js', false, true, false, false, $debug);
 	}
 
 	/**
@@ -101,14 +105,36 @@ abstract class JHtmlBehavior
 		}
 
 		// Include MooTools framework
-		self::framework();
+		self::framework(true);
 
-		JHtml::_('script', 'system/caption.js', true, true);
+		/*JHtml::_('script', 'system/caption.js', true, true);
 
 		// Attach caption to document
 		JFactory::getDocument()->addScriptDeclaration(
 			"window.addEvent('load', function() {
 				new JCaption('" . $selector . "');
+			});"
+		);*/
+		//JHtml::_('script', 'system/jquery.ui.js', true, true);
+
+		JFactory::getDocument()->addScriptDeclaration(
+			"jQuery(document).ready(function($){
+				$('" . $selector . "').tooltip({
+					position: {
+						my: 'center bottom',
+						at: 'center top'
+					},
+					create: function(event, ui) {
+						var tip = $(this),
+							tipText = tip.attr('title');
+
+						if (tipText.indexOf('::') != -1) {
+							var parts = tipText.split('::');
+							tip.attr('title', parts[1]);
+						}
+					},
+					tooltipClass: 'tooltip'
+				});
 			});"
 		);
 
@@ -151,7 +177,7 @@ abstract class JHtmlBehavior
 	 *
 	 * @since   11.1
 	 */
-	public static function switcher()
+	public static function switcher($toggler='tabs')
 	{
 		// Only load once
 		if (isset(self::$loaded[__METHOD__]))
@@ -160,19 +186,14 @@ abstract class JHtmlBehavior
 		}
 
 		// Include MooTools framework
-		self::framework();
-
-		JHtml::_('script', 'system/switcher.js', true, true);
+		self::framework(true);
 
 		$script = "
-			document.switcher = null;
-			window.addEvent('domready', function(){
-				toggler = document.id('submenu');
-				element = document.id('config-document');
-				if (element) {
-					document.switcher = new JSwitcher(toggler, element, {cookieName: toggler.getProperty('class')});
-				}
+			jQuery(document).ready(function($){
+				$('#" . $toggler . "').switcher();
 			});";
+
+		JHtml::_('script', 'system/switcher.js', false, true);
 
 		JFactory::getDocument()->addScriptDeclaration($script);
 		self::$loaded[__METHOD__] = true;
@@ -240,7 +261,7 @@ abstract class JHtmlBehavior
 		self::framework(true);
 
 		// Setup options object
-		$opt['maxTitleChars']	= (isset($params['maxTitleChars']) && ($params['maxTitleChars'])) ? (int) $params['maxTitleChars'] : 50;
+		/*$opt['maxTitleChars']	= (isset($params['maxTitleChars']) && ($params['maxTitleChars'])) ? (int) $params['maxTitleChars'] : 50;
 		// offsets needs an array in the format: array('x'=>20, 'y'=>30)
 		$opt['offset']			= (isset($params['offset']) && (is_array($params['offset']))) ? $params['offset'] : null;
 		if (!isset($opt['offset']))
@@ -255,21 +276,30 @@ abstract class JHtmlBehavior
 		$opt['onShow']			= (isset($params['onShow'])) ? '\\' . $params['onShow'] : null;
 		$opt['onHide']			= (isset($params['onHide'])) ? '\\' . $params['onHide'] : null;
 
-		$options = JHtmlBehavior::_getJSObject($opt);
+		$options = JHtmlBehavior::_getJSObject($opt);*/
 
-		// Attach tooltips to document
 		JFactory::getDocument()->addScriptDeclaration(
-			"window.addEvent('domready', function() {
-			$$('$selector').each(function(el) {
-				var title = el.get('title');
-				if (title) {
-					var parts = title.split('::', 2);
-					el.store('tip:title', parts[0]);
-					el.store('tip:text', parts[1]);
-				}
-			});
-			var JTooltips = new Tips($$('$selector'), $options);
-		});"
+			"jQuery(document).ready(function($){
+				$('" . $selector . "').tooltip({
+					track: true,
+					show: false,
+					content: function() {
+						return $(this).attr('title');
+					},
+					create: function(event, ui) {
+						var tip = $(this),
+							tipText = tip.attr('title');
+
+						if (tipText.indexOf('::') != -1) {
+							var parts = tipText.split('::');
+							tip.attr('title', '<div class=\"tip-title\">' + parts[0] + '</div><div class=\"tip-text\">' + parts[1] + '</div>');
+						} else {
+							tip.attr('title', '<div class=\"tip-text\">' + tipText + '</div>');
+						}
+					},
+					tooltipClass: 'tool-tip'
+				});
+			});"
 		);
 
 		// Set static array
@@ -310,8 +340,8 @@ abstract class JHtmlBehavior
 			self::framework();
 
 			// Load the javascript and css
-			JHtml::_('script', 'system/modal.js', true, true);
-			JHtml::_('stylesheet', 'system/modal.css', array(), true);
+			JHtml::_('script', 'system/jquery.fancybox.js', true, true);
+			JHtml::_('stylesheet', 'system/jquery.fancybox.css', array(), true);
 		}
 
 		$sig = md5(serialize(array($selector, $params)));
@@ -321,7 +351,7 @@ abstract class JHtmlBehavior
 		}
 
 		// Setup options object
-		$opt['ajaxOptions']		= (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+		/*$opt['ajaxOptions']		= (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
 		$opt['handler']			= (isset($params['handler'])) ? $params['handler'] : null;
 		$opt['fullScreen']		= (isset($params['fullScreen'])) ? (bool) $params['fullScreen'] : null;
 		$opt['parseSecure']		= (isset($params['parseSecure'])) ? (bool) $params['parseSecure'] : null;
@@ -353,6 +383,36 @@ abstract class JHtmlBehavior
 				parse: 'rel'
 			});
 		});"
+		);*/
+		$opt = array();
+		$opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+		$opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
+		$opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
+		$opt['closeBtn']   = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
+		$opt['iframe']     = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
+		if (isset($params['size']) 
+		 && is_array($params['size']))
+		{
+			$opt['width']  = $params['size']['width'];
+			$opt['height'] = $params['size']['height'];
+		}
+		$opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("rel"); }';
+		$opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
+		$opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
+		$opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;
+		$opt['afterShow']  = (isset($params['onShow'])) ? $params['onShow'] : null;
+		$opt['afterClose'] = (isset($params['onHide'])) ? $params['onHide'] : null;
+		$opt['tpl']        = (isset($params['tpl'])) ? $params['tpl'] : null;
+		$opt['autoSize']   = (isset($params['autoSize'])) ? $params['autoSize'] : false;
+		$opt['fitToView']  = (isset($params['fitToView'])) ? $params['fitToView'] : false;
+
+		$options = JHtmlBehavior::_getJSObject($opt);
+
+		// Attach modal behavior to document
+		$document->addScriptDeclaration(
+			'jQuery(document).ready(function($){
+				$("' . $selector . '").fancybox(' . $options . ');
+			});'
 		);
 
 		// Set static array
@@ -385,7 +445,7 @@ abstract class JHtmlBehavior
 
 		// Attach multiselect to document
 		JFactory::getDocument()->addScriptDeclaration(
-			"window.addEvent('domready', function() {
+			"jQuery(document).ready(function($){
 				new Joomla.JMultiSelect('" . $id . "');
 			});"
 		);
@@ -487,17 +547,19 @@ abstract class JHtmlBehavior
 		}
 
 		$document = JFactory::getDocument();
-		$tag = JFactory::getLanguage()->getTag();
-
-		JHtml::_('stylesheet', 'system/calendar-jos.css', array(' title' => JText::_('JLIB_HTML_BEHAVIOR_GREEN'), ' media' => 'all'), true);
-		JHtml::_('script', $tag . '/calendar.js', false, true);
-		JHtml::_('script', $tag . '/calendar-setup.js', false, true);
+		/*$tag = JFactory::getLanguage()->getTag();
 
 		$translation = JHtmlBehavior::_calendartranslation();
 		if ($translation)
 		{
 			$document->addScriptDeclaration($translation);
-		}
+		}*/
+		JHtml::_('stylesheet', 'system/jquery.datepicker.css', array('media' => 'all'), true);
+		JHtml::_('stylesheet', 'system/jquery.timepicker.css', array('media' => 'all'), true);
+
+		self::framework(true);
+		JHtml::_('script', 'system/jquery.timepicker.js', false, true);
+
 		self::$loaded[__METHOD__] = true;
 	}
 
@@ -516,32 +578,25 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		// Include MooTools framework
+		// Include framework
 		self::framework(true);
 
-		JHtml::_('stylesheet', 'system/mooRainbow.css', array('media' => 'all'), true);
-		JHtml::_('script', 'system/mooRainbow.js', false, true);
+		JHtml::_('stylesheet', 'system/jquery.colpick.css', array('media' => 'all'), true);
+		JHtml::_('script', 'system/jquery.colpick.js', false, true);
 
 		JFactory::getDocument()
 			->addScriptDeclaration(
-			"window.addEvent('domready', function(){
-				var nativeColorUi = false;
-				if (Browser.opera && (Browser.version >= 11.5)) {
-					nativeColorUi = true;
-				}
-				$$('.input-colorpicker').each(function(item){
-					if (nativeColorUi) {
-						item.type = 'color';
-					} else {
-						new MooRainbow(item, {
-							id: item.id,
-							imgPath: '" . JURI::root(true) . "/media/system/images/mooRainbow/',
-							onComplete: function(color) {
-								this.element.value = color.hex;
-							},
-							startColor: item.value.hexToRgb(true) ? item.value.hexToRgb(true) : [0, 0, 0]
-						});
+			"jQuery(document).ready(function($){
+				$('.input-colorpicker').colpick({
+					layout:'hex',
+					colorScheme:'dark',
+					onChange:function(hsb, hex, rgb, el, bySetColor) {
+						//$(el).css('border-color','#' + hex);
+						// Fill the text box just if the color was set using the picker, and not the colpickSetColor function.
+						if (!bySetColor) $(el).val(hex);
 					}
+				}).keyup(function(){
+					$(this).colpickSetColor(this.value);
 				});
 			});
 		");
@@ -579,15 +634,19 @@ abstract class JHtmlBehavior
 		}
 
 		$document = JFactory::getDocument();
-		$script = '';
-		$script .= 'function keepAlive() {';
-		$script .= '	var myAjax = new Request({method: "get", url: "index.php"}).send();';
-		$script .= '}';
-		$script .= ' window.addEvent("domready", function()';
-		$script .= '{ keepAlive.periodical(' . $refreshTime . '); }';
-		$script .= ');';
+		$document->addScriptDeclaration('
+			jQuery(document).ready(function($){
+				(function keepAlive() {
+					$.ajax({
+						url: "index.php", 
+						complete: function() {
+							setTimeout(keepAlive, ' . $refreshTime . ');
+						}
+					});
+				})();
+			});'
+		);
 
-		$document->addScriptDeclaration($script);
 		self::$loaded[__METHOD__] = true;
 
 		return;
@@ -616,12 +675,13 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		JHtml::_('script', 'system/highlighter.js', true, true);
+		//JHtml::_('script', 'system/highlighter.js', true, true);
+		JHtml::_('script', 'system/jquery.highlighter.js', true, true);
 
 		$terms = str_replace('"', '\"', $terms);
 
 		$document = JFactory::getDocument();
-		$document->addScriptDeclaration("
+		/*$document->addScriptDeclaration("
 			window.addEvent('domready', function () {
 				var start = document.id('" . $start . "');
 				var end = document.id('" . $end . "');
@@ -637,6 +697,12 @@ abstract class JHtmlBehavior
 				}).highlight([\"" . implode('","', $terms) . "\"]);
 				start.dispose();
 				end.dispose();
+			});
+		");*/
+
+		$document->addScriptDeclaration("
+			jQuery(document).ready(function($){
+				$('body').highlight([\"" . implode('","', $terms) . "\"]);
 			});
 		");
 
@@ -665,8 +731,15 @@ abstract class JHtmlBehavior
 		// Include MooTools framework
 		self::framework();
 
-		$js = "window.addEvent('domready', function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
-			" else {top.location = self.location; }});";
+		//$js = "window.addEvent('domready', function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
+		//	" else {top.location = self.location; }});";
+		$js = "jQuery(document).ready(function($){
+			if (top == self) {
+				document.documentElement.style.display = 'block';
+			} else {
+				top.location = self.location;
+			}
+		});";
 		$document = JFactory::getDocument();
 		$document->addStyleDeclaration('html { display:none }');
 		$document->addScriptDeclaration($js);

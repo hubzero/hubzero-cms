@@ -18,6 +18,8 @@ defined('JPATH_PLATFORM') or die;
  */
 abstract class JHtmlSliders
 {
+	public static $open = false;
+
 	/**
 	 * Creates a panes and loads the javascript behavior for it.
 	 *
@@ -31,8 +33,9 @@ abstract class JHtmlSliders
 	public static function start($group = 'sliders', $params = array())
 	{
 		self::_loadBehavior($group, $params);
+		self::$open = false;
 
-		return '<div id="' . $group . '" class="pane-sliders"><div style="display:none;"><div>';
+		return '<div id="' . $group . '" class="pane-sliders">';
 	}
 
 	/**
@@ -44,6 +47,7 @@ abstract class JHtmlSliders
 	 */
 	public static function end()
 	{
+		self::$open = false;
 		return '</div></div></div>';
 	}
 
@@ -59,8 +63,17 @@ abstract class JHtmlSliders
 	 */
 	public static function panel($text, $id)
 	{
-		return '</div></div><div class="panel"><h3 class="pane-toggler title" id="' . $id . '"><a href="javascript:void(0);"><span>' . $text
-			. '</span></a></h3><div class="pane-slider content">';
+		$content = '';
+		if (self::$open)
+		{
+			$content .= '</div></div>';
+		}
+		else
+		{
+			self::$open = true;
+		}
+		$content .= '<h3 class="pane-toggler title" id="' . $id . '"><a href="#' . $id . '"><span>' . $text . '</span></a></h3><div class="panel"><div class="pane-slider content">';
+		return $content;
 	}
 
 	/**
@@ -88,20 +101,21 @@ abstract class JHtmlSliders
 				? (int) $params['startOffset'] : null;
 			$show = (isset($params['startOffset']) && !(isset($params['startTransition']) && $params['startTransition']))
 				? (int) $params['startOffset'] : null;
+
 			$options = '{';
-			$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
-				"toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_"
-				. $group . "',$$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
+			$opt = array();
+			$opt['heightStyle'] = "'content'";
+			/*$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
+				"toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_" . $group . "',$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
 			$opt['onBackground'] = "function(toggler, i) {toggler.addClass('pane-toggler');" .
-				"toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($$('div#"
-				. $group . ".pane-sliders > .panel > h3').length==$$('div#" . $group
-				. ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" . $group . "',-1);}";
+				"toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($('div#"
+				. $group . ".pane-sliders > .panel > h3').length==$('div#" . $group . ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" . $group . "',-1);}";
 			$opt['duration'] = (isset($params['duration'])) ? (int) $params['duration'] : 300;
 			$opt['display'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $display, 'cookie')
 				: $display;
 			$opt['show'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $show, 'cookie') : $show;
 			$opt['opacity'] = (isset($params['opacityTransition']) && ($params['opacityTransition'])) ? 'true' : 'false';
-			$opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';
+			$opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';*/
 			foreach ($opt as $k => $v)
 			{
 				if ($v)
@@ -115,9 +129,9 @@ abstract class JHtmlSliders
 			}
 			$options .= '}';
 
-			$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#" . $group
-				. ".pane-sliders > .panel > h3.pane-toggler'), $$('div#" . $group . ".pane-sliders > .panel > div.pane-slider'), " . $options
-				. "); });";
+			$js = "jQuery(document).ready(function($){
+				$('div#" . $group . "').accordion(" . $options . ");
+			});";
 
 			$document->addScriptDeclaration($js);
 		}

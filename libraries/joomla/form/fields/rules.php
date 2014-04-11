@@ -104,7 +104,9 @@ class JFormFieldRules extends JFormField
 		$html = array();
 		$html[] = '<div id="permissions-sliders" class="pane-sliders">';
 		$html[] = '<p class="rule-desc">' . JText::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
-		$html[] = '<ul id="rules">';
+		$html[] = '<div id="permissions-rules">';
+		//$html[] = '<ul id="rules">';
+
 
 		// Start a row for each user group.
 		foreach ($groups as $group)
@@ -113,21 +115,22 @@ class JFormFieldRules extends JFormField
 
 			if ($difLevel > 0)
 			{
-				$html[] = '<li><ul>';
+				//$html[] = '<li><ul>';
 			}
 			elseif ($difLevel < 0)
 			{
-				$html[] = str_repeat('</ul></li>', -$difLevel);
+				//$html[] = str_repeat('</ul></li>', -$difLevel);
 			}
 
-			$html[] = '<li>';
+			//$html[] = '<li>';
 
-			$html[] = '<div class="panel">';
+			//$html[] = '<div class="panel">';
 			$html[] = '<h3 class="pane-toggler title"><a href="javascript:void(0);"><span>';
 			$html[] = str_repeat('<span class="level">|&ndash;</span> ', $curLevel = $group->level) . $group->text;
 			$html[] = '</span></a></h3>';
+			$html[] = '<div class="panel">';
 			$html[] = '<div class="pane-slider content pane-hide">';
-			$html[] = '<div class="mypanel">';
+			
 			$html[] = '<table class="group-rules">';
 			$html[] = '<thead>';
 			$html[] = '<tr>';
@@ -259,15 +262,15 @@ class JFormFieldRules extends JFormField
 			}
 
 			$html[] = '</tbody>';
-			$html[] = '</table></div>';
+			$html[] = '</table>';
 
 			$html[] = '</div></div>';
-			$html[] = '</li>';
+			//$html[] = '</li>';
 
 		}
 
-		$html[] = str_repeat('</ul></li>', $curLevel);
-		$html[] = '</ul><div class="rule-notes">';
+		//$html[] = str_repeat('</ul></li>', $curLevel) . '</ul>';
+		$html[] = '</div><div class="rule-notes">';
 		if ($section == 'component' || $section == null)
 		{
 			$html[] = JText::_('JLIB_RULES_SETTING_NOTES');
@@ -276,9 +279,10 @@ class JFormFieldRules extends JFormField
 		{
 			$html[] = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
 		}
-		$html[] = '</div></div>';
+		$html[] = '</div>';
+		$html[] = '</div>';
 
-		$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#permissions-sliders.pane-sliders .panel h3.pane-toggler'),"
+		/*$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#permissions-sliders.pane-sliders .panel h3.pane-toggler'),"
 			. "$$('div#permissions-sliders.pane-sliders .panel div.pane-slider'), {onActive: function(toggler, i) {toggler.addClass('pane-toggler-down');"
 			. "toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_permissions-sliders"
 			. $component
@@ -286,7 +290,12 @@ class JFormFieldRules extends JFormField
 			. "onBackground: function(toggler, i) {toggler.addClass('pane-toggler');toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');"
 			. "i.removeClass('pane-down');}, duration: 300, display: "
 			. JRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", show: "
-			. JRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", alwaysHide:true, opacity: false}); });";
+			. JRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", alwaysHide:true, opacity: false}); });";*/
+		$js = "jQuery(document).ready(function($){
+				$('div#permissions-rules').accordion({
+					heightStyle: 'content'
+				});
+			});";
 
 		JFactory::getDocument()->addScriptDeclaration($js);
 

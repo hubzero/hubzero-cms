@@ -848,7 +848,7 @@ abstract class JHtml
 	 *
 	 * @since   11.1
 	 */
-	public static function calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
+	public static function calendar($value, $name, $id, $format = 'yy-mm-dd', $attribs = null)
 	{
 		static $done;
 
@@ -873,8 +873,9 @@ abstract class JHtml
 			// Only display the triggers once for each control.
 			if (!in_array($id, $done))
 			{
+				$format = ($format == 'Y-m-d H:i:s' || $format == '%Y-%m-%d %H:%M:%S' || $format == 'Y-m-d' ? 'yy-mm-dd' : $format);
 				$document = JFactory::getDocument();
-				$document
+				/*$document
 					->addScriptDeclaration(
 					'window.addEvent(\'domready\', function() {Calendar.setup({
 				// Id of the input field
@@ -888,12 +889,27 @@ abstract class JHtml
 				singleClick: true,
 				firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
 				});});'
-				);
+				);*/
+				$document->addScriptDeclaration("
+					jQuery(document).ready(function($){
+						$('#" . $id . "').datetimepicker({  
+							duration: '',
+							showTime: true,
+							constrainInput: false,
+							stepMinutes: 1,
+							stepHours: 1,
+							altTimeField: '',
+							time24h: true,
+							dateFormat: '" . $format . "',
+							timeFormat: 'HH:mm:00'
+						});
+					});
+				");
 				$done[] = $id;
 			}
-			return '<input type="text" title="' . (0 !== (int) $value ? self::_('date', $value, null, null) : '') . '" name="' . $name . '" id="' . $id
+			return '<span class="input-datetime"><input type="text" title="' . (0 !== (int) $value ? self::_('date', $value, null, null) : '') . '" name="' . $name . '" id="' . $id
 				. '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />'
-				. self::_('image', 'system/calendar.png', JText::_('JLIB_HTML_CALENDAR'), array('class' => 'calendar', 'id' => $id . '_img'), true);
+				. self::_('image', 'system/calendar.png', JText::_('JLIB_HTML_CALENDAR'), array('class' => 'calendar', 'id' => $id . '_img'), true) . '</span>';
 		}
 		else
 		{

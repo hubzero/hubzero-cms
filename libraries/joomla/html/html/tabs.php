@@ -18,6 +18,8 @@ defined('JPATH_PLATFORM') or die;
  */
 abstract class JHtmlTabs
 {
+	public static $open = false;
+
 	/**
 	 * Creates a panes and creates the JavaScript object for it.
 	 *
@@ -31,8 +33,9 @@ abstract class JHtmlTabs
 	public static function start($group = 'tabs', $params = array())
 	{
 		self::_loadBehavior($group, $params);
+		self::$open = false;
 
-		return '<dl class="tabs" id="' . $group . '"><dt style="display:none;"></dt><dd style="display:none;">';
+		return '<dl class="tabs" id="' . $group . '">';
 	}
 
 	/**
@@ -44,6 +47,7 @@ abstract class JHtmlTabs
 	 */
 	public static function end()
 	{
+		self::$open = false;
 		return '</dd></dl>';
 	}
 
@@ -59,7 +63,17 @@ abstract class JHtmlTabs
 	 */
 	public static function panel($text, $id)
 	{
-		return '</dd><dt class="tabs ' . $id . '"><span><h3><a href="javascript:void(0);">' . $text . '</a></h3></span></dt><dd class="tabs">';
+		$content = '';
+		if (self::$open)
+		{
+			$content .= '</dd>';
+		}
+		else
+		{
+			self::$open = true;
+		}
+		$content .= '<dt id="tab' . $id . '"><a href="#tab' . $id . '">' . $text . '</a></dt><dd>';
+		return $content;
 	}
 
 	/**
@@ -104,15 +118,14 @@ abstract class JHtmlTabs
 
 			$options .= '}';
 
-			$js = '	window.addEvent(\'domready\', function(){
-						$$(\'dl#' . $group . '.tabs\').each(function(tabs){
-							new JTabs(tabs, ' . $options . ');
-						});
+			$js = 'jQuery(document).ready(function($){
+						$("dl#' . $group . '.tabs").tabs();
 					});';
 
 			$document = JFactory::getDocument();
 			$document->addScriptDeclaration($js);
-			JHtml::_('script', 'system/tabs.js', false, true);
+
+			JHtml::_('script', 'system/jquery.tabs.js', false, true);
 
 			$loaded[(string) $group] = true;
 		}

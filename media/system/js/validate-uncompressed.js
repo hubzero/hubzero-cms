@@ -3,14 +3,6 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-Object.append(Browser.Features, {
-	inputemail: (function() {
-		var i = document.createElement("input");
-		i.setAttribute("type", "email");
-		return i.type !== "text";
-	})()
-});
-
 /**
  * Unobtrusive Form Validation library
  *
@@ -20,8 +12,9 @@ Object.append(Browser.Features, {
  * @subpackage	Forms
  * @since		1.5
  */
-var JFormValidator = new Class({
-	initialize: function()
+//var JFormValidator = new Class({
+var JFormValidator = function() {
+	this.initialize = function()
 	{
 		// Initialize variables
 		this.handlers	= Object();
@@ -59,51 +52,59 @@ var JFormValidator = new Class({
 		// Attach to forms with class 'form-validate'
 		var forms = $$('form.form-validate');
 		forms.each(function(form){ this.attachToForm(form); }, this);
-	},
+	};
 
-	setHandler: function(name, fn, en)
+	this.setHandler = function(name, fn, en)
 	{
 		en = (en == '') ? true : en;
 		this.handlers[name] = { enabled: en, exec: fn };
-	},
+	};
 
-	attachToForm: function(form)
+	this.attachToForm = function(form)
 	{
 		// Iterate through the form object and attach the validate method to all input fields.
-		form.getElements('input,textarea,select,button').each(function(el){
+		form.find('input,textarea,select,button').each(function(i, el){
+			el = $(el);
 			if (el.hasClass('required')) {
-				el.set('aria-required', 'true');
-				el.set('required', 'required');
+				el.attr('aria-required', 'true');
+				el.attr('required', 'required');
 			}
-			if ((document.id(el).get('tag') == 'input' || document.id(el).get('tag') == 'button') && document.id(el).get('type') == 'submit') {
+			if ((el.prop('tagName') == 'input' || $(el).prop('tagName') == 'button') && $(el).attr('type') == 'submit') {
 				if (el.hasClass('validate')) {
-					el.onclick = function(){return document.formvalidator.isValid(this.form);};
+					el.on('click', function(){return document.formvalidator.isValid(this.form);});
 				}
 			} else {
-				el.addEvent('blur', function(){return document.formvalidator.validate(this);});
-				if (el.hasClass('validate-email') && Browser.Features.inputemail) {
-					el.type = 'email';
+				el.on('blur', function(){return document.formvalidator.validate(this);});
+				if (el.hasClass('validate-email') && this.inputemail) {
+					el.attr('type') = 'email';
 				}
 			}
 		});
-	},
+	};
 
-	validate: function(el)
+	this.inputemail = function() 
 	{
-		el = document.id(el);
+		var i = document.createElement("input");
+		i.setAttribute("type", "email");
+		return i.type !== "text";
+	};
+
+	this.validate = function(el)
+	{
+		el = $(el);
 
 		// Ignore the element if its currently disabled, because are not submitted for the http-request. For those case return always true.
-		if(el.get('disabled') && !(el.hasClass('required'))) {
+		if (el.attr('disabled') && !(el.hasClass('required'))) {
 			this.handleResponse(true, el);
 			return true;
 		}
 
 		// If the field is required make sure it has a value
 		if (el.hasClass('required')) {
-			if (el.get('tag')=='fieldset' && (el.hasClass('radio') || el.hasClass('checkboxes'))) {
+			if (el.prop('tagName')=='fieldset' && (el.hasClass('radio') || el.hasClass('checkboxes'))) {
 				for(var i=0;;i++) {
-					if (document.id(el.get('id')+i)) {
-						if (document.id(el.get('id')+i).checked) {
+					if ($(el.attr('id')+i)) {
+						if ($(el.attr('id')+i).checked) {
 							break;
 						}
 					}
@@ -113,7 +114,7 @@ var JFormValidator = new Class({
 					}
 				}
 			}
-			else if (!(el.get('value'))) {
+			else if (!(el.val())) {
 				this.handleResponse(false, el);
 				return false;
 			}
@@ -138,14 +139,14 @@ var JFormValidator = new Class({
 		// Return validation state
 		this.handleResponse(true, el);
 		return true;
-	},
+	};
 
-	isValid: function(form)
+	this.isValid = function(form)
 	{
 		var valid = true;
 
 		// Validate form fields
-		var elements = form.getElements('fieldset').concat(Array.from(form.elements));
+		var elements = form.find('fieldset').concat(Array.from(form.elements));
 		for (var i=0;i < elements.length; i++) {
 			if (this.validate(elements[i]) == false) {
 				valid = false;
@@ -160,9 +161,9 @@ var JFormValidator = new Class({
 		});
 
 		return valid;
-	},
+	};
 
-	handleResponse: function(state, el)
+	this.handleResponse = function(state, el)
 	{
 		// Find the label object for the given field if it exists
 		if (!(el.labelref)) {
@@ -177,23 +178,23 @@ var JFormValidator = new Class({
 		// Set the element and its label (if exists) invalid state
 		if (state == false) {
 			el.addClass('invalid');
-			el.set('aria-invalid', 'true');
+			el.attr('aria-invalid', 'true');
 			if (el.labelref) {
-				document.id(el.labelref).addClass('invalid');
-				document.id(el.labelref).set('aria-invalid', 'true');
+				$(el.labelref).addClass('invalid');
+				$(el.labelref).attr('aria-invalid', 'true');
 			}
 		} else {
 			el.removeClass('invalid');
-			el.set('aria-invalid', 'false');
+			el.attr('aria-invalid', 'false');
 			if (el.labelref) {
-				document.id(el.labelref).removeClass('invalid');
-				document.id(el.labelref).set('aria-invalid', 'false');
+				$(el.labelref).removeClass('invalid');
+				$(el.labelref).attr('aria-invalid', 'false');
 			}
 		}
-	}
-});
+	};
+};
 
 document.formvalidator = null;
-window.addEvent('domready', function(){
+jQuery(document).ready(function($){
 	document.formvalidator = new JFormValidator();
 });
