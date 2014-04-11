@@ -192,7 +192,7 @@ function submitbutton(pressbutton)
 						<tr>
 							<th><?php echo JText::_('Created Date:'); ?></th>
 							<td>
-								<?php echo date("F d, Y @ g:ia", strtotime($this->newsletter->created)); ?>
+								<?php echo JHTML::_('date', $this->newsletter->created, 'F d, Y @ g:ia'); ?>
 								<input type="hidden" name="newsletter[created]" value="<?php echo $this->newsletter->created; ?>" />
 							</td>
 						</tr>
@@ -215,7 +215,7 @@ function submitbutton(pressbutton)
 						<tr>
 							<th><?php echo JText::_('Last Modified On:'); ?></th>
 							<td>
-								<?php echo date("F d, Y @ g:ia", strtotime($this->newsletter->modified)); ?>
+								<?php echo JHTML::_('date', $this->newsletter->modified, 'F d, Y @ g:ia'); ?>
 								<input type="hidden" name="newsletter[modified]" value="<?php echo $this->newsletter->modified; ?>" />
 							</td>
 						</tr>
