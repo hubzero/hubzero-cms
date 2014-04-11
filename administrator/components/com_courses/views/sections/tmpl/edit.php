@@ -42,13 +42,12 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 
 
-JHtml::_('behavior.switcher');
-
+JHtml::_('behavior.switcher', 'submenu');
+JHtml::_('behavior.calendar');
 
 $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
-$this->css()
-     ->css('classic');
+$this->css(); //->css('classic');
 
 $course_id = 0;
 ?>
@@ -71,19 +70,15 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	}
 }
-document.switcher = null;
-window.addEvent('domready', function(){
-	toggler = document.id('submenu');
-	element = document.id('section-document');
-	if (element) {
-		document.switcher = new JSwitcher(toggler, element, {cookieName: toggler.getProperty('class')});
-	}
+jQuery(document).ready(function($){
+	$('#section-document').tabs();
 });
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
@@ -331,8 +326,6 @@ window.addEvent('domready', function(){
 								</tbody>
 							</table>
 
-							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
-							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
 							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.fileuploader.js"></script>
 							<script type="text/javascript">
 							String.prototype.nohtml = function () {
@@ -342,9 +335,7 @@ window.addEvent('domready', function(){
 									return this + '&no_html=1';
 								}
 							};
-							jQuery(document).ready(function(jq){
-								var $ = jq;
-								
+							jQuery(document).ready(function($){
 								if ($("#ajax-uploader").length) {
 									var uploader = new qq.FileUploader({
 										element: $("#ajax-uploader")[0],
@@ -457,21 +448,22 @@ window.addEvent('domready', function(){
 				<?php if (!$this->row->exists() && !$this->row->get('is_default')) { ?>
 				<p class="info"><?php echo JText::_('Dates and times are initially inherited from the default section for this offering.'); ?></p>
 				<?php } ?>
-				<script src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
-				<script src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script>
-				<script src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
-				<script src="components/com_courses/assets/js/jquery-ui-timepicker-addon.js"></script>
-				<?php 
-				jimport('joomla.html.pane');
-				$tabs = JPane::getInstance('sliders');
 
-				echo $tabs->startPane("content-pane"); 
+				<?php 
+				//jimport('joomla.html.pane');
+				//$tabs = JPane::getInstance('sliders');
+
+				//echo $tabs->startPane("content-pane"); 
+				echo JHtml::_('sliders.start', 'content-pane');
+				
+
 				$this->offering->section($this->row->get('alias', '__default'));
 
 					$i = 0;
 					foreach ($this->offering->units(array(), true) as $unit) 
 					{
-						echo $tabs->startPanel(stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
+						echo JHtml::_('sliders.panel', stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
+						//echo $tabs->startPanel(stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
 				?>
 							<input type="hidden" name="dates[<?php echo $i; ?>][id]" value="<?php echo $this->row->date('unit', $unit->get('id'))->get('id'); ?>" />
 							<input type="hidden" name="dates[<?php echo $i; ?>][scope]" value="unit" />
@@ -710,14 +702,14 @@ window.addEvent('domready', function(){
 							</table>
 				<?php
 						$i++;
-						echo $tabs->endPanel();
+						//echo $tabs->endPanel();
 					}
-				echo $tabs->endPane();
+				//echo $tabs->endPane();
+				echo JHtml::_('sliders.end');
 				?>
 				<!-- </fieldset> -->
 				<script type="text/javascript">
-				jQuery(document).ready(function(jq){
-					var $ = jq;
+				jQuery(document).ready(function($){
 					$('.datetime-field').datetimepicker({  
 						duration: '',
 						showTime: true,

@@ -134,9 +134,6 @@ $doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/ass
 	<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css" />
 </form>
 
-<script src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
-<script src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script>
-<script src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.layout.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.geom.min.js"></script>

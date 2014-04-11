@@ -73,8 +73,8 @@ if ($this->row->id) {
 }
 
 // Instantiate the sliders object
-jimport('joomla.html.pane');
-$tabs = JPane::getInstance('sliders');
+//jimport('joomla.html.pane');
+//$tabs = JPane::getInstance('sliders');
 
 $time = $this->attribs->get('timeof', '');
 $time = strtotime($time) === false ? NULL : $time;
@@ -350,8 +350,10 @@ function popratings()
 		</fieldset>
 <?php }
 
-		echo $tabs->startPane("content-pane");
-		echo $tabs->startPanel('Publishing','publish-page');
+		//echo $tabs->startPane("content-pane");
+		//echo $tabs->startPanel('Publishing','publish-page');
+	echo JHtml::_('sliders.start', 'content-pane');
+	echo JHtml::_('sliders.panel', JText::_('Publishing'), 'publish-page');
 ?>
 		<table class="paramlist admintable">
 			<tbody>
@@ -420,8 +422,9 @@ function popratings()
 			</tbody>
 		</table>
 <?php
-		echo $tabs->endPanel();
-		echo $tabs->startPanel('Files','file-page');
+		//echo $tabs->endPanel();
+		//echo $tabs->startPanel('Files','file-page');
+		echo JHtml::_('sliders.panel', JText::_('Files'), 'file-page');
 ?>
 		<p>
 			<label>
@@ -437,20 +440,23 @@ function popratings()
 		<iframe width="100%" height="400" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;listdir=<?php echo $path . DS . $dir_id; ?>"></iframe>
 		<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
 <?php
-		echo $tabs->endPanel();
+		//echo $tabs->endPanel();
 
 		if ($this->row->standalone == 1) {
-			echo $tabs->startPanel('Tags','tags-page');
+			//echo $tabs->startPanel('Tags','tags-page');
+			echo JHtml::_('sliders.panel', JText::_('Tags'), 'tags-page');
 			?>
 			<textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
 			<?php
-			echo $tabs->endPanel();
+			//echo $tabs->endPanel();
 
-			echo $tabs->startPanel('Parameters','params-page');
+			//echo $tabs->startPanel('Parameters','params-page');
+			echo JHtml::_('sliders.panel', JText::_('Parameters'), 'params-page');
 			echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
-			echo $tabs->endPanel();
+			//echo $tabs->endPanel();
 		} else {
-			echo $tabs->startPanel('Parameters','params-page');
+			//echo $tabs->startPanel('Parameters','params-page');
+			echo JHtml::_('sliders.panel', JText::_('Parameters'), 'params-page');
 			?>
 			<table width="100%" class="paramlist admintable" cellspacing="1">
 				<tr>
@@ -470,10 +476,11 @@ function popratings()
 				</tr>
 			</table>
 			<?php
-			echo $tabs->endPanel();
+			//echo $tabs->endPanel();
 		}
 
-		echo $tabs->endPane();
+		//echo $tabs->endPane();
+		echo JHtml::_('sliders.end');
 ?>
 
 	</div>

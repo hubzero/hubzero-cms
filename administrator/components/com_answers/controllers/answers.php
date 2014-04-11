@@ -164,11 +164,11 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		{
 			$id = $ids[0];
 		}
-		if (!$qid)
+		/*if (!$qid)
 		{
 			$qid = $id;
 			$id = 0;
-		}
+		}*/
 
 		if (is_object($row))
 		{

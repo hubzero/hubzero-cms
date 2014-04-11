@@ -34,7 +34,7 @@ $canDo = MembersHelper::getActions('component');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('MEMBER') . ': <small><small>[ ' . $text . ' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('MEMBER') . ': ' . $text, 'user.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
@@ -61,7 +61,7 @@ if (!$surname) {
 //jimport('joomla.html.pane');
 //$tabs = JPane::getInstance('sliders');
 
-JHtml::_('behavior.switcher');
+JHtml::_('behavior.switcher', 'submenu');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -75,14 +75,6 @@ function submitbutton(pressbutton)
 	
 	submitform(pressbutton);
 }
-document.switcher = null;
-window.addEvent('domready', function(){
-	toggler = document.id('submenu');
-	element = document.id('member-document');
-	if (element) {
-		document.switcher = new JSwitcher(toggler, element, {cookieName: toggler.getProperty('class')});
-	}
-});
 </script>
 
 <form action="index.php" method="post" name="adminForm">

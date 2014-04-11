@@ -18,7 +18,7 @@ JHtml::_('behavior.formvalidation');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (document.formvalidator.isValid(document.id('component-form'))) {
+		if (document.formvalidator.isValid($('#component-form'))) {
 			Joomla.submitform(task, document.getElementById('component-form'));
 		}
 	}
@@ -30,7 +30,7 @@ JHtml::_('behavior.formvalidation');
 				<?php echo JText::_('JAPPLY');?></button>
 			<button type="button" onclick="Joomla.submitform('component.save', this.form);">
 				<?php echo JText::_('JSAVE');?></button>
-			<button type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.$.fancybox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 		<div class="configuration" >

@@ -47,6 +47,8 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
+JHTML::_('behavior.framework', true);
+
 $paramsClass = 'JParameter';
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
@@ -114,10 +116,10 @@ function submitbutton(pressbutton)
 				</tr>
 <?php } ?>
 				<tr>
-					<td class="key"><label><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label></td>
+					<td class="key"><label for="field-description"><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label></td>
 					<td><?php 
 						$editor = JFactory::getEditor();
-						echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false);
+						echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal'));
 					?></td>
 				</tr>
 			</tbody>
@@ -282,9 +284,6 @@ function submitbutton(pressbutton)
 			</tbody>
 		</table>
 
-		<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.js"></script> 
-		<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script> 
-		<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script> 
 		<script type="text/javascript">
 			if (!jq) {
 				var jq = $;

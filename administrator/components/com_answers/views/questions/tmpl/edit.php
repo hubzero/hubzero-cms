@@ -85,19 +85,19 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="q_subject">Subject: <span class="required">*</span></label><br />
+							<label for="q_subject">Subject: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
 							<input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->subject('raw')); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="question[question]">Question:</label><br />
-							<?php echo $editor->display('question[question]', $this->row->content('raw'), '100%', 'auto', '50', '15'); ?>
+							<label for="field-question">Question:</label><br />
+							<?php echo JFactory::getEditor()->display('question[question]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-question', null, null, array('class' => 'minimal no-footer')); ?>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="q_tags">Tags: <span class="required">*</span></label><br />
+							<label for="q_tags">Tags: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
 							<textarea name="question[tags]" id="q_tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 						</td>
 					</tr>

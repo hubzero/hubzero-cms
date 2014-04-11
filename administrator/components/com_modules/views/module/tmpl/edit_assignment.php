@@ -14,27 +14,32 @@ require_once JPATH_ADMINISTRATOR.'/components/com_menus/helpers/menus.php';
 $menuTypes = MenusHelper::getMenuLinks();
 ?>
 		<script type="text/javascript">
-			window.addEvent('domready', function(){
+			jQuery(document).ready(function($){
 				validate();
-				document.getElements('select').addEvent('change', function(e){validate();});
+				$('select').on('change', function(e){validate();});
 			});
 			function validate(){
-				var value	= document.id('jform_assignment').value;
-				var list	= document.id('menu-assignment');
-				if(value == '-' || value == '0'){
-					$$('.jform-assignments-button').each(function(el) {el.setProperty('disabled', true); });
-					list.getElements('input').each(function(el){
-						el.setProperty('disabled', true);
+				var value = $('#jform_assignment').val(),
+					list  = $('#menu-assignment');
+
+				if (value == '-' || value == '0') {
+					$('.jform-assignments-button').each(function(i, el) {
+						$(el).prop('disabled', true);
+					});
+					list.find('input').each(function(i, el){
+						$(el).prop('disabled', true);
 						if (value == '-'){
-							el.setProperty('checked', false);
+							$(el).prop('checked', false);
 						} else {
-							el.setProperty('checked', true);
+							$(el).prop('checked', true);
 						}
 					});
 				} else {
-					$$('.jform-assignments-button').each(function(el) {el.setProperty('disabled', false); });
-					list.getElements('input').each(function(el){
-						el.setProperty('disabled', false);
+					$('.jform-assignments-button').each(function(i, el) {
+						$(el).prop('disabled', false);
+					});
+					list.find('input').each(function(i, el){
+						$(el).prop('disabled', false);
 					});
 				}
 			}
@@ -53,15 +58,15 @@ $menuTypes = MenusHelper::getMenuLinks();
 
 			<label id="jform_menuselect-lbl" for="jform_menuselect"><?php echo JText::_('JGLOBAL_MENU_SELECTION'); ?></label>
 
-			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.chkbox').each(function(el) { el.checked = !el.checked; });">
+			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.chkbox').each(function(i, el) { el.checked = !el.checked; });">
 				<?php echo JText::_('JGLOBAL_SELECTION_INVERT'); ?>
 			</button>
 
-			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.chkbox').each(function(el) { el.checked = false; });">
+			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.chkbox').each(function(i, el) { el.checked = false; });">
 				<?php echo JText::_('JGLOBAL_SELECTION_NONE'); ?>
 			</button>
 
-			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.chkbox').each(function(el) { el.checked = true; });">
+			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.chkbox').each(function(i, el) { el.checked = true; });">
 				<?php echo JText::_('JGLOBAL_SELECTION_ALL'); ?>
 			</button>
 
@@ -76,15 +81,15 @@ $menuTypes = MenusHelper::getMenuLinks();
 				
 				$chkbox_class = 'chk-menulink-' . $type->id; ?>
 				
-				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.<?php echo $chkbox_class; ?>').each(function(el) { el.checked = !el.checked; });">
+				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.<?php echo $chkbox_class; ?>').each(function(i, el) { el.checked = !el.checked; });">
 					<?php echo JText::_('JGLOBAL_SELECTION_INVERT'); ?>
 				</button>
 				
-				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.<?php echo $chkbox_class; ?>').each(function(el) { el.checked = false; });">
+				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.<?php echo $chkbox_class; ?>').each(function(i, el) { el.checked = false; });">
 					<?php echo JText::_('JGLOBAL_SELECTION_NONE'); ?>
 				</button>
 				
-				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.<?php echo $chkbox_class; ?>').each(function(el) { el.checked = true; });">
+				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.<?php echo $chkbox_class; ?>').each(function(i, el) { el.checked = true; });">
 					<?php echo JText::_('JGLOBAL_SELECTION_ALL'); ?>
 				</button>
 				

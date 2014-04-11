@@ -364,86 +364,70 @@ JHTML::_('behavior.tooltip');
 </form>
 
 <script type="text/javascript">
-	window.addEvent('domready', function(){
+	jQuery(document).ready(function($){
 		addDeleteQueryEvent();
 	});
 	function addDeleteQueryEvent()
 	{
-		$$('.views .delete').each(function (el) {
-			$(el).addEvent('click', function (e){
-				new Event(e).stop();
+		$('.views').on('click', '.delete', function (e){
+			e.preventDefault();
 
-				var res = confirm('Are you sure you wish to delete this item?');
-				if (!res) {
-					return false;
-				}
-
-				var href = $(this).href;
-				if (href.indexOf('?') == -1) {
-					href += '?no_html=1';
-				} else {
-					href += '&no_html=1';
-				}
-
-				var myAjax = new Ajax(href, {
-					method: 'get',
-					update: $('custom-views'),
-					evalScripts: false,
-					onSuccess: function() {
-						addDeleteQueryEvent();
-					}
-				}).request();
-				
+			var res = confirm('Are you sure you wish to delete this item?');
+			if (!res) {
 				return false;
-			});
-		});
-		$$('.fltlft h3').each(function(el) {
-			$(el).addEvent('click', function (e){
-				e.preventDefault();
-				if (!$(this).hasClass('closed')) {
-					$(this).addClass('closed');
-					$($(this).getProperty('data-views')).addClass('closed');
-				} else {
-					$(this).removeClass('closed');
-					$($(this).getProperty('data-views')).removeClass('closed');
-				}
-			});
-		});
-		var clear = $('clear-search');
-						// Create the clear button if it doesn't already exist
-			if (!clear) {
-				var close = new Element('span', {
-					id: 'clear-search',
-					styles: {
-						'display': 'none'
-					},
-					events: {
-							'click': function(event) {
-								$('filter_search').value = '';
-								$('ticketForm').submit();
-							}
-						}
-				}).injectInside($('filter-bar'));
 			}
-		if ($('filter_search').value != '') {
-			$('clear-search').setStyles({
-				display: 'block'
+
+			var href = $(this).href;
+			if (href.indexOf('?') == -1) {
+				href += '?no_html=1';
+			} else {
+				href += '&no_html=1';
+			}
+
+			$.get(href, {}, function(response){
+				$('#custom-views').html(response);
 			});
+			
+			return false;
+		});
+		$('.fltlft h3').on('click', function (e){
+			e.preventDefault();
+
+			if (!$(this).hasClass('closed')) {
+				$(this).addClass('closed');
+				$($(this).attr('data-views')).addClass('closed');
+			} else {
+				$(this).removeClass('closed');
+				$($(this).attr('data-views')).removeClass('closed');
+			}
+		});
+
+		var clear = $('#clear-search');
+		// Create the clear button if it doesn't already exist
+		if (!clear.length) {
+			var close = $('<span>')
+							.attr('id', 'clear-search')
+							.css('display', 'none')
+							.on('click', function(event) {
+								$('#filter_search').value = '';
+								$('#ticketForm').submit();
+							})
+							.appendTo($('#filter-bar'));
 		}
 
-		$('filter_search').addEvent('keyup', function (e) {
-			var clear = $('clear-search');
+		if ($('#filter_search').val() != '') {
+			$('#clear-search').css('display', 'block');
+		}
+
+		$('#filter_search').on('keyup', function (e) {
+			var clear = $('#clear-search');
 			// Show the button
-			if (this.value != '') {
-				if (clear.getStyle('display') != 'block') {
-					clear.setStyles({
-						display: 'block'
-					});
+			if ($(this).val() != '') {
+				if (clear.css('display') != 'block') {
+					clear.css('display', 'block');
 				}
 			} else {
-				clear.setStyles({
-						display: 'none'
-					});
+				clear.css('display', 'none');
 			}
 		});
 	}

@@ -17,13 +17,13 @@ $hasContent = empty($this->item->module) || $this->item->module == 'custom' || $
 
 $script = "Joomla.submitbutton = function(task)
 	{
-			if (task == 'module.cancel' || document.formvalidator.isValid(document.id('module-form'))) {";
+			if (task == 'module.cancel' || document.formvalidator.isValid($('#module-form'))) {";
 if ($hasContent) {
 	$script .= $this->form->getField('content')->save();
 }
 $script .= "	Joomla.submitform(task, document.getElementById('module-form'));
 				if (self != top) {
-					window.top.setTimeout('window.parent.SqueezeBox.close()', 1000);
+					window.top.setTimeout('window.parent.$.fancybox().close()', 1000);
 				}
 			} else {
 				alert('".$this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'))."');

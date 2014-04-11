@@ -32,17 +32,16 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS') . ': <small><small>[ ' . JText::_('Focus Areas') . ' ]</small></small>', 'tags.png');
+JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('Focus Areas'), 'tags.png');
 //JToolBarHelper::cancel();
 
 //JToolBarHelper::custom('index', 'edit', ' ', 'Tag Relationships', false);
 JToolBarHelper::spacer();
 JToolBarHelper::help('focusareas.html', true);
 
-$doc = JFactory::getDocument();
+JHTML::_('behavior.framework');
 
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/jquery.js');
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/jquery-ui.js');
+$doc = JFactory::getDocument();
 $doc->addScript('/administrator/components/' . $this->option . '/assets/js/tag_graph.js');
 
 $dbh = JFactory::getDBO();

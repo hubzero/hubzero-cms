@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 // Load tooltips behavior
 JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.switcher');
+JHtml::_('behavior.switcher', 'submenu');
 JHtml::_('behavior.tooltip');
 
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher
@@ -21,7 +21,7 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'application.cancel' || document.formvalidator.isValid(document.id('application-form'))) {
+		if (task == 'application.cancel' || document.formvalidator.isValid($('#application-form'))) {
 			Joomla.submitform(task, document.getElementById('application-form'));
 		}
 	}
