@@ -214,6 +214,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$row->publish_up = JFactory::getDate()->toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone = 0;
+		$row->access = 0;
 		$row->path = ''; // make sure no path is specified just yet
 
 		// Check content
