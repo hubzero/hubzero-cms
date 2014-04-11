@@ -690,24 +690,11 @@ class EventsControllerEvents extends Hubzero_Controller
 			//if we have a group and we are a member
 			if (is_object($group))
 			{
-				//if we are a member of that group
-				if (in_array($this->juser->get('id'), $group->get('members')))
-				{
-					//get the events publish up month and year so we can jump to that month/year
-					$publishUpDate  = strtotime( $row->publish_up );
-					$publishUpMonth = date("n", $publishUpDate);
-					$publishUpYear  = date("Y", $publishUpDate);
-					
-					//redirect to group calendar
-					$redirect = JRoute::_( 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&month=' . $publishUpMonth . '&year=' . $publishUpYear, false );
-					$this->setRedirect( $redirect );
-					return;
-				}
-				else
-				{
-					JError::raiseError(403, JText::_('Event is group restricted.'));
-					return;
-				}
+				//redirect to group calendar
+				$redirect = JRoute::_( 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $row->id, false);
+				$this->setRedirect( $redirect );
+				return;
+
 			}
 			else
 			{

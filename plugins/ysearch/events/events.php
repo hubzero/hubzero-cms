@@ -79,6 +79,8 @@ class plgYSearchEvents extends YSearchPlugin
 			"SELECT 
 				e.title,
 				e.content AS description,
+				e.scope,
+				e.scope_id,
 				concat('index.php?option=com_events&task=details&id=', e.id) AS link,
 				$weight AS weight,
 				publish_up AS date,
@@ -90,12 +92,41 @@ class plgYSearchEvents extends YSearchPlugin
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		);
+
 		foreach ($rows->to_associative() as $row)
 		{
 			if (!$row) 
 			{
 				continue;
 			}
+
+			// check group perms
+			if ($row->scope == 'group')
+			{
+				// load group
+				$group = Hubzero_Group::getInstance($row->scope_id);
+
+				// make sure we found one
+				if (!$group)
+				{
+					continue;
+				}
+
+				// get group calendar access
+				$juser  = JFactory::getUser();
+				$access = Hubzero_Group_Helper::getPluginAccess($group, 'calendar');
+				
+				// is calendar off
+				// is calendar for registered users & not logged in
+				// is calendar for members only and we are not a member
+				if ($access == 'nobody' 
+					|| ($access == 'registered' && $juser->get('guest')) 
+					|| ($access == 'members' && !in_array($juser->get('id'), $group->get('members'))))
+				{
+					continue;
+				}
+			}
+
 			$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
 			$results->add($row);
 		}
