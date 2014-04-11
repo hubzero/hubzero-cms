@@ -15,15 +15,13 @@ if (typeof(Joomla) === 'undefined')
 //-----------------------------------------------------------
 //  Create our namespace
 //-----------------------------------------------------------
-var HUB = HUB || {};
+jQuery(document).ready(function($){
+	var menu = $('#toolbar-box'),
+		top = menu.offset().top - parseFloat(menu.css('margin-top').replace(/auto/, 0));
 
-window.addEvent('domready', function(){
-	var menu = $('toolbar-box'),
-		top = menu.getTop() - parseFloat(menu.getStyle('margin-top').replace(/auto/, 0));
-
-	$(window).addEvent('scroll', function(event) {
+	$(window).on('scroll', function(event) {
 		// what the y position of the scroll is
-		var y = $(window).getScrollTop();
+		var y = $(window).scrollTop();
 		// whether that's below the form
 		if (y >= top) {
 			// if so, add the fixed class
@@ -35,9 +33,10 @@ window.addEvent('domready', function(){
 	});
 
 	// ipad and iphone fix
-	if ((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
-		$$('.main-navigation li.node').each(function(el){
-			el.addEvent('click', function(){ });  // we just need to attach a click event listener to provoke iPhone/iPod/iPad's hover event
-		});
+	if ((navigator.userAgent.match(/iPhone/i))
+	 || (navigator.userAgent.match(/iPod/i))
+	 || (navigator.userAgent.match(/iPad/i))) {
+	 	// we just need to attach a click event listener to provoke iPhone/iPod/iPad's hover event
+		$('.main-navigation li.node').on('click', function(){ });
 	}
 });

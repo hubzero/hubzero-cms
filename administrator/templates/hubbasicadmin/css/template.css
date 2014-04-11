@@ -923,11 +923,13 @@
 		color: #000;
 		text-decoration: underline;
 	}
+	.sub-navigation li.ui-state-active a,
 	.sub-navigation li a.active {
 		z-index: 1;
 		color: #424242;
 		font-weight: bold;
 	}
+	.sub-navigation li.ui-state-active a:before,
 	.sub-navigation li a.active small.fontcon-before,
 	.sub-navigation li a.active:before {
 		position: absolute;
@@ -942,6 +944,7 @@
 		left: 50%;
 		margin-left: -8px;
 	}
+	.sub-navigation li.ui-state-active a:after,
 	.sub-navigation li a.active small.fontcon-after,
 	.sub-navigation li a.active:after {
 		position: absolute;
@@ -2004,7 +2007,7 @@
 		-o-box-shadow: none;
 		box-shadow: none;
 	}
-	.panel {
+	/*.panel {
 		margin-bottom: .2em;
 		border: 1px solid #D6D6D6;
 		-webkit-border-radius: 0.27em;
@@ -2012,11 +2015,11 @@
 		-ms-border-radius: 0.27em;
 		-o-border-radius: 0.27em;
 		border-radius: 0.27em;
-	}
-	.panel fieldset {
+	}*/
+	.pane-sliders fieldset {
 		padding: 1.618em 1.618em 0 1.618em;
 	}
-	.panel h3 {
+	.pane-sliders h3 {
 		cursor: pointer;
 		-webkit-border-radius: 0.27em;
 		-moz-border-radius: 0.27em;
@@ -2033,38 +2036,42 @@
 		text-shadow: 1px 1px 0px #fff;
 		position: relative;
 		background: #ffffff;
+		border: 1px solid #D6D6D6;
+		border-bottom: none;
 	}
-	.panel h3:after {
+	.pane-sliders h3:after {
 		position: absolute;
 		right: 1.618em;
 		top: 0.5em;
 		content: "\2190";
 		font-family: 'Fontcons';
 	}
-	.panel h3.jpane-toggler-down {
+	.pane-sliders h3.jpane-toggler-down {
 		-webkit-border-radius: 0.27em 0.27em 0 0;
 		-moz-border-radius: 0.27em 0.27em 0 0;
 		-ms-border-radius: 0.27em 0.27em 0 0;
 		-o-border-radius: 0.27em 0.27em 0 0;
 		border-radius: 0.27em 0.27em 0 0;
 	}
-	.panel h3.pane-toggler-down:after,
-	.panel h3.jpane-toggler-down:after {
+	.pane-sliders h3.ui-state-active:after,
+	.pane-sliders h3.pane-toggler-down:after,
+	.pane-sliders h3.jpane-toggler-down:after {
 		content: "\2193";
 	}
-	.panel h3:hover {
+	.pane-sliders h3:hover {
 		background: #fff;
 	}
-	.panel h3 a {
+	.pane-sliders h3 a {
 		color: #757575;
 	}
-	.panel .content {
+	.pane-sliders .content {
 		background: #F6F6F6;
 		-webkit-border-radius: 0 0 0.27em 0.27em;
 		-moz-border-radius: 0 0 0.27em 0.27em;
 		-ms-border-radius: 0 0 0.27em 0.27em;
 		-o-border-radius: 0 0 0.27em 0.27em;
 		border-radius: 0 0 0.27em 0.27em;
+		border: 1px solid #D6D6D6;
 	}
 	table.admintable .paramlist_value input#detailscreated,
 	table.admintable .paramlist_value input#detailspublish_up, 
@@ -2533,6 +2540,10 @@
 	}
 	fieldset.radio {
 		padding: 0 1.618em;
+	}
+
+	.ui-datepicker {
+		display: none;
 	}
 
 @media only screen and (min-width: 319px) and (max-width: 320px) {

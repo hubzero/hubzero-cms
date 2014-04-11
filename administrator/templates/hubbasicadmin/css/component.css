@@ -445,7 +445,7 @@
 	.panel fieldset {
 		padding: 1.618em 1.618em 0 1.618em;
 	}
-	.panel h3 {
+	.pane-sliders h3 {
 		cursor: pointer;
 		-webkit-border-radius: 0.27em;
 		   -moz-border-radius: 0.27em;
@@ -468,10 +468,10 @@
 		font-weight: bold;
 		text-shadow: 1px 1px 0px #fff;
 	}
-	.panel h3:hover {
+	.pane-sliders h3:hover {
 		background: #fff;
 	}
-	.panel h3 a {
+	.pane-sliders h3 a {
 		color: #757575;
 	}
 	.panel .content {

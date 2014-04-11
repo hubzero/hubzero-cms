@@ -47,9 +47,10 @@ if ($this->direction == 'rtl') {
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$doc->addScript('/media/system/js/mootools-core-uncompressed.js');
-	$doc->addScript('/media/system/js/core-uncompressed.js');
-	$doc->addScript('/media/system/js/mootools-more-uncompressed.js');
+	//$doc->addScript('/media/system/js/mootools-core-uncompressed.js');
+	//$doc->addScript('/media/system/js/core-uncompressed.js');
+	//$doc->addScript('/media/system/js/mootools-more-uncompressed.js');
+	JHTML::_('behavior.framework');
 	$doc->addScript('templates/' . $this->template . '/js/component.js');
 }
 
