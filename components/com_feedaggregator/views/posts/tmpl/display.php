@@ -50,7 +50,7 @@ $this->js('posts')
 			<a href="#feedbox" id="generateFeed" class="fancybox-inline icon-feed btn">Generate RSS Feed</a>
 		</li>
 		<li>
-		<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
+		<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retrieve New Posts'); ?></a>
 		</li>
 	
 		<li>
