@@ -138,9 +138,9 @@ class CoursesControllerMedia extends Hubzero_Controller
 		}
 
 		// Save detailed tracking info
+		$trackingInformationDetailed                              = new stdClass;
 		if ($event == 'start')
 		{
-			$trackingInformationDetailed                              = new stdClass;
 			$trackingInformationDetailed->user_id                     = $juser->get('id');
 			$trackingInformationDetailed->session_id                  = $session->getId();
 			$trackingInformationDetailed->ip_address                  = $ipAddress; 
