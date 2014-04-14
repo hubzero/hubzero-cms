@@ -490,7 +490,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		if (!$this->config->get('access-edit-' . $assetType) && !$this->config->get('access-create-' . $assetType))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option)))
+				JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
