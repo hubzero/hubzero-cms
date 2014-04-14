@@ -35,11 +35,6 @@ if (!defined('HVERSION')) {
 	define('HVERSION', "1.2.1");
 }
 
-// Define the HUBzero branch if not already defined.
-if (!defined('HBRANCH')) {
-	define('HBRANCH', "stable");
-}
-
 // Register the location of renamed classes so they can be autoloaded
 // The old name are considered deprecated and this should be removed in 3.0
 JLoader::register('JRule', JPATH_PLATFORM . '/joomla/access/rule.php');
