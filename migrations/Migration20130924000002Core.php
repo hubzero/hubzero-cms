@@ -290,7 +290,7 @@ class Migration20130924000002Core extends Base
 				$table->rebuild();
 
 				// Rebuild assets
-				$this->rebuildAssets();
+				self::rebuildAssets();
 			}
 		}
 	}
@@ -310,7 +310,7 @@ class Migration20130924000002Core extends Base
 
 		foreach ($children as $node)
 		{
-			$rightId = $this->rebuildAssets($node->id, $rightId, $level + 1);
+			$rightId = self::rebuildAssets($node->id, $rightId, $level + 1);
 
 			if ($rightId === false)
 			{
