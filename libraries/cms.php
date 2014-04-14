@@ -32,7 +32,7 @@ if (!defined('JVERSION')) {
 
 // Define the HUBzero version if not already defined.
 if (!defined('HVERSION')) {
-	define('HVERSION', "1.2.1");
+	define('HVERSION', "1.2.2");
 }
 
 // Register the location of renamed classes so they can be autoloaded
