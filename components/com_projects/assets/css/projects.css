@@ -1055,6 +1055,9 @@
 	#describe p.question {
 		margin-top: 0;
 	}
+	#setup #name {
+		text-transform: lowercase;
+	}
 
 /* Setup - info box
 --------------------------------------------- */
@@ -1102,9 +1105,6 @@
 	}
 	#restricted-choice {
 		padding: 0 1em 1em 1em;
-	}
-	#setup #name {
-		text-transform: lowercase;
 	}
 	
 /* Confirm Invite 
