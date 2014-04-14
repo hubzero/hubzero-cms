@@ -19,7 +19,7 @@ $canDo = TemplatesHelper::getActions();
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'style.cancel' || document.formvalidator.isValid(document.id('style-form'))) {
+		if (task == 'style.cancel' || document.formvalidator.isValid($('#style-form'))) {
 			Joomla.submitform(task, document.getElementById('style-form'));
 		}
 	}
@@ -74,13 +74,14 @@ $canDo = TemplatesHelper::getActions();
 
 	<?php echo JHtml::_('sliders.end'); ?>
 	</div>
+
 	<?php if ($user->authorise('core.edit', 'com_menu') && $this->item->client_id==0):?>
 		<?php if ($canDo->get('core.edit.state')) : ?>
 			<div class="width-60 fltlft">
 			<?php echo $this->loadTemplate('assignment'); ?>
 			</div>
-			<?php endif; ?>
-		<?php endif;?>
+		<?php endif; ?>
+	<?php endif;?>
 
 	<div class="clr"></div>
 </form>

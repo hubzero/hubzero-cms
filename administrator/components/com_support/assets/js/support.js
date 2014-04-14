@@ -18,34 +18,34 @@ var Support = {
 		'type':'Type',
 		'resolved':'Resolution'
 	},
-	
+
 	chosen: [], 
-	
+
 	in_array: function(needle, haystack, argStrict) {
-	    var key = '', strict = !!argStrict;
+		var key = '', strict = !!argStrict;
 
-	    if (strict) {
-	        for (key in haystack) {
-	            if (haystack[key] === needle) {
-	                return true;
-	            }
-	        }
-	    } else {
-	        for (key in haystack) {
-	            if (haystack[key] == needle) {
-	                return true;
-	            }
-	        }
-	    }
+		if (strict) {
+			for (key in haystack) {
+				if (haystack[key] === needle) {
+					return true;
+				}
+			}
+		} else {
+			for (key in haystack) {
+				if (haystack[key] == needle) {
+					return true;
+				}
+			}
+		}
 
-	    return false;
+		return false;
 	},
-	
+
 	addRow: function(id) {
-		$$('.condition-nouns').each(function(noun) {
+		$('.condition-nouns').each(function(i, noun) {
 			Support.chosen.push(noun.options[noun.selectedIndex].value);
 		});
-		$$('.condition-nouns').each(function(noun) {
+		$('.condition-nouns').each(i, function(noun) {
 			/*var i = 0;
 			var rmv = new Array();
 			for (var word in Support.conditions) 
@@ -85,8 +85,8 @@ var Support = {
 		// Count the rows
 		var counter = tbody.rows.length;
 		if (counter == 1) {
-			$$('.remove-condition').each(function(trigger) {
-				trigger.setStyle('visibility', 'visible');
+			$('.remove-condition').each(function(i, trigger) {
+				$(trigger).css('visibility', 'visible');
 			});
 		}
 		// Get the last row
@@ -138,8 +138,8 @@ var Support = {
 						inputs[k].options[0].selected = true;
 						Support.chosen.push(inputs[k].options[0].value);
 						if (inputs[k].options.length == 1) {
-							$$('.add-condition').each(function(trigger) {
-								trigger.setStyle('visibility', 'hidden');
+							$('.add-condition').each(function(i, trigger) {
+								$(trigger).css('visibility', 'hidden');
 							});
 						}
 					}
@@ -151,10 +151,10 @@ var Support = {
 
 		Support.changeDynaList(document.getElementById(firstSelect));
 		
-		/*$$('.condition-nouns').each(function(noun) {
+		/*$('.condition-nouns').each(function(i, noun) {
 			Support.chosen.push(noun.options[noun.selectedIndex].value);
 		});*/
-		$$('.condition-nouns').each(function(noun) {
+		$('.condition-nouns').each(function(i, noun) {
 			var rmv = new Array();
 			for (var i=0;i<noun.options.length;i++) 
 			{
@@ -183,13 +183,13 @@ var Support = {
 		var row = el.parentNode.parentNode;
 		var tby = row.parentNode;
 
-		$$('.condition-nouns').each(function(noun) {
+		$('.condition-nouns').each(function(i, noun) {
 			word = row.childNodes[1].childNodes[1].value; //Support.chosen[(Support.chosen.length - 1)];
 			Support.addOption(noun,Support.conditions[word],word);
 		});
 
-		$$('.add-condition').each(function(trigger) {
-			trigger.setStyle('visibility', 'visible');
+		$('.add-condition').each(function(i, trigger) {
+			$(trigger).css('visibility', 'visible');
 		});
 
 		var addcondition = null;
@@ -213,8 +213,8 @@ var Support = {
 			var counter = tby.rows.length;
 			var lastNode = tby.rows[(counter - 1)];
 			if (counter == 1) {
-				$$('.remove-condition').each(function(trigger) {
-					trigger.setStyle('visibility', 'hidden');
+				$('.remove-condition').each(function(i, trigger) {
+					$(trigger).css('visibility', 'hidden');
 				});
 			}
 			lastNode.childNodes[3].appendChild(addcondition);
@@ -314,11 +314,11 @@ var Support = {
 		{
 			//val[i] = $('conditions_' + i + '_0').value + ':' + $('conditions_'+i+'_1').value + ':' + $('conditions_'+i+'_2').value;
 			expressions[i] = {};
-			expressions[i].colval  = $('conditions_' + i + '_0').value;
-			expressions[i].coldisp = $('conditions_' + i + '_0').options[$('conditions_' + i + '_0').selectedIndex].text;
-			expressions[i].opval   = $('conditions_' + i + '_1').value;
-			expressions[i].opdisp  = $('conditions_' + i + '_1').options[$('conditions_' + i + '_1').selectedIndex].text;
-			expressions[i].val     = $('conditions_' + i + '_2').value
+			expressions[i].colval  = $('#conditions_' + i + '_0').val();
+			expressions[i].coldisp = $('#conditions_' + i + '_0').options[$('conditions_' + i + '_0').selectedIndex].text;
+			expressions[i].opval   = $('#conditions_' + i + '_1').val();
+			expressions[i].opdisp  = $('#conditions_' + i + '_1').options[$('conditions_' + i + '_1').selectedIndex].text;
+			expressions[i].val     = $('#conditions_' + i + '_2').val()
 		}
 		q.expressions = expressions;
 		
@@ -339,18 +339,16 @@ var Support = {
 		
 		var q = this.getCondition(id);
 		console.log(JSON.stringify(q));
-		/*var t = $('save-con-title').value;
-		new Ajax('index.php?option=com_support&task=savequery&no_html=1&t='+t+'&c='+val,{
-			'method' : 'post',
-			'update' : $('saved-queries')
-		}).request();*/
+		/*var t = $('#save-con-title').val();
+		$.get('index.php?option=com_support&task=savequery&no_html=1&t='+t+'&c='+val,{}, function(response){
+			$('#saved-queries').html(response);
+		});*/
 	},
 	
 	deleteQuery: function(id) {
-		new Ajax('index.php?option=com_support&task=deletequery&no_html=1&id='+id,{
-			'method' : 'get',
-			'update' : $('saved-queries')
-		}).request();
+		$.get('index.php?option=com_support&task=deletequery&no_html=1&id='+id,{}, function(response){
+			$('#saved-queries').html(response);
+		});
 	},
 	
 	// <select> manipulation

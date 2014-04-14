@@ -107,9 +107,23 @@ $k = 0;
 $i = 0;
 foreach ($this->rows as $row)
 {
-	$check = '';
-	if ($row->get('admin') == 1) {
+	/*$check = '';
+	if ($row->get('admin') == 1) 
+	{
 		$check = '<span class="check">' . strToLower(JText::_('ADMIN')) . '</span>';
+	}*/
+
+	if ($row->get('admin')) 
+	{
+		$calt = JText::_('Yes');
+		$cls2 = 'yes';
+		$state = 0;
+	} 
+	else 
+	{
+		$calt = JText::_('No');
+		$cls2 = 'no';
+		$state = 1;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -141,7 +155,9 @@ foreach ($this->rows as $row)
 				<?php } ?>
 				</td>
 				<td>
-					<?php echo $check; ?>
+					<span class="state <?php echo $cls2; ?>">
+						<span><?php echo $calt; ?></span>
+					</span>
 				</td>
 				<td>
 					<?php echo $row->get('total'); ?>

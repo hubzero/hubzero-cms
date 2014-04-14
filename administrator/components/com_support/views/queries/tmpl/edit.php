@@ -144,14 +144,14 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<script type="text/javascript" src="/media/system/js/jquery.js"></script>
-	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
+	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
+	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script> -->
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
 	<script type="text/javascript">
 		function submitbutton(pressbutton) 
 		{
-			var $ = jq, query = {};
+			var query = {};
 
 			if (pressbutton == 'cancel') {
 				submitform( pressbutton );
@@ -182,7 +182,7 @@ $juser = JFactory::getUser();
 		<fieldset>
 			<div style="float: right">
 				<button type="button" onclick="saveAndUpdate();"><?php echo JText::_( 'Save' );?></button>
-				<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button>
+				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_( 'Cancel' );?></button>
 			</div>
 			<div class="configuration" >
 				<?php echo JText::_('Query builder') ?>
@@ -252,15 +252,13 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<script type="text/javascript" src="/media/system/js/jquery.js"></script>
-	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
+	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
+	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script> -->
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
 	<script type="text/javascript">
 		function submitbutton(pressbutton) 
 		{
-			var $ = jq;
-
 			var form = document.adminForm;
 
 			if (pressbutton == 'cancel') {
@@ -277,7 +275,7 @@ $juser = JFactory::getUser();
 
 		function saveAndUpdate()
 		{
-			var $ = jq, query = {};
+			var query = {};
 
 			if (!$('#field-title').val()) {
 				alert('Please provide a title.');
@@ -289,13 +287,13 @@ $juser = JFactory::getUser();
 
 			$.post('index.php', $("#queryForm").serialize(), function(data){
 				window.parent.document.getElementById('custom-views').innerHTML = data;
-				window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 700);
+				window.top.setTimeout('window.parent.$.fancybox.close()', 700);
 			});
 		}
 
 		Conditions.option = <?php echo json_encode($this->conditions); ?>
 
-		jQuery(document).ready(function(jq){
+		jQuery(document).ready(function($){
 			Conditions.addqueryroot('.query', true);
 		});
 	</script>

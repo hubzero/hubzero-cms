@@ -43,19 +43,13 @@ JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('job.html', true);
 
+JHTML::_('behavior.calendar');
+
 $create_date = NULL;
 if (intval($this->row->get('created')) <> 0) 
 {
 	$create_date = JHTML::_('date', $this->row->get('created'));
 }
-
-$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
-
-$document = JFactory::getDocument();
-$document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -77,29 +71,25 @@ function submitbutton(pressbutton)
 
 var Fields = {
 	initialise: function() {
-		$('field-event').addEvent('change', function(){
-			var ev = $(this).value.replace('::', '--');
+		$('#field-event').on('change', function(){
+			var ev = $(this).val().replace('::', '--');
 
-			$$('fieldset.eventparams').each(function(el) {
-				$(el).setStyles({
-					'display': 'none'
-				});
+			$('fieldset.eventparams').each(function(i, el) {
+				$(el).css('display', 'none');
 			});
 
-			if ($('params-' + ev)) {
-				$('params-' + ev).setStyles({
-					'display': 'block'
-				});
+			if ($('#params-' + ev)) {
+				$('#params-' + ev).css('display', 'block');
 			}
 		});
 
-		$('field-recurrence').addEvent('change', function(){
+		$('#field-recurrence').on('change', function(){
 			var min = '*',
 				hour = '*',
 				day = '*',
 				month = '*',
 				dow = '*',
-				recurrence = $(this).value;
+				recurrence = $(this).val();
 			
 			switch (recurrence)
 			{
@@ -127,77 +117,79 @@ var Fields = {
 					min = '0';
 				break;
 			}
-			
+
 			if (recurrence == 'custom') {
-				if ($('custom').hasClass('hide')) {
-					$('custom').removeClass('hide');
+				if ($('#custom').hasClass('hide')) {
+					$('#custom').removeClass('hide');
 				}
 			} else {
-				if (!$('custom').hasClass('hide')) {
-					$('custom').addClass('hide');
+				if (!$('#custom').hasClass('hide')) {
+					$('#custom').addClass('hide');
 				}
 			}
-			
-			$('field-minute-c').value = min;
-			$('field-minute-s').value = min;
-			$('field-hour-c').value = hour;
-			$('field-hour-s').value = hour;
-			$('field-day-c').value = day;
-			$('field-day-s').value = day;
-			$('field-month-c').value = month;
-			$('field-month-s').value = month;
-			$('field-dayofweek-c').value = dow;
-			$('field-dayofweek-s').value = dow;
+
+			$('#field-minute-c').val(min);
+			$('#field-minute-s').val(min);
+			$('#field-hour-c').val(hour);
+			$('#field-hour-s').val(hour);
+			$('#field-day-c').val(day);
+			$('#field-day-s').val(day);
+			$('#field-month-c').val(month);
+			$('#field-month-s').val(month);
+			$('#field-dayofweek-c').val(dow);
+			$('#field-dayofweek-s').val(dow);
+		});
+
+		$('#field-minute-s').on('change', function(){
+			$('#field-minute-c').val($(this).val());
+			$('#field-recurrence').val('custom');
+		});
+		$('#field-minute-c').on('change', function(){
+			$('#field-minute-s').val($(this).val());
+			$('#field-recurrence').val('custom');
+		});
+
+		$('#field-hour-s').on('change', function(){
+			$('#field-hour-c').val($(this).val());
+			$('#field-recurrence').val('custom');
+		});
+		$('#field-hour-c').on('change', function(){
+			$('#field-hour-s').val($(this).val());
+			$('#field-recurrence').val('custom');
 		});
 		
-		$('field-minute-s').addEvent('change', function(){
-			$('field-minute-c').value = $(this).value;
-			$('field-recurrence').value = 'custom';
+		$('#field-day-s').on('change', function(){
+			$('#field-day-c').val($(this).val());
+			$('#field-recurrence').val('custom');
 		});
-		$('field-minute-c').addEvent('change', function(){
-			$('field-minute-s').value = $(this).value;
-			$('field-recurrence').value = 'custom';
-		});
-		
-		$('field-hour-s').addEvent('change', function(){
-			$('field-hour-c').value = $(this).value;
-			$('field-recurrence').value = 'custom';
-		});
-		$('field-hour-c').addEvent('change', function(){
-			$('field-hour-s').value = $(this).value;
-			$('field-recurrence').value = 'custom';
+		$('#field-day-c').on('change', function(){
+			$('#field-day-s').val($(this).val());
+			$('#field-recurrence').val('custom');
 		});
 		
-		$('field-day-s').addEvent('change', function(){
-			$('field-day-c').value = $(this).value;
-			$('field-recurrence').value = 'custom';
+		$('#field-month-s').on('change', function(){
+			$('#field-month-c').val($(this).val());
+			$('#field-recurrence').val('custom');
 		});
-		$('field-day-c').addEvent('change', function(){
-			$('field-day-s').value = $(this).value;
-			$('field-recurrence').value = 'custom';
-		});
-		
-		$('field-month-s').addEvent('change', function(){
-			$('field-month-c').value = $(this).value;
-			$('field-recurrence').value = 'custom';
-		});
-		$('field-month-c').addEvent('change', function(){
-			$('field-month-s').value = $(this).value;
-			$('field-recurrence').value = 'custom';
+		$('#field-month-c').on('change', function(){
+			$('#field-month-s').val($(this).val());
+			$('#field-recurrence').val('custom');
 		});
 		
-		$('field-dayofweek-s').addEvent('change', function(){
-			$('field-dayofweek-c').value = $(this).value;
-			$('field-recurrence').value = 'custom';
+		$('#field-dayofweek-s').on('change', function(){
+			$('#field-dayofweek-c').val($(this).val());
+			$('#field-recurrence').val('custom');
 		});
-		$('field-dayofweek-c').addEvent('change', function(){
-			$('field-dayofweek-s').value = $(this).value;
-			$('field-recurrence').value = 'custom';
+		$('#field-dayofweek-c').on('change', function(){
+			$('#field-dayofweek-s').val($(this).val());
+			$('#field-recurrence').val('custom');
 		});
 	}
 }
 
-window.addEvent('domready', Fields.initialise);
+jQuery(document).ready(function($){
+	Fields.initialise();
+});
 </script>
 
 <?php
@@ -536,13 +528,8 @@ window.addEvent('domready', Fields.initialise);
 					</tr>
 				</tbody>
 			</table>
-			<script src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
-			<script src="components/com_cron/assets/js/jquery-ui-timepicker-addon.js"></script>
 			<script type="text/javascript">
-				jQuery(document).ready(function(jq){
-					var $ = jq;
+				jQuery(document).ready(function($){
 					$('.datetime-field').datetimepicker({  
 						duration: '',
 						showTime: true,
@@ -555,7 +542,7 @@ window.addEvent('domready', Fields.initialise);
 						timeFormat: 'HH:mm:00'
 					});
 				});
-				</script>
+			</script>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
