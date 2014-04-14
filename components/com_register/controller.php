@@ -474,10 +474,11 @@ class RegisterController extends \Hubzero\Component\SiteController
 		}
 
 		// add member interests
-		if (!is_null($xregistration->get('interests')))
+		$interests = $xregistration->get('interests');
+		if (!empty($interests))
 		{
 			$mt = new MembersTags($this->database);
-			$mt->tag_object($target_xprofile->get('uidNumber'), $target_xprofile->get('uidNumber'), $xregistration->get('interests'), 1, 1);
+			$mt->tag_object($target_xprofile->get('uidNumber'), $target_xprofile->get('uidNumber'), $interests, 1, 1);
 		}
 
 		if ($result) 
@@ -955,8 +956,11 @@ class RegisterController extends \Hubzero\Component\SiteController
 					}
 
 					// add member interests
+					$interests = $xregistration->get('interests');
 					$mt = new MembersTags($this->database);
-					$mt->tag_object($xprofile->get('uidNumber'), $xprofile->get('uidNumber'), $xregistration->get('interests'), 1, 1);
+					if (!empty($interests)) {
+						$mt->tag_object($xprofile->get('uidNumber'), $xprofile->get('uidNumber'), $interests, 1, 1);
+					}
 
 					if ($result) 
 					{
