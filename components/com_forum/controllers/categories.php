@@ -170,7 +170,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		// Push scripts to the template
 		$this->_getScripts('assets/js/' . $this->_name);
-	
+
 		// Set the page title
 		$this->_buildTitle();
 
