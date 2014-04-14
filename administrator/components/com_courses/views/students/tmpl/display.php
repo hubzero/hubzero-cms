@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<div class="col width-30 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter name, username, or ID'); ?>" />
 		</div>
 		<div class="col width-70 fltrt">
 			<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label> 
