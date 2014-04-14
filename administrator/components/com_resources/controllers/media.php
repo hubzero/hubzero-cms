@@ -229,7 +229,8 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 		$folder = ResourcesUtilities::normalizePath($folder);
 
 		// Check if the folder even exists
-		if (!is_dir($path . $folder) or !$folder) {
+		if (!is_dir($path . $folder) or !$folder) 
+		{
 			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
 		}
 		else

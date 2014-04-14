@@ -706,7 +706,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					}
 					$message['plaintext'] .= $attach->parse($comment) . "\r\n\r\n";
 
-                    // Prepare message to allow email responses to be parsed and added to the ticket
+					// Prepare message to allow email responses to be parsed and added to the ticket
 					if ($allowEmailResponses)
 					{
 						$live_site = rtrim(JURI::base(),'/');
