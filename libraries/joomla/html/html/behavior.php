@@ -384,7 +384,7 @@ abstract class JHtmlBehavior
 			});
 		});"
 		);*/
-		$opt = array();
+		$opt = array('arrows' => false);
 		$opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
 		$opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
 		$opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;

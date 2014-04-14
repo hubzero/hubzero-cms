@@ -47,8 +47,14 @@ abstract class JHtmlSliders
 	 */
 	public static function end()
 	{
+		$content = '';
+		if (self::$open)
+		{
+			$content .= '</div></div>';
+		}
 		self::$open = false;
-		return '</div></div></div>';
+		$content .= '</div>';
+		return $content;
 	}
 
 	/**
