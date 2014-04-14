@@ -62,10 +62,10 @@ class plgSystemHubzero extends JPlugin
 	public function onAfterRoute()
 	{
 		$app = JFactory::getApplication();
-		if (!JPluginHelper::isEnabled('system', 'jquery'))
+		/*if (!JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			JHTML::_('behavior.mootools');
-		}
+		}*/
 	}
 
 	/**
