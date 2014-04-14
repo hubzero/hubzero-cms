@@ -23,21 +23,21 @@ JHtml::_('behavior.modal');
 	{
 		if (task == 'item.setType' || task == 'item.setMenuType') {
 			if(task == 'item.setType') {
-				document.id('item-form').elements['jform[type]'].value = type;
-				document.id('fieldtype').value = 'type';
+				$('#item-form').elements['jform[type]'].value = type;
+				$('#fieldtype').value = 'type';
 			} else {
-				document.id('item-form').elements['jform[menutype]'].value = type;
+				$('#item-form').elements['jform[menutype]'].value = type;
 			}
-			Joomla.submitform('item.setType', document.id('item-form'));
-		} else if (task == 'item.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
-			Joomla.submitform(task, document.id('item-form'));
+			Joomla.submitform('item.setType', $('#item-form'));
+		} else if (task == 'item.cancel' || document.formvalidator.isValid($('#item-form'))) {
+			Joomla.submitform(task, $('#item-form'));
 		} else {
 			// special case for modal popups validation response
-			$$('#item-form .modal-value.invalid').each(function(field){
+			$('#item-form .modal-value.invalid').each(function(i, field){
 				var idReversed = field.id.split("").reverse().join("");
 				var separatorLocation = idReversed.indexOf('_');
 				var name = idReversed.substr(separatorLocation).split("").reverse().join("")+'name';
-				document.id(name).addClass('invalid');
+				$('#'+name).addClass('invalid');
 			});
 		}
 	}

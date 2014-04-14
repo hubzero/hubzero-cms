@@ -12,9 +12,9 @@ JHtml::_('behavior.framework', true);
 ?>
 	<script type="text/javascript">
 	// Hide/show all rows which are not assigned.
-	window.addEvent('domready', function() {
-		document.id('showmods').addEvent('click', function(e) {
-			$$('.adminlist tr.no').toggle();
+	jQuery(document).ready(function($){
+		$('#showmods').on('click', function(e) {
+			$('.adminlist tr.no').toggle();
 		});
 	});
 	</script>
