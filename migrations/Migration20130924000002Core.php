@@ -290,12 +290,12 @@ class Migration20130924000002Core extends Base
 				$table->rebuild();
 
 				// Rebuild assets
-				self::rebuildAssets();
+				$this->rebuildAssets();
 			}
 		}
 	}
 
-	private static function rebuildAssets($parentId=1, $leftId=0, $level=0)
+	private function rebuildAssets($parentId=1, $leftId=0, $level=0)
 	{
 		$database = \JFactory::getDbo();
 		$query = $database->getQuery(true);
@@ -310,7 +310,7 @@ class Migration20130924000002Core extends Base
 
 		foreach ($children as $node)
 		{
-			$rightId = self::rebuildAssets($node->id, $rightId, $level + 1);
+			$rightId = $this->rebuildAssets($node->id, $rightId, $level + 1);
 
 			if ($rightId === false)
 			{
