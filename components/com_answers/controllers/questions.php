@@ -553,12 +553,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$this->view->filters['limit']
 		);
 
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add the Javascript to the template
-		$this->_getScripts('assets/js/vote');
-
 		// Set the page title
 		$this->_buildTitle();
 
@@ -604,14 +598,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		{
 			$this->view->voted = $this->view->question->voted();
 		}
-
-		// Add the CSS to the template
-		$this->_getStyles();
-		$this->_getStyles($this->_option, 'assets/css/vote.css');
-
-		// Add the Javascript to the template
-		$this->_getScripts('assets/js/answers');
-		$this->_getScripts('assets/js/vote');
 
 		// Set the page title
 		$this->_buildTitle($this->view->question);
@@ -704,9 +690,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$this->view->funds = ($funds > 0) ? $funds : 0;
 		}
-
-		// Add the CSS to the template
-		$this->_getStyles();
 
 		// Set the page title
 		$this->_buildTitle();

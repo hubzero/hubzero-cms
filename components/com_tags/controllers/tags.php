@@ -76,10 +76,6 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway(null);
 
-		// Push some styles to the template
-		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-		$this->_getStyles();
-
 		// Output HTML
 		if ($this->getError()) 
 		{
@@ -333,9 +329,6 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		// Set the page title
 		$this->_buildTitle($tags);
-
-		// Push some styles to the template
-		$this->_getStyles();
 
 		// Output HTML
 		if (JRequest::getVar('format', '') == 'xml') 
@@ -716,12 +709,6 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		// Set the page title
 		$this->_buildTitle();
 
-		// Push some styles to the document
-		$this->_getStyles();
-
-		// Push scripts to the document
-		$this->_getScripts(); //'assets/js/tags');
-
 		$this->view->config = $this->config;
 
 		// Output HTML
@@ -784,12 +771,6 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		// Set the page title
 		$this->_buildTitle();
-
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push scripts to the document
-		$this->_getScripts('assets/css/tags');
 
 		// Pass error messages to the view
 		if ($this->getError()) 

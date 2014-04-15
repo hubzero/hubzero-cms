@@ -31,6 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->css('vote.css')
+     ->js()
+     ->js('vote.js');
+
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
 if (!$this->question->get('anonymous')) 
 {
