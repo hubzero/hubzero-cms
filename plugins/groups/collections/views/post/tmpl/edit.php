@@ -87,7 +87,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 						</noscript>
 					</div>
 					<script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script>
-					<script src="<?php echo $jbase; ?>/plugins/groups/collections/fileupload.jquery.js"></script>
+					<script src="<?php echo $jbase; ?>/plugins/groups/collections/fileupload.js"></script>
 		<?php } else { ?>
 					<label for="upload">
 						<?php echo JText::_('File:'); ?>
