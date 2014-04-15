@@ -2927,15 +2927,32 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseDelete($course)
 	{
+		if (!$course->exists())
+		{
+			return '';
+		}
+
 		$log = JText::_('PLG_COURSES_FORUM') . ': ';
 
 		$this->database = JFactory::getDBO();
 
 		$sModel = new ForumTableSection($this->database);
-		$sections = $sModel->getRecords(array(
-			'scope'    => 'course',
-			'scope_id' => $course->offering()->get('id')
-		));
+		$sections = array();
+		foreach ($course->offerings() as $offering)
+		{
+			if (!$offering->exists())
+			{
+				continue;
+			}
+			$sec = $sModel->getRecords(array(
+				'scope'    => 'course',
+				'scope_id' => $offering->get('id')
+			));
+			foreach ($sec as $s)
+			{
+				$sections[] = $s;
+			}
+		}
 
 		// Do we have any IDs?
 		if (count($sections) > 0) 
@@ -2969,7 +2986,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					$log .= 'forum.section.' . $section->id . '.category.' . $category->id . '.post' . "\n";
 
 					// Set all the categories to "deleted"
-					if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+					if (!$cModel->setStateBySection($section->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 					{
 						$this->setError($cModel->getError());
 					}
