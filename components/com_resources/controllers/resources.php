@@ -934,13 +934,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->_getStyles($this->_option,'hubpresenter.css');
 
 		//add the HUBpresenter required javascript files
-		if(!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$document->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-			$document->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		}
-		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.jquery.js');
-		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.plugins.jquery.js');
+		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.js');
+		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.plugins.js');
 		
 		//media tracking object
 		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
@@ -1033,13 +1028,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->_getStyles($this->_option,'video.css');
 		
 		//add the HUBpresenter required javascript files
-		if(!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$document->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-			$document->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		}
-		$document->addScript('/components/' . $this->_option . "/assets/js/video.jquery.js");
-		$document->addScript('/components/' . $this->_option . "/assets/js/hubpresenter.plugins.jquery.js");
+		$document->addScript('/components/' . $this->_option . "/assets/js/video.js");
+		$document->addScript('/components/' . $this->_option . "/assets/js/hubpresenter.plugins.js");
 		
 		//get the request vars
 		$parent = JRequest::getInt("id", "");

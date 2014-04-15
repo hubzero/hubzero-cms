@@ -8,145 +8,168 @@
 //-----------------------------------------------------------
 // Edit in place script for attachments
 //-----------------------------------------------------------
-
-var eip = new Class({
-
-	initialize: function(els, action, params, options) {
-		// Handle array of elements or single element
-		if ($type(els) == 'array') {
-			els.each(function(el){
-				this.prepForm(el);
-			}.bind(this));
-		} else if ($type(els) == 'element') {
-			this.prepForm(els);
-		} else {
-			return;
-		}
-
-		// Store the action (path to file) and params
-		this.action = action;
-		this.params = params;
-
-		// Default options
-		this.options = Object.extend({
-			overCl: 'over',
-			hiddenCl: 'hidden',
-			editableCl: 'editable',
-			textareaCl: 'textarea'
-		}, options || {} );
-	},
-
-	prepForm: function(el) {
-		var obj = this;
-		el.addEvents({
-			'mouseover': function(){this.addClass(obj.options.overCl);},
-			'mouseout': function(){this.removeClass(obj.options.overCl);},
-			'click': function(){obj.showForm(this);}
-		});
-
-	},
-
-	showForm: function(el) {
-		// Get the name (target) and id from your element
-		var classes = el.getProperty('class').split(" ");
-		for (i=classes.length-1;i>=0;i--) {
-			if (classes[i].contains('item:')) {
-				var target = classes[i].split(":")[1];
-			} else if (classes[i].contains('id:')) {
-				var id = classes[i].split(":")[1];
-			}
-		}
-
-		// Hide your target element
-		el.addClass(this.options.hiddenCl);
-
-		// If the form exists already, let's show that
-		if (el.form) {
-			el.form.removeClass(this.options.hiddenCl);
-			el.form[target].focus();
-			return;
-		}
-
-		// Create new form
-		var form = new Element('form', {
-			'id': 'form_' + el.getProperty('id'),
-			'action': this.action,
-			'class': this.options.editableCl
-		});
-
-		// Store new form in the element
-		el.form = form;
-
-		// Create a textarea or input for user
-		if (el.hasClass(this.options.textareaCl)) {
-			var input = new Element('textarea', {
-				'name': target
-			}).appendText(el.innerHTML).injectInside(form);
-		} else {
-			var input = new Element('input', {
-				'name': target,
-				'value': el.innerHTML
-			}).injectInside(form);
-			input.style.width = '120px';
-		}
-
-		// Need this to pass to the buttons
-		var obj = this;
-
-		// Add a submit button
-		new Element('input', {
-			'type': 'submit',
-			'value': 'save',
-			'events': {
-				'click': function(evt){
-					(new Event(evt)).stop();
-					el.empty();
-					el.appendText('saving...');
-					obj.hideForm(form, el);
-					form.send({update: el});
-				}
-			}
-		}).injectInside(form);
-
-		// Add a cancel button
-		new Element('input', {
-			'type': 'button',
-			'value': 'cancel',
-			'events': {
-				'click': function(form, el){
-					obj.hideForm(form, el);
-				}.pass([form, el])
-			}
-		}).injectInside(form);
-
-		// For every param, add a hidden input
-		for (param in this.params) {
-			new Element('input', {
-				'type': 'hidden',
-				'name': param,
-				'value': this.params[param]
-			}).injectInside(form);
-		}
-
-		//
-		new Element('input', {
-			'type': 'hidden',
-			'name': 'id',
-			'value': id
-		}).injectInside(form);
-
-		// Add the form after the target element
-		form.injectAfter(el);
-
-		// Focus on the input
-		input.focus();
-	},
-
-	hideForm: function(form, el) {
-		form.addClass(this.options.hiddenCl);
-		el.removeClass(this.options.hiddenCl);
+(function($){
+/*
+ * Editable 1.3.3
+ *
+ * Copyright (c) 2009 Arash Karimzadeh (arashkarimzadeh.com)
+ * Licensed under the MIT (MIT-LICENSE.txt)
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * Date: Mar 02 2009
+ */
+$.fn.editable = function(options){
+	var defaults = {
+		onEdit: null,
+		onSubmit: null,
+		onCancel: null,
+		editClass: null,
+		submit: null,
+		cancel: null,
+		type: 'text', //text, textarea or select
+		submitBy: 'blur', //blur,change,dblclick,click
+		editBy: 'click',
+		options: null
 	}
-});
+	if(options=='disable')
+		return this.unbind(this.data('editable.options').editBy,this.data('editable.options').toEditable);
+	if(options=='enable')
+		return this.bind(this.data('editable.options').editBy,this.data('editable.options').toEditable);
+	if(options=='destroy')
+		return  this.unbind(this.data('editable.options').editBy,this.data('editable.options').toEditable)
+					.data('editable.previous',null)
+					.data('editable.current',null)
+					.data('editable.options',null);
+	
+	var options = $.extend(defaults, options);
+	
+	options.toEditable = function(){
+		$this = $(this);
+		$this.data('editable.current',$this.html());
+		opts = $this.data('editable.options');
+		$.editableFactory[opts.type].toEditable($this.empty(),opts);
+		// Configure events,styles for changed content
+		$this.data('editable.previous',$this.data('editable.current'))
+			 .children()
+				 .focus()
+				 .addClass(opts.editClass);
+		// Submit Event
+		if(opts.submit){
+			$('<button/>').appendTo($this)
+						.html(opts.submit)
+						.one('mouseup',function(){opts.toNonEditable($(this).parent(),true)});
+		}else
+			$this.one(opts.submitBy,function(){opts.toNonEditable($(this),true)})
+				 .children()
+				 	.one(opts.submitBy,function(){opts.toNonEditable($(this).parent(),true)});
+		// Cancel Event
+		if(opts.cancel)
+			$('<button/>').appendTo($this)
+						.html(opts.cancel)
+						.one('mouseup',function(){opts.toNonEditable($(this).parent(),false)});
+		// Call User Function
+		if($.isFunction(opts.onEdit))
+			opts.onEdit.apply(	$this,
+									[{
+										current:$this.data('editable.current'),
+										previous:$this.data('editable.previous')
+									}]
+								);
+	}
+	options.toNonEditable = function($this,change){
+		opts = $this.data('editable.options');
+		// Configure events,styles for changed content
+		$this.one(opts.editBy,opts.toEditable)
+			 .data( 'editable.current',
+				    change 
+						?$.editableFactory[opts.type].getValue($this,opts)
+						:$this.data('editable.current')
+					)
+			 .html(
+				    opts.type=='password'
+				   		?'*****'
+						:$this.data('editable.current')
+					);
+		// Call User Function
+		var func = null;
+		if($.isFunction(opts.onSubmit)&&change==true)
+			func = opts.onSubmit;
+		else if($.isFunction(opts.onCancel)&&change==false)
+			func = opts.onCancel;
+		if(func!=null)
+			func.apply($this,
+						[{
+							current:$this.data('editable.current'),
+							previous:$this.data('editable.previous')
+						}]
+					);
+	}
+	this.data('editable.options',options);
+	return  this.one(options.editBy,options.toEditable);
+}
+$.editableFactory = {
+	'text': {
+		toEditable: function($this,options){
+			console.log($this.data('editable.current').replace(/[\t\r\n]/g, '').replace(/\s+/g, ' '));
+			$('<input/>').appendTo($this)
+						 .val($this.data('editable.current').replace(/[\t\r\n]/g, '').replace(/\s+/g, ' '));
+		},
+		getValue: function($this,options){
+			return $this.children().val();
+		}
+	},
+	'password': {
+		toEditable: function($this,options){
+			$this.data('editable.current',$this.data('editable.password'));
+			$this.data('editable.previous',$this.data('editable.password'));
+			$('<input type="password"/>').appendTo($this)
+										 .val($this.data('editable.current'));
+		},
+		getValue: function($this,options){
+			$this.data('editable.password',$this.children().val());
+			return $this.children().val();
+		}
+	},
+	'textarea': {
+		toEditable: function($this,options){
+			$('<textarea/>').appendTo($this)
+							.val($this.data('editable.current'));
+		},
+		getValue: function($this,options){
+			return $this.children().val();
+		}
+	},
+	'select': {
+		toEditable: function($this,options){
+			$select = $('<select/>').appendTo($this);
+			$.each( options.options,
+					function(key,value){
+						$('<option/>').appendTo($select)
+									.html(value)
+									.attr('value',key);
+					}
+				   )
+			$select.children().each(
+				function(){
+					var opt = $(this);
+					if(opt.text()==$this.data('editable.current'))
+						return opt.attr('selected', 'selected').text();
+				}
+			)
+		},
+		getValue: function($this,options){
+			var item = null;
+			$('select', $this).children().each(
+				function(){
+					if($(this).attr('selected'))
+						return item = $(this).text();
+				}
+			)
+			return item;
+		}
+	}
+}
+})(jQuery);
 
 //-----------------------------------------------------------
 //  Ensure we have our namespace
@@ -158,40 +181,54 @@ if (!HUB) {
 //-----------------------------------------------------------
 //  Highlight table rows when clicking checkbox
 //-----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Contribute = {
+	jQuery: jq,
+	
 	initialize: function() {
-		if ($('license-preview')) {
-			$('license-preview').setStyles({'display':'block'});
+		var $ = this.jQuery;
+		
+		if ($('#license-preview').length > 0) {
+			$('#license-preview').css({'display':'block'});
 		}
-		if ($('license')) {
-			if ($('license').value == 'custom') {
-				$('license-text').setStyles({'display':'inline-block'});
-				$('license-preview').setStyles({'display':'none'});
+		if ($('#license').length > 0) {
+			if ($('#license').val() == 'custom') {
+				$('#license-text').css({'display':'inline-block'});
+				$('#license-preview').css({'display':'none'});
 			}
-			$('license').addEvent('change', function() {
-				if ($(this).value != '') {
-					$('license-preview').innerHTML = $('license-' + $(this).value).value;
-					if ($('license-text')) {
-						if ($(this).value == 'custom') {
-							//$('license-preview').innerHTML = '<textarea name="license-text" cols="75" rows="10">' + $('license-' + $(this).value).value + '</textarea>';
-							$('license-text').setStyles({'display':'inline-block'});
-							$('license-preview').setStyles({'display':'none'});
+			$('#license').on('change', function() {
+				if ($(this).val() != '') {
+					$('#license-preview').html($('#license-' + $(this).val()).val());
+					if ($('#license-text')) {
+						if ($(this).val() == 'custom') {
+							$('#license-text').css({'display':'inline-block'});
+							$('#license-preview').css({'display':'none'});
 						} else {
-							$('license-text').setStyles({'display':'none'});
-							$('license-preview').setStyles({'display':'block'});
+							$('#license-text').css({'display':'none'});
+							$('#license-preview').css({'display':'block'});
 						}
 					}
 				} else {
-					$('license-preview').innerHTML = 'License preview.';
+					$('#license-preview').html('License preview.');
 				}
 			});
 		}
-		
-		new eip($$('.ftitle'), 'index.php', {option: 'com_contribute', task: 'rename', no_html: 1});
+
+		$('.ftitle').editable({
+			type:'text',
+			submit:'save',
+			cancel:'cancel',
+			editClass:'resultItem',
+			onSubmit: function() {
+				$.get('index.php?option=com_tools&controller=attachments&task=rename&no_html=1&id=' + this.attr('data-id') + '&name='+this.text());
+			}
+		});
 	}
 }
 
-//-----------------------------------------------------------
-
-window.addEvent('domready', HUB.Contribute.initialize);
-
+jQuery(document).ready(function($){
+	HUB.Contribute.initialize();
+});
