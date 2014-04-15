@@ -56,12 +56,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		$this->view->setLayout('display');
-		
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add any JS to the template
-		$this->_getScripts('assets/js/kb');
 
 		// Set the pathway
 		$this->_buildPathway(null, null, null);
@@ -174,12 +168,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		// Get all main categories for menu
 		$this->view->categories = $this->archive->categories();
 
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add any JS to the template
-		$this->_getScripts('assets/js/kb');
-
 		// Set the pathway
 		$this->_buildPathway($this->view->section, $this->view->category, null);
 
@@ -268,12 +256,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		$this->view->subcategories = $this->view->section->children('list');
 
 		$this->view->replyto = new KbModelComment(JRequest::getInt('reply', 0));
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add any JS to the template
-		$this->_getScripts('assets/js/kb');
 
 		// Set the pathway
 		$this->_buildPathway($this->view->section, $this->view->category, $this->view->article);

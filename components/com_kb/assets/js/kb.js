@@ -1,40 +1,60 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_kb/kb.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_kb/assets/js/kb.jquery.js
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
+//----------------------------------------------------------
+// Registration form validation
+//----------------------------------------------------------
+if (!jq) {
+	var jq = $;
 }
 
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
-HUB.Kb = {
-	initialize: function() {
-		
-		// Voting
-		$$('.vote-link').each(function(el) {
-			$(el).addEvent('click', function(e) {
-				if (this.href) {
-					new Event(e).stop();
-				
-					new Ajax(this.href+'?no_html=1',{
-						'method' : 'get',
-						'update' : $(this.parentNode.parentNode)
-					}).request();
-				}
-				return false;
-			});
-		});
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
 	}
-}
+};
 
-//---------------
+jQuery(document).ready(function(jq){
+	var $ = jq;
 
-window.addEvent('domready', HUB.Kb.initialize);
+	// Voting
+	$('#content').on('click', '.vote-button', function (e) {
+		if ($(this).attr('href')) {
+			var el = $(this);
+			e.preventDefault();
+
+			$.get(el.attr('href').nohtml(), {}, function(data) {
+				$(el.parent().parent()).html(data);
+				$('.tooltip').hide();
+			});
+			return false;
+		}
+	});
+
+	// Comment reply
+	$('a.reply').on('click', function (e) {
+		e.preventDefault();
+
+		var frm = $('#' + $(this).attr('data-rel'));
+
+		if (frm.hasClass('hide')) {
+			frm.removeClass('hide');
+			$(this)
+				.addClass('active')
+				.text($(this).attr('data-txt-active'));
+		} else {
+			frm.addClass('hide');
+			$(this)
+				.removeClass('active')
+				.text($(this).attr('data-txt-inactive'));
+		}
+	});
+});
+
+
