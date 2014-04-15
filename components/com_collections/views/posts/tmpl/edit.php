@@ -31,6 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if (!$this->no_html)
+{
+	$this->css()
+	     ->js();
+	if (JPluginHelper::isEnabled('system', 'jquery')) 
+	{
+		$this->js('jquery.fileuploader.js', 'system')
+		     ->js('fileupload.js');
+	}
+}
+
 $item = $this->entry->item();
 
 if (!$this->entry->exists())
@@ -127,8 +138,6 @@ if (!$dir)
 								</label>
 							</noscript>
 						</div>
-						<script src="<?php echo $site; ?>/media/system/js/jquery.fileuploader.js"></script>
-						<script src="<?php echo $site; ?>/components/com_collections/assets/js/fileupload.jquery.js"></script>
 			<?php } else { ?>
 						<label for="upload">
 							<?php echo JText::_('COM_COLLECTIONS_FILE'); ?>

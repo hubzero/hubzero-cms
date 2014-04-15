@@ -31,6 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js('jquery.masonry')
+     ->js('jquery.infinitescroll')
+     ->js();
+
 $likes = 0;
 if ($this->rows->total() > 0) 
 {

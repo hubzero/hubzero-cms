@@ -67,12 +67,6 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 		$this->view->config     = $this->config;
 
-		$this->_getStyles();
-
-		$this->_getScripts('assets/js/jquery.masonry');
-		$this->_getScripts('assets/js/jquery.infinitescroll');
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Filters for returning results
 		$this->view->filters = array();
 		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
@@ -135,12 +129,6 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 		$this->view->config     = $this->config;
 
-		$this->_getStyles();
-
-		$this->_getScripts('assets/js/jquery.masonry');
-		$this->_getScripts('assets/js/jquery.infinitescroll');
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Filters for returning results
 		$this->view->filters = array();
 		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
@@ -199,8 +187,6 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 	{
 		$this->view->setLayout('about');
 
-		$this->_getStyles();
-
 		// Filters for returning results
 		$this->view->filters = array();
 		$this->view->filters['id']      = JRequest::getInt('id', 0);
@@ -222,7 +208,12 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 		$model = CollectionsModel::getInstance();
 
-		$this->view->collections = $model->collections(array('count' => true, 'access' => 0, 'state' => 1, 'is_default' => 0));
+		$this->view->collections = $model->collections(array(
+			'count' => true, 
+			'access' => 0, 
+			'state' => 1, 
+			'is_default' => 0
+		));
 
 		$this->_buildTitle();
 		$this->_buildPathway();

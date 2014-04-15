@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 $item = $this->post->item();
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;

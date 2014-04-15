@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $base = 'index.php?option=' . $this->option;
 ?>
 <div id="content-header">
@@ -73,7 +75,7 @@ $base = 'index.php?option=' . $this->option;
 		</div>
 	</fieldset>
 
-	<div class="main section">
+	<div class="main section about">
 
 		<p class="tagline"><?php echo JText::_('COM_COLLECTIONS_TAGLINE'); ?></p>
 

@@ -66,12 +66,6 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	{
 		$this->view->setLayout('display');
 
-		$this->_getStyles();
-
-		//$this->_getScripts('assets/js/jquery.masonry');
-		//$this->_getScripts('assets/js/jquery.infinitescroll');
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		$this->view->config     = $this->config;
 		$this->view->juser      = $this->juser;
 
@@ -161,9 +155,6 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		// push scripts and styles to document
 		if (!$this->view->no_html)
 		{
-			$this->_getStyles();
-			$this->_getScripts('assets/js/' . $this->_name);
-
 			$filters = array(
 				'count' => true,
 				'access' => 0,
