@@ -1,44 +1,185 @@
-// Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
-// 
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-// 
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/js/globals.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-var HUBzero = {
-  Version: '1.1',
-  require: function(libraryName) {
-    // inserting via DOM fails in Safari 2.0, so brute force approach
-    document.write('<script type="text/javascript" src="'+libraryName+'"></script>');
-  },
-  load: function() {
-    if((typeof MooTools=='undefined') ||
-      parseFloat(MooTools.version) < 1.1)
-      throw("This HUB requires the MooTools JavaScript framework >= 1.1.0");
-    
-    $A(document.getElementsByTagName("script")).each( function(s) {
-      if (s.src && s.src.match(/hub\.js(\?.*)?$/)) {
-	  var path = s.src.replace(/hub\.js(\?.*)?$/,'');
-      var includes = s.src.match(/\?.*load=([a-z,]*)/);
-      (includes ? includes[1] : 'modal,growl,tooltips,globals').split(',').each(
-       function(include) { HUBzero.require(path+include+'.js') });
-	  }
-    });
-  }
+//-----------------------------------------------------------
+//  Create our namespace
+//-----------------------------------------------------------
+if (!HUB) {
+	var HUB = {};
 }
 
-HUBzero.load();
+var alertFallback = true;
+if (typeof console === "undefined" || typeof console.log === "undefined") {
+	console = {};
+	console.log = function() {};
+}
+
+//-----------------------------------------------------------
+//  Various functions - encapsulated in HUB namespace
+//-----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+
+	$.getDocHeight = function(){
+		var D = document;
+		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
+	};
+} else {
+	jq.getDocHeight = function(){
+		var D = document;
+		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
+	};
+}
+
+HUB.Base = {
+	// Container for jquery. 
+	// Needed for noconflict mode compatibility
+	jQuery: jq,
+
+	// Set the base path to this template
+	templatepath: '/templates/hubbasic2012/',
+
+	// launch functions
+	initialize: function() {
+		var $ = this.jQuery, w = 760, h = 520;
+
+		// Set focus on username field for login form
+		if ($('#username').length > 0) {
+			$('#username').focus();
+		}
+
+		// Set the search box's placeholder text color
+		if ($('#searchword').length > 0) {
+			$('#searchword')
+				.css('color', '#777')
+				.on('focus', function(){
+					if ($(this).val() == 'Search') {
+						$(this).val('').css('color', '#ddd');
+					}
+				})
+				.on('blur', function(){
+					if ($(this).val() == '' || $(this).val() == 'Search') {
+						$(this).val('Search').css('color', '#777');
+					}
+				});
+		}
+
+		// Turn links with specific classes into popups
+		$('a').each(function(i, trigger) {
+			if ($(trigger).is('.demo, .popinfo, .popup, .breeze')) {
+				$(trigger).on('click', function (e) {
+					e.preventDefault();
+
+					if ($(this).attr('class')) {
+						var sizeString = $(this).attr('class').split(' ').pop();
+						if (sizeString && sizeString.match(/\d+x\d+/gi)) {
+							var sizeTokens = sizeString.split('x');
+							w = parseInt(sizeTokens[0]);
+							h = parseInt(sizeTokens[1]);
+						}
+						else if(sizeString && sizeString == 'fullxfull')
+						{
+							w = screen.width;
+							h = screen.height;
+						}
+					}
+
+					window.open($(this).attr('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w);
+				});
+			}
+			if ($(trigger).attr('rel') && $(trigger).attr('rel').indexOf('external') !=- 1) {
+				$(trigger).attr('target', '_blank');
+			}
+		});
+
+		// Set the overlay trigger for launch tool links
+		$('.launchtool').on('click', function(e) {
+			$.fancybox({
+				closeBtn: false, 
+				href: HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif'
+			});
+		});
+
+		// Set overlays for lightboxed elements
+		$('a[rel=lightbox]').fancybox();
+
+		// Init tooltips
+		$('.hasTip, .tooltips').tooltip({
+			position: 'top center',
+			effect: 'fade',
+			offset: [-4, 0],
+			onBeforeShow: function(event, position) {
+				var tip = this.getTip(),
+					tipText = tip[0].innerHTML;
+
+				if (tipText.indexOf('::') != -1) {
+					var parts = tipText.split('::');
+					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
+				}
+			}
+		}).dynamic();
+
+		// Init fixed position DOM: tooltips
+		$('.fixedToolTip').tooltip({
+			relative: true
+		});
+		
+		HUB.Base.placeholderSupport();
+	},
+	
+	placeholderSupport: function()
+	{
+		var $ = this.jQuery;
+		
+		//test for placeholder support
+		var test = document.createElement('input');
+		var placeholder_supported  = ('placeholder' in test);
+		
+		//if we dont have placeholder support mimic it with focus and blur events
+		if(!placeholder_supported)
+		{
+			$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
+				var placeholderText = $(this).attr('placeholder');
+				
+				//make sure we have placeholder text
+				if(placeholderText != '' && placeholderText != null)
+				{
+					//add plceholder text and class
+					if($(this).val() == '')
+					{
+						$(this).addClass('placeholder-support').val( placeholderText );
+					}
+					
+					//attach event listeners to input
+					$(this).focus(function() {
+						if($(this).val() == placeholderText)
+						{
+							$(this).removeClass('placeholder-support').val('');
+						}
+					})
+					.blur(function(){
+						if($(this).val() == '')
+						{
+							$(this).addClass('placeholder-support').val( placeholderText );
+						}
+					});
+				}
+			});
+			
+			$('form').submit(function(event){
+				$('.placeholder-support').each(function(i, el){
+					$(this).val('');
+				});
+			});
+		}
+	}
+};
+
+jQuery(document).ready(function($){
+	HUB.Base.initialize();
+});
+
