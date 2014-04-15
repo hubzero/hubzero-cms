@@ -754,12 +754,10 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 */
 	public function delete()
 	{
-		$value = parent::delete();
-
 		JPluginHelper::importPlugin('courses');
 		JDispatcher::getInstance()->trigger('onCourseDelete', array($this));
 
-		return $value;
+		return parent::delete();
 	}
 
 	/**
