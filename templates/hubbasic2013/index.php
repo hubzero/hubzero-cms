@@ -37,14 +37,7 @@ $juser  = JFactory::getUser();
 $this->setGenerator('HUBzero - The open source platform for scientific and educational collaboration');
 
 //do we want to include jQuery
-if (JPluginHelper::isEnabled('system', 'jquery')) 
-{
-	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.jquery.js');
-} 
-else 
-{
-	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
-}
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
