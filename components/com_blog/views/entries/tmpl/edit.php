@@ -37,6 +37,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 } else {
 	$lid = time().rand(0,10000);
 }*/
+$this->css()
+     ->js('jquery.timepicker.js', 'system')
+     ->js();
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();

@@ -1,64 +1,57 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_blog/blog.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_blog/assets/js/blog.jquery.js
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
+if (!jq) {
+	var jq = $;
 }
 
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
-HUB.Plugins.MembersBlog = {
-	initialize: function() {
-		if (typeof(SqueezeBoxHub) != "undefined") {
-			if (!SqueezeBoxHub) {
-				SqueezeBoxHub.initialize({ size: {x: 500, y: 375} });
-			}
+jQuery(document).ready(function (jq) {
+	var $ = jq;
 
-			// Create a "login" button
-			el = new Element('a', {
-				href: '/login',
-				title: 'Login',
-				id: 'login-button'
-			}).appendText('Login').addClass('pane-prev').injectTop($('hubForm'));
-				
-			// Add the event
-			el.addEvent('click', function(e) {
-				new Event(e).stop();
+	$('#content')
+			// Toggle text and classes when clicking reply
+			.on('click', 'a.reply', function (e) {
+				e.preventDefault();
 
-				SqueezeBoxHub.fromElement('login-btn',{
-					handler: 'url', 
-					size: {x: 500, y: 375}, 
-					ajaxOptions: {
-						method: 'get',
-						onComplete: function() {
-							frm = $('hubForm-ajax');
-							if (frm) {
-								frm.addEvent('submit', function(e) {
-									new Event(e).stop();
-									frm.send({
-										onComplete: function() {
-											SqueezeBoxHub.close();
-										}
-							        });
-								});
-							}
-						}
-					}
-				}); // end SqueezeBoxHub
-			}); // end addEvent
-		} // end if
-	} // end initialize
-}
+				var frm = $('#' + $(this).attr('rel'));
 
-//window.addEvent('domready', HUB.Plugins.MembersBlog.initialize);
+				if (frm.hasClass('hide')) {
+					frm.removeClass('hide');
+
+					$(this)
+						.addClass('active')
+						.text($(this).attr('data-txt-active'));
+				} else {
+					frm.addClass('hide');
+					$(this)
+						.removeClass('active')
+						.text($(this).attr('data-txt-inactive'));
+				}
+			})
+			// Add confirm dialog to delete links
+			.on('click', 'a.delete', function (e) {
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					e.preventDefault();
+				}
+				return res;
+			});
+
+	if ($('#hubForm').length > 0) {
+		$('input.datetime-field').datetimepicker({  
+				duration: '',
+				showTime: true,
+				constrainInput: false,
+				stepMinutes: 1,
+				stepHours: 1,
+				altTimeField: '',
+				time24h: true,
+				dateFormat: 'yy-mm-dd',
+				timeFormat: 'hh:mm:00'
+			});
+	}
+});

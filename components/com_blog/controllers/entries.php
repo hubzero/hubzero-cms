@@ -191,8 +191,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		$this->_buildTitle();
 		$this->_buildPathway();
-		$this->_getStyles();
-		$this->_getScripts();
 
 		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 
@@ -326,8 +324,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		// Push some scripts to the template
 		$this->_buildTitle();
 		$this->_buildPathway();
-		$this->_getStyles();
-		$this->_getScripts('assets/js/' . $this->_name);
 
 		$this->view->title = ($this->config->get('title')) 
 							? $this->config->get('title') 
@@ -393,9 +389,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		// Push some scripts to the template
 		$this->_buildTitle();
 		$this->_buildPathway();
-		$this->_getStyles();
-		$this->_getScripts('assets/js/jquery-ui-timepicker-addon');
-		$this->_getScripts('assets/js/' . $this->_name);
 
 		$this->view->title = ($this->config->get('title')) 
 							? $this->config->get('title') 
@@ -517,8 +510,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			// Push some scripts to the template
 			$this->_buildTitle();
 			$this->_buildPathway();
-			$this->_getStyles();
-			$this->_getScripts();
 
 			// Output HTML
 			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
