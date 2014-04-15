@@ -88,7 +88,6 @@
 		cursor: pointer;
 	}
 	input[type="submit"].started:hover {
-		background: #FFFFFF;
 		cursor: default;
 	}
 	
@@ -130,7 +129,10 @@
 		z-index: 999;
 	}
 	#preview-window pre {
-		font-size: 90%;
+		font-size: 80%;
+		line-height: 1.3em;
+		text-align: left;
+		white-space: pre-line;
 	}
 	#preview-image {
 		text-align: center;
@@ -302,6 +304,11 @@
 		background: #fcfcfc;
 		padding: 0.5em 1em;
 		width: 70%;
+	}
+	table.revisions td.commit-details pre {
+		line-height: 1.3em;
+		text-align: left;
+		white-space: pre-line;
 	}
 	table.revisions td.commit-options {
 		width: 10%;

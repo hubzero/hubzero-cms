@@ -151,8 +151,11 @@ HUB.Projects = {
 	launchBox: function() 
 	{
 		var $ = this.jQuery;
-		var bWidth = 600;
+		var bWidth 	= 600;
 		var bHeight = 500;
+		var css 	= 'sbp-window';
+		var cBtn	= 1;
+		
 		$('.showinbox').each(function(i, item) {
 			// Clean up
 			$(item).off('click');
@@ -166,14 +169,25 @@ HUB.Projects = {
 			}
 			$(item).attr('href', href);	
 			
+			// TEX compiler view
 			if ($(item).hasClass('tex-menu'))
 			{
 				bWidth = 800;
-			}		
-			
+			}
+						
 			// Open box on click
 			$(item).on('click', function(e) {
 				e.preventDefault();
+				
+				// New publication process: fileselector
+				if ($(this).hasClass('item-add'))
+				{
+					bWidth = 700;				
+				}
+				if ($(this).hasClass('nox'))
+				{
+					cBtn = 0;
+				}		
 
 				if (!$(this).hasClass('inactive')) {
 					// Modal box for actions
@@ -183,13 +197,16 @@ HUB.Projects = {
 						height: 'auto',
 						autoSize: false,
 						fitToView: false,
-						wrapCSS: 'sbp-window',
+						wrapCSS: css,
+						closeBtn: cBtn,
 						afterShow: function() {
 							if ($('#cancel-action')) {
 								$('#cancel-action').on('click', function(e) {
 									$.fancybox.close();
 								});
 							}
+							
+							// Publication process
 							if ($('#ajax-selections') && $('#section')) {
 								if (HUB.ProjectPublications) {
 									var replacement = '';

@@ -3629,7 +3629,7 @@ class plgProjectsFiles extends JPlugin
 				// If non-binary and below 10MB
 				if (!$binary && $filesize <= 10485760)
 				{				
-					$content = $this->_git->showTextContent($fpath);
+					$content = $this->_git->showTextContent($fpath, 100);
 					$content = $content ? ProjectsHtml::shortenText($content, 200) : '';
 				}
 			}
@@ -3637,9 +3637,9 @@ class plgProjectsFiles extends JPlugin
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'preview'
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'preview'
 				)
 			);
 						
@@ -3661,7 +3661,7 @@ class plgProjectsFiles extends JPlugin
 		{ 
 			// Which revision are we downloading?
 			$hash 	  = JRequest::getVar('hash', '');
-			$serveas  = basename($file);
+			$servas   = basename($file);
 			
 			// Multiple files selected
 			if ($multifile)
@@ -5365,17 +5365,14 @@ class plgProjectsFiles extends JPlugin
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
 
+			chdir(JPATH_ROOT . $base_path);
+			exec('du -sk ', $out);
 			$used = 0;
-			if (is_dir(JPATH_ROOT . $base_path))
-			{
-				chdir(JPATH_ROOT . $base_path);
-				exec('du -sk ', $out);
 
-				if ($out && isset($out[0]))
-				{
-					$kb = str_replace('.', '', trim($out[0]));
-					$used = $kb * 1024;
-				}
+			if ($out && isset($out[0]))
+			{
+				$kb = str_replace('.', '', trim($out[0]));
+				$used = $kb * 1024;
 			}
 			
 			return $used;

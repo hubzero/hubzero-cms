@@ -145,7 +145,7 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function showTextContent($fpath = '', $max = 100)
+	public function showTextContent($fpath = '', $max = 10000)
 	{		
 		if (!$fpath)
 		{
@@ -290,7 +290,15 @@ class ProjectsGitHelper extends JObject
 	 */
 	public function gitLog ($path = '', $file = '', $hash = '', $return = 'date') 
 	{
-		chdir($this->_prefix . $path);
+		if (is_dir($this->_prefix . $path))
+		{
+			chdir($this->_prefix . $path);
+		}
+		else
+		{
+			return false;
+		}
+		
 		$what = '';
 		
 		// Set exec command for retrieving different commit information
@@ -433,6 +441,12 @@ class ProjectsGitHelper extends JObject
 			{
 				return NULL;
 			}
+		}
+		elseif ($return == 'size')
+		{
+			$arr = explode("\t", $out[0]);
+			$n = substr($out[0], 0, 1);
+			return $n == 'f' ? NULL : $arr[0];
 		}
 		else
 		{	
@@ -1117,7 +1131,7 @@ class ProjectsGitHelper extends JObject
 				// Exctract file content for certain statuses
 				if (in_array($revision['commitStatus'], array('A', 'M', 'R')) && $content)
 				{
-					$revision['content'] = $this->filterASCII($content);
+					$revision['content'] = $this->filterASCII($content, false, false, 10000);
 				}				
 										
 				$versions[] = $revision;
@@ -1133,27 +1147,13 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     integer
 	 */
-	public function IsBinary($file) 
+	public function isBinary($file) 
 	{ 
-	  	if (file_exists($file)) 
-		{   	
-			if (!is_file($file)) 
-			{
-				return 0;
-			} 
+		// MIME types		
+		$mt = new \Hubzero\Content\Mimetypes();
+		$mime = $mt->getMimeType( $file );
 
-	    	$fh  = fopen($file, "r"); 
-	    	$blk = fread($fh, 512); 
-	    	fclose($fh); 
-	    	clearstatcache(); 
-
-	    	return ( 
-		      0 or substr_count($blk, "^ -~")/512 > 0.3 
-		        or substr_count($blk, "\x00") > 0 
-		    ); 
-	  	}
-	 
-	  	return 0; 
+		return substr($mime, 0, 4) == 'text' ? false : true;
 	}
 	
 	/**
