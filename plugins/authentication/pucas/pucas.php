@@ -252,7 +252,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		{
 			$username = phpCAS::getUser();
 
-			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'pucas', null, $username);
+			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
 			$hzal->email = $username . '@purdue.edu';
 
 			$response->auth_link = $hzal;
