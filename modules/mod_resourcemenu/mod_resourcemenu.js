@@ -18,11 +18,17 @@ if (!HUB || !HUB.Modules) {
 // ResourceMenu popup
 //-------------------------------------------------------------
 
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Modules.ResourceMenu = {
 	// Amazon.com style popup menu
 	initialize: function() {
-		var nav = $('nav');  // find the main navigation
-		var popup = $('resources-menu');  // find the popup's content
+		var $ = this.jQuery;
+		
+		var nav = $('#nav');  // find the main navigation
+		var popup = $('#resources-menu');  // find the popup's content
 		if (nav && popup) {
 			var rnav = null;
 			
@@ -53,14 +59,14 @@ HUB.Modules.ResourceMenu = {
 				bdy.removeChild(popup);
 				rnav.appendChild(popup);
 				
-				rnav.addEvent('mouseover', function() { 
+				rnav.ont('mouseover', function() { 
 					var z = HUB.Position.findPosY(nav);
 					if (z != h) {
 						popup.style.top = (z + 26) +'px';
 					}
 					popup.removeClass('off'); 
 				});
-				rnav.addEvent('mouseout', function() {
+				rnav.on('mouseout', function() {
 					popup.addClass('off');
 				});
 			}
@@ -68,7 +74,7 @@ HUB.Modules.ResourceMenu = {
 	}
 };
 
-//----------------------------------------------------------
-
-window.addEvent('domready', HUB.Modules.ResourceMenu.initialize);
+jQuery(document).ready(function($){
+	HUB.Modules.ResourceMenu.initialize();
+});
 
