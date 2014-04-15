@@ -146,7 +146,7 @@ var JFormValidator = function() {
 		var valid = true;
 
 		// Validate form fields
-		var elements = form.find('fieldset').concat(Array.from(form.elements));
+		var elements = form.find('fieldset'); //.concat(Array.from(form.elements));
 		for (var i=0;i < elements.length; i++) {
 			if (this.validate(elements[i]) == false) {
 				valid = false;
@@ -154,11 +154,11 @@ var JFormValidator = function() {
 		}
 
 		// Run custom form validators if present
-		new Hash(this.custom).each(function(validator){
+		/*new Hash(this.custom).each(function(validator){
 			if (validator.exec() != true) {
 				valid = false;
 			}
-		});
+		});*/
 
 		return valid;
 	};
@@ -167,9 +167,10 @@ var JFormValidator = function() {
 	{
 		// Find the label object for the given field if it exists
 		if (!(el.labelref)) {
-			var labels = $$('label');
+			var labels = $('label');
 			labels.each(function(label){
-				if (label.get('for') == el.get('id')) {
+				label = $(label);
+				if (label.attr('for') == el.attr('id')) {
 					el.labelref = label;
 				}
 			});
