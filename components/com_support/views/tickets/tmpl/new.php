@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $browsers = array(
 	'[unspecified]' => JText::_('COM_SUPPORT_TROUBLE_SELECT_BROWSER'),
 	'msie' => 'Internet Explorer',

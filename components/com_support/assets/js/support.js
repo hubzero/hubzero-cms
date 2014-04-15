@@ -15,147 +15,190 @@ if (!HUB) {
 //----------------------------------------------------------
 // Support
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Support = {
+	jQuery: jq,
+	
 	getMessage: function() {
-		var id = $('messages');
-		if (id.value != 'mc') {
-			var hi = $(id.value).value;
-			var co = $('comment');
-			co.value = hi;
+		var $ = HUB.Support.jQuery;
+		
+		var id = $('#messages');
+		if (id.val() != 'mc') {
+			var hi = $('#'+id.val()).val();
+			$('#comment').val(hi);
 		} else {
-			var co = $('comment');
-			co.value = '';
+			$('#comment').val('');
 		}
 	},
 	
 	initialize: function() {
+		var $ = this.jQuery;
+
 		HUB.Support.addDeleteQueryEvent();
 		HUB.Support.addEditQueryEvent();
 
-		if ($('messages')) {
-			$('messages').addEvent('change', HUB.Support.getMessage);
+		if ($('#messages').length > 0) {
+			$('#messages').on('change', HUB.Support.getMessage);
 		}
 
-		if ($('make-private')) {
-			$('make-private').onclick = function() {
-				var es = $('email_submitter');
-				if (this.checked == true) {
-					if (es.checked == true) {
-						es.checked = false;
-						es.disabled = true;
+		if ($('#make-private').length > 0) {
+			$('#make-private').on('click', function() {
+				var es = $('#email_submitter');
+				if ($('#make-private').attr('checked')) {
+					if ($('#email_submitter').attr('checked')) {
+						$('#email_submitter').removeAttr('checked').attr('disabled', 'disabled');
 					}
-					$('commentform').addClass('private');
+					$('#commentform').addClass('private');
 				} else {
-					es.checked = true;
-					es.disabled = false;
-					$('commentform').removeClass('private');
+					$('#email_submitter').removeAttr('disabled').attr('checked', 'checked');
+					$('#commentform').removeClass('private');
+				}
+			});
+		}
+
+		var attach = $("#ajax-uploader");
+		if (attach.length) {
+			$('#ajax-uploader-list')
+				.on('click', 'a.delete', function (e){
+					e.preventDefault();
+					if ($(this).attr('data-id')) {
+						$.get($(this).attr('href'), {}, function(data) {});
+					}
+					$(this).parent().parent().remove();
+				});
+
+			var uploader = new qq.FileUploader({
+				element: attach[0],
+				action: attach.attr("data-action"),
+				multiple: true,
+				debug: true,
+				template: '<div class="qq-uploader">' +
+							'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+							'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+							'<ul class="qq-upload-list"></ul>' + 
+						'</div>',
+				onSubmit: function(id, file) {
+					//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
+				},
+				onComplete: function(id, file, response) {
+					// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
+					response.html = response.html.replace(/&gt;/g, '>');
+					response.html = response.html.replace(/&lt;/g, '<');
+					$('#ajax-uploader-list').append(response.html);
+				}
+			});
+		}
+
+		// Add customized tooltip (with delay so it doesn't popup when moving mouse down the screen)
+		/*$('.ticket-content').tooltip({
+			position: 'top center',
+			effect: 'fade',
+			delay: 250,
+			predelay: 750,
+			offset: [-4, 0],
+			onBeforeShow: function(event, position) {
+				var tip = this.getTip(),
+					tipText = tip[0].innerHTML;
+					
+				if (tipText.indexOf('::') != -1) {
+					var parts = tipText.split('::');
+					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
 				}
 			}
-		}
+		});*/
 	},
 
 	addEditQueryEvent: function() {
-		if (typeof(SqueezeBoxHub) != "undefined") {
-			if (!SqueezeBoxHub || !$('sbox-window')) {
-				SqueezeBoxHub.initialize({ size: {x: 750, y: 500} });
-			}
-			
-			$$('a.modal').each(function(el) {
-				if (el.href.indexOf('?') == -1) {
-					el.href = el.href + '?no_html=1';
-				} else {
-					el.href = el.href + '&no_html=1';
-				}
-				el.addEvent('click', function(e) {
-					new Event(e).stop();
+		var $ = HUB.Support.jQuery;
 
-					w = 600;
-					h = 550;
-					if (this.className) {
-						var sizeString = this.className.split(' ').pop();
-						if (sizeString && sizeString != 'play') {
-							var sizeTokens = sizeString.split('x');
-							w = parseInt(sizeTokens[0]);
-							h = parseInt(sizeTokens[1]);
-						}
-					}
-
-					SqueezeBoxHub.fromElement(el,{
-						handler: 'url', 
-						size: {x: w, y: h}, 
-						ajaxOptions: {method: 'get'},
-						onComplete: function() {
-							Conditions.addqueryroot('.query', true);
-
-							if ($('queryForm')) {
-								$('queryForm').addEvent('submit', function(e) {
-									new Event(e).stop();
-
-									if (!$('field-title').value) {
-										alert('Please provide a title.');
-										return false;
-									}
-
-									var myAjax = new Ajax($(this).getProperty('action'), {
-										method: 'post',
-										update: $('custom-views'),
-										evalScripts: false,
-										onSuccess: function() {
-											HUB.Support.addEditQueryEvent();
-											SqueezeBoxHub.close();
-										}
-									}).request();
-
-									/*$(this).send({
-										//update: $('sbox-content'),
-										onComplete: function() {
-											SqueezeBoxHub.close();
-										}
-							        });*/
-								});
-							}
-						}
-					});
-				});
-			});
-		}
-	},
-
-	addDeleteQueryEvent: function() {
-		$$('.views .delete').each(function(el) {
-			$(el).addEvent('click', function(e){
-				new Event(e).stop();
-
-				var res = confirm('Are you sure you wish to delete this item?');
-				if (!res) {
-					return false;
-				}
-
-				var href = $(this).href;
+		$('a.modal').fancybox({
+			type: 'ajax',
+			width: 600,
+			height: 550,
+			autoSize: false,
+			fitToView: false,
+			titleShow: false,
+			arrows: false,
+			closeBtn: true,
+			/*tpl: {
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div><a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a></div>'
+			},*/
+			beforeLoad: function() {
+				href = $(this).attr('href');
 				if (href.indexOf('?') == -1) {
 					href += '?no_html=1';
 				} else {
 					href += '&no_html=1';
 				}
+				$(this).attr('href', href);
+			},
+			afterShow: function() {
+				Conditions.addqueryroot('.query', true);
 
-				var myAjax = new Ajax(href, {
-					method: 'get',
-					update: $('custom-views'),
-					evalScripts: false,
-					onSuccess: function() {
-						HUB.Support.addDeleteQueryEvent();
-						HUB.Support.addEditQueryEvent();
-					}
-				}).request();
+				if ($('#queryForm').length > 0) {
+					$('#queryForm').submit(function(e) {
+						e.preventDefault();
 
-				return false;
+						if (!$('#field-title').val()) {
+							alert('Please provide a title.');
+							return false;
+						}
+
+						query = Conditions.getCondition('.query > fieldset');
+						$('#field-conditions').val(JSON.stringify(query));
+
+						$.post($(this).attr('action'), $(this).serialize(), function(data) {
+							$('#custom-views').html(data);
+							HUB.Support.addEditQueryEvent();
+							$.fancybox.close();
+						});
+					});
+				}
+			}
+		});
+
+		/*$('a.delete').each(function(i, el) {
+			$(el).on('click', function(e) {
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					e.preventDefault();
+				}
+				return res;
 			});
+		});*/
+	},
+
+	addDeleteQueryEvent: function() {
+		var $ = HUB.Support.jQuery;
+
+		$('.views').on('click', '.delete', function(e){
+			e.preventDefault();
+
+			var res = confirm('Are you sure you wish to delete this item?');
+			if (!res) {
+				return false;
+			}
+
+			var href = $(this).attr('href');
+			if (href.indexOf('?') == -1) {
+				href += '?no_html=1';
+			} else {
+				href += '&no_html=1';
+			}
+
+			$.get(href, {}, function(data){
+				$('#custom-views').html(data);
+				HUB.Support.addEditQueryEvent();
+			});
+
+			return false;
 		});
 	}
 }
 
-//----------------------------------------------------------
-
-window.addEvent('domready', HUB.Support.initialize);
-
+jQuery(document).ready(function($){
+	HUB.Support.initialize();
+});

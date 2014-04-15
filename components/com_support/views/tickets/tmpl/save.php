@@ -30,6 +30,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+if (!$this->no_html)
+{
+	$this->css();
+}
 ?>
 <?php if ($this->no_html) { ?>
 	<div id="report-response">
@@ -45,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?>
 		</p>
 	</div>
-	<script type="text/javascript">window.top.window.<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>HUB.Modules.ReportProblems.hideTimer();<?php } else { ?>HUB.ReportProblem.hideTimer();<?php } ?></script>
+	<script type="text/javascript">window.top.window.HUB.Modules.ReportProblems.hideTimer();</script>
 <?php } else { ?>
 	<div class="main section">
 		<?php if ($this->getError()) { ?>

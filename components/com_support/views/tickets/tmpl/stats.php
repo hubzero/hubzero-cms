@@ -32,22 +32,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/*$st = new SupportTicket($database);
+$this->css();
 
-if (intval($this->config->get('cache', 1)))
-{
-	$cache = JFactory::getCache('callback');
-	$cache->setCaching(1);
-	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-
-	$resolutions = $cache->call(array($st, 'findResolutions'), $this->type);
-	$severities  = $cache->call(array($st, 'findSeverities'), $this->type);
-}
-else
-{
-	$resolutions = $st->find('resolved', array('type' => $this->type, 'open' => 0));
-	$severities  = $st->find('severity', array('type' => $this->type));
-}*/
 $base = rtrim(JURI::getInstance()->base(true), '/');
 
 $database = JFactory::getDBO();
@@ -234,12 +220,13 @@ function getMonthName($month)
 					}
 					$openeddata = implode(',', $o);
 				}
+
+				$this->js('flot/jquery.flot.min.js', 'system')
+				     ->js('flot/jquery.flot.tooltip.min.js', 'system')
+				     ->js('flot/jquery.flot.pie.min.js', 'system')
+				     ->js('flot/jquery.flot.resize.js', 'system');
 			?>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.min.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.resize.js"></script>
-			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;

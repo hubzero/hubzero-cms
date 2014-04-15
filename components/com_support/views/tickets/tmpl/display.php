@@ -33,9 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 $live_site = rtrim(JURI::base(), '/');
 
-$this->js('json2.js');
-$this->js('condition.builder.js');
-$this->css('conditions.css');
+$this->css()
+     ->css('conditions.css')
+     ->js()
+     ->js('jquery.hoverIntent.js', 'system')
+     ->js('json2.js')
+     ->js('condition.builder.js');
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

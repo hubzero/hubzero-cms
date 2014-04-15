@@ -149,9 +149,6 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Add the CSS to the template and set the page title
-		$this->_getStyles();
-
 		// Output HTML
 		if ($this->getError()) 
 		{
@@ -266,9 +263,6 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		// Push some needed styles to the template
-		$this->_getStyles();
 
 		// Output HTML
 		if ($this->getError()) 

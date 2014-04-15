@@ -165,15 +165,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Push some styles to the template
-		$this->_getStyles();
-
 		$type = JRequest::getVar('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
 
 		$this->view->group = JRequest::getVar('group', '_none_');
-
-		//$this->view->sort = JRequest::getVar('sort', 'name');
 
 		// Set up some dates
 		$jconfig = JFactory::getConfig();
@@ -181,25 +176,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
-
-		/*$day   = strftime("%d", time()+($this->offset*60*60));
-		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day)) 
-		{
-			$day = "0$day";
-		}
-		if ($month <= "9"&preg_match("#(^[1-9]{1})#",$month)) 
-		{
-			$month = "0$month";
-		}
-
-		$startday = 0;
-		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
-		if ($numday == -1) 
-		{
-			$numday = 6;
-		}
-		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year);
-		$week = strftime("%d", $week_start);*/
 
 		$this->view->year = $year;
 		$this->view->opened = array();
@@ -221,13 +197,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		if ($this->view->group == '_none_') 
 		{
-			/*$query = "SELECT a.username, a.name, a.id"
-				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-				. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
-				. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
-				. "\n WHERE a.block = '0' AND g.id=25"
-				. "\n ORDER BY a.name";*/
 			$query = "SELECT DISTINCT a.username, a.name, a.id"
 				. "\n FROM #__users AS a"
 				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.username"	// map user to aro
@@ -390,24 +359,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		}
 
 		// Closed tickets
-		/*$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`, MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(c.created) AS closed
-				FROM #__support_comments AS c 
-				LEFT JOIN #__support_tickets AS t ON c.ticket=t.id
-				WHERE t.report!=''
-				AND t.type=" . $this->view->type . " AND t.open=0";
-		if ($this->view->group == '_none_') 
-		{
-			$sql .= " AND (t.`group`='' OR t.`group` IS NULL)";
-		} 
-		else if ($this->view->group)
-		{
-			$sql .= " AND t.`group`='{$this->view->group}'";
-		}
-		if ($this->view->start && $end)
-		{
-			$sql .= " AND c.created>='" . $this->view->start . "-01 00:00:00' AND c.created<'" . $end . "-01 00:00:00'";
-		}
-		$sql .= " ORDER BY c.created ASC";*/
 		$sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
 				FROM #__support_tickets AS t
 				WHERE t.report!=''
@@ -759,13 +710,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Get some needed styles
-		$this->_getStyles();
-
-		// Get some needed scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
-
 		$this->view->acl = $this->acl;
 
 		// Output HTML
@@ -811,9 +755,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		// Push some styles to the template
-		$this->_getStyles();
 
 		// Output HTML
 		$this->view->verified   = $this->_isVerified();
@@ -964,9 +905,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		// Push some styles to the template
-		$this->_getStyles();
 
 		// Trigger any events that need to be called
 		$customValidation = true;
@@ -1472,10 +1410,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onTicketSubmission', array($row));
 
-		if (!$no_html)
-		{
-			$this->_getStyles();
-		}
 		// Output Thank You message
 		$this->view->ticket  = $row->id;
 		$this->view->no_html = $no_html;
@@ -1980,12 +1914,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$this->_buildTitle($this->view->row);
 
 		$this->view->title = $this->_title;
-
-		// Get some needed styles
-		$this->_getStyles();
-
-		// Get some needed scripts
-		$this->_getScripts('assets/js/' . $this->_name);
 
 		$this->view->acl = $this->acl;
 
