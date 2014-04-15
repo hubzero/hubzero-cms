@@ -1005,7 +1005,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$ext = (strtolower($download) == 'bibtex') ? '.bib' : '.enw';
 
 		//filename
-		$filename = 'citations_export_' . strtolower($download) . '_' . JFactory::getDate("Y_m_d") . $ext;
+		$filename = 'citations_export_' . strtolower($download) . '_' . JFactory::getDate()->format('Y_m_d') . $ext;
 
 		//output file
 		header('Content-Type: application/octet-stream');
