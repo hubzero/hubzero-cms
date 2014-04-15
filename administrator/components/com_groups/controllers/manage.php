@@ -111,7 +111,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		$this->view->filters['approved'] = JRequest::getVar('approved');
 		
 		//published filter
-		$this->view->filters['published'] = JRequest::getVar('published', 1);
+		//$this->view->filters['published'] = JRequest::getVar('published', 1);
 		
 		//created filter
 		$this->view->filters['created'] = JRequest::getVar('created', '');
