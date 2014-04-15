@@ -102,10 +102,8 @@ function submitbutton(pressbutton)
 						<td>
 							<input type="text" name="fields[user_id]" rel="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-source="<?php echo $base; ?>/administrator/index.php" />
 							<span class="hint">Enter usernames, IDs, or look up users by name</span>
-							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
-							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
-							<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.jquery.js"></script>
-							<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/templates/hubbasic2013/html/plg_hubzero_autocompleter/autocompleter.css?v=1373657749";</script>
+							<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
+							<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
 							<?php 
 							/*JPluginHelper::importPlugin('hubzero');
 							$dispatcher = JDispatcher::getInstance();

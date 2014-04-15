@@ -230,8 +230,6 @@ function submitbutton(pressbutton)
 						</tbody>
 					</table>
 
-					<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
-					<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
 					<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.fileuploader.js"></script>
 					<script type="text/javascript">
 					String.prototype.nohtml = function () {
@@ -241,9 +239,7 @@ function submitbutton(pressbutton)
 							return this + '&no_html=1';
 						}
 					};
-					jQuery(document).ready(function(jq){
-						var $ = jq;
-
+					jQuery(document).ready(function($){
 						if ($("#ajax-uploader").length) {
 							var uploader = new qq.FileUploader({
 								element: $("#ajax-uploader")[0],

@@ -58,37 +58,34 @@ function goUpDir()
 		</legend>
 		<div id="ajax-uploader-before">&nbsp;</div>
 		<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=upload&amp;course=<?php echo $this->course_id; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
-		<table>
-			<tbody>
-				<tr>
-					<td>
-						<input type="file" name="upload" id="upload" />
-					</td>
-					<td style="white-space:nowrap;">
-						<input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo JText::_('Unpack (.zip, .tar, etc)'); ?></label>
-					</td>
-					<td>
-						<input type="submit" value="<?php echo JText::_('Upload'); ?>" />
-					</td>
-				</tr>
-				<!-- <tr>
-					<td><label for="foldername"><?php echo JText::_('Create folder'); ?></label></td>
-					<td colspan="2"><input type="text" name="foldername" id="foldername" /></td>
-				</tr>
-				<tr>
-					<td> </td>
-					<td colspan="2"><input type="submit" value="<?php echo JText::_('Create or Upload'); ?>" /></td>
-				</tr> -->
-			</tbody>
-		</table>
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<input type="file" name="upload" id="upload" />
+						</td>
+						<td style="white-space:nowrap;">
+							<input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo JText::_('Unpack (.zip, .tar, etc)'); ?></label>
+						</td>
+						<td>
+							<input type="submit" value="<?php echo JText::_('Upload'); ?>" />
+						</td>
+					</tr>
+					<!-- <tr>
+						<td><label for="foldername"><?php echo JText::_('Create folder'); ?></label></td>
+						<td colspan="2"><input type="text" name="foldername" id="foldername" /></td>
+					</tr>
+					<tr>
+						<td> </td>
+						<td colspan="2"><input type="submit" value="<?php echo JText::_('Create or Upload'); ?>" /></td>
+					</tr> -->
+				</tbody>
+			</table>
 		</div>
-		<script type="text/javascript" src="/media/system/js/jquery.js"></script>
-		<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
-		<script type="text/javascript" src="/media/system/js/jquery.fileuploader.js"></script>
+
+		<script type="text/javascript" src="../media/system/js/jquery.fileuploader.js"></script>
 		<script type="text/javascript">
-		jQuery(document).ready(function(jq){
-			var $ = jq;
-			
+		jQuery(document).ready(function($){
 			if ($("#ajax-uploader").length) {
 				var uploader = new qq.FileUploader({
 					element: $("#ajax-uploader")[0],
@@ -211,10 +208,6 @@ function goUpDir()
 		<div id="themanager" class="manager">
 			<iframe src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;tmpl=component&amp;listdir=<?php echo $this->listdir; ?>&amp;subdir=<?php echo $this->subdir; ?>&amp;course=<?php echo $this->course_id; ?>" name="imgManager" id="imgManager" width="98%" height="150"></iframe>
 		</div>
-	</fieldset>
-	
-	<fieldset>
-		
 
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

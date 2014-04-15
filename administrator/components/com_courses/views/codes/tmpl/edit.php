@@ -41,22 +41,10 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-jimport('joomla.html.editor');
-
-$editor = JEditor::getInstance();
+JHTML::_('behavior.calendar');
 
 $document = JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');
-/*$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-$gparams = new $paramsClass($this->offering->params);
-
-$membership_control = $gparams->get('membership_control', 1);
-
-$display_system_users = $gparams->get('display_system_users', 'global');*/
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -233,13 +221,8 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<script src="/media/system/js/jquery.js"></script>
-	<script src="/media/system/js/jquery.ui.js"></script>
-	<script src="/media/system/js/jquery.noconflict.js"></script>
-	<script src="components/com_courses/assets/js/jquery-ui-timepicker-addon.js"></script>
 	<script type="text/javascript">
-		jQuery(document).ready(function(jq){
-			var $ = jq;
+		jQuery(document).ready(function($){
 			$('.datetime-field').datetimepicker({  
 				duration: '',
 				showTime: true,
