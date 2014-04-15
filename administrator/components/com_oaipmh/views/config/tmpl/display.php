@@ -35,11 +35,6 @@ JToolBarHelper::cancel();
 //$this->last;
 
 $document =  JFactory::getDocument();
-$document->addScript('/media/system/js/jquery.js');
-$document->addScript('/media/system/js/jquery.noconflict.js');
-$document->addScript('/media/system/js/jquery.ui.js');
-$document->addStyleSheet('/media/system/css/jquery.ui.css');
-//$document->addStyleSheet('components/com_oaipmh/views/config/tmpl/jquery-ui-1.10.0.custom.min.css');
 ?>
 
 <script type="text/javascript">
