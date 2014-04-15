@@ -31,8 +31,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $document = JFactory::getDocument();
-//$document->addScript('components/'.$this->option.'/assets/js/xsortables.js');
-//$document->addScript('components/'.$this->option.'/assets/js/resources.js');
 
 $authIDs = array();
 ?>
@@ -108,7 +106,4 @@ if ($this->authnames != NULL)
 <input type="hidden" name="old_authors" id="old_authors" value="<?php echo implode(',', $authIDs); ?>" />
 <input type="hidden" name="new_authors" id="new_authors" value="<?php echo implode(',', $authIDs); ?>" />
 
-<script src="/media/system/js/jquery.js"></script>
-<script src="/media/system/js/jquery.ui.js"></script>
-<script src="/media/system/js/jquery.noconflict.js"></script>
-<script src="components/com_resources/assets/js/authors.jquery.js"></script>
+<script src="components/com_resources/assets/js/authors.js"></script>
