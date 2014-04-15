@@ -207,7 +207,9 @@ class CitationsControllerCitations extends Hubzero_Controller
 		}
 		
 		//Convert upload dates to correct time format
-		if ($this->view->filters['startuploaddate'] == '0000-00-00' || $this->view->filters['startuploaddate'] == '')
+		if ($this->view->filters['startuploaddate'] == '0000-00-00'
+			|| $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00' 
+			|| $this->view->filters['startuploaddate'] == '')
 		{
 			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
 		}
@@ -215,7 +217,9 @@ class CitationsControllerCitations extends Hubzero_Controller
 		{
 			$this->view->filters['startuploaddate'] = JFactory::getDate($this->view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
 		}
-		if ($this->view->filters['enduploaddate'] == '0000-00-00' || $this->view->filters['enduploaddate'] == '')
+		if ($this->view->filters['enduploaddate'] == '0000-00-00'
+			|| $this->view->filters['enduploaddate'] == '0000-00-00 00:00:00'
+			|| $this->view->filters['enduploaddate'] == '')
 		{
 			$this->view->filters['enduploaddate'] = JFactory::getDate()->modify('+1 DAY')->format('Y-m-d 00:00:00');
 		}
