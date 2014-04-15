@@ -54,16 +54,8 @@ class plgEditorWikiwyg extends JPlugin
 	{
 		if ($this->_pushscripts) 
 		{
-			$app = JFactory::getApplication();
-
-			$script = '';
-			if ($app->isAdmin()) 
-			{
-				$script = $this->_name . '.mootools';
-			}
-
 			\Hubzero\Document\Assets::addPluginStylesheet('editors', $this->_name);
-			\Hubzero\Document\Assets::addPluginScript('editors', $this->_name, $script);
+			\Hubzero\Document\Assets::addPluginScript('editors', $this->_name);
 
 			$this->_pushscripts = false;
 		}
