@@ -142,7 +142,7 @@ class TimeController extends \Hubzero\Component\SiteController
 	{
 		$doc = JFactory::getDocument();
 
-		$component_js = "/components".DS."com_time".DS."time.jquery.js";
+		$component_js = "/components".DS."com_time".DS."time.js";
 		$hover_intent = DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.hoverIntent.js';
 
 		if(!JPluginHelper::isEnabled('system', 'jquery'))
