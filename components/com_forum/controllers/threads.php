@@ -167,12 +167,6 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 		$this->view->notifications = $this->getComponentMessage();
 
-		// Push CSS to the template
-		$this->_getStyles();
-
-		// Push scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Set the page title
 		$this->_buildTitle();
 
@@ -373,9 +367,8 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 				$return = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&thread=' . $id . '&task=edit');
 			}
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return)).
-					JText::_('Please login to create or edit posts.'),
-					'warning'
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($return)) . JText::_('Please login to create or edit posts.'),
+				'warning'
 			);
 			return;
 		}
@@ -420,9 +413,6 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
-
-		// Push CSS to the template
-		$this->_getStyles();
 
 		// Set the page title
 		$this->_buildTitle();

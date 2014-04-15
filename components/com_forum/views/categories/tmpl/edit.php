@@ -30,6 +30,8 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $juser = JFactory::getUser();
 ?>
 	<div id="content-header">

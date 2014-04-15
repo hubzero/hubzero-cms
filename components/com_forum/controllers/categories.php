@@ -165,12 +165,6 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		$this->view->model = $this->model;
 
-		// Push CSS to the tmeplate
-		$this->_getStyles();
-
-		// Push scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Set the page title
 		$this->_buildTitle();
 
@@ -250,12 +244,6 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		$this->view->config = $this->config;
 		$this->view->model  = $this->model;
 
-		// Push CSS to the tmeplate
-		$this->_getStyles();
-
-		// Push scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Set the page title
 		$this->_buildTitle();
 
@@ -333,9 +321,6 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
-
-		// Push CSS to the template
-		$this->_getStyles();
 
 		$this->view->config = $this->config;
 		$this->view->model  = $this->model;

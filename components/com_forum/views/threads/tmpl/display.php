@@ -30,6 +30,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 $juser = JFactory::getUser();
 
 $this->category->set('section_alias', $this->filters['section']);

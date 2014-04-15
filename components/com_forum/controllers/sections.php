@@ -88,12 +88,6 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 			$this->view->sections = $this->model->sections('list', array('state' => 1));
 		}
 
-		// Push CSS to the tmeplate
-		$this->_getStyles();
-
-		// Push scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Set the page title
 		$this->_buildTitle();
 
