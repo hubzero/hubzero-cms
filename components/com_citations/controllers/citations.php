@@ -154,8 +154,8 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->filters['reftype']         = JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
 		$this->view->filters['geo']             = JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
 		$this->view->filters['aff']             = JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
-		$this->view->filters['startuploaddate'] = JRequest::getVar('startuploaddate', 0);
-		$this->view->filters['enduploaddate']   = JRequest::getVar('enduploaddate', 0);
+		$this->view->filters['startuploaddate'] = JRequest::getVar('startuploaddate', '0000-00-00');
+		$this->view->filters['enduploaddate']   = JRequest::getVar('enduploaddate', '0000-00-00');
 
 		// Affiliation filter
 		$this->view->filter = array(
@@ -205,20 +205,23 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->view->filters['idlist'] = "";
 			$session->set('idlist', $this->view->filters['idlist']); 
 		}
-
+		
 		//Convert upload dates to correct time format
-		if ($this->view->filters['startuploaddate'] == 0 || $this->view->filters['startuploaddate'] == '' || $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00')
+		if ($this->view->filters['startuploaddate'] == '0000-00-00' || $this->view->filters['startuploaddate'] == '')
 		{
 			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
 		}
 		else
 		{
-			$this->view->filters['startuploaddate'] = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['startuploaddate']));
+			$this->view->filters['startuploaddate'] = JFactory::getDate($this->view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
 		}
-		$this->view->filters['enduploaddate']   = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['enduploaddate']));
-		if ($this->view->filters['enduploaddate'] == "1969-12-31 19:00:00")
-		{ 
-			$this->view->filters['enduploaddate'] = JFactory::getDate();
+		if ($this->view->filters['enduploaddate'] == '0000-00-00' || $this->view->filters['enduploaddate'] == '')
+		{
+			$this->view->filters['enduploaddate'] = JFactory::getDate()->modify('+1 DAY')->format('Y-m-d 00:00:00');
+		}
+		else
+		{
+			$this->view->filters['enduploaddate'] = JFactory::getDate($this->view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
 		}
 
 		//Make sure the end date for the upload search isn't before the start date
@@ -231,7 +234,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			);
 			return; 
 		}
-
+		
 		// Instantiate a new citations object
 		$obj = new CitationsCitation($this->database);
 
