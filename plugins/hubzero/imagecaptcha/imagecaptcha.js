@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/hubzero/wikieditortoolbar/wikieditortoolbar.js
+ * @file        plugins/hubzero/imagecaptcha/imagecaptcha.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -14,11 +14,11 @@ if (!HUB.Plugins) {
 }
 
 // Plugin scripts
-HUB.Plugins.HubzeroImagecaptcha = {
-	initialize: function() {
-		
-	}
+if (!jq) {
+	var jq = $;
 }
 
 // Initialize script
-window.addEvent('domready', HUB.Plugins.HubzeroImagecaptcha.initialize);
+jQuery(document).ready(function($){
+	// Nothing here yet...
+});

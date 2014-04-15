@@ -92,7 +92,7 @@ class plgHubzeroAutocompleter extends JPlugin
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) 
 		{
-			$jq = false;
+			/*$jq = false;
 			// Is jQuery enabled?
 			if (JPluginHelper::isEnabled('system', 'jquery'))
 			{
@@ -132,7 +132,8 @@ class plgHubzeroAutocompleter extends JPlugin
 				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>' . "\n";
 				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>' . "\n";
 				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>' . "\n";
-			}
+			}*/
+			$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
 
 			$scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
 			//$scripts .= '<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="';
