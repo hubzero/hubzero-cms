@@ -41,13 +41,6 @@ $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true),
 JHTML::_('behavior.tooltip');
 
 $doc = JFactory::getDocument();
-/*$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/jquery.js');
-$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/jquery-ui.js');
-$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/d3/d3.min.js');
-$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/d3/d3.layout.min.js');
-$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/d3/d3.geom.min.js');
-$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/tag_graph.js');
-$doc->addScript($base . '/plugins/hubzero/autocompleter/autocompleter.jquery.js');*/
 $doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/assets/css/tag_graph.css');
 ?>
 <form id="tag-sel" action="" method="get">
@@ -138,4 +131,4 @@ $doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/ass
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.layout.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.geom.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/tag_graph.js"></script>
-<script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.jquery.js"></script>
+<script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
