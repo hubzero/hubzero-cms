@@ -78,9 +78,6 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		$this->view->start = JRequest::getInt('limitstart', 0);
 		$this->view->limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 
-		// Get some needed CSS and JS
-		$this->_getStyles();
-
 		// Get categories
 		$areas = $this->_getAreas();
 
