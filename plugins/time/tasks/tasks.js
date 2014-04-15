@@ -25,7 +25,7 @@ HUB.Plugins.TimeTasks = {
 	jQuery: jq,
 
 	initialize: function() {
-		var $ = this.jQuery.noConflict();
+		var $ = this.jQuery;
 
 		// Initialize variables
 		var column   = $('#filter-column');
@@ -42,7 +42,7 @@ HUB.Plugins.TimeTasks = {
 	}, // end initialize
 
 	col_change: function() {
-		var $ = HUB.Plugins.TimeTasks.jQuery.noConflict();
+		var $ = HUB.Plugins.TimeTasks.jQuery;
 
 		// Initialize variables
 		var table    = $('#filter-table');
@@ -83,7 +83,7 @@ HUB.Plugins.TimeTasks = {
 	}, // end col_change
 
 	operator_change: function() {
-		var $ = HUB.Plugins.TimeTasks.jQuery.noConflict();
+		var $ = HUB.Plugins.TimeTasks.jQuery;
 
 		// Initialize variables
 		var operator = $('#filter-operator');

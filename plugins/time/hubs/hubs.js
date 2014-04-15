@@ -25,7 +25,7 @@ HUB.Plugins.TimeHubs = {
 	jQuery: jq,
 
 	initialize: function() {
-		var $ = this.jQuery.noConflict();
+		var $ = this.jQuery;
 
 		// --------------------
 		// Contact fields

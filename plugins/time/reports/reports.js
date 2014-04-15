@@ -25,7 +25,7 @@ HUB.Plugins.TimeReports = {
 	jQuery: jq,
 
 	initialize: function() {
-		var $ = this.jQuery.noConflict();
+		var $ = this.jQuery;
 
 		// Set a few variables
 		var hub       = $("#hub_id");
@@ -91,7 +91,7 @@ HUB.Plugins.TimeReports = {
 	//-------------------------------------------------------------
 
 	getRecords: function() {
-		var $ = this.jQuery.noConflict();
+		var $ = this.jQuery;
 
 		// Set a few variables
 		var hub       = $("#hub_id");

@@ -25,7 +25,7 @@ HUB.Plugins.TimeOverview = {
 	jQuery: jq,
 
 	initialize: function() {
-		var $ = this.jQuery.noConflict();
+		var $ = this.jQuery;
 		// nothing...
 	} // end initialize
 }

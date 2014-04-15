@@ -108,7 +108,8 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginScript('time','hubs');
 
 		// Only perform the following if this is the active tab/plugin
-		if ($return == 'html') {
+		if ($return == 'html') 
+		{
 			switch ($action)
 			{
 				// Views
