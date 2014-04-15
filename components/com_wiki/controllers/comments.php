@@ -143,13 +143,6 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 			$this->view->mycomment->set('created_by', $this->juser->get('id'));
 		}
 
-		if (!$this->_sub)
-		{
-			// Include any CSS
-			$this->_getStyles();
-			$this->_getScripts('assets/js/wiki', 'com_wiki');
-		}
-
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->get('title');

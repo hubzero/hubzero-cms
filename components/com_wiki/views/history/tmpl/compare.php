@@ -31,8 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$orauthor = $this->or->creator('name') ? $this->or->creator('name') : JText::_('Unknown');
+if (!$this->sub)
+{
+	$this->css();
+}
 
+$orauthor = $this->or->creator('name') ? $this->or->creator('name') : JText::_('Unknown');
 $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('Unknown');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">

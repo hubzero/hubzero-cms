@@ -31,6 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if (!$this->sub)
+{
+	// Include any CSS
+	if ($this->page->get('pagename') == 'MainPage')
+	{
+		$this->css('introduction.css', 'system'); // component, stylesheet name, look in media system dir
+	}
+	$this->css();
+}
+// Include any Scripts
+$this->js();
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>

@@ -123,12 +123,6 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$this->view->base_path = $this->_base_path;
 		$this->view->sub       = $this->_sub;
 
-		if (!$this->_sub)
-		{
-			// Include any CSS
-			$this->_getStyles();
-		}
-
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->get('title');
@@ -213,12 +207,6 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		//$diffs = new Diff($ota, $nta);
 		$formatter = new TableDiffFormatter();
 		$this->view->content = $formatter->format(new Diff($ota, $nta));
-
-		if (!$this->_sub)
-		{
-			// Include any CSS
-			$this->_getStyles();
-		}
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"

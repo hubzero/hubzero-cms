@@ -31,6 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if (!$this->sub)
+{
+	$this->css();
+}
+$this->js()
+     ->js('jquery.fileuploader.js', 'system');
+
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
 

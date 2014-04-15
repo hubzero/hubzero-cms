@@ -122,18 +122,6 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->view->base_path = $this->_base_path;
 		$this->view->sub       = $this->_sub;
 
-		if (!$this->_sub)
-		{
-			// Include any CSS
-			if ($this->page->get('pagename') == 'MainPage')
-			{
-				$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-			}
-			$this->_getStyles();
-		}
-		// Include any Scripts
-		$this->_getScripts('assets/js/wiki', 'com_wiki');
-
 		// Prep the pagename for display 
 		$this->view->title = $this->page->get('title'); //getTitle();
 
@@ -438,19 +426,6 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 
 		$this->view->tags = trim(JRequest::getVar('tags', $this->page->tags('string'), 'post'));
 		$this->view->authors = trim(JRequest::getVar('authors', $this->page->authors('string'), 'post'));
-
-		if (!$this->_sub)
-		{
-			// Include any CSS
-			$this->_getStyles();
-		}
-		// Include any Scripts
-		$this->_getScripts('assets/js/wiki', 'com_wiki');
-		if (JPluginHelper::isEnabled('system', 'jquery')) 
-		{
-			$document = JFactory::getDocument();
-			$document->addScript("/media/system/js/jquery.fileuploader.js");
-		}
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
@@ -829,12 +804,6 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			break;
 
 			default:
-				if (!$this->_sub)
-				{
-					// Include any CSS
-					$this->_getStyles();
-				}
-
 				$this->view->page      = $this->page;
 				$this->view->config    = $this->config;
 				$this->view->base_path = $this->_base_path;
@@ -922,12 +891,6 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->view->config    = $this->config;
 		$this->view->base_path = $this->_base_path;
 		$this->view->sub       = $this->_sub;
-
-		if (!$this->_sub)
-		{
-			// Include any CSS
-			$this->_getStyles();
-		}
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
