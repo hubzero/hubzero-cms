@@ -1,225 +1,293 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_sliding_panes/mod_sliding_panes.js
+ * @file        modules/mod_sliding_panes/mod_sliding_panes.jquery.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 /*
- * Based off of the SlidingTabs mootools plugin by Jenna “Blueberry” Fox!
- * Documentation: http://creativepony.com/journal/scripts/sliding-tabs/
- * version: 1.8
- */
 
-var ModSlidingPanes = new Class({
-	options: {
-		startingSlide: false, // sets the slide to start on, either an element or an id 
-		activeButtonClass: 'active', // class to add to selected button
-		activationEvent: 'click', // you can set this to ‘mouseover’ or whatever you like
-		wrap: true, // calls to previous() and next() should wrap around?
-		slideEffect: { // options for effect used to animate the sliding, see Fx.Base in mootools docs
-			duration: 400 // 0.4 of a second
-		},
-		animateHeight: true, // animate height of container
-		rightOversized: 0, // how much of the next pane to show to the right of the current pane
-		animate: 'slide'
-	},
-	current: null, // zero based current pane number, read only
-	buttons: false,
-	outerSlidesBox: null,
-	innerSlidesBox: null,
-	panes: null,
-	fx: null, // this one animates the scrolling inside
-	heightFx: null, // this one animates the height
-	periodical: null, // container for the periodical scrolling
-	
-	initialize: function(container, rotate, options) {
-//		document.write(JSON.stringify({
-//			'container': container,
-//			'rotate': rotate,
-//			'options': options
-//		}));
-		this.setOptions(options);
+Based off of jShowOff by Erik Kallevig (http://ekallevig.com/jshowoff)
 
-		// Create a button container
-		this.headings = new Element('div', {}).addClass('panes-headings').injectInside($(container));
-		
-		// Create a slides button container
-		this.btnCtnr = new Element('ul', {}).addClass('panes-buttons').injectInside(this.headings);
-		
-		// Get the slides
-		this.outerSlidesBox = $(container).getFirst();
-		this.innerSlidesBox = this.outerSlidesBox.getFirst();
-		this.panes = this.innerSlidesBox.getChildren();
-		
-		// Create a button for each slide and add it to the button container
-		for (var i = 0; i < this.panes.length; i++)
-		{
-			var btnEl = new Element('li', {});
-			btnEl.innerHTML = i + 1;
-			btnEl.injectInside(this.btnCtnr);
-		}
-		this.buttons = this.btnCtnr.getChildren();
+Options
 
-		// Create a "previous slide" button
-		this.prevBtn = new Element('p', {
-			//href: '#',
-			title: 'Previous Slide'
-		}).addClass('pane-prev').injectTop(this.headings);
-		this.prevBtn.addEvent('click', this.previous.bind(this));
+animatePause :		whether to use 'Pause' animation text when pausing [boolean, defaults to true]
+autoPlay :			whether to start playing immediately [boolean, defaults to true]
+changeSpeed :		speed of transition [integer, milliseconds, defaults to 600]
+controls :			whether to create & display controls (Play/Pause, Previous, Next) [boolean, defaults to true]
+controlText :		custom text for controls [object, 'play', 'pause', 'previous' and 'next' properties]
+cssClass :			custom class to add to .jSlidingPanes wrapper [string]
+effect :			transition effect [string: 'fade', 'slideLeft' or 'none', defaults to 'fade']
+hoverPause :		whether to pause on hover [boolean, defaults to true]
+links :				whether to create & display numeric links to each slide [boolean, defaults to true]
+speed :				time each slide is shown [integer, milliseconds, defaults to 3000]
 
-		// Create a "next slide" button
-		this.nextBtn = new Element('p', {
-			//href: '#',
-			title: 'Next Slide'
-		}).addClass('pane-next').injectInside(this.headings);
-		this.nextBtn.addEvent('click', this.next.bind(this));
-		
-		// Initiate the scroll FX
-		this.heightFx = this.outerSlidesBox.effect('height', this.options.slideEffect);
-		
-		// set up button highlight
-		this.current = this.options.startingSlide ? this.panes.indexOf($(this.options.startingSlide)) : 0;
-		if (this.buttons) { this.buttons[this.current].addClass(this.options.activeButtonClass); }
-		
-		// add needed stylings
-		if (this.options.animate === 'slide')
-		{
-			this.fx = new Fx.Scroll(this.outerSlidesBox, this.options.slideEffect);
-			this.outerSlidesBox.setStyle('overflow', 'hidden');
-			this.panes.each(function(pane, index) {
-				pane.setStyles({
-					'float': 'left',
-					'overflow': 'hidden'
-				});
-			}.bind(this));
-		}
-		else if (this.options.animate === 'fade')
-		{
-			this.last = this.panes[0];
-			this.panes.each(function(pane, idx) { if (idx > 0) pane.setStyle('opacity', 0); });
-		}
-		
-		// stupidness to make IE work - it boggles the mind why this has any effect
-		// maybe it's something to do with giving it layout?
-		this.innerSlidesBox.setStyle('float', 'left');
-		
-		if (this.options.startingSlide) this.fx.toElement(this.options.startingSlide);
-		
-		// add events to the buttons
-		if (this.buttons) this.buttons.each( function(button) {
-			button.addEvent(this.options.activationEvent, this.buttonEventHandler.bindWithEvent(this, button));
-		}.bind(this));
-		
-		if (this.options.animateHeight) {
-			this.heightFx.set(this.panes[this.current].offsetHeight);
-		}
-		
-		// set up all the right widths inside the panes
-		this.recalcWidths();
-		
-		// Set up the periodical
-		if (rotate) {
-			// Create a "pause" button
-			this.pauseBtn = new Element('p', {
-				//href: '#',
-				title: 'Pause'
-			}).addClass('pane-pause').injectTop($(container));
-			this.pauseBtn.addEvent('click', function(){
-				$clear(this.periodical);
-			}.bind(this));
+*/
 
-			// Create a "play" button
-			this.pauseBtn = new Element('p', {
-				//href: '#',
-				title: 'Play'
-			}).addClass('pane-play').injectTop($(container));
-			this.pauseBtn.addEvent('click', function(){
-				this.periodical = this.next.periodical(7500, this);
-			}.bind(this));
+(function($) {
+
+
+	$.fn.jSlidingPanes = function(settings) {
+
+		// default global vars
+		var config = {
+			animatePause : true,
+			autoPlay : true,
+			changeSpeed : 600,
+			controls : true,
+			controlText : {
+				play :		'Play',
+				pause :		'Pause',
+				next :		'Next',
+				previous :	'Previous'
+			},
+			effect : 'fade',
+			hoverPause : true,
+			links : true,
+			speed : 3000
+		};
+		
+		// merge default global variables with custom variables, modifying 'config'
+		if (settings) $.extend(true, config, settings);
+
+		// make sure speed is at least 20ms longer than changeSpeed
+		if (config.speed < (config.changeSpeed+20)) {
+			alert('jShowOff: Make speed at least 20ms longer than changeSpeed; the fades aren\'t always right on time.');
+			return this;
+		};
+		
+		// create slideshow for each matching element invoked by .jSlidingPanes()
+		this.each(function(i) {
 			
-			this.periodical = this.next.periodical(7500, this);
-		}
-	},
-	
-	// to change to a specific tab, call this, argument is the pane element you want to switch to.
-	changeTo: function(element, animate) {
-		if ($type(element) == 'number') element = this.panes[element - 1];
-		if (!$defined(animate)) animate = true;
-		var event = { cancel: false, target: $(element), animateChange: animate };
-		this.fireEvent('change', event);
-		if (event.cancel == true) { return; };
-		
-		if (this.buttons) { this.buttons[this.current].removeClass(this.options.activeButtonClass); };
-		this.current = this.panes.indexOf($(event.target));
-		if (this.buttons) { this.buttons[this.current].addClass(this.options.activeButtonClass); };
-		
-		if (this.options.animate === 'slide')
-		{
-			this.fx.stop();
-			if (event.animateChange) {
-				this.fx.toElement(event.target);
-			} else {
-				this.outerSlidesBox.scrollTo(this.current * this.outerSlidesBox.offsetWidth.toInt(), 0);
-			}
-		}
-		else if (this.options.animate === 'fade')
-		{
-			new Fx.Style(this.last, 'opacity').start(1, 0);
-			new Fx.Style(element, 'opacity').start(0, 1); 
-			this.last = element;
-		}
-		
-		if (this.options.animateHeight)
-			this.heightFx.start(this.panes[this.current].offsetHeight);
-	},
-	
-	// Handles a click
-	buttonEventHandler: function(event, button) {
-		if (event.target == this.buttons[this.current]) return;
-		this.changeTo(this.panes[this.buttons.indexOf($(button))]);
-		// Clear the periodical
-		$clear(this.periodical);
-	},
-	
-	// call this to go to the next tab
-	next: function() {
-		var next = this.current + 1;
-		if (next == this.panes.length) {
-			if (this.options.wrap == true) { next = 0 } else { return }
-		}
-		
-		this.changeTo(this.panes[next]);
-	},
-	
-	// to go to the previous tab
-	previous: function() {
-		var prev = this.current - 1
-		if (prev < 0) {
-			if (this.options.wrap == true) { prev = this.panes.length - 1 } else { return }
-		}
-		
-		this.changeTo(this.panes[prev]);
-	},
-	
-	// call this if the width of the sliding tabs container changes to get everything in line again
-	recalcWidths: function() {
-		this.panes.each(function(pane, index) {
-			pane.setStyle('width', this.outerSlidesBox.offsetWidth.toInt() - this.options.rightOversized + 'px');
-		}.bind(this));
-		
-		this.innerSlidesBox.setStyle(
-			'width', (this.outerSlidesBox.offsetWidth.toInt() * this.panes.length) + 'px'
-		);
-		
-		// fix positioning
-		if (this.current > 0) {
-			if (this.fx)
-				this.fx.stop();
-			this.outerSlidesBox.scrollTo(this.current * this.outerSlidesBox.offsetWidth.toInt(), 0);
-		}
-	}
-});
+			// declare instance variables
+			var $cont = $(this);
+			var gallery = $(this).children().remove();
+			var timer = '';
+			var counter = 0;
+			var preloadedImg = [];
+			var howManyInstances = $('.panes').length+1;
+			var uniqueClass = 'panes-'+howManyInstances;
+			var cssClass = config.cssClass != undefined ? config.cssClass : '';
+			
+			
+			// set up wrapper
+			$cont.css('position','relative').wrap('<div class="panes '+uniqueClass+'" />');
+			var $wrap = $('.'+uniqueClass);
+			$wrap.css('position','relative').addClass(cssClass);
+			
+			// add first slide to wrapper
+			$(gallery[0]).clone().appendTo($cont);
+			
+			// preload slide images into memory
+			preloadImg();
+			
+			// add controls
+			if(config.controls){
+				addControls();
+				if(config.autoPlay==false){
+					$('.'+uniqueClass+'-pause').addClass(uniqueClass+'-paused pane-paused').text(config.controlText.play);
+				};
+			};
+			
+			// add slide links
+			if(config.links){
+				addSlideLinks();
+				$('.'+uniqueClass+'-buttons li').eq(0).addClass(uniqueClass+'-active active');
+			};
+			
+			// pause slide rotation on hover
+			if(config.hoverPause){ $cont.hover(
+				function(){ if(isPlaying()) pause('hover'); },
+				function(){ if(isPlaying()) play('hover'); }
+			);};
+			
+			// determine autoPlay
+			if(config.autoPlay && gallery.length>1) {
+				timer = setInterval( function(){ play(); }, config.speed );
+			};
+			
+			// display error message if no slides present
+			if(gallery.length<1){
+				$('.'+uniqueClass).append('<p>For slides to work, the container element must have child elements.</p>');
+			};
 
-ModSlidingPanes.implement(new Options, new Events);
+			
+			// utility for loading slides
+			function transitionTo(gallery,index) {
+				
+				var oldCounter = counter;
+				if((counter >= gallery.length) || (index >= gallery.length)) { counter = 0; var e2b = true; }
+				else if((counter < 0) || (index < 0)) { counter = gallery.length-1; var b2e = true; }
+				else { counter = index; }
 
+
+				if(config.effect=='slideLeft'){
+					var newSlideDir, oldSlideDir;
+					function slideDir(dir) {
+						newSlideDir = dir=='right' ? 'left' : 'right';
+						oldSlideDir = dir=='left' ? 'left' : 'right';					
+					};
+					
+
+					counter >= oldCounter ? slideDir('left') : slideDir('right') ;
+
+					$(gallery[counter]).clone().appendTo($cont).slideIt({direction:newSlideDir,changeSpeed:config.changeSpeed});
+					if($cont.children().length>1){
+						$cont.children().eq(0).css('position','absolute').slideIt({direction:oldSlideDir,showHide:'hide',changeSpeed:config.changeSpeed},function(){$(this).remove();});
+					};
+				} else if (config.effect=='fade') {
+					$(gallery[counter]).clone().appendTo($cont).hide().fadeIn(config.changeSpeed,function(){if($.browser.msie)this.style.removeAttribute('filter');});
+					if($cont.children().length>1){
+						$cont.children().eq(0).css('position','absolute').fadeOut(config.changeSpeed,function(){$(this).remove();});
+					};
+				} else if (config.effect=='none') {
+					$(gallery[counter]).clone().appendTo($cont);
+					if($cont.children().length>1){
+						$cont.children().eq(0).css('position','absolute').remove();
+					};
+				};
+				
+				// update active class on slide link
+				if(config.links){
+					$('.'+uniqueClass+'-active').removeClass(uniqueClass+'-active active');
+					$('.'+uniqueClass+'-buttons li').eq(counter).addClass(uniqueClass+'-active active');
+				};
+			};
+			
+			// is the rotator currently in 'play' mode
+			function isPlaying(){
+				return $('.'+uniqueClass+'-pause').hasClass('pane-paused') ? false : true;
+			};
+			
+			// start slide rotation on specified interval
+			function play(src) {
+				if(!isBusy()){
+					counter++;
+					transitionTo(gallery,counter);
+					if(src=='hover' || !isPlaying()) {
+						timer = setInterval(function(){ play(); },config.speed);
+					}
+					if(!isPlaying()){
+						$('.'+uniqueClass+'-pause').text(config.controlText.pause).removeClass('pane-paused '+uniqueClass+'-paused');
+					}
+				};
+			};
+			
+			// stop slide rotation
+			function pause(src) {
+				clearInterval(timer);
+				if(!src || src=='playBtn') $('.'+uniqueClass+'-pause').text(config.controlText.play).addClass('pane-paused '+uniqueClass+'-paused');
+				if(config.animatePause && src=='playBtn'){
+					$('<p class="'+uniqueClass+'-pausetext pane-pausetext">'+config.controlText.pause+'</p>').css({ fontSize:'62%', textAlign:'center', position:'absolute', top:'40%', lineHeight:'100%', width:'100%' }).appendTo($wrap).addClass(uniqueClass+'pauseText').animate({ fontSize:'600%', top:'30%', opacity:0 }, {duration:500,complete:function(){$(this).remove();}});
+				}
+			};
+			
+			// load the next slide
+			function next() {
+				goToAndPause(counter+1);
+			};
+		
+			// load the previous slide
+			function previous() {
+				goToAndPause(counter-1);
+			};
+			
+			// is the rotator in mid-transition
+			function isBusy() {
+				return $cont.children().length>1 ? true : false;
+			};
+			
+			// load a specific slide
+			function goToAndPause(index) {
+				$cont.children().stop(true,true);
+				if((counter != index) || ((counter == index) && isBusy())){
+					if(isBusy()) $cont.children().eq(0).remove();
+					transitionTo(gallery,index);
+					pause();
+				};
+			};	
+
+			// load images into memory
+			function preloadImg() {
+				$(gallery).each(function(i){
+					$(this).find('img').each(function(i){
+						preloadedImg[i] = $('<img>').attr('src',$(this).attr('src'));					
+					});
+				});
+			};
+				
+			// generate and add play/pause, prev, next controls
+			function addControls() {
+				$wrap.append('<div class="panes-controls '+uniqueClass+'-controls"><p class="pane-pause '+uniqueClass+'-ause" title="'+config.controlText.pause+'"></p></div>');
+				$('.'+uniqueClass+'-controls p').each(function(){
+						if($(this).hasClass('pane-pause')) $(this).click(function(){ isPlaying() ? pause('playBtn') : play(); return false; } );
+						//if($(this).hasClass('pane-prev')) $(this).click(function(){ previous(); return false; });
+						//if($(this).hasClass('pane-next')) $(this).click(function(){ next(); return false; });
+	
+				});
+				
+				$wrap.append('<div class="panes-headings '+uniqueClass+'-headings"><p class="pane-prev '+uniqueClass+'-prev" title="'+config.controlText.previous+'"></p> <p class="pane-next '+uniqueClass+'-next" title="'+config.controlText.next+'"></p></div>');
+				$('.'+uniqueClass+'-controls p').each(function(){
+					if($(this).hasClass('pane-prev')) $(this).click(function(){ previous(); return false; });
+					if($(this).hasClass('pane-next')) $(this).click(function(){ next(); return false; });
+				});
+			};	
+
+			// generate and add slide links
+			function addSlideLinks() {
+				//$wrap.append('<div class="panes-headings '+uniqueClass+'-controls"><ul class="panes-buttons '+uniqueClass+'-buttons"></ul></div>');
+				$('<ul class="panes-buttons '+uniqueClass+'-buttons"></ul>').insertBefore('.'+uniqueClass+'-headings .pane-next') //appendTo('.'+uniqueClass+'-headings');
+				$.each(gallery, function(i, val) {
+					var linktext = ($(this).attr('title') != '' && $(this).attr('title') != undefined) ? $(this).attr('title') : i+1;
+					$('<li class="pane-button-'+i+' '+uniqueClass+'-button-'+i+'">'+linktext+'</li>').bind('click', {index:i}, function(e){ goToAndPause(e.data.index); return false; }).appendTo('.'+uniqueClass+'-buttons');
+				});
+			};		
+	
+	
+		// end .each
+		});
+	
+		return this;
+
+	// end .jSlidingPanes
+	};
+
+// end closure
+})(jQuery);
+
+
+
+
+(function($) {
+
+	$.fn.slideIt = function(settings,callback) {
+	
+		// default global vars
+		var config = {
+			direction : 'left',
+			showHide : 'show',
+			changeSpeed : 600
+		};
+		
+		// merge default global variables with custom variables, modifying 'config'
+		if (settings) $.extend(config, settings);
+		
+		this.each(function(i) {	
+			$(this).css({left:'auto',right:'auto',top:'auto',bottom:'auto'});
+			var measurement = (config.direction == 'left') || (config.direction == 'right') ? $(this).outerWidth() : $(this).outerHeight();
+			var startStyle = {};
+			startStyle['position'] = $(this).css('position') == 'static' ? 'relative' : $(this).css('position');
+			startStyle[config.direction] = (config.showHide == 'show') ? '-'+measurement+'px' : 0;
+			var endStyle = {};
+			endStyle[config.direction] = config.showHide == 'show' ? 0 : '-'+measurement+'px';
+			$(this).css(startStyle).animate(endStyle,config.changeSpeed,callback);
+		// end .each
+		});
+	
+		return this;
+		
+	// end .slideIt
+	};
+
+// end closure
+})(jQuery);
