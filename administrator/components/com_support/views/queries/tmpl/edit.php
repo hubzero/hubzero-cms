@@ -36,12 +36,6 @@ $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS 
 
 $tmpl = JRequest::getVar('tmpl', '');
 
-//if ($tmpl) 
-//{
-	/*$document->addScript('/media/system/js/jquery.js');
-	$document->addScript('/media/system/js/jquery.noconflict.js');
-	$document->addScript('components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js');
-	$document->addScript('components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js');*/
 if (!$tmpl) 
 {
 	$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
@@ -144,8 +138,6 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
-	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script> -->
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
 	<script type="text/javascript">
@@ -252,8 +244,6 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
-	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script> -->
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
 	<script type="text/javascript">

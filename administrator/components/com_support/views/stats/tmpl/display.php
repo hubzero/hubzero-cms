@@ -37,6 +37,8 @@ JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'Ticket Stats' ), 's
 JToolBarHelper::spacer();
 JToolBarHelper::help('stats.html', true);
 
+JHTML::_('behavior.framework');
+
 $database = JFactory::getDBO();
 $sql = "SELECT resolved
 		FROM #__support_tickets
@@ -180,13 +182,11 @@ function getMonthName($month)
 					$openeddata = implode(',', $o);
 				}
 			?>
-			<script src="/media/system/js/jquery.js"></script>
-			<script src="/media/system/js/jquery.noconflict.js"></script>
-			<script src="/media/system/js/flot/jquery.flot.min.js"></script>
-			<script src="/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-			<script src="/media/system/js/flot/jquery.flot.pie.min.js"></script>
-			<script src="/media/system/js/flot/jquery.flot.resize.js"></script>
-			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+			<script src="../media/system/js/flot/jquery.flot.min.js"></script>
+			<script src="../media/system/js/flot/jquery.flot.tooltip.min.js"></script>
+			<script src="../media/system/js/flot/jquery.flot.pie.min.js"></script>
+			<script src="../media/system/js/flot/jquery.flot.resize.js"></script>
+			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;
