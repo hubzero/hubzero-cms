@@ -11,29 +11,22 @@ if (!HUB.Plugins) {
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
-HUB.Plugins.ResourcesRecommendations = {
-	initialize: function() {
-		// Recommendations web service
-		var recoms = $('recommendations-section');
-		if (recoms) {
-			var sbjt = $('recommendations-subject')
-			if (sbjt) {
-				sbjt.empty();
-				imgpath = '/components/com_resources/images/loading.gif';
-				var p = new Element('p', {'id':'loading-section'});
-				var img = new Element('img', {'id':'loading-img','src':imgpath}).injectInside(p);
-				p.injectInside(sbjt);
-			
-				var rid = $('rid');
-				if (rid) {
-					new Ajax('/index.php?option=com_resources&task=plugin&trigger=onResourcesRecoms&no_html=1&rid='+rid.value,{
-							'method' : 'get',
-							'update' : sbjt
-						}).request();
-				}
-			}
-		}
-	} // end initialize
+if (!jq) {
+	var jq = $;
 }
 
-window.addEvent('domready', HUB.Plugins.ResourcesRecommendations.initialize);
+jQuery(document).ready(function($){
+	var recoms = $('#recommendations-section');
+	if (recoms.length) {
+		var sbjt = $('#recommendations-subject');
+		if (sbjt.length) {
+
+			var rid = $('#rid');
+			if (rid.length) {
+				$.get('/index.php?option=com_resources&task=plugin&trigger=onResourcesRecoms&no_html=1&rid='+rid.val(), {}, function(data) {
+					$(sbjt).html(data);
+				});
+			}
+		}
+	}
+});
