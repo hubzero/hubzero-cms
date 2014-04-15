@@ -1,64 +1,51 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/members/blog/blog.js
+ * @file        plugins/groups/blog/blog.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
+if (!jq) {
+	var jq = $;
 }
 
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
-HUB.Plugins.MembersBlog = {
-	initialize: function() {
-		if (typeof(SqueezeBoxHub) != "undefined") {
-			if (!SqueezeBoxHub) {
-				SqueezeBoxHub.initialize({ size: {x: 500, y: 375} });
-			}
+jQuery(document).ready(function (jq) {
+	var $ = jq;
 
-			// Create a "login" button
-			el = new Element('a', {
-				href: '/login',
-				title: 'Login',
-				id: 'login-button'
-			}).appendText('Login').addClass('pane-prev').injectTop($('hubForm'));
-				
-			// Add the event
-			el.addEvent('click', function(e) {
-				new Event(e).stop();
+	if ($("#field-publish_up").length && $("#field-publish_down").length) {
+		$('#field-publish_up, #field-publish_down').datetimepicker({
+			controlType: 'slider',
+			dateFormat: 'yy-mm-dd',
+			timeFormat: 'HH:mm:ss'
+		});
+	}
 
-				SqueezeBoxHub.fromElement('login-btn',{
-					handler: 'url', 
-					size: {x: 500, y: 375}, 
-					ajaxOptions: {
-						method: 'get',
-						onComplete: function() {
-							frm = $('hubForm-ajax');
-							if (frm) {
-								frm.addEvent('submit', function(e) {
-									new Event(e).stop();
-									frm.send({
-										onComplete: function() {
-											SqueezeBoxHub.close();
-										}
-							        });
-								});
-							}
-						}
-					}
-				}); // end SqueezeBoxHub
-			}); // end addEvent
-		} // end if
-	} // end initialize
-}
+	$('#content')
+			// Toggle text and classes when clicking reply
+			.on('click', 'a.reply', function (e) {
+				e.preventDefault();
 
-window.addEvent('domready', HUB.Plugins.MembersBlog.initialize);
+				var frm = $('#' + $(this).attr('rel'));
+
+				if (frm.hasClass('hide')) {
+					frm.removeClass('hide');
+
+					$(this)
+						.addClass('active')
+						.text($(this).attr('data-txt-active'));
+				} else {
+					frm.addClass('hide');
+					$(this)
+						.removeClass('active')
+						.text($(this).attr('data-txt-inactive'));
+				}
+			})
+			// Add confirm dialog to delete links
+			.on('click', 'a.delete', function (e) {
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					e.preventDefault();
+				}
+				return res;
+			});
+});

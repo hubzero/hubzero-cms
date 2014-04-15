@@ -158,12 +158,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		\Hubzero\Document\Assets::addPluginStylesheet('members', 'profile');
 		\Hubzero\Document\Assets::addPluginScript('members', 'profile');
-		
-		if (JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$document = JFactory::getDocument();
-			$document->addScript("/media/system/js/jquery.fileuploader.js");
-		}
+		\Hubzero\Document\Assets::addSystemScript('jquery.fileuploader.js');
 
 		$this->view = new \Hubzero\Plugin\View(
 			array(
