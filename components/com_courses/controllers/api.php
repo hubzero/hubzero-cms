@@ -1367,7 +1367,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Parse some things out of the referer
-		$referer = $_SERVER['HTTP_REFERER'];
+		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : JRequest::getVar('referrer');
 		preg_match('/\/asset\/([[:digit:]]*)/', $referer, $matches);
 
 		if (!$asset_id = $matches[1])
