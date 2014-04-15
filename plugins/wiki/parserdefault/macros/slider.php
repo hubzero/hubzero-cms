@@ -130,16 +130,10 @@ class SliderMacro extends WikiMacro
 
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css');
-		if (!JPluginHelper::isEnabled('system', 'jquery')) 
-		{
-			$document->addScript('media/system/js/jquery.js');
-		}
 		$document->addScript('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js');
 		$document->addScriptDeclaration('
-			var $jQ = jQuery.noConflict();
-			
-			$jQ(function() {
-				$jQ("#slider_' . $id . '").cycle({
+			jQuery(document).ready(function($){
+				$("#slider_' . $id . '").cycle({
 					fx: \'scrollHorz\',
 					speed: 450,
 					pager: \'#slider_' . $id . '_pager\'
