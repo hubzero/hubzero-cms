@@ -130,8 +130,7 @@ if (!$tmpl && !$no_html) {
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
-	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
+	<!--
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script> -->
 	<script type="text/javascript">
@@ -242,8 +241,7 @@ if (!$tmpl && !$no_html) {
 		<?php echo JHTML::_('form.token'); ?>
 		</fieldset>
 	</form>
-	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
-	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
+	<!--
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script> -->
 	<script type="text/javascript">
