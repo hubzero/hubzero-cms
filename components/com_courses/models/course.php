@@ -646,12 +646,10 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 */
 	public function delete()
 	{
-		$value = parent::delete();
-
 		$this->importPlugin('courses')
 		     ->trigger('onCourseDelete', array($this));
 
-		return $value;
+		return parent::delete();
 	}
 
 	/**
