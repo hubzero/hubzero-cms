@@ -37,9 +37,9 @@ WYKIWYG.converter = function() {
 			count: 0,
 			cursor: 0
 		};
-
+		
 		var htmlblocks = [];
-
+		
 		var ELEMENTS = [
 			{
 				patterns: 'p',
@@ -67,9 +67,9 @@ WYKIWYG.converter = function() {
 					if (innerHTML == '<!-- columns -->') {
 						return replace;
 					}
-
+					
 					innerHTML = innerHTML.replace(/^\n\n/, '\n');
-
+					
 					if (cls && cls[1].indexOf('columns') == -1) {
 						if (cls[1] == 'html') {
 							htmlblocks.push('{{{\n#!html\n' + innerHTML.rtrim() + '\n}}}\n');
@@ -78,9 +78,9 @@ WYKIWYG.converter = function() {
 						replace += innerHTML ? '\n\n' + '[[Div(start' + (style && style[1] ? ', style=' + style[1] : '' ) + (cls && cls[1] ? ', class=' + cls[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' + innerHTML + '[[Div(end)]]' : '';
 					} else if (cls && cls[1]) {
 						columns.cursor++;
-
+						
 						var num = cls[1].match(/two|three|four|five|six/gi);
-
+						
 						cls[1] = cls[1].replace(/columns/, '') // remove columns declaration
 										.replace(/first|second|third|fourth|fifth|sixth/, '') // remove column count
 										.replace(/two|three|four|five|six/, '') // remove coulmn number declaration
@@ -95,7 +95,7 @@ WYKIWYG.converter = function() {
 							case '': 
 							default: break;
 						}
-
+						
 						if (columns.cursor == 1) {
 							replace += '[[Column('+columns.count+')]]\n';
 						} else if (columns.cursor == columns.count) {
@@ -113,7 +113,7 @@ WYKIWYG.converter = function() {
 			{
 				patterns: 'br',
 				type: 'void',
-				replacement: '[[br]]\n'
+				replacement: '[[br]]'
 			},
 			{
 				patterns: 'h([1-6])',
@@ -212,17 +212,19 @@ WYKIWYG.converter = function() {
 			}
 		];
 
+		//string = string.replace(/((^|\s)\[([^\[])(.*?)\])/g, '$2[!$3$4]');
+
 		string = string.replace(/\&nbsp;/ig, ' ');
-		string = string.replace(/<div><br><\/div>/ig, '\n');
+		string = string.replace(/<div><br(\s*)\/?><\/div>/ig, '\n');
 
 		// THandle nested DIVs
 		string = countDivs(string);
-
+		
 		function countDivs(text) {
 			var j = 0;
 
 			lines = text.split('\n');
-
+			
 			for (var i = 0, len = lines.length; i < len; i++) 
 			{
 				lines[i] = lines[i].replace(/(<div\b([^>]*)>)/g,
@@ -247,9 +249,9 @@ WYKIWYG.converter = function() {
 					}
 				);
 			}
-
+			
 			text = lines.join('\n');
-
+			
 			return text;
 		}
 
@@ -307,7 +309,7 @@ WYKIWYG.converter = function() {
 				var lis = innerHTML.split('</li>');
 				lis.splice(lis.length - 1, 1);
 				for (i = 0, len = lis.length; i < len; i++) {
-					if(lis[i]) {
+					if (lis[i]) {
 						var prefix = (listType === 'ol') ? " # " : " * ";
 						lis[i] = lis[i].replace(/\s*<li[^>]*>([\s\S]*)/i, function(str, innerHTML) {
 							innerHTML = innerHTML.replace(/^\s+/, '');
@@ -320,7 +322,7 @@ WYKIWYG.converter = function() {
 				}
 				return lis.join('\n');
 			});
-			return '\n\n' + html.replace(/[ \t]+\n|\s+$/g, '');
+			return html; //html.replace(/[ \t]+\n|\s+$/g, '');
 		}
 
 		// Converts lists that have no child lists (of same type) first, then works it's way up
@@ -343,7 +345,7 @@ WYKIWYG.converter = function() {
 						});
 						dts[i] = dts[i].replace(/\s*<dd[^>]*>([\s\S]*)<\/dd>/i, function(str, innerHTML) {
 							innerHTML = innerHTML.replace(/^\s+/, '');
-							return '   ' + innerHTML + '';
+							return '   ' + innerHTML + '\n';
 						});
 					}
 				}
@@ -568,7 +570,7 @@ WYKIWYG.converter = function() {
 			//text = _DoSpans(text);
 			text = _EscapeSpecialCharsWithinTagAttributes(text);
 			text = _EncodeBackslashEscapes(text);
-
+			//text = text.replace(/\[\[br\]\]/gi,"<br />");
 			// Process anchor tags.
 			text = _DoAnchors(text);
 
@@ -581,7 +583,7 @@ WYKIWYG.converter = function() {
 
 			// Do hard breaks:
 			text = text.replace(/  +\n/g," <br />\n");
-			text = text.replace(/\[\[br\]\]/gi,"<br />");
+			
 
 			return text;
 		}
@@ -649,6 +651,10 @@ WYKIWYG.converter = function() {
 			var link_id	 = m3.toLowerCase();
 			var url		= m4;
 			var title	= m7;
+
+			if (url[0] == '!') {
+				return '[' + whole_match.substr(2);
+			}
 
 			if (url == "") {
 				if (whole_match.search(/\(\s*\)$/m)>-1) {
@@ -749,7 +755,7 @@ WYKIWYG.converter = function() {
 			// Turn Wiki div macros [[Div(start, attribute=value)]]content[[Div(end)]] into <div> tags.
 
 			// Don't forget: encode * and _
-			text = text.replace(/(?:\n\n|^)(\[\[Div\(start(.*?)\)\]\]([\s\S]*?)\[\[Div\(end\)\]\])/gi, writeDivTag);
+			text = text.replace(/(?:\n|^)(\[\[Div\(start(.*?)\)\]\]([\s\S]*?)\[\[Div\(end\)\]\])/gi, writeDivTag);
 			return text;
 		}
 
@@ -774,7 +780,8 @@ WYKIWYG.converter = function() {
 				}
 			}
 			
-			var result = '<div' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + _RunBlockGamut(content) + '</div>';
+			//var result = '<div' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + "\n" + _RunBlockGamut(content) + "\n" + '</div>';
+			var result = '<div' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + "\n" + _RunBlockGamut(content) + "\n" + '</div>';
 
 			return result;
 		}
@@ -873,11 +880,18 @@ WYKIWYG.converter = function() {
 			//  ...
 			//  ====== Header 6 ======
 
-			text = text.replace(/^(\={1,6})[ \t]*(.+?)[ \t]*\=*[ \t]*[\#]*(\S*)\n+/gm,
-				function(wholeMatch,m1,m2, m3) {
-					var h_level = m1.length;
-					return hashBlock("<h" + h_level + (m3 ? ' id="'+m3+'"' : '') + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">");
-				});
+			//text = text.replace(/^((\={1,6})(.+?)\=*[ \t]*[\#]*(\S*))\n+/gm,
+			for (var i = 6; i >= 1; --i)
+			{
+				var regex = new RegExp('^(={' + i + '})(.+)(={' + i + '})[ \t]*[#]*(\S*)\n*', 'gm');
+				text = text.replace(regex,
+					function(wholeMatch, m1, m2, m3, m4) {
+						//console.log('"' + wholeMatch + '" "' + m2 + '"');
+						var h_level = m1.length;
+						//console.log("<h" + h_level + (m4 ? ' id="'+m4+'"' : '') + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">");
+						return hashBlock("<h" + h_level + (m4 ? ' id="'+m4+'"' : '') + ">" + _RunSpanGamut(m2.trim()) + "</h" + h_level + ">");
+					});
+			}
 
 			return text;
 		}
@@ -897,6 +911,7 @@ WYKIWYG.converter = function() {
 			var whole_list = /^(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*#]|\d\.)[ \t]+)))/gm;
 
 			if (g_list_level) {
+				//console.log('list level');
 				text = text.replace(whole_list,function(wholeMatch,m1,m2) {
 					var list = m1;
 					var list_type = (m2.search(/[*+\*]/g)>-1) ? "ul" : "ol";
@@ -917,15 +932,16 @@ WYKIWYG.converter = function() {
 			} else {
 				//whole_list = /(\n|^\n?)(([ ]+([*\*]|[*\#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#]|\d\.)[ \t]+)))/g;
 				//whole_list = /(\n|^\n?)(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*#]|\d\.)[ \t]+)))/g;
-				whole_list = /(\n?)(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n+)(?![ \t]+([*#]|\d\.)))/g;
+				whole_list = /(^|\n)(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n+)(?![ \t]+([*#]|\d\.)))/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
 					var runup = m1;
 					var list = m2;
 
+					//var list_type = (m3.search(/[*\*]/g)>-1) ? "ul" : "ol";
 					var list_type = (m3.search(/[*]/g)>-1) ? "ul" : "ol";
 					// Turn double returns into triple returns, so that we can make a
 					// paragraph for the last item in a list, if necessary:
-					var list = list.replace(/\n{2,}/g,"\n\n\n");;
+					var list = list.replace(/\n{2,}/g,"\n\n\n");
 					var result = _ProcessListItems(list);
 					result = runup + "<"+list_type+">\n" + result + "</"+list_type+">\n\n";	
 					return result;
@@ -971,7 +987,7 @@ WYKIWYG.converter = function() {
 			//  add sentinel to emulate \z
 			list_str += "~0";
 
-			//list_str = list_str.replace(/(\n)?(^[ \t]*)([*\*]|[*\#])[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*\*]|[*\#])[ \t]+))/gm,
+			//list_str = list_str.replace(/(\n)?(^[ \t]*)([*\*]|[*\#]|\d\.)[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*\*]|[*\#]|\d\.)[ \t]+))/gm,
 			list_str = list_str.replace(/(\n)?(^[ \t]*)([*#]|\d\.)[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*#]|\d\.)[ \t]+))/gm,
 				function(wholeMatch,m1,m2,m3,m4){
 					var item = m4;
@@ -983,7 +999,8 @@ WYKIWYG.converter = function() {
 					}
 					else {
 						// Recursion for sub-lists:
-						item = _DoLists(_Outdent(item));
+						//console.log(_Outdent(item));
+						item = _DoLists(item);
 						item = item.replace(/\n$/,""); // chomp(item)
 						item = _RunSpanGamut(item);
 					}
@@ -1028,14 +1045,14 @@ WYKIWYG.converter = function() {
 					return result;
 				});
 			} else {
-				whole_list = /(\n)?([ ]{1}(.+?)[:]{2}[^\r]+?(.+\n)*)/g;
+				whole_list = /(\n)?((.+?)::[\s\S]+?(?=\n{2}|$))/g; //(\n)?([ ]{1}(.+?)[:]{2}[^\r]+?(.+\n)*)/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
 					var runup = m1,
 						list = m2,
 						list_type = "dl";
 					// Turn double returns into triple returns, so that we can make a
 					// paragraph for the last item in a list, if necessary:
-					var list = list.replace(/\n{2,}/g,"\n\n\n");;
+					var list = list.replace(/\n{2,}/g,"\n\n\n");
 					var result = _ProcessDefListItems(list);
 					result = runup + "<" + list_type + ">\n" + result + "</" + list_type + ">\n";	
 					return result;
@@ -1059,7 +1076,8 @@ WYKIWYG.converter = function() {
 			// add sentinel to emulate \z
 			list_str += "~0";
 
-			list_str = list_str.replace(/(\n)?(\s{1})(.+?):{2}[^\r]+?(~0|(\s{3}(.+))+)/gm,
+			list_str = list_str.replace(/((\s)*(.+?)::[^\r]+?(.+))/g,
+			//list_str = list_str.replace(/(\n)?(\s{1})(.+?):{2}[^\r]+?(~0|(\s{3}(.+))+)/gm,
 				function(wholeMatch,m1,m2,m3,m4){
 					var leading_line = m1,
 						leading_space = m2,
@@ -1155,7 +1173,11 @@ WYKIWYG.converter = function() {
 
 					cells = row.split('||');
 					for (i; i < cells.length; i++) {
-						item += '<td>' + _RunSpanGamut(cells[i]) + '</td>';
+						if (cells[i][0] == '=') {
+							item += '<th>' + _RunSpanGamut(cells[i].replace(/=(.*)=/g,"$1")) + '</th>';
+						} else {
+							item += '<td>' + _RunSpanGamut(cells[i]) + '</td>';
+						}
 					}
 					
 					return  "<tr>" + item + "</tr>\n";
@@ -1672,8 +1694,10 @@ WYKIWYG.converter = function() {
 		text = _stripCodeBlocks(text);
 
 		text = _DoHtmlCodeBlocks(text);
-		
+
 		text = _DoCodeBlocks(text);
+
+		text = text.replace(/\[\[br\]\]/gi,"<br />");
 
 		// Turn block-level HTML blocks into hash entries
 		text = _HashHTMLBlocks(text);
@@ -1682,8 +1706,9 @@ WYKIWYG.converter = function() {
 		// Otherwise, the link processor would transform macro syntax.
 		// Ex: [[Macro()]] -> [<a href="Macro()">Macro()</a>]
 		text = _DoDivs(text);
+
 		text = _DoColumns(text);
-		
+
 		text = _StripMacros(text);
 
 		text = _RunBlockGamut(text);
@@ -1710,6 +1735,9 @@ WYKIWYG.converter = function() {
 	}
 }
 
+if (!jq) {
+	var jq = $;
+}
 
 WYKIWYG.editor = function() {
 	var c=[], 
@@ -1742,9 +1770,11 @@ WYKIWYG.editor = function() {
 	c['print']=[25,'Print','a','print'];
 	
 	function edit(n, obj) {
+		var $ = jq;
+		
 		this.n = n; 
 		window[n] = this; 
-		this.t = T$(obj.id); 
+		this.t = T$(obj.id);
 		this.obj = obj; 
 		this.xhtml = obj.xhtml;
 		
@@ -1756,7 +1786,7 @@ WYKIWYG.editor = function() {
 			this.i = document.createElement('iframe'); 
 		
 		this.i.frameBorder = 0;
-		this.i.style.width = '100%'; //(obj.width || (this.t.offsetWidth || '500') - 8); 
+		this.i.width = '100%'; //(obj.width || (this.t.offsetWidth || '500') - 8); 
 		//this.i.height = (obj.height || (this.t.offsetHeight || '250') - 8);
 		if (obj.footer) {
 			this.i.height = (obj.height || ((this.t.rows * parseInt($(this.t).css("font-size"))) || '250') - 8);
@@ -1879,7 +1909,6 @@ WYKIWYG.editor = function() {
 			}
 			p.appendChild(f);
 		}
-		
 		this.e = this.i.contentWindow.document;
 		this.e.open();
 		// Create the iframe document
@@ -1913,14 +1942,11 @@ WYKIWYG.editor = function() {
 			}
 		}
 		var wwe = this;
-		$$('form').each(function(frm) {
-			if ($(frm).getElementById(obj.id)) {
-				$(frm).addEvent('submit', function() {
-					var converter = new WYKIWYG.converter();
-					if (wwe.d) {
-						wwe.t.value = wwe.makeWiki();
-					}
-				});
+		$(this.t).closest('form').on('submit', function(){
+			var converter = new WYKIWYG.converter();
+			if (wwe.d) {
+				wwe.t.value = wwe.makeWiki();
+				wwe.e.body.innerHTML = '';
 			}
 		});
 	};
@@ -2013,6 +2039,7 @@ WYKIWYG.editor = function() {
 			v = v.replace(/<\/(blockquote|p|div|li|dt|dd|td|h[1-6])><br ?\/?>/gi,'</$1>\n');
 			v = v.replace(/<\/div><(blockquote|p|div|li|dt|dd|td|h[1-6])(\b[^>]*)>/gi,'</div>\n<$1$2>');
 			v = v.replace(/<br ?\/?><br ?\/?>/gi,'\n\n');
+			
 		}
 		return converter.makeWiki(v);
 	},
@@ -2031,12 +2058,12 @@ WYKIWYG.editor = function() {
 			this.e.body.innerHTML = v;
 			this.t.style.display = 'none'; 
 			this.i.style.display = 'block'; 
-			this.d = 1
+			this.d = 1;
 		} else {
 			if (div) {
 				div.innerHTML = this.obj.toggletext || 'switch to wysiwyg';
 			}
-			this.t.value = this.makeWiki();
+			this.t.value = this.makeWiki(v);
 			if (!post) {
 				this.t.style.height = this.i.height+'px';
 				this.i.style.display = 'none';
@@ -2062,12 +2089,20 @@ WYKIWYG.cursor = function() {
 	}
 }();
 
-wykiwygs = [];
+var wykiwygs = [];
 
-// Init editor
-window.addEvent('domready', function(){
-	$$('.wiki-toolbar-content').each(function(textarea) {
-		var id = $(textarea).getProperty('id');
+function initWykiwyg() {
+	//console.log('init wykiwyg');
+
+	jQuery('.wiki-toolbar-content').each(function(i, textarea) {
+		var id = jQuery(textarea).attr('id');
+
+		for (var i = 0; i < wykiwygs.length; i++) 
+		{
+			if (wykiwygs[i].obj.id == id) {
+				return;
+			}
+		}
 
 		var controls = [
 			'bold','italic','underline','strikethrough','|',
@@ -2078,7 +2113,7 @@ window.addEvent('domready', function(){
 			'style','|',
 			'hr','link','unlink'
 		];
-		if ($(this).hasClass('minimal')) {
+		if (jQuery(this).hasClass('minimal')) {
 			controls = [
 				'bold','italic','underline','strikethrough','|',
 				'subscript','superscript','|',
@@ -2088,9 +2123,14 @@ window.addEvent('domready', function(){
 		}
 
 		var footer = true;
-		if ($(this).hasClass('no-footer')) {
+		if (jQuery(this).hasClass('no-footer')) {
 			footer = false;
 		}
+
+		var links = jQuery(jQuery(textarea).parent()).find('a.popup');
+		links.each(function(i, link) {
+			jQuery(link).attr('href', jQuery(link).attr('href') + '?tmpl=component');
+		});
 
 		var edtr = new WYKIWYG.editor.edit('editor' + id,{
 			id: id,
@@ -2101,8 +2141,13 @@ window.addEvent('domready', function(){
 			xhtml: true,
 			cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
 		});
-		
+
 		wykiwygs.push(edtr);
 	});
-});
+};
 
+// Init editor
+jQuery(document).ready(function($){
+	initWykiwyg();
+});
+jQuery(document).on('ajaxLoad', initWykiwyg);
