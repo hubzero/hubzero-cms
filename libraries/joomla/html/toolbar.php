@@ -162,6 +162,23 @@ class JToolBar extends JObject
 		$html[] = '<div class="toolbar-list" id="' . $this->_name . '">';
 		$html[] = '<ul>';
 
+		foreach ($this->_bar as $key => $button)
+		{
+			$this->_bar[$key][9] = array();
+			if ($button[0] == 'Separator')
+			{
+				continue;
+			}
+			if (!isset($this->_bar[$key - 1]) || $this->_bar[$key - 1][0] == 'Separator')
+			{
+				$this->_bar[$key][9][] = 'first';
+			}
+			if (!isset($this->_bar[$key + 1]) || $this->_bar[$key + 1][0] == 'Separator')
+			{
+				$this->_bar[$key][9][] = 'last';
+			}
+		}
+
 		// Render each button in the toolbar.
 		foreach ($this->_bar as $button)
 		{
@@ -170,7 +187,7 @@ class JToolBar extends JObject
 
 		// End toolbar div.
 		$html[] = '</ul>';
-		$html[] = '<div class="clr"></div>';
+		//$html[] = '<div class="clr"></div>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);
