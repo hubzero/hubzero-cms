@@ -318,7 +318,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= "\t\t\t\t".'<input type="text" name="name[middle]" value="'. htmlentities(trim($middleName), ENT_COMPAT, 'UTF-8') .'" />'."\n";
 			$html .= "\t\t\t".'</label>'."\n";
 			$html .= "\t\t\t".'<label'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t\t".JText::_('COM_REGISTER_LAST_NAME').': '.$required."\n";
+			$html .= "\t\t\t\t".JText::_('COM_REGISTER_LAST_NAME').': '."\n";
 			$html .= "\t\t\t\t".'<input type="text" name="name[last]" value="'. htmlentities(trim($surname), ENT_COMPAT, 'UTF-8') .'" />'."\n";
 			$html .= "\t\t\t".'</label>'."\n";
 			$html .= "\t\t".'</div>'."\n";
