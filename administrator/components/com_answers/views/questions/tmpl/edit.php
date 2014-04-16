@@ -44,9 +44,6 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('question.html', true);
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -73,40 +70,39 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span>Details</span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /> <label for="anonymous">Anonymous</label>
-						</td>
-						<td>
-							<input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> /> <label for="email">Notify of responses</label>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="q_subject">Subject: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
-							<input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->subject('raw')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="field-question">Question:</label><br />
-							<?php echo JFactory::getEditor()->display('question[question]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-question', null, null, array('class' => 'minimal no-footer')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="q_tags">Tags: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
-							<textarea name="question[tags]" id="q_tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /> 
+					<label for="anonymous">Anonymous</label>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> /> 
+					<label for="email">Notify of responses</label>
+				</div>
+			</div>
+			<div class="clr"></div>
+
+			<div class="input-wrap">
+				<label for="q_subject">Subject: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->subject('raw')); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-question">Question:</label><br />
+				<?php echo JFactory::getEditor()->display('question[question]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-question', null, null, array('class' => 'minimal no-footer')); ?>
+			</div>
+
+			<div class="input-wrap">
+				<label for="q_tags">Tags: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<textarea name="question[tags]" id="q_tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="Metadata for this entry">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th>ID:</th>
@@ -115,7 +111,7 @@ function submitbutton(pressbutton)
 						<input type="hidden" name="question[id]" value="<?php echo $this->row->get('id'); ?>" />
 					</td>
 				</tr>
-<?php if ($this->row->get('id')) { ?>
+			<?php if ($this->row->get('id')) { ?>
 				<tr>
 					<th>Created:</th>
 					<td><?php echo $this->row->get('created'); ?></td>
@@ -124,33 +120,30 @@ function submitbutton(pressbutton)
 					<th>Created by:</th>
 					<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
 				</tr>
-<?php } ?>
+			<?php } ?>
 			</tbody>
 		</table>
+
 		<fieldset class="adminform">
 			<legend><span>Parameters</span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="created_by">Change Creator:</label></td>
-						<td><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', JFactory::getUser()->get('id')); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="created">Created Date:</label></td>
-						<td><?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'question[created]', 'created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="state">State:</label></td>
-						<td>
-							<select name="question[state]" id="state">
-								<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>>Open</option>
-								<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>>Closed</option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="created_by">Change Creator:</label><br />
+				<input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', JFactory::getUser()->get('id')); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="created">Created Date:</label><br />
+				<?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'question[created]', 'created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
+			</div>
+
+			<div class="input-wrap">
+				<label for="state">State:</label><br />
+				<select name="question[state]" id="state">
+					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>>Open</option>
+					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>>Closed</option>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
