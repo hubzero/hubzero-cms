@@ -70,15 +70,8 @@ class modSpotlight extends \Hubzero\Module\Module
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
-
-		if (!class_exists('FeaturesHistory'))
-		{
-			$this->error = true;
-			return false;
-		}
 
 		$this->database = JFactory::getDBO();
 
@@ -127,7 +120,6 @@ class modSpotlight extends \Hubzero\Module\Module
 			$row = null;
 			$out = '';
 			$tbl = '';
-			$fh = new FeaturesHistory($this->database);
 
 			$tbl = ($spot == 'tools' || $spot == 'nontools') ? 'resources' : '';
 			$tbl = $spot == ('members') ? 'profiles' : $tbl;
@@ -137,174 +129,118 @@ class modSpotlight extends \Hubzero\Module\Module
 			$tbl = $spot == ('blog')    ? 'blog'     : $tbl;
 			$tbl = (!$tbl) ? array_rand($tbls, 1) : $tbl;
 
-			// Check the feature history for today's feature
-			$fh->loadActive($start, $tbl, $spot . $k);
-
-			// Did we find a feature for today?
-
-			if ($fh->id && $fh->objectid)
+			// we need to randomly choose one
+			switch ($tbl)
 			{
-				switch ($fh->tbl)
-				{
-					case 'resources':
-					case 'itunes':
-						// Load the resource
-						$row = new ResourcesResource($this->database);
-						$row->load($fh->objectid);
-						if ($row)
-						{
-							$row->typetitle = $row->getTypetitle();
-						}
-					break;
+				case 'resources':
+					// Initiate a resource object
+					$rr = new ResourcesResource($this->database);
+					$filters['start'] = 0;
+					$filters['type'] = $spot;
+					$filters['sortby'] = 'random';
+					$filters['minranking'] = trim($this->params->get('minranking'));
+					$filters['tag'] = ($spot == 'tools') ? trim($this->params->get('tag')) : ''; // tag is set for tools only
 
-					case 'profiles':
-						// Load the member profile
-						$row = new MembersProfile($this->database);
-						$row->load($fh->objectid);
-					break;
+					// Get records
+					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);
+				break;
 
-					case 'topics':
-						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-						// Yes - load the topic page
-						$row = new WikiTablePage($this->database);
-						$row->load($fh->objectid);
-					break;
+				case 'profiles':
+					// No - so we need to randomly choose one
+					$filters['start'] = 0;
+					$filters['sortby'] = "RAND()";
+					$filters['search'] = '';
+					$filters['state'] = 'public';
+					$filters['authorized'] = false;
+					$filters['tag'] = '';
+					$filters['contributions'] = trim($this->params->get('min_contributions'));
+					$filters['show'] = trim($this->params->get('show'));
 
-					case 'answers':
-						// Yes - load the question
-						$row = new AnswersTableQuestion($this->database);
-						$row->load($fh->objectid);
+					$mp = new MembersProfile($this->database);
 
-						$ar = new AnswersTableResponse($this->database);
-						$row->rcount = count($ar->getIds($row->id));
-					break;
+					// Get records
+					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);
+				break;
 
-					case 'blog':
-						// Yes - load the blog
-						$row = new BlogTableEntry($this->database);
-						$row->load($fh->objectid);
-					break;
+				case 'topics':
+					// No - so we need to randomly choose one
+					$topics_tag = trim($this->params->get('topics_tag'));
+					$query  = "SELECT DISTINCT w.id, w.pagename, w.title ";
+					$query .= " FROM #__wiki_page AS w ";
+					if ($topics_tag)
+					{
+						$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=w.id AND RTA.tbl='wiki' ";
+						$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
+					}
+					else
+					{
+						$query .= ", #__wiki_version AS v ";
+					}
+					$query .= " WHERE w.access!=1 AND w.scope = ''  ";
+					if ($topics_tag)
+					{
+						$query .= " AND (TA.tag='" . $topics_tag . "' OR TA.raw_tag='" . $topics_tag . "') ";
+					}
+					else
+					{
+						$query .= " AND v.pageid=w.id AND v.approved = 1 AND v.pagetext != '' ";
+					}
+					$query .= " ORDER BY RAND() ";
+					$this->database->setQuery($query);
 
-					default:
-						// Nothing
-					break;
-				}
+					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();
+				break;
+
+				case 'itunes':
+					// Initiate a resource object
+					$rr = new ResourcesResource($this->database);
+					$filters['start'] = 0;
+					$filters['sortby'] = 'random';
+					$filters['tag'] = trim($this->params->get('itunes_tag'));
+
+					// Get records
+					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);
+				break;
+
+				case 'answers':
+					$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.anonymous  ";
+					$query .= ", (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount ";
+					$query .= " FROM #__answers_questions AS C ";
+					$query .= " WHERE C.state=0 ";
+					$query .= " AND (C.reward > 0 OR C.helpful > 0) ";
+					$query .= " ORDER BY RAND() ";
+					$this->database->setQuery($query);
+
+					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();
+				break;
+
+				case 'blog':
+					$filters = array();
+					$filters['limit'] = 1;
+					$filters['start'] = 0;
+					$filters['state'] = 'public';
+					$filters['order'] = "RAND()";
+					$filters['search'] = '';
+					$filters['scope'] = 'member';
+					$filters['group_id'] = 0;
+					$filters['authorized'] = false;
+					$filters['sql'] = '';
+					$mp = new BlogTableEntry($this->database);
+					$entry = $mp->getRecords($filters);
+
+					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $entry;
+				break;
 			}
-			else
+
+			if ($rows && count($rows[$spot]) > 0)
 			{
-				// No - so we need to randomly choose one
-				switch ($tbl)
-				{
-					case 'resources':
-						// Initiate a resource object
-						$rr = new ResourcesResource($this->database);
-						$filters['start'] = 0;
-						$filters['type'] = $spot;
-						$filters['sortby'] = 'random';
-						$filters['minranking'] = trim($this->params->get('minranking'));
-						$filters['tag'] = ($spot == 'tools') ? trim($this->params->get('tag')) : ''; // tag is set for tools only
+				$row = $rows[$spot][0];
+			}
 
-						// Get records
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);
-					break;
-
-					case 'profiles':
-						// No - so we need to randomly choose one
-						$filters['start'] = 0;
-						$filters['sortby'] = "RAND()";
-						$filters['search'] = '';
-						$filters['state'] = 'public';
-						$filters['authorized'] = false;
-						$filters['tag'] = '';
-						$filters['contributions'] = trim($this->params->get('min_contributions'));
-						$filters['show'] = trim($this->params->get('show'));
-
-						$mp = new MembersProfile($this->database);
-
-						// Get records
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);
-					break;
-
-					case 'topics':
-						// No - so we need to randomly choose one
-						$topics_tag = trim($this->params->get('topics_tag'));
-						$query  = "SELECT DISTINCT w.id, w.pagename, w.title ";
-						$query .= " FROM #__wiki_page AS w ";
-						if ($topics_tag)
-						{
-							$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=w.id AND RTA.tbl='wiki' ";
-							$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
-						}
-						else
-						{
-							$query .= ", #__wiki_version AS v ";
-						}
-						$query .= " WHERE w.access!=1 AND w.scope = ''  ";
-						if ($topics_tag)
-						{
-							$query .= " AND (TA.tag='" . $topics_tag . "' OR TA.raw_tag='" . $topics_tag . "') ";
-						}
-						else
-						{
-							$query .= " AND v.pageid=w.id AND v.approved = 1 AND v.pagetext != '' ";
-						}
-						$query .= " ORDER BY RAND() ";
-						$this->database->setQuery($query);
-
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();
-					break;
-
-					case 'itunes':
-						// Initiate a resource object
-						$rr = new ResourcesResource($this->database);
-						$filters['start'] = 0;
-						$filters['sortby'] = 'random';
-						$filters['tag'] = trim($this->params->get('itunes_tag'));
-
-						// Get records
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);
-					break;
-
-					case 'answers':
-						$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.anonymous  ";
-						$query .= ", (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount ";
-						$query .= " FROM #__answers_questions AS C ";
-						$query .= " WHERE C.state=0 ";
-						$query .= " AND (C.reward > 0 OR C.helpful > 0) ";
-						$query .= " ORDER BY RAND() ";
-						$this->database->setQuery($query);
-
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();
-					break;
-
-					case 'blog':
-						$filters = array();
-						$filters['limit'] = 1;
-						$filters['start'] = 0;
-						$filters['state'] = 'public';
-						$filters['order'] = "RAND()";
-						$filters['search'] = '';
-						$filters['scope'] = 'member';
-						$filters['group_id'] = 0;
-						$filters['authorized'] = false;
-						$filters['sql'] = '';
-						$mp = new BlogTableEntry($this->database);
-						$entry = $mp->getRecords($filters);
-
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $entry;
-					break;
-				}
-
-				if ($rows && count($rows[$spot]) > 0)
-				{
-					$row = $rows[$spot][0];
-				}
-
-				// make sure we aren't pulling the same item
-				if ($k != 1 && in_array($spot, $activespots) && $rows && count($rows[$spot]) > 1)
-				{
-					$row = (count($rows[$spot]) < $k) ? $rows[$spot][$k-1] : $rows[$spot][1]; // get the next one
-				}
+			// make sure we aren't pulling the same item
+			if ($k != 1 && in_array($spot, $activespots) && $rows && count($rows[$spot]) > 1)
+			{
+				$row = (count($rows[$spot]) < $k) ? $rows[$spot][$k-1] : $rows[$spot][1]; // get the next one
 			}
 
 			// pull info
@@ -319,16 +255,6 @@ class modSpotlight extends \Hubzero\Module\Module
 			if ($out)
 			{
 				$this->html .= '<li class="spot_' . $k . '">' . $out . '</li>' . "\n";
-
-				// Check if this has been saved in the feature history
-				if (!$fh->id || !$fh->objectid)
-				{
-					$fh->featured = $start;
-					$fh->objectid = $itemid;
-					$fh->tbl = $tbl;
-					$fh->note = $spot . $k;
-					$fh->store();
-				}
 
 				$k++;
 			}

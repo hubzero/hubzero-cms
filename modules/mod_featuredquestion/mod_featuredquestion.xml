@@ -44,18 +44,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_featuredquestion.ini</language>
 	</languages>
-	<params>
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />
-		<param name="defaultpic" type="text" menu="hide" default="/modules/mod_featuredquestion/question_thumb.gif" label="Default picture" description="Default placeholder image for questions" />
-	</params>
-	<params group="advanced">
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">

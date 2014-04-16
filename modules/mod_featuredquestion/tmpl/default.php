@@ -58,7 +58,7 @@ if ($this->getError()) { ?>
 	<?php } ?>
 		<p>
 			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
-				<?php echo $this->escape(stripslashes($this->row->subject)); ?>
+				<?php echo $this->escape(strip_tags($this->row->subject)); ?>
 			</a>
 		<?php if ($this->row->question) { ?>
 			: <?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>

@@ -51,15 +51,6 @@ class modFeaturedresource extends \Hubzero\Module\Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
-
-		if (!class_exists('FeaturesHistory')) 
-		{
-			$this->setError(JText::_('FeaturesHistory class missing'));
-			require(JModuleHelper::getLayoutPath($this->module->module));
-			return;
-		}
-
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 		$database = JFactory::getDBO();
@@ -76,130 +67,29 @@ class modFeaturedresource extends \Hubzero\Module\Module
 		// Only published tools
 		$filters['toolState'] = 7;
 
-		$this->cls = trim($this->params->get('moduleclass_sfx'));
-		$this->txt_length = trim($this->params->get('txt_length'));
-		$catid = trim($this->params->get('catid'));
-
-		$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
-		$end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 23:59:59';
-
 		$row = null;
 
-		$fh = new FeaturesHistory($database);
+		// No - so we need to randomly choose one
+		// Initiate a resource object
+		$rr = new ResourcesResource($database);
 
-		// Is a specific content category set?
-		if ($catid) 
+		// Get records
+		$rows = $rr->getRecords($filters, false);
+		if (count($rows) > 0) 
 		{
-			// Yes - so we need to check if there's an active article to display
-			$juser = JFactory::getUser();
-			$aid = $juser->get('aid', 0);
-
-			$contentConfig = JComponentHelper::getParams('com_content');
-			$noauth = !$contentConfig->get('shownoauth');
-
-			$date = JFactory::getDate();
-			$now = $date->toMySQL();
-
-			$nullDate = $database->getNullDate();
-
-			// Load an article
-			$query = 'SELECT a.*,' .
-				' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.
-				' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug'.
-				' FROM #__content AS a' .
-				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
-				' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
-				' WHERE a.state = 1 ' .
-				($noauth ? ' AND a.access <= ' . (int) $aid . ' AND cc.access <= ' . (int) $aid . ' AND s.access <= ' . (int) $aid : '') .
-				' AND (a.publish_up = ' . $database->Quote($nullDate) . ' OR a.publish_up <= ' . $database->Quote($now) . ') ' .
-				' AND (a.publish_down = ' . $database->Quote($nullDate) . ' OR a.publish_down >= ' . $database->Quote($now) . ')' .
-				' AND cc.id = ' . (int) $catid .
-				' AND cc.section = s.id' .
-				' AND cc.published = 1' .
-				' AND s.published = 1' .
-				' ORDER BY a.ordering';
-			$database->setQuery($query, 0, $filters['limit']);
-			$rows = $database->loadObjectList();
-			if (count($rows) > 0) 
-			{
-				$row = $rows[0];
-			}
-		}
-
-		// Do we have an article to display?
-		if (!$row) 
-		{
-			// No - so we need to display a resource
-			// Check the feature history for today's feature
-			$fh->loadActive($start, 'resources', $filters['type']);
-
-			// Did we find a feature for today?
-			if ($fh->id && $fh->tbl == 'resources') 
-			{
-				// Yes - load the resource
-				$row = new ResourcesResource($database);
-				$row->load($fh->objectid);
-				if ($row) 
-				{
-					$row->typetitle = $row->getTypetitle();
-				}
-			} 
-			else 
-			{
-				// No - so we need to randomly choose one
-				// Initiate a resource object
-				$rr = new ResourcesResource($database);
-
-				// Get records
-				$rows = $rr->getRecords($filters, false);
-				if (count($rows) > 0) 
-				{
-					$row = $rows[0];
-				}
-			}
+			$row = $rows[0];
 		}
 
 		// Did we get any results?
 		if ($row) 
 		{
+			$this->cls = trim($this->params->get('moduleclass_sfx'));
+			$this->txt_length = trim($this->params->get('txt_length'));
+
 			$config = JComponentHelper::getParams('com_resources');
 
-			// Is this a content article or a member profile?
-			if (isset($row->catid)) 
-			{
-				// Content article
-				$id = $row->created_by_alias;
-
-				// Check if the article has been saved in the feature history
-				$fh->loadObject($row->id, 'content');
-				if (!$fh->id) 
-				{
-					$fh->featured = $start;
-					$fh->objectid = $row->id;
-					$fh->tbl      = 'content';
-					$fh->store();
-				}
-				$rr = new ResourcesResource($database);
-				$rr->load($id);
-
-				$row->typetitle = $rr->getTypetitle();
-				$row->type = $rr->type;
-			} 
-			else 
-			{
-				// Resource
-				$id = $row->id;
-
-				// Check if this has been saved in the feature history
-				if (!$fh->id) 
-				{
-					$fh->featured = $start;
-					$fh->objectid = $row->id;
-					$fh->tbl      = 'resources';
-					$fh->note     = $filters['type'];
-					$fh->store();
-				}
-			}
+			// Resource
+			$id = $row->id;
 
 			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
 			$path = $this->build_path($row->created, $row->id, $path);
@@ -235,13 +125,9 @@ class modFeaturedresource extends \Hubzero\Module\Module
 			$this->id    = $id;
 			$this->thumb = $thumb;
 			$this->row   = $row;
-		}
-		else 
-		{
-			$this->row = null;
-		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+			require(JModuleHelper::getLayoutPath($this->module->module));
+		}
 	}
 
 	/**
@@ -257,7 +143,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;

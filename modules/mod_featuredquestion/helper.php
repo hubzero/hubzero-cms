@@ -44,82 +44,37 @@ class modFeaturedquestion extends \Hubzero\Module\Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
-
-		if (!class_exists('FeaturesHistory')) 
-		{
-			$this->setError(JText::_('FeaturesHistory class missing'));
-			require(JModuleHelper::getLayoutPath($this->module->module));
-			return;
-		}
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		$database = JFactory::getDBO();
-
-		$filters = array();
-		$filters['limit'] = 1;
-
-		$this->cls = trim($this->params->get('moduleclass_sfx'));
-		$this->txt_length = trim($this->params->get('txt_length'));
-
-		$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
-		$end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 23:59:59';
-
 		$row = null;
 
-		$fh = new FeaturesHistory($database);
+		// randomly choose one
+		$filters = array();
+		$filters['limit'] = 1;
+		$filters['start']    = 0;
+		$filters['sortby']   = 'random';
+		$filters['tag']      = '';
+		$filters['filterby'] = 'open';
+		$filters['created_before'] = date('Y-m-d', mktime(0, 0, 0, date('m'), (date('d')+7), date('Y'))) . ' 00:00:00';
 
-		// Load some needed libraries
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
+		$mp = new AnswersTableQuestion($database);
 
-		// Check the feature history for today's feature
-		$fh->loadActive($start, 'answers');
-
-		// Did we find a feature for today?
-		if ($fh->id && $fh->tbl == 'answers') 
+		$rows = $mp->getResults($filters);
+		if (count($rows) > 0) 
 		{
-			// Yes - load the member profile
-			$row = new AnswersTableQuestion($database);
-			$row->load($fh->objectid);
-
-			$ar = new AnswersTableResponse($database);
-			$row->rcount = count($ar->getIds($row->id));
-		} 
-		else 
-		{
-			// No - so we need to randomly choose one
-			$filters['start']    = 0;
-			$filters['sortby']   = 'random';
-			$filters['tag']      = '';
-			$filters['filterby'] = 'open';
-			$filters['created_before'] = date('Y-m-d', mktime(0, 0, 0, date('m'), (date('d')+7), date('Y'))) . ' 00:00:00';
-
-			$mp = new AnswersTableQuestion($database);
-
-			$rows = $mp->getResults($filters);
-			if (count($rows) > 0) 
-			{
-				$row = $rows[0];
-			}
+			$row = $rows[0];
 		}
 
 		// Did we have a result to display?
 		if ($row) 
 		{
+			$this->cls = trim($this->params->get('moduleclass_sfx'));
+			$this->txt_length = trim($this->params->get('txt_length'));
+
 			$this->row = $row;
 
 			$config = JComponentHelper::getParams('com_answers');
-
-			// Check if this has been saved in the feature history
-			if (!$fh->id) 
-			{
-				$fh->featured = $start;
-				$fh->objectid = $row->id;
-				$fh->tbl      = 'answers';
-				$fh->store();
-			}
 
 			$this->thumb = DS . trim($this->params->get('defaultpic'), DS);
 
@@ -140,7 +95,7 @@ class modFeaturedquestion extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
