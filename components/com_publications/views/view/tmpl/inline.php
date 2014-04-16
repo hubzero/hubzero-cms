@@ -120,13 +120,11 @@ else if (in_array(strtolower($this->ext), $docs) && $this->googleView)
 			."\n";
 }
 else
-
 		// View in html5-browser 
 		{ ?>
 			<p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
 			</p>
-		<?php }
-
+		<?php 
 	if (strtolower($this->ext) == 'wmv') { ?>
 	<object type="video/x-ms-wmv" 
 		  data="<?php echo $this->url; ?>" width="100%" height="<?php echo $height; ?>">
@@ -145,5 +143,6 @@ else
 		<embed src="<?php echo $this->url; ?>" scale="aspect"></embed>
 		</object>
 	</div>
-<?php } ?>
+<?php }
+} ?>
 </div>
