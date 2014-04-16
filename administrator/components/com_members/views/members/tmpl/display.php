@@ -88,18 +88,18 @@ function submitbutton(pressbutton)
 			</select>
 			
 			<label for="filter_search"><?php echo JText::_('for'); ?></label> 
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 			
 			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 		</div>
-		<div class="col width-60 fltrt" style="text-align: right;">
+		<div class="col width-60 fltrt">
 			<select name="emailConfirmed" id="filter_emailConfirmed" onchange="document.adminForm.submit( );">
-				<option value="0"<?php if ($this->filters['emailConfirmed'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Select email confirmed -'); ?></option>
+				<option value="0"<?php if ($this->filters['emailConfirmed'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Email confirmed -'); ?></option>
 				<option value="1"<?php if ($this->filters['emailConfirmed'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Confirmed'); ?></option>
 				<option value="-1"<?php if ($this->filters['emailConfirmed'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unconfirmed'); ?></option>
 			</select>
 			<select name="public" id="filter_public" onchange="document.adminForm.submit( );">
-				<option value="-1"<?php if ($this->filters['public'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Select profile access -'); ?></option>
+				<option value="-1"<?php if ($this->filters['public'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Profile access -'); ?></option>
 				<option value="1"<?php if ($this->filters['public'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
 				<option value="0"<?php if ($this->filters['public'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
 			</select>
@@ -107,9 +107,9 @@ function submitbutton(pressbutton)
 		<div class="clr"></div>
 	</fieldset>
 
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
-		 	<tr>
+			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Name'), 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -218,9 +218,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->username); ?>
 				</td>
 				<td>
-<?php if (trim($row->email)) { ?>
+				<?php if (trim($row->email)) { ?>
 					<a href="mailto:<?php echo $row->email; ?>"><?php echo $this->escape($row->email); ?></a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<a class="state <?php echo $state; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
@@ -245,7 +245,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<?php echo JHTML::_('form.token'); ?>
