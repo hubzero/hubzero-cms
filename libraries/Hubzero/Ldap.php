@@ -554,6 +554,8 @@ class Hubzero_Ldap
 			}
 		}
 
+		$dn = "cn=" . $dbinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
+
 		$result = @ldap_modify($conn, $dn, $entry);
 
 		if($result !== true)
