@@ -66,20 +66,24 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Details'); ?></span></legend>
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key">
-						<label for="field-scope"><?php echo JText::_('Scope'); ?>:</label><br />
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-scope">
+						<?php echo JText::_('Scope'); ?>:<br />
 						<select name="fields[scope]" id="field-scope">
 							<option value="site"<?php if ($this->row->get('scope') == 'site' || $this->row->get('scope') == '') { echo ' selected="selected"'; } ?>>site</option>
 							<option value="member"<?php if ($this->row->get('scope') == 'member') { echo ' selected="selected"'; } ?>>member</option>
 							<option value="group"<?php if ($this->row->get('scope') == 'group') { echo ' selected="selected"'; } ?>>group</option>
 						</select>
-					</td>
-					<td class="key">
-						<label for="field-group_id"><?php echo JText::_('Group'); ?>:</label><br />
+					</label>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="field-group_id">
+						<?php echo JText::_('Group'); ?>:<br />
 						<?php
 						$filters = array();
 						$filters['authorized'] = 'admin';
@@ -110,34 +114,37 @@ function submitbutton(pressbutton)
 						$html .= '</select>'."\n";
 						echo $html;
 						?>
-					</td>
-				</tr>
-				<tr>
-					<td class="key" colspan="2">
-						<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required">required</span></label><br />
-						<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<td class="key" colspan="2">
-						<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
-						<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<td class="key" colspan="2">
-						<label for="field-content"><?php echo JText::_('Content'); ?>: <span class="required">required</span></label><br />
-						<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td class="key" colspan="2">
-						<label for="field-tags"><?php echo JText::_('Tags'); ?>:</label><br />
-						<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+					</label>
+				</div>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-title">
+					<?php echo JText::_('Title'); ?>: <span class="required">required</span><br />
+					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+				</label>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-alias">
+					<?php echo JText::_('Alias'); ?>:<br />
+					<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+				</label>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-content">
+					<?php echo JText::_('Content'); ?>: <span class="required">required</span><br />
+					<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
+				</label>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-tags">
+					<?php echo JText::_('Tags'); ?>:<br />
+					<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+				</label>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
@@ -171,41 +178,34 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('State'); ?>:</th>
-						<td>
-							<select name="fields[state]">
-								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
-								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
-								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>
-								<option value="-1"<?php if ($this->row->get('state') == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Trashed'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Publish up'); ?>:</th>
-						<td>
-							<input type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($this->row->get('publish_up')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Publish down'); ?>:</th>
-						<td>
-							<input type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($this->row->get('publish_down')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-allow_comments"><?php echo JText::_('Allow comments'); ?></label></th>
-						<td><input class="option" type="checkbox" name="fields[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->row->get('allow_comments')) { echo ' checked="checked"'; } ?> /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<input class="option" type="checkbox" name="fields[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->row->get('allow_comments')) { echo ' checked="checked"'; } ?> />
+				<label for="field-allow_comments"><?php echo JText::_('Allow comments'); ?></label>
+			</div>
+
+			<div class="input-wrap">
+				<label><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]">
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>
+					<option value="-1"<?php if ($this->row->get('state') == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Trashed'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label><?php echo JText::_('Publish up'); ?>:</label><br />
+				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_up')), 'fields[publish_up]', 'field-publish_up'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<label><?php echo JText::_('Publish down'); ?>:</label><br />
+				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_down')), 'fields[publish_down]', 'field-publish_down'); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

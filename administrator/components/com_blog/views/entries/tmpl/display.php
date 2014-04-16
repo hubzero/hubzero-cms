@@ -78,7 +78,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 <?php if ($this->filters['scope'] == 'group') { ?>
 		<?php
@@ -149,42 +149,37 @@ $nullDate = $db->getNullDate();
 
 foreach ($this->rows as $row)
 {
-	$publish_up = JFactory::getDate($row->get('publish_up'));
+	$publish_up   = JFactory::getDate($row->get('publish_up'));
 	$publish_down = JFactory::getDate($row->get('publish_down'));
 	$publish_up->setOffset($config->getValue('config.offset'));
 	$publish_down->setOffset($config->getValue('config.offset'));
 
 	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1) 
 	{
-		$img  = 'publish_y.png';
 		$alt  = JText::_('Published');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
 	else if (($now->toUnix() <= $publish_down->toUnix() || $row->get('publish_down') == $nullDate) && $row->get('state') == 1) 
 	{
-		$img  = 'publish_g.png';
 		$alt  = JText::_('Published');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
 	else if ($now->toUnix() > $publish_down->toUnix() && $row->get('state') == 1) 
 	{
-		$img  = 'publish_r.png';
 		$alt  = JText::_('Expired');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
 	else if ($row->get('state') == 0) 
 	{
-		$img  = 'publish_x.png';
 		$alt  = JText::_('Unpublished');
 		$task = 'publish';
 		$cls  = 'unpublish';
 	} 
 	else if ($row->get('state') == -1) 
 	{
-		$img  = 'disabled.png';
 		$alt  = JText::_('Archived');
 		$task = 'publish';
 		$cls  = 'trash';
@@ -216,16 +211,14 @@ foreach ($this->rows as $row)
 
 	if ($row->get('allow_comments') == 0) 
 	{
-		$cimg = 'publish_x.png';
 		$calt = JText::_('Off');
-		$cls2 = 'unpublish';
+		$cls2 = 'off';
 		$state = 1;
 	} 
 	else 
 	{
-		$cimg = 'publish_g.png';
 		$calt = JText::_('On');
-		$cls2 = 'publish';
+		$cls2 = 'on';
 		$state = 0;
 	}
 ?>
@@ -254,11 +247,11 @@ foreach ($this->rows as $row)
 					<span class="editlinktip hasTip" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-							<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
 						<span class="state <?php echo $cls; ?>">
-							<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+							<span><?php echo $alt; ?></span>
 						</span>
 					<?php } ?>
 					</span>
@@ -270,7 +263,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=setcomments&amp;state=<?php echo $state; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /><?php } else { echo $calt; } ?></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td>

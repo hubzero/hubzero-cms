@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
@@ -88,9 +88,9 @@ function submitbutton(pressbutton)
 			</tr>
 		</thead>
 		<tfoot>
- 			<tr>
- 				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
- 			</tr>
+			<tr>
+				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+			</tr>
 		</tfoot>
 		<tbody>
 <?php
@@ -107,16 +107,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	if (!$row->get('anonymous')) 
 	{
-		$cimg = 'publish_x.png';
 		$calt = JText::_('Off');
-		$cls2 = 'unpublish';
+		$cls2 = 'off';
 		$state = 1;
 	} 
 	else 
 	{
-		$cimg = 'publish_g.png';
 		$calt = JText::_('On');
-		$cls2 = 'publish';
+		$cls2 = 'on';
 		$state = 0;
 	}
 ?>
@@ -167,6 +165,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="entry_id" value="<?php echo $this->filters['entry_id']; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
