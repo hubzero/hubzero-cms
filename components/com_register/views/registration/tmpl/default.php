@@ -142,10 +142,10 @@ defined('_JEXEC') or die('Restricted access');
 
 	if (($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) {
 		$html .= '<div class="error">'."\n";
-		$html .= "\t".'<p>The email address "' . htmlentities($this->registration['email'],ENT_COMPAT,'UTF-8') . '" is already registered. If you have lost or forgotten this ' . $this->sitename . ' login information, we can resend it to you at that email address now:</p>'."\n";
-		$html .= "\t".'<p class="submit"><input type="submit" name="resend" value="Email Existing Account Information" /></p>'."\n";
+		$html .= "\t".'<p>The email address "' . htmlentities($this->registration['email'],ENT_COMPAT,'UTF-8') . '" is already registered. If you have lost or forgotten this ' . $this->sitename . ' login information, we can help you recover it:</p>'."\n";
+		$html .= "\t".'<p class="submit"><a href="' . JRoute::_('index.php?option=com_users&view=remind') . '" class="btn btn-danger">Email Existing Account Information</a>'."\n";
 		$html .= "\t".'<p>If you are aware you already have another account registered to this email address, and are requesting another account because you need more resources, ' . $this->sitename . ' would be happy to work with you to raise your resource limits instead:</p>'."\n";
-		$html .= "\t".'<p class="submit"><input type="submit" name="raiselimit" value="Raise Existing Resource Limits" /></p>'."\n";
+		$html .= "\t".'<p class="submit"><a href="' . JRoute::_('index.php?option=com_support&controller=tickets&task=new') . '" class="btn btn-danger">Submit Request to Raise Existing Limits</a></p>'."\n";
 		$html .= '</div>'."\n";
 	}
 
