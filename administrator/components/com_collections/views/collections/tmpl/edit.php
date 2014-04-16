@@ -66,117 +66,104 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Details'); ?></span></legend>
-		<table class="admintable">
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-object_type"><?php echo JText::_('Owner type'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+					<select name="fields[object_type]" id="field-object_type">
+						<option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>>site</option>
+						<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>>member</option>
+						<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>>group</option>
+					</select>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="field-title"><?php echo JText::_('Owner ID'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+					<input type="text" name="fields[object_id]" id="field-object_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('Only letters, numbers, and dashes allowed. If no alias is provided one will be created from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('Description'); ?></label><br />
+				<textarea name="fields[description]" id="field-description" cols="35" rows="10"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col width-40 fltrt">
+		<table class="meta">
 			<tbody>
 				<tr>
-					<td class="key">
-						<label for="field-object_type"><?php echo JText::_('Owner type'); ?>:</label><br />
-						<select name="fields[object_type]" id="field-object_type">
-							<option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>>site</option>
-							<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>>member</option>
-							<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>>group</option>
-						</select>
-					</td>
-					<td class="key">
-						<label for="field-title"><?php echo JText::_('Owner ID'); ?>:</label><br />
-						<input type="text" name="fields[object_id]" id="field-object_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
+					<th class="key"><?php echo JText::_('Creator'); ?>:</th>
+					<td>
+						<?php 
+						$editor = JUser::getInstance($this->row->get('created_by'));
+						echo $this->escape(stripslashes($editor->get('name'))); 
+						?>
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<td class="key" colspan="2">
-						<label for="field-title"><?php echo JText::_('Title'); ?>:</label><br />
-						<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('created'); ?>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<td class="key" colspan="2">
-						<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
-						<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+					<th class="key"><?php echo JText::_('Likes'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('positive', 0); ?>
+						<input type="hidden" name="fields[positive]" id="field-positive" value="<?php echo $this->escape($this->row->get('positive', 0)); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<td class="key" colspan="2">
-						<label for="field-description"><?php echo JText::_('Description'); ?></label><br />
-						<textarea name="fields[description]" id="field-description" cols="35" rows="10"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
+					<th class="key"><?php echo JText::_('Posts'); ?>:</th>
+					<td>
+						<?php echo $this->row->count('post'); ?>
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Followers'); ?>:</th>
+					<td>
+						<?php echo $this->row->count('followers'); ?>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		</fieldset>
-	</div>
-	<div class="col width-40 fltrt">
-		<fieldset class="adminform">
-			<table class="meta">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
-						<td>
-							<?php 
-							$editor = JUser::getInstance($this->row->get('created_by'));
-							echo $this->escape(stripslashes($editor->get('name'))); 
-							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
-						<td>
-							<?php echo $this->row->get('created'); ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Likes'); ?>:</th>
-						<td>
-							<?php echo $this->row->get('positive', 0); ?>
-							<input type="hidden" name="fields[positive]" id="field-positive" value="<?php echo $this->escape($this->row->get('positive', 0)); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Posts'); ?>:</th>
-						<td>
-							<?php echo $this->row->count('post'); ?>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Followers'); ?>:</th>
-						<td>
-							<?php echo $this->row->count('followers'); ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('State'); ?>:</th>
-						<td>
-							<select name="fields[state]">
-								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Archived'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Access'); ?>:</th>
-						<td>
-							<select name="fields[access]">
-								<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
-								<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
-								<!-- <option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Special'); ?></option> -->
-								<option value="4"<?php if ($this->row->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Archived'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-access"><?php echo JText::_('Access'); ?>:</label><br />
+				<select name="fields[access]" id="field-access">
+					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
+					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
+					<option value="4"<?php if ($this->row->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

@@ -63,9 +63,10 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 
 		<input type="hidden" name="collection_id" value="<?php echo $this->filters['collection_id']; ?>" />
 	</fieldset>
@@ -108,13 +109,18 @@ foreach ($this->rows as $row)
 			$class = 'publish';
 			$task = 'unoriginal';
 			$alt = JText::_('COM_COLLECTIONS_IS_ORIGINAL');
-			break;
+		break;
 
 		case 0:
 			$class = 'unpublish';
 			$task = 'original';
 			$alt = JText::_('COM_COLLECTIONS_IS_NOT_ORIGINAL');
-			break;
+		break;
+	}
+
+	if (!($content = $row->item()->description('clean', 75)))
+	{
+		$content = JText::_('-- none --');
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -123,12 +129,12 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_COLLECTIONS_EDIT_CATEGORY'); ?>">
-						<span><?php echo $row->item()->description('clean', 75); ?></span>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+						<span><?php echo $content; ?></span>
 					</a>
 				<?php } else { ?>
 					<span>
-						<span><?php echo $row->item()->description('clean', 75); ?></span>
+						<span><?php echo $content; ?></span>
 					</span>
 				<?php } ?>
 				</td>
