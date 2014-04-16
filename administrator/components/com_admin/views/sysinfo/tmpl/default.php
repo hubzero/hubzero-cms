@@ -2,7 +2,7 @@
 /**
  * @package		Joomla.Administrator
  * @subpackage	com_admin
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 // Add specific helper files for html generation
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 // Load switcher behavior
-JHtml::_('behavior.switcher');
+JHtml::_('behavior.switcher', 'submenu');
 ?>
 
 <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="adminForm" id="adminForm">
@@ -27,7 +27,7 @@ JHtml::_('behavior.switcher');
 
 		<div id="page-phpsettings" class="tab">
 			<div class="noshow">
-				<div class="width-60">
+				<div class="width-100">
 					<?php echo $this->loadTemplate('phpsettings'); ?>
 				</div>
 			</div>
@@ -35,7 +35,7 @@ JHtml::_('behavior.switcher');
 
 		<div id="page-config" class="tab">
 			<div class="noshow">
-				<div class="width-60">
+				<div class="width-100">
 					<?php echo $this->loadTemplate('config'); ?>
 				</div>
 			</div>
@@ -43,7 +43,7 @@ JHtml::_('behavior.switcher');
 
 		<div id="page-directory" class="tab">
 			<div class="noshow">
-				<div class="width-60">
+				<div class="width-100">
 					<?php echo $this->loadTemplate('directory'); ?>
 				</div>
 			</div>
