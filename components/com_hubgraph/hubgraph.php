@@ -17,8 +17,8 @@ $basePath = preg_replace('#^'.preg_quote(JPATH_BASE).'#', '', dirname(__FILE__))
 
 $doc = JFactory::getDocument();
 //$doc->addScript('/jquery.js');
-$doc->addScript($basePath.'/resources/hubgraph.js');
-$doc->addStyleSheet($basePath.'/resources/hubgraph.css');
+\Hubzero\Document\Assets::addComponentScript('com_hubgraph','resources/hubgraph');
+\Hubzero\Document\Assets::addComponentStylesheet('com_hubgraph','resources/hubgraph.css');
 
 $path = JFactory::getApplication()->getPathway();
 $path->addItem('Search', $base);
