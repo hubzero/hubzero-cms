@@ -484,7 +484,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		{
 			// Get invite emails
 			$db = JFactory::getDBO();
-			$group_inviteemails = new Hubzero_Group_InviteEmail($db);
+			$group_inviteemails = new \Hubzero\User\Group\InviteEmail($db);
 			$current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
 
 			$headers  = 'From: ' . $from['name'] . ' <' . $from['email'] . '>' . "\r\n";
@@ -550,7 +550,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		if (substr($name, 0, 7) == 'mailto:') 
 		{
 			$name = substr($name, 7, strlen($name));
-			$name = plgGroupsMessages::obfuscate($name);
+			$name = self::obfuscate($name);
 
 			$href = 'mailto:' . $name;
 		}
@@ -566,7 +566,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	 * @param      string $email Address to obfuscate
 	 * @return     string
 	 */
-	public function obfuscate($email)
+	public static function obfuscate($email)
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';

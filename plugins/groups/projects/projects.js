@@ -5,26 +5,11 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
+if (!jq) {
+	var jq = $;
 }
 
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
-}
+jQuery(document).ready(function(jq){
+	var $ = jq;
 
-//----------------------------------------------------------
-//  Group Calendar Code
-//----------------------------------------------------------
-HUB.Plugins.GroupProjects = {
-	
-	initialize: function() {
-		
-	}
-	
-}
-
-window.addEvent('domready', HUB.Plugins.GroupProjects.initialize);
+});

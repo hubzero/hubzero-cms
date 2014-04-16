@@ -144,21 +144,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 					return $arr;
 				}
 			}
-			
+
 			//push styles to the view
 			\Hubzero\Document\Assets::addPluginStylesheet('groups','calendar');
 			\Hubzero\Document\Assets::addPluginScript('groups','calendar');
-			
-			//check to see if we need to include the mootools datepicker
-			if (!JPluginHelper::isEnabled('system', 'jquery'))
-			{
-				$document = JFactory::getDocument();
-				if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js')) 
-				{
-					$document->addScript('components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js');
-				}
-			}
-			
+
 			//get the request vars
 			$this->month    = JRequest::getInt('month', JFactory::getDate()->format("m") ,'get');
 			$this->month    = (strlen($this->month) == 1) ? '0'.$this->month : $this->month;
