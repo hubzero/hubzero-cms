@@ -789,10 +789,6 @@ class WishlistController extends \Hubzero\Component\SiteController
 
 			// Push some scripts to the template
 			$this->_getScripts();
-			
-			$document = JFactory::getDocument();
-			$document->addStylesheet('components' . DS . 'com_projects' . DS 
-			. 'assets' . DS . 'css' . DS . 'calendar.css');
 
 			// Go through some access checks
 			if ($juser->get('guest') && $action) 
@@ -849,10 +845,8 @@ class WishlistController extends \Hubzero\Component\SiteController
 			$filters = self::getFilters($this->_admin);
 
 			// Get the next and previous wishes
-			$wish->prev = $objWish->getWishId('prev', $wishid, $wish->wishlist, 
-				$this->_admin, $juser->get('id'), $filters);
-			$wish->next = $objWish->getWishId('next', $wishid, $wish->wishlist, 
-				$this->_admin, $juser->get('id'), $filters);
+			$wish->prev = $objWish->getWishId('prev', $wishid, $wish->wishlist, $this->_admin, $juser->get('id'), $filters);
+			$wish->next = $objWish->getWishId('next', $wishid, $wish->wishlist, $this->_admin, $juser->get('id'), $filters);
 
 			// Update average value for importance (this is tricky MySQL)
 			$votesplit = $this->config->get('votesplit')  ? trim($this->config->get('votesplit')) : 0;
@@ -1370,15 +1364,15 @@ class WishlistController extends \Hubzero\Component\SiteController
 				$name = JText::_('COM_WISHLIST_ANONYMOUS');
 			}
 
-			$message  = '----------------------------'.r.n;
-			$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$this->_list_title.' '.JText::_('WISHLIST').r.n;
-			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+			$message  = '----------------------------'."\r\n";
+			$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$this->_list_title.' '.JText::_('WISHLIST')."\r\n";
+			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject)."\r\n";
 			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, JText::_('DATE_FORMAT_HZ1'));
 			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 			$message .= $objWish->anonymous ? '' : '('.$login.')';
-			$message .= r.n.r.n;
+			$message .= "\r\n\r\n";
 
-			$message .= '----------------------------'.r.n;
+			$message .= '----------------------------'."\r\n";
 			$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 			$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_ASSIGNED_WISH').'.';
 
