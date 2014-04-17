@@ -782,8 +782,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		{
 			foreach ($newsletterContacts as $contact)
 			{
-				$mailSubject = '[SENDING TEST] - ' . $mailSubject;
-				mail($contact, $mailSubject, $mailBody, $mailHeaders, $mailArgs);
+				mail($contact, '[SENDING TEST] - '.$mailSubject, $mailBody, $mailHeaders, $mailArgs);
 			}
 			return true;
 		}
