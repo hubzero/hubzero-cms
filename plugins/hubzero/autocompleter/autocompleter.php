@@ -87,7 +87,7 @@ class plgHubzeroAutocompleter extends JPlugin
 		$type  = (isset($atts[7])) ? $atts[7] : 'multi'; // Allow single or multiple entries
 		$dsabl = (isset($atts[8])) ? $atts[8] : '';      // Readonly input
 
-		$base = rtrim(JURI::getInstance()->base(true), '/');
+		$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 		$datascript = $base . '/index.php';
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) 
