@@ -69,115 +69,101 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
 			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-scope">
-						<?php echo JText::_('Scope'); ?>:<br />
-						<select name="fields[scope]" id="field-scope">
-							<option value="site"<?php if ($this->row->get('scope') == 'site' || $this->row->get('scope') == '') { echo ' selected="selected"'; } ?>>site</option>
-							<option value="member"<?php if ($this->row->get('scope') == 'member') { echo ' selected="selected"'; } ?>>member</option>
-							<option value="group"<?php if ($this->row->get('scope') == 'group') { echo ' selected="selected"'; } ?>>group</option>
-						</select>
-					</label>
+				<div class="input-wrap" data-hint="<?php echo JText::_('Choose the type of blog this post is being made to.'); ?>">
+					<label for="field-scope"><?php echo JText::_('Scope'); ?>:</label><br />
+					<select name="fields[scope]" id="field-scope">
+						<option value="site"<?php if ($this->row->get('scope') == 'site' || $this->row->get('scope') == '') { echo ' selected="selected"'; } ?>>site</option>
+						<option value="member"<?php if ($this->row->get('scope') == 'member') { echo ' selected="selected"'; } ?>>member</option>
+						<option value="group"<?php if ($this->row->get('scope') == 'group') { echo ' selected="selected"'; } ?>>group</option>
+					</select>
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="field-group_id">
-						<?php echo JText::_('Group'); ?>:<br />
-						<?php
-						$filters = array();
-						$filters['authorized'] = 'admin';
-						$filters['fields'] = array('cn','description','published','gidNumber','type');
-						$filters['type'] = array(1,3);
-						$filters['sortby'] = 'description';
-						$groups = \Hubzero\User\Group::find($filters);
-						
-						$html  = '<select name="fields[group_id]" id="field-group_id">'."\n";
-						$html .= '<option value="0"';
-						if ($this->row->get('group_id') == 0) 
+					<label for="field-group_id"><?php echo JText::_('Group'); ?>:</label><br />
+					<?php
+					$filters = array();
+					$filters['authorized'] = 'admin';
+					$filters['fields'] = array('cn','description','published','gidNumber','type');
+					$filters['type'] = array(1,3);
+					$filters['sortby'] = 'description';
+					$groups = \Hubzero\User\Group::find($filters);
+					
+					$html  = '<select name="fields[group_id]" id="field-group_id">'."\n";
+					$html .= '<option value="0"';
+					if ($this->row->get('group_id') == 0) 
+					{
+						$html .= ' selected="selected"';
+					}
+					$html .= '>'.JText::_('None').'</option>'."\n";
+					if ($groups) 
+					{
+						foreach ($groups as $group)
 						{
-							$html .= ' selected="selected"';
-						}
-						$html .= '>'.JText::_('None').'</option>'."\n";
-						if ($groups) 
-						{
-							foreach ($groups as $group)
+							$html .= ' <option value="'.$group->gidNumber.'"';
+							if ($this->row->get('group_id') == $group->gidNumber) 
 							{
-								$html .= ' <option value="'.$group->gidNumber.'"';
-								if ($this->row->get('group_id') == $group->gidNumber) 
-								{
-									$html .= ' selected="selected"';
-								}
-								$html .= '>' . $this->escape(stripslashes($group->description)) . '</option>'."\n";
+								$html .= ' selected="selected"';
 							}
+							$html .= '>' . $this->escape(stripslashes($group->description)) . '</option>'."\n";
 						}
-						$html .= '</select>'."\n";
-						echo $html;
-						?>
-					</label>
+					}
+					$html .= '</select>'."\n";
+					echo $html;
+					?>
 				</div>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-title">
-					<?php echo JText::_('Title'); ?>: <span class="required">required</span><br />
-					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-				</label>
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('Alpha-numeric, dashes and unsercores. If none provided, an alias will be generated from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-alias">
-					<?php echo JText::_('Alias'); ?>:<br />
-					<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-				</label>
+				<label for="field-content"><?php echo JText::_('Content'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-content">
-					<?php echo JText::_('Content'); ?>: <span class="required">required</span><br />
-					<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
-				</label>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-tags">
-					<?php echo JText::_('Tags'); ?>:<br />
-					<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
-				</label>
+				<label for="field-tags"><?php echo JText::_('Tags'); ?>:</label><br />
+				<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<fieldset class="adminform">
-			<table class="meta">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
-						<td>
-							<?php 
-							$editor = JUser::getInstance($this->row->get('created_by'));
-							echo $this->escape(stripslashes($editor->get('name'))); 
-							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
-						<td>
-							<?php echo $this->row->get('created'); ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Hits'); ?>:</th>
-						<td>
-							<?php echo $this->row->get('hits'); ?>
-							<input type="hidden" name="fields[hits]" id="field-hits" value="<?php echo $this->escape($this->row->get('hits')); ?>" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('Created By'); ?>:</th>
+					<td>
+						<?php 
+						$editor = JUser::getInstance($this->row->get('created_by'));
+						echo $this->escape(stripslashes($editor->get('name'))); 
+						?>
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('created'); ?>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Hits'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('hits'); ?>
+						<input type="hidden" name="fields[hits]" id="field-hits" value="<?php echo $this->escape($this->row->get('hits')); ?>" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
@@ -188,8 +174,8 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('State'); ?>:</label><br />
-				<select name="fields[state]">
+				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
 					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
 					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
 					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>
@@ -198,12 +184,12 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('Publish up'); ?>:</label><br />
+				<label for="field-publish_up"><?php echo JText::_('Publish up'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_up')), 'fields[publish_up]', 'field-publish_up'); ?>
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('Publish down'); ?>:</label><br />
+				<label for="field-publish_down"><?php echo JText::_('Publish down'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_down')), 'fields[publish_down]', 'field-publish_down'); ?>
 			</div>
 		</fieldset>
