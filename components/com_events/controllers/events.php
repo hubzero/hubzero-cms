@@ -1223,6 +1223,13 @@ class EventsControllerEvents extends Hubzero_Controller
 			$dietary = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $dietary);
 		}
 
+		// check to make sure this is the only time registering
+		if (EventsRespondent::checkUniqueEmailForEvent($register['email'], $event->id) > 0)
+		{
+			$this->setError(JText::_('You have previously registered for this event.'));
+			$validemail = 0;
+		}
+
 		if ($register['firstname'] && $register['lastname'] && ($validemail == 1)) 
 		{
 			$jconfig = JFactory::getConfig();
