@@ -42,9 +42,6 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -78,86 +75,76 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span>Details</span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<input type="checkbox" name="answer[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> />
-							<label for="anonymous">Anonymous:</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>Question:</span><br />
-							<?php echo $this->escape($this->question->subject('clean')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label>Answer:</label><br />
-							<?php echo $editor->display('answer[answer]', $this->escape($this->row->content('raw')), '100%', 'auto', '50', '15'); ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			
+			<div class="input-wrap">
+				<input type="checkbox" name="answer[anonymous]" id="field-anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> />
+				<label for="field-anonymous">Anonymous:</label>
+			</div>
+			<div class="input-wrap">
+				<span>Question:</span><br />
+				<?php echo $this->escape($this->question->subject('clean')); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="field-answer">Answer: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<?php echo JFactory::getEditor()->display('answer[answer]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-answer'); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="Metadata for this entry">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th>ID:</th>
 					<td><?php echo $this->row->get('id'); ?></td>
 				</tr>
-<?php if ($this->row->get('id')) { ?>
+			<?php if ($this->row->get('id')) { ?>
 				<tr>
 					<th>Created:</th>
 					<td><?php echo $this->row->get('created'); ?></td>
 				</tr>
 				<tr>
-					<th>Created by:</th>
+					<th>Creator:</th>
 					<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
 				</tr>
-<?php } ?>
+			<?php } ?>
+				<tr>
+					<th>Helpful:</th>
+					<td>
+						<span class="votes up">+<?php echo $this->row->get('helpful'); ?></span> 
+						<span class="votes down">-<?php echo $this->row->get('nothelpful'); ?></span> 
+						<?php if ( $this->row->get('helpful') > 0 || $this->row->get('nothelpful') > 0 ) { ?>
+							<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('reset');" />
+						<?php } ?>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<fieldset class="adminform">
 			<legend><span>Parameters</span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="state">Accept:</label></td>
-						<td><input type="checkbox" name="answer[state]" id="state" value="1" <?php echo $this->row->get('state') ? 'checked="checked"' : ''; ?> /> (<?php echo ($this->row->get('state') == 1) ? 'Accepted answer' : 'Unaccepted'; ?>)</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="created_by">Change Creator:</label></td>
-						<td><input type="text" name="answer[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->escape($this->row->get('created_by', JFactory::getUser()->get('id'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="created">Created Date:</label></td>
-						<td><?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'answer[created]', 'created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
-					</tr>
-					<tr>
-						<td class="key">Helpful:</td>
-						<td>
-							<span style="color:green;">+<?php echo $this->row->get('helpful'); ?></span> 
-							<span style="color:red;">-<?php echo $this->row->get('nothelpful'); ?></span> 
-							<?php if ( $this->row->get('helpful') > 0 || $this->row->get('nothelpful') > 0 ) { ?>
-								<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('reset');" />
-							<?php } ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-state">Accept:</label><br />
+				<input type="checkbox" name="answer[state]" id="field-state" value="1" <?php echo $this->row->get('state') ? 'checked="checked"' : ''; ?> /> (<?php echo ($this->row->get('state') == 1) ? 'Accepted answer' : 'Unaccepted'; ?>)
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-created_by">Change Creator:</label><br />
+				<input type="text" name="answer[created_by]" id="field-created_by" size="25" maxlength="50" value="<?php echo $this->escape($this->row->get('created_by', JFactory::getUser()->get('id'))); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-created">Created Date:</label><br />
+				<?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'answer[created]', 'field-created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="answer[question_id]" value="<?php echo $this->question->get('id'); ?>" />
 	<input type="hidden" name="answer[id]" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
