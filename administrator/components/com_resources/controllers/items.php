@@ -1872,5 +1872,55 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 
 		$this->view->display();
 	}
+
+	/**
+	 * Check resource paths
+	 */
+	public function checkTask()
+	{
+		// hold missing 
+		$this->view->missing = array();
+		$this->view->html    = '';
+
+		// get all resources
+		$db  = JFactory::getDBO();
+		$sql = "SELECT id, title, path FROM `#__resources` ORDER BY id";
+		$db->setQuery($sql);
+		$results = $db->loadObjectList();
+
+		// get upload path
+		$params = JComponentHelper::getParams('com_resources');
+		$base = $params->get('uploadpath', '/site/resources');
+		$base = JPATH_ROOT . DS . trim($base, DS) . DS;
+
+		// loop through each resource
+		foreach ($results as $result)
+		{
+			// make sure we have a path
+			if (isset($result->path) && $result->path != '')
+			{
+				// trim our result
+				$path = ltrim($result->path, DS);
+				$path = trim($path);
+
+				// checks
+				if (is_dir($path))
+				{	
+					$this->view->html .= '<font color="yellow">#' . $result->id . ': Resource path is a directory ' . $path . '</font><br />';
+				}
+				elseif (JURI::isInternal($path) && !file_exists($base . $path))
+				{
+					$this->view->missing[] = $result;
+					$this->view->html .= '<font color="red">#' . $result->id . ': missing resource at - ' .  $base . $path . '</font><br />';
+				}
+				else
+				{
+					$this->view->html .= '<font color="green">#' . $result->id . ': All is Good! - ' . $path . '</font><br />';
+				}
+			}
+		}
+
+		$this->view->display();
+	}
 }
 
