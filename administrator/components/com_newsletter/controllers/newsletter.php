@@ -780,9 +780,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		if ($sendingTest)
 		{
 			foreach ($newsletterContacts as $contact)
-			{
-				$mailSubject = '[SENDING TEST] - ' . $mailSubject;
-				
+			{	
 				// create new message
 				$message = new \Hubzero\Mail\Message();
 				
@@ -793,7 +791,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 				}
 		
 				// build message object and send
-				$message->setSubject($mailSubject)
+				$message->setSubject('[SENDING TEST] - '.$mailSubject)
 						->setTo($contact)
 						->addPart($mailBody, 'text/html')
 						->send();
