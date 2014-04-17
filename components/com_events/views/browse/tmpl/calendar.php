@@ -105,7 +105,7 @@ for ($a=$start; $a>0; $a--)
 }
 
 $monthHasEvent = false;
-$eventCheck = new EventsRepeat;
+//$eventCheck = new EventsRepeat;
 $lastDayOfMonth = date("t",mktime(0,0,0,$cal_month,1,$cal_year));
 $rd = 0;
 for ($d=1;$d<=$lastDayOfMonth;$d++)
@@ -137,16 +137,17 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 	$class = ($selected_date == $to_day) ? 'today' : '';
 	if ($d == $this->day) {
 		//$class .= ' selected';
-	}
-	$hasevents = false;
-	for ($r = 0; $r < count($rows); $r++)
-	{
-		if ($eventCheck->EventsRepeat($rows[$r], $cal_year, $cal_month, $do)) {
-			$hasevents = true;
-			//$class = ($selected_date == $to_day) ? 'today' : 'withevents';
-			break;
-		}
-	}
+	} 
+	
+	$hasevents = (count($rows) > 0) ? true : false;
+	//for ($r = 0; $r < count($rows); $r++)
+	//{
+	//	if ($eventCheck->EventsRepeat($rows[$r], $cal_year, $cal_month, $do)) {
+	//		$hasevents = true;
+	//		//$class = ($selected_date == $to_day) ? 'today' : 'withevents';
+	//		break;
+	//	}
+	//}
 	if ((($dayOfWeek)%7 == $startday) || ((1 + $dayOfWeek)%7 == $startday)) {
 		$class .= ' weekend';
 	}

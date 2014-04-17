@@ -78,9 +78,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_REPEAT'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ANNOUNCEMENT'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
 				<th scope="col"><?php echo JText::_('Pages'); ?></th>
@@ -117,7 +115,7 @@ $row = &$this->rows[$i];
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>
 <?php } else { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 <?php } ?>
@@ -127,51 +125,6 @@ $row = &$this->rows[$i];
 						<?php echo $this->escape($row->category); ?>
 					</span>
 				</td>
-				<td style="white-space: nowrap;">
-<?php
-	if ($row->reccurtype > 0) {
-		switch ($row->reccurtype)
-		{
-			case "1": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_WEEK');  break;
-			case "2": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_WEEK');  break;
-			case "3": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_MONTH'); break;
-			case "4": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_MONTH'); break;
-			case "5": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_YEAR');  break;
-		}
-		if ($row->reccurday >= 0) {
-			$dayname = EventsHtml::getLongDayName($row->reccurday);
-
-			if (($row->reccurtype == 1) || ($row->reccurtype == 2)) {
-				//$pairorimpair = $row->reccurweeks == "pair" ? _CAL_LANG_REP_WEEKPAIR : ($row->reccurweeks == "impair" ? _CAL_LANG_REP_WEEKIMPAIR : _CAL_LANG_REP_WEEK);
-
-				if (trim($row->reccurweeks) == 'pair') {
-					$pairorimpair = JText::_('COM_EVENTS_CAL_LANG_REP_WEEKPAIR');
-				} else if ($row->reccurweeks == 'impair') {
-					$pairorimpair = JText::_('COM_EVENTS_CAL_LANG_REP_WEEKIMPAIR');
-				} else {
-					$pairorimpair = JText::_('COM_EVENTS_CAL_LANG_REP_WEEK');
-				}
-				echo JText::_('COM_EVENTS_CAL_LANG_EACH').'&nbsp;'.$dayname.'&nbsp;'.$pairorimpair;
-			//} elseif ($row->reccurtype == 1) {
-			//	echo $dayname."&nbsp;"._CAL_LANG_EACHOF."&nbsp;".$reccur;
-			} else {
-				echo JText::_('COM_EVENTS_CAL_LANG_EACH').'&nbsp;'.$reccur;
-			}
-		} else {
-			echo JText::_('COM_EVENTS_CAL_LANG_EACH').'&nbsp;'.$reccur;
-		}
-	} else {
-		$bits_up = explode('-',$row->publish_up);
-		$bup = explode(' ', end($bits_up));
-		$bits_dn = explode('-',$row->publish_down);
-		$bdn = explode(' ', end($bits_dn));
-		if ($bup[0] != $bdn[0]) {
-			echo JText::_('COM_EVENTS_CAL_LANG_ALLDAYS');
-		} else {
-			echo '&nbsp;';
-		}
-	}
-?></td>
 				<td>
 <?php
 	$now = JFactory::getDate()->toSql();
@@ -191,14 +144,14 @@ $row = &$this->rows[$i];
 		if ($row->publish_up == '0000-00-00 00:00:00') {
 			$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JText::_('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
 		} else {
-			$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.$row->publish_up.'<br />';
+			$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JHTML::_('date', $row->publish_up, 'Y-m-d H:i:s').'<br />';
 		}
 	}
 	if (isset($row->publish_down)) {
 		if ($row->publish_down == '0000-00-00 00:00:00') {
 			$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JText::_('COM_EVENTS_CAL_LANG_NEVER').'<br />';
 		} else {
-			$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.$row->publish_down.'<br />';
+			$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JHTML::_('date', $row->publish_down, 'Y-m-d H:i:s').'<br />';
 		}
 	}
 
@@ -210,21 +163,6 @@ $row = &$this->rows[$i];
 						<span><?php echo $alt; ?></span>
 					</a>
 <?php } ?>
-				</td>
-				<td><?php 
-				if ($row->announcement == 0) {
-					$class = 'unpublished';
-					$tsk = 'announcement';
-					$alt = 'event';
-				} else {
-					$class = 'published';
-					$tsk = 'event';
-					$alt = 'announcement';
-					}
-				?>
-					<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','make_<?php echo $tsk; ?>')" title="Click to make into an <?php echo $tsk; ?>">
-						<span><?php echo $alt; ?></span>
-					</a>
 				</td>
 				<td style="white-space: nowrap;">
 					<?php echo $times; ?>

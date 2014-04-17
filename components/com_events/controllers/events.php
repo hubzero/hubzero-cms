@@ -592,21 +592,21 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$filters['scope'] = 'event';
 
 		$ee = new EventsEvent($this->database);
-		$rows = $ee->getEvents('day', $filters);
+		$events = $ee->getEvents('day', $filters);
 
 		// Go through each event and ensure it should be displayed
-		$events = array();
-		if (count($rows) > 0) 
-		{
-			foreach ($rows as $row)
-			{
-				$checkprint = new EventsRepeat($row, $year, $month, $day);
-				if ($checkprint->viewable == true) 
-				{
-					$events[] = $row;
-				}
-			}
-		}
+		// $events = array();
+		// if (count($rows) > 0) 
+		// {
+		// 	foreach ($rows as $row)
+		// 	{
+		// 		$checkprint = new EventsRepeat($row, $year, $month, $day);
+		// 		if ($checkprint->viewable == true) 
+		// 		{
+		// 			$events[] = $row;
+		// 		}
+		// 	}
+		// }
 
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = true;
@@ -741,49 +741,49 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$row->contact_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->contact_info);
 
 		// Images - replace the {mosimage} plugins in both text areas
-		if ($row->images) 
-		{
-			$row->images = explode("\n", $row->images);
-			$images = array();
+		// if ($row->images) 
+		// {
+		// 	$row->images = explode("\n", $row->images);
+		// 	$images = array();
 
-			foreach ($row->images as $img)
-			{
-				$temp = explode('|', trim($img));
-				if (!isset($temp[1]))
-				{
-					$temp[1] = "left";
-				}
+		// 	foreach ($row->images as $img)
+		// 	{
+		// 		$temp = explode('|', trim($img));
+		// 		if (!isset($temp[1]))
+		// 		{
+		// 			$temp[1] = "left";
+		// 		}
 
-				if (!isset($temp[2]))
-				{
-					$temp[2] = "Image";
-				}
+		// 		if (!isset($temp[2]))
+		// 		{
+		// 			$temp[2] = "Image";
+		// 		}
 
-				if (!isset($temp[3]))
-				{
-					$temp[3] = "0";
-				}
+		// 		if (!isset($temp[3]))
+		// 		{
+		// 			$temp[3] = "0";
+		// 		}
 
-				$images[] = '<img src="./images/stories/' . $temp[0] . '" style="float:' . $temp[1] . ';" alt="' . $temp[2] . '" />';
-			}
+		// 		$images[] = '<img src="./images/stories/' . $temp[0] . '" style="float:' . $temp[1] . ';" alt="' . $temp[2] . '" />';
+		// 	}
 
-			$text = explode('{mosimage}', $row->content);
+		// 	$text = explode('{mosimage}', $row->content);
 
-			$row->content = $text[0];
+		// 	$row->content = $text[0];
 
-			for ($i=0, $n=count($text)-1; $i < $n; $i++)
-			{
-				if (isset($images[$i])) 
-				{
-					$row->content .= $images[$i];
-				}
-				if (isset($text[$i+1])) 
-				{
-					$row->content .= $text[$i+1];
-				}
-			}
-			unset($text);
-		}
+		// 	for ($i=0, $n=count($text)-1; $i < $n; $i++)
+		// 	{
+		// 		if (isset($images[$i])) 
+		// 		{
+		// 			$row->content .= $images[$i];
+		// 		}
+		// 		if (isset($text[$i+1])) 
+		// 		{
+		// 			$row->content .= $text[$i+1];
+		// 		}
+		// 	}
+		// 	unset($text);
+		// }
 
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 		$row->content = preg_replace_callback("/$UrlPtrn/", array('EventsHtml', 'autolink'), trim(stripslashes($row->content)));
@@ -813,7 +813,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$eday = $edbits[0];
 
 		// Everyone has access unless restricted to admins in the configuration
-		$authorized = $this->_authorize($row->created_by_alias);
+		$authorized = true;
 
 		$auth = true;
 		if ($this->config->getCfg('adminlevel')) 
@@ -1218,6 +1218,14 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$dietary = array_map('trim', $dietary);
 			$dietary = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $dietary);
 		}
+
+		// check to make sure this is the only time registering
+		if (EventsRespondent::checkUniqueEmailForEvent($register['email'], $event->id) > 0)
+		{
+			$this->setError(JText::_('You have previously registered for this event.'));
+			$validemail = 0;
+		}
+
 
 		if ($register['firstname'] && $register['lastname'] && ($validemail == 1)) 
 		{
@@ -1790,11 +1798,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$end_pm     = JRequest::getInt('end_pm', 0, 'post');
 		$time_zone	= JRequest::getVar('time_zone', -5, 'post');
 
-		$reccurweekdays = JRequest::getVar('reccurweekdays', array(), 'post');
-		$reccurweeks    = JRequest::getVar('reccurweeks', array(), 'post');
-		$reccurday_week = JRequest::getVar('reccurday_week', '', 'post');
-		$reccurday_year = JRequest::getVar('reccurday_year', '', 'post');
-
 		// Bind the posted data to an event object
 		$row = new EventsEvent($this->database);
 		if (!$row->bind($_POST)) 
@@ -1828,10 +1831,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		}
 
 		// Set some fields and do some cleanup work
-		if (is_null($row->useCatColor)) 
-		{
-			$row->useCatColor = 0;
-		}
 		if ($row->catid) 
 		{
 			$row->catid = intval($row->catid);
@@ -1888,8 +1887,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$row->created_by_alias = htmlentities($row->created_by_alias);
-
 		// Reformat the time into 24hr format if necessary
 		if ($this->config->getCfg('calUseStdTime') =='YES') 
 		{
@@ -1944,65 +1941,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$up = new DateTime($publishtime, $eventTimezone);
 		$up->setTimezone($utcTimezone);
 		$row->publish_down = $up->format("Y-m-d H:i:s");
-		
-		if ($row->publish_up <> $row->publish_down) 
-		{
-			$row->reccurtype = intval($row->reccurtype);
-		} 
-		else 
-		{
-			$row->reccurtype = 0;
-		}
-
-		switch ($row->reccurtype)
-		{
-			case 0:
-				$row->reccurday = '';
-			break;
-			case 1:
-				$row->reccurday =  $reccurday_week;
-			break;
-			case 2:
-				$row->reccurday = '';
-			break;
-			case 3:
-				$row->reccurday = $reccurday_month;
-			break;
-			case 4:
-				$row->reccurday = '';
-			break;
-			case 5:
-				$row->reccurday = $reccurday_year;
-			break;
-		}
-
-		// Reccur week days
-		if (empty($reccurweekdays)) 
-		{
-			$weekdays = '';
-		} 
-		else 
-		{
-			$weekdays = implode('|', $reccurweekdays);
-		}
-		$row->reccurweekdays = $weekdays;
-
-		// Reccur viewable weeks
-		$reccurweekss = JRequest::getVar('reccurweekss', '', 'post');
-		$reccurweeks = array();
-		if ($reccurweekss) 
-		{
-			$reccurweeks[] = $reccurweekss;
-		}
-		if (empty($reccurweeks)) 
-		{
-			$weekweeks = '';
-		} 
-		else 
-		{
-			$weekweeks = implode('|', $reccurweeks);
-		}
-		$row->reccurweeks = $weekweeks;
 
 		// Always unpublish if no Publisher otherwise publish automatically
 		if ($this->config->getCfg('adminlevel')) 
@@ -2015,7 +1953,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		}
 
 		$row->state = 1;
-		$row->mask = 0;
 
 		$pubdow = strtotime($row->publish_down);
 		$pubup = strtotime($row->publish_up);
