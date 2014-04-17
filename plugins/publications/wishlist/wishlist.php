@@ -142,8 +142,9 @@ class plgPublicationsWishlist extends JPlugin
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php' );
 		
 		// Configure controller
-		WishlistController::setVar('_option', $option);
-		WishlistController::setVar('banking', $this->config->get('banking'));
+		$controller = new WishlistController();
+		$controller->setVar('_option', $option);
+		$controller->setVar('banking', $this->config->get('banking'));
 		
 		// Get filters
 		$filters = WishlistController::getFilters(0);
