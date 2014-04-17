@@ -76,37 +76,38 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_DETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><label for="field->category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label></th>
-						<td>
-							<select name="fields[category]" id="field-category">
-								<option value=""<?php echo ($this->row->category == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
-								<option value="general"<?php echo ($this->row->category == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('general'); ?></option>
-								<option value="group"<?php echo ($this->row->category == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('group'); ?></option>
-								<option value="resource"<?php echo ($this->row->category == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('resource'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-referenceid"><?php echo JText::_('COM_WISHLIST_REFERENCEID'); ?>:</label></th>
-						<td><input type="text" name="fields[referenceid]" id="field-referenceid" size="11" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->referenceid)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-title"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>:</label></th>
-						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-description"><?php echo JText::_('COM_WISHLIST_DESCRIPTION'); ?>:</label></th>
-						<td><input type="text" name="fields[description]" id="field-description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field->category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label><br />
+					<select name="fields[category]" id="field-category">
+						<option value=""<?php echo ($this->row->category == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
+						<option value="general"<?php echo ($this->row->category == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('general'); ?></option>
+						<option value="group"<?php echo ($this->row->category == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('group'); ?></option>
+						<option value="resource"<?php echo ($this->row->category == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('resource'); ?></option>
+					</select>
+				</div>
+			</div>
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-referenceid"><?php echo JText::_('COM_WISHLIST_REFERENCEID'); ?>:</label><br />
+					<input type="text" name="fields[referenceid]" id="field-referenceid" size="11" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->referenceid)); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>:</label><br />
+				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('COM_WISHLIST_DESCRIPTION'); ?>:</label><br />
+				<input type="text" name="fields[description]" id="field-description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('Metadata for this category'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th class="key"><?php echo JText::_('ID'); ?>:</th>
@@ -134,28 +135,24 @@ function submitbutton(pressbutton)
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_PARAMETERS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-state"><?php echo JText::_('COM_WISHLIST_STATE'); ?>:</label></td>
-						<td><input type="checkbox" name="fields[state]" id="field-state" value="1" <?php echo $this->row->state ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-public"><?php echo JText::_('COM_WISHLIST_PUBLIC'); ?>:</label></td>
-						<td><input type="checkbox" name="fields[public]" id="field-public" value="1" <?php echo $this->row->public ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<input type="checkbox" name="fields[state]" id="field-state" value="1" <?php echo $this->row->state ? 'checked="checked"' : ''; ?> />
+				<label for="field-state"><?php echo JText::_('COM_WISHLIST_STATE'); ?></label>
+			</div>
+
+			<div class="input-wrap">
+				<input type="checkbox" name="fields[public]" id="field-public" value="1" <?php echo $this->row->public ? 'checked="checked"' : ''; ?> />
+				<label for="field-public"><?php echo JText::_('COM_WISHLIST_PUBLIC'); ?></label>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
-	<?php /*if (version_compare(JVERSION, '1.6', 'ge')) { ?>
-		<?php if ($canDo->get('core.admin')): ?>
+
+	<?php /*<?php if ($canDo->get('core.admin')): ?>
 			<div class="col width-100 fltlft">
 				<fieldset class="panelform">
 					<legend><span><?php echo JText::_('COM_WISHLIST_FIELDSET_RULES'); ?></span></legend>
@@ -164,12 +161,11 @@ function submitbutton(pressbutton)
 				</fieldset>
 			</div>
 			<div class="clr"></div>
-		<?php endif; ?>
-	<?php }*/ ?>
-	
+		<?php endif; ?>*/ ?>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

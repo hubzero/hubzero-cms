@@ -74,9 +74,12 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label> 
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+
+			<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
-		<div class="col width-50 fltrt" style="text-align: right;">
+		<div class="col width-50 fltrt">
 			<label for="filter-category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> 
 			<select name="category" id="filter-category">
 				<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
@@ -84,8 +87,6 @@ function submitbutton(pressbutton)
 				<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('group'); ?></option>
 				<option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('resource'); ?></option>
 			</select>
-
-			<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
 		</div>
 	</fieldset>
 	<div class="clr"></div>
@@ -102,9 +103,9 @@ function submitbutton(pressbutton)
 			</tr>
 		</thead>
 		<tfoot>
- 			<tr>
- 				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
- 			</tr>
+			<tr>
+				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
+			</tr>
 		</tfoot>
 		<tbody>
 <?php
@@ -149,37 +150,37 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_WISHLIST_EDIT_LIST'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $class; ?>">
 						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="<?php echo JText::_('COM_WISHLIST_CHANGE_ACCESS'); ?>">
 						<?php echo $groupname; ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span <?php echo $color_access; ?>>
 						<?php echo $groupname; ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<span class="glyph category">
@@ -192,15 +193,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 				</td>
 				<td>
-<?php if ($row->wishes > 0) { ?>
+				<?php if ($row->wishes > 0) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_WISHLIST_VIEW_WISHES_FOR_LIST'); ?>">
 						<span><?php echo $row->wishes . ' ' . JText::_('COM_WISHLIST_LIST_WISHES'); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<span><?php echo $row->wishes; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -216,6 +217,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

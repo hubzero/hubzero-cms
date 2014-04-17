@@ -90,35 +90,32 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_DETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><label for="field-wishlist"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> <span class="required">required</span></th>
-						<td>
-							<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('fieldassigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
-								<option value="0"<?php echo ($this->row->wishlist == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('[none]'); ?></option>
-<?php if ($this->lists) { ?>
-	<?php foreach ($this->lists as $list) { ?>
-								<option value="<?php echo $list->id; ?>"<?php echo ($this->row->wishlist == $list->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($list->title)); ?></option>
-	<?php } ?>
-<?php } ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-subject"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>:</label> <span class="required">required</span></th>
-						<td><input type="text" name="fields[subject]" id="field-subject" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->subject)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-about"><?php echo JText::_('COM_WISHLIST_DESCRIPTION'); ?>:</label></th>
-						<td><textarea name="fields[about]" id="field-about" cols="35" rows="30"><?php echo $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->about))); ?></textarea></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-tags"><?php echo JText::_('COM_WISHLIST_TAGS'); ?>:</label></th>
-						<td><input type="text" name="fields[tags]" id="field-tags" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->tags)); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-wishlist"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> <span class="required">required</span><br />
+				<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('fieldassigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
+					<option value="0"<?php echo ($this->row->wishlist == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('[none]'); ?></option>
+			<?php if ($this->lists) { ?>
+				<?php foreach ($this->lists as $list) { ?>
+					<option value="<?php echo $list->id; ?>"<?php echo ($this->row->wishlist == $list->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($list->title)); ?></option>
+				<?php } ?>
+			<?php } ?>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-subject"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>:</label> <span class="required">required</span><br />
+				<input type="text" name="fields[subject]" id="field-subject" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->subject)); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-about"><?php echo JText::_('COM_WISHLIST_DESCRIPTION'); ?>:</label><br />
+				<textarea name="fields[about]" id="field-about" cols="35" rows="30"><?php echo $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->about))); ?></textarea>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-tags"><?php echo JText::_('COM_WISHLIST_TAGS'); ?>:</label><br />
+				<input type="text" name="fields[tags]" id="field-tags" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->tags)); ?>" />
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
@@ -182,7 +179,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('Metadata'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th class="key"><?php echo JText::_('ID'); ?>:</th>
