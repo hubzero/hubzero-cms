@@ -1,0 +1,71 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_tags.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Tags
+// --------------------------------------------------
+
+	.tags {
+		margin: 0 0.618em;
+		padding: 0;
+		line-height: 2em;
+		display: inline-block;
+
+		li {
+			display: inline-block !important;
+			background: none;
+			margin: 0 !important;
+			padding: 0 !important;
+			font-size: 12px;
+		}
+		a { 
+			background: #999;
+			border: none;
+			display: inline-block;
+			white-space: nowrap;
+			line-height: 1em !important;
+			.border-radius(0 3px 3px 0); 
+			position: relative;
+			margin: 0 9px 0 0;
+			padding: 0.3em 0.5em 0.3em 0.65em;
+			color: #fff;
+
+			&:before {
+				content: "";
+				position: absolute;
+				bottom: 0;
+				left: -1.5em;
+				border-width: 0.825em;
+				border-style: solid;
+				border-color: transparent #999 transparent transparent; 
+				display: block; 
+				width: 0;
+			}
+			&:after {
+				content: "";
+				position: absolute;
+				background: #fff;
+				width: 0.35em;
+				height: 0.35em;
+				left: -1px;
+				top: 0.6em;
+				.border-radius(0.35em); 
+			}
+			&:hover {
+				text-decoration: none;
+				background: #000;
+				color: #fff;
+			}
+			&:hover:before {
+				border-color: transparent #000 transparent transparent; 
+			}
+		}
+		li.admin a { 
+			background: #FFF2EF;
+			border-right: 1px solid #efccc2;
+			border-bottom: 1px solid #efccc2;
+		}
+	}

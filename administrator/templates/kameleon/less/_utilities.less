@@ -1,0 +1,64 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/utilities.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Core classes
+	.show {
+		display: block;
+	}
+	.hide {
+		display: none;
+	}
+	.hidden {
+		display: none;
+		visibility: hidden;
+	}
+	.invisible {
+		visibility: hidden;
+	}
+	.visible {
+		overflow: visible !important;
+	}
+	.clear,
+	.clr {
+		clear: both;
+		display: block;
+		overflow: hidden;
+		visibility: hidden;
+		width: 0;
+		height: 0;
+	}
+	.clearfix {
+		display: block;
+	}
+	.clearfix:after {
+		content: ".";
+		display: block;
+		height: 0;
+		font-size: 0;
+		line-height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+	* html .clearfix {
+		height: 1%;
+	}
+	
+	.fltrt {
+		float: right;
+	}
+	.fltlft {
+		float: left;
+	}
+
+	.important {
+		font-size: 1.30769em;
+	}
+	.ampersand{
+		font-family: Baskerville,"Goudy Old Style","Palatino","Book Antiqua",serif;
+		font-size: 110%;
+		font-style: italic;
+	}

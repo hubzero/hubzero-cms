@@ -1,0 +1,53 @@
+
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_menus.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Modal
+// --------------------------------------------------
+
+body {
+	.fancybox-overlay {
+		background: rgba(200, 200, 200, 0.9);
+
+		.fancybox-skin {
+			background: transparent;
+			.box-shadow(none);
+		}
+		.fancybox-outer {
+			.box-shadow(~"0 1px 8px rgba(0, 0, 0, 0.2)");
+			overflow: hidden;
+		}
+
+		a.fancybox-close,
+		.fancybox-close {
+			width: 1em;
+			height: 1em;
+			top: 15px;
+			right: 15px;
+			padding: 0.6em 0.725em;
+			font-size: 1.5em;
+			line-height: 1;
+			overflow: hidden;
+			white-space: nowrap;
+			text-align: center;
+			.transition(all ease-in-out 0.2s);
+			border-left: 1px solid rgba(0, 0, 0, 0.1);
+			color: #fff;
+			background-image: none;
+
+			&:before {
+				content: "\2716"; //\f057";
+				font-family: "Fontcons";
+			}
+			&:hover {
+				background-color: rgba(0, 0, 0, 0.1);
+				text-decoration: none;
+				color: #fff;
+			}
+		}
+	}
+}

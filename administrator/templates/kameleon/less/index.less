@@ -1,0 +1,513 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/index.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Core variables and mixins
+@import "_variables.less";
+@import "_mixins.less";
+
+// CSS Reset
+@import "_reset.less";
+
+// Fonts
+@import "_fonts.less"; // Fontcons defines available icons
+
+// Grid system and page structure
+@import "_grid.less";
+@import "_forms.less";
+@import "_uniform.less";
+
+html {
+	min-height: 100%;
+	font-size: 62.5%;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	overflow-x: hidden;
+}
+
+body {
+	color: #777;
+	background: #fff;
+	min-height: 100%;
+}
+button,
+input[type=submit] {
+	font-size: 0.85em;
+}
+
+// Links
+	a {
+		color: #444;
+		text-decoration: none;
+	}
+	a:hover,
+	a:focus {
+		color: #000;
+		text-decoration: underline;
+	}
+// Tables
+	table {
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		border-collapse: separate;
+
+		caption {
+			text-align: left;
+			padding: 0.61803399em 1.61803399em;
+			text-align: left;
+			color: #959595;
+			font-weight: bold;
+		}
+		th,
+		td {
+			padding: 1em;
+			text-align: left;
+		}
+		tfoot th,
+		tfoot td {
+			border-right: 1px solid #eee;
+		}
+		tbody th,
+		tbody td {
+			border-bottom: 1px solid #e9e9e9;
+			border-left: 1px dotted #f4f4f4;
+		}
+		thead {
+			th {
+				text-align: left;
+				font-weight: bold;
+				white-space: nowrap;
+				border-bottom: 1px solid #dddddd;
+				border-left: 1px solid #eee;
+				color: #888;
+
+				img {
+					margin-left: 0.2em;
+				}
+
+				a,
+				a:link, 
+				a:active, 
+				a:visited {
+					color: #888;
+				}
+				a:hover {
+					color: #000;
+					text-decoration: none;
+				}
+				&.active,
+				a.active {
+					color: #333;
+				}
+
+				a.sort:after {
+					content: "\2304";
+					font-family: "Fontcons";
+					margin-left: 0.4em;
+					color: #ccc;
+				}
+				a.sort:hover:after {
+					color: #000;
+				}
+				a.desc:after {
+					content: "\2303";
+				}
+				a.asc:after {
+					content: "\2304";
+				}
+				a.sort.active:after {
+					color: #333;
+				}
+			}
+		}
+		tfoot tr th:first-child,
+		tfoot tr td:first-child,
+		thead tr th:first-child,
+		thead tr td:first-child,
+		tbody tr th:first-child,
+		tbody tr td:first-child {
+			padding-left: 2.23606798em;
+			border-left: none;
+		}
+		tfoot tr th:last-child,
+		tfoot tr td:last-child,
+		thead tr th:last-child,
+		thead tr td:last-child,
+		tbody tr th:last-child,
+		tbody tr td:last-child {
+			padding-right: 2.23606798em;
+		}
+	}
+
+	// Admin list
+	table.adminlist {
+		thead th {
+			font-weight: 500;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+			font-size: 0.85em;
+			padding: 1.15em;
+
+			&:first-child {
+				padding-left: 2.63606798em;
+			}
+			&:last-child {
+				padding-right: 2.63606798em;
+			}
+		}
+		tbody tr {
+			background-color: #fff;
+		}
+		tbody tr.archived th,
+		tbody tr.archived td,
+		tbody tr.archived a {
+			color: #ccc;
+		}
+		/*tbody tr,
+		tbody tr td,
+		tbody tr th {
+			border: none;
+		}
+		tbody tr:nth-child(odd) td {
+			background-color: #f3f3f3;
+		}*/
+		tbody tr:hover td {
+			background-color: #ffe; //rgba(0, 0, 0, 0.1)
+		}
+		/*tfoot td {
+			text-align: right;
+			border-top: 1px solid #dddddd;
+		}*/
+		tbody tr:last-child th,
+		tbody tr:last-child td {
+			border-bottom: 1px solid #dddddd;
+		}
+
+		select,
+		.input-text,
+		input[type=text],
+		input[type=password],
+		input[type=email],
+		textarea {
+			width: 100%;
+			max-width: 100%;
+		}
+	}
+
+	.active-sort {
+		display: inline-block;
+		width: 1em;
+		white-space: nowrap;
+		overflow: hidden;
+
+		&:before {
+			content: "\2193";
+			font-family: "Fontcons";
+			margin-right: 1em;
+			font-size: 1em;
+			line-height: 1;
+			color: #666;
+		}
+		&.desc:before {
+			content: "\2191";
+		}
+	}
+
+	// Misc.
+	.align-center {
+		text-align: center;
+	}
+	.adminlist {
+		margin: 0;
+	}
+	.order {
+		white-space: nowrap;
+	}
+	.order span {
+		display: inline-block;
+		width: 16px;
+	}
+
+// Wrap
+	#wrap-container {
+	}
+	#wrap {
+		margin: 0;
+		padding: 0;
+		background: #f9f9f9;
+		//border-left: 1px solid #dadada;
+	}
+// Content
+	#component-content {
+		position: relative;
+		padding-top: 5.4em;
+		.clearfix();
+	}
+// Footer
+	@import "_footer.less";
+
+// Rules
+	#jform_rules-lbl {
+		display: none;
+	}
+	.vote.plus {
+		color: green;
+	}
+	.vote.minus {
+		color: red;
+	}
+	input.new {
+		margin-right: 2em;
+	}
+
+// filters
+	fieldset#filter-bar {
+		text-align: left;
+		border: none;
+		margin: 1.61803399em 0 0 0;
+		padding: 0 2.23606798em 1.61803399em 2.23606798em;
+		border-bottom: 1px solid #eee;
+		.clearfix();
+
+		label,
+		legend {
+			display: none;
+		}
+		button,
+		input,
+		select {
+			width: auto;
+			max-width: 11em;
+			margin-bottom: 0;
+		}
+		.selector {
+			margin-top: 0.2em;
+
+			select {
+				width: 100%;
+				max-width: 50em;
+			}
+		}
+		.fltrt {
+			text-align: right;
+		}
+	}
+	form#application-form,
+	form#item-form {
+		border: none;
+		background: transparent;
+		padding: 2.236em;
+	}
+	fieldset {
+		border: none;
+		outline: none;
+
+		legend {
+			font-size: 1em;
+			padding: 0.4376em 0 0.4376em 0;
+			color: #333;
+			text-transform: none;
+			font-weight: bold;
+			text-indent: 1.618em;
+			width: 100%;
+			margin: 0 0 0.618em 0;
+			color: #444;
+		}
+		&:after {
+			content: "";
+			clear: both;
+			height: 0;
+			visibility: hidden;
+			line-height: 0;
+		}
+
+		&.adminform {
+			padding: 0;
+			background-color: #fff;
+			border: 1px solid #D6D6D6;
+			border: 1px solid rgba(0, 0, 0, 0.1);
+			.border-radius(0.25em);
+
+			legend {
+				float: left;
+				width: 100%;
+				.border-radius(0.27em 0.27em 0 0);
+				padding: 0.61803399em 0 0.61803399em 0;
+				color: #333;
+				text-transform: uppercase;
+				font-weight: 500;
+				letter-spacing: 0.15em;
+				background: transparent;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+				span {
+					background: transparent;
+					padding: 0;
+					margin: 0;
+				}
+			}
+
+			fieldset {
+				border: 1px solid #dddddd;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+				margin: 0.41803399em 1.61803399em 1.41803399em 1.61803399em;
+				padding: 0.61803399 0;
+				.border-radius(0.25em);
+
+				legend {
+					float: none;
+					border: none;
+					background: transparent;
+					text-transform: none;
+					font-weight: bold;
+					width: auto;
+					margin: 0 1em;
+					padding: 0 0.61803399em;
+					text-indent: 0;
+					letter-spacing: auto;
+					font-weight: 400;
+					color: #333;
+				}
+			}
+		}
+		.fltlft .input-wrap {
+			padding-right: 0;
+		}
+		.fltrt .input-wrap {
+			padding-left: 0;
+		}
+	}
+
+	.data-wrap {
+		background-color: rgba(0, 0, 0, 0.075);
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		.border-radius(0.25em);
+		max-height: 600px;
+		overflow-y: scroll;
+
+		h3,
+		h4,
+		h5 {
+			font-size: 1em;
+			line-height: 1.61803399em;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+			font-weight: 500;
+			margin: 0 0 0.61803399em 0;
+			padding: 0.61803399em 1.61803399em;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		}
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+
+			li {
+				padding: 1.618em 1.618em 1.618em 3.2em;
+				margin: 0;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+				position: relative;
+				color: #666;
+
+				&:last-child {
+					border-bottom: none;
+				}
+				&:before {
+					position: absolute;
+					top: 1.218em; 
+					left: 0.618em;
+					content: "";
+					font-family: "Fontcons";
+					color: #bbb;
+					font-size: 1.5em;
+				}
+
+				&.created:before {
+					content: "\271A";
+				}
+				&.edited:before,
+				&.modified:before {
+					content: "\270E";
+				}
+				&.removed:before,
+				&.deleted:before {
+					content: "\2716";
+				}
+				&.moved:before {
+					content: "\2192";
+				}
+				&.copied:before {
+					content: "\f060";
+				}
+			}
+		}
+	}
+	.ui-datepicker {
+		background: #111111;
+		background: rgba(0, 0, 0, 0.8);
+		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+		border: none;
+		color: #eee;
+		display: none;
+	}
+	.ui-datepicker table {
+		border: none;
+		border-top: 1px solid #666;
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+		border-left: 1px solid #666;
+		border-left: 1px solid rgba(255, 255, 255, 0.2);
+	}
+	.ui-datepicker table thead tr th,
+	.ui-datepicker table tbody tr th,
+	.ui-datepicker table tbody tr td {
+		border: none;
+		border-right: 1px solid #666;
+		border-right: 1px solid rgba(255, 255, 255, 0.2);
+		border-bottom: 1px solid #666;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		padding: 0.418em 0.618em;
+	}
+	.ui-datepicker table tbody tr th,
+	.ui-datepicker table tbody tr td {
+		background-color: #333;
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+	.ui-datepicker-calendar .ui-datepicker-unselectable {
+		background-color: rgba(255, 255, 255, 0.3);
+	}
+	.ui-datepicker .ui-slider {
+		background-color: #333;
+		background-color: rgba(255, 255, 255, 0.1);
+		border: 1px solid #666;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: none;
+	}
+
+// Layout & navigation
+@import "_header.less";
+@import "_menus.less";
+@import "_toolbar.less";
+
+// Pagination
+@import "_pagination.less";
+
+// Alerts
+@import "_notifications.less";
+
+// Tooltips
+@import "_hint.less";
+@import "_tooltip.less";
+@import "_meta.less";
+@import "_icons.less";
+@import "_panes.less";
+@import "_modal.less";
+// Utility classes
+@import "_utilities.less"; // Has to be last to override when necessary
+
+@import "_dark.less";

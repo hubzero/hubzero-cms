@@ -1,0 +1,141 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_pagination.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Pagination
+// --------------------------------------------------
+
+.pagination {
+	margin: -1em -0.8em -1em 0;
+	padding: 0;
+
+	.list-footer {
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		list-style: none;
+		border-left: 1px solid #eee;
+		.clearfix();
+
+		li {
+			float: left;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			border-right: 1px solid #eee;
+
+			strong,
+			span,
+			a {
+				font-weight: normal;
+				text-decoration: none;
+				display: inline-block;
+				margin: 0;
+				padding: 0.618em 0.8em;
+				.transition(all ease-in-out 0.2s);
+				color: #999;
+			}
+			span {
+				color: #ccc;
+			}
+			strong {
+				color: #666; 
+				font-weight: bold; 
+				text-decoration: none;
+				background: #fff;
+			}
+			a {
+				color: #666;
+				cursor: pointer;
+
+				&:hover {
+					background: #efefef;
+					color: #333;
+					text-decoration: underline;
+				}
+			}
+
+			.selector {
+				.border-radius(0);
+				border-top: none;
+				border-bottom: none;
+
+				span {
+					padding: 0.618em 1.8em 0.618em 0.8em;
+					border-top: none;
+					border-bottom: none;
+					color: #666;
+				}
+			}
+		}
+
+		.page { 
+			padding: 0;
+
+			span {
+				color: #aaa;
+			}
+		}
+
+		.counter {
+			float: right;
+			padding: 0.618em 0.8em;
+			white-space: nowrap;
+			border-right: none;
+			border-left: 1px solid #eee;
+		}
+		.limit {
+			float: right;
+			border-right: none;
+			border-left: 1px solid #e9e9e9;
+			//padding: 0.618em 0.8em 0.6em 0.8em;
+			padding: 0 0 0 0.8em;
+			white-space: nowrap;
+		}
+		select {
+			width: auto;
+		}
+		label {
+			width: auto;
+			display: inline;
+			color: #999;
+		}
+
+		li.start span,
+		li.start a {
+			margin-left: 0;
+			overflow: hidden;
+			width: 0.6em;
+			white-space: nowrap;
+
+			&:before {
+				content: "\2039";
+				font-family: "Fontcons";
+				margin-right: 5em;
+			}
+		}
+		li.end span,
+		li.end a {
+			margin-right: 0;
+			overflow: hidden;
+			width: 0.6em;
+			white-space: nowrap;
+
+			&:before {
+				content: "\203A";
+				font-family: "Fontcons";
+				margin-right: 5em;
+			}
+		}
+		li.next,
+		li.prev {
+			display: none;
+		}
+	}
+	.selector {
+		margin-top: 0;
+	}
+}

@@ -1,0 +1,117 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/component.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Core variables and mixins
+@import "_variables.less";
+@import "_mixins.less";
+
+// CSS Reset
+@import "_reset.less";
+
+// Fonts
+@import "_fonts.less"; // Fontcons defines available icons
+
+// Grid system and page structure
+@import "_grid.less";
+@import "_forms.less";
+@import "_uniform.less";
+
+// Tooltips
+@import "_hint.less";
+@import "_tooltip.less";
+
+@import "_tabs.less";
+
+// Components: Alerts
+@import "_notifications.less";
+
+// Utility classes
+@import "_utilities.less"; // Has to be last to override when necessary
+
+// Wrap
+#wrap {
+	width: 320px;
+	margin: 0 auto 100px auto;
+	.border-radius(0.27em);
+	.box-shadow(0 0 0 0.618em rgba(0, 0, 0, 0.08));
+}
+// Content
+#component-content {
+	padding: 0;
+	margin: 0;
+	background: #f2f2f2;
+	.border-radius(0.27em);
+	.box-shadow(0 0 2px rgba(0, 0, 0, 0.4));
+}
+// Main
+#main {
+	padding: 1.61803399em;
+	overflow: hidden;
+	zoom: 1;
+
+	p:last-child {
+		padding-bottom: 0;
+		margin-bottom: 0;
+	}
+}
+#component-form>fieldset {
+	margin: 0;
+}
+// Configuration
+div.configuration {
+	font-size: 1.1em;
+	line-height: 1;
+	font-weight: 400;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: #333;
+	margin: 0px;
+	padding: 1em 1.618em;
+	background: #333;
+	color: #fff;
+	.box-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	z-index: 555;
+	overflow: hidden;
+
+	&:before {
+		content: "\2699";
+		font-family: "Fontcons";
+		position: absolute;
+		color: rgba(255, 255, 255, 0.15);
+		line-height: 1;
+		font-size: 7em;
+		top: -0.05em;
+		left: -0.15em;
+	}
+	.configuration-options {
+		position: absolute;
+		top: 0.5em;
+		right: 4.5em;
+		margin: 0;
+		padding: 0;
+
+		button {
+			margin-top: 0;
+			margin-bottom: 0;
+			font-size: 0.85em;
+			padding: 0.4em 0.71em;
+		}
+	}
+}
+
+div.current .pane-sliders {
+	margin-bottom: 1.61803399em;
+	padding: 0.61803399em;
+	background: #6e6e6e;
+	border: none;
+	.border-radius(0.27em);
+	.box-shadow(~"inset 0px 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(255, 255, 255, 0.4)");
+}

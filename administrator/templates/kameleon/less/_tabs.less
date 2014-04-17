@@ -1,0 +1,207 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_tabs.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Tabs
+// --------------------------------------------------
+
+dl.tabs {
+	float: left;
+	margin: 3.2em 0 0 0;
+	padding: 0;
+	z-index: 50;
+	position: relative;
+	clear: left;
+	width: 100%;
+	background: #eee;
+
+	dt {
+		float: left;
+		padding: 1em 1em 1em 1.618em;
+		margin: 0;
+		border: none;
+		margin-left: 3px;
+		color: #999;
+		.transition(all ease-in-out 0.2s);
+		line-height: 1em;
+		font-size: 1em;
+
+		h3 {
+			font-size: 1em;
+			font-weight: 400;
+			margin: 0;
+			padding: 0;
+		}
+
+		a {
+			color: #999;
+			text-decoration: none;
+		}
+		&:hover,
+		a:hover {
+			color: #000;
+			text-decoration: underline;
+		}
+		&.open,
+		&.open a,
+		&.current,
+		&.current a {
+			z-index: 100;
+			color: #424242;
+			font-weight: bold;
+			position: relative;
+		}
+		&.open:before,
+		&.current:before {
+			position: absolute;
+			width: 0px;
+			height: 0px;
+			display: block;
+			content: "";
+			border: 8px solid #d6d6d6;
+			border-color: transparent transparent rgba(0, 0, 0, 0.05) transparent;
+			overflow: hidden;
+			bottom: -1px;
+			left: 50%;
+			margin-left: -8px;
+		}
+		&.open:after,
+		&.current:after {
+			position: absolute;
+			width: 0px;
+			height: 0px;
+			display: block;
+			content: "";
+			border: 8px solid #e8e8e8;
+			border-color: transparent transparent #f9f9f9 transparent;
+			overflow: hidden;
+			bottom: -3px;
+			left: 50%;
+			margin-left: -8px;
+		}
+	}
+	dd {
+		margin: 0;
+		padding: 1.618em;
+		position: absolute;
+		top: 3em;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		background: #f9f9f9;
+		border-top: 1px solid #d6d6d6;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+		fieldset {
+			border: none;
+		}
+	}
+}
+
+dl#content-pane.tabs {
+	margin: 1px 0 0 0;
+}
+
+div.current {
+	clear: both;
+	border-top: 1px solid #d6d6d6;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 1.618em;
+	background: #f9f9f9;
+
+	dd {
+		padding: 0;
+		margin: 0;
+	}
+
+	ul,
+	li {
+		list-style: none;
+	}
+	li {
+		padding: 0.2em 0 0.4em 0;
+		border-bottom: 1px solid #eee;
+
+		&:after {
+			content: ".";
+			display: block;
+			height: 0;
+			font-size: 0;
+			line-height: 0;
+			clear: both;
+			visibility: hidden;
+		}
+		&:last-child {
+			border: none;
+		}
+	}
+	label,
+	span.faux-label {
+		display: block;
+		min-width: 150px;
+		width: 11em;
+		float: left;
+		clear: left;
+	}
+
+	fieldset {
+		border: none 0;
+
+		&.adminform {
+			border: 1px #ccc solid;
+		}
+	}
+
+	fieldset.radio {
+		float: left;
+
+		input {
+			clear: none;
+			min-width: 15px;
+			float: left;
+			margin: 3px 0 0 2px;
+		}
+		label {
+			clear: none;
+			min-width: 45px;
+			width: 5em;
+			float: left;
+			margin: 3px 0 0 5px;
+		}
+	}
+
+	fieldset.checkboxes {
+		float: left;
+		clear: right;
+
+		input {
+			clear: left;
+			min-width: 15px;
+			float: left;
+			margin: 3px 0 0 2px;
+		}
+		label {
+			clear: right;
+			min-width: 45px;
+			margin: 3px 0 0 5px;
+		}
+	}
+
+	input,
+	textarea,
+	select {
+		clear: none;
+		margin: 3px 0 0 2px;
+		width: auto;
+	}
+
+	select {
+		margin-bottom: 15px;
+	}
+	table select {
+		margin-bottom: 0;
+	}
+}

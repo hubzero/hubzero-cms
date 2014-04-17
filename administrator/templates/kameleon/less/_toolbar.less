@@ -1,0 +1,238 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_toolbar.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Toolbar
+// --------------------------------------------------
+
+.toolbar-box {
+	overflow: hidden;
+	zoom: 1;
+	padding: 0;
+	margin: 0;
+	color: #999;
+	font-size: 0.95em;
+	background: #fff;
+	border-bottom: 1px solid #dadada;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+
+	&.fixed {
+		position: fixed;
+		top: 0;
+		z-index: 500;
+		width: 100%;
+		max-width: 100%;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+	.breadcrumb-title {
+		display: none;
+	}
+	#toolbar {
+		margin: 1.5em 2.41803399em 0 0;
+		padding: 0;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	.pagetitle {
+		display: inline-block;
+		color: #333;
+		margin: 0 0 0 2.41803399em;
+		padding: 1em 0;
+		white-space: nowrap;
+		text-align: left;
+
+		h2 {
+			margin: 0;
+			padding: 0.4em 0;
+			font-size: 1.5em;
+			font-weight: 400;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+		}
+		span,
+		small {
+			color: #999;
+		}
+	}
+
+	a {
+		color: #666;
+		.transition(all ease-in-out 0.2s);
+
+		&:hover {
+			color: #000;
+			text-decoration: none;
+		}
+	}
+
+	ul,
+	ul li {
+		background: transparent;
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		float: left;
+		text-align: center;
+		font-size: 85%;
+		display: block;
+		text-decoration: none;
+
+		&:first-child {
+			padding-right: 0em;
+		}
+
+		a {
+			.box-sizing(border-box);
+			text-align: center;
+			height: 36px;
+			width: 36px;
+			display: block;
+			border: 1px solid #dadada;
+			border: 1px solid rgba(0, 0, 0, 0.1);
+			color: transparent;
+			position: relative;
+			text-decoration: none;
+
+			span {
+				z-index: 1;
+				overflow: hidden;
+				list-style: none;
+				padding: 0;
+				margin: 9px auto;
+				display: block;
+				height: 22px;
+				width: 22px;
+				border: none;
+				background-repeat: no-repeat;
+				position: relative;
+				text-indent: 0;
+				text-align: center;
+				text-decoration: none;
+
+				&:before {
+					font-family: 'Fontcons';
+					font-size: 22px;
+					content: "\2588";
+					text-decoration: none;
+					cursor: pointer;
+					font-weight: 400;
+					color: #a9a9a9;
+					color: rgba(0, 0, 0, 0.6);
+				}
+				&:after {
+					font-size: 16px;
+					font-family: 'Fontcons';
+					content: "";
+					position: absolute;
+					right: 2px;
+					bottom: 8px;
+					color: #666;
+					text-decoration: none;
+					text-shadow:
+					     -1px -1px 0 #fff,
+					      1px -1px 0 #fff,
+					      -1px 1px 0 #fff,
+					       1px 1px 0 #fff;
+					cursor: pointer;
+					font-weight: 400;
+				}
+			}
+
+			&:after,
+			&:before {
+				position: absolute;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				filter: alpha(opacity=0);
+				-webkit-opacity: 0;
+				-moz-opacity: 0;
+				opacity: 0;
+				text-indent: 0;
+				overflow: visible;
+				z-index: 1000000;
+				pointer-events: none;
+				-webkit-transition: 0.3s ease;
+				   -moz-transition: 0.3s ease;
+				    -ms-transition: 0.3s ease;
+				        transition: 0.3s ease;
+				content: attr(data-title);
+				background: #383838;
+				color: #fff;
+				text-shadow: 0 -1px 0px black;
+				padding: 0.65em 0.85em;
+				font-size: 1.1em;
+				line-height: 1;
+				white-space: nowrap;
+				box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+				-webkit-border-radius: 0.25em;
+				-moz-border-radius: 0.25em;
+				border-radius: 0.25em;
+				right: 100%;
+				top: 50%;
+				margin-top: -1.15em;
+				visibility: hidden\9;
+			}
+			&:after {
+				content: "";
+				padding: 0;
+				margin-right: -10px;
+				background: transparent;
+				border: 6px solid transparent;
+				border-color: transparent transparent transparent #383838;
+				box-shadow: none;
+				display: block;
+				width: 0;
+				margin-top: -0.65em;
+			}
+
+			&:hover {
+				background-color: #fff;
+
+				&:before,
+				&:after {
+					-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+					filter: alpha(opacity=100);
+					-webkit-opacity: 1;
+					-moz-opacity: 1;
+					opacity: 1;
+					visibility: visible\9;
+				}
+
+				span:before,
+				span:after {
+					color: #000;
+				}
+			}
+		}
+
+		&.first a {
+			border-radius: 0.25em 0 0 0.25em;
+		}
+		&.last a {
+			border-radius: 0 0.25em 0.25em 0;
+		}
+		&.first.last a {
+			border-radius: 0.25em;
+		}
+		&.button + li.button a {
+			border-left: none;
+		}
+		&.spacer,
+		&.divider {
+			width: 22px;
+			border: 1px solid transparent;
+		}
+	}
+}

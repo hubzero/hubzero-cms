@@ -1,0 +1,56 @@
+
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_meta.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Meta
+// --------------------------------------------------
+
+	table.meta {
+		color: #eee;
+		font-weight: 700;
+		padding: 0;
+		.border-radius(0.27em);
+		overflow: hidden;
+		zoom: 1;
+		margin: 0 0 1.61803399em 0;
+		.transition(all ease-in-out 0.2s);
+		background: #888;
+		border: none;
+
+		tbody {
+			th,
+			td {
+				padding: 0.61803399em;
+				border: none;
+				border-top: 1px solid rgba(255, 255, 255, 0.2);
+			}
+			tr:first-child,
+			tr:first-child th,
+			tr:first-child td {
+				border: none;
+			}
+			tr:hover,
+			tr:hover td,
+			tr:hover th,
+			tr:nth-child(even),
+			tr:nth-child(even) th,
+			tr,
+			th,
+			td {
+				background: transparent;
+				text-align: left;
+			}
+			tr:last-child th,
+			tr:last-child td {
+				border-bottom: none;
+			}
+		}
+
+		&:hover {
+			.box-shadow(~"inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5)");
+		}
+	}

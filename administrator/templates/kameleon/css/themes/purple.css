@@ -1,0 +1,50 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kameleon/css/themes/purple.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Purple Style Sheet 
+	a {
+		color: #a181e2;
+	}
+	a:hover {
+		color: #000;
+	}
+/* Form elements */
+	.input-text:focus,
+	.input-username:focus,
+	.input-password:focus,
+	textarea:focus, 
+	input[type="text"]:focus, 
+	input[type="password"]:focus, 
+	input[type="file"]:focus { 
+		border-color: #a181e2;
+	}
+
+/* Light header */
+	#login-body #toolbar-box,
+	div.configuration,
+	.light .main-navigation {
+		background: #a684e9;
+	}
+	.light .main-navigation ul#menu ul {
+		background: #a684e9;
+	}
+	.light .main-navigation ul#menu ul li {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	.light .main-navigation ul#menu a {
+		color: #fff;
+	}
+
+/* Dark header 
+	.dark #login-body #toolbar-box,
+	.dark div.configuration,*/
+	.dark #toolbar-box {
+		background: #a684e9;
+	}
+	.dark #toolbar-box .pagetitle h2 {
+		color: #fff;
+	}

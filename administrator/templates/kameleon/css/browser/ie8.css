@@ -1,0 +1,91 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasicadmin/css/ie8.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Structure */
+	.toolbar-box {
+		border-bottom: 1px solid #ccc;
+	}
+	.toolbar-box li a span:before,
+	.toolbar-box table a span:before {
+		top: -8px;
+	}
+	.toolbar-box .header:before {
+		font-size: 26px;
+	}
+	.mod {
+		border-top: 1px solid #666;
+		border-right: 1px solid #d0d0d0;
+		border-bottom: 1px solid #fff;
+		border-left: 1px solid #d0d0d0;
+	}
+/* Login */
+	#login-body #wrap {
+		margin: 0 auto 100px auto;
+		padding: 0.18em 0.618em 0.618em 0.618em;
+	}
+/* Main Menu */
+	#header .user-options li:hover a,
+	#header .user-options li:focus a,
+	#header .user-options li a:hover,
+	#header .user-options li a:focus,
+	.main-navigation ul#menu>li:hover,
+	.main-navigation ul#menu>li:focus {
+		background: url("../../images/layout/black-20.png");
+	}
+	.main-navigation ul#menu li.separator {
+		margin: 0 10px;
+		padding: 3px 0;
+		height: 1px;
+		background: transparent url("../../images/nav/bg-nav-sub-seperator.png") 0 0 repeat-x;
+		width: 140px;
+		overflow: hidden;
+		display: block;
+	}
+	.main-navigation ul#menu li.separator span {
+		display: none;
+	}
+	.toolbar-box li a small.fontcon-before,
+	.toolbar-box li a span:before,
+	.toolbar-box table a small.fontcon-before,
+	.toolbar-box table a span:before {
+		margin-top: 8px;
+	}
+/* Support */
+	.ticket-details,
+	ol.comments .comment-changelog {
+		background: #ededed;
+	}
+	ol.comments .comment-changelog:before {
+		border-color: #ededed #ededed transparent transparent;
+	}
+/* Misc */
+	p.info,
+	p.warning,
+	p.error,
+	p.message,
+	#system-message dd {
+		background-image: url("../../images/layout/light-stripes-5.png");
+	}
+	#system-message dd:before {
+		margin-top: -0.45em;
+	}
+	input {
+		border-width: expression(this.type=="radio"?'0px':this.type=="checkbox"?'0px':'1px');
+	}
+	input, 
+	select, 
+	button {
+		font-size: 1em;
+	}
+	fieldset.adminform legend {
+		border: 1px solid #D6D6D6;
+		margin-left: -1px;
+		margin-top: -1px;
+	}
+	.pane-sliders {
+		margin: 20px 0 0 0;
+	}

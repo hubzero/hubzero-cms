@@ -1,0 +1,254 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/reset.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// reset
+	html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,
+	del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,
+	label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,figure,footer,header,
+	hgroup,menu,nav,section,menu,time,mark,audio,video {
+		border: 0;
+		outline: 0;
+		font-size: 100%;
+		vertical-align: baseline;
+		background: transparent;
+		margin: 0;
+		padding: 0;
+	}
+
+// HTML5
+	article,
+	aside,
+	figure,
+	footer,
+	header,
+	hgroup,
+	nav,
+	section {
+		display: block; 
+	}
+	nav ul {
+		list-style: none;
+	}
+
+// Defaults 
+	blockquote,
+	q {
+		quotes: none;
+	}
+	blockquote:before,
+	blockquote:after,
+	q:before,
+	q:after {
+		content: none;
+	}
+	a {
+		font-size: 100%;
+		vertical-align: baseline;
+		background: transparent;
+		margin: 0;
+		padding: 0;
+	}
+	ins {
+		background-color: #ff9;
+		color: #000;
+		text-decoration: none;
+	}
+	mark {
+		background-color: #ff9;
+		color: #000;
+		font-style: italic;
+		font-weight: bold;
+	}
+	del {
+		text-decoration: line-through;
+	}
+	abbr[title],
+	dfn[title] {
+		border-bottom: 1px dotted #000;
+		cursor: help;
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+	hr {
+		display: block;
+		height: 1px;
+		border: 0;
+		border-top: 1px solid #ccc;
+		margin: 1.61803399em 0;
+		padding: 0;
+	}
+	input,
+	select {
+		vertical-align: middle;
+	}
+	table {
+		font-size: inherit;
+		font: 100%;
+	}
+	input,
+	textarea,
+	button {
+		font-size: 99%;
+		font-family: @sansFontFamily;
+	}
+	pre,
+	code,
+	kbd,
+	samp {
+		font-family: @monoFontFamily;
+	}
+	body,
+	select,
+	input,
+	textarea {
+		color: #7c7c7c;
+	}
+	b,
+	strong, 
+	th {
+		font-weight: 700;
+	}
+	i,
+	em {
+		font-style: italic;
+	}
+	td,
+	td img {
+		vertical-align: top;
+	}
+	sub {
+		vertical-align: sub;
+		font-size: smaller;
+	}
+	sup {
+		vertical-align: super;
+		font-size: smaller;
+	}
+	small,
+	.small {
+		font-size: 0.8034441847541164em;
+		line-height: 2;
+	}
+	pre {
+		white-space: pre;
+		white-space: pre-wrap;
+		white-space: pre-line;
+		word-wrap: break-word;
+	}
+	p {
+		-webkit-hyphens: auto;
+		-webkit-hyphenate-character: "\2010";
+		-webkit-hyphenate-limit-after: 1;
+		-webkit-hyphenate-limit-before: 3;
+		-moz-hyphens: auto;
+		orphans: 3;
+		widows: 3;
+	}
+	.ie7 img {
+		-ms-interpolation-mode: bicubic;
+	}
+	img,
+	embed,
+	object,
+	video{
+		max-width: 100% !important;
+	}
+	p, ul, ol, dl, blockquote, hr, pre, table, fieldset, article, article, footer, nav {
+		margin: 0 0 1.61803399em 0;
+		line-height: 1.61803399em;
+	}
+
+// Lists
+	article ul {
+		margin: 0 0 1.61803399em 0;
+		list-style: disc outside;
+	}
+	article ol {
+		margin: 0 0 1.61803399em 0;
+		list-style: decimal outside;
+	}
+	dd {
+		margin: 0 0 0.61803399em 1.61803399em;
+	}
+	dt {
+		font-weight: bold;
+	}
+
+// Form element
+	input[type="radio"] {
+		vertical-align: text-bottom;
+	}
+	input[type="checkbox"] {
+		vertical-align: middle;
+		*vertical-align: baseline;
+	}
+	label,
+	input[type=button],
+	input[type=submit],
+	button {
+		cursor: pointer;
+		vertical-align: baseline;
+	}
+	::-moz-selection{
+		background: #FF5E99;
+		color: #fff;
+		text-shadow: none;
+	}
+	::selection{
+		background: #FF5E99;
+		color: #fff;
+		text-shadow: none;
+	}
+	button {
+		width: auto;
+		overflow: visible;
+	}
+
+// Base
+	html {
+		font-size: 62.5%;
+		font-family: @sansFontFamily;
+		text-align: center;
+		-webkit-text-size-adjust: 100%;
+		-ms-text-size-adjust: 100%;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		height: 100%;
+	}
+	body {
+		height: 100%;
+		text-align: left;
+		font-size: 1.3em;
+		line-height: 1.61803399em;
+	}
+
+// Headers
+	h1, h2, h3, h4, h5, h6 {
+		font-weight: 700;
+		margin: 0;
+		line-height: 1.7142em;
+	}
+	h1 {
+		font-size: 2.618em;
+		padding: 1.142em 0 0.437em;
+	}
+	h2 {
+		font-size: 1.849em;
+		padding: 1.142em 0 0.437em;
+	}
+	h3 {
+		font-size: 1.618em;
+		padding: 1.142em 0 0.4376em;
+	}
+	h4 {
+		font-size: 1em;
+		padding: 1.142em 0 0.706em;
+	}

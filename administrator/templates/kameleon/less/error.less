@@ -1,0 +1,235 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/component.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Core variables and mixins
+@import "_variables.less";
+@import "_mixins.less";
+
+// CSS Reset
+@import "_reset.less";
+
+// Fonts
+@import "_fonts.less"; // Fontcons defines available icons
+
+// Grid system and page structure
+@import "_grid.less";
+
+// Components: Alerts
+@import "_notifications.less";
+
+// Utility classes
+@import "_utilities.less";
+
+// Root node
+	html {
+		font-family: sans-serif;
+	}
+
+// Body
+	body {
+		font-family: @sansFontFamily;
+		font-weight: 400;
+		font-size: @baseFontSize;
+		line-height: @baseLineHeight;
+		color: #666;
+		background: #f9f9f9;
+		text-rendering: optimizeLegibility;
+	}
+
+// Links
+	a, 
+	a:active, 
+	a:visited {
+		text-decoration: none;
+		color: #444;
+		border: none;
+	}
+	a:hover {
+		color: #222;
+		border-bottom: 1px solid #999;
+	}
+
+// Elements
+	// Lists
+	ul {
+		list-style: disc;
+		margin: 0 0 0 2em;
+
+		li {
+			margin: 0.5em 0;
+		}
+	}
+	ol {
+		list-style: decimal;
+		margin: 0 0 0 2em;
+
+		li {
+			margin: 0.5em 0;
+		}
+	}
+	// Misc.
+	p {
+		margin: 1em 0;
+	}
+	hr {
+		clear: both;
+		height: 1px;
+		background: #ddd;
+		margin: 2em 0;
+		border: none;
+	}
+	abbr {
+		border-bottom: 1px dotted #333;
+	}
+	dfn {
+		font-style: italic;
+	}
+	dl dt {
+		font-weight: bold;
+	}
+	dl dd {
+		margin-left: 2em;
+	}
+	img {
+		border: 0;
+	}
+
+// Headers
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-weight: 400;
+		color: #484848;
+		margin: 1em 0;
+	}
+	h2 {
+		line-height: 1.3;
+		font-size: 1.9em;
+		font-weight: 300;
+	}
+	h3 {
+		font-size: 1.4em;
+	}
+	h4,
+	h5,
+	h6 {
+		font-size: 1.1em;
+	}
+
+// Structure
+	@import "_header.less";
+	@import "_menus.less";
+	@import "_toolbar.less";
+
+	#wrap {
+		margin: 0;
+		padding: 0;
+		background: #f9f9f9;
+	}
+	#component-content {
+		position: relative;
+		padding-top: 5.4em;
+		.clearfix();
+	}
+
+	@import "_footer.less";
+
+// Error Message
+	#errorbox {
+		padding: 1.61803399em 2.23606798em 1.61803399em 2.23606798em;
+		margin: 0;
+		position: relative;
+		z-index: 1;
+
+		h3 {
+			position: relative;
+			font-size: 18em;
+			text-align: center;
+			color: #ddd;
+			margin: 0;
+			padding: 0.11em 0;
+			line-height: 1.2em;
+			font-weight: 300;
+		}
+	}
+
+// Stack trace
+	.backtrace-wrap {
+		background-color: #333;
+		padding: 1em 0;
+
+		table {
+			font-family: @monoFontFamily;
+			width: 100%;
+			text-align: left;
+			font-size: 0.85em;
+			border: none;
+			color: #e9e4e5;
+
+			th,
+			td {
+				vertical-align: top;
+				padding: 0.618em 1em;
+				word-break: break-all;
+			}
+			tbody tr:nth-child(odd) {
+				background-color: #3a3a3a;
+			}
+			td strong {
+				font-weight: bold;
+				color: #250b23;
+			}
+			thead th:first-child,
+			tbody th {
+				text-align: right;
+				white-space: nowrap;
+			}
+			caption,
+			thead th {
+				font-weight: normal;
+				letter-spacing: 0.15em;
+				white-space: nowrap;
+			}
+			caption {
+				text-align: left;
+				padding: 0.618em 1em;
+				display: none;
+			}
+		}
+		// Syntax highlighting
+		.fnc {
+			color: #4bb1b1;
+		}
+		.cls {
+			color: #ef7c61;
+		}
+		.mtd {
+			color: #fffefe;
+		}
+		.opn {
+			color: #aaa;
+		}
+		.com,
+		.fl {
+			color: #888;
+		}
+		.ln {
+			color: #bcd42a;
+		}
+	}
+
+// For smaller screens
+@media only screen and (max-width: 868px) {
+	.col {
+		float: none;
+		width: auto;
+		margin: 0;
+	}
+}

@@ -1,0 +1,191 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_notifications.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Alerts
+// --------------------------------------------------
+
+.notificationColor(@successText, @successBackground, @successBorder) {
+	background-color: @successBackground;
+	color: @successText !important;
+	border-color: @successBorder;
+}
+
+// System messages
+	#system-message {
+		margin: 0 0 1.61803399em 0;
+
+		ul,
+		li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		dt {
+			display: none;
+		}
+	}
+
+	.info,
+	.warning,
+	.error,
+	.message,
+	#system-message dd {
+		margin: 0;
+		padding: 0.61803399em 0.61803399em 0.61803399em 2.31803399em;
+		color: #ffffc0;
+		position: relative;
+		overflow: hidden;
+		zoom: 1;
+		border: 0.27em solid #eee;
+		.border-radius(0.27em);
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+		background-image: url("@{pathSystemImg}/light-stripes.png");
+		#gradient > .striped(#fff, -45deg, .065);
+		.background-size(30px 30px); // Controls the size of the stripes
+	}
+	.info,
+	.warning,
+	.error,
+	.message {
+		margin: 1em 0;
+		h3,
+		h4 {
+			color: #fff !important;
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+		a {
+			color: #fff !important;
+			border-bottom: 1px dotted #eee !important;
+		}
+		a:hover {
+			color: #fff !important;
+			border-bottom: 1px solid #fff !important;
+		}
+	}
+
+	span.info,
+	span.warning,
+	span.error,
+	span.message {
+		display: inline-block;
+		*display: inline;
+		margin: 0;
+	}
+
+	#system-message dd {
+		margin: 0;
+	}
+
+	.message,
+	#system-message dd.message {
+		.notificationColor(@successText, @successBackground, @successBorder);
+	}
+	.info,
+	#system-message dd.info {
+		.notificationColor(@infoText, @infoBackground, @infoBorder);
+	}
+	.warning,
+	#system-message dd.warning {
+		.notificationColor(@warningText, @warningBackground, @warningBorder);
+	}
+	.error,
+	#system-message dd.error {
+		.notificationColor(@errorText, @errorBackground, @errorBorder);
+	}
+	span.systemmessage-before,
+	.info:before,
+	.warning:before,
+	.error:before,
+	.message:before,
+	#system-message dd:before {
+		position: absolute;
+		top: 0.81803399em;
+		width: 1em;
+		height: 1em;
+		font-size: 1em;
+		line-height: 1;
+		display: block;
+		left: 0.81803399em;
+		.fontcons(@iconSuccess);
+	}
+	.message:before,
+	#system-message dd.message:before {
+		content: "\@{iconSuccess}";
+		top: 0.71803399em;
+	}
+	.error:before,
+	#system-message dd.error:before {
+		content: "\@{iconError}";
+	}
+	.warning:before,
+	#system-message dd.warning:before {
+		content: "\@{iconWarning}";
+	}
+	.info:before,
+	#system-message dd.info:before {
+		content: "\@{iconInfo}";
+		left: 0.71803399em;
+	}
+
+// [!] HACKS - IE 7 and older
+	.info,
+	#system-message dd.info { 
+		.ie7-fontcons-before("systemmessage", @iconInfo);
+	}
+	.warning,
+	#system-message dd.warning { 
+		.ie7-fontcons-before("systemmessage", @iconWarning);
+	}
+	.error,
+	#system-message dd.error { 
+		.ie7-fontcons-before("systemmessage", @iconError);
+	}
+	.message,
+	#system-message dd.message { 
+		.ie7-fontcons-before("systemmessage", @iconSuccess);
+	}
+
+// [!] HACKS - Firefox 3.4 and older
+@-moz-document url-prefix() {
+	html.firefox3 .message:before,
+	html.firefox3 #system-message dd.message:before,
+	html.firefox3 .error:before,
+	html.firefox3 #system-message dd.error:before,
+	html.firefox3 .warning:before,
+	html.firefox3 #system-message dd.warning:before,
+	html.firefox3 .info:before,
+	html.firefox3 #system-message dd.info:before {
+		content: "";
+		display: none;
+	}
+	html.firefox3 .info,
+	html.firefox3 #system-message dd.info { 
+		background-image: url("@{pathSystemImg}/information.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+	html.firefox3 .warning,
+	html.firefox3 #system-message dd.warning { 
+		background-image: url("@{pathSystemImg}/warning.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+	html.firefox3 .error,
+	html.firefox3 #system-message dd.error { 
+		background-image: url("@{pathSystemImg}/error.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+	html.firefox3 .message,
+	html.firefox3 #system-message dd.message { 
+		background-image: url("@{pathSystemImg}/accept.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+}

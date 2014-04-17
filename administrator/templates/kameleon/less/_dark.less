@@ -1,0 +1,85 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_dark.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Dark
+// --------------------------------------------------
+
+.dark {
+	.main-navigation {
+		background: #444;
+
+		ul#menu {
+			border-left: 1px solid rgba(255, 255, 255, 0.1);
+
+			li {
+				border-right: 1px solid rgba(255, 255, 255, 0.1);
+			}
+			ul {
+				background-color: #444;
+
+				li {
+					background-color: rgba(0, 0, 0, 0.2);
+				}
+			}
+			&.disabled li,
+			&.disabled li:hover,
+			&.disabled a,
+			&.disabled a:hover {
+				color: rgba(255, 255, 255, 0.2);
+			}
+		}
+	}
+
+	#header .user-options li {
+		border-left: 1px solid rgba(255, 255, 255, 0.1);
+		border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+		&:before {
+			border-color: transparent transparent transparent #eee;
+		}
+		&:after {
+			background-color: #eee;
+			color: #222;
+			text-shadow: 0 -1px 0px #fff;
+		}
+	}
+
+	#toolbar-box {
+		background: #fff;
+	}
+	.toolbar-box .pagetitle h2 {
+		color: #fff;
+	}
+	.toolbar-box li a {
+		border-color: rgba(255, 255, 255, 0.4);
+
+		small.fontcon-before,
+		span:before {
+			color: rgba(255, 255, 255, 0.8);
+		}
+
+		small.fontcon-after,
+		span:after {
+			color: #fff;
+			text-shadow:
+			     -1px -1px 0 #e84c3d,
+			      1px -1px 0 #e84c3d,
+			      -1px 1px 0 #e84c3d,
+			       1px 1px 0 #e84c3d;
+		}
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.2);
+			color: #fff;
+
+			span:before,
+			span:after {
+				color: #fff;
+			}
+		}
+	}
+}

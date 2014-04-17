@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.6//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<extension type="template" version="2.5" client="administrator">
+	<name>kameleon (admin)</name>
+	<creationDate>05/24/14</creationDate>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+	<license>GNU/GPL</license>
+	<version>1.0</version>
+	<description>Administration template for HUBzero CMS</description>
+	<files>
+		<filename>index.php</filename>
+		<filename>css/index.css</filename>
+		<filename>css/login.css</filename>
+		<filename>css/component.css</filename>
+		<filename>css/error.css</filename>
+	</files>
+	<positions>
+		<position>menu</position>
+		<position>submenu</position>
+		<position>toolbar</position>
+		<position>title</position>
+		<position>status</position>
+		<position>icon</position>
+		<position>cpanel</position>
+		<position>debug</position>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="header" type="list" default="gray" label="TPL_KAMELEON_FIELD_HEADER_LABEL" description="TPL_KAMELEON_FIELD_HEADER_DESC">
+					<option value="light">TPL_KAMELEON_FIELD_HEADER_LIGHT</option>
+					<option value="dark">TPL_KAMELEON_FIELD_HEADER_DARK</option>
+				</field>
+				<field name="theme" type="list" default="gray" label="TPL_KAMELEON_FIELD_THEME_LABEL" description="TPL_KAMELEON_FIELD_THEME_DESC">
+					<option value="">TPL_KAMELEON_FIELD_THEME_GRAY</option>
+					<option value="charcoal">TPL_KAMELEON_FIELD_THEME_CHARCOAL</option>
+					<option value="blue">TPL_KAMELEON_FIELD_THEME_BLUE</option>
+					<option value="aqua">TPL_KAMELEON_FIELD_THEME_AQUA</option>
+					<option value="green">TPL_KAMELEON_FIELD_THEME_GREEN</option>
+					<option value="orange">TPL_KAMELEON_FIELD_THEME_ORANGE</option>
+					<option value="red">TPL_KAMELEON_FIELD_THEME_RED</option>
+					<option value="salmon">TPL_KAMELEON_FIELD_THEME_SALMON</option>
+					<option value="purple">TPL_KAMELEON_FIELD_THEME_PURPLE</option>
+					<option value="yellow">TPL_KAMELEON_FIELD_THEME_YELLOW</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

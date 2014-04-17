@@ -1,0 +1,43 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_footer.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Footer
+// --------------------------------------------------
+	#footer {
+		padding: 1.61803399em 2.33606798em 0.61803399em 2.33606798em;
+		margin: 0;
+		color: #aaa;
+		font-size: 0.95em;
+		border-top: 1px solid #dadada;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+		a {
+			color: #666;
+			border: none;
+			text-decoration: none;
+			.transition(all ease-in-out 0.2s);
+
+			&:hover {
+				color: #000;
+				text-decoration: underline;
+			}
+		}
+		.copyright {
+			float: left;
+			text-align: left;
+			width: 45%;
+		}
+		.promotion {
+			float: right;
+			text-align: right;
+			width: 45%;
+		}
+		.basement {
+			overflow: hidden;
+			zoom: 1;
+		}
+	}

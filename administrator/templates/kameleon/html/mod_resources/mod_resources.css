@@ -1,0 +1,137 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_dashboard/dashboard.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.mod_resources {
+		padding: 1.618em;
+		position: relative;
+	}
+
+	.mod_resources .legend table,
+	.mod_resources .legend table thead tr,
+	.mod_resources .legend table thead th,
+	.mod_resources .legend table tbody tr,
+	.mod_resources .legend table tbody td {
+		border: none;
+		background: transparent;
+	}
+	.mod_resources .legend table {
+		width: auto;
+	}
+	.mod_resources .legend table tbody td {
+		padding: 0.2em;
+	}
+	/*.mod_resources .legend table tbody td.legendColorBox {
+		padding-left: 1em;
+	}*/
+	.mod_resources .resources-total {
+		position: absolute;
+		top: 100px;
+		left: 50%;
+		margin-left: -96px;
+		font-size: 2em;
+		color: #666;
+		font-weight: 300;
+		text-align: center;
+		width: 100px;
+	}
+
+	.resources-stats-overview {
+		margin: .618em 2.218em 0 2.218em;
+		padding: 2.218em 0;
+	}
+	.resources-stats-overview tbody tr td,
+	.resources-stats-overview tbody tr td:first-child {
+		text-align: center;
+		font-size: 3em;
+		font-weight: 300;
+		padding: 0;
+		border: none;
+	}
+	.resources-stats-overview tbody tr td a {
+		color: #666;
+	}
+	.resources-stats-overview tbody tr td.pending a {
+		color: orange;
+	}
+	.resources-stats-overview tbody tr td span {
+		font-size: 0.35em;
+		font-weight: 400;
+		display: block;
+		margin: 1em 0 0 0;
+		color: #999;
+	}
+	.resources-stats-overview tbody tr td.pending-items a {
+		color: orange;
+	}
+
+	/*.resources-stats-overview {
+		border-top: none;
+		border-bottom: none;
+		margin: 0;
+		width: 100%;
+		text-align: left;
+		font-size: 1em;
+		border-collapse: collapse;
+		background: #fff;
+	}
+
+	.resources-stats-overview thead th {
+		color: #aaa;
+		font-weight: normal;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		border-bottom: none;
+		padding: 5px 10px;
+	}
+	.resources-stats-overview tbody td {
+		padding: 5px 10px 15px 10px;
+		font-size: 2.5em;
+		font-weight: normal;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		color: #777;
+		border-bottom: 1px solid #dfdfdf;
+	}
+	.resources-stats-overview tbody td.draft-internal,
+	.resources-stats-overview tbody td.draft-internal a {
+		color: #999;
+	}
+	.resources-stats-overview tbody td.draft-user,
+	.resources-stats-overview tbody td.draft-user a {
+		color: #999;
+	}
+	.resources-stats-overview tbody td.pending,
+	.resources-stats-overview tbody td.pending a {
+		color: #ff9900;
+	}
+	.resources-stats-overview tbody td.published,
+	.resources-stats-overview tbody td.published a {
+		color: #999;
+	}
+	.resources-stats-overview tbody td.unpublished,
+	.resources-stats-overview tbody td.unpublished a {
+		color: #999;
+	}
+	.resources-stats-overview tbody td.removed,
+	.resources-stats-overview tbody td.removed a {
+		color: #999;
+	}
+	
+	.resources-stats-overview tbody td a {
+		border: none;
+	}
+	.resources-stats-overview tbody td a:hover {
+		color: #000;
+	}
+	.resources-stats-overview tbody td span {
+		color: #aaa;
+		font-size: 14px;
+		line-height: 14px;
+		font-weight: normal;
+		margin: 0 1.5em 0 0;
+		padding: 0;
+	}*/

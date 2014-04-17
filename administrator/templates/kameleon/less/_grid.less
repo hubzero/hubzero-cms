@@ -1,0 +1,40 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_grid.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Grid
+// --------------------------------------------------
+
+	.col {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	div.width-20  { width: 18%; }
+	div.width-30  { width: 28%; }
+	div.width-35  { width: 33%; }
+	div.width-40  { width: 38%; }
+	div.width-45  { width: 43%; }
+	div.width-48  { width: 48%; }
+	div.width-50  { width: 48%; }
+	div.width-55  { width: 53%; }
+	div.width-60  { width: 58%; }
+	div.width-65  { width: 63%; }
+	div.width-70  { width: 68%; }
+	div.width-80  { width: 78%; }
+
+	.clrlft  { clear: left; }
+	.clrrt   { clear: right; }
+	.fltlft  { float: left; }
+	.fltrt   { float: right; }
+	.fltnone { float: none; }
+
+	.fltlft + .fltrt:after {
+		clear: both;
+		content: "";
+		display: table;
+		line-height: 0;
+	}

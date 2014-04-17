@@ -1,0 +1,147 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/variables.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Variables
+// --------------------------------------------------
+
+
+// Global values
+// --------------------------------------------------
+
+// Grays
+// -------------------------
+@black:                 #000;
+@grayDarker:            #222;
+@grayDark:              #333;
+@gray:                  #555;
+@grayLight:             #999;
+@grayLighter:           #eee;
+@white:                 #fff;
+
+
+// Accent colors
+// -------------------------
+@blue:                  #049cdb;
+@blueDark:              #0064cd;
+@green:                 #46a546;
+@red:                   #9d261d;
+@yellow:                #ffc40d;
+@orange:                #f89406;
+@pink:                  #c3325f;
+@purple:                #7a43b6;
+
+
+// Scaffolding
+// -------------------------
+// System assets paths
+// -------------------------
+@pathSystemCss:         "/media/system/css";
+@pathSystemImg:         "/media/system/images";
+@pathSystemJs:          "/media/system/js";
+
+@pathTemplate:          "/administrator/templates/kameleon";
+@bodyBackground:        #ececec url("@{pathTemplate}/images/layout/noise-lite.png");
+@contentBackground:     #f9f9f9 url("@{pathTemplate}/images/layout/noise-lite.png");
+@contentPadding:        0;
+@contentMargin:         0 30px;
+@textColor:             @grayDark;
+
+
+// Links
+// -------------------------
+@linkColor:             #178bc1;
+@linkColorHover:        darken(@linkColor, 15%);
+
+
+// Typography
+// -------------------------
+@sansFontFamily:        "OpenSans", "Cabin", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@serifFontFamily:       Georgia, "Times New Roman", Times, serif;
+@monoFontFamily:        Monaco, Menlo, Consolas, "Courier New", monospace;
+
+@baseFontSize:          1.3em; //12px;
+@baseFontFamily:        @sansFontFamily;
+@baseLineHeight:        1.61803399em; //20px;
+@altFontFamily:         @serifFontFamily;
+
+@headingsFontFamily:    inherit; // empty to use BS default, @baseFontFamily
+@headingsFontWeight:    bold;    // instead of browser default, bold
+@headingsColor:         inherit; // empty to use BS default, @textColor
+
+
+// Pre and Code
+// -------------------------
+@preBoxShadow:          0 0 0.25em rgba(0, 0, 0, 0.2);
+@preBorder:             none;
+@preBackground:         @white;
+
+
+// Component sizing
+// -------------------------
+// Based on 14px font-size and 20px line-height
+
+@fontSizeLarge:         @baseFontSize * 1.25; // ~18px
+@fontSizeSmall:         @baseFontSize * 0.85; // ~12px
+@fontSizeMini:          @baseFontSize * 0.75; // ~11px
+
+@paddingLarge:          11px 19px; // 44px
+@paddingSmall:          2px 10px;  // 26px
+@paddingMini:           0 6px;   // 22px
+
+@baseBorderRadius:      0.25em;
+@borderRadiusLarge:     0.5em;
+@borderRadiusSmall:     0.125em;
+
+
+// Forms
+// -------------------------
+@inputBackground:               rgba(0, 0, 0, 0.039);
+@inputBorder:                   #D9D9D9;
+@inputBorderRadius:             @baseBorderRadius;
+@inputDisabledBackground:       @grayLighter;
+@formActionsBackground:         #f5f5f5;
+@inputHeight:                   @baseLineHeight + 10px; // base line-height + 8px vertical padding + 2px top/bottom border
+@horizontalComponentOffset:     @baseLineHeight / 2;
+
+
+// Notifications
+// -------------------------
+
+@iconHelp:                "f059";
+@iconInfo:                "f05a";
+@iconSuccess:             "2714";
+@iconError:               "f094";
+@iconWarning:             "26A0";
+@iconPlusSign:            "2295";
+@iconMinusSign:           "2296";
+@iconRemoveSign:          "f057";
+@iconSuccessSign:         "f058";
+@iconWarningSign:         "2757";
+@iconRemoveCircle:        "2297";
+@iconSuccessCircle:       "f05d";
+@iconBanCircle:           "2298";
+
+@warningText:             #ffffc0;
+@warningBackground:       #cea638;
+@warningBorder:           #ac8416;
+
+@errorText:               #ffd2c3;
+@errorBackground:         #ba4a3b;
+@errorBorder:             #982819;
+
+@successText:             #e9ffae;
+@successBackground:       #619926;
+@successBorder:           #3f7704;
+
+@helpText:                #f3eefe;
+@helpBackground:          #a284db;
+@helpBorder:              #8066b2;
+
+@infoText:                #e8f1fe;
+@infoBackground:          #84A7DB;
+@infoBorder:              #6685b2;

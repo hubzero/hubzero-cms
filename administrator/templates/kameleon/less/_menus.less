@@ -1,0 +1,307 @@
+
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_menus.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Menus
+// --------------------------------------------------
+
+	// Main menu
+	.main-navigation {
+		display: block;
+		font-size: 1em;
+		margin: 0 0 0 0;
+		padding: 0 2.23606798em;
+		background-color: #777;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		zoom: 1;
+		.clearfix();
+
+		ul#menu,
+		ul#menu li,
+		ul#menu ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		ul#menu {
+			position: relative;
+			min-height: 3.8em;
+			padding: 0;
+			font-weight: normal;
+			border-left: 1px solid rgba(0, 0, 0, 0.1);
+
+			li {
+				float: left;
+				line-height: 1.3em;
+				vertical-align: middle;
+				padding: 0;
+				border: none;
+				color: #fff;
+				border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+				&:hover,
+				&:focus {
+					position: relative;
+					z-index: 599;
+					cursor: default;
+				}
+			}
+			ul {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				z-index: 598;
+				width: 100%;
+				display: none;
+				background: #373737;
+				padding: 0;
+				margin: 0 0 0 -1px;
+				border: none;
+				width: 160px;
+				.border-radius(0 0 0.25em 0.25em);
+
+				li {
+					float: none;
+					padding: 0 10px;
+					margin: 0;
+					background: #373737;
+					font-weight: normal;
+					border: none;
+				}
+				ul {
+					top: 1px;
+					left: 99%;
+					.border-radius(0.25em);
+				}
+			}
+
+			// Drop-Down Menu Theme
+			li:hover,
+			li:focus {
+				color: #FF9966;
+
+				&>ul,
+				&>ul {
+					display: block;
+				}
+			}
+			&>li.active>a,
+			li.active a {
+				color: #333;
+				background: #5c5c5c;
+			}
+			li.active li a {
+				color: #000;
+				background: transparent;
+			}
+			.separator span {
+				display: block;
+				padding: 3px 0;
+			}
+			a {
+				display: block;
+				border: none;
+				padding: 1.4em 1.5em;
+				color: #fff;
+				color: rgba(255, 255, 255, 0.9);
+				font-weight: 500;
+				line-height: 1;
+				cursor: pointer;
+
+				span {
+					display: inline-block;
+					width: 1em;
+					overflow: hidden;
+					margin-left: 1em;
+
+					img {
+						display: none;
+					}
+					&:before {
+						display: inline-block;
+						content: "\273D";
+						font-family: "Fontcons";
+						width: 1em;
+						overflow: hidden;
+					}
+				}
+			}
+			ul li a {
+				padding: 0.61803399em;
+				color: #aaa;
+				color: rgba(255, 255, 255, 0.6);
+				font-weight: normal;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+				.transition(all ease-in-out 0.2s);
+				border-radius: 0;
+			}
+			&>li:hover,
+			&>li:focus {
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+			&>li:hover>a,
+			&>li:focus>a,
+			li>a:hover,
+			li>a:focus { 
+				color: #fff;
+			}
+			li.active li a:hover,
+			li.active li a:focus,
+			a:hover,
+			a:focus { 
+				color: #fff;
+				text-decoration: none;
+			}
+			ul li a:hover,
+			ul li a:focus { 
+				color: #fff;
+				text-decoration: none;
+			}
+			a:active { 
+				color: #ECECC4;
+			}
+
+			li:first-child ul {
+				margin: 0;
+			}
+			ul li:first-child a {
+				border-top: none;
+				background: none;
+				border-radius: 0;
+			}
+			ul li:last-child a {
+				border-bottom: none;
+				border-radius: 0;
+			}
+			ul li:last-child {
+				padding-bottom: 0.61803399em;
+				.border-radius(0 0 0.25em 0.25em);
+			}
+			ul li.node>a:after {
+				content: "›";
+				position: absolute;
+				right: 1em;
+			}
+			//#header .user-options .disabled .logout,
+			&.disabled li a,
+			&.disabled>li:hover > a,
+			&.disabled>li:focus > a,
+			&.disabled li > a:hover,
+			&.disabled li > a:focus {
+				color: #ddd;
+				color: rgba(0, 0, 0, 0.2);
+				background: transparent;
+			}
+			&.disabled>li:hover,
+			&.disabled>li:focus {
+				background-color: transparent;
+				color: #ddd;
+			}
+		}
+	}
+
+// Submenu
+	.sub-navigation {
+		zoom: 1;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		color: #999;
+		font-size: 0.95em;
+		background: #eee;
+
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 1em 2.33606798em 0 2.33606798em;
+			border-bottom: 1px solid #d6d6d6;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+		}
+		li {
+			margin: 0;
+			padding: 0;
+			width: auto;
+			display: inline-block;
+
+			a {
+				padding: 0em 0.2185em 1em 0.2185em;
+				display: inline-block;
+				border: none;
+				background: transparent;
+				margin: 0 1.61803399em 0 0;
+				color: #999;
+				.transition(all ease-in-out 0.2s);
+				position: relative;
+				z-index: 1;
+
+				&:hover {
+					color: #000;
+					text-decoration: underline;
+				}
+				&.active {
+					z-index: 1;
+					color: #424242;
+					font-weight: bold;
+
+					&:before {
+						position: absolute;
+						width: 0px;
+						height: 0px;
+						display: block;
+						content: "";
+						border: 8px solid #d6d6d6;
+						border-color: transparent transparent #d6d6d6 transparent;
+						overflow: hidden;
+						bottom: -1px;
+						left: 50%;
+						margin-left: -8px;
+					}
+				}
+			}
+		}
+	}
+
+// Item form
+	#item-form {
+		.sub-navigation {
+			background: transparent;
+
+			ul {
+				padding: 0;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			}
+			li a {
+				border: 1px solid #d6d6d6;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+				border-bottom: none;
+				background: #eee;
+				margin: 0;
+				padding: 0.31803399em 0.61803399em;
+				.border-radius(0.25em 0.25em 0 0);
+
+				&:hover {
+					background: #ddd;
+				}
+				&.active {
+					background: transparent;
+				}
+				&.active:before {
+					display: none;
+				}
+				&.active:after {
+					left: 0;
+					right: 0;
+					bottom: -1px;
+					height: 2px;
+					background: #f9f9f9;
+					border: none;
+					margin: 0;
+					width: auto;
+				}
+			}
+		}
+	}

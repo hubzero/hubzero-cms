@@ -1,0 +1,147 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_header.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Header
+// --------------------------------------------------
+
+	#header {
+		margin: 0;
+		padding: 0;
+		position: relative;
+		.clearfix();
+
+		h1 {
+			display: none;
+		}
+
+		a {
+			color: #ccc;
+			border: none;
+			text-decoration: none;
+			.transition(all ease-in-out 0.2s);
+
+			&:hover {
+				color: #666;
+				border: none;
+				text-decoration: none;
+				background-color: rgba(0, 0, 0, 0.1);
+			}
+		}
+
+		// User options
+		.user-options {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			position: absolute;
+			top: 0;
+			right: 2.23606798em;
+
+			li {
+				border-left: 1px solid rgba(0, 0, 0, 0.1);
+				border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+				&:before,
+				&:after {
+					position: absolute;
+					-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+					filter: alpha(opacity=0);
+					-webkit-opacity: 0;
+					-moz-opacity: 0;
+					opacity: 0;
+					text-indent: 0;
+					overflow: visible;
+					z-index: 1000000;
+					pointer-events: none;
+					.transition(0.3s ease);
+					content: attr(data-title);
+					background: #383838;
+					color: #fff;
+					text-shadow: 0 -1px 0px black;
+					padding: 0.55em 0.85em 0.65em 0.85em;
+					font-size: 0.85em;
+					font-weight: 400;
+					line-height: 1;
+					white-space: nowrap;
+					box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+					.border-radius(0.25em);
+					right: 100%;
+					bottom: 50%;
+					margin-bottom: -1.2em;
+					visibility: hidden\9;
+				}
+				&:before {
+					content: "";
+					padding: 0;
+					margin-right: -10px;
+					margin-bottom: -6px;
+					background: transparent;
+					border: 6px solid transparent;
+					border-color: transparent transparent transparent #383838;
+					box-shadow: none;
+					display: block;
+					width: 0;
+				}
+				&:hover:before,
+				&:hover:after {
+					-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+					filter: alpha(opacity=100);
+					-webkit-opacity: 1;
+					-moz-opacity: 1;
+					opacity: 1;
+					visibility: visible\9;
+				}
+			}
+
+			span.button-wrap {
+				margin-right: 1em;
+				display: none;
+			}
+			.logout {
+				display: block;
+				border: none;
+				color: #ddd;
+				color: rgba(255, 255, 255, 0.8);
+				font-weight: 400;
+				line-height: 1;
+				position: relative;
+				z-index: 1;
+				margin: 0;
+				padding: 0.555em 0.6em 0.55em 0.8em;
+				width: 1em;
+				font-size: 1.8em;
+				overflow: hidden;
+				display: block;
+				cursor: pointer;
+				white-space: nowrap;
+
+				&:before {
+					font-family: 'Fontcons';
+					content: "\f011";
+					margin-right: 10em;
+				}
+			}
+
+			li:hover a,
+			li:focus a,
+			li a:hover,
+			li a:focus {
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+			& > li:hover > a,
+			& > li:focus > a
+			li > a:hover,
+			li > a:focus { 
+				color: #fff;
+			}
+
+			li.disabled {
+				color: #ddd;
+				opacity: 0.7;
+			}
+		}
+	}

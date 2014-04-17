@@ -1,0 +1,50 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kameleon/css/themes/charcoal.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Blue Style Sheet 
+	a {
+		color: #4bb9bd;
+	}
+	a:hover {
+		color: #000;
+	}
+/* Form elements */
+	.input-text:focus,
+	.input-username:focus,
+	.input-password:focus,
+	textarea:focus, 
+	input[type="text"]:focus, 
+	input[type="password"]:focus, 
+	input[type="file"]:focus { 
+		border-color: #222;
+	}
+
+/* Light header */
+	#login-body #toolbar-box,
+	div.configuration,
+	.light .main-navigation {
+		background: #222;
+	}
+	.light .main-navigation ul#menu ul {
+		background: #222;
+	}
+	.light .main-navigation ul#menu ul li {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	.light .main-navigation ul#menu a {
+		color: #fff;
+	}
+
+/* Dark header 
+	.dark #login-body #toolbar-box,
+	.dark div.configuration,*/
+	.dark #toolbar-box {
+		background: #222;
+	}
+	.dark #toolbar-box .pagetitle h2 {
+		color: #fff;
+	}

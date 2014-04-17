@@ -1,0 +1,53 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kameleon/css/themes/salmon.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Salmon Style Sheet 
+	a,
+	a:active,
+	a:visited {
+		color: #a63b2a;
+	}
+	a:hover,
+	a:focus {
+		color: #000;
+	}
+/* Form elements 
+	.input-text:focus,
+	.input-username:focus,
+	.input-password:focus,
+	textarea:focus, 
+	input[type="text"]:focus, 
+	input[type="password"]:focus, 
+	input[type="file"]:focus { 
+		border-color: #ff6f6f;
+	}
+
+/* Light header */
+	#login-body #toolbar-box,
+	div.configuration,
+	.light .main-navigation {
+		background: #ff6f6f;
+	}
+	.light .main-navigation ul#menu ul {
+		background: #ff6f6f;
+	}
+	.light .main-navigation ul#menu ul li {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	.light .main-navigation ul#menu ul li a {
+		color: #dcb3aa;
+	}
+
+/* Dark header 
+	.dark #login-body #toolbar-box,
+	.dark div.configuration,*/
+	.dark #toolbar-box {
+		background: #ff6f6f;
+	}
+	.dark #toolbar-box .pagetitle h2 {
+		color: #fff;
+	}

@@ -1,0 +1,47 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_tooltip.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Tooltip
+// --------------------------------------------------
+
+.tool-tip {
+	position: absolute;
+	min-width: 200px;
+	max-width: 400px;
+	.box-shadow(~"0 1px 5px rgba(0, 0, 0, 0.1)");
+	background: #fff9e2;
+	border: 2px solid #ffce00;
+	color: #cea000;
+	z-index: 50;
+
+	.tip-title {
+		padding: 0.7em 1em;
+		margin: 0;
+		font-size: 1em;
+		font-weight: bold;
+		border-bottom: 1px solid #f7eabc;
+	}
+	.tip-text {
+		padding: 1em 1em 0.7em 1em;
+		font-size: 1em;
+		margin: 0;
+
+		img {
+			.border-radius(50%);
+			border: 2px solid #ead480;
+		}
+	}
+	table {
+		margin: 0;
+
+		tbody th,
+		tbody td {
+			padding: 0.418em;
+			border-color: #f7eabc;
+		}
+	}
+}

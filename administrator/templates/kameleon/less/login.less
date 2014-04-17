@@ -1,0 +1,166 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/login.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Core variables and mixins
+@import "_variables.less";
+@import "_mixins.less";
+
+// CSS Reset
+@import "_reset.less";
+
+// Fonts
+@import "_fonts.less";
+
+// Common base styles
+@import "_forms.less";
+
+// Components: Alerts
+@import "_notifications.less";
+
+	html {
+		background-color: #333;
+	}
+
+// Header
+	#header {
+		padding: 100px 0 0 0;
+
+		h1 {
+			display: none;
+		}
+	}
+// Wrap
+	#wrap {
+		width: 320px;
+		margin: 0 auto 100px auto;
+	}
+// Content
+	#component-content {
+		padding: 0;
+		margin: 0;
+		background: #f9f9f9;
+		.border-radius(0.5em 0.5em 0.25em 0.25em);
+		.box-shadow(~"0 0 2px rgba(0, 0, 0, 0.4)");
+	}
+// Main
+	#main {
+		padding: 1.61803399em;
+		overflow: hidden;
+		zoom: 1;
+
+		p:last-child {
+			padding-bottom: 0;
+			margin-bottom: 0;
+		}
+	}
+// Toolbar
+	#toolbar-box {
+		overflow: hidden;
+		zoom: 1;
+		padding: 0;
+		margin: 0.61803399em 0 0 0;
+		background-color: #777;
+		position: relative;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		color: #999;
+		font-size: 0.95em;
+		.border-radius(0.25em 0.25em 0 0);
+
+		h2 {
+			font-size: 1.1em;
+			display: block;
+			color: #fff;
+			margin: 0;
+			padding: 1em 1.618em;
+			font-weight: 400;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+
+			&:after {
+				content: "\f011";
+				font-family: "Fontcons";
+				position: absolute;
+				color: rgba(255, 255, 255, 0.2);
+				font-size: 7em;
+				top: 0.35em;
+				right: -0.15em;
+			}
+		}
+	}
+// Forms
+	form fieldset legend {
+		display: none;
+	}
+	form .button-holder {
+		background: none;
+		border: none;
+		margin: 0;
+		padding: 1.618em 0 0 0;
+	}
+	form fieldset {
+		margin-bottom: 0;
+	}
+	form .btn {
+		margin: 0;
+	}
+	.input-text,
+	.input-username,
+	.input-password,
+	input[type=text],
+	input[type=password] {
+		margin-bottom: 0;
+		margin-top: 0;
+		background-color: #fff;
+		padding: 0.618em;
+		display: block;
+		margin: 0;
+	}
+	.input-username,
+	input[type=text] {
+		.border-radius(0.25em 0.25em 0 0);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.045);
+	}
+	.input-password,
+	input[type=password] {
+		.border-radius(0 0 0.25em 0.25em);
+		border-top: 1px solid rgba(0, 0, 0, 0.045);
+		margin-top: -1px;
+	}
+	.input-text:focus,
+	.input-username:focus,
+	.input-password:focus,
+	input[type=text]:focus, 
+	input[type=password]:focus, 
+	.input-text:hover,
+	.input-username:hover,
+	.input-password:hover,
+	input[type=text]:hover, 
+	input[type=password]:hover { 
+		background-color: #fff; 
+		border-color: #777 !important; 
+	}
+	button,
+	input[type=submit] {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		background-color: #888;
+		border: none;
+		text-shadow: none;
+		color: #fff;
+		font-size: 1em;
+	}
+	button:hover,
+	button:focus,
+	input[type=submit]:hover,
+	input[type=submit]:focus {
+		background: orange;
+		border: none;
+	}
+	label span {
+		display: none;
+	}

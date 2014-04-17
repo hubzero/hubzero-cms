@@ -1,0 +1,365 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_icons.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Icons
+// --------------------------------------------------
+
+	// States
+	a.state,
+	a.state:link,
+	a.state:active,
+	a.state:visited,
+	.state {
+		position: relative;
+		z-index: 1;
+		overflow: hidden;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: inline-block;
+		height: 1.2em;
+		width: 1.2em;
+		color: #777;
+		text-decoration: none;
+		border: none;
+		white-space: nowrap;
+
+		&:before {
+			font-size: 1.2em;
+			line-height: 1;
+			font-family: 'Fontcons';
+			display: inline-block;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+		}
+		&:hover {
+			text-decoration: none;
+		}
+		img,
+		span {
+			display: none;
+		}
+	}
+	// Active / Inactive
+	/*.active {
+		&:before {
+			content: "\f056";
+			color: #a3ca60;
+		}
+	}
+	.inactive {
+		&:before {
+			content: "\2010";
+			color: #ccc;
+			color: rgba(0, 0, 0, 0.2);
+		}
+		&:hover:before {
+			color: #222;
+		}
+	}*/
+	// Publish
+	.on,
+	.yes,
+	.publish,
+	.published {
+		&:before {
+			content: "\2714";
+			color: #a3ca60;
+		}
+		&:hover:before {
+			color: green;
+		}
+	}
+	// Unpublish
+	.off,
+	.no,
+	.unpublish,
+	.unpublished {
+		&:before {
+			content: "\2298";
+			color: #ccc;
+			color: rgba(0, 0, 0, 0.2);
+		}
+		&:hover:before {
+			color: red;
+		}
+	}
+	// Pending
+	.pending {
+		&:before {
+			content: "\22EF";
+			color: #f9b96f;
+		}
+		&:hover:before {
+			color: orange;
+		}
+	}
+	// Trash
+	.trash {
+		&:before {
+			content: "\f014";
+		}
+		&:hover:before {
+			color: #111;
+		}
+	}
+	// New
+	.add,
+	.new {
+		&:before {
+			content: "\2295";
+		}
+		&:hover:before {
+			color: #7F913C;
+		}
+	}
+
+	.view:before {
+		content: "\f06e";
+		top: -20%;
+	}
+	.view:hover:before {
+		color: #000;
+	}
+	.member:before,
+	.user:before {
+		content: "\f007";
+	}
+
+	/* Checked out */
+	.checkedout:before {
+		content: "\f023";
+		color: #999;
+		font-size: 16px;
+		line-height: 16px;
+		font-family: 'Fontcons';
+	}
+	.checkedout:hover:before {
+		color: #333;
+	}
+	/* Default */
+	.default:before {
+		content: "\2605";
+	}
+	.default:hover:before {
+		color: #F8D201;
+	}
+	/* Delete */
+	.delete:before {
+		content: "\2716";
+	}
+	/* Attachment */
+	.attachment:before {
+		content: "\f092";
+	}
+	/* Menu */
+	.menulist:before {
+		content: "\f03a";
+	}
+	a.menulist:hover:before {
+		color: #000;
+	}
+	.uparrow:before {
+		content: "\2191";
+	}
+	.downarrow:before {
+		content: "\2193";
+	}
+	.uparrow:hover:before,
+	.downarrow:hover:before {
+		color: #333;
+	}
+	
+	// Glyphs
+	.glyph {
+		&:before {
+			position: relative;
+			z-index: 1;
+			overflow: hidden;
+			padding: 0;
+			margin: 0 0.2em 0 0;
+			display: inline-block;
+			height: 1em;
+			width: 1em;
+			font-family: 'Fontcons';
+			font-size: 1.2em;
+			color: #666;
+			text-decoration: none;
+			border: none;
+		}
+		&.group:before {
+			content: "\f042";
+			font-size: 19px;
+		}
+		&.thread:before {
+			content: "\f086";
+		}
+		&.comment:before {
+			content: "\f075";
+		}
+		&.category:before {
+			content: "\f07b";
+		}
+		&.tag:before {
+			content: "\f02b";
+		}
+		&.org:before {
+			content: "\f062";
+		}
+		&.public:before {
+			content: "\f06e";
+			//line-height: 24px;
+		}
+		&.private:before {
+			content: "\f070";
+			//line-height: 24px;
+		}
+	}
+	
+	.level,
+	.gi,
+	.gtr {
+		margin-right: 0.2em;
+		color: #ddd;
+	}
+	.level,
+	.gtr {
+		visibility: hidden;
+	}
+	.smallsub {
+		margin: 0;
+		padding: 0;
+		font-size: 0.85em;
+		color: #999;
+	}
+	.smallsub a {
+		color: #777;
+		white-space: nowrap;
+	}
+	.com_users .smallsub a:before {
+		font-family: 'Fontcons';
+		border: 1px solid #D4D5AA;
+		padding: 5px;
+		max-width: 400px;
+		z-index: 50;
+	}
+
+// Small (16x16)
+	// Preview
+	/*.state.icon-16-preview:before {
+		content: "\f06e";
+		top: -20%;
+	}
+	.state.icon-16-nopreview:before {
+		content: "\f070";
+		color: #aaa;
+		top: -20%;
+	}
+	// Unset
+	.icon-16-unset {
+		color: #c55500;
+	}
+	.icon-16-unset:before {
+		content: "\2298";
+		font-size: 16px;
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+	}
+	.icon-16-unset:hover:before {
+		color: #c55500;
+	}
+	// Allowed
+	.icon-16-allowed {
+		color: #7F913C;
+	}
+	.icon-16-allowed:before {
+		font-family: 'Fontcons';
+		font-size: 14px;
+		line-height: 14px;
+		content: "\2714";
+		font-size: 16px;
+		margin-right: 0.2em;
+	}
+	.icon-16-allowed:hover:before {
+		color: #7F913C;
+	}*/
+
+// Toolbar Icons
+	.toolbar-box {
+		.icon-32-send:before         { content: "\2709"; }
+		.icon-32-send:after          { content: "\2192"; right: 0; bottom: 4px; }
+		.icon-32-delete:before       { content: "\f014"; }
+		.icon-32-help:before         { content: "\f059"; }
+		.icon-32-cancel:before       { content: "\f057"; }
+		.icon-32-checkin:before      { content: "\2611"; }
+		.icon-32-options:before      { content: "\2692"; }
+		.icon-32-apply:before        { content: "\f058"; }
+		.icon-32-back:before         { content: "\2190"; }
+		.icon-32-export:before       { content: "\f08e"; }
+		.icon-32-forward:before      { content: "\2192"; }
+		.icon-32-save:before         { content: "\2605"; }
+		.icon-32-edit:before         { content: "\270E"; }
+		.icon-32-copy:before         { content: "\f060"; }
+		.icon-32-move:before         { content: "\f047"; }
+		.icon-32-new:before          { content: "\271A"; }
+		.icon-32-upload:before       { content: "\f046"; }
+		.icon-32-assign:before       { }
+		.icon-32-html:before         { content: "\f016"; }
+		.icon-32-html small.fontcon-after,
+		.icon-32-html:after { 
+			font-size: 6px; 
+			line-height: 6px;
+			content: "HTML"; 
+			font-family: @sansFontFamily;
+			background: #fff;
+			border: 1px solid #666;
+			right: 0;
+			bottom: 4px;
+			height: 8px;
+			padding: 0 1px;
+		}
+		.icon-32-css:before          { content: "\f016"; }
+		.icon-32-css small.fontcon-after,
+		.icon-32-css:after { 
+			font-size: 6px; 
+			line-height: 6px;
+			content: "CSS"; 
+			font-family: @sansFontFamily;
+			background: #fff;
+			border: 1px solid #666;
+			right: 0;
+			bottom: 4px;
+			height: 8px;
+			padding: 0 1px;
+		}
+		.icon-32-menus:before        { content: "\f03a"; }
+		.icon-32-publish:before      { content: "\2714"; }
+		.icon-32-unblock:before      { content: "\f007"; }
+		.icon-32-unblock:after       { content: "\2611"; }
+		.icon-32-unpublish:before    { content: "\2298"; }
+		.icon-32-restore:before      { content: "\267B"; }
+		.icon-32-trash:before        { content: "\f014"; }
+		.icon-32-archive:before      { content: "\f005"; }
+		.icon-32-archive:after       { content: "\2190"; }
+		.icon-32-unarchive:before    { content: "\f005"; }
+		.icon-32-unarchive:after     { content: "\2192"; }
+		.icon-32-preview:before      { content: "\f06e"; }
+		.icon-32-default:before      { content: "\2605"; }
+		.icon-32-refresh:before      { content: "\f021"; }
+		.icon-32-save-new:before     { }
+		.icon-32-save-copy:before    { content: "\2605"; }
+		.icon-32-save-copy:after     { content: "\271A"; }
+		.icon-32-error:before        { content: "\26A0"; }
+		.icon-32-new-style:before    { }
+		.icon-32-delete-style:before { }
+		.icon-32-purge:before        { content: "\21BB"; }
+		.icon-32-remove:before       { content: "\2296"; }
+		.icon-32-featured:before     { }
+		.icon-32-stats:before        { content: "\25F7"; }
+		.icon-32-config:before       { content: "\2699"; }
+	}
