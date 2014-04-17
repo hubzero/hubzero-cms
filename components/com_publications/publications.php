@@ -62,7 +62,7 @@ require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'usage.php' );
 require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
 require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
 require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php' );
-
+require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'resourceMapGenerator.php');
 require_once( JPATH_COMPONENT . DS . 'models' . DS . 'types.php' );
 
 require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
