@@ -55,12 +55,12 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
-	<p><?php echo JText::_('MERGED_EXPLANATION'); ?></p>
-	
+	<p class="warning"><?php echo JText::_('MERGED_EXPLANATION'); ?></p>
+
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MERGING'); ?></span></legend>
-			
+
 			<ul>
 			<?php
 			foreach ($this->tags as $tag)
@@ -74,15 +74,21 @@ function submitbutton(pressbutton)
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MERGE_TO'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="newtag"><?php echo JText::_('Tag'); ?>:</label></td>
-						<td><input type="text" name="newtag" id="newtag" size="25" value="" /></td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="newtag"><?php echo JText::_('Tag'); ?>:</label><br />
+				<?php
+				JPluginHelper::importPlugin('hubzero');
+				$tf = JDispatcher::getInstance()->trigger(
+					'onGetMultiEntry', 
+					array(
+						array('tags', 'tags', 'actags')
+					)
+				);
+				echo (count($tf) ? implode("\n", $tf) : '<input type="text" name="newtag" id="newtag" size="25" value="" />');
+				?>
+			</div>
+			<p>Enter the tag you wish to merge to. This may be an existing tag, including one of the selected 'merging' tags, or an entirely new tag.</p>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
@@ -92,6 +98,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 	<input type="hidden" name="task" value="merge" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

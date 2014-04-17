@@ -71,8 +71,9 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 			<input type="submit" name="filter_submit" value="<?php echo JText::_('GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt" style="text-align: right;">
 			<label for="filter-filterby"><?php echo JText::_('FILTER'); ?>:</label>
@@ -85,7 +86,7 @@ function submitbutton(pressbutton)
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
@@ -107,12 +108,6 @@ $k = 0;
 $i = 0;
 foreach ($this->rows as $row)
 {
-	/*$check = '';
-	if ($row->get('admin') == 1) 
-	{
-		$check = '<span class="check">' . strToLower(JText::_('ADMIN')) . '</span>';
-	}*/
-
 	if ($row->get('admin')) 
 	{
 		$calt = JText::_('Yes');

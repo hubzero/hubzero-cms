@@ -303,6 +303,8 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		switch ($step)
 		{
 			case 1:
+				JRequest::setVar('hidemainmenu', 1);
+
 				// Instantiate a new view
 				$this->view->step = 2;
 				$this->view->idstr = $idstr;
@@ -434,6 +436,8 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		switch ($step)
 		{
 			case 1:
+				JRequest::setVar('hidemainmenu', 1);
+
 				$this->view->step = 2;
 				$this->view->idstr = $idstr;
 				$this->view->tags = array();
