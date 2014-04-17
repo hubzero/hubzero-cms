@@ -42,13 +42,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 * @return	void
 	 */
 	public function execute()
-	{
-		// Load the component config
-		$config = JComponentHelper::getParams( $this->_option );
-		$this->_config = $config;
-		
+	{		
 		// Is component enabled?
-		if ($this->_config->get('enabled', 0) == 0)
+		if ($this->config->get('enabled', 0) == 0)
 		{
 			$this->_redirect = JRoute::_('index.php?option=com_resources');
 			return;
@@ -70,7 +66,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_task  = JRequest::getVar( 'task', '' );
 		$this->_id    = JRequest::getInt( 'id', 0 );
 		$this->_alias = JRequest::getVar( 'alias', '' );
-		$this->_resid = JRequest::getInt( 'resid', 0 );		
+		$this->_resid = JRequest::getInt( 'resid', 0 );	
 		
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
@@ -85,6 +81,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$this->_task = 'intro';
 		}
+		if (strrpos(strtolower($this->_alias), '.rdf') > 0)
+        {
+            $this->_resourceMap();
+			return;
+        }
 		
 		// Set the default task
 		$this->registerTask('__default', 'intro');
@@ -99,6 +100,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->registerTask('submit', 'contribute');
 		$this->registerTask('edit', 'contribute');
 		$this->registerTask('start', 'contribute');
+		$this->registerTask('publication', 'contribute');
 		
 		parent::execute();
 	}
@@ -460,6 +462,27 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	}
 	
 	/**
+     * Retrieves the data from database and compose the RDF file for download.
+     */
+    protected function _resourceMap()
+    {
+        $resourceMap = new ResourceMapGenerator();
+        $id = "";
+
+        // Retrieves the ID from alias
+        if (substr(strtolower($this->_alias), -4) == ".rdf")
+        {
+                $lastSlash = strrpos($this->_alias, "/");
+                $lastDot = strrpos($this->_alias, ".rdf");
+                $id = substr($this->_alias, $lastSlash, $lastDot);
+        }
+
+        // Create download headers
+        $resourceMap->pushDownload($this->config->get('webpath'));
+        exit;
+    }
+	
+	/**
 	 * View publication
 	 * 
 	 * @return     void
@@ -795,6 +818,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Output HTML
 		$view->display();
+		
+		// Insert .rdf link in the header
+        ResourceMapGenerator::putRDF($id);
 	}
 	
 	/**
