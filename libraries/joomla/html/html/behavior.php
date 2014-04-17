@@ -170,6 +170,40 @@ abstract class JHtmlBehavior
 	}
 
 	/**
+	 * Add unobtrusive javascript support for charts
+	 *
+	 * @return  void
+	 */
+	public static function chart($type='core')
+	{
+		// Only load once
+		if (isset(self::$loaded[__METHOD__][$type]))
+		{
+			return;
+		}
+
+		// Include MooTools framework
+		if ($type != 'core')
+		{
+			self::chart();
+		}
+
+		if ($type == 'core')
+		{
+			JHtml::_('script', 'system/flot/jquery.flot.min.js', true, true);
+			JHtml::_('script', 'system/flot/jquery.flot.tooltip.min.js', true, true);
+		}
+		else
+		{
+			JHtml::_('script', 'system/flot/jquery.flot.' . $type . '.min.js', true, true);
+		}
+
+		self::$loaded[__METHOD__][$type] = true;
+
+		return;
+	}
+
+	/**
 	 * Add unobtrusive javascript support for submenu switcher support in
 	 * Global Configuration and System Information.
 	 *
