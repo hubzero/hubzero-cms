@@ -35,6 +35,8 @@ $canDo = ResourcesHelperPermissions::getActions('resource');
 JToolBarHelper::title(JText::_('Resource Manager'), 'resources.png');
 if ($canDo->get('core.admin')) 
 {
+	JToolBarHelper::custom('check', 'scan', '', 'Check Paths', false);
+	JToolBarHelper::spacer();
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
