@@ -5,78 +5,63 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-	table.adminform #mod_supporttickets {
-		margin-bottom: 1em;
+/* Default styles */
+	.mod_supporttickets {
+		margin: 1.618em 2.218em;
 	}
-	#mod_supporttickets .title {
-		color: #666;
-		border: 1px solid #dfdfdf;
-		background: #dfdfdf;
-		padding: 0.7em;
-		margin: 0;
-	}
-	.support-stats-overview {
-		border-top: none;
-		border-bottom: none;
-		margin: 0;
-		width: 100%;
-		text-align: left;
-		font-size: 1em;
-		border-collapse: collapse;
-		background: #fff;
-	}
-	.support-stats-overview thead th {
-		color: #aaa;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		border-bottom: none;
-		padding: 5px 10px;
-	}
-	.support-stats-overview tbody td {
-		padding: 5px 10px 15px 10px;
-		font-size: 2.5em;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		color: #777;
-		border-bottom: 1px solid #dfdfdf;
-	}
-	.support-stats-overview tbody td.block {
-		padding-bottom: 10px;
-	}
-	.support-stats-overview tbody td.block,
-	.support-stats-overview tbody td.block a,
-	.my-tickets tbody td,
-	.my-tickets tbody td a {
-		color: #999; /*#b18fbc; purple*/
-	}
-	.open-tickets tbody td.critical,
-	.open-tickets tbody td.critical a {
-		color: red;
-	}
-	.open-tickets tbody td.major,
-	.open-tickets tbody td.major a {
-		color: #ce7d7d;
-	}
-	.open-tickets tbody td.newt,
-	.open-tickets tbody td.newt a {
-		color: #ff1177;
+
+	.mod_supporttickets table,
+	.mod_supporttickets table thead tr,
+	.mod_supporttickets table thead th,
+	.mod_supporttickets table tbody tr,
+	.mod_supporttickets table tbody td {
+		border: none;
 		background: transparent;
 	}
-	.support-stats-overview tbody td a {
-		border: none;
+	.mod_supporttickets .chart table {
+		width: auto;
+		margin-top: -1em;
 	}
-	.support-stats-overview tbody td a:hover {
-		color: #000;
-		text-decoration: none;
-		border: none;
+	.mod_supporttickets .chart table tbody td {
+		padding: 0.2em;
 	}
-	.support-stats-overview tbody td span {
-		color: #aaa;
-		font-size: 14px;
-		line-height: 14px;
-		font-weight: normal;
-		margin: 0 1.5em 0 0;
+	.mod_supporttickets .chart table tbody td.legendColorBox {
+		padding-left: 1em;
+	}
+
+/* Hero styles */
+	.hero .mod_supporttickets {
+		margin: 0 2.218em;
+	}
+	.hero .mod_supporttickets .chart table {
+		margin-top: 0;
+	}
+	.hero .mod_supporttickets .breakdown {
+		margin: 1.618em 2.218em 0 2.218em;
+		padding: 2.218em 0;
+	}
+	.hero .mod_supporttickets .breakdown table td {
+		text-align: center;
+		font-size: 3em;
+		font-weight: 300;
 		padding: 0;
+	}
+	.hero .mod_supporttickets .breakdown table td a {
+		color: orange;
+	}
+	.hero .mod_supporttickets .breakdown table td span {
+		font-size: 0.35em;
+		font-weight: 400;
+		display: block;
+		margin: 1em 0 0 0;
+	}
+
+/* Chart tip */
+	#flotTip {
+		background: #111111;
+		background: rgba(0, 0, 0, 0.8);
+		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+		font-size: 0.85em;
+		padding: 0.25em 0.75em;
+		color: #fff;
 	}

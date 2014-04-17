@@ -29,59 +29,130 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app = JFactory::getApplication();
+JHTML::_('behavior.chart', 'resize');
 ?>
-<div id="mod_supporttickets">
-<?php if ($app->getTemplate() == 'khepri' && $this->module->showtitle) : ?>
-	<h3 class="title"><?php echo $this->module->title; ?></h3>
-<?php endif; ?>
-	<table class="support-stats-overview open-tickets">
-		<thead>
-			<tr>
-				<th scope="col"><?php echo JText::_('Open'); ?></th>
-				<th scope="col"><?php echo JText::_('Unassigned'); ?></th>
-				<th scope="col"><?php echo JText::_('New'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td class="major"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[0]->id; ?>" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->escape($this->opened[0]->count); ?></a></td>
-				<td class="critical"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[2]->id; ?>" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->escape($this->opened[2]->count); ?></a></td>
-				<td class="newt"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[1]->id; ?>" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->escape($this->opened[1]->count); ?></a></td>
-			</tr>
-		</tbody>
-	</table>
+<div class="mod_supporttickets">
+	<div id="container<?php echo $this->module->id; ?>" class="chart" style="min-width: 400px; height: 200px;"></div>
+	<?php
+		$top = 0;
 
-	<table class="support-stats-overview closed-tickets">
-		<thead>
-			<tr>
-				<th scope="col" class="block"><?php echo JText::_('Average lifetime'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td class="block">
-					<?php echo (isset($this->lifetime[0])) ? $this->lifetime[0] : 0; ?> <span><?php echo JText::_('days'); ?></span> 
-					<?php echo (isset($this->lifetime[1])) ? $this->lifetime[1] : 0; ?> <span><?php echo JText::_('hours'); ?></span> 
-					<?php echo (isset($this->lifetime[2])) ? $this->lifetime[2] : 0; ?> <span><?php echo JText::_('minutes'); ?></span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-<?php if ($this->params->get('showMine', 1)) { ?>
-	<table class="support-stats-overview my-tickets">
-		<thead>
-			<tr>
-				<th scope="col"><?php echo JText::_('My Tickets (reported)'); ?></th>
-				<th scope="col"><?php echo JText::_('My Tickets (assigned)'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[0]->id; ?>" title="<?php echo JText::_('View my reported tickets'); ?>"><?php echo $this->escape($this->my[0]->count); ?></a></td>
-				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[1]->id; ?>" title="<?php echo JText::_('View my assigned tickets'); ?>"><?php echo $this->escape($this->my[1]->count); ?></a></td>
-			</tr>
-		</tbody>
-	</table>
-<?php } ?>
+		$closeddata = '';
+		if ($this->closedmonths) 
+		{
+			$c = array();
+			foreach ($this->closedmonths as $year => $data)
+			{
+				foreach ($data as $k => $v)
+				{
+					$top = ($v > $top) ? $v : $top;
+					$c[] = '[new Date(' . $year . ',  ' . ($k - 1) . ', 1),' . $v . ']';
+				}
+			}
+			$closeddata = implode(',', $c);
+		}
+
+		$openeddata = '';
+		if ($this->openedmonths) 
+		{
+			$o = array();
+			foreach ($this->openedmonths as $year => $data)
+			{
+				foreach ($data as $k => $v)
+				{
+					$top = ($v > $top) ? $v : $top;
+					$o[] = '[new Date(' . $year . ',  ' . ($k - 1) . ', 1),' . $v . ']'; // - $this->closedmonths[$k];
+				}
+			}
+			$openeddata = implode(',', $o);
+		}
+	?>
+
+	<script type="text/javascript">
+		if (!jq) {
+			var jq = $;
+		}
+		if (jQuery()) {
+			var $ = jq, 
+				chart, 
+				month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+				datasets = [
+					{
+						color: "orange", //#AA4643 #93ACCA
+						label: "Opened",
+						data: [<?php echo $openeddata; ?>]
+					},
+					{
+						color: "#656565", //#CFCFAB
+						label: "Closed",
+						data: [<?php echo $closeddata; ?>]
+					}
+				];
+
+			$(document).ready(function() {
+				var chart = $.plot($('#container<?php echo $this->module->id; ?>'), datasets, {
+					series: {
+						lines: { 
+							show: true,
+							fill: true
+						},
+						points: { show: false },
+						shadowSize: 0
+					},
+					//crosshair: { mode: "x" },
+					grid: {
+						color: 'rgba(0, 0, 0, 0.6)',
+						borderWidth: 1,
+						borderColor: 'transparent',
+						hoverable: true, 
+						clickable: true
+					},
+					tooltip: true,
+						tooltipOpts: {
+						content: "%y %s in %x",
+						shifts: {
+							x: -60,
+							y: 25
+						},
+						defaultTheme: false
+					},
+					legend: { 
+						show: true,
+						noColumns: 2,
+						position: "ne",
+						backgroundColor: 'transparent',
+						margin: [0, -50]
+					},
+					xaxis: { mode: "time", tickLength: 0, tickDecimals: 0, <?php if (count($o) <= 12) { echo 'ticks: ' . count($o) . ','; } ?>
+						tickFormatter: function (val, axis) {
+							var d = new Date(val);
+							return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+						}
+					},
+					yaxis: { min: 0 }
+				});
+			});
+		}
+	</script>
+	<div class="clr"></div>
+
+	<div class="breakdown">
+		<table class="support-stats-overview open-tickets">
+			<tbody>
+				<tr>
+					<td class="major">
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[0]->id; ?>" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->escape($this->topened[0]->count); ?></a>
+						<span><?php echo JText::_('Open'); ?></span>
+					</td>
+					<td class="critical">
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[2]->id; ?>" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->escape($this->topened[2]->count); ?></a>
+						<span><?php echo JText::_('Unassigned'); ?></span>
+					</td>
+					<td class="newt">
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[1]->id; ?>" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->escape($this->topened[1]->count); ?></a>
+						<span><?php echo JText::_('New'); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
