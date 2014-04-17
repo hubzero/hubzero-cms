@@ -41,9 +41,6 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
-
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -76,26 +73,22 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_KB_DETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><label for="field->section"><?php echo JText::_('COM_KB_PARENT_CATEGORY'); ?>:</label></th>
-						<td><?php echo KbHelperHtml::sectionSelect($this->sections, $this->row->get('section'), 'fields[section]'); ?></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>:</label></th>
-						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label></th>
-						<td><input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-description"><?php echo JText::_('COM_KB_DESCRIPTION'); ?>:</label></th>
-						<td><?php echo $editor->display('fields[description]', $this->escape(stripslashes($this->row->get('description'))), '', '', '50', '10'); ?></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field->section"><?php echo JText::_('COM_KB_PARENT_CATEGORY'); ?>:</label><br />
+				<?php echo KbHelperHtml::sectionSelect($this->sections, $this->row->get('section'), 'fields[section]'); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('Alpha-numeric characters, underscores, and dashes. If none provided, one will generated from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('COM_KB_DESCRIPTION'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->row->get('description'))), '', '', 50, 10, false, 'field-description'); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
@@ -114,24 +107,22 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_KB_PARAMETERS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-state"><?php echo JText::_('COM_KB_PUBLISH'); ?>:</label></td>
-						<td><input type="checkbox" name="fields[state]" id="field-state" value="1" <?php echo $this->row->get('state') ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label></td>
-						<td>
-							<select name="fields[access]" id="field-access">
-								<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
-								<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
-								<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Special'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('COM_KB_PUBLISH'); ?>:</label>
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Trashed'); ?></option>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label>
+				<select name="fields[access]" id="field-access">
+					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
+					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
+					<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Special'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

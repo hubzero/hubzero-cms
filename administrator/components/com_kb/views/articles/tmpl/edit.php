@@ -41,9 +41,6 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
-
 $selected = null;
 ?>
 <script type="text/javascript">
@@ -91,62 +88,60 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_KB_DETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required">required</span></label><br />
-							<select name="fields[section]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
-							<?php foreach ($this->sections as $section) { ?>
-								<?php
-								if ($this->row->get('section') == $section->get('id'))
-								{
-									$selected = $section;
-								}
-								?>
-								<option value="<?php echo $section->get('id'); ?>"<?php echo ($this->row->get('section') == $section->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-							<?php } ?>
-							</select>
-						</td>
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required"><?php echo JText::_('required'); ?></span</label><br />
+					<select name="fields[section]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
+					<?php foreach ($this->sections as $section) { ?>
+						<?php
+						if ($this->row->get('section') == $section->get('id'))
+						{
+							$selected = $section;
+						}
+						?>
+						<option value="<?php echo $section->get('id'); ?>"<?php echo ($this->row->get('section') == $section->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+					<?php } ?>
+					</select>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="fieldcategory"><?php echo JText::_('COM_KB_SUB_CATEGORY'); ?>:</label><br />
+					<select name="fields[category]" id="fieldcategory">
+						<option value="0"<?php echo ($this->row->get('category') == 0) ? ' selected="selected"' : ''; ?>>[ none ]</option>
+				<?php if ($selected) { ?>
+					<?php foreach ($selected->children() as $category) { ?>
+						<option value="<?php echo $category->get('id'); ?>"<?php echo ($this->row->get('category') == $category->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+					<?php } ?>
+				<?php } ?>
+					</select>
+				</div>
+			</div>
+			<div class="clr"></div>
 
-						<td class="key"><label for="fieldcategory"><?php echo JText::_('COM_KB_SUB_CATEGORY'); ?>:</label><br />
-							<select name="fields[category]" id="fieldcategory">
-								<option value="0"<?php echo ($this->row->get('category') == 0) ? ' selected="selected"' : ''; ?>>[ none ]</option>
-						<?php if ($selected) { ?>
-							<?php foreach ($selected->children() as $category) { ?>
-								<option value="<?php echo $category->get('id'); ?>"<?php echo ($this->row->get('category') == $category->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
-							<?php } ?>
-						<?php } ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required">required</span></label><br />
-							<input type="text" name="fields[title]" id="field-title" size="100" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label><br />
-						<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="field-fulltxt"><?php echo JText::_('COM_KB_BODY'); ?>: <span class="required">required</span></label><br />
-							<?php echo $editor->display('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), '', '', '60', '30'); ?>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label><?php echo JText::_('COM_KB_TAGS'); ?>: <span class="required">required</span></label><br />
-							<textarea name="tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" size="100" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('Alpha-numeric characters, underscores, and dashes. If none provided, one will generated from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" /></td>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-fulltxt"><?php echo JText::_('COM_KB_BODY'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<?php echo JFactory::getEditor()->display('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), '', '', 60, 30, false, 'field-fulltxt'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-tags"><?php echo JText::_('COM_KB_TAGS'); ?>:</label><br />
+				<textarea name="tags" id="field-tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('Metadata for this category'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th class="key"><?php echo JText::_('ID'); ?>:</th>
@@ -178,49 +173,51 @@ function submitbutton(pressbutton)
 				</tr>
 			<?php } ?>
 		<?php } ?>
+				<tr>
+					<td class="key"><?php echo JText::_('COM_KB_HITS'); ?>:</td>
+					<td>
+						<?php echo $this->row->get('hits', 0); ?>
+						<?php if ($this->row->get('hits', 0)) { ?>
+						<input type="button" name="reset_hits" id="reset_hits" value="<?php echo JText::_('COM_KB_RESET_HITS'); ?>" onclick="submitbutton('resethits');" />
+						<?php } ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="key"><?php echo JText::_('COM_KB_VOTES'); ?>:</td>
+					<td>
+						+<?php echo $this->row->get('helpful', 0); ?> -<?php echo $this->row->get('nothelpful', 0); ?>
+						<?php if ($this->row->get('helpful', 0) > 0 || $this->row->get('nothelpful', 0) > 0) { ?>
+						<input type="button" name="reset_votes" value="<?php echo JText::_('COM_KB_RESET_VOTES'); ?>" onclick="submitbutton('resetvotes');" />
+						<?php } ?>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('State'); ?></legend>
+			<legend><span><?php echo JText::_('State'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-state"><?php echo JText::_('COM_KB_PUBLISHED'); ?>:</label></td>
-						<td><input type="checkbox" name="fields[state]" id="field-state" value="1" <?php echo $this->row->get('state') ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label></td>
-						<td>
-							<select name="fields[access]" id="field-access">
-								<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
-								<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
-								<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Special'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_KB_HITS'); ?>:</td>
-						<td><?php echo $this->row->get('hits', 0); ?>
-						<?php if ($this->row->get('hits', 0)) { ?>
-						<input type="button" name="reset_hits" id="reset_hits" value="<?php echo JText::_('COM_KB_RESET_HITS'); ?>" onclick="submitbutton('resethits');" />
-						<?php } ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_KB_VOTES'); ?>:</td>
-						<td>+<?php echo $this->row->get('helpful', 0); ?> -<?php echo $this->row->get('nothelpful', 0); ?>
-						<?php if ($this->row->get('helpful', 0) > 0 || $this->row->get('nothelpful', 0) > 0) { ?>
-						<input type="button" name="reset_votes" value="<?php echo JText::_('COM_KB_RESET_VOTES'); ?>" onclick="submitbutton('resetvotes');" />
-						<?php } ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('COM_KB_PUBLISH'); ?>:</label>
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Trashed'); ?></option>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label>
+				<select name="fields[access]" id="field-access">
+					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
+					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
+					<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Special'); ?></option>
+				</select>
+			</div>
 		</fieldset>
+
 		<fieldset class="adminform paramlist">
 			<legend><span><?php echo JText::_('COM_KB_PARAMETERS'); ?></span></legend>
+
 			<?php echo $this->params->render(); ?>
 		</fieldset>
 	</div>
