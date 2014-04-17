@@ -49,12 +49,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask($posts = NULL)
 	{
-		
-		//$this->_getScripts('assets/js/posts');
-		//$this->_getStyles();
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'posts.css');
-
 		$userId = $this->juser->id;
 		$authlevel = JAccess::getAuthorisedViewLevels($userId);
 		$access_level = 3; //author_level

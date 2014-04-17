@@ -1,63 +1,88 @@
 jQuery(document).ready(function() 
 {	
-	jQuery('.fancybox-inline').fancybox(
+	//enable fancyboxes
+	makeFancy();
+	
+	jQuery('.actionBtn').on('click', function()
+	{
+		var post = changeState(this);
+		buttonSelect(post);
+		
+	}); //end button pressing
+}); // end ready
+	
+
+/*
+ * handles the fancybox wrappers
+ */
+function makeFancy() {
+ 	jQuery('.fancybox-inline').fancybox(
 			{
 				'transitionIn' : 'elastic',
 				'transitionOut' : 'elastic'
 			});
+}
+
+function changeState(actionBtn)
+{
+	//determine the id and the action
+	var post = {"record_id":jQuery(actionBtn).data('id'), "action": jQuery(actionBtn).data('action')};
 	
-	jQuery('.actionBtn').click(function()
+	if(post.action == 'remove')
 	{
-		var x = jQuery(this).attr('id');		
-		
-		jQuery(this).each(function()
-				{
-					jQuery(this).addClass("active");
-				});
-		
-		var record_id = x.split("-").pop();
-		var action = x.split("-");
-		action = action[0];
-		
-		 if(action == 'remove')
-		 {
+		jQuery.post("/index.php?option=com_feedaggregator&task=updateStatus&no_html=1",
+		{'id': post.record_id,
+		 'action': post.action 
+		},
+		function(data) 
+		{
+			jQuery.fancybox.next();
+			jQuery("#row-"+post.record_id).attr('style','background-color:red');
+			jQuery("#row-"+post.record_id).remove();
+		});
+	}
+	else
+	{
+		jQuery.post("/index.php?option=com_feedaggregator&task=updateStatus&no_html=1",
+		{
+		 'id': post.record_id,
+		 'action': post.action 
+		},
+		function(data) 
+		{
+			jQuery.fancybox.next();
+			if(post.action == "mark")
+			{
+				jQuery('#status-'+post.record_id).text('under review');
+				jQuery('#status-'+post.record_id).attr('style','color: purple');				
+			}
+			else if(post.action == "approve")
+			{
+				jQuery('#status-'+post.record_id).text('approved');	
+				jQuery('#status-'+post.record_id).attr('style','color: green');
+			}
+		});
+	}
 	
-		 	jQuery.post("/index.php?option=com_feedaggregator&task=updateStatus&no_html=1",
-			         {'id': record_id,
-		         	  'action': action },
-				     function(data) 
-				     {
-		      		 	jQuery.fancybox.next();
-		      			jQuery("#row-"+record_id).attr('style','background-color:red');
-		    		 	jQuery("#row-"+record_id).remove();
+	return post;
+} //function changeState()
 
-			         });
-	         
-		 }
-		 else
-		 {
-			 jQuery.post("/index.php?option=com_feedaggregator&task=updateStatus&no_html=1",
-			         {'id': record_id,
-		         	  'action': action },
-				     function(data) 
-				     {
-		     			 jQuery.fancybox.next();
-		     	 		 if(action == "mark")
-		 				{
-		      				jQuery('#status-'+record_id).text('under review');
-		 	         		jQuery('#status-'+record_id).attr('style','color: purple');
-		 	     						
-		 				}
-			 			else if(action == "approve")
-			 			{
-			 	         		 jQuery('#status-'+record_id).text('approved');	
-			 	         		 jQuery('#status-'+record_id).attr('style','color: green');
-			 			}
-
-			         });
-    
-			 
-		 }
+/*
+ * handles the changing of state of the button
+ * returns: JSON object with record_id, action
+ */
+function buttonSelect(post)
+{
+		
+	jQuery('.btnGrp' + post.record_id).each(function(){
+		if(jQuery(this).hasClass('active'))
+		{
+			jQuery(this).removeClass("active");
+		}		
 	});
 	
-}); 
+	jQuery('#' + post.action + '-' + post.record_id).addClass("active");
+	jQuery('#' + post.action + '-prev-' + post.record_id).addClass("active");
+	
+	return post;
+}
