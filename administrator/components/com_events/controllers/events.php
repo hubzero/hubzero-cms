@@ -239,8 +239,9 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		}
 
 		// Incoming
-		$id = JRequest::getInt('id', 0, 'request');
-
+		$ids = JRequest::getVar('id', array(), 'request');
+		$id  = (isset($ids[0])) ? $ids[0] : 0;
+		
 		// Load the event object
 		$this->view->row = new EventsEvent($this->database);
 		$this->view->row->load($id);
@@ -260,61 +261,24 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		{
 			$this->view->row->checkout($this->juser->get('id'));
 
-			if (trim($this->view->row->images)) 
-			{
-				$this->view->row->images = explode("\n", $this->view->row->images);
-			} 
-			else 
-			{
-				$this->view->row->images = array();
-			}
-
 			if (trim($this->view->row->publish_down) == '0000-00-00 00:00:00') 
 			{
 				$this->view->row->publish_down = JText::_('COM_EVENTS_CAL_LANG_NEVER');
 			}
 
-			$event_up = new EventsDate($this->view->row->publish_up);
-			$start_publish = sprintf("%4d-%02d-%02d", $event_up->year, $event_up->month, $event_up->day);
-			$start_time = $event_up->hour . ':' . $event_up->minute;
+			$start_publish = JHTML::_('date', $this->view->row->publish_up, 'Y-m-d');
+			$start_time = JHTML::_('date', $this->view->row->publish_up, 'H:i');
 
-			$event_down = new EventsDate($this->view->row->publish_down);
-			$stop_publish = sprintf("%4d-%02d-%02d", $event_down->year, $event_down->month, $event_down->day);
-			$end_time = $event_down->hour . ':' . $event_down->minute;
-
-			$this->view->row->reccurday_month = 99;
-			$this->view->row->reccurday_week = 99;
-			$this->view->row->reccurday_year = 99;
-
-			if ($this->view->row->reccurday <> '') 
-			{
-				if ($this->view->row->reccurtype == 1) 
-				{
-					$this->view->row->reccurday_week = $this->view->row->reccurday;
-				} 
-				elseif ($this->view->row->reccurtype == 3) 
-				{
-					$this->view->row->reccurday_month = $this->view->row->reccurday;
-				} 
-				elseif ($this->view->row->reccurtype == 5) 
-				{
-					$this->view->row->reccurday_year = $this->view->row->reccurday;
-				}
-			}
+			$stop_publish = JHTML::_('date', $this->view->row->publish_down, 'Y-m-d');
+			$end_time = JHTML::_('date', $this->view->row->publish_down, 'H:i');
 		} 
 		else 
 		{
 			$this->view->row->state = 0;
-			$this->view->row->images = array();
-			$start_publish = strftime("%Y-%m-%d", time()+($offset*60*60));
-			$stop_publish = strftime("%Y-%m-%d", time()+($offset*60*60));
+			$start_publish = JFactory::getDate()->format('Y-m-d');
+			$stop_publish = JFactory::getDate()->format('Y-m-d');
 			$start_time = "08:00";
 	        $end_time = "17:00";
-			$this->view->row->color_bar = EventsHtml::getColorBar(null,'');
-
-			$this->view->row->reccurday_month = -1;
-			$this->view->row->reccurday_week = -1;
-			$this->view->row->reccurday_year = -1;
 		}
 
 		// Get list of groups
@@ -327,9 +291,6 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			$this->database->setQuery("SELECT 0 AS value, 'Public' AS text");
 		}
 		$groups = $this->database->loadObjectList();
-
-		// Build the html select list
-		$this->view->glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox"', 'value', 'text', intval($this->view->row->access), false, false);
 
 		$this->view->fields = $this->config->getCfg('fields');
 		if (!empty($this->view->fields)) 
@@ -460,12 +421,6 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$end_time   = JRequest::getVar('end_time', '17:00', 'post');
 		$end_pm     = JRequest::getInt('end_pm', 0, 'post');
 
-		$reccurweekdays  = JRequest::getVar('reccurweekdays', array(), 'post');
-		$reccurweeks     = JRequest::getVar('reccurweeks', array(), 'post');
-		$reccurday_week  = JRequest::getVar('reccurday_week', '', 'post');
-		$reccurday_month = JRequest::getVar('reccurday_month', '', 'post');
-		$reccurday_year  = JRequest::getVar('reccurday_year', '', 'post');
-
 		// Bind the posted data to an event object
 		$row = new EventsEvent($this->database);
 		if (!$row->bind($_POST)) 
@@ -478,7 +433,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		if ($row->id) 
 		{
 			// Existing - update modified info
-			$row->modified = strftime("%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
+			$row->modified = JFactory::getDate()->toSql();
 			if (!$juser->get('guest')) 
 			{
 				$row->modified_by = $juser->get('id');
@@ -487,7 +442,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		else 
 		{
 			// New - set created info
-			$row->created = strftime("%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
+			$row->created = JFactory::getDate()->toSql();
 			if (!$juser->get('guest')) 
 			{
 				$row->created_by = $juser->get('id');
@@ -495,10 +450,6 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		}
 
 		// Set some fields and do some cleanup work
-		if (is_null($row->useCatColor)) 
-		{
-			$row->useCatColor = 0;
-		}
 		if ($row->catid) 
 		{
 			$row->catid = intval($row->catid);
@@ -553,8 +504,6 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$row->created_by_alias = htmlentities($row->created_by_alias);
-
 		// reformat the time into 24hr format if necessary
 		if ($this->config->getCfg('calUseStdTime') =='YES') 
 		{
@@ -577,81 +526,32 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			$end_time = $hrs . ':' . $mins;
 		}
 
+		// build local timezone
+		$tz = new DateTimezone(JFactory::getConfig()->get('offset'));
+
 		if ($row->publish_up) 
 		{
 			$publishtime = $row->publish_up . ' ' . $start_time . ':00';
-			$row->publish_up = strftime("%Y-%m-%d %H:%M:%S", strtotime($publishtime));
+			$row->publish_up = JFactory::getDate($publishtime, $tz)->toSql();
 		} 
 		else 
 		{
-			$row->publish_up = strftime("%Y-%m-%d 00:00:00", time()+($offset*60*60));
+			$row->publish_up = JFactory::getDate()->toSql();
 		}
 
 		if ($row->publish_down) 
 		{
 			$publishtime = $row->publish_down . ' ' . $end_time . ':00';
-			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S", strtotime($publishtime));
-		} 
-		else 
-		{
-			$row->publish_down = strftime("%Y-%m-%d 23:59:59", time()+($offset*60*60));
+			$row->publish_down = JFactory::getDate($publishtime, $tz)->toSql();
 		}
 
-		if ($row->publish_up <> $row->publish_down) 
-		{
-			$row->reccurtype = intval($row->reccurtype);
-		} 
-		else 
-		{
-			$row->reccurtype = 0;
-		}
-
-		switch ($row->reccurtype)
-		{
-			case 0: $row->reccurday = '';               break;
-			case 1: $row->reccurday =  $reccurday_week; break;
-			case 2: $row->reccurday = '';               break;
-			case 3: $row->reccurday = $reccurday_month; break;
-			case 4: $row->reccurday = '';               break;
-			case 5: $row->reccurday = $reccurday_year;  break;
-		}
-
-		// Reccur week days
-		if (empty($reccurweekdays) == '') 
-		{
-			$weekdays = '';
-		} 
-		else 
-		{
-			$weekdays = implode('|', $reccurweekdays);
-		}
-		$row->reccurweekdays = $weekdays;
-
-		// Reccur viewable weeks
-		$reccurweekss = JRequest::getVar('reccurweekss', '', 'post');
-		$reccurweeks = array();
-		if ($reccurweekss) 
-		{
-			$reccurweeks[] = $reccurweekss;
-		}
-		if (empty($reccurweeks)) 
-		{
-			$weekweeks = '';
-		} 
-		else 
-		{
-			$weekweeks = implode('|', $reccurweeks);
-		}
-		$row->reccurweeks = $weekweeks;
 
 		// If this is a new event, publish it, otherwise retain its state
 		if (!$row->id) 
 		{
 			$row->state = 1;
 		}
-
-		$row->mask = 0;
-
+		
 		// Get parameters
 		$params = JRequest::getVar('params', '', 'post');
 		if (is_array($params)) 

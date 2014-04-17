@@ -1143,6 +1143,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$errors[] = JText::_('Missing email address or email is not valid.');
 		}
 
+		// check to make sure this is the only time registering
+		if (EventsRespondent::checkUniqueEmailForEvent($register['email'], $event_id) > 0)
+		{
+			$errors[] = JText::_('You have previously registered for this event.');
+		}
+
 		//if we have any errors we must return
 		if (count($errors) > 0)
 		{

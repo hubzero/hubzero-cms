@@ -452,5 +452,21 @@ class EventsRespondent extends JTable
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . intval($event_id));
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Check for unique registration per event
+	 * 
+	 * @param  string $email
+	 * @param  int $eventId
+	 * @return int
+	 */
+	public static function checkUniqueEmailForEvent($email, $eventId)
+	{
+		$db = JFactory::getDBO(); 
+		$sql = "SELECT COUNT(*) FROM `#__events_respondents` WHERE `event_id`=" . $db->quote($eventId) . " AND `email`=" .$db->quote($email);
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
 }
 

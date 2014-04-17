@@ -155,8 +155,8 @@ if (count($this->rows) > 0) {
 					$event_up->month = sprintf( "%02d", $event_up->month);
 					$event_up->year  = sprintf( "%4d",  $event_up->year);*/
 
-					$checkprint = new EventsRepeat($row, $rows['week']['year'], $rows['week']['month'], $rows['week']['day']);
-					if ($checkprint->viewable == true) {
+					//$checkprint = new EventsRepeat($row, $rows['week']['year'], $rows['week']['month'], $rows['week']['day']);
+					//if ($checkprint->viewable == true) {
 						$view = new JView( array('name'=>'browse','layout'=>'item') );
 						$view->option = $this->option;
 						$view->task = $this->task;
@@ -171,7 +171,7 @@ if (count($this->rows) > 0) {
 						$e[] = $view->loadTemplate();
 						//$e[] = EventsHtml::eventRow($row, $event_up, $this->option, $this->fields, $categories, 0);
 						$countprint++;
-					}
+					//}
 				}
 				if ($countprint == 0) {
 					echo '<p>'.JText::_('EVENTS_CAL_LANG_NO_EVENTS').'</p>'."\n";

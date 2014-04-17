@@ -170,6 +170,13 @@ class EventsEvent extends JTable
 	var $time_zone        = NULL;
 
 	/**
+	 * varchar(5)
+	 * 
+	 * @var string
+	 */
+	var $repeating_rule   = NULL;
+
+	/**
 	 * datetime(0000-00-00 00:00:00)
 	 * 
 	 * @var string
