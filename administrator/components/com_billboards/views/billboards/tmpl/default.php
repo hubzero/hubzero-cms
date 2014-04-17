@@ -35,25 +35,28 @@ JHTML::_('behavior.tooltip');
 // Menu
 JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . JText::_('BILLBOARDS'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '200', '500');
+JToolBarHelper::spacer();
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
+JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
+JToolBarHelper::spacer();
 JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'delete');
 
 $juser = JFactory::getUser();
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th><?php echo JText::_('BILLBOARD_ID'); ?></th>
-				<th><?php echo JText::_('BILLBOARD_NAME'); ?></th>
-				<th><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?></th>
-				<th style="text-align:center;"><?php echo JText::_('BILLBOARD_ORDERING') . JHTML::_('grid.order', $this->rows); ?></th>
-				<th><?php echo JText::_('PUBLISHED'); ?></th>
+				<th scope="col"><?php echo JText::_('BILLBOARD_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('BILLBOARD_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('BILLBOARD_ORDERING') . JHTML::_('grid.order', $this->rows); ?></th>
+				<th scope="col"><?php echo JText::_('PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -87,23 +90,32 @@ $juser = JFactory::getUser();
 		}
 
 		$task  = $row->published ? 'unpublish' : 'publish';
-		$class = $row->published ? 'published' : 'unpublished';
+		$class = $row->published ? 'publish' : 'unpublish';
 		$alt   = $row->published ? JText::_('PUBLISHED') : JText::_('UNPUBLISHED');
 ?>
-
 			<tr class="<?php echo "row$k"; ?>">
-				<td><?php echo $checked; ?></td>
-				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;cid[]=<? echo $row->id; ?>" title="Edit this slide"><?php echo $row->name; ?></a></td>
-				<td><?php echo $row->bcollection; ?></td>
+				<td>
+					<?php echo $checked; ?>
+				</td>
+				<td>
+					<?php echo $row->id; ?>
+				</td>
+				<td>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;cid[]=<? echo $row->id; ?>" title="Edit this slide"><?php echo $row->name; ?></a>
+				</td>
+				<td>
+					<?php echo $row->bcollection; ?>
+				</td>
 				<td class="order">
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
 				</td>
-				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><span><?php echo $alt; ?></span></a></td>
+				<td>
+					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+						<span><?php echo $alt; ?></span>
+					</a>
+				</td>
 			</tr>
-
 <?php $k = 1 - $k; } ?>
-
 		</tbody>
 	</table>
 
