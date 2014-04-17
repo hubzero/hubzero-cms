@@ -55,7 +55,9 @@ if($this->docs) {
 				$mt = new \Hubzero\Content\Mimetypes();
 				
 				$mimetype 	= $mt->getMimeType($child->path);
-				$type 		= strtolower(array_shift(explode('/', $mimetype)));
+				$parts		= explode('/', $mimetype);
+				$type 		= array_shift($parts);
+				$type 		= strtolower($type);
 				
 				// Some files can be viewed inline
 				if ($type == 'image' || $type == 'video' || $type == 'audio') 
@@ -75,7 +77,9 @@ if($this->docs) {
 		$serveas = $params->get('serveas', $default_type);
 		
 		// Get ext
-		$ext = strtolower(array_pop(explode('.', $child->path)));
+		$parts  = explode('.', $child->path);
+		$ext 	= array_pop($parts);
+		$ext	= strtolower($ext);
 		
 		// Get size
 		$fpath = $this->path . DS . $child->path;
