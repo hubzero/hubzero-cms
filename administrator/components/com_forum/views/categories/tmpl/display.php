@@ -31,19 +31,23 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = ForumHelper::getActions('category');
 
 JToolBarHelper::title(JText::_('Forums') . ': ' . JText::_('Categories'), 'forum.png');
-if ($canDo->get('core.admin')) {
+if ($canDo->get('core.admin')) 
+{
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) {
+if ($canDo->get('core.edit.state')) 
+{
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) {
+if ($canDo->get('core.create')) 
+{
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) {
+if ($canDo->get('core.delete')) 
+{
 	JToolBarHelper::deleteList();
 }
 ?>
@@ -204,20 +208,17 @@ if ($this->results)
 		{
 			case '2':
 				$task = 'publish';
-				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
 				$cls = 'trash';
 			break;
 			case '1':
 				$task = 'unpublish';
-				$img = 'publish_g.png';
 				$alt = JText::_('Published');
 				$cls = 'publish';
 			break;
 			case '0':
 			default:
 				$task = 'publish';
-				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
 				$cls = 'unpublish';
 			break;
@@ -260,26 +261,26 @@ if ($this->results)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
@@ -287,33 +288,33 @@ if ($this->results)
 					<!-- </a> -->
 				</td>
 				<td>
-<?php //if ($this->escape($row->group_alias)) { ?>
+				<?php //if ($this->escape($row->group_alias)) { ?>
 					<span class="scope">
 						<span><?php echo isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope) . ' (' . $this->escape($row->scope_id) . ')'; ?></span>
 					</span>
-<?php //} ?>
+				<?php //} ?>
 				</td>
 				<td>
-<?php if ($row->threads > 0) { ?>
+				<?php if ($row->threads > 0) { ?>
 					<a class="glyph thread" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('View the threads for this category'); ?>">
 						<span><?php echo $row->threads; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="glyph thread">
 						<span><?php echo $row->threads; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($row->posts > 0) { ?>
+				<?php if ($row->posts > 0) { ?>
 					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('View the posts for this category'); ?>">
 						<span><?php echo $row->posts; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="glyph comment">
 						<span><?php echo $row->posts; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -330,6 +331,6 @@ if ($this->results)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

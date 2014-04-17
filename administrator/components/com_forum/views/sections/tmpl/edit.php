@@ -73,78 +73,78 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td><input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-scope]"><?php echo JText::_('Scope'); ?>:</label></td>
-						<td><input type="text" name="fields[scope]" id="field-scope]" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('State'); ?>:</td>
-						<td>
-							<select name="fields[state]">
-								<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('Access'); ?>:</td>
-						<td>
-							<select name="fields[access]">
-								<option value="0"<?php echo ($this->row->get('access') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-								<option value="1"<?php echo ($this->row->get('access') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Registered'); ?></option>
-								<option value="2"<?php echo ($this->row->get('access') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Special'); ?></option>
-								<option value="3"<?php echo ($this->row->get('access') == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
-								<option value="4"<?php echo ($this->row->get('access') == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-scope"><?php echo JText::_('Scope'); ?>:</label><br />
+					<input type="text" name="fields[scope]" id="field-scope" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label><br />
+					<input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('Alpha-numeric characters, underscores, and dashes. If none provided, one will generated from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<td>
+						<?php echo $this->escape($this->row->creator('name')); ?>
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Creator'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('created'); ?>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
 		<fieldset class="adminform">
-			<table class="meta" summary="<?php echo JText::_('Metadata for this forum section'); ?>">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
-						<td>
-							<?php echo $this->escape($this->row->creator('name')); ?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
-						<td>
-							<?php echo $this->row->get('created'); ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
-						</td>
-					</tr>
-					
-				</tbody>
-			</table>
+			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-access"><?php echo JText::_('Access'); ?>:</label><br />
+				<select name="fields[access]" id="field-access">
+					<option value="0"<?php echo ($this->row->get('access') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
+					<option value="1"<?php echo ($this->row->get('access') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Registered'); ?></option>
+					<option value="2"<?php echo ($this->row->get('access') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Special'); ?></option>
+					<option value="3"<?php echo ($this->row->get('access') == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
+					<option value="4"<?php echo ($this->row->get('access') == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
 
-<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
 	<?php if ($canDo->get('core.admin')): ?>
 		<div class="col width-100 fltlft">
 			<fieldset class="panelform">
@@ -155,12 +155,11 @@ function submitbutton(pressbutton)
 		</div>
 		<div class="clr"></div>
 	<?php endif; ?>
-<?php } ?>
-	
+
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

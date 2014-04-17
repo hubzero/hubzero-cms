@@ -31,19 +31,23 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = ForumHelper::getActions('section');
 
 JToolBarHelper::title(JText::_('Forums'), 'forum.png');
-if ($canDo->get('core.admin')) {
+if ($canDo->get('core.admin')) 
+{
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) {
+if ($canDo->get('core.edit.state')) 
+{
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) {
+if ($canDo->get('core.create')) 
+{
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) {
+if ($canDo->get('core.delete')) 
+{
 	JToolBarHelper::deleteList();
 }
 ?>
@@ -134,20 +138,17 @@ if ($this->results)
 		{
 			case '2':
 				$task = 'publish';
-				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
 				$cls = 'trash';
 			break;
 			case '1':
 				$task = 'unpublish';
-				$img = 'publish_g.png';
 				$alt = JText::_('Published');
 				$cls = 'publish';
 			break;
 			case '0':
 			default:
 				$task = 'publish';
-				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
 				$cls = 'unpublish';
 			break;

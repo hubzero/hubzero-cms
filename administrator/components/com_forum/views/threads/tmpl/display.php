@@ -68,26 +68,15 @@ function submitbutton(pressbutton) {
 		<label for="field-category_id"><?php echo JText::_('Category:'); ?></label> 
 		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
 			<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
-<?php
-	foreach ($this->sections as $scope => $sections)
-	{
-?>
+		<?php foreach ($this->sections as $scope => $sections) { ?>
 			<optgroup label="<?php echo $this->escape(stripslashes($scope)); ?>">
-<?php
-			foreach ($sections as $section)
-			{
-?>
+			<?php foreach ($sections as $section) { ?>
 				<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
-<?php
-				foreach ($section->categories as $category)
-				{
-?>
+				<?php foreach ($section->categories as $category) { ?>
 					<option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
-<?php
-				}
-?>
+				<?php } ?>
 				</optgroup>
-<?php
+			<?php
 				if (!isset($list[$section->scope]))
 				{
 					$list[$section->scope] = array();
@@ -97,11 +86,9 @@ function submitbutton(pressbutton) {
 					$list[$section->scope][$section->scope_id] = $scope;
 				}
 			}
-?>
+			?>
 			</optgroup>
-<?php
-	}
-?>
+		<?php } ?>
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -111,7 +98,7 @@ function submitbutton(pressbutton) {
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Sticky', 'sticky', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Access', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -137,20 +124,17 @@ if ($this->results)
 		{
 			case 2:
 				$task = 'publish';
-				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
 				$cls = 'trash';
 			break;
 			case 1:
 				$task = 'unpublish';
-				$img = 'publish_g.png';
 				$alt = JText::_('Published');
 				$cls = 'publish';
 			break;
 			case 0:
 			default:
 				$task = 'publish';
-				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
 				$cls = 'unpublish';
 			break;
@@ -160,7 +144,6 @@ if ($this->results)
 		{
 			case '1':
 				$stickyTask = '0';
-				$stickyImg = 'publish_g.png';
 				$stickyAlt = JText::_('Sticky');
 				$stickyTitle = JText::_('not sticky');
 				$scls = 'publish';
@@ -168,7 +151,6 @@ if ($this->results)
 			case '0':
 			default:
 				$stickyTask = '1';
-				$stickyImg = 'publish_x.png';
 				$stickyAlt = JText::_('Not sticky');
 				$stickyTitle = JText::_('sticky');
 				$scls = 'unpublish';
@@ -217,26 +199,26 @@ if ($this->results)
 					</a>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
 						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $scls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $stickyTitle;?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
+						<span><?php echo $stickyAlt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $scls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
+						<span><?php echo $stickyAlt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
@@ -275,6 +257,6 @@ if ($this->results)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

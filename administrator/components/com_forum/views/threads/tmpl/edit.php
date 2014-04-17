@@ -74,108 +74,83 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-<?php if (!$this->row->parent) { ?>
-					<tr>
-						<td class="key"><label for="field-section_id"><?php echo JText::_('COM_FORUM_FIELD_SECTION'); ?>:</label></td>
-						<td>
-							<select name="fields[category_id]" id="field-category_id">
-								<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
-					<?php
-						foreach ($this->sections as $group => $sections)
-						{
-					?>
-								<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
-					<?php
-								foreach ($sections as $section)
-								{
-					?>
-									<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
-					<?php
-									foreach ($section->categories as $category)
-									{
-					?>
-										<option value="<?php echo $category->id; ?>"<?php if ($this->row->category_id == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
-					<?php
-									}
-					?>
-									</optgroup>
-					<?php
-								}
-					?>
-								</optgroup>
-					<?php
-						}
-					?>
-							</select>
-						</td>
-					</tr>
-<?php } ?>
-<?php if ($this->row->parent) { ?>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('COM_FORUM_FIELD_PARENT'); ?>:</label></td>
-						<td>
-							<select name="fields[parent]" id="field-parent">
-								<option value="0"><?php echo JText::_('COM_FORUM_FIELD_PARENT_SELECT'); ?></option>
-					<?php
-						foreach ($this->threads as $thread)
-						{
-					?>
-								<option value="<?php echo $thread->id; ?>"<?php if ($this->row->parent == $thread->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($thread->title)); ?></option>
-					<?php
-						}
-					?>
-							</select>
-						</td>
-					</tr>
-<?php } ?>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('COM_FORUM_FIELD_TITLE'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-comment"><?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?></label></td>
-						<td><textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape($post->content('raw')); ?></textarea></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-anonymous"><?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?></label></td>
-						<td><input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->anonymous) { echo ' checked="checked"'; } ?> /></td>
-					</tr>
-<?php if (!$this->row->parent) { ?>
-					<tr>
-						<td class="key"><label for="field-sticky"><?php echo JText::_('COM_FORUM_FIELD_STICKY'); ?></label></td>
-						<td><input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->row->sticky) { echo ' checked="checked"'; } ?> /></td>
-					</tr>
-<?php } ?>
-				</tbody>
-			</table>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-scope"><?php echo JText::_('Scope'); ?>:</label><br />
+					<input type="text" name="fields[scope]" id="field-scope" size="35" maxlength="150" value="<?php echo $this->escape($this->row->scope); ?>" />
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label><br />
+					<input type="text" name="fields[scope_id]" id="field-scope_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->scope_id); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
+
+			<div class="input-wrap">
+				<label for="field-object_id"><?php echo JText::_('Object ID'); ?>:</label><br />
+				<input type="text" name="fields[object_id]" id="field-object_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->object_id); ?>" />
+			</div>
+
+		<?php if (!$this->row->parent) { ?>
+			<div class="input-wrap">
+				<label for="field-section_id"><?php echo JText::_('COM_FORUM_FIELD_SECTION'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<select name="fields[category_id]" id="field-category_id">
+					<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
+			<?php foreach ($this->sections as $group => $sections) { ?>
+					<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
+					<?php foreach ($sections as $section) { ?>
+						<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
+						<?php foreach ($section->categories as $category) { ?>
+							<option value="<?php echo $category->id; ?>"<?php if ($this->row->category_id == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
+						<?php } ?>
+						</optgroup>
+					<?php } ?>
+					</optgroup>
+			<?php } ?>
+				</select>
+			</div>
+		<?php } ?>
+
+		<?php if ($this->row->parent) { ?>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_FORUM_FIELD_PARENT'); ?>:</label><br />
+				<select name="fields[parent]" id="field-parent">
+					<option value="0"><?php echo JText::_('COM_FORUM_FIELD_PARENT_SELECT'); ?></option>
+				<?php foreach ($this->threads as $thread) { ?>
+					<option value="<?php echo $thread->id; ?>"<?php if ($this->row->parent == $thread->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($thread->title)); ?></option>
+				<?php } ?>
+				</select>
+			</div>
+		<?php } ?>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_FORUM_FIELD_TITLE'); ?>:</label><br />
+				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-comment"><?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape($post->content('raw')); ?></textarea>
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_FORUM_LEGEND_ATTACHMENTS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label for="upload">
-								<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?> <?php if ($post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($post->attachment()->get('filename'))) . '</strong>'; } ?><br />
-								<input type="file" name="upload" id="upload" />
-							</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="field-attach-descritpion">
-								<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?><br />
-								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($post->attachment()->get('description'))); ?>" />
-							</label>
-							<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($post->attachment()->get('id'))); ?>" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="upload"><?php echo JText::_('COM_FORUM_FIELD_FILE'); ?> <?php if ($post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($post->attachment()->get('filename'))) . '</strong>'; } ?></label><br />
+				<input type="file" name="upload" id="upload" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-attach-descritpion"><?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?></label><br />
+				<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($post->attachment()->get('description'))); ?>" />
+				<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($post->attachment()->get('id'))); ?>" />
+			</div>
+
 			<?php if ($post->attachment()->exists()) { ?>
 				<p class="warning">
 					<?php echo JText::_('COM_FORUM_FIELD_FILE_WARNING'); ?>
@@ -184,95 +159,85 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<fieldset class="adminform">
-			<table class="meta" summary="<?php echo JText::_('Metadata for this forum post'); ?>">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
-						<td>
-							<?php 
-							$editor = JUser::getInstance($this->row->created_by);
-							echo $this->escape($editor->get('name')); 
-							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
-						<td>
-							<?php echo $this->row->created; ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
-						</td>
-					</tr>
-<?php if ($this->row->modified_by) { ?>
-					<tr>
-						<th class="key"><?php echo JText::_('Modified By'); ?>:</th>
-						<td>
-							<?php 
-							$modifier = JUser::getInstance($this->row->modified_by);
-							echo $this->escape($modifier->get('name')); 
-							?>
-							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->modified_by; ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Modified Date'); ?>:</th>
-						<td>
-							<?php echo $this->row->modified; ?>
-							<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->modified; ?>" />
-						</td>
-					</tr>
-<?php } ?>
-				</tbody>
-			</table>
-		</fieldset>
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('Creator'); ?>:</th>
+					<td>
+						<?php 
+						$editor = JUser::getInstance($this->row->created_by);
+						echo $this->escape($editor->get('name')); 
+						?>
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<td>
+						<?php echo $this->row->created; ?>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+					</td>
+				</tr>
+			<?php if ($this->row->modified_by) { ?>
+				<tr>
+					<th class="key"><?php echo JText::_('Modifier'); ?>:</th>
+					<td>
+						<?php 
+						$modifier = JUser::getInstance($this->row->modified_by);
+						echo $this->escape($modifier->get('name')); 
+						?>
+						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->modified_by; ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Modified'); ?>:</th>
+					<td>
+						<?php echo $this->row->modified; ?>
+						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->modified; ?>" />
+					</td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Parameters'); ?></span></legend>
+			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><?php echo JText::_('State'); ?>:</td>
-						<td>
-							<select name="fields[state]">
-								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('Access'); ?>:</td>
-						<td>
-							<select name="fields[access]">
-								<option value="0"<?php echo ($this->row->access == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-								<option value="1"<?php echo ($this->row->access == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Registered'); ?></option>
-								<option value="2"<?php echo ($this->row->access == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Special'); ?></option>
-								<option value="3"<?php echo ($this->row->access == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
-								<option value="4"<?php echo ($this->row->access == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-scope"><?php echo JText::_('Scope'); ?>:</label></td>
-						<td><input type="text" name="fields[scope]" id="field-scope" size="35" maxlength="150" value="<?php echo $this->escape($this->row->scope); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label></td>
-						<td><input type="text" name="fields[scope_id]" id="field-scope_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->scope_id); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-object_id"><?php echo JText::_('Object ID'); ?>:</label></td>
-						<td><input type="text" name="fields[object_id]" id="field-object_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->object_id); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->anonymous) { echo ' checked="checked"'; } ?> />
+				<label for="field-anonymous"><?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?></label>
+			</div>
+
+			<?php if (!$this->row->parent) { ?>
+				<div class="input-wrap">
+					<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->row->sticky) { echo ' checked="checked"'; } ?> />
+					<label for="field-sticky"><?php echo JText::_('COM_FORUM_FIELD_STICKY'); ?></label>
+				</div>
+			<?php } ?>
+
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-access"><?php echo JText::_('Access'); ?>:</label><br />
+				<select name="fields[access]" id="field-access">
+					<option value="0"<?php echo ($this->row->access == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
+					<option value="1"<?php echo ($this->row->access == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Registered'); ?></option>
+					<option value="2"<?php echo ($this->row->access == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Special'); ?></option>
+					<option value="3"<?php echo ($this->row->access == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
+					<option value="4"<?php echo ($this->row->access == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
 
-<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
 	<?php if ($canDo->get('core.admin')): ?>
 		<div class="col width-100 fltlft">
 			<fieldset class="panelform">
@@ -283,7 +248,6 @@ function submitbutton(pressbutton)
 		</div>
 		<div class="clr"></div>
 	<?php endif; ?>
-<?php } ?>
 
 	<?php if ($this->row->parent) { ?>
 		<input type="hidden" name="fields[category_id]" value="<?php echo $this->row->category_id; ?>" />
@@ -296,6 +260,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

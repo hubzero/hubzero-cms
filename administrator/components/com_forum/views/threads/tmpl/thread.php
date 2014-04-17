@@ -68,32 +68,17 @@ function submitbutton(pressbutton) {
 		<label><?php echo JText::_('Category:'); ?></label> 
 		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
 			<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
-<?php
-	foreach ($this->sections as $group => $sections)
-	{
-?>
+		<?php foreach ($this->sections as $group => $sections) { ?>
 			<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
-<?php
-			foreach ($sections as $section)
-			{
-?>
+			<?php foreach ($sections as $section) { ?>
 				<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
-<?php
-				foreach ($section->categories as $category)
-				{
-?>
+				<?php foreach ($section->categories as $category) { ?>
 					<option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
-<?php
-				}
-?>
+				<?php } ?>
 				</optgroup>
-<?php
-			}
-?>
+			<?php } ?>
 			</optgroup>
-<?php
-	}
-?>
+		<?php } ?>
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -106,7 +91,7 @@ function submitbutton(pressbutton) {
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
 				<th><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Scope', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Creator', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -130,20 +115,17 @@ if ($this->results)
 		{
 			case '2':
 				$task = 'publish';
-				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
 				$cls = 'trash';
 			break;
 			case '1':
 				$task = 'unpublish';
-				$img = 'publish_g.png';
 				$alt = JText::_('Published');
 				$cls = 'publish';
 			break;
 			case '0':
 			default:
 				$task = 'publish';
-				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
 				$cls = 'unpublish';
 			break;
@@ -162,15 +144,15 @@ if ($this->results)
 					</a>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<span class="scope">
