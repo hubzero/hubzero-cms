@@ -159,7 +159,7 @@ if ($this->fromfeed != TRUE)
 ?>
 <?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
 <p>There are no posts here.</p>
-<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retreive New Posts'); ?></a>
+<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retrieve New Posts'); ?></a>
 <?php else: ?>
 <p>You need to review some new posts before you can see anything here!</p>	
 <a href="<?php echo JRoute::_('index.php?&filterby=new'); ?>"><?php echo JText::_('View New Posts'); ?></a>
