@@ -29,8 +29,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 $text = ($this->task == 'editcollection' ? JText::_('BILLBOARDS_COLLECTION_EDIT') : JText::_('BILLBOARDS_COLLECTION_NEW'));
-JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+
+JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
 JToolBarHelper::save('savecollection');
 JToolBarHelper::cancel('cancelcollection');
 
@@ -54,16 +56,14 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="name"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?>:</label></td>
-					<td><input type="text" name="collection[name]" id="name" value="<?php echo htmlentities(stripslashes($this->row->name), ENT_QUOTES); ?>" size="50" /></td>
-				</tr>
-			</tbody>
-		</table>
+		<legend><span><?php echo JText::_('Details'); ?></span></legend>
+
+		<div class="input-wrap">
+			<label for="name"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+			<input type="text" name="collection[name]" id="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
+		</div>
 	</fieldset>
 	<input type="hidden" name="collection[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

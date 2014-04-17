@@ -31,9 +31,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Add the toolbar items
-JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': <small><small>[ ' . JText::_('BILLBOARDS_COLLECTIONS') . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . JText::_('BILLBOARDS_COLLECTIONS'), 'addedit.png');
 JToolBarHelper::addNew('newcollection');
 JToolBarHelper::editList('editcollection');
+JToolBarHelper::spacer();
 JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'deletecollection');
 ?>
 
@@ -55,8 +56,9 @@ JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'deletecollect
 
 <?php
 	$k = 0;
-	for ($i=0, $n=count($this->rows); $i < $n; $i++) {
-	$row =& $this->rows[$i];
+	for ($i=0, $n=count($this->rows); $i < $n; $i++) 
+	{
+		$row =& $this->rows[$i];
 ?>
 
 			<tr>
@@ -65,7 +67,10 @@ JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'deletecollect
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editcollection&amp;id[]=<? echo $row->id; ?>"><?php echo stripslashes($row->name); ?></a></td>
 			</tr>
 
-<?php $k = 1 - $k; } ?>
+<?php 
+		$k = 1 - $k;
+	}
+?>
 
 		</tbody>
 	</table>
