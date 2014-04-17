@@ -202,45 +202,41 @@ jQuery(document).ready(function($){
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-event"><?php echo JText::_('Event'); ?>:</label></td>
-						<td>
-							<select name="fields[event]" id="field-event">
-								<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Select...'); ?></option>
-<?php
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-event"><?php echo JText::_('Event'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<select name="fields[event]" id="field-event">
+					<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Select...'); ?></option>
+					<?php
 						if ($this->plugins)
 						{
 							foreach ($this->plugins as $plugin)
 							{
-?>
+								?>
 								<optgroup label="<?php echo $this->escape($plugin->name); ?>">
-<?php
+								<?php
 								if ($plugin->events)
 								{
 									foreach ($plugin->events as $event)
 									{
-?>
+									?>
 									<option value="<?php echo $plugin->element; ?>::<?php echo $event['name']; ?>"<?php if ($this->row->get('event') == $event['name']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($event['label']); ?></option>
-<?php
+									<?php
 									}
 								}
-?>
+								?>
 								</optgroup>
-<?php
+								<?php
 							}
 						}
-?>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+						?>
+				</select>
+			</div>
 		</fieldset>
 
 		<?php
@@ -284,7 +280,7 @@ jQuery(document).ready(function($){
 							}
 							?>
 							<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
-								<legend><?php echo JText::_('Parameters'); ?></legend>
+								<legend><span><?php echo JText::_('Parameters'); ?></span></legend>
 								<?php echo $out; ?>
 							</fieldset>
 							<?php
@@ -296,23 +292,21 @@ jQuery(document).ready(function($){
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Recurrence'); ?></span></legend>
+
+			<div class="input-wrap">
+				<?php echo JText::_('Common'); ?>:<br />
+				<select name="fields[recurrence]" id="field-recurrence">
+					<option value=""<?php echo ($this->row->get('recurrence') == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Select...'); ?></option>
+					<option value="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Custom'); ?></option>
+					<option value="0 0 1 1 *"<?php echo ($this->row->get('recurrence') == '0 0 1 1 *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a year, midnight, Jan. 1st'); ?></option>
+					<option value="0 0 1 * *"<?php echo ($this->row->get('recurrence') == '0 0 1 * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a month, midnight, first of month'); ?></option>
+					<option value="0 0 * * 0"<?php echo ($this->row->get('recurrence') == '0 0 * * 0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a week, midnight on Sunday'); ?></option>
+					<option value="0 0 * * *"<?php echo ($this->row->get('recurrence') == '0 0 * * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a day, midnight'); ?></option>
+					<option value="0 * * * *"<?php echo ($this->row->get('recurrence') == '0 * * * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once an hour, beginning of hour'); ?></option>
+				</select>
+			</div>
+
 			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><?php echo JText::_('Common'); ?>:</td>
-						<td colspan="2">
-							<select name="fields[recurrence]" id="field-recurrence">
-								<option value=""<?php echo ($this->row->get('recurrence') == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Select...'); ?></option>
-								<option value="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Custom'); ?></option>
-								<option value="0 0 1 1 *"<?php echo ($this->row->get('recurrence') == '0 0 1 1 *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a year, midnight, Jan. 1st'); ?></option>
-								<option value="0 0 1 * *"<?php echo ($this->row->get('recurrence') == '0 0 1 * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a month, midnight, first of month'); ?></option>
-								<option value="0 0 * * 0"<?php echo ($this->row->get('recurrence') == '0 0 * * 0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a week, midnight on Sunday'); ?></option>
-								<option value="0 0 * * *"<?php echo ($this->row->get('recurrence') == '0 0 * * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once a day, midnight'); ?></option>
-								<option value="0 * * * *"<?php echo ($this->row->get('recurrence') == '0 * * * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Run once an hour, beginning of hour'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
 				<tbody id="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? '' : ' class="hide"'; ?>>
 					<tr>
 						<td class="key"><label for="field-minute-c"><?php echo JText::_('Minute'); ?></label>:</td>
@@ -433,116 +427,91 @@ jQuery(document).ready(function($){
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<fieldset class="adminform">
-			<table class="meta" summary="<?php echo JText::_('Metadata for this cron job'); ?>">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('ID'); ?>:</th>
-						<td>
-							<?php echo $this->escape($this->row->get('id')); ?>
-							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
-						<td>
-							<?php 
-							$editor = JUser::getInstance($this->row->get('created_by'));
-							echo $this->escape($editor->get('name')); 
-							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
-						<td>
-							<?php echo $this->escape($this->row->get('created')); ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
-						</td>
-					</tr>
-<?php if ($this->row->get('modified')) { ?>
-					<tr>
-						<th class="key"><?php echo JText::_('Modified By'); ?>:</th>
-						<td>
-							<?php 
-							$modifier = JUser::getInstance($this->row->get('modified_by'));
-							echo $this->escape($modifier->get('name')); 
-							?>
-							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Modified Date'); ?>:</th>
-						<td>
-							<?php echo $this->escape($this->row->get('modified')); ?>
-							<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->row->get('modified')); ?>" />
-						</td>
-					</tr>
-<?php } ?>
-<?php if ($this->row->get('id')) { ?>
-					<tr>
-						<th class="key"><?php echo JText::_('Last Run'); ?>:</th>
-						<td>
-							<?php echo $this->escape($this->row->get('last_run')); ?>
-							<input type="hidden" name="fields[last_run]" id="field-last_run" value="<?php echo $this->escape($this->row->get('last_run')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Next Run'); ?>:</th>
-						<td>
-							<?php echo $this->escape($this->row->get('next_run')); ?>
-							<input type="hidden" name="fields[next_run]" id="field-next_run" value="<?php echo $this->escape($this->row->get('next_run')); ?>" />
-						</td>
-					</tr>
-<?php } ?>
-				</tbody>
-			</table>
-		</fieldset>
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<td>
+						<?php echo $this->escape($this->row->get('id')); ?>
+						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Created By'); ?>:</th>
+					<td>
+						<?php 
+						$editor = JUser::getInstance($this->row->get('created_by'));
+						echo $this->escape($editor->get('name')); 
+						?>
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
+					<td>
+						<?php echo $this->escape($this->row->get('created')); ?>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+					</td>
+				</tr>
+			<?php if ($this->row->get('modified')) { ?>
+				<tr>
+					<th class="key"><?php echo JText::_('Modified By'); ?>:</th>
+					<td>
+						<?php 
+						$modifier = JUser::getInstance($this->row->get('modified_by'));
+						echo $this->escape($modifier->get('name')); 
+						?>
+						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Modified Date'); ?>:</th>
+					<td>
+						<?php echo $this->escape($this->row->get('modified')); ?>
+						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->row->get('modified')); ?>" />
+					</td>
+				</tr>
+			<?php } ?>
+			<?php if ($this->row->get('id')) { ?>
+				<tr>
+					<th class="key"><?php echo JText::_('Last Run'); ?>:</th>
+					<td>
+						<?php echo $this->escape($this->row->get('last_run')); ?>
+						<input type="hidden" name="fields[last_run]" id="field-last_run" value="<?php echo $this->escape($this->row->get('last_run')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('Next Run'); ?>:</th>
+					<td>
+						<?php echo $this->escape($this->row->get('next_run')); ?>
+						<input type="hidden" name="fields[next_run]" id="field-next_run" value="<?php echo $this->escape($this->row->get('next_run')); ?>" />
+					</td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><label for="field-state"><?php echo JText::_('State'); ?>:</label></th>
-						<td>
-							<select name="fields[state]" id="field-state">
-								<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-publish_up"><?php echo JText::_('Start running'); ?>:</label></th>
-						<td>
-							<input type="text" name="fields[publish_up]" id="field-publish_up" class="datetime-field" value="<?php echo $this->escape(($this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-publish_down"><?php echo JText::_('Stop running'); ?>:</label></th>
-						<td>
-							<input type="text" name="fields[publish_down]" id="field-publish_down" class="datetime-field" value="<?php echo $this->escape(($this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))); ?>" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<script type="text/javascript">
-				jQuery(document).ready(function($){
-					$('.datetime-field').datetimepicker({  
-						duration: '',
-						showTime: true,
-						constrainInput: false,
-						stepMinutes: 1,
-						stepHours: 1,
-						altTimeField: '',
-						time24h: true,
-						dateFormat: 'yy-mm-dd',
-						timeFormat: 'HH:mm:00'
-					});
-				});
-			</script>
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-publish_up"><?php echo JText::_('Start running'); ?>:</label><br />
+				<?php echo JHTML::_('calendar', $this->escape(($this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))), 'fields[publish_up]', 'field-publish_up'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-publish_down"><?php echo JText::_('Stop running'); ?>:</label><br />
+				<?php echo JHTML::_('calendar', $this->escape(($this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), 'fields[publish_down]', 'field-publish_down'); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
@@ -559,10 +528,10 @@ jQuery(document).ready(function($){
 		<div class="clr"></div>
 	<?php endif; ?>
 <?php }*/ ?>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

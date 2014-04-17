@@ -31,21 +31,25 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CronHelper::getActions('component');
 
 JToolBarHelper::title(JText::_('Cron'), 'cron.png');
-if ($canDo->get('core.admin')) {
+if ($canDo->get('core.admin')) 
+{
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::custom('run', 'purge', '', JText::_('Run'), false);
 JToolBarHelper::spacer();
-if ($canDo->get('core.edit.state')) {
+if ($canDo->get('core.edit.state')) 
+{
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) {
+if ($canDo->get('core.create')) 
+{
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) {
+if ($canDo->get('core.delete')) 
+{
 	JToolBarHelper::deleteList();
 }
 ?>
@@ -97,35 +101,30 @@ if ($this->results)
 		{
 			case '2': // Deleted
 				$task = 'publish';
-				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
 				$cls = 'trash';
 			break;
 			case '1': // Published
 				$task = 'unpublish';
-				$img = 'publish_g.png';
 				$alt = JText::_('Published');
 				$cls = 'publish';
 			break;
 			case '0': // Unpublished
 			default:
 				$task = 'publish';
-				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
 				$cls = 'unpublish';
 			break;
 		}
-		
+
 		switch ($row->get('active')) 
 		{
 			case '1': // Published
-				$img2 = 'publish_g.png';
 				$alt2 = JText::_('Active');
 				$cls2 = 'publish';
 			break;
 			case '0': // Unpublished
 			default:
-				$img2 = 'publish_x.png';
 				$alt2 = JText::_('Inactive');
 				$cls2 = 'unpublish';
 			break;
@@ -139,26 +138,26 @@ if ($this->results)
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<span class="datetime">
@@ -172,7 +171,7 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="state <?php echo $cls2; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img2;?>" width="16" height="16" border="0" alt="<?php echo $alt2; ?>" /><?php } else { echo $alt2; } ?></span>
+						<span><?php echo $alt2; ?></span>
 					</span>
 				</td>
 				<td>
