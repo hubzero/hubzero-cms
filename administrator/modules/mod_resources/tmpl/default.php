@@ -30,37 +30,103 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-?>
-<table class="resources-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Draft (internal)'); ?></th>
-			<th scope="col"><?php echo JText::_('Draft (user)'); ?></th>
-			<th scope="col"><?php echo JText::_('Pending'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="draft-internal"><a href="index.php?option=com_resources&amp;c=resources&amp;status=5" title="<?php echo JText::_('View draft (internal) resources'); ?>"><?php echo $this->escape($this->draftInternal); ?></a></td>
-			<td class="draft-user"><a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('View draft (user) resources'); ?>"><?php echo $this->escape($this->draftUser); ?></a></td>
-			<td class="pending"><a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('View pending resources'); ?>"><?php echo $this->escape($this->pending); ?></a></td>
-		</tr>
-	</tbody>
-</table>
 
-<table class="resources-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Published'); ?></th>
-			<th scope="col"><?php echo JText::_('Unpublished'); ?></th>
-			<th scope="col"><?php echo JText::_('Removed'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="published"><a href="index.php?option=com_resources&amp;c=resources&amp;status=1" title="<?php echo JText::_('View published resources'); ?>"><?php echo $this->escape($this->published); ?></a></td>
-			<td class="unpublished"><a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('View unpublished resources'); ?>"><?php echo $this->escape($this->unpublished); ?></a></td>
-			<td class="removed"><a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('View removed resources'); ?>"><?php echo $this->escape($this->removed); ?></a></td>
-		</tr>
-	</tbody>
-</table>
+JHTML::_('behavior.chart', 'resize');
+JHTML::_('behavior.chart', 'pie');
+
+$total = $this->draftInternal + $this->draftUser + $this->pending + $this->published + $this->unpublished + $this->removed;
+$this->draft = $this->draftInternal + $this->draftUser;
+?>
+<div class="mod_resources">
+	<div class="overview-container">
+		<div id="resources-container<?php echo $this->module->id; ?>" style="min-width: 200px; height: 200px;"></div>
+
+		<script type="text/javascript">
+		if (jQuery()) {
+			var $ = jq,
+				resolutionPie;
+
+			$(document).ready(function() {
+				resolutionPie = $.plot($("#resources-container<?php echo $this->module->id; ?>"), [
+					{label: 'published', data: <?php echo round(($this->published / $total)*100, 2); ?>, color: '#656565'},
+					{label: 'draft', data: <?php echo round(($this->draft / $total)*100, 2); ?>, color: '#999'}, //#7c94c2
+					{label: 'pending', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '#f9d180'}, //#c67c6b
+					{label: 'removed', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '#ccc'}, //#d8aa65
+					{label: 'unpublished', data: <?php echo round(($this->unpublished / $total)*100, 2); ?>, color: '#eee'} //#5f9c63
+				], {
+					legend: { 
+						show: true
+					},
+					series: {
+						pie: { 
+							innerRadius: 0.5,
+							show: true,
+							stroke: {
+								color: '#efefef'
+							}
+						}
+					},
+					grid: {
+						hoverable: false
+					}
+				});
+			});
+		}
+		</script>
+
+		<p class="resources-total"><?php echo $total; ?></p>
+	<!-- 
+		<table class="resources-stats-overview">
+			<thead>
+				<tr>
+					<th scope="col"><?php echo JText::_('Draft (internal)'); ?></th>
+					<th scope="col"><?php echo JText::_('Draft (user)'); ?></th>
+					<th scope="col"><?php echo JText::_('Pending'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="draft-internal"><a href="index.php?option=com_resources&amp;c=resources&amp;status=5" title="<?php echo JText::_('View draft (internal) resources'); ?>"><?php echo $this->escape($this->draftInternal); ?></a></td>
+					<td class="draft-user"><a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('View draft (user) resources'); ?>"><?php echo $this->escape($this->draftUser); ?></a></td>
+					<td class="pending"><a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('View pending resources'); ?>"><?php echo $this->escape($this->pending); ?></a></td>
+				</tr>
+			</tbody>
+		</table>
+		-->
+	</div>
+	<div class="overview-container">
+		<table class="resources-stats-overview">
+			<tbody>
+				<tr>
+					<td>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=1" title="<?php echo JText::_('View published resources'); ?>"><?php echo $this->escape($this->published); ?></a>
+						<span><?php echo JText::_('Published'); ?></span>
+					</td>
+					<td class="pending-items">
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('View pending resources'); ?>"><?php echo $this->escape($this->pending); ?></a>
+						<span><?php echo JText::_('Pending'); ?></span>
+					</td>
+					<td>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('View draft resources'); ?>"><?php echo $this->escape($this->draft); ?></a>
+						<span><?php echo JText::_('Draft'); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table class="resources-stats-overview">
+			<tbody>
+				<tr>
+					<td>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('View unpublished resources'); ?>"><?php echo $this->escape($this->unpublished); ?></a>
+						<span><?php echo JText::_('Published'); ?></span>
+					</td>
+					<td class="pending-items">
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('View removed resources'); ?>"><?php echo $this->escape($this->removed); ?></a>
+						<span><?php echo JText::_('Pending'); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
