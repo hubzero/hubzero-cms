@@ -46,9 +46,10 @@ class WishlistController extends \Hubzero\Component\SiteController
 	 */
 	public function __construct($config=array())
 	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
+		$this->_redirect 	= NULL;
+		$this->_message 	= NULL;
 		$this->_messageType = 'message';
+		$this->banking 		= NULL;
 
 		// Set the controller name
 		if (empty($this->_name)) 
@@ -3270,7 +3271,7 @@ class WishlistController extends \Hubzero\Component\SiteController
 		} 
 		else 
 		{
-			$default = $this->banking ? 'bonus' : 'date';
+			$default = isset($this->banking) && $this->banking ? 'bonus' : 'date';
 			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
 		}
 
