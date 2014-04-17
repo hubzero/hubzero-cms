@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required"><?php echo JText::_('required'); ?></span</label><br />
+					<label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
 					<select name="fields[section]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
 					<?php foreach ($this->sections as $section) { ?>
 						<?php
