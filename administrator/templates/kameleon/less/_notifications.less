@@ -133,59 +133,29 @@
 		left: 0.71803399em;
 	}
 
-// [!] HACKS - IE 7 and older
-	.info,
-	#system-message dd.info { 
-		.ie7-fontcons-before("systemmessage", @iconInfo);
-	}
-	.warning,
-	#system-message dd.warning { 
-		.ie7-fontcons-before("systemmessage", @iconWarning);
-	}
-	.error,
-	#system-message dd.error { 
-		.ie7-fontcons-before("systemmessage", @iconError);
-	}
-	.message,
-	#system-message dd.message { 
-		.ie7-fontcons-before("systemmessage", @iconSuccess);
-	}
+#system-message-container {
+	display: none;
+}
 
-// [!] HACKS - Firefox 3.4 and older
-@-moz-document url-prefix() {
-	html.firefox3 .message:before,
-	html.firefox3 #system-message dd.message:before,
-	html.firefox3 .error:before,
-	html.firefox3 #system-message dd.error:before,
-	html.firefox3 .warning:before,
-	html.firefox3 #system-message dd.warning:before,
-	html.firefox3 .info:before,
-	html.firefox3 #system-message dd.info:before {
-		content: "";
-		display: none;
-	}
-	html.firefox3 .info,
-	html.firefox3 #system-message dd.info { 
-		background-image: url("@{pathSystemImg}/information.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-	html.firefox3 .warning,
-	html.firefox3 #system-message dd.warning { 
-		background-image: url("@{pathSystemImg}/warning.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-	html.firefox3 .error,
-	html.firefox3 #system-message dd.error { 
-		background-image: url("@{pathSystemImg}/error.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-	html.firefox3 .message,
-	html.firefox3 #system-message dd.message { 
-		background-image: url("@{pathSystemImg}/accept.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
+.growl {
+	position: fixed;
+	top: 30%;
+	right: 50%;
+	margin-right: -105px;
+	width: 211px;
+	text-align: center;
+
+	#system-message dd {
+		padding: 5em 0.61803399em 0.61803399em 0.61803399em;
+		font-weight: 500;
+
+		&:before {
+			font-size: 4em;
+			line-height: 1;
+			top: 0;
+			left: 50%;
+			text-align: center;
+			margin-left: -0.5em;
+		}
 	}
 }
