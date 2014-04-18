@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        administrator/modules/mod_resources/resources.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -9,7 +9,6 @@
 		padding: 1.618em;
 		position: relative;
 	}
-
 	.mod_resources .legend table,
 	.mod_resources .legend table thead tr,
 	.mod_resources .legend table thead th,
@@ -35,33 +34,63 @@
 		text-align: center;
 		width: 100px;
 	}
-
 	.mod_resources .resources-stats-overview {
 		margin: 0.618em 0 0 0;
 		padding: 2.218em 0 0 0;
 		table-layout: fixed;
 	}
+	.mod_resources .resources-stats-overview {
+		padding: 1.218em 0 0 0;
+		table-layout: fixed;
+	}
 	.mod_resources .resources-stats-overview tbody tr td,
 	.mod_resources .resources-stats-overview tbody tr td:first-child {
 		text-align: center;
-		font-size: 3em;
+		font-size: 1.1em;
 		font-weight: 300;
 		padding: 0;
 		border: none;
 	}
 	.mod_resources .resources-stats-overview tbody tr td a {
-		color: #666;
+		color: #444;
 	}
 	.mod_resources .resources-stats-overview tbody tr td.pending a {
 		color: orange;
 	}
 	.mod_resources .resources-stats-overview tbody tr td span {
-		font-size: 0.35em;
 		font-weight: 400;
-		display: block;
-		margin: 1em 0 0 0;
 		color: #999;
 	}
 	.mod_resources .resources-stats-overview tbody tr td.pending-items a {
 		color: orange;
+	}
+
+/* Hero */
+	.hero .mod_resources .resources-stats-overview tbody tr td,
+	.hero .mod_resources .resources-stats-overview tbody tr td:first-child {
+		font-size: 3em;
+	}
+	.hero .mod_resources .resources-stats-overview tbody tr td span {
+		font-size: 0.35em;
+		display: block;
+		margin: 1em 0 0 0;
+	}
+	.hero .mod_resources .resources-total {
+		top: 80px;
+	}
+	.hero .mod_resources .overview-container {
+		position: relative;
+		float: left;
+		width: 50%;
+		margin: 0;
+		padding: 0;
+	}
+	.hero .mod_resources:before,
+	.hero .mod_resources:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.hero .mod_resources:after {
+		clear: left;
 	}

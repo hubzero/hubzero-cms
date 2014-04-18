@@ -42,6 +42,9 @@ $this->draft = $this->draftInternal + $this->draftUser;
 		<div id="resources-container<?php echo $this->module->id; ?>" style="min-width: 200px; height: 200px;"></div>
 
 		<script type="text/javascript">
+		if (!jq) {
+			var jq = $;
+		}
 		if (jQuery()) {
 			var $ = jq,
 				resolutionPie;
@@ -75,24 +78,6 @@ $this->draft = $this->draftInternal + $this->draftUser;
 		</script>
 
 		<p class="resources-total"><?php echo $total; ?></p>
-	<!-- 
-		<table class="resources-stats-overview">
-			<thead>
-				<tr>
-					<th scope="col"><?php echo JText::_('Draft (internal)'); ?></th>
-					<th scope="col"><?php echo JText::_('Draft (user)'); ?></th>
-					<th scope="col"><?php echo JText::_('Pending'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="draft-internal"><a href="index.php?option=com_resources&amp;c=resources&amp;status=5" title="<?php echo JText::_('View draft (internal) resources'); ?>"><?php echo $this->escape($this->draftInternal); ?></a></td>
-					<td class="draft-user"><a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('View draft (user) resources'); ?>"><?php echo $this->escape($this->draftUser); ?></a></td>
-					<td class="pending"><a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('View pending resources'); ?>"><?php echo $this->escape($this->pending); ?></a></td>
-				</tr>
-			</tbody>
-		</table>
-		-->
 	</div>
 	<div class="overview-container">
 		<table class="resources-stats-overview">
@@ -119,11 +104,11 @@ $this->draft = $this->draftInternal + $this->draftUser;
 				<tr>
 					<td>
 						<a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('View unpublished resources'); ?>"><?php echo $this->escape($this->unpublished); ?></a>
-						<span><?php echo JText::_('Published'); ?></span>
+						<span><?php echo JText::_('Unpublished'); ?></span>
 					</td>
-					<td class="pending-items">
+					<td>
 						<a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('View removed resources'); ?>"><?php echo $this->escape($this->removed); ?></a>
-						<span><?php echo JText::_('Pending'); ?></span>
+						<span><?php echo JText::_('Removed'); ?></span>
 					</td>
 				</tr>
 			</tbody>
