@@ -65,94 +65,86 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
-		
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><?php echo JText::_('Page title'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->get('title'))); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('Page name'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->get('pagename'))); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('Scope'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->get('scope'))); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('Group'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->get('group_cn'))); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><label><?php echo JText::_('Edit summary'); ?>:</label></td>
-						<td><input type="text" name="revision[summary]" size="55" maxlength="255" value="<?php echo $this->escape(stripslashes($this->revision->get('summary'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label><?php echo JText::_('Text'); ?>:</label><br />
-							<?php echo $editor->display('revision[pagetext]', stripslashes($this->revision->get('pagetext')), '520px', '700px', '50', '10'); ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-summary"><?php echo JText::_('Edit summary'); ?>:</label><br />
+				<input type="text" name="revision[summary]" id="field-summary" size="55" maxlength="255" value="<?php echo $this->escape(stripslashes($this->revision->get('summary'))); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-pagetext"><?php echo JText::_('Text'); ?>:</label><br />
+				<textarea name="revision[pagetext]" id="field-pagetext" cols="50" rows="40"><?php echo $this->escape(stripslashes($this->revision->get('pagetext'))); ?></textarea>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('Metadata for this entry'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?>:</th>
-					<td><?php echo $this->escape($this->revision->get('id')); ?><input type="hidden" name="revision[id]" id="revid" value="<?php echo $this->escape($this->revision->get('id')); ?>" /></td>
+					<th><?php echo JText::_('Page title'); ?>:</th>
+					<td><?php echo $this->escape(stripslashes($this->page->get('title'))); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Page name'); ?>:</th>
+					<td><?php echo $this->escape(stripslashes($this->page->get('pagename'))); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Page Scope'); ?>:</th>
+					<td><?php echo $this->escape(stripslashes($this->page->get('scope'))); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Page Group'); ?>:</th>
+					<td><?php echo $this->escape(stripslashes($this->page->get('group_cn'))); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('Page ID'); ?>:</th>
 					<td><?php echo $this->escape($this->revision->get('pageid')); ?><input type="hidden" name="revision[pageid]" id="pageid" value="<?php echo $this->escape($this->revision->get('pageid')); ?>" /></td>
 				</tr>
 				<tr>
+					<th><?php echo JText::_('ID'); ?>:</th>
+					<td><?php echo $this->escape($this->revision->get('id')); ?><input type="hidden" name="revision[id]" id="revid" value="<?php echo $this->escape($this->revision->get('id')); ?>" /></td>
+				</tr>
+				<tr>
 					<th><?php echo JText::_('Revision #'); ?>:</th>
-					<td><?php echo $this->escape($this->revision->get('version')); ?><input type="hidden" name="revision[version]" id-"version" value="<?php echo $this->escape($this->revision->get('version')); ?>" /></td>
+					<td><?php echo $this->escape($this->revision->get('version')); ?><input type="hidden" name="revision[version]" id="version" value="<?php echo $this->escape($this->revision->get('version')); ?>" /></td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('PARAMETERS'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="minor_edit"><?php echo JText::_('Minor edit'); ?>:</label></td>
-						<td><input type="checkbox" name="revision[minor_edit]" id="minor_edit" value="1" <?php echo $this->revision->get('minor_edit') ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="approved"><?php echo JText::_('State'); ?>:</label></td>
-						<td>
-							<select name="revision[approved]" id="approved">
-								<option value="0"<?php echo $this->revision->get('approved') == 0 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Not approved'); ?></option>
-								<option value="1"<?php echo $this->revision->get('approved') == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Approved'); ?></option>
-								<option value="2"<?php echo $this->revision->get('approved') == 2 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label><?php echo JText::_('Creator'); ?>:</label></td>
-						<td><?php echo JHTML::_('list.users', 'created_by', $this->revision->get('created_by'), 0, '', 'name', 1); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="created"><?php echo JText::_('Created'); ?>:</label></td>
-						<td><input type="text" name="revision[created]" id="created" size="25" maxlength="19" value="<?php echo $this->escape($this->revision->get('created')); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<input type="checkbox" name="revision[minor_edit]" id="field-minor_edit" value="1" <?php echo $this->revision->get('minor_edit') ? 'checked="checked"' : ''; ?> />
+				<label for="field-minor_edit"><?php echo JText::_('Minor edit'); ?></label>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-approved"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="revision[approved]" id="field-approved">
+					<option value="0"<?php echo $this->revision->get('approved') == 0 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Not approved'); ?></option>
+					<option value="1"<?php echo $this->revision->get('approved') == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Approved'); ?></option>
+					<option value="2"<?php echo $this->revision->get('approved') == 2 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label><?php echo JText::_('Creator'); ?>:</label><br />
+				<?php echo JHTML::_('list.users', 'created_by', $this->revision->get('created_by'), 0, '', 'name', 1); ?>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-created"><?php echo JText::_('Created'); ?>:</label><br />
+				<?php echo JHTML::_('calendar', $this->escape($this->revision->get('created')), 'revision[created]', 'field-created'); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="pageid" value="<?php echo $this->revision->get('pageid'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

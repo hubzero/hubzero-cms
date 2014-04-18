@@ -50,12 +50,13 @@ function submitbutton(pressbutton)
 			<tr>
 		</tbody>
 	</table>
-	
+
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 		
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -114,32 +115,34 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Edit revision'); ?>">
 						<?php echo JText::sprintf('Revision %s', $this->escape(stripslashes($row->get('version')))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo JText::sprintf('Revision %s', $this->escape(stripslashes($row->get('version')))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->get('summary'))); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a <?php echo $color_access; ?> class="<?php echo $class; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id=<?php echo $row->get('id'); ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;approve=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Set state'); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span <?php echo $color_access; ?> class="<?php echo $class; ?>">
 						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-					<?php echo $this->escape($row->get('minor_edit')); ?>
+					<span class="state <?php echo ($row->get('minor_edit') ? 'yes' : 'no'); ?>">
+						<span><?php echo $this->escape($row->get('minor_edit')); ?></span>
+					</span>
 				</td>
 				<td>
 					<time datetime="<?php echo $this->escape($row->get('created')); ?>"><?php echo $this->escape($row->get('created')); ?></time>

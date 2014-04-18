@@ -68,14 +68,15 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<div class="col width-40 fltlft">
 			<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 			<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
-		<div class="col width-60 fltrt" style="text-align: right">
+		<div class="col width-60 fltrt">
 			<label for="filter_group"><?php echo JText::_('Group'); ?>:</label>
 			<select name="group" id="filter_group" onchange="document.adminForm.submit( );">
-				<option value=""><?php echo JText::_('- Select group -'); ?></option>
+				<option value=""><?php echo JText::_('- Group -'); ?></option>
 				<?php 
 				if ($this->groups) {
 					foreach ($this->groups as $group) {
@@ -89,7 +90,7 @@ function submitbutton(pressbutton)
 
 			<label for="filter_namespace"><?php echo JText::_('Namespace'); ?>:</label>
 			<select name="namespace" id="filter_namespace" onchange="document.adminForm.submit( );">
-				<option value="">- Select namespace -</option>
+				<option value="">- Namespace -</option>
 				<option value="Help">Help</option>
 				<option value="Template">Template</option>
 			</select>
@@ -231,6 +232,6 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
