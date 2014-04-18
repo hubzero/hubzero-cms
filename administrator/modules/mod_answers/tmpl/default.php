@@ -30,37 +30,31 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-?>
-<table class="answers-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Open'); ?></th>
-			<th scope="col"><?php echo JText::_('Closed'); ?></th>
-			<th scope="col"><?php echo JText::_('Last 24 hours'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="open"><a href="index.php?option=com_answers&amp;filterby=open" title="<?php echo JText::_('View open questions'); ?>"><?php echo $this->escape($this->open); ?></a></td>
-			<td class="closed"><a href="index.php?option=com_answers&amp;filterby=closed" title="<?php echo JText::_('View closed questions'); ?>"><?php echo $this->escape($this->closed); ?></a></td>
-			<td class="newest"><a href="index.php?option=com_answers&amp;filterby=all&amp;sortby=date" title="<?php echo JText::_('View newest questions'); ?>"><?php echo $this->escape($this->pastDay); ?></a></td>
-		</tr>
-	</tbody>
-</table>
 
-<?php if ($this->params->get('showMine', 0)) { ?>
-<table class="answers-stats-overview my-questions">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('My Questions (open)'); ?></th>
-			<th scope="col"><?php echo JText::_('My Questions (closed)'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="myopen"><a href="index.php?option=com_answers&amp;filterby=open&amp;created_by=<?php echo $this->username ?>" title="<?php echo JText::_('View my open questions'); ?>"><?php echo $this->escape($this->myopen); ?></a></td>
-			<td class="myclosed"><a href="index.php?option=com_answers&amp;filterby=closed&amp;created_by=<?php echo $this->username ?>" title="<?php echo JText::_('View my closed questions'); ?>"><?php echo $this->escape($this->myclosed); ?></a></td>
-		</tr>
-	</tbody>
-</table>
-<?php } ?>
+$total = $this->closed + $this->open;
+?>
+<div class="mod_answers">
+	<table class="stats-overview">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					<div>
+						<div class="graph">
+							<strong class="bar" style="width: <?php echo round(($this->closed / $total) * 100, 2); ?>%"><span><?php echo round(($this->closed / $total) * 100, 2); ?>% closed</span></strong>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="closed">
+					<a href="index.php?option=com_answers&amp;filterby=closed" title="<?php echo JText::_('View closed questions'); ?>"><?php echo $this->escape($this->closed); ?></a>
+					<span><?php echo JText::_('Closed'); ?></span>
+				</td>
+				<td class="asked">
+					<a href="index.php?option=com_answers&amp;filterby=open" title="<?php echo JText::_('View open questions'); ?>"><?php echo $this->escape($this->open); ?></a>
+					<span><?php echo JText::_('Asked'); ?></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

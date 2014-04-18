@@ -1,63 +1,76 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/modules/mod_dashboard/dashboard.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        administrator/modules/mod_answers/answers.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-	.answers-stats-overview {
-		border-top: none;
-		border-bottom: none;
+	.mod_answers {
+		margin: .618em 2.218em 0 2.218em;
+		padding: 2.218em 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	.mod_answers .stats-overview {
 		margin: 0;
-		width: 100%;
-		text-align: left;
-		font-size: 1em;
-		border-collapse: collapse;
-		background: #fff;
-	}
-	.answers-stats-overview thead th {
-		/*font-size: 85%;*/
-		color: #aaa;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		border-bottom: none;
-		padding: 5px 10px;
-		/*width: 20%;*/
-	}
-	.answers-stats-overview tbody td {
-		padding: 5px 10px 15px 10px;
-		font-size: 2.5em;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		color: #777;
-		border-bottom: 1px solid #dfdfdf;
-	}
-	.answers-stats-overview tbody td a {
-		color: #999;
-		border: none;
-		text-decoration: none;
-	}
-	.answers-stats-overview tbody td a:hover {
-		color: #000;
-	}
-	
-	.answers-stats-overview tbody td.newest,
-	.answers-stats-overview tbody td.newest a {
-	}
-	.answers-stats-overview tbody td.open,
-	.answers-stats-overview tbody td.open a {
-	}
-	.answers-stats-overview tbody td.closed,
-	.answers-stats-overview tbody td.closed a {
-	}
-	
-	.answers-stats-overview tbody td span {
-		color: #aaa;
-		font-size: 14px;
-		line-height: 14px;
-		font-weight: normal;
-		margin: 0 1.5em 0 0;
 		padding: 0;
+	}
+	.mod_answers .stats-overview tbody tr td,
+	.mod_answers .stats-overview tbody tr td:first-child,
+	.mod_answers .stats-overview tbody tr td:last-child {
+		text-align: center;
+		font-size: 3em;
+		font-weight: 300;
+		padding: 0;
+		border: none;
+	}
+	.mod_answers .stats-overview tbody tr td a {
+		color: #666;
+	}
+	.mod_answers .stats-overview tbody tr td.asked a {
+		color: orange;
+	}
+	.mod_answers .stats-overview tbody tr td>span {
+		font-size: 0.35em;
+		font-weight: 400;
+		display: block;
+		margin: 1em 0 0 0;
+		color: #999;
+	}
+
+	/* CSS bar graph */
+	.mod_answers .graph { 
+		position: relative;
+		-webkit-border-radius: 0.1em;
+		-moz-border-radius: 0.1em;
+		-ms-border-radius: 0.1em;
+		-o-border-radius: 0.1em;
+		border-radius: 0.1em;
+		margin: 0 0 0.618em 0;
+		padding: 0;
+		background-color: #f9d180;
+	}
+	.mod_answers .graph .bar { 
+		display: block;
+		position: relative;
+		background: #777; 
+		text-align: center; 
+		color: #333; 
+		height: 0.5em; 
+		line-height: 1;
+		-webkit-border-radius: 0.1em 0 0 0.1em;
+		-moz-border-radius: 0.1em 0 0 0.1em;
+		-ms-border-radius: 0.1em 0 0 0.1em;
+		-o-border-radius: 0.1em 0 0 0.1em;
+		border-radius: 0.1em 0 0 0.1em;
+	}
+	.mod_answers .graph .bar span {
+		position: absolute;
+		left: 1em;
+		font-size: 0.4em;
+		display: none;
 	}
