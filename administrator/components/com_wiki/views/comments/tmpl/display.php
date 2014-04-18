@@ -62,12 +62,13 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -89,18 +90,14 @@ function submitbutton(pressbutton)
 			</tr>
 		</thead>
 		<tfoot>
- 			<tr>
- 				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
- 			</tr>
+			<tr>
+				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
+			</tr>
 		</tfoot>
 		<tbody>
 <?php
 $k = 0;
-$config	= JFactory::getConfig();
-$now	= JFactory::getDate();
-$db		= JFactory::getDBO();
 
-$nullDate = $db->getNullDate();
 $rows = $this->rows;
 for ($i=0, $n=count($rows); $i < $n; $i++)
 {
@@ -108,30 +105,26 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 
 	if (!$row->anonymous) 
 	{
-		$cimg2  = 'publish_x.png';
 		$calt2  = JText::_('Off');
-		$cls2   = 'unpublish';
+		$cls2   = 'off';
 		$state2 = 1;
 	} 
 	else 
 	{
-		$cimg2  = 'publish_g.png';
 		$calt2  = JText::_('On');
-		$cls2   = 'publish';
+		$cls2   = 'on';
 		$state2 = 0;
 	}
-	
+
 	switch ($row->status) 
 	{
 		case 2:
-			$cimg1  = 'disabled.png';
 			$calt1  = JText::_('Trashed');
 			$cls1   = 'trash';
 			$state1 = 'publish';
 		break;
 
 		case 1:
-			$cimg1  = 'publish_x.png';
 			$calt1  = JText::_('Abusive');
 			$cls1   = 'unpublish';
 			$state1 = 'publish';
@@ -139,7 +132,6 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 
 		case 0:
 		default:
-			$cimg1  = 'publish_g.png';
 			$calt1  = JText::_('Published');
 			$cls1   = 'publish';
 			$state1 = 'unpublish';
@@ -155,15 +147,15 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php echo $row->treename; ?>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->ctext)), 90); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->ctext)), 90); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->name)); ?>
@@ -198,6 +190,6 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 	<input type="hidden" name="pageid" value="<?php echo $this->filters['pageid']; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
