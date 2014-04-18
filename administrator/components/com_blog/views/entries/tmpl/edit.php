@@ -55,8 +55,10 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (form.greeting.value == ''){
+	if ($('#field-title').val() == ''){
 		alert("<?php echo JText::_('Error! You must fill in a title!'); ?>");
+	} else if ($('#field-content').val() == ''){
+		alert("<?php echo JText::_('Error! You must add content!'); ?>");
 	} else {
 		submitform(pressbutton);
 	}

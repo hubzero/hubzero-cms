@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
@@ -114,6 +114,7 @@ function submitbutton(pressbutton)
 		?>
 <?php } ?>
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
 	<div class="clr"></div>
 
