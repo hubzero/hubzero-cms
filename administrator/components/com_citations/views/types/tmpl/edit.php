@@ -34,7 +34,7 @@ $canDo = CitationsHelper::getActions('type');
 
 $text = ($this->task == 'edittype' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('Citation Type') . ': <small><small>[ ' . $text . ' ]</small></small>', 'citation.png');
+JToolBarHelper::title(JText::_('Citation Type') . ': ' . $text, 'citation.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -102,63 +102,69 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-70 fltlft">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Citation Type'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<?php if ($id) : ?>
-						<tr>
-							<th class="key"><?php echo JText::_('Type ID'); ?></th>
-							<td><?php echo $id; ?><input type="hidden" name="type[id]" value="<?php echo $id; ?>" /></td>
-						</tr>
-					<?php endif ;?>
-					<tr>
-						<th class="key"><?php echo JText::_('Type Alias'); ?></th>
-						<td><input type="text" name="type[type]" value="<?php echo $type; ?>" size="50" /></td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Type Title'); ?></th>
-						<td><input type="text" name="type[type_title]" value="<?php echo $title; ?>" size="100" /></td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Type Description'); ?></th>
-						<td><textarea name="type[type_desc]" rows="5" cols="58"><?php echo $desc; ?></textarea></td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Fields'); ?></th>
-						<td>
-							<?php echo JText::_('**Type and Title are automatically included'); ?><br />
-							<textarea name="type[fields]" rows="20" cols="58"><?php echo $fields; ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-type"><?php echo JText::_('Type Alias'); ?></label><br />
+				<input type="text" name="type[type]" id="field-type" value="<?php echo $type; ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-field-type_title"><?php echo JText::_('Type Title'); ?></label><br />
+				<input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $title; ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-type_desc"><?php echo JText::_('Type Description'); ?></label><br />
+				<textarea name="type[type_desc]" id="field-type_desc" rows="5" cols="58"><?php echo $desc; ?></textarea>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-fields"><?php echo JText::_('Fields'); ?></label><br />
+				<textarea name="type[fields]" id="field-fields" rows="20" cols="58"><?php echo $fields; ?></textarea>
+				<span class="hint"><?php echo JText::_('**Type and Title are automatically included'); ?></span>
+			</div>
 		</fieldset>
 	</div>
-	<div class="col width-30 fltrt">
-		<table class="admintable">
-			<thead>
-				<tr>
-					<th><?php echo JText::_('Placeholder'); ?></th>
-					<th><?php echo JText::_('Field'); ?></th>
-				</tr>
-			</thead>
+	<div class="col width-40 fltrt">
+		<table class="meta">
 			<tbody>
-				<?php foreach ($f as $k => $v) : ?>
-					<tr>
-						<td><?php echo $k; ?></td>
-						<td><?php echo $v; ?></td>
-					</tr>
-				<?php endforeach; ?>
+				<tr>
+					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<td>
+						<?php echo ($id ? $id : 0); ?>
+						<input type="hidden" name="type[id]" value="<?php echo $id; ?>" />
+					</td>
+				</tr>
 			</tbody>
 		</table>
+
+		<div class="data-wrap">
+			<table class="admintable">
+				<thead>
+					<tr>
+						<th><?php echo JText::_('Placeholder'); ?></th>
+						<th><?php echo JText::_('Field'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($f as $k => $v) : ?>
+						<tr>
+							<td><?php echo $k; ?></td>
+							<td><?php echo $v; ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

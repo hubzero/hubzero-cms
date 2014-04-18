@@ -39,7 +39,7 @@ JToolBarHelper::save();
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
 $cf = new CitationFormat();
 ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
@@ -73,39 +73,28 @@ $jQ(document).ready(function(e) {
 </script>
 
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Citation Format'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th width="20%">
-							<?php echo JText::_('Format Style:'); ?>
-						</th>
-						<td>
-							<select name="format[style]" id="format-selector">
-								<option value="apa" <?php if ($this->currentFormat->style == 'apa') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->apaFormat); ?>">APA Format</option>
-								<option value="ieee" <?php if ($this->currentFormat->style == 'ieee') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->ieeeFormat); ?>">IEEE Format</option>
-								<option value="custom" <?php if ($this->currentFormat->style != 'apa' && $this->currentFormat->style != 'ieee') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->currentFormat->format); ?>">Custom Format</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th width="20%">
-							<?php echo JText::_('Format String:'); ?>
-						</th>
-						<td>
-							<textarea name="format[format]" rows="10" id="format-string"><?php echo $this->currentFormat->format; ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="format-selector"><?php echo JText::_('Format Style:'); ?></label><br />
+				<select name="format[style]" id="format-selector">
+					<option value="apa" <?php if ($this->currentFormat->style == 'apa') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->apaFormat); ?>">APA Format</option>
+					<option value="ieee" <?php if ($this->currentFormat->style == 'ieee') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->ieeeFormat); ?>">IEEE Format</option>
+					<option value="custom" <?php if ($this->currentFormat->style != 'apa' && $this->currentFormat->style != 'ieee') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->currentFormat->format); ?>">Custom Format</option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="format-string"><?php echo JText::_('Format String:'); ?></label><br />
+				<textarea name="format[format]" rows="10" id="format-string"><?php echo $this->currentFormat->format; ?></textarea>
+			</div>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Placeholders'); ?></span></legend>
+	<div class="col width-40 fltrt">
+		<div class="data-wrap">
 			<table class="admintable">
 				<thead>
 					<tr>
@@ -125,8 +114,10 @@ $jQ(document).ready(function(e) {
 					?>
 				</tbody>
 			</table>
-		</fieldset>
+		</div>
 	</div>
+	<div class="clr"></div>
+
 	<input type="hidden" name="format[id]" value="<?php echo $this->currentFormat->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

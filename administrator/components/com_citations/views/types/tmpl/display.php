@@ -43,6 +43,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete')) 
 {
+	JToolBarHelper::spacer();
 	JToolBarHelper::deleteList();
 }
 ?>
@@ -60,7 +61,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->types); ?>);" /></th>
@@ -72,8 +73,12 @@ function submitbutton(pressbutton)
 		<tbody>
 			<?php foreach ($this->types as $i => $t) : ?>
 				<tr>
-					<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $t['id']; ?>" onclick="isChecked(this.checked);" /></td>
-					<td><?php echo $t['id']; ?></td>
+					<td>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $t['id']; ?>" onclick="isChecked(this.checked);" />
+					</td>
+					<td>
+						<?php echo $t['id']; ?>
+					</td>
 					<td>
 						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $t['id']; ?>">
 							<span><?php echo $this->escape($t['type']); ?></span>
@@ -93,6 +98,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
