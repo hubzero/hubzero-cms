@@ -171,7 +171,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 	 */
 	public function applyTask()
 	{
-	    $this->saveTask();
+		$this->saveTask();
 	}
 
 	/**
@@ -182,7 +182,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		JRequest::checkToken() or die('Invalid Token');
-		
+
 		// Incoming instance ID
 		$fields = JRequest::getVar('fields', array(), 'post');
 
@@ -254,14 +254,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 	{
 		$juser = JFactory::getUser();
 
-		$yearFormat = '%Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$yearFormat = 'Y';
-			$tz = false;
-		}
+		$yearFormat = 'Y';
 
 		//  Limit one-time batch size
 		$limit = JRequest::getInt('limit', 2);
@@ -278,13 +271,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
-		$sitename 	= $jconfig->getValue('config.sitename');
-		
+		$sitename = $jconfig->getValue('config.sitename');
+
 		// Get config
 		$config = JComponentHelper::getParams($this->_option);
 
 		// Get all tool publications without new DOI
-		$this->database->setQuery("SELECT * FROM #__doi_mapping WHERE doi='' OR doi IS NULL ");
+		$this->database->setQuery("SELECT * FROM `#__doi_mapping` WHERE doi='' OR doi IS NULL ");
 		$rows = $this->database->loadObjectList();
 
 		if ($rows) 
@@ -313,13 +306,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				}
 
 				// Get version info
-				$this->database->setQuery("SELECT * FROM #__tool_version WHERE toolname='".$row->alias."' AND revision='".$row->local_revision."' AND state!=3 LIMIT 1");
+				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname='".$row->alias."' AND revision='".$row->local_revision."' AND state!=3 LIMIT 1");
 				$results = $this->database->loadObjectList();
 
 				if ($results) 
 				{
 					$title = $results[0]->title ? $results[0]->title : $resource->title;
-					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, $yearFormat, $tz)) : date('Y');
+					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, $yearFormat)) : date('Y');
 				}
 				else 
 				{
@@ -341,7 +334,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				$doiSuccess = $objDOI->registerDOI($authors, $config, $metadata, $doierr);
 				if ($doiSuccess) 
 				{
-					$this->database->setQuery("UPDATE #__doi_mapping SET doi='$doiSuccess' WHERE rid=$row->rid AND local_revision=$row->local_revision");
+					$this->database->setQuery("UPDATE `#__doi_mapping` SET doi='$doiSuccess' WHERE rid=$row->rid AND local_revision=$row->local_revision");
 					if (!$this->database->query()) 
 					{
 						$failed[] = $doiSuccess;
@@ -386,7 +379,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		if (!array_key_exists('versionid', $fields['jos_doi_mapping'])) 
 		{
-			$this->database->setQuery("ALTER TABLE `jos_doi_mapping` ADD `versionid` int(11) default '0'");
+			$this->database->setQuery("ALTER TABLE `#__doi_mapping` ADD `versionid` int(11) default '0'");
 			if (!$this->database->query()) 
 			{
 				echo $this->database->getErrorMsg();
@@ -395,7 +388,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		}
 		if (!array_key_exists('doi', $fields['jos_doi_mapping'])) 
 		{
-			$this->database->setQuery("ALTER TABLE `jos_doi_mapping` ADD `doi` varchar(50) default NULL");
+			$this->database->setQuery("ALTER TABLE `#__doi_mapping` ADD `doi` varchar(50) default NULL");
 			if (!$this->database->query()) 
 			{
 				echo $this->database->getErrorMsg();

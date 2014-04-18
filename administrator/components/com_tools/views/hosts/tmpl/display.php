@@ -36,7 +36,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -63,25 +63,25 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
-<?php 
+				<?php 
 					foreach ($list as $key => $value)
 					{
 						if ($value != '0') 
 						{
 							echo '<strong>';
 						}
-?>
+						?>
 					<a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=toggle&amp;hostname=<?php echo $row->hostname; ?>&amp;item=<?php echo $key; ?>">
 						<span><?php echo $this->escape($key); ?></span>
 					</a>
-<?php
+						<?php
 						if ($value != '0') 
 						{
 							echo '</strong>';
 						}
 						echo '<br />';
 					}
-?>
+				?>
 				</td>
 				<td>
 					<a class="state <?php echo ($row->status == 'up') ? 'publish' : 'unpublish'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=status&amp;hostname=<?php echo $row->hostname; ?>">
@@ -110,7 +110,7 @@ if ($this->rows)
 ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />

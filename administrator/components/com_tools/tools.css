@@ -38,16 +38,16 @@
 	section .state.unknown:before {
 		content: "\f059";
 	}
-	table.adminlist a.active {
+	table.adminlist tbody a.active {
 		color: #7F913C;
 		color: #666;
 	}
-	table.adminlist a.active:before {
+	table.adminlist tbody a.active:before {
 		font-size: 1.2em;
 		content: "\2022";
 		margin-right: 0.5em;
 	}
-	table.adminlist a.inactive {
+	table.adminlist tbody a.inactive {
 		color: #c55500;
 		color: #999;
 		padding-left: 1.1em;

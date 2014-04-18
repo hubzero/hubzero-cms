@@ -24,13 +24,14 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('SEARCH'); ?></label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-		
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"></th>
@@ -45,7 +46,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="7">
+				<td colspan="8">
 					<?php echo $this->pageNav->getListFooter(); ?>
 				</td>
 			</tr>
@@ -112,11 +113,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="view" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

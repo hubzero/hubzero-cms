@@ -20,20 +20,10 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<!-- 
-	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('SEARCH'); ?></label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-		
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
-	</fieldset>
-	<div class="clr"></div>
-	-->
-
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
-				<th colspan="7">
+				<th colspan="6">
 					<?php echo $this->escape($this->tool->id); ?> - <?php echo $this->escape(stripslashes($this->tool->title)); ?> (<?php echo $this->escape($this->tool->toolname); ?>)
 				</th>
 			</tr>
@@ -105,11 +95,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
