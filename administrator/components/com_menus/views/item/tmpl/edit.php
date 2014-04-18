@@ -23,10 +23,10 @@ JHtml::_('behavior.modal');
 	{
 		if (task == 'item.setType' || task == 'item.setMenuType') {
 			if(task == 'item.setType') {
-				$('#item-form').elements['jform[type]'].value = type;
-				$('#fieldtype').value = 'type';
+				$('#item-form').find('input[name="jform[type]"]').val(type);
+				$('#fieldtype').val('type');
 			} else {
-				$('#item-form').elements['jform[menutype]'].value = type;
+				$('#item-form').find('input[name="jform[menutype]"]').val(type);
 			}
 			Joomla.submitform('item.setType', $('#item-form'));
 		} else if (task == 'item.cancel' || document.formvalidator.isValid($('#item-form'))) {

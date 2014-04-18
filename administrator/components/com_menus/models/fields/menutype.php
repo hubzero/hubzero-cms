@@ -67,8 +67,22 @@ class JFormFieldMenutype extends JFormFieldList
 		JHtml::_('behavior.framework');
 		JHtml::_('behavior.modal');
 
+		JFactory::getDocument()->addScriptDeclaration("
+			jQuery(document).ready(function($){
+				$('input.modal').fancybox({
+					arrows: false,
+					type: 'iframe',
+					autoSize: false,
+					fitToView: false,
+					width: 600,
+					height: 450,
+					href: '" . JRoute::_('index.php?option=com_menus&view=menutypes&tmpl=component&recordId='.$recordId, false) . "'
+				});
+			});
+		");
+
 		$html[] = '<input type="text" id="'.$this->id.'" readonly="readonly" disabled="disabled" value="'.$value.'"'.$size.$class.' />';
-		$html[] = '<input type="button" value="'.JText::_('JSELECT').'" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 600, y: 450}, url:\''.JRoute::_('index.php?option=com_menus&view=menutypes&tmpl=component&recordId='.$recordId).'\'})" />';
+		$html[] = '<input type="button" class="modal" value="'.JText::_('JSELECT').'" />';
 		$html[] = '<input type="hidden" name="'.$this->name.'" value="'.htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8').'" />';
 
 		return implode("\n", $html);

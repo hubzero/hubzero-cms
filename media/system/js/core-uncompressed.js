@@ -24,6 +24,8 @@ Joomla.submitform = function(task, form) {
 		if(!form){
 			form = document.adminForm;
 		}
+	} else {
+		form = form[0];
 	}
 
 	if (typeof(task) !== 'undefined' && '' !== task) {
