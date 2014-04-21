@@ -34,7 +34,7 @@ JToolBarHelper::title(JText::_('LDAP Configuration'), 'config.png');
 JToolBarHelper::preferences($this->option, '550');
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('HubConfig'); ?></legend>

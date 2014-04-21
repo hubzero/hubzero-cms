@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
-JToolBarHelper::title(JText::_('SEF Manager') . ': <small><small>[ ' . $text . ' ]</small></small>', 'config.png');
+JToolBarHelper::title(JText::_('SEF Manager') . ': ' . $text, 'config.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -63,21 +63,18 @@ function submitbutton(pressbutton)
 	}
 	?>
 	<fieldset class="adminform">
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="oldurl">New <acronym title="Search Engine Friendly">SEF</acronym> URL:</label></td>
-					<td><input type="text" size="80" name="oldurl" id="oldurl" value="<?php echo $this->row->oldurl; ?>" /></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="newurl">Old Non-<acronym title="Search Engine Friendly">SEF</acronym> URL:</label></td>
-					<td>
-						<input type="text" size="80" name="newurl" id="newurl" value="<?php echo $this->row->newurl; ?>" />
-						<p class="info">only relative redirection from the document root <em>without</em> a '/' at the begining</p>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<legend><span><?php echo JText::_('Details'); ?></span></legend>
+
+		<div class="input-wrap">
+			<label for="oldurl">New <acronym title="Search Engine Friendly">SEF</acronym> URL:</label><br />
+			<input type="text" size="80" name="oldurl" id="oldurl" value="<?php echo $this->escape($this->row->oldurl); ?>" />
+		</div>
+
+		<div class="input-wrap">
+			<label for="newurl">Old Non-<acronym title="Search Engine Friendly">SEF</acronym> URL:</label><br />
+			<input type="text" size="80" name="newurl" id="newurl" value="<?php echo $this->escape($this->row->newurl); ?>" />
+			<span class="hint">only relative redirection from the document root <em>without</em> a '/' at the begining</span>
+		</div>
 	</fieldset>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
