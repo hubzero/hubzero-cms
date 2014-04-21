@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Registration') . ': <small><small>[ ' . JText::_('Employer Types') . ' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('Registration') . ': ' . JText::_('Employer Types'), 'user.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
@@ -50,22 +50,20 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filter">
-		<label>
-			<?php echo JText::_('SEARCH'); ?>: 
-			<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
-		</label>
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 
-	<table class="adminlist" summary="<?php echo JText::_('Organization Types'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('ID'); ?></th>
-				<th><?php echo JText::_('Type'); ?></th>
-				<th><?php echo JText::_('Title'); ?></th>
+				<th scope="col"><?php echo JText::_('ID'); ?></th>
+				<th scope="col"><?php echo JText::_('Type'); ?></th>
+				<th scope="col"><?php echo JText::_('Title'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -111,6 +109,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

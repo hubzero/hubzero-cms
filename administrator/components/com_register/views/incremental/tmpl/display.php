@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Registration') . ': <small><small>[ ' . JText::_('Incremental Registration Options') . ' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('Registration') . ': ' . JText::_('Incremental Registration Options'), 'user.png');
 JToolBarHelper::save();
 
 $dbh = JFactory::getDBO();
