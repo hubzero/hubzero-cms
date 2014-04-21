@@ -24,7 +24,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filters-bar">
+	<fieldset id="filter-bar">
 		<a class="refresh" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=&amp;appname=&amp;exechost=&amp;start=0">
 			<span><?php echo JText::_('Clear filters'); ?></span>
 		</a>
