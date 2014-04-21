@@ -82,7 +82,7 @@ CREATE TABLE `host` (
   `status` varchar(20) NOT NULL DEFAULT '',
   `uses` smallint(5) unsigned NOT NULL DEFAULT '0',
   `portbase` int(11) NOT NULL DEFAULT '0',
-  `venue_id` int(11),
+  `zone_id` int(11),
   PRIMARY KEY (`hostname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -3428,23 +3428,30 @@ CREATE TABLE `#__users_transactions` (
   KEY `idx_referenceid_categroy_type` (`referenceid`,`category`,`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `venue` (
+CREATE TABLE `zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `venue` varchar(40) DEFAULT NULL,
+  `zone` varchar(40) DEFAULT NULL,
   `state` varchar(15) DEFAULT NULL,
   `type` varchar(10) DEFAULT NULL,
+  `master` varchar(255) DEFAULT NULL,
   `mw_version` varchar(3) DEFAULT NULL,
   `ssh_key_path` varchar(200) DEFAULT NULL,
-  `latitude` double DEFAULT NULL,
-  `longitude` double DEFAULT NULL,
-  `master` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `venue_countries` (
+CREATE TABLE `zone_locations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `venue_id` int(11) NOT NULL,
-  `countrySHORT` char(2) DEFAULT NULL,
+  `zone_id` int(11) NOT NULL,
+  `ipFROM` int(10) unsigned zerofill NOT NULL DEFAULT '0000000000',
+  `ipTO` int(10) unsigned zerofill NOT NULL DEFAULT '0000000000',
+  `continent` char(2) NOT NULL,
+  `countrySHORT` char(2) NOT NULL,
+  `countryLONG` varchar(64) NOT NULL,
+  `ipREGION` varchar(128) NOT NULL,
+  `ipCITY` varchar(128) NOT NULL,
+  `ipLATITUDE` double DEFAULT NULL,
+  `ipLONGITUDE` double DEFAULT NULL,
+  `notes` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

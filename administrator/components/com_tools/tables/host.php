@@ -76,7 +76,7 @@ class MwHost extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $venue_id;
+	var $zone_id;
 
 	/**
 	 * Constructor
@@ -236,7 +236,7 @@ class MwHost extends JTable
 		}
 
 		$query = "FROM $this->_tbl AS c";
-		$query .= " LEFT JOIN venue AS v ON v.id = c.venue_id";
+		$query .= " LEFT JOIN zone AS v ON v.id = c.zone_id";
 		if (isset($filters['hosttype']) && $filters['hosttype']) 
 		{
 			$query .= " JOIN hosttype AS t ON c.provisions & t.value != 0";
@@ -275,7 +275,7 @@ class MwHost extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT c.*, v.venue " . $this->_buildQuery($filters);
+		$query  = "SELECT c.*, v.zone " . $this->_buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
