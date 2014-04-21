@@ -97,7 +97,7 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 		
 		<label for="filter-status"><?php echo JText::_('Status'); ?>:</label> 
 		<select name="status" id="filter-status">
@@ -112,12 +112,12 @@ function submitbutton(pressbutton)
 	</fieldset>
 	<div class="clr"></div>
 	
-	<table class="adminlist" summary="<?php echo JText::_('COM_GROUPS_TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th colspan="8">(<?php echo $this->escape(stripslashes($this->group->get('cn'))); ?>) <?php echo $this->escape(stripslashes($this->group->get('description'))); ?></th>
 			</tr>
-		 	<tr>
+			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -159,15 +159,15 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->uidNumber); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
+				<?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
 					<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->uidNumber; ?>">
 						<?php echo $this->escape(stripslashes($row->name)); ?>
 					</a>
-<?php else : ?>
+				<?php else : ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->name)); ?>
 					</span>
-<?php endif; ?>
+				<?php endif; ?>
 				</td>
 				<td>
 					<span>

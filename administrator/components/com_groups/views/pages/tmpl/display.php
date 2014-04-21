@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn;
 
 // create title
-JToolBarHelper::title($this->group->get('description') . ': <small><small>[ ' . JText::_('Group Pages') . ' ]</small></small>', 'groups.png');
+JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group Pages'), 'groups.png');
 
 // create toolbar buttons
 $canDo = GroupsHelper::getActions('group');
@@ -149,12 +149,12 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th width="30px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->pages->count();?>);" /></th>
-				<th>Title</th>
-				<th>Order</th>
-				<th>State</th>
-				<th>Home</th>
-				<th># of Versions</th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->pages->count();?>);" /></th>
+				<th scope="col">Title</th>
+				<th scope="col">Order</th>
+				<th scope="col">State</th>
+				<th scope="col">Home</th>
+				<th scope="col"># of Versions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -203,7 +203,7 @@ function submitbutton(pressbutton)
 <?php endif; ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />

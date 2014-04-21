@@ -38,7 +38,7 @@ $canDo = GroupsHelper::getActions('group');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(JText::_('COM_GROUPS').': <small><small>[ ' . $text . ' ]</small></small>', 'groups.png');
+	JToolBarHelper::title(JText::_('COM_GROUPS').': ' . $text, 'groups.png');
 	if ($canDo->get('core.edit')) 
 	{
 		JToolBarHelper::save();
@@ -46,6 +46,7 @@ if ($tmpl != 'component')
 	JToolBarHelper::cancel();
 }
 
+JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -66,8 +67,8 @@ function submitbutton(pressbutton)
 	window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&gid=<?php echo $this->group->get('cn'); ?>'", 700);
 }
 
-window.addEvent('domready', function(){
-	window.addEvent('keypress', function(){
+jQuery(document).ready(function($){
+	$(window).on('keypress', function(){
 		if (window.event.keyCode == 13) {
 			submitbutton('addusers');
 		}
@@ -77,14 +78,14 @@ window.addEvent('domready', function(){
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="index.php" method="post" name="adminForm" id="component-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
-		<div style="float: right">
-			<button type="button" onclick="submitbutton('addusers');"><?php echo JText::_( 'Save' );?></button>
-			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button>
-		</div>
 		<div class="configuration" >
+			<div class="fltrt configuration-options">
+				<button type="button" onclick="submitbutton('addusers');"><?php echo JText::_( 'Save' );?></button>
+				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_( 'Cancel' );?></button>
+			</div>
 			<?php echo JText::_('Add users') ?>
 		</div>
 	</fieldset>
