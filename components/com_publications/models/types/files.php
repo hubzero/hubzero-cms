@@ -243,13 +243,17 @@ class typeFiles extends JObject
 				foreach($selections['files'] as $file) 
 				{
 					$mtype = $mt->getMimeType(urldecode($file));
-					$mimetypes[] = strtolower(array_shift(explode('/', $mtype)));
+					$parts = explode('/', $mtype);
+					$mtype = array_shift($parts);
+					$mimetypes[] = strtolower($mtype);
 				}
 
 				// If one file, determine how to serve (to be extended)
 				if ($count == 1) 
 				{
-					$ext = strtolower(array_pop(explode('.', basename($selections['files'][0]))));
+					$sf  = explode('.', basename($selections['files'][0]));
+					$ext = array_pop($sf);
+					$ext = strtolower($ext);
 
 					// Some files can be viewed inline
 					if (in_array('video', $mimetypes) 
