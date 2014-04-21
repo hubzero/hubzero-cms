@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 
 <div class="col width-60 fltlft">
 	<nav role="navigation" class="sub-navigation">
@@ -110,118 +110,110 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 
-			<table class="admintable">
-			 <tbody>
-			  <tr>
-			   <td class="key"><label for="public"><?php echo JText::_('PUBLIC_PROFILE'); ?>:</label></td>
-			   <td><input type="checkbox" name="profile[public]" id="public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> /></td>
-			  </tr>
-			  <tr>
-			   <td class="key"><label for="vip"><?php echo JText::_('VIP'); ?>:</label></td>
-			   <td><input type="checkbox" name="profile[vip]" id="vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> /></td>
-			  </tr>
-			  <tr>
-			   <td class="key"><label for="givenName"><?php echo JText::_('FIRST_NAME'); ?>:</label></td>
-			   <td><input type="text" name="profile[givenName]" id="givenName" value="<?php echo $this->escape($givenName); ?>" size="50" /></td>
-			  </tr>
-			  <tr>
-			   <td class="key"><label for="middleName"><?php echo JText::_('MIDDLE_NAME'); ?>:</label></td>
-			   <td><input type="text" name="profile[middleName]" id="middleName" value="<?php echo $this->escape($middleName); ?>" size="50" /></td>
-			  </tr>
-			  <tr>
-			   <td class="key"><label for="surname"><?php echo JText::_('LAST_NAME'); ?>:</label></td>
-			   <td><input type="text" name="profile[surname]" id="surname" value="<?php echo $this->escape($surname); ?>" size="50" /></td>
-			  </tr>
-			<tr>
-			   <td class="key"><label for="orgtype"><?php echo JText::_('COL_EMPLOYMENT_STATUS'); ?>:</label></td>
-			   <td>
-					<select name="profile[orgtype]" id="orgtype">
-						<option value=""<?php if (!$this->profile->get('orgtype')) { echo ' selected="selected"'; } ?>><?php echo JText::_('(select from list)'); ?></option>
-				<?php
-				
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<input type="checkbox" name="profile[public]" id="public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> />
+					<label for="public"><?php echo JText::_('PUBLIC_PROFILE'); ?></label>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<input type="checkbox" name="profile[vip]" id="vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> />
+					<label for="vip"><?php echo JText::_('VIP'); ?></label>
+				</div>
+			</div>
+			<div class="clr"></div>
 
-				$rot = new RegisterOrganizationType(JFactory::getDBO());
-				$types = $rot->getTypes();
+			<div class="input-wrap">
+				<label for="givenName"><?php echo JText::_('FIRST_NAME'); ?>:</label><br />
+				<input type="text" name="profile[givenName]" id="givenName" value="<?php echo $this->escape($givenName); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="middleName"><?php echo JText::_('MIDDLE_NAME'); ?>:</label><br />
+				<input type="text" name="profile[middleName]" id="middleName" value="<?php echo $this->escape($middleName); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="surname"><?php echo JText::_('LAST_NAME'); ?>:</label><br />
+				<input type="text" name="profile[surname]" id="surname" value="<?php echo $this->escape($surname); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="orgtype"><?php echo JText::_('COL_EMPLOYMENT_STATUS'); ?>:</label><br />
+				<select name="profile[orgtype]" id="orgtype">
+					<option value=""<?php if (!$this->profile->get('orgtype')) { echo ' selected="selected"'; } ?>><?php echo JText::_('(select from list)'); ?></option>
+					<?php
+					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
 
-				if (!$types || count($types) <= 0) 
-				{
-					$types = array(
-						'universityundergraduate' => JText::_('University / College Undergraduate'),
-						'universitygraduate'      => JText::_('University / College Graduate Student'),
-						'universityfaculty'       => JText::_('University / College Faculty'), // university
-						'universitystaff'         => JText::_('University / College Staff'),
-						'precollegestudent'       => JText::_('K-12 (Pre-College) Student'),
-						'precollegefacultystaff'  => JText::_('K-12 (Pre-College) Faculty/Staff'), // precollege
-						'nationallab'             => JText::_('National Laboratory'),
-						'industry'                => JText::_('Industry / Private Company'),
-						'government'              => JText::_('Government Agency'),
-						'military'                => JText::_('Military'),
-						'unemployed'              => JText::_('Retired / Unemployed')
-					);
-				}
-				foreach ($types as $type => $title) 
-				{
-					echo '<option value="' . $type . '"';
-					if ($this->profile->get('orgtype') == $type) 
+					$rot = new RegisterOrganizationType(JFactory::getDBO());
+					$types = $rot->getTypes();
+
+					if (!$types || count($types) <= 0) 
 					{
-						echo ' selected="selected"';
+						$types = array(
+							'universityundergraduate' => JText::_('University / College Undergraduate'),
+							'universitygraduate'      => JText::_('University / College Graduate Student'),
+							'universityfaculty'       => JText::_('University / College Faculty'), // university
+							'universitystaff'         => JText::_('University / College Staff'),
+							'precollegestudent'       => JText::_('K-12 (Pre-College) Student'),
+							'precollegefacultystaff'  => JText::_('K-12 (Pre-College) Faculty/Staff'), // precollege
+							'nationallab'             => JText::_('National Laboratory'),
+							'industry'                => JText::_('Industry / Private Company'),
+							'government'              => JText::_('Government Agency'),
+							'military'                => JText::_('Military'),
+							'unemployed'              => JText::_('Retired / Unemployed')
+						);
 					}
-					echo '>' . $this->escape(stripslashes($title)) . '</option>' . "\n";
-				}
+					foreach ($types as $type => $title) 
+					{
+						echo '<option value="' . $type . '"';
+						if ($this->profile->get('orgtype') == $type) 
+						{
+							echo ' selected="selected"';
+						}
+						echo '>' . $this->escape(stripslashes($title)) . '</option>' . "\n";
+					}
 					?>
-					</select>
-				</td>
-			  </tr>  
-			<tr>
-			   <td class="key"><label for="organization"><?php echo JText::_('ORGANIZATION'); ?>:</label></td>
-			   <td><input type="text" name="profile[organization]" id="organization" value="<?php echo $this->escape(stripslashes($this->profile->get('organization'))); ?>" size="50" /></td>
-			  </tr>
-			  <tr>
-		 	   <td class="key"><label for="url"><?php echo JText::_('WEBSITE'); ?>:</label></td>
-		 	   <td><input type="text" name="profile[url]" id="url" value="<?php echo $this->escape(stripslashes($this->profile->get('url'))); ?>" size="50" /></td>
-		 	  </tr>
-			  <tr>
-			   <td class="key"><?php echo JText::_('COL_TELEPHONE'); ?>:</td>
-			   <td><input type="text" name="profile[phone]" id="phone" value="<?php echo $this->escape($this->profile->get('phone')); ?>" size="50" /></td>
-			  </tr>
-			  <tr>
-		 	   <td class="key"><label for="tags"><?php echo JText::_('INTERESTS'); ?>:</label></td>
-		 	   <td><input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->tags); ?>" size="50" /></td>
-		 	  </tr>
-		 	  <tr>
-			   <td class="key" valign="top"><label for="bio"><?php echo JText::_('BIO'); ?>:</label></td>
-			   <td>
-			        <?php
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="organization"><?php echo JText::_('ORGANIZATION'); ?>:</label><br />
+				<input type="text" name="profile[organization]" id="organization" value="<?php echo $this->escape(stripslashes($this->profile->get('organization'))); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="url"><?php echo JText::_('WEBSITE'); ?>:</label><br />
+				<input type="text" name="profile[url]" id="url" value="<?php echo $this->escape(stripslashes($this->profile->get('url'))); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="phone"><?php echo JText::_('COL_TELEPHONE'); ?>:</label><br />
+				<input type="text" name="profile[phone]" id="phone" value="<?php echo $this->escape($this->profile->get('phone')); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="tags"><?php echo JText::_('INTERESTS'); ?>:</label><br />
+				<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->tags); ?>" size="50" />
+			</div>
+			<div class="input-wrap">
+				<label for="bio"><?php echo JText::_('BIO'); ?>:</label><br />
+				<?php
 					jimport('joomla.html.editor');
 					$editor =  JEditor::getInstance();
-					echo $editor->display('profile[bio]', $this->escape($this->profile->getBio('raw')), '360px', '200px', '40', '10');
-			        ?>
-			  </td>
-			  </tr>
-			<tr>
-				<td class="key" valign="top"><?php echo JText::_('COL_CONTACT_ME'); ?>:</td>
-				<td>
-					<label>
-						Would you like to receive email updates (newsletters, etc.)?
-						<?php
-							$options = array(
-								'-1' => '- Select email option &mdash;',
-								'1'  => 'Yes, send me emails',
-								'0'  => 'No, don\'t send me emails'
-							);
-						?>
-						<select name="profile[mailPreferenceOption]">
-							<?php foreach ($options as $key => $value) : ?>
-								<?php $sel = ($key == $this->profile->get('mailPreferenceOption')) ? 'selected="selected"' : ''; ?>
-								<option <?php echo $sel; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
-							<?php endforeach; ?>
-						</select>
-					</label>
-				</td>
-			</tr>
-			</tbody>
-			</table>
+					echo $editor->display('profile[bio]', $this->escape($this->profile->getBio('raw')), '', '', 40, 10);
+				?>
+			</div>
+			<div class="input-wrap">
+				<?php
+					$options = array(
+						'-1' => '- Select email option &mdash;',
+						'1'  => 'Yes, send me emails',
+						'0'  => 'No, don\'t send me emails'
+					);
+				?>
+				<select name="profile[mailPreferenceOption]">
+					<?php foreach ($options as $key => $value) : ?>
+						<?php $sel = ($key == $this->profile->get('mailPreferenceOption')) ? 'selected="selected"' : ''; ?>
+						<option <?php echo $sel; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<label>Would you like to receive email updates (newsletters, etc.)?</label>
+			</div>
 		</fieldset>
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>

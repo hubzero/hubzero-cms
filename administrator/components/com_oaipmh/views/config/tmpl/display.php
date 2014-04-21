@@ -70,45 +70,41 @@ function removeGroup(id) {
 				</td>
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				<td colspan="2">
-					<div id="tabs">
- 						<ul id="tablist">
-						<?php
-							$i = 0; 
-							foreach ($this->sets as $set) 
-							{
-								echo "<li><a href='#tabs-$set[0]'>Group $set[0]:</a></li>";
-								$i++; 
-							}
-							echo "<script type=\"text/javascript\">var sets = $i;</script>"; 
-						?>
-						</ul>
-						<?php
-							$x = 0; 
-							foreach ($this->sets as $set) 
-							{
-								echo "<div id='tabs-$set[0]'>";
-								for ($i=$x;$i<=$x+16;$i++) 
-								{
-									echo $this->dcs[$i][1];
-									echo "<br /><textarea rows='3' name='queries[]'>{$this->dcs[$i][2]}</textarea>";
-									echo "<input type='hidden' name='qid[]' value='{$this->dcs[$i][0]}' />";
-								}
-								if ($set[0] > 1) 
-								{
-									echo "<br /><br />[ <a href=\"#\" onclick=\"javascript:removeGroup($set[0])\" >Remove Group</a> ]";
-								}
-								echo "</div>";
-								$x=$i;
-							}
-						?>
-					</div>
-				</td>
-			</tr>
-		</tbody>
 	</table>
+	<div id="tabs">
+		<ul id="tablist">
+		<?php
+			$i = 0; 
+			foreach ($this->sets as $set) 
+			{
+				echo "<li><a href='#tabs-$set[0]'>Group $set[0]:</a></li>";
+				$i++; 
+			}
+			echo "<script type=\"text/javascript\">var sets = $i;</script>"; 
+		?>
+		</ul>
+		<?php
+			$x = 0; 
+			foreach ($this->sets as $set) 
+			{
+				echo '<div id="tabs-' . $set[0] . '">';
+				for ($i=$x;$i<=$x+16;$i++) 
+				{
+					echo '<div class="input-wrap">';
+					echo '<label>' . $this->dcs[$i][1] . '</label><br />';
+					echo '<textarea rows="3" name="queries[]">' . $this->dcs[$i][2] . '</textarea>';
+					echo '<input type="hidden" name="qid[]" value="' . $this->dcs[$i][0] . '" />';
+					echo '</div>';
+				}
+				if ($set[0] > 1) 
+				{
+					echo "<br /><br />[ <a href=\"#\" onclick=\"javascript:removeGroup($set[0])\" >Remove Group</a> ]";
+				}
+				echo '</div>';
+				$x=$i;
+			}
+		?>
+	</div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="save" />
