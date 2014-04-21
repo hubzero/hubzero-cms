@@ -186,7 +186,7 @@ if ($this->results)
 				break;
 		}
 ?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="<?php echo "row$k" . ($row->state ==2 ? ' archived' : ''); ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
 				</td>
@@ -201,11 +201,11 @@ if ($this->results)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+						<span><?php echo $alt; ?></span>
 					</span>
 				<?php } ?>
 				</td>
@@ -223,7 +223,7 @@ if ($this->results)
 				<td>
 					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
 					<span>
-						<span><?php echo $row->groupname; ?></span>
+						<span><?php echo $this->escape($row->groupname); ?></span>
 					</span>
 					<!-- </a> -->
 				</td>
@@ -239,7 +239,7 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="created">
-						<span><?php echo $row->created; ?></span>
+						<span><?php echo $this->escape($row->created); ?></span>
 					</span>
 				</td>
 			</tr>

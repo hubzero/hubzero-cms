@@ -185,7 +185,7 @@ if ($this->results)
 
 		$cat = $row->categories('count', array('state' => -1));
 ?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="<?php echo "row$k" . ($row->get('state') ==2 ? ' archived' : ''); ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>

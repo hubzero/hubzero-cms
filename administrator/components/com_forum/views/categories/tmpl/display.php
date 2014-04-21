@@ -253,7 +253,7 @@ if ($this->results)
 				break;
 		}
 ?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="<?php echo "row$k" . ($row->state ==2 ? ' archived' : ''); ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
 				</td>
