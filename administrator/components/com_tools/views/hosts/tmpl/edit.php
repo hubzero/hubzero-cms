@@ -56,17 +56,17 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="admin"><?php echo JText::_('Venue'); ?>:</label></td>
+						<td class="key"><label for="admin"><?php echo JText::_('Zone'); ?>:</label></td>
 						<td>
-							<select name="fields[venue_id]">
+							<select name="fields[zone_id]">
 								<option value="0"><?php echo JText::_('Select...'); ?></option>
 <?php
-						if ($this->venues)
+						if ($this->zones)
 						{
-							foreach ($this->venues as $venue)
+							foreach ($this->zones as $zone)
 							{
 ?>
-								<option<?php if ($venue->id == $this->row->venue_id) { echo ' selected="selected"'; } ?> value="<?php echo $venue->id; ?>"><?php echo $this->escape(stripslashes($venue->venue)); ?></option>
+								<option<?php if ($zone->id == $this->row->zone_id) { echo ' selected="selected"'; } ?> value="<?php echo $zone->id; ?>"><?php echo $this->escape(stripslashes($zone->zone)); ?></option>
 <?php 
 							}
 						}

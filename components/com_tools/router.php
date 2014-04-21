@@ -146,6 +146,34 @@ function toolsParseRoute($segments)
 				$vars['task'] = $segments[0];
 			break;
 
+			// Zones controller
+			case 'zones':
+				if (isset($segments[3]))
+				{
+					$vars['option'] = 'com_tools';
+					$vars['controller'] = 'zones';
+					$vars['task'] = $segments[1];
+
+					switch($vars['task'])
+					{
+						case 'assets':
+							$vars['file'] = "/$segments[2]/$segments[3]";
+							array_pop($segments);
+							array_pop($segments);
+							array_pop($segments);
+							array_pop($segments);
+							break;
+						default:
+							$vars['task'] = 'notfound';
+							break;
+					}
+				}
+				else
+				{
+					$vars['task'] = 'notfound';
+				}
+				break;
+
 			default:
 				// This is an alias
 				// /tools/mytool => /resources/mytool
@@ -254,6 +282,7 @@ function toolsParseRoute($segments)
 				$vars['task'] = 'css';
 				$vars['controller'] = 'tools';
 			break;
+
 
 			default:
 				$vars['sess'] = $segments[1];
