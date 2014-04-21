@@ -140,6 +140,35 @@ class NewsletterMailinglist extends JTable
 			return $this->_db->loadObjectList();
 		}
 	}
+
+	/**
+	 * Get number of emails in list
+	 * @param  [type] $filters
+	 * @return [type]
+	 */
+	public function getListEmailsCount($filters)
+	{
+		$sql = "SELECT COUNT(*) FROM {$this->_tbl_assoc} AS mle";
+		$wheres = array();
+
+		if (isset($filters['lid']))
+		{
+			$wheres[] = "mle.mid=" . $this->_db->quote( $filters['lid'] );
+		}
+
+		if (isset($filters['status']))
+		{
+			$wheres[] = "mle.status=" . $this->_db->quote( $filters['status'] );
+		}
+
+		if (count($wheres) > 0)
+		{
+			$sql .= " WHERE " . implode(' AND ', $wheres);
+		}
+
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+	}
 	
 	
 	/**
@@ -161,10 +190,19 @@ class NewsletterMailinglist extends JTable
 		{
 			return $this->_getHubMailingList();
 		}
+
+		// default select
+		$select = "mle.*, (SELECT reason FROM #__newsletter_mailinglist_unsubscribes AS u 
+				WHERE mle.email=u.email AND mle.mid=u.mid) AS unsubscribe_reason";
+
+		// specific select
+		if (isset($filters['select']))
+		{
+			$select = $filters['select'];
+		}
 		
 		//get list of emails
-		$sql = "SELECT mle.*, (SELECT reason FROM #__newsletter_mailinglist_unsubscribes AS u 
-				WHERE mle.email=u.email AND mle.mid=u.mid) AS unsubscribe_reason 
+		$sql = "SELECT {$select} 
 				FROM {$this->_tbl_assoc} AS mle 
 				WHERE mle.mid=" . $this->_db->quote( $mailinglistId );
 				
@@ -183,8 +221,21 @@ class NewsletterMailinglist extends JTable
 		{
 			$sql .= " ORDER BY mle.id";
 		}
+
+		// limit and start
+		if (isset($filters['limit']))
+		{
+			$start = (isset($filters['start'])) ? $filters['start'] : 0;
+			$sql .= " LIMIT " . $start . ", " . $filters['limit'];
+		}
 		
 		$this->_db->setQuery( $sql );
+
+		if (isset($filters['select']))
+		{
+			return $this->_db->loadResultArray();
+		}
+
 		return $this->_db->loadObjectList( $key );
 	}
 	
