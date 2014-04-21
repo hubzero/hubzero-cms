@@ -351,7 +351,7 @@
 		*background: #fff;  
 		*filter: alpha(opacity = 1);
 	}
-	#app-venue {
+	#app-zone {
 		background: #4e5052;
 		-webkit-border-radius: 0 0 0.27em 0.27em;
 		-moz-border-radius: 0 0 0.27em 0.27em;
@@ -359,11 +359,11 @@
 		padding: 1em;
 		color: #999a9b;
 	}
-	#app-venue p {
+	#app-zone p {
 		margin: 0;
 		padding: 0;
 	}
-	#app-venue .venue-identity {
+	#app-zone .zone-identity {
 		width: 100px;
 		max-height: 100px;
 		overflow: hidden;
@@ -374,7 +374,7 @@
 		border-radius: 0.27em;
 		float: left;
 	}
-	#app-venue form {
+	#app-zone form {
 		margin: 0;
 		padding: 0.5em;
 		border: 1px solid #666;
@@ -383,7 +383,7 @@
 		border-radius: 0.27em;
 		font-size: 90%;
 	}
-	#app-venue form select {
+	#app-zone form select {
 		max-width: 10em;
 	}
 /* Disk usage */

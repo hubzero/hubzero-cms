@@ -1,0 +1,79 @@
+<?php
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Migration script for removing old venues tables in favor of zones
+ **/
+class Migration20140421112851ComTools extends Hubzero_Migration
+{
+	/**
+	 * Up
+	 **/
+	protected static function up($db)
+	{
+		/* We can just drop the old tables because they were never used on a live hub */
+
+		if ($db->tableExists('venues'))
+		{
+			$query = "DROP TABLE `venues`;";
+			$db->setQuery($query);
+			$db->query();
+		}
+
+		if ($db->tableExists('venue_locations'))
+		{
+			$query = "DROP TABLE `venue_locations`;";
+			$db->setQuery($query);
+			$db->query();
+		}
+
+		if ($db->tableExists('venue_countries'))
+		{
+			$query = "DROP TABLE `venue_countries`;";
+			$db->setQuery($query);
+			$db->query();
+		}
+
+		if (!$db->tableExists('zones'))
+		{
+			$query = "CREATE TABLE IF NOT EXISTS `zones` (
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
+			  `zone` varchar(40) DEFAULT NULL,
+			  `state` varchar(15) DEFAULT NULL,
+			  `type` varchar(10) DEFAULT NULL,
+			  `master` varchar(255) DEFAULT NULL,
+			  `mw_version` varchar(3) DEFAULT NULL,
+			  `ssh_key_path` varchar(200) DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM AUTO_INCREMENT DEFAULT CHARSET=utf8;";
+
+			$db->setQuery($query);
+			$db->query();
+		}
+
+		if (!$db->tableExists('zone_locations'))
+		{
+			$query = "CREATE TABLE IF NOT EXISTS `zone_locations` (
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
+			  `zone_id` int(11) NOT NULL,
+			  `ipFROM` int(10) unsigned zerofill NOT NULL DEFAULT '0000000000',
+			  `ipTO` int(10) unsigned zerofill NOT NULL DEFAULT '0000000000',
+			  `continent` char(2) NOT NULL,
+			  `countrySHORT` char(2) NOT NULL,
+			  `countryLONG` varchar(64) NOT NULL,
+			  `ipREGION` varchar(128) NOT NULL,
+			  `ipCITY` varchar(128) NOT NULL,
+			  `ipLATITUDE` double DEFAULT NULL,
+			  `ipLONGITUDE` double DEFAULT NULL,
+			  `notes` varchar(128) DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM AUTO_INCREMENT DEFAULT CHARSET=utf8;";
+
+			$db->setQuery($query);
+			$db->query();
+		}
+
+	}
+}

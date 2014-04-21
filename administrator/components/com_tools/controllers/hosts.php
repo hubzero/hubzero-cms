@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'venue.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'zone.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
 
@@ -253,8 +253,8 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$ht = new MwHosttype($mwdb);
 		$this->view->hosttypes = $ht->getRecords();
 
-		$v = new MwVenue($mwdb);
-		$this->view->venues = $v->getRecords();
+		$v = new MwZones($mwdb);
+		$this->view->zones = $v->getRecords();
 		
 		//make sure we have a hostname
 		if($this->view->row->hostname != '')

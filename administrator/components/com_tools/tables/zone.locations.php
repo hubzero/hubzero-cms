@@ -32,9 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Middleware venue table class
+ * Middleware zone locations table class
  */
-class MwVenue extends JTable
+class MwZoneLocations extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -44,25 +44,80 @@ class MwVenue extends JTable
 	var $id;
 
 	/**
-	 * varchar(255)
+	 * int(11)
 	 * 
-	 * @var string
+	 * @var integer
 	 */
-	var $venue;
-
-	/**
-	 * varchar(20)
-	 * 
-	 * @var string
-	 */
-	var $state;
+	var $zone_id;
 
 	/**
 	 * varchar(255)
 	 * 
 	 * @var string
 	 */
-	var $master;
+	var $ipFROM;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $ipTO;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $continent;
+
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $countrySHORT;
+
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $countryLONG;
+
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $ipREGION;
+
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $ipCity;
+
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $ipLATITUDE;
+
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $ipLONGITUDE;
 
 	/**
 	 * Constructor
@@ -72,7 +127,7 @@ class MwVenue extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('venue', 'id', $db);
+		parent::__construct('zone_locations', 'id', $db);
 	}
 
 	/**
@@ -82,27 +137,10 @@ class MwVenue extends JTable
 	 */
 	public function check()
 	{
-		$this->venue = trim($this->venue); //preg_replace("/[^A-Za-z0-9-.]/", '', $this->venue);
-		if (!$this->venue) 
+		$this->zone_id = intval($this->zone_id);
+		if (!$this->zone_id) 
 		{
-			$this->setError(JText::_('No venue provided'));
-			return false;
-		}
-		$this->master = trim($this->master);
-		if (!$this->master) 
-		{
-			$this->setError(JText::_('No master provided'));
-			return false;
-		}
-		$this->state = strtolower(trim($this->state));
-		if (!$this->state) 
-		{
-			$this->setError(JText::_('No state provided.'));
-			return false;
-		}
-		if (!in_array($this->state, array('up', 'down')))
-		{
-			$this->setError(JText::_('Invalid state provided.'));
+			$this->setError(JText::_('No zone ID provided'));
 			return false;
 		}
 
@@ -110,27 +148,32 @@ class MwVenue extends JTable
 	}
 
 	/**
-	 * Delete a record and any associated records in the #__venue_locations table
+	 * Delete one or more records by zone ID
 	 *
-	 * @param      integer $oid Record ID
+	 * @param      integer $zone_id Zone ID
 	 * @return     boolean True if successful otherwise returns and error message
 	 */
-	public function delete($oid=null)
+	public function deleteByZone($zone_id=null)
 	{
-		$k = $this->_tbl_key;
-		if ($oid) 
+		$zone_id = intval($zone_id);
+		if (!$zone_id)
 		{
-			$this->$k = $oid;
+			$zone_id = $this->zone_id;
 		}
 
-		$location = new MwVenueLocation($this->_db);
-		if (!$location->deleteByVenue($oid))
+		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) .
+				' WHERE zone_id = ' . $this->_db->Quote($zone_id);
+		$this->_db->setQuery($query);
+
+		if ($this->_db->query())
 		{
-			$this->setError($location->getError());
+			return true;
+		}
+		else
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-
-		return parent::delete($oid);
 	}
 
 	/**
@@ -143,30 +186,14 @@ class MwVenue extends JTable
 	{
 		$where = array();
 
-		if (isset($filters['state']) && $filters['state'] != '') 
+		if (isset($filters['zone_id']) && $filters['zone_id'] != '') 
 		{
-			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
-		}
-		if (isset($filters['master']) && $filters['master'] != '') 
-		{
-			$where[] = "c.`master`=" . $this->_db->Quote($filters['master']);
-		}
-		if (isset($filters['venue']) && $filters['venue'] != '') 
-		{
-			$where[] = "c.`venue`=" . $this->_db->Quote($filters['venue']);
-		}
-
-		if (isset($filters['search']) && $filters['search'] != '') 
-		{
-			$where[] = "(LOWER(c.venue) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.master) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "c.`zone_id`=" . $this->_db->Quote($filters['zone_id']);
 		}
 
 		$query = "FROM $this->_tbl AS c";
-		if (isset($filters['location']) && $filters['location']) 
-		{
-			$query .= " JOIN venue_locations AS t ON c.id=t.venue_id";
-			$where[] = "t.location = " . $this->_db->Quote($this->view->filters['location']);
-		}
+		$query .= " JOIN zones AS t ON c.zone_id=t.id";
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -200,17 +227,17 @@ class MwVenue extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT c.* " . $this->_buildQuery($filters);
+		$query  = "SELECT c.*, t.zone " . $this->_buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
-			$filters['sort'] = 'venue';
+			$filters['sort'] = 'id';
 		}
 		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
-		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		$query .= " ORDER BY c.zone_id, " . $filters['sort'] . " " . $filters['sort_Dir'];
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{

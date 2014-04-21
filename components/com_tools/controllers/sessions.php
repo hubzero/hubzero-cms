@@ -35,6 +35,8 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.view.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.zones.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'zones.php');
 
 /**
  * Tools controller class for simulation sessions
@@ -546,6 +548,10 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return;
 		}
 
+                $country = Hubzero_Geo::ipcountry($app->ip);
+
+		//die($app->ip . $country);
+
 		// Log the launch attempt
 		$this->_recordUsage($app->toolname, $this->juser->get('id'));
 
@@ -910,6 +916,25 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess);
 			return;
+		}
+
+		$z = new MwZones($mwdb);
+		$zone_row = $z->load($row->zone_id);
+
+		if ($zone_row->id == $row->zone_id)
+		{
+			$this->view->zones    = ToolsModelZones::getExecutionZones();
+			$this->view->zone     = $zone_row->zone;
+			$this->view->zone_id  = $zone_row->id;
+			$this->view->zone_pic = '/tools/zones/assets/' . $zone_row->id . '/' . $zone_row->pic;
+var_dump($this->view);//die('hi');
+		}
+		else
+		{
+			$this->view->zones    = array();
+			$this->view->zone     = '';
+			$this->view->zone_id  = '';
+			$this->view->zone_pic = '';
 		}
 
 		if (strstr($row->appname, '_')) 
