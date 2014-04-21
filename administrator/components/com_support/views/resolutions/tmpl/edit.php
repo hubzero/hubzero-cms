@@ -57,16 +57,12 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="title"><?php echo JText::_('RESOLUTION_TEXT'); ?>:</label></td>
-					<td><input type="text" name="res[title]" id="title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" /></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="input-wrap">
+			<label for="field-title"><?php echo JText::_('RESOLUTION_TEXT'); ?>:</label><br />
+			<input type="text" name="res[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" />
+		</div>
 	</fieldset>
-	
+
 	<input type="hidden" name="res[alias]" value="<?php echo $this->row->alias; ?>" />
 	<input type="hidden" name="res[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

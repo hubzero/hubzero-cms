@@ -32,6 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'REPORT_ABUSE' ), 'support.png' );
 
+JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -48,15 +49,15 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label><?php echo JText::_('SHOW'); ?>:</label> 
-		<select name="state" onchange="document.adminForm.submit( );">
+		<label for="filter-state"><?php echo JText::_('SHOW'); ?>:</label> 
+		<select name="state" id="filter-state" onchange="document.adminForm.submit( );">
 			<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('OUTSTANDING'); ?></option>
 			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('RELEASED'); ?></option>
 			<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('DELETED'); ?></option>
 		</select>
 
-		<label><?php echo JText::_('SORT_BY'); ?>:</label> 
-		<select name="sortby" onchange="document.adminForm.submit( );">
+		<label for="filter-sortby"><?php echo JText::_('SORT_BY'); ?>:</label> 
+		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit( );">
 			<option value="a.category"<?php if ($this->filters['sortby'] == 'a.category') { echo ' selected="selected"'; } ?>><?php echo JText::_('CATEGORY'); ?></option>
 			<option value="a.created DESC"<?php if ($this->filters['sortby'] == 'a.created DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('MOST_RECENT'); ?></option>
 		</select>
@@ -66,12 +67,12 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('ID'); ?></th>
-				<th><?php echo JText::_('STATUS'); ?></th>
-				<th><?php echo JText::_('REPORTED_ITEM'); ?></th>
-				<th><?php echo JText::_('REASON'); ?></th>
-				<th><?php echo JText::_('BY'); ?></th>
-				<th><?php echo JText::_('DATE'); ?></th>
+				<th scope="col"><?php echo JText::_('ID'); ?></th>
+				<th scope="col"><?php echo JText::_('STATUS'); ?></th>
+				<th scope="col"><?php echo JText::_('REPORTED_ITEM'); ?></th>
+				<th scope="col"><?php echo JText::_('REASON'); ?></th>
+				<th scope="col"><?php echo JText::_('BY'); ?></th>
+				<th scope="col"><?php echo JText::_('DATE'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -93,7 +94,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$status = JText::_('RELEASED');
 			break;
 		case '0':
-			$status = '<span class="yes">'.JText::_('NEW').'</span>';
+			$status = JText::_('NEW');
 			break;
 	}
 

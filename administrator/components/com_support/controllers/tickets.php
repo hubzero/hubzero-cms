@@ -51,10 +51,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
-		// Push some styles to the template
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
-
 		$obj = new SupportTicket($this->database);
 
 		// Get filters

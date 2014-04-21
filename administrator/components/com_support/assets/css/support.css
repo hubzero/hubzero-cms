@@ -881,17 +881,13 @@
 	}
 
 	#ticketForm {
-		padding-top: 1px;
-		margin: -2.23606798em;
+		/*padding-top: 1px;
+		margin: -2.23606798em;*/
 		position: relative;
 		overflow: hidden;
 	}
 
 	#ticketForm fieldset#filter-bar {
-		/*border-bottom: 1px solid #000;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.9);
-		*border-bottom: 1px solid #000;
-		padding: 1em;*/
 		padding: 0;
 		margin: 0;
 		border: none;
@@ -904,14 +900,8 @@
 	}
 	#ticketForm fieldset#filter #filter_search, 
 	#ticketForm fieldset#filter-bar #filter_search {
-		/*background-color: rgba(0, 0, 0, 0.3);
-		border: 1px solid rgba(255, 255, 255, 0.1);*/
 		background-color: #6a6a6a;
 		border: none;
-		/*-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		border-radius: 0.25em;
-		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.6);*/
 		background-position: 5px 50%;
 		margin: 0;
 		width: 100%;
@@ -970,7 +960,6 @@
 	}
 
 	#ticketForm .fltlft {
-		/*background: #3a3a3a url("../img/linen-100.png");*/
 		background: #2d2d2d url("../img/noise-100.png");
 		width: 250px;
 		margin-bottom: -2000px;
@@ -1462,26 +1451,6 @@
 			        -webkit-linear-gradient(#e4e4e4 25%, #e2e2e2 25%, #e2e2e2 50%, transparent 50%, transparent 75%, #ececec 75%, #ececec);
 		background-color: #dbdbdb;
 		background-size: 20px 20px;
-		/*background: -webkit-linear-gradient(27deg, #dddddd 5px, transparent 5px) 0 5px,
-			        -webkit-linear-gradient(207deg, #dddddd 5px, transparent 5px) 10px 0px,
-			        -webkit-linear-gradient(27deg, #eaeaea 5px, transparent 5px) 0px 10px,
-			        -webkit-linear-gradient(207deg, #eaeaea 5px, transparent 5px) 10px 5px,
-			        -webkit-linear-gradient(90deg, #e3e3e3 10px, transparent 10px),
-			        -webkit-linear-gradient(#e4e4e4 25%, #e2e2e2 25%, #e2e2e2 50%, transparent 50%, transparent 75%, #efefef 75%, #efefef);
-		background: -moz-linear-gradient(27deg, #dddddd 5px, transparent 5px) 0 5px,
-			        -moz-linear-gradient(207deg, #dddddd 5px, transparent 5px) 10px 0px,
-			        -moz-linear-gradient(27deg, #eaeaea 5px, transparent 5px) 0px 10px,
-			        -moz-linear-gradient(207deg, #eaeaea 5px, transparent 5px) 10px 5px,
-			        -moz-linear-gradient(90deg, #e3e3e3 10px, transparent 10px),
-			        -moz-linear-gradient(#e4e4e4 25%, #e2e2e2 25%, #e2e2e2 50%, transparent 50%, transparent 75%, #efefef 75%, #efefef);
-		background: linear-gradient(27deg, #dddddd 5px, transparent 5px) 0 5px,
-			        linear-gradient(207deg, #dddddd 5px, transparent 5px) 10px 0px,
-			        linear-gradient(27deg, #eaeaea 5px, transparent 5px) 0px 10px,
-			        linear-gradient(207deg, #eaeaea 5px, transparent 5px) 10px 5px,
-			        linear-gradient(90deg, #e3e3e3 10px, transparent 10px),
-			        linear-gradient(#e4e4e4 25%, #e2e2e2 25%, #e2e2e2 50%, transparent 50%, transparent 75%, #efefef 75%, #efefef);
-		background-color: #131313;
-		background-size: 20px 20px;*/
 	}
 
 	.com_support .ticket-watch {
@@ -1728,8 +1697,6 @@
 	}
 	.sort-options ul li a {
 		color: #fff;
-		/*background-color: #636166;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);*/
 		text-decoration: none;
 		font-weight: normal;
 		line-height: 1em;
@@ -1746,26 +1713,6 @@
 	.sort-options ul li a:hover {
 		color: #fff;
 	}
-	/*#tktlist thead a {
-		display: inline-block;
-		cursor: pointer;
-		font-weight: normal;
-		line-height: 1em;
-		border: none;
-		margin: 0;
-		padding: 0.4em 0.75em;
-		color: #fff;
-		text-shadow: none;
-	}
-	#tktlist thead a.active {
-		color: #fff;
-		background-color: #2a2a2a;
-		-webkit-border-radius: 1em;
-		-moz-border-radius: 1em;
-		-ms-border-radius: 1em;
-		-o-border-radius: 1em;
-		border-radius: 1em;
-	}*/
 	.sort-options ul li a.active {
 		color: #fff;
 	}
@@ -1775,27 +1722,6 @@
 	.sort-options ul li a.asc:before {
 		content: "\2191";
 	}
-	/*.sort-options .item-count:before {
-		content: "(";
-	}
-	.sort-options .item-count:after {
-		content: ")";
-	}
-	.sort-options a:before {
-		display: none;
-	}
-	.sort-options ul li.active>a {
-		background-color: #333;
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		-ms-border-radius: 10px;
-		-o-border-radius: 10px;
-		border-radius: 10px;
-	}
-	.sort-options li.active ul ul a,
-	.sort-options ul ul a {
-		padding-left: 2em;
-	}*/
 	.sort-options li:hover ul,
 	.sort-options li:focus ul {
 		visibility: visible;

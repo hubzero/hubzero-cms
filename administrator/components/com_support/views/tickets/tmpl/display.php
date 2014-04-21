@@ -40,6 +40,8 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('tickets.html', true);
 
 JHTML::_('behavior.tooltip');
+
+$this->css();
 ?>
 
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="ticketForm">

@@ -31,6 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
+
 JToolBarHelper::title( JText::_( 'Support' ).': '. $text, 'support.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -38,9 +39,6 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('messages.html', true);
 
 $jconfig = JFactory::getConfig();
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -65,19 +63,16 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MESSAGE_LEGEND'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="title"><?php echo JText::_('MESSAGE_SUMMARY'); ?>: <span class="required">*</span></label></td>
-						<td><input type="text" name="msg[title]" id="title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" /></td>
-					</tr>
-		 			<tr>
-						<td class="key" style="vertical-align: top;"><label for="message"><?php echo JText::_('MESSAGE_TEXT'); ?>: <span class="required">*</span></label></th>
-						<td><?php echo $editor->display('msg[message]', $this->escape(stripslashes($this->row->message)), '', '', '50', '10'); ?></td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('MESSAGE_SUMMARY'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="msg[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-message"><?php echo JText::_('MESSAGE_TEXT'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<textarea name="msg[message]" id="field-message" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->message)); ?></textarea>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">

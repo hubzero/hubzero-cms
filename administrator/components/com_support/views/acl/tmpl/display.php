@@ -196,112 +196,104 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td style="text-align:center;"><?php echo $row->id; ?></td>
 				<td><?php echo $row->alias; ?> (<?php echo $row->foreign_key; ?>)</td>
 				<td><?php echo $row->model; ?></td>
-				
 				<td style="text-align:center;">
 					<?php 
-					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
 					$cls = 'unpublish';
-					if ($data['tickets']['read']) {
-						$cimg = 'publish_g.png';
+					if ($data['tickets']['read']) 
+					{
 						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=read&amp;value=<?php echo $data['tickets']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
 					$cls = 'unpublish';
-					if ($data['tickets']['update']) {
-						$cimg = 'publish_g.png';
+					if ($data['tickets']['update']) 
+					{
 						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=update&amp;value=<?php echo $data['tickets']['update'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
 					$cls = 'unpublish';
-					if ($data['tickets']['delete']) {
-						$cimg = 'publish_g.png';
+					if ($data['tickets']['delete']) 
+					{
 						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=delete&amp;value=<?php echo $data['tickets']['delete'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 
 				<td style="text-align:center;">
 					<?php 
-					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
 					$cls = 'unpublish';
-					if ($data['comments']['create']) {
-						$cimg = 'publish_g.png';
+					if ($data['comments']['create']) 
+					{
 						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
 					$cls = 'unpublish';
-					if ($data['comments']['read']) {
-						$cimg = 'publish_g.png';
+					if ($data['comments']['read']) 
+					{
 						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 
 				<td style="text-align:center;">
 					<?php 
-					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
 					$cls = 'unpublish';
-					if ($data['private_comments']['create']) {
-						$cimg = 'publish_g.png';
+					if ($data['private_comments']['create']) 
+					{
 						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['private_comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
 					$cls = 'unpublish';
-					if ($data['private_comments']['read']) {
-						$cimg = 'publish_g.png';
+					if ($data['private_comments']['read']) 
+					{
 						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['private_comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
+						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td> </td>
