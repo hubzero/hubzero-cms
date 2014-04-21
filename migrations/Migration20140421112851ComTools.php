@@ -47,7 +47,7 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 			  `mw_version` varchar(3) DEFAULT NULL,
 			  `ssh_key_path` varchar(200) DEFAULT NULL,
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT DEFAULT CHARSET=utf8;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$db->setQuery($query);
 			$db->query();
@@ -69,7 +69,7 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 			  `ipLONGITUDE` double DEFAULT NULL,
 			  `notes` varchar(128) DEFAULT NULL,
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT DEFAULT CHARSET=utf8;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$db->setQuery($query);
 			$db->query();
