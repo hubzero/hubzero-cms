@@ -165,9 +165,13 @@ class plgEditorCkeditor extends JPlugin
 		$atts = array();
 		foreach ($params as $key => $value)
 		{
+			if (is_array($value))
+			{
+				$value = implode(';', $value);
+			}
 			$atts[] = $key .'="' . $value . '"';
 		}
-
+		
 		// output html and script
 		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
 		if (JFactory::getApplication()->isAdmin())
