@@ -75,14 +75,13 @@ function buttonSelect(post)
 {
 		
 	jQuery('.btnGrp' + post.record_id).each(function(){
-		if(jQuery(this).hasClass('active'))
+		if(jQuery(this).prop('disabled'))
 		{
-			jQuery(this).removeClass("active");
+			jQuery(this).removeAttr('disabled');
 		}		
 	});
-	
-	jQuery('#' + post.action + '-' + post.record_id).addClass("active");
-	jQuery('#' + post.action + '-prev-' + post.record_id).addClass("active");
+	jQuery('#' + post.action + '-' + post.record_id).attr('disabled','disabled');
+	jQuery('#' + post.action + '-prev-' + post.record_id).attr('disabled','disabled');
 	
 	return post;
 }
