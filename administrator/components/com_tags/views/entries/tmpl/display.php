@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 			<input type="submit" name="filter_submit" value="<?php echo JText::_('GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
-		<div class="col width-50 fltrt" style="text-align: right;">
+		<div class="col width-50 fltrt">
 			<label for="filter-filterby"><?php echo JText::_('FILTER'); ?>:</label>
 			<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
 				<option value="all"<?php if ($this->filters['by'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_ALL_TAGS'); ?></option>
