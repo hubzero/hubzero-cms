@@ -136,7 +136,7 @@ foreach($assets as $asset)
 				// Get the date of the completion
 				if (!is_null($resp->getEndTime()))
 				{
-					$date = date('r', strtotime($resp->getEndTime()));
+					$date = JHTML::_('date', $resp->getEndTime(), 'r');
 				}
 				else
 				{
@@ -171,7 +171,7 @@ foreach($assets as $asset)
 					}
 
 					// Get the date of the completion
-					$date = date('r', strtotime($resp->getEndTime()));
+					$date = JHTML::_('date', $resp->getEndTime(), 'r');
 
 					// They have completed this form, therefor set increment_count_taken equal to true
 					$increment_count_taken = true;
