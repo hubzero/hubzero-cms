@@ -270,8 +270,6 @@ class Rule
 				}
 			}
 			else if ($rule['rule'] == 'notReused') {
-				$passhash = "{MD5}" . base64_encode(pack('H*', md5($password)));
-
 				$date = new \DateTime('now');
 				$date->modify("-" . $rule['value'] . "day");
 
@@ -280,7 +278,7 @@ class Rule
 					continue;
 				}
 
-				if ($phist->exists($passhash, $date->format("Y-m-d H:i:s"))) {
+				if ($phist->exists($password, $date->format("Y-m-d H:i:s"))) {
 					$fail[] = $rule['failuremsg'];
 				}
 			}

@@ -143,39 +143,42 @@ class History
 	}
 
 	/**
-	 * Check if a passhash exists for a user
+	 * Check if a password exists for a user
 	 * 
-	 * @param   string $passhash
+	 * @param   string $password
 	 * @param   string $since
 	 * @return  boolean
 	 */
-	public function exists($passhash = null, $since =  null)
+	public function exists($password = null, $since = null)
 	{
 		$db = \JFactory::getDBO();
 
-		if (empty($db)) 
+		if (empty($db))
 		{
 			return false;
 		}
 
-		$query = "SELECT 1 FROM #__users_password_history WHERE " .
-			"user_id=" . $db->Quote($this->user_id) . " AND " .
-			"passhash=" . $db->Quote($passhash);
+		$query = "SELECT `passhash` FROM `#__users_password_history` WHERE user_id = " . $db->Quote($this->user_id);
 
-		if (!empty($since)) 
+		if (!empty($since))
 		{
 			$query .= " AND invalidated >= " . $db->Quote($since);
 		}
 
-		$query .= ";";
-
 		$db->setQuery($query);
 
-		$result = $db->loadResult();
+		$results = $db->loadObjectList();
 
-		if ($result == '1') 
+		if ($results && count($results) > 0)
 		{
-			return true;
+			foreach ($results as $result)
+			{
+				$compare = \Hubzero\User\Password::comparePasswords($result->passhash, $password);
+				if ($compare)
+				{
+					return true;
+				}
+			}
 		}
 
 		return false;

@@ -591,9 +591,31 @@ class Password
 		return true;
 	}
 
+	public static function getPasshash($password)
+	{
+		// Get the password encryption/hashing mechanism
+		$config = \JComponentHelper::getParams('com_members');
+		$type   = $config->get('passhash_mechanism', 'CRYPT_SHA512');
+
+		switch ($type)
+		{
+			case 'MD5':
+				$passhash = "{MD5}" . base64_encode(pack('H*', md5($password)));
+				break;
+
+			case 'CRYPT_SHA512':
+			default:
+				$encrypted = crypt($password, '$6$' . \JUserHelper::genRandomPassword(8) . '$');
+				$passhash = "{CRYPT}" . $encrypted;
+				break;
+		}
+
+		return $passhash;
+	}
+
 	public static function changePassword($user = null, $password)
 	{
-		$passhash = "{MD5}" . base64_encode(pack('H*', md5($password)));
+		$passhash = self::getPasshash($password);
 
 		return self::changePasshash($user, $passhash);
 	}
@@ -601,17 +623,18 @@ class Password
 	public static function changePasshash($user = null, $passhash)
 	{
 		// Get config values for min, max, and warning
-		$config = \JComponentHelper::getParams('com_members');
-		$shadowMin = $config->get('shadowMin', '0');
-		$shadowMax = $config->get('shadowMax', null);
+		$config        = \JComponentHelper::getParams('com_members');
+		$shadowMin     = $config->get('shadowMin', '0');
+		$shadowMax     = $config->get('shadowMax', null);
 		$shadowWarning = $config->get('shadowWarning', '7');
-		
+
+		// Translate empty shadowMax to mean NULL
 		$shadowMax = ($shadowMax == '') ? null : $shadowMax;
-		
+
 		$hzup = self::getInstance($user);
-		
+
 		$oldhash = $hzup->__get('passhash');
-		
+
 		$hzup->__set('passhash', $passhash);
 		$hzup->__set('shadowFlag', null);
 		$hzup->__set('shadowLastChange', intval(time() / 86400));
@@ -621,20 +644,20 @@ class Password
 		$hzup->__set('shadowInactive', '0');
 		$hzup->__set('shadowExpire', null);
 		$hzup->update();
-		
+
 		$db = \JFactory::getDBO();
-		
-		$db->setQuery("UPDATE #__xprofiles SET userPassword=" . $db->Quote($passhash) . " WHERE uidNumber=" . $db->Quote($hzup->get('user_id')) . ";");
+
+		$db->setQuery("UPDATE `#__xprofiles` SET userPassword=" . $db->Quote($passhash) . " WHERE uidNumber=" . $db->Quote($hzup->get('user_id')));
 		$db->query();
-		
-		$db->setQuery("UPDATE #__users SET password=" . $db->Quote($passhash) . " WHERE id=" . $db->Quote($hzup->get('user_id')) . ";");
+
+		$db->setQuery("UPDATE `#__users` SET password=" . $db->Quote($passhash) . " WHERE id=" . $db->Quote($hzup->get('user_id')));
 		$db->query();
-		
+
 		if (!empty($oldhash))
 		{
 			History::addPassword($oldhash, $user);
 		}
-		
+
 		return true;
 	}
 
@@ -644,37 +667,50 @@ class Password
 		{
 			return false;
 		}
-		
+
 		preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/", $passhash, $matches);
-		
+
 		$encryption = strtolower($matches[2]);
-		
+
 		if (empty($encryption))
 		{ // Joomla
 			$encryption = "md5-hex";
-			
+
 			if (!empty($matches[4]))
 			{ // Joomla 1.5
 				$crypt = $matches[4];
-				$salt = $matches[5];
+				$salt  = $matches[5];
 			}
 			else
 			{ // Joomla 1.0
 				$crypt = $matches[5];
-				$salt = '';
+				$salt  = '';
 			}
 		}
 		else
 		{
-			$salt = $matches[4];
+			$salt  = $matches[4];
 			$crypt = $matches[5];
 		}
-		
+
 		if ($encryption == 'md5')
 		{
 			$encryption = "md5-base64";
 		}
-		
+		else if ($encryption == 'crypt')
+		{
+			preg_match('/\$([[:alnum:]]{1,2})\$[[:alnum:]]{8}\$/', $passhash, $parts);
+			$salt = $parts[0];
+
+			switch ($parts[1])
+			{
+				case '6':
+				default:
+					$encryption = 'crypt-sha512';
+					break;
+			}
+		}
+
 		if (empty($salt) && ($encryption == 'ssha'))
 		{
 			$salt = substr(base64_decode(substr($crypt, -32)), -4);
@@ -685,16 +721,16 @@ class Password
 			jimport('joomla.user.helper');
 			$hashed = \JUserHelper::getCryptedPassword($password, $salt, $encryption);
 		}
-		
+
 		return ($crypt == $hashed);
 	}
 
 	public static function passwordMatches($user = null, $password, $alltables = false)
 	{
 		$passhash = null;
-		
+
 		$hzup = self::getInstance($user);
-		
+
 		if (is_object($hzup) && !empty($hzup->passhash))
 		{
 			$passhash = $hzup->passhash;
@@ -702,7 +738,7 @@ class Password
 		else if ($alltables)
 		{
 			$profile = Profile::getInstance($user);
-			
+
 			if (is_object($profile) && ($profile->get('userPassword') != ''))
 			{
 				$passhash = $profile->get('userPassword');
@@ -710,14 +746,14 @@ class Password
 			else
 			{
 				$user = \JUser::getInstance($user);
-				
+
 				if (is_object($user) && !empty($user->password))
 				{
 					$passhash = $user->password;
 				}
 			}
 		}
-		
+
 		return self::comparePasswords($passhash, $password);
 	}
 

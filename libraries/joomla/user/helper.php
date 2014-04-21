@@ -412,6 +412,7 @@ abstract class JUserHelper
 			case 'crypt-des':
 			case 'crypt-md5':
 			case 'crypt-blowfish':
+			case 'crypt-sha512':
 				return ($show_encrypt ? '{crypt}' : '') . crypt($plaintext, $salt);
 
 			case 'md5-base64':
@@ -535,6 +536,17 @@ abstract class JUserHelper
 				else
 				{
 					return '$2$' . substr(md5(mt_rand()), 0, 12) . '$';
+				}
+				break;
+
+			case 'crypt-sha512':
+				if ($seed)
+				{
+					return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 12);
+				}
+				else
+				{
+					return '$6$' . substr(md5(mt_rand()), 0, 8) . '$';
 				}
 				break;
 
