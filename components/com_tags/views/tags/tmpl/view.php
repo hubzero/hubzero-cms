@@ -265,7 +265,7 @@ foreach ($this->results as $category)
 				$dopaging = true;
 			}
 		} else {
-			$total = $this->cats[$k]['total'];
+			$total = $cats[$k]['total'];
 
 			// It is not - does this category have sub-categories?
 			if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
