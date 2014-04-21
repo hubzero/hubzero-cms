@@ -676,41 +676,71 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 			return;
 		}
 		
-		//make sure it wasnt deleted
+		// make sure it wasnt deleted
 		if ($newsletterNewsletter->deleted == 1)
 		{
 			$this->setError('The newsletter you are attempting to send has been previously deleted.');
 			$this->displayTask();
 			return;
 		}
-		
-		//get emails based on mailing list
+
+		// get emails based on mailing list
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
-		$filters = array( 'status' => 'active' );
-		$emails = array_keys( $newsletterMailinglist->getListEmails( $mailinglistId, 'email', $filters ) );
-		
-		//make sure we have emails
-		if (count($emails) < 1)
+
+		// build newsletter for sending
+		$newsletterNewsletterContent = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
+
+		// send campaign
+		// purposefully send no emails, will create later
+		$newsletterMailing = $this->_send( $newsletterNewsletter, $newsletterNewsletterContent, array(), $mailinglistId, $sendingTest = false );
+
+		// array of filters
+		$filters = array(
+			'lid'    => $mailinglistId,
+			'status' => 'active',
+			'limit'  => 10000,
+			'start'  => 0,
+			'select' => 'email'
+		);
+
+		// get count of emails
+		$count = $newsletterMailinglist->getListEmailsCount($filters);
+		$left  = $count;
+
+		// make sure we have emails
+		if ($count < 1)
 		{
 			$this->setError('The newsletter mailing list you are attempting to send the newsletter to has no members. Please add emails to the mailing list and try again.');
 			$this->displayTask();
 			return;
 		}
-		
-		//build newsletter for sending
-		$newsletterNewsletterContent = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
-		
-		//$newsletterNewsletterContent = \Hubzero\Image\MozifyHelper::mozifyHtml( $newsletterNewsletterContent, 5 );
-		
-		//send campaign
-		$this->_send( $newsletterNewsletter, $newsletterNewsletterContent, $emails, $mailinglistId, $sendingTest = false );
+
+		// add recipients at 10000 at a time
+		while ($left >= 0)
+		{
+			// get emails
+			$emails = $newsletterMailinglist->getListEmails( $mailinglistId, 'email', $filters );
+
+			// add recipeients
+			$this->_sendTo($newsletterMailing, $emails);
+
+			// nullify vars
+			$emails = null;
+			unset($emails);
+
+			//adjust our start
+			$filters['start'] += $filters['limit'];
+
+			// remove from what we have left to get
+			$left -= $filters['limit'];
+		}
 		
 		//mark campaign as sent
 		$newsletterNewsletter->sent = 1;
 		if ($newsletterNewsletter->save( $newsletterNewsletter ))
 		{
 			//set message for user
-			$this->_message = JText::_($newsletterNewsletter->name . ' has or will be sent to "' . count($emails) . '" members.');
+			$this->_message = JText::_($newsletterNewsletter->name . ' has or will be sent to "' . number_format($count) . '" members.');
 
 			//redirect after sent
 			$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
@@ -855,22 +885,47 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 			return;
 		}
 		
-		//loop through each email and send mail
-		foreach ($newsletterContacts as $contact)
-		{
-			//create mailing recipient object
-			$mailingRecipient 				= new stdClass;
-			$mailingRecipient->mid 			= $newsletterMailing->id;
-			$mailingRecipient->email 		= $contact;
-			$mailingRecipient->status 		= 'queued';
-			$mailingRecipient->date_added 	= JFactory::getDate()->toSql();
-			
-			//save mailing recipient object
-			$newsletterMailingRecipient = new NewsletterMailingRecipient( $this->database );
-			$newsletterMailingRecipient->save( $mailingRecipient );
-		}
+		// create recipients
+		$this->_sendTo($newsletterMailing, $newsletterContacts);
 		
-		return true;
+		return $newsletterMailing;
+	}
+
+	/**
+	 * Create newsletter mailing recipients 
+	 * 
+	 * @param  [type] $mailing
+	 * @param  [type] $emails
+	 * @return [type]
+	 */
+	private function _sendTo($mailing, &$emails)
+	{
+		// array to hold values
+		$values = array();
+
+		// create date object once
+		$date = JFactory::getDate()->toSql();
+
+		// create new record for each email
+		foreach ($emails as $email)
+		{
+			$values[] = "(" . $this->database->quote($mailing->id) . "," . $this->database->quote($email) . ",'queued', " . $this->database->quote($date) . ")";
+		}
+
+		// make sure we have some values
+		if (count($values) > 0)
+		{
+			// build full query & execute
+			$sql = "INSERT INTO `#__newsletter_mailing_recipients` (`mid`,`email`,`status`,`date_added`) VALUES " . implode(',', $values);
+			$this->database->setQuery($sql);
+			$this->database->query();
+		}
+
+		// garbage collection
+		$values = null;
+		$sql    = null;
+		unset($values);
+		unset($sql);
 	}
 	
 	
