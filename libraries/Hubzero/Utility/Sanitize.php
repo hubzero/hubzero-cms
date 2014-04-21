@@ -296,6 +296,7 @@ class Sanitize
 		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', true);
 		$config->set('Output.CommentScriptContents', false);
 		$config->set('Output.TidyFormat', true);
+		$config->set('Attr.AllowedFrameTargets', array('_blank'));
 
 		$path = JPATH_ROOT . DS . 'cache' . DS . 'htmlpurifier';
 		if (!is_dir($path)) 
