@@ -1567,8 +1567,8 @@
 /* Buttons & Icons */
 	a.btn,
 	.btn {
-		color: #555;
-		border-color: #CCC #CCC #AAA #AAA;
+		/*color: #555;
+		border-color: #CCC #CCC #AAA #AAA;*/
 	}
 	#page_options .btn,
 	#content-header-extra .btn {

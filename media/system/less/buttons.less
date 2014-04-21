@@ -66,7 +66,7 @@
 	// Disabled state
 	&.disabled,
 	&[disabled] {
-		cursor: default;
+		cursor: not-allowed;
 		background-image: none;
 		.opacity(65);
 		.box-shadow(none);
@@ -145,47 +145,60 @@
 		color: @btnPrimaryColor;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.85);
+		.buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
+		.box-shadow(~"inset 0 0 0 #FFF");
 		border: 1px solid @btnPrimaryBorder;
 		border-right-color: darken(@btnPrimaryBorder, 10%);
 		border-bottom-color: darken(@btnPrimaryBorder, 10%);
-		.buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
 	}
 	// Warning appears are orange
 	.btn-warning {
 		color: @btnWarningColor !important;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+		.buttonBackground(@btnWarningBackground, @btnWarningBackgroundHighlight);
+		.box-shadow(~"inset 0 0 0 #FFF");
 		border: 1px solid @btnWarningBorder;
 		border-right-color: darken(@btnWarningBorder, 10%);
 		border-bottom-color: darken(@btnWarningBorder, 10%);
-		.buttonBackground(@btnWarningBackground, @btnWarningBackgroundHighlight);
 	}
 	// Danger and error appear as red
 	.btn-error,
 	.btn-danger {
 		color: @btnDangerColor !important;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+		.buttonBackground(@btnDangerBackground, @btnDangerBackgroundHighlight);
+		.box-shadow(~"inset 0 0 0 #FFF");
 		border: 1px solid @btnDangerBorder;
 		border-right-color: darken(@btnDangerBorder, 10%);
 		border-bottom-color: darken(@btnDangerBorder, 10%);
-		.buttonBackground(@btnDangerBackground, @btnDangerBackgroundHighlight);
 	}
 	// Success appears as green
 	.btn-success {
 		color: @btnSuccessColor !important;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+		.buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+		.box-shadow(~"inset 0 0 0 #FFF");
 		border: 1px solid @btnSuccessBorder;
 		border-right-color: darken(@btnSuccessBorder, 10%);
 		border-bottom-color: darken(@btnSuccessBorder, 10%);
-		.buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
 	}
 	// Info appears as a neutral blue
 	.btn-info {
 		color: @btnInfoColor !important;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+		.buttonBackground(@btnInfoBackground, @btnInfoBackgroundHighlight);
+		.box-shadow(~"inset 0 0 0 #FFF");
 		border: 1px solid @btnInfoBorder;
 		border-right-color: darken(@btnInfoBorder, 10%);
 		border-bottom-color: darken(@btnInfoBorder, 10%);
-		.buttonBackground(@btnInfoBackground, @btnInfoBackgroundHighlight);
+	}
+	.btn-primary:hover,
+	.btn-warning:hover,
+	.btn-error:hover,
+	.btn-danger:hover,
+	.btn-success:hover,
+	.btn-info:hover {
+		.box-shadow(~"0 0 2px rgba(0, 0, 0, 0.35)");
 	}
 
 
