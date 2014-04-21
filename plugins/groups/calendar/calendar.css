@@ -415,7 +415,10 @@ table.group-event-details {
 .download:before,
 .subscribe-webcal:before,
 .import:before,
-.back:before {
+.back:before,
+.author:before,
+.date:before,
+.time:before {
 	font-family: 'Fontcons';
 	margin-right: 0.2em;
 }
@@ -440,6 +443,16 @@ table.group-event-details {
 .back:before {
 	content: '\f08a';
 }
+.author:before {
+	content: '\f007';
+}
+.date:before {
+	content: '\f073';
+}
+.time:before {
+	content: '\f017';
+}
+
 .group-registrants tbody tr:nth-child(2n),
 .group-calendars tbody tr:nth-child(2n) {
 	background:#efefef;
