@@ -128,9 +128,9 @@ $this->css('posts');
 				</td>
 				
 				<td>
-					<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="<?php echo ($post->status == "approved" ? 'active' : ''); ?> approveBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Approve" id="approve-<?php echo $post->id;?>">	
-					<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?> reviewBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Mark for Review" id="mark-<?php echo $post->id; ?>">
-					<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?> removeBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Remove" id="remove-<?php echo $post->id;?>">
+					<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="approveBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Approve" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?>>	
+					<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Mark for Review" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?>>
+					<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Remove" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> >
 				</td>
 			</tr>
 			<div class="postpreview-container">
@@ -140,9 +140,9 @@ $this->css('posts');
 						<p><a target="_blank" href="<?php echo $post->link; ?>">Link to original post.</a></p>
 						<div class="button-container">
 						<hr />
-						<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="<?php echo ($post->status == "approved" ? 'active' : ''); ?> actionBtn approveBtn btn <?php echo 'btnGrp'.$post->id; ?> " value="Approve" id="approve-prev-<?php echo $post->id;?>">
-						<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="<?php echo ($post->status == "under review" ? 'active' : ''); ?> reviewBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?> " value="Mark for Review" id="mark-prev-<?php echo $post->id;?>">
-						<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="<?php echo ($post->status == "removed" ? 'active' : ''); ?> removeBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?> " value="Remove" id="remove-prev-<?php echo $post->id;?>">
+						<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="actionBtn approveBtn btn <?php echo 'btnGrp'.$post->id; ?> " value="Approve" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?> >
+						<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?> " value="Mark for Review" id="mark-prev-<?php echo $post->id;?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?> >
+						<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?> " value="Remove" id="remove-prev-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> >
 						</div>
 				</div>
 			</div>
