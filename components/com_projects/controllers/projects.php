@@ -1211,6 +1211,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		if ($sync) 
 		{
 			$objO->sysGroup($project->alias, $this->config->get('group_prefix', 'pr-'));
+			
+			// Reload project
+			$project = $obj->getProject($project->alias, $this->juser->get('id'));
 		}
 				
 		// Set the pathway
