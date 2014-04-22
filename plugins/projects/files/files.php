@@ -2352,7 +2352,8 @@ class plgProjectsFiles extends JPlugin
 				)
 			);
 			
-			$view->dirs 		= $this->getFolders($this->path, '', $this->prefix, 1, true);
+			$view->list			= $this->getList();
+		//	$view->dirs 		= $this->getFolders($this->path, '', $this->prefix, 1, true);
 			$view->path 		= $this->prefix. $this->path;
 			$view->items 		= $items;
 			$view->database 	= $this->_database;
