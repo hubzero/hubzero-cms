@@ -422,6 +422,8 @@ class typeFiles extends JObject
 				
 				// Get Git hash				
 				$vcs_hash = $git->gitLog($fpath, urldecode($file), '', 'hash');
+				
+				$originalHash = $objPA->vcs_hash;
 
 				if ($objPA->loadAttachment($vid, $path, $this->_attachmentType)) 
 				{
@@ -452,7 +454,7 @@ class typeFiles extends JObject
 					$added++;
 					if ($secret && ($state != 1 || ($state == 1 && !$primary))) 
 					{
-						$this->_publishAttachment($pid, $vid, $objPA->path, $objPA->vcs_hash, $secret);							
+						$this->_publishAttachment($pid, $vid, $objPA->path, $originalHash, $secret);							
 					}
 				}
 			}
