@@ -32,14 +32,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Zone') : JText::_('New Zone'));
 
-JToolBarHelper::title(JText::_('Tools').': <small><small>[ ' . $text . ' ]</small></small>', 'tools.png');
+JToolBarHelper::title(JText::_('Tools').': ' . $text, 'tools.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
-
+JHtml::_('behavior.modal');
+JHtml::_('behavior.switcher');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -53,23 +52,35 @@ function submitbutton(pressbutton)
 
 	submitform(pressbutton);
 }
+document.switcher = null;
+window.addEvent('domready', function(){
+	toggler = document.id('submenu');
+	element = document.id('zone-document');
+	if (element) {
+		document.switcher = new JSwitcher(toggler, element, {cookieName: toggler.getProperty('class')});
+	}
+
+	SqueezeBox.initialize({});
+	document.assetform = SqueezeBox;
+});
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-        <nav role="navigation" class="sub-navigation">
-                <div id="submenu-box">
-                        <div class="submenu-box">
-                                <div class="submenu-pad">
-                                        <ul id="submenu" class="member">
-                                                <li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
-                                                <li><a href="index.php?option=com_tools&controller=zones&task=locations&id=<?php echo $this->row->id;?>" id="locations">Locations</a></li>
-                                        </ul>
-                                        <div class="clr"></div>
-                                </div>
-                        </div>
-                        <div class="clr"></div>
-                </div>
-        </nav><!-- / .sub-navigation -->
+	<nav role="navigation" class="sub-navigation">
+		<div id="submenu-box">
+			<div class="submenu-box">
+				<div class="submenu-pad">
+					<ul id="submenu" class="member">
+						<li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
+						<li><a href="#" onclick="return false;" id="locations">Locations</a></li>
+						<!-- <li><a href="index.php?option=com_tools&amp;controller=zones&amp;task=locations&amp;id=<?php echo $this->row->get('id'); ?>" id="locations">Locations</a></li> -->
+					</ul>
+					<div class="clr"></div>
+				</div>
+			</div>
+			<div class="clr"></div>
+		</div>
+	</nav><!-- / .sub-navigation -->
 
 	<div id="zone-document">
 		<div id="page-profile" class="tab">
@@ -78,45 +89,65 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('ZONE_PROFILE'); ?></span></legend>
 
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 
 			<table class="admintable">
-			 <tbody>
-		  	  <tr>
-			   <td class="key"><label for="zone"><?php echo JText::_('Zone'); ?>:</label></td>
-			   <td colspan="2"><input type="text" name="fields[zone]" id="zone" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->zone)); ?>" /></td>
-			  </tr>
-			  <tr>
-			    <td class="key"><label for="master"><?php echo JText::_('Master'); ?>:</label></td>
-			    <td colspan="2"><input type="text" name="fields[master]" id="master" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->master)); ?>" /></td>
-			  </tr>
-			  <tr>
-			    <td class="key"><?php echo JText::_('State'); ?>:</td>
-			    <td><label for="state-up"><input class="option" type="radio" name="fields[state]" id="state-up" size="30" value="up"<?php if ($this->row->state == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('up'); ?></label></td>
-			    <td><label for="state-down"><input class="option" type="radio" name="fields[state]" id="state-down" size="30" value="down"<?php if ($this->row->state == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('down'); ?></label></td>
-			  </tr>
-			 </tbody>
+				<tbody>
+					<tr>
+						<th class="key"><label for="field-zone"><?php echo JText::_('Zone'); ?>:</label></th>
+						<td colspan="2"><input type="text" name="fields[zone]" id="field-zone" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('zone'))); ?>" /></td>
+					</tr>
+					<tr>
+						<th class="key"><label for="field-master"><?php echo JText::_('Master'); ?>:</label></th>
+						<td colspan="2"><input type="text" name="fields[master]" id="field-master" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('master'))); ?>" /></td>
+					</tr>
+					<tr>
+						<th class="key"><label for="field-type"><?php echo JText::_('Type'); ?>:</label></th>
+						<td colspan="2">
+							<select name="fields[type]" id="field-type">
+								<option value="local"<?php if ($this->row->get('type') == 'local') { echo ' selected="selected"'; } ?>><?php echo JText::_('Local'); ?></option>
+								<option value="remote"<?php if ($this->row->get('type') == 'remote') { echo ' selected="selected"'; } ?>><?php echo JText::_('Remote'); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('State'); ?>:</th>
+						<td><label for="field-state-up"><input class="option" type="radio" name="fields[state]" id="field-state-up" size="30" value="up"<?php if ($this->row->get('state') == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('up'); ?></label></td>
+						<td><label for="field-state-down"><input class="option" type="radio" name="fields[state]" id="field-state-down" size="30" value="down"<?php if ($this->row->get('state') == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('down'); ?></label></td>
+					</tr>
+				</tbody>
 			</table>
 		</fieldset>
 		</div>
 		<div class="col width-40 fltrt">
-			<table class="meta" summary="<?php echo JText::_('Metadata for this item'); ?>">
-			<tbody>
-				<tr>
-					<th scope="row"><?php echo JText::_('ID'); ?></th>
-					<td><?php echo $this->escape($this->row->id); ?></td>
-				</tr>
-				<tr>
-					<th scope="row"><?php echo JText::_('State'); ?></th>
-					<td><?php echo $this->escape($this->row->state); ?></td>
-				</tr>
-			</tbody>
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th scope="row"><?php echo JText::_('ID'); ?></th>
+						<td><?php echo $this->escape($this->row->get('id')); ?></td>
+					</tr>
+					<tr>
+						<th scope="row"><?php echo JText::_('State'); ?></th>
+						<td><?php echo $this->escape($this->row->get('state')); ?></td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 		<div class="clr"></div>
+		</div>
+
+		<div id="page-locations" class="tab">
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('Locations'); ?></span></legend>
+			<?php if ($this->row->get('id')) { ?>
+				<iframe width="100%" height="400" name="locations" id="locations" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;tmpl=component&amp;zone=<?php echo $this->row->get('id'); ?>"></iframe>
+			<?php } else { ?>
+				<p><?php echo JText::_('Course must be saved before managers can be added.'); ?></p>
+			<?php } ?>
+		</fieldset>
 		</div>
 	<?php echo JHTML::_('form.token'); ?>
 </form>

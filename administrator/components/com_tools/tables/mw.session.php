@@ -109,6 +109,20 @@ class MwSession extends JTable
 	var $sesstoken  = null;
 
 	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $params  = null;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $zone_id = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -382,6 +396,10 @@ class MwSession extends JTable
 		if (isset($filters['appname']) && $filters['appname'] != '') 
 		{
 			$where[] = "s.appname=" . $this->_db->Quote($filters['appname']);
+		}
+		if (isset($filters['zone_id']) && $filters['zone_id']) 
+		{
+			$where[] = "s.zone_id=" . $this->_db->Quote($filters['zone_id']);
 		}
 		if (isset($filters['exechost']) && $filters['exechost'] != '') 
 		{

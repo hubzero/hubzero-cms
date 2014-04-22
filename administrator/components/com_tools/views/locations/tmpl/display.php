@@ -30,7 +30,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Tools'), 'tools.png');
+JToolBarHelper::title(JText::_('Tools') . ': ' . JText::_('Zones') . ': ' . JText::_('Locations'), 'tools.png');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
@@ -53,18 +53,20 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
+				<th colspan="6"><?php echo JText::_('zone:') . ' ' . $this->escape($this->zone->get('zone')); ?></th>
+			</tr>
+			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Zone', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Type', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Master', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'SSH Key Path', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('Locations'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'IP from', 'ipFROM', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'IP to', 'ipTO', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Continent', 'continent', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Country', 'countrySHORT', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -85,22 +87,23 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($row->get('type'))); ?>
-				</td>
-				<td>
-					<a class="state <?php echo ($row->get('state') == 'up') ? 'publish' : 'unpublish'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->get('id'); ?>&amp;state=<?php echo ($row->get('state') == 'up') ? 'down' : 'up'; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo $this->escape(stripslashes($row->get('state'))); ?></span>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('ipFROM'))); ?>
 					</a>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($row->get('master'))); ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('ipTO'))); ?>
+					</a>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($row->get('ssh_key_path'))); ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('continent'))); ?>
+					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;zone=<?php echo $row->get('id'); ?>">
-						<span><?php echo $row->locations('count'); ?></span>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<span><?php echo $this->escape(stripslashes($row->get('countrySHORT'))); ?></span>
 					</a>
 				</td>
 			</tr>
@@ -115,6 +118,7 @@ if ($this->rows)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="zone" value="<?php echo $this->filters['zone']; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
