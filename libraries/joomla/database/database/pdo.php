@@ -145,7 +145,7 @@ class JDatabasePDO extends JDatabase
 			return false;
 		}
 		
-		if ($this->connection->exec('USE ' . $database) === false) {
+		if ($this->connection->exec('USE `' . $database . '`') === false) {
 			$this->errorNum = 3;
 			$this->errorMsg = 'Could not connect to database';
 			var_dump($result);
