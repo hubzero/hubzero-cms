@@ -138,16 +138,13 @@ class modEventsLatest extends \Hubzero\Module\Module
 	 * @param      array &$rows Parameter description (if any) ...
 	 * @param      unknown $date Parameter description (if any) ...
 	 * @param      array &$seenThisEvent Parameter description (if any) ...
-	 * @param      unknown $noRepeats Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	private function _getEventsByDate(&$rows, $date, &$seenThisEvent, $noRepeats)
+	private function _getEventsByDate(&$rows, $date, &$seenThisEvent)
 	{
 		$num_events = count($rows);
 		$new_rows_events = array();
-
-		$eventCheck = new EventsRepeat;
-
+		
 		if ($num_events > 0)
 		{
 			$year  = date('Y', $date);
@@ -157,15 +154,13 @@ class modEventsLatest extends \Hubzero\Module\Module
 			for ($r = 0; $r < count($rows); $r++)
 			{
 				$row = $rows[$r];
-				if (isset($seenThisEvent[$row->id]) && $noRepeats)
+				if (isset($seenThisEvent[$row->id]))
 				{
 					continue;
 				}
-				if ($eventCheck->EventsRepeat($row, $year, $month, $day))
-				{
-					$seenThisEvent[$row->id] = 1;
-					$new_rows_events[] =& $rows[$r];
-				}
+
+				$seenThisEvent[$row->id] = 1;
+				$new_rows_events[] =& $rows[$r];
 			}
 
 			usort($new_rows_events, array('modEventsLatest','cmpByStartTime'));
@@ -201,9 +196,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 		$disableTitleStyle = $this->params->get('display_title_style') ? abs(intval($this->params->get('display_title_style'))) : 0;
 		$disableDateStyle  = $this->params->get('display_date_style')  ? abs(intval($this->params->get('display_date_style'))) : 0;
 		$customFormatStr   = $this->params->get('custom_format_str')   ? $this->params->get('custom_format_str') : NULL;
-		$norepeat          = $this->params->get('no_repeat')           ? abs(intval($this->params->get('no_repeat'))) : 0;
 		$charlimit         = $this->params->get('char_limit')          ? abs(intval($this->params->get('char_limit'))) : 150;
-		$announcements     = $this->params->get('announcements')       ? abs(intval($this->params->get('announcements'))) : 0;
 
 		// Can't have a mode greater than 4
 		if ($mode > 4)
@@ -263,24 +256,10 @@ class modEventsLatest extends \Hubzero\Module\Module
 				break;
 		}
 
-		switch ($announcements)
-		{
-			case 2:
-				$ancmnt = "AND #__events.announcement='1'";
-			break;
-			case 1:
-				$ancmnt = "AND #__events.announcement!='1'";
-			break;
-			case 0:
-			default:
-				$ancmnt = "";
-			break;
-		}
-
-		// Display only events that are not announcements
+		// Display events
 		$query = "SELECT #__events.* FROM #__events, #__categories as b"
 			. "\nWHERE #__events.catid = b.id " // AND b.access <= $gid AND #__events.access <= $gid 
-                        . "\n   AND (#__events.state='1' $ancmnt AND #__events.checked_out='0')"
+                        . "\n   AND (#__events.state='1')"
 			. "\n	AND ((publish_up <= '$todayBegin%' AND publish_down >= '$todayBegin%')"
 			. "\n	OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
 			. "\n   OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"
@@ -306,7 +285,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 			while ($date <= $lastDate)
 			{
 				// Get the events for this $date
-				$eventsThisDay = $this->_getEventsByDate($rows, $date, $seenThisEvent, $norepeat);
+				$eventsThisDay = $this->_getEventsByDate($rows, $date, $seenThisEvent);
 				if (count($eventsThisDay))
 				{
 					// dmcd May 7/04  bug fix to not exceed maxEvents
@@ -323,7 +302,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 				$i++;
 			}
 		}
-
+		
 		// Do we actually have any events to display?
 		if ($events < $maxEvents && ($mode==1 || $mode==3))
 		{

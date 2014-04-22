@@ -59,11 +59,6 @@ if ($this->getError()) { ?>
 					$day   = date('d', $startDate);
 
 					$cls = ($cls == 'even') ? 'odd' : 'even';
-
-					if ($dayEvent->announcement == 1)
-					{
-						$cls .= ' announcement';
-					}
 					?>
 			<tr class="<?php echo $cls; ?>">
 				<td class="event-date">
