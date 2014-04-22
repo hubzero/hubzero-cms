@@ -101,7 +101,7 @@ if ($this->comment->changelog)
 				{
 					$message .= ' * ' . $items['field'] . ' changed from "' . $items['before'] . '" to "' . $items['after'] . '"' . "\n";
 				}
-				else 
+				else if ($type == 'notifications')
 				{
 					$message  .= ' * ' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . "\n";
 				}
@@ -377,7 +377,7 @@ Content-type: text/html;charset=utf-8";
 																			{
 																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . $items['field'] . '</span> changed from "<b style="color: #333;">' . $items['before'] . '</b>" to "<b style="color: #333;">' . $items['after'] . '</b>"</td>';
 																			}
-																			else 
+																			else if ($type == 'notifications')
 																			{
 																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . JText::_('Messaged') . '</span> (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</td>';
 																			}

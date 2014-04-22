@@ -324,7 +324,7 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 																			{
 																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . $items['field'] . '</span> changed from "<b style="color: #333;">' . $items['before'] . '</b>" to "<b style="color: #333;">' . $items['after'] . '</b>"</td>';
 																			}
-																			else 
+																			else if ($type == 'notifications')
 																			{
 																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . JText::_('Messaged') . '</span> (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</td>';
 																			}
