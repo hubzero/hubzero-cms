@@ -20,11 +20,12 @@
 	.mod_events_calendar td {
 		border-bottom: 1px solid #fff;
 		}
-	.mod_events_calendar .todaynoevents {
-		background-color: #fff;
+	.mod_events_calendar .todaynoevents,
+	.mod_events_calendar .todaywithevents {
+		background-color: rgba(23,139,193,0.1);
 		}
 	.mod_events_calendar .daywithevents {
-		background-color: #F7F7F3;
+		background-color: transparent;
 		}
 /* Upcoming Events */
 	.upcoming-events {

@@ -253,7 +253,6 @@ class modEventsCalendar extends \Hubzero\Module\Module
 		}
 
 		$monthHasEvent = false;
-		$eventCheck = new EventsRepeat;
 		$lastDayOfMonth = date("t", mktime(0, 0, 0, $cal_month, 1, $cal_year));
 		$rd = 0;
 		for ($d=1;$d<=$lastDayOfMonth;$d++)
@@ -274,16 +273,14 @@ class modEventsCalendar extends \Hubzero\Module\Module
 			$mark_bold = '';
 			$mark_close_bold = '';
 			$class = ($selected_date == $to_day) ? 'todaynoevents' : 'daynoevents';
-
-			for ($r = 0; $r < count($rows); $r++)
+			
+			// do we have events
+			if (count($rows) > 0)
 			{
-				if ($eventCheck->EventsRepeat($rows[$r], $cal_year, $cal_month, $do))
+				$class = 'daywithevents';
+				if ($selected_date == $to_day)
 				{
-					$monthHasEvent = true;
-					$mark_bold = '<b>';
-					$mark_close_bold = '</b>';
-					$class = ($selected_date == $to_day) ? 'todaywithevents' : 'daywithevents';
-					break;
+					$class = 'todaywithevents';
 				}
 			}
 
