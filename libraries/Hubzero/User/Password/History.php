@@ -110,7 +110,7 @@ class Hubzero_User_Password_History
 		return false;
 	}
 
-	public function exists($passhash = null, $since =  null)
+	public function exists($password = null, $since = null)
 	{
 		$db = JFactory::getDBO();
 
@@ -118,22 +118,26 @@ class Hubzero_User_Password_History
 			return false;
 		}
 
-		$query = "SELECT 1 FROM #__users_password_history WHERE " .
-			"user_id=" . $db->Quote($this->user_id) . " AND " .
-			"passhash=" . $db->Quote($passhash);
+		$query = "SELECT `passhash` FROM `#__users_password_history` WHERE user_id = " . $db->Quote($this->user_id);
 
 		if (!empty($since)) {
 			$query .= " AND invalidated >= " . $db->Quote($since);
 		}
 
-		$query .= ";";
-
 		$db->setQuery($query);
 
-		$result = $db->loadResult();
+		$results = $db->loadObjectList();
 
-		if ($result == '1') {
-			return true;
+		if ($results && count($results) > 0)
+		{
+			foreach ($results as $result)
+			{
+				$compare = Hubzero_User_Password::comparePasswords($result->passhash, $password);
+				if ($compare)
+				{
+					return true;
+				}
+			}
 		}
 
 		return false;
