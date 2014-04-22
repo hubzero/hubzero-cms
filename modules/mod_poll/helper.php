@@ -88,18 +88,6 @@ class modPoll extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
-
-		if (!$debug && intval($this->params->get('cache', 0)))
-		{
-			$cache = JFactory::getCache('callback');
-			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
-			return;
-		}
-
 		$this->run();
 	}
 
