@@ -33,12 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.job.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.view.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.zones.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'zones.php');
+//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.job.php');
+//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
+//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.view.php');
+//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.zones.php');
+//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'zones.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'middleware.php');
 
 /**
  * Tools controller class for simulation sessions
@@ -350,22 +351,22 @@ class ToolsControllerSessions extends Hubzero_Controller
 
 		if (!empty($params))
 		{
-			$params_whitelist = explode(',',$this->config->get('params_whitelist',''));
-	
+			$params_whitelist = explode(',', $this->config->get('params_whitelist',''));
+
 			$separator = "\r\n";
-	
-			$line = trim( strtok($params, $separator) );
-	
+
+			$line = trim(strtok($params, $separator));
+
 			$verified_params = array();
-	
+
 			while ($line !== false) 
 			{
 				$re = "/\s*(directory|file|int)\s*(?:\:|\(\s*(.*?)\s*\)\s*:)\s*(.*?)\s*$/";
-				
+
 				if (preg_match($re, $line, $matches) != false)
 				{
-					$type = $matches[1];
-					$key  = $matches[2];
+					$type  = $matches[1];
+					$key   = $matches[2];
 					$value = $matches[3];
 
 					if (($type == 'directory' || $type == 'file'))
@@ -374,15 +375,15 @@ class ToolsControllerSessions extends Hubzero_Controller
 						if (strncmp($value,"~/",2) === 0)
 						{
 							$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
-		
-							$homeDirectory = rtrim($xprofile->get('homeDirectory'),"/");
-	
+
+							$homeDirectory = rtrim($xprofile->get('homeDirectory'), '/');
+
 							if (!isset($homeDirectory[0]) || $homeDirectory[0] !== '/')
 							{
 								break;
 							}
 
-							$value = substr_replace($value,$homeDirectory,0,1);
+							$value = substr_replace($value, $homeDirectory, 0, 1);
 						}
 
 						// Fail if $value doesn't start with '/'
@@ -390,25 +391,25 @@ class ToolsControllerSessions extends Hubzero_Controller
 						{
 							break;
 						}
-	
+
 						// Fail if unable to normalize $value
 						$value = $this->normalize_path($value, $type == 'file');
-	
+
 						if ($value === false)
 						{
 							break;
 						}
-	
+
 						// Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
 						if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0)
 						{
 							break;
 						}
-	
+
 						// Fail if $value isn't prefixed with a whitelisted directory
-						foreach($params_whitelist as $wl)
+						foreach ($params_whitelist as $wl)
 						{
-							$wl = rtrim($wl,'/') . '/'; 	// make sure we compare against a full path element
+							$wl = rtrim($wl,'/') . '/';  // make sure we compare against a full path element
 
 							if (strncmp($wl,$value,strlen($wl)) === 0)
 							{
@@ -423,13 +424,13 @@ class ToolsControllerSessions extends Hubzero_Controller
 						}
 
 						// Add verified parameter to array
-						if ($key)		
+						if ($key)
 						{
-							$verified_params[] = $type . "(" . $key . "):" .$value;
+							$verified_params[] = $type . '(' . $key . '):' . $value;
 						}
 						else
 						{
-							$verified_params[] = $type . ":" . $value;
+							$verified_params[] = $type . ':' . $value;
 						}
 					}
 					else if ($type == 'int')
@@ -439,20 +440,20 @@ class ToolsControllerSessions extends Hubzero_Controller
 						{
 							break;
 						}
-	
+
 						// Fail if $value not an integer
 						if (preg_match('/^[-+]?[0-9]+$/', $value) == 0)
 						{
 							break;
 						}
 						// Add verified parameter to array
-						if ($key)		
+						if ($key)
 						{
-							$verified_params[] = $type . "(" . $key . "):" .$value;
+							$verified_params[] = $type . '(' . $key . '):' . $value;
 						}
 						else
 						{
-							$verified_params[] = $type . ":" . $value;
+							$verified_params[] = $type . ':' . $value;
 						}
 					}
 				} 
@@ -460,17 +461,17 @@ class ToolsControllerSessions extends Hubzero_Controller
 				{
 					break;
 				}
-	
-				$line = strtok( $separator );  // Get next line
+
+				$line = strtok($separator);  // Get next line
 			}
-	
+
 			if ($line !== false)
 			{
 				$this->badparamsTask($params);
 				return;
 			}
 		}
-		
+
 		// Incoming
 		$app = new stdClass;
 		$app->name    = trim(str_replace(':', '-', JRequest::getVar('app', '')));
@@ -552,7 +553,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			return;
 		}
 
-                $country = Hubzero_Geo::ipcountry($app->ip);
+		$country = Hubzero_Geo::ipcountry($app->ip);
 
 		//die($app->ip . $country);
 
@@ -630,6 +631,25 @@ class ToolsControllerSessions extends Hubzero_Controller
 			$toolparams = " params=" . rawurlencode($params) . " ";
 		}
 
+		// Determine zone
+		$app->zone_id = 0;
+		if ($this->config->get('zones'))
+		{
+			$middleware = new ToolsModelMiddleware();
+
+			$this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
+			$middleware->set('allowed', $this->database->loadResultArray());
+
+			if ($zone = $middleware->zoning($app->ip, $middleware->get('allowed')))
+			{
+				if ($zone->exists())
+				{
+					//$toolparams .= ' zone=' . $zone->get('zone');
+					$app->zone_id = $zone->get('id');
+				}
+			}
+		}
+
 		// We've passed all checks so let's actually start the session
 		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version . $toolparams, $output);
 		if ($this->getError())
@@ -660,15 +680,113 @@ class ToolsControllerSessions extends Hubzero_Controller
 		// Save the changed caption
 		$ms->load($app->sess);
 		$ms->sessname = $app->caption;
+		$ms->params   = $params;
+		$ms->zone_id  = $app->zone_id;
 		if (!$ms->store()) 
 		{
 			echo $ms->getError();
+			die();
 		}
 
 		$rtrn = JRequest::getVar('return', '');
 
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (JRequest::getInt('novnc', 0) ? '&novnc=1' : ''), false)
+		);
+	}
+
+	/**
+	 * Invoke a tool session
+	 * 
+	 * @return     void
+	 */
+	public function reinvokeTask()
+	{
+		// Check that the user is logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask();
+			return;
+		}
+
+		$middleware = new ToolsModelMiddleware();
+
+		// Incoming
+		$id = JRequest::getInt('sess', 0);
+
+		// Try loading the session
+		//$session = MiddlewareModelSession::getInstance($id, $this->config->get('access-manage-session'));
+		$session = $middleware->session($id, $this->config->get('access-manage-session'));
+
+		// Double-check that the user can view this session.
+		if (!$session->exists()) 
+		{
+			JError::raiseError(500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $id);
+			return;
+		}
+
+		// Stop the old session
+		$status = $this->middleware("stop $id", $output);
+		if ($status == 0) 
+		{
+			$msg = '<p>Stopping ' . $id . '<br />';
+			foreach ($output as $line)
+			{
+				$msg .= $line . "\n";
+			}
+			$msg .= '</p>'."\n";
+		}
+
+		// Get tool params
+		$toolparams = '';
+		if ($params = $session->get('params'))
+		{
+			$toolparams = " params=" . rawurlencode($params) . " ";
+		}
+
+		// Set the zone
+		if ($zone = JRequest::getInt('zone', 0))
+		{
+			$mwz = $middleware->zone($zone);
+			if ($mwz->exists())
+			{
+				$toolparams .= ' zone=' . $mwz->get('zone');
+			}
+		}
+
+		// We've passed all checks so let's actually start the new session
+		ximport('Hubzero_Environment');
+
+		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . Hubzero_Environment::ipAddress() . " app=" . $session->app() . " version=" . $session->app('version') . $toolparams, $output);
+		if ($this->getError())
+		{
+			$this->setRedirect(
+				JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
+				JText::_('Failed to invoke session'),
+				'error'
+			);
+			return;
+		}
+
+		// Do we have a session ID?
+		$new_id = !empty($output->session) ? $output->session : '';
+
+		// Load the new session and transfer some data
+		//$reinvoked = MiddlewareModelSession::getInstance($new_id, $this->config->get('access-manage-session'));
+		$reinvoked = $middleware->session($new_id, $this->config->get('access-manage-session'));
+		$reinvoked->set('sessname', $session->get('sessname'));
+		$reinvoked->set('params', $params);
+		if (!$reinvoked->store()) 
+		{
+			JError::raiseError(500, $reinvoked->getError());
+			return;
+		}
+
+		// Redirect to the new session view
+		$rtrn = JRequest::getVar('return', '');
+
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (JRequest::getInt('novnc', 0) ? '&novnc=1' : ''), false)
 		);
 	}
 
@@ -924,24 +1042,16 @@ class ToolsControllerSessions extends Hubzero_Controller
 			return;
 		}
 
-		$z = new MwZones($mwdb);
-		$zone_row = $z->load($row->zone_id);
+		$this->view->middleware = new ToolsModelMiddleware();
+		//$session = $this->view->middleware->session($app->sess);
 
-		if ($zone_row->id == $row->zone_id)
-		{
-			$this->view->zones    = ToolsModelZones::getExecutionZones();
-			$this->view->zone     = $zone_row->zone;
-			$this->view->zone_id  = $zone_row->id;
-			$this->view->zone_pic = '/tools/zones/assets/' . $zone_row->id . '/' . $zone_row->pic;
-var_dump($this->view);//die('hi');
-		}
-		else
-		{
-			$this->view->zones    = array();
-			$this->view->zone     = '';
-			$this->view->zone_id  = '';
-			$this->view->zone_pic = '';
-		}
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'tables' . DS . 'version.php');
+		$tv = new ToolVersion($this->database);
+		$tv->loadFromInstance($row->appname);
+		$this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
+		$this->view->middleware->set('allowed', $this->database->loadResultArray());
+
+		$this->view->zone = $this->view->middleware->zone($row->zone_id);
 
 		if (strstr($row->appname, '_')) 
 		{
@@ -951,13 +1061,12 @@ var_dump($this->view);//die('hi');
 		}
 
 		// Get parent tool name - to write correct links
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'tables' . DS . 'version.php');
-		$tv = new ToolVersion($this->database);
+		//$tv = new ToolVersion($this->database);
 		$parent_toolname = $tv->getToolname($row->appname);
 		$toolname = ($parent_toolname) ? $parent_toolname : $row->appname;
 
 		// Get the tool's name
-		$tv->loadFromInstance($row->appname);
+		//$tv->loadFromInstance($row->appname);
 		$app->title = stripslashes($tv->title);
 
 		$paramClass = 'JParameter';

@@ -38,24 +38,8 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' .
 /**
  * Administrative tools controller for zones
  */
-class ToolsControllerZones extends Hubzero_Controller
+class ToolsControllerLocations extends Hubzero_Controller
 {
-	/**
-	 * Determines task being called and attempts to execute it
-	 *
-	 * @return	void
-	 */
-	public function execute()
-	{
-		if (!$this->config->get('zones'))
-		{
-			$this->setRedirect('index.php?option=' . $this->_option);
-			return;
-		}
-
-		parent::execute();
-	}
-
 	/**
 	 * Display a list of hosts
 	 * 
@@ -72,13 +56,14 @@ class ToolsControllerZones extends Hubzero_Controller
 		$this->view->filters['zone']       = urldecode($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.zone', 
 			'zone', 
-			''
+			0,
+			'int'
 		));
-		$this->view->filters['master']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.master', 
-			'master', 
+		$this->view->filters['tmpl']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.tmpl',
+			'tmpl',
 			''
-		));
+		);
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
@@ -90,36 +75,48 @@ class ToolsControllerZones extends Hubzero_Controller
 			'filter_order_Dir', 
 			'ASC'
 		));
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
-			'int'
-		);
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		// Get the middleware
-		$model = new ToolsModelMiddleware();
+		if ($this->view->filters['tmpl'] == 'component')
+		{
+			$this->view->setLayout('component');
+		}
+		else
+		{
+			// Get paging variables
+			$this->view->filters['limit']        = $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit', 
+				'limit', 
+				$config->getValue('config.list_limit'), 
+				'int'
+			);
+			$this->view->filters['start']        = $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart', 
+				'limitstart', 
+				0, 
+				'int'
+			);
 
-		$this->view->total = $model->zones('count', $this->view->filters);
+			// In case limit has been changed, adjust limitstart accordingly
+			$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		}
 
-		$this->view->rows  = $model->zones('list', $this->view->filters);
+		// Get the middleware database
+		$this->view->zone = new MiddlewareModelZone($this->view->filters['zone']);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
-			$this->view->filters['limit']
-		);
+		$this->view->total = $this->view->zone->locations('count', $this->view->filters);
+
+		$this->view->rows  = $this->view->zone->locations('list', $this->view->filters);
+
+		if ($this->view->filters['tmpl'] != 'component')
+		{
+			// Initiate paging
+			jimport('joomla.html.pagination');
+			$this->view->pageNav = new JPagination(
+				$this->view->total, 
+				$this->view->filters['start'], 
+				$this->view->filters['limit']
+			);
+		}
 
 		// Set any errors
 		if ($this->getError())
@@ -169,12 +166,15 @@ class ToolsControllerZones extends Hubzero_Controller
 			// Incoming
 			$id = JRequest::getInt('id', 0);
 
-			$this->view->row = new MiddlewareModelZone($id);
+			$this->view->row = new MiddlewareModelLocation($id);
 		}
+
+		$this->view->zone = JRequest::getInt('zone', 0);
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('state', 'down');
+			$this->view->row->set('zone_id', $this->view->zone);
 		}
+		$this->view->tmpl = JRequest::getVar('tmpl', '');
 
 		// Set any errors
 		if ($this->getError())
@@ -212,8 +212,9 @@ class ToolsControllerZones extends Hubzero_Controller
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
+		$tmpl   = JRequest::getVar('tmpl', '');
 
-		$row = new MiddlewareModelZone($fields['id']);
+		$row = new MiddlewareModelLocation($fields['id']);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -229,34 +230,24 @@ class ToolsControllerZones extends Hubzero_Controller
 			return;
 		}
 
-		/*$vl = new MwZoneLocations($mwdb);
-		$vl->deleteByZone($row->id);
-
-		$locations = JRequest::getVar('locations', array(), 'post');
-		foreach ($locations as $location)
+		if ($tmpl == 'component')
 		{
-			$vl = new MwZoneLocations($mwdb);
-			$vl->zone_id = $row->id;
-			$vl->location = $location;
-			if (!$vl->check())
+			if ($this->getError())
 			{
-				$this->addComponentMessage($vl->getError(), 'error');
-				$this->editTask($row);
-				return;
+				echo '<p class="error">' . $this->getError() . '</p>';
 			}
-			if (!$vl->store())
+			else
 			{
-				$this->addComponentMessage($vl->getError(), 'error');
-				$this->editTask($row);
-				return;
+				echo '<p class="message">' . JText::_('Location successfully saved') . '</p>';
 			}
-		}*/
+			return;
+		}
 
 		if ($redirect)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('Zone successfully saved.'),
+				Jtext::_('Zone location successfully saved.'),
 				'message'
 			);
 			return;
@@ -286,13 +277,11 @@ class ToolsControllerZones extends Hubzero_Controller
 			);
 		}
 
-		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
 
-		$row = new MwZones($mwdb);
-		if ($row->load($id))
+		$row = new MiddlewareModelLocation($id);
+		if ($row->exists())
 		{
-			$row->state = $state;
+			$row->set('state', $state);
 			if (!$row->store())
 			{
 				$this->setRedirect(
@@ -322,16 +311,14 @@ class ToolsControllerZones extends Hubzero_Controller
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		$mwdb = MwUtils::getMWDBO();
-
 		if (count($ids) > 0) 
 		{
-			$row = new MwZones($mwdb);
-
 			// Loop through each ID
 			foreach ($ids as $id) 
 			{
-				if (!$row->delete(intval($id))) 
+				$row = new MiddlewareModelLocation(intval($id));
+
+				if (!$row->delete()) 
 				{
 					JError::raiseError(500, $row->getError());
 					return;
@@ -341,7 +328,7 @@ class ToolsControllerZones extends Hubzero_Controller
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Zone successfully deleted.'),
+			JText::_('Zone location successfully deleted.'),
 			'message'
 		);
 	}

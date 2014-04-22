@@ -191,7 +191,7 @@ class MwZoneLocations extends JTable
 			$where[] = "c.`zone_id`=" . $this->_db->Quote($filters['zone_id']);
 		}
 
-		$query = "FROM $this->_tbl AS c";
+		$query  = "FROM $this->_tbl AS c";
 		$query .= " JOIN zones AS t ON c.zone_id=t.id";
 
 		if (count($where) > 0)
@@ -204,47 +204,52 @@ class MwZoneLocations extends JTable
 	}
 
 	/**
-	 * Get a record count
-	 * 
-	 * @param      array $filters Filters to build SQL from
-	 * @return     integer
-	 */
-	public function getCount($filters=array())
-	{
-		$filters['limit'] = 0;
-
-		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	/**
 	 * Get a list of records
 	 * 
-	 * @param      array $filters Filters to build SQL from
-	 * @return     array
+	 * @param      string $what    Data to return
+	 * @param      array  $filters Filters to build SQL from
+	 * @return     mixed
 	 */
-	public function getRecords($filters=array())
+	public function find($what='list', $filters=array())
 	{
-		$query  = "SELECT c.*, t.zone " . $this->_buildQuery($filters);
-
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		switch ($what)
 		{
-			$filters['sort'] = 'id';
-		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
-		{
-			$filters['sort_Dir'] = 'ASC';
-		}
-		$query .= " ORDER BY c.zone_id, " . $filters['sort'] . " " . $filters['sort_Dir'];
+			case 'count':
+				$filters['limit'] = 0;
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
-		{
-			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
-		}
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'all':
+				$filters['limit'] = 0;
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query  = "SELECT c.*, t.zone " . $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort']) 
+				{
+					$filters['sort'] = 'c.zone_id';
+				}
+				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+				{
+					$filters['sort_Dir'] = 'ASC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] != 0) 
+				{
+					$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 }

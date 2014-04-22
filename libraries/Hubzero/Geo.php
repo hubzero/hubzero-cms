@@ -134,6 +134,23 @@ class Hubzero_Geo
 	}
 
 	/**
+	 * Get continent by the country
+	 * 
+	 * @param      string $country Parameter description (if any) ...
+	 * @return     array
+	 */
+	public static function getContinentByCountry($country='')
+	{
+		if (!$country || !($gdb = Hubzero_Geo::getGeoDBO())) 
+		{
+			return array();
+		}
+
+		$gdb->setQuery("SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) ='" . strtolower($country) . "'");
+		return $gdb->loadResultArray();
+	}
+
+	/**
 	 * Get a list of countries by continent
 	 * 
 	 * @param      array $names Parameter description (if any) ...

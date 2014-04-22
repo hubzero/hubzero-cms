@@ -117,7 +117,7 @@ function toolsParseRoute($segments)
 				}
 				$vars['task'] = 'assets';
 				$vars['controller'] = 'tools';
-     				$vars['type'] = $segments[1];
+				$vars['type'] = $segments[1];
 				$vars['file'] = $segments[2];
 				return $vars;
 			break;
@@ -235,12 +235,14 @@ function toolsParseRoute($segments)
 			break;
 
 			// Sessions controller
+			case 'reinvoke':
 			case 'invoke':
 				$vars['option'] = 'com_tools';
 				$vars['controller'] = 'sessions';
-				$vars['app'] = $segments[0];
+				$vars['app']  = $segments[0];
 				$vars['task'] = $segments[1];
-				if (isset($segments[2])) {
+				if (isset($segments[2])) 
+				{
 					$vars['version'] = $segments[2];
 				}
 			break;

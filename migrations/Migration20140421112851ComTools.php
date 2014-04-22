@@ -46,6 +46,7 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 			  `master` varchar(255) DEFAULT NULL,
 			  `mw_version` varchar(3) DEFAULT NULL,
 			  `ssh_key_path` varchar(200) DEFAULT NULL,
+			  `picture` varchar(250) DEFAULT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 

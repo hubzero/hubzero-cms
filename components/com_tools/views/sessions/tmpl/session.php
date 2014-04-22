@@ -143,21 +143,37 @@ if (!$this->app->sess) {
 			} 
 			?>
 		</div><!-- #app-footer -->
-	<?php if ($this->zone) { ?>
+	<?php if ($this->zone->exists()) { ?>
 		<div id="app-zone">
 			<div class="grid">
 				<div class="col span6">
-					<p class="zone-identity"><img src="<?php echo rtrim(JURI::base(true), '/') . '/tools/zones/assets/' . $this->zone_id . '/' . $this->zone_pic; ?>" alt="" /></p>
-					<p><?php echo JText::sprintf('This tool session is powered by the mirror site at %s', $this->zone); ?></p>
+					<p class="zone-identity">
+					<?php if ($logo = $this->zone->logo()) { ?>
+						<img src="<?php echo $logo; ?>" alt="" />
+					<?php } ?>
+					</p>
+					<p>
+						<?php echo JText::sprintf('This tool session is powered by the mirror site at %s', $this->zone->get('zone')); ?>
+					</p>
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
-					<form name="share" id="app-zone" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+					<form name="share" id="app-zone" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
 						<div class="grid">
 							<div class="col span-half">
 								<label for="field-zone">
 									<?php echo JText::_('Run elsewhere:'); ?><br />
 									<select name="zone" id="field-zone">
 										<option value=""><?php echo JText::_('Select zone ...'); ?></option>
+									<?php 
+									foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone) 
+									{
+										if ($zone->get('id') == $this->zone->get('id'))
+										{
+											continue;
+										}
+									?>
+										<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('zone')); ?></option>
+									<?php } ?>
 									</select>
 								</label>
 								<input type="submit" value="Go" />
