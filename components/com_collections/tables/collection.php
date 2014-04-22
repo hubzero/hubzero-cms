@@ -224,7 +224,8 @@ class CollectionsTableCollection extends JTable
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
 			'is_default'  => 1,
-			'created_by'  => $object_id
+			'created_by'  => $object_id,
+			'access'      => 0
 		);
 		if (!$result['created_by'])
 		{
