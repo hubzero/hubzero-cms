@@ -79,6 +79,13 @@ class MwZones extends JTable
 	var $ssh_key_path;
 
 	/**
+	 * varchar(250)
+	 * 
+	 * @var string
+	 */
+	var $picture;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -169,68 +176,119 @@ class MwZones extends JTable
 		{
 			$where[] = "c.`zone`=" . $this->_db->Quote($filters['zone']);
 		}
+		if (isset($filters['id'])) 
+		{
+			if (!is_array($filters['id']))
+			{
+				$filters['id'] = array($filters['id']);
+				$filters['id'] = array_map('intval', $filters['id']);
+			}
+			if (!empty($filters['id']))
+			{
+				$where[] = "c.`id` IN (" . implode(',', $filters['id']) . ")";
+			}
+		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.zone) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.master) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(c.`zone`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.`master`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		$query = "FROM $this->_tbl AS c";
-		if (isset($filters['location']) && $filters['location']) 
+		if (isset($filters['ip']) || isset($filters['ipFROM']) || isset($filters['ipTO']) 
+		 || isset($filters['continent']) || isset($filters['countrySHORT']) 
+		 || isset($filters['ipREGION']) || isset($filters['ipCITY'])) 
 		{
-			$query .= " JOIN zone_locations AS t ON c.id=t.zone_id";
-			$where[] = "t.location = " . $this->_db->Quote($this->view->filters['location']);
+			$query .= " JOIN `zone_locations` AS t ON c.`id`=t.`zone_id`";
+			//$where[] = "t.`id` = " . $this->_db->Quote($this->view->filters['location']);
+			if (isset($filters['ipFROM']) && $filters['ipFROM'] != '') 
+			{
+				$where[] = "t.`ipFROM`= INET_ATON(" . $this->_db->Quote($filters['ipFROM']) . ")";
+			}
+			if (isset($filters['ipTO']) && $filters['ipTO'] != '') 
+			{
+				$where[] = "t.`ipTO`= INET_ATON(" . $this->_db->Quote($filters['ipTO']) . ")";
+			}
+			// If we just have an IP address
+			if (isset($filters['ip']) && $filters['ip'] != '') 
+			{
+				$where[] = "t.`ipFROM` <= INET_ATON(" . $this->_db->Quote($filters['ip']) . ")";
+				$where[] = "t.`ipTO` >= INET_ATON(" . $this->_db->Quote($filters['ip']) . ")";
+			}
+			if (isset($filters['continent']) && $filters['continent'] != '') 
+			{
+				$where[] = "LOWER(t.`continent`)=" . $this->_db->Quote(strtolower($filters['continent']));
+			}
+			if (isset($filters['countrySHORT']) && $filters['countrySHORT'] != '') 
+			{
+				$where[] = "LOWER(t.`countrySHORT`)=" . $this->_db->Quote(strtolower($filters['countrySHORT']));
+			}
+			if (isset($filters['ipREGION']) && $filters['ipREGION'] != '') 
+			{
+				$where[] = "LOWER(t.`ipREGION`)=" . $this->_db->Quote(strtolower($filters['ipREGION']));
+			}
+			if (isset($filters['ipCITY']) && $filters['ipCITY'] != '') 
+			{
+				$where[] = "LOWER(t.`ipCITY`)=" . $this->_db->Quote(strtolower($filters['ipCITY']));
+			}
 		}
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $where);
 		}
+		$query .= " GROUP BY `zone` ";
 
 		return $query;
 	}
 
 	/**
-	 * Get a record count
-	 * 
-	 * @param      array $filters Filters to build SQL from
-	 * @return     integer
-	 */
-	public function getCount($filters=array())
-	{
-		$filters['limit'] = 0;
-
-		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	/**
 	 * Get a list of records
 	 * 
-	 * @param      array $filters Filters to build SQL from
-	 * @return     array
+	 * @param      string $what    Data to return
+	 * @param      array  $filters Filters to build SQL from
+	 * @return     mixed
 	 */
-	public function getRecords($filters=array())
+	public function find($what='list', $filters=array())
 	{
-		$query  = "SELECT c.* " . $this->_buildQuery($filters);
-
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		switch ($what)
 		{
-			$filters['sort'] = 'zone';
-		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
-		{
-		}
-		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+			case 'count':
+				$filters['limit'] = 0;
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
-		{
-			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
-		}
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'all':
+				$filters['limit'] = 0;
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query  = "SELECT c.* " . $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort']) 
+				{
+					$filters['sort'] = 'zone';
+				}
+				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+				{
+					$filters['sort_Dir'] = 'ASC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] != 0) 
+				{
+					$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 }

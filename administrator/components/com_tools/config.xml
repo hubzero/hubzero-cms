@@ -160,6 +160,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="zones" type="radio" default="0" label="Zones" description="Allow tool session zones">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
 	</fieldset>
 	<fieldset name="tool">
 		<field name="default_mw" type="text" menu="hide" default="narwhal" label="Default middleware" description="Name of default middleware" />

@@ -58,11 +58,14 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_tools&controller=hosttypes',
 	$controllerName == 'hosttypes'
 );
-JSubMenuHelper::addEntry(
-	JText::_('Zones'),
-	'index.php?option=com_tools&controller=zones',
-	$controllerName == 'zones'
-);
+if (JComponentHelper::getParams('com_tools')->get('zones'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('Zones'),
+		'index.php?option=com_tools&controller=zones',
+		$controllerName == 'zones'
+	);
+}
 JSubMenuHelper::addEntry(
 	JText::_('Sessions'),
 	'index.php?option=com_tools&controller=sessions',
