@@ -243,13 +243,17 @@ class typeFiles extends JObject
 				foreach($selections['files'] as $file) 
 				{
 					$mtype = $mt->getMimeType(urldecode($file));
-					$mimetypes[] = strtolower(array_shift(explode('/', $mtype)));
+					$parts = explode('/', $mtype);
+					$mtype = array_shift($parts);
+					$mimetypes[] = strtolower($mtype);
 				}
 
 				// If one file, determine how to serve (to be extended)
 				if ($count == 1) 
 				{
-					$ext = strtolower(array_pop(explode('.', basename($selections['files'][0]))));
+					$sf  = explode('.', basename($selections['files'][0]));
+					$ext = array_pop($sf);
+					$ext = strtolower($ext);
 
 					// Some files can be viewed inline
 					if (in_array('video', $mimetypes) 
@@ -418,6 +422,8 @@ class typeFiles extends JObject
 				
 				// Get Git hash				
 				$vcs_hash = $git->gitLog($fpath, urldecode($file), '', 'hash');
+				
+				$originalHash = $objPA->vcs_hash;
 
 				if ($objPA->loadAttachment($vid, $path, $this->_attachmentType)) 
 				{
@@ -448,7 +454,7 @@ class typeFiles extends JObject
 					$added++;
 					if ($secret && ($state != 1 || ($state == 1 && !$primary))) 
 					{
-						$this->_publishAttachment($pid, $vid, $objPA->path, $objPA->vcs_hash, $secret);							
+						$this->_publishAttachment($pid, $vid, $objPA->path, $originalHash, $secret);							
 					}
 				}
 			}
