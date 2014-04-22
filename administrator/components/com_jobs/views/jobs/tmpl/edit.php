@@ -122,7 +122,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" id="jobForm" name="jobForm">
+<form action="index.php" method="post" id="jobForm" name="adminForm">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Company'); ?></span></legend>
