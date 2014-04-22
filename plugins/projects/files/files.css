@@ -90,6 +90,15 @@
 	input[type="submit"].started:hover {
 		cursor: default;
 	}
+
+/* Move files
+--------------------------------------------- */
+
+	#abox-content ul li span.folder {
+		background: url("/plugins/projects/files/images/folder.gif") 0 0 no-repeat;
+		padding-left: 20px;
+		margin-left: 0;
+	}
 	
 /* Files management icons
 --------------------------------------------- */

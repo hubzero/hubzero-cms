@@ -27,12 +27,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 $f = 1;
 $i = 1;
 $skipped = 0;
-$maxlevel = 1;
+$maxlevel = 100;
 
 // Get remote connection
 $objRFile = new ProjectRemoteFile ($this->database);
 
 $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+
+// Get all parents
+$dirs = array();
+foreach ($this->list as $item) 
+{
+	if ($item->type == 'folder')
+	{
+		$dirs[] = $item->localPath;
+	}
+}
 
 ?>
 <div id="abox-content">
@@ -102,28 +112,30 @@ if (!$this->getError()) {
 		
 		<div id="dirs" class="dirs">
 			<h4><?php echo JText::_('COM_PROJECTS_MOVE_WHERE'); ?></h4>
-			<?php if(count($this->dirs) > 0) {  $maxlevel = 1; echo '<ul class="dirtree">';
+			<?php if (count($dirs) > 0) {  echo '<ul class="dirtree">';
 			?>
 				<li>
 					<input type="radio" name="newpath" value="" <?php if(!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo JText::_('COM_PROJECTS_HOME_DIRECTORY'); ?></span>
 				</li>
 			<?php 
-			for ($i= 0; $i < count($this->dirs); $i++) { 
-					$dir = $this->dirs[$i];
+			for ($i= 0; $i < count($dirs); $i++) { 
+					$dir = $dirs[$i];
 					// Remove full path
-					$dir = trim(str_replace($this->path, "", $dir), DS);
-					$desect_path = explode(DS, $dir);
-					$level = count($desect_path);
-					$dirname = end($desect_path);
-					$maxlevel = $level > $maxlevel ? $level : $maxlevel;
+					$dir 			= trim(str_replace($this->path, "", $dir), DS);
+					$desect_path 	= explode(DS, $dir);
+					$level 			= count($desect_path);
+					$dirname 		= end($desect_path);
+					$maxlevel 		= $level > $maxlevel ? $level : $maxlevel;
+					
+					$leftMargin = ($level * 15) . 'px';
 				 ?>
-				<li class="level_<?php echo $level; ?>">
+				<li style="margin-left:<?php echo $leftMargin; ?>">
 					<input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if($this->subdir == $dir) { echo 'disabled="disabled" '; } ?> /> <span><span class="folder <?php if($this->subdir == $dir) { echo 'prominent '; } ?>"><?php echo $dirname; ?></span></span>
 				</li>
 			<?php } 
 			echo '</ul>'; } 
-			if($maxlevel <= 3) { ?>
-			<?php if(count($this->dirs) > 0) { ?>
+			if ($maxlevel <= 100) { ?>
+			<?php if (count($dirs) > 0) { ?>
 				<div class="or"><?php echo JText::_('COM_PROJECTS_OR'); ?></div>
 			<?php }  ?>
 			<label><span class="block"><?php echo JText::_('COM_PROJECTS_MOVE_TO_NEW_DIRECTORY'); ?></span>
