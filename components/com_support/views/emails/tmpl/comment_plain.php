@@ -81,7 +81,7 @@ if ($this->comment->changelog)
 				{
 					$message .= ' * ' . $items['field'] . ' changed from "' . $items['before'] . '" to "' . $items['after'] . '"' . "\n";
 				}
-				else 
+				else if ($type == 'notifications')
 				{
 					$message  .= ' * ' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . "\n";
 				}
