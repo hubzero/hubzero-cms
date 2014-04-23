@@ -132,6 +132,10 @@ class SupportModelComment extends \Hubzero\Base\Model
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile;
+			}
 		}
 		if ($property)
 		{
