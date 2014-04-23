@@ -13,30 +13,34 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+
+		$mwdb = MwUtils::getMWDBO();
+
 		/* We can just drop the old tables because they were never used on a live hub */
 
-		if ($db->tableExists('venues'))
+		if ($mwdb->tableExists('venues'))
 		{
 			$query = "DROP TABLE `venues`;";
-			$db->setQuery($query);
-			$db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 
-		if ($db->tableExists('venue_locations'))
+		if ($mwdb->tableExists('venue_locations'))
 		{
 			$query = "DROP TABLE `venue_locations`;";
-			$db->setQuery($query);
-			$db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 
-		if ($db->tableExists('venue_countries'))
+		if ($mwdb->tableExists('venue_countries'))
 		{
 			$query = "DROP TABLE `venue_countries`;";
-			$db->setQuery($query);
-			$db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 
-		if (!$db->tableExists('zones'))
+		if (!$mwdb->tableExists('zones'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `zones` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -51,8 +55,8 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 		if (!$mwdb->tableHasField('zones', 'title'))
 		{
@@ -61,7 +65,7 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 			$mwdb->query();
 		}
 
-		if (!$db->tableExists('zone_locations'))
+		if (!$mwdb->tableExists('zone_locations'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `zone_locations` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -79,9 +83,8 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$db->setQuery($query);
-			$db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
-
 	}
 }
