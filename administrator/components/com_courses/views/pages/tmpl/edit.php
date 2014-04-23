@@ -62,32 +62,22 @@ JToolBarHelper::cancel();
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->row->get('offering_id'); ?>" />
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="field-content"><?php echo JText::_('Content'); ?>:</label><br />
-							<textarea name="fields[content]" id="field-content" rows="35" columns="40"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>:</label><br />
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-url"><?php echo JText::_('URL'); ?>:</label><br />
+				<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-content"><?php echo JText::_('Content'); ?>:</label><br />
+				<textarea name="fields[content]" id="field-content" rows="35" columns="40"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-30 fltrt">
-		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('Type'); ?></th>
@@ -119,21 +109,17 @@ JToolBarHelper::cancel();
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="content"><?php echo JText::_('Active'); ?>:</label></td>
-						<td>
-							<input type="radio" name="fields[active]" id="field-active_yes" value="1" <?php if ($this->row->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_yes"><?php echo JText::_('Yes'); ?></label>
-							<input type="radio" name="fields[active]" id="field-active_no" value="0" <?php if (!$this->row->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_no"><?php echo JText::_('No'); ?></label>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-active"><?php echo JText::_('Active'); ?>:</label><br />
+				<select name="fields[active]" id="field-active">
+					<option value="1" <?php if ($this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('Yes'); ?></option>
+					<option value="0" <?php if (!$this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('No'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">

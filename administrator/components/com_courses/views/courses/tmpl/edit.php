@@ -77,68 +77,54 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-group_id"><?php echo JText::_('Group'); ?>:</label></td>
-						<td>
-							<select name="fields[group_id]" id="field-group_id">
-								<option value="0"<?php if (!$this->row->get('group_id')) { echo ' selected="selected"'; } ?>><?php echo JText::_('[none]'); ?></option>
-							<?php
-							$filters = array(
-								'authorized' => 'admin',
-								'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
-								'type'       => array(1, 3),
-								'sortby'     => 'description'
-							);
-							$groups = \Hubzero\User\Group::find($filters);
-							if ($groups)
-							{
-								foreach ($groups as $group)
-								{
-									?>
-									<option value="<?php echo $group->gidNumber; ?>"<?php if ($group->gidNumber == $this->row->get('group_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($group->description); ?> (<?php echo $this->escape($group->cn); ?>)</option>
-									<?php 
-								}
-							}
-							?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
-							<span class="hint"><?php echo JText::_('Alpha-numeric characters only. If left blank, alias will be generated from the title.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
-					</tr>
-					<tr>
-						<td class="key" valign="top"><label for="field-blurb"><?php echo JText::_('Blurb'); ?>:</label></td>
-						<td>
-							<textarea name="fields[blurb]" id="field-blurb" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->get('blurb'))); ?></textarea>
-							<span class="hint"><?php echo JText::_('This is a short sentence or two for the catalog.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
-						<td>
-							<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
-							<span class="hint"><?php echo JText::_('This is a longer, detailed description of the course.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key" valign="top"><label for="field-tags"><?php echo JText::_('Tags'); ?>:</label></td>
-						<td>
-							<textarea name="tags" id="field-tags" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-group_id"><?php echo JText::_('Group'); ?>:</label><br />
+				<select name="fields[group_id]" id="field-group_id">
+					<option value="0"<?php if (!$this->row->get('group_id')) { echo ' selected="selected"'; } ?>><?php echo JText::_('[none]'); ?></option>
+				<?php
+				$filters = array(
+					'authorized' => 'admin',
+					'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
+					'type'       => array(1, 3),
+					'sortby'     => 'description'
+				);
+				$groups = \Hubzero\User\Group::find($filters);
+				if ($groups)
+				{
+					foreach ($groups as $group)
+					{
+						?>
+						<option value="<?php echo $group->gidNumber; ?>"<?php if ($group->gidNumber == $this->row->get('group_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($group->description); ?> (<?php echo $this->escape($group->cn); ?>)</option>
+						<?php 
+					}
+				}
+				?>
+				</select>
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('Alpha-numeric characters only. If left blank, alias will be generated from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
+				<span class="hint"><?php echo JText::_('Alpha-numeric characters only. If left blank, alias will be generated from the title.'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label><br />
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('This is a short sentence or two for the catalog.'); ?>">
+				<label for="field-blurb"><?php echo JText::_('Blurb'); ?>:</label><br />
+				<textarea name="fields[blurb]" id="field-blurb" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->get('blurb'))); ?></textarea>
+				<span class="hint"><?php echo JText::_('This is a short sentence or two for the catalog.'); ?></span>
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('This is a longer, detailed description of the course.'); ?>">
+				<label for="field-description"><?php echo JText::_('Description'); ?>:</label><br />
+				<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
+				<span class="hint"><?php echo JText::_('This is a longer, detailed description of the course.'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label for="field-tags"><?php echo JText::_('Tags'); ?>:</label><br />
+				<textarea name="tags" id="field-tags" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
@@ -151,7 +137,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('Course ID'); ?></th>
@@ -173,25 +159,19 @@ function submitbutton(pressbutton)
 			<?php } ?>
 			</tbody>
 		</table>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key" valign="top"><label for="field-state"><?php echo JText::_('State'); ?>:</label></td>
-						<td>
-							<select name="fields[state]" id="field-state">
-								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-								<option value="3"<?php if ($this->row->get('state') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('Draft'); ?></option>
-								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+					<option value="3"<?php if ($this->row->get('state') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('Draft'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 
 		<?php

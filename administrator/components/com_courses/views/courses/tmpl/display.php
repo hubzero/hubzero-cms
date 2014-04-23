@@ -71,13 +71,13 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
-	
-	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
+
+	<table class="adminlist">
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
@@ -173,12 +173,12 @@ foreach ($this->rows as $row)
 				<td>
 					<?php if ($params->get('certificate', '')) { ?>
 					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=certificates&amp;course=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Certificate set'); ?>">
-						<span class="state publish">
+						<span class="state yes">
 							<span class="text"><?php echo JText::_('Certificate set'); ?></span>
 						</span>
 					<?php } else { ?>
 					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=certificates&amp;course=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('No certificate set'); ?>">
-						<span class="state unpublish">
+						<span class="state no">
 							<span class="text"><?php echo JText::_('No certificate set'); ?></span>
 						</span>
 					<?php } ?>
