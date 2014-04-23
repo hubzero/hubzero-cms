@@ -154,7 +154,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		);
 
 		// Set filters for view
-		$view->filters = TimeFilters::getFilters();
+		$view->filters = TimeFilters::getFilters($this);
 
 		// Get the total number of tasks (for pagination)
 		$view->total = $tasks->getCount($view->filters);
