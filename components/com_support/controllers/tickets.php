@@ -895,6 +895,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 		//$problem  = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $problem);
 
+		$reporter['name']  = trim($reporter['name']);
+		$reporter['email'] = trim($reporter['email']);
+		$problem['long']   = trim($problem['long']);
+
 		// Make sure email address is valid
 		$validemail = $this->_isValidEmail($reporter['email']);
 
