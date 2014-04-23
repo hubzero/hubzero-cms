@@ -106,6 +106,9 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			$sf = getenv('SERVER_SOFTWARE');
 		}
 
+		$commit = shell_exec("git log -1 --pretty=format:'%H - %s (%ci)' --abbrev-commit");
+		//shell_exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit git merge-base local-dev dev");
+
 		// System
 		$response->system = array(
 			'cms'         => \Hubzero\Version\Version::VERSION,
@@ -114,6 +117,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			'dbcollation' => $this->database->getCollation(),
 			'phpversion'  => phpversion(),
 			'server'      => $sf,
+			'last_commit' => $commit
 		);
 
 		JPluginHelper::importPlugin('hubzero');
