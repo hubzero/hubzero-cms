@@ -181,7 +181,14 @@ $first = $this->model->entries('first');
 					$archiveDate .= ($this->filters['month']) ? '-' . $this->filters['month'] : '-01';
 					$archiveDate .= '-01 00:00:00';
 
-					echo JFactory::getDate($archiveDate)->format('M Y');
+					if ($this->filters['month'])
+					{
+						echo JFactory::getDate($archiveDate)->format('M Y');
+					}
+					else
+					{
+						echo JFactory::getDate($archiveDate)->format('Y');
+					}
 				} ?>
 				</h3>
 
