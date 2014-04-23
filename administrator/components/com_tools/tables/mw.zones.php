@@ -51,6 +51,13 @@ class MwZones extends JTable
 	var $zone;
 
 	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $title;
+
+	/**
 	 * varchar(20)
 	 * 
 	 * @var string
@@ -103,11 +110,15 @@ class MwZones extends JTable
 	 */
 	public function check()
 	{
-		$this->zone = trim($this->zone); //preg_replace("/[^A-Za-z0-9-.]/", '', $this->zone);
+		$this->zone = preg_replace("/[^A-Za-z0-9\-\_\.]/", '', $this->zone);
 		if (!$this->zone) 
 		{
 			$this->setError(JText::_('No zone provided'));
 			return false;
+		}
+		if (!$this->title) 
+		{
+			$this->title = $this->zone;
 		}
 		$this->master = trim($this->master);
 		if (!$this->master) 
