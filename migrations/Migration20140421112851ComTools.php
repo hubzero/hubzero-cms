@@ -41,6 +41,7 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 			$query = "CREATE TABLE IF NOT EXISTS `zones` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `zone` varchar(40) DEFAULT NULL,
+			  `title` varchar(255) DEFAULT NULL,
 			  `state` varchar(15) DEFAULT NULL,
 			  `type` varchar(10) DEFAULT NULL,
 			  `master` varchar(255) DEFAULT NULL,
@@ -52,6 +53,12 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 
 			$db->setQuery($query);
 			$db->query();
+		}
+		if (!$mwdb->tableHasField('zones', 'title'))
+		{
+			$query = "ALTER TABLE `session` ADD `title` varchar(255) DEFAULT NULL;";
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 
 		if (!$db->tableExists('zone_locations'))

@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'middleware.php');
 
 /**
  * Controller class for tools (default)
@@ -52,16 +53,25 @@ class ToolsControllerZones extends Hubzero_Controller
 		exit;
 	}
 
+	/**
+	 * Normalize a path
+	 * 
+	 * @param     string  $path
+	 * @param     boolean $isFile
+	 * @return    mixed
+	 */
 	private static function normalize_path($path, $isFile = false)
 	{
 		if (!isset($path[0]) || $path[0] != '/')
+		{
 			return false;
+		}
 
 		$parts = explode('/', $path);
 
 		$result = array();
 
-		foreach($parts as $part)
+		foreach ($parts as $part)
 		{
 			if ($part === '' || $part == '.')
 			{
@@ -81,10 +91,12 @@ class ToolsControllerZones extends Hubzero_Controller
 		if ($isFile) // Files can't end with directory separator or special directory names
 		{
 			if ($part == '' || $part == '.' || $part == '..')
+			{
 				return false;
+			}
 		}
 
-		return "/" . implode('/', $result) . ($isFile ? '' : '/');
+		return '/' . implode('/', $result) . ($isFile ? '' : '/');
 	}
 
 	/**
@@ -95,24 +107,35 @@ class ToolsControllerZones extends Hubzero_Controller
 	public function assetsTask()
 	{
 		$file = JRequest::getVar('file');
-
-		$file = self::normalize_path($file,true);
+		$file = self::normalize_path('/' . trim($file, '/'), true);
 
 		if (empty($file))
-			$this->notFoundTask();
+		{
+			echo 'file:' . $file; die();
+			return $this->notFoundTask();
+		}
 
-		$file = '/site/tools/zones/assets' . $file;
+		$zone = new MiddlewareModelZone(JRequest::getInt('id', 0));
+		if (!$zone->exists())
+		{
+			echo 'zone: ' . $zone->get('id'); die();
+			return $this->notFoundTask();
+		}
+
+		$file = $zone->logo('path') . '/' . ltrim($file, '/');
 
 		if (!is_file($file) || !is_readable($file)) 
-			$this->notFoundTask();
+		{
+			return $this->notFoundTask();
+		}
 
 		$xserver = new Hubzero_Content_Server();
-		$xserver->filename(JPATH_ROOT . $file);
+		$xserver->filename($file);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-        if (!$xserver->serve())
-        {
+		if (!$xserver->serve())
+		{
 			JError::raiseError(404, JText::_('COM_TOOLS_SERVER_ERROR'));
 		}
 

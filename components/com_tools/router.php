@@ -67,6 +67,11 @@ function toolsBuildRoute(&$query)
 		$segments[] = $query['sess'];
 		unset($query['sess']);
 	}*/
+	if (!empty($query['file'])) 
+	{
+		$segments[] = $query['file'];
+		unset($query['file']);
+	}
 	if (isset($query['return']) && $query['return'] == '') 
 	{
 		unset($query['return']);
@@ -157,7 +162,8 @@ function toolsParseRoute($segments)
 					switch($vars['task'])
 					{
 						case 'assets':
-							$vars['file'] = "/$segments[2]/$segments[3]";
+							$vars['id'] = $segments[2];
+							$vars['file'] = $segments[3]; //"/$segments[2]/$segments[3]";
 							array_pop($segments);
 							array_pop($segments);
 							array_pop($segments);
