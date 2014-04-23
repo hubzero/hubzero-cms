@@ -138,6 +138,7 @@ defined('_JEXEC') or die('Restricted access');
 
 						<input type="hidden" name="fields[id]" value="0" />
 						<input type="hidden" name="fields[state]" value="1" />
+						<input type="hidden" name="fields[access]" value="0" />
 						<input type="hidden" name="fields[scope]" value="<?php echo $this->thread->get('scope'); ?>" />
 						<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
 						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->thread->get('scope_id'); ?>" />

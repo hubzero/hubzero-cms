@@ -130,6 +130,7 @@ $juser = JFactory::getUser();
 					<input type="hidden" name="fields[id]" value="" />
 					<input type="hidden" name="fields[scope]" value="site" />
 					<input type="hidden" name="fields[scope_id]" value="0" />
+					<input type="hidden" name="fields[access]" value="0" />
 					<?php echo JHTML::_('form.token'); ?>
 				</fieldset>
 			</form>
@@ -172,6 +173,7 @@ foreach ($this->sections as $section)
 						<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
 						<input type="hidden" name="fields[scope]" value="site" />
 						<input type="hidden" name="fields[scope_id]" value="0" />
+						<input type="hidden" name="fields[access]" value="0" />
 						<input type="hidden" name="controller" value="sections" />
 						<input type="hidden" name="task" value="save" />
 						<?php echo JHTML::_('form.token'); ?>
