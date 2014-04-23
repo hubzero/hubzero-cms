@@ -176,7 +176,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 				$archiveDate  = $this->year;
 				$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
 				$archiveDate .= '-01 00:00:00';
-				echo JFactory::getDate($archiveDate)->format('M Y');
+				if ($this->month)
+				{
+					echo JFactory::getDate($archiveDate)->format('M Y');
+				}
+				else
+				{
+					echo JFactory::getDate($archiveDate)->format('Y');
+				}
 			} ?>
 				<?php
 					if ($this->config->get('feeds_enabled', 1)) :
