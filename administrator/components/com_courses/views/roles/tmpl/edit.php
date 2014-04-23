@@ -67,36 +67,28 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-offering_id"><?php echo JText::_('Offering'); ?>:</label></td>
-						<td>
-							<select name="fields[offering_id]" id="field-offering_id">
-								<option value="0"<?php if (0 == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo JText::_('[none]'); ?></option>
-<?php foreach ($this->courses as $course) { ?>
-								<optgroup label="<?php echo $course->get('alias'); ?>">
-	<?php foreach ($course->offerings() as $offering) { ?>
-								<option value="<?php echo $offering->get('id'); ?>"<?php if ($offering->get('id') == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('title'))); ?></option>
-	<?php } ?>
-								</optgroup>
-<?php } ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" size="50" value="<?php echo $this->escape($this->row->title); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[alias]" id="field-alias" size="50" value="<?php echo $this->escape($this->row->alias); ?>" /><br />
-							<span class="hint"><?php echo JText::_('If no alias is provided, one will be generated from the title.'); ?></span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-offering_id"><?php echo JText::_('Offering'); ?>:</label><br />
+				<select name="fields[offering_id]" id="field-offering_id">
+					<option value="0"<?php if (0 == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo JText::_('[none]'); ?></option>
+			<?php foreach ($this->courses as $course) { ?>
+					<optgroup label="<?php echo $course->get('alias'); ?>">
+				<?php foreach ($course->offerings() as $offering) { ?>
+						<option value="<?php echo $offering->get('id'); ?>"<?php if ($offering->get('id') == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('title'))); ?></option>
+				<?php } ?>
+					</optgroup>
+			<?php } ?>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" size="50" value="<?php echo $this->escape($this->row->title); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('If no alias is provided, one will be generated from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="50" value="<?php echo $this->escape($this->row->alias); ?>" />
+				<span class="hint"><?php echo JText::_('If no alias is provided, one will be generated from the title.'); ?></span>
+			</div>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -119,42 +111,6 @@ function submitbutton(pressbutton)
 						<?php echo $this->row->id; ?>
 					</td>
 				</tr>
-				<?php /*<tr>
-					<th class="key"><?php echo JText::_('Created By'); ?>:</th>
-					<td>
-						<?php 
-						$editor = JUser::getInstance($this->row->created_by);
-						echo $this->escape($editor->get('name')); 
-						?>
-						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
-					<td>
-						<?php echo $this->row->created; ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
-					</td>
-				</tr>
-<?php if ($this->row->modified_by) { ?>
-				<tr>
-					<th class="key"><?php echo JText::_('Modified By'); ?>:</th>
-					<td>
-						<?php 
-						$modifier = JUser::getInstance($this->row->modified_by);
-						echo $this->escape($modifier->get('name')); 
-						?>
-						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->modified_by; ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo JText::_('Modified Date'); ?>:</th>
-					<td>
-						<?php echo $this->row->modified; ?>
-						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->modified; ?>" />
-					</td>
-				</tr>
-<?php } */ ?>
 			</tbody>
 		</table>
 	</div>

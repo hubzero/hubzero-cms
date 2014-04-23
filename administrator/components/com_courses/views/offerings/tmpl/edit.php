@@ -73,67 +73,49 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
-			
+
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->row->get('course_id'); ?>" />
 			<input type="hidden" name="course" value="<?php echo $this->row->get('course_id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
-							<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
-							<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-							<span class="hint">Only numbers, letters, dashes, and underscores allowed. If no alias is provided, one will be generated form the title.</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+				<span class="hint">Only numbers, letters, dashes, and underscores allowed. If no alias is provided, one will be generated form the title.</span>
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td colspan="2">
-							<label for="field-state"><?php echo JText::_('State'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label></label><br />
-							<select name="fields[state]" id="field-state">
-								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<span class="hint">The following values are optional. If no <strong>start date</strong> is set, the offering will be available immediately upon being published.</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="publish_up">Offering starts:</label><br />
-							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
-							<span class="hint">Format: YYYY-MM-DD hh:mm:ss</span>
-						</td>
-						<td>
-							<label for="publish_down">Offering ends:</label><br />
-							<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
-							<span class="hint">Format: YYYY-MM-DD hh:mm:ss</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('State'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
+				</select>
+			</div>
+
+			<p><span class="hint">The following values are optional. If no <strong>start date</strong> is set, the offering will be available immediately upon being published.</span></p>
+
+			<div class="input-wrap">
+				<label for="publish_up">Offering starts:</label><br />
+				<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
+				<span class="hint">Format: YYYY-MM-DD hh:mm:ss</span>
+			</div>
+			<div class="input-wrap">
+				<label for="publish_down">Offering ends:</label><br />
+				<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
+				<span class="hint">Format: YYYY-MM-DD hh:mm:ss</span>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">

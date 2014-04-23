@@ -85,51 +85,41 @@ window.addEvent("domready", function() {
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-parent"><?php echo JText::_('Parent'); ?>:</label></td>
-						<td>
-							<select name="fields[parent]" id="field-parent">
-								<option value="0"<?php if (0 == $this->row->get('parent')) { echo ' selected="selected"'; } ?>><?php echo JText::_('(none)'); ?></option>
-<?php foreach ($this->assetgroups as $assetgroup) { ?>
-								<option value="<?php echo $assetgroup->get('id'); ?>"<?php if ($assetgroup->get('id') == $this->row->get('parent')) { echo ' selected="selected"'; } ?>><?php echo $assetgroup->treename . $this->escape(stripslashes($assetgroup->get('title'))); ?></option>
-<?php } ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
-							<span class="hint"><?php echo JText::_('Alhpa-numeric characters only. If no alias is provided, one will be generated from the title.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
-						<td>
-							<textarea name="fields[description]" id="field-description" cols="40" rows="5"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap" data-hint="<?php echo JText::_('Asset groups can be nested, creating a heirarchy.'); ?>">
+				<label for="field-parent"><?php echo JText::_('Parent'); ?>:</label><br />
+				<select name="fields[parent]" id="field-parent">
+					<option value="0"<?php if (0 == $this->row->get('parent')) { echo ' selected="selected"'; } ?>><?php echo JText::_('(none)'); ?></option>
+				<?php foreach ($this->assetgroups as $assetgroup) { ?>
+					<option value="<?php echo $assetgroup->get('id'); ?>"<?php if ($assetgroup->get('id') == $this->row->get('parent')) { echo ' selected="selected"'; } ?>><?php echo $assetgroup->treename . $this->escape(stripslashes($assetgroup->get('title'))); ?></option>
+				<?php } ?>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('Alhpa-numeric characters only. If no alias is provided, one will be generated from the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+				<span class="hint"><?php echo JText::_('Alhpa-numeric characters only. If no alias is provided, one will be generated from the title.'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('Description'); ?>:</label><br />
+				<textarea name="fields[description]" id="field-description" cols="40" rows="5"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+			</div>
 		</fieldset>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Assets'); ?></span></legend>
 			<?php if ($this->row->get('id')) { ?>
-						<iframe width="100%" height="400" name="assets" id="assets" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=assets&amp;tmpl=component&amp;scope=asset_group&amp;scope_id=<?php echo $this->row->get('id'); ?>&amp;course_id=<?php echo $this->offering->get('course_id'); ?>"></iframe>
+				<iframe width="100%" height="400" name="assets" id="assets" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=assets&amp;tmpl=component&amp;scope=asset_group&amp;scope_id=<?php echo $this->row->get('id'); ?>&amp;course_id=<?php echo $this->offering->get('course_id'); ?>"></iframe>
 			<?php } else { ?>
-						<p><?php echo JText::_('Entry must be saved before assets can be added.'); ?></p>
+				<p><?php echo JText::_('Entry must be saved before assets can be added.'); ?></p>
 			<?php } ?>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('Unit ID'); ?></th>
@@ -139,44 +129,37 @@ window.addEvent("domready", function() {
 					<th><?php echo JText::_('ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
-<?php if ($this->row->get('created')) { ?>
+			<?php if ($this->row->get('created')) { ?>
 				<tr>
 					<th><?php echo JText::_('Created'); ?></th>
 					<td><?php echo $this->escape($this->row->get('created')); ?></td>
 				</tr>
-<?php } ?>
-<?php if ($this->row->get('created_by')) { ?>
+			<?php } ?>
+			<?php if ($this->row->get('created_by')) { ?>
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
 					<td><?php 
 					$creator = JUser::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>
-<?php } ?>
+			<?php } ?>
 			</tbody>
 		</table>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key" valign="top"><label for="field-state"><?php echo JText::_('State'); ?>:</label></td>
-						<td>
-							<select name="fields[state]" id="field-state">
-								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 
 		<?php
-
 			JPluginHelper::importPlugin('courses');
 			$dispatcher = JDispatcher::getInstance();
 
@@ -210,7 +193,7 @@ window.addEvent("domready", function() {
 					}
 					?>
 					<fieldset class="adminform eventparams" id="params-<?php echo $plugin['name']; ?>">
-						<legend><?php echo JText::sprintf('%s Parameters', $plugin['title']); ?></legend>
+						<legend><span><?php echo JText::sprintf('%s Parameters', $plugin['title']); ?></span></legend>
 						<?php echo $out; ?>
 					</fieldset>
 					<?php

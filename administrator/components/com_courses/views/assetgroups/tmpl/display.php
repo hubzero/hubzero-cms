@@ -73,13 +73,13 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
-	
-	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
+
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th colspan="7">
@@ -118,12 +118,12 @@ $n = count($this->rows);
 $ordering = true;
 foreach ($this->rows as $row)
 {
-	$orderkey	= array_search($row->get('id'), $this->ordering[$row->get('parent')]);
+	$orderkey = array_search($row->get('id'), $this->ordering[$row->get('parent')]);
 
 	$tip = '[coming soon]';
 	//$assetgroups = $row->assetgroups()->total();
 	$assets = $row->assets()->total();
-	
+
 	switch ($row->get('state'))
 	{
 		case 1:
@@ -152,37 +152,37 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php echo $row->treename; ?>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
+				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $class; ?>">
 						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $row->treename; ?>
@@ -191,15 +191,15 @@ foreach ($this->rows as $row)
 					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($this->ordering[$row->get('parent')][$orderkey + 1]), 'orderdown', 'Move Down', $ordering ); ?></span>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a class="glyph assets" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $assets; ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="glyph assets">
 						<?php echo $assets; ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php

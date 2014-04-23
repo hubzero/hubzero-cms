@@ -52,13 +52,13 @@ JToolBarHelper::help('roles.html', true);
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist" summary="<?php echo JText::_('A list of resource roles'); ?>">
+	<table class="adminlist"
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
@@ -67,13 +67,7 @@ JToolBarHelper::help('roles.html', true);
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Title'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Offering ID'), 'offering_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Total'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<!-- <th scope="col"><?php echo JText::_('Permissions'); ?></th> -->
 			</tr>
-			<!-- <tr>
-				<th scope="col"><?php echo JText::_('Manage enrollment'); ?></th>
-				<th scope="col"><?php echo JText::_('Manage offering'); ?></th>
-				<th scope="col"><?php echo JText::_('Delete offering'); ?></th>
-			</tr> -->
 		</thead>
 		<tfoot>
 			<tr>
@@ -89,34 +83,34 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->offering_id; ?>
@@ -124,9 +118,6 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td>
 					<?php echo $row->total; ?>
 				</td>
-				<!-- <td>
-
-				</td> -->
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -141,6 +132,6 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="sort_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

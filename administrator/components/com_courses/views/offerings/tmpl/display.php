@@ -66,22 +66,18 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
-	
-	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
+
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th colspan="10">
-					(<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>"> -->
-						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
-					<!-- </a> -->) 
-					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>"> -->
-						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-					<!-- </a> -->
+					(<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>) 
+					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 				</th>
 			</tr>
 			<tr>
@@ -109,7 +105,7 @@ $k = 0;
 foreach ($this->rows as $row)
 {
 	$tip = '[coming soon]';
-	$managers = $row->members(array('count' => true, 'student' => 0));
+	//$managers = $row->members(array('count' => true, 'student' => 0));
 	$units    = $row->units(array('count' => true));
 
 	$s = $row->sections();
@@ -151,17 +147,6 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?>
 				</td>
-				<!-- <td>
-<?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo $managers; ?>
-					</a>
-<?php } else { ?>
-					<span class="glyph member">
-						<?php echo $managers; ?>
-					</span>
-<?php } ?>
-				</td> -->
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->get('state') == 1) { ?>

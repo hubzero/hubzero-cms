@@ -83,7 +83,7 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
-			
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
@@ -91,14 +91,11 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="section" value="<?php echo $this->row->get('section_id'); ?>" />
 			<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id'); ?>" />
 			<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->get('user_id'); ?>" />
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="offering_id"><?php echo JText::_('Offering'); ?>:</label></td>
-						<td>
-							<select name="fields[offering_id]" id="offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
-								<option value="-1"><?php echo JText::_('(none)'); ?></option>
+
+			<div class="input-wrap">
+				<label for="field-offering_id"><?php echo JText::_('Offering'); ?>:</label><br />
+				<select name="fields[offering_id]" id="field-offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
+					<option value="-1"><?php echo JText::_('(none)'); ?></option>
 					<?php
 						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 						$model = CoursesModelCourses::getInstance();
@@ -106,9 +103,9 @@ function submitbutton(pressbutton)
 						{
 							foreach ($model->courses() as $course)
 							{
-					?>
-								<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
-					<?php
+							?>
+							<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+								<?php
 								$j = 0;
 								foreach ($course->offerings() as $i => $offering)
 								{
@@ -116,49 +113,40 @@ function submitbutton(pressbutton)
 									{
 										$js .= 'offeringsections[' . $j++ . "] = new Array( '" . $offering->get('id') . "','" . addslashes($section->get('id')) . "','" . addslashes($section->get('title')) . "' );\n\t\t";
 									}
-					?>
-									<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
-					<?php
+									?>
+								<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+									<?php
 								}
-					?>
-								</optgroup>
-					<?php 
+							?>
+							</optgroup>
+							<?php 
 							}
 						}
 					?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="section_id"><?php echo JText::_('Section'); ?>:</label></td>
-						<td>
-							<select name="fields[section_id]" id="section_id">
-								<option value="-1"><?php echo JText::_('Select Section'); ?></option>
-								<?php
-								foreach ($this->offering->sections() as $k => $section)
-								{
-								?>
-								<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-								<?php
-								}
-								?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="enrolled">Enrolled:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="field-token">Serial #:</label></th>
-						<td>
-							<input type="text" name="fields[token]" id="field-token" value="<?php echo $this->escape($this->row->get('token')); ?>" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-section_id"><?php echo JText::_('Section'); ?>:</label><br />
+				<select name="fields[section_id]" id="field-section_id">
+					<option value="-1"><?php echo JText::_('Select Section'); ?></option>
+					<?php
+					foreach ($this->offering->sections() as $k => $section)
+					{
+					?>
+					<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+					<?php
+					}
+					?>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-enrolled"><?php echo JText::_('Enrolled:'); ?></label><br />
+				<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'field-enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="field-token"><?php echo JText::_('Serial #:'); ?></label><br />
+				<input type="text" name="fields[token]" id="field-token" value="<?php echo $this->escape($this->row->get('token')); ?>" />
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
@@ -177,7 +165,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>

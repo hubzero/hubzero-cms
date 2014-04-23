@@ -86,7 +86,7 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
-			
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
@@ -94,100 +94,88 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id', $role_id); ?>" />
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[student]" value="1" />
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="acmembers">User:</label></th>
-						<td>
-							<input type="text" name="fields[user_id]" rel="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-source="<?php echo $base; ?>/administrator/index.php" />
-							<span class="hint">Enter usernames, IDs, or look up users by name</span>
-							<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
-							<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
-							<?php 
-							/*JPluginHelper::importPlugin('hubzero');
-							$dispatcher = JDispatcher::getInstance();
 
-							$mc = $dispatcher->trigger('onGetMultiEntry', array(
-								array(
-									'members',   // The component to call
-									'fields[user_id]',        // Name of the input field
-									'acmembers', // ID of the input field
-									'',          // CSS class(es) for the input field
-									'' // The value of the input field
-								)
-							));
-							if (count($mc) > 0) {
-								echo $mc[0] . '<span class="hint">Enter usernames, IDs, or look up users by name</span>';
-							} else { ?>
-							<input type="text" name="fields[user_id]" id="acmembers" value="" size="35" />
-							<span class="hint">Enter a comma-separated list of usernames or IDs</span>
-							<?php }*/ ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="offering_id"><?php echo JText::_('Offering'); ?>:</label></td>
-						<td>
-							<select name="fields[offering_id]" id="offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
-								<option value="-1"><?php echo JText::_('(none)'); ?></option>
-					<?php
-						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-						$model = CoursesModelCourses::getInstance();
-						if ($model->courses()->total() > 0)
-						{
-							$j = 0;
-							foreach ($model->courses() as $course)
-							{
-					?>
-								<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
-					<?php
-								foreach ($course->offerings() as $i => $offering)
-								{
-									foreach ($offering->sections() as $section)
-									{
-										$js .= 'offeringsections[' . $j++ . "] = new Array( '" . $offering->get('id') . "','" . addslashes($section->get('id')) . "','" . addslashes($section->get('title')) . "' );\n\t\t";
-									}
-					?>
-									<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
-					<?php
-								}
-					?>
-								</optgroup>
+			<div class="input-wrap">
+				<label for="acmembers">User:</label><br />
+					<input type="text" name="fields[user_id]" rel="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-source="<?php echo $base; ?>/administrator/index.php" />
+					<span class="hint">Enter usernames, IDs, or look up users by name</span>
+					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
+					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
 					<?php 
+					/*JPluginHelper::importPlugin('hubzero');
+					$dispatcher = JDispatcher::getInstance();
+
+					$mc = $dispatcher->trigger('onGetMultiEntry', array(
+						array(
+							'members',   // The component to call
+							'fields[user_id]',        // Name of the input field
+							'acmembers', // ID of the input field
+							'',          // CSS class(es) for the input field
+							'' // The value of the input field
+						)
+					));
+					if (count($mc) > 0) {
+						echo $mc[0] . '<span class="hint">Enter usernames, IDs, or look up users by name</span>';
+					} else { ?>
+					<input type="text" name="fields[user_id]" id="acmembers" value="" size="35" />
+					<span class="hint">Enter a comma-separated list of usernames or IDs</span>
+					<?php }*/ ?>
+			</div>
+			<div class="input-wrap">
+				<label for="offering_id"><?php echo JText::_('Offering'); ?>:</label><br />
+					<select name="fields[offering_id]" id="offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
+						<option value="-1"><?php echo JText::_('(none)'); ?></option>
+			<?php
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+				$model = CoursesModelCourses::getInstance();
+				if ($model->courses()->total() > 0)
+				{
+					$j = 0;
+					foreach ($model->courses() as $course)
+					{
+			?>
+						<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+			<?php
+						foreach ($course->offerings() as $i => $offering)
+						{
+							foreach ($offering->sections() as $section)
+							{
+								$js .= 'offeringsections[' . $j++ . "] = new Array( '" . $offering->get('id') . "','" . addslashes($section->get('id')) . "','" . addslashes($section->get('title')) . "' );\n\t\t";
 							}
+			?>
+							<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+			<?php
 						}
+			?>
+						</optgroup>
+			<?php 
+					}
+				}
+			?>
+					</select>
+			</div>
+			<div class="input-wrap">
+				<label for="section_id"><?php echo JText::_('Section'); ?>:</label><br />
+				<select name="fields[section_id]" id="section_id">
+					<option value="-1"><?php echo JText::_('Select Section'); ?></option>
+					<?php
+					foreach ($this->offering->sections() as $k => $section)
+					{
 					?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="section_id"><?php echo JText::_('Section'); ?>:</label></td>
-						<td>
-							<select name="fields[section_id]" id="section_id">
-								<option value="-1"><?php echo JText::_('Select Section'); ?></option>
-								<?php
-								foreach ($this->offering->sections() as $k => $section)
-								{
-								?>
-								<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-								<?php
-								}
-								?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="enrolled">Enrolled:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+					<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+					<?php
+					}
+					?>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="enrolled">Enrolled:</label><br />
+				<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>

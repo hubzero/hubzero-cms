@@ -121,7 +121,7 @@ function submitbutton(pressbutton)
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 		<?php if ($this->filters['offering']) { ?>
 			<tr>
