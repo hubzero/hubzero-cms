@@ -152,7 +152,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		);
 
 		// Set filters for view
-		$view->filters = TimeFilters::getFilters();
+		$view->filters = TimeFilters::getFilters($this);
 
 		// Get the total number of records (for pagination)
 		$view->total = $records->getCount($view->filters);

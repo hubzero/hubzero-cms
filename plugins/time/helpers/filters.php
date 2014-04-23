@@ -39,19 +39,22 @@ class TimeFilters
 	/**
 	 * Get filters from request
 	 * 
+	 * @param  $plugin  - plugin calling this method
 	 * @return $filters - array of filters
 	 */
-	public function getFilters()
+	public static function getFilters($plugin)
 	{
+		$app = JFactory::getApplication();
+
 		// Get request variables for filters (use values from state if new ones are defined)
 		$filters['start']    = (JRequest::getInt('start')) ? JRequest::getInt('start') : JRequest::getInt('limitstart', 0);
-		$filters['limit']    = JRequest::getInt('limit', $this->mainframe->getUserState("$this->option.$this->active.limit"));
-		$filters['orderby']  = JRequest::getVar('orderby', $this->mainframe->getUserState("$this->option.$this->active.orderby"));
-		$filters['orderdir'] = JRequest::getVar('orderdir', $this->mainframe->getUserState("$this->option.$this->active.orderdir"));
-		$filters['search']   = JRequest::getVar('search', $this->mainframe->getUserState("$this->option.$this->active.search"));
+		$filters['limit']    = JRequest::getInt('limit',    $app->getUserState("$plugin->option.$plugin->active.limit"));
+		$filters['orderby']  = JRequest::getVar('orderby',  $app->getUserState("$plugin->option.$plugin->active.orderby"));
+		$filters['orderdir'] = JRequest::getVar('orderdir', $app->getUserState("$plugin->option.$plugin->active.orderdir"));
+		$filters['search']   = JRequest::getVar('search',   $app->getUserState("$plugin->option.$plugin->active.search"));
 
 		// Process query filters
-		$q = $this->mainframe->getUserState("$this->option.$this->active.q");
+		$q = $app->getUserState("$plugin->option.$plugin->active.q");
 		if(JRequest::getVar('q', NULL))
 		{
 			$incoming = JRequest::getVar('q', NULL);
@@ -61,7 +64,7 @@ class TimeFilters
 			}
 			else
 			{
-				$this->addPluginMessage(JText::_('Looks like you may have forgotten to select an option'), 'warning');
+				$plugin->addPluginMessage(JText::_('Looks like you may have forgotten to select an option'), 'warning');
 			}
 		}
 
@@ -79,17 +82,17 @@ class TimeFilters
 		$filters['search'] = ($filters['search'] === NULL) ? '' : $filters['search'];
 		if(!is_array($q))
 		{
-			if($this->active == 'records')
+			if($plugin->active == 'records')
 			{
 				$q[0]['column']   = 'user_id';
 				$q[0]['operator'] = 'e';
-				$q[0]['value']    = $this->juser->get('id');
+				$q[0]['value']    = $plugin->juser->get('id');
 			}
-			elseif($this->active == 'tasks')
+			elseif($plugin->active == 'tasks')
 			{
 				$q[0]['column']   = 'assignee';
 				$q[0]['operator'] = 'e';
-				$q[0]['value']    = $this->juser->get('id');
+				$q[0]['value']    = $plugin->juser->get('id');
 			}
 		}
 
@@ -97,12 +100,12 @@ class TimeFilters
 		$filters['q'] = self::filtersMap($q);
 
 		// Set some values in the session
-		$this->mainframe->setUserState("$this->option.$this->active.start", $filters['start']);
-		$this->mainframe->setUserState("$this->option.$this->active.limit", $filters['limit']);
-		$this->mainframe->setUserState("$this->option.$this->active.orderby", $filters['orderby']);
-		$this->mainframe->setUserState("$this->option.$this->active.orderdir", $filters['orderdir']);
-		$this->mainframe->setUserState("$this->option.$this->active.search", $filters['search']);
-		$this->mainframe->setUserState("$this->option.$this->active.q", $filters['q']);
+		$app->setUserState("$plugin->option.$plugin->active.start",    $filters['start']);
+		$app->setUserState("$plugin->option.$plugin->active.limit",    $filters['limit']);
+		$app->setUserState("$plugin->option.$plugin->active.orderby",  $filters['orderby']);
+		$app->setUserState("$plugin->option.$plugin->active.orderdir", $filters['orderdir']);
+		$app->setUserState("$plugin->option.$plugin->active.search",   $filters['search']);
+		$app->setUserState("$plugin->option.$plugin->active.q",        $filters['q']);
 
 		return $filters;
 	}
@@ -114,11 +117,12 @@ class TimeFilters
 	 * @param  array $exclude - array of columns to exclude
 	 * @return $columns       - array of column names
 	 */
-	public function getColumnNames($table, $exclude=array())
+	public static function getColumnNames($table, $exclude=array())
 	{
 		// Get the column names
 		$prefix = JFactory::getApplication()->getCfg('dbprefix');
-		$cols = $this->db->getTableFields($prefix.$table);
+		$db     = JFactory::getDbo();
+		$cols   = $db->getTableFields($prefix.$table);
 
 		$columns = array();
 
@@ -153,7 +157,7 @@ class TimeFilters
 	 * @param  array $filters - array of filters (search included)
 	 * @return object $obj    - object to return
 	 */
-	public function highlight($obj, $filters=array())
+	public static function highlight($obj, $filters=array())
 	{
 		// Highlight search words if set
 		if(!empty($filters['search']) && is_array($obj))
@@ -175,7 +179,7 @@ class TimeFilters
 	 * 
 	 * @return string $html - html for operators select box
 	 */
-	public function buildSelectOperators()
+	public static function buildSelectOperators()
 	{
 		$html  = '<select name="q[operator]" id="filter-operator">';
 		$html .= '<option value="e">equals (&#61;)</option>';
@@ -198,7 +202,7 @@ class TimeFilters
 	 * @param  int $limit  - limit of query
 	 * @return $pagination - Joomla list footer (string)
 	 */
-	public function getPagination($total, $start, $limit)
+	public static function getPagination($total, $start, $limit)
 	{
 		// Import pagination
 		jimport('joomla.html.pagination');
@@ -220,9 +224,10 @@ class TimeFilters
 	 * @param  $q - query arguments
 	 * @return void
 	 */
-	public function filtersMap($q=array())
+	public static function filtersMap($q=array())
 	{
 		// Initialize variables
+		$db        = JFactory::getDbo();
 		$filters   = array();
 		$return    = array();
 		$dcolumn   = '';
@@ -265,7 +270,7 @@ class TimeFilters
 					// Augment task_id information
 					elseif($val['column'] == 'task_id')
 					{
-						$task = new TimeTasks($this->db);
+						$task = new TimeTasks($db);
 						$task->load($val['value']);
 						$val['human_column']   = 'Task';
 						$val['o']              = self::translateOperator($val['operator']);
@@ -287,7 +292,7 @@ class TimeFilters
 						$val['human_column']   = 'Hub';
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
-						$hub = new TimeHubs($this->db);
+						$hub = new TimeHubs($db);
 						$hub->load($val['value']);
 						$val['human_value']    = $hub->name;
 						$filters[]  = $val;
@@ -336,8 +341,9 @@ class TimeFilters
 	 * @param  $column - incoming column for which values pertain
 	 * @return $return - outgoing values
 	 */
-	public function filtersOverrides($vals, $column)
+	public static function filtersOverrides($vals, $column)
 	{
+		$db     = JFactory::getDbo();
 		$return = array();
 
 		foreach($vals as $val)
@@ -362,7 +368,7 @@ class TimeFilters
 			}
 			elseif($column == 'hub_id')
 			{
-				$hub = new TimeHubs($this->db);
+				$hub = new TimeHubs($db);
 				$hub->load($value);
 				$x['value'] = $value;
 				$x['display'] = $hub->name;
@@ -395,7 +401,7 @@ class TimeFilters
 	 * @param  $o - operator of interest
 	 * @return void
 	 */
-	private function translateOperator($o)
+	private static function translateOperator($o)
 	{
 		if($o == 'e')
 		{
@@ -434,7 +440,7 @@ class TimeFilters
 	 * @param  $o - operator of interest
 	 * @return string - value of operator
 	 */
-	private function mapOperator($o)
+	private static function mapOperator($o)
 	{
 		if($o == '=')
 		{
