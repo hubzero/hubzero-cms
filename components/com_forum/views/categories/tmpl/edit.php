@@ -100,6 +100,7 @@ $juser = JFactory::getUser();
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[scope]" value="site" />
 			<input type="hidden" name="fields[scope_id]" value="0" />
+			<input type="hidden" name="fields[access]" value="0" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="categories" />
