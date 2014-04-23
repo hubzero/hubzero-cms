@@ -357,4 +357,429 @@ class ToolsControllerZones extends Hubzero_Controller
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
+
+	/**
+	 * Upload a file to the wiki via AJAX
+	 * 
+	 * @return     string
+	 */
+	public function ajaxUploadTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$id = JRequest::getInt('id', 0);
+		if (!$id) 
+		{
+			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
+			return;
+		}
+
+		$zone = MiddlewareModelZone::getInstance($id);
+
+		// Build the path
+		$path = $zone->logo('path');
+
+		if (!$path)
+		{
+			echo json_encode(array('error' => $this->getError()));
+			return;
+		}
+
+		// allowed extensions for uplaod
+		$allowedExtensions = array('png','jpeg','jpg','gif');
+
+		// max upload size
+		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+
+		// get the file
+		if (isset($_GET['qqfile']))
+		{
+			$stream = true;
+			$file = $_GET['qqfile'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
+		}
+		elseif (isset($_FILES['qqfile']))
+		{
+			$stream = false;
+			$file = $_FILES['qqfile']['name'];
+			$size = (int) $_FILES['qqfile']['size'];
+		}
+		else
+		{
+			echo json_encode(array('error' => JText::_('File not found')));
+			return;
+		}
+
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path)) 
+			{
+				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				return;
+			}
+		}
+
+		if (!is_writable($path))
+		{
+			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			return;
+		}
+
+		// check to make sure we have a file and its not too big
+		if ($size == 0) 
+		{
+			echo json_encode(array('error' => JText::_('File is empty')));
+			return;
+		}
+		if ($size > $sizeLimit) 
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			return;
+		}
+
+		// don't overwrite previous files that were uploaded
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$filename = urldecode($filename);
+		$filename = JFile::makeSafe($filename);
+		$filename = str_replace(' ', '_', $filename);
+
+		$ext = $pathinfo['extension'];
+		if (!in_array(strtolower($ext), $allowedExtensions))
+		{
+			echo json_encode(array('error' => JText::_('File type not allowed.')));
+			return;
+		}
+
+		$file = $path . DS . $filename . '.' . $ext;
+
+		if ($stream)
+		{
+			//read the php input stream to upload file
+			$input = fopen("php://input", "r");
+			$temp = tmpfile();
+			$realSize = stream_copy_to_stream($input, $temp);
+			fclose($input);
+
+			//move from temp location to target location which is user folder
+			$target = fopen($file , "w");
+			fseek($temp, 0, SEEK_SET);
+			stream_copy_to_stream($temp, $target);
+			fclose($target);
+		}
+		else
+		{
+			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+		}
+
+		// Do we have an old file we're replacing?
+		if ($curfile = $zone->get('picture')) 
+		{
+			// Remove old image
+			if (file_exists($path . DS . $curfile)) 
+			{
+				if (!JFile::delete($path . DS . $curfile)) 
+				{
+					echo json_encode(array('error' => JText::_('UNABLE_TO_DELETE_FILE')));
+					return;
+				}
+			}
+		}
+
+		$zone->set('picture', $filename . '.' . $ext);
+		if (!$zone->store()) 
+		{
+			echo json_encode(array('error' => $zone->getError()));
+			return;
+		}
+
+		$this_size = filesize($file);
+		list($width, $height, $type, $attr) = getimagesize($file);
+
+		//echo result
+		echo json_encode(array(
+			'success'   => true, 
+			'file'      => $filename . '.' . $ext,
+			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'id'        => $id,
+			'size'      => Hubzero_View_Helper_Html::formatSize($this_size),
+			'width'     => $width,
+			'height'    => $height
+		));
+	}
+
+	/**
+	 * Upload a file
+	 * 
+	 * @return     void
+	 */
+	public function uploadTask()
+	{
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->ajaxUploadTask();
+		}
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$id = JRequest::getInt('id', 0);
+		if (!$id) 
+		{
+			$this->setError(JText::_('COM_COURSES_NO_ID'));
+			$this->pictureTask('', $id);
+			return;
+		}
+
+		$zone = MiddlewareModelZone::getInstance($id);
+
+		// Build the path
+		$path = $zone->logo('path');
+
+		if (!$path)
+		{
+			$this->pictureTask('', $id);
+			return;
+		}
+
+		// Incoming file
+		$file = JRequest::getVar('upload', '', 'files', 'array');
+		if (!$file['name']) 
+		{
+			$this->setError(JText::_('COM_COURSES_NO_FILE'));
+			$this->pictureTask('', $id);
+			return;
+		}
+		$curfile = JRequest::getVar('curfile', '');
+
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path)) 
+			{
+				$this->setError(JText::_('COM_COURSES_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->pictureTask('', $id);
+				return;
+			}
+		}
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = str_replace(' ', '_', $file['name']);
+
+		// Perform the upload
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		{
+			$this->setError(JText::_('ERROR_UPLOADING'));
+			$file = $curfile;
+		} 
+		else 
+		{
+			// Do we have an old file we're replacing?
+			if ($curfile = $zone->get('picture')) 
+			{
+				// Remove old image
+				if (file_exists($path . DS . $curfile)) 
+				{
+					if (!JFile::delete($path . DS . $curfile)) 
+					{
+						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+						$this->pictureTask($file['name'], $id);
+						return;
+					}
+				}
+			}
+
+			$zone->set('picture', $file['name']);
+			if (!$zone->store()) 
+			{
+				$this->setError($zone->getError());
+			}
+
+			$file = $file['name'];
+		}
+
+		// Push through to the image view
+		$this->pictureTask($file, $id);
+	}
+
+	/**
+	 * Upload a file to the wiki via AJAX
+	 * 
+	 * @return     string
+	 */
+	public function ajaxRemoveTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$id = JRequest::getInt('id', 0);
+		if (!$id) 
+		{
+			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
+			return;
+		}
+
+		$zone = MiddlewareModelZone::getInstance($id);
+
+		// Build the path
+		$path = $zone->logo('path');
+		if (!$path)
+		{
+			echo json_encode(array('error' => $this->getError()));
+			return;
+		}
+
+		$file = $zone->get('picture');
+
+		if (!file_exists($path . DS . $file) or !$file) 
+		{
+			$this->setError(JText::_('FILE_NOT_FOUND'));
+		} 
+		else 
+		{
+			// Attempt to delete the file
+			jimport('joomla.filesystem.file');
+			if (!JFile::delete($path . DS . $file)) 
+			{
+				echo json_encode(array('error' => JText::_('UNABLE_TO_DELETE_FILE')));
+				return;
+			}
+		}
+
+		// Instantiate a model, change some info and save
+		$zone->set('picture', '');
+		if (!$zone->store()) 
+		{
+			echo json_encode(array('error' => $zone->getError()));
+			return;
+		}
+
+		//echo result
+		echo json_encode(array(
+			'success'   => true, 
+			'file'      => '',
+			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'id'        => $id,
+			'size'      => 0,
+			'width'     => 0,
+			'height'    => 0
+		));
+	}
+
+	/**
+	 * Delete a file
+	 * 
+	 * @return     void
+	 */
+	public function removefileTask()
+	{
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->ajaxRemoveTask();
+		}
+
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit('Invalid Token');
+
+		// Incoming member ID
+		$id = JRequest::getInt('id', 0);
+		if (!$id) 
+		{
+			$this->setError(JText::_('MEMBERS_NO_ID'));
+			$this->pictureTask('', $id);
+			return;
+		}
+
+		$zone = MiddlewareModelZone::getInstance($id);
+
+		// Build the file path
+		$path = $zone->logo('path');
+		$file = $zone->get('picture');
+
+		if (!file_exists($path . DS . $file) or !$file) 
+		{
+			$this->setError(JText::_('FILE_NOT_FOUND'));
+		} 
+		else 
+		{
+			// Attempt to delete the file
+			jimport('joomla.filesystem.file');
+			if (!JFile::delete($path . DS . $file)) 
+			{
+				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->pictureTask($file, $id);
+				return;
+			}
+
+			$zone->set('picture', '');
+			if (!$zone->store()) 
+			{
+				$this->setError($zone->getError());
+			}
+
+			$file = '';
+		}
+
+		$this->pictureTask($file, $id);
+	}
+
+	/**
+	 * Display a file and its info
+	 * 
+	 * @param      string  $file File name
+	 * @param      integer $id   User ID
+	 * @return     void
+	 */
+	public function pictureTask($file='', $id=0)
+	{
+		$this->view->setLayout('display');
+
+		// Load the component config
+		$this->view->config = $this->config;
+
+		// Incoming
+		if (!$id) 
+		{
+			$id = JRequest::getInt('id', 0);
+		}
+
+		$this->view->zone = MiddlewareModelZone::getInstance($id);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
 }

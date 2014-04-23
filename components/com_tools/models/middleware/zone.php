@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,7 +35,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 require_once(__DIR__ . '/location.php');
 
 /**
- * Courses model class for a forum
+ * Middleware zone mdel
  */
 class MiddlewareModelZone extends MiddlewareModelBase
 {
@@ -47,7 +47,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 	protected $_tbl_name = 'MwZones';
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * \Hubzero\ItemList
 	 * 
 	 * @var object
 	 */
@@ -58,10 +58,10 @@ class MiddlewareModelZone extends MiddlewareModelBase
 	);
 
 	/**
-	 * Returns a reference to an article model
+	 * Returns a reference to a zone model
 	 *
-	 * @param      mixed $oid Article ID or alias
-	 * @return     object KbModelArticle
+	 * @param      mixed  $oid Zone ID or name
+	 * @return     object
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -81,7 +81,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 	}
 
 	/**
-	 * Get a list of responses
+	 * Get a list of locations
 	 * 
 	 * @param      string $rtrn    Data type to return [count, list]
 	 * @param      array  $filters Filters to apply to query
@@ -142,11 +142,11 @@ class MiddlewareModelZone extends MiddlewareModelBase
 		// Return just the file name
 		if ($rtrn == 'file')
 		{
-			return $this->get('pic');
+			return $this->get('picture');
 		}
 
 		// Build the path
-		$path = '/site/tools/zones/assets/' . $this->get('id');
+		$path = JPATH_ROOT . '/site/tools/zones/' . $this->get('id');
 
 		// Return just the upload path?
 		if ($rtrn == 'path')
@@ -155,13 +155,13 @@ class MiddlewareModelZone extends MiddlewareModelBase
 		}
 
 		// Do we have a logo set?
-		if ($file = $this->get('pic'))
+		if ($file = $this->get('picture'))
 		{
 			// Return the web path to the image
 			$path .= '/' . $file;
-			if (file_exists(JPATH_ROOT . $path))
+			if (file_exists($path))
 			{
-				$path = JRoute::_('index.php?option=com_tools&app=zones&task=assets&version=' . $this->get('id') . '&file=' . $file); //str_replace('/administrator', '', \JURI::base(true)) . $path;
+				$path = JRoute::_('index.php?option=com_tools&app=zones&task=assets&version=' . $this->get('id') . '&file=' . $file);
 			}
 			return $path;
 		}
@@ -182,13 +182,28 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			return true;
 		}
 
-		// Remove comments
+		// Remove locations
 		foreach ($this->locations('list') as $location)
 		{
 			if (!$location->delete())
 			{
 				$this->setError($location->getError());
 				return false;
+			}
+		}
+
+		// Check for a picture
+		if ($file = $this->get('picture'))
+		{
+			// Make sure the picture exists
+			if (file_exists($this->logo('path') . DS . $file))
+			{
+				// Remove picture
+				jimport('joomla.filesystem.file');
+				if (!JFile::delete($this->logo('path') . DS . $file)) 
+				{
+					$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
+				}
 			}
 		}
 

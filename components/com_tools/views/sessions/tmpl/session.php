@@ -153,7 +153,7 @@ if (!$this->app->sess) {
 					<?php } ?>
 					</p>
 					<p>
-						<?php echo JText::sprintf('This tool session is powered by the mirror site at %s', $this->zone->get('zone')); ?>
+						<?php echo JText::sprintf('This tool session is powered by the mirror site at %s', $this->zone->get('title', $this->zone->get('zone'))); ?>
 					</p>
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
@@ -163,7 +163,7 @@ if (!$this->app->sess) {
 								<label for="field-zone">
 									<?php echo JText::_('Run elsewhere:'); ?><br />
 									<select name="zone" id="field-zone">
-										<option value=""><?php echo JText::_('Select zone ...'); ?></option>
+										<option value=""><?php echo JText::_('Select ...'); ?></option>
 									<?php 
 									foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone) 
 									{
@@ -172,7 +172,7 @@ if (!$this->app->sess) {
 											continue;
 										}
 									?>
-										<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('zone')); ?></option>
+										<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
 									<?php } ?>
 									</select>
 								</label>
