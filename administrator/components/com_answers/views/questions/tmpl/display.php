@@ -65,15 +65,21 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-		<input type="text" name="q" id="filter_search" value="<?php echo $this->escape($this->filters['q']); ?>" />
+		<div class="col width-50 fltlft">
+			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
+			<input type="text" name="q" id="filter_search" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
-		<label for="filterby"><?php echo JText::_('Filter by:'); ?></label> 
-		<select name="filterby" id="filterby" onchange="document.adminForm.submit( );">
-			<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>><?php echo JText::_('Open Questions'); ?></option>
-			<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed Questions'); ?></option>
-			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('All Questions'); ?></option>
-		</select>
+			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
+		<div class="col width-50 fltrt">
+			<label for="filterby"><?php echo JText::_('Filter by:'); ?></label> 
+			<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
+				<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>><?php echo JText::_('Open Questions'); ?></option>
+				<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed Questions'); ?></option>
+				<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('All Questions'); ?></option>
+			</select>
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -105,13 +111,11 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 	{
 		case '1':
 			$task = 'open';
-			$img = 'publish_x.png';
 			$alt = JText::_( 'Closed' );
 			$cls = 'unpublished';
 		break;
 		case '0':
 			$task = 'close';
-			$img = 'publish_g.png';
 			$alt = JText::_( 'Open' );
 			$cls = 'published';
 		break;
@@ -184,6 +188,6 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

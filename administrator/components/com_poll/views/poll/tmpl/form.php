@@ -51,98 +51,59 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 		}
 	}
 </script>
-<form action="index.php" method="post" name="adminForm">
-<div class="col width-45 fltlft">
-	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'Details' ); ?></legend>
-	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo JText::_( 'Title' ); ?>:
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="title" id="title" size="60" value="<?php echo $this->poll->title; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="alias">
-					<?php echo JText::_( 'Alias' ); ?>:
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="alias" id="alias" size="60" value="<?php echo $this->poll->alias; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<label for="lag">
-					<?php echo JText::_( 'Lag' ); ?>:
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="lag" id="lag" size="10" value="<?php echo $this->poll->lag; ?>" />
-				<?php echo JText::_( '(seconds between votes)' ); ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="120" class="key">
-				<?php echo JText::_( 'Published' ); ?>:
-			</td>
-			<td>
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-50 fltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_( 'Details' ); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_( 'Title' ); ?>:</label><br />
+				<input class="inputbox" type="text" name="title" id="field-title" value="<?php echo $this->escape($this->poll->title); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="alias"><?php echo JText::_( 'Alias' ); ?>:</label><br />
+				<input class="inputbox" type="text" name="alias" id="field-alias" value="<?php echo $this->escape($this->poll->alias); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_( 'seconds between votes' ); ?>">
+				<label for="lag"><?php echo JText::_( 'Lag' ); ?>:</label><br />
+				<input class="inputbox" type="text" name="lag" id="field-lag" value="<?php echo $this->escape($this->poll->lag); ?>" />
+				<span class="hint"><?php echo JText::_( '(seconds between votes)' ); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label for="field-published"><?php echo JText::_( 'Published' ); ?>:</label><br />
 				<?php echo JHTML::_( 'select.booleanlist',  'published', 'class="inputbox"', $this->poll->published ); ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="120" class="key">
-				<?php echo JText::_( 'Open' ); ?>:
-			</td>
-			<td>
+			</div>
+			<div class="input-wrap">
+				<label for="field-open"><?php echo JText::_( 'Open' ); ?>:</label><br />
 				<?php echo JHTML::_( 'select.booleanlist',  'open', 'class="inputbox"', $this->poll->open ); ?>
-			</td>
-		</tr>
-	</table>
-	</fieldset>
-	<p class="warning">This whole thing is wildly inaccurate. Rounding errors, ballot stuffers, dynamic IPs, firewalls. If you're using these numbers to do anything important, you're insane.</p>
-</div>
-<div class="col width-45 fltrt">
-	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'Options' ); ?></legend>
-	<table class="admintable">
-	<?php for ($i=0, $n=count( $this->options ); $i < $n; $i++ ) { ?>
-		<tr>
-			<td class="key">
-				<label for="polloption<?php echo $this->options[$i]->id; ?>">
-					<?php echo JText::_( 'Option' ); ?> <?php echo ($i+1); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->options[$i]->text; ?>" size="60" />
-			</td>
-		</tr>
-		<?php } for (; $i < 12; $i++) { ?>
-		<tr>
-			<td class="key">
-				<label for="polloption<?php echo $i + 1; ?>">
-					<?php echo JText::_( 'Option' ); ?> <?php echo $i + 1; ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="polloption[]" id="polloption<?php echo $i + 1; ?>" value="" size="60" />
-			</td>
-		</tr>
-		<?php } ?>
-	</table>
-	</fieldset>
-</div>
-<div class="clr"></div>
+			</div>
+		</fieldset>
+		<p class="warning">This whole thing is wildly inaccurate. Rounding errors, ballot stuffers, dynamic IPs, firewalls. If you're using these numbers to do anything important, you're insane.</p>
+	</div>
+	<div class="col width-50 fltrt">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_( 'Options' ); ?></span></legend>
+
+		<?php for ($i=0, $n=count( $this->options ); $i < $n; $i++ ) { ?>
+			<div class="input-wrap">
+				<label for="polloption<?php echo $this->options[$i]->id; ?>"><?php echo JText::_( 'Option' ); ?> <?php echo ($i+1); ?></label><br />
+				<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape($this->options[$i]->text); ?>" />
+			</div>
+			<?php } for (; $i < 12; $i++) { ?>
+			<div class="input-wrap">
+				<label for="polloption<?php echo $i + 1; ?>"><?php echo JText::_( 'Option' ); ?> <?php echo $i + 1; ?></label><br />
+				<input class="inputbox" type="text" name="polloption[]" id="polloption<?php echo $i + 1; ?>" value="" />
+			</div>
+			<?php } ?>
+		</fieldset>
+	</div>
+	<div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option" value="com_poll" />
 	<input type="hidden" name="id" value="<?php echo $this->poll->id; ?>" />
 	<input type="hidden" name="cid[]" value="<?php echo $this->poll->id; ?>" />
 	<input type="hidden" name="textfieldcheck" value="<?php echo $n; ?>" />
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

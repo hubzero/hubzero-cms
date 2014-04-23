@@ -78,17 +78,17 @@ if ($this->getError())
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
 
-			<div class="input-wrap" data-hint="Only administrators can see admin tags. They're a useful way to apply metadata that may not be appropriate or useful for the site's visitors.">
+			<div class="input-wrap" data-hint="<?php echo JText::_('Only administrators can see admin tags. They\'re a useful way to apply metadata that may not be appropriate or useful for the site\'s visitors.'); ?>">
 				<input type="checkbox" name="fields[admin]" id="field-admin" value="1" <?php if ($this->tag->get('admin') == 1) { echo 'checked="checked"'; } ?> /> 
 				<label for="field-admin"><?php echo JText::_('ADMIN'); ?></label>
 			</div>
 
-			<div class="input-wrap" data-hint="To create the normalized tag (used for URLs), all spaces, punctuation, and non-alpanumeric characters are stripped. &quot;N.Y.&quot;, &quot;NY&quot;, and &quot;ny&quot; will all have a normalized tag of &quot;ny&quot;.">
-				<label for="field-raw_tag"><?php echo JText::_('RAW_TAG'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('To create the normalized tag (used for URLs), all spaces, punctuation, and non-alpanumeric characters are stripped. &quot;N.Y.&quot;, &quot;NY&quot;, and &quot;ny&quot; will all have a normalized tag of &quot;ny&quot;.'); ?>">
+				<label for="field-raw_tag"><?php echo JText::_('RAW_TAG'); ?>: <span class="required"><?php echo JText::_('requiredG'); ?></span></label><br />
 				<input type="text" name="fields[raw_tag]" id="field-raw_tag" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" />
 			</div>
 
-			<div class="input-wrap" data-hint="Enter a comma-separated list of alternate spellings, abbreviations, or synonyms for this tag.">
+			<div class="input-wrap" data-hint="<?php echo JText::_('Enter a comma-separated list of alternate spellings, abbreviations, or synonyms for this tag.'); ?>">
 				<label for="field-substitutions"><?php echo JText::_('ALIAS'); ?>:</label><br />
 				<textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->tag->substitutes('string'))); ?></textarea>
 			</div>

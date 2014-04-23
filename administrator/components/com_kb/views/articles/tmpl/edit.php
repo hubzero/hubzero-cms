@@ -218,7 +218,9 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform paramlist">
 			<legend><span><?php echo JText::_('COM_KB_PARAMETERS'); ?></span></legend>
 
-			<?php echo $this->params->render(); ?>
+			<div class="input-wrap">
+				<?php echo $this->params->render(); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

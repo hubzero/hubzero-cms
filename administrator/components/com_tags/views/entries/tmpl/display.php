@@ -71,7 +71,8 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+
 			<input type="submit" name="filter_submit" value="<?php echo JText::_('GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
