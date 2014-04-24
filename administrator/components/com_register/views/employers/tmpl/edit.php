@@ -52,23 +52,39 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Details'); ?></span></legend>
+	<div class="col width-60 fltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
-		<input type="hidden" name="task" value="save" />
+			<div class="input-wrap" data-hint="<?php echo JText::_('Created from Title if left blank'); ?>">
+				<label for="field-type"><?php echo JText::_('Type'); ?>:</label><br />
+				<input type="text" name="type" id="field-type" value="<?php echo $this->escape($this->model->type); ?>" />
+			</div>
 
-		<div class="input-wrap" data-hint="<?php echo JText::_('Created from Title if left blank'); ?>">
-			<label for="field-type"><?php echo JText::_('Type'); ?>:</label><br />
-			<input type="text" name="type" id="field-type" value="<?php echo $this->escape($this->model->type); ?>" />
-		</div>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<input type="text" name="title" id="field-title" value="<?php echo $this->escape($this->model->title); ?>" />
+			</div>
+		</fieldset>
+	</div>
+	<div class="col width-40 fltrt">
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<td>
+						<?php echo $this->model->id; ?>
+						<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="clr"></div>
 
-		<div class="input-wrap">
-			<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
-			<input type="text" name="title" id="field-title" value="<?php echo $this->escape($this->model->title); ?>" />
-		</div>
-	</fieldset>
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

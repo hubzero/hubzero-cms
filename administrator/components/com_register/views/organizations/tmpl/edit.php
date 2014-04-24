@@ -52,18 +52,34 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Details'); ?></span></legend>
+	<div class="col width-60 fltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
-		<input type="hidden" name="task" value="save" />
+			<div class="input-wrap">
+				<label for="field-organization"><?php echo JText::_('Organization'); ?>:</label><br />
+				<input type="text" name="organization" id="field-organization" value="<?php echo $this->escape($this->model->organization); ?>" size="50" />
+			</div>
+		</fieldset>
+	</div>
+	<div class="col width-40 fltrt">
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<td>
+						<?php echo $this->model->id; ?>
+						<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="clr"></div>
 
-		<div class="input-wrap">
-			<label for="field-organization"><?php echo JText::_('Organization'); ?>:</label><br />
-			<input type="text" name="organization" id="field-organization" value="<?php echo $this->escape($this->model->organization); ?>" size="50" />
-		</div>
-	</fieldset>
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
