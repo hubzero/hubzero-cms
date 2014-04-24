@@ -36,6 +36,8 @@ defined('_JEXEC') or die('Restricted access');
  */
 class TagsControllerRelationships extends \Hubzero\Component\AdminController
 {
+	private $preload;
+
 	/**
 	 * Show a form for looking up a tag's relationships
 	 * 
@@ -43,6 +45,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
+		$this->preload = 'nikki';
 		$this->view->setLayout('display');
 
 		// Set any errors
@@ -53,7 +56,11 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 				$this->view->setError($error);
 			}
 		}
-
+		
+		if (isset($_REQUEST['tag']) && (int)$_REQUEST['tag'] == $_REQUEST['tag']) {
+			$this->database->setQuery('SELECT tag FROM #__tags WHERE id = '.$_REQUEST['tag']);
+			$this->view->set('preload', $this->database->loadResult());
+		}
 		// Output the HTML
 		$this->view->display();
 	}
@@ -95,7 +102,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		$id = null;
 		$descr = '';
 
-		$rv = $this->get_tag($tag);
+		$rv = $tag = $this->get_tag($tag);
 		$nodes[] = array(
 			'id'      => $rv['id'], 
 			'tag'     => $rv['tag'], 
@@ -196,7 +203,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		$id = null;
 		$descr = '';
 
-		$rv = $this->get_tag($tag);
+		$rv = $tag =  $this->get_tag($tag);
 		$nodes[] = array(
 			'id'      => $rv['id'], 
 			'tag'     => $rv['tag'], 
@@ -321,7 +328,8 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	{
 		if (isset($_POST['tag']) && ($tid = (int)$_POST['tag']))
 		{
-			$this->database->execute('UPDATE #__tags SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
+			$this->database->setQuery('UPDATE #__tags SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
+			$this->database->execute();
 			$tag = $this->get_tag($tid);
 			$preload = $tag['raw_tag'];
 			$normalize = create_function('$a', 'return preg_replace(\'/[^a-zA-Z0-9]/\', \'\', strtolower($a));'); 
@@ -360,15 +368,17 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 						else
 						{
 							$n_tag = $this->get_tag($n_tag, false);
-							$this->database->execute(sprintf($sql[0], $tid, $n_tag['id']));
+							$this->database->setQuery(sprintf($sql[0], $tid, $n_tag['id']));
+							$this->database->execute();
 						}
 					}
 				}
-				// any tags that have not be unset were deleted on the form, so we need to reflect that in the database
+				// any tags that have not been unset were deleted on the form, so we need to reflect that in the database
 				foreach ($ex as $e_tag=>$_v)
 				{
 					$e_tag = $this->get_tag($e_tag, false);
-					$this->database->execute(sprintf($sql[1], $tid, $e_tag['id']));
+					$this->database->setQuery(sprintf($sql[1], $tid, $e_tag['id']));
+					$this->database->execute();
 				}
 			}
 		}
@@ -399,13 +409,16 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 					{
 						JError::raiseError(404, 'Merge target not found');
 					}
-					$this->database->execute('UPDATE #__tags_object SET tagid = ' . $merge_id . ' WHERE tagid = ' . $tid);
+					$this->database->setQuery('UPDATE #__tags_object SET tagid = ' . $merge_id . ' WHERE tagid = ' . $tid);
+					$this->database->execute();
 				}
 				else
 				{
-					$this->database->execute('DELETE FROM #__tags_object WHERE tagid = ' . $tid);
+					$this->database->setQuery('DELETE FROM #__tags_object WHERE tagid = ' . $tid);
+					$this->database->execute();
 				}
-				$this->database->execute('DELETE FROM #__tags WHERE id = ' . $tid);
+				$this->database->setQuery('DELETE FROM #__tags WHERE id = ' . $tid);
+				$this->database->execute();
 			}
 			else
 			{
@@ -428,25 +441,29 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		$existing = $this->database->loadAssocList('id');
 
 		// rebuilding from the form data is easier than finding and resolving differences
-		$this->database->execute('TRUNCATE TABLE #__focus_area_resource_type_rel');
+		$this->database->setQuery('TRUNCATE TABLE #__focus_area_resource_type_rel');
+		$this->database->execute();
 		foreach ($existing as $id => $fa)
 		{
 			// no form field == deleted
 			if (!isset($_POST['name-' . $id]))
 			{
-				$this->database->execute('DELETE FROM #__focus_areas WHERE id = ' . $id);
+				$this->database->setQuery('DELETE FROM #__focus_areas WHERE id = ' . $id);
+				$this->database->execute();
 				continue;
 			}
 			$new_tag = $this->get_tag($_POST['name-' . $id], false);
-			$this->database->execute('UPDATE #__focus_areas SET 
+			$this->database->setQuery('UPDATE #__focus_areas SET 
 				mandatory_depth = ' . ($_POST['mandatory-' . $id] === 'mandatory' ? 1 : ($_POST['mandatory-' . $id] === 'depth' ? (int)$_POST['mandatory-depth-' . $id] : 'NULL')) . ', 
 				multiple_depth = ' . ($_POST['multiple-' . $id]  === 'multiple'  ? 1 : ($_POST['multiple-' . $id]  === 'depth' ? (int)$_POST['multiple-depth-' . $id]  : 'NULL')) . ', 
 				tag_id = ' . $new_tag['id'].' 
 				WHERE id = ' . $id
 			);
+			$this->database->execute();
 			foreach ($_POST['types-'.$id] as $type_id)
 			{
-				$this->database->execute('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+				$this->database->setQuery('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+				$this->database->execute();
 			}
 		}
 
@@ -458,15 +475,17 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			}
 			$tag = $this->get_tag($_POST['name-new-' . $idx], false);
 
-			$this->database->execute('INSERT INTO #__focus_areas(mandatory_depth, multiple_depth, tag_id) VALUES (' .
+			$this->database->setQuery('INSERT INTO #__focus_areas(mandatory_depth, multiple_depth, tag_id) VALUES (' .
 				($_POST['mandatory-new-' . $idx] === 'mandatory' ? 1 : ($_POST['mandatory-new-' . $idx] === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', ' .
 				($_POST['multiple-new-' . $idx]  === 'multiple'  ? 1 : ($_POST['multiple-new-' . $idx]  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', ' .
 				$tag['id'] . ')' 
 			);
+			$this->database->execute();
 			$id = $this->database->insertid();
 			foreach ($_POST['types-new-' . $idx] as $type_id)
 			{
-				$this->database->execute('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+				$this->database->setQuery('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+				$this->database->execute();
 			}
 		}
 
@@ -549,7 +568,8 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			return $rv;
 		}
 		$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag_str));
-		$this->database->execute('INSERT INTO #__tags(tag, raw_tag) VALUES(\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
+		$this->database->setQuery('INSERT INTO #__tags(tag, raw_tag) VALUES(\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
+		$this->database->execute();
 		$id = $this->database->insertid();
 		return array(
 			'id'          => $id,
