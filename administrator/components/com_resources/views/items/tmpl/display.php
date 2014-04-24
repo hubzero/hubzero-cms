@@ -268,9 +268,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
+				<?php if ($row->type == 7) { ?>
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Tool pages must be managed through the Tools Pipeline' );?>">
+						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+					</span>
+				<?php } else { ?>
 					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
+				<?php } ?>
 				</td>
 				<td>
 					<a class="<?php echo $class;?> hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $alt; ?> :: Set this to <?php echo $task;?>">
