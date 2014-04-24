@@ -172,6 +172,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 				<?php echo JText::sprintf('PLG_GROUPS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
 			<?php } else if (!isset($this->year) || !$this->year) { ?>
 				<?php echo JText::_('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
+			<?php } elseif (isset($this->year) && isset($this->month) && $this->month == 0) { ?>
+				<?php echo JText::sprintf('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->year); ?>
 			<?php } else { 
 				$archiveDate  = $this->year;
 				$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
