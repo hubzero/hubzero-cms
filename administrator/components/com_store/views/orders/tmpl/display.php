@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = StoreHelper::getActions('component');
 
-$text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
+$text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
 JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.admin')) 
@@ -42,7 +42,7 @@ if ($canDo->get('core.admin'))
 
 ?>
 <script type="text/javascript">
-public function submitbutton(pressbutton) 
+function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -55,21 +55,19 @@ public function submitbutton(pressbutton)
 </script>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-	    <?php echo count($this->rows); ?> <?php echo JText::_('COM_STORE_ORDERS_DISPLAYED'); ?>.
-	
-		<label><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
-		<select name="filterby" onchange="document.adminForm.submit();">
+		<label for="filter-filterby"><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
+		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
 			<option value="new"<?php if ($this->filters['filterby'] == 'new') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_NEW'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
 			<option value="processed"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_COMPLETED'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
-	    	<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_CANCELLED'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
+			<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_CANCELLED'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
 			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ALL'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
 		</select>
 
-		<label><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
-		<select name="sortby" onchange="document.adminForm.submit();">
-	    	<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ORDER_DATE'); ?></option>
+		<label for="filter-sortby"><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
+		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit();">
+			<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ORDER_DATE'); ?></option>
 			<option value="m.status_changed"<?php if ($this->filters['sortby'] == 'm.status_changed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_LAST_STATUS_CHANGE'); ?></option>
-			<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_ORDER')).' '.strtoupper(JText::_('COM_STORE_ID')); ?></option>			
+			<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_ORDER')).' '.strtoupper(JText::_('COM_STORE_ID')); ?></option>
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -77,18 +75,18 @@ public function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo strtoupper(JText::_('COM_STORE_ID')); ?></th>
-				<th><?php echo JText::_('COM_STORE_STATUS'); ?></th>
-				<th><?php echo JText::_('COM_STORE_ORDERED_ITEMS'); ?></th>
-				<th><?php echo JText::_('COM_STORE_TOTAL'); ?> (<?php echo JText::_('COM_STORE_POINTS'); ?>)</th>
-				<th><?php echo JText::_('COM_STORE_BY'); ?></th>
-				<th><?php echo JText::_('COM_STORE_DATE'); ?></th>
+				<th scope="col"><?php echo strtoupper(JText::_('COM_STORE_ID')); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_STATUS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_ORDERED_ITEMS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_TOTAL'); ?> (<?php echo JText::_('COM_STORE_POINTS'); ?>)</th>
+				<th scope="col"><?php echo JText::_('COM_STORE_BY'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_DATE'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6">
+				<td colspan="7">
 					<?php echo $this->pageNav->getListFooter(); ?>
 				</td>
 			</tr>
