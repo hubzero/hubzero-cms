@@ -220,24 +220,24 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	switch ($row->access)
 	{
 		case 0:
-			$color_access = 'style="color: green;"';
+			$color_access = 'public';
 			$task_access = 'accessregistered';
 			break;
 		case 1:
-			$color_access = 'style="color: red;"';
+			$color_access = 'registered';
 			$task_access = 'accessspecial';
 			break;
 		case 2:
-			$color_access = 'style="color: black;"';
+			$color_access = 'special';
 			$task_access = 'accessprotected';
 			break;
 		case 3:
-			$color_access = 'style="color: blue;"';
+			$color_access = 'protected';
 			$task_access = 'accessprivate';
 			$row->groupname = 'Protected';
 			break;
 		case 4:
-			$color_access = 'style="color: red;"';
+			$color_access = 'private';
 			$task_access = 'accesspublic';
 			$row->groupname = 'Private';
 			break;
@@ -250,6 +250,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$beingused = false;
 		}
 	}*/
+	if (!isset($row->child_id))
+	{
+		$row->child_id = $row->id;
+	}
 
 	if ($row->logicaltitle)
 	{
@@ -312,11 +316,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 <?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
-					<span class="access" <?php echo $color_access; ?>>
+					<span class="access <?php echo $color_access; ?>">
 						<span><?php echo $row->groupname; ?></span>
 					</span>
 <?php } else { ?>
-					<a class="access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" <?php echo $color_access; ?> title="Change Access">
+					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="Change Access">
 						<span><?php echo $row->groupname; ?></span>
 					</a>
 <?php } ?>
