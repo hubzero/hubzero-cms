@@ -129,4 +129,4 @@ $doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/ass
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.layout.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.geom.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/tag_graph.js"></script>
-<script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
+<script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.jquery.js"></script>
