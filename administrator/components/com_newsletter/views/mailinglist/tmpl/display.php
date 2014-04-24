@@ -29,10 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');                              
+defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletter Mailing List\'s' ) . '</a>', 'list.png');
+JToolBarHelper::title(JText::_( 'Newsletter Mailing List\'s' ), 'list.png');
 
 //add buttons to toolbar
 JToolBarHelper::addNew();
@@ -58,29 +58,31 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->lists); ?>);" /></th>
-				<th><?php echo JText::_('Mailing List'); ?></th>
-				<th><?php echo JText::_('Public/Private'); ?></th>
-				<th><?php echo JText::_('Active Subscribers'); ?></th>
-				<th><?php echo JText::_('Total Subscribers'); ?></th>
+				<th scope="col"><?php echo JText::_('Mailing List'); ?></th>
+				<th scope="col"><?php echo JText::_('Public/Private'); ?></th>
+				<th scope="col"><?php echo JText::_('Active Subscribers'); ?></th>
+				<th scope="col"><?php echo JText::_('Total Subscribers'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php if(count($this->lists) > 0) : ?>
-				<?php foreach($this->lists as $k => $list) : ?>
+			<?php if (count($this->lists) > 0) : ?>
+				<?php foreach ($this->lists as $k => $list) : ?>
 					<tr>
 						<td width="30">
 							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $list->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
-							<?php echo $list->name; ?>	
+							<?php echo $this->escape($list->name); ?>
 						</td>
 						<td>
-							<?php echo ($list->private) ? 'Private' : 'Public'; ?>	
+							<span class="access <?php echo ($list->private) ? 'private' : 'public'; ?>">
+								<?php echo ($list->private) ? 'Private' : 'Public'; ?>
+							</span>
 						</td>
 						<td>
 							<?php echo $list->active_count; ?>
@@ -92,7 +94,7 @@ function submitbutton(pressbutton)
 				<?php endforeach; ?>
 			<?php else : ?>
 				<tr>
-					<td colspan="4">
+					<td colspan="5">
 						Currently there are no mailing lists. <a onclick="javascript:submitbutton('add');" href="#">Click here to add a mailing list.</a>
 					</td>
 				</tr>

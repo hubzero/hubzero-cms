@@ -29,10 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');                              
+defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletter Tools' ) . '</a>', 'tools.png');
+JToolBarHelper::title(JText::_( 'Newsletter Tools' ), 'tools.png');
 ?>
 
 <script type="text/javascript">
@@ -50,11 +50,12 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data">
+<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend>Mozify Image</legend>
-				<table class="admintable">
+			<legend><span>Mozify Image</span></legend>
+
+			<table class="admintable">
 				<tbody>
 					<tr>
 						<td colspan="2">
@@ -109,14 +110,14 @@ function submitbutton(pressbutton)
 		<?php if ($this->code != '') : ?>
 			<h3 style="padding-top: 0">Original</h3>
 			<img src="<?php echo str_replace(JPATH_ROOT, '', $this->original); ?>" />
-			
+
 			<h3>Mozified</h3>
 			<iframe id="preview-iframe" style="border:1px solid transparent"></iframe>
 			<div id="preview-code" style="display:none"><?php echo $this->preview; ?></div>
-			
+
 			<h3>Code</h3>
 			<textarea id="code"><?php echo str_replace("\n", "", $this->code); ?></textarea>
-		
+
 			<script>
 				jQuery(document).ready(function($){
 					//get iframe and mozified code
@@ -135,7 +136,8 @@ function submitbutton(pressbutton)
 			</script>
 		<?php endif; ?>
 	</div>
-	
+	<div class="clr"></div>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="mozify" />

@@ -32,12 +32,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set the title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletter Templates' ) . '</a>', 'template.png');
+JToolBarHelper::title(JText::_( 'Newsletter Templates' ), 'template.png');
 
 //add toolbar buttons
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::custom('duplicate', 'copy', '', 'Copy');
+JToolBarHelper::spacer();
 JToolBarHelper::deleteList('Are you sure you want to delete the selected Newsletter Template(s)?', 'delete');
 JToolBarHelper::spacer();
 JToolBarHelper::preferences($this->option, '550');
@@ -48,7 +49,7 @@ JToolBarHelper::preferences($this->option, '550');
 		echo '<p class="error">' . $this->getError() . '</p>';
 	}
 ?>
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>

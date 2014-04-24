@@ -136,6 +136,9 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		//get request vars
 		$template = JRequest::getVar("template", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
 		

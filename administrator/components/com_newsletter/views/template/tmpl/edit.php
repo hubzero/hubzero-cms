@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Newsletter Template') . ': <small><small>[ ' . $text . ' ]</small></small>', 'template.png');
+JToolBarHelper::title(JText::_('Newsletter Template') . ': ' . $text, 'template.png');
 
 //add toolbar buttons
 JToolBarHelper::save();
@@ -47,76 +47,84 @@ JToolBarHelper::cancel();
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm">
-	<fieldset class="adminform">
-		<legend><?php echo JText::_( $text . ' Newsletter Template'); ?></legend>
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<th><?php echo JText::_('Name:'); ?></th>
-					<td><input type="text" name="template[name]" value="<?php echo $this->template->name; ?>" /></td>
-				</tr>
-				<tr>
-					<th>
-						<?php echo JText::_('Primary Title Color:'); ?><br />
-						<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
-					</th>
-					<td><input type="text" name="template[primary_title_color]" value="<?php echo $this->template->primary_title_color; ?>" /></td>
-				</tr>
-				<tr>
-					<th>
-						<?php echo JText::_('Primary Text Color:'); ?><br />
-						<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
-					</th>
-					<td><input type="text" name="template[primary_text_color]" value="<?php echo $this->template->primary_text_color; ?>" /></td>
-				</tr>
-				<tr>
-					<th>
-						<?php echo JText::_('Secondary Title Color:'); ?><br />
-						<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
-					</th>
-					<td><input type="text" name="template[secondary_title_color]" value="<?php echo $this->template->secondary_title_color; ?>" /></td>
-				</tr>
-				<tr>
-					<th>
-						<?php echo JText::_('Secondary Text Color:'); ?><br />
-						<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
-					</th>
-					<td><input type="text" name="template[secondary_text_color]" value="<?php echo $this->template->secondary_text_color; ?>" /></td>
-				</tr>
-				<tr>
-					<th>
-						<?php echo JText::_('Template:') ?><br /><br />
-						<?php if ($this->config->get('template_tips')) : ?>
-							<span class="hint">
-								<?php echo JText::_('Need Help Building Your Template?') ?><br />
-								<a target="_blank" href="<?php echo $this->config->get('template_tips'); ?>"><?php echo JText::_('Tips for Creating Your Template'); ?></a>
-							</span>
-							<br /><br />
-						<?php endif; ?>
-						<?php if ($this->config->get('template_templates')) : ?>
-							<span class="hint">
-								<?php echo JText::_('Need Examples and/or Free Templates'); ?><br />
-								<a target="_blank" href="<?php echo $this->config->get('template_templates'); ?>"><?php echo JText::_('Check out these templates'); ?></a>
-							</span>
-							<br /><br />
-						<?php endif; ?>
-						<span class="hint"><?php echo JText::_('Placeholders that can be used:'); ?></span><br />
-						<span class="hint"><?php echo JText::_('{{LINK}} = Link to HUB'); ?></span><br />
-						<span class="hint"><?php echo JText::_('{{ALIAS}} = Newsletter Alias'); ?></span><br />
-						<span class="hint"><?php echo JText::_('{{TITLE}} = Newsletter Title'); ?></span><br />
-						<span class="hint"><?php echo JText::_('{{ISSUE}} = Newsletter Issue'); ?></span><br />
-						<span class="hint"><?php echo JText::_('{{PRIMARY_STORIES}} = Newsletter Primary Stories'); ?></span><br />
-						<span class="hint"><?php echo JText::_('{{SECONDARY_STORIES}} = Newsletter Secondary Stories'); ?></span><br />
-						<span class="hint"><?php echo JText::_('{{COPYRIGHT}} = Current Year (copyright)'); ?></span><br />
-					</th>
-					<td><textarea name="template[template]" cols="100" rows="30"><?php echo $this->escape( $this->template->template ); ?></textarea>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-70 fltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_( $text . ' Newsletter Template'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-name"><?php echo JText::_('Name:'); ?></label><br />
+				<input type="text" name="template[name]" id="field-name" value="<?php echo $this->escape($this->template->name); ?>" />
+			</div>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap" data-hint="<?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?>">
+					<label for="field-primary_title_color"><?php echo JText::_('Primary Title Color:'); ?></label><br />
+					<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
+					<input type="text" name="template[primary_title_color]" id="field-primary_title_color" value="<?php echo $this->escape($this->template->primary_title_color); ?>" />
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap" data-hint="<?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?>">
+					<label for="field-primary_text_color"><?php echo JText::_('Primary Text Color:'); ?></label><br />
+					<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
+					<input type="text" name="template[primary_text_color]" id="field-primary_text_color" value="<?php echo $this->escape($this->template->primary_text_color); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap" data-hint="<?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?>">
+					<label for="field-secondary_title_color"><?php echo JText::_('Secondary Title Color:'); ?></label><br />
+					<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
+					<input type="text" name="template[secondary_title_color]" id="field-secondary_title_color" value="<?php echo $this->escape($this->template->secondary_title_color); ?>" />
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap" data-hint="<?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?>">
+					<label for="field-secondary_text_color"><?php echo JText::_('Secondary Text Color:'); ?></label><br />
+					<span class="hint"><?php echo JText::_('Hex Color Code (ex. #FF0000 -> Red)'); ?></span>
+					<input type="text" name="template[secondary_text_color]" id="field-secondary_text_color" value="<?php echo $this->escape($this->template->secondary_text_color); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
+
+			<div class="input-wrap">
+				<label for="field-template"><?php echo JText::_('Template:') ?></label><br />
+				<textarea name="template[template]" id="field-template" cols="100" rows="30"><?php echo $this->escape( $this->template->template ); ?></textarea>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col width-30 fltrt">
+		<?php if ($this->config->get('template_tips')) : ?>
+			<span class="hint">
+				<?php echo JText::_('Need Help Building Your Template?') ?><br />
+				<a target="_blank" href="<?php echo $this->config->get('template_tips'); ?>"><?php echo JText::_('Tips for Creating Your Template'); ?></a>
+			</span>
+			<br /><br />
+		<?php endif; ?>
+		<?php if ($this->config->get('template_templates')) : ?>
+			<span class="hint">
+				<?php echo JText::_('Need Examples and/or Free Templates'); ?><br />
+				<a target="_blank" href="<?php echo $this->config->get('template_templates'); ?>"><?php echo JText::_('Check out these templates'); ?></a>
+			</span>
+			<br /><br />
+		<?php endif; ?>
+		<span class="hint"><?php echo JText::_('Placeholders that can be used:'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{LINK}} = Link to HUB'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{ALIAS}} = Newsletter Alias'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{TITLE}} = Newsletter Title'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{ISSUE}} = Newsletter Issue'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{PRIMARY_STORIES}} = Newsletter Primary Stories'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{SECONDARY_STORIES}} = Newsletter Secondary Stories'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{COPYRIGHT}} = Current Year (copyright)'); ?></span><br />
+	</div>
+	<div class="clr"></div>
+
 	<input type="hidden" name="template[id]" value="<?php echo $this->template->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

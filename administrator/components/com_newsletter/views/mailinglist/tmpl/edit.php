@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Newsletter Mailing List') . ': <small><small>[ ' . $text . ' ]</small></small>', 'list.png');
+JToolBarHelper::title(JText::_('Newsletter Mailing List') . ': ' . $text, 'list.png');
 
 //add toolbar buttons
 JToolBarHelper::save();
@@ -47,37 +47,36 @@ JToolBarHelper::cancel();
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<?php if (!$this->list->id) : ?>
 		<p class="info">You must first create the mailing list to add emails to it.</p>
 	<?php endif; ?>
 	<fieldset class="adminform">
-		<legend><?php echo $text; ?> Mailing List</legend>
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<th width="200px">Name:</th>
-					<td><input type="text" name="list[name]" value="<?php echo $this->list->name; ?>" /></td>
-				</tr>
-				<tr>
-					<th>Public/Private:</th>
-					<td>
-						<select name="list[private]">
-							<option value="0" <?php echo ($this->list->private == 0) ? 'selected="selected"': ''; ?>>Public</option>
-							<option value="1" <?php echo ($this->list->private == 1) ? 'selected="selected"': ''; ?>>Private</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>Description:</th>
-					<td><textarea name="list[description]" rows="5"><?php echo $this->list->description; ?></textarea></td>
-				</tr>
-			</tbody>
-		</table>
+		<legend><span><?php echo $text; ?> Mailing List</span></legend>
+
+		<div class="input-wrap">
+			<label for="field-name">Name:</label><br />
+			<input type="text" name="list[name]" id="field-name" value="<?php echo $this->escape($this->list->name); ?>" /></td>
+		</div>
+
+		<div class="input-wrap">
+			<label for="field-private">Public/Private:</label><br />
+			<select name="list[private]" id="field-private">
+				<option value="0" <?php echo ($this->list->private == 0) ? 'selected="selected"': ''; ?>>Public</option>
+				<option value="1" <?php echo ($this->list->private == 1) ? 'selected="selected"': ''; ?>>Private</option>
+			</select>
+		</div>
+
+		<div class="input-wrap">
+			<label for="field-description">Description:</label><br />
+			<textarea name="list[description]" id="field-description" rows="5"><?php echo $this->list->description; ?></textarea>
+		</div>
 	</fieldset>
-	
+
 	<input type="hidden" name="list[id]" value="<?php echo $this->list->id; ?>" />
 	<input type="hidden" name="option" value="com_newsletter" />
 	<input type="hidden" name="controller" value="mailinglist" />
 	<input type="hidden" name="task" value="save" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

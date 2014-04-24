@@ -123,6 +123,9 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		//get request vars
 		$list = JRequest::getVar('list', array(), 'post');
 		
