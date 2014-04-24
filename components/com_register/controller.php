@@ -453,6 +453,8 @@ class RegisterController extends Hubzero_Controller
 		if ($result) 
 		{
 			$result = Hubzero_User_Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
+			// Now expire the password
+			Hubzero_User_Password::expirePassword($target_xprofile->get('username'));
 		}
 		
 		// Did we successully create/update an account?
