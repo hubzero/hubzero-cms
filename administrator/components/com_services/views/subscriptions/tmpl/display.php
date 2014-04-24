@@ -52,40 +52,36 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<?php echo $this->total; ?> <?php echo JText::_('total subscriptions'); ?>.
-		<label>
-			<?php echo JText::_('Filter by'); ?>:
-			<select name="filterby" onchange="document.adminForm.submit( );">
-				<option value="pending"<?php if ($this->filters['filterby'] == 'pending') { echo ' selected="selected"'; } ?>><?php echo JText::_('Pending'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
-				<option value="active"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('Active'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
-				<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('Cancelled'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
-				<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
-			</select>
-		</label>
-		
-		<label>
-			<?php echo JText::_('Sort by'); ?>:
-			<select name="sortby" onchange="document.adminForm.submit( );">
-				<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo JText::_('Date Added'); ?></option>
-				<option value="date_updated"<?php if ($this->filters['sortby'] == 'date_updated') { echo ' selected="selected"'; } ?>><?php echo JText::_('Last Updated'); ?></option>
-				<option value="date_expires"<?php if ($this->filters['sortby'] == 'date_expires') { echo ' selected="selected"'; } ?>><?php echo JText::_('Soon to Expire'); ?></option>
-				<option value="pending"<?php if ($this->filters['sortby'] == 'pending') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Pending Admin Action')); ?></option>	
-				<option value="status"<?php if ($this->filters['sortby'] == 'status') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Status')); ?></option>					
-			</select>
-		</label> 
+		<label for="filter-filterby"><?php echo JText::_('Filter by'); ?>:</label>
+		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit( );">
+			<option value="pending"<?php if ($this->filters['filterby'] == 'pending') { echo ' selected="selected"'; } ?>><?php echo JText::_('Pending'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
+			<option value="active"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('Active'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
+			<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('Cancelled'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
+		</select>
+
+		<label for="filter-sortby"><?php echo JText::_('Sort by'); ?>:</label> 
+		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit( );">
+			<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo JText::_('Date Added'); ?></option>
+			<option value="date_updated"<?php if ($this->filters['sortby'] == 'date_updated') { echo ' selected="selected"'; } ?>><?php echo JText::_('Last Updated'); ?></option>
+			<option value="date_expires"<?php if ($this->filters['sortby'] == 'date_expires') { echo ' selected="selected"'; } ?>><?php echo JText::_('Soon to Expire'); ?></option>
+			<option value="pending"<?php if ($this->filters['sortby'] == 'pending') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Pending Admin Action')); ?></option>
+			<option value="status"<?php if ($this->filters['sortby'] == 'status') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Status')); ?></option>
+		</select>
 	</fieldset>
 	<div class="clr"></div>
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('ID -- Code'); ?></th>
-				<th><?php echo JText::_('Status'); ?></th>
-				<th><?php echo JText::_('Service'); ?></th>
-				<th><?php echo JText::_('Pending Payment / Units'); ?></th>
-				<th><?php echo JText::_('User'); ?></th>
-				<th><?php echo JText::_('Added'); ?></th>
-				<th><?php echo JText::_('Last Updated'); ?></th>
-				<th><?php echo JText::_('Expires'); ?></th>
+				<th scope="col"><?php echo JText::_('ID -- Code'); ?></th>
+				<th scope="col"><?php echo JText::_('Status'); ?></th>
+				<th scope="col"><?php echo JText::_('Service'); ?></th>
+				<th scope="col"><?php echo JText::_('Pending Payment / Units'); ?></th>
+				<th scope="col"><?php echo JText::_('User'); ?></th>
+				<th scope="col"><?php echo JText::_('Added'); ?></th>
+				<th scope="col"><?php echo JText::_('Last Updated'); ?></th>
+				<th scope="col"><?php echo JText::_('Expires'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -154,6 +150,6 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
