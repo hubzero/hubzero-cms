@@ -32,43 +32,21 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS') . ': <small><small>[ ' . JText::_('Relationships') . ' ]</small></small>', 'tags.png');
-/*if ($canDo->get('core.admin')) 
-{
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
-}
-if ($canDo->get('core.edit')) 
-{
-	JToolBarHelper::custom('pierce', 'copy', '', JText::_('PIERCE'), false);
-	JToolBarHelper::custom('merge', 'forward', '', JText::_('MERGE'), false);
-	JToolBarHelper::spacer();
-}
-if ($canDo->get('core.create')) 
-{
-	JToolBarHelper::addNew();
-}
-if ($canDo->get('core.delete')) 
-{
-	JToolBarHelper::deleteList();
-}*/
+JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('Relationships'), 'tags.png');
 
-$preload = null;
+$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+
+JHTML::_('behavior.tooltip');
 
 $doc = JFactory::getDocument();
-
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/jquery.js');
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/jquery-ui.js');
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/d3/d3.min.js');
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/d3/d3.layout.min.js');
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/d3/d3.geom.min.js');
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/tag_graph.js');
-$doc->addScript('/plugins/hubzero/autocompleter/autocompleter.jquery.js');
-//$doc->addStyleSheet('/plugins/hubzero/autocompleter/autocompleter.css');
-$doc->addStyleSheet('/administrator/components/' . $this->option . '/assets/css/tag_graph.css');
-
-//JToolBarHelper::title(JText::_('Tag Management'));
-//JToolBarHelper::custom('meta', 'edit', ' ', 'Focus Areas', false);
+/*$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/jquery.js');
+$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/jquery-ui.js');
+$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/d3/d3.min.js');
+$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/d3/d3.layout.min.js');
+$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/d3/d3.geom.min.js');
+$doc->addScript($base . '/administrator/components/' . $this->option . '/assets/js/tag_graph.js');
+$doc->addScript($base . '/plugins/hubzero/autocompleter/autocompleter.jquery.js');*/
+$doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/assets/css/tag_graph.css');
 ?>
 <form id="tag-sel" action="" method="get">
 	<fieldset class="adminform">
@@ -84,7 +62,7 @@ $doc->addStyleSheet('/administrator/components/' . $this->option . '/assets/css/
 			<tbody>
 				<tr>
 					<th class="key"><label>Tag:</label></th>
-					<td><input type="text" id="center-node" class="tag-entry" value="<?php echo $preload; ?>" /></td>
+					<td><input type="text" id="center-node" class="tag-entry" value="<?php echo $this->get('preload'); ?>" /></td>
 					<td>Look up a tag to view and assign its relationships to other tags.</td>
 				</tr>
 				<tr>
@@ -151,5 +129,14 @@ $doc->addStyleSheet('/administrator/components/' . $this->option . '/assets/css/
 	<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
 	<input type="hidden" value="" name="task" />
 	<input type="hidden" value="0" name="boxchecked" />
-	<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="/plugins/hubzero/autocompleter/autocompleter.css" />
+	<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css" />
 </form>
+
+<script src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
+<script src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script>
+<script src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
+<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.min.js"></script>
+<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.layout.min.js"></script>
+<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.geom.min.js"></script>
+<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/tag_graph.js"></script>
+<script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.jquery.js"></script>
