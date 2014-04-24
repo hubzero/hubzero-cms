@@ -759,6 +759,12 @@ $area = JRequest::getVar('area', 'about');
 	{
 		$coinsData[] = 'rft.pages=' . $citation->pages;
 	}
+
+	//add journal to coins
+	if($citation->journal)
+	{
+		$coinsData[] = 'rft.jtitle=' . $citation->journal;
+	}
 	
 	//add authors to coins
 	if($citation->author)
