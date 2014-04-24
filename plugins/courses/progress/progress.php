@@ -328,10 +328,11 @@ class plgCoursesProgress extends JPlugin
 		$assets = $asset->find(
 			array(
 				'w' => array(
-					'course_id'  => $this->course->get('id'),
-					'section_id' => $this->course->offering()->section()->get('id'),
-					'asset_type' => 'form',
-					'state'      => 1
+					'course_id'   => $this->course->get('id'),
+					'section_id'  => $this->course->offering()->section()->get('id'),
+					'offering_id' => $this->course->offering()->get('id'),
+					'asset_type'  => 'form',
+					'state'       => 1
 				),
 				'order_by'  => 'title',
 				'order_dir' => 'ASC'
