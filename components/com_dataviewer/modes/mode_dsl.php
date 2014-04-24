@@ -163,7 +163,7 @@ function pathway($dd)
 	$document->setTitle($dd['title']);
 
 	$mainframe =  JFactory::getApplication();
-	$pathway = &$mainframe->getPathway();
+	$pathway = $mainframe->getPathway();
 
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 		$ref_title = "Datastore";
