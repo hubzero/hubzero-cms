@@ -54,10 +54,11 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+
 			<table class="admintable">
 				<thead>
 					<tr>
@@ -75,29 +76,29 @@ function submitbutton(pressbutton)
 ?>
 					<tr>
 						<td>
-							<input type="text" name="fields[<?php echo $i; ?>][subid]" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($row->subid)); ?>" />
+							<input type="text" name="fields[<?php echo $i; ?>][subid]" maxlength="250" size="4" value="<?php echo $this->escape(stripslashes($row->subid)); ?>" />
 							<input type="hidden" name="fields[<?php echo $i; ?>][ordering]" value="<?php echo $this->escape(stripslashes($row->ordering)); ?>" />
 						</td>
 						<td>
-							<input type="text" name="fields[<?php echo $i; ?>][name]" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($row->name)); ?>" />
+							<input type="text" name="fields[<?php echo $i; ?>][name]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->name)); ?>" />
 						</td>
 						<td>
-							<input type="text" name="fields[<?php echo $i; ?>][organization]" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($row->organization)); ?>" />
+							<input type="text" name="fields[<?php echo $i; ?>][organization]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->organization)); ?>" />
 						</td>
 						<td>
 							<select name="fields[<?php echo $i; ?>][role]">
 								<option value=""<?php if ($row->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
-<?php 
+						<?php 
 						if ($this->roles)
 						{
 							foreach ($this->roles as $role)
 							{
-?>
+								?>
 								<option value="<?php echo $this->escape($role->alias); ?>"<?php if ($row->role == $role->alias) { echo ' selected="selected"'; }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
-<?php
+								<?php
 							}
 						}
-?>
+						?>
 							</select>
 						</td>
 					</tr>
@@ -112,16 +113,11 @@ function submitbutton(pressbutton)
 	<div class="col width-30 fltrt">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Author'); ?></span></legend>
-			<table>
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('ID'); ?>:</th>
-						<td>
-							<input type="text" name="authorid" value="<?php echo $this->authorid; ?>" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-authorid"><?php echo JText::_('ID'); ?>:</label><br />
+				<input type="text" name="authorid" id="field-authorid" value="<?php echo $this->escape($this->authorid); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
@@ -130,6 +126,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

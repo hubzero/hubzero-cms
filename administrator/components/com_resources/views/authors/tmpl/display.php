@@ -68,7 +68,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
@@ -86,7 +86,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
  			<tr>
- 				<td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
+ 				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
  			</tr>
 		</tfoot>
 		<tbody>
@@ -95,18 +95,16 @@ $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
-	
+
 	if ($row->authorid > 0) 
 	{
 		$stickyTask = '1';
-		$stickyImg = 'publish_g.png';
 		$stickyAlt = JText::_('Member');
 		$scls = 'member';
 	}
 	else 
 	{
 		$stickyTask = '0';
-		$stickyImg = 'publish_x.png';
 		$stickyAlt = JText::_('Not member');
 		$scls = 'notmember';
 	}
@@ -118,34 +116,34 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->authorid ?>" onclick="isChecked(this.checked, this);" />
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->authorid; ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->authorid; ?>" title="<?php echo JText::_('COM_RESOURCES_EDIT_LIST'); ?>">
 						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('[unknown]'); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('[unknown]'); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($row->authorid > 0) { ?>
+				<?php if ($row->authorid > 0) { ?>
 					<a class="state <?php echo $scls; ?>" href="index.php?option=com_members&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->authorid; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
+						<span><?php echo $stickyAlt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $scls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
+						<span><?php echo $stickyAlt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<span>
@@ -166,6 +164,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

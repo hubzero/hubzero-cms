@@ -57,9 +57,8 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php?option=com_resources&amp;controller=import" method="post" name="adminForm" id="adminForm">
-	<fieldset class="adminform">
-		
-		<table class="admintable">
+
+		<table class="adminlist">
 			<thead>
 				<tr>
 					<th scope="col" width="20px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
@@ -143,12 +142,12 @@ function submitbutton(pressbutton)
 					<?php endforeach; ?>
 				<?php else : ?>
 					<tr>
-						<td colspan="4">Currently there are no imports</td>
+						<td colspan="6">Currently there are no imports</td>
 					</tr>
 				<?php endif; ?>
 			</tbody>
 		</table>
-	</fieldset>
+
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />

@@ -80,51 +80,43 @@ function submitbutton(pressbutton)
 	<div class="col width-50 fltlft">
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('RESOURCES_TYPES_DETAILS'); ?></span></legend>
-		
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="type"><?php echo JText::_('RESOURCES_TYPES_TITLE'); ?>:</label></td>
-					<td><input type="text" name="type" id="type" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" /></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="alias"><?php echo JText::_('Alias'); ?>:</label></td>
-					<td>
-						<input type="text" name="alias" id="alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
-						<span class="hint"><?php echo JText::_('If no alias provided, one will be generated from the title.'); ?></span>
-					</td>
-				</tr>
-				<tr>
-					<td class="key"><label><?php echo JText::_('RESOURCES_TYPES_CATEGORY'); ?>:</label></td>
-					<td><?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, '[ select ]', '', '', ''); ?></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="contributable"><?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE'); ?>:</label></td>
-					<td><input type="checkbox" name="contributable" id="contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE_EXPLANATION'); ?></td>
-				</tr>
+
+		<div class="input-wrap">
+			<label for="field-type"><?php echo JText::_('RESOURCES_TYPES_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+			<input type="text" name="type" id="field-type" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
+		</div>
+		<div class="input-wrap" data-hint="<?php echo JText::_('If no alias provided, one will be generated from the title.'); ?>">
+			<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+			<input type="text" name="alias" id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
+			<span class="hint"><?php echo JText::_('Letters and numbers only. If no alias provided, one will be generated from the title.'); ?></span>
+		</div>
+		<div class="input-wrap">
+			<label><?php echo JText::_('RESOURCES_TYPES_CATEGORY'); ?>:</label><br />
+			<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, '[ select ]', '', '', ''); ?>
+		</div>
+		<div class="input-wrap">
+			<label for="field-contributable"><?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE'); ?>:</label><br />
+			<input type="checkbox" name="contributable" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE_EXPLANATION'); ?>
+		</div>
 <?php if ($this->row->category != 27) { ?>
-				<tr>
-					<td class="key"><label for="params-linkaction"><?php echo JText::_('Linked file action'); ?>:</label></td>
-					<td>
-						<select name="params[linkAction]" id="params-linkaction">
-							<option value="extension"<?php echo ($params->get('linkAction') == 'extension') ? ' selected="selected"':''; ?>><?php echo JText::_('Determine by file extension'); ?></option>
-							<option value="external"<?php echo ($params->get('linkAction') == 'external') ? ' selected="selected"':''; ?>><?php echo JText::_('New window'); ?></option>
-							<option value="lightbox"<?php echo ($params->get('linkAction') == 'lightbox') ? ' selected="selected"':''; ?>><?php echo JText::_('Lightbox'); ?></option>
-							<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo JText::_('Download'); ?></option>
-						</select>
-					</td>
-				</tr>
+		<div class="input-wrap">
+			<label for="params-linkaction"><?php echo JText::_('Linked file action'); ?>:</label><br />
+			<select name="params[linkAction]" id="params-linkaction">
+				<option value="extension"<?php echo ($params->get('linkAction') == 'extension') ? ' selected="selected"':''; ?>><?php echo JText::_('Determine by file extension'); ?></option>
+				<option value="external"<?php echo ($params->get('linkAction') == 'external') ? ' selected="selected"':''; ?>><?php echo JText::_('New window'); ?></option>
+				<option value="lightbox"<?php echo ($params->get('linkAction') == 'lightbox') ? ' selected="selected"':''; ?>><?php echo JText::_('Lightbox'); ?></option>
+				<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo JText::_('Download'); ?></option>
+			</select>
+		</div>
 <?php } ?>
-				<tr>
-					<td class="key"><label for="field-description"><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label></td>
-					<td><?php 
-						$editor = JFactory::getEditor();
-						echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal'));
-					?></td>
-				</tr>
-			</tbody>
-		</table>
-	
+		<div class="input-wrap">
+			<label for="field-description"><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label><br />
+			<?php 
+				$editor = JFactory::getEditor();
+				echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal'));
+			?>
+		</div>
+
 		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -138,21 +130,14 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<thead>
 					<tr>
-						<th><?php echo JText::_('Plugin'); ?></th>
-						<th colspan="2"><?php echo JText::_('Active'); ?></th>
+						<th scope="col"><?php echo JText::_('Plugin'); ?></th>
+						<th scope="col" colspan="2"><?php echo JText::_('Active'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 				<?php 
 				$database = JFactory::getDBO();
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$database->setQuery( "SELECT * FROM #__extensions WHERE `type`='plugin' AND `folder`='resources'" );
-				}
-				else
-				{
-					$database->setQuery( "SELECT * FROM #__plugins WHERE `folder`='resources'" );
-				}
+				$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='resources'" );
 				$plugins = $database->loadObjectList();
 
 				$found = array();
@@ -170,7 +155,7 @@ function submitbutton(pressbutton)
 					}
 					?>
 					<tr>
-						<td><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></td>
+						<th scope="row"><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></th>
 						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
 						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
 					</tr>
@@ -182,277 +167,275 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<div class="col width-100">
-	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('RESOURCES_TYPES_CUSTOM_FIELDS'); ?></span></legend>
-		
-		<table class="admintable" id="fields">
-			<thead>
-				<tr>
-<?php //if ($this->row->id) { ?>
-					<th><?php echo JText::_('RESOURCES_TYPES_REORDER'); ?></th>
-<?php //} ?>
-					<th><?php echo JText::_('RESOURCES_TYPES_FIELD'); ?></th>
-					<th><?php echo JText::_('RESOURCES_TYPES_TYPE'); ?></th>
-					<th><?php echo JText::_('RESOURCES_TYPES_REQUIRED'); ?></th>
-					<th><?php echo JText::_('RESOURCES_TYPES_OPTIONS'); ?></th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="<?php echo '5';//($this->row->id) ? '5' : '4'; ?>">
-						<button id="add-custom-field" href="#addRow">
-							<span><?php echo JText::_('+ Add new row'); ?></span>
-						</button>
-					</td>
-				</tr>
-			</tfoot>
-			<tbody id="field-items">
-			<?php 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-			$elements = new ResourcesElements('', $this->row->customFields);
-			$schema = $elements->getSchema();
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('RESOURCES_TYPES_CUSTOM_FIELDS'); ?></span></legend>
 
-			if (!is_object($schema))
-			{
-				$schema = new stdClass();
-				$schema->fields = array();
-			}
+			<table class="admintable" id="fields">
+				<thead>
+					<tr>
+						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_REORDER'); ?></th>
+						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_FIELD'); ?></th>
+						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_TYPE'); ?></th>
+						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_REQUIRED'); ?></th>
+						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_OPTIONS'); ?></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="<?php echo '5';//($this->row->id) ? '5' : '4'; ?>">
+							<button id="add-custom-field" href="#addRow">
+								<span><?php echo JText::_('+ Add new row'); ?></span>
+							</button>
+						</td>
+					</tr>
+				</tfoot>
+				<tbody id="field-items">
+				<?php 
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+				$elements = new ResourcesElements('', $this->row->customFields);
+				$schema = $elements->getSchema();
 
-			if (count($schema->fields) <= 0)
-			{
-				$fs = explode(',', $this->config->get('tagsothr', 'bio,credits,citations,sponsoredby,references,publications'));
-				foreach ($fs as $f)
+				if (!is_object($schema))
 				{
-					$f = trim($f);
-					$element = new stdClass();
-					$element->name = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($f));
-					$element->label = ucfirst($f);
-					$element->type = 'text';
-					$element->required = '';
-					$element->value = '';
-					$element->default = '';
-					$element->description = '';
-
-					$schema->fields[] = $element;
+					$schema = new stdClass();
+					$schema->fields = array();
 				}
-			}
 
-			$i = 0;
-			foreach ($schema->fields as $field)
-			{
-				?>
-				<tr>
-					<td class="order">
-						<span class="handle hasTip" title="<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>">
-							<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>
-						</span>
-					</td>
-					<td>
-						<input type="text" name="fields[<?php echo $i; ?>][title]" value="<?php echo $this->escape(stripslashes($field->label)); ?>" maxlength="255" />
-						<input type="hidden" name="fields[<?php echo $i; ?>][name]" value="<?php echo $this->escape(stripslashes($field->name)); ?>" />
-					</td>
-					<td>
-						<select name="fields[<?php echo $i; ?>][type]" id="fields-<?php echo $i; ?>-type">
-							<optgroup label="<?php echo JText::_('Common'); ?>">
-								<option value="text"<?php echo ($field->type == 'text') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXT'); ?></option>
-								<option value="textarea"<?php echo ($field->type == 'textarea') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXTAREA'); ?></option>
-								<option value="list"<?php echo ($field->type == 'list') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_LIST'); ?></option>
-								<option value="radio"<?php echo ($field->type == 'radio') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_RADIO'); ?></option>
-								<option value="checkbox"<?php echo ($field->type == 'checkbox') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_CHECKBOX'); ?></option>
-								<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_HIDDEN'); ?></option>
-							</optgroup>
-							<optgroup label="<?php echo JText::_('Pre-defined'); ?>">
-								<option value="date"<?php echo ($field->type == 'date') ? ' selected="selected"':''; ?>><?php echo JText::_('Date'); ?></option>
-								<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo JText::_('Geo Location'); ?></option>
-								<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo JText::_('Language List'); ?></option>
-							</optgroup>
-						</select>
-					</td>
-					<td>
-						<input type="checkbox" name="fields[<?php echo $i; ?>][required]" value="1"<?php echo ($field->required) ? ' checked="checked"':''; ?> />
-					</td>
-					<td id="fields-<?php echo $i; ?>-options">
-						<?php echo $elements->getElementOptions($i, $field, 'fields'); ?>
-					</td>
-				</tr>
-				<?php
-				$i++;
-			}
-			?>
-			</tbody>
-		</table>
-
-		<script type="text/javascript">
-			if (!jq) {
-				var jq = $;
-			}
-			
-			var Fields = {
-				isIE8: function() {
-					var rv = -1,
-						ua = navigator.userAgent,
-						re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");
-					if (re.exec(ua) != null) {
-						rv = parseFloat(RegExp.$1);
-					}
-					return (rv == 4);
-				},
-
-				addRow: function(id) {
-					var tbody = document.getElementById(id).tBodies[0],
-						counter = tbody.rows.length,
-						newNode = tbody.rows[0].cloneNode(true),
-						replaceme = null;
-
-					var newField = newNode.childNodes;
-					for (var i=0;i<newField.length;i++) 
+				if (count($schema->fields) <= 0)
+				{
+					$fs = explode(',', $this->config->get('tagsothr', 'bio,credits,citations,sponsoredby,references,publications'));
+					foreach ($fs as $f)
 					{
-						var inputs = newField[i].childNodes;
-						for (var k=0;k<inputs.length;k++) 
-						{
-							var theName = inputs[k].name;
-							if (theName) {
-								tokens = theName.split('[');
-								n = tokens[2];
-								inputs[k].name = id + '[' + counter + ']['+ n;
-								inputs[k].id = id + '-' + counter + '-' + n.replace(']', '');
+						$f = trim($f);
+						$element = new stdClass();
+						$element->name = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($f));
+						$element->label = ucfirst($f);
+						$element->type = 'text';
+						$element->required = '';
+						$element->value = '';
+						$element->default = '';
+						$element->description = '';
 
-								if (Fields.isIE8() && inputs[k].type == 'select-one') {
-									inputs[k].id = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
-									replaceme = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
+						$schema->fields[] = $element;
+					}
+				}
+
+				$i = 0;
+				foreach ($schema->fields as $field)
+				{
+					?>
+					<tr>
+						<td class="order">
+							<span class="handle hasTip" title="<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>">
+								<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>
+							</span>
+						</td>
+						<td>
+							<input type="text" name="fields[<?php echo $i; ?>][title]" value="<?php echo $this->escape(stripslashes($field->label)); ?>" maxlength="255" />
+							<input type="hidden" name="fields[<?php echo $i; ?>][name]" value="<?php echo $this->escape(stripslashes($field->name)); ?>" />
+						</td>
+						<td>
+							<select name="fields[<?php echo $i; ?>][type]" id="fields-<?php echo $i; ?>-type">
+								<optgroup label="<?php echo JText::_('Common'); ?>">
+									<option value="text"<?php echo ($field->type == 'text') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXT'); ?></option>
+									<option value="textarea"<?php echo ($field->type == 'textarea') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXTAREA'); ?></option>
+									<option value="list"<?php echo ($field->type == 'list') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_LIST'); ?></option>
+									<option value="radio"<?php echo ($field->type == 'radio') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_RADIO'); ?></option>
+									<option value="checkbox"<?php echo ($field->type == 'checkbox') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_CHECKBOX'); ?></option>
+									<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_HIDDEN'); ?></option>
+								</optgroup>
+								<optgroup label="<?php echo JText::_('Pre-defined'); ?>">
+									<option value="date"<?php echo ($field->type == 'date') ? ' selected="selected"':''; ?>><?php echo JText::_('Date'); ?></option>
+									<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo JText::_('Geo Location'); ?></option>
+									<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo JText::_('Language List'); ?></option>
+								</optgroup>
+							</select>
+						</td>
+						<td>
+							<input type="checkbox" name="fields[<?php echo $i; ?>][required]" value="1"<?php echo ($field->required) ? ' checked="checked"':''; ?> />
+						</td>
+						<td id="fields-<?php echo $i; ?>-options">
+							<?php echo $elements->getElementOptions($i, $field, 'fields'); ?>
+						</td>
+					</tr>
+					<?php
+					$i++;
+				}
+				?>
+				</tbody>
+			</table>
+
+			<script type="text/javascript">
+				if (!jq) {
+					var jq = $;
+				}
+				
+				var Fields = {
+					isIE8: function() {
+						var rv = -1,
+							ua = navigator.userAgent,
+							re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");
+						if (re.exec(ua) != null) {
+							rv = parseFloat(RegExp.$1);
+						}
+						return (rv == 4);
+					},
+
+					addRow: function(id) {
+						var tbody = document.getElementById(id).tBodies[0],
+							counter = tbody.rows.length,
+							newNode = tbody.rows[0].cloneNode(true),
+							replaceme = null;
+
+						var newField = newNode.childNodes;
+						for (var i=0;i<newField.length;i++) 
+						{
+							var inputs = newField[i].childNodes;
+							for (var k=0;k<inputs.length;k++) 
+							{
+								var theName = inputs[k].name;
+								if (theName) {
+									tokens = theName.split('[');
+									n = tokens[2];
+									inputs[k].name = id + '[' + counter + ']['+ n;
+									inputs[k].id = id + '-' + counter + '-' + n.replace(']', '');
+
+									if (Fields.isIE8() && inputs[k].type == 'select-one') {
+										inputs[k].id = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
+										replaceme = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
+									}
+								}
+								var n = id + '[' + counter + '][type]';
+								var z = id + '[' + counter + '][required]';
+								if (inputs[k].value && inputs[k].name != z) {
+									inputs[k].value = '';
+									inputs[k].selectedIndex = 0;
+									inputs[k].selected = false;
+								}
+								if (inputs[k].checked) {
+									inputs[k].checked = false;
 								}
 							}
-							var n = id + '[' + counter + '][type]';
-							var z = id + '[' + counter + '][required]';
-							if (inputs[k].value && inputs[k].name != z) {
-								inputs[k].value = '';
-								inputs[k].selectedIndex = 0;
-								inputs[k].selected = false;
-							}
-							if (inputs[k].checked) {
-								inputs[k].checked = false;
+							if (newField[i].id) {
+								newField[i].id = 'fields-'+counter+'-options';
 							}
 						}
-						if (newField[i].id) {
-							newField[i].id = 'fields-'+counter+'-options';
+
+						tbody.appendChild(newNode);
+
+						// Make a clone of the clone. Why? Because IE 8 is dumb.
+						// IE still retains a reference to the original object for change events
+						// So, when calling onChange, the event gets fired for the clone AND the 
+						// original. Cloning the clone seems to fix this.
+						if (replaceme) {
+							var replace = jq(replaceme);
+							var select = jq.clone(replace).appendAfter(replace);
+							jq.remove(replace);
 						}
-					}
 
-					tbody.appendChild(newNode);
+						Fields.initSelect();
 
-					// Make a clone of the clone. Why? Because IE 8 is dumb.
-					// IE still retains a reference to the original object for change events
-					// So, when calling onChange, the event gets fired for the clone AND the 
-					// original. Cloning the clone seems to fix this.
-					if (replaceme) {
-						var replace = jq(replaceme);
-						var select = jq.clone(replace).appendAfter(replace);
-						jq.remove(replace);
-					}
+						//jq('#fields tbody').sortable(); //'enable');
 
-					Fields.initSelect();
+						return false;
+					},
 
-					//jq('#fields tbody').sortable(); //'enable');
+					addOption: function(id) {
+						var tbody = document.getElementById(id).tBodies[0];
+						var counter = tbody.rows.length;
+						var newNode = tbody.rows[0].cloneNode(true);
 
-					return false;
-				},
-
-				addOption: function(id) {
-					var tbody = document.getElementById(id).tBodies[0];
-					var counter = tbody.rows.length;
-					var newNode = tbody.rows[0].cloneNode(true);
-
-					var newField = newNode.childNodes;
-					for (var i=0;i<newField.length;i++) 
-					{
-						var inputs = newField[i].childNodes;
-						for (var k=0;k<inputs.length;k++) 
+						var newField = newNode.childNodes;
+						for (var i=0;i<newField.length;i++) 
 						{
-							var theName = inputs[k].name;
-							if (theName) {
-								tokens = theName.split('[');
-								n = tokens[2];
-								inputs[k].name = 'fields['+id+'][' +n+ '[' + counter + '][label]';
-							}
-							if (inputs[k].value) {
-								inputs[k].value = '';
+							var inputs = newField[i].childNodes;
+							for (var k=0;k<inputs.length;k++) 
+							{
+								var theName = inputs[k].name;
+								if (theName) {
+									tokens = theName.split('[');
+									n = tokens[2];
+									inputs[k].name = 'fields['+id+'][' +n+ '[' + counter + '][label]';
+								}
+								if (inputs[k].value) {
+									inputs[k].value = '';
+								}
 							}
 						}
-					}
 
-					tbody.appendChild(newNode);
+						tbody.appendChild(newNode);
 
-					return false;
-				},
+						return false;
+					},
 
-				initOptions: function() {
-					jq('.add-custom-option').each(function(i, el){
-						jq(el)
-							.off('click')
-							.on('click', function(e){
-								e.preventDefault();
+					initOptions: function() {
+						jq('.add-custom-option').each(function(i, el){
+							jq(el)
+								.off('click')
+								.on('click', function(e){
+									e.preventDefault();
 
-								Fields.addOption(jq(this).attr('rel'));
-							});
-					});
-				},
-
-				timer: 0,
-
-				clear: function() {
-					Fields.timer = 0;
-				},
-
-				initSelect: function() {
-					jq('#fields select').each(function(i, el){
-						jq(el)
-							.off('change')
-							.on('change', function(){
-								var i = this.name.replace(/^fields\[(\d+)\]\[type\]/g,"$1");
-								jq.get('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type='+this.value+'&name='+i,{}, function (response){
-									jq('#fields-'+i+'-options').html(response);
-									Fields.initOptions();
+									Fields.addOption(jq(this).attr('rel'));
 								});
-							})
-					});
-				},
-
-				initialise: function() {
-					jq('#add-custom-field').on('click', function (e){
-						e.preventDefault();
-
-						Fields.addRow('fields');
-					});
-
-					Fields.initSelect();
-					Fields.initOptions();
-
-					jq('#fields tbody').sortable();
-				}
-			}
-
-			jQuery(document).ready(function(jq){
-				var $ = jq;
-
-				Fields.initialise();
-
-				$("#fields tbody").sortable({
-					handle: '.handle',
-					helper: function(e, tr) {
-						var $originals = tr.children();
-						var $helper = tr.clone();
-						$helper.children().each(function(index) {
-							// Set helper cell sizes to match the original sizes
-							$(this).width($originals.eq(index).width())
 						});
-						return $helper;
+					},
+
+					timer: 0,
+
+					clear: function() {
+						Fields.timer = 0;
+					},
+
+					initSelect: function() {
+						jq('#fields select').each(function(i, el){
+							jq(el)
+								.off('change')
+								.on('change', function(){
+									var i = this.name.replace(/^fields\[(\d+)\]\[type\]/g,"$1");
+									jq.get('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type='+this.value+'&name='+i,{}, function (response){
+										jq('#fields-'+i+'-options').html(response);
+										Fields.initOptions();
+									});
+								})
+						});
+					},
+
+					initialise: function() {
+						jq('#add-custom-field').on('click', function (e){
+							e.preventDefault();
+
+							Fields.addRow('fields');
+						});
+
+						Fields.initSelect();
+						Fields.initOptions();
+
+						jq('#fields tbody').sortable();
 					}
-				});  //.disableSelection();
-			});
-		</script>
-	</fieldset>
+				}
+
+				jQuery(document).ready(function(jq){
+					var $ = jq;
+
+					Fields.initialise();
+
+					$("#fields tbody").sortable({
+						handle: '.handle',
+						helper: function(e, tr) {
+							var $originals = tr.children();
+							var $helper = tr.clone();
+							$helper.children().each(function(index) {
+								// Set helper cell sizes to match the original sizes
+								$(this).width($originals.eq(index).width())
+							});
+							return $helper;
+						}
+					});  //.disableSelection();
+				});
+			</script>
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 

@@ -69,37 +69,28 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('RESOURCES_TYPES_DETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label></br />
-							<input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="field-name"><?php echo JText::_('Name'); ?>:</label><br />
-							<input type="text" name="fields[name]" id="field-name" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" /><br />
-							<span class="hint"><?php echo JText::_('If no name is provided, one will be generated from the title.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="field-url"><?php echo JText::_('URL'); ?>:</label><br />
-							<input type="text" name="fields[url]" id="field-url" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" /><br />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label><?php echo JText::_('Content'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
-							<?php 
-							echo JFactory::getEditor()->display('fields[text]', stripslashes($this->row->text), '', '', '45', '10', false);
-							?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label></br />
+				<input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-name"><?php echo JText::_('Name'); ?>:</label><br />
+				<input type="text" name="fields[name]" id="field-name" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" /><br />
+				<span class="hint"><?php echo JText::_('If no name is provided, one will be generated from the title.'); ?></span>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-url"><?php echo JText::_('URL'); ?>:</label><br />
+				<input type="text" name="fields[url]" id="field-url" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" /><br />
+			</div>
+
+			<div class="input-wrap">
+				<label><?php echo JText::_('Content'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<?php 
+				echo JFactory::getEditor()->display('fields[text]', stripslashes($this->row->text), '', '', '45', '10', false);
+				?>
+			</div>
 
 			<input type="hidden" name="fields[ordering]" value="<?php echo $this->row->ordering; ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
