@@ -30,56 +30,87 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+JHTML::_('behavior.chart', 'resize');
+JHTML::_('behavior.chart', 'pie');
+
+$total = $this->granted + $this->accepted + $this->pending + $this->removed + $this->withdrawn + $this->removed + $this->rejected;
 ?>
-<table class="wishlist-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Pending'); ?></th>
-			<th scope="col"><?php echo JText::_('Accepted'); ?></th>
-			<th scope="col"><?php echo JText::_('Granted'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="pending"><a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=0" title="<?php echo JText::_('View pending wishes'); ?>"><?php echo $this->escape($this->pending); ?></a></td>
-			<td class="accepted"><a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=1" title="<?php echo JText::_('View accepted wishes'); ?>"><?php echo $this->escape($this->accepted); ?></a></td>
-			<td class="granted"><a href="index.php?option=com_wishlist&amp;status=1" title="<?php echo JText::_('View granted wishes'); ?>"><?php echo $this->escape($this->granted); ?></a></td>
-		</tr>
-	</tbody>
-</table>
+<div class="mod_wishlist">
+	<div class="overview-container">
+		<div id="wishlist-container<?php echo $this->module->id; ?>" style="min-width: 200px; height: 200px;"></div>
 
-<table class="wishlist-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Rejected'); ?></th>
-			<th scope="col"><?php echo JText::_('Withdrawn'); ?></th>
-			<th scope="col"><?php echo JText::_('Removed'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="rejected"><a href="index.php?option=com_wishlist&amp;status=3" title="<?php echo JText::_('View rejected wishes'); ?>"><?php echo $this->escape($this->rejected); ?></a></td>
-			<td class="withdrawn"><a href="index.php?option=com_wishlist&amp;status=4" title="<?php echo JText::_('View withdrawn wishes'); ?>"><?php echo $this->escape($this->withdrawn); ?></a></td>
-			<td class="removed"><a href="index.php?option=com_wishlist&amp;status=2" title="<?php echo JText::_('View removed wishes'); ?>"><?php echo $this->escape($this->removed); ?></a></td>
-		</tr>
-	</tbody>
-</table>
+		<script type="text/javascript">
+		if (!jq) {
+			var jq = $;
+		}
+		if (jQuery()) {
+			var $ = jq,
+				wishlistPie;
 
-<?php if ($this->params->get('showMine', 0)) { ?>
-<table class="wishlist-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('My Wishes (pending)'); ?></th>
-			<th scope="col"><?php echo JText::_('My Wishes (accepted)'); ?></th>
-			<th scope="col"><?php echo JText::_('My Wishes (granted)'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="mypending"><a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=0&amp;proposed_by=<?php echo $this->username; ?>" title="<?php echo JText::_('View my pending wishes'); ?>"><?php echo $this->escape($this->mypending); ?></a></td>
-			<td class="myaccepted"><a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=1&amp;proposed_by=<?php echo $this->username; ?>" title="<?php echo JText::_('View my accepted wishes'); ?>"><?php echo $this->escape($this->myaccepted); ?></a></td>
-			<td class="mygranted"><a href="index.php?option=com_wishlist&amp;status=1&amp;proposed_by=<?php echo $this->username; ?>" title="<?php echo JText::_('View my granted wishes'); ?>"><?php echo $this->escape($this->mygranted); ?></a></td>
-		</tr>
-	</tbody>
-</table>
-<?php } ?>
+			$(document).ready(function() {
+				wishlistPie = $.plot($("#wishlist-container<?php echo $this->module->id; ?>"), [
+					{label: 'pending', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '#656565'},
+					{label: 'granted', data: <?php echo round(($this->granted / $total)*100, 2); ?>, color: '#999'}, //#7c94c2
+					{label: 'accepted', data: <?php echo round(($this->accepted / $total)*100, 2); ?>, color: '#f9d180'}, //#c67c6b
+					{label: 'removed', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '#ccc'}, //#d8aa65
+					{label: 'withdrawn', data: <?php echo round(($this->withdrawn / $total)*100, 2); ?>, color: '#eee'}, //#5f9c63
+					{label: 'rejected', data: <?php echo round(($this->rejected / $total)*100, 2); ?>, color: '#333'} //#5f9c63
+				], {
+					legend: { 
+						show: true
+					},
+					series: {
+						pie: { 
+							innerRadius: 0.5,
+							show: true,
+							stroke: {
+								color: '#efefef'
+							}
+						}
+					},
+					grid: {
+						hoverable: false
+					}
+				});
+			});
+		}
+		</script>
+
+		<p class="wishlist-total"><?php echo $total; ?></p>
+	</div>
+	<div class="overview-container">
+		<table class="wishlist-stats-overview">
+			<tbody>
+				<tr>
+					<td class="pending-items">
+						<a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=0" title="<?php echo JText::_('View pending wishes'); ?>"><?php echo $this->escape($this->pending); ?></a>
+						<span><?php echo JText::_('Pending'); ?></span>
+					</td>
+					<td class="accepted-items">
+						<a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=1" title="<?php echo JText::_('View accepted wishes'); ?>"><?php echo $this->escape($this->accepted); ?></a>
+						<span><?php echo JText::_('Accepted'); ?></span>
+					</td>
+					<td class="granted-items">
+						<a href="index.php?option=com_wishlist&amp;status=1" title="<?php echo JText::_('View granted wishes'); ?>"><?php echo $this->escape($this->granted); ?></a>
+						<span><?php echo JText::_('Granted'); ?></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="rejected-items">
+						<a href="index.php?option=com_wishlist&amp;status=3" title="<?php echo JText::_('View rejected wishes'); ?>"><?php echo $this->escape($this->rejected); ?></a>
+						<span><?php echo JText::_('Rejected'); ?></span>
+					</td>
+					<td class="withdrawn-items">
+						<a href="index.php?option=com_wishlist&amp;status=4" title="<?php echo JText::_('View withdrawn wishes'); ?>"><?php echo $this->escape($this->withdrawn); ?></a>
+						<span><?php echo JText::_('Withdrawn'); ?></span>
+					</td>
+					<td class="removed-items">
+						<a href="index.php?option=com_wishlist&amp;status=2" title="<?php echo JText::_('View removed wishes'); ?>"><?php echo $this->escape($this->removed); ?></a>
+						<span><?php echo JText::_('Removed'); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

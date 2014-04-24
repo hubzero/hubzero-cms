@@ -57,38 +57,23 @@ class modWishlist extends \Hubzero\Module\Module
 			}
 		}
 
-		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=1");
+		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=1");
 		$this->granted = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND accepted=0 AND status=0");
+		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND accepted=0 AND status=0");
 		$this->pending = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND accepted=1 AND status=0");
+		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND accepted=1 AND status=0");
 		$this->accepted = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=3");
+		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=3");
 		$this->rejected = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=4");
+		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=4");
 		$this->withdrawn = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=2");
+		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=2");
 		$this->removed = $this->database->loadResult();
-
-		if ($this->params->get('showMine', 0))
-		{
-			$juser = JFactory::getUser();
-			$this->username = $juser->get('username');
-
-			$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=1 AND proposed_by=" . $juser->get('id'));
-			$this->granted = $this->database->loadResult();
-
-			$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND accepted=0 AND status=0 AND proposed_by=" . $juser->get('id'));
-			$this->pending = $this->database->loadResult();
-
-			$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND accepted=1 AND status=0 AND proposed_by=" . $juser->get('id'));
-			$this->accepted = $this->database->loadResult();
-		}
 
 		$this->css();
 
