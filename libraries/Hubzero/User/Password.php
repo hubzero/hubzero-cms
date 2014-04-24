@@ -757,7 +757,7 @@ class Password
 		return self::comparePasswords($passhash, $password);
 	}
 
-	public function invalidatePassword($user = null)
+	public static function invalidatePassword($user = null)
 	{
 		$hzup = self::getInstance($user);
 
@@ -767,7 +767,7 @@ class Password
 		return true;
 	}
 
-	public function expirePassword($user = null)
+	public static function expirePassword($user = null)
 	{
 		$hzup = self::getInstance($user);
 
