@@ -218,7 +218,6 @@ class BlogTableEntry extends JTable
 		if (!$this->id)
 		{
 			$this->created    = JFactory::getDate()->toSql();
-			$this->publish_up = JFactory::getDate()->toSql();
 		}
 
 		if (!$this->publish_up || $this->publish_up == $this->_db->getNullDate()) 
