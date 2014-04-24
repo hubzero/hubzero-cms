@@ -117,18 +117,18 @@ foreach ($this->rows as $row)
 
 	if (!$row->get('access', 0)) 
 	{
-		$color_access = 'style="color: green;"';
-		$task_access = 'accessregistered';
+		$color_access = 'public';
+		$task_access  = 'accessregistered';
 	} 
 	elseif ($row->get('access', 0) == 1) 
 	{
-		$color_access = 'style="color: red;"';
-		$task_access = 'accessspecial';
+		$color_access = 'registered';
+		$task_access  = 'accessspecial';
 	} 
 	else 
 	{
-		$color_access = 'style="color: black;"';
-		$task_access = 'accesspublic';
+		$color_access = 'special';
+		$task_access  = 'accesspublic';
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -159,11 +159,11 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->get('id'); ?>" <?php echo $color_access; ?> title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
+					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
 						<?php echo $row->get('groupname'); ?>
 					</a>
 				<?php } else { ?>
-					<span <?php echo $color_access; ?>>
+					<span class="access <?php echo $color_access; ?>">
 						<?php echo $row->get('groupname'); ?>
 					</span>
 				<?php } ?>
