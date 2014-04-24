@@ -198,6 +198,15 @@ input[type=submit] {
 			width: 100%;
 			max-width: 100%;
 		}
+		td.order {
+			.input-text,
+			input[type=text],
+			input[type=password],
+			input[type=email],
+			textarea {
+				width: auto;
+			}
+		}
 	}
 
 	.active-sort {
@@ -448,6 +457,19 @@ input[type=submit] {
 			}
 		}
 	}
+
+	.access {
+		&.public {
+			color: #7F913C;
+		}
+		&.registered {
+			color: #e84c3d;
+		}
+		&.special {
+			color: #111;
+		}
+	}
+
 	.ui-datepicker {
 		background: #111111;
 		background: rgba(0, 0, 0, 0.8);
@@ -455,38 +477,88 @@ input[type=submit] {
 		border: none;
 		color: #eee;
 		display: none;
-	}
-	.ui-datepicker table {
-		border: none;
-		border-top: 1px solid #666;
-		border-top: 1px solid rgba(255, 255, 255, 0.2);
-		border-left: 1px solid #666;
-		border-left: 1px solid rgba(255, 255, 255, 0.2);
-	}
-	.ui-datepicker table thead tr th,
-	.ui-datepicker table tbody tr th,
-	.ui-datepicker table tbody tr td {
-		border: none;
-		border-right: 1px solid #666;
-		border-right: 1px solid rgba(255, 255, 255, 0.2);
-		border-bottom: 1px solid #666;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-		padding: 0.418em 0.618em;
-	}
-	.ui-datepicker table tbody tr th,
-	.ui-datepicker table tbody tr td {
-		background-color: #333;
-		background-color: rgba(255, 255, 255, 0.1);
-	}
-	.ui-datepicker-calendar .ui-datepicker-unselectable {
-		background-color: rgba(255, 255, 255, 0.3);
-	}
-	.ui-datepicker .ui-slider {
-		background-color: #333;
-		background-color: rgba(255, 255, 255, 0.1);
-		border: 1px solid #666;
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: none;
+
+		.ui-datepicker-title {
+			color: #eee;
+		}
+
+		.ui-datepicker-calendar {
+			border: none;
+
+			thead tr th,
+			tbody tr th,
+			tbody tr td {
+				border: none;
+				padding: 0.418em 0.618em;
+			}
+			tbody tr th,
+			tbody tr td {
+				background-color: #333;
+				background-color: rgba(255, 255, 255, 0.1);
+			}
+			tbody a {
+				color: #999;
+			}
+			thead tr th {
+				background-color: #666;
+				color: #ddd;
+			}
+			thead tr th:first-child,
+			thead tr th:last-child,
+			tbody tr td:first-child {
+				border: none;
+			}
+			.ui-datepicker-unselectable {
+				background-color: rgba(255, 255, 255, 0.15);
+			}
+			.ui-datepicker-today,
+			.ui-datepicker-today a {
+				background-color: #222;
+				color: #fff;
+			}
+		}
+		a.ui-datepicker-prev {
+			width: 2em;
+			overflow: hidden;
+			white-space: nowrap;
+			text-align: left;
+		}
+		a.ui-datepicker-prev:before {
+			content: "\f0d9";
+			font-family: "Fontcons";
+			margin-right: 5em;
+		}
+		a.ui-datepicker-prev:hover {
+			color: #fff;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		a.ui-datepicker-next {
+			width: 2em;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		a.ui-datepicker-next:before {
+			content: "\f0da";
+			font-family: "Fontcons";
+			margin-right: 4em;
+			margin-left: 1.2em;
+		}
+		a.ui-datepicker-next:hover {
+			color: #fff;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		.ui-slider {
+			background-color: #333;
+			background-color: rgba(255, 255, 255, 0.1);
+			border: 1px solid #666;
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			box-shadow: none;
+		}
+		.ui-datepicker-buttonpane {
+			border-top: 1px solid rgba(255, 255, 255, 0.2);
+		}
 	}
 
 // Layout & navigation
