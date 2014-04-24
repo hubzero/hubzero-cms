@@ -962,6 +962,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		$reporter = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $reporter);
 		//$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
 
+		$reporter['name']  = trim($reporter['name']);
+		$reporter['email'] = trim($reporter['email']);
+		$problem['long']   = trim($problem['long']);
+
 		// Make sure email address is valid
 		$validemail = $this->_isValidEmail($reporter['email']);
 
