@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = StoreHelper::getActions('item');
 
-$text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
+$text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
 JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.admin')) 
@@ -46,7 +46,7 @@ if ($canDo->get('core.create'))
 
 ?>
 <script type="text/javascript">
-public function submitbutton(pressbutton) 
+function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -59,21 +59,19 @@ public function submitbutton(pressbutton)
 </script>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<?php echo count($this->rows); ?> <?php echo JText::_('COM_STORE_ITEMS_DISPLAYED'); ?>.
-
-		<label><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
-		<select name="filterby" onchange="document.adminForm.submit();">
+		<label for="filter-filterby"><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
+		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
 			<option value="available"<?php if ($this->filters['filterby'] == 'available') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_INSTORE_ITEMS'); ?></option>
-	    	<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_PUBLISHED'); ?></option>
+			<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_PUBLISHED'); ?></option>
 			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ALL_ITEMS'); ?></option>
 		</select>
 
-		<label><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
-		<select name="sortby" onchange="document.adminForm.submit();">
-	    	<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_LOWEST_PRICE'); ?></option>
-	    	<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_HIGHEST_PRICE'); ?></option>
+		<label for="filter-sortby"><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
+		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit();">
+			<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_LOWEST_PRICE'); ?></option>
+			<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_HIGHEST_PRICE'); ?></option>
 			<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_DATE_ADDED')); ?></option>
-	    	<option value="category"<?php if ($this->filters['sortby'] == 'category') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_CATEGORY')); ?></option>			
+			<option value="category"<?php if ($this->filters['sortby'] == 'category') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_CATEGORY')); ?></option>
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -110,13 +108,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$a_class = 'publish';
 			$a_task = 'unavailable';
 			$a_alt = JText::_('COM_STORE_TIP_MARK_UNAVAIL');
-			$a_img = 'publish_g.png';
 			break;
 		case '0':
 			$a_class = 'unpublish';
 			$a_task = 'available';
 			$a_alt = JText::_('COM_STORE_TIP_MARK_AVAIL');
-			$a_img = 'publish_x.png';
 			break;
 	}
 	switch ($row->published)
@@ -125,13 +121,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$p_class = 'publish';
 			$p_task = 'unpublish';
 			$p_alt = JText::_('COM_STORE_TIP_REMOVE_ITEM');
-			$p_img = 'publish_g.png';
 			break;
 		case '0':
 			$p_class = 'unpublish';
 			$p_task = 'publish';
 			$p_alt = JText::_('COM_STORE_TIP_ADD_ITEM');
-			$p_img = 'publish_x.png';
 			break;
 	}
 ?>
@@ -145,15 +139,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->category)); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ITEM_DETAILS'); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo \Hubzero\Utility\String::truncate(stripslashes($row->description), 300); ?></td>
@@ -164,26 +158,26 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo ($row->allorders) ? $row->allorders : '0'; ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $a_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>">
-						<span><img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" /></span>
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $a_class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>">
+						<span><?php echo $a_alt; ?></span>
 					</a>
-<?php } else { ?>
-					<span class="state <?php echo $a_class;?>">
-						<span><img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" /></span>
+				<?php } else { ?>
+					<span class="state <?php echo $a_class; ?>">
+						<span><?php echo $a_alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $p_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>">
-						<span><img src="images/<?php echo $p_img; ?>" width="16" height="16" border="0" alt="<?php echo $p_alt; ?>" /></span>
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $p_class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>">
+						<span><?php echo $p_img; ?></span>
 					</a>
-<?php } else { ?>
-					<span class="state <?php echo $p_class;?>">
-						<span><img src="images/<?php echo $p_img; ?>" width="16" height="16" border="0" alt="<?php echo $p_alt; ?>" /></span>
+				<?php } else { ?>
+					<span class="state <?php echo $p_class; ?>">
+						<span><?php echo $p_alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php
