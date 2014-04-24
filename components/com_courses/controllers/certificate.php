@@ -103,7 +103,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 			$url  = rtrim(str_replace('http:', 'https:', $juri->base()), DS) . DS;
 			$url .= 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=render&no_html=1';
 			// Course / Offering / Student
-			$url .= '&course=' . $course->get('id') . '&offering=' . $offering->get('id') . '&u=' . $this->juser->get('id');
+			$url .= '&course=' . $course->get('id') . '&offering=' . $offering->get('alias') . ':' . $offering->section()->get('alias') . '&u=' . $this->juser->get('id');
 			// Validation key (lock on a screen door)
 			$url .= '&key='. JUtility::getHash($course->get('id') . $offering->get('id') . $this->juser->get('id'));
 
