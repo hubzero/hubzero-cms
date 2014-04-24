@@ -16,12 +16,6 @@ if (typeof console === "undefined" || typeof console.log === "undefined") {
 	console.log = function() {};
 }
 
-if (event && !event.preventDefault) {
-	event.preventDefault = function() {
-		event.returnValue = false; //ie
-	};
-}
-
 //-----------------------------------------------------------
 //  Various functions - encapsulated in HUB namespace
 //-----------------------------------------------------------
