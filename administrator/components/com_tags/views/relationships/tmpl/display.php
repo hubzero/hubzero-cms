@@ -34,8 +34,6 @@ $canDo = TagsHelper::getActions();
 
 JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('Relationships'), 'tags.png');
 
-$preload = null;
-
 $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
 JHTML::_('behavior.tooltip');
@@ -64,7 +62,7 @@ $doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/ass
 			<tbody>
 				<tr>
 					<th class="key"><label>Tag:</label></th>
-					<td><input type="text" id="center-node" class="tag-entry" value="<?php echo $preload; ?>" /></td>
+					<td><input type="text" id="center-node" class="tag-entry" value="<?php echo $this->get('preload'); ?>" /></td>
 					<td>Look up a tag to view and assign its relationships to other tags.</td>
 				</tr>
 				<tr>
