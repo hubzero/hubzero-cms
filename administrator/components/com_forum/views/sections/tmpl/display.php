@@ -157,27 +157,27 @@ if ($this->results)
 		switch ($row->get('access'))
 		{
 			case 0:
-				$color_access = 'style="color: green;"';
+				$color_access = 'public';
 				$task_access  = '1';
 				$row->set('access_level', JText::_('Public'));
 				break;
 			case 1:
-				$color_access = 'style="color: red;"';
+				$color_access = 'registered';
 				$task_access  = '2';
 				$row->set('access_level', JText::_('Registered'));
 				break;
 			case 2:
-				$color_access = 'style="color: black;"';
+				$color_access = 'special';
 				$task_access  = '3';
 				$row->set('access_level', JText::_('Special'));
 				break;
 			case 3:
-				$color_access = 'style="color: blue;"';
+				$color_access = 'protected';
 				$task_access  = '4';
 				$row->set('access_level', JText::_('Protected'));
 				break;
 			case 4:
-				$color_access = 'style="color: red;"';
+				$color_access = 'private';
 				$task_access  = '0';
 				$row->set('access_level', JText::_('Private'));
 				break;
@@ -216,7 +216,7 @@ if ($this->results)
 				</td>
 				<td>
 					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
-						<span><?php echo $this->escape($row->get('access_level')); ?></span>
+						<span class="access <?php echo $color_access; ?>"><?php echo $this->escape($row->get('access_level')); ?></span>
 					<!-- </a> -->
 				</td>
 				<td>
