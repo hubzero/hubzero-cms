@@ -10,20 +10,9 @@
 
 .pane-sliders {
 	margin: 0 0 1.61803399em 0;
-	padding: 0.61803399em;
 	background: #eaeaea;
-	border: none;
-	.border-radius(0.27em);
-	.box-shadow(~"inset 0px 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(255, 255, 255, 0.4)");
-}
-fieldset.adminform>.pane-sliders {
-	margin: 2.8em 0 0 0;
-	.box-shadow(none);
-}
-
-.panel {
-	margin-bottom: 0.2em;
 	border: 1px solid #D6D6D6;
+	overflow: hidden;
 	.border-radius(0.27em);
 
 	fieldset {
@@ -31,31 +20,29 @@ fieldset.adminform>.pane-sliders {
 	}
 	h3 {
 		cursor: pointer;
-		.border-radius(0.27em);
 		padding: 0.5em 1.618em 0.5em 1.618em;
 		margin: 0;
 		font-size: 1em;
-		border-bottom: 1px solid #D6D6D6;
-		font-weight: normal;
+		font-weight: 500;
+		border-top: 1px solid #D6D6D6;
 		color: #757575;
-		font-weight: bold;
-		text-shadow: 1px 1px 0px #fff;
 		position: relative;
-		background: #ffffff;
 
+		&:first-child {
+			border-top: none;
+			.border-radius(0.27em 0.27em 0 0);
+		}
 		&:after {
 			position: absolute;
 			right: 1.618em;
 			top: 0.5em;
-			content: "\2190";
+			content: "\2039";
 			font-family: 'Fontcons';
 		}
 
-		&.jpane-toggler-down {
-			.border-radius(0.27em 0.27em 0 0);
-
+		&.ui-state-active {
 			&:after {
-				content: "\2193";
+				content: "\2304";
 			}
 		}
 		&:hover {
@@ -66,9 +53,14 @@ fieldset.adminform>.pane-sliders {
 		}
 	}
 	.content {
-		background: #F6F6F6;
-		.border-radius(0 0 0.27em 0.27em);
+		background: #f0f0f0;
+		border-top: 1px solid #D6D6D6;
+		padding: 0 0 0.1em 0;
 	}
+}
+
+fieldset.adminform>.pane-sliders {
+	margin: 2.8em 0 0 0;
 }
 
 #rules {
