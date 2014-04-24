@@ -305,7 +305,7 @@ JHTML::_('behavior.tooltip');
 									</span>
 			<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 									<span class="ticket-activity">
-										<time datetime="<?php echo $lastcomment; ?>"><?php echo JHTML::_('date.relative', JHTML::_('date', $lastcomment, $tsformat)); ?></time>
+										<time datetime="<?php echo $lastcomment; ?>"><?php echo JHTML::_('date.relative', $lastcomment); ?></time>
 									</span>
 			<?php } ?>
 								</p>
