@@ -191,6 +191,11 @@ class CoursesTableAsset extends JTable
 		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
 		$query .= " LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
 
+		if (isset($filters['offering_id']))
+		{
+			$query .= " LEFT JOIN `#__courses_units` AS cu ON cag.unit_id = cu.id";
+		}
+
 		$where = array();
 
 		if (!empty($filters['asset_id']))
@@ -224,6 +229,10 @@ class CoursesTableAsset extends JTable
 		if (!empty($filters['unit_id']))
 		{
 			$where[] = "cag.unit_id=" . $this->_db->Quote((int) $filters['unit_id']);
+		}
+		if (!empty($filters['offering_id']))
+		{
+			$where[] = "cu.offering_id=" . $this->_db->Quote((int) $filters['offering_id']);
 		}
 		if (!empty($filters['graded']))
 		{
