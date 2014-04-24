@@ -484,6 +484,8 @@ class RegisterController extends \Hubzero\Component\SiteController
 		if ($result) 
 		{
 			$result = \Hubzero\User\Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
+			// Now expire the password
+			\Hubzero\User\Password::expirePassword($target_xprofile->get('username'));
 		}
 		
 		// Did we successully create/update an account?
