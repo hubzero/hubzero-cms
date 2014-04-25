@@ -134,7 +134,11 @@ $month = date("m", strtotime($this->event->publish_up));
 		<?php if (isset($this->event->extra_info) && $this->event->extra_info != '') : ?>
 			<tr>
 				<th class="url"></th>
-				<td colspan="3"><?php echo Hubzero_Event_Helper::autoLinkText( $this->event->extra_info ); ?></td>
+				<td colspan="3">
+					<a href="<?php echo $this->event->extra_info; ?>" rel="external">
+						<?php echo $this->event->extra_info; ?>
+					</a>
+				</td>
 			</tr>
 		<?php endif; ?>
 		
