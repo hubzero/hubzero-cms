@@ -62,7 +62,7 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<?php echo $this->clist; ?>
 		<?php echo $this->glist; ?>
@@ -110,15 +110,15 @@ $row = &$this->rows[$i];
 				<?php } ?>
 				</td>
 				<td>
-<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
+				<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
 					<span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor)); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>
-<?php } else { ?>
+				<?php } else { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<span>
@@ -126,50 +126,49 @@ $row = &$this->rows[$i];
 					</span>
 				</td>
 				<td>
-<?php
-	$now = JFactory::getDate()->toSql();
-	$alt = JText::_('Unpublished');
-	if ($now <= $row->publish_up && $row->state == "1") {
-		$alt = JText::_('Pending');
-	} else if (($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
-		$alt = JText::_('Published');
-	} else if ($now > $row->publish_down && $row->state == "1") {
-		$alt = JText::_('Expired');
-	} elseif ($row->state == "0") {
-		$alt = JText::_('Unpublished');
-	}
+				<?php
+					$now = JFactory::getDate()->toSql();
+					$alt = JText::_('Unpublished');
+					if ($now <= $row->publish_up && $row->state == "1") {
+						$alt = JText::_('Pending');
+					} else if (($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
+						$alt = JText::_('Published');
+					} else if ($now > $row->publish_down && $row->state == "1") {
+						$alt = JText::_('Expired');
+					} elseif ($row->state == "0") {
+						$alt = JText::_('Unpublished');
+					}
 
-	$times = '';
-	if (isset($row->publish_up)) {
-		if ($row->publish_up == '0000-00-00 00:00:00') {
-			$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JText::_('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
-		} else {
-			$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JHTML::_('date', $row->publish_up, 'Y-m-d H:i:s').'<br />';
-		}
-	}
-	if (isset($row->publish_down)) {
-		if ($row->publish_down == '0000-00-00 00:00:00') {
-			$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JText::_('COM_EVENTS_CAL_LANG_NEVER').'<br />';
-		} else {
-			$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JHTML::_('date', $row->publish_down, 'Y-m-d H:i:s').'<br />';
-		}
-	}
+					$times = '';
+					if (isset($row->publish_up)) {
+						if ($row->publish_up == '0000-00-00 00:00:00') {
+							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JText::_('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
+						} else {
+							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JHTML::_('date', $row->publish_up, 'Y-m-d H:i:s').'<br />';
+						}
+					}
+					if (isset($row->publish_down)) {
+						if ($row->publish_down == '0000-00-00 00:00:00') {
+							$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JText::_('COM_EVENTS_CAL_LANG_NEVER').'<br />';
+						} else {
+							$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JHTML::_('date', $row->publish_down, 'Y-m-d H:i:s').'<br />';
+						}
+					}
 
-	$pages = $p->getCount(array('event_id'=>$row->id));
+					$pages = $p->getCount(array('event_id'=>$row->id));
 
-	if ($times) { 
-?>
+					if ($times) { 
+				?>
 					<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td style="white-space: nowrap;">
 					<?php echo $times; ?>
 				</td>
 				<td>
-					
-					<?php if($row->scope == 'group') : ?>
+					<?php if ($row->scope == 'group') : ?>
 						<?php
 							$group = \Hubzero\User\Group::getInstance( $row->scope_id );
 							if (is_object($group))
