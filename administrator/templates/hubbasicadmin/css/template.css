@@ -2555,6 +2555,20 @@
 		display: none;
 	}
 
+/* Access levels */
+	.access.public {
+		color: green;
+	}
+	.access.registered {
+		color: blue;
+	}
+	.access.special {
+		color: #111;
+	}
+	.access.private {
+		color: red;
+	}
+
 @media only screen and (min-width: 319px) and (max-width: 320px) {
 	.main-navigation ul#menu li {
 		float: none;
