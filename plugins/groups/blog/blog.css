@@ -46,6 +46,12 @@
 	ol.blog-entries .odd {
 		background: transparent;
 	}
+	.entry.pending h2:before,
+	ol.blog-entries .pending h4:before {
+		content: '(pending availability)';
+		color: #999;
+	}     
+
 	ol.blog-entries li li {
 		margin-left: 20px;
 	}

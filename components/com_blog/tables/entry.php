@@ -435,7 +435,9 @@ class BlogTableEntry extends JTable
 		} 
 		else 
 		{
-			$query .= "AND (m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . ")";
+			$created_by = " OR m.created_by=" .  $this->_db->quote(JFactory::getUser()->get('id'));
+			$query .= "AND (m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . "{$created_by})";
+
 					//AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
 		}
 		if ((isset($filters['state']) && $filters['state'] != 'all') || !isset($filters['state']))
