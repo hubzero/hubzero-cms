@@ -229,6 +229,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 				{
 					$cls .= ' expired';
 				}
+				if ($row->get('state') == 0)
+				{
+					$cls .= ' unpublished';
+				}
+
 				if (!$row->isAvailable())
 				{
 					if ($row->get('created_by') != JFactory::getUser()->get('id'))

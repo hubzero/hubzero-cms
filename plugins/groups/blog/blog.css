@@ -49,7 +49,6 @@
 	.entry.pending h2:before,
 	ol.blog-entries .pending h4:before {
 		content: '(pending availability)';
-		color: #999;
 	}     
 	ol.blog-entries li li {
 		margin-left: 20px;
@@ -60,6 +59,9 @@
 	}
 	ol.blog-entries .expired .entry-content {
 		color: #ccc;
+	}
+	ol.blog-entries .unpublished .entry-title:before {
+		content: "(unpublished)";
 	}
 	ol.blog-entries dl.entry-meta {
 		margin: 0.5em 0;
