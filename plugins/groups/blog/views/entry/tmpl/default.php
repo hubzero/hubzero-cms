@@ -65,6 +65,12 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($popular as $row) { ?>
+				<?php 
+					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+					{
+						continue;
+					}
+				?>
 				<li>
 					<a href="<?php echo JRoute::_($row->link()); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
@@ -82,6 +88,12 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($recent as $row) { ?>
+				<?php 
+					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+					{
+						continue;
+					}
+				?>
 				<li>
 					<a href="<?php echo JRoute::_($row->link()); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
@@ -99,7 +111,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 	</div><!-- /.aside -->
 	
 	<div class="subject">
-		<div class="entry" id="e<?php echo $this->row->get('id'); ?>">
+		<?php
+			$cls = '';
+			if (!$this->row->isAvailable())
+			{
+				$cls = ' pending';
+			}
+		?>
+		<div class="entry<?php echo $cls; ?>" id="e<?php echo $this->row->get('id'); ?>">
 			<h2 class="entry-title">
 				<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>
 			</h2>
