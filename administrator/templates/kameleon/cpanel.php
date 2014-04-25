@@ -33,13 +33,13 @@ defined('_JEXEC') or die;
 
 $app = JFactory::getApplication();
 
-// Load CSS
-$this->addStyleSheet('templates/' . $this->template . '/css/index.css');
-//$this->addStyleSheet('templates/' . $this->template . '/css/common/icons.css');
-$this->addStyleSheet('templates/' . $this->template . '/css/cpanel.css');
-if ($theme = $this->params->get('theme')) 
+// Load base styles
+$this->addStyleSheet('templates/' . $this->template . '/css/index.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/index.css'));
+$this->addStyleSheet('templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/cpanel.css'));
+// Load theme
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray') 
 {
-	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $theme . '.css');
+	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 // Load language direction CSS
 if ($this->direction == 'rtl') 
@@ -47,10 +47,7 @@ if ($this->direction == 'rtl')
 	$this->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
 }
 
-$this->addScript('templates/' . $this->template . '/js/index.js');
-
 $htheme = $this->params->get('header', 'light');
-
 $browser = new \Hubzero\Browser\Detector();
 ?>
 <!DOCTYPE html>
@@ -63,16 +60,17 @@ $browser = new \Hubzero\Browser\Detector();
 		<jdoc:include type="head" />
 
 		<script type="text/javascript" src="../media/system/js/jquery.uniform.min.js"></script>
+		<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/index.js"></script>
 
 		<!--[if lt IE 9]>
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
 
-		<!--[if IE 7]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
+		<!--[if IE 9]>
+			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
+			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
 		<![endif]-->
 	</head>
 	<body id="cpanel-body">
@@ -88,15 +86,15 @@ $browser = new \Hubzero\Browser\Detector();
 						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu')) {
 							$logoutLink = '';
 						} else {
-							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
+							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
 						}
 						$hideLinks	= JRequest::getBool('hidemainmenu');
 						$output = array();
 
 						// Print the logout link.
 						$output[] = ($hideLinks 
-										? '<li data-title="'.JText::_('TPL_KAMELEON_LOG_OUT').'" class="disabled"><span class="logout">' 
-										: '<li data-title="'.JText::_('TPL_KAMELEON_LOG_OUT').'"><a class="logout" href="'.$logoutLink.'">').JText::_('TPL_KAMELEON_LOG_OUT').($hideLinks ? '</span></li>' : '</a></li>');
+										? '<li data-title="' . JText::_('TPL_KAMELEON_LOG_OUT') . '" class="disabled"><span class="logout">' 
+										: '<li data-title="' . JText::_('TPL_KAMELEON_LOG_OUT') . '"><a class="logout" href="' . $logoutLink . '">') . JText::_('TPL_KAMELEON_LOG_OUT') . ($hideLinks ? '</span></li>' : '</a></li>');
 						// Reverse rendering order for rtl display.
 						if ($this->direction == "rtl") :
 							$output = array_reverse($output);
@@ -139,10 +137,10 @@ $browser = new \Hubzero\Browser\Detector();
 					</div>
 					<div class="cpanel-wrap">
 						<div class="cpanel col width-48 fltlft">
-							<jdoc:include type="modules" name="icon" style="cpanel" />
+							<jdoc:include type="modules" name="cpanelleft" style="cpanel" />
 						</div>
 						<div class="cpanel col width-48 fltrt">
-							<jdoc:include type="modules" name="cpanel" style="cpanel" />
+							<jdoc:include type="modules" name="cpanelright" style="cpanel" />
 						</div>
 					</div>
 					<!-- Content ends -->

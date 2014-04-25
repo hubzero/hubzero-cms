@@ -39,12 +39,14 @@
 		color: #fff;
 	}
 
-/* Dark header 
-	.dark #login-body #toolbar-box,
-	.dark div.configuration,*/
+/* Dark header */
 	.dark #toolbar-box {
 		background: #f9b96f;
+		border-color: #fbaf41;
 	}
 	.dark #toolbar-box .pagetitle h2 {
 		color: #fff;
+	}
+	.dark .toolbar-box li a {
+		border-color: rgba(255,255,255,0.6);
 	}

@@ -31,7 +31,9 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$this->addStyleSheet('templates/'.$this->template.'/css/component.css');
+// Load base styles
+$this->addStyleSheet('templates/' . $this->template . '/css/component.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/component.css'));
+// Load theme
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray') 
 {
 	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
@@ -39,7 +41,7 @@ if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 // Load language direction CSS
 if ($this->direction == 'rtl') 
 {
-	$this->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+	$this->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
 }
 
 $this->addScript('templates/' . $this->template . '/js/component.js');

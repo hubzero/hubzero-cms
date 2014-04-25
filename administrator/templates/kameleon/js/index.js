@@ -183,23 +183,6 @@ jQuery(document).ready(function($){
 
 	var msg = $('#system-message-container');
 	if (msg.length && msg.html().replace(/\s+/, '') != '') {
-		/*msg
-			.hide()
-			.fancybox({
-				type: 'html',
-				modal: true,
-				autoSize: true,
-				titleShow: false,
-				content: msg.html(),
-				afterShow: function(){
-					setTimeout(function(){
-						$.fancybox.close();
-					}, 1.5 * 1000);
-				}
-			})
-			.eq(0)
-			.trigger('click');*/
-		console.log(msg.html());
 		$.growl('', msg.html());
 	}
 });

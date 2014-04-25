@@ -62,13 +62,13 @@ dl.tabs {
 			display: block;
 			content: "";
 			border: 8px solid #d6d6d6;
-			border-color: transparent transparent rgba(0, 0, 0, 0.05) transparent;
+			border-color: transparent transparent rgba(0, 0, 0, 0.15) transparent;
 			overflow: hidden;
 			bottom: -1px;
 			left: 50%;
 			margin-left: -8px;
 		}
-		&.open:after,
+		/*&.open:after,
 		&.current:after {
 			position: absolute;
 			width: 0px;
@@ -81,7 +81,7 @@ dl.tabs {
 			bottom: -3px;
 			left: 50%;
 			margin-left: -8px;
-		}
+		}*/
 	}
 	dd {
 		margin: 0;
@@ -122,7 +122,7 @@ div.current {
 		list-style: none;
 	}
 	li {
-		padding: 0.2em 0 0.4em 0;
+		padding: 0.8em 0;
 		border-bottom: 1px solid #eee;
 
 		&:after {
@@ -151,7 +151,7 @@ div.current {
 		border: none 0;
 
 		&.adminform {
-			border: 1px #ccc solid;
+			border: 1px solid #ccc;
 		}
 	}
 
@@ -194,13 +194,13 @@ div.current {
 	textarea,
 	select {
 		clear: none;
-		margin: 3px 0 0 2px;
+		margin: 0.2em 0;
 		width: auto;
 	}
 
-	select {
+	/*select {
 		margin-bottom: 15px;
-	}
+	}*/
 	table select {
 		margin-bottom: 0;
 	}

@@ -42,25 +42,25 @@ $browser = new \Hubzero\Browser\Detector();
 <!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
 	<head>
-		<link href="templates/<?php echo $this->template; ?>/css/error.css" rel="stylesheet" type="text/css" />
+		<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/error.css'); ?>" />
 
 	<?php if ($this->direction == 'rtl') : ?>
-		<link href="templates/<?php echo $this->template; ?>/css/common/rtl.css" rel="stylesheet" type="text/css" />
+		<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/common/rtl.css" />
 	<?php endif; ?>
 
 	<?php if (JDEBUG) : ?>
-		<link href="../media/cms/css/debug.css" rel="stylesheet" type="text/css" />
+		<link type="text/css" rel="stylesheet" href="../media/cms/css/debug.css" />
 	<?php endif; ?>
 
 		<!--[if lt IE 9]>
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
 
-		<!--[if IE 7]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
+		<!--[if IE 9]>
+			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
+			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
 		<![endif]-->
 	</head>
 	<body id="error-body">
@@ -75,7 +75,7 @@ $browser = new \Hubzero\Browser\Detector();
 						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu')) {
 							$logoutLink = '';
 						} else {
-							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
+							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
 						}
 						$output = array();
 						// Print the Preview link to Main site.
@@ -83,7 +83,7 @@ $browser = new \Hubzero\Browser\Detector();
 						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
 						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
 						// Print the logout link.
-						$output[] = '<a class="logout" href="'.$logoutLink.'">'.JText::_('TPL_KAMELEON_LOG_OUT').'</a>';
+						$output[] = '<a class="logout" href="' . $logoutLink . '">' . JText::_('TPL_KAMELEON_LOG_OUT') . '</a>';
 						// Reverse rendering order for rtl display.
 						if ($this->direction == "rtl") :
 							$output = array_reverse($output);

@@ -164,26 +164,17 @@ input[type=submit] {
 		tbody tr {
 			background-color: #fff;
 		}
+		/*tbody tr.archived {
+			background-color: rgba(255, 229, 229, 0.025);
+		}*/
 		tbody tr.archived th,
 		tbody tr.archived td,
 		tbody tr.archived a {
-			color: #ccc;
+			color: #bbb;
 		}
-		/*tbody tr,
-		tbody tr td,
-		tbody tr th {
-			border: none;
-		}
-		tbody tr:nth-child(odd) td {
-			background-color: #f3f3f3;
-		}*/
 		tbody tr:hover td {
-			background-color: #ffe; //rgba(0, 0, 0, 0.1)
+			background-color: #ffe;
 		}
-		/*tfoot td {
-			text-align: right;
-			border-top: 1px solid #dddddd;
-		}*/
 		tbody tr:last-child th,
 		tbody tr:last-child td {
 			border-bottom: 1px solid #dddddd;
@@ -470,6 +461,14 @@ input[type=submit] {
 		}
 		&.private {
 			color: red;
+		}
+	}
+	.archived .access {
+		&.public,
+		&.registered,
+		&.special,
+		&.private {
+			color: #ccc;
 		}
 	}
 

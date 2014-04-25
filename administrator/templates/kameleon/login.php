@@ -33,13 +33,13 @@ defined('_JEXEC') or die;
 
 $app = JFactory::getApplication();
 
-// Load CSS
-$this->addStyleSheet('templates/' . $this->template . '/css/login.css');
-if ($theme = $this->params->get('theme'))
+// Load base styles
+$this->addStyleSheet('templates/' . $this->template . '/css/login.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/login.css'));
+// Load theme
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray') 
 {
-	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $theme . '.css');
+	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
-
 // Load language direction CSS
 if ($this->direction == 'rtl') 
 {
@@ -58,15 +58,16 @@ $browser = new \Hubzero\Browser\Detector();
 		<jdoc:include type="head" />
 
 		<!--[if lt IE 9]>
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
 
-		<!--[if IE 7]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
+		<!--[if IE 9]>
+			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
+			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
 		<![endif]-->
+
 		<script type="text/javascript">
 			jQuery(document).ready(function($){
 				(function worker() {

@@ -33,8 +33,8 @@ defined('_JEXEC') or die;
 
 $app = JFactory::getApplication();
 
-// Load styles
-$this->addStyleSheet('templates/'.$this->template.'/css/index.css');
+// Load base styles
+$this->addStyleSheet('templates/' . $this->template . '/css/index.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/index.css'));
 // Load theme
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray') 
 {
@@ -43,11 +43,10 @@ if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 // Load language direction CSS
 if ($this->direction == 'rtl') 
 {
-	$this->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+	$this->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
 }
 
 $htheme = $this->params->get('header', 'light');
-
 $browser = new \Hubzero\Browser\Detector();
 ?>
 <!DOCTYPE html>
@@ -61,15 +60,16 @@ $browser = new \Hubzero\Browser\Detector();
 
 		<script type="text/javascript" src="../media/system/js/jquery.uniform.min.js"></script>
 		<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/index.js"></script>
+
 		<!--[if lt IE 9]>
 			<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
 
+		<!--[if IE 9]>
+			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+		<![endif]-->
 		<!--[if IE 8]>
 			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
-		<![endif]-->
-		<!--[if IE 7]>
-			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" />
 		<![endif]-->
 	</head>
 	<body id="minwidth-body">
@@ -91,8 +91,8 @@ $browser = new \Hubzero\Browser\Detector();
 				$output = array();
 				// Print the logout link.
 				$output[] = ($hideLinks 
-								? '<li class="disabled" data-title="'.JText::_('TPL_KAMELEON_LOG_OUT').'"><span class="logout">' 
-								: '<li data-title="'.JText::_('TPL_KAMELEON_LOG_OUT').'"><a class="logout" href="'.$logoutLink.'">').JText::_('TPL_KAMELEON_LOG_OUT').($hideLinks ? '</span></li>' : '</a></li>');
+								? '<li class="disabled" data-title="' . JText::_('TPL_KAMELEON_LOG_OUT') . '"><span class="logout">' 
+								: '<li data-title="' . JText::_('TPL_KAMELEON_LOG_OUT') . '"><a class="logout" href="' . $logoutLink . '">') . JText::_('TPL_KAMELEON_LOG_OUT') . ($hideLinks ? '</span></li>' : '</a></li>');
 				// Reverse rendering order for rtl display.
 				if ($this->direction == "rtl") :
 					$output = array_reverse($output);

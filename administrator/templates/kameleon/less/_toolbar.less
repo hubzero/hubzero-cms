@@ -29,7 +29,7 @@
 		z-index: 500;
 		width: 100%;
 		max-width: 100%;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+		.box-shadow(0 3px 0 rgba(0, 0, 0, 0.07));
 	}
 	.breadcrumb-title {
 		display: none;
@@ -163,10 +163,7 @@
 				overflow: visible;
 				z-index: 1000000;
 				pointer-events: none;
-				-webkit-transition: 0.3s ease;
-				   -moz-transition: 0.3s ease;
-				    -ms-transition: 0.3s ease;
-				        transition: 0.3s ease;
+				.transition(0.3s ease);
 				content: attr(data-title);
 				background: #383838;
 				color: #fff;
@@ -176,9 +173,7 @@
 				line-height: 1;
 				white-space: nowrap;
 				box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
-				-webkit-border-radius: 0.25em;
-				-moz-border-radius: 0.25em;
-				border-radius: 0.25em;
+				.border-radius(0.25em);
 				right: 100%;
 				top: 50%;
 				margin-top: -1.15em;

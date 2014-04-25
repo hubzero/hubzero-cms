@@ -50,6 +50,10 @@
 		}
 		a {
 			color: #757575;
+
+			.level {
+				color: #ccc;
+			}
 		}
 	}
 	.content {
@@ -57,12 +61,44 @@
 		border-top: 1px solid #D6D6D6;
 		padding: 0 0 0.1em 0;
 	}
+	.rule-desc {
+		margin: 0;
+		padding: 1.618em;
+		border-bottom: 1px solid #D6D6D6;
+	}
+	.rule-notes {
+		padding: 1.618em;
+		border-top: 1px solid #D6D6D6;
+
+		em {
+			color: #444;
+		}
+	}
+	.icon-16-unset {
+		color: #c55500;
+
+		&:before {
+			content: "\2298";
+			font-family: 'Fontcons';
+			margin-right: 0.3em;
+		}
+	}
+	.icon-16-allowed {
+		color: #7F913C;
+
+		&:before {
+			content: "\2714";
+			font-family: 'Fontcons';
+			margin-right: 0.3em;
+		}
+	}
 }
 
 fieldset.adminform>.pane-sliders {
 	margin: 2.8em 0 0 0;
 }
 
+/*
 #rules {
 	border: 1px solid #d2d2d2;
 
@@ -101,3 +137,4 @@ fieldset.adminform>.pane-sliders {
 		}
 	}
 }
+*/

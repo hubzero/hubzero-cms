@@ -20,6 +20,99 @@
 @import "_forms.less";
 @import "_uniform.less";
 
+// Body
+	body {
+		color: #777;
+		background: #f9f9f9;
+		min-height: 100%;
+	}
+// Links
+	a {
+		color: #444;
+		text-decoration: none;
+	}
+	a:hover,
+	a:focus {
+		color: #000;
+		text-decoration: underline;
+	}
+
+// Tables
+	table {
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		border-collapse: separate;
+
+		caption {
+			text-align: left;
+			//padding: 0.61803399em 1.61803399em;
+			padding: 0.41803399em 1.21803399em;
+			text-align: left;
+			color: #959595;
+			font-weight: bold;
+		}
+		th,
+		td {
+			padding: 0.61803399em;
+			text-align: left;
+		}
+		tfoot th,
+		tfoot td {
+			border-right: 1px solid #eee;
+		}
+		tbody th,
+		tbody td {
+			border-bottom: 1px solid #e1e1e1;
+			border-left: 1px dotted #e9e9e9;
+		}
+		tbody tr:hover td {
+			background-color: #ffe; //rgba(0, 0, 0, 0.1)
+		}
+		thead {
+			th {
+				text-align: left;
+				font-weight: bold;
+				white-space: nowrap;
+				border-bottom: 1px solid #ddd;
+				border-left: 1px solid #e9e9e9;
+				color: #888;
+
+				a,
+				a:link, 
+				a:active, 
+				a:visited {
+					color: #888;
+				}
+				a:hover {
+					color: #000;
+					text-decoration: none;
+				}
+				&.active,
+				a.active {
+					color: #333;
+				}
+			}
+		}
+		tfoot tr th:first-child,
+		tfoot tr td:first-child,
+		thead tr th:first-child,
+		thead tr td:first-child,
+		tbody tr th:first-child,
+		tbody tr td:first-child {
+			padding-left: 1.61803399em; //2.23606798em;
+			border-left: none;
+		}
+		tfoot tr th:last-child,
+		tfoot tr td:last-child,
+		thead tr th:last-child,
+		thead tr td:last-child,
+		tbody tr th:last-child,
+		tbody tr td:last-child {
+			padding-right: 1.61803399em; //2.23606798em;
+		}
+	}
+
 // Tooltips
 @import "_hint.less";
 @import "_tooltip.less";
@@ -33,7 +126,7 @@
 @import "_utilities.less"; // Has to be last to override when necessary
 
 // Wrap
-#wrap {
+/*#wrap {
 	width: 320px;
 	margin: 0 auto 100px auto;
 	.border-radius(0.27em);
@@ -57,7 +150,7 @@
 		padding-bottom: 0;
 		margin-bottom: 0;
 	}
-}
+}*/
 #component-form>fieldset {
 	margin: 0;
 }
@@ -69,11 +162,11 @@ div.configuration {
 	letter-spacing: 0.15em;
 	text-transform: uppercase;
 	color: #333;
-	margin: 0px;
+	margin: 0;
 	padding: 1em 1.618em;
 	background: #333;
 	color: #fff;
-	.box-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+	.box-shadow(0 2px 0 rgba(0, 0, 0, 0.06));
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -81,6 +174,7 @@ div.configuration {
 	z-index: 555;
 	overflow: hidden;
 
+	// Icon
 	&:before {
 		content: "\2699";
 		font-family: "Fontcons";
@@ -91,6 +185,7 @@ div.configuration {
 		top: -0.05em;
 		left: -0.15em;
 	}
+	// Button container
 	.configuration-options {
 		position: absolute;
 		top: 0.5em;
@@ -107,11 +202,8 @@ div.configuration {
 	}
 }
 
-div.current .pane-sliders {
-	margin-bottom: 1.61803399em;
-	padding: 0.61803399em;
-	background: #6e6e6e;
-	border: none;
-	.border-radius(0.27em);
-	.box-shadow(~"inset 0px 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(255, 255, 255, 0.4)");
+#jform_rules-lbl {
+	display: none;
 }
+
+@import "_panes.less";
