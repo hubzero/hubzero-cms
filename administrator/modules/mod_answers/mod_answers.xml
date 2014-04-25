@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/modules/mod_dashboard/mod_dashboard.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           administrator/modules/mod_answers/mod_answers.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2014 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5" client="administrator">
 	<name>Answers</name>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>This module shows on the Admin area Home Page and displays items that administrator needs to watch for.</description>
 	<files>
@@ -38,16 +38,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="showMine" type="radio" default="0" label="Show Your Entries" description="Show/Hide entries created by you">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -63,4 +53,3 @@ HUBzero is a registered trademark of Purdue University.
 		</fields>
 	</config>
 </install>
-
