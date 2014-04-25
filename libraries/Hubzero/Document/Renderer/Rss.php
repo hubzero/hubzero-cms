@@ -42,7 +42,7 @@ class Rss extends \JDocumentRenderer
 	 *
 	 * @var  string
 	 */
-	private $_mime = 'application/rss+xml';
+	protected $_mime = 'application/rss+xml';
 
 	/**
 	 * Render the feed
