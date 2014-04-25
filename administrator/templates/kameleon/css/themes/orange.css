@@ -50,3 +50,10 @@
 	.dark .toolbar-box li a {
 		border-color: rgba(255,255,255,0.6);
 	}
+	.dark .toolbar-box li a span:after {
+		text-shadow:
+		     -1px -1px 0#f9b96f,
+		      1px -1px 0 #f9b96f,
+		      -1px 1px 0 #f9b96f,
+		       1px 1px 0 #f9b96f;
+	}
