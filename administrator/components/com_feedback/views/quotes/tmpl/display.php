@@ -68,8 +68,8 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('FEEDBACK_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
-		
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+	
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
@@ -84,13 +84,13 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_ORGANIZATION'), 'org', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JText::_('FEEDBACK_COL_QUOTE'); ?></th>
 				<!--<th scope="col"><?php //echo JText::_('FEEDBACK_COL_PICTURE'); ?></th>-->
-<?php 
-if ($this->type == 'regular') {
-	echo ('<th>' . JText::_('FEEDBACK_COL_PUBLISH_CONSENT') . '</th><th>' . JText::_('FEEDBACK_COL_UID') . '</th>');
-} else {
-	echo ('<th>' . JText::_('FEEDBACK_COL_QUOTES') . '</th><th>' . JText::_('FEEDBACK_COL_ROTATION') . '</th>');
-}
-?>   
+				<?php 
+				if ($this->type == 'regular') {
+					echo ('<th>' . JText::_('FEEDBACK_COL_PUBLISH_CONSENT') . '</th><th>' . JText::_('FEEDBACK_COL_UID') . '</th>');
+				} else {
+					echo ('<th>' . JText::_('FEEDBACK_COL_QUOTES') . '</th><th>' . JText::_('FEEDBACK_COL_ROTATION') . '</th>');
+				}
+				?>
 			</tr>
 		</thead>
 		<tfoot>
@@ -123,28 +123,28 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;type=<?php echo $this->type ?>&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape(stripslashes($row->fullname)); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->fullname)); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo ($row->org) ? $this->escape(stripslashes($row->org)) : '&nbsp;';?></td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;type=<?php echo $this->type ?>&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape($quotepreview); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape($quotepreview); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<!--
 				<td>
@@ -180,6 +180,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
