@@ -25,7 +25,7 @@ class ConfigViewClose extends JViewLegacy
 		// close a modal window
 		JFactory::getDocument()->addScriptDeclaration('
 			window.parent.location.href=window.parent.location.href;
-			window.parent.SqueezeBox.close();
+			window.parent.$.fancybox.close();
 		');
 	}
 }
