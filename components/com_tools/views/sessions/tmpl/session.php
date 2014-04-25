@@ -143,7 +143,7 @@ if (!$this->app->sess) {
 			} 
 			?>
 		</div><!-- #app-footer -->
-	<?php if ($this->zone->exists()) { ?>
+	<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
 		<div id="app-zone">
 			<div class="grid">
 				<div class="col span6">

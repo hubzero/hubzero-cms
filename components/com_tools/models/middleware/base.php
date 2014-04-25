@@ -50,7 +50,33 @@ class MiddlewareModelBase extends \Hubzero\Model
 	{
 		$this->_db = MwUtils::getMWDBO();
 
-		parent::__construct($oid);
+		if ($this->_tbl_name)
+		{
+			$cls = $this->_tbl_name;
+			$this->_tbl = new $cls($this->_db);
+
+			if (!($this->_tbl instanceof \JTable))
+			{
+				$this->_logError(
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+				);
+				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+			}
+
+			if (is_numeric($oid) || is_string($oid))
+			{
+				// Make sure $oid isn't empty
+				// This saves a database call
+				if ($oid)
+				{
+					$this->_tbl->load($oid);
+				}
+			}
+			else if (is_object($oid) || is_array($oid))
+			{
+				$this->bind($oid);
+			}
+		}
 	}
 
 	/**
