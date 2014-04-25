@@ -215,11 +215,14 @@ class BlogModel extends JObject
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				/*if (!isset($this->_entries['count']) || !is_numeric($this->_entries['count']))
+				if (JFactory::getApplication()->getName() == 'administrator')
 				{
-					$this->_entries['count'] = (int) $this->_tbl->count($filters);
-				}*/
-				return (int) $this->_tbl->getCount($filters); //$this->_entries['count'];
+					return (int) $this->_tbl->getEntriesCount($filters);
+				}
+				else
+				{
+					return (int) $this->_tbl->getCount($filters);
+				}
 			break;
 
 			case 'first':
@@ -265,21 +268,26 @@ class BlogModel extends JObject
 			case 'list':
 			case 'results':
 			default:
-				//if (!($this->_entries instanceof \Hubzero\ItemList))
-				//{
-					if ($results = $this->_tbl->getRecords($filters))
+				if (JFactory::getApplication()->getName() == 'administrator')
+				{
+					$results = $this->_tbl->getEntries($filters);
+				}
+				else
+				{
+					$results = $this->_tbl->getRecords($filters);
+				}
+
+				if ($results)
+				{
+					foreach ($results as $key => $result)
 					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new BlogModelEntry($result);
-						}
+						$results[$key] = new BlogModelEntry($result);
 					}
-					else
-					{
-						$results = array();
-					}
-					//$this->_entries = new \Hubzero\ItemList($results);
-				//}
+				}
+				else
+				{
+					$results = array();
+				}
 				return new \Hubzero\ItemList($results);
 			break;
 		}
