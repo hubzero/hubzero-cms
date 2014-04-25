@@ -14,7 +14,7 @@ $clientId = $this->state->get('filter.client_id');
 $published = $this->state->get('filter.published');
 ?>
 <fieldset class="batch">
-	<legend><?php echo JText::_('COM_MODULES_BATCH_OPTIONS');?></legend>
+	<legend><span><?php echo JText::_('COM_MODULES_BATCH_OPTIONS');?></span></legend>
 	<p><?php echo JText::_('COM_MODULES_BATCH_TIP'); ?></p>
 	<?php echo JHtml::_('batch.access');?>
 	<?php echo JHtml::_('batch.language'); ?>
@@ -26,7 +26,7 @@ $published = $this->state->get('filter.published');
 	<button type="submit" onclick="Joomla.submitbutton('module.batch');">
 		<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 	</button>
-	<button type="button" onclick="document.id('batch-position-id').value='';document.id('batch-access').value='';document.id('batch-language-id').value=''">
+	<button type="button" onclick="$('#batch-position-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
 		<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 	</button>
 </fieldset>

@@ -23,7 +23,8 @@ $saveOrder	= $listOrder == 'ordering';
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_MODULES_MODULES_FILTER_SEARCH_DESC'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo JText::_('COM_MODULES_MODULES_FILTER_SEARCH_DESC'); ?>" />
+
 			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
@@ -31,7 +32,8 @@ $saveOrder	= $listOrder == 'ordering';
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
 				<?php echo JHtml::_('select.options', ModulesHelper::getClientOptions(), 'value', 'text', $this->state->get('filter.client_id'));?>
 			</select>
-             <select name="filter_state" class="inputbox" onchange="this.form.submit()">
+
+			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', ModulesHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
@@ -41,18 +43,15 @@ $saveOrder	= $listOrder == 'ordering';
 				<?php echo JHtml::_('select.options', ModulesHelper::getPositions($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.position'));?>
 			</select>
 
-            <select name="filter_module" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_module" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('COM_MODULES_OPTION_SELECT_MODULE');?></option>
 				<?php echo JHtml::_('select.options', ModulesHelper::getModules($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.module'));?>
 			</select>
-
-
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
-
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
@@ -71,19 +70,19 @@ $saveOrder	= $listOrder == 'ordering';
 				<th class="title">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-                <th width="5%">
+				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="15%" class="left">
 					<?php echo JHtml::_('grid.sort',  'COM_MODULES_HEADING_POSITION', 'position', $listDirn, $listOrder); ?>
 				</th>
-                <th width="10%">
+				<th width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'modules.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-                <th width="10%" class="left" >
+				<th width="10%" class="left" >
 					<?php echo JHtml::_('grid.sort', 'COM_MODULES_HEADING_MODULE', 'name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
@@ -129,7 +128,6 @@ $saveOrder	= $listOrder == 'ordering';
 					<?php else : ?>
 							<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
-
 					<?php if (!empty($item->note)) : ?>
 					<p class="smallsub">
 						<?php echo JText::sprintf('JGLOBAL_LIST_NOTE', $this->escape($item->note));?></p>
@@ -162,13 +160,12 @@ $saveOrder	= $listOrder == 'ordering';
 						<?php echo $item->ordering; ?>
 					<?php endif; ?>
 				</td>
-                <td class="left">
+				<td class="left">
 					<?php echo $item->name;?>
 				</td>
 				<td class="center">
 					<?php echo $item->pages; ?>
 				</td>
-
 				<td class="center">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
@@ -194,11 +191,9 @@ $saveOrder	= $listOrder == 'ordering';
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 
-	<div>
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>
