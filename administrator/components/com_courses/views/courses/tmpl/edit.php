@@ -108,7 +108,7 @@ function submitbutton(pressbutton)
 				<span class="hint"><?php echo JText::_('Alpha-numeric characters only. If left blank, alias will be generated from the title.'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label><br />
+				<label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('This is a short sentence or two for the catalog.'); ?>">
@@ -121,7 +121,7 @@ function submitbutton(pressbutton)
 				<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
 				<span class="hint"><?php echo JText::_('This is a longer, detailed description of the course.'); ?></span>
 			</div>
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo JText::_('This is a camma-separated list of keywords or phrases.'); ?>">
 				<label for="field-tags"><?php echo JText::_('Tags'); ?>:</label><br />
 				<textarea name="tags" id="field-tags" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 			</div>

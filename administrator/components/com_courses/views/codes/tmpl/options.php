@@ -73,8 +73,8 @@ function submitbutton(pressbutton)
 	window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&section=<?php echo $this->section->get('id'); ?>'", 700);
 }
 
-window.addEvent('domready', function(){
-	window.addEvent('keypress', function(){
+jQuery(document).ready(function($){
+	$(window).on('keypress', function(){
 		if (window.event.keyCode == 13) {
 			submitbutton('generate');
 		}
@@ -87,11 +87,12 @@ window.addEvent('domready', function(){
 <form action="index.php" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
-		<div style="float: right">
-			<button type="button" onclick="submitbutton('generate');"><?php echo JText::_( 'Generate' );?></button>
-			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button>
-		</div>
-		<div class="configuration" >
+		<div class="configuration">
+			<div class="configuration-options">
+				<button type="button" onclick="submitbutton('generate');"><?php echo JText::_( 'Generate' );?></button>
+				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_( 'Cancel' );?></button>
+			</div>
+
 			<?php echo JText::_('Generate Codes') ?>
 		</div>
 	</fieldset>
@@ -99,7 +100,7 @@ window.addEvent('domready', function(){
 	<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
-			
+
 			<input type="hidden" name="section" value="<?php echo $this->section->get('id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">

@@ -69,16 +69,16 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
-	
-	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
+
+	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="10">
+				<th colspan="7">
 					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
@@ -108,10 +108,8 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
-$i = 0;
 $k = 0;
-$n = $this->rows->total();
-foreach ($this->rows as $row)
+foreach ($this->rows as $i => $row)
 {
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -122,15 +120,15 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('code'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->get('code'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?>
@@ -138,7 +136,7 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?>
 				</td>
-<?php if ($row->get('redeemed')) { ?>
+			<?php if ($row->get('redeemed')) { ?>
 				<td>
 					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(unknown)'); ?>
 				</td>
@@ -147,14 +145,13 @@ foreach ($this->rows as $row)
 						<?php echo $this->escape(stripslashes($row->redeemer()->get('name'))); ?>
 					</a>
 				</td>
-<?php } else { ?>
+			<?php } else { ?>
 				<td colspan="2">
 					<?php echo JText::_('(not redeemed)'); ?>
 				</td>
-<?php } ?>
+			<?php } ?>
 			</tr>
 <?php
-	$i++;
 	$k = 1 - $k;
 }
 ?>

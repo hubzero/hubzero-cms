@@ -109,13 +109,10 @@ jQuery(document).ready(function($){
 					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 					<input type="hidden" name="task" value="save" />
 
-					<table class="admintable">
-						<tbody>
-							<tr>
-								<th class="key"><label for="offering_id"><?php echo JText::_('Offering'); ?>:</label></th>
-								<td>
-									<select name="fields[offering_id]" id="offering_id">
-										<option value="-1"><?php echo JText::_('Select offering...'); ?></option>
+					<div class="input-wrap">
+						<label for="offering_id"><?php echo JText::_('Offering'); ?>:</label><br />
+						<select name="fields[offering_id]" id="offering_id">
+							<option value="-1"><?php echo JText::_('Select offering...'); ?></option>
 							<?php
 								require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 								$model = CoursesModelCourses::getInstance();
@@ -143,86 +140,73 @@ jQuery(document).ready(function($){
 									}
 								}
 							?>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></th>
-								<td>
-									<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
-								</td>
-							</tr>
-							<tr>
-								<th class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></th>
-								<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
-							</tr>
-							<tr>
-								<th class="key"><?php echo JText::_('Default section'); ?>:</th>
-								<td>
-									<label for="field-is_default-yes"><input type="radio" name="fields[is_default]" id="field-is_default-yes" value="1" <?php if ($this->row->get('is_default', 0) == 1) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('yes'); ?></label>
-									<label for="field-is_default-no"><input type="radio" name="fields[is_default]" id="field-is_default-no" value="0" <?php if ($this->row->get('is_default', 0) == 0) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('no'); ?></label>
-								</td>
-							</tr>
-							<tr>
-								<th class="key"><label for="field-enrollment"><?php echo JText::_('Enrollment'); ?>:</label></th>
-								<td>
-									<select name="fields[enrollment]" id="field-enrollment">
-										<option value="0"<?php if ($this->row->get('enrollment', 2) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Open (anyone can join)'); ?></option>
-										<option value="1"<?php if ($this->row->get('enrollment', 2) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Restricted (coupon code is required)'); ?></option>
-										<option value="2"<?php if ($this->row->get('enrollment', 2) == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed (no new enrollment)'); ?></option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th class="key"><label for="field-state"><?php echo JText::_('State'); ?>:</label></th>
-								<td>
-									<select name="fields[state]" id="field-state">
-										<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-										<option value="3"<?php if ($this->row->get('state') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('Draft'); ?></option>
-										<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-										<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
-									</select>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+						</select>
+					</div>
+
+					<div class="input-wrap">
+						<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+						<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+					</div>
+
+					<div class="input-wrap">
+						<label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label><br />
+						<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" /></td>
+					</div>
+
+					<fieldset>
+						<legend><?php echo JText::_('Default section'); ?>:</legend>
+						<div class="input-wrap">
+							<label for="field-is_default-yes"><input type="radio" name="fields[is_default]" id="field-is_default-yes" value="1" <?php if ($this->row->get('is_default', 0) == 1) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('yes'); ?></label>
+							<label for="field-is_default-no"><input type="radio" name="fields[is_default]" id="field-is_default-no" value="0" <?php if ($this->row->get('is_default', 0) == 0) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('no'); ?></label>
+						</div>
+					</fieldset>
+
+					<div class="input-wrap">
+						<label for="field-enrollment"><?php echo JText::_('Enrollment'); ?>:</label><br />
+						<select name="fields[enrollment]" id="field-enrollment">
+							<option value="0"<?php if ($this->row->get('enrollment', 2) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Open (anyone can join)'); ?></option>
+							<option value="1"<?php if ($this->row->get('enrollment', 2) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Restricted (coupon code is required)'); ?></option>
+							<option value="2"<?php if ($this->row->get('enrollment', 2) == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed (no new enrollment)'); ?></option>
+						</select>
+					</div>
+
+					<div class="input-wrap">
+						<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+						<select name="fields[state]" id="field-state">
+							<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+							<option value="3"<?php if ($this->row->get('state') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('Draft'); ?></option>
+							<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+							<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
+						</select>
+					</div>
 				</fieldset>
 
 				<fieldset class="adminform">
 					<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-					
-					<table class="admintable">
-						<tbody>
-							<tr>
-								<th class="key"><label for="publish_up">Publish up:</label></th>
-								<td>
-									<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-									<span class="hint">When the section will become available for enrollment</span>
-								</td>
-							</tr>
-							<tr>
-								<th class="key"><label for="start_date">Starts:</label></th>
-								<td>
-									<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'start_date', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-									<span class="hint">When the section starts a live offering</span>
-								</td>
-							</tr>
-							<tr>
-								<th class="key"><label for="end date">Finishes:</label></th>
-								<td>
-									<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'end_date', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-									<span class="hint">When the live offering ends</span>
-								</td>
-							</tr>
-							<tr>
-								<th class="key"><label for="publish_down">Publish down:</label></th>
-								<td>
-									<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-									<span class="hint">When section will close (materials no longer accessible)</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+
+					<div class="input-wrap" data-hint="<?php echo JText::_('When the section will become available for enrollment'); ?>">
+						<label for="field-publish_up"><?php echo JText::_('Publish up:'); ?></label><br />
+						<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'field-publish_up'); ?>
+						<span class="hint"><?php echo JText::_('When the section will become available for enrollment'); ?></span>
+					</div>
+
+					<div class="input-wrap" data-hint="<?php echo JText::_('When the section starts a live offering'); ?>">
+						<label for="field-start_date"><?php echo JText::_('Starts:'); ?></label><br />
+						<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'field-start_date'); ?>
+						<span class="hint"><?php echo JText::_('When the section starts a live offering'); ?></span>
+					</div>
+
+					<div class="input-wrap" data-hint="<?php echo JText::_('When the live offering ends'); ?>">
+						<label for="field-end date"><?php echo JText::_('Finishes:'); ?></label><br />
+						<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'field-end_date'); ?>
+						<span class="hint"><?php echo JText::_('When the live offering ends'); ?></span>
+					</div>
+
+					<div class="input-wrap" data-hint="<?php echo JText::_('When section will close (materials no longer accessible)'); ?>">
+						<label for="field-publish_down"><?php echo JText::_('Publish down:'); ?></label><br />
+						<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'field-publish_down'); ?>
+						<span class="hint"><?php echo JText::_('When section will close (materials no longer accessible)'); ?></span>
+					</div>
 				</fieldset>
 			</div>
 			<div class="col width-50 fltrt">
