@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,41 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$total = $this->confirmed + $this->unconfirmed;
 ?>
-<table class="members-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Confirmed'); ?></th>
-			<th scope="col"><?php echo JText::_('Unconfirmed'); ?></th>
-			<th scope="col"><?php echo JText::_('Last 24 hours'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="confirmed"><a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('View confirmed members'); ?>"><?php echo $this->escape($this->confirmed); ?></a></td>
-			<td class="unconfirmed"><a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('View unconfirmed members'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a></td>
-			<td class="newest"><a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo date("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('View newest members'); ?>"><?php echo $this->escape($this->pastDay); ?></a></td>
-		</tr>
-	</tbody>
-</table>
+<div class="mod_members">
+	<table class="stats-overview">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					<div>
+						<div class="graph">
+							<strong class="bar" style="width: <?php echo round(($this->confirmed / $total) * 100, 2); ?>%"><span><?php echo round(($this->confirmed / $total) * 100, 2); ?>%</span></strong>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="confirmed">
+					<a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('View confirmed members'); ?>"><?php echo $this->escape($this->confirmed); ?></a>
+					<span><?php echo JText::_('Confirmed'); ?></span>
+				</td>
+				<td class="unconfirmed">
+					<a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('View unconfirmed members'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a>
+					<span><?php echo JText::_('Unconfirmed'); ?></span>
+				</td>
+				<!-- <td class="newest">
+					<a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo gmdate("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('View newest members'); ?>"><?php echo $this->escape($this->pastDay); ?></a>
+					<span><?php echo JText::_('~24 hours'); ?></span>
+				</td> -->
+			</tr>
+		</tbody>
+	</table>
+</div>
