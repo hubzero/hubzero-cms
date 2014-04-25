@@ -155,7 +155,11 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 		<?php if ($this->event->get('extra_info') != '') : ?>
 			<tr>
 				<th class="url"></th>
-				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->get('extra_info') ); ?></td>
+				<td colspan="3">
+					<a href="<?php echo $this->event->get('extra_info'); ?>" rel="external">
+						<?php echo $this->event->get('extra_info'); ?>
+					</a>
+				</td>
 			</tr>
 		<?php endif; ?>
 		
