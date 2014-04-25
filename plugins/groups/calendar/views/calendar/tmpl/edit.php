@@ -74,9 +74,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 		<form name="editevent" action="index.php" method="post" id="hubForm" class="full">
 			<fieldset>
 				<legend><?php echo $formTitle; ?></legend>
-
 				<label><?php echo JText::_('Title:'); ?> <span class="required">Required</span>
-					<input type="text" name="event[title]" id="event_title" value="<?php echo $this->event->get('title'); ?>" />
+					<input type="text" name="event[title]" id="event_title" value="<?php echo $this->escape($this->event->get('title')); ?>" />
 				</label>
 
 				<?php if (count($this->calendars) > 0 || $this->authorized == 'manager') : ?>
