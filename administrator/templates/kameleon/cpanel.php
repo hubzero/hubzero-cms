@@ -137,10 +137,10 @@ $browser = new \Hubzero\Browser\Detector();
 					</div>
 					<div class="cpanel-wrap">
 						<div class="cpanel col width-48 fltlft">
-							<jdoc:include type="modules" name="cpanelleft" style="cpanel" />
+							<jdoc:include type="modules" name="icon" style="cpanel" />
 						</div>
 						<div class="cpanel col width-48 fltrt">
-							<jdoc:include type="modules" name="cpanelright" style="cpanel" />
+							<jdoc:include type="modules" name="cpanel" style="cpanel" />
 						</div>
 					</div>
 					<!-- Content ends -->
