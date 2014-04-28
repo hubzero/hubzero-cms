@@ -81,9 +81,9 @@
 	#questions {
 		z-index: 1000;
 		position: fixed;
-		margin-top: 4%;
 		background: #fff;
 		padding: 20px;
+		min-width: 40%;
 		margin-left: 15%;
 		margin-right: 15%;
 		box-shadow: 10px 10px 5px #222;
@@ -91,7 +91,7 @@
 		text-align: center;
 		overflow: auto;
 		top: 20px;
-		bottom: 20px;
+		bottom: 40px;
 	}
 	#questions strong {
 		padding-left: 17px;

@@ -59,13 +59,18 @@ class ModIncrementalRegistrationGroups
 		$colNames = array();
 		$wantRace = false;
 		$wantDisability = false;
+		$wantLocation = false;
 		foreach ($cols as $col) {
 			if ($col['field'] == 'race') {
-				$wantRace = true;
+				$wantRace = $col['label'];
 				continue;
 			}
 			if ($col['field'] == 'disability') {
-				$wantDisability = true;
+				$wantDisability = $col['label'];
+				continue;
+			}
+			if ($col['field'] == 'location') {
+				$wantLocation = $col['label'];
 				continue;
 			}
 			$colNames[] = $col['field'];
@@ -93,14 +98,20 @@ class ModIncrementalRegistrationGroups
 			if (!($country = self::$dbh->loadResult()) || strtolower($country) == 'us') {
 				self::$dbh->setQuery('SELECT COUNT(*) FROM #__xprofiles_race WHERE uidNumber = '.$uid);
 				if (!self::$dbh->loadResult()) {
-					$neededCols['race'] = 'Race';
+					$neededCols['race'] = $wantRace;
 				}
 			}
 		}
 		if ($wantDisability) {
 			self::$dbh->setQuery('SELECT 1 FROM #__xprofiles_disability WHERE uidNumber = '.$uid.' LIMIT 1');
 			if (!self::$dbh->loadResult()) {
-				$neededCols['disability'] = 'Disability';
+				$neededCols['disability'] = $wantDisability;
+			}
+		}
+		if ($wantLocation) {
+			self::$dbh->setQuery('SELECT 1 FROM #__xprofiles_address WHERE uidNumber = '.$uid.' AND addressPostal IS NOT NULL AND addressPostal != \'\' LIMIT 1');
+			if (!self::$dbh->loadResult()) {
+				$neededCols['location'] = $wantLocation;
 			}
 		}
 		return $neededCols;
