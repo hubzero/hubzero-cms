@@ -21,17 +21,17 @@ defined('_JEXEC') or die;
 	?>
 		<fieldset class="panelform">
 			<?php $hidden_fields = ''; ?>
-			<ul class="adminformlist">
-				<?php foreach ($this->form->getFieldset('request') as $field) : ?>
+
+			<?php foreach ($this->form->getFieldset('request') as $field) : ?>
 				<?php if (!$field->hidden) : ?>
-				<li>
+				<div class="input-wrap">
 					<?php echo $field->label; ?>
 					<?php echo $field->input; ?>
-				</li>
+				</div>
 				<?php else : $hidden_fields.= $field->input; ?>
 				<?php endif; ?>
-				<?php endforeach; ?>
-			</ul>
+			<?php endforeach; ?>
+
 			<?php echo $hidden_fields; ?>
 		</fieldset>
 <?php
@@ -48,12 +48,12 @@ defined('_JEXEC') or die;
 			?>
 		<div class="clr"></div>
 		<fieldset class="panelform">
-			<ul class="adminformlist">
 				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-					<li><?php echo $field->label; ?>
-					<?php echo $field->input; ?></li>
+					<div class="input-wrap">
+						<?php echo $field->label; ?>
+						<?php echo $field->input; ?>
+					</div>
 				<?php endforeach; ?>
-			</ul>
 		</fieldset>
 <?php endforeach;?>
 <?php
@@ -69,11 +69,11 @@ defined('_JEXEC') or die;
 			?>
 		<div class="clr"></div>
 		<fieldset class="panelform">
-			<ul class="adminformlist">
 				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-					<li><?php echo $field->label; ?>
-					<?php echo $field->input; ?></li>
+					<div class="input-wrap">
+						<?php echo $field->label; ?>
+						<?php echo $field->input; ?>
+					</div>
 				<?php endforeach; ?>
-			</ul>
 		</fieldset>
 <?php endforeach;?>

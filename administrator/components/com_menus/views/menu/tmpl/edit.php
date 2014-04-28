@@ -19,30 +19,35 @@ JHtml::_('behavior.formvalidation');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'menu.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
+		if (task == 'menu.cancel' || document.formvalidator.isValid($('#item-form'))) {
 			Joomla.submitform(task, document.getElementById('item-form'));
 		}
 	}
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_menus&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
-<div class="width-40">
-	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_MENUS_MENU_DETAILS');?></legend>
-			<ul class="adminformlist">
-				<li><?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?></li>
+	<div class="width-40">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('COM_MENUS_MENU_DETAILS');?></span></legend>
 
-				<li><?php echo $this->form->getLabel('menutype'); ?>
-				<?php echo $this->form->getInput('menutype'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('title'); ?>
+				<?php echo $this->form->getInput('title'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('description'); ?>
-				<?php echo $this->form->getInput('description'); ?></li>
-			</ul>
-	</fieldset>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('menutype'); ?>
+				<?php echo $this->form->getInput('menutype'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('description'); ?>
+				<?php echo $this->form->getInput('description'); ?>
+			</div>
+		</fieldset>
+	</div>
+	<div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
-	</div>
 </form>
-<div class="clr"></div>
