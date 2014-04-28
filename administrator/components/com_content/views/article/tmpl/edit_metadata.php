@@ -8,20 +8,21 @@
 
 defined('_JEXEC') or die;
 ?>
-<ul class="adminformlist">
-	<li><?php echo $this->form->getLabel('metadesc'); ?>
-	<?php echo $this->form->getInput('metadesc'); ?></li>
+	<div class="input-wrap">
+		<?php echo $this->form->getLabel('metadesc'); ?>
+		<?php echo $this->form->getInput('metadesc'); ?>
+	</div>
 
-	<li><?php echo $this->form->getLabel('metakey'); ?>
-	<?php echo $this->form->getInput('metakey'); ?></li>
-
+	<div class="input-wrap">
+		<?php echo $this->form->getLabel('metakey'); ?>
+		<?php echo $this->form->getInput('metakey'); ?>
+	</div>
 
 <?php foreach($this->form->getGroup('metadata') as $field): ?>
-	<li>
+	<div class="input-wrap">
 		<?php if (!$field->hidden): ?>
 			<?php echo $field->label; ?>
 		<?php endif; ?>
 		<?php echo $field->input; ?>
-	</li>
+	</div>
 <?php endforeach; ?>
-</ul>

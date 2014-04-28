@@ -27,8 +27,7 @@ abstract class JHtmlContentAdministrator
 		$state	= JArrayHelper::getValue($states, (int) $value, $states[1]);
 		$html	= JHtml::_('image', 'admin/'.$state[0], JText::_($state[2]), NULL, true);
 		if ($canChange) {
-			$html	= '<a href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.JText::_($state[3]).'">'
-					. $html.'</a>';
+			$html	= '<a href="#" class="state ' . ($value ? 'yes' : 'no') . '" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.JText::_($state[3]).'">'. $html.'</a>';
 		}
 
 		return $html;
