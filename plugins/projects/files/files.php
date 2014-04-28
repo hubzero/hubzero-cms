@@ -5168,7 +5168,7 @@ class plgProjectsFiles extends JPlugin
 				$file['date']  				= NULL;
 				$file['author'] 			= NULL;
 				$file['email'] 				= NULL;
-				$file['bytes']				= filesize($this->prefix . $fullpath . DS . $ut);
+				$file['bytes']				= filesize($this->prefix . $path . DS . $ut);
 				$file['size']				= ProjectsHtml::formatSize($file['bytes']);
 				$file['untracked'] 			= 1;				
 				$file['pid'] 				= '';
