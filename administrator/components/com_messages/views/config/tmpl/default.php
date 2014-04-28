@@ -18,7 +18,7 @@ JHtml::_('behavior.keepalive');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'config.cancel' || document.formvalidator.isValid(document.id('config-form'))) {
+		if (task == 'config.cancel' || document.formvalidator.isValid($('#config-form'))) {
 			Joomla.submitform(task, document.getElementById('config-form'));
 		}
 	}
@@ -26,9 +26,9 @@ JHtml::_('behavior.keepalive');
 <form action="<?php echo JRoute::_('index.php?option=com_messages'); ?>" method="post" name="adminForm" id="message-form" class="form-validate">
 	<fieldset>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('config.save', this.form);window.top.setTimeout('window.parent.SqueezeBox.close()', 1400);">
+			<button type="button" onclick="Joomla.submitform('config.save', this.form);window.top.setTimeout('window.parent.$.fancybox.close()', 1400);">
 				<?php echo JText::_('JSAVE');?></button>
-			<button type="button" onclick="window.parent.SqueezeBox.close();">
+			<button type="button" onclick="window.parent.$.fancybox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 		<div class="configuration" >

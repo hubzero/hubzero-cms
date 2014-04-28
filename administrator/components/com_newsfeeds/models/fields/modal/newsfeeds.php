@@ -38,9 +38,9 @@ class JFormFieldModal_Newsfeeds extends JFormField
 		// Build the script.
 		$script = array();
 		$script[] = '	function jSelectChart_'.$this->id.'(id, name, object) {';
-		$script[] = '		document.id("'.$this->id.'_id").value = id;';
-		$script[] = '		document.id("'.$this->id.'_name").value = name;';
-		$script[] = '		SqueezeBox.close();';
+		$script[] = '		$("#'.$this->id.'_id").val(id);';
+		$script[] = '		$("#'.$this->id.'_name").val(name);';
+		$script[] = '		$.fancybox.close();';
 		$script[] = '	}';
 
 		// Add the script to the document head.
@@ -48,9 +48,9 @@ class JFormFieldModal_Newsfeeds extends JFormField
 
 		// Build the script.
 		$script = array();
-		$script[] = '	window.addEvent("domready", function() {';
-		$script[] = '		var div = new Element("div").setStyle("display", "none").inject(document.id("menu-types"), "before");';
-		$script[] = '		document.id("menu-types").inject(div, "bottom");';
+		$script[] = '	jQuery(document).ready(function($){';
+		$script[] = '		var div = $("<div>").css("display", "none").prependTo($("#menu-types"));';
+		$script[] = '		$("#menu-types").append(div);';
 		$script[] = '	});';
 
 		// Add the script to the document head.

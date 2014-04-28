@@ -18,7 +18,7 @@ JHtml::_('behavior.keepalive');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'newsfeed.cancel' || document.formvalidator.isValid(document.id('newsfeed-form'))) {
+		if (task == 'newsfeed.cancel' || document.formvalidator.isValid($('#newsfeed-form'))) {
 			Joomla.submitform(task, document.getElementById('newsfeed-form'));
 		} else {
 			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');

@@ -28,7 +28,7 @@ endif;
 
 <script type="text/javascript">
 	Joomla.submitbutton = function(task) {
-		if (task == 'article.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+		if (task == 'article.cancel' || document.formvalidator.isValid($('#adminForm'))) {
 			<?php echo $this->form->getField('articletext')->save(); ?>
 			Joomla.submitform(task);
 		} else {

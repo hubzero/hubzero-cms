@@ -17,12 +17,12 @@ JHtml::_('behavior.keepalive');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task) {
-		if (task == 'message.cancel' || document.formvalidator.isValid(document.id('message-form'))) {
-			Joomla.submitform(task, document.getElementById('message-form'));
+		if (task == 'message.cancel' || document.formvalidator.isValid($('#item-form'))) {
+			Joomla.submitform(task, document.getElementById('item-form'));
 		}
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_messages'); ?>" method="post" name="adminForm" id="message-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_messages'); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-100">
 		<fieldset class="adminform">
 		<ul class="adminformlist">
