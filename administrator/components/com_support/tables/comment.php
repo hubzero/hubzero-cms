@@ -86,13 +86,6 @@ class SupportComment extends JTable
 	var $access     = NULL;
 
 	/**
-	 * int(3)
-	 * 
-	 * @var integer
-	 */
-	var $comment_id = NULL;
-
-	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
