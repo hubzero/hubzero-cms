@@ -21,7 +21,7 @@ JHtml::_('behavior.keepalive');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'category.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
+		if (task == 'category.cancel' || document.formvalidator.isValid($('#item-form'))) {
 			<?php echo $this->form->getField('description')->save(); ?>
 			Joomla.submitform(task, document.getElementById('item-form'));
 		} else {
@@ -33,60 +33,86 @@ JHtml::_('behavior.keepalive');
 <form action="<?php echo JRoute::_('index.php?option=com_categories&extension='.JRequest::getCmd('extension', 'com_content').'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_CATEGORIES_FIELDSET_DETAILS');?></legend>
-			<ul class="adminformlist">
-				<li><?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?></li>
+			<legend><span><?php echo JText::_('COM_CATEGORIES_FIELDSET_DETAILS');?></span></legend>
 
-				<li><?php echo $this->form->getLabel('alias'); ?>
-				<?php echo $this->form->getInput('alias'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('title'); ?>
+				<?php echo $this->form->getInput('title'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('extension'); ?>
-				<?php echo $this->form->getInput('extension'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('alias'); ?>
+				<?php echo $this->form->getInput('alias'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('parent_id'); ?>
-				<?php echo $this->form->getInput('parent_id'); ?></li>
+			<?php echo $this->form->getInput('extension'); ?>
+			<?php
+			/*<div class="input-wrap">
+				<?php echo $this->form->getLabel('extension'); ?>
+				<?php echo $this->form->getInput('extension'); ?>
+			</div>*/
+			?>
 
-				<li><?php echo $this->form->getLabel('published'); ?>
-				<?php echo $this->form->getInput('published'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('parent_id'); ?>
+				<?php echo $this->form->getInput('parent_id'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('access'); ?>
-				<?php echo $this->form->getInput('access'); ?></li>
-
-				<?php if ($this->canDo->get('core.admin')): ?>
-					<li><span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
-					<div class="button2-left"><div class="blank">
-		      			<button type="button" onclick="document.location.href='#access-rules';">
-		      			<?php echo JText::_('JGLOBAL_PERMISSIONS_ANCHOR'); ?></button>
-		      		</div></div>
-		    		</li>
-				<?php endif; ?>
-
-				<li><?php echo $this->form->getLabel('language'); ?>
-				<?php echo $this->form->getInput('language'); ?></li>
-
-				<li><?php echo $this->form->getLabel('id'); ?>
-				<?php echo $this->form->getInput('id'); ?></li>
-			</ul>
+			<div class="width-50 fltlft">
+				<div class="input-wrap">
+					<?php echo $this->form->getLabel('published'); ?>
+					<?php echo $this->form->getInput('published'); ?>
+				</div>
+			</div>
+			<div class="width-50 fltrt">
+				<div class="input-wrap">
+					<?php echo $this->form->getLabel('access'); ?>
+					<?php echo $this->form->getInput('access'); ?>
+				</div>
+			</div>
 			<div class="clr"></div>
-			<?php echo $this->form->getLabel('description'); ?>
-			<div class="clr"></div>
-			<?php echo $this->form->getInput('description'); ?>
+
+				<?php /*if ($this->canDo->get('core.admin')): ?>
+					<div class="input-wrap">
+						<span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
+						<div class="button2-left">
+							<div class="blank">
+								<button type="button" onclick="document.location.href='#access-rules';">
+									<?php echo JText::_('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
+								</button>
+							</div>
+						</div>
+					</div>
+				<?php endif;*/ ?>
+
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('language'); ?>
+				<?php echo $this->form->getInput('language'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('id'); ?>
+				<?php echo $this->form->getInput('id'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('description'); ?>
+				<?php echo $this->form->getInput('description'); ?>
+			</div>
 		</fieldset>
 	</div>
 
 	<div class="width-40 fltrt">
-
 		<?php echo JHtml::_('sliders.start', 'categories-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-			<?php echo $this->loadTemplate('options'); ?>
-			<div class="clr"></div>
+		<?php echo $this->loadTemplate('options'); ?>
+		<div class="clr"></div>
 
-			<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
-			<fieldset class="panelform">
-				<?php echo $this->loadTemplate('metadata'); ?>
-			</fieldset>
+		<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
+		<fieldset class="panelform">
+			<?php echo $this->loadTemplate('metadata'); ?>
+		</fieldset>
 
-		<?php  $fieldSets = $this->form->getFieldsets('attribs'); ?>
+		<?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
 		<?php foreach ($fieldSets as $name => $fieldSet) : ?>
 			<?php $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_CATEGORIES_'.$name.'_FIELDSET_LABEL'; ?>
 			<?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
@@ -95,12 +121,12 @@ JHtml::_('behavior.keepalive');
 					<p class="tip"><?php echo $this->escape(JText::_($fieldSet->description));?></p>
 				<?php endif; ?>
 				<fieldset class="panelform">
-					<ul class="adminformlist">
 					<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-						<li><?php echo $field->label; ?>
-						<?php echo $field->input; ?></li>
+						<div class="input-wrap">
+							<?php echo $field->label; ?>
+							<?php echo $field->input; ?>
+						</div>
 					<?php endforeach; ?>
-					</ul>
 				</fieldset>
 			<?php endif ?>
 		<?php endforeach; ?>
@@ -122,8 +148,7 @@ JHtml::_('behavior.keepalive');
 			<?php echo JHtml::_('sliders.end'); ?>
 		</div>
 	<?php endif; ?>
-	<div>
-		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+
+	<input type="hidden" name="task" value="" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>
