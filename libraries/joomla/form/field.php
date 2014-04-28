@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Form
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -513,7 +513,8 @@ abstract class JFormField
 		// Add the label text and closing tag.
 		if ($this->required)
 		{
-			$label .= '>' . $text . '<span class="star">&#160;*</span></label>';
+			//$label .= '>' . $text . '<span class="star">&#160;*</span></label>';
+			$label .= '>' . $text . '<span class="required star">' . JText::_('JOPTION_REQUIRED'). '</span></label>';
 		}
 		else
 		{
