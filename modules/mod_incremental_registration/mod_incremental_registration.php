@@ -375,6 +375,11 @@ class ModIncrementalRegistrationController
 								}
 								continue;
 							}
+							if ($k == 'location') {
+								$dbh->setQuery('INSERT INTO #__xprofiles_address(uidNumber, addressPostal) VALUES('.$uid.', '.$dbh->quote($location).')');
+								$dbh->execute();
+								continue;
+							}
 							if ($k == 'name') 
 							{
 								$dbh->setQuery('UPDATE #__xprofiles SET givenName = '.$dbh->quote($_POST['name']['first']).', middleName = '.$dbh->quote($_POST['name']['middle']).', surname = '.$dbh->quote($_POST['name']['last']).' WHERE uidNumber = '.$uid);
