@@ -55,8 +55,8 @@ class JFormFieldModulePosition extends JFormFieldText
 		// Build the script.
 		$script = array();
 		$script[] = '	function jSelectPosition_'.$this->id.'(name) {';
-		$script[] = '		document.id("'.$this->id.'").value = name;';
-		$script[] = '		SqueezeBox.close();';
+		$script[] = '		$("#'.$this->id.'").val(name);';
+		$script[] = '		$.fancybox.close();';
 		$script[] = '	}';
 
 		// Add the script to the document head.
@@ -67,15 +67,16 @@ class JFormFieldModulePosition extends JFormFieldText
 		$link	= 'index.php?option=com_modules&amp;view=positions&amp;layout=modal&amp;tmpl=component&amp;function=jSelectPosition_'.$this->id.'&amp;client_id='.$clientId;
 
 		// The current user display field.
-		$html[] = '<div class="fltlft">';
+		//$html[] = '<div class="fltlft">';
+		$html[] = '<div class="input-modal">';
 		$html[] = parent::getInput();
-		$html[] = '</div>';
+		//$html[] = '</div>';
 
 		// The user select button.
-		$html[] = '<div class="button2-left">';
-		$html[] = '  <div class="blank">';
-		$html[] = '	<a class="modal" title="'.JText::_('COM_MODULES_CHANGE_POSITION_TITLE').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_MODULES_CHANGE_POSITION_BUTTON').'</a>';
-		$html[] = '  </div>';
+		//$html[] = '<div class="button2-left">';
+		//$html[] = '  <div class="blank">';
+		$html[] = '	<a class="button modal" title="'.JText::_('COM_MODULES_CHANGE_POSITION_TITLE').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_MODULES_CHANGE_POSITION_BUTTON').'</a>';
+		//$html[] = '  </div>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);
