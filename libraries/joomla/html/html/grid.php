@@ -239,7 +239,7 @@ abstract class JHtmlGrid
 		$alt = $value ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
 		$action = $value ? JText::_('JLIB_HTML_UNPUBLISH_ITEM') : JText::_('JLIB_HTML_PUBLISH_ITEM');
 
-		$href = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $prefix . $task . '\')" title="' . $action . '">' . JHtml::_('image', 'admin/' . $img, $alt, null, true) . '</a>';
+		$href = '<a href="#" class="state ' . ($value ? 'publish' : 'unpublish') . '" onclick="return listItemTask(\'cb' . $i . '\',\'' . $prefix . $task . '\')" title="' . $action . '"><span>' . $alt . '</span></a>';
 
 		return $href;
 	}
