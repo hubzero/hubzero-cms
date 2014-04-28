@@ -10,30 +10,31 @@
 defined('_JEXEC') or die;
 ?>
 <div class="width-100">
+	<fieldset class="adminform">
+		<legend><span><?php echo JText::_('COM_CONFIG_CACHE_SETTINGS'); ?></span></legend>
 
-<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_CONFIG_CACHE_SETTINGS'); ?></legend>
-	<ul class="adminformlist">
-			<?php
-			foreach ($this->form->getFieldset('cache') as $field):
-			?>
-					<li><?php echo $field->label; ?>
-					<?php echo $field->input; ?></li>
-			<?php
-			endforeach;
-			?>
+		<?php
+		foreach ($this->form->getFieldset('cache') as $field):
+		?>
+			<div class="input-wrap">
+				<?php echo $field->label; ?>
+				<?php echo $field->input; ?>
+			</div>
+		<?php
+		endforeach;
+		?>
+
 		<?php if (isset($this->data['cache_handler']) && $this->data['cache_handler'] == 'memcache' || $this->data['session_handler'] == 'memcache') : ?>
-
-					<?php
+			<?php
 			foreach ($this->form->getFieldset('memcache') as $mfield):
 			?>
-					<li><?php echo $mfield->label; ?>
-					<?php echo $mfield->input; ?></li>
+				<div class="input-wrap">
+					<?php echo $mfield->label; ?>
+					<?php echo $mfield->input; ?>
+				</div>
 			<?php
 			endforeach;
 			?>
 		<?php endif; ?>
-		</ul>
-
-</fieldset>
+	</fieldset>
 </div>

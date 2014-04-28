@@ -11,11 +11,12 @@ defined('_JEXEC') or die;
 ?>
 <div class="width-80">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_CONFIG_TEXT_FILTER_SETTINGS'); ?></legend>
+		<legend><span><?php echo JText::_('COM_CONFIG_TEXT_FILTER_SETTINGS'); ?></span></legend>
+
 		<p><?php echo JText::_('COM_CONFIG_TEXT_FILTERS_DESC'); ?></p>
+
 		<?php foreach ($this->form->getFieldset('filters') as $field): ?>
 			<?php echo $field->label; ?>
-			<div class="clr"> </div>
 			<?php echo $field->input; ?>
 		<?php endforeach; ?>
 	</fieldset>
