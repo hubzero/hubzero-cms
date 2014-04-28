@@ -110,7 +110,7 @@ if ($this->contributors)
 
 					if (isset($types[$gid])) 
 					{
-						$link .= ' <ul class="badges"><li>' . str_replace(' ', '-', $types[$gid]) . '</li></ul>';
+						$link .= ' <span class="badge">' . str_replace(' ', '-', $types[$gid]) . '</span>';
 					}
 				}
 			}
