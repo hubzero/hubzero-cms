@@ -38,7 +38,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 	<button type="submit" onclick="submitbutton('category.batch');">
 		<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 	</button>
-	<button type="button" onclick="document.id('batch-category-id').value='';document.id('batch-access').value='';document.id('batch-language-id').value=''">
+	<button type="button" onclick="$('3batch-category-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
 		<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 	</button>
 </fieldset>

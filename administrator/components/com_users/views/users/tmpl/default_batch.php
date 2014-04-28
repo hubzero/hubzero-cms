@@ -2,7 +2,7 @@
 /**
  * @package		Joomla.Administrator
  * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -19,6 +19,7 @@ $options = array(
 ?>
 <fieldset class="batch">
 	<legend><?php echo JText::_('COM_USERS_BATCH_OPTIONS');?></legend>
+
 	<label id="batch-choose-action-lbl" for="batch-choose-action"><?php echo JText::_('COM_USERS_BATCH_GROUP') ?></label>
 	<fieldset id="batch-choose-action" class="combo">
 		<select name="batch[group_id]" class="inputbox" id="batch-group-id">
@@ -31,7 +32,7 @@ $options = array(
 	<button type="submit" onclick="Joomla.submitbutton('user.batch');">
 		<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 	</button>
-	<button type="button" onclick="document.id('batch-group-id').value=''">
+	<button type="button" onclick="$('#batch-group-id').val('');">
 		<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 	</button>
 </fieldset>

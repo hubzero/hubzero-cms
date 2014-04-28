@@ -37,9 +37,9 @@ class JFormFieldModal_Article extends JFormField
 		// Build the script.
 		$script = array();
 		$script[] = '	function jSelectArticle_'.$this->id.'(id, title, catid, object) {';
-		$script[] = '		document.id("'.$this->id.'_id").value = id;';
-		$script[] = '		document.id("'.$this->id.'_name").value = title;';
-		$script[] = '		SqueezeBox.close();';
+		$script[] = '		$("#'.$this->id.'_id").val(id);';
+		$script[] = '		$("#'.$this->id.'_name").val(title);';
+		$script[] = '		$.fancybox.close();';
 		$script[] = '	}';
 
 		// Add the script to the document head.

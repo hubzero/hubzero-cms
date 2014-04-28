@@ -22,7 +22,7 @@ $fieldsets = $this->form->getFieldsets();
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'profile.cancel' || document.formvalidator.isValid(document.id('profile-form'))) {
+		if (task == 'profile.cancel' || document.formvalidator.isValid($('#profile-form'))) {
 			Joomla.submitform(task, document.getElementById('profile-form'));
 		}
 	}

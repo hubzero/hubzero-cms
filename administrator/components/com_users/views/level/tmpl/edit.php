@@ -25,60 +25,57 @@ Joomla.submitbutton = function(task)
 	}
 }
 /*
-window.addEvent('domready', function(){
-	document.id('user-groups').getElements('input').each(function(i){
+jQuery(document).ready(function($){
+	$('#user-groups').find('input').each(function(i){
 		// Event to check all child groups.
-		i.addEvent('check', function(e){
+		$(i).on('check', function(e){
 			// Check the child groups.
-			document.id('user-groups').getElements('input').each(function(c){
-				if (this.getProperty('rel') == c.id) {
-					c.setProperty('checked', true);
-					c.setProperty('disabled', true);
-					c.fireEvent('check');
+			$('#user-groups').find('input').each(function(c){
+				if (this.attr('rel') == c.id) {
+					c.prop('checked', true);
+					c.prop('disabled', true);
+					c.trigger('check');
 				}
-			}.bind(this));
-		}.bind(i));
-
-		// Event to uncheck all the parent groups.
-		i.addEvent('uncheck', function(e){
+			});
+		})
+		.on('uncheck', function(e){
 			// Uncheck the parent groups.
-			document.id('user-groups').getElements('input').each(function(c){
-				if (c.getProperty('rel') == this.id) {
-					c.setProperty('checked', false);
-					c.setProperty('disabled', false);
-					c.fireEvent('uncheck');
+			$('#user-groups').find('input').each(function(c){
+				if (c.attr('rel') == this.id) {
+					c.prop('checked', false);
+					c.prop('disabled', false);
+					c.trigger('uncheck');
 				}
-			}.bind(this));
-		}.bind(i));
-
+			});
+		})
 		// Bind to the click event to check/uncheck child/parent groups.
-		i.addEvent('click', function(e){
+		.on('click', function(e){
 			// Check the child groups.
-			document.id('user-groups').getElements('input').each(function(c){
-				if (this.getProperty('rel') == c.id) {
-					c.setProperty('checked', true);
-					if (this.getProperty('checked')) {
-						c.setProperty('disabled', true);
+			$('#user-groups').find('input').each(function(c){
+				if (this.attr('rel') == c.id) {
+					c.prop('checked', true);
+					if (this.attr('checked')) {
+						c.prop('disabled', true);
 					} else {
-						c.setProperty('disabled', false);
+						c.prop('disabled', false);
 					}
-					c.fireEvent('check');
+					c.trigger('check');
 				}
-			}.bind(this));
+			});
 
 			// Uncheck the parent groups.
-			document.id('user-groups').getElements('input').each(function(c){
-				if (c.getProperty('rel') == this.id) {
-					c.setProperty('checked', false);
-					c.setProperty('disabled', false);
-					c.fireEvent('uncheck');
+			$('#user-groups').find('input').each(function(c){
+				if (c.attr('rel') == this.id) {
+					c.prop('checked', false);
+					c.prop('disabled', false);
+					c.trigger('uncheck');
 				}
-			}.bind(this));
-		}.bind(i));
+			});
+		});
 
 		// Initialise the widget.
-		if (i.getProperty('checked')) {
-			i.fireEvent('click');
+		if (i.prop('checked')) {
+			i.trigger('click');
 		}
 	});
 });

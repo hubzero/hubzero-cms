@@ -31,7 +31,7 @@ $type		= $this->state->get('filter.type');
 
 			<button type="submit">
 				<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();">
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();">
 				<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
@@ -93,11 +93,9 @@ $type		= $this->state->get('filter.type');
 		</tbody>
 	</table>
 
-	<div>
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="filter_order" value="<?php echo $ordering; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $direction; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $ordering; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $direction; ?>" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>
