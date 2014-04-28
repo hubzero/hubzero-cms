@@ -48,31 +48,50 @@ defined('_JEXEC') or die;
 	}
 </script>
 
-<form enctype="multipart/form-data" action="<?php echo JRoute::_('index.php?option=com_installer&view=install');?>" method="post" name="adminForm" id="adminForm">
+<form enctype="multipart/form-data" action="<?php echo JRoute::_('index.php?option=com_installer&view=install');?>" method="post" name="adminForm" id="item-form">
 
 	<?php if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftp'); ?>
 	<?php endif; ?>
 	<div class="width-70 fltlft">
-		<fieldset class="uploadform">
-			<legend><?php echo JText::_('COM_INSTALLER_UPLOAD_PACKAGE_FILE'); ?></legend>
-			<label for="install_package"><?php echo JText::_('COM_INSTALLER_PACKAGE_FILE'); ?></label>
-			<input class="input_box" id="install_package" name="install_package" type="file" size="57" />
-			<input class="button" type="button" value="<?php echo JText::_('COM_INSTALLER_UPLOAD_AND_INSTALL'); ?>" onclick="Joomla.submitbutton()" />
+		<fieldset class="adminform uploadform">
+			<legend><span><?php echo JText::_('COM_INSTALLER_UPLOAD_PACKAGE_FILE'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="install_package"><?php echo JText::_('COM_INSTALLER_PACKAGE_FILE'); ?></label>
+				<input class="input_box" id="install_package" name="install_package" type="file" size="57" />
+			</div>
+			<div class="input-wrap">
+				<input class="button" type="button" value="<?php echo JText::_('COM_INSTALLER_UPLOAD_AND_INSTALL'); ?>" onclick="Joomla.submitbutton()" />
+			</div>
+			<div class="clr"></div>
 		</fieldset>
-		<div class="clr"></div>
-		<fieldset class="uploadform">
-			<legend><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_DIRECTORY'); ?></legend>
-			<label for="install_directory"><?php echo JText::_('COM_INSTALLER_INSTALL_DIRECTORY'); ?></label>
-			<input type="text" id="install_directory" name="install_directory" class="input_box" size="70" value="<?php echo $this->state->get('install.directory'); ?>" />			<input type="button" class="button" value="<?php echo JText::_('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton3()" />
+
+		<fieldset class="adminform uploadform">
+			<legend><span><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_DIRECTORY'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="install_directory"><?php echo JText::_('COM_INSTALLER_INSTALL_DIRECTORY'); ?></label>
+				<input type="text" id="install_directory" name="install_directory" class="input_box" size="70" value="<?php echo $this->state->get('install.directory'); ?>" />
+			</div>
+			<div class="input-wrap">
+				<input type="button" class="button" value="<?php echo JText::_('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton3()" />
+			</div>
+			<div class="clr"></div>
 		</fieldset>
-		<div class="clr"></div>
-		<fieldset class="uploadform">
-			<legend><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_URL'); ?></legend>
-			<label for="install_url"><?php echo JText::_('COM_INSTALLER_INSTALL_URL'); ?></label>
-			<input type="text" id="install_url" name="install_url" class="input_box" size="70" value="http://" />
-			<input type="button" class="button" value="<?php echo JText::_('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton4()" />
+
+		<fieldset class="adminform uploadform">
+			<legend><span><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_URL'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="install_url"><?php echo JText::_('COM_INSTALLER_INSTALL_URL'); ?></label>
+				<input type="text" id="install_url" name="install_url" class="input_box" size="70" value="http://" />
+			</div>
+			<div class="input-wrap">
+				<input type="button" class="button" value="<?php echo JText::_('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton4()" />
+			</div>
 		</fieldset>
+
 		<input type="hidden" name="type" value="" />
 		<input type="hidden" name="installtype" value="upload" />
 		<input type="hidden" name="task" value="install.install" />
