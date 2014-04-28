@@ -23,27 +23,29 @@ $fieldsets = $this->form->getFieldsets();
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'user.cancel' || document.formvalidator.isValid(document.id('user-form'))) {
-			Joomla.submitform(task, document.getElementById('user-form'));
+		if (task == 'user.cancel' || document.formvalidator.isValid($('#item-form'))) {
+			Joomla.submitform(task, document.getElementById('item-form'));
 		}
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_users&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="user-form" class="form-validate" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=com_users&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" enctype="multipart/form-data">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_USERS_USER_ACCOUNT_DETAILS'); ?></legend>
-			<ul class="adminformlist">
+			<legend><span><?php echo JText::_('COM_USERS_USER_ACCOUNT_DETAILS'); ?></span></legend>
+
 			<?php foreach($this->form->getFieldset('user_details') as $field) :?>
-				<li><?php echo $field->label; ?>
-				<?php echo $field->input; ?></li>
+				<div class="input-wrap">
+					<?php echo $field->label; ?>
+					<?php echo $field->input; ?>
+				</div>
 			<?php endforeach; ?>
-			</ul>
 		</fieldset>
 
 		<?php if ($this->grouplist) :?>
 		<fieldset id="user-groups" class="adminform">
 			<legend><?php echo JText::_('COM_USERS_ASSIGNED_GROUPS'); ?></legend>
+
 			<?php echo $this->loadTemplate('groups');?>
 		</fieldset>
 		<?php endif; ?>
@@ -52,6 +54,7 @@ $fieldsets = $this->form->getFieldsets();
 	<div class="width-40 fltrt">
 		<?php
 		echo JHtml::_('sliders.start');
+
 		foreach ($fieldsets as $fieldset) :
 			if ($fieldset->name == 'user_details') :
 				continue;
@@ -59,16 +62,16 @@ $fieldsets = $this->form->getFieldsets();
 			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
 		?>
 		<fieldset class="panelform">
-		<ul class="adminformlist">
-		<?php foreach($this->form->getFieldset($fieldset->name) as $field): ?>
-			<?php if ($field->hidden): ?>
-				<?php echo $field->input; ?>
-			<?php else: ?>
-				<li><?php echo $field->label; ?>
-				<?php echo $field->input; ?></li>
-			<?php endif; ?>
-		<?php endforeach; ?>
-		</ul>
+			<?php foreach($this->form->getFieldset($fieldset->name) as $field): ?>
+				<?php if ($field->hidden): ?>
+					<?php echo $field->input; ?>
+				<?php else: ?>
+					<div class="input-wrap">
+						<?php echo $field->label; ?>
+						<?php echo $field->input; ?>
+					</div>
+				<?php endif; ?>
+			<?php endforeach; ?>
 		</fieldset>
 		<?php endforeach; ?>
 		<?php echo JHtml::_('sliders.end'); ?>
@@ -76,4 +79,5 @@ $fieldsets = $this->form->getFieldsets();
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
+	<div class="clr"></div>
 </form>
