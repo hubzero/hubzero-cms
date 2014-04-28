@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JHTML::_('behavior.chart', 'resize');
+//JHTML::_('behavior.chart', 'resize');
 JHTML::_('behavior.chart', 'pie');
 
 $total = $this->draftInternal + $this->draftUser + $this->pending + $this->published + $this->unpublished + $this->removed;

@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JHTML::_('behavior.chart', 'resize');
+//JHTML::_('behavior.chart', 'resize');
 ?>
 <div class="mod_supporttickets">
 	<div id="container<?php echo $this->module->id; ?>" class="chart" style="min-width: 400px; height: 200px;"></div>

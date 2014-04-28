@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JHTML::_('behavior.chart', 'resize');
+//JHTML::_('behavior.chart', 'resize');
 JHTML::_('behavior.chart', 'pie');
 
 $total = $this->granted + $this->accepted + $this->pending + $this->removed + $this->withdrawn + $this->removed + $this->rejected;
