@@ -124,7 +124,8 @@ class ModIncrementalRegistrationController
 
 		$media = new ModIncrementalRegistrationMediaPath;
 		$groups = new ModIncrementalRegistrationGroups;
-		if (($row = $groups->getActiveColumns($uid)) || $opts->isCurlEnabled()) 
+		$hasCurl = file_exists(JPATH_BASE.'/media/media/images/bigcurl.png');
+		if (($row = $groups->getActiveColumns($uid)) || $hasCurl) 
 		{
 			if (!isset($_SESSION['return']) && !preg_match('/[.]/', $uri)) 
 			{
@@ -132,15 +133,13 @@ class ModIncrementalRegistrationController
 			}
 			$doc = JFactory::getDocument();
 			$doc->addStylesheet($media->get('/mod_incremental_registration.css'));
-			$jquery = '';
-			if (JPluginHelper::isEnabled('system', 'jquery'))
-			{
-				$jquery = '.jquery';
-			}
-			$doc->addScript($media->get('/mod_incremental_registration' . $jquery . '.js'));
+			$doc->addScript($media->get('/mod_incremental_registration.jquery.js'));
 
 			if ($row) 
 			{
+				$dbh->setQuery('SELECT popover_text, award_per FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
+				list($introText, $awardPer) = $dbh->loadRow();
+				
 				if ($_SERVER['REQUEST_METHOD'] == 'GET') 
 				{
 					require JPATH_BASE . $media->get('/views/popover.php');
@@ -288,6 +287,14 @@ class ModIncrementalRegistrationController
 					if (isset($row['mailPreferenceOption']) && $mailPreferenceOption == -1) {
 						$errors['mailPreferenceOption'] = true;
 					}
+					if (isset($row['location']) && !$location) {
+						if (isset($_POST['location'])) {
+							$location = trim($_POST['location']);
+						}
+						else {
+							$errors['location'] = true;
+						}
+					}
 
 					if ($errors) 
 					{
@@ -305,7 +312,7 @@ class ModIncrementalRegistrationController
 							{
 								if (!$v) 
 								{
-									$award += 15;
+									$award += $awardPer;
 								}
 							}
 						}
@@ -315,8 +322,7 @@ class ModIncrementalRegistrationController
 
 						if ($award) 
 						{
-							ximport('Hubzero_Bank');
-							$BTL = new Hubzero_Bank_Teller($dbh, $uid);
+							$BTL = new \Hubzero\Bank\Teller($dbh, $uid);
 							$BTL->deposit($award, 'Profile completion award', 'registration', 0);
 						}
 
@@ -369,6 +375,11 @@ class ModIncrementalRegistrationController
 								}
 								continue;
 							}
+							if ($k == 'location') {
+								$dbh->setQuery('INSERT INTO #__xprofiles_address(uidNumber, addressPostal) VALUES('.$uid.', '.$dbh->quote($location).')');
+								$dbh->execute();
+								continue;
+							}
 							if ($k == 'name') 
 							{
 								$dbh->setQuery('UPDATE #__xprofiles SET givenName = '.$dbh->quote($_POST['name']['first']).', middleName = '.$dbh->quote($_POST['name']['middle']).', surname = '.$dbh->quote($_POST['name']['last']).' WHERE uidNumber = '.$uid);
@@ -398,7 +409,7 @@ class ModIncrementalRegistrationController
 					}
 				}
 			}
-			else if (!preg_match('%^/members/' . $uid . '/profile%', $uri)) 
+			else if (!preg_match('%^/members/' . $uid . '/profile%', $uri) && $hasCurl) 
 			{
 				require JPATH_BASE . $media->get('/views/curl.php');
 			}
