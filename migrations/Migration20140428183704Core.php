@@ -15,11 +15,11 @@ class Migration20140428183704Core extends Base
 	 **/
 	public function up()
 	{
-		$this->db->deleteComponentEntry('apc');
-		$this->db->deleteComponentEntry('geodb');
-		$this->db->deleteComponentEntry('ldap');
-		$this->db->deleteComponentEntry('myhub');
-		$this->db->deleteComponentEntry('xflash');
-		$this->db->deleteComponentEntry('xpoll');
+		$this->deleteComponentEntry('apc');
+		$this->deleteComponentEntry('geodb');
+		$this->deleteComponentEntry('ldap');
+		$this->deleteComponentEntry('myhub');
+		$this->deleteComponentEntry('xflash');
+		$this->deleteComponentEntry('xpoll');
 	}
 }
