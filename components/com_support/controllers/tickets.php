@@ -1822,6 +1822,23 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$this->view->row->report = str_replace("\t",' &nbsp; &nbsp;',$this->view->row->report);
 			//$this->view->row->report = preg_replace('/  /', ' &nbsp;', $this->view->row->report);
 		//}
+		$juri = JURI::getInstance();
+
+		$webpath = str_replace('//', '/', $juri->base() . $this->config->get('webpath') . DS . $id);
+		if (isset($_SERVER['HTTPS'])) 
+		{
+			$webpath = str_replace('http:', 'https:', $webpath);
+		}
+		if (!strstr($webpath, '://')) 
+		{
+			$webpath = str_replace(':/', '://', $webpath);
+		}
+		$attach = new SupportAttachment($this->database);
+		$attach->webpath = $webpath;
+		$attach->uppath  = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $id;
+		$attach->output  = 'web';
+
+		$this->view->row->report = $attach->parse($this->view->row->report);
 
 		if ($watch = JRequest::getWord('watch', ''))
 		{
