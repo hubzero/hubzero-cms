@@ -63,11 +63,11 @@ class JFormFieldMedia extends JFormField
 			// Build the script.
 			$script = array();
 			$script[] = '	function jInsertFieldValue(value, id) {';
-			$script[] = '		var old_value = document.id(id).value;';
+			$script[] = '		var old_value = $("#" + id).val();';
 			$script[] = '		if (old_value != value) {';
-			$script[] = '			var elem = document.id(id);';
-			$script[] = '			elem.value = value;';
-			$script[] = '			elem.fireEvent("change");';
+			$script[] = '			var elem = $("#" + id);';
+			$script[] = '			elem.val(value);';
+			$script[] = '			elem.trigger("change");';
 			$script[] = '			if (typeof(elem.onchange) === "function") {';
 			$script[] = '				elem.onchange();';
 			$script[] = '			}';
@@ -76,26 +76,27 @@ class JFormFieldMedia extends JFormField
 			$script[] = '	}';
 
 			$script[] = '	function jMediaRefreshPreview(id) {';
-			$script[] = '		var value = document.id(id).value;';
-			$script[] = '		var img = document.id(id + "_preview");';
+			$script[] = '		id = "#" + id;';
+			$script[] = '		var value = $(id).val();';
+			$script[] = '		var img = $(id + "_preview");';
 			$script[] = '		if (img) {';
 			$script[] = '			if (value) {';
 			$script[] = '				img.src = "' . JURI::root() . '" + value;';
-			$script[] = '				document.id(id + "_preview_empty").setStyle("display", "none");';
-			$script[] = '				document.id(id + "_preview_img").setStyle("display", "");';
+			$script[] = '				$(id + "_preview_empty").css("display", "none");';
+			$script[] = '				$(id + "_preview_img").css("display", "");';
 			$script[] = '			} else { ';
 			$script[] = '				img.src = ""';
-			$script[] = '				document.id(id + "_preview_empty").setStyle("display", "");';
-			$script[] = '				document.id(id + "_preview_img").setStyle("display", "none");';
+			$script[] = '				$(id + "_preview_empty").css("display", "");';
+			$script[] = '				$(id + "_preview_img").css("display", "none");';
 			$script[] = '			} ';
 			$script[] = '		} ';
 			$script[] = '	}';
 
 			$script[] = '	function jMediaRefreshPreviewTip(tip)';
 			$script[] = '	{';
-			$script[] = '		tip.setStyle("display", "block");';
-			$script[] = '		var img = tip.getElement("img.media-preview");';
-			$script[] = '		var id = img.getProperty("id");';
+			$script[] = '		$(tip).css("display", "block");';
+			$script[] = '		var img = tip.find("img.media-preview");';
+			$script[] = '		var id = $(img).attr("id");';
 			$script[] = '		id = id.substring(0, id.length - "_preview".length);';
 			$script[] = '		jMediaRefreshPreview(id);';
 			$script[] = '	}';
@@ -118,10 +119,12 @@ class JFormFieldMedia extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// The text field.
-		$html[] = '<div class="fltlft">';
+		//$html[] = '<div class="fltlft">';
+		$html[] = '<div class="input-multimodal">';
+		$html[] = '	<div class="col width-60 fltlft">';
 		$html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
 			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . ' readonly="readonly"' . $attr . ' />';
-		$html[] = '</div>';
+		//$html[] = '</div>';
 
 		$directory = (string) $this->element['directory'];
 		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
@@ -140,26 +143,29 @@ class JFormFieldMedia extends JFormField
 			$folder = '';
 		}
 		// The button.
-		$html[] = '<div class="button2-left">';
-		$html[] = '	<div class="blank">';
-		$html[] = '		<a class="modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
+		//$html[] = '<div class="button2-left">';
+		//$html[] = '	<div class="blank">';
+		$html[] = '	</div>';
+		$html[] = '	<div class="col width-40 fltrt">';
+		$html[] = '		<a class="button modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
 			. ($this->element['readonly'] ? ''
 			: ($link ? $link
 				: 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
 				. $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
 			. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
 		$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a>';
-		$html[] = '	</div>';
-		$html[] = '</div>';
+		//$html[] = '	</div>';
+		//$html[] = '</div>';
 
-		$html[] = '<div class="button2-left">';
-		$html[] = '	<div class="blank">';
-		$html[] = '		<a title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#" onclick="';
+		//$html[] = '<div class="button2-left">';
+		//$html[] = '	<div class="blank">';
+		$html[] = '		<a class="button" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#" onclick="';
 		$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
 		$html[] = 'return false;';
 		$html[] = '">';
 		$html[] = JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
 		$html[] = '	</div>';
+		$html[] = '	<div class="clr"></div>';
 		$html[] = '</div>';
 
 		// The Preview.
@@ -206,7 +212,7 @@ class JFormFieldMedia extends JFormField
 			$previewImgEmpty = '<div id="' . $this->id . '_preview_empty"' . ($src ? ' style="display:none"' : '') . '>'
 				. JText::_('JLIB_FORM_MEDIA_PREVIEW_EMPTY') . '</div>';
 
-			$html[] = '<div class="media-preview fltlft">';
+			//$html[] = '<div class="media-preview fltlft">';
 			if ($showAsTooltip)
 			{
 				$tooltip = $previewImgEmpty . $previewImg;
@@ -222,7 +228,7 @@ class JFormFieldMedia extends JFormField
 				$html[] = ' ' . $previewImgEmpty;
 				$html[] = ' ' . $previewImg;
 			}
-			$html[] = '</div>';
+			//$html[] = '</div>';
 		}
 
 		return implode("\n", $html);

@@ -62,7 +62,7 @@ class JFormFieldUser extends JFormField
 		$script[] = '			document.getElementById("' . $this->id . '_name").value = title;';
 		$script[] = '			' . $onchange;
 		$script[] = '		}';
-		$script[] = '		SqueezeBox.close();';
+		$script[] = '		$.fancybbox.close();';
 		$script[] = '	}';
 
 		// Add the script to the document head.
@@ -80,22 +80,26 @@ class JFormFieldUser extends JFormField
 		}
 
 		// Create a dummy text field with the user name.
-		$html[] = '<div class="fltlft">';
-		$html[] = '	<input type="text" id="' . $this->id . '_name"' . ' value="' . htmlspecialchars($table->name, ENT_COMPAT, 'UTF-8') . '"'
-			. ' disabled="disabled"' . $attr . ' />';
-		$html[] = '</div>';
-
-		// Create the user select button.
-		$html[] = '<div class="button2-left">';
-		$html[] = '  <div class="blank">';
+		//$html[] = '<div class="fltlft">';
 		if ($this->element['readonly'] != 'true')
 		{
-			$html[] = '		<a class="modal_' . $this->id . '" title="' . JText::_('JLIB_FORM_CHANGE_USER') . '"' . ' href="' . $link . '"'
+			$html[] = '<div class="input-modal">';
+		}
+		$html[] = '	<input type="text" id="' . $this->id . '_name"' . ' value="' . htmlspecialchars($table->name, ENT_COMPAT, 'UTF-8') . '"'
+			. ' disabled="disabled"' . $attr . ' />';
+		//$html[] = '</div>';
+
+		// Create the user select button.
+		//$html[] = '<div class="button2-left">';
+		//$html[] = '  <div class="blank">';
+		if ($this->element['readonly'] != 'true')
+		{
+			$html[] = '		<a class="button modal_' . $this->id . '" title="' . JText::_('JLIB_FORM_CHANGE_USER') . '"' . ' href="' . $link . '"'
 				. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
 			$html[] = '			' . JText::_('JLIB_FORM_CHANGE_USER') . '</a>';
+			$html[] = '</div>';
 		}
-		$html[] = '  </div>';
-		$html[] = '</div>';
+		//$html[] = '  </div>';
 
 		// Create the real field, hidden, that stored the user id.
 		$html[] = '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" value="' . (int) $this->value . '" />';
