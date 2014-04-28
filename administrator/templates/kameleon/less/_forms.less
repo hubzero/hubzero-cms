@@ -36,6 +36,7 @@
 		-webkit-background-clip: padding-box;
 		margin-bottom: 1em;
 	}
+	a.button,
 	button,
 	input[type=submit] {
 		font-family: @sansFontFamily;
@@ -63,6 +64,8 @@
 		-webkit-appearance: none;
 		--webkit-appearance: none;
 	}
+	a.button:hover,
+	a.button:focus,
 	button:hover,
 	button:focus,
 	input[type=submit]:hover,
@@ -285,5 +288,13 @@
 		&:hover:after,
 		&:focus:after {
 			border-color: rgba(0, 0, 0, 0.2)
+		}
+	}
+	.input-modal {
+		.input-text,
+		input[type=text],
+		input[type=password],
+		input[type=email] {
+			width: 72%;
 		}
 	}
