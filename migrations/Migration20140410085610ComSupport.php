@@ -18,7 +18,7 @@ class Migration20140410085610ComSupport extends Base
 		// add comment ID
 		if (!$this->db->tableHasField('#__support_attachments', 'comment_id'))
 		{
-			$query = "ALTER TABLE `#__support_attachments` ADD COLUMN `comment_id` int(11) unsigned NOT NULL DEFAULT '0';";
+			$query = "ALTER TABLE `#__support_attachments` ADD COLUMN `comment_id` int(11) NOT NULL DEFAULT '0';";
 
 			$this->db->setQuery($query);
 			$this->db->query();
