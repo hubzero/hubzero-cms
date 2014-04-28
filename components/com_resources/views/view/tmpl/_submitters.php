@@ -43,6 +43,15 @@ if ($this->contributors)
 	$names_s = array();
 	$orgsln_s = '';
 
+	$types = array(
+		'manager'       => 'manager', 
+		'administrator' => 'administrator', 
+		'super users'   => 'super administrator',
+		'publisher'     => 'publisher',
+		'editor'        => 'editor'
+	);
+	//$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
+
 	foreach ($this->contributors as $contributor)
 	{
 		if (strtolower($contributor->role) != 'submitter') 
@@ -90,10 +99,18 @@ if ($this->contributors)
 				$xuser = JUser::getInstance($contributor->id);
 				if (is_object($xuser) && $xuser->get('name')) 
 				{
-					$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
-					if (isset($types[$xuser->gid])) 
+					// get users groups
+					// in reverse to get the highest levels first
+					$groupIds = JAccess::getGroupsByUser($xuser->id, false);
+					$database->setQuery("SELECT title FROM `#__usergroups` WHERE `id` IN (" . implode(',', $groupIds) . ") ORDER BY lft ASC");
+					$groups = array_reverse($database->loadColumn());
+
+					// use the users first group
+					$gid = isset($groups[0]) ? strtolower($groups[0]) : null;
+
+					if (isset($types[$gid])) 
 					{
-						$link .= ' <ul class="badges"><li>' . str_replace(' ', '-', $types[$xuser->gid]) . '</li></ul>';
+						$link .= ' <span class="badge">' . str_replace(' ', '-', $types[$gid]) . '</span>';
 					}
 				}
 			}
