@@ -17,73 +17,97 @@ $canDo = LanguagesHelper::getActions();
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'language.cancel' || document.formvalidator.isValid(document.id('language-form'))) {
-			Joomla.submitform(task, document.getElementById('language-form'));
+		if (task == 'language.cancel' || document.formvalidator.isValid($('#item-form'))) {
+			Joomla.submitform(task, document.getElementById('item-form'));
 		}
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_languages&layout=edit&lang_id='.(int) $this->item->lang_id); ?>" method="post" name="adminForm" id="language-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_languages&layout=edit&lang_id='.(int) $this->item->lang_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<?php if ($this->item->lang_id) : ?>
-				<legend><?php echo JText::sprintf('JGLOBAL_RECORD_NUMBER', $this->item->lang_id); ?></legend>
+				<legend><span><?php echo JText::sprintf('JGLOBAL_RECORD_NUMBER', $this->item->lang_id); ?></span></legend>
 			<?php else : ?>
-				<legend><?php echo JText::_('COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE'); ?></legend>
+				<legend><span><?php echo JText::_('COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE'); ?></span></legend>
 			<?php endif; ?>
 
-			<ul class="adminformlist">
-				<li><?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('title'); ?><br />
+				<?php echo $this->form->getInput('title'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('title_native'); ?>
-				<?php echo $this->form->getInput('title_native'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('title_native'); ?><br />
+				<?php echo $this->form->getInput('title_native'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('sef'); ?>
-				<?php echo $this->form->getInput('sef'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('sef'); ?><br />
+				<?php echo $this->form->getInput('sef'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('image'); ?>
-				<?php echo $this->form->getInput('image'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('image'); ?><br />
+				<?php echo $this->form->getInput('image'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('lang_code'); ?>
-				<?php echo $this->form->getInput('lang_code'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('lang_code'); ?><br />
+				<?php echo $this->form->getInput('lang_code'); ?>
+			</div>
 
 				<?php if ($canDo->get('core.edit.state')) : ?>
-					<li><?php echo $this->form->getLabel('published'); ?>
-					<?php echo $this->form->getInput('published'); ?></li>
+					<div class="input-wrap">
+						<?php echo $this->form->getLabel('published'); ?><br />
+						<?php echo $this->form->getInput('published'); ?>
+					</div>
 				<?php endif; ?>
 
-				<li><?php echo $this->form->getLabel('access'); ?>
-				<?php echo $this->form->getInput('access'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('access'); ?><br />
+				<?php echo $this->form->getInput('access'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('description'); ?>
-				<?php echo $this->form->getInput('description'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('description'); ?><br />
+				<?php echo $this->form->getInput('description'); ?>
+			</div>
 
-				<li><?php echo $this->form->getLabel('lang_id'); ?>
-				<?php echo $this->form->getInput('lang_id'); ?></li>
-			</ul>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('lang_id'); ?><br />
+				<?php echo $this->form->getInput('lang_id'); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start', 'language-sliders-'.$this->item->lang_code, array('useCookie'=>1)); ?>
 
 		<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'metadata'); ?>
-			<fieldset class="adminform">
+			<fieldset class="panelform">
 				<?php foreach($this->form->getFieldset('metadata') as $field): ?>
 					<?php if (!$field->hidden): ?>
-						<?php echo $field->label; ?>
+						<div class="input-wrap">
+							<?php echo $field->label; ?><br />
+							<?php echo $field->input; ?>
+						</div>
+					<?php else : ?>
+						<?php echo $field->input; ?>
 					<?php endif; ?>
-					<?php echo $field->input; ?>
 				<?php endforeach; ?>
 			</fieldset>
 
 		<?php echo JHtml::_('sliders.panel', JText::_('COM_LANGUAGES_FIELDSET_SITE_NAME_LABEL'), 'site_name'); ?>
-			<fieldset class="adminform">
+			<fieldset class="panelform">
 				<?php foreach($this->form->getFieldset('site_name') as $field): ?>
 					<?php if (!$field->hidden): ?>
-						<?php echo $field->label; ?>
+						<div class="input-wrap">
+							<?php echo $field->label; ?><br />
+							<?php echo $field->input; ?>
+						</div>
+					<?php else : ?>
+						<?php echo $field->input; ?>
 					<?php endif; ?>
-					<?php echo $field->input; ?>
 				<?php endforeach; ?>
 			</fieldset>
 
