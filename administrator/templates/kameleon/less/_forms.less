@@ -169,12 +169,12 @@
 	}
 
 // Required
-	.required {
+	/*.required {
 		color: #c00;
 		text-transform: uppercase;
 		font-size: 0.85em;
 		font-weight: 400;
-	}
+	}*/
 	fieldset>p,
 	.input-wrap {
 		padding: 0.41803399em 1.61803399em;
@@ -204,11 +204,14 @@
 	}
 
 	label .required {
+		text-transform: uppercase;
+		font-size: 0.85em;
+		font-weight: 400;
+		color: #c00;
+		color: rgba(200, 0, 0, 0.4);
 		display: inline-block;
 		background: transparent;
-		color: rgba(200, 0, 0, 0.4);
 		padding: 0.25em 0.45em 0.25em 0.45em;
-		font-weight: 400;
 		line-height: 1;
 		white-space: nowrap;
 		.border-radius(0.25em);
