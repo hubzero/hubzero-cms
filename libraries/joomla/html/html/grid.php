@@ -43,14 +43,15 @@ abstract class JHtmlGrid
 		$bool = ($value) ? 'true' : 'false';
 		$task = ($value) ? $taskOff : $taskOn;
 		$toggle = (!$task) ? false : true;
+		$bool .= ($value) ? ' on' : ' off';
 
 		if ($toggle)
 		{
-			$html = '<a class="grid_' . $bool . ' hasTip" title="' . $title . '" rel="{id:\'cb' . $i . '\', task:\'' . $task . '\'}" href="#toggle"></a>';
+			$html = '<a class="state grid_' . $bool . ' hasTip" title="' . $title . '" rel="{id:\'cb' . $i . '\', task:\'' . $task . '\'}" href="#toggle"><span>' . $title . '</span></a>';
 		}
 		else
 		{
-			$html = '<a class="grid_' . $bool . '"></a>';
+			$html = '<a class="state grid_' . $bool . '"><span>' . $title . '</span></a>';
 		}
 
 		return $html;
@@ -344,31 +345,23 @@ abstract class JHtmlGrid
 		{
 			// Build the behavior script.
 			$js = '
-		window.addEvent(\'domready\', function(){
-			actions = $$(\'a.move_up\');
-			actions.combine($$(\'a.move_down\'));
-			actions.combine($$(\'a.grid_true\'));
-			actions.combine($$(\'a.grid_false\'));
-			actions.combine($$(\'a.grid_trash\'));
-			actions.each(function(a){
-				a.addEvent(\'click\', function(){
-					args = JSON.decode(this.rel);
+		jQuery(document).ready(function($){
+			$("a.move_up, a.move_down, a.grid_true, a.grid_false, a.trash")
+				.on("click", function(){
+					args = JSON.decode($(this).attr("rel"));
 					listItemTask(args.id, args.task);
 				});
-			});
-			$$(\'input.check-all-toggle\').each(function(el){
-				el.addEvent(\'click\', function(){
-					if (el.checked) {
-						document.id(this.form).getElements(\'input[type=checkbox]\').each(function(i){
+
+			$("input.check-all-toggle").on("click", function(){
+					if ($(this).checked) {
+						$($(this).closest("form")).find("input[type=checkbox]").each(function(i){
 							i.checked = true;
 						})
-					}
-					else {
-						document.id(this.form).getElements(\'input[type=checkbox]\').each(function(i){
+					} else {
+						$($(this).closest("form")).find("input[type=checkbox]").each(function(i){
 							i.checked = false;
 						})
 					}
-				});
 			});
 		});';
 
