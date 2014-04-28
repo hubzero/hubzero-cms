@@ -193,11 +193,12 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 
 		//echo result
 		echo json_encode(array(
-			'success'   => true, 
-			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(JPATH_ROOT, '', $path),
-			'id'        => $ticket,
-			'html'      => str_replace('>', '&gt;',  $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
+			'success'    => true, 
+			'file'       => $filename . '.' . $ext,
+			'directory'  => str_replace(JPATH_ROOT, '', $path),
+			'ticket'     => $ticket,
+			'comment_id' => $comment,
+			'html'       => str_replace('>', '&gt;',  $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
 		));
 	}
 
