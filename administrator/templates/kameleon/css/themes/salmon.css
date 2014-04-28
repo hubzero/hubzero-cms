@@ -15,16 +15,6 @@
 	a:focus {
 		color: #000;
 	}
-/* Form elements 
-	.input-text:focus,
-	.input-username:focus,
-	.input-password:focus,
-	textarea:focus, 
-	input[type="text"]:focus, 
-	input[type="password"]:focus, 
-	input[type="file"]:focus { 
-		border-color: #ff6f6f;
-	}
 
 /* Light header */
 	#login-body #toolbar-box,
@@ -42,12 +32,18 @@
 		color: #dcb3aa;
 	}
 
-/* Dark header 
-	.dark #login-body #toolbar-box,
-	.dark div.configuration,*/
+/* Dark header */
 	.dark #toolbar-box {
 		background: #ff6f6f;
+		border-color: #ff6f6f;
 	}
 	.dark #toolbar-box .pagetitle h2 {
 		color: #fff;
+	}
+	.dark .toolbar-box li a span:after {
+		text-shadow:
+		     -1px -1px 0 #ff6f6f,
+		      1px -1px 0 #ff6f6f,
+		      -1px 1px 0 #ff6f6f,
+		       1px 1px 0 #ff6f6f;
 	}

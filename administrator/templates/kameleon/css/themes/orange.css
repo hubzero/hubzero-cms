@@ -12,16 +12,6 @@
 	a:hover {
 		color: #000;
 	}
-/* Form elements */
-	.input-text:focus,
-	.input-username:focus,
-	.input-password:focus,
-	textarea:focus, 
-	input[type="text"]:focus, 
-	input[type="password"]:focus, 
-	input[type="file"]:focus { 
-		border-color: #eca95a;
-	}
 
 /* Light header */
 	#login-body #toolbar-box,
@@ -52,7 +42,7 @@
 	}
 	.dark .toolbar-box li a span:after {
 		text-shadow:
-		     -1px -1px 0#f9b96f,
+		     -1px -1px 0 #f9b96f,
 		      1px -1px 0 #f9b96f,
 		      -1px 1px 0 #f9b96f,
 		       1px 1px 0 #f9b96f;
