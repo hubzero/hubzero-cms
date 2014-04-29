@@ -293,8 +293,8 @@ class CollectionsTableCollection extends JTable
 			}
 
 			$juser = JFactory::getUser();
-			$this->created    = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = ($this->created ? $this->created : JFactory::getDate()->toSql());
+			$this->created_by = ($this->created_by ? $this->created_by : $juser->get('id'));
 			$this->state      = 1;
 		}
 		else
