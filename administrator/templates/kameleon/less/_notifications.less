@@ -10,7 +10,7 @@
 
 .notificationColor(@successText, @successBackground, @successBorder) {
 	background-color: @successBackground;
-	color: @successText !important;
+	//color: @successText !important;
 	border-color: @successBorder;
 }
 
@@ -36,16 +36,15 @@
 	#system-message dd {
 		margin: 0;
 		padding: 0.61803399em 0.61803399em 0.61803399em 2.31803399em;
-		color: #ffffc0;
+		color: #fff;
 		position: relative;
 		overflow: hidden;
 		zoom: 1;
-		border: 0.27em solid #eee;
+		font-weight: 500;
+		border: none; //0.27em solid #eee;
 		.border-radius(0.27em);
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-		background-image: url("@{pathSystemImg}/light-stripes.png");
-		#gradient > .striped(#fff, -45deg, .065);
-		.background-size(30px 30px); // Controls the size of the stripes
+		background-color: #222;
 	}
 	.info,
 	.warning,
@@ -76,6 +75,7 @@
 		display: inline-block;
 		*display: inline;
 		margin: 0;
+		padding: 0.41803399em 0.41803399em 0.41803399em 2.31803399em;
 	}
 
 	#system-message dd {
@@ -98,7 +98,6 @@
 	#system-message dd.error {
 		.notificationColor(@errorText, @errorBackground, @errorBorder);
 	}
-	span.systemmessage-before,
 	.info:before,
 	.warning:before,
 	.error:before,
@@ -108,7 +107,8 @@
 		top: 0.81803399em;
 		width: 1em;
 		height: 1em;
-		font-size: 1em;
+		font-size: 1.1em;
+		font-weight: 400;
 		line-height: 1;
 		display: block;
 		left: 0.81803399em;
