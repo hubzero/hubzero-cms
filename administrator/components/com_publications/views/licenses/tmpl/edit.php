@@ -45,55 +45,44 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" id="item-form" name="adminForm">
-	<div class="col width-50 fltrt">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_LICENSE_DETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:<span class="required">*</span></label></td>
-						<td><input type="text" name="fields[title]" id="field-title" size="55" maxlength="100" value="<?php echo $this->escape($this->row->title); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-name"><?php echo JText::_('Name'); ?>:<span class="required">*</span></label></td>
-						<td>
-							<input type="text" name="fields[name]" id="field-name" size="55" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
-							<span class="hint"><?php echo JText::_('If no name is provided, one will be generated from the title.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[url]" id="field-url" size="55" maxlength="100" value="<?php echo $this->escape($this->row->url); ?>" />
-							<span class="hint"><?php echo JText::_('URL to the full license.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label><?php echo JText::_('About'); ?>:<span class="required">*</span></label></td>
-						<td><?php 
-							$editor = JFactory::getEditor();
-							echo $editor->display('fields[info]', stripslashes($this->row->info), '', '', '50', '4', false);
-						?>
-							<span class="hint"><?php echo JText::_('Short description of license'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label><?php echo JText::_('Content'); ?>:</label></td>
-						<td><?php 
-							$editor = JFactory::getEditor();
-							echo $editor->display('fields[text]', stripslashes($this->row->text), '', '', '50', '10', false);
-						?></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-icon"><?php echo JText::_('Icon'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[icon]" id="field-icon" size="55" value="<?php echo $this->escape($this->row->icon); ?>" />
-							<span class="hint"><?php echo JText::_('Path to icon image'); ?></span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[title]" id="field-title" maxlength="100" value="<?php echo $this->escape($this->row->title); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('If no name is provided, one will be generated from the title.'); ?>">
+				<label for="field-name"><?php echo JText::_('Name'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[name]" id="field-name" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
+				<span class="hint"><?php echo JText::_('If no name is provided, one will be generated from the title.'); ?></span>
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('URL to the full license.'); ?>">
+				<label for="field-url"><?php echo JText::_('URL'); ?>:</label>
+				<input type="text" name="fields[url]" id="field-url" maxlength="100" value="<?php echo $this->escape($this->row->url); ?>" />
+				<span class="hint"><?php echo JText::_('URL to the full license.'); ?></span>
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('Short description of license'); ?>">
+				<label for="field-info"><?php echo JText::_('About'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<?php 
+					$editor = JFactory::getEditor();
+					echo $editor->display('fields[info]', stripslashes($this->row->info), '', '', '50', '4', false, 'field-info');
+				?>
+				<span class="hint"><?php echo JText::_('Short description of license'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label for="field-text"><?php echo JText::_('Content'); ?>:</label></td>
+				<?php 
+					$editor = JFactory::getEditor();
+					echo $editor->display('fields[text]', stripslashes($this->row->text), '', '', '50', '10', false, 'field-text');
+				?>
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('Path to icon image'); ?>">
+				<label for="field-icon"><?php echo JText::_('Icon'); ?>:</label>
+				<input type="text" name="fields[icon]" id="field-icon" value="<?php echo $this->escape($this->row->icon); ?>" />
+				<span class="hint"><?php echo JText::_('Path to icon image'); ?></span>
+			</div>
 
 			<input type="hidden" name="fields[ordering]" value="<?php echo $this->row->ordering; ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
@@ -103,66 +92,83 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-50 fltrt">
-	  <fieldset class="adminform">
-			<legend><span><?php echo JText::_('License Configuration'); ?></span></legend>
-		<table class="admintable">
+		<table class="meta">
 			<tbody>
 				<tr>
-					<td class="key"><?php echo JText::_('ID'); ?></td>
+					<th><?php echo JText::_('ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo JText::_('Default'); ?></td>
+					<th><?php echo JText::_('Default'); ?></th>
 					<td><?php echo $this->row->main == 1 ? JText::_('COM_PUBLICATIONS_LICENSE_YES') : JText::_('COM_PUBLICATIONS_LICENSE_NO') ; ?></td>
 				</tr>
+			<?php if ($this->row->id) { ?>
 				<tr>
-					<td class="key"><?php echo JText::_('Active'); ?></td>
-					<td>
-						<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?></span>
-						<label class="block"><input class="option" name="active" type="radio" value="1" <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?>
-						</label>
-						<label class="block"><input class="option" name="active" type="radio" value="0" <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?>
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo JText::_('Customizable'); ?></td>
-					<td>
-						<span class="hint"><?php echo JText::_('Do we allow users to customize license text?'); ?></span>
-						<label class="block"><input class="option" name="customizable" type="radio" value="1" <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?>
-						</label>
-						<label class="block"><input class="option" name="customizable" type="radio" value="0" <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?>
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo JText::_('Agreement required'); ?></td>
-					<td>
-						<span class="hint"><?php echo JText::_('Do we require publication authors to agree to license terms?'); ?></span>
-						<label class="block"><input class="option" name="agreement" type="radio" value="1" <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?>
-						</label>
-						<label class="block"><input class="option" name="agreement" type="radio" value="0" <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?>
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo JText::_('Apps only'); ?></td>
-					<td>
-						<span class="hint"><?php echo JText::_('Is this license applicable to apps publications only?'); ?></span>
-						<label class="block"><input class="option" name="apps_only" type="radio" value="1" <?php echo $this->row->apps_only == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?>
-						</label>
-						<label class="block"><input class="option" name="apps_only" type="radio" value="0" <?php echo $this->row->apps_only == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?>
-						</label>
-					</td>
-				</tr>
-<?php if ($this->row->id) { ?>
-				<tr>
-					<td class="key"><?php echo JText::_('Ordering'); ?></td>
+					<th><?php echo JText::_('Ordering'); ?></th>
 					<td><?php echo $this->row->ordering; ?></td>
 				</tr>
-<?php } ?>
+			<?php } ?>
 			</tbody>
 		</table>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('License Configuration'); ?></span></legend>
+
+			<fieldset>
+				<legend><?php echo JText::_('Active'); ?></legend>
+
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?>">
+					<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?></span>
+
+					<input class="option" name="active" id="field-active1" type="radio" value="1" <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-active1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
+					<br />
+					<input class="option" name="active" id="field-active0" type="radio" value="0" <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-active0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend><?php echo JText::_('Customizable'); ?></legend>
+
+				<div class="input-wrap" data-hint="<?php echo JText::_('Do we allow users to customize license text?'); ?>">
+					<span class="hint"><?php echo JText::_('Do we allow users to customize license text?'); ?></span>
+
+					<input class="option" name="customizable" id="field-customizable1" type="radio" value="1" <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-customizable1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
+					<br />
+					<input class="option" name="customizable" id="field-customizable0" type="radio" value="0" <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-customizable0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend><?php echo JText::_('Agreement required'); ?></legend>
+
+				<div class="input-wrap" data-hint="<?php echo JText::_('Do we require publication authors to agree to license terms?'); ?>">
+					<span class="hint"><?php echo JText::_('Do we require publication authors to agree to license terms?'); ?></span>
+
+					<input class="option" name="agreement" id="field-agreement1" type="radio" value="1" <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-agreement1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
+					<br />
+					<input class="option" name="agreement" id="field-agreement0" type="radio" value="0" <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-agreement0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend><?php echo JText::_('Apps only'); ?></legend>
+
+				<div class="input-wrap" data-hint="<?php echo JText::_('Is this license applicable to apps publications only?'); ?>">
+					<span class="hint"><?php echo JText::_('Is this license applicable to apps publications only?'); ?></span>
+
+					<input class="option" name="apps_only" id="field-apps_only1" type="radio" value="1" <?php echo $this->row->apps_only == 1 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-apps_only1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
+					<br />
+					<input class="option" name="apps_only" id="field-apps_only0" type="radio" value="0" <?php echo $this->row->apps_only == 0 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-apps_only0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
+				</div>
+			</fieldset>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

@@ -40,12 +40,12 @@ JToolBarHelper::publishList('changestatus', 'Publish/Unpublish');
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-	
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -69,7 +69,7 @@ $k = 0;
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	$class = $row->active == 1 ? 'item_on' : 'item_off';
+	$class = $row->active == 1 ? 'on' : 'off';
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -89,10 +89,16 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					</a>
 				</td>
 				<td class="centeralign">
-					<span class="<?php echo $class; ?>">&nbsp;</span>
+					<span class="state <?php echo $class; ?>">
+						<span><?php echo JText::_($class); ?></span>
+					</span>
 				</td>
 				<td class="centeralign">
-					<span class="<?php echo $row->main == 1 ? 'item_on' : ''; ?>">&nbsp;</span>
+					<?php if ($row->main == 1) { ?>
+					<span class="state yes">
+						<span><?php echo JText::_('JYES'); ?></span>
+					</span>
+					<?php } ?>
 				</td>
 				<td class="order">
 					<span>

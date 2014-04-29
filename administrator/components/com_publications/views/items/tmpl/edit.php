@@ -205,7 +205,7 @@ function popratings()
 	return false;
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="resourceForm" class="editform">
+<form action="index.php" method="post" name="adminForm" id="item-form" class="editform">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 	<table class="admintable">

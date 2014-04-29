@@ -37,8 +37,9 @@ JToolBarHelper::cancel();
 
 $dcTypes = array(
 	'Collection' , 'Dataset' , 'Event' , 'Image' ,
- 	'InteractivePublication' , 'MovingImage' , 'PhysicalObject' ,
-    'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text');
+	'InteractivePublication' , 'MovingImage' , 'PhysicalObject' ,
+	'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text'
+);
 
 $paramsClass = 'JParameter';
 if (version_compare(JVERSION, '1.6', 'ge'))
@@ -47,6 +48,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 $params = new $paramsClass($this->row->params);
+
+JHTML::_('behavior.framework', true);
 
 ?>
 <script type="text/javascript">
@@ -62,43 +65,31 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Category Information'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-name"><?php echo JText::_('Name'); ?>:<span class="required">*</span></label></td>
-						<td>
-							<input type="text" name="prop[name]" id="field-name" size="55" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td>
-							<input type="text" name="prop[alias]" id="field-alias" size="55" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-url_alias"><?php echo JText::_('URL Alias'); ?>:</label></td>
-						<td>
-							<input type="text" name="prop[url_alias]" id="field-url_alias" size="55" maxlength="100" value="<?php echo $this->escape($this->row->url_alias); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-dc_type"><?php echo JText::_('dc:type'); ?>:</label></td>
-						<td>
-							<select name="prop[dc_type]" id="field-dc_type">
-							<?php foreach ($dcTypes as $dct) { ?>
-							<option value="<?php echo $dct; ?>" <?php if ($this->escape($this->row->dc_type) == $dct) { echo 'selected="selected"'; } ?>><?php echo $dct; ?></option>
-							<?php } ?>
-							</select>
-							<span class="hint"><?php echo JText::_('DublinCoreMetaData type'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label><?php echo JText::_('Description'); ?>:</label></td>
-						<td><input type="text" name="prop[description]" id="field-description" size="55" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-name"><?php echo JText::_('Name'); ?>:<span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="prop[name]" id="field-name" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label>
+				<input type="text" name="prop[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-url_alias"><?php echo JText::_('URL Alias'); ?>:</label>
+				<input type="text" name="prop[url_alias]" id="field-url_alias" maxlength="100" value="<?php echo $this->escape($this->row->url_alias); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('DublinCoreMetaData type'); ?>">
+				<label for="field-dc_type"><?php echo JText::_('dc:type'); ?>:</label>
+				<select name="prop[dc_type]" id="field-dc_type">
+					<?php foreach ($dcTypes as $dct) { ?>
+					<option value="<?php echo $dct; ?>" <?php if ($this->escape($this->row->dc_type) == $dct) { echo 'selected="selected"'; } ?>><?php echo $dct; ?></option>
+					<?php } ?>
+				</select>
+				<span class="hint"><?php echo JText::_('DublinCoreMetaData type'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('Description'); ?>:</label>
+				<input type="text" name="prop[description]" id="field-description" size="55" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
+			</div>
 
 			<input type="hidden" name="prop[id]" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -107,57 +98,61 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-50 fltrt">
-	  <fieldset class="adminform">
-		<legend><span><?php echo JText::_('Item Configuration'); ?></span></legend>
-		<table class="admintable">
+		<table class="meta">
 			<tbody>
 				<tr>
-					<td class="key"><?php echo JText::_('ID'); ?></td>
+					<th><?php echo JText::_('ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo JText::_('Status'); ?></td>
-					<td>
-						<label class="block"><input class="option" name="prop[state]" type="radio" value="1" <?php echo $this->row->state == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Active'); ?>
-						</label>
-						<label class="block"><input class="option" name="prop[state]" type="radio" value="0" <?php echo $this->row->state != 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Inactive'); ?>
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo JText::_('Contributable'); ?></td>
-					<td>
-						<span class="hint"><?php echo JText::_('Offer category as a catalogue choice for new publications?'); ?></span>
-						<label class="block"><input class="option" name="prop[contributable]" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Yes'); ?>
-						</label>
-						<label class="block"><input class="option" name="prop[contributable]" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('No'); ?>
-						</label>
-					</td>
 				</tr>
 			</tbody>
 		</table>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Item Configuration'); ?></span></legend>
+
+			<fieldset>
+				<legend><?php echo JText::_('Status'); ?></legend>
+
+				<div class="input-wrap">
+					<input class="option" name="prop[state]" id="field-state1" type="radio" value="1" <?php echo $this->row->state == 1 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-state1"><?php echo JText::_('Active'); ?></label>
+					<br />
+					<input class="option" name="prop[state]" id="field-state0" type="radio" value="0" <?php echo $this->row->state != 1 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-state0"><?php echo JText::_('Inactive'); ?></label>
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend><?php echo JText::_('Contributable'); ?></legend>
+				<div class="input-wrap" data-hint="<?php echo JText::_('Offer category as a catalogue choice for new publications?'); ?>">
+					<span class="hint"><?php echo JText::_('Offer category as a catalogue choice for new publications?'); ?></span>
+
+					<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-contributable1"><?php echo JText::_('Yes'); ?></label>
+					<br />
+					<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-contributable0"><?php echo JText::_('No'); ?></label>
+				</div>
+			</fieldset>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
+
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_CATS_MASTER_TYPE_CONFIG'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<?php foreach ($this->types as $mt) { ?>
-					<tr>
-						<td class="key"><?php echo $mt; ?></td>
-						<td>
-							<label class="block"><input class="option" name="params[type_<?php echo $mt; ?>]" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> /> <?php echo 'include as choice'; ?></label>
-						</td>
-						<td>
-							<label class="block"><input class="option" name="params[type_<?php echo $mt; ?>]" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> /> <?php echo 'not applicable'; ?></label>
-						</td>
-					</tr>
-				<?php } ?>	
-				</tbody>
-			</table>
+
+			<?php foreach ($this->types as $mt) { ?>
+				<fieldset>
+					<legend><?php echo $mt; ?></legend>
+					<div class="input-wrap">
+						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>1" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> /> 
+						<label for="field-type_<?php echo $mt; ?>1"><?php echo 'include as choice'; ?></label>
+						<br />
+						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>0" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> /> 
+						<label for="field-type_<?php echo $mt; ?>0"><?php echo 'not applicable'; ?></label>
+					</div>
+				</fieldset>
+			<?php } ?>
 		</fieldset>
 	</div>
 	<div class="col width-50 ltlft">
@@ -174,16 +169,9 @@ function submitbutton(pressbutton)
 				<tbody>
 				<?php 
 				$database = JFactory::getDBO();
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$database->setQuery( "SELECT * FROM #__extensions WHERE `type`='plugin' AND `folder`='publications'" );
-				}
-				else
-				{
-					$database->setQuery( "SELECT * FROM #__plugins WHERE `folder`='publications'" );
-				}
-				$plugins = $database->loadObjectList();
-				if ($plugins)
+				$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='publications'" );
+
+				if ($plugins = $database->loadObjectList())
 				{
 					$found = array();
 					foreach ($plugins as $plugin)
@@ -206,7 +194,7 @@ function submitbutton(pressbutton)
 						</tr>
 						<?php
 					}
-				}		
+				}
 				?>
 				</tbody>
 			</table>
@@ -314,9 +302,9 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 
-			<script type="text/javascript" src="/media/system/js/jquery.js"></script> 
+			<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script> 
 			<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script> 
-			<script type="text/javascript" src="/media/system/js/jquery.ui.js"></script> 
+			<script type="text/javascript" src="/media/system/js/jquery.ui.js"></script>  -->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;

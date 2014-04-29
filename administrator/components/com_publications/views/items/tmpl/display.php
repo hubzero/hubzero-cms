@@ -63,24 +63,20 @@ function submitbutton(pressbutton)
 <p class="warning">This component is currently disabled and is inaccessible to end users.</p>
 <?php } ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
-	<fieldset id="filter">
-		<label for="status">
-			<?php echo JText::_('Status'); ?>:
-			<select name="status" id="status">
-				<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('[ all ]'); ?></option>
-				<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Draft'); ?></option>
-				<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Pending'); ?></option>
-				<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
-				<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
-				<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Ready'); ?></option>
-			</select>
-		</label>
-	
-		<label for="category">
-			<?php echo JText::_('Category'); ?>:
-			<?php echo PublicationsHtml::selectCategory($this->categories, 'category', $this->filters['category'], '[ all]', '', '', ''); ?>
-		</label>
-	
+	<fieldset id="filter-bar">
+		<label for="status"><?php echo JText::_('Status'); ?>:</label>
+		<select name="status" id="status">
+			<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('[ all status ]'); ?></option>
+			<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Draft'); ?></option>
+			<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Pending'); ?></option>
+			<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
+			<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
+			<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Ready'); ?></option>
+		</select>
+
+		<label for="category"><?php echo JText::_('Category'); ?>:</label>
+		<?php echo PublicationsHtml::selectCategory($this->categories, 'category', $this->filters['category'], '[ all categories ]', '', '', ''); ?>
+
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 
@@ -187,6 +183,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

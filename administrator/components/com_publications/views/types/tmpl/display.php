@@ -51,7 +51,7 @@ JToolBarHelper::editList();
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -60,17 +60,17 @@ $k = 0;
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	$sClass  = $row->supporting == 1 ? 'item_on' : 'item_off';
-	$cClass  = $row->contributable == 1 ? 'item_on' : 'item_off';
-	
+	$sClass  = $row->supporting == 1 ? 'on' : 'off';
+	$cClass  = $row->contributable == 1 ? 'on' : 'off';
+
 	// Determine whether master type is supported in current version of hub code
-	$aClass  = 'item_off';
+	$aClass  = 'off';
 	$active  = 'off';
-	
+
 	// If we got a plugin - type is supported
 	if (JPluginHelper::isEnabled('projects', $row->alias))
 	{
-		$aClass  = 'item_on';
+		$aClass  = 'on';
 		$active  = 'on';
 	}
 ?>
@@ -83,17 +83,24 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<span><?php echo $this->escape($row->type); ?></span></a>
+						<span><?php echo $this->escape($row->type); ?></span>
+					</a>
 				</td>
 				<td><span class="block faded"><?php echo $this->escape($row->alias); ?></span></td>
 				<td class="centeralign narrow">
-					<span class="<?php echo $aClass; ?>"><?php echo $active; ?></span>
+					<span class="state <?php echo $aClass; ?>">
+						<span><?php echo $active; ?></span>
+					</span>
 				</td>
 				<td class="centeralign narrow">
-					<span class="<?php echo $cClass; ?>">&nbsp;</span>
+					<span class="state <?php echo $cClass; ?>">
+						<span><?php echo JText::_($cClass); ?></span>
+					</span>
 				</td>
 				<td class="centeralign narrow">
-					<span class="<?php echo $sClass; ?>">&nbsp;</span>
+					<span class="state <?php echo $sClass; ?>">
+						<span><?php echo JText::_($sClass); ?></span>
+					</span>
 				</td>
 				<td class="order">
 					<span>

@@ -58,8 +58,6 @@ $k = 0;
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	$class  = $row->state == 1 ? 'item_on' : 'item_off';
-	$cClass = $row->contributable == 1 ? 'item_on' : 'item_off';
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td class="narrow">
@@ -70,16 +68,23 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<span><?php echo $this->escape($row->name); ?></span></a>
-						<span class="block faded"><?php echo JText::_('Alias') . ': ' .$this->escape($row->alias); ?> |
-							<?php echo JText::_('URL Alias') . ': ' .$this->escape($row->url_alias); ?> |
-							<?php echo JText::_('dc_type') . ': ' .$this->escape($row->dc_type); ?></span>
+						<span><?php echo $this->escape($row->name); ?></span>
+					</a>
+					<span class="block faded">
+						<?php echo JText::_('Alias') . ': ' .$this->escape($row->alias); ?> |
+						<?php echo JText::_('URL Alias') . ': ' .$this->escape($row->url_alias); ?> |
+						<?php echo JText::_('dc_type') . ': ' .$this->escape($row->dc_type); ?>
+					</span>
 				</td>
 				<td class="centeralign narrow">
-					<span class="<?php echo $cClass; ?>">&nbsp;</span>
+					<span class="state <?php echo ($row->contributable == 1 ? 'yes' : 'no'); ?>">
+						<span><?php echo ($row->contributable == 1 ? JText::_('JYES') : JText::_('JNO')); ?></span>
+					</span>
 				</td>
 				<td class="centeralign narrow">
-					<span class="<?php echo $class; ?>">&nbsp;</span>
+					<span class="state <?php echo ($row->state == 1 ? 'on' : 'off'); ?>">
+						<span><?php echo ($row->state == 1 ? JText::_('on') : JText::_('off')); ?></span>
+					</span>
 				</td>
 			</tr>
 <?php
