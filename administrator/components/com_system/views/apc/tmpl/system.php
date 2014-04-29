@@ -171,22 +171,22 @@ $cache     = $this->cache;
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo SystemHtml::sortheader('S',$fieldheading,   "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('H','Hits',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('Z','Size',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('A','Last accessed', "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('M','Last modified', "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('C','Created at',    "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&OB=" . $this->MYREQUEST['OB']); ?></th>
 <?php
 		if ($fieldname=='info')
 		{
 			$cols+=1;
 ?>
-				<th><?php echo SystemHtml::sortheader('T','Timeout', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&OB=" . $this->MYREQUEST['OB']); ?></th>
 <?php
 		}
 ?>
-				<th><?php echo SystemHtml::sortheader('D','Deleted at', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>

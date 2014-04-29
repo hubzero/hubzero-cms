@@ -103,12 +103,12 @@ $MY_SELF   = $this->MY_SELF;
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo SystemHtml::sortheader('S','Directory Name',  "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('T','Number of Files', "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('H','Total Hits',      "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('Z','Total Size',      "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('C','Avg. Hits',       "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader('A','Avg. Size',       "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S','Directory Name',  "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Number of Files', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Total Hits',      "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Total Size',      "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Avg. Hits',       "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Avg. Size',       "&OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>
