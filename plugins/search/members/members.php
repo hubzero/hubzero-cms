@@ -298,6 +298,40 @@ class plgSearchMembers extends SearchPlugin
 				$added[$link] = 1;
 			}
 			$row->sort_children(array('ContributionSorter', 'sort'));
+
+			$workp = new SearchResultSQL(
+				"SELECT 
+					r.publication_id AS id,
+					r.title AS title,
+					concat(coalesce(r.description, ''), coalesce(r.abstract, '')) AS description,
+					concat('/publications/', r.id) AS link,
+					1 AS weight,
+					rt.alias AS section,
+					aa.ordering
+					FROM #__publication_authors aa
+					LEFT JOIN #__publication_versions r
+						ON aa.publication_version_id = r.id AND r.state = 1
+					LEFT JOIN #__publications p 
+						ON p.id = r.publication_id
+					LEFT JOIN #__publication_categories rt 
+						ON rt.id = p.category
+					WHERE aa.user_id = " . $row->get('id')
+			);
+			$workp_assoc = $workp->to_associative();
+			//$added = array();
+			foreach ($workp_assoc as $wrow)
+			{
+				$link = $wrow->get_link();
+				if (array_key_exists($link, $added))
+				{
+					continue;
+				}
+				$row->add_child($wrow);
+				$row->add_weight(1);
+				$added[$link] = 1;
+			}
+			$row->sort_children(array('ContributionSorter', 'sort'));
+
 			$resp[] = $row;
 		}
 		usort($resp, array('ContributionSorter', 'sort_weight'));
