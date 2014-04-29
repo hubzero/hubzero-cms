@@ -50,9 +50,9 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
-	<fieldset class="adminform">
-		<table class="admintable">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset>
+		<table class="adminlist">
 			<thead>
 				<tr>
 					<th><?php echo JText::_('Field/Area'); ?></th>
@@ -139,11 +139,11 @@ foreach ($this->params as $field => $values)
 ?>
 			</tbody>
 		</table>
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="save" />
-		
+
 		<?php echo JHTML::_('form.token'); ?>
 	</fieldset>
 </form>
