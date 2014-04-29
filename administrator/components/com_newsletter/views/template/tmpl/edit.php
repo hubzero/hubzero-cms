@@ -36,6 +36,8 @@ $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 JToolBarHelper::title(JText::_('Newsletter Template') . ': ' . $text, 'template.png');
 
 //add toolbar buttons
+JToolBarHelper::help('template.html', true);
+JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 ?>
@@ -118,6 +120,8 @@ JToolBarHelper::cancel();
 		<span class="hint"><?php echo JText::_('{{PRIMARY_STORIES}} = Newsletter Primary Stories'); ?></span><br />
 		<span class="hint"><?php echo JText::_('{{SECONDARY_STORIES}} = Newsletter Secondary Stories'); ?></span><br />
 		<span class="hint"><?php echo JText::_('{{COPYRIGHT}} = Current Year (copyright)'); ?></span><br />
+		<span class="hint"><?php echo JText::_('{{UNSUBSCRIBE_LINK}} = 1 Click Unsubscribe Link'); ?></span><br />
+
 	</div>
 	<div class="clr"></div>
 
