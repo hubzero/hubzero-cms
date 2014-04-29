@@ -43,9 +43,6 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
-
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
@@ -70,88 +67,77 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_DETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label for="field-content"><?php echo JText::_('COM_WISHLIST_COMMENT'); ?>:</label><br />
-							<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-content"><?php echo JText::_('COM_WISHLIST_COMMENT'); ?>:</label><br />
+				<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))); ?></textarea>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('Metadata'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('Reference ID'); ?>:</th>
+					<th><?php echo JText::_('Reference ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->item_id; ?>
-						<input type="hidden" name="fields[item_id]" value="<?php echo $this->row->item_id; ?>" />
+						<input type="hidden" name="fields[item_id]" value="<?php echo $this->escape($this->row->item_id); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Category'); ?>:</th>
+					<th><?php echo JText::_('Category'); ?>:</th>
 					<td>
 						<?php echo $this->row->item_type; ?>
-						<input type="hidden" name="fields[item_type]" value="<?php echo $this->row->item_type; ?>" />
+						<input type="hidden" name="fields[item_type]" value="<?php echo $this->escape($this->row->item_type); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<th><?php echo JText::_('ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->id; ?>
-						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->id; ?>" />
+						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->id); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<th><?php echo JText::_('Created'); ?>:</th>
 					<td>
-						<time datetime="<?php echo $this->row->created; ?>"><?php echo $this->row->created; ?></time>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+						<time datetime="<?php echo $this->escape($this->row->created); ?>"><?php echo $this->escape($this->row->created); ?></time>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->created); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
+					<th><?php echo JText::_('Created by'); ?>:</th>
 					<td>
 						<?php 
 						$editor = JUser::getInstance($this->row->created_by);
 						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown'); 
 						?>
-						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->created_by); ?>" />
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_PARAMETERS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><label for="field-anonymous"><?php echo JText::_('COM_WISHLIST_ANONYMOUS'); ?>:</label></th>
-						<td><input type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo $this->row->anonymous ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-state"><?php echo JText::_('COM_WISHLIST_STATUS'); ?>:</label></th>
-						<td>
-							<select name="fields[state]" id="field-state">
-								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('unpublished'); ?></option>
-								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('published'); ?></option>
-								<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('deleted'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<input type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo $this->row->anonymous ? 'checked="checked"' : ''; ?> />
+				<label for="field-anonymous"><?php echo JText::_('COM_WISHLIST_ANONYMOUS'); ?></label>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('COM_WISHLIST_STATUS'); ?>:</label>
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('unpublished'); ?></option>
+					<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('published'); ?></option>
+					<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('deleted'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
 	
-	<?php /*if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
 			<div class="col width-100 fltlft">
 				<fieldset class="panelform">
@@ -162,12 +148,12 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="clr"></div>
 		<?php endif; ?>
-	<?php }*/ ?>
-	
+	*/ ?>
+
 	<input type="hidden" name="wish" value="<?php echo $this->wish; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
