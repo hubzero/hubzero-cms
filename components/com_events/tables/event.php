@@ -511,6 +511,18 @@ class EventsEvent extends JTable
 				$sql .= " ORDER BY publish_up ASC";
 			break;
 		}
+
+		if (isset($filters['limit']))
+		{
+			if (isset($filters['start']))
+			{
+				$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			}
+			else
+			{
+				$sql .= " LIMIT " . $filters['limit'];
+			}
+		}
 		
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
