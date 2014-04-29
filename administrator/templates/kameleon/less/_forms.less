@@ -36,6 +36,7 @@
 		-webkit-background-clip: padding-box;
 		margin-bottom: 1em;
 	}
+	#editor-xtd-buttons a,
 	a.button,
 	button,
 	input[type=submit] {
@@ -64,6 +65,8 @@
 		-webkit-appearance: none;
 		--webkit-appearance: none;
 	}
+	#editor-xtd-buttons a:hover,
+	#editor-xtd-buttons a:focus,
 	a.button:hover,
 	a.button:focus,
 	button:hover,
@@ -74,6 +77,18 @@
 		border: 1px solid #aaaaaa;
 		.box-shadow(~"inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35)");
 		.transition(background-position 0.1s linear);
+	}
+	#editor-xtd-buttons {
+		border: 1px solid #D6D6D6;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		.border-radius(0.25em);
+		padding: 0.41803399em;
+		.clearfix();
+
+		.button2-left {
+			float: left;
+			margin-right: 0.5em;
+		}
 	}
 	select {
 		margin-bottom: 1em;
