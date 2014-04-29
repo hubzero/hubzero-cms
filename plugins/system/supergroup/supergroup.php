@@ -89,17 +89,14 @@ class plgSystemSupergroup extends JPlugin
 			{
 				// include router
 				require_once $componentRouter;
-		
+			
 				// build function name
 				$parseRouteFunction = ucfirst($active) . 'ParseRoute';
 				$parseRouteFunction = str_replace(array("-", "."), "", $parseRouteFunction);
 				
 				// if we have a build route functions, run it
 				if (function_exists($parseRouteFunction))
-				{
-					// get segments from router
-					$routeParts = $parseRouteFunction($query);
-					
+				{	
 					// get current route and remove prefix
 					$currentRoute = rtrim(JURI::getInstance()->getPath(), DS);
 					$currentRoute = trim(str_replace('groups' . DS . $group->get('cn') . DS . $active, '', $currentRoute), DS);
