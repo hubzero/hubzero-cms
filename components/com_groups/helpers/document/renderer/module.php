@@ -44,7 +44,7 @@ class GroupsHelperDocumentRendererModule extends GroupsHelperDocumentRenderer
 		$content = '';
 		
 		// get the page id
-		$pageid = $this->page->get('id');
+		$pageid = ($this->page) ? $this->page->get('id') : null;
 		
 		// get the list of modules
 		$groupModuleArchive = GroupsModelModuleArchive::getInstance();
