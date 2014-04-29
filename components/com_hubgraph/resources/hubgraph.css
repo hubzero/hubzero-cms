@@ -371,6 +371,7 @@ ol.related {
 	float: left;
 	margin-right: 6px;
 	margin-top: 6px;
+	max-width: 80px;
 }
 .sub.domains { 
 	margin-left: 3px;
