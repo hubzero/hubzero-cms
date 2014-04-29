@@ -33,18 +33,5 @@ JToolBarHelper::title( JText::_( 'Usage Manager' ), 'usage.png' );
 JToolBarHelper::preferences('com_usage', '550');
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton) 
-{
-	var form = document.adminForm;
-	
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
-<p>Nothing here yet.</p>
+<p class="warning">There are currently no administrative capabilities for this component. Configuration may be done via the <strong>options</strong> button in the toolbar.</p>
