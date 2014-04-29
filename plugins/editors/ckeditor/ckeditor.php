@@ -292,7 +292,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->resize_enabled                = false;
 		$config->emailProtection               = 'encode';
 		$config->protectedSource               = array('/<group:include([^\\/]*)\\/>/g');
-		$config->extraAllowedContent           = 'mark(*)[*]';
+		$config->extraAllowedContent           = 'mark(*)[*]; *(*)[*]';
 		$config->disableNativeSpellChecker     = false;
 		$config->scayt_autoStartup             = true;
 		$config->scayt_contextCommands         = 'all';
