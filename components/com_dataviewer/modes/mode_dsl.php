@@ -28,7 +28,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 {
 	global $dv_conf;
 	$dd = false;
-	$db =  JFactory::getDBO();
+	$db = JFactory::getDBO();
 
 	if (!$dv_id) {
 		$dv_id = JRequest::getVar('dv');
@@ -70,7 +70,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	// Access restrictions for unpublished databases
 	if(!isset($dd['publication_state']) || $dd['publication_state'] != 1) {
 		$sql = "SELECT username FROM #__project_owners po JOIN #__users u ON (u.id = po.userid) WHERE projectid = {$dd['project']}";
-		$db =  JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$db->setQuery($sql);
 		$dd['acl']['allowed_users'] = $db->loadResultArray();
 	}
@@ -159,10 +159,10 @@ function pathway($dd)
 {
 	$db_id = $dd['db_id'];
 
-	$document =  JFactory::getDocument();
+	$document = JFactory::getDocument();
 	$document->setTitle($dd['title']);
 
-	$mainframe =  JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {

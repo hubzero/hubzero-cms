@@ -1,5 +1,5 @@
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -22,7 +22,7 @@ db.dbJQ(document).ready(function($) {
 	});
 
 
-	$('.db-dd-remove-link').on('click', function() {		
+	$('.db-dd-remove-link').on('click', function() {
 		var dd = $(this).data('dd');
 		var title = $(this).closest('tr').find('td:nth(1)').text();
 		if (confirm('Are you sure you want to remove "' + title + '" Dataview?')) {

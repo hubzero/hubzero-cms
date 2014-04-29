@@ -17,13 +17,11 @@ function view($dd = false) {
 
 	$document =  JFactory::getDocument();
 
-//	dv_add_script('modernizr.js');
 
 	dv_add_script('util.js');
 
 	/* jQuery */
 	dv_add_script('jquery.js');
-//	dv_add_script('jquery-migrate.js');
 
 	/* Bootstrap */
 	dv_add_script('bootstrap/bootstrap.js');
@@ -32,7 +30,6 @@ function view($dd = false) {
 	/* jQuery-UI */
 	dv_add_script('jquery-ui/jquery-ui.js');
 	dv_add_css('jquery-ui/smoothness/jquery-ui.min.css');
-
 
 	dv_add_css('font-awesome/css/font-awesome.css');
 
@@ -56,7 +53,14 @@ function view($dd = false) {
 
 	dv_add_script('dv_custom_views.js');
 	dv_add_css('dv_custom_views.css');
-//	$document->addScript($html_path . '/dv_maps.js' . $ver);
+
+	dv_add_script('jquery.lazyload.min.js');
+
+	if(isset($dd['show_maps'])) {
+		dv_add_script('/leaflet/leaflet.js');
+		dv_add_css('/leaflet/leaflet.css');
+		dv_add_script('dv_maps.js');
+	}
 
 	dv_add_script('jquery.dv.js');
 
@@ -96,6 +100,16 @@ function view($dd = false) {
 		// overrides
 		$dv_conf['settings']['limit'] = (isset($dd['display_limit']))? $dd['display_limit']: $dv_conf['settings']['limit'];
 		$dv_conf['settings']['hide_data'] = isset($dd['hide_data']);
+		$dv_conf['settings']['serverside'] = (isset($dd['serverside']) && $dd['serverside'])? true: false;
+		
+		if(!isset($dd['customizer']) && isset($dv_conf['customizer'])) {
+			$dd['customizer'] = $dv_conf['customizer'];
+		}
+		
+		if(isset($dd['customizer']) && $dd['customizer'] === false) {
+			unset($dd['customizer']);
+		}
+
 		$dv_conf['settings']['serverside'] = (isset($dd['serverside']) && $dd['serverside'])? true: false;
 
 		$sql = query_gen($dd);
@@ -178,34 +192,50 @@ function view($dd = false) {
 			&nbsp;<h4 id="dv_return_link_container" style="display: inline-block; margin: 0;"><?=$return?></h4>
 		</div>
 		<div id="dv-spreadsheet-toolbar" class="ui-corner-top">
+			<?php if(!isset($dd['top_menu']['download']['show']) || $dd['top_menu']['download']['show'] != false): ?>
 			<button class="btn btn-mini dv-btn-download" data-format="csv" title="Download Data as a spreadsheet">
 				<i class="icon-download"> </i >
 				<span class="lbl">Download</span>
 			</button>
+			<?php endif; ?>
+
+			<?php if(!isset($dd['top_menu']['fullscreen']['show']) || $dd['top_menu']['fullscreen']['show'] != false): ?>
 			<button id="dv-btn-fullscreen" class="btn btn-mini" title="Fullscreen" data-screen-mode=''>
 				<i class="icon-fullscreen"> </i >
 				<span class="lbl">Fullscreen</span>
 			</button>
+			<?php endif; ?>
+
 			<?php if(isset($dd['filters']) && count($dd['filters'])>0): ?>
 			<button id="dv-btn-filters" class="btn btn-mini" title="Filter Dialog">
 				<i class="icon-filter"> </i >
 				<span class="lbl">Filter Dialog</span>
 			</button>
 			<?php endif; ?>
+
 			<button id="dv-btn-filter-clear-all" class="btn btn-mini" title="Click this to clear all the column filters and the global search">
 				<i class="icon-remove-circle"> </i >
 				<span class="lbl">Clear Filters</span>
 			</button>
-			
+
+			<?php if(!isset($dd['top_menu']['no_wrap']['show']) || $dd['top_menu']['no_wrap']['show'] != false): ?>
 			<button id="dv-btn-no-wrap" class="btn btn-mini" title="Disable text wrapping for all cells." data-current="normal">
 				<i class="icon-text-width"> </i >
 				<span class="lbl">No-Wrap</span>
 			</button>
+			<?php endif; ?>
 
 			<?php if(isset($dd['custom_charts']) || isset($dd['charts_list'])): ?>
 			<button id="dv-spreadsheet-charts" class="btn btn-mini" title="Display charts">
 				<i class="icon-bar-chart"> </i >
 				<span class="lbl">Charts</span>
+			</button>
+			<?php endif; ?>
+
+			<?php if(isset($dd['show_maps'])): ?>
+			<button id="dv-spreadsheet-maps" class="btn btn-mini" title="Display Maps">
+				<i class="icon-map-marker"></i > 
+				<span class="lbl">Maps</span>
 			</button>
 			<?php endif; ?>
 
@@ -264,17 +294,21 @@ function view($dd = false) {
 
 		<?php if(isset($dd['show_maps'])): ?>
 		<div id="dv_maps_panel" style="position: relative; display: none; clear: both; width: 800px; height: 300px; padding: 3px 5px 3px 5px; margin-top: 0;" class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
-			<button class="btn btn-inverse btn-mini dv-btn-download" data-format="kml" class="dv-btn-download" style="font-weight: bold; background-color: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in KML format">
-				<i class="icon-download"></i > KML
+			<button class="btn btn-inverse btn-mini" title="Click here to reload the map" id="dv_map_reload" style="float: left;">
+				<i class="icon-refresh"></i > Reload Map
 			</button>
-			<button class="btn btn-inverse btn-mini dv-btn-download" data-format="kmz" class="dv-btn-download" style="font-weight: bold; background-color: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in KMZ format">
-				<i class="icon-download"></i > KMZ
-			</button>
-			<button class="btn btn-inverse btn-mini dv-btn-download" data-format="shp" class="dv-btn-download" style="font-weight: bold; background-color: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in SHP format">
-				<i class="icon-download"></i > SHP
-			</button>
-			<a href="#" style="border: 0;" title="Click here to reload the map" alt="Reload button" id="dv_map_reload" style="font-size: 10px;"><img src="<?=$html_path?>/icon-refresh.png" style="border: 0; height: 14px; margin-right: 2px;" />Reload Map</a>
-			<div id="dv_maps_canvas" style="position: absolute; top: 20px; bottom: 8px; left: 5px; right: 8px;" class="ui-widget-content ui-corner-all"></div>
+			<div style="float: right;">
+				<button data-format="kml" class="btn btn-inverse btn-mini dv-btn-download" style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in KML format">
+					<i class="icon-download"></i > KML
+				</button>
+				<button data-format="kmz" class="btn btn-inverse btn-mini dv-btn-download" style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in KMZ format">
+					<i class="icon-download"></i > KMZ
+				</button>
+				<button data-format="shp" class="btn btn-inverse btn-mini dv-btn-download" style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in SHP format">
+					<i class="icon-download"></i > SHP
+				</button>
+			</div>
+			<div id="dv_maps_canvas" style="position: absolute; top: 30px; bottom: 8px; left: 5px; right: 8px;" class="ui-widget-content ui-corner-all"></div>
 		</div>
 		<?php endif; ?>
 
@@ -409,7 +443,7 @@ function view($dd = false) {
 				} elseif (isset($filted_view[$id])) {
 					print '<th><input type="text" placeholder="' . $filted_view[$id] . '" disabled=disabled style="background: yellow;" /></th>';
 				} else {
-					print '<th><input title="' . $title . '" type="text" placeholder="' . $label . '" class="search_init" /></th>';
+					print '<th><input title="' . $title . '" type="text" placeholder="' . $label . '" class="search_init" style="background: #FFF;" /><span class="dv-col-clear-filter" style="margin-left: -15px; color: #FFF; cursor: pointer;"><i class="icon-remove-sign"></i></span></th>';
 				}
 			}
 
@@ -433,7 +467,6 @@ function view($dd = false) {
 		if (JRequest::getVar('show_filters', 'false') === 'true') {
 			$dv_show_filters = 'true';
 		}
-
 	?>
 		<!-- Start: Dialog boxes -->
 		<div id="truncated_text_dialog" style="display: none; overflow: auto;" title="Full Text"></div>
@@ -451,7 +484,7 @@ function view($dd = false) {
 			dv_show_filters = <?=$dv_show_filters?>;
 			dv_settings.show_charts = <?=JRequest::getInt('show_chart', 'undefined');?>;
 			dv_show_customizer = <?=($show_customizer)? 'true': 'false';?>;
-			var dv_show_maps = <?=JRequest::getInt('show_map', 'undefined');?>;
+			var dv_show_maps = <?=JRequest::getString('show_map', 'undefined');?>;
 		</script>
 
 		<form style="display: none;" id="dv-spreadsheet-dl" method="POST"

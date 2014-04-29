@@ -15,7 +15,7 @@ function get_conf($db_id)
 {
 	global $dv_conf, $com_name;
 
-	$params =  JComponentHelper::getParams('com_datastores');
+	$params = JComponentHelper::getParams('com_datastores');
 	$dv_conf['db']['host'] = $params->get('db_host');
 	$dv_conf['db']['user'] = $params->get('db_ro_user');
 	$dv_conf['db']['password'] = $params->get('db_ro_pass');
@@ -31,7 +31,7 @@ function get_dd($db_id)
 {
 	global $dv_conf;
 	$dd = false;
-	$db =  JFactory::getDBO();
+	$db = JFactory::getDBO();
 
 	$dv_id = JRequest::getVar('dv');
 
@@ -47,7 +47,7 @@ function get_dd($db_id)
 		$dd['table'] = $td['name'];
 		$dd['title'] = $r['name'];
 
-		if ($db_id['extra'] == 'table' || $db_id['extra'] == 'update') {
+		if (isset($db_id['extra']) && ($db_id['extra'] == 'table' || $db_id['extra'] == 'update')) {
 
 			if ($db_id['extra'] == 'update') {
 				$update_link = '/datastores/' . $db_id['name'] . '/table/data_record_update/?table=' . $dv_id . '&__ds_rec_id=';
@@ -58,7 +58,8 @@ function get_dd($db_id)
 					'type'=>'link',
 					'relative'=>'true',
 					'link_label'=>'Edit',
-					'link_title'=>'Click here to update or remove this record'
+					'link_title'=>'Click here to update or remove this record',
+					'popup'=>array('window'=>'Edit_Record', 'features'=>'width=1175px,resizable,scrollbars,status')
 				);
 			}
 
@@ -69,6 +70,11 @@ function get_dd($db_id)
 						$dd['cols'][$td['name'] . '.' . $col['name']]['type_extra'] = $col['type_extra'];
 						$dd['cols'][$td['name'] . '.' . $col['name']]['ds-repo-path'] = "/file_repo/{$td['name']}/{$col['name']}";
 						$dd['cols'][$td['name'] . '.' . $col['name']]['file-verify'] = true;
+					}
+
+					if ($col['type'] == 'url') {
+						$dd['cols'][$td['name'] . '.' . $col['name']]['type'] = 'url';
+						$dd['cols'][$td['name'] . '.' . $col['name']]['url-display'] = 'full_link';
 					}
 
 					if ($col['type'] == 'txt' && ($col['type_extra'] == 'medium' || $col['type_extra'] == 'large')) {
@@ -84,10 +90,14 @@ function get_dd($db_id)
 		$dsid = $db_id['name'];
 		$path = "/data/datastores/$dsid/datadefinitions";
 		$dd_file = "$dv_id.json";
-		$dd = json_decode(file_get_contents("$path/$dd_file"), true);
+		if(file_exists("$path/$dd_file")) {
+			$dd = json_decode(file_get_contents("$path/$dd_file"), true);
+		} else {
+			return false;
+		}
 	}
 	
-	
+
 	
 	$dd['db_id'] = $db_id;
 	$dd['dv_id'] = $dv_id;
@@ -108,17 +118,22 @@ function get_dd($db_id)
 	if (isset($dv_conf['proc_mode_switch']) && $dv_conf['proc_mode_switch']) {
 		$link = get_db();
 		$total = mysql_query(query_gen_total($dd), $link);
-		$total = mysql_fetch_assoc($total);
-		$total = isset($total['total']) ? $total['total'] : 0;
-		$dd['total_records'] = $total;
+		if ($total) {
+			$total = mysql_fetch_assoc($total);
+			$total = isset($total['total']) ? $total['total'] : 0;
+			$dd['total_records'] = $total;
 
-		$vis_col_count = 0;
-		if(isset($dd['cols'])) {
-			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
-		}
+			$vis_col_count = 0;
+			if(isset($dd['cols'])) {
+				$vis_col_count = count(array_filter($dd['cols'], function ($col) {
+						return !isset($col['hide']); 
+					})
+				);
+			}
 
-		if ($dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
-			$dd['serverside'] = true;
+			if ($dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
+				$dd['serverside'] = true;
+			}
 		}
 	}
 
@@ -158,11 +173,14 @@ function get_dd($db_id)
 
 	/* ACL */
 
-	// Dataviews attached to resources
+	// Dataviews attached to resources & publised
 	$sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path 
 		FROM jos_datastore_resources AS dr 
-		LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id) 
-		WHERE r.id IS NOT NULL AND dr.datastore_id = {$db_id['name']} AND dv.path = '/dataviewer/view/{$db_id['name']}:ds/$dv_id/'";
+			LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id) 
+		WHERE r.id IS NOT NULL 
+			AND r.published = 1 
+			AND dr.datastore_id = {$db_id['name']} 
+			AND dv.path = '/dataviewer/view/{$db_id['name']}:ds/$dv_id/'";
 	$db->setQuery($sql);
 	$res = $db->loadAssoc();
 
@@ -259,11 +277,11 @@ function pathway($dd)
 {
 	$db_id = $dd['db_id'];
 
-	$document =  JFactory::getDocument();
+	$document = JFactory::getDocument();
 	$document->setTitle($dd['title']);
 
-	$mainframe =  JFactory::getApplication();
-	$pathway = &$mainframe->getPathway();
+	$mainframe = JFactory::getApplication();
+	$pathway = $mainframe->getPathway();
 
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 		$ref_title = "Datastore";

@@ -8,30 +8,30 @@
  */
 
 
-jQuery.fn.dataTableExt.oApi.fnFilterClear  = function (oSettings) {
+jQuery.fn.dataTableExt.oApi.fnFilterClear = function (oSettings) {
 
-    /* Remove global filter */
-    oSettings.oPreviousSearch.sSearch = "";
-      
-    /* Remove the text of the global filter in the input boxes */
-    if ( typeof oSettings.aanFeatures.f != 'undefined' )
-    {
-        var n = oSettings.aanFeatures.f;
-        for ( var i=0, iLen=n.length ; i<iLen ; i++ )
-        {
-            jQuery('input', n[i]).val( '' );
-        }
-    }
-      
-    /* Remove the search text for the column filters */
-    for ( var i=0, iLen=oSettings.aoPreSearchCols.length ; i<iLen ; i++ )
-    {
-        oSettings.aoPreSearchCols[i].sSearch = "";
-        jQuery('th>input', oSettings.nTFoot)[i].value = '';
-    }
-      
-    /* Redraw */
-    oSettings.oApi._fnReDraw( oSettings );
+	/* Remove global filter */
+	oSettings.oPreviousSearch.sSearch = "";
+
+	/* Remove the text of the global filter in the input boxes */
+	if ( typeof oSettings.aanFeatures.f != 'undefined' )
+	{
+		var n = oSettings.aanFeatures.f;
+		for ( var i=0, iLen=n.length ; i<iLen ; i++ )
+		{
+			jQuery('input', n[i]).val( '' );
+		}
+	}
+
+	/* Remove the search text for the column filters */
+	for ( var i=0, iLen=oSettings.aoPreSearchCols.length ; i<iLen ; i++ )
+	{
+		oSettings.aoPreSearchCols[i].sSearch = "";
+		jQuery('th>input', oSettings.nTFoot)[i].value = '';
+	}
+
+	/* Redraw */
+	oSettings.oApi._fnReDraw( oSettings );
 };
 
 
@@ -52,7 +52,7 @@ jQuery.fn.dataTableExt.oApi.fnGetColumnData = function ( oSettings, iColumn, bUn
 	var aiRows;
 
 	// use only filtered rows
-	if (bFiltered == true) aiRows = oSettings.aiDisplay; 
+	if (bFiltered == true) aiRows = oSettings.aiDisplay;
 	// use all rows
 	else aiRows = oSettings.aiDisplayMaster; // all row numbers
 
@@ -159,8 +159,24 @@ jQuery.fn.dataTableExt.oSort['numrange-desc']  = function(a,b) {
 };
 
 
-jQuery.fn.dataTableExt.oSort['datetime-desc'] = jQuery.fn.dataTableExt.oSort['date-desc'];
+// Field type: datetime
+jQuery.fn.dataTableExt.oSort['datetime-pre'] = jQuery.fn.dataTableExt.oSort['date-pre'];
 jQuery.fn.dataTableExt.oSort['datetime-asc'] = jQuery.fn.dataTableExt.oSort['date-asc'];
+jQuery.fn.dataTableExt.oSort['datetime-desc'] = jQuery.fn.dataTableExt.oSort['date-desc'];
+
+
+// Field type: time
+jQuery.fn.dataTableExt.oSort['time-pre'] = function (a) {
+	var x = Date.parse('1970-01-01T' + a);
+
+	if (isNaN(x) || x === '') {
+		x = Date.parse('1970-01-01T00:00:00');
+	}
+	return x;
+};
+
+jQuery.fn.dataTableExt.oSort['time-asc'] = jQuery.fn.dataTableExt.oSort['date-asc'];
+jQuery.fn.dataTableExt.oSort['time-desc'] = jQuery.fn.dataTableExt.oSort['date-desc'];
 
 
 jQuery.fn.dataTableExt.ofnSearch['number'] = function (data) {

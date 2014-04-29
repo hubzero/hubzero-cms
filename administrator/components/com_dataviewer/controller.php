@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -49,14 +49,13 @@ function authorized()
 {
 	global $conf;
 	$juser = JFactory::getUser();
-	ximport('Hubzero_User_Helper');
 
 	if ($conf['access_limit_to_group'] === false) {
 		return true;
 	}
 
 	if ($conf['access_limit_to_group'] !== false && !$juser->get('guest')) {
-		$groups = Hubzero_User_Helper::getGroups($juser->get('id'));
+		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
 		if ($groups && count($groups)) {
 			foreach ($groups as $g) {
 				if ($g->cn == $conf['access_limit_to_group']) {

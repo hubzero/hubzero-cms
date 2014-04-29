@@ -17,11 +17,17 @@ function get_conf($db_id)
 	$db_dv_conf = array();
 	$db_name = $db_id['name'];
 
-	$db_conf_file = "/data/db/$db_name/database.json";
+	// Base directory
+	$dv_conf['db_base_dir'] = JComponentHelper::getParams('com_databases')->get('base_dir');
+	if (!$dv_conf['db_base_dir'] || $dv_conf['db_base_dir'] == '') {
+		$dv_conf['db_base_dir'] = '/db/databases';
+	}
+
+	$db_conf_file = "{$dv_conf['db_base_dir']}/$db_name/database.json";
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 	$dv_conf['db'] = array_merge($dv_conf['db'], $db_conf['database_ro']);
 
-	$dv_conf_file = "/data/db/$db_name/applications/$com_name/config.json";
+	$dv_conf_file = "{$dv_conf['db_base_dir']}/$db_name/applications/$com_name/config.json";
 
 	if (file_exists($dv_conf_file)) {
 		$db_dv_conf = json_decode(file_get_contents($dv_conf_file), true);
@@ -44,14 +50,13 @@ function get_dd($db_id)
 	$dv_id = JRequest::getVar('dv');
 	$db_name = $db_id['name'];
 
-	$dv_conf['dd_json'] = "/data/db/$db_name/applications/dataviewer/datadefinitions";
+	$dv_conf['dd_json'] = "{$dv_conf['db_base_dir']}/$db_name/applications/dataviewer/datadefinitions";
 
 	$dd_json_file = (isset($dv_conf['dd_json']) && file_exists($dv_conf['dd_json'] . DS . $dv_id . '.json'))? $dv_conf['dd_json'] . DS . $dv_id . '.json': false;
 
-	if ($db_id['extra'] && $db_id['extra'] == 'table') {
+	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 		$dd['title'] = 'Table : ' . $dv_id;
 		$dd['table'] = $dv_id;
-		$dd['serverside'] = true;
 
 		$juser = JFactory::getUser();
 		if (!$juser->get('guest') && isset($dv_conf['_managers']) && $dv_conf['_managers'] !== false) {
@@ -94,22 +99,27 @@ function get_dd($db_id)
 
 		$dd = _dd_post($dd);
 
-		/* Dynamically set processing mode */
-		if (isset($dv_conf['proc_mode_switch']) && $dv_conf['proc_mode_switch']) {
-			$link = get_db();
-			$total = mysql_query(query_gen_total($dd), $link);
-			$total = mysql_fetch_assoc($total);
-			$total = isset($total['total']) ? $total['total'] : 0;
-			$dd['total_records'] = $total;
+	}
 
-			$vis_col_count = 0;
-			if(isset($dd['cols'])) {
-				$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
-			}
+	/* Dynamically set processing mode */
+	if (isset($dv_conf['proc_mode_switch']) && $dv_conf['proc_mode_switch']) {
+		$link = get_db();
+		$total = mysql_query(query_gen_total($dd), $link);
+		$total = mysql_fetch_assoc($total);
+		$total = isset($total['total']) ? $total['total'] : 0;
+		$dd['total_records'] = $total;
 
-			if ($dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
-				$dd['serverside'] = true;
-			}
+		$vis_col_count = 0;
+		if(isset($dd['cols'])) {
+			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+		} elseif (isset($db_id['extra']) && $db_id['extra'] == 'table') {
+			$sql = "SELECT COUNT(*) AS cols FROM information_schema.columns WHERE table_name = '{$dd['table']}'";
+			$cols = mysql_fetch_assoc(mysql_query($sql, $link));
+			$vis_col_count = $cols['cols'];
+		}
+
+		if ($dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
+			$dd['serverside'] = true;
 		}
 	}
 
@@ -180,9 +190,9 @@ function _dd_post($dd)
 
 function pathway($dd)
 {
-	$document =  JFactory::getDocument();
+	$document = JFactory::getDocument();
 	$document->setTitle($dd['title']);
-	$mainframe =  JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 
 	if(isset($_SERVER['HTTP_REFERER'])) {
