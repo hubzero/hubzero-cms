@@ -51,11 +51,11 @@ $this->draft = $this->draftInternal + $this->draftUser;
 
 			$(document).ready(function() {
 				resolutionPie = $.plot($("#resources-container<?php echo $this->module->id; ?>"), [
-					{label: 'published', data: <?php echo round(($this->published / $total)*100, 2); ?>, color: '#656565'},
-					{label: 'draft', data: <?php echo round(($this->draft / $total)*100, 2); ?>, color: '#999'}, //#7c94c2
-					{label: 'pending', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '#f9d180'}, //#c67c6b
-					{label: 'removed', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '#ccc'}, //#d8aa65
-					{label: 'unpublished', data: <?php echo round(($this->unpublished / $total)*100, 2); ?>, color: '#eee'} //#5f9c63
+					{label: 'published', data: <?php echo round(($this->published / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_published", "#656565"); ?>'},
+					{label: 'draft', data: <?php echo round(($this->draft / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_draft", "#999"); ?>'},
+					{label: 'pending', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_pending", "#f9d180"); ?>'},
+					{label: 'removed', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_removed", "#ccc"); ?>'},
+					{label: 'unpublished', data: <?php echo round(($this->unpublished / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_unpublished", "#fff"); ?>'}
 				], {
 					legend: { 
 						show: true
