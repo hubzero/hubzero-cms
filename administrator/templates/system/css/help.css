@@ -1,0 +1,272 @@
+
+body {
+	font-size: 14px;
+	line-height: 20px;
+	color: #222;
+	background: #fff;
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	padding: 20px;
+	text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+	color: #333;
+	margin: 0;
+}
+h1 {
+	font-size: 3em;
+	line-height: 1;
+	margin-bottom: 0.5em;
+	padding-bottom: 0.25em;
+	border-bottom: 1px solid #CCC;
+}
+h2 {
+	font-size: 2em;
+	margin: 1.5em 0 0.5em 0;
+}
+h3 {
+	font-size: 1.5em;
+	line-height: 1;
+	margin: 0.5em 0;
+}
+h4 {
+	font-size: 1.2em;
+	line-height: 1.25;
+	margin: 0.5em 0
+}
+h5 {
+	font-size: 1em;
+	margin: 0.25em 0
+	}
+h6 {
+	font-size: 1em;
+	color: #777;
+}
+h1 img, 
+h2 img, 
+h3 img, 
+h4 img, 
+h5 img, 
+h6 img {
+	margin: 0;
+}
+p {
+	margin: 0 0 1.5em;
+}
+p img.left {
+	float: left;
+	margin: 1.5em 1.5em 1.5em 0;
+	padding: 0;
+}
+p img.right {
+	float: right;
+	margin: 1.5em 0 1.5em 1.5em;
+}
+a {
+	color: #0FA1CA;
+	text-decoration: underline;
+}
+a:focus, 
+a:hover {
+	color: #000;
+	text-decoration: none;
+}
+a:visited {
+	color: #c23444;
+}
+blockquote {
+	margin: 1.5em;
+	color: #666;
+	font-style: italic;
+}
+strong {
+	font-weight: bold;
+}
+em, 
+dfn {
+	font-style: italic;
+}
+dfn {
+	font-weight: bold;
+}
+sup, 
+sub {
+	line-height: 0;
+}
+abbr, 
+acronym {
+	border-bottom: 1px dotted #666;
+}
+address {
+	margin: 0 0 1.5em;
+	font-style: italic;
+}
+del {
+	color: #666;
+}
+pre {
+	margin: 1.5em 0;
+	white-space: pre;
+}
+pre, 
+code, 
+tt {
+	font-size: 12px;
+	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
+	line-height: 1.5;
+	background: #efefef;
+	border: 1px solid #CCC;
+	padding: 5px;
+}
+li ul, 
+li ol {
+	margin: 0 1.5em;
+	}
+ul, 
+ol {
+	margin: 0 1.5em 1.5em 2em;
+}
+ul {
+	list-style-type: disc;
+}
+ol {
+	list-style-type: decimal;
+}
+ul ul {
+	list-style-type: circle;
+}
+ol ol {
+	list-style-type: lower-alpha;
+}
+ul.unstyled,
+ol.unstyled {
+	list-style: none;
+	margin: 0 1.5em 1.5em 0;
+}
+ul li,
+ol li {
+	margin: 0.5em 0;
+}
+dl {
+	margin: 0 0 1.5em 0;
+}
+dl dt {
+	font-weight: bold;
+}
+dd {
+	margin-left: 1.5em;
+}
+
+table {
+	width: 100%;
+	border-left: 1px solid #CCC;
+	border-top: 1px solid #CCC;
+}
+thead th {
+	font-weight: bold;
+	font-size: 1.1em;
+	line-height: 1.5em;
+	background: #fff;
+}
+th,
+td {
+	padding: 5px;
+	border-bottom: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+tr:nth-child(even) td {
+	background: #f0f0f0;
+}
+tfoot {
+	font-size: 0.85em;
+	font-style: italic;
+}
+figure {
+	display: inline-block;
+	border: 1px solid #ccc;
+	padding: 4px;
+	background: #FFF;
+	margin: 10px 0;
+}
+figcaption {
+	font-size: 1em;
+	padding: 5px 0 2px 0;
+	color: #777;
+	text-align: center;
+}
+
+/* Added By Chris */
+
+.example {
+	position: relative;
+	padding: 30px 20px 10px 20px;
+	margin: 20px 0 60px 0;
+	background: #FFF;
+	border: 1px solid #CCC;
+}
+.example:before {
+	content: 'Example';
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	border: 1px solid #CCC;
+	background: #efefef;
+	padding: 5px;
+	font-size: 12px;
+	line-height: 12px;
+}
+img {
+	max-width: 100%;
+}
+.help-footer {
+	border-top: 1px solid #ccc;
+	font-size: 0.85em;
+	padding: 10px 0 0 0;
+	margin: 10px 0 0 0;
+}
+.help-footer a.top,
+.help-footer a.index {
+	float: right;
+	color: #0FA1CA;
+}
+.help-footer a.index {
+	margin-right: 10px;
+}
+.help-footer .modified {
+	color: #ccc;
+}
+.help-header .back {
+	float: left;
+	display: none;
+	position: relative;
+	width: 24px;
+	height: 24px;
+	margin: 10px 10px 0 0;
+	background: #555;
+	border: none;
+	color: transparent;
+	border-radius: 2px;
+}
+.help-header .back:hover {
+	background: #222;
+}
+.help-header .back:before {
+	content: '\2190';
+	font-family: 'Fontcons';
+	color: #FFF;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	text-align: center;
+	padding-top: 6px;
+}
+hr {
+	height: 0;
+	width: 100%;
+	padding: 0;
+	margin: 30px 0;
+	border: none;
+	border-top:1px solid #efefef;
+}
