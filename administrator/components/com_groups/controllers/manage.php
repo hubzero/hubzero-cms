@@ -435,9 +435,10 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		shell_exec("cp -rn $srcPath $uploadPath");
 		
 		// make sure files are all owned by www-data
+		// make sure files are all group owned by access-content
 		// make sure files are group read and writable
-		shell_exec("chown -R www-data.www-data $uploadPath");
-		shell_exec("chmod -R 774 $uploadPath");
+		shell_exec("chown -R www-data.access-content $uploadPath");
+		shell_exec("chmod -R 2770 $uploadPath");
 		
 		// create super group DB if doesnt already exist
 		$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
