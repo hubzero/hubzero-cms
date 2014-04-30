@@ -2,7 +2,7 @@
 /**
  * @package		Joomla.Administrator
  * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -12,14 +12,14 @@ $user = JFactory::getUser();
 ?>
 <table width="100%">
 	<tr valign="top">
-		<td>
+		<td class="media-tree">
 			<fieldset id="treeview">
 				<legend><?php echo JText::_('COM_MEDIA_FOLDERS'); ?></legend>
 				<div id="media-tree_tree"></div>
 				<?php echo $this->loadTemplate('folders'); ?>
 			</fieldset>
 		</td>
-		<td>
+		<td class="media-browser">
 			<?php if (($user->authorise('core.create', 'com_media')) and $this->require_ftp): ?>
 				<form action="index.php?option=com_media&amp;task=ftpValidate" name="ftpForm" id="ftpForm" method="post">
 					<fieldset title="<?php echo JText::_('COM_MEDIA_DESCFTPTITLE'); ?>">
