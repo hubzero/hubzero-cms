@@ -203,7 +203,7 @@ class plgSearchPublications extends SearchPlugin
 				$weight AS weight,
 				v.published_up AS date,
 				c.alias AS section,
-				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)  
+				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
 					AS contributors,
 				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
 					AS contributor_ids,
