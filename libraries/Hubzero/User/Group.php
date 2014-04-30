@@ -1567,6 +1567,9 @@ class Group extends Object
 	{
 		$options = array();
 
+		// get description before parsing
+		$before = $this->get($type . '_desc');
+
 		switch (strtolower($as))
 		{
 			case 'parsed':
@@ -1605,6 +1608,13 @@ class Group extends Object
 		if ($shorten)
 		{
 			$content = String::truncate($content, $shorten, $options);
+		}
+		
+		// set our descriptions to be html
+		if ($before != $content && $as == 'parsed')
+		{
+			$this->set($type . '_desc', trim($content));
+			$this->update();
 		}
 
 		return $content;
