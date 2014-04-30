@@ -136,23 +136,23 @@ foreach ($this->rows as $row)
 	switch ($row->get('access', 0)) 
 	{
 		case 0:
-			$color_access = 'style="color: green;"';
+			$color_access = 'public';
 			$task_access = 'accessregistered';
 			$row->set('groupname', JText::_('Public'));
 		break;
 		case 1:
-			$color_access = 'style="color: red;"';
+			$color_access = 'registered';
 			//$task_access = 'accessspecial';
 			$task_access = 'accessprivate';
 			$row->set('groupname', JText::_('Registered'));
 		break;
 		/*case 2:
-			$color_access = 'style="color: black;"';
+			$color_access = 'special';
 			$task_access = 'accessprivate';
 			$row->set('groupname', JText::_('Special'));
 		break;*/
 		case 4:
-			$color_access = 'style="color: red;"';
+			$color_access = 'private';
 			$task_access = 'accesspublic';
 			$row->set('groupname', JText::_('Private'));
 		break;
@@ -186,12 +186,12 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->get('id'); ?>" <?php echo $color_access; ?> title="<?php echo JText::_('COM_COLLECTIONS_CHANGE_ACCESS'); ?>">
-						<?php echo $row->get('groupname'); ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->get('id'); ?>" class="access <?php echo $color_access; ?>" title="<?php echo JText::_('COM_COLLECTIONS_CHANGE_ACCESS'); ?>">
+						<span><?php echo $row->get('groupname'); ?></span>
 					</a>
 				<?php } else { ?>
-					<span <?php echo $color_access; ?>>
-						<?php echo $row->get('groupname'); ?>
+					<span class="access <?php echo $color_access; ?>">
+						<span><?php echo $row->get('groupname'); ?></span>
 					</span>
 				<?php } ?>
 				</td>
