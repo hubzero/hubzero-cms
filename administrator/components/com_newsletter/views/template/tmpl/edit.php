@@ -36,7 +36,7 @@ $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 JToolBarHelper::title(JText::_('Newsletter Template') . ': ' . $text, 'template.png');
 
 //add toolbar buttons
-JToolBarHelper::help('template.html', true);
+JToolBarHelper::help('index.php?option=com_help&component=com_newsletter&page=template', true);
 JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
