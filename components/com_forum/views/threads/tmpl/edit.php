@@ -136,7 +136,7 @@ else
 				<label for="fieldcomment">
 					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_FORUM_REQUIRED'); ?></span>
 					<?php
-					echo \JFactory::getEditor()->display('fields[comment]', $this->escape(stripslashes($this->post->get('comment'))), '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
+					echo \JFactory::getEditor()->display('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
