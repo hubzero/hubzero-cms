@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'watching.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'comment.php');
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'tags.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'tags.php');
 
 /**
  * Support model for a ticket
@@ -49,11 +49,18 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	protected $_tbl_name = 'SupportTicket';
 
 	/**
-	 * \Hubzero\ItemList
+	 * \Hubzero\Base\ItemList
 	 * 
 	 * @var object
 	 */
 	private $_data = null;
+
+	/**
+	 * Support ACL
+	 * 
+	 * @var object
+	 */
+	private $_acl = null;
 
 	/**
 	 * URL for this entry
@@ -126,7 +133,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			$user = \Hubzero\User\Profile::getInstance($this->get('login'));
 			if (!is_object($user) || !$user->get('uidNumber'))
 			{
-				$user = new \Hubzero\User\Profile(0);
+				$user = new \Hubzero\User\Profile();
 				$user->set('name', $this->get('name'));
 				$user->set('username', $this->get('login'));
 				$user->set('email', $this->get('email'));
@@ -155,7 +162,12 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	{
 		if (!($this->_data->get('owner.profile') instanceof \Hubzero\User\Profile))
 		{
-			$this->_data->set('owner.profile', \Hubzero\User\Profile::getInstance($this->get('owner')));
+			$user = \Hubzero\User\Profile::getInstance($this->get('owner'));
+			if (!is_object($user) || !$user->get('uidNumber'))
+			{
+				$user = new \Hubzero\User\Profile();
+			}
+			$this->_data->set('owner.profile', $user);
 		}
 		if ($property)
 		{
@@ -305,7 +317,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			case 'count':
 				if (!is_numeric($this->_data->get('comments.count')) || $clear)
 				{
-					$tbl = new SupportTableComment($this->_db);
+					$tbl = new SupportComment($this->_db);
 					$this->_data->set('comments.count', $tbl->countComments($this->access('read', 'private_comments'), $this->get('id'))); //count($filters));
 				}
 				return $this->_data->get('comments.count');
@@ -316,7 +328,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			default:
 				if (!($this->_data->get('comments.list') instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					$tbl = new SupportTableComment($this->_db);
+					$tbl = new SupportComment($this->_db);
 					if ($results = $tbl->getComments($this->access('read', 'private_comments'), $this->get('id'))) //find($filters))
 					{
 						foreach ($results as $key => $result)
@@ -529,10 +541,28 @@ class SupportModelTicket extends \Hubzero\Base\Model
 					return $content;
 				}
 
-				$attach = SupportModelAttachment::getInstance(0);
-				$attach->set('ticket', $this->get('id'));
+				$config = JComponentHelper::getParams('com_support');
+				$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('id');
 
-				$this->set('report_parsed', $attach->parse(stripslashes($this->get('report'))));
+				$webpath = str_replace('//', '/', rtrim(JURI::getInstance()->base(), '/') . '/' . $path);
+				if (isset($_SERVER['HTTPS'])) 
+				{
+					$webpath = str_replace('http:', 'https:', $webpath);
+				}
+				if (!strstr($webpath, '://')) 
+				{
+					$webpath = str_replace(':/', '://', $webpath);
+				}
+
+				$attach = new SupportAttachment($this->_db);
+				$attach->webpath = $webpath;
+				$attach->uppath  = JPATH_ROOT . DS . $path;
+				$attach->output  = 'web';
+
+				$this->set('report_parsed', htmlentities($this->get('report'), ENT_COMPAT, 'UTF-8'));
+				$this->set('report_parsed', nl2br($this->get('report_parsed')));
+				$this->set('report_parsed', str_replace("\t",' &nbsp; &nbsp;', $this->get('report_parsed')));
+				$this->set('report_parsed', $attach->parse($this->get('report_parsed')));
 
 				return $this->content('parsed');
 			break;
