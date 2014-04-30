@@ -51,19 +51,15 @@ JToolBarHelper::custom('sendtest', 'sendtest', '', 'Test Send');
 JToolBarHelper::custom('sendnewsletter', 'send', '', 'Send');
 JToolBarHelper::spacer();
 JToolBarHelper::preferences($this->option, '550');
+
+// add js
+$this->js();
 ?>
 
-
-
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+
+Joomla.submitbutton = function(pressbutton)
 {
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	
 	if (pressbutton == 'preview')
 	{
 		var id = '',
@@ -79,9 +75,6 @@ function submitbutton(pressbutton)
 		HUB.Administrator.Newsletter.newsletterPreview( id );
 		return;
 	}
-	
-	// do field validation
-	submitform( pressbutton );
 }
 </script>
 
