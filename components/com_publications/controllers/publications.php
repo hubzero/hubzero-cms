@@ -73,19 +73,21 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$this->_getStyles('', 'jquery.fancybox.css', true); // add fancybox styling
 		}
 		
+		if (strrpos(strtolower($this->_alias), '.rdf') > 0)
+		{
+		    $this->_resourceMap();
+			return;
+		}
 		if (($this->_id || $this->_alias) && !$this->_task) 
 		{
 			$this->_task = 'view';
+			$this->viewTask();
+			return;
 		}
 		elseif (!$this->_task)
 		{
 			$this->_task = 'intro';
 		}
-		if (strrpos(strtolower($this->_alias), '.rdf') > 0)
-        {
-            $this->_resourceMap();
-			return;
-        }
 		
 		// Set the default task
 		$this->registerTask('__default', 'intro');
