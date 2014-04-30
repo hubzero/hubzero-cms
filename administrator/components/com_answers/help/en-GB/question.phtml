@@ -1,8 +1,72 @@
 		<article>
 			<h1><span>Question</span></h1>
-			<div class="section">
+
+			<ul class="nav">
+				<li><a href="#overview">Overview</a></li>
+				<li><a href="#toolbar">Toolbar</a></li>
+				<li><a href="#details">Details</a></li>
+				<li><a href="#parameters">Parameters</a></li>
+			</ul>
+
+			<section id="overview">
 				<h2><span>Overview</span></h2>
 
-				<p>-- Needs filling in --</p>
-			</div>
+				<p>A question submitted by a site member.</p>
+			</section>
+			<section id="toolbar">
+				<h2><span>Toolbar</span></h2>
+				<p>At the top right you will see the toolbar.</p>
+				<p>The functions are:</p>
+				<dl>
+					<dt>Save</dt>
+					<dd>Save changes and return to the edit form.</dd>
+
+					<dt>Save &amp; Close</dt>
+					<dd>Save changes and return to the listing of entries.</dd>
+
+					<dt>Cancel</dt>
+					<dd>Discard any changes made and return to the listing of entries.</dd>
+
+					<dt>Help</dt>
+					<dd>Opens this help screen.</dd>
+				</dl>
+			</section>
+			<section id="details">
+				<h2><span>Details</span></h2>
+
+				<p>Every entry consists of a <strong>subject</strong>, optional <strong>question</strong>, and <strong>tags</strong>.</p>
+
+				<dl>
+					<dt>Anonymous</dt>
+					<dd>This is a flag to indicate if the user posted the question anonymously. Entries marked as anonymous will not display the poster's name or link to their profile.</dd>
+
+					<dt>Notify of responses</dt>
+					<dd>This is a flag to indicate if the user wishes to be notified when responses (answers) are posted to their question.</dd>
+
+					<dt>Subject</dt>
+					<dd>A required field. The primary question being asked.</dd>
+
+					<dt>Question</dt>
+					<dd>An optional field, this is where the user can expound upon their question, providing details and potential scenarios.</dd>
+
+					<dt>Tags</dt>
+					<dd>This is an optional, comma-separated list of keywords or phrases that describe the content of the entry.</dd>
+				</dl>
+			</section>
+			<section id="parameters">
+				<h2><span>Parameters</span></h2>
+
+				<p>The following options control various aspects of the published state (when and if an entry is available to users).</p>
+
+				<dl>
+					<dt>State</dt>
+					<dd>The published status of the entry. Unpublished and trashed jobs will never be run.</dd>
+
+					<dt>Created Datep</dt>
+					<dd>A timestamp (YYYY-MM-DD hh:mm:ss) for when the entry was created.</dd>
+
+					<dt>Change Creator</dt>
+					<dd>This is a user ID for the user designated as the entry creator.</dd>
+				</dl>
+			</section>
 		</article>
