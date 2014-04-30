@@ -37,14 +37,14 @@ class MediaViewMedia extends JViewLegacy
 
 		JHtml::_('behavior.modal');
 		$document->addScriptDeclaration("
-		window.addEvent('domready', function() {
-			document.preview = SqueezeBox;
+		jQuery(document).ready(function($){
+			document.preview = $.fancybox;
 		});");
 
-		JHtml::_('script', 'system/mootree.js', true, true, false, false);
-		JHtml::_('stylesheet', 'system/mootree.css', array(), true);
+		JHtml::_('script', 'system/jquery.treeview.js', true, true, false, false);
+		JHtml::_('stylesheet', 'system/jquery.treeview.css', array(), true);
 		if ($lang->isRTL()) :
-			JHtml::_('stylesheet', 'media/mootree_rtl.css', array(), true);
+			JHtml::_('stylesheet', 'media/jquery.treeview_rtl.css', array(), true);
 		endif;
 
 		if (DIRECTORY_SEPARATOR == '\\')

@@ -1,0 +1,47 @@
+.treeview, 
+.treeview ul { 
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.treeview ul {
+	margin-top: 4px;
+}
+.treeview li { 
+	margin: 0;
+	padding: 3px 0pt 3px 16px;
+}
+.treeview .hitarea {
+	height: 16px;
+	width: 16px;
+	margin-left: -16px;
+	float: left;
+	cursor: pointer;
+}
+.treeview .hitarea:before {
+	content: "\271A";
+	font-family: "Fontcons";
+}
+.treeview .collapsable .hitarea:before {
+	content: "\2010";
+}
+.treeview a.selected {
+	background-color: #eee;
+}
+
+#treecontrol {
+	margin: 1em 0;
+	display: none;
+}
+
+.treeview .hover {
+	color: red;
+	cursor: pointer;
+}
+
+.treeview .placeholder {
+	background: url(images/ajax-loader.gif) 0 0 no-repeat;
+	height: 16px;
+	width: 16px;
+	display: block;
+}

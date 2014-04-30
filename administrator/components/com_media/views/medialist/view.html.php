@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -34,13 +34,11 @@ class MediaViewMediaList extends JViewLegacy
 		endif;
 
 		$document->addScriptDeclaration("
-		window.addEvent('domready', function() {
+		jQuery(document).ready(function($){
 			window.parent.document.updateUploader();
-			$$('a.img-preview').each(function(el) {
-				el.addEvent('click', function(e) {
-					new Event(e).stop();
-					window.top.document.preview.fromElement(el);
-				});
+			$('a.img-preview').on('click', function(e) {
+				e.preventDefault();
+				window.top.document.preview.open($(this).attr('href'));
 			});
 		});");
 

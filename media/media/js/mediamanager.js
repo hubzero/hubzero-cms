@@ -11,169 +11,207 @@
  * @since		1.5
  */
 (function() {
-var MediaManager = this.MediaManager = {
+	var MediaManager = this.MediaManager = {
 
-	initialize: function()
-	{
-		this.folderframe	= document.id('folderframe');
-		this.folderpath		= document.id('folderpath');
-
-		this.updatepaths	= $$('input.update-folder');
-
-		this.frame		= window.frames['folderframe'];
-		this.frameurl	= this.frame.location.href;
-		//this.frameurl   = window.frames['folderframe'].location.href;
-
-		this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../media/system/images/mootree.gif', onClick:
-				function(node){
-					target = node.data.target != null ? node.data.target : '_self';
-
-					// Get the current URL.
-				   	uri = this._getUriObject(this.frameurl);
-				   	current	= uri.file+'?'+uri.query;
-
-					if (current != 'undefined?undefined' && current != encodeURI(node.data.url)) {
-						window.frames[target].location.href = node.data.url;
-					}
-				}.bind(this)
-			},{ text: '', open: true, data: { url: 'index.php?option=com_media&view=mediaList&tmpl=component', target: 'folderframe'}});
-		this.tree.adopt('media-tree');
-	},
-
-	submit: function(task)
-	{
-		form = window.frames['folderframe'].document.id('mediamanager-form');
-		form.task.value = task;
-		if (document.id('username')) {
-			form.username.value = document.id('username').value;
-			form.password.value = document.id('password').value;
-		}
-		form.submit();
-	},
-
-	onloadframe: function()
-	{
-		// Update the frame url
-		this.frameurl = this.frame.location.href;
-
-		var folder = this.getFolder();
-		if (folder) {
-			this.updatepaths.each(function(path){ path.value =folder; });
-			this.folderpath.value = basepath+'/'+folder;
-			node = this.tree.get('node_'+folder);
-			node.toggle(false, true);
-		} else {
-			this.updatepaths.each(function(path){ path.value = ''; });
-			this.folderpath.value = basepath;
-			node = this.tree.root;
-		}
-
-		if (node) {
-			this.tree.select(node, true);
-		}
-
-		document.id(viewstyle).addClass('active');
-
-		a = this._getUriObject(document.id('uploadForm').getProperty('action'));
-		q = new Hash(this._getQueryObject(a.query));
-		q.set('folder', folder);
-		var query = [];
-		q.each(function(v, k){
-			if (v != null) {
-				this.push(k+'='+v);
-			}
-		}, query);
-		a.query = query.join('&');
-
-		if (a.port) {
-			document.id('uploadForm').setProperty('action', a.scheme+'://'+a.domain+':'+a.port+a.path+'?'+a.query);
-		} else {
-			document.id('uploadForm').setProperty('action', a.scheme+'://'+a.domain+a.path+'?'+a.query);
-		}
-	},
-
-	oncreatefolder: function()
-	{
-		if (document.id('foldername').value.length) {
-			document.id('dirpath').value = this.getFolder();
-			Joomla.submitbutton('createfolder');
-		}
-	},
-
-	setViewType: function(type)
-	{
-		document.id(type).addClass('active');
-		document.id(viewstyle).removeClass('active');
-		viewstyle = type;
-		var folder = this.getFolder();
-		this._setFrameUrl('index.php?option=com_media&view=mediaList&tmpl=component&folder='+folder+'&layout='+type);
-	},
-
-	refreshFrame: function()
-	{
-		this._setFrameUrl();
-	},
-
-	getFolder: function()
-	{
-		var url	 = this.frame.location.search.substring(1);
-		var args	= this.parseQuery(url);
-
-		if (args['folder'] == "undefined") {
-			args['folder'] = "";
-		}
-
-		return args['folder'];
-	},
-
-	parseQuery: function(query)
-	{
-		var params = new Object();
-		if (!query) {
-			return params;
-		}
-		var pairs = query.split(/[;&]/);
-		for ( var i = 0; i < pairs.length; i++ )
+		initialize: function()
 		{
-			var KeyVal = pairs[i].split('=');
-			if ( ! KeyVal || KeyVal.length != 2 ) {
-				continue;
+			this.folderframe	= $('#folderframe');
+			this.folderpath		= $('#folderpath');
+
+			this.updatepaths	= $('input.update-folder');
+
+			this.frame		= window.frames['folderframe'];
+			this.frameurl	= this.frame.location.href;
+			//this.frameurl   = window.frames['folderframe'].location.href;
+
+			var self = this;
+			$('#media-tree').find('a').on('click', function(e){
+				var node = $(this);
+
+				target = node.attr('target') != null ? node.attr('target') : '_self';
+
+				// Get the current URL.
+				uri = self._getUriObject(self.frameurl);
+				current = uri.file+'?'+uri.query;
+
+				if (current != 'undefined?undefined' && current != encodeURI(node.attr('href'))) {
+					window.frames[target].location.href = node.attr('href');
+				}
+			});
+			/*this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../media/system/images/mootree.gif', onClick:
+					function(node){
+						target = node.data.target != null ? node.data.target : '_self';
+
+						// Get the current URL.
+						uri = this._getUriObject(this.frameurl);
+						current = uri.file+'?'+uri.query;
+
+						if (current != 'undefined?undefined' && current != encodeURI(node.data.url)) {
+							window.frames[target].location.href = node.data.url;
+						}
+					}.bind(this)
+				},{ text: '', open: true, data: { url: 'index.php?option=com_media&view=mediaList&tmpl=component', target: 'folderframe'}});
+			this.tree.adopt('media-tree');*/
+			this.tree = $('#media-tree').treeview({
+				collapsed: true
+			});
+		},
+
+		submit: function(task)
+		{
+			form = window.frames['folderframe'].$('#mediamanager-form');
+			form.task.value = task;
+			if ($('#username').length) {
+				form.username.value = $('#username').val();
+				form.password.value = $('#password').val();
 			}
-			var key = unescape( KeyVal[0] );
-			var val = unescape( KeyVal[1] ).replace(/\+ /g, ' ');
-			params[key] = val;
-	   }
-	   return params;
-	},
+			form.submit();
+		},
 
-	_setFrameUrl: function(url)
-	{
-		if (url != null) {
-			this.frameurl = url;
+		onloadframe: function()
+		{
+			// Update the frame url
+			this.frameurl = this.frame.location.href;
+
+			var folder = this.getFolder();
+			if (folder) {
+				this.updatepaths.each(function(i, path){ path.value =folder; });
+				this.folderpath.value = basepath+'/'+folder;
+				node = this.tree.get('node_'+folder);
+				//node.toggle(false, true);
+			} else {
+				this.updatepaths.each(function(i, path){ path.value = ''; });
+				this.folderpath.value = basepath;
+				node = this.tree.root;
+			}
+
+			if (node) {
+				this.tree.select(node, true);
+			}
+
+			$(viewstyle).addClass('active');
+
+			a = this._getUriObject($('#uploadForm').attr('action'));
+			/*q = new Hash(this._getQueryObject(a.query));
+			q.set('folder', folder);
+			var query = [];
+			q.each(function(v, k){
+				if (v != null) {
+					this.push(k+'='+v);
+				}
+			}, query);*/
+			q = this._getQueryObject(a.query);
+			q.folder = folder;
+			var query = [];
+			for (var k in q) {
+				if (q[k] != null) {
+					query.push(k+'='+q[k]);
+				}
+			};
+			a.query = query.join('&');
+
+			if (a.port) {
+				$('#uploadForm').attr('action', a.scheme+'://'+a.domain+':'+a.port+a.path+'?'+a.query);
+			} else {
+				$('#uploadForm').attr('action', a.scheme+'://'+a.domain+a.path+'?'+a.query);
+			}
+		},
+
+		oncreatefolder: function()
+		{
+			if ($('#foldername').val().length) {
+				$('#dirpath').val(this.getFolder());
+				Joomla.submitbutton('createfolder');
+			}
+		},
+
+		setViewType: function(type)
+		{
+			$(type).addClass('active');
+			$(viewstyle).removeClass('active');
+			viewstyle = type;
+			var folder = this.getFolder();
+			this._setFrameUrl('index.php?option=com_media&view=mediaList&tmpl=component&folder='+folder+'&layout='+type);
+		},
+
+		refreshFrame: function()
+		{
+			this._setFrameUrl();
+		},
+
+		getFolder: function()
+		{
+			var url  = this.frame.location.search.substring(1);
+			var args = this.parseQuery(url);
+
+			if (args['folder'] == "undefined") {
+				args['folder'] = "";
+			}
+
+			return args['folder'];
+		},
+
+		parseQuery: function(query)
+		{
+			var params = new Object();
+			if (!query) {
+				return params;
+			}
+			var pairs = query.split(/[;&]/);
+			for ( var i = 0; i < pairs.length; i++ )
+			{
+				var KeyVal = pairs[i].split('=');
+				if ( ! KeyVal || KeyVal.length != 2 ) {
+					continue;
+				}
+				var key = unescape( KeyVal[0] );
+				var val = unescape( KeyVal[1] ).replace(/\+ /g, ' ');
+				params[key] = val;
+			}
+			return params;
+		},
+
+		_setFrameUrl: function(url)
+		{
+			if (url != null) {
+				this.frameurl = url;
+			}
+			this.frame.location.href = this.frameurl;
+		},
+
+		_getQueryObject: function(q) {
+			var vars = q.split(/[&;]/);
+			var rs = {};
+			if (vars.length) {
+				//vars.each(function(val) {
+				for ( var i = 0; i < vars.length; i++ )
+				{
+					var keys = vars[i].split('=');
+					if (keys.length && keys.length == 2) rs[encodeURIComponent(keys[0])] = encodeURIComponent(keys[1]);
+				};
+			}
+			return rs;
+		},
+
+		_getUriObject: function(u){
+			var bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
+			var barts = null;
+			if (bits) {
+				barts = {};
+				var keys = ['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'];
+				for ( var i = 0; i < bits.length; i++ )
+				{
+					barts[keys[i]] = bits[i];
+				}
+			}
+			return (barts)
+				? barts //.associate(['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'])
+				: null;
 		}
-		this.frame.location.href = this.frameurl;
-	},
+	};
+})($);
 
-	_getQueryObject: function(q) {
-		var vars = q.split(/[&;]/);
-		var rs = {};
-		if (vars.length) vars.each(function(val) {
-			var keys = val.split('=');
-			if (keys.length && keys.length == 2) rs[encodeURIComponent(keys[0])] = encodeURIComponent(keys[1]);
-		});
-		return rs;
-	},
-
-	_getUriObject: function(u){
-		var bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
-		return (bits)
-			? bits.associate(['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'])
-			: null;
-	}
-};
-})(document.id);
-
-window.addEvent('domready', function(){
+jQuery(document).ready(function($){
 	// Added to populate data on iframe load
 	MediaManager.initialize();
 	MediaManager.trace = 'start';
