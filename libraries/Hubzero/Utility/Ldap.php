@@ -100,7 +100,7 @@ class Ldap
 			}
 		}
 
-		$conn = @ldap_connect($pldap, $port);
+		$conn = ldap_connect($pldap, $port);
 
 		if ($conn === false)
 		{
@@ -117,7 +117,7 @@ class Ldap
 			\JFactory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) success. ");
 		}
 
-		if (@ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3) == false)
+		if (ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3) == false)
 		{
 			if ($debug)
 			{
@@ -133,7 +133,7 @@ class Ldap
 			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
 		}
 
-		if (@ldap_set_option($conn, LDAP_OPT_RESTART, 1) == false)
+		if (ldap_set_option($conn, LDAP_OPT_RESTART, 1) == false)
 		{
 			if ($debug)
 			{
@@ -149,7 +149,7 @@ class Ldap
 			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
 		}
 
-		if (!@ldap_set_option($conn, LDAP_OPT_REFERRALS, false))
+		if (!ldap_set_option($conn, LDAP_OPT_REFERRALS, false))
 		{
 			if ($debug)
 			{
@@ -167,7 +167,7 @@ class Ldap
 
 		if ($negotiate_tls)
 		{
-			if (!@ldap_start_tls($conn))
+			if (!ldap_start_tls($conn))
 			{
 				if ($debug)
 				{
@@ -184,7 +184,7 @@ class Ldap
 			}
 		}
 
-		if (@ldap_bind($conn, $acctman, $acctmanPW) == false)
+		if (ldap_bind($conn, $acctman, $acctmanPW) == false)
 		{
 			$err	 = ldap_errno($conn);
 			$errstr  = ldap_error($conn);
@@ -231,7 +231,7 @@ class Ldap
 			return false;
 		}
 
-		$query = "SELECT p.uidNumber AS uidNumber, p.username AS uid, p.name AS cn, " .
+		$query = "SELECT p.uidNumber AS uidNumber, u.username AS uid, p.name AS cn, " .
 				" p.gidNumber, p.homeDirectory, p.loginShell, " .
 				" pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, " .
 				" pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag " .
@@ -283,9 +283,9 @@ class Ldap
 			'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host'
 		);
 
-		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
+		$entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
 
-		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
+		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
 		// If there was a database entry, but there was no ldap entry, create the ldap entry
 		if (!empty($dbinfo) && ($count <= 0))
@@ -322,11 +322,11 @@ class Ldap
 				return false;
 			}
 
-			$result = @ldap_add($conn, $dn, $entry);
+			$result = ldap_add($conn, $dn, $entry);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 				return false;
 			}
 			else
@@ -340,9 +340,9 @@ class Ldap
 
 		if ($count > 0)
 		{
-			$firstentry = @ldap_first_entry($conn, $entry);
+			$firstentry = ldap_first_entry($conn, $entry);
 
-			$attr = @ldap_get_attributes($conn, $firstentry);
+			$attr = ldap_get_attributes($conn, $firstentry);
 
 			if (!empty($attr))
 			{
@@ -352,7 +352,7 @@ class Ldap
 
 					if (isset($attr[$key][0]))
 					{
-						if (count($attr[$key]) <= 2)
+						if (count($attr[$key]) <= 1)
 						{
 							$ldapinfo[$key] = $attr[$key][0];
 						}
@@ -380,11 +380,11 @@ class Ldap
 		{
 			$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
 
-			$result = @ldap_delete($conn, $dn);
+			$result = ldap_delete($conn, $dn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 				return false;
 			}
 			else
@@ -395,6 +395,12 @@ class Ldap
 		}
 
 		// Otherwise update the ldap entry
+
+		if (!empty($ldapinfo['host']) && !is_array($ldapinfo['host']))
+		{
+			$ldapinfo['host'] = array($ldapinfo['host']);
+		}
+
 		$entry = array();
 
 		foreach ($dbinfo as $key=>$value)
@@ -412,13 +418,18 @@ class Ldap
 			}
 		}
 
-		$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
+		if (empty($entry))
+		{
+			++self::$success['unchanged'];
+			return true;
+		}
 
-		$result = @ldap_modify($conn, $dn, $entry);
+		$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
+		$result = ldap_modify($conn, $dn, $entry);
 
 		if ($result !== true)
 		{
-			self::$errors['warning'][] = @ldap_error($conn);
+			self::$errors['warning'][] = ldap_error($conn);
 			return false;
 		}
 		else
@@ -476,22 +487,12 @@ class Ldap
 		$ldap_params = \JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
-		if (is_numeric($group) && $group >= 0)
-		{
-			$dn = 'ou=groups,' . $hubLDAPBaseDN;
-			$filter = '(gidNumber=' . $group . ')';
-		}
-		else
-		{
-			$dn = "cn=$group,ou=groups," . $hubLDAPBaseDN;
-			$filter = '(objectclass=*)';
-		}
-
+		$dn = "cn=" . $dbinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
+		$filter = '(objectclass=*)';
 		$reqattr = array('gidNumber','cn','description','memberUid');
 
-		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
-		
-		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
+		$entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
+		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
 		// If there was a database entry, but there was no ldap entry, create the ldap entry
 		if (!empty($dbinfo) && ($count <= 0))
@@ -514,11 +515,12 @@ class Ldap
 				}
 			}
 
-			$result = @ldap_add($conn, $dn, $entry);
+			$result = ldap_add($conn, $dn, $entry);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				$result = ldap_add($conn, $dn, $entry);
+				self::$errors['warning'][] = ldap_error($conn);
 				return false;
 			}
 			else
@@ -530,13 +532,13 @@ class Ldap
 
 		$ldapinfo = null;
 
-		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
+		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
 		if ($count > 0)
 		{
-			$firstentry = @ldap_first_entry($conn, $entry);
+			$firstentry = ldap_first_entry($conn, $entry);
 
-			$attr = @ldap_get_attributes($conn, $firstentry);
+			$attr = ldap_get_attributes($conn, $firstentry);
 
 			if (!empty($attr) && $attr['count'] > 0)
 			{
@@ -546,7 +548,7 @@ class Ldap
 
 					if (isset($attr[$key][0]))
 					{
-						if (count($attr[$key]) <= 2)
+						if (count($attr[$key]) <= 1)
 						{
 							$ldapinfo[$key] = $attr[$key][0];
 						}
@@ -574,11 +576,11 @@ class Ldap
 		{
 			$dn = "cn=" . $ldapinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
 
-			$result = @ldap_delete($conn, $dn);
+			$result = ldap_delete($conn, $dn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 				return false;
 			}
 			else
@@ -590,6 +592,11 @@ class Ldap
 
 		// Otherwise update the ldap entry
 		$entry = array();
+
+		if (!empty($ldapinfo['memberUid']) && !is_array($ldapinfo['memberUid']))
+		{
+			$ldapinfo['memberUid'] = array($ldapinfo['memberUid']);
+		}
 
 		foreach ($dbinfo as $key=>$value)
 		{
@@ -607,12 +614,17 @@ class Ldap
 		}
 
 		$dn = "cn=" . $dbinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
+		if (empty($entry))
+		{
+			++self::$success['unchanged'];
+			return true;
+		}
 
-		$result = @ldap_modify($conn, $dn, $entry);
+		$result = ldap_modify($conn, $dn, $entry);
 
 		if ($result !== true)
 		{
-			self::$errors['warning'][] = @ldap_error($conn);
+			self::$errors['warning'][] = ldap_error($conn);
 			return false;
 		}
 		else
@@ -685,9 +697,9 @@ class Ldap
 
 		$reqattr = array('gidNumber','cn');
 
-		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
+		$entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
 		
-		$count = @ldap_count_entries($conn, $entry);
+		$count = ldap_count_entries($conn, $entry);
 
 		// If there was a database entry, but there was no ldap entry, create the ldap entry
 		if ($count <= 0)
@@ -699,9 +711,9 @@ class Ldap
 
 		if ($count > 0)
 		{
-			$firstentry = @ldap_first_entry($conn, $entry);
+			$firstentry = ldap_first_entry($conn, $entry);
 
-			$attr = @ldap_get_attributes($conn, $firstentry);
+			$attr = ldap_get_attributes($conn, $firstentry);
 
 			if (!empty($attr) && $attr['count'] > 0)
 			{
@@ -752,12 +764,12 @@ class Ldap
 				$adds['memberUid'][] = $memberUid;
 			}
 
-			if (@ldap_mod_add($conn, $dn, $adds) == false)
+			if (ldap_mod_add($conn, $dn, $adds) == false)
 			{
 				// if bulk add fails, try individual
 				foreach($add as $memberUid)
 				{
-					@ldap_mod_add($conn, $dn, array('memberUid' => $memberUid));
+					ldap_mod_add($conn, $dn, array('memberUid' => $memberUid));
 				}
 			}
 		}
@@ -781,7 +793,7 @@ class Ldap
 				$deletes['memberUid'][] = $memberUid;
 			}
 
-			@ldap_mod_del($conn, $dn, $deletes);
+			ldap_mod_del($conn, $dn, $deletes);
 		}
 	}
 
@@ -893,19 +905,19 @@ class Ldap
 		$dn = "ou=groups," . $hubLDAPBaseDN;
 		$filter = '(objectclass=hubGroup)';
 
-		$sr = @ldap_search($conn, $dn, $filter, array('gid','cn'), 0, 0, 0);
+		$sr = ldap_search($conn, $dn, $filter, array('gid','cn'), 0, 0, 0);
 
 		$gids = array();
 
 		if ($sr !== false) 
 		{
-			if (@ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false) 
 			{
-				$entry = @ldap_first_entry($conn, $sr);
+				$entry = ldap_first_entry($conn, $sr);
 
 				while ($entry !== false) 
 				{
-					$attr = @ldap_get_attributes($conn, $entry);
+					$attr = ldap_get_attributes($conn, $entry);
 
 					if (array_key_exists('gid', $attr))
 					{
@@ -916,18 +928,18 @@ class Ldap
 						$gids[] = "cn=" . $attr['cn'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
 					}
 
-					$entry = @ldap_next_entry($conn, $entry);
+					$entry = ldap_next_entry($conn, $entry);
 				}
 			}
 		}
 
 		foreach ($gids as $giddn)
 		{
-			$result = @ldap_delete($conn, $giddn);
+			$result = ldap_delete($conn, $giddn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 			}
 			else
 			{
@@ -954,11 +966,11 @@ class Ldap
 		foreach ($result as $row)
 		{
 			$dn = "cn=$row," .  "ou=groups," . $hubLDAPBaseDN;
-			$result = @ldap_delete($conn, $dn);
+			$result = ldap_delete($conn, $dn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 			}
 			else
 			{
@@ -970,23 +982,23 @@ class Ldap
 		$dn = "ou=groups," . $hubLDAPBaseDN;
 		$filter = '(&(objectclass=posixGroup)(gidNumber>=1000))';
 
-		$sr = @ldap_search($conn, $dn, $filter, array('gid'), 0, 0, 0);
+		$sr = ldap_search($conn, $dn, $filter, array('gid'), 0, 0, 0);
 
 		$gids = array();
 
 		if ($sr !== false) 
 		{
-			if (@ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false) 
 			{
-				$entry = @ldap_first_entry($conn, $sr);
+				$entry = ldap_first_entry($conn, $sr);
 
 				while ($entry !== false) 
 				{
-					$attr = @ldap_get_attributes($conn, $firstentry);
+					$attr = ldap_get_attributes($conn, $firstentry);
 
 					$gids[] = $attr['gid'][0];
 
-					$entry = @ldap_next_entry($conn, $entry);
+					$entry = ldap_next_entry($conn, $entry);
 				}
 			}
 		}
@@ -994,11 +1006,11 @@ class Ldap
 		foreach ($gids as $gid)
 		{
 			$dn = "gid=$gid," . "ou=groups," . $hubLDAPBaseDN;
-			$result = @ldap_delete($conn, $dn);
+			$result = ldap_delete($conn, $dn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 			}
 			else
 			{
@@ -1038,23 +1050,23 @@ class Ldap
 		$dn = "ou=users," . $hubLDAPBaseDN;
 		$filter = '(objectclass=hubAccount)';
 
-		$sr = @ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
+		$sr = ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
 
 		$uids = array();
 
 		if ($sr !== false) 
 		{
-			if (@ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false) 
 			{
-				$entry = @ldap_first_entry($conn, $sr);
+				$entry = ldap_first_entry($conn, $sr);
 
 				while ($entry !== false) 
 				{
-					$attr = @ldap_get_attributes($conn, $entry);
+					$attr = ldap_get_attributes($conn, $entry);
 
 					$uids[] = $attr['uid'][0];
 
-					$entry = @ldap_next_entry($conn, $entry);
+					$entry = ldap_next_entry($conn, $entry);
 				}
 			}
 		}
@@ -1062,11 +1074,11 @@ class Ldap
 		foreach ($uids as $uid)
 		{
 			$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
-			$result = @ldap_delete($conn, $dn);
+			$result = ldap_delete($conn, $dn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 			}
 			else
 			{
@@ -1092,11 +1104,11 @@ class Ldap
 		foreach($result as $row)
 		{
 			$dn = "uid=$row," .  "ou=users," . $hubLDAPBaseDN;
-			$result = @ldap_delete($conn, $dn);
+			$result = ldap_delete($conn, $dn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 			}
 			else
 			{
@@ -1108,23 +1120,23 @@ class Ldap
 		$dn = "ou=users," . $hubLDAPBaseDN;
 		$filter = '(&(objectclass=posixAccoiunt)(uidNumber>=1000))';
 
-		$sr = @ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
+		$sr = ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
 
 		$uids = array();
 
 		if ($sr !== false) 
 		{
-			if (@ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false) 
 			{
 				$entry = ldap_first_entry($conn, $sr);
 
 				while ($entry !== false) 
 				{
-					$attr = @ldap_get_attributes($conn, $firstentry);
+					$attr = ldap_get_attributes($conn, $firstentry);
 
 					$uids[] = $attr['uid'][0];
 
-					$entry = @ldap_next_entry($conn, $entry);
+					$entry = ldap_next_entry($conn, $entry);
 				}
 			}
 		}
@@ -1132,11 +1144,11 @@ class Ldap
 		foreach ($uids as $uid)
 		{
 			$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
-			$result = @ldap_delete($conn, $dn);
+			$result = ldap_delete($conn, $dn);
 
 			if ($result !== true)
 			{
-				self::$errors['warning'][] = @ldap_error($conn);
+				self::$errors['warning'][] = ldap_error($conn);
 			}
 			else
 			{

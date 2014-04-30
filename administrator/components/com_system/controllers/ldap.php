@@ -198,7 +198,7 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 		elseif (isset($result['success']))
 		{
 			$messageType = 'passed';
-			$message     = JText::_("Groups have been exported to LDAP ({$result['added']} added, {$result['modified']} modified, and {$result['deleted']} deleted)");
+			$message     = JText::_("Groups have been exported to LDAP ({$result['added']} added, {$result['modified']} modified, {$result['deleted']} deleted and {$result['unchanged']} unchanged)");
 		}
 
 		$this->setRedirect(
@@ -233,7 +233,7 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 		elseif (isset($result['success']))
 		{
 			$messageType = 'passed';
-			$message     = JText::_("Users have been exported to LDAP ({$result['added']} added, {$result['modified']} modified, and {$result['deleted']} deleted)");
+			$message     = JText::_("Users have been exported to LDAP ({$result['added']} added, {$result['modified']} modified, {$result['deleted']} deleted and {$result['unchanged']} unchanged)");
 		}
 
 		$this->setRedirect(
