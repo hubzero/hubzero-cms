@@ -11,7 +11,7 @@ class Hubzero_Ldap
 		'success'  => true,
 		'added'    => 0,
 		'deleted'  => 0,
-		'modified' => 0
+		'modified' => 0,
 		'unchanged' => 0
 		);
 
