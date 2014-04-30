@@ -53,7 +53,7 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList('Are you sure you want to remove these items?', 'remove');
 }
 JToolBarHelper::spacer();
-JToolBarHelper::help('assetgroups.html', true);
+JToolBarHelper::help('assetgroups');
 
 JHTML::_('behavior.tooltip');
 ?>

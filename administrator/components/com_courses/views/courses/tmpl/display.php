@@ -51,7 +51,7 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList('delete', 'delete');
 }
 JToolBarHelper::spacer();
-JToolBarHelper::help('courses.html', true);
+JToolBarHelper::help('courses');
 
 JHTML::_('behavior.tooltip');
 ?>
