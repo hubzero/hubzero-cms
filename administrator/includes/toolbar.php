@@ -128,12 +128,12 @@ abstract class JToolBarHelper
 	 * @param	string	$component	Name of component to get Help (null for current component)
 	 * @since	1.0
 	 */
-	public static function help($url)
+	public static function help($url, $width = 700, $height = 500)
 	{
 		$bar = JToolBar::getInstance('toolbar');
 
 		// Add a help button.
-		$bar->appendButton('Help', 'help', 'Help', $url);
+		$bar->appendButton('Help', $url, $width, $height);
 	}
 
 	/**
