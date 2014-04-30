@@ -28,10 +28,12 @@ $menu->addChild(
 
 $menu->addSeparator();
 
+/*
 $menu->addChild(
 	new JMenuNode(JText::_('MOD_HUBMENU_USER_PROFILE'), 'index.php?option=com_admin&task=profile.edit&id='.$user->id, 'class:profile')
 );
 $menu->addSeparator();
+*/
 
 if ($user->authorise('core.admin'))
 {
