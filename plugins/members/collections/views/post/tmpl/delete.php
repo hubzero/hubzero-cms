@@ -36,7 +36,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 $identifier = $this->post->item()->get('title');
 if (!$identifier)
 {
-	$identifier = $this->post->item()->get('description');
+	$identifier = $this->post->item()->description('clean');
 	if (!$identifier)
 	{
 		$identifier = '#' . $this->post->item()->get('id');
