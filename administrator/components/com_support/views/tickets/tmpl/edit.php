@@ -105,7 +105,7 @@ $dispatcher = JDispatcher::getInstance();
 
 $cc = array();
 ?>
-<form action="index.php" method="post" name="adminForm" id="commentform" enctype="multipart/form-data">
+<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 <?php 
 if ($this->row->id) {
 		/*if ($this->row->id) {
@@ -578,22 +578,22 @@ if ($this->row->id) {
 					
 						<label for="comment-field-message">
 							<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?> <?php 
-							/*$mc = $dispatcher->trigger('onGetMultiEntry', array(
+							$mc = $dispatcher->trigger('onGetMultiEntry', array(
 								array(
 									'members',   // The component to call
 									'cc',        // Name of the input field
-									'acmembers', // ID of the input field
+									'comment-field-message', // ID of the input field
 									'',          // CSS class(es) for the input field
-									implode(', ', $notify) // The value of the input field
+									implode(', ', $cc) // The value of the input field
 								)
 							));
 							if (count($mc) > 0) {
 								echo '<span class="hint">'.JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];
 							} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
-							<input type="text" name="cc" id="acmembers" value="" size="35" />
+								<input type="text" name="cc" id="comment-field-message" value="<?php echo implode(', ', $cc); ?>" />
 							<?php }
-							<span class="hint"><?php echo JText::_('Private comments will NOT be sent to the ticket submitter regardless of entries specified.'); ?></span>*/ ?>
-							<input type="text" name="cc" id="comment-field-message" value="<?php echo implode(', ', $cc); ?>" />
+							/*<span class="hint"><?php echo JText::_('Private comments will NOT be sent to the ticket submitter regardless of entries specified.'); ?></span>
+							<input type="text" name="cc" id="comment-field-message" value="<?php echo implode(', ', $cc); ?>" />*/ ?>
 						</label>
 						<div class="col width-50 fltlft">
 							<label for="email_submitter">
