@@ -53,7 +53,7 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 JToolBarHelper::spacer();
-JToolBarHelper::help('jobs.html', true);
+JToolBarHelper::help('jobs');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

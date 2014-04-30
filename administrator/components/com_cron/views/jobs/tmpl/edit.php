@@ -41,7 +41,7 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
-JToolBarHelper::help('job.html', true);
+JToolBarHelper::help('job');
 
 JHTML::_('behavior.calendar');
 
