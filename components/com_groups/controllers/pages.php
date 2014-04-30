@@ -374,8 +374,16 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// only create a new version and send approve notif if content has changed
 		if ($contentChanged)
 		{
+			// check version again (because were not on store() method)
+			if (!$this->version->check())
+			{
+				$this->setNotification($this->version->getError(), 'error');
+				$this->editTask();
+				return;
+			}
+
 			// save version settings
-			if (!$this->version->store(true, $this->group->isSuperGroup()))
+			if (!$this->version->store(false, $this->group->isSuperGroup()))
 			{
 				$this->setNotification($this->version->getError(), 'error');
 				$this->editTask();
