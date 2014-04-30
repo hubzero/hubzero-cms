@@ -37,7 +37,7 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
-JToolBarHelper::help('queries.html', true);
+JToolBarHelper::help('queries');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

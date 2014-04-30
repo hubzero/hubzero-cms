@@ -36,7 +36,7 @@ JToolBarHelper::save();
 JToolBarHelper::apply();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
-JToolBarHelper::help('ticket.html', true);
+JToolBarHelper::help('ticket');
 
 $juser = JFactory::getUser();
 

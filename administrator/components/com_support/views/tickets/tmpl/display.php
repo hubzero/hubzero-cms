@@ -37,7 +37,7 @@ JToolBarHelper::addNew();
 //JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
-JToolBarHelper::help('tickets.html', true);
+JToolBarHelper::help('tickets');
 
 JHTML::_('behavior.tooltip');
 

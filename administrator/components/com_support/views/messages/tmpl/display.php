@@ -35,7 +35,7 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
-JToolBarHelper::help('messages.html', true);
+JToolBarHelper::help('messages');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

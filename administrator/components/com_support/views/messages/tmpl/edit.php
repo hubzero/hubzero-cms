@@ -36,7 +36,7 @@ JToolBarHelper::title( JText::_( 'Support' ).': '. $text, 'support.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
-JToolBarHelper::help('messages.html', true);
+JToolBarHelper::help('messages');
 
 $jconfig = JFactory::getConfig();
 ?>

@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'Ticket Stats' ), 'support.png' );
 
 JToolBarHelper::spacer();
-JToolBarHelper::help('stats.html', true);
+JToolBarHelper::help('stats');
 
 JHTML::_('behavior.framework');
 

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('Support').': '.JText::_('ACL'), 'support.png');
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
-JToolBarHelper::help('acl.html', true);
+JToolBarHelper::help('acl');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
