@@ -95,7 +95,7 @@ class plgTagsPublications extends JPlugin
 		if (!is_array($categories)) 
 		{
 			// Get categories
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$rt = new PublicationCategory($database);
 			$categories = $rt->getCategories();
 			$this->_cats = $categories;
@@ -144,7 +144,7 @@ class plgTagsPublications extends JPlugin
 			return NULL;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -271,8 +271,8 @@ class plgTagsPublications extends JPlugin
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 		$rt = new PublicationCategory($database);
@@ -383,9 +383,9 @@ class plgTagsPublications extends JPlugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		// Instantiate a helper object
 		$helper = new PublicationHelper($database, $row->ftext, $row->id);
@@ -415,7 +415,7 @@ class plgTagsPublications extends JPlugin
 		{
 			$row->href = JRoute::_($row->href);
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		// Start building the HTML
 		$html  = "\t".'<li class="';
