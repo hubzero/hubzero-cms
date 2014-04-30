@@ -12,6 +12,7 @@ class Hubzero_Ldap
 		'added'    => 0,
 		'deleted'  => 0,
 		'modified' => 0
+		'unchanged' => 0
 		);
 
 	public static function getLDO($debug = 0)
