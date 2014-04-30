@@ -44,7 +44,7 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
-JToolBarHelper::help('edit.html', true);
+JToolBarHelper::help('edit');
 
 ?>
 <script type="text/javascript">

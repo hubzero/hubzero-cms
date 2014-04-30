@@ -38,7 +38,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::save('merge');
 }
 JToolBarHelper::cancel();
-
+JToolBarHelper::spacer();
+JToolBarHelper::help('merge');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
