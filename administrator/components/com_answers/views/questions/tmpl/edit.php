@@ -43,7 +43,7 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
-JToolBarHelper::help('question.html', true);
+JToolBarHelper::help('question');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

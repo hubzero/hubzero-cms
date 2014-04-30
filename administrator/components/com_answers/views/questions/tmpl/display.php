@@ -47,7 +47,7 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 JToolBarHelper::spacer();
-JToolBarHelper::help('questions.html', true);
+JToolBarHelper::help('questions');
 
 ?>
 <script type="text/javascript">

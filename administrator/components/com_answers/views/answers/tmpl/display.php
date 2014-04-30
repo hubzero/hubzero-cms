@@ -47,7 +47,7 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 	JToolBarHelper::spacer();
 }
-JToolBarHelper::help('responses.html', true);
+JToolBarHelper::help('responses');
 
 ?>
 
