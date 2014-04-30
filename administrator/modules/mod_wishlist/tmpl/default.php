@@ -50,12 +50,12 @@ $total = $this->granted + $this->accepted + $this->pending + $this->removed + $t
 
 			$(document).ready(function() {
 				wishlistPie = $.plot($("#wishlist-container<?php echo $this->module->id; ?>"), [
-					{label: 'pending', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '#656565'},
-					{label: 'granted', data: <?php echo round(($this->granted / $total)*100, 2); ?>, color: '#999'}, //#7c94c2
-					{label: 'accepted', data: <?php echo round(($this->accepted / $total)*100, 2); ?>, color: '#f9d180'}, //#c67c6b
-					{label: 'removed', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '#ccc'}, //#d8aa65
-					{label: 'withdrawn', data: <?php echo round(($this->withdrawn / $total)*100, 2); ?>, color: '#eee'}, //#5f9c63
-					{label: 'rejected', data: <?php echo round(($this->rejected / $total)*100, 2); ?>, color: '#333'} //#5f9c63
+					{label: 'pending', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_pending", "#656565"); ?>'},
+					{label: 'granted', data: <?php echo round(($this->granted / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_granted", "#999"); ?>'},
+					{label: 'accepted', data: <?php echo round(($this->accepted / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_accepted", "#f9d180"); ?>'},
+					{label: 'removed', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_removed", "#cccccc"); ?>'},
+					{label: 'withdrawn', data: <?php echo round(($this->withdrawn / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>'},
+					{label: 'rejected', data: <?php echo round(($this->rejected / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_rejected", "#333333"); ?>'}
 				], {
 					legend: { 
 						show: true

@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/modules/mod_dashboard/mod_dashboard.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           administrator/modules/mod_wishlist/mod_wishlist.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2014 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -46,6 +46,14 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">Use global</option>
 					<option value="0">No caching</option>
 				</field>
+			</fieldset>
+			<fieldset name="colors">
+				<field name="color_pending" type="text" default="#656565" label="Pending" description="The graph color for pending items." />
+				<field name="color_granted" type="text" default="#999999" label="Granted" description="The graph color for granted items." />
+				<field name="color_accepted" type="text" default="#f9d180" label="Accepted" description="The graph color for accepted items." />
+				<field name="color_removed" type="text" default="#cccccc" label="Removed" description="The graph color for removed items." />
+				<field name="color_withdrawn" type="text" default="#ffffff" label="Withdrawn" description="The graph color for withdrawn items." />
+				<field name="color_rejected" type="text" default="#333333" label="Rejected" description="The graph color for rejected items." />
 			</fieldset>
 		</fields>
 	</config>
