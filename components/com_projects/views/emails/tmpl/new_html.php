@@ -64,7 +64,7 @@ $subtitle .= ' "' . $this->project->title. '"';
 // Get the actual message
 $comment = '';
 
-if ($this->config->get('restricted_data', 0) && $this->reviewer == 'sensitive') 
+if ($this->config->get('restricted_data', 0)) 
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') . '</li>';
@@ -76,7 +76,7 @@ if ($this->config->get('restricted_data', 0) && $this->reviewer == 'sensitive')
 	}
 	$comment .= '</ul>';
 }
-if ($this->config->get('grantinfo', 0) && $this->reviewer == 'sponsored') 
+if ($this->config->get('grantinfo', 0)) 
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') . '</li>';
@@ -86,13 +86,13 @@ if ($this->config->get('grantinfo', 0) && $this->reviewer == 'sponsored')
 	$comment .= '</ul>';
 }
 
-if ($this->config->get('ginfo_group', 0) && $this->reviewer == 'sponsored') 
+if ($this->config->get('ginfo_group', 0)) 
 {
 	$comment .= '<p>' . JText::_('COM_PROJECTS_EMAIL_LINK_SPS') . '<br />';
 	$comment .= $browseLink . '?reviewer=sponsored' . '</p>';
 }
 
-if ($this->config->get('sdata_group', 0) && $this->reviewer == 'sensitive') 
+if ($this->config->get('sdata_group', 0)) 
 {
 	$comment .= '<p>' . JText::_('COM_PROJECTS_EMAIL_LINK_HIPAA') . '<br />';
 	$comment .= $browseLink . '?reviewer=sensitive' . '</p>';
