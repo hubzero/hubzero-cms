@@ -52,6 +52,7 @@ class Ldap
 		'added'	=> 0,
 		'deleted'  => 0,
 		'modified' => 0
+		'unchanged' => 0
 	);
 
 	/**
