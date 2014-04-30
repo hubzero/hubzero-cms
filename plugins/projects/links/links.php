@@ -778,6 +778,10 @@ class plgProjectsLinks extends JPlugin
 						{
 							$authString .=  $author['family'] . ', ' . $author['given'] . ', ';
 						}
+						elseif (isset($author['literal']))
+						{
+							$authString .=  $author['literal'] . ', ';
+						}
 					}
 					$authString = substr($authString,0,strlen($authString) - 2);	
 				}
