@@ -40,6 +40,10 @@ class JButtonHelp extends JButton
 	{
 		$text = JText::_('JTOOLBAR_HELP');
 		$class = $this->fetchIconClass('help');
+		if (!strstr('?', $url) && !strstr('&', $url) && substr($url, 0, 4) != 'http')
+		{
+			$url = 'index.php?option=com_help&component=' . JRequest::getCmd('option') . '&page=' . $url;
+		}
 		$doTask = "Joomla.popupWindow('$url', '" . JText::_('JHELP', true) . "', {$width}, {$height}, 1)";
 
 		$html  = "<a href=\"#\" onclick=\"$doTask\" rel=\"help\" class=\"toolbar\" data-title=\"$text\">\n";
