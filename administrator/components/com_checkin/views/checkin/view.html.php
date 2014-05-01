@@ -50,6 +50,6 @@ class CheckinViewCheckin extends JViewLegacy
 			JToolBarHelper::preferences('com_checkin');
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_SITE_MAINTENANCE_GLOBAL_CHECK-IN');
+		JToolBarHelper::help('checkin');
 	}
 }
