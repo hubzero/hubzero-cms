@@ -1,0 +1,147 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/notifications.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Alerts
+// --------------------------------------------------
+
+.notificationColor(@successText, @successBackground, @successBorder) {
+	background-color: @successBackground;
+	//color: @successText !important;
+	border-color: @successBorder;
+}
+
+// System messages
+	#system-message {
+		margin: 0 0 1.61803399em 0;
+
+		ul,
+		li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		dt {
+			display: none;
+		}
+	}
+
+	.help,
+	.info,
+	.warning,
+	.error,
+	.passed,
+	#system-message dd {
+		margin: 0;
+		padding: 0.61803399em 0.61803399em 0.61803399em 2.31803399em;
+		color: #fff;
+		position: relative;
+		overflow: hidden;
+		zoom: 1;
+		font-weight: 500;
+		border: none; //0.27em solid #eee;
+		.border-radius(0.27em);
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+		background-color: #222;
+	}
+	.help,
+	.info,
+	.warning,
+	.error,
+	.passed {
+		margin: 1em 0;
+		h3,
+		h4 {
+			color: #fff !important;
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+		a {
+			color: #fff !important;
+			border-bottom: 1px dotted #eee !important;
+		}
+		a:hover {
+			color: #fff !important;
+			border-bottom: 1px solid #fff !important;
+		}
+	}
+
+	span.help,
+	span.info,
+	span.warning,
+	span.error,
+	span.passed {
+		display: inline-block;
+		*display: inline;
+		margin: 0;
+		padding: 0.41803399em 0.41803399em 0.41803399em 2.31803399em;
+	}
+
+	#system-message dd {
+		margin: 0;
+	}
+
+	.passed,
+	#system-message dd.message {
+		.notificationColor(@successText, @successBackground, @successBorder);
+	}
+	.info,
+	#system-message dd.info {
+		.notificationColor(@infoText, @infoBackground, @infoBorder);
+	}
+	.help,
+	#system-message dd.help {
+		.notificationColor(@helpText, @helpBackground, @helpBorder);
+	}
+	.warning,
+	#system-message dd.warning {
+		.notificationColor(@warningText, @warningBackground, @warningBorder);
+	}
+	.error,
+	#system-message dd.error {
+		.notificationColor(@errorText, @errorBackground, @errorBorder);
+	}
+	.help:before,
+	.info:before,
+	.warning:before,
+	.error:before,
+	.passed:before,
+	#system-message dd:before {
+		position: absolute;
+		top: 0.81803399em;
+		width: 1em;
+		height: 1em;
+		font-size: 1.1em;
+		line-height: 1;
+		display: block;
+		left: 0.81803399em;
+		.fontcons(@iconSuccess);
+	}
+	.passed:before,
+	#system-message dd.message:before {
+		content: "\@{iconSuccess}";
+		top: 0.71803399em;
+	}
+	.help:before,
+	#system-message dd.help:before {
+		content: "\@{iconHelp}";
+		left: 0.71803399em;
+	}
+	.error:before,
+	#system-message dd.error:before {
+		content: "\@{iconError}";
+	}
+	.warning:before,
+	#system-message dd.warning:before {
+		content: "\@{iconWarning}";
+	}
+	.info:before,
+	#system-message dd.info:before {
+		content: "\@{iconInfo}";
+		left: 0.71803399em;
+	}

@@ -1,0 +1,440 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/comments.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Comments
+// --------------------------------------------------
+	ol.comments {
+		list-style-type: none !important;
+		margin: 1em 0 0 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+
+		// This is to remove any possible styling conflicts with .comments class
+		&:before {
+			content: "";
+			display: none;
+		}
+
+		li {
+			clear: left;
+			margin: 0;
+			padding: 0;
+			border: none;
+			position: relative;
+
+			ol.comments {
+				margin: 0;
+				padding: 0;
+
+				li {
+					padding-left: 70px;
+				}
+			}
+		}
+
+		// Options
+		.comment-options {
+			color: @white;
+			font-size: 90%;
+			visibility: hidden;
+
+			a {
+				margin-right: 1em;
+				visibility: hidden;
+				color: @commentOptionColor;
+				border: none;
+
+				&:before {
+					margin-right: 0.4em;
+				}
+			}
+			&:hover a,
+			a.reply {
+				visibility: visible;
+			}
+			&:hover a {
+				color: @commentOptionHoverColor;
+			}
+			a.active,
+			a:hover {
+				color: @commentOptionColorHover;
+			}
+			a.abuse:hover,
+			a.delete:hover {
+				color: @commentOptionDangerColor;
+			}
+			a.active:before {
+				content: "\2716";
+			}
+		}
+		.comment-options a span,
+		dl.comment-details {
+			display: none;
+		}
+
+		// Member photo
+		p.comment-member-photo {
+			float: left;
+			margin: 0 20px 0 0;
+			padding: 0;
+			width: 48px;
+			height: 48px;
+			overflow: hidden;
+			position: relative;
+			.border-radius(50%);
+		}
+
+		// Content 
+		.comment-content {
+			margin: 0 0 1em 70px;
+			position: relative;
+			background-color: @commentBackground;
+			border: @commentBorder;
+			padding: 0.61803399em 1.61803399em;
+
+			// Arrow
+			&:before,
+			&:after {
+				content: "";
+				position: absolute;
+				top: 10px;
+				left: -20px;
+				border-width: 10px;
+				border-style: solid;
+				border-color: transparent @commentBorderColor transparent transparent;
+				display: block; 
+				width: 0;
+			}
+			// Arrow base (should be same color as content border)
+			&:before {
+				top: 10px; 
+				left: -20px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentBorderColor transparent transparent;
+			}
+			// Arrow overlay (should be same color as content background) 
+			// This is offset by a pixel relative to :before, which creates a 1px border effect
+			&:after {
+				top: 10px; 
+				left: -18px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentBackground transparent transparent; 
+			}
+
+			&:hover .comment-options {
+				visibility: visible;
+			}
+		}
+
+		// Voting buttons
+		.comment-voting {
+			margin: -0.61803399em 0 0 0;
+			padding: 0;
+			float: right;
+
+			.thumbsvote {
+				margin-top: 0.5em;
+			}
+		}
+
+		// Author comments
+		.author:before { // This is to remove any possible styling conflicts with .author class
+			content: "";
+			display: none;
+		}
+		.start > .comment-content,
+		.author > .comment-content {
+			border-color: @commentAuthorBorderColor;
+			background: @commentBackground url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUeNpiYWBgEPn///8bBihgZGQUgbGxiTORohisgRTFIHEmUhSDbSBFMYqTiPULEymKB2koAQQYANU4UCtoY01GAAAAAElFTkSuQmCC) bottom repeat-x;
+		}
+		.author > .comment-content:before,
+		.start > .comment-content:before {
+			border-color: transparent @commentAuthorBorderColor transparent transparent;
+		}
+		// Chosen comments
+		.chosen > .comment-content {
+			border-color: @commentChosenBorderColor;
+		}
+		.chosen > .comment-content:before {
+			border-color: transparent @commentChosenBorderColor transparent transparent;
+		}
+		// Private comments
+		.private > .comment-content {
+			border-color: @commentPrivateBorderColor;
+			background-color: @commentPrivateBackground;
+		}
+		.private > .comment-content:before {
+			border-color: transparent @commentPrivateBorderColor transparent transparent;
+		}
+		.private > .comment-content:after {
+			border-color: transparent @commentPrivateBackground transparent transparent;
+		}
+		.private small.private-after,
+		.private:after {
+			position: absolute;
+			top: 1.61803399em;
+			right: 1.61803399em;
+			display: block;
+			color: @grayLight;
+			.fontcons(@iconLock);
+		}
+		.private {
+			.ie7-fontcons-after('private', @iconLock);
+		}
+		// Details (date, time)
+		span.comment-details {
+			color: @commentPermalinkColor;
+		}
+		// Permalink
+		.permalink {
+			border: none;
+			color: @commentPermalinkColor;
+
+			&:hover {
+				color: @black;
+				border: none;
+			}
+		}
+
+		// Figures
+		.img {
+			padding-left: 0px;
+			background: transparent;
+			text-align: center;
+		}
+		.figure {
+			display: inline-block;
+			background: @white;
+			border: 1px solid #eaeaea;
+		}
+		.figure a {
+			border: none;
+		}
+		.figcaption {
+			display: block;
+			padding: 0.5em;
+			background: #efefef;
+		}
+
+		// Reply form
+		.addcomment {
+			margin: 0 -1.61803399em -0.61803399em -1.61803399em;
+			padding: 1.61803399em;
+			background-color: @commentReplyBackground;
+			border: none;
+			border-top: @commentReplyBorder;
+
+			legend {
+				display: none;
+			}
+			label {
+				display: block;
+
+				span.label-text {
+					display: none;
+				}
+			}
+			.cancelreply {
+				margin-left: 2em;
+			}
+			.submit {
+				clear: both;
+				margin: -1.5em 0 0 0;
+				padding: 0;
+				text-align: right;
+			}
+			input, 
+			select, 
+			textarea {
+				margin: 0.25em 0 0.5em 0;
+				width: 100%;
+			}
+			.submit input,
+			.option {
+				width: auto;
+			}
+			.upload-label {
+				margin-bottom: 0.5em;
+			}
+			.reply-anonymous-label {
+				width: 50%;
+			}
+		}
+	}
+	#commentform .comment-date-at,
+	#commentform .comment-date-on,
+	ol.comments .comment-date-at,
+	ol.comments .comment-date-on {
+		visibility: hidden;
+		display: none;
+	}
+	#commentform .date:before,
+	ol.comments .date:before {
+		content: "\@{iconCalendar}";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	#commentform .time:before,
+	ol.comments .time:before {
+		content: "\@{iconTime}";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	#commentform .date,
+	#commentform .time,
+	ol.comments .date,
+	ol.comments .time {
+		margin-left: 0.7em;
+	}
+
+/* Comment form */
+	#commentform {
+		margin: 0;
+		padding: 0;
+
+		fieldset {
+			margin: 0;
+			text-align: left;
+			color: #777;
+			position: relative;
+			background-color: @commentFormBackground;
+			border: 1px solid @commentFormBorderColor;
+			padding: 0.61803399em 1.61803399em 0 1.61803399em;
+			.border-radius(0);
+			//.box-shadow(@commentShadow);
+
+			// Arrow
+			&:before,
+			&:after {
+				content: "";
+				position: absolute;
+				bottom: -15px;
+				left: 50px;
+				border-width: 15px 0 0 15px;
+				border-style: solid;
+				border-color: @commentFormBorderColor transparent; 
+				display: block; 
+				width: 0;
+			}
+			// Arrow base (should be same color as content border)
+			&:before {
+				top: 10px; 
+				left: -20px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentFormBorderColor transparent transparent;
+			}
+			// Arrow overlay (should be same color as content background) 
+			// This is offset by a pixel relative to :before, which creates a 1px border effect
+			&:after {
+				top: 10px; 
+				left: -18px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentFormBackground transparent transparent; 
+			}
+
+			fieldset {
+				border: 1px solid #ddd;
+				margin: 1em 0;
+				padding: 0 1em 1em 1em;
+				//.box-shadow(none);
+
+				&:before,
+				&:after {
+					display: none;
+				}
+
+				legend {
+					margin: 0 0.5em;
+					padding: 0 1em;
+				}
+			}
+		}
+
+		p.comment-member-photo {
+			float: left;
+			overflow: hidden;
+			margin: 0 20px 0 0;
+			padding: 0;
+			width: 48px;
+			height: 48px;
+			background: transparent;
+			.border-radius(50%);
+			//.box-shadow(@commentShadow);
+		}
+		.sidenote {
+			padding: 0.61803399em 1.61803399em;
+			color: #aaa;
+			margin: 0.61803399em -1.61803399em 0 -1.61803399em;
+			background: darken(@commentFormBackground, 5%);
+		}
+		.required,
+		.optional {
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			font-size: 80%;
+		}
+		label {
+			padding-top: 1em;
+			position: relative;
+			display: block;
+
+			span.label-text {
+				display: none;
+			}
+		}
+		.grouping {
+			position: relative;
+			margin-left: -3em;
+			padding: 0 0 1.5em 5em;
+			overflow: hidden;
+			top: 1em;
+			left: 1.5em;
+
+			label {
+				padding: 0;
+				float: left;
+				width: 50%;
+
+				&:first-child {
+					margin: 0 2em 0 -3.5em;
+				}
+
+				span {
+					top: 0;
+				}
+			}
+		}
+		input, 
+		select, 
+		textarea {
+			margin-top: 0.25em;
+			width: 100%;
+
+			&.option {
+				margin-top: 0;
+			}
+		}
+		.submit {
+			clear: both;
+			margin: -1.5em 0 1em 0;
+			padding: 0;
+			text-align: right;
+		}
+		.submit input,
+		.option {
+			width: auto;
+		}
+		#comment-anonymous-label {
+			width: 50%;
+		}
+	}

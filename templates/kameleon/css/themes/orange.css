@@ -1,0 +1,27 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/basic/css/themes/orange.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	orange theme
+	-- -- -- -- -- -- --
+
+*/
+
+	a, 
+	a:active,
+	a:visited {
+		color: #eca95a; /*#f8b366;*/
+	}
+	#outer-wrap,
+	.highlight-section:before {
+		background: #f9b96f;
+	}
+	blockquote {
+		border-color: #f9b96f;
+	}

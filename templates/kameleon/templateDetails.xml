@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<extension type="template" version="2.5">
+	<name>kameleon (site)</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Site template for HUBzero CMS</description>
+	<files>
+		<filename>css/component.css</filename>
+		<filename>css/debug.css</filename>
+		<filename>css/error.css</filename>
+		<filename>css/fonts.css</filename>
+		<filename>css/main.css</filename>
+		<filename>css/print.css</filename>
+		<filename>css/browser/ie7.css</filename>
+		<filename>css/browser/ie8.css</filename>
+		<filename>css/browser/ie9.css</filename>
+		<filename>css/pages/community.css</filename>
+		<filename>css/pages/congrats.css</filename>
+		<filename>css/pages/discover.css</filename>
+		<filename>css/pages/home.css</filename>
+		<filename>html/mod_breadcrumbs/default.php</filename>
+		<filename>html/mod_reportproblems/mod_reportproblems.css</filename>
+		<filename>html/mod_search/default.php</filename>
+		<filename>images/overlay/prevlabel.gif</filename>
+		<filename>index.php</filename>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>js/hub.js</filename>
+		<filename>template_thumbnail.png</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.tpl_kameleon.ini</language>
+	</languages>
+	<positions>
+		<position>footer</position>
+		<position>banner</position>
+		<position>welcome</position>
+		<position>left</position>
+		<position>right</position>
+		<position>helppane</position>
+		<position>user3</position>
+		<position>introblock</position>
+		<position>notices</position>
+		<position>search</position>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="header" type="list" default="light" label="TPL_KAMELEON_FIELD_HEADER_LABEL" description="TPL_KAMELEON_FIELD_HEADER_DESC">
+					<option value="light">TPL_KAMELEON_FIELD_HEADER_LIGHT</option>
+					<option value="dark">TPL_KAMELEON_FIELD_HEADER_DARK</option>
+				</field>
+				<field name="theme" type="list" default="" label="TPL_KAMELEON_FIELD_THEME_LABEL" description="TPL_KAMELEON_FIELD_THEME_DESC">
+					<option value="">TPL_KAMELEON_FIELD_THEME_GRAY</option>
+					<option value="charcoal">TPL_KAMELEON_FIELD_THEME_CHARCOAL</option>
+					<option value="blue">TPL_KAMELEON_FIELD_THEME_BLUE</option>
+					<option value="aqua">TPL_KAMELEON_FIELD_THEME_AQUA</option>
+					<option value="green">TPL_KAMELEON_FIELD_THEME_GREEN</option>
+					<option value="orange">TPL_KAMELEON_FIELD_THEME_ORANGE</option>
+					<option value="red">TPL_KAMELEON_FIELD_THEME_RED</option>
+					<option value="salmon">TPL_KAMELEON_FIELD_THEME_SALMON</option>
+					<option value="purple">TPL_KAMELEON_FIELD_THEME_PURPLE</option>
+					<option value="yellow">TPL_KAMELEON_FIELD_THEME_YELLOW</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

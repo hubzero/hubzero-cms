@@ -1,0 +1,82 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/tooltip.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Tooltips
+// --------------------------------------------------
+
+.tooltip {
+	//float: left;
+	position: absolute;
+	min-width: 50px;
+	max-width: 400px;
+	z-index: @zindexTooltip;
+	font-size: 0.85em;
+	padding: 0.5em 1em;
+	color: @tooltipColor;
+	border: @tooltipBorder;
+	.box-shadow(~"0 0 0 2px rgba(0, 0, 0, 0.1)");
+	background: #111111;
+	background: rgba(0, 0, 0, 0.8);
+	.box-sizing(border-box);
+
+	// Arrow
+	&:after {
+		content: "";
+		border-color: mix(@tooltipBackgroundStart, @tooltipBackgroundEnd, 80%) transparent transparent transparent;
+		border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+		border-style: solid;
+		border-width: @tooltipArrowWidth @tooltipArrowWidth 0 @tooltipArrowWidth;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		bottom: -@tooltipArrowWidth;
+		left: 50%;
+		margin-left: -@tooltipArrowWidth;
+	}
+	// Bottom
+	&.bottom:after {
+		bottom: auto;
+		top: -@tooltipArrowWidth;
+		border-color: transparent transparent mix(@tooltipBackgroundStart, @tooltipBackgroundEnd, 80%) transparent;
+		border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
+		border-width: 0 @tooltipArrowWidth @tooltipArrowWidth @tooltipArrowWidth;
+	}
+	// Left
+	&.left {
+		margin-top: 2.5em;
+		&:after {
+			bottom: auto;
+			left: auto;
+			right: -@tooltipArrowWidth;
+			margin-left: 0;
+			top: 50%;
+			margin-top: -@tooltipArrowWidth;
+			border-color: transparent transparent transparent mix(@tooltipBackgroundStart, @tooltipBackgroundEnd, 80%);
+			border-color: transparent transparent transparent rgba(0, 0, 0, 0.8);
+			border-width: @tooltipArrowWidth 0 @tooltipArrowWidth @tooltipArrowWidth;
+		}
+	}
+	// Right
+	&.right:after {
+		bottom: auto;
+		margin-left: 0;
+		left: -@tooltipArrowWidth;
+		top: 50%;
+		margin-top: -@tooltipArrowWidth;
+		border-color: transparent mix(@tooltipBackgroundStart, @tooltipBackgroundEnd, 80%) transparent transparent;
+		border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
+		border-width: @tooltipArrowWidth @tooltipArrowWidth @tooltipArrowWidth 0;
+	}
+
+	// Title
+	.tooltip-title {
+		display: none;
+	}
+}

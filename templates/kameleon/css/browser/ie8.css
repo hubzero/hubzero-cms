@@ -1,0 +1,87 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic2013/css/browser/ie8.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	IE 8 Windows hacks
+	-- -- -- -- -- -- --
+
+*/
+
+/* Masthead */
+	#content.com_content .wrap,
+	#features,
+	#system-debug,
+	#footer ul#legalese,
+	#masthead .inner,
+	#content {
+		border-left: 1px solid #ccc;
+		border-right: 1px solid #ccc;
+	}
+	#ancillary,
+	#sub-masthead .inner {
+		border-left: 1px solid #2a2a2a;
+		border-right: 1px solid #2a2a2a;
+	}
+	#footer ul#legalese {
+		border-bottom: 1px solid #ccc;
+	}
+	#system-debug {
+		border-top: 1px solid #ccc;
+	}
+	#features,
+	#ancillary {
+		margin-top: -20px;
+	}
+	#content.com_content .about.odd:before,
+	body #introduction .clear:before {
+		border-right: 1px solid #bbb;
+		left: -31px;
+	}
+	#content.com_content .about.odd:after,
+	body #introduction .clear:after {
+		border-left: 1px solid #bbb;
+		right: -31px;
+	}
+	.highlight-section p {
+		border-right: 1px solid #bbb;
+		border-left: 1px solid #bbb;
+	}
+	#splash .inner-wrap {
+		background: transparent url("/templates/hubbasic2013/images/layout/glass-stripes.png");
+	}
+	#splash .inner-wrap .inner {
+		border-left: 1px solid #4b677c;
+		border-right: 1px solid #4b677c;
+		background: transparent url("/templates/hubbasic2013/images/layout/glass.png");
+	}
+
+	#wrap {
+		border-top: 1px solid #250b23;
+	}
+
+	.com_content .content-header,
+	#content-header {
+		margin-top: -20px;
+	}
+
+/* Search form */
+	#searchform {
+		width: 230px;
+	}
+	#submitquery {
+		text-indent: 3em;
+		overflow: hidden;
+		width: 3em;
+	}
+
+/* Forms */
+	#hubForm:before {
+		border-left: 1px solid #dfdfdf;
+	}
+

@@ -1,0 +1,144 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic2013/css/pages/discover.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	discover page CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#content {
+		padding: 0;
+	}
+	.com_content .contentpaneopen {
+		padding: 0;
+	}
+	.com_content .content-header {
+		margin: 0 30px;
+	}
+	.grid {
+		padding: 30px 60px;
+	}
+	.below {
+		padding-top: 0;
+	}
+
+	.below + .grid {
+		background-color: #fff;
+	}
+
+	span.fontcon-before,
+	span.fontcon-after,
+	#content .col div:before {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 50%;
+		top: 0.5em;
+		width: 1em;
+		height: 1em;
+		padding: 0.5em;
+		font-size: 3em;
+		font-family: 'Fontcons';
+		color: #dadada;
+		margin-left: -1em;
+		font-weight: normal;
+		-webkit-transition: all 300ms ease; 
+		   -moz-transition: all 300ms ease; 
+		    -ms-transition: all 300ms ease; 
+		     -o-transition: all 300ms ease; 
+		        transition: all 300ms ease;
+		border: 1px solid #dadada;
+		border-radius: 50%;
+		text-align: center;
+		line-height: 1;
+		background: transparent;
+	}
+	#content .col div:hover:before {
+		top: 0.2em;
+		color: #250b23;
+	}
+	#content .grid {
+		margin-bottom: 2em;
+	}
+	#content .grid.below {
+		border-top: none;
+	}
+	#content .col {
+		position: relative;
+	}
+	#content .col div {
+		background: none;
+		padding-top: 8em;
+		text-align: center;
+	}
+	#content .col div.wiki:before {
+		content: "\f072";
+	}
+	#content .col div.presentation:before {
+		content: "\f040";
+	}
+	#content .col div.quote:before {
+		content: "\275D";
+	}
+	#content .col div.tag:before {
+		content: "\f02c";
+	}
+	#content .col div.feedback:before {
+		content: "\f086";
+	}
+	#content .col div.note:before {
+		content: "\f075";
+	}
+	#content .col div.contribute:before {
+		content: "\f01b";
+	}
+	#content .col div.tool:before {
+		content: "\2692";
+	}
+	#content .col div.donate:before {
+		content: "\f04d";
+	}
+	#content .col div.blog:before {
+		content: "\f036";
+	}
+	#content .col div.poll:before {
+		content: "\f080";
+	}
+	#content .col div.event:before {
+		content: "\f073";
+	}
+	#content .col div.cart:before {
+		content: "\f04d";
+	}
+	#content .col div.new:before {
+		content: "\273D";
+	}
+	#content .col div.wish:before {
+		content: "\f078";
+	}
+
+	#content .col h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1.2;
+		border: none;
+	}
+	#content .col h3 { 
+		margin: 0 0 1em 0; 
+		padding: 0.6em 0 0.6em 0;
+		display: block;
+		line-height: 1.4em;
+		color: #565656;
+	}
+	#content .col h3 a { 
+		border: none;
+		color: #565656;
+	}

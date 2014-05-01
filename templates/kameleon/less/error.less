@@ -1,0 +1,296 @@
+
+// Core variables and mixins
+@import "_variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "../../../media/system/less/mixins.less";
+
+// CSS Reset
+@import "../../../media/system/less/reset.less";
+
+a,
+a:active, 
+a:visited {
+	text-decoration: none;
+	color: #444;
+	border: none;
+}
+a:hover,
+a:hover:visited {
+	color: #222;
+	border-bottom: 1px solid #999;
+}
+
+// Fonts
+@import "_fonts.less";
+
+// Icons
+@import "../../../media/system/less/fontcons.less"; // Fontcons defines available icons
+@import "../../../media/system/less/icons.less"; // !! Dependant upon Fontcons.less
+
+// Grid system and page structure
+@import "../../../media/system/less/grid.less";
+
+// Root node
+	html {
+		font-family: sans-serif;
+	}
+
+// Body
+	body {
+		font-family: @sansFontFamily;
+		font-weight: 400;
+		font-size: @baseFontSize;
+		line-height: @baseLineHeight;
+		color: #666;
+		background: #f9f9f9; //#ececec;
+		text-rendering: optimizeLegibility;
+	}
+
+// Elements
+	// Lists
+	ul {
+		list-style: disc;
+		margin: 0 0 0 2em;
+
+		li {
+			margin: 0.5em 0;
+		}
+	}
+	ol {
+		list-style: decimal;
+		margin: 0 0 0 2em;
+
+		li {
+			margin: 0.5em 0;
+		}
+	}
+	// Misc.
+	p {
+		margin: 1em 0;
+	}
+	hr {
+		clear: both;
+		height: 1px;
+		background: #ddd;
+		margin: 2em 0;
+		border: none;
+	}
+	abbr {
+		border-bottom: 1px dotted #333;
+	}
+	dfn {
+		font-style: italic;
+	}
+	dl dt {
+		font-weight: bold;
+	}
+	dl dd {
+		margin-left: 2em;
+	}
+	img {
+		border: 0;
+	}
+
+// Headers
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-weight: 400;
+		color: #484848;
+		margin: 1em 0;
+	}
+	h2 {
+		line-height: 1.3;
+		font-size: 1.9em;
+		font-weight: 300;
+	}
+	h3 {
+		font-size: 1.4em;
+	}
+	h4,
+	h5,
+	h6 {
+		font-size: 1.1em;
+	}
+
+// Structure
+	#masthead {
+		/*margin: 0;
+		padding: 0 60px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		background: #fff;
+		z-index: 999;
+		.box-shadow(~"0 0 5px rgba(0, 0, 0, 0.38)");
+		.transition(all 0.3s ease);
+
+		.clearfix();
+
+		h1 {
+			font-size: 1.775em;
+			line-height: 1;
+			margin: 0;
+			padding: 0 30px 0 0;
+			float: left;
+			text-transform: lowercase;
+			border-right: 1px solid #eee;
+			font-family: 'Kaushan Script', cursive;
+			.transition(all 0.3s ease);
+
+			h1 a {
+				position: relative; 
+				display: block; 
+				height: 1em;
+				background: transparent;
+				border: none;
+				font-weight: normal;
+				font-style: normal;
+				padding: 0.56em 0;
+				color: #333;
+
+				&:hover {
+					color: #333;
+				}
+			}
+		}*/
+		display: none;
+	}
+
+	#wrap {
+		border-top: none;
+	}
+	#content {
+		margin: 0;
+		padding: 0;
+
+		.main {
+			padding: 60px;
+		}
+	}
+
+	#footer {
+		padding: 30px 60px;
+		background: #ececec;
+	}
+
+// Error Message
+	#errorbox {
+		padding: 0;
+		margin: 0;
+		position: relative;
+		z-index: 1;
+
+		.wrap {
+			background: #fff;
+			position: relative;
+			display: block;
+			padding: 30px;
+		}
+		h3 {
+			margin-top: 0;
+			padding-top: 0;
+		}
+	}
+	#errormessage {
+		margin-top: 0em;
+		margin-bottom: 0em;
+	}
+	.signature {
+		font-style: italic;
+		text-align: right;
+	}
+
+// Error code
+	h2.error-code {
+		position: relative;
+		font-size: 18em;
+		text-align: center;
+		color: #ddd;
+		margin: 0;
+		padding: 0.11em 0;
+		line-height: 1.2em;
+		font-weight: 300;
+		height: 300px;
+		border-top: 5px solid rgba(0, 0, 0, 0.03);
+		border-bottom: 5px solid rgba(0, 0, 0, 0.03);
+	}
+	.warning,
+	.error {
+		margin: 0 0 30px 0;
+	}
+
+// Stack trace
+	.backtrace-wrap {
+		background-color: #333;
+		.border-radius(0.25em);
+		padding: 1em 0;
+	}
+	table {
+		font-family: @monoFontFamily;
+		width: 100%;
+		text-align: left;
+		font-size: 0.85em;
+		border: none;
+		color: #e9e4e5;
+
+		th,
+		td {
+			vertical-align: top;
+			padding: 0.618em 1em;
+			word-break: break-all;
+		}
+		tbody tr:nth-child(odd) {
+			background-color: #3a3a3a;
+		}
+		td strong {
+			font-weight: bold;
+			color: #250b23;
+		}
+		caption,
+		thead th {
+			font-weight: normal;
+			letter-spacing: 0.15em;
+			white-space: nowrap;
+		}
+		caption {
+			text-align: left;
+			padding: 0.618em 1em;
+			display: none;
+		}
+	}
+	// Syntax highlighting
+	.fnc {
+		color: #4bb1b1;
+	}
+	.cls {
+		color: #ef7c61;
+	}
+	.mtd {
+		color: #fffefe;
+	}
+	.opn {
+		color: #aaa;
+	}
+	.com,
+	.fl {
+		color: #888;
+	}
+	.ln {
+		color: #bcd42a;
+	}
+
+// For smaller screens
+@media only screen and (max-width: 868px) {
+	.grid .col {
+		float: none;
+		width: auto;
+		margin: 0;
+	}
+}
+
+@import "../../../media/system/less/utilities.less";
+@import "_print.less";

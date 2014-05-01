@@ -1,0 +1,214 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic2013/css/browser/ie7.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	IE 7 Windows hacks
+	-- -- -- -- -- -- --
+
+*/
+
+/* Layout */
+	#content.com_content .wrap,
+	#features,
+	#system-debug,
+	#footer ul#legalese,
+	#masthead .inner,
+	#content {
+		border-left: 1px solid #ccc;
+		border-right: 1px solid #ccc;
+	}
+	#ancillary,
+	#sub-masthead .inner {
+		border-left: 1px solid #2a2a2a;
+		border-right: 1px solid #2a2a2a;
+	}
+	#footer ul#legalese {
+		border-bottom: 1px solid #ccc;
+	}
+	#system-debug {
+		border-top: 1px solid #ccc;
+	}
+	#features {
+		margin-top: -30px;
+	}
+	.highlight-section p {
+		border-right: 1px solid #bbb;
+		border-left: 1px solid #bbb;
+	}
+	#splash {
+		background: transparent;
+		border-left: 1px solid #40586a;
+		border-right: 1px solid #40586a;
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#62a0b2', endColorstr='#250b23', GradientType=0);
+	}
+	#splash .inner-wrap {
+		background: transparent url("/templates/hubbasic2013/images/layout/glass-stripes.png");
+	}
+	#splash .inner-wrap .inner {
+		border-left: 1px solid #4b677c;
+		border-right: 1px solid #4b677c;
+		background: transparent url("/templates/hubbasic2013/images/layout/glass.png");
+	}
+
+	#wrap {
+		border-top: 1px solid #250b23;
+	}
+
+	.com_content .content-header h2,
+	#content-header h2 {
+		padding-top: 30px;
+	}
+	#content-header-extra {
+		top: 2em;
+	}
+
+/* Masthead */
+	#masthead {
+		z-index: 777;
+	}
+	#masthead .inner {
+		z-index: 778;
+		height: 5.8em;
+	}
+
+/* Search form */
+	#searchword {
+		background: #333;
+	}
+	#submitquery {
+		text-indent: 3em;
+		overflow: hidden;
+		width: 3em;
+		padding: 1.3em 1em 1.3em 1em;
+	}
+
+/* 5 star Reviews */
+	.avgrating {
+		padding-left: 70px;
+	}
+	.avgrating span {
+		padding-left: 0;
+	}
+	.no-stars        { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 0 no-repeat; }
+	.half-stars      { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -40px no-repeat; }
+	.one-stars       { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -80px no-repeat; }
+	.onehalf-stars   { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -120px no-repeat; }
+	.two-stars       { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -160px no-repeat; }
+	.twohalf-stars   { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -200px no-repeat; }
+	.three-stars     { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -240px no-repeat; }
+	.threehalf-stars { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -280px no-repeat; }
+	.four-stars      { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -320px no-repeat; }
+	.fourhalf-stars  { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -360px no-repeat; }
+	.five-stars      { background: url("/templates/hubbasic2013/images/stars/stars.gif") 0 -400px no-repeat; }
+
+/* Common classes */
+	.changestatus {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08d;&nbsp;</small>' + this.innerHTML);
+	}
+	.transfer {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2194;&nbsp;</small>' + this.innerHTML);
+	}
+	.makeprivate {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf06e;&nbsp;</small>' + this.innerHTML);
+	}
+	.editwish {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x270E;&nbsp;</small>' + this.innerHTML);
+	}
+	.abuse {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2298;&nbsp;</small>' + this.innerHTML);
+	}
+	.reply {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08a;&nbsp;</small>' + this.innerHTML);
+	}
+
+/* Content */
+	#content {
+		/*border: 1px solid #ccc;*/
+		margin-top: -30px;
+	}
+	#content .inner {
+		zoom: 1;
+	}
+
+/* Introduction */
+	body #introduction {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	body #introduction .subject {
+		padding-left: 0;
+	}
+
+/* Misc. */
+	.events-section {
+		padding-top: 20px;
+	}
+	#content-header-extra ul li {
+		display: inline;
+	}
+	.entries {
+		border: 1px solid #e9e9e9;
+	}
+	.entries caption {
+		border: 1px solid #e9e9e9;
+	}
+
+	#page_options a,
+	#content-header-extra a {
+		padding: 0.4em 0.91em 0.4em 0.91em;
+	}
+
+/* Sections */
+	.subject {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="subject-before"></small>' + this.innerHTML);
+	}
+	.aside {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="aside-before"></small>' + this.innerHTML + '<small class="aside-after"></small>');
+	}
+
+/* Forms */
+	#hubForm {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="hubform-before"></small>' + this.innerHTML + '<small class="hubform-after"></small>');
+	}
+	#hubForm input[type=text],
+	#hubForm input[type=password],
+	#hubForm input[type=email],
+	#hubForm textarea {
+		background: #F0F0F0;
+		border: 1px solid #D9D9D9;
+		padding: 0.2em 0.4em 0.6em 0.4em;
+	}
+	#hubForm textarea:focus, 
+	#hubForm input[type="text"]:focus, 
+	#hubForm input[type="password"]:focus, 
+	#hubForm input[type="file"]:focus {
+		background-color: #fff;
+		border-color: #ecada2;
+	}
+	#hubForm legend {
+		margin-top: -0.5em;
+		margin-left: -0.6em;
+		border: 1px solid #e5e5e5;
+		border-left: none;
+	}
+	#hubForm label {
+	}
+	#hubForm .group {
+		clear: left;
+	}
+	#hubForm .group label input {
+		width: 97%;
+		margin: 0 0 0 -3.2em;
+	}
+	#hubForm .threeup label input {
+		margin: 0 0 0 -2.7em;
+	}
+	#hubForm .group label:first-child input {
+		margin: 0 0 0 -2em;
+	}

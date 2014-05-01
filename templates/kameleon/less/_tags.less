@@ -1,0 +1,80 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/tags.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Tags
+// --------------------------------------------------
+
+	.tags {
+		margin-left: 0;
+		font-size: 0.85em !important;
+
+		li {
+			display: inline-block !important;
+			.ie7-inline-block();
+			margin: 0.2em 0.2em 0.2em 0 !important;
+
+			a {
+				position: relative;
+				display: inline-block !important;
+				.ie7-inline-block();
+				border: 0;
+				line-height: 1 !important;
+				margin: 0 !important;
+				background: @tagBackground !important;
+				color: @tagColor !important;
+				padding: 0.4em 0.6em 0.5em 0.6em !important;
+				.border-radius(@tagBorderRadius);
+
+				span {
+					background-color: @tagCountBackground;
+					background-color: rgba(255, 255, 255, 0.2);
+					display: inline-block;
+					.ie7-inline-block();
+					margin: -0.4em -0.6em -0.5em 0.6em;
+					padding: 0.4em 0.6em 0.5em 0.6em;
+					.border-radius(@tagBorderRadius);
+				}
+
+				&:hover {
+					color: @tagColorHover !important;
+					background: @tagBackgroundHover !important;
+				}
+				&:hover span {
+					background-color: @tagCountBackgroundHover;
+					#translucent > .background(@white, 0.2);
+				}
+			}
+		}
+		.admin a {
+			color: @tagAdminColor !important;
+			background: @tagAdminBackground !important;
+			&:hover {
+				color: @tagAdminColorHover !important;
+				background: @tagAdminBackgroundHover !important;
+			}
+		}
+	}
+
+// [!] HACK - IE 7 and older
+	.tags li {
+		*display: inline !important;
+
+		a {
+			*line-height: 1em !important;
+
+			span {
+				*background-color: @tagCountBackground;
+				*padding: 6px 6px 6px 6px !important;
+				*margin: -6px -6px -7px 4px;
+			}
+
+			&:hover span {
+				*background-color: @tagCountBackgroundHover;
+			}
+		}
+	}

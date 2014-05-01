@@ -1,0 +1,105 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/pagination.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Pagination (multiple pages)
+// --------------------------------------------------
+
+.list-footer {
+	margin: @baseLineHeight 0;
+	padding: 1em 0 0 0;
+	color: lighten(@paginationColor, 50%);
+	background-image: none;
+	list-style: none;
+	line-height: @baseLineHeight;
+	.clearfix();
+	font-size: 11px;
+	border-top: 1px solid #ccc;
+	border-top: 1px solid rgba(0,0,0,0.15);
+
+	li {
+		float: left;
+		margin: 0;
+		padding: 0 (@baseFontSize / 3);
+		background-image: none;
+		list-style: none;
+	}
+	.counter {
+		float: right;
+		padding: 0;
+		color: @paginationColor;
+		border-left: none;
+	}
+	.page { 
+		padding: 0 0.21em;
+	}
+	.limit {
+		padding-right: @baseFontSize;
+		color: @paginationColor;
+		float: right;
+	}
+	.start {
+		margin-left: 0;
+		padding-left: 0;
+	}
+	.next,
+	.prev {
+		display: none;
+	}
+	input,
+	label {
+		display: inline;
+		width: auto;
+	}
+
+	span,
+	strong,
+	a,
+	a:visited {
+		display: inline-block;
+		border: 2px solid #CCC;
+		border: 2px solid rgba(0, 0, 0, 0.1);
+		text-align: center;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		outline: 0;
+		text-decoration: none;
+	}
+
+	// Disabled buttons
+	span {
+		padding: 0.3em 0.71em;
+		color: #999;
+		font-weight: 400;
+		position: relative;
+	}
+
+	// Current page
+	strong {
+		background-color: #eee;
+		padding: 0.35em 0.71em;
+		color: #555;
+		font-weight: 500;
+	}
+
+	// Page links
+	a,
+	a:visited {
+		padding: 0.3em 0.71em;
+		color: #555;
+		.background-clip(padding-box);
+		font-weight: 400;
+		cursor: pointer;
+		position: relative;
+
+		&:hover {
+			background-color: #e8e8e8;
+			border-color: #aaaaaa;
+		}
+	}
+}

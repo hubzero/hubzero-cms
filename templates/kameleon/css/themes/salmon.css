@@ -1,0 +1,27 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/basic/css/themes/red.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	red theme
+	-- -- -- -- -- -- --
+
+*/
+
+	a, 
+	a:active, 
+	a:visited {
+		color: #ff6f6f; /* red */
+	}
+	#outer-wrap,
+	.highlight-section:before {
+		background: #ff6f6f; /* Red, darker red: #d95f5e */;
+	}
+	blockquote {
+		border-color: #ff6f6f;
+	}

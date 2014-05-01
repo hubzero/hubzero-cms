@@ -1,0 +1,53 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/tabs.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Sub menu
+// --------------------------------------------------
+	ul.sub-menu {
+		list-style: none;
+		padding: @tabContainerPadding;
+		margin: 0;
+		border-bottom: 1px solid @tabActiveBorder;
+		*zoom: 1;
+		.clearfix(left);
+		background: @tabContainerBackground;
+
+		li {
+			float: left;
+			margin: 0;
+			padding: 0;
+			a {
+				position: relative;
+				top: 1px;
+				text-decoration: none;
+				display: block;
+				background: @tabBackground;
+				border: 1px solid @tabBorder;
+				border-bottom-width: 0;
+				color: @tabColor;
+				padding: 0.5em 1em;
+				text-align: center;
+				line-height: 1;
+				text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
+
+				&:hover {
+					border-color: @tabBorderHover;
+					background: @tabBackgroundHover;
+					color: @tabColor;
+				}
+			}
+
+			&.active a,
+			&.active a:hover {
+				background: @tabActiveBackground;
+				color: @tabColorActive;
+				border-color: @tabActiveBorder;
+				text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
+			}
+		}
+	}

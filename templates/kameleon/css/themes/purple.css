@@ -1,0 +1,27 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/basic/css/themes/purple.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	purple theme
+	-- -- -- -- -- -- --
+
+*/
+
+	a, 
+	a:active, 
+	a:visited {
+		color: #a181e2;
+	}
+	#outer-wrap,
+	.highlight-section:before {
+		background: #a684e9; /*af90eb;*/
+	}
+	blockquote {
+		border-color: #a684e9;
+	}

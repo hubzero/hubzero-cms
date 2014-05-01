@@ -1,0 +1,57 @@
+/* Mobile Top */
+	.mobile-top #nav {
+		display: none;
+	}
+	.mobile-top #mobile-nav {
+		position: absolute;
+		   right: 60px;
+		     top: 25px;
+	}
+
+
+/* Mobile Search */
+	.mobile-search #searchform {
+		 float: left;
+		margin: 20px 0 0 20px;
+	}
+	.mobile-search #searchform #searchword {
+		     float: none;
+		   padding: 8px;
+		    border: 1px solid #dadada;
+		background: #f9f9f9;
+		     color: #555;
+	}
+
+
+/* Mobile Wrap */
+	.mobile-wrap .content-header:before,
+	.mobile-wrap .content-header:after,
+	.mobile-wrap .content-header h2:before,
+	.mobile-wrap .content-header h2:after,
+	.mobile-wrap #content-header:before,
+	.mobile-wrap #content-header:after,
+	.mobile-wrap #content-header h2:before,
+	.mobile-wrap #content-header h2:after {
+		display: none;
+	}
+	.mobile-wrap .content-header h2,
+	.mobile-wrap #content-header h2 {
+		padding: 30px !important;
+	}
+	.mobile-wrap #content-header-extra ul {
+		padding: 20px 0 0 0;
+	}
+	.mobile-wrap .com_content .wrap .columns:after,
+	.mobile-wrap .com_content .wrap h3:before,
+	.mobile-wrap .com_content .wrap h3:after {
+		display: none !important;
+	}
+
+
+/* Mobile Footer */
+	.mobile-footer {
+		text-align: center;
+		   padding: 10px 0 !important;
+		    height: 30px;
+		min-height: inherit !important;
+	}
