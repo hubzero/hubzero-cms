@@ -35,6 +35,6 @@ class InstallerViewWarnings extends InstallerViewDefault
 	protected function addToolbar()
 	{
 		parent::addToolbar();
-		JToolBarHelper::help('JHELP_EXTENSIONS_EXTENSION_MANAGER_WARNINGS');
+		JToolBarHelper::help('warnings');
 	}
 }

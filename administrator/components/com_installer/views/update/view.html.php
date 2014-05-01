@@ -50,6 +50,6 @@ class InstallerViewUpdate extends InstallerViewDefault
 		JToolBarHelper::custom('update.purge', 'purge', 'purge', 'JTOOLBAR_PURGE_CACHE', false, false);
 		JToolBarHelper::divider();
 		parent::addToolbar();
-		JToolBarHelper::help('JHELP_EXTENSIONS_EXTENSION_MANAGER_UPDATE');
+		JToolBarHelper::help('update');
 	}
 }

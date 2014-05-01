@@ -41,6 +41,6 @@ class InstallerViewInstall extends InstallerViewDefault
 	protected function addToolbar()
 	{
 		parent::addToolbar();
-		JToolBarHelper::help('JHELP_EXTENSIONS_EXTENSION_MANAGER_INSTALL');
+		JToolBarHelper::help('install');
 	}
 }

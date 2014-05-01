@@ -1,0 +1,73 @@
+<article>
+	<h1>Extension Manager: Discover</h1>
+
+	<p>This screen is accessed from the back-end Joomla! administrator panel. It is used to discover and install extensions into your Joomla! installation. Some examples of extensions are plug-ins, components, and site templates.
+</p>
+<h2> <span class="mw-headline" id="How_to_Access">How to Access</span></h2>
+<ul><li>Select <b>Extensions → Extension Manager</b> from the drop-down menu of the <i><b>Joomla! Administrator Panel</b></i>. Then select the <b>Discover</b> menu item in the <i><b>Extension manager</b></i> screen that appears.
+</li></ul>
+<h2> <span class="mw-headline" id="Description">Description</span></h2>
+<p>This screen allows you to discover extensions that have not gone through the normal installation process. This provides a method to install large extensions which are not possible to install using the normal process. For example, some extensions are too large in file size to upload using the web interface due to limitations of the web hosting environment. Using this feature you can upload extension files directly to your web server using some other means such as FTP or SFTP and place those extension files into the appropriate directory. You can then use the discover feature to find the newly uploaded extension and activate it in your Joomla! installation. Using the discover operation you can also discover and install multiple extensions at the same time.
+</p>
+<h2> <span class="mw-headline" id="Screenshot">Screenshot</span></h2>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-extension_manager-discover-screen.png" class="image"><img alt="Help25-extension manager-discover-screen.png" src="http://docs.joomla.org/images/6/66/Help25-extension_manager-discover-screen.png" width="670" height="146" /></a>
+</p>
+<h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
+<ul><li><b>Checkbox.</b> Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items.
+</li><li><b>Name.</b> The name of the extension.
+</li><li><b>Extension Type.</b> The extension type - module, plug-in, template, language.
+</li><li><b>Version.</b> The version number of the Extension.
+</li><li><b>Date.</b> The date this extension was released.
+</li><li><b>Folder.</b> If the extension is a plug-in, the subdirectory of your Joomla! installation's /plugins directory where the extension is located. By default Joomla! 2.5 has the following subdirectories in the plugins directory which each represent the different types of plug-ins that are defined by default: authentication, content, editors, editors-xtd, extension, search, system, user.
+</li><li><b>Client.</b> Specifies if this is a site or administrator extension.
+</li><li><b>Author.</b> The author of this extension.
+</li><li><b>ID.</b> The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You cannot change this number.
+</li></ul>
+<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+<p>At the top right you will see the toolbar:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-Install-Discover-PurgeCache-Options-Help.png" class="image"><img alt="Help25-Toolbar-Install-Discover-PurgeCache-Options-Help.png" src="http://docs.joomla.org/images/7/71/Help25-Toolbar-Install-Discover-PurgeCache-Options-Help.png" width="321" height="65" /></a>
+</p><p>The functions are:
+</p>
+<ul><li><b>Install</b>. Installs the selected extension.
+</li><li><b>Discover</b>. Searches the Joomla! installation directories for uninstalled extensions. Any uninstalled extensions found will be displayed in the extension listing. Caches the search results so they continue to be displayed on subsequent visits to this screen.
+</li><li><b>Purge Cache</b>. Clears cached information about uninstalled extensions.  This will update the list of uninstalled extensions shown on this screen.
+</li><li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.
+</li><li><b>Help</b>. Opens this help screen.
+</li></ul>
+<h2> <span class="mw-headline" id="Links_to_Other_Screens">Links to Other Screens</span></h2>
+<p>At the top left, you will see the following five links:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help-extension_manager-install-menu.png" class="image"><img alt="Help-extension manager-install-menu.png" src="http://docs.joomla.org/images/8/8d/Help-extension_manager-install-menu.png" width="382" height="26" /></a>
+</p>
+<ul><li><b>Install.</b> Links to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Install" title="Help25:Extensions Extension Manager Install">Install Screen</a>.
+</li><li><b>Update.</b> Links to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Update" title="Help25:Extensions Extension Manager Update">Update Screen</a>.
+</li><li><b>Manage.</b> Links to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Manage" title="Help25:Extensions Extension Manager Manage">Manage Screen</a>.
+</li><li><b>Discover.</b> Links to the <strong class="selflink">Discover Screen</strong>.
+</li><li><b>Database.</b> Links to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Database" title="Help25:Extensions Extension Manager Database">Database Screen</a>.
+</li><li><b>Warnings.</b> Links to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Warnings" title="Help25:Extensions Extension Manager Warnings">Warnings Screen</a>.
+</li><li><b>Install Langauges.</b> Links to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_languages" title="Help25:Extensions Extension Manager languages">Languages Screen</a>.
+</li></ul>
+<h2> <span class="mw-headline" id="Outline">Outline</span></h2>
+<p>An extension can be installed with the discover function by doing the following steps:
+</p>
+<ol><li> Upload the uncompressed extension files to the appropriate directory in your Joomla! installation. For example, if you wanted to upload a site template extension to your Joomla! installation you would create a directory for the template extension in the /templates sub-directory of your Joomla! installation. Then you would upload the template extension files into that directory you created.
+</li><li> After you have uploaded the extension files, go back to the Extension Manager Discover screen and click the <b>Discover</b> item in the toolbar. This will initiate the search function which will search your Joomla! extension directories looking for uninstalled extensions.
+</li><li> If the extension you uploaded is compatible with Joomla! 2.5 and is not already installed, it will appear in the listing of discovered extensions in this screen.
+</li><li> Click the check-box to the left of the discovered extension and then click the <b>Install</b> item in the toolbar. This will install the extension into your Joomla! installation.
+</li></ol>
+<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+<ul><li> If you have many extensions you want to install you can upload them all into the appropriate directories of your Joomla! installation and then use this screen to discover all of them in one operation. You can then install all of the extensions in one step by selecting all of them and pressing the <b>Install</b> item in the toolbar.
+</li></ul>
+<h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
+<ul><li>If you install a Component Extension, it will be listed as a new Menu Item in the <i>Components</i> menu.
+</li></ul>
+<ul><li>You can assign a Menu Item to an installed Component Extension in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager" title="Help25:Menus Menu Item Manager">Menu Item Manager</a> by clicking the <i>New</i> toolbar button. The new Component will show in the Internal Link list of Menu Item Types.
+</li></ul>
+<ul><li>If you install a Module Extension, it will be added to the list of the Modules in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager" title="Help25:Extensions Module Manager">Module Manager</a>, where you can enable/disable it. You can also customize it's parameters in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Edit" title="Help25:Extensions Module Manager Edit">Module Edit</a> screen.
+</li></ul>
+<ul><li>An installed Plugin Extension will be added to the list of the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Plugin_Manager" title="Help25:Extensions Plugin Manager">Plugin Manager</a>, where you can enable/disable it. You can also customize its parameters in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Plugin_Manager_Edit" title="Help25:Extensions Plugin Manager Edit">Plugin Edit</a> screen.
+</li></ul>
+<ul><li>An installed Template Extension will be added to the Site or Administrator list of the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Template_Manager_Styles" title="Help25:Extensions Template Manager Styles">Template Manager</a> where you can assign it to all of the pages or to the selected ones. You can also customize its parameters, edit the HTML or CSS source, or preview the available Module positions.
+</li></ul>
+<ul><li>An installed Language Extension will be added to the Site or Administrator list of the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Language_Manager_Installed" title="Help25:Extensions Language Manager Installed">Language Manager</a>, depending on the client attribute of the Extension. This screen let's you assign it as the default language, if desired.
+</li></ul>
+</article>

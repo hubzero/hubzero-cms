@@ -77,7 +77,7 @@ class InstallerViewLanguages extends InstallerViewDefault
 			JToolBarHelper::divider();
 			parent::addToolbar();
 			// TODO: this help screen will need to be created
-			JToolBarHelper::help('JHELP_EXTENSIONS_EXTENSION_MANAGER_LANGUAGES');
+			JToolBarHelper::help('languages');
 		}
 	}
 }
