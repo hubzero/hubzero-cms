@@ -1,0 +1,270 @@
+<article>
+	<h1>Global Configuration</h1>
+
+	<p>Controls all critical global settings of a the hub, they include the following: Site, System, Server, Permissions, and Text filters.</p>
+
+	<section id="overview">
+		<h2>Description</h2>
+
+		<p>The Global Configuration screen allows you to configure the hub with your personal settings.  Settings made in this screen apply to the whole site. </p>
+
+		<ul>
+			<li><a href="#Site">Details on Site</a> configuration</li>
+			<li><a href="#System">Details on System</a> configuration</li>
+			<li><a href="#Server">Details on Server</a> configuration</li>
+			<li><a href="#Permissions">Details on Permissions</a> configuration</li>
+			<li><a href="#Text_Filters">Details on Text filters</a> configuration</li>
+		</ul>
+	</section>
+
+	<section id="toolbar">
+		<h2>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<ul>
+			<li><b>Save</b>. Saves the global configuration settings and stays in the current screen.</li>
+			<li><b>Save &amp; Close</b>. Saves the global configuration settings and closes the current screen.</li>
+			<li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.</li>
+			<li><b>Help</b>. Opens this help screen.</li>
+		</ul>
+	</section>
+
+	<section id="Site">
+		<h2><span>Site</span></h2>
+
+		<section id="Site_Settings">
+			<h3><span>Site Settings</span></h3>
+			<ul>
+				<li> <b>Site Name</b>. The name of the site.</li>
+				<li> <b>Site Offline</b>. This setting shows when the site is offline.  Only Administrators will be able to see the site when <i>Site Offline</i> is set to Yes.  The default setting is <b>No</b>.</li>
+				<li> <b>Offline Message</b>. The message that will be displayed on the site when the site is offline. If custom message is selected then the message in the text area beneath is used.
+			</li><li> <b>Offline Image</b>. The image that will be displayed on the site when the site is offline.
+			</li><li> <b>Default Editor</b>. The default <a href="/proxy/index.php?option=com_help&view=help&keyref=Content_creators#Content_Editors" title="Content creators">editor</a> to use when creating articles.
+			</li><li> <b>Default Captcha</b>. The default Captcha to use when called by extensions. Remember to correctly configure the associated plugin when selecting an option here. By default, this is set to <b>None</b>.
+			</li><li> <b>Default Access Level</b>. The default access level to the site. The options here are from the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Users_Access_Levels" title="Help25:Users Access Levels">Help25:Users Access Levels</a>.
+			</li><li> <b>Default List Limit</b>. The length of lists in the Control Panel for all Users.  By default, this is set to <b>20</b>.
+			</li><li> <b>Default Feed Limit</b>. The number of content items to be shown in the feed(s).  By default, this is set to <b>10</b>.
+			</li><li> <b>Feed Email</b>. Newsfeeds include the authors e-mail address. Select <b>Author Email</b> to use each author's email address. Select <b>Site Email</b> to include the 'Mail From' email address for each article.
+			</li></ul>
+		</section>
+
+		<section id="Metadata_Settings">
+			<h3> <span class="mw-headline" id="Metadata_Settings">Metadata Settings</span></h3>
+			<ul><li> <b>Site Meta Description</b>. This is the description of the site which is indexed by search engine spiders.
+			</li><li> <b>Site Meta Keywords</b>. These keywords describe the site and are the basis for improving the ability of search engine spiders ability to index the site.
+			</li><li> <b>Content Rights</b>. Describe what rights others have to use this content.
+			</li><li> <b>Show Title Meta Tag</b>. It shows the Meta information of each article.  This Meta information is used by search engine spiders when indexing the site.  Each article can have its own Meta Data information (set under the <b>Metadata Information</b> pane when creating or editing an article).  
+			</li><li> <b>Show Author Meta Tag</b>. It shows the Author Meta information for articles and is used by search engine spiders when indexing the site.
+			</li><li> <b>Show Joomla! Version</b>. It shows the Joomla! version in the <b>generator</b> meta tag.
+			</li></ul>
+		</section>
+
+		<section id="SEO_Settings">
+			<h3><span>SEO Settings</span></h3>
+
+			<p>SEO stands for <i>Search Engine Optimization</i>.</p>
+
+			<ul><li> <b>Search Engine Friendly URLs</b>. When set to <i>Yes</i>, URLs are rewritten to be more friendly for search engine spiders. For example, the URL: <i>www.example.com/index.php?option=com_content&amp;view=etc...</i>, would turn into: <i>www.example.com/alias</i>.  Most of the items created in Joomla! have an Alias box where a search engine friendly URL can be inserted.  The default setting is <b>No</b>.
+			</li><li> <b>Use Apache <i>mod_rewrite</i></b>. When set to <i>Yes</i>, Joomla! will use the <i>mod_rewrite</i> settings of Apache when creating search engine friendly URLs.  Please note: it is advised that you do not modify any <b>.htaccess</b> file without an understanding of how it works. You must use the <b>.htaccess</b> file provided with Joomla! in order to use this setting.  To use this file, rename the <b>htaccess.txt</b> file (found in the root directory) to <b>.htaccess</b>. By default, this setting is set to <b>No</b>.
+			</li><li> <b>Adds Suffix to URL</b>. When set to <i>Yes</i>, Joomla! will add <b>.html</b> to the end of the URLs.  The default setting is <b>No</b>.
+			</li><li><b>Unicode aliases</b>. If Yes, non-Latin characters are allowed in the alias (and URL). If No, a title that includes non-Latin characters will produce a default alias value of the current time and date (for example, "2012-12-31-17-54"). The default setting is <b>No</b>.
+			</li><li> <b>Add Site Name To Page Titles</b>. Appends the site name to all page titles. (This is what you see in your browser tab.)
+			</li></ul>
+			<h3> <span class="mw-headline" id="Cookie_Settings">Cookie Settings</span></h3>
+			<ul><li> <b>Cookie Domain</b>. Domain to use when setting session cookies. precede with '.' to make valid for all subdomains. Example: .MyDomain.org
+			</li><li> <b>Cookie Path</b>. Path for which the cookie is valid.
+			</li></ul>
+		</section>
+	</section>
+
+	<section id="System">
+		<h2><span>System</span></h2>
+
+		<section>
+			<h3><span class="mw-headline" id="System_Settings">System Settings</span></h3>
+			<ul><li> <b>Path to Log folder</b>. The path where the logs should be stored.  The Joomla! installer should automatically fill in this folder.
+			</li><li> <b>Help Server</b>. The place Joomla! looks for help information when you click the <b>Help</b> button (visible in many screens and options of the administration panel).  By default, it uses Joomla!'s main help site.
+			</li></ul>
+		</section>
+		<section>
+			<h3> <span class="mw-headline" id="Debug_Settings">Debug Settings</span></h3>
+			<p>For this debug settings to work the associated <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Plugin_Manager_Edit#System_-_Debug" title="Help25:Extensions Plugin Manager Edit">plugin</a> must be activated (this is enabled by default). You can also customize further what will show in the debug modes in this plugin.
+			</p>
+			<ul><li> <b>Debug System</b>. This will turn on the debugging system of Joomla!.  When set to <b>Yes</b>, this tool will provide diagnostic information, language translations, and SQL errors. If any such issues or errors occur, they will be displayed at the bottom of each page, in both the front-end and back-end.
+			</li><li> <b>Debug Language</b>. This will turn on the debugging indicators (*...*) or (?...?) for the Joomla! Language files.  Debug Language will work without the Debug System tool set to on.  But it will not provide additional detailed references which would help in correcting any errors.
+			</li></ul>
+		</section>
+		<section>
+			<h3> <span class="mw-headline" id="Cache_Settings">Cache Settings</span></h3>
+			<ul><li> <b>Cache</b>. This chooses whether the site caches or not. Default setting is <b>ON - Progressive Caching</b>
+			</li><li> <b>Cache Handler</b>. This setting sets how the cache operates.  There is only one caching mechanism which is file-based.
+			</li><li> <b>Cache Time</b>. This setting sets the maximum length of time (in minutes) for a cache file to be stored before it is refreshed.  The default setting is <b>15</b> minutes.
+			</li></ul>
+		</section>
+		<section>
+			<h3> <span class="mw-headline" id="Session_Settings">Session Settings</span></h3>
+			<ul><li> <b>Session Lifetime</b>. This setting sets how long a session should last and how long a user can remain signed in for (before logging them off for being inactive).  The default setting is <b>15</b> minutes.
+			</li><li> <b>Session Handler</b>. This setting sets how the session should be handled once a user connects and logs into the site.  The default setting is set to <b>Database</b>.
+			</li></ul>
+		</section>
+	</section>
+
+	<section id="Server">
+		<h2><span>Server</span></h2>
+
+		<h3> <span class="mw-headline" id="Server_Settings">Server Settings</span></h3>
+		<ul><li> <b>Path to Temp-folder</b>. The path where files are temporarily stored.  This is filled in by default when Joomla! is installed.
+		</li><li> <b>GZIP Page Compression</b>. Compressing pages typically increases your site's speed.  The default setting is <b>No</b>.
+		</li><li> <b>Error Reporting</b>. This sets the appropriate level of reporting.  The default setting is <b>System Default</b>.
+		</li><li> <b>Force SSL<i>. This setting forces the site access for selected areas under SSL (https). </i></b><i>Note</i>: you must have set already the server to use SSL. Options are:
+		<ul><li> <b>None</b>. SSL is not activated
+		</li><li> <b>Administrator Only</b>. SSL is only valid for the backend.
+		</li><li> <b>Entire Site</b>. SSL is valid for the whole site (front- &amp; backend).
+		</li></ul>
+		</li></ul>
+		<h3> <span class="mw-headline" id="Locale_Settings">Locale Settings</span></h3>
+		<ul><li> <b>Server Timezone</b>. This tool sets the current date and time.  The set time should be where the site's server is located.  The default setting is <b>(UTC 00:00) Western Europe Time, London, Lisbon, Casablanca</b>.
+		</li></ul>
+		<h3> <span class="mw-headline" id="FTP_Settings">FTP Settings</span></h3>
+		<p>FTP stands for File Transfer Protocol.  Most of these settings are set during the initial Joomla! installation.
+		</p>
+		<ul><li> <b>Enable FTP</b>. This setting tells Joomla! to use it's built-in FTP function instead of the normal upload process used by PHP.
+		</li><li> <b>FTP Host</b>. The host server's URL connecting the FTP.
+		</li><li> <b>FTP Port</b>. The port where the FTP is accessed.  The default setting is <b>21</b>.
+		</li><li> <b>FTP Username</b>. The username that Joomla! will use when accessing the FTP server.  Security recommendation: create another FTP user account to access a folder where files will be uploaded to.
+		</li><li> <b>FTP Password</b>. The password that Joomla! will use when accessing the FTP server.  Security recommendation: create another FTP user account to access the folder where files will be uploaded to.
+		</li><li> <b>FTP Root</b>. The root directory where files should be uploaded to.
+		</li></ul>
+		<h3> <span class="mw-headline" id="Database_Settings">Database Settings</span></h3>
+		<p>These settings are set during the initial setup of Joomla!  It is advised to leave these settings the way they are, unless you have a good understanding of how databases work.
+		</p>
+		<ul><li> <b>Database Type</b>. The type of databased to be used.  The default setting is <b>mysql</b>, but this can be changed during the initial setup of Joomla!.
+		</li><li> <b>Host</b>. The hostname where the database is located.  It is typically set to <b>localhost</b> for most servers.  It is possible for the hostname to be located on a different server all together.
+		</li><li> <b>Database Username</b>. The username to access the database.
+		</li><li> <b>Database Name</b>. The name of the database.
+		</li><li> <b>Database Prefix</b>. The prefix used before the actual table's name.  This allows you to have multiple Joomla! installations in the same database.  The default setting is <b>jos_</b>, but this can be changed during initial setup of Joomla!.
+		</li></ul>
+		<h3> <span class="mw-headline" id="Mail_Settings">Mail Settings</span></h3>
+		<p>The mail settings are set during the initial setup of Joomla!.  These settings can be changed whenever needed.
+		</p>
+		<ul><li> <b>Mailer</b>. This setting sets which mailer to use to deliver emails from the site.  The default setting is <b>PHP Mail Function</b>. This can be changed during the initial setup of Joomla!.
+		</li><li> <b>From E-mail</b>. The email address used by Joomla! to send site email.
+		</li><li> <b>From Name</b>. The name Joomla! will use when sending site emails.  By default, Joomla! uses the site name during the initial setup.
+		</li><li> <b>Sendmail Path</b>. The path where the Sendmail program is located.  This is typically filled in by Joomla! during the initial setup.  This path is only used if <b>Mailer</b> is set to <b>Sendmail</b>.
+		</li><li> <b>SMTP Authentication</b>. If the SMTP server requires authentication to send mail, set this to <b>Yes</b>. Otherwise leave it at <b>No</b>.  This is only used if <b>Mailer</b> is set to <b>Sendmail</b>.
+		</li><li> <b>SMTP Security</b>. Select the security model your SMTP server uses - Default is None. Options are SSL and TTL.
+		</li><li> <b>SMTP Port</b>. Most unsecure servers use port 25 and most secure servers use port 465.
+		</li><li> <b>SMTP Username</b>. The username to use for access to the SMTP host.  This is only used if <b>Mailer</b> is set to <b>Sendmail</b>.
+		</li><li> <b>SMTP Password</b>. The password to use for access to the SMTP host.  This is only used if <b>Mailer</b> is set to <b>Sendmail</b>.
+		</li><li> <b>SMTP Host</b>. The SMTP address to use when sending mail.  This is only used if <b>Mailer</b> is set to <b>Sendmail</b>.
+		</li></ul>
+	</section>
+
+	<section id="Permissions">
+		<h2><span>Permissions</span></h2>
+		<p>Joomla! version 2.5 will install with the same familiar back-end permissions as that of version 1.5. However, with 2.5, you can easily change these to suit the needs of your site.</p>
+		<p>The permissions for each action are inherited from the level above in the permission hierarchy and from a group's parent group. Let's see how this works. The top level for this is the entire site. This is set up in the Site-&gt;Global Configuration-&gt;Permissions, as shown below.</p>
+
+		<p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes.
+		</p><p>The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied.
+		</p><p>Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.
+		</p>
+		<h3> <span class="mw-headline" id="Setting_Groups">Setting Groups</span></h3>
+		<p>The first thing to notice are the nine Actions: Site Login, Admin Login, Super Admin, Access Component, Create, Delete, Edit, Edit State. and Edit Own. These are the actions that a use can perform on an object in Joomla. The specific meaning of each action depends on the context. For the Global Configuration screen, they are defined as follows:
+		</p>
+		<dl><dt>Site Login&#160;</dt><dd> Login to the front end of the site
+		</dd></dl>
+		<dl><dt>Admin Login&#160;</dt><dd> Login to the back end of the site
+		</dd></dl>
+		<dl><dt> Super Admin&#160;</dt><dd> Grants the user "super user" status. Users with this permission can do anything on the site. Only users with this permission can change Global Configuration settings (this screen). These permissions cannot be restricted. It is important to understand that, if a user is a member of a Super Admin group, any other permissions assigned to this user are irrelevant. The user can do anything action on the site. However, Access Levels can still be assigned to control what this group sees on the site. (Obviously, a Super Admin user can change Access Levels if they want to, so Access Levels do not totally restrict what a Super Admin user can see.)
+		</dd></dl>
+		<dl><dt>Access Component</dt><dd> Open the component manger screens (User Manager, Menu Manager, Article Manager, and so on)
+		</dd></dl>
+		<dl><dt>Create&#160;</dt><dd> Create new objects (for example, users, menu items, articles, weblinks, and so on)
+		</dd></dl>
+		<dl><dt>Delete&#160;</dt><dd> Delete existing objects
+		</dd></dl>
+		<dl><dt>Edit&#160;</dt><dd> Edit existing objects
+		</dd></dl>
+		<dl><dt>Edit State&#160;</dt><dd> Change object state (Publish, Unpublish, Archive, and Trash)
+		</dd></dl>
+		<dl><dt>Edit Own&#160;</dt><dd> Edit existing objects that the logged in user has created
+		</dd></dl>
+		<p>There are two very important points to understand from this screen. The first is to see how the permissions can be inherited from the parent Group. The second is to see how you can control the default permissions by Group and by Action.
+		</p><p>This provides a lot of flexibility. For example, if you wanted Shop Suppliers to be able to have the ability to login to the back end, you could just change their Admin Login value to "Allowed". If you wanted to not allow members of Administrator group to delete objects or change their state, you would change their permissions in these columns to Inherited (or Denied).
+		</p><p>It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.
+		</p>
+	</section>
+
+	<section id="Text_Filters">
+		<h2><span>Text Filters</span></h2>
+
+		<p>Web sites can be attacked by users entering in special HTML code. Filtering is a way to protect your Joomla web site. Filtering options give you more control over the HTML that your content providers are allowed to submit. You can be as strict or as liberal as you desire, depending on your site's needs.
+		</p><p>It is important to understand that filtering occurs at the time an article is saved, <i>after</i> it has been written or edited. Depending on your editor and filter settings, it is possible for a user to add HTML to an article during the edit session only to have that HTML removed from the article when it is saved. This can sometimes cause confusion or frustration. If you have filtering set up on your site, make sure your users understand what types of HTML are allowed.
+		</p><p>The default setting in Joomla version 2.5 is that all users will have "black list" filtering on by default. This is designed to protect against markup commonly associated with web site attacks. So, if you do not set any filtering options, all users will have "black list" filtering done using the default list of filtered items. If you create a filter here, this overrides the default, and the default filter is no longer in effect.
+		</p><p>To access the filtering settings, click on Options and select 'Text filters'
+		</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Text_filters.png" class="image"><img alt="Text filters.png" src="http://docs.joomla.org/images/e/e9/Text_filters.png" width="640" height="512" /></a>
+		</p>
+		<h3> <span class="mw-headline" id="Column_Headings">Column Headings</span></h3>
+		<ul><li> <b>Filter Groups</b>
+		<dl><dd> For each user group on your site you specify which filter is applied to their edits.  The default filter is 'Default Black List'.
+		</dd></dl>
+		</li><li> <b>Filter Type</b>
+		<dl><dd> There are five types of filter available:
+		</dd></dl>
+		<ul><li> <i><b>Default Black List</b></i>
+		<ul><li> This filter excludes the following tags:
+		<dl><dd> 'applet', 'body', 'bgsound', 'base', 'basefont', 'embed', 'frame', 'frameset', 'head', 'html', 'id', 'iframe', 'ilayer', 'layer', 'link', 'meta', 'name', 'object', 'script', 'style', 'title', 'xml'.
+		</dd></dl>
+		</li><li> This filter also excludes the following attributes:
+		<dl><dd> 'action', 'background', 'codebase', 'dynsrc', 'lowsrc'.
+		</dd></dl>
+		</li><li> You can black list (disallow) additional tags and attributes using the <b>Filter Tags</b> and <b>Filter Attributes</b> columns.
+		</li></ul>
+		</li><li> <i><b>Custom Black List</b></i>.  Only those tags and attributes listed in the <b>Filter Tags</b> and <b>Filter Attributes</b> columns will be disallowed.
+		</li><li> <i><b>White List</b></i>.  Only those tags and attributes listed in the <b>Filter Tags</b> and <b>Filter Attributes</b> columns will be allowed.
+		</li><li> <i><b>No HTML</b></i>.  This is the strictest filter you can apply.  All tags and attributes will be disallowed.
+		</li><li> <i><b>No Filtering</b></i>.  This is the most permissive filter you can apply. All tags and attributes, including the default black list tags and attributes will be allowed.
+		</li></ul>
+		</li><li> <b>Filter Tags</b>
+		<dl><dd> A list of tag names to add to the currently selected filter.  Separate each tag name with a space or a comma.  For the <b>Default Black List</b> filter these tags will be added to the default list of tags that are disallowed.  For the <b>Customer Black List</b> filter these tags are the only ones that are disallowed.  For the <b>White List</b> filter these are the only tags that are allowed.
+		</dd></dl>
+		</li><li> <b>Filter Attributes</b>
+		<dl><dd> A list of attribute names to add to the currently selected filter.  Separate each attribute name with a space or a comma.  For the <b>Default Black List</b> filter these attributes will be added to the default list of attributes that are disallowed.  For the <b>Customer Black List</b> filter these attributes are the only ones that are disallowed.  For the <b>White List</b> filter these are the only attributes that are allowed.
+		</dd></dl>
+		</li></ul>
+		<h3> <span class="mw-headline" id="Notes">Notes</span></h3>
+		<ul><li> <b>Combining filters.</b>  If a user belongs to two different groups that have different filter settings, filters will combine in a permissive way. That is, the set of tags the user will be permitted to use will the combination of the tags that each group allows the user to use. So if the user is a member of one group that white lists a specific set of tags and another group that white lists a different set of tags, the user will be able to use both sets of white listed tags. White lists override blacklists, so if a user belongs to one group that black lists a tag and another group that white lists a tag, the user will be able to use that tag. A user that belongs to a group that has no filtering will be able to use any HTML regardless of filtering settings for other groups the user belongs to.
+		</li><li> <b>Filter Application.</b>  Please note that these settings work regardless of the editor that you are using.  Even if you are using a WYSIWYG editor, the filtering settings may strip additional tags and attributes prior to saving information in the database.
+		</li><li> <b>Developer note</b>.  The filtering parameters in config.xml have the new parameter menu="hide".  This hides the filters from the Menu Item's Component pane as you do not want cascading overrides to occur at the menu item level.
+		</li></ul>
+		<h3> <span class="mw-headline" id="Filter_Examples">Filter Examples</span></h3>
+		<p><b>Example One:</b>
+		To allow people in a group to only submit content with basic HTML tags, use the following settings:
+		</p>
+		<ul><li> Select White List as the Filter type
+		</li><li> Set the Filter tags to: p, b, i, em, br, a, ul, ol, li, img
+		</li><li> Set the Filter attributes to: href, target, src
+		</li></ul>
+		<p><b>Example Two:</b>
+		To apply the default black-list filtering to a group, use the following settings:
+		</p>
+		<ul><li> Select Black List as the Filter type.
+		</li><li> Leave the Filter Tags and Filter attributes fields empty.
+		</li></ul>
+		<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+		<ul><li> Most, if not all, of these settings can be set once and then left alone.
+		</li><li> If major modifications need to be made, then consider taking the site offline to test it and to make sure everything is in working order.
+		</li><li> The settings are saved in '&lt;Joomla-root&gt;/configuration.php'. You have to either activate the FTP-layer or make the 'configuration.php' file writable to save your changes.
+		</li></ul>
+	</section>
+
+	<section id="Related_Information">
+		<h2><span>Related Information</span></h2>
+		<ul>
+			<li><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel" title="Help25:Site Control Panel">Control panel</a></li>
+			<li><a rel="nofollow" class="external text" href="http://httpd.apache.org/docs/2.2/howto/htaccess.html">Info about .htaccess</a></li>
+			<li><a href="/proxy/index.php?option=com_help&view=help&keyref=Access_Control_List/1.6-2.5/Tutorial" title="Access Control List/1.6-2.5/Tutorial" class="mw-redirect">ACL Tutorial for Joomla 1.6, 1.7 and 2.5</a></li>
+		</ul>
+	</section>
+</article>

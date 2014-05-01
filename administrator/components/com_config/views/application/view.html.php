@@ -69,6 +69,6 @@ class ConfigViewApplication extends JViewLegacy
 		JToolBarHelper::divider();
 		JToolBarHelper::cancel('application.cancel');
 		JToolBarHelper::divider();
-		JToolBarHelper::help('JHELP_SITE_GLOBAL_CONFIGURATION');
+		JToolBarHelper::help('global_config');
 	}
 }
