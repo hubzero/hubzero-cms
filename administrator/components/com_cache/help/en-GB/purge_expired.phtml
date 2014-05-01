@@ -1,0 +1,40 @@
+<article>
+	<h1>Purge Expired Cache</h1>
+
+	<p>Component packaged with Joomla! 2.5 Core for deleting the expired cache files if caching is enabled.
+</p>
+<h2> <span class="mw-headline" id="How_to_Access">How to Access</span></h2>
+<p>To access this screen:
+</p>
+<ul><li> Select <b>Site &#8594; Maintenance &#8594; Purge Expired Cache</b> from the drop-down menus.
+</li></ul>
+<h2> <span class="mw-headline" id="Description">Description</span></h2>
+<p>This tool will purge all expired cache files from the cache folders. Cache files are temporary files that are created to improve the performance of your site.  <b>Cache files that are still current according to what Joomla! finds are not purged.</b>
+</p>
+<ul><li> Because this process has to check each cache file individually, it is slower and requires more system resources.  Once the purge process is complete there should be no loss in speed for your users, because all up to date cache files are still available for your current Joomla! website.
+</li><li> In contrast, the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Maintenance_Clear_Cache" title="Help25:Site Maintenance Clear Cache">Clean Cache</a> option runs more quickly since it deletes all of the files stored in each cache folder.  However, the website may be a little slower immediately after running Clean Cache, since <i>all</i> cache files -- including current ones -- are removed, so users lose the benefit of using the cache files until they are re-created by Joomla!to be up to date with your current site.
+</li><li> If you have a large number of cache files and your server setting for 'max_input_time' is set to less then 60 seconds, you may receive a PHP warning message saying that the process exceeded the maximum time allowed. In this case, no harm is done but all of the files may not have been purged. It is ok simply to re-run the process.
+</li></ul>
+<h2> <span class="mw-headline" id="Screenshot">Screenshot</span></h2>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-site-maintenance-purge_expired_cache-screen.png" class="image"><img alt="Help25-site-maintenance-purge expired cache-screen.png" src="http://docs.joomla.org/images/e/e7/Help25-site-maintenance-purge_expired_cache-screen.png" width="670" height="257" /></a>
+</p>
+<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+<p>At the top right you will see the toolbar:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-PurgeExpired-Options-Help.png" class="image"><img alt="Help25-Toolbar-PurgeExpired-Options-Help.png" src="http://docs.joomla.org/images/3/3d/Help25-Toolbar-PurgeExpired-Options-Help.png" width="209" height="65" /></a>
+</p><p>The functions are:
+</p>
+<ul><li><b>Purge expired</b>.  Deletes all expired cache files. Cache files that are still current will not be deleted.  WARNING: This operation can be resource intensive on sites with a large number of items.
+</li><li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.
+</li><li><b>Help</b>. Opens this help screen.
+</li></ul>
+<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+<ul><li> It is recommended that this option is run on a regular basis, however this will require more system resources because each file is checked.
+</li><li> The <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Maintenance_Clear_Cache" title="Help25:Site Maintenance Clear Cache">Clear Cache</a> option is quicker, however <b>all</b> cache files will be deleted, not just those that have expired.
+</li><li> If you receive a PHP timeout error or warning during the process, it is safe to start this process again.
+</li></ul>
+<h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
+<ul><li> To change the cache settings for your site: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration" title="Help25:Site Global Configuration">Global Configuration - Cache Settings</a>.
+</li><li> To clear all cache files: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Maintenance_Clear_Cache" title="Help25:Site Maintenance Clear Cache">Clean Cache</a>.
+</li><li> To automatically purge expired cache files: <a href="/proxy/index.php?option=com_help&view=help&keyref=Purging_expired_cache_files" title="Purging expired cache files">Purging expired cache files</a>.
+</li></ul>
+</article>

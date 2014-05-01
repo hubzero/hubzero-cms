@@ -1,0 +1,60 @@
+<article>
+	<h1>Clear Cache</h1>
+
+	<p>Component packaged with Joomla! 2.5 Core to clear cache files from the cache folders if enabled under the  <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Cache_Settings" title="Help25:Site Global Configuration">Site Global Configuration</a> settings.
+</p>
+<h2> <span class="mw-headline" id="How_to_Access">How to Access</span></h2>
+<p>To access this screen:
+</p>
+<ul><li> Select <b>Site &#8594; Maintenance &#8594; Clear Cache</b> from the drop-down menus.
+</li></ul>
+<h2> <span class="mw-headline" id="Description">Description</span></h2>
+<p>This tool will delete <i>all</i> Cache files from the cache folders - including current ones - from your web server. As admin functions are cached too, some cache folders might appear as if they were not cleaned because they get recreated before cache content is rescanned after this action.
+</p><p>Cache files are temporary files that are created to improve the performance of your site. If you have made significant changes to your web site, such as changing your Template or Language, your cache files may be out of date. To avoid any problems caused by out of date cache files, you can delete all of the cache files.
+</p>
+<ul><li> Because this process deletes <i>all</i> Cache files,  the website may be a little slower immediately after running Clean Cache.  Once this process is complete, users lose the benefit of using the cache files until they are re-created by Joomla! to be up to date with your current site.  
+</li><li> In contrast, the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Maintenance_Purge_Expired_Cache" title="Help25:Site Maintenance Purge Expired Cache">Purge Expired Cache</a> option will check each Cache file individually for being out of date, but the process is slower and requires more system resources.  However, the website should perform close to the same speed for users visiting your site, since all up to date files are still available for your current Joomla! site.
+</li></ul>
+<h2> <span class="mw-headline" id="Screenshot">Screenshot</span></h2>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-site-maintenance-clear_cache-screen.png" class="image"><img alt="Help25-site-maintenance-clear cache-screen.png" src="http://docs.joomla.org/images/f/f5/Help25-site-maintenance-clear_cache-screen.png" width="670" height="451" /></a>
+</p>
+<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+<p>At the top right you will see the toolbar:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-Delete-Options-Help.png" class="image"><img alt="Help25-Toolbar-Delete-Options-Help.png" src="http://docs.joomla.org/images/0/02/Help25-Toolbar-Delete-Options-Help.png" width="173" height="65" /></a>
+</p><p>The functions are:
+</p>
+<ul><li><b>Delete</b>. Deletes the selected items. Works with one or multiple items selected.
+</li><li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.
+</li><li><b>Help</b>. Opens this help screen.
+</li></ul>
+<h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
+<p>The drop-down list at the top right allows you to filter the list with the following options:
+</p>
+<ul><li><b>Site</b>. This is the default and allows you to see the cache files for the front-end of the web site.
+</li><li><b>Administrator</b>. Select this option to see the cache files for the Administrator back-end of the web site.
+</li></ul>
+<h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
+<ul><li> <b>#</b>. An indexing number automatically assigned by Joomla! for ease of reference.
+</li></ul>
+<ul><li> <b>Checkbox</b>. Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.
+</li><li><b>Cache Group</b>. The type of item being cached in this file. This is also the name of the subdirectory where this type of cache file is stored. The cache files are stored in the directory "&lt;path-to-Joomla!&gt;/cache/&lt;Cache Group Name&gt;".
+</li><li><b>Number of Files</b>. The number of files currently in this cache group.
+</li><li><b>Size</b>. The total size, in KB, of the cache files in this group.
+</li></ul>
+<h2> <span class="mw-headline" id="List_Filters_2">List Filters</span></h2>
+<ul><li><b>Page Controls.</b> When the number of items is more than one page, you will see a page control bar as shown below.<div class="thumb tnone"><div class="thumbinner" style="width:543px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-pagination.png" class="image"><img alt="Help25-chunk-colheader-pagination.png" src="http://docs.joomla.org/images/7/76/Help25-chunk-colheader-pagination.png" width="541" height="37" class="thumbimage" /></a>  <div class="thumbcaption"></div></div></div>
+<ul><li><b>Display #:</b> Select the number of items to show on one page.
+</li><li><b>Start:</b> Click to go to the first page.
+</li><li><b>Prev:</b> Click to go to the previous page.
+</li><li><b>Page numbers:</b> Click to go to the desired page.
+</li><li><b>Next:</b> Click to go to the next page.
+</li><li><b>End:</b> Click to go to the last page.
+</li></ul>
+</li></ul>
+<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+<ul><li> Normally you want to delete all cache files. To do this, click the check box in the column heading to select all files and then click the Delete icon in the toolbar.
+</li></ul>
+<h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
+<ul><li> To change the cache settings for your site: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration" title="Help25:Site Global Configuration">Global Configuration - Cache Settings</a>
+</li></ul>
+</article>

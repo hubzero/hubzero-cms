@@ -40,6 +40,6 @@ class CacheViewPurge extends JViewLegacy
 			JToolBarHelper::preferences('com_cache');
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_SITE_MAINTENANCE_PURGE_EXPIRED_CACHE');
+		JToolBarHelper::help('purge_expired');
 	}
 }
