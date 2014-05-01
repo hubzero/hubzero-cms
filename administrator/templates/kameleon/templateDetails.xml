@@ -28,11 +28,11 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="header" type="list" default="gray" label="TPL_KAMELEON_FIELD_HEADER_LABEL" description="TPL_KAMELEON_FIELD_HEADER_DESC">
+				<field name="header" type="list" default="light" label="TPL_KAMELEON_FIELD_HEADER_LABEL" description="TPL_KAMELEON_FIELD_HEADER_DESC">
 					<option value="light">TPL_KAMELEON_FIELD_HEADER_LIGHT</option>
 					<option value="dark">TPL_KAMELEON_FIELD_HEADER_DARK</option>
 				</field>
-				<field name="theme" type="list" default="gray" label="TPL_KAMELEON_FIELD_THEME_LABEL" description="TPL_KAMELEON_FIELD_THEME_DESC">
+				<field name="theme" type="list" default="" label="TPL_KAMELEON_FIELD_THEME_LABEL" description="TPL_KAMELEON_FIELD_THEME_DESC">
 					<option value="">TPL_KAMELEON_FIELD_THEME_GRAY</option>
 					<option value="charcoal">TPL_KAMELEON_FIELD_THEME_CHARCOAL</option>
 					<option value="blue">TPL_KAMELEON_FIELD_THEME_BLUE</option>
