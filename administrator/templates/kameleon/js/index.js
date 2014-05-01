@@ -131,7 +131,8 @@ smaller area with "overflow: scroll" enabled?
 			notice.css({'opacity':'0'}).fadeIn(jQuery.growl.settings.noticeFadeTimeout);
 		},
 		noticeRemove: function(notice, callback) {
-			notice.animate({opacity: '0', height: '0px'}, {duration:jQuery.growl.settings.noticeFadeTimeout, complete: callback});
+			//notice.animate({opacity: '0', height: '0px'}, {duration:jQuery.growl.settings.noticeFadeTimeout, complete: callback});
+			notice.fadeOut({duration:jQuery.growl.settings.noticeFadeTimeout, complete: callback});
 		},
 		noticeFadeTimeout: 'slow',
 		displayTimeout: 1500,
