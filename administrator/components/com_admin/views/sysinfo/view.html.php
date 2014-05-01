@@ -78,6 +78,6 @@ class AdminViewSysinfo extends JViewLegacy
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('COM_ADMIN_SYSTEM_INFORMATION'), 'systeminfo.png');
-		JToolBarHelper::help('JHELP_SITE_SYSTEM_INFORMATION');
+		JToolBarHelper::help('sysinfo');
 	}
 }
