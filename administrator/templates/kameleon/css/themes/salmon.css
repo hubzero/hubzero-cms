@@ -28,9 +28,6 @@
 	.light .main-navigation ul#menu ul li {
 		background-color: rgba(0, 0, 0, 0.2);
 	}
-	.light .main-navigation ul#menu ul li a {
-		color: #dcb3aa;
-	}
 
 /* Dark header */
 	.dark #toolbar-box {

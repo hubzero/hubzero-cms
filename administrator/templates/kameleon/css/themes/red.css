@@ -25,9 +25,9 @@
 	.light .main-navigation ul#menu ul li {
 		background-color: rgba(0, 0, 0, 0.2);
 	}
-	.light .main-navigation ul#menu a {
+	/*.light .main-navigation ul#menu a {
 		color: #fff;
-	}
+	}*/
 
 /* Dark header */
 	.dark #toolbar-box {
