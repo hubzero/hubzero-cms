@@ -88,6 +88,6 @@ class ModulesViewModule extends JViewLegacy
 		else {
 			$url = null;
 		}
-		JToolBarHelper::help($help->key, false, $url);
+		JToolBarHelper::help('module'); //$help->key, false, $url);
 	}
 }

@@ -94,6 +94,6 @@ class ModulesViewModules extends JViewLegacy
 			JToolBarHelper::preferences('com_modules');
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_EXTENSIONS_MODULE_MANAGER');
+		JToolBarHelper::help('modules');
 	}
 }
