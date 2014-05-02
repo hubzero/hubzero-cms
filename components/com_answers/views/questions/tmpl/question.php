@@ -151,15 +151,12 @@ if (!$this->question->get('anonymous'))
 			<?php if (!$this->question->isReported()) { ?>
 				<p class="entry-voting voting">
 					<?php
-						$view = new JView(array(
-							'name'   => $this->controller, 
-							'layout' => 'vote'
-						));
-						$view->option     = $this->option;
-						$view->controller = $this->controller;
-						$view->question   = $this->question;
-						$view->voted      = $this->voted;
-						$view->display();
+						$this->view('vote')
+						     ->set('option', $this->option)
+						     ->set('controller', $this->controller)
+						     ->set('question', $this->question)
+						     ->set('voted', $this->voted)
+						     ->display();
 					?>
 				</p><!-- / .question-voting -->
 			<?php } ?>
@@ -401,22 +398,17 @@ if (!$this->question->get('anonymous'))
 
 		<div class="subject">
 			<?php
-			$view = new JView(
-				array(
-					'name'    => $this->controller,
-					'layout'  => '_list'
-				)
-			);
-			$view->item_id    = 0;
-			$view->parent     = 0;
-			$view->cls        = 'odd';
-			$view->depth      = 0;
-			$view->option     = $this->option;
-			$view->question   = $this->question;
-			$view->comments   = $this->question->chosen('list');
-			$view->base       = $this->question->link();
-			$view->config     = $this->question->config();
-			$view->display();
+			$this->view('_list')
+			     ->set('item_id', 0)
+			     ->set('parent', 0)
+			     ->set('cls', 'odd')
+			     ->set('depth', 0)
+			     ->set('option', $this->option)
+			     ->set('question', $this->question)
+			     ->set('comments', $this->question->chosen('list'))
+			     ->set('base', $this->question->link())
+			     ->set('config', $this->question->config())
+			     ->display();
 			?>
 		</div><!-- / .subject -->
 		<div class="clear"></div>
@@ -452,22 +444,17 @@ if (!$this->question->get('anonymous'))
 		<div class="subject">
 		<?php if ($this->question->comments('count')) { ?>
 			<?php
-			$view = new JView(
-				array(
-					'name'    => $this->controller,
-					'layout'  => '_list'
-				)
-			);
-			$view->item_id    = 0;
-			$view->parent     = 0;
-			$view->cls        = 'odd';
-			$view->depth      = 0;
-			$view->option     = $this->option;
-			$view->question   = $this->question;
-			$view->comments   = $this->question->comments('list');
-			$view->config     = $this->question->config();
-			$view->base       = $this->question->link();
-			$view->display();
+			$this->view('_list')
+			     ->set('item_id', 0)
+			     ->set('parent', 0)
+			     ->set('cls', 'odd')
+			     ->set('depth', 0)
+			     ->set('option', $this->option)
+			     ->set('question', $this->question)
+			     ->set('comments', $this->question->comments('list'))
+			     ->set('config', $this->question->config())
+			     ->set('base', $this->question->link())
+			     ->display();
 			?>
 		<?php } else if ($this->question->chosen('count')) { ?>
 			<div class="subject-wrap">

@@ -47,21 +47,18 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if (!$this->comment->isReported() && $this->comment->get('qid')) { ?>
 			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
-				$view = new JView(array(
-					'name'   => 'questions', 
-					'layout' => 'rateitem'
-				));
-				$view->option = $this->option;
-				$view->item   = $this->comment;
-				$view->type   = 'question';
-				$view->vote   = '';
-				$view->id     = '';
+				$view = $this->view('rateitem');
+				$view->set('option', $this->option)
+				     ->set('item', $this->comment)
+				     ->set('type', 'question')
+				     ->set('vote', '')
+				     ->set('id', '');
 				if (!$juser->get('guest')) 
 				{
 					if ($this->comment->get('created_by') == $juser->get('username')) 
 					{
-						$view->vote = $this->comment->get('vote');
-						$view->id   = $this->comment->get('id');
+						$view->set('vote', $this->comment->get('vote'))
+						     ->set('id', $this->comment->get('id'));
 					}
 				}
 				$view->display();
@@ -163,22 +160,17 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3)) 
 		{
-			$view = new JView(
-				array(
-					'name'    => 'questions',
-					'layout'  => '_list'
-				)
-			);
-			$view->item_id    = $this->comment->get('item_id');
-			$view->parent     = $this->comment->get('id');
-			$view->question   = $this->question;
-			$view->option     = $this->option;
-			$view->comments   = $this->comment->replies('list');
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->base       = $this->base;
-			$view->display();
+			$this->view('_list')
+			     ->set('item_id', $this->comment->get('item_id'))
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('question', $this->question)
+			     ->set('option', $this->option)
+			     ->set('comments', $this->comment->replies('list'))
+			     ->set('config', $this->config)
+			     ->set('depth', $this->depth)
+			     ->set('cls', $cls)
+			     ->set('base', $this->base)
+			     ->display();
 		}
 		?>
 	</li>
