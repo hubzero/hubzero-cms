@@ -404,6 +404,34 @@ class Record extends \Hubzero\Base\Object
 		// if we updating we want to completely replace
 		if ($this->_mode == 'UPDATE' && isset($this->record->resource->id))
 		{
+			// remove any existing files
+			$children = $this->record->resource->getItemChildren(array('parent_id' => $this->record->resource->id));
+			foreach($children as $child)
+			{
+				$rconfig = \JComponentHelper::getParams('com_resources');
+				$base = JPATH_ROOT . DS . trim($rconfig->get('uploadpath', '/site/resources'), DS);
+				$file = $base . DS . $child->path;
+
+				//get file info
+				$info = pathinfo($file);
+				$directory = $info['dirname'];
+				
+				if ($child->type == 13 && file_exists($file))
+				{
+					shell_exec('rm ' . $file);
+				}
+
+				// get iterator on direcotry
+				$iterator = new \FilesystemIterator($directory);
+				$isDirEmpty = !$iterator->valid();
+
+				// remove directory if empty
+				if ($isDirEmpty)
+				{
+					shell_exec('rmdir ' . $directory);
+				}
+			}
+
 			// delete all child resources
 			$sql = "DELETE FROM `#__resources` WHERE `id` IN (
 						SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $this->_database->quote($this->record->resource->id) . 
