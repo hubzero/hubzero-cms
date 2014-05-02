@@ -39,6 +39,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('category');
 
 $create_date = NULL;
 if (intval($this->row->created) <> 0) 

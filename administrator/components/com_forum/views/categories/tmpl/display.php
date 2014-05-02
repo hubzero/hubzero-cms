@@ -50,6 +50,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('categories');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -227,27 +229,27 @@ if ($this->results)
 		switch ($row->access)
 		{
 			case 0:
-				$color_access = 'style="color: green;"';
+				$color_access = 'public';
 				$task_access  = '1';
 				$row->groupname = JText::_('Public');
 				break;
 			case 1:
-				$color_access = 'style="color: red;"';
+				$color_access = 'registered';
 				$task_access  = '2';
 				$row->groupname = JText::_('Registered');
 				break;
 			case 2:
-				$color_access = 'style="color: black;"';
+				$color_access = 'special';
 				$task_access  = '3';
 				$row->groupname = JText::_('Special');
 				break;
 			case 3:
-				$color_access = 'style="color: blue;"';
+				$color_access = 'protected';
 				$task_access  = '4';
 				$row->groupname = JText::_('Protected');
 				break;
 			case 4:
-				$color_access = 'style="color: red;"';
+				$color_access = 'private';
 				$task_access  = '0';
 				$row->groupname = JText::_('Private');
 				break;
@@ -283,9 +285,9 @@ if ($this->results)
 				<?php } ?>
 				</td>
 				<td>
-					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
-						<span><?php echo $row->access_level; ?></span>
-					<!-- </a> -->
+					<span class="access <?php echo $color_access; ?>">
+						<span><?php echo $row->groupname; ?></span>
+					</span>
 				</td>
 				<td>
 				<?php //if ($this->escape($row->group_alias)) { ?>

@@ -40,15 +40,14 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('section');
 
 $create_date = NULL;
 if (intval($this->row->get('created')) <> 0) 
 {
 	$create_date = JHTML::_('date', $this->row->get('created'));
 }
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
