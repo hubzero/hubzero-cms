@@ -1,43 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/editors/ckeditor/ckeditor.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2014 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
 <extension version="2.5" type="plugin" group="editors">
 	<name>plg_editors_ckeditor</name>
 	<version>1.0</version>
-	<creationDate></creationDate>
-	<author>Christopher Smoak</author>
-	<authorEmail>N/A</authorEmail>
-	<authorUrl></authorUrl>
-	<copyright></copyright>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<license></license>
-	<description></description>
+	<description>WYSIWYG Editor built on CKEditor</description>
 	<files>
 		<filename plugin="ckeditor">ckeditor.php</filename>
-		<filename>index.html</filename>	</files>
+		<filename>index.html</filename>
+	</files>
 	<languages>
 		<language tag="en-GB"></language>
 	</languages>
 	<config>
 		<fields name="params">
-
 			<fieldset name="basic">
-				<field name="linenumbers" type="radio"
-					default="0"
-					description="PLG_CODEMIRROR_FIELD_LINENUMBERS_DESC"
-					label="PLG_CODEMIRROR_FIELD_LINENUMBERS_LABEL"
-				>
+				<field name="startupMode" type="radio" default="wysiwyg" description="The mode to start the plugin in." label="Start-up Mode">
+					<option value="wysiwyg">wysiwyg</option>
+					<option value="source">source</option>
+				</field>
+				<field name="sourceViewButton" type="radio" default="0" description="Display a source view button" label="Source View">
 					<option value="0">JOFF</option>
 					<option value="1">JON</option>
 				</field>
-
-				<field name="tabmode" type="radio"
-					default="indent"
-					description="PLG_CODEMIRROR_FIELD_TABMODE_DESC"
-					label="PLG_CODEMIRROR_FIELD_TABMODE_LABEL"
-				>
-					<option value="indent">PLG_CODEMIRROR_FIELD_VALUE_TABMODE_INDENT</option>
-					<option value="shift">PLG_CODEMIRROR_FIELD_VALUE_TABMODE_SHIFT</option>
+				<field name="autoGrowAutoStart" type="radio" default="0" description="Display a source view button" label="Auto-grow">
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
+				</field>
+				<field name="autoGrowMinHeight" type="text" size="5" default="5em" label="Auto-grow Min Height" description="Minimum height for the auto-grow" />
+				<field name="autoGrowMaxHeight" type="text" size="5" default="500em" label="Auto-grow Max Height" description="Maximum height for the auto-grow" />
+				<field name="spellCheckAutoStart" type="radio" default="0" description="Spellcheck Auto Start" label="Spellcheck Auto Start">
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
+				</field>
+				<field name="allowScriptTags" type="radio" default="0" description="Allow javascript tags?" label="Allow Javascript Tags">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 			</fieldset>
-
 		</fields>
 	</config>
 </extension>
