@@ -1,150 +1,9 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_tools/tools.js
+ * @package	 hubzero-cms
+ * @file		components/com_tools/tools.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-//-------------------------------------------------------------
-// Edit session titles
-//-------------------------------------------------------------
-var eip = new Class({
-	initialize: function(els, action, params, options) {
-		// Handle array of elements or single element
-		if ($type(els) == 'array') {
-			els.each(function(el){
-				this.prepForm(el);
-			}.bind(this));
-		} else if ($type(els) == 'element') {
-			this.prepForm(els);
-		} else {
-			return;
-		}
-
-		// Store the action (path to file) and params
-		this.action = action;
-		this.params = params;
-
-		// Default options
-		this.options = Object.extend({
-			overCl: 'over',
-			hiddenCl: 'hidden',
-			editableCl: 'editable',
-			textareaCl: 'textarea'
-		}, options || {} );
-	},
-
-	prepForm: function(el) {
-		var obj = this;
-		el.addEvents({
-			'mouseover': function(){this.addClass(obj.options.overCl);},
-			'mouseout': function(){this.removeClass(obj.options.overCl);},
-			'click': function(){obj.showForm(this);}
-		});
-
-	},
-
-	showForm: function(el) {
-		// Get the name (target) and id from your element
-		var classes = el.getProperty('class').split(" ");
-		for (i=classes.length-1;i>=0;i--) {
-			if (classes[i].contains('item:')) {
-				var target = classes[i].split(":")[1];
-			} else if (classes[i].contains('id:')) {
-				var id = classes[i].split(":")[1];
-			}
-		}
-
-		// Hide your target element
-		el.addClass(this.options.hiddenCl);
-
-		// If the form exists already, let's show that
-		if (el.form) {
-			el.form.removeClass(this.options.hiddenCl);
-			el.form[target].focus();
-			return;
-		}
-
-		// Create new form
-		var form = new Element('form', {
-			'id': 'form_' + el.getProperty('id'),
-			'action': this.action,
-			'class': this.options.editableCl
-		});
-
-		// Store new form in the element
-		el.form = form;
-
-		// Create a textarea or input for user
-		if (el.hasClass(this.options.textareaCl)) {
-			var input = new Element('textarea', {
-				'name': target
-			}).appendText(el.innerHTML).injectInside(form);
-		} else {
-			var input = new Element('input', {
-				'name': target,
-				'value': el.innerHTML
-			}).injectInside(form);
-			//input.style.width = '120px';
-		}
-
-		// Need this to pass to the buttons
-		var obj = this;
-
-		// Add a submit button
-		new Element('input', {
-			'type': 'submit',
-			'value': 'save',
-			'events': {
-				'click': function(evt){
-					(new Event(evt)).stop();
-					el.empty();
-					el.appendText('saving...');
-					obj.hideForm(form, el);
-					form.send({update: el});
-				}
-			}
-		}).injectInside(form);
-
-		// Add a cancel button
-		new Element('input', {
-			'type': 'button',
-			'value': 'cancel',
-			'events': {
-				'click': function(form, el){
-					obj.hideForm(form, el);
-				}.pass([form, el])
-			}
-		}).injectInside(form);
-
-		// For every param, add a hidden input
-		for (param in this.params) {
-			new Element('input', {
-				'type': 'hidden',
-				'name': param,
-				'value': this.params[param]
-			}).injectInside(form);
-		}
-
-		//
-		new Element('input', {
-			'type': 'hidden',
-			'name': 'id',
-			'value': id
-		}).injectInside(form);
-
-		// Add the form after the target element
-		form.injectAfter(el);
-
-		// Focus on the input
-		input.focus();
-	},
-
-	hideForm: function(form, el) {
-		form.addClass(this.options.hiddenCl);
-		el.removeClass(this.options.hiddenCl);
-	}
-});
 
 //-----------------------------------------------------------
 //  Ensure we have our namespace
@@ -160,26 +19,32 @@ if (!HUB) {
 // of $('theapp') to retrieve it seems to throw errors, so
 // we use document.getElementById instead.
 //-------------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Mw = {
+	jQuery: jq,
+	
 	// Inform Mambo whether session needs signed applet.
 	sessionUsesSignedApplet: function(value) {
+		var $ = this.jQuery;
 		// Value should be either true or false.
 
 		// This function doesn't do anything yet.
 		// It will be called from the middleware.
 		if (value) {
-			var myAjax = new Ajax('/index.php?option=com_tools&task=signed&no_html=1').request();
-			var signed = $('signedapplet');
-			signed.value = 1;
+			$.get('/index.php?option=com_tools&controller=sessions&task=signed&no_html=1', {});
+			$('signedapplet').val(1);
 		}
 	},
 		
 	// Clear the static troubleshooting message
 	clearTroubleshoot: function() {
-		var trouble = $('troubleshoot');
+		var $ = this.jQuery;
+		var trouble = $('#troubleshoot');
 		if (trouble) {
-			var par = trouble.parentNode;
-			par.removeChild(trouble);
+			$(trouble).remove();
 		}
 	},
 	
@@ -192,14 +57,6 @@ HUB.Mw = {
 	// Delete the "Connecting..." message.
 	cancelConnecting: function() {
 		HUB.Mw.cancelTimeout();
-		
-		/*var theapp = document.getElementById('theapp');
-		if (theapp) {
-			theapp.style.visibility = 'visible';
-			$('app-wrap').style.background = '';
-		}*/
-		//$('app-content').setStyle('visibility', 'visible');
-		//$('app-wrap').setStyle('background', '');
 	},
 
 	// Start a timer to show Java failure.
@@ -207,18 +64,17 @@ HUB.Mw = {
 	
 	// Show a message saying that Java didn't appear to work.
 	appletTimeout: function() {
+		var $ = this.jQuery;
 		HUB.Mw.clearTroubleshoot();
 		HUB.Mw.cancelConnecting();
 
-		var theapp = document.getElementById('theapp');
+		var theapp = $('#theapp');
 		if (theapp) {
-			var par = theapp.parentNode;
-			par.removeChild(theapp);
+			var par = theapp.parent();
+			theapp.remove();
 		}
 
-		var errdiv = document.createElement('div');
-		errdiv.id = 'theapp';
-		errdiv.innerHTML = '<p class="error">' +
+		$('<div id="theapp"><p class="error">' +
 				'It appears that the Java environment did not ' +
 				'start properly.  Please make sure that you ' +
 				'have Java installed and enabled for your web ' +
@@ -227,8 +83,8 @@ HUB.Mw = {
 				'(<a target="_blank" href="http://www.java.com/en/download/testjava.jsp">How do I do this?</a>)  ' +
 				'Without Java support you will not be able to ' +
 				'view any applications.' +
-				'</p>';
-		par.appendChild(errdiv);
+			'</p></div>'
+		).appendTo(par);
 	},
 	
 	startAppletTimeout: function() {
@@ -243,27 +99,32 @@ HUB.Mw = {
 
 	// Show a message explaining that Java is not enabled.
 	noJava: function() {
+		var $ = this.jQuery;
 		HUB.Mw.cancelConnecting();
-		var trouble = $('troubleshoot');
+		var trouble = $('#troubleshoot');
 		if (!trouble) {
 			return;
 		}
-		trouble.innerHTML = '<p class="error">' +
+		trouble.html(
+			'<p class="error">' +
 				'It appears that Java is either not installed or ' +
 				'not enabled.  You will not be able to view tools ' +
 				'until Java is enabled.<br />' +
 				'(<a href="/kb/misc/java/">Learn how to enable Java</a>)  ' +
-				'</p>';
+			'</p>'
+		);
 	},
 
 	// Show a message explaining that there is a browser/Java bug.
 	javaBug: function() {
+		var $ = this.jQuery;
 		HUB.Mw.cancelConnecting();
-		var trouble = $('troubleshoot');
+		var trouble = $('#troubleshoot');
 		if (!trouble) {
 			return;
 		}
-		trouble.innerHTML ='<p class="error">' +
+		trouble.html(
+			'<p class="error">' +
 				'There is a problem caused by the specific version ' +
 				'of Java you are using with this browser. You will ' +
 				'likely not be able to view tools. There are three ' +
@@ -277,7 +138,8 @@ HUB.Mw = {
 				'but 1.6.0 Update 03 and 04 do not.<br>' +
 				'3) Use a browser other than Firefox.<br>' +
 				'(<a href="/kb/tools/unable_to_connect_error_in_firefox/">More information</a>)  ' +
-				'</p>';
+			'</p>'
+		);
 	},
 
 	// Check for any Java bugs.
@@ -285,7 +147,7 @@ HUB.Mw = {
 		// A return value of 1 means there's a bug.
 		var bv = navigator.userAgent.toLowerCase();
 		if (bv.indexOf('firefox') == -1 &&
-		    bv.indexOf('iceweasel') == -1) {
+			bv.indexOf('iceweasel') == -1) {
 			// So far the only problems have been with Firefox.
 			// If this is not Firefox, assume no problem.
 			// Avoid future Javascript calls to invoke Java.
@@ -311,7 +173,13 @@ HUB.Mw = {
 	// Helper function for filexfer and user-initiated alerts.
 	clientAction: function(action) {
 		if (action.slice(0,4) == "url ") {
-			document.open(action.slice(4), '_blank', 'width=600,height=600,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
+			if (action.match(/.*?\/filexfer\/.*?\/download\/.*?\?token=.*/)) {
+				actionurl = window.location.protocol + "//" + window.location.host + action.slice( action.indexOf("/filexfer/") )
+			}
+			else {
+				actionurl = action.slice(4);
+			}
+			document.open(actionurl, '_blank', 'width=600,height=600,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
 		} else if (action.slice(0,6) == "alert ") {
 			alert(action.slice(6));
 		} else {
@@ -334,180 +202,297 @@ HUB.Mw = {
 
 	// Force the size of the appwrap to the size of the app (plus some padding)
 	forceSize: function(w,h) {
+		var $ = this.jQuery;
 		HUB.Mw.clearTroubleshoot();
 		HUB.Mw.cancelConnecting();
 		
-		var app = document.getElementById('theapp');
-		if (app) {
+		if ($('#theapp')) {
 			if (w < 100) { w = 100; }
 			if (h < 100) { h = 100; }
 			
-			$('app-wrap').setStyles({
-				'width': (w.toString()) + 'px',
-				'height': (h.toString()) + 'px'
+			$('#app-content').css({
+				'width': w.toString() + 'px',
+				'height': h.toString() + 'px'
 			});
 			
+			$('#app-size').html(w.toString()+' x '+h.toString());
+			
 			if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
-				if ($('app-header')) {
-					$('app-header').setStyle('width', w.toString() + 'px');
+				if ($('#app-header')) {
+					$('#app-header').css('width', w.toString() + 'px');
 				}
-				if ($('app-footer')) {
-					$('app-footer').setStyle('width', w.toString() + 'px');
+				if ($('#app-footer')) {
+					$('#app-footer').css('width', w.toString() + 'px');
 				}
-			}
-			if ($('app-size')) {
-				$('app-size').setHTML(w.toString()+' x '+h.toString());
 			}
 
-			app.style.width = w.toString() + 'px';
-			app.style.height = h.toString() + 'px';
-			app.width = w.toString();
-			app.height = h.toString();
+			if (w < 513) {
+				$('.ui-resizable-handle').css('bottom', '-5em');
+			} else {
+				$('.ui-resizable-handle').css('bottom', '-3em');
+			}
+
+			$('#theapp').css('width', w.toString() + 'px')
+				.css('height', h.toString() + 'px')
+				.attr('width', w.toString())
+				.attr('height', h.toString());
 		}
 	},
-	
-	editSessionTitle: function() {
-		new eip($$('.session-title'), 'index.php', {option: 'com_tools', task: 'rename', no_html: 1});
-	},
-	
+
 	storageMonitor: function() {
-		function fetch(){			
-			new Ajax('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0',{
-					 'method' : 'get',
-					 'update' : $('diskusage')
-					 }).request();
+		var $ = this.jQuery;
+		//fetch.periodical(60000);
+		var holdTheInterval = setInterval(function(){
+			$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
+				$('#diskusage').html(data);
+			}, 'html');
+
+			/*$.get('/api/members/diskusage', {}, function(data) {
+				if (data && $.type(data.amount) === "number" && $.type(data.total) === "number")
+				{
+					$('#diskusage .du-amount-bar').css('width', data.amount+'%');
+					$('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');
+				}
+			}, 'JSON');*/
+		}, 60000);
+	},
+	
+	sessionSharing: function() {
+		var $ = this.jQuery;
+		if (!$('#share-btn').length)
+		{
+			return;
 		}
-		
-		fetch.periodical(60000);
+		$('#share-btn').on('click', function(event){
+			event.preventDefault();
+			
+			//disable button
+			$(this).attr('disabled','disabled');
+			
+			//get the form data
+			var share = $("#app-share"),
+				url = share.attr("action"),
+				data = share.serialize();
+			
+			//add no html param to url
+			if (url.indexOf('?') == -1) 
+			{
+				url += '?no_html=1';
+			} 
+			else 
+			{
+				url += '&no_html=1';
+			}
+			
+			//show message to user
+			$("#app-share")
+				.css('position', 'relative')
+				.prepend('<div id="app-share-overlay" data-message="Hold on while we make the connections!" class="open" />')
+				.hide()
+				.fadeIn();
+			
+			//make ajax call to add share
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data,
+				//dataType: 'json',
+				error: function(jqXHR, textStatus, errorThrown)
+				{
+					alert('We have experienced a server error while trying to share this tool session.\n\nYou could be seeing this error if you are trying to share with someone who already has sharing privledges.');
+				
+					//fade out message
+					$("#app-share-overlay").delay(2000).fadeOut('slow', function(){
+						//enable button
+						$("#share-btn").removeAttr('disabled');
+						
+						//remove items from token list and clear actual hidden input
+						$("#acmembers").tokenInput('clear');
+						
+						//reset group select box
+						$("#group").val(0);
+						
+						//uncheck readonly 
+						$("#readonly").removeAttr('checked');
+					});
+				},
+				success: function(data, status, jqXHR)
+				{
+					//reload share table
+					$("#app-share .entries").html( $(data).find('.entries > *') );
+					
+					//fade out message
+					$("#app-share-overlay").delay(2000).fadeOut('slow', function(){
+						//enable button
+						$("#share-btn").removeAttr('disabled');
+						
+						//remove items from token list and clear actual hidden input
+						$("#acmembers").tokenInput('clear');
+						
+						//reset group select box
+						$("#group").val(0);
+						
+						//uncheck readonly 
+						$("#readonly").removeAttr('checked');
+					});
+				}
+			});
+		});
+	},
+	
+	removeSessionSharing: function() {
+		var $ = this.jQuery;
+		$(".entries").on('click', '.entry-remove', function(event) {
+			event.preventDefault();
+			
+			//get the url from link
+			var url = $(this).attr('href');
+			
+			//add no html param to url
+			if(url.indexOf('?') == -1) 
+			{
+				url += '?no_html=1';
+			} 
+			else 
+			{
+				url += '&no_html=1';
+			}
+			
+			//show message to user
+			$("#app-share")
+				.css('position', 'relative')
+				.prepend('<div id="app-share-overlay" data-message="Closing Connections..." class="close" />')
+				.hide()
+				.fadeIn();
+			
+			$.ajax({
+				url: url,
+				type: 'GET',
+				success: function(data, status, jqXHR)
+				{
+					//reload share table
+					$("#app-share .entries").html( $(data).find('.entries > *') );
+					
+					//fade out message
+					$("#app-share-overlay").delay(1500).fadeOut('slow');
+				}
+			});
+		});
 	},
 	
 	initialize: function() {
-		// Initiate app resizing
-		var appwrap = $('app-content');
-		if (appwrap) {
-			var appfooter = $('app-footer');
-			var footermenu = new Element('ul', {}).injectInside(appfooter);
-			var app = document.getElementById('theapp'); //$('theapp');
-			
-			if (app.className.indexOf('no-popout') == -1) {
-				var newwindow = $('app-btn-newwindow');
-				if (!newwindow) {
-					var li = new Element('li', {});
-					var res = new Element('a', {
-						id: 'app-btn-newwindow',
-						alt: 'Popout',
-						title: 'Popout',
-						events: {
-							'click': function(event) {
-								document.theapp.popout();
-							}
-						}
-					}).addClass('popout');
-					var sp = new Element('span', {}).setHTML('New Window').injectInside(res);
-					res.injectInside(li);
-					li.injectInside(footermenu);
-				}
-			}
-			
-			if (app.className.indexOf('no-refresh') == -1) {
-				var refresh = $('app-btn-refresh');
-				if (!refresh) {
-					var li = new Element('li', {});
-					var res = new Element('a', {
-						id: 'app-btn-refresh',
-						alt: 'Refresh Window',
-						title: 'Refresh Window',
-						events: {
-							'click': function(event) {
-								document.theapp.refresh();
-							}
-						}
-					}).addClass('refresh');
-					var sp = new Element('span', {}).setHTML('Refresh').injectInside(res);
-					res.injectInside(li);
-					li.injectInside(footermenu);
-				}
-			}
-			
-			if (app.className.indexOf('no-resize') == -1) {
-				var resizehandle = $('app-btn-resizehandle');
-				if (!resizehandle) {
-					var app = document.getElementById('theapp');
-					var w = app.getAttribute('width');
-					var h = app.getAttribute('height');
-
-					if (w < 100) { w = 100; }
-					if (h < 100) { h = 100; }
-
-					appwrap.setStyle('height', h.toString() + 'px');
-					appwrap.setStyle('width', w.toString() + 'px');
-
-					var li = new Element('li', {});
-
-					/*var p = new Element('p', {
-						id: 'app-size',
-						alt: w.toString() + ' x ' + h.toString()
-					}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(appwrap);*/
-
-					var res = new Element('a', {
-						id: 'app-btn-resizehandle',
-						alt: 'Resize',
-						title: 'Resize'
-					}).addClass('resize');
-					var sp = new Element('span', {id: 'app-size'}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(res);
-					res.injectInside(li);
-					li.injectInside(footermenu);
-
-					// Init the resizing capabilities
-					appwrap.makeResizable({
-						handle:$('app-btn-resizehandle'),
-						onDrag: function(el) {
-							var size = el.getCoordinates();
-							//$('app-size').setStyle('visibility','visible').setHTML((size.width - 20)+' x '+(size.height - 20));
-							$('app-size').setHTML(size.width+' x '+size.height);
-						},
-						onComplete: function(el) {
-							var app = document.getElementById('theapp');
-							if (app) {
-								var size = el.getCoordinates();
-
-								var w = parseFloat(size.width);
-								var h = parseFloat(size.height);
-
-								if (w < 100) { w = 100; }
-								if (h < 100) { h = 100; }
-
-								if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
-									if ($('app-header')) {
-										$('app-header').setStyle('width', w + 'px');
-									}
-									if ($('app-footer')) {
-										$('app-footer').setStyle('width', w + 'px');
-									}
-								}
-
-								/*app.style.width = (w - 20) + 'px';
-								app.style.height = (h - 20) + 'px';
-								app.width = (w - 20);
-								app.height = (h - 20);
-								app.requestResize((w - 20),(h - 20));*/
-								app.style.width = w + 'px';
-								app.style.height = h + 'px';
-								app.width = w;
-								app.height = h;
-								app.requestResize(w, h);
-							}
-						}
-					});
-				}
-			}
+		var $ = this.jQuery;
+		if (!$('#theapp') || !$('#app-wrap')) {
+			return;
 		}
 		
+		var appwrap = $('#app-wrap');
+		var appfooter = $('#app-footer');
+
+		var app = $('#theapp');
+		var w = app.attr('width');
+		var h = app.attr('height');
+
+		if (w < 345) { w = 345; }
+		if (h < 200) { h = 200; }
+
+		if (w > 3900) { w = 3900; }
+		if (h > 3900) { h = 3900; }
+
+		//appwrap.css('width', w.toString() + 'px');
+		
+		var footermenu = $('<ul></ul>');
+		
+		if (!app.hasClass('no-popout')) {
+			var li = $('<li></li>');
+			$('<a class="popout" id="app-btn-newwindow" alt="New Window" title="New Window"><span>New Window</span></a>')
+				.click(function(event) {
+					document.theapp.popout();
+				})
+				.appendTo(li);
+			li.appendTo(footermenu);
+		}
+
+		if (!app.hasClass('no-refresh')) {
+			var li = $('<li></li>');
+			$('<a class="refresh" id="app-btn-refresh" alt="Refresh Window" title="Refresh Window"><span>Refresh Window</span></a>')
+				.click(function(event) {
+					document.theapp.refresh();
+				})
+				.appendTo(li);
+			li.appendTo(footermenu);
+		}
+		
+		if (!app.hasClass('no-resize')) {
+			var li = $('<li></li>');
+			$('<a class="resize" id="app-btn-resizehandle" alt="Resize" title="Resize"><span id="app-size">'+w.toString() + ' x ' + h.toString()+'</span></a>')
+				.appendTo(li);
+			li.appendTo(footermenu);
+			
+			// Init the resizing capabilities
+			var wh = $('#app-content').height(),
+				ah = $('#theapp').height(),
+				os = wh - ah;
+
+			$('#app-content').resizable({
+				minHeight: 200,
+				maxHeight: 3900,
+				minWidth: 345,
+				maxWidth: 3900,
+				handles: 'se',
+				resize: function(event, ui) {
+					$('#app-size').html($('#app-content').width()+' x '+$('#app-content').height());
+				},
+				stop: function(event, ui) {
+					if ($('#theapp')) {
+						var w = parseFloat($('#app-content').width()),
+							h = parseFloat($('#app-content').height());
+
+						if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
+							if ($('#app-header')) {
+								$('#app-header').css('width', w + 'px');
+							}
+							if ($('#app-footer')) {
+								$('#app-footer').css('width', w + 'px');
+							}
+						}
+
+						$('#app-size').html(w.toString()+' x '+h.toString());
+
+						if (w < 513) {
+							$('.ui-resizable-handle').css('bottom', '-5em');
+						} else {
+							$('.ui-resizable-handle').css('bottom', '-3em');
+						}
+
+						$('#theapp')
+							.css('width', (w) + 'px')
+							.css('height', (h - os) + 'px')
+							.attr('width', (w))
+							.attr('height', (h - os));
+						document.getElementById('theapp').requestResize(w, h);
+					}
+				}
+			});
+		}
+		
+		footermenu.appendTo(appfooter);
+		
 		// Inititate session title editing
-		HUB.Mw.editSessionTitle();
+		$('#session-title.editable').editable('index.php?option=com_tools&controller=sessions&task=rename&no_html=1&id=' + $('#session-title').attr('rel'), {
+			id   : 'title',
+			name : 'name',
+			width : '200px',
+			submit : 'OK',
+			cancel : 'cancel'
+		});
 		
 		// Initiate the storage usage
 		HUB.Mw.storageMonitor();
+		
+		//share & un-share session
+		HUB.Mw.sessionSharing();
+		HUB.Mw.removeSessionSharing();
 	}
 }
 
@@ -536,9 +521,7 @@ function forceSize(w,h)
 	HUB.Mw.forceSize(w,h);
 }
 
-//-------------------------------------------------------------
-// Add functions to load event
-//-------------------------------------------------------------
-
-window.addEvent('domready', HUB.Mw.initialize);
+jQuery(document).ready(function($){
+	HUB.Mw.initialize();
+});
 

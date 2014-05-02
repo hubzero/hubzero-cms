@@ -14,7 +14,12 @@ if (!HUB) {
 //----------------------------------------------------------
 // Registration form validation
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Register = {
+	jQuery: jq,
 	orgother: "",
 	country_origin: 0,
 	country_resident: 0,
@@ -37,390 +42,446 @@ HUB.Register = {
 	disabilityother: "",
 
 	setOrgOther: function() {
-		var form = $('hubForm');
-		form.org.selectedIndex = 0;
+		var $ = HUB.Register.jQuery;
+
+		$('#org').attr('selectedIndex', '0');
 	},
 
 	disableOrgOther: function() {
-		var form = $('hubForm');
-		if(form.org.selectedIndex == 0) {
-			form.orgtext.disabled = false;
-			form.orgtext.value = HUB.Register.orgother;
+		var $ = HUB.Register.jQuery;
+
+		if($('#org').attr('selectedIndex') == 0) {
+			$('#orgtext').attr('disabled', false);
+			$('#orgtext').val(HUB.Register.orgother);
 		}
-		else if(form.orgtext.value) {
-			form.orgtext.disabled = true;
-			HUB.Register.orgother = form.orgtext.value;
-			form.orgtext.value = "";
+		else if($('#orgtext').val()) {
+			$('#orgtext').attr('disabled', true);
+			HUB.Register.orgother = $('#orgtext').val();
+			$('#orgtext').val("");
 		}
 	},
 
 	setNonUSCountryOrigin: function() {
-		var form = $('hubForm');
-		form.corigin_usno.checked = true;
+		var $ = HUB.Register.jQuery;
+
+		$('#corigin_usno').attr('checked', true);
 		HUB.Register.disableRacialBackground();
 	},
 
 	setNonUSCountryResident: function() {
-		var form = $('hubForm');
-		form.cresident_usno.checked = true;
+		var $ = HUB.Register.jQuery;
+
+		$('#cresident_usno').attr('checked', true);
 	},
 
 	disableCountryOriginSubgroups: function() {
-		var form = $('hubForm');
-		if(form.corigin_usyes.checked) {
-			HUB.Register.country_origin = form.corigin.selectedIndex;
-			form.corigin.disabled = true;
-			form.corigin.selectedIndex = -1;
-		}
-		else {
-			form.corigin.disabled = false;
-			form.corigin.selectedIndex = HUB.Register.country_origin;
+		var $ = HUB.Register.jQuery;
+
+		if($('#corigin_usyes').attr('checked')) {
+			HUB.Register.country_origin = $('#corigin').attr('selectedIndex');
+			$('#corigin').attr('disabled', true);
+			$('#corigin').attr('selectedIndex', '-1');
+		} else {
+			$('#corigin').attr('disabled', false);
+			$('#corigin').attr('selectedIndex', HUB.Register.country_origin);
 		}
 		HUB.Register.disableRacialBackground();
 	},
 
 	disableCountryResidentSubgroups: function() {
-		var form = $('hubForm');
-		if(form.cresident_usyes.checked) {
-			HUB.Register.country_resident = form.cresident.selectedIndex;
-			form.cresident.disabled = true;
-			form.cresident.selectedIndex = -1;
+		var $ = HUB.Register.jQuery;
+
+		if($('#cresident_usyes').attr('checked')) {
+			HUB.Register.country_resident = $('#cresident').attr('selectedIndex');
+			$('#cresident').attr('disabled', true);
+			$('#cresident').attr('selectedIndex', '-1');
 		} else {
-			form.cresident.disabled = false;
-			form.cresident.selectedIndex = HUB.Register.country_resident;
+			$('#cresident').attr('disabled', false);
+			$('#cresident').attr('selectedIndex', HUB.Register.country_resident);
 		}
 	},
 
 	setNativeAmerican: function() {
-		var form = $('hubForm');
-		form.racenativeamerican.checked = true;
-		form.racerefused.checked = false;
+		var $ = HUB.Register.jQuery;
+
+		$('#racenativeamerican').attr('checked', true);
+		$('#racerefused').attr('checked', false);
 	},
 
 	disableNativeTribe: function() {
-		var form = $('hubForm');
-		if(form.racenativeamerican.checked) {
-			form.racenativetribe.disabled = false;
-			form.racenativetribe.value = HUB.Register.racenativetribe;
+		var $ = HUB.Register.jQuery;
+
+		if($('#racenativeamerican').attr('checked')) {
+			$('#racenativetribe').attr('disabled', false);
+			$('#racenativetribe').val(HUB.Register.racenativetribe);
 			HUB.Register.setRacialChoice();
 		} else {
-			form.racenativetribe.disabled = true;
-			HUB.Register.racenativetribe = form.racenativetribe.value;
-			form.racenativetribe.value = "";
+			$('#racenativetribe').attr('disabled', true);
+			HUB.Register.racenativetribe = $('#racenativetribe').val();
+			$('#racenativetribe').val("");
 		}
 	},
 
 	setRacialChoice: function() {
-		var form = $('hubForm');
-		form.racerefused.checked = false;
+		var $ = HUB.Register.jQuery;
+
+		$('#racerefused').attr('checked', false);
 	},
 
 	disableRacialChoices: function() {
-		var form = $('hubForm');
-		if(form.racerefused.checked) {
-			form.racenativeamerican.disabled = true;
-			HUB.Register.racenativeamerican = form.racenativeamerican.checked;
-			form.racenativeamerican.checked = false;
-			form.raceasian.disabled = true;
-			HUB.Register.raceasian = form.raceasian.checked;
-			form.raceasian.checked = false;
-			form.raceblack.disabled = true;
-			HUB.Register.raceblack = form.raceblack.checked;
-			form.raceblack.checked = false;
-			form.racehawaiian.disabled = true;
-			HUB.Register.racehawaiian = form.racehawaiian.checked;
-			form.racehawaiian.checked = false;
-			form.racewhite.disabled = true;
-			HUB.Register.racewhite = form.racewhite.checked;
-			form.racewhite.checked = false;
+		var $ = HUB.Register.jQuery;
+
+		if($('#racerefused').attr('checked')) {
+			$('#racenativeamerican').attr('disabled', true);
+			HUB.Register.racenativeamerican = $('#racenativeamerican').attr('checked');
+			$('#racenativeamerican').attr('checked', false);
+			$('#raceasian').attr('disabled', true);
+			HUB.Register.raceasian = $('#raceasian').attr('checked');
+			$('#raceasian').attr('checked', false);
+			$('#raceblack').attr('disabled', true);
+			HUB.Register.raceblack = $('#raceblack').attr('checked');
+			$('#raceblack').attr('checked', false);
+			$('#racehawaiian').attr('disabled', true);
+			HUB.Register.racehawaiian = $('#racehawaiian').attr('checked');
+			$('#racehawaiian').attr('checked', false);
+			$('#racewhite').attr('disabled', true);
+			HUB.Register.racewhite = $('#racewhite').attr('checked');
+			$('#racewhite').attr('checked', false);
 		}
-		else if(!form.racerefused.disabled) {
-			form.racenativeamerican.checked = HUB.Register.racenativeamerican;
-			form.racenativeamerican.disabled = false;
-			form.raceasian.checked = HUB.Register.raceasian;
-			form.raceasian.disabled = false;
-			form.raceblack.checked = HUB.Register.raceblack;
-			form.raceblack.disabled = false;
-			form.racehawaiian.checked = HUB.Register.racehawaiian;
-			form.racehawaiian.disabled = false;
-			form.racewhite.checked = HUB.Register.racewhite;
-			form.racewhite.disabled = false;
+		else if(!$('#racerefused').attr('disabled')) {
+			$('#racenativeamerican').attr('checked', HUB.Register.racenativeamerican);
+			$('#racenativeamerican').attr('disabled', false);
+			$('#raceasian').attr('checked', HUB.Register.raceasian);
+			$('#raceasian').attr('disabled', false);
+			$('#raceblack').attr('checked', HUB.Register.raceblack);
+			$('#raceblack').attr('disabled', false);
+			$('#racehawaiian').attr('checked', HUB.Register.racehawaiian);
+			$('#racehawaiian').attr('disabled', false);
+			$('#racewhite').attr('checked', HUB.Register.racewhite);
+			$('#racewhite').attr('disabled', false);
 		}
 		HUB.Register.disableNativeTribe();
 	},
 
 	disableRacialBackground: function() {
-		var form = $('hubForm');
-		if(form.corigin_usyes.checked) {
-			form.racenativeamerican.checked = HUB.Register.racenativeamerican;
-			form.racenativeamerican.disabled = false;
-			form.raceasian.checked = HUB.Register.raceasian;
-			form.raceasian.disabled = false;
-			form.raceblack.checked = HUB.Register.raceblack;
-			form.raceblack.disabled = false;
-			form.racehawaiian.checked = HUB.Register.racehawaiian;
-			form.racehawaiian.disabled = false;
-			form.racewhite.checked = HUB.Register.racewhite;
-			form.racewhite.disabled = false;
-			form.racerefused.checked = HUB.Register.racerefused;
-			form.racerefused.disabled = false;
+		var $ = HUB.Register.jQuery;
+
+		if($('#corigin_usyes').attr('checked')) {
+			$('#racenativeamerican').attr('checked', HUB.Register.racenativeamerican);
+			$('#racenativeamerican').attr('disabled', false);
+			$('#raceasian').attr('checked', HUB.Register.raceasian);
+			$('#raceasian').attr('disabled', false);
+			$('#raceblack').attr('checked', HUB.Register.raceblack);
+			$('#raceblack').attr('disabled', false);
+			$('#racehawaiian').attr('checked', HUB.Register.racehawaiian);
+			$('#racehawaiian').attr('disabled', false);
+			$('#racewhite').attr('checked', HUB.Register.racewhite);
+			$('#racewhite').attr('disabled', false);
+			$('#racerefused').attr('checked', HUB.Register.racerefused);
+			$('#racerefused').attr('disabled', false);
 		} else {
-			form.racenativeamerican.disabled = true;
-			HUB.Register.racenativeamerican = form.racenativeamerican.checked;
-			form.racenativeamerican.checked = false;
-			form.raceasian.disabled = true;
-			HUB.Register.raceasian = form.raceasian.checked;
-			form.raceasian.checked = false;
-			form.raceblack.disabled = true;
-			HUB.Register.raceblack = form.raceblack.checked;
-			form.raceblack.checked = false;
-			form.racehawaiian.disabled = true;
-			HUB.Register.racehawaiian = form.racehawaiian.checked;
-			form.racehawaiian.checked = false;
-			form.racewhite.disabled = true;
-			HUB.Register.racewhite = form.racewhite.checked;
-			form.racewhite.checked = false;
-			form.racerefused.disabled = true;
-			HUB.Register.racerefused = form.racerefused.checked;
-			form.racerefused.checked = false;
+			$('#racenativeamerican').attr('disabled', true);
+			HUB.Register.racenativeamerican = $('#racenativeamerican').attr('checked');
+			$('#racenativeamerican').attr('checked', false);
+			$('#raceasian').attr('disabled', true);
+			HUB.Register.raceasian = $('#raceasian').attr('checked');
+			$('#raceasian').attr('checked', false);
+			$('#raceblack').attr('disabled', true);
+			HUB.Register.raceblack = $('#raceblack').attr('checked');
+			$('#raceblack').attr('checked', false);
+			$('#racehawaiian').attr('disabled', true);
+			HUB.Register.racehawaiian = $('#racehawaiian').attr('checked');
+			$('#racehawaiian').attr('checked', false);
+			$('#racewhite').attr('disabled', true);
+			HUB.Register.racewhite = $('#racewhite').attr('checked');
+			$('#racewhite').attr('checked', false);
+			$('#racerefused').attr('disabled', true);
+			HUB.Register.racerefused = $('#racerefused').attr('checked');
+			$('#racerefused').attr('checked', false);
 		}
 		HUB.Register.disableRacialChoices();
 	},
 
 	setHispanic: function() {
-		var form = $('hubForm');
-		form.hispanicyes.checked = true;
+		var $ = HUB.Register.jQuery;
+
+		$('#hispanicyes').attr('checked', true);
 	},
 
 	disableHispanicSubgroups: function() {
-		var form = $('hubForm');
-		if(form.hispanicyes.checked){
-			form.hispaniccuban.checked = HUB.Register.hispaniccuban;
-			form.hispaniccuban.disabled = false;
-			form.hispanicmexican.checked = HUB.Register.hispanicmexican;
-			form.hispanicmexican.disabled = false;
-			form.hispanicpuertorican.checked = HUB.Register.hispanicpuertorican;
-			form.hispanicpuertorican.disabled = false;
-			form.hispanicother.value = HUB.Register.hispanicother;
-			form.hispanicother.disabled = false;
+		var $ = HUB.Register.jQuery;
+
+		if($('#hispanicyes').attr('checked')) {
+			$('#hispaniccuban').attr('checked', HUB.Register.hispaniccuban);
+			$('#hispaniccuban').attr('disabled', false);
+			$('#hispanicmexican').attr('checked', HUB.Register.hispanicmexican);
+			$('#hispanicmexican').attr('disabled', false);
+			$('#hispanicpuertorican').attr('checked', HUB.Register.hispanicpuertorican);
+			$('#hispanicpuertorican').attr('disabled', false);
+			$('#hispanicother').val(HUB.Register.hispanicother);
+			$('#hispanicother').attr('disabled', false);
 		}
-		else if(!form.hispanicother.disabled) {
-			form.hispaniccuban.disabled = true;
-			HUB.Register.hispaniccuban = form.hispaniccuban.checked;
-			form.hispaniccuban.checked = false;
-			form.hispanicmexican.disabled = true;
-			HUB.Register.hispanicmexican = form.hispanicmexican.checked;
-			form.hispanicmexican.checked = false;
-			form.hispanicpuertorican.disabled = true;
-			HUB.Register.hispanicpuertorican = form.hispanicpuertorican.checked;
-			form.hispanicpuertorican.checked = false;
-			form.hispanicother.disabled = true;
-			HUB.Register.hispanicother = form.hispanicother.value;
-			form.hispanicother.value = "";
+		else if(!$('#hispanicother').attr('disabled')) {
+			$('#hispaniccuban').attr('disabled', true);
+			HUB.Register.hispaniccuban = $('#hispaniccuban').attr('checked');
+			$('#hispaniccuban').attr('checked', false);
+			$('#hispanicmexican').attr('disabled', true);
+			HUB.Register.hispanicmexican = $('#hispanicmexican').attr('checked');
+			$('#hispanicmexican').attr('checked', false);
+			$('#hispanicpuertorican').attr('disabled', true);
+			HUB.Register.hispanicpuertorican = $('#hispanicpuertorican').attr('checked');
+			$('#hispanicpuertorican').attr('checked', false);
+			$('#hispanicother').attr('disabled', true);
+			HUB.Register.hispanicother = $('#hispanicother').val();
+			$('#hispanicother').val("");
 		}
 	},
 
 	setDisabled: function() {
-		var form = $('hubForm');
-		form.disabilityyes.checked = true;
+		var $ = HUB.Register.jQuery;
+
+		$('#disabilityyes').attr('checked', true);
 	},
 
 	disableDisabilitySubgroups: function() {
-		var form = $('hubForm');
-		if(form.disabilityyes.checked){
-			form.disabilityblind.checked = HUB.Register.disabilityblind;
-			form.disabilityblind.disabled = false;
-			form.disabilitydeaf.checked = HUB.Register.disabilitydeaf;
-			form.disabilitydeaf.disabled = false;
-			form.disabilityphysical.checked = HUB.Register.disabilityphysical;
-			form.disabilityphysical.disabled = false;
-			form.disabilitylearning.checked = HUB.Register.disabilitylearning;
-			form.disabilitylearning.disabled = false;
-			form.disabilityvocal.checked = HUB.Register.disabilityvocal;
-			form.disabilityvocal.disabled = false;
-			form.disabilityother.value = HUB.Register.disabilityother;
-			form.disabilityother.disabled = false;
+		var $ = HUB.Register.jQuery;
+
+		if($('#disabilityyes').attr('checked')){
+			$('#disabilityblind').attr('checked', HUB.Register.disabilityblind);
+			$('#disabilityblind').attr('disabled', false);
+			$('#disabilitydeaf').attr('checked', HUB.Register.disabilitydeaf);
+			$('#disabilitydeaf').attr('disabled', false);
+			$('#disabilityphysical').attr('checked', HUB.Register.disabilityphysical);
+			$('#disabilityphysical').attr('disabled', false);
+			$('#disabilitylearning').attr('checked', HUB.Register.disabilitylearning);
+			$('#disabilitylearning').attr('disabled', false);
+			$('#disabilityvocal').attr('checked', HUB.Register.disabilityvocal);
+			$('#disabilityvocal').attr('disabled', false);
+			$('#disabilityother').val(HUB.Register.disabilityother);
+			$('#disabilityother').attr('disabled', false);
 		}
-		else if(!form.disabilityother.disabled) {
-			form.disabilityblind.disabled = true;
-			HUB.Register.disabilityblind = form.disabilityblind.checked;
-			form.disabilityblind.checked = false;
-			form.disabilitydeaf.disabled = true;
-			HUB.Register.disabilitydeaf = form.disabilitydeaf.checked;
-			form.disabilitydeaf.checked = false;
-			form.disabilityphysical.disabled = true;
-			HUB.Register.disabilityphysical = form.disabilityphysical.checked;
-			form.disabilityphysical.checked = false;
-			form.disabilitylearning.disabled = true;
-			HUB.Register.disabilitylearning = form.disabilitylearning.checked;
-			form.disabilitylearning.checked = false;
-			form.disabilityvocal.disabled = true;
-			HUB.Register.disabilityvocal = form.disabilityvocal.checked;
-			form.disabilityvocal.checked = false;
-			form.disabilityother.disabled = true;
-			HUB.Register.disabilityother = form.disabilityother.value;
-			form.disabilityother.value = "";
+		else if(!$('#disabilityother').attr('disabled')) {
+			$('#disabilityblind').attr('disabled', true);
+			HUB.Register.disabilityblind = $('#disabilityblind').attr('checked');
+			$('#disabilityblind').attr('checked', false);
+			$('#disabilitydeaf').attr('disabled', true);
+			HUB.Register.disabilitydeaf = $('#disabilitydeaf').attr('checked');
+			$('#disabilitydeaf').attr('checked', false);
+			$('#disabilityphysical').attr('disabled', true);
+			HUB.Register.disabilityphysical = $('#disabilityphysical').attr('checked');
+			$('#disabilityphysical').attr('checked', false);
+			$('#disabilitylearning').attr('disabled', true);
+			HUB.Register.disabilitylearning = $('#disabilitylearning').attr('checked');
+			$('#disabilitylearning').attr('checked', false);
+			$('#disabilityvocal').attr('disabled', true);
+			HUB.Register.disabilityvocal = $('#disabilityvocal').attr('checked');
+			$('#disabilityvocal').attr('checked', false);
+			$('#disabilityother').attr('disabled', true);
+			HUB.Register.disabilityother = $('#disabilityother').val();
+			$('#disabilityother').val("");
 		}
 	},
 	
 	disableIndie: function() {
-		$('type-indie').checked = false;
-		$('username').disabled = false;
-		$('passwd').disabled = false;
+		var $ = HUB.Register.jQuery;
+
+		$('#type-indie').attr('checked', false);
+		$('#username').attr('disabled', false);
+		$('#passwd').attr('disabled', false);
 	},
 	
 	disableDomains: function() {
-		$('username').value = '';
-		$('username').disabled = true;
-		$('passwd').value = '';
-		$('passwd').disabled = true;
-		$('type-indie').checked = true;
-		$$('.option').each(function(input) {
-			var name = input.getAttribute('name');
-			var value = input.getAttribute('value');
+		var $ = HUB.Register.jQuery;
+
+		$('#username').val('');
+		$('#username').attr('disabled', true);
+		$('#passwd').val('');
+		$('#passwd').attr('disabled', true);
+		$('#type-indie').attr('checked', true);
+		$('.option').each(function(i, input) {
+			var name = $(input).attr('name');
+			var value = $(input).val();
 			if (name == 'domain' && value != '') {
-				if (input.checked) {
-					input.checked = false;
+				if ($(input).attr('checked')) {
+					$(input).attr('checked', false);
 				}
 			}
 		});
 	},
-	
+
 	initialize: function() {
-		$$('a.popup').each(function(trigger) {
-			href = $(this).getProperty('href');
+		var $ = HUB.Register.jQuery, w = 760, h = 520;
+
+		$('.com_register a.popup').each(function(i, trigger) {
+			href = $(this).attr('href');
 			if (href.indexOf('?') == -1) {
 				href += '?tmpl=component';
 			} else {
 				href += '&tmpl=component';
 			}
-			$(this).setProperty('href', href);
+			$(this).attr('href', href);
 		});
-		
+
+		if ($('#tagcloud')) {
+			$('#tagcloud').removeClass('hide');
+
+			$('#tags-hint').text('Enter tags above or click one of the tags below.');
+
+			$('.tags a').on('click', function (e) {
+				e.preventDefault();
+				
+				var val = $('#actags').val();
+				$('#actags').val((val) ? val + ', ' + $(this).text() : $(this).text());
+				if (jQuery().tokenInput) {
+					$('#actags').tokenInput('add', {
+						id: $(this).attr('rel'), 
+						name: $(this).text()
+					});
+				}
+				return false;
+			});
+		}
+
 		// Look for the "type-linked" element
-		var typeindie = $('type-indie');
-		if (typeindie) {
+		var typeindie = $('#type-indie');
+		if (typeindie.length) {
 			// Found it - means we're on the initial registration
 			// form where users choose a linked account or not
-			$('username').disabled = true;
-			$('passwd').disabled = true;
-			$$('.option').each(function(input) {
-				var name = input.getAttribute('name');
-				var value = input.getAttribute('value');
-				var checked = input.getAttribute('checked');
+			$('#username').attr('disabled', true);
+			$('#passwd').attr('disabled', true);
+			$('.option').each(function(i, input) {
+				var name = $(input).attr('name');
+				var value = $(input).val();
+				var checked = $(input).attr('checked');
 			    if (name == 'domain' && value != '') {
-					input.addEvent('click', HUB.Register.disableIndie);
+					$(input).click(HUB.Register.disableIndie);
 
 					if (checked == 'checked')
 					{
-						$('username').disabled = false;
-						$('passwd').disabled = false;
+						$('#username').attr('disabled', false);
+						$('#passwd').attr('disabled', false);
 					}
 				}
 			});
-			typeindie.addEvent('click', HUB.Register.disableDomains);
+			$(typeindie).click(HUB.Register.disableDomains);
 		} else {
 			// Not found - this should mean we're on the full
 			// registration form
-			
+
 			// organization
-			if ($('org')) {
-				$('org').addEvent('change', HUB.Register.disableOrgOther);
-				$('orgtext').addEvent('change', HUB.Register.setOrgOther);
+			if ($('#org')) {
+				$('#org').change(HUB.Register.disableOrgOther);
+				$('#orgtext').change(HUB.Register.setOrgOther);
 			}
 			// country of origin
-			if ($('corigin_usyes')) {
-				$('corigin_usyes').addEvent('change', HUB.Register.disableCountryOriginSubgroups);
-				$('corigin_usno').addEvent('change', HUB.Register.disableCountryOriginSubgroups);
-				$('corigin').addEvent('change', HUB.Register.setNonUSCountryOrigin);
+			if ($('#corigin_usyes')) {
+				$('#corigin_usyes').change(HUB.Register.disableCountryOriginSubgroups);
+				$('#corigin_usno').change(HUB.Register.disableCountryOriginSubgroups);
+				$('#corigin').change(HUB.Register.setNonUSCountryOrigin);
+				HUB.Register.disableCountryOriginSubgroups();
 			}
 			// country of residence
-			if ($('cresident_usyes')) {
-				$('cresident_usyes').addEvent('change', HUB.Register.disableCountryResidentSubgroups);
-				$('cresident_usno').addEvent('change', HUB.Register.disableCountryResidentSubgroups);
-				$('cresident').addEvent('change', HUB.Register.setNonUSCountryResident);
+			if ($('#cresident_usyes')) {
+				$('#cresident_usyes').change(HUB.Register.disableCountryResidentSubgroups);
+				$('#cresident_usno').change(HUB.Register.disableCountryResidentSubgroups);
+				$('#cresident').change(HUB.Register.setNonUSCountryResident);
+				HUB.Register.disableCountryResidentSubgroups();
 			}
 			// disability
-			if ($('disabilityyes')) {
-				$('disabilityyes').addEvent('change', HUB.Register.disableDisabilitySubgroups);
-				$('disabilityblind').addEvent('change', HUB.Register.setDisabled);
-				$('disabilitydeaf').addEvent('change', HUB.Register.setDisabled);
-				$('disabilityphysical').addEvent('change', HUB.Register.setDisabled);
-				$('disabilitylearning').addEvent('change', HUB.Register.setDisabled);
-				$('disabilityvocal').addEvent('change', HUB.Register.setDisabled);
-				$('disabilityother').addEvent('change', HUB.Register.setDisabled);
-				$('disabilityno').addEvent('change', HUB.Register.disableDisabilitySubgroups);
-				$('disabilityrefused').addEvent('change', HUB.Register.disableDisabilitySubgroups);
+			if ($('#disabilityyes')) {
+				$('#disabilityyes').change(HUB.Register.disableDisabilitySubgroups);
+				$('#disabilityblind').change(HUB.Register.setDisabled);
+				$('#disabilitydeaf').change(HUB.Register.setDisabled);
+				$('#disabilityphysical').change(HUB.Register.setDisabled);
+				$('#disabilitylearning').change(HUB.Register.setDisabled);
+				$('#disabilityvocal').change(HUB.Register.setDisabled);
+				$('#disabilityother').change(HUB.Register.setDisabled);
+				$('#disabilityno').change(HUB.Register.disableDisabilitySubgroups);
+				$('#disabilityrefused').change(HUB.Register.disableDisabilitySubgroups);
 			}
 			// hispanic
-			if ($('hispanicyes')) {
-				$('hispanicyes').addEvent('change', HUB.Register.disableHispanicSubgroups);
-				$('hispaniccuban').addEvent('change', HUB.Register.setHispanic);
-				$('hispanicmexican').addEvent('change', HUB.Register.setHispanic);
-				$('hispanicpuertorican').addEvent('change', HUB.Register.setHispanic);
-				$('hispanicother').addEvent('change', HUB.Register.setHispanic);
-				$('hispanicno').addEvent('change', HUB.Register.disableHispanicSubgroups);
-				$('hispanicrefused').addEvent('change', HUB.Register.disableHispanicSubgroups);
+			if ($('#hispanicyes')) {
+				$('#hispanicyes').change(HUB.Register.disableHispanicSubgroups);
+				$('#hispaniccuban').change(HUB.Register.setHispanic);
+				$('#hispanicmexican').change(HUB.Register.setHispanic);
+				$('#hispanicpuertorican').change(HUB.Register.setHispanic);
+				$('#hispanicother').change(HUB.Register.setHispanic);
+				$('#hispanicno').change(HUB.Register.disableHispanicSubgroups);
+				$('#hispanicrefused').change(HUB.Register.disableHispanicSubgroups);
 			}
 			// race
-			if ($('racenativeamerican')) {
-				$('racenativeamerican').addEvent('change', HUB.Register.disableNativeTribe);
-				$('racenativetribe').addEvent('change', HUB.Register.setNativeAmerican);
-				$('raceasian').addEvent('change', HUB.Register.setRacialChoice);
-				$('raceblack').addEvent('change', HUB.Register.setRacialChoice);
-				$('racehawaiian').addEvent('change', HUB.Register.setRacialChoice);
-				$('racewhite').addEvent('change', HUB.Register.setRacialChoice);
-				$('racerefused').addEvent('change', HUB.Register.disableRacialChoices);
+			if ($('#racenativeamerican')) {
+				$('#racenativeamerican').change(HUB.Register.disableNativeTribe);
+				$('#racenativetribe').change(HUB.Register.setNativeAmerican);
+				$('#raceasian').change(HUB.Register.setRacialChoice);
+				$('#raceblack').change(HUB.Register.setRacialChoice);
+				$('#racehawaiian').change(HUB.Register.setRacialChoice);
+				$('#racewhite').change(HUB.Register.setRacialChoice);
+				$('#racerefused').change(HUB.Register.disableRacialChoices);
 			}
 		}
-		
-		var passmtr = $('passmeter');
-		var passwd = $('password');
-		if (passmtr && passwd) {
-			/*
-			<span id="meter-container" class="hide">
-				<span id="passwd-meter" style="width:0%;" class="bad"><span>Strength</span></span>
-			</span>
-			*/
-			
-			var container = new Element('span', {
-				id: 'meter-container'
-			}).injectAfter(passwd);
-			
-			if (passwd.value != '') {
+
+		var passmtr = $('#passmeter');
+		var passwd = $('#password');
+		if (passmtr.length && passwd.length) {
+			$('<span id="meter-container"></span>').insertAfter(passwd);
+
+			if (passwd.val() != '') {
 				HUB.Register.checkPass();
 			} else {
-				var meter = new Element('span', {
-					id: 'passwd-meter',
-					'class': 'bad',
-					styles: {
-						width: '0%'
-					}
-				}).injectInside(container);
-
-				var txt = new Element('span', {}).appendText('Strength').injectInside(meter);
+				$('<span id="passwd-meter" style="width:0%" class="bad"><span>Strength</span></span>').appendTo('#meter-container');
 			}
-			
-			passwd.addEvent('keyup',function(event) {
+
+			passwd.keyup(function(event) {
 				var timer = setTimeout('HUB.Register.checkPass()',200);
 			});
 		}
+
+		var userlogin = $('#userlogin');
+		var usernameStatusAfter = $('#userlogin');
+		
+		if(userlogin.length > 0) {
+			
+			usernameStatusAfter.after('<p class="hint" id="usernameStatus">&nbsp;</p>');
+			
+			userlogin.focusout(function(obj) {
+				var timer = setTimeout('HUB.Register.checkLogin()',200);
+			});
+		}
+	},
+
+	checkPass: function() {
+		var $ = HUB.Register.jQuery;
+		
+		if ($('#userlogin')) {
+			usernm = $('#userlogin').val();
+		}
+		passwd = $('#password').val();
+
+		$.post('/register/passwordstrength?no_html=1', {'format': 'raw', 'pass':passwd, 'user':usernm}, function(data) {
+			$('#meter-container').html(data);
+		});
 	},
 	
-	checkPass: function() {
-		if ($('userlogin')) {
-			usernm = $('userlogin').value;
-		}
-		passwd = $('password').value;
+	checkLogin: function() {
+		var $ = HUB.Register.jQuery;
+		var username = $('#userlogin').val();
+		var submitTo = '/register/checkusername?userlogin=' + username;
+		var usernameStatus = $('#usernameStatus');
 
-		var checked = new Ajax('/register/passwordstrength', {
-			method: 'post',
-			data: 'no_html=1&pass='+passwd+'&user='+usernm,
-			update: $('meter-container')
-		}).request();
+		$.getJSON(submitTo, function(data) {
+			usernameStatus.html(data.message);
+			usernameStatus.removeClass('ok');
+			usernameStatus.removeClass('notok');
+			if(data.status == 'ok') {
+				usernameStatus.addClass('ok');
+			} else {
+				usernameStatus.addClass('notok');
+			}
+		});
 	}
 }
 
-//-----------------------------------------------------------
-window.addEvent('domready', HUB.Register.initialize);
-
+jQuery(document).ready(function($){
+	HUB.Register.initialize();
+});

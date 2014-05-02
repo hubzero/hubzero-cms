@@ -15,19 +15,34 @@ if (!HUB) {
 //----------------------------------------------------------
 // Usage stats
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Usage = {
+	jQuery: jq,
+
 	initialize: function() {
-		// Init fixed position DOM: tooltips
-		var iTTips = new MooTips($$('.fixedImgTip'), {
-			showDelay: 500,			// Delay for 500 milliseconds
-			maxTitleChars: 100,
-			className: 'img',
-			fixed: true,			// fixed in place; note tip mouseover does not hide tip
-			offsets: {'x':20,'y':5} // offset by 100,100
-		});
+		var $ = this.jQuery;
+		
+		$('.fixedImgTip').tooltip({
+			position:'TOP RIGHT',
+			//offset: [10,-20],
+			onBeforeShow: function(event, position) {
+				var tip = this.getTip(),
+					tipText = tip[0].innerHTML;
+
+				if (tipText.indexOf(" :: ") != -1) {
+					var parts = tipText.split(" :: ");
+					tip[0].innerHTML = "<span class=\"tooltip-title\">"+parts[0]+"</span><span>"+parts[1]+"</span>";
+				}
+			}
+		}).dynamic({ bottom: { direction: 'down' }, right: { direction: 'left' } });
 	},
 
 	cutup: function(p, h) {
+		var $ = this.jQuery;
+		
 		var pArray = p.split('.');
 		var k = null;
 		switch(h)
@@ -44,16 +59,18 @@ HUB.Usage = {
 	},
 
 	deactivate: function(cls, pv) {
+		var $ = this.jQuery;
+		
 		var cLinks = document.getElementsByClassName(cls);
-		if(cLinks) {
+		if (cLinks) {
 			for (var k=0; k < cLinks.length; k++)
 			{
-				if (cLinks[k].hasClass('displaying')) {
-					cLinks[k].removeClass('displaying');
+				if ($(cLinks[k]).hasClass('displaying')) {
+					$(cLinks[k]).removeClass('displaying');
 				}
-				if(k == 0 && pv == 1) {
-					if (!cLinks[k].hasClass('displaying')) {
-						cLinks[k].addClass('displaying');
+				if (k == 0 && pv == 1) {
+					if (!$(cLinks[k]).hasClass('displaying')) {
+						$(cLinks[k]).addClass('displaying');
 					}
 				}
 			}
@@ -61,12 +78,14 @@ HUB.Usage = {
 	},
 	
 	loadOFC: function() {
-		p = $('period').value;
+		var $ = this.jQuery;
+		
+		p = $('#period').val();
 		swfobject.embedSWF("/libraries/ofc/open-flash-chart.swf", "chart", "600", "350", "9.0.0", "expressInstall.swf", {"data-file":"/usage/chart/"+p+"/?no_html=1"});
 	}
 }
 
-//----------------------------------------------------------
-
-window.addEvent('domready', HUB.Usage.initialize);
+jQuery(document).ready(function($){
+	HUB.Usage.initialize();
+});
 

@@ -1,45 +1,22 @@
 /**
  * @package     hubzero-cms
  * @file        components/com_resources/models/element/geo.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Resources) {
-	HUB.Resources = {};
-}
+jQuery(document).ready(function($){
+	$('.geolocation').on('blur', function() {
+		var field = $(this),
+			geocoder = new google.maps.Geocoder();
 
-//----------------------------------------------------------
-// Resource Geo location
-//----------------------------------------------------------
-
-HUB.Resources.Geo = {
-
-	initialize: function() {
-		$$('.geolocation').each(function(el){
-			$(el).addEvent('blur', function() {
-				var field = $(this);
-				//var val = $(this).value.split(' ').join('+'); // strangely enough, this is faster than replace()
-
-				var geocoder = new google.maps.Geocoder();
-
-				if (geocoder) {
-					geocoder.geocode({ 'address': $(this).value }, function (results, status) {
-						if (status == google.maps.GeocoderStatus.OK) {
-							$($(field).id + '-lat').value = results[0].geometry.location.lat();
-						    $($(field).id + '-lng').value = results[0].geometry.location.lng();
-						}
-					});
+		if (geocoder) {
+			geocoder.geocode({ 'address': $(this).val() }, function (results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					$('#' + $(field).attr('id') + '-lat').val(results[0].geometry.location.lat()); //Ya
+					$('#' + $(field).attr('id') + '-lng').val(results[0].geometry.location.lng()); //Za
 				}
 			});
-		});
-	} // end initialize
-}
-
-window.addEvent('domready', HUB.Resources.Geo.initialize);
+		}
+	});
+});
