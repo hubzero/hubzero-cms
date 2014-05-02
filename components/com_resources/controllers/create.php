@@ -1228,60 +1228,38 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Is this resource licensed under Creative Commons?
 		if ($this->config->get('cc_license')) 
 		{
-			if (($license = JRequest::getVar('license', ''))) 
+			$license = JRequest::getVar('license', '');
+			
+			if ($license == 'custom')
 			{
-				if ($license == 'custom')
+				$license .= $resource->id;
+
+				$licenseText = JRequest::getVar('license-text', '');
+				if ($licenseText == '[ENTER LICENSE HERE]') 
 				{
-					$license .= $resource->id;
+					$this->_getStyles($this->_option, $this->_controller . '.css');
 
-					$licenseText = JRequest::getVar('license-text', '');
-					if ($licenseText == '[ENTER LICENSE HERE]') 
-					{
-						$this->_getStyles($this->_option, $this->_controller . '.css');
-
-						$this->setError(JText::_('Please enter a license.'));
-						$this->_checkProgress($id);
-						$this->step_review();
-						return;
-					}
-
-					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
-
-					$rl = new ResourcesLicense($this->database);
-					$rl->load($license);
-					$rl->name = $license;
-					$rl->text = $licenseText;
-					$rl->info = $resource->id;
-					$rl->check();
-					$rl->store();
-				}
-				
-				$params = explode("\n", $resource->params);
-				$newparams = array();
-				$flag = 0;
-
-				// Loop through the params and check if a license param exist
-				foreach ($params as $param)
-				{
-					$p = explode('=', $param);
-					if ($p[0] == 'license') 
-					{
-						$flag = 1;
-						$p[1] = $license;
-					}
-					$param = implode('=', $p);
-					$newparams[] = $param;
+					$this->setError(JText::_('Please enter a license.'));
+					$this->_checkProgress($id);
+					$this->step_review();
+					return;
 				}
 
-				// No license param so add it
-				if ($flag == 0) 
-				{
-					$newparams[] = 'license=' . $license;
-				}
+				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
 
-				// Overwrite the resource's params with the new params
-				$resource->params = implode("\n", $newparams);
+				$rl = new ResourcesLicense($this->database);
+				$rl->load($license);
+				$rl->name = $license;
+				$rl->text = $licenseText;
+				$rl->info = $resource->id;
+				$rl->check();
+				$rl->store();
 			}
+			
+			// set license
+			$params = new JParameter($resource->params);
+			$params->set('license', $license);
+			$resource->params = $params->toString();
 		}
 
 		// Save and checkin the resource
