@@ -15,175 +15,189 @@ if (!HUB) {
 //----------------------------------------------------------
 // Answers Scripts
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Jobs = {
+	jQuery: jq,
+	
 	initialize: function() {
-		
-		var default_tagline = 'Why should I be hired? (optional but highly recommended)';
-		var default_lookingfor = 'Briefly describe your career goals (optional but highly recommended)';
-		
+		var $ = this.jQuery;
+
+		var default_tagline = 'Why should I be hired? (optional but highly recommended)',
+			default_lookingfor = 'Briefly describe your career goals (optional but highly recommended)';
+
 		// cancel confirm form	
-		if($('showconfirm') && $$('.confirmwrap')[0]) {				
-			$('showconfirm').addEvent('click', function(e) {
-				e = new Event(e).stop();
-				$$('.confirmwrap')[0].style.display = 'block';					   
-			});		   
+		if ($('#showconfirm') && $('.confirmwrap')) {
+			$('#showconfirm').on('click', function(e) {
+				e.preventDefault();
+				$('.confirmwrap').show();
+			});
 		}
-		
-		// Calendar
-		if($('startdate')) {
-			myCal1 = new Calendar({ startdate: 'Y-m-d' }, { direction: 0, tweak: {x: 6, y: 0} });
+
+		// Date picker
+		if ($('#startdate').length > 0) {
+			$('#startdate').datepicker({
+				dateFormat: 'yy-mm-dd'
+			});
 		}
-		if($('closedate')) {
-			myCal1 = new Calendar({ closedate: 'Y-m-d' }, { direction: 0, tweak: {x: 6, y: 0} });
+
+		if ($('#closedate').length > 0) {
+			$('#closedate').datepicker({
+				dateFormat: 'yy-mm-dd'
+			});
 		}
-				
+
 		// subscription form
-		if($('subForm')) {	
-			var frm = document.getElementById('hubForm');
-			
+		if ($('#subForm')) {
+			var frm = $('#hubForm');
+
 			// show details of selected option
-			var services = $$('.service');
-			
-			if(services) {
+			var services = $('.service');
+
+			if (services.length) {
 				var sel = 0;
-				services.each(function(item) {													
-					if (item.checked) {
-						$('plan_'+ item.value).style.display = 'block';							
+				services.each(function(i, item) {
+					if (item.attr('checked')) {
+						$('#plan_'+ $(item).val()).show();
 					}
 					else {
-						$('plan_'+ item.value).style.display = 'none';	
+						$('#plan_'+ $(item).val()).hide();
 					}
-					
-					$('units_' + item.value).addEvent('change', function() {																	 
-						var unitprice = $('price_' + item.value).value;
-						var newprice = unitprice * $('units_' + item.value).value;
-						$('injecttotal_' + item.value).innerHTML = 	newprice.toFixed(2);
+
+					$('#units_' + $(item).val()).change(function() {
+						var unitprice = $('#price_' + $(item).val()).val();
+						var newprice = unitprice * $('#units_' + $(item).val()).val();
+						$('#injecttotal_' + $(item).val()).html(newprice.toFixed(2));
 					});	
-					
-					item.addEvent('click', function(){					
+
+					$(item).click(function(){
 						HUB.Jobs.hideDetails();
-						$('plan_'+ item.value).style.display = 'block';					
-					});									
-			   });								 			   
+						$('#plan_'+ $(item).val()).show();
+					});
+				});
 			}
-						
+			
 			// display total price calculation
-			$$('.totalprice').each(function(item) {	
-				item.style.display = 'block';					
-			});			
-		}		
-		
-		// save to shortlist
-		if($$('.favvit')) {		
-			if ($$('.favvit').length > 0) {				
-				$$('.favvit').each(function(item) {		
-					item.addEvent('click', function(e) {	
-						e = new Event(e).stop();
-						var oid = $(item.parentNode).getProperty('id').replace('o','');						
-						var profilebox = $(item.parentNode.parentNode.parentNode);
-							
-						new Ajax('index.php?option=com_jobs&task=plugin&trigger=onMembersShortlist&no_html=1&oid='+oid,{
-							method : 'get',
-							update : $(profilebox)
-						}).request();						
-					});						  												  
-				});								  
-			}
-		}
-			
-		// editing seeker info
-		if($('tagline-men')) {		
-			HUB.Jobs.setCounter($('tagline-men'), $('counter_number_tagline') );
-			
-			if($('tagline-men').value=='') {
-				$('tagline-men').value = default_tagline;
-				$('tagline-men').setStyle('color', '#999');
-			}
-			
-			$('tagline-men').addEvent('click', function(e) {
-					// Clear default value
-					if($('tagline-men').value == default_tagline)	 {
-						$('tagline-men').value = '';
-						$('tagline-men').setStyle('color', '#000');
-					}										   
-			});	
-			
-			$('tagline-men').addEvent('keyup', function(e) {					
-					HUB.Jobs.setCounter($('tagline-men'), $('counter_number_tagline') );
-			});	
-		}
-				
-		if($('lookingfor-men')) {		
-				
-			HUB.Jobs.setCounter($('lookingfor-men'), $('counter_number_lookingfor') );
-			
-			if($('lookingfor-men').value=='') {
-				$('lookingfor-men').value = default_lookingfor;
-				$('lookingfor-men').setStyle('color', '#999');
-			}
-			
-			$('lookingfor-men').addEvent('click', function(e) {
-					// Clear default value
-					if($('lookingfor-men').value == default_lookingfor)	 {
-						$('lookingfor-men').value = '';
-						$('lookingfor-men').setStyle('color', '#000');
-					}										   
-			});	
-			
-			$('lookingfor-men').addEvent('keyup', function(e) {					
-					HUB.Jobs.setCounter($('lookingfor-men'), $('counter_number_lookingfor') );
-			});												   
-		}
-		
-		
-		// submit form - cleanup default values
-		
-		if($('prefsForm')) {			
-			$('prefsForm').addEvent('submit', function(){
-				if($('lookingfor-men').value=='' || $('lookingfor-men').value==default_lookingfor) {
-					$('lookingfor-men').value = '';
-				}
-				if( $('tagline-men').value =='' || $('tagline-men').value == default_tagline) {
-					$('tagline-men').value = '';
-				}
-			});	
-		}
-			
-		// show chars counter
-		if($$('.counter')) {			
-			for (i = 0; i < $$('.counter').length; i++) {
-				$$('.counter')[i].style.display = "block";
-			}
-		}			
-	},
-	
-	hideDetails: function() {
-			$$('.subdetails').each(function(item) {											
-				item.style.display = 'none';								
+			$('.totalprice').each(function(i, item) {
+				$(item).show();
 			});
+		}
+
+		// save to shortlist
+		$('.favvit').on('click', function(e) {
+			e.preventDefault();
+			var oid = $($(item).parent()).attr('id').replace('o','');
+			var profilebox = $($(item).parent().parent().parent());
+				
+			$.get('index.php?option=com_jobs&task=plugin&trigger=onMembersShortlist&no_html=1&oid='+oid,{}, function(data){
+				$(profilebox).html(data);
+			});
+		});
+
+		// editing seeker info
+		var tgmen = $('#tagline-men');
+		if (tgmen.length) {
+			HUB.Jobs.setCounter(tgmen, $('#counter_number_tagline'));
+
+			if (tgmen.val() == '') {
+				tgmen
+					.val(default_tagline()
+					.css('color', '#999');
+			}
+
+			tgmen
+				.on('click', function(e) {
+					// Clear default value
+					if ($(this).val() == default_tagline) {
+						$(this)
+							.val('')
+							.css('color', '#000');
+					}
+				})
+				.on('keyup', function(e) {
+					HUB.Jobs.setCounter(tgmen, $('#counter_number_tagline'));
+				});
+		}
+
+		var lfmen = $('#lookingfor-men');
+		if (lfmen.length) {
+			HUB.Jobs.setCounter(lfmen, $('#counter_number_lookingfor') );
+
+			if (lfmen.val() == '') {
+				lfmen
+					.val(default_lookingfor)
+					.css('color', '#999');
+			}
+
+			lfmen.on('click', function(e) {
+				// Clear default value
+				if (lfmen.val() == default_lookingfor) {
+					lfmen
+						.val('')
+						.css('color', '#000');
+				}
+			});	
+
+			lfmen.on('keyup', function(e) {
+				HUB.Jobs.setCounter(lfmen, $('#counter_number_lookingfor') );
+			});
+		}
+
+
+		// submit form - cleanup default values
+		if ($('#prefsForm').length) {
+			$('#prefsForm').on('submit', function(){
+				if (lfmen.val() == '' || lfmen.val() == default_lookingfor) {
+					lfmen.val('');
+				}
+				if (tgmen.val() =='' || tgmen.val() == default_tagline) {
+					tgmen.val('');
+				}
+			});	
+		}
+
+		// show chars counter
+		$('.counter').each(function(i, elm) {
+			$(elm).show();
+		});
 	},
-	
-	setCounter: function(el, numel) {
+
+	hideDetails: function() {
+		var $ = this.jQuery;
 		
-			var maxchars = 140;
-			
-			var current_length = el.value.length;
-			var remaining_chars = maxchars-current_length;
-			if(remaining_chars < 0) {
-				remaining_chars = 0;
-			}
-			numel.innerHTML = remaining_chars;
-			
-			if(remaining_chars <= 10){
-			$(numel.parentNode).setStyle('color', '#CC0000');
-			} else {
-			$(numel.parentNode).setStyle('color', '#999999');
-			}
-			
-			if (remaining_chars == 0) {
-				el.setProperty('value', el.getProperty('value').substr(0,maxchars));
-			}			
+		$('.subdetails').each(function(i, item) {
+			$(item).hide();
+		});
+	},
+
+	setCounter: function(el, numel) {
+		var $ = this.jQuery;
+		
+		if (!$(el).val()) {
+			return;
+		}
+		var maxchars = 140;
+		var current_length = $(el).val().length;
+		var remaining_chars = maxchars-current_length;
+		if (remaining_chars < 0) {
+			remaining_chars = 0;
+		}
+		$(numel).html(remaining_chars);
+		
+		if (remaining_chars <= 10){
+			$(numel.parent()).css('color', '#CC0000');
+		} else {
+			$(numel.parent()).css('color', '#999999');
+		}
+		
+		if (remaining_chars == 0) {
+			$(el).val($(el).val().substr(0,maxchars));
+		}
 	}
 }
 
-window.addEvent('domready', HUB.Jobs.initialize);
+jQuery(document).ready(function($){
+	HUB.Jobs.initialize();
+});
