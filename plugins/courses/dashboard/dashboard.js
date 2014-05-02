@@ -1,27 +1,24 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/announcements/announcements.js
+ * @file        plugins/courses/dashboard/dashboard.jquery.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
+if (!jq) {
+	var jq = $;
 }
 
-//----------------------------------------------------------
-// Announcements scripts
-//----------------------------------------------------------
-HUB.Plugins.CoursesDashboard = {
-	initialize: function() {
-		
-	} //end initialize
-}
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+};
 
-window.addEvent('domready', HUB.Plugins.CoursesDashboard.initialize);
+jQuery(document).ready(function(jq){
+	var $ = jq;
+
+	
+});
