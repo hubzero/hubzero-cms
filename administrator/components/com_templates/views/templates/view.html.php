@@ -82,6 +82,6 @@ class TemplatesViewTemplates extends JViewLegacy
 			JToolBarHelper::preferences('com_templates');
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_EXTENSIONS_TEMPLATE_MANAGER_TEMPLATES');
+		JToolBarHelper::help('templates');
 	}
 }

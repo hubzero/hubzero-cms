@@ -86,6 +86,6 @@ class TemplatesViewStyle extends JViewLegacy
 		else {
 			$url = null;
 		}
-		JToolBarHelper::help($help->key, false, $url);
+		JToolBarHelper::help('style'); //$help->key, false, $url);
 	}
 }
