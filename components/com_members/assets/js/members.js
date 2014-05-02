@@ -1,113 +1,84 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_members/members.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_members/assets/js/members.js
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
 
 //----------------------------------------------------------
 //  Members scripts
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
-HUB.Members = {
-	initialize: function() {
-		HUB.Members.menu();
-		HUB.Members.dashboard();
-		HUB.Members.messageMember();
-	},
-	
-	//-----
-	
-	menu: function()
-	{   
-		$$("#page_menu li").each(function(element, index){
-			var meta = element.getElements(".meta"),
-				alrt = element.getElements(".alrt"),
-				metasize = meta.getSize()[0],
-				oldpos = 33;
-			
-			if(metasize.size.x > 20)
-			{
-				diff = metasize.size.x - 20;
-				alrt.setProperty("style", "right:"+(33+diff)+"px");
-			}
-			else if(metasize.size.x < 20 && metasize.size.x != 0)
-			{
-				diff = 20 - metasize.size.x;
-				alrt.setProperty("style", "right:"+(33-diff)+"px");
-			}
-		});
-		
-	},
-	
-	//-----
-	
-	messageMember: function()
-	{
-		if (typeof(SqueezeBoxHub) != "undefined") {
-			if (!SqueezeBoxHub) {
-				SqueezeBoxHub.initialize({ size: {x: 300, y: 375} });
-			}
-			
-			// Modal boxes member messaing
-			$$('a.message').each(function(el) {
-				if (el.href.indexOf('?') == -1) {
-					el.href = el.href + '?no_html=1';
-				} else {
-					el.href = el.href + '&no_html=1';
-				}
-				el.addEvent('click', function(e) {
-					new Event(e).stop();
+jQuery(document).ready(function($){
+	if (!jQuery().fancybox) {
+		return;
+	}
 
-					SqueezeBoxHub.fromElement(el,{
-						handler: 'url', 
-						size: {x: 700, y: 418}, 
-						ajaxOptions: {
-							evalScripts: true,
-							method: 'get',
-							onComplete: function() {
-								frm = $('hubForm-ajax');
-								if (frm) {
-									frm.addEvent('submit', function(e) {
-										new Event(e).stop();
-										frm.send({
-											//update: $('sbox-content'),
-											onComplete: function() {
-												SqueezeBoxHub.close();
-											}
-								        });
-									});
-								}
-							}
-						}
+	//move the modules button to top
+	if ($("#personalize")) {
+		$("#personalize").appendTo($("#page_options"));
+		$("#personalize").removeClass("hide");
+	}
+
+	$('a.message').fancybox({
+		type: 'ajax',
+		width: 700,
+		height: 'auto',
+		autoSize: false,
+		fitToView: false,
+		titleShow: false,
+		tpl: {
+			wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+		},
+		beforeLoad: function() {
+			href = $(this).attr('href');
+			if (href.indexOf('?') == -1) {
+				href += '?no_html=1';
+			} else {
+				href += '&no_html=1';
+			}
+			$(this).attr('href', href);	
+		},
+		afterLoad: function(upcomingObject, currentObject) {
+			var dom = $(upcomingObject.content);
+			dom.filter('script').each(function() {
+				$.globalEval(this.text || this.textContent || this.innerHTML || '');
+			});
+		},
+		afterShow: function() {
+			if ($('#hubForm-ajax')) {
+				$('#hubForm-ajax').on('submit', function(e) {
+					e.preventDefault();
+					$.post($(this).attr('action'), $(this).serialize(), function(returndata) {
+						$.fancybox.close();
 					});
 				});
-			});
+			}
 		}
-	},
-	
-	//-----
-	
-	dashboard: function()
-	{
-		//move the modules button to top
-		if( $("personalize") )
-		{
-			$("personalize").injectInside( $("page_options") );
-			$("personalize").removeClass("hide");
+	});
+
+	$("#page_menu li").each(function(index){
+		var meta = $(this).find(".meta"),
+			metawidth = meta.outerWidth(true),
+			alrt = $(this).find(".alrt");
+
+		if (alrt.length) {
+			if (metawidth > 20) {
+				alrt.css("right", 33+(metawidth-20));
+			} else if (metawidth < 20 && metawidth != 0) {
+				alrt.css("right", 33-(20-metawidth));
+			}
+		} 
+	});
+
+	$("#member-stats-graph").fancybox({
+		fitToView: true,
+		title:'',
+		beforeShow: function() {
+			$(".fancybox-inner img").css("width","100%");
 		}
-	}
-	
-	//-----
-};
-
-window.addEvent('domready', HUB.Members.initialize);
-
-//------------------------------------------------------------                                                   
+	});
+});

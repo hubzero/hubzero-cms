@@ -1,4 +1,4 @@
-window.addEvent('domready', function() 
+jQuery(document).ready(function($)
 {
 	var inps = document.getElementById('hubForm').getElementsByTagName('input');
 	var wallet = document.getElementById('wallet').getElementsByTagName('span')[0];
@@ -11,7 +11,7 @@ window.addEvent('domready', function()
 				var timer = null;
 				var progress = 0;
 				var dir = null;
-				inp.addEvent('keyup', function()
+				$(inp).on('keyup', function()
 				{
 					if (inp.value == '' && dir != 'down' && progress)
 					{
