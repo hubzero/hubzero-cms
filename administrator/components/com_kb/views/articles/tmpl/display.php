@@ -57,6 +57,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('articles');
 
 $juser = JFactory::getUser();
 ?>
