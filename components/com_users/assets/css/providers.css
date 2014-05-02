@@ -18,166 +18,118 @@
 	font-style: normal;
 }
 
-/* defaults */
-.account-group {
-	zoom: 1;
-	display: inline-block;
-	vertical-align: baseline;
-	margin: 0 5px 10px 0;
-	outline: none;
-	text-align: left;
-	text-decoration: none;
-	font-weight: bold;
-	line-height: 1.8em;
-	padding: 0.8em 2.2em 0.8em 5em;
-	text-shadow: 0px -1px 1px #1E2D4D;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	border-radius: 0.25em;
-	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-	color: white;
-	border: 1px solid #3A5918;
-	background: #619926;
-	white-space: nowrap;
-	word-wrap: normal;
+.auth .account {
+	display: block;
+	width: 350px;
+	margin: 10px auto;
 	position: relative;
-	min-width: 200px;
+	height: 50px;
+	line-height: 50px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	color: #FFFFFF;
 }
-#account-suggestions a,
-#members-account-section a {
-	border-bottom: none;
+.auth .account:hover,
+.primary:hover {
+	box-shadow: 2px 2px #AAAAAA;
 }
-#account-suggestions a:hover,
-#members-account-section a:hover {
-	border-bottom: none;
+.auth .account:active,
+.primary:active {
+	box-shadow: inset 3px 3px #555555;
 }
-.account-group:hover {
-	text-decoration: none;
-	border-bottom: none;
-	color: #fff;
-	-webkit-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	-moz-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	-ms-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	background: #537F22;
-}
-a {
-	border-bottom: none;
-	text-decoration: none;
-}
-a:active .account-group,
-a:active.account-group {
-	-webkit-box-shadow: inset 0px 2px 3px #000;
-	-moz-box-shadow: inset 0px 2px 3px #000;
-	box-shadow: inset 0px 2px 3px #000;
-}
-.account-group:before {
-	background: rgba(0, 0, 0, 0.08);
+.auth .account:before {
 	position: absolute;
-	border-right: 1px solid #3A5918;
 	top: 0;
 	left: 0;
 	bottom: 0;
 	width: 1em;
 	text-align: center;
 	font-family: Socicons;
-	color: white;
-	font-size: 28px;
+	font-size: 40px;
 	font-weight: normal;
-	padding: 21px 0.3em;
-	-webkit-border-radius: 0.25em 0 0 0.25em;
-	-moz-border-radius: 0.25em 0 0 0.25em;
-	border-radius: 0.25em 0 0 0.25em;
-	margin-right: 0.2em;
+	color: #FFFFFF;
+	margin-left: 5px;
 }
-.account-group p {
-	margin: 0;
+.auth .account:after {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 1em;
+	text-align: center;
+	font-family: fontcons;
+	font-size: 14px;
+	font-weight: normal;
+	color: #FFFFFF;
+	margin-right: 5px;
+	content: "\203a";
 }
-.account-group.inactive {
-	opacity: .5;
-}
-.account-group.inactive:hover {
-	opacity: .9;
-}
-
-/* facebook */
-#facebook:before {
-	content: "\f013";
-}
-#facebook {
-	border: 1px solid #223357;
-	background: #3B5998;
-}
-#facebook:hover {
-	background: #36528C;
+.auth .account .signin {
+	margin-left: 50px;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 1.2em;
 }
 
-/* google */
-#google:before {
-	content: "\f02c";
+.facebook:before { content: "\f012"; }
+.facebook { background: #3B5998; }
+.google:before { content: "\f02b"; }
+.google { background: #D6492C; }
+.linkedin:before { content: "\f016"; }
+.linkedin { background: #4875B4; }
+.pucas:before { content: "\f005"; }
+.pucas { background: #A3792C; }
+.twitter:before { content: "\f010"; }
+.twitter { background: #55ACEE; }
+.hubzero:before { content: "\f001"; }
+.hubzero { background: #999; }
+
+.alt-account {
+	display: inline-block;
+	background: transparent;
+	border-bottom: none;
+	font-size: 2em;
+	margin-right: 5px;
 }
-#google {
-	border: 1px solid #223357;
-	background: #D6492C;
-}
-#google:hover {
-	background: #C74429;
+.alt-account:before {
+	content: "";
+	font-family: "Socicons";
 }
 
-/* linkedin */
-#linkedin:before {
-	content: "\f017";
-}
-#linkedin {
-	border: 1px solid #223357;
-	background: #4875B4;
-}
-#linkedin:hover {
-	background: #446FAB;
-}
+.others .facebook:before { content: "\f013"; }
+.others .facebook { color: #3B5998; }
+.others .google:before { content: "\f02c"; }
+.others .google { color: #D6492C; }
+.others .linkedin:before { content: "\f017"; }
+.others .linkedin { color: #4875B4; }
+.others .pucas:before { content: "\f006"; }
+.others .pucas { color: #A3792C; }
+.others .twitter:before { content: "\f011"; }
+.others .twitter { color: #55ACEE; }
+.others .hubzero:before { content: "\f002"; }
+.others .hubzero { color: #999; }
 
-/* pucas */
-#pucas:before {
-	content: "\f006";
+.primary .upper:before {
+	font-family: "arial";
+	font-size: 4em;
+	text-align: center;
+	color: #FFFFFF;
 }
-#pucas {
-	border: 1px solid #223357;
-	background: #A3792C;
-}
-#pucas:hover {
-	background: #997229;
-}
+.primary .upper.facebook:before { content: "facebook"; }
+.primary .upper.google:before { content: "Google"; }
+.primary .upper.linkedin:before { content: "LinkedIn"; }
+.primary .upper.twitter:before { content: "Twitter"; }
+.primary .upper.pucas:before { content: "Purdue Career Account"; }
 
-/* twitter */
-#twitter:before {
-	content: "\f011";
-}
-#twitter {
-	border: 1px solid #223357;
-	background: #9AE4E8;
-}
-#twitter:hover {
-	background: #89CBCF;
-}
-
-/* hub */
-#hubzero:before {
-	content: "\f002";
-}
-#hubzero {
-	border: 1px solid #223357;
-	background: #999;
-}
-#hubzero:hover {
-	background: #888;
-}
-
-/* Firefox 3 hacks */
-html.firefox3 .account-group:before {
-	display: none;
-}
-html.firefox3 #authentication #providers a {
-	padding: 0.5em 2em;
-}
+.primary .facebook { color: #FFFFFF; }
+.primary .google:before { content: ""; }
+.primary .google { color: #D6492C; }
+.primary .linkedin:before { content: ""; }
+.primary .linkedin { color: #4875B4; }
+.primary .pucas:before { content: ""; }
+.primary .pucas { color: #A3792C; }
+.primary .twitter:before { content: ""; }
+.primary .twitter { color: #55ACEE; }
+.primary .hubzero:before { content: ""; }
+.primary .hubzero { color: #999; }

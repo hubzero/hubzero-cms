@@ -22,6 +22,7 @@ function UsersBuildRoute(&$query)
 	static $default;
 	static $registration;
 	static $profile;
+	static $link;
 	static $login;
 	static $logout;
 	static $remind;
@@ -53,6 +54,11 @@ function UsersBuildRoute(&$query)
 			// Check to see if we have found the remind menu item.
 			if (empty($remind) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'remind')) {
 				$remind = $items[$i]->id;
+			}
+
+			// Check to see if we have found the link menu item.
+			if (empty($link) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'link')) {
+				$link = $items[$i]->id;
 			}
 
 			// Check to see if we have found the login menu item.
@@ -113,6 +119,9 @@ function UsersBuildRoute(&$query)
 				break;
 
 			case 'endsinglesignon':
+				break;
+
+			case 'link':
 				break;
 
 			case 'logout':

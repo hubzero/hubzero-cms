@@ -306,6 +306,20 @@ class plgAuthenticationGoogle extends JPlugin
 
 			$hzal->update();
 
+			// If we have a real user, drop the authenticator cookie
+			if (isset($user) && is_object($user))
+			{
+				// Set cookie with login preference info
+				$prefs                  = array();
+				$prefs['user_id']       = $user->get('id');
+				$prefs['user_img']      = $user_profile['picture'];
+				$prefs['authenticator'] = 'google';
+
+				$namespace = 'authenticator';
+				$lifetime  = time() + 365*24*60*60;
+
+				\Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
+			}
 		}
 		else
 		{

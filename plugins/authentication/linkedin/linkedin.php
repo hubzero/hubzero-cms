@@ -260,7 +260,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
 
 			// Get the linked in profile
-			$profile = $linkedin_client->profile('~:(id,first-name,last-name,email-address)');
+			$profile = $linkedin_client->profile('~:(id,first-name,last-name,email-address,picture-urls::(original))');
 			$profile = $profile['linkedin'];
 
 			// Parse the profile XML
@@ -302,6 +302,21 @@ class plgAuthenticationLinkedIn extends JPlugin
 			}
 
 			$hzal->update();
+
+			// If we have a real user, drop the authenticator cookie
+			if (isset($user) && is_object($user))
+			{
+				// Set cookie with login preference info
+				$prefs                  = array();
+				$prefs['user_id']       = $user->get('id');
+				$prefs['user_img']      = (string) $profile->{'picture-urls'}->{'picture-url'};
+				$prefs['authenticator'] = 'linkedin';
+
+				$namespace = 'authenticator';
+				$lifetime  = time() + 365*24*60*60;
+
+				\Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
+			}
 		}
 		else // no authorization
 		{

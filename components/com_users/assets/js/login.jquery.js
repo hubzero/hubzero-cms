@@ -23,38 +23,30 @@ HUB.User = {
 	jQuery: jq,
 
 	initialize: function() {
-		var $ = this.jQuery;
-		var login_button = $('#login-submit');
-		var username     = $('#username');
-		var password     = $('#password');
-		var error        = $('#authentication .error');
-		var hcredentials = $('#credentials-hub');
-		var attempts     = 0;
+		var $ = this.jQuery,
+			login_button = $('.login-submit'),
+			username     = $('.username'),
+			password     = $('.passwd'),
+			error        = $('.auth .input-error'),
+			inputs       = $('.input-wrap'),
+			loading      = $('.loading'),
+			attempts     = 0;
 
 		$('input:checkbox').uniform();
 
-		hcredentials.on('keyup', function(event) {
-			if(error.html() != '' && event.keyCode != '13') {
-				error.slideUp('fast', function(){});
-				login_button.attr('disabled', false);
-				login_button.fadeTo('fast', '1');
-			}
-			$(this).fadeTo('fast', '1');
+		$('.local').click(function ( e ) {
+
 		});
 
-		$('.account-group-wrap').hoverIntent({
-			over: function(){
-				var signOut = $(this).find('.sign-out');
-
-				if (signOut.find('.current-user').html() !== '') {
-					signOut.animate({'margin-top': -12});
-				}
-			},
-			timeout: 100,
-			interval: 50,
-			out: function(){
-				$(this).find('.sign-out').animate({'margin-top': -42});
+		inputs.on('keyup', function(event) {
+			if(error.html() !== '' && event.keyCode != '13') {
+				$('.input-wrap').removeClass('input-wrap-error');
+				error.slideUp('fast');
+				login_button.attr('disabled', false);
+				login_button.fadeTo('fast', '1');
+				loading.hide();
 			}
+			$(this).fadeTo('fast', '1');
 		});
 
 		login_button.on('click', function(event) {
@@ -62,6 +54,8 @@ HUB.User = {
 
 			$(this).attr('disabled', true);
 			$(this).fadeTo('fast', '.5');
+			loading.show();
+
 
 			// Grab the form
 			var form = $(this).parents("form");
@@ -82,7 +76,8 @@ HUB.User = {
 						password.val('');
 						password.focus();
 						error.html('Sorry. Something went wong. Please try logging in again.');
-						error.slideDown('fast', function(){});
+						error.slideDown('fast');
+						loading.hide();
 						attempts++;
 
 						if (attempts >= 3) {
@@ -100,8 +95,10 @@ HUB.User = {
 					{
 						password.val('');
 						password.focus();
+						$('.input-wrap').addClass('input-wrap-error');
 						error.html(response.error);
-						error.slideDown('fast', function(){});
+						error.slideDown('fast');
+						loading.hide();
 					}
 				},
 				error: function(xhr, status, error)

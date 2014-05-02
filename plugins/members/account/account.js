@@ -40,7 +40,7 @@ HUB.Plugins.MembersAccount = {
 
 		// Expand the submit button on hover (not necessary, just fun...)
 		if($.isFunction($().hoverIntent)){
-			$('.account-group.active').hoverIntent({
+			$('.auth .account.active').hoverIntent({
 				over: function(){
 					$(this).find('.account-id').slideDown('fast');
 				},
@@ -52,7 +52,7 @@ HUB.Plugins.MembersAccount = {
 			});
 		} else {
 			// Add hover to account group
-			$('.account-group.active').hover(function() {
+			$('.auth .account.active').hover(function() {
 				$(this).find('.account-id').show();
 			}, function() {
 				$(this).find('.account-id').hide();

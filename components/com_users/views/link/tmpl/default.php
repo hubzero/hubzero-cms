@@ -30,86 +30,56 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$step = (int) JRequest::getInt('step', 1);
 ?>
 
 <div id="content-header" class="full">
-	<h2>Connect With</h2>
+	<h2>Account Setup</h2>
 </div>
 
-<div class="main section" id="link-existing">
-	<p class="info">
-		You have successfully connected to <?php echo $this->sitename; ?> with your <?php echo $this->display_name; ?> account.<br />
-		BUT, it isn't currently linked to an existing <?php echo $this->sitename; ?> account.  To proceed, either:
-	</p>
-
-	<div id="option1-link-existing" class="options">
-		<div class="clickable">Log in with an existing <?php echo $this->sitename; ?> account, 
-			and link your <?php echo $this->display_name; ?> account to it
+<div class="prompt-wrap">
+	<div class="prompt-container prompt1" style="display:<?php echo ($step === 1) ? 'block': 'none'; ?>">
+		<div class="prompt">
+			Have you ever logged into <?php echo $this->sitename; ?> before?
 		</div>
-		<div id="option1-inner" class="inner-content">
-
-<?php if($this->conflict) { ?>
-			<p>
-				<span class="important">Is one of these you?</span> Based on your email address, we found the following accounts that may be yours.
-				Click one of them to login with that existing account
-				and link it up with your <?php echo $this->display_name; ?> account.
-			</p>
-
-			<div id="account-suggestions">
-<?php foreach($this->conflict as $c) { ?>
-				<a href="<?php echo JRoute::_('/logout?return=' .
-					base64_encode(JRoute::_('/login?authenticator=' . $c['auth_domain_name'] . '&return=' .
-					base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))); ?>">
-					<div class="account-group" id="<?php echo $c['auth_domain_name']; ?>">
-						<p>
-							<span class="user-icon"><?php echo $c['name']; ?></span><br />
-							<span class="email-icon"><?php echo $c['email']; ?></span>
-						</p>
-					</div>
-				</a>
-<?php } // close foreach conflict ?>
-			</div><!-- / #account-suggestions -->
-<?php } // close if $this->conflict ?>
-
-			<div class="clear"></div>
-
-			<div id="other-links">
-				<p>
-					<span class="important">Have another account<?php echo ($this->conflict) ? ", but don't see it above" : ''; ?>?
-					</span> Choose one of the following that best matches your scenario:
-				</p>
-
-<?php foreach($this->plugins as $plugin) {
-	$paramsClass = 'JParameter';
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$paramsClass = 'JRegistry';
-	}
-
-	$pparams = new $paramsClass($plugin->params);
-	$display = $pparams->get('display_name', ucfirst($plugin->name));
-
-	$name = ($plugin->name == 'hubzero') ? 'Local hub' : $display;
-	if($plugin->name != $this->hzad->authenticator) {
-		echo '<a href="' . JRoute::_('/logout?return=' .
-			base64_encode(JRoute::_('/login?authenticator=' . $plugin->name . '&return=' .
-			base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))) .
-			'">I login to ' . $this->sitename . ' using my ' . $name  . ' account</a><br />';
-	}
-} ?>
-
-			</div><!-- / #other-links -->
-		</div><!-- / #option1-inner -->
-	</div><!-- / #option1-link-existing -->
-
-	<p class="or">OR</p>
-
-	<div id="option2-create-new" class="options">
-		<div class="clickable">Create a new account using your <?php echo $this->display_name; ?> identity</div>
-		<div id="option2-inner" class="inner-content">
-			<a id="new-account" href="<?php echo JRoute::_('index.php?option=com_register&task=update'); ?>">Create a new account</a>
+		<div class="responses">
+			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=2'); ?>">
+				<div data-step="1" class="button next forward">Yes</div>
+			</a>
+			<a href="<?php echo JRoute::_('index.php?option=com_register&task=update'); ?>">
+				<div data-step="1" class="button backwards">No</div>
+			</a>
 		</div>
 	</div>
 
-</div><!-- / #link-existing -->
-<div class="clear"></div>
+	<div class="prompt-container prompt2" style="display:<?php echo ($step === 2) ? 'block': 'none'; ?>">
+		<div class="prompt">
+			Great! Did you want to link your <?php echo $this->display_name; ?> account to that existing account or create a new account?
+		</div>
+		<div class="responses">
+			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=3'); ?>">
+				<div data-step="2" class="button next link">Link</div>
+			</a>
+			<a href="<?php echo JRoute::_('index.php?option=com_register&task=update'); ?>">
+				<div data-step="2" class="button create-new">Create new</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="prompt-container prompt3" style="display:<?php echo ($step === 3) ? 'block': 'none'; ?>">
+		<div class="prompt">
+			We can do that. Just login with that existing account now and we'll link them up!
+		</div>
+		<div class="responses">
+			<a href="<?php echo JRoute::_('/logout?return=' .
+				base64_encode(JRoute::_('/login?reset=1&return=' .
+					base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))); ?>">
+				<div data-step="3" class="button ok">OK</div>
+			</a>
+			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=2'); ?>">
+				<div data-step="3" class="button previous back">Go back</div>
+			</a>
+		</div>
+	</div>
+</div>

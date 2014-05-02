@@ -290,6 +290,21 @@ class plgAuthenticationPUCAS extends JPlugin
 			}
 
 			$hzal->update();
+
+			// If we have a real user, drop the authenticator cookie
+			if (isset($user) && is_object($user))
+			{
+				// Set cookie with login preference info
+				$prefs                  = array();
+				$prefs['user_id']       = $user->get('id');
+				$prefs['user_img']      = \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false);
+				$prefs['authenticator'] = 'pucas';
+
+				$namespace = 'authenticator';
+				$lifetime  = time() + 365*24*60*60;
+
+				\Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
+			}
 		}
 		else
 		{

@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="sub-section">
 		<h4><?php echo JText::_('PLG_MEMBERS_LINKED_ACCOUNTS'); ?></h4>
 		<div class="clear"></div>
-		<div class="sub-section-content">
+		<div class="sub-section-content auth">
 <?php 
 		if($this->hzalaccounts)
 		{
@@ -61,15 +61,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$pparams      = new $paramsClass($plugin->params);
 				$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
 ?>
-				<div class="account-group active" id="<?php echo $hzala['auth_domain_name']; ?>">
+				<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
 					<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php 
 						echo JRoute::_('index.php?option=' .
 							$this->option . '&id=' .
 							$this->member->get('uidNumber') .
 							'&active=account&action=unlink&hzal_id=' .
 							$hzala['id']); ?>">x</a></div>
-					<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
-					<div class="account-id"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_ID'); ?>: <?php echo $hzala['username']; ?></div>
+					<div class="account-info">
+						<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+					</div>
 				</div>
 <?php
 			}
@@ -95,9 +96,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$display_name = $pparams->get('display_name', ucfirst($domain->name));
 ?>
 				<a href="<?php echo JRoute::_('index.php?option=' . $com_user . '&view=login&authenticator=' . $domain->name); ?>">
-					<div class="account-group inactive" id="<?php echo $domain->name; ?>">
-						<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
-						<div class="account-id"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_CLICK_TO_LINK'); ?></div>
+					<div class="account inactive <?php echo $domain->name; ?>">
+						<div class="account-info">
+							<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+						</div>
 					</div>
 				</a>
 <?php

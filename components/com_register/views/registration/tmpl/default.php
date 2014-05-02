@@ -127,11 +127,11 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= '<div class="explaination"><p class="info">You can choose to log in via one of these services, and we\'ll help you fill in the info below!</p></div>';
 			$html .= '<fieldset>';
 			$html .= '<legend>Connect With</legend>';
-			$html .= '<div id="providers">';
+			$html .= '<div id="providers" class="auth">';
 			foreach($authenticators as $a)
 			{
-				$html .= '<a class="account-group" id="'.$a['name'].'" href="'.JRoute::_('index.php?option='.$com_users.'&view=login&authenticator='.$a['name']).'">';
-				$html .= '<p>'.$a['display'].' account</p>';
+				$html .= '<a class="'.$a['name'].' account" href="'.JRoute::_('index.php?option=com_users&view=login&authenticator='.$a['name']).'">';
+				$html .= '<div class="signin">Sign in with '.$a['display'].'</div>';
 				$html .= '</a>';
 			}
 			$html .= '</div>';

@@ -30,88 +30,122 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$app = JFactory::getApplication();
 
-$usersConfig =  JComponentHelper::getParams('com_users');
+$hash  = JUtility::getHash(JFactory::getApplication()->getName().':authenticator');
+$crypt = new JSimpleCrypt();
+
+if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !JRequest::getInt('reset', false))
+{
+	$primary  = $cookie->authenticator;
+	$user     = JFactory::getUser($cookie->user_id);
+	$user_img = $cookie->user_img;
+	JRequest::setVar('primary', $primary);
+}
+
+$app         = JFactory::getApplication();
+$usersConfig = JComponentHelper::getParams('com_users');
+$primary     = JRequest::getWord('primary', false);
 ?>
 
-<?php if ($this->params->get('show_page_title',1)) : ?>
-<div id="content-header">
-	<h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
-</div>
+<?php if ($this->params->get('show_page_title', 1)) : ?>
+	<div id="content-header">
+		<h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
+	</div>
 <?php endif; ?>
 
-<?php
-// Check for error messages (regular message queue)
-if (!empty($error_message))
-{
-	echo '<p class="error">'. $error_message . '</p>';
-}
-
-// If an account is being linked, and the authenticator is hubzero, give a message
-if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
-{
-	echo '<p class="warning">To link your two accounts, you need to login with your ' . $app->getCfg('sitename') . ' account.  You will only need to do this once.</p>';
-}
-
-?>
-
-<div id="authentication" class="<?php echo ($this->multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
-	<div class="error"></div>
-	<div class="grid">
-		<div id="inner" class="<?php echo ($this->multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
-			<?php if($this->multiAuth) { // only display if we have third part auth plugins enabled ?>
-				<div id="providers" class="col span-half">
-					<h3>Sign in with your:</h2>
-					<?php foreach($this->authenticators as $a) : ?>
-						<div class="account-group-wrap">
-							<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
-								<p><?php echo $a['display']; ?> account</p>
-							</a>
-							<a class="sign-out" href="<?php echo JRoute::_('index.php?option=com_users&task=user.logout&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
-								Not <span class="current-user"><?php echo (isset($this->status[$a['name']]['username'])) ? $this->status[$a['name']]['username'] : ''; ?></span>? Sign out.
-							</a>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			<?php } // close if - check if any authentication plugins are enabled ?>
-			<div id="credentials-hub" class="<?php echo ($this->multiAuth) ? 'col span-half omega' : 'singleAuth'; ?>">
-				<div id="credentials-hub-inner">
-					<h3><?php echo ($this->multiAuth) ? 'Your local hub account:' : 'Sign In:'; ?></h2>
-					<form action="<?php echo JRoute::_('index.php', true, true); ?>" method="post" id="login_form">
-						<div class="labelInputPair">
-							<label for="username"><?php echo JText::_('Username or email'); ?>:</label>
-							<a class="forgots forgot-username" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
-							<input tabindex="1" type="text" name="username" id="username" placeholder="email or username" />
-						</div>
-						<div class="labelInputPair">
-							<label for="password"><?php echo JText::_('Password'); ?>:</label>
-							<a class="forgots forgot-password" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
-							<input tabindex="2" type="password" name="passwd" id="password" placeholder="password" />
-						</div>
-						<div class="submission">
-						<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-							<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" <?php echo ($this->remember_me_default) ? 'checked="checked"' : ''; ?> />
-							<label for="remember" id="remember-me-label"><?php echo JText::_('Keep me logged in?'); ?></label>
-						<?php endif; ?>
-						<input type="submit" value="Login" id="login-submit"/>
-						</div>
-						<div class="clear"></div>
-						<input type="hidden" name="option" value="com_users" />
-						<input type="hidden" name="authenticator" value="hubzero" />
-						<input type="hidden" name="task" value="user.login" />
-						<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
-						<input type="hidden" name="freturn" value="<?php echo $this->freturn; ?>" />
-						<?php echo JHTML::_('form.token'); ?>
-					</form>
-				</div>
+<?php if ($primary && $primary != 'hubzero') : ?>
+	<a class="primary" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $primary . $this->returnQueryString); ?>">
+		<div class="<?php echo $primary; ?> upper"></div>
+		<div class="auth">
+			<div class="person">
+				<?php if (isset($user_img)) : ?>
+					<img src="<?php echo $user_img; ?>" alt="Users profile picture">
+				<?php endif; ?>
 			</div>
-			<?php if (!$this->multiAuth && $usersConfig->get('allowUserRegistration') != '0') { ?>
-				<p class="callToAction">Don't have an account? <a href="/register<?php if ($this->return) { echo '?return=' . $this->return; } ?>">Create one.</a></p>
-			<?php } ?>
+			<div class="lower">
+				<div class="instructions">Sign in with <?php echo ucfirst($primary); ?></div>
+			</div>
+		</div>
+	</a>
+<?php else: ?>
+	<div class="auth">
+		<div class="person">
+			<?php if (isset($user_img)) : ?>
+				<img src="<?php echo $user_img; ?>" alt="Users profile picture">
+			<?php endif; ?>
+		</div>
+		<div class="default" style="display:<?php echo ($primary || count($this->authenticators) == 0) ? 'none' : 'block'; ?>;">
+			<div class="instructions">Choose your sign in method:</div>
+			<div class="options">
+				<?php foreach($this->authenticators as $a) : ?>
+					<a class="<?php echo $a['name']; ?> account" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
+						<div class="signin">Sign in with <?php echo $a['display']; ?></div>
+					</a>
+				<?php endforeach; ?>
+			</div>
+			<div class="or"></div>
+			<div class="local">
+				<a href="<?php echo JRoute::_('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
+					Sign in with your <?php echo $app->getCfg('sitename'); ?> account
+				</a>
+			</div>
+		</div>
+		<div class="hz" style="display:<?php echo ($primary == 'hubzero' || count($this->authenticators) == 0) ? 'block' : 'none'; ?>;">
+			<div class="instructions">Sign in to <?php echo $app->getCfg('sitename'); ?></div>
+			<form action="<?php echo JRoute::_('index.php', true, true); ?>" method="post" class="login_form">
+				<div class="input-wrap">
+					<?php if (isset($user) && is_object($user)) : ?>
+						<input type="hidden" name="username" value="<?php echo $user->get('username'); ?>" />
+						<div class="existing-name"><?php echo $user->get('name'); ?></div>
+						<div class="existing-email"><?php echo $user->get('email'); ?></div>
+					<?php else : ?>
+						<div class="label-input-pair username">
+							<label for="username"><?php echo JText::_('Username or email'); ?>:</label>
+							<input tabindex="1" type="text" name="username" class="username" placeholder="email address or username" />
+						</div>
+					<?php endif; ?>
+					<div class="label-input-pair">
+						<label for="password"><?php echo JText::_('Password'); ?>:</label>
+						<input tabindex="2" type="password" name="passwd" class="passwd" placeholder="password" />
+						<div class="loading"></div>
+					</div>
+					<div class="input-error">blah blah</div>
+				</div>
+				<div class="submission">
+					<input type="submit" value="Sign in" class="login-submit"/>
+					<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
+						<div class="remember-wrap">
+							<input type="checkbox" class="option" name="remember" class="remember" value="yes" alt="Remember Me" <?php echo ($this->remember_me_default) ? 'checked="checked"' : ''; ?> />
+							<label for="remember" class="remember-me-label"><?php echo JText::_('Keep me logged in?'); ?></label>
+						</div>
+					<?php endif; ?>
+				</div>
+				<div class="forgots">
+					<?php if (!isset($user)) : ?>
+						<a class="forgot-username" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
+					<?php endif; ?>
+					<a class="forgot-password" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
+				</div>
+				<input type="hidden" name="option" value="com_users" />
+				<input type="hidden" name="authenticator" value="hubzero" />
+				<input type="hidden" name="task" value="user.login" />
+				<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
+				<input type="hidden" name="freturn" value="<?php echo $this->freturn; ?>" />
+				<?php echo JHTML::_('form.token'); ?>
+			</form>
 		</div>
 	</div>
-	<?php if ($this->multiAuth && $usersConfig->get('allowUserRegistration') != '0') { ?>
-		<p class="callToAction">Or, you can <a href="/register<?php if ($this->return) { echo '?return=' . $this->return; } ?>">create a local account.</a></p>
-	<?php } ?>
-</div>
+<?php endif; ?>
+<?php if (isset($user) && is_object($user)) : ?>
+	<div class="others">
+		<a href="<?php echo JRoute::_('index.php?option=com_users&view=login&reset=1' . $this->returnQueryString); ?>">
+			Sign in with a different account
+		</a>
+	</div>
+<?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
+	<p class="create">
+		<a href="/register" class="register">
+			Create an account
+		</a>
+	</p>
+<?php endif; ?>

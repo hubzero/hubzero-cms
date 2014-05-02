@@ -5,23 +5,101 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/* Container styles */
-#authentication {
+#content {
+	background: #FFFFFF;
+}
+
+.auth {
+	margin: 75px auto 20px auto;
+	background: #F2F2F2;
+	width: 400px;
+	border: 1px solid #DFDFDF;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	position: relative;
+}
+.auth:before {
+	position: absolute;
+	background: #F2F2F2;
+	top: 0;
+	left: 50%;
+	width: 94px;
+	height: 94px;
+	margin-top: -50px;
+	margin-left: -50px;
+	content: "";
+	border: 4px solid #FFFFFF;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	z-index: 2;
+}
+.auth:after {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-top: -51px;
+	margin-left: -51px;
+	content: "";
+	border-width: 52px;
+	border-color: transparent #DFDFDF #DFDFDF transparent;
+	border-style: solid;
+	-webkit-border-radius: 52px;
+	-moz-border-radius: 52px;
+	border-radius: 52px;
+	z-index: 1;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.auth .person {
+	position: absolute;
+	height: 94px;
+	width: 94px;
+	left: 50%;
+	z-index: 3;
+	margin-left: -46px;
+	margin-top: -46px;
+	top: 0;
 	overflow: hidden;
-	padding: 25px 25px 10px 25px;
-	margin: 35px auto;
-	border: 1px solid #C5C3C3;
-	width: 300px;
-	box-shadow: 2px 2px 2px #aaa;
-	font-family: 'Cabin', sans-serif;
-	background: #fff;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+}
+.auth .person:before {
+	position: absolute;
+	content: "\f007";
+	font-family: "fontcons";
+	top: 8px;
+	left: 0;
+	font-size: 100px;
+	line-height: 100px;
+	color: #CCCCCC;
+	height: 96px;
+	width: 96px;
+	text-align: center;
+}
+.auth img {
+	z-index: 4;
 	position: relative;
 }
-#authentication.multiAuth {
-	width: 650px;
+.auth .instructions {
+	font-size: 1.5em;
+	text-align: center;
+	margin: 60px 0 20px 0;
+}
+.auth .or {
+	width: 200px;
+	height: 20px;
+	margin: 15px auto;
+	background: url('/components/com_users/assets/img/line.png') 50% 50% repeat-x;
+	overflow: hidden;
 	position: relative;
 }
-#authentication.multiAuth #inner:before {
+.auth .or:before {
 	content: "or";
 	font-size: 20px;
 	padding: 10px;
@@ -31,232 +109,188 @@
 	top: 50%;
 	margin-left: -20px;
 	margin-top: -20px;
-	background: #FFF;
+	background: #F2F2F2;
 	z-index: 500;
 }
-#authentication.multiAuth #inner {
-	background: url('/components/com_users/assets/img/line.png') 50% 50% repeat-y;
-	overflow: hidden;
-}
-#authentication .error {
-	display: none;
-	margin-top: 0;
-}
-#authentication .two {
-	margin: 0;
-	width: 325px;
-}
-p.callToAction {
+.auth .local,
+.create {
+	font-weight: bold;
+	font-size: 1.2em;
 	text-align: center;
-}
-
-/* External auth providers */
-#authentication #providers h3 {
-	margin-top: 0;
 	margin-bottom: 20px;
 }
-#authentication.multiAuth #providers h3 {
-	display: inline-block;
-}
-#authentication #providers a {
-	color: #fff;
-	font-size: 17px;
-	font-weight: normal;
+.auth .existing-name {
+	font-size: 1.2em;
 	text-align: center;
-	padding: 0.5em 1em 0.5em 60px;
+	margin-bottom: 5px;
 }
-#authentication #providers .sign-out {
-	display: block;
-	color: #666;
-	font-size: 12px;
-	font-weight: normal;
+.auth .existing-email {
+	font-size: 1.1em;
 	text-align: center;
-	border: 1px solid black;
-	margin: -42px 5px 10px 5px;
-	width: 247px;
-	padding: 5px 10px;
-	border-bottom-right-radius: 3px;
-	border-bottom-left-radius: 3px;
-
-	background: #EFEFEF;
-	background: -webkit-gradient(linear, left top, left bottom, from(#EFEFEF), to(#CECECE));
-	background: -webkit-linear-gradient(#EFEFEF, #CECECE);
-	background: -moz-linear-gradient(center top, #EFEFEF 0%, #CECECE 100%);
-	background: -moz-gradient(center top, #EFEFEF 0%, #CECECE 100%);
-	background: -o-linear-gradient(#EFEFEF, #CECECE);
-	background-image: -ms-linear-gradient(top, #EFEFEF 0%, #CECECE 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EFEFEF,endColorstr=#CECECE);
-	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EFEFEF, endColorstr=#CECECE)";
+	margin-bottom: 10px;
 }
-#authentication #providers .sign-out:hover {
-	background: #E1E1E1;
-	background: -webkit-gradient(linear, left top, left bottom, from(#E1E1E1), to(#BCBCBC));
-	background: -webkit-linear-gradient(#E1E1E1, #BCBCBC);
-	background: -moz-linear-gradient(center top, #E1E1E1 0%, #BCBCBC 100%);
-	background: -moz-gradient(center top, #E1E1E1 0%, #BCBCBC 100%);
-	background: -o-linear-gradient(#E1E1E1, #BCBCBC);
-	background-image: -ms-linear-gradient(top, #E1E1E1 0%, #BCBCBC 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#E1E1E1,endColorstr=#BCBCBC);
-	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#E1E1E1, endColorstr=#BCBCBC)";
-}
-#authentication #providers a:before {
-	padding: 9px 0.3em;
-}
-
-/* Hub credentials section */
-#authentication #credentials-hub-inner .labelInputPair label {
-	display: none;
-}
-#authentication.multiAuth #credentials-hub-inner {
-	padding-left: 50px;
-}
-#authentication.multiAuth #credentials-hub {
-	opacity: .5;
-}
-#authentication.multiAuth #credentials-hub:hover {
-	-webkit-transition: all ease-in-out 0.2s;
-	-moz-transition: all ease-in-out 0.2s;
-	-o-transition: all ease-in-out 0.2s;
-	transition: all ease-in-out 0.2s;
-	opacity: 1;
-}
-#authentication.singleAuth #credentials-hub-inner h3 {
-	display: none;
-}
-#authentication.multiAuth #credentials-hub-inner h3 {
-	display: inline-block;
-	margin-top: 0;
+.others {
+	text-align: center;
 	margin-bottom: 20px;
+	font-weight: bold;
 }
-#authentication #credentials-hub-inner div.labelInputPair {
+.auth .error {
+	display: none;
+	margin: 0 20px 0 20px;
+}
+.auth .label-input-pair {
 	position: relative;
-	overflow: hidden;
 }
-#authentication #credentials-hub-inner a.forgots {
-	position: absolute;
-	right: 10px;
-	padding-top: 9px;
+.auth .label-input-pair label {
+	display: none;
+}
+.auth .forgots {
+	border-top: 1px solid #DFDFDF;
+}
+.auth .forgots a {
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	width: auto;
 	border-bottom: none;
-	text-decoration: none;
-	opacity: .6;
-	font-size: 11px;
+	padding: 10px;
 }
-#authentication #credentials-hub-inner a.forgots:hover {
-	opacity: 1;
+.auth .forgots a:hover {
+	background: rgba(255, 255, 255, .5);
 }
-#authentication #credentials-hub div.submission {
-	margin-top: 5px;
-}
-#authentication #credentials-hub #login-submit {
-	margin-top: 15px;
-}
-#authentication #credentials-hub #remember-me-label {
+.auth .remember-me-label {
 	vertical-align: middle;
 }
-#authentication #credentials-hub input[type="text"],
-#authentication #credentials-hub input[type="password"] {
-	margin: 0;
+.auth .input-wrap {
+	padding: 5px 10px;
+	margin: 5px 10px;
+	border-color: transparent;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+	background: transparent;
+
+	-webkit-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+	-moz-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+	-o-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+	transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+}
+.auth .input-wrap-error {
+	-webkit-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+	-moz-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+	-o-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+	transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
+
+	border-color: #CC0000;
+	background: rgba(155, 0, 0, .2);
+}
+.auth .input-error {
+	display: none;
+	color: #CC0000;
+	font-style: italic;
+	text-align: center;
+	margin-top: 5px;
+}
+.auth .username {
 	margin-bottom: 10px;
-	padding: 10px 100px 10px 30px;
-	border-radius: 4px;
-	border: 1px solid #C5C3C3;
-	background-color: #F0F0F0;
+}
+.auth .submission {
+	padding: 0 20px;
+	text-align: center;
+}
+.auth input[type="text"],
+.auth input[type="password"] {
+	margin: 0;
+	padding: 10px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #CCCCCC;
+	background-color: #FFFFFF;
 	background-repeat: no-repeat;
 	background-position: 7px 9px;
 	width: 100%;
 	outline: none;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 }
-#authentication #credentials-hub input[type="text"]:focus,
-#authentication #credentials-hub input[type="password"]:focus {
-	background-color: #FFF;
-}
-#authentication #credentials-hub input[type="text"] {
-	background-image: url('/components/com_users/assets/img/user.png');
-}
-#authentication #credentials-hub input[type="password"] {
-	background-image: url('/components/com_users/assets/img/padlock.png');
-}
-#authentication #credentials-hub input[type="submit"] {
+.auth input[type="submit"] {
 	width: 100%;
-	border: 1px solid #888;
-	border-radius: 4px;
-	background: #C5C3C3;
+	border: none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background: #178bc1;
 	color: #fff;
 	font-weight: bold;
 	font-size: 14px;
 	padding: 12px;
+	margin: 5px 0 15px 0;
 	-webkit-transition: all ease-in-out 0.1s;
 	-moz-transition: all ease-in-out 0.1s;
 	-o-transition: all ease-in-out 0.1s;
 	transition: all ease-in-out 0.1s;
-	background: #333;
-	background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#333333));
-	background: -webkit-linear-gradient(#666666, #333333);
-	background: -moz-linear-gradient(center top, #666 0%, #333 100%);
-	background: -moz-gradient(center top, #666 0%, #333 100%);
-	background: -o-linear-gradient(#666, #333);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#333333);
-	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#333333)";
 }
-#authentication #credentials-hub input[type="submit"]:hover {
+.auth input[type="submit"]:hover {
 	-webkit-box-shadow: inset 0 2px 7px #999;
 	-moz-box-shadow: inset 0 2px 7px #999;
 	box-shadow: inset 0 2px 7px #999;
 }
-#authentication #credentials-hub input[type="submit"]:active {
+.auth input[type="submit"]:active {
 	-webkit-box-shadow: inset 1px 2px 3px #111;
 	-moz-box-shadow: inset 1px 2px 3px #111;
 	box-shadow: inset 0 2px 2px #111;
 }
-
-/* logout */
-.logout.btn,
-.home.btn {
-	padding: 0.4em 0.91em 0.4em 2.91em;
+.auth input[type="submit"]:focus {
+	outline: none;
 }
-.logout.btn:before,
-.home.btn:before {
-	background: #e3e3e3;
-	background: rgba(0, 0, 0, 0.08);
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 1em;
-	text-align: center;
-	font-size: 1.2em;
-	font-weight: normal;
-	font-family: 'Fontcons';
-	line-height: 2.1;
-	padding: 0 0.5em;
-	margin-right: 0.2em;
-	-webkit-border-radius: 0.25em 0 0 0.25em;
-	-moz-border-radius: 0.25em 0 0 0.25em;
-	-ms-border-radius: 0.25em 0 0 0.25em;
-	-o-border-radius: 0.25em 0 0 0.25em;
-	border-radius: 0.25em 0 0 0.25em;
-	content: "\2716";
-}
-.home.btn:before {
-	content: "\2302";
-}
-
-/* IE 7 hacks */
-html>body #authentication #credentials-hub input[type="text"],
-html>body #authentication #credentials-hub input[type="password"] {
-	*width: 168px;
-}
-html>body #authentication.multiAuth #credentials-hub input[type="text"],
-html>body #authentication.multiAuth #credentials-hub input[type="password"] {
-	*width: 143px;
-}
-html>body #authentication.multiAuth #providers a {
-	*padding-left: 1em;
-	*width: 243px;
-}
-html.firefox3 #authentication.multiAuth #inner:before {
+.auth .loading {
 	display: none;
+	background-image: url("../img/spinner.gif");
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.auth .remember-wrap {
+	margin-bottom: 10px;
+}
+.primary {
+	display: block;
+	width: 400px;
+	margin: 0 auto;
+	border-bottom: none;
+	text-decoration: none;
+}
+.primary:hover {
+	border-bottom: none;
+	text-decoration: none;
+	cursor: pointer;
+}
+.primary .upper {
+	width: 402px;
+	height: 100px;
+	margin-top: 20px;
+	text-align: center;
+	padding-top: 40px;
+	-webkit-border-top-left-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-moz-border-radius-topright: 3px;
+	border-top-right-radius: 3px;
+}
+.primary .lower {
+	height: 60px;
+}
+.primary .auth {
+	margin-top: 0;
+	-webkit-border-top-left-radius: 0;
+	-moz-border-radius-topleft: 0;
+	border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 0;
+	-moz-border-radius-topright: 0;
+	border-top-right-radius: 0;
+}
+.primary .instructions {
+	color: #888888;
 }

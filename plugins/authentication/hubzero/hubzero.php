@@ -125,11 +125,11 @@ class plgAuthenticationHubzero extends JPlugin
 		}
 
 		if ($result)
-		{	
-			if (\Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true)) {
-				
+		{
+			if (\Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true))
+			{
 				$user = JUser::getInstance($result->id);
-				
+
 				$response->username = $user->username;
 				$response->email = $user->email;
 				$response->fullname = $user->name;
@@ -149,14 +149,26 @@ class plgAuthenticationHubzero extends JPlugin
 					$session = JFactory::getSession();
 					$session->set('expiredpassword', '1');
 				}
-			} else {
-				
+
+				// Set cookie with login preference info
+				$prefs                  = array();
+				$prefs['user_id']       = $user->get('id');
+				$prefs['user_img']      = \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false);
+				$prefs['authenticator'] = 'hubzero';
+
+				$namespace = 'authenticator';
+				$lifetime  = time() + 365*24*60*60;
+
+				\Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
+			}
+			else
+			{
 				$response->status = JAUTHENTICATE_STATUS_FAILURE;
 				$response->error_message = 'Username and password do not match or you do not have an account yet.';
 			}
 		}
-		else {
-			
+		else
+		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}

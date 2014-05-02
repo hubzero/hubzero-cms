@@ -241,16 +241,16 @@
 }
 
 /* other */
-#members-account-section .account-group.active {
-	vertical-align: top;
+#members-account-section .account {
+	float: left;
+	margin: 0;
+	margin-right: 10px;
+	margin-bottom: 10px;
 }
-#members-account-section .account-group.active:before {
-	padding: 12px 0.3em;
-}
-#members-account-section .account-group.active .account-id {
+#members-account-section .account.active:after {
 	display: none;
 }
-#members-account-section .account-group .x {
+#members-account-section .account .x {
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -258,13 +258,16 @@
 	padding: 0;
 	line-height: 6px;
 }
-#members-account-section .account-group .x a {
+#members-account-section .account .x a {
 	text-decoration: none;
 	border-bottom: none;
 	color: #fff;
 }
-#members-account-section .account-group .x a:hover {
+#members-account-section .account .x a:hover {
 	text-decoration: none;
 	border-bottom: none;
 	color: #A87C58;
+}
+#members-account-section .account .account-info {
+	padding-left: 50px;
 }
