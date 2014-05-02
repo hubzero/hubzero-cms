@@ -111,20 +111,15 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3)) 
 		{
-			$view = new JView(
-				array(
-					'name'    => 'entries',
-					'layout'  => '_list'
-				)
-			);
-			$view->parent     = $this->comment->get('id');
-			$view->option     = $this->option;
-			$view->comments   = $this->comment->replies();
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->base       = $this->base;
-			$view->display();
+			$this->view('_list')
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('option', $this->option)
+			     ->set('comments', $this->comment->replies())
+			     ->set('config', $this->config)
+			     ->set('depth', $this->depth)
+			     ->set('cls', $cls)
+			     ->set('base', $this->base)
+			     ->display();
 		}
 		?>
 	</li>

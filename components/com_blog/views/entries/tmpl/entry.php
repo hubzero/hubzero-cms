@@ -305,20 +305,15 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<div class="subject">
 	<?php if ($this->row->comments('count') > 0) { ?>
 		<?php 
-			$view = new JView(
-				array(
-					'name'    => 'entries',
-					'layout'  => '_list'
-				)
-			);
-			$view->parent     = 0;
-			$view->cls        = 'odd';
-			$view->depth      = 0;
-			$view->option     = $this->option;
-			$view->comments   = $this->row->comments('list');
-			$view->config     = $this->config;
-			$view->base       = $this->row->link();
-			$view->display();
+			$this->view('_list')
+			     ->set('parent', 0)
+			     ->set('option', $this->option)
+			     ->set('comments', $this->row->comments('list'))
+			     ->set('config', $this->config)
+			     ->set('depth', 0)
+			     ->set('cls', 'odd')
+			     ->set('base', $this->row->link())
+			     ->display();
 		?>
 	<?php } else { ?>
 		<p class="no-comments">
