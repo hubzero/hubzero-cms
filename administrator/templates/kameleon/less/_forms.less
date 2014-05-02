@@ -217,6 +217,10 @@
 			display: none;
 		}
 	}
+	.input-wrap>fieldset.radio {
+		margin: 0;
+		padding: 0.41803399em 1.61803399em;
+	}
 
 	label .required {
 		text-transform: uppercase;
@@ -314,5 +318,32 @@
 		input[type=password],
 		input[type=email] {
 			width: 72%;
+		}
+	}
+
+	.batch {
+		margin: 0;
+		padding: 0 0.618em;
+		border-top: 1px solid #dddddd;
+		background-color: #eee;
+
+		legend {
+			float: left;
+			width: 100%;
+			padding: 1em 0.618em;
+			margin-left: -0.618em;
+			margin-right: -0.618em;
+			//color: #333;
+			text-transform: uppercase;
+			font-weight: 500;
+			letter-spacing: 0.15em;
+			background: transparent;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+			span {
+				background: transparent;
+				padding: 0;
+				margin: 0;
+			}
 		}
 	}
