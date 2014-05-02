@@ -1,48 +1,35 @@
 // Dark
-	.dark #masthead,
-	.dark_header #masthead {
+	.dark #masthead {
 		background: #444;
 	}
-	.dark #masthead h1,
-	.dark_header #masthead h1 {
+	.dark #masthead h1 {
 		background: #555;
 		border-bottom: 1px solid #555;
 	}
-	.dark #masthead h1 a,
-	.dark_header #masthead h1 a {
+	.dark #masthead h1 a {
 		color: #fff;
 	}
-	.dark #nav ul.menu a,
-	.dark #account li>a,
-	.dark_header #nav ul.menu a,
-	.dark_header #account li>a {
+	.dark #nav ul.menu a {
 		color: #ccc;
 	}
-	.dark #nav ul.menu ul li a,
-	.dark_header #nav ul.menu ul li a {
+	.dark #nav ul.menu ul li a {
 		color: #747474;
 	}
+	.dark #account {
+		.account-details {
+			color: #ddd;
+		}
+		li {
+			&:hover {
+				background: #fff;
 
-	/*.dark {
-		body {
-			color: #ccc;
-			background: #555;
+				.account-details {
+					color: #444;
+				}
+			}
 		}
-		h3 {
-			color: #fff;
+		#account-info {
+			border-left: 1px solid #555;
+			border-left: 1px solid rgba(255, 255, 255, 0.1);
 		}
-		#wrap {
-			background: #666;
-		}
-		#footer {
-			background: #444;
-			color: #ccc;
-		}
-		section.section .subject + .aside {
-			background: #616161;
-			background: rgba(0, 0, 0, 0.1);
-		}
-		#footer ul#legalese {
-			background: #555;
-		}
-	}*/
+	}
