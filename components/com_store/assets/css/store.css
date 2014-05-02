@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_store/store.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_store/assets/css/store.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -362,38 +362,5 @@
 		text-align: right;
 	}
 	
-/* IE 7 Hacks */
+/* [!] IE 7 Hacks */
 
-/* IE 6 Hacks */
-	* html .infoholder { 
-		width: 500px;
-		margin-right: 3em;
-	}
-	* html .purchase { 
-		right: -15em;
-		top: 0;
-	}
-	* html #hubForm fieldset { 
-		width: 70%;
-		margin-bottom: 0;
-	}
-	* html .process input { 
-		display: inline;
-		width: 100px;
-		height: 15px;
-		overflow: hidden;
-		position: relative;
-	}
-	* html .process { 
-		position: relative;
-		padding-right: 2em;
-		padding-top: 0.5em;
-		padding-left: 3em;
-	}
-	* html .reassure {		
-		margin: 3em -10em -6em 10em;
-		position: relative;
-		padding-right: 2em;
-		padding-top: 0.5em;
-		padding-left: 3em;
-	}
