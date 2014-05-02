@@ -5,7 +5,6 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//var alertFallback = true;
 if (typeof console === "undefined" || typeof console.log === "undefined") {
 	console = {};
 	console.log = function() {};

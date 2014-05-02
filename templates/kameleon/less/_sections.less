@@ -1,0 +1,322 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_sections.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Sections
+// --------------------------------------------------
+	.section {
+		padding: 30px;
+		position: relative;
+	}
+	.section .section {
+		padding: 30px 0;
+	}
+
+	body #page_content .main {
+		background: none;
+	}
+	body #page_header {
+		padding-bottom: 25px;
+	}
+
+/* Subjects (with right aside) */
+	.subject {
+		margin: 0;
+		padding: 0;
+		margin-right: 270px;
+	}
+	#page_content .subject:before {
+		right: 250px;
+	}
+	#page_content .section .subject:before {
+		right: 230px;
+		bottom: -10px;
+	}
+	.subject.contracted:before {
+		right: 40%;
+		margin-right: 20px;
+	}
+	.section .section .subject:before {
+		display: none;
+	}
+	.subject:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
+
+// Asides (right side)
+.aside {
+	float: right;
+	width: 210px;
+	padding: 0 0 0 30px;
+
+	p {
+		margin: 1em 0;
+	}
+	h4 {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	// Fieldsets
+	fieldset {
+		margin: 1em 0 2em 0;
+		padding: 0;
+		background: #fff;
+		.border-radius(0.25em);
+
+		label {
+			display: block;
+			margin: 0;
+			border-bottom: 1px solid #eee;
+			padding: 1em;
+
+			input, 
+			select, 
+			textarea {
+				width: 100%;
+			}
+			input.option {
+				width: auto;
+			}
+		}
+		legend {
+			display: none;
+		}
+		fieldset {
+			margin: 1em;
+			padding: 0;
+			border: 1px solid #DEE4CD;
+
+			legend {
+				display: block;
+				font-weight: bold;
+				padding: 0 1em;
+				margin: 0;
+			}
+		}
+		.submit {
+			margin: 0;
+			padding: 0.5em 1em 0.5em 1em;
+		}
+	}
+
+	ul {
+		border-bottom: 1px solid #dadada;
+		margin: 0;
+		list-style: none;
+
+		ul {
+			padding: 0;
+			margin: 0;
+			background: none;
+			border-bottom: none;
+		}
+	}
+
+	li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-top: 1px solid #e1e1e1;
+
+		&.parent {
+			border-bottom: none;
+		}
+		li {
+			padding-left: 20px;
+		}
+
+		strong,
+		a,
+		span.member {
+			display: block;
+			padding: 0.75em 0;
+			text-decoration: none;
+			padding-left: 10px;
+			border: none;
+			font-weight: normal;
+			font-style: normal;
+			position: relative;
+
+			&:before {
+				content: "";
+				border-color: transparent transparent transparent #747474;
+				border-style: dashed dashed dashed solid;
+				border-width: 4px 0 4px 4px;
+				height: 0;
+				width: 0;
+				display: block;
+				overflow: hidden;
+				position: absolute;
+				top: 1.6em;
+				left: 0;
+				margin-top: -4px;
+			}
+		}
+	}
+	.tags li a {
+		border: none;
+		&:before {
+			display: none;
+		}
+	}
+	/*
+	.aside .sub-nav li.active a:hover:before,
+	.aside li#current a:hover:before,
+	.aside li a:hover:before {
+		left: 0.2em;
+	}
+	.withleft .aside li#current {
+	}
+	.aside .sub-nav li strong,
+	.aside .sub-nav li.active>a,
+	.aside li#current>a {
+		color: #2C2C2C;
+		font-weight: bold;
+	}
+	.aside .sub-nav li strong:before,
+	.aside .sub-nav li.active a:before,
+	.aside li#current>a:before {
+		border-color: transparent transparent transparent #2C2C2C;
+	}*/
+	.container {
+		padding: 30px 0;
+		margin: 0;
+
+		h3,
+		h4 {
+			color: #333;
+			padding: 1.8em 0 0.4em 30px;
+			margin: 0 0 0 -30px;
+			font-weight: 400;
+			padding: 0;
+			margin: 0;
+		}
+		ol,
+		ul {
+			margin-bottom: 1.618em;
+
+			ol,
+			ul {
+				margin: 0;
+				padding: 0;
+				border-top: 1px solid #dadada;
+				border-bottom: none;
+
+				li {
+					padding-left: 1.618em;
+				}
+			}
+		}
+		ol:last-child,
+		ul:last-child,
+		p:last-child {
+			margin-bottom: 0;
+		}
+		/*.tags {
+			//padding-left: 10px;
+
+			li {
+				background: transparent;
+				padding: 0;
+			}
+		}*/
+	}
+	/*.aside ul.textboxlist-holder li {
+		border: none;
+	}
+	.aside ul.textboxlist-holder li a:before {
+		display: none;
+	}
+	.aside ul.textboxlist-holder li.bit-box a.closebutton {
+		padding: 0;
+	}*/
+}
+
+	section.section {
+		display: table;
+		padding: 0;
+		margin: 0 -30px;
+		vertical-align: top;
+
+		.subject {
+			margin-right: 0;
+			padding: 0 30px 0 60px;
+			display: table-cell;
+			width: 100%;
+			vertical-align: top;
+		}
+		.aside {
+			background: #f6f6f6;
+			float: none;
+			display: table-cell;
+			vertical-align: top;
+			padding: 0 30px 0 60px;
+			width: 200px;
+			min-width: 200px;
+			border-right: 1px solid rgba(0, 0, 0, 0.05);
+		}
+		.subject + .aside {
+			padding: 0 60px 0 30px;
+			border-left: 1px solid rgba(0, 0, 0, 0.05);
+			border-right: none;
+		}
+		.aside + .subject {
+			padding: 0 60px 0 30px;
+		}
+	}
+
+/* NOTE: added to some containing div to dictate what side (left or right) an "aside" column will appear. */
+
+/* Subjects (with left aside) 
+	.withleft .subject {
+		margin-right: 0;
+		margin-left: 270px;
+	}
+/* Asides (left side) */
+	.withleft {
+		border: none;
+
+		#content-header {
+			margin: 0;
+		}
+		h2:first-child {
+			margin-top: 0;
+		}
+
+		.aside {
+			ul>li:first-child {
+				border-top: none;
+			}
+			ul ul {
+				border: none;
+				padding-right: 0;
+				margin-right: 0;
+			}
+			ul ul>li:first-child {
+			 	border-top: 1px solid #ddd;
+			}
+			li .separator {
+				display: block;
+				height: 2.2em;
+			}
+			li a span, 
+			li span span {
+				border: none;
+			}
+		}
+	}
+
+	.subject #hubForm fieldset fieldset {
+		padding: 0 1em 1em 1em;
+		margin-top: 1em;
+	}
+	.subject #hubForm .submit {
+		margin-right: 0;
+	}

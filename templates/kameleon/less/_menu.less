@@ -1,0 +1,173 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_menu.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Menu
+// --------------------------------------------------
+
+#nav {
+	float: left;
+	border: none;
+	padding: 0;
+	margin: 0 0 0 1em;
+
+	h2 {
+		display: none;
+	}
+	ul.menu,
+	ul.menu li,
+	ul.menu ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	ul.menu {
+		position: relative;
+		z-index: 797;
+		float: left;
+		padding: 0;
+		width: 100%;
+		font-weight: 400;
+
+		&:after {
+			content: "";
+			display: block;
+			height: 0;
+			clear: both;
+			visibility: hidden;
+		}
+
+		span.separator {
+			display: block;
+			padding: 0.8em 1em;
+			border: none;
+		}
+		a {
+			display: block;
+			border: none;
+			color: #747474;
+			padding: 2.25em 1em;
+			font-size: 1em;
+			text-transform: uppercase;
+			font-weight: 500;
+			letter-spacing: 0.15em;
+		}
+
+		li {
+			float: left;
+			line-height: 1.3em;
+			vertical-align: middle;
+			zoom: 1;
+
+			padding: 0;
+			border: none;
+			color: #343434;
+
+			&.active li a {
+				color: #747474;
+			}
+
+			&:hover,
+			&:focus {
+				position: relative;
+				z-index: 799;
+				cursor: default;
+				color: #FF9966;
+
+				&>a {
+					color: #111;
+				}
+			}
+		}
+		// Second level
+		ul {
+			visibility: hidden;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			z-index: 798;
+			//width: 100%;
+			width: 16em;
+			padding: 0;
+			margin-left: -1px;
+			background: #fff;
+			border: 1px solid #ccc;
+			border: 1px solid rgba(0, 0, 0, 0.18);
+			border-top: none;
+
+			li {
+				float: none;
+				font-weight: normal;
+				background: none;
+
+				a {
+					padding: 0.8em 1em;
+					text-transform: none;
+					color: #747474;
+					border: none;
+					font-size: 1em;
+				}
+
+				// Arrow indicating another level
+				&.parent>a:after {
+					font-family: 'Fontcons';
+					content: "\203A";
+					font-size: 0.85em;
+					line-height: 1.2em;
+					display: block;
+					float: right;
+					width: 1em;
+					height: 1em;
+					text-align: right;
+				}
+			}
+			// Third level
+			ul {
+				top: 1px;
+				left: 99%;
+				border: 1px solid #ccc;
+				border: 1px solid rgba(0, 0, 0, 0.18);
+			}
+		}
+		li:hover > ul,
+		li:focus > ul {
+			visibility: visible;
+		}
+
+		&>li.active>a,
+		li.active a {
+			color: #222;
+			position: relative;
+			background-color: #f1f1f1;
+		}
+		li.active li a {
+			background: transparent;
+		}
+
+		a:hover,
+		a:focus { 
+			color: #111;
+		}
+		li.parent:hover > a,
+		li.parent:focus > a
+		li.parent>a:hover,
+		li.parent>a:focus {
+			background-color: #fff;
+		}
+		ul li.active a,
+		ul li a:hover,
+		ul li a:focus,
+		li.parent>ul li a:hover,
+		li.parent>ul li a:focus { 
+			background-color: rgba(0, 0, 0, 0.1);
+			color: #111;
+		}
+	}
+}
+#masthead.fixed #nav ul.menu a {
+	padding: 1.275em 1em;
+}

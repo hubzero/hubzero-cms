@@ -33,20 +33,18 @@ defined('_JEXEC') or die('Restricted access');
 $config = JFactory::getConfig();
 $juser  = JFactory::getUser();
 
-//do we want to include jQuery
-if (JPluginHelper::isEnabled('system', 'jquery')) 
-{
-	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
-}
+// Include global scripts
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
 
+// Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
-
 $cls = array(
 	$browser->name(),
 	$browser->name() . $browser->major(),
 	$this->params->get('header', 'light')
 );
 
+// Prepend site name to document title
 $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
 ?>
 <!DOCTYPE html>
@@ -56,7 +54,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo end($cls); ?> ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?>"> <!--<![endif]-->
 	<head>
-		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/index.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/index.css?v=<?php echo filemtime(JPATH_ROOT . $this->baseurl . '/templates/' . $this->template . '/css/index.css'); ?>" />
 
 		<jdoc:include type="head" />
 
@@ -139,23 +137,21 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 						</header><!-- / #masthead -->
 
 						<div id="sub-masthead">
-							<div class="inner">
-							<?php if ($this->countModules('helppane')) : ?>
-								<p id="tab">
-									<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_KAMELEON_NEED_HELP'); ?>">
-										<span><?php echo JText::_('TPL_KAMELEON_HELP'); ?></span>
-									</a>
-								</p>
-							<?php endif; ?>
-								<jdoc:include type="modules" name="search" />
-								<div id="trail">
-									<?php if (!$this->countModules('welcome')) : ?>
-									<jdoc:include type="modules" name="breadcrumbs" />
-									<?php else: ?>
-									<span class="pathway"><?php echo JText::_('TPL_KAMELEON_TAGLINE'); ?></span>
-									<?php endif; ?>
-								</div><!-- / #trail -->
-							</div><!-- / .inner -->
+						<?php if ($this->countModules('helppane')) : ?>
+							<p id="tab">
+								<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_KAMELEON_NEED_HELP'); ?>">
+									<span><?php echo JText::_('TPL_KAMELEON_HELP'); ?></span>
+								</a>
+							</p>
+						<?php endif; ?>
+							<jdoc:include type="modules" name="search" />
+							<div id="trail">
+								<?php if (!$this->countModules('welcome')) : ?>
+								<jdoc:include type="modules" name="breadcrumbs" />
+								<?php else: ?>
+								<span class="pathway"><?php echo JText::_('TPL_KAMELEON_TAGLINE'); ?></span>
+								<?php endif; ?>
+							</div><!-- / #trail -->
 						</div><!-- / #sub-masthead -->
 
 						<div class="inner">

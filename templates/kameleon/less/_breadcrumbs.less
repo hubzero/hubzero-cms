@@ -1,0 +1,61 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_breadcrumbs.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Breadcrumbs
+// --------------------------------------------------
+
+#outer-wrap {
+	padding-top: 5.65em;
+	background: #444;
+}
+#sub-masthead {
+	margin: 0;
+	padding: 0 @gutter;
+	vertical-align: baseline;
+	display: block;
+	font-size: 0.85em;
+	.transition(all 0.1s ease-out);
+	.clearfix();
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+	&.fixed {
+		margin: 4.75em 0 0 0;
+	}
+	&:hover {
+		background: rgba(0, 0, 0, 0.1);
+	}
+}
+
+// Breadcrumbs
+#trail {
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	color: rgba(255, 255, 255, 0.7);
+
+	span.pathway {
+		display: block;
+		padding: 0.95em 0 0.95em 0;
+		margin: 0;
+	}
+	a {
+		color: #fff;
+		border: none;
+
+		&:hover {
+			color: #fff;
+			border-bottom: 1px solid #fff;
+		}
+	}
+	.sep {
+		padding: 0 0.2em;
+		color: #fff;
+		color: rgba(255, 255, 255, 0.4);
+	}
+}

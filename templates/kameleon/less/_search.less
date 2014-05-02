@@ -1,0 +1,123 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_search.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Search
+// --------------------------------------------------
+
+#searchform {
+	float: right;
+	margin: 0;
+	padding: 0;
+	position: relative;
+
+	&:after {
+		content: "\f002";
+		font-family: "Fontcons";
+		font-weight: 400;
+		position: absolute;
+		top: 0.8em;
+		right: 0.8em;
+		color: #fff;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 1.5em;
+		line-height: 1;
+		text-align: center;
+		width: 1em;
+		cursor: pointer;
+	}
+	&:hover:after {
+		color: #fff;
+	}
+
+	legend {
+		display: none;
+	}
+	fieldset {
+		border: none;
+		padding: 0;
+		margin: 0;
+		background: transparent;
+	}
+	label {
+		display: none;
+	}
+	input {
+		display: block;
+		border: none;
+		float: left;
+		line-height: 1;
+		width: auto;
+		.border-radius(0);
+	}
+	input#submitquery {
+		margin: 0;
+		padding: 1.3em 1em 1.3em 1em;
+		background: transparent;
+		.box-sizing(border-box);
+		.background-clip(padding-box);
+		outline: none;
+		font-size: 1.1em;
+		cursor: pointer;
+		color: transparent;
+		border-right: 1px solid rgba(255, 255, 255, 0.3);
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+	}
+	input#searchword {
+		margin: 0;
+		background-color: transparent;
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+		width: 170px;
+		color: #abadad;
+		color: rgba(255, 255, 255, 0.7);
+		padding: 1.3em 1em 1.2em 1em;
+
+		// WebKit browsers
+		&::-webkit-input-placeholder {
+			color: rgba(255, 255, 255, 0.7);
+		}
+		// Mozilla Firefox 4 to 18
+		&:-moz-placeholder {
+			color: rgba(255, 255, 255, 0.7);
+		}
+		// Mozilla Firefox 19+
+		&::-moz-placeholder {
+			color: rgba(255, 255, 255, 0.7);
+		}
+		// Internet Explorer 10+
+		&:-ms-input-placeholder {
+			color: rgba(255, 255, 255, 0.7);
+		}
+
+		&:focus {
+			color: #e1e1e1;
+			color: #fff;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+	}
+}
+// Mozilla
+@-moz-document url-prefix() {
+	#searchform input#submitquery {
+		padding: 1.1em 1em 1.1em 1em;
+	}
+	#searchform input#searchword {
+		padding: 1.1em 1em 1.2em 1em;
+	}
+}
+// Opera
+html.opera #searchform {
+	input#submitquery {
+		padding: 1.1em 1em 1.1em 1em;
+	}
+	input#searchword {
+		padding: 1.1em 1em 1.2em 1em;
+	}
+}

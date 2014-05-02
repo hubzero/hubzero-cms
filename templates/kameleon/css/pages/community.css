@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        templates/hubbasic2013/css/pages/community.css
- * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @file        templates/kameleon/css/pages/community.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,37 +43,7 @@
 		margin: 0;
 		font-size: 1.2em;
 		line-height: 1.8em;
-		/*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);*/
 	}
-	/*.com_content .about.odd:before,
-	.com_content .about.odd:after {
-		content: "";
-		display: block;
-		margin: 0;
-		padding: 0;
-		position: absolute;
-		z-index: 100;
-		top: 0;
-		bottom: 0;
-		width: 30px;
-		left: -30px;
-		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
-		-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		   -moz-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		    -ms-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		     -o-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		        box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-	}
-	.com_content .about.odd:after {
-		left: auto;
-		right: -30px;
-		-webkit-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		   -moz-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		    -ms-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		     -o-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		        box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-	}*/
-
 	.com_content .about.odd {
 		background: #fff;
 		border-top: 1px solid #eaeaea;

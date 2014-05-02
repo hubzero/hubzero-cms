@@ -1,0 +1,214 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_masthead.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Masthead
+// --------------------------------------------------
+
+#masthead {
+	margin: 0;
+	padding: 0 60px 0 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: #fff;
+	z-index: 999;
+	.transition(all 0.3s ease);
+	.clearfix();
+	border: none;
+
+	h1 {
+		font-size: 2.7em;
+		line-height: 1;
+		margin: 0;
+		padding: 0 30px 0 60px;
+		float: left;
+		text-transform: lowercase;
+		font-family: 'Kaushan Script', cursive;
+		.transition(all 0.3s ease);
+		background: #f6f6f6;
+		border-bottom: 1px solid #f6f6f6;
+
+		a {
+			position: relative; 
+			display: block; 
+			height: 1em;
+			background: transparent;
+			border: none;
+			font-weight: normal;
+			font-style: normal;
+			padding: 0.56em 0;
+			color: #343434;
+
+			&:hover {
+				color: #343434;
+				text-decoration: none;
+				border: none;
+			}
+		}
+	}
+
+	&.fixed {
+		.box-shadow(~"0 4px 0 rgba(0, 0, 0, 0.08)");
+
+		h1 {
+			font-size: 1.775em;
+		}
+	}
+}
+
+#account {
+	float: right;
+	list-style: none;
+	margin: 0 -1em 0 0;
+	padding: 0;
+	position: relative;
+	z-index: 798;
+
+	&.loggedin {
+		cursor: pointer;
+	}
+
+	a:hover,
+	a:focus { 
+		color: #111;
+	}
+
+	li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		float: left;
+		line-height: 1.3em;
+		vertical-align: middle;
+		zoom: 1;
+
+		&>a {
+			display: block;
+			border: none;
+			color: #747474;
+			padding: 2.25em 1em;
+			font-size: 1em;
+			font-weight: 500;
+			text-transform: uppercase;
+			letter-spacing: 0.15em;
+
+			&:hover,
+			&:focus { 
+				color: #111;
+			}
+		}
+
+		ul {
+			background: #fff;
+			border: 1px solid rgba(0, 0, 0, 0.4);
+			border-top: none;
+			position: absolute;
+			visibility: hidden;
+			width: 200px;
+			right: 0px;
+			top: 100%;
+		}
+
+		&:hover > ul,
+		&:focus > ul {
+			visibility: visible;
+		}
+
+		ul li {
+			float: none;
+			border: none;
+			border-top: 1px solid #eee;
+
+			a {
+				display: block;
+				color: #747474;
+				position: relative;
+				font-size: 1em;
+				border: none;
+				padding: 0.8em 1em;
+				text-transform: none;
+
+				&:hover,
+				&:focus {
+					background-color: #178bc1;
+					color: #fff;
+					margin: 0 -2px;
+				}
+				&:before {
+					content: "";
+					display: inline-block;
+					font-family: 'Fontcons';
+					font-size: 1.2em;
+					width: 1em;
+					height: 1em;
+					margin-right: 0.2em;
+				}
+			}
+
+			&#account-dashboard a:before {
+				content: "\f009";
+			}
+			&#account-profile a:before {
+				content: "\f007";
+			}
+			&#account-messages a:before {
+				content: "\2709";
+			}
+			&#account-logout a:before {
+				content: "\f011";
+			}
+		}
+	}
+
+	.account-details {
+		color: #555;
+		border: none;
+	}
+	#account-info {
+		padding: 1.65em 3.25em 1.65em 1.675em;
+		white-space: nowrap;
+		border-left: 1px solid #eee;
+		max-width: 30em;
+
+		&:after {
+			content: "";
+			border-color: #E5E5E5 transparent transparent transparent;
+			border-style: solid dashed dashed dashed;
+			border-width: 6px 6px 0 6px;
+			height: 0;
+			width: 0;
+			display: block;
+			overflow: hidden;
+			position: absolute;
+			top: 1.5em;
+			right: 1.675em;
+		}
+	}
+
+	img {
+		float: left;
+		margin: 0 0.5em 0 0;
+		.border-radius(50%);
+	}
+	span.account-email {
+		display: block;
+		color: #bbb;
+		font-size: 85%;
+		margin-right: 3em;
+	}
+}
+#masthead.fixed #account {
+	li>a {
+		padding: 1.275em 1em;
+	}
+	#account-info {
+		padding-top: 0.65em;
+		padding-bottom: 0.65em;
+	}
+}

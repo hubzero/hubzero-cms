@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        media/hubzero/css/columns.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        templates/kameleon/html/system/css/introduction.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -26,25 +26,21 @@
 		padding: 0;
 		position: absolute;
 		z-index: 1;
-		font-family: 'Fontcons';
-		font-size: 50px;
 		line-height: 1;
-		top: 43px;
-		left: 45px;
-		color: #bbb;
+		font-family: 'Fontcons';
+		font-size: 300px;
+		color: #f6f6f6;
+		text-shadow: none;
+		top: 60px;
+		left: auto;
+		right: 60px;
+		text-align: right;
 	}
-	#introduction .btn {
-		z-index: 2;
-	}
-	/*#introduction .aside,
+	#introduction .aside,
 	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
-	}*/
+		z-index: 2;
+		position: relative;
+	}
 	#introduction h3 {
 		margin-top: 0;
 		color: #484848;
@@ -61,7 +57,7 @@
 		padding: 0 0 0 5px;
 		position: relative;
 	}
-	#introduction li:before {
+	/*#introduction li:before {
 		content: '›';
 		font-size: 18px;
 		line-height: 18px;
@@ -70,7 +66,7 @@
 		position: absolute;
 		left: 0;
 		top: 50%;
-	}
+	}*/
 	#introduction p {
 		margin: 1em 0 0 0;
 		font-size: 1.2em;
@@ -95,6 +91,12 @@
 		margin: 0 30px;
 		display: block;
 		border-top: 1px solid #e0e0e0;
+	}
+	/*#introduction + .section {
+		padding: 0 30px 30px 30px;
+	}*/
+	#introduction .data-entry {
+		margin-top: 0;
 	}
 
 /* Four Columns */

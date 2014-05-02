@@ -1,0 +1,90 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_footer.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Footer
+// --------------------------------------------------
+
+#footer {
+	padding: 0;
+	color: #aaa;
+	font-size: 0.9em;
+	background: #f1f1f1;
+
+	h2 {
+		display: none;
+	}
+	h3 {
+		margin: 0;
+		padding: 0 0 1em 0;
+		text-transform: uppercase;
+		font-size: 1em;
+		font-weight: 600;
+		letter-spacing: 0.15em;
+	}
+	a {
+		color: #999;
+		border-bottom: none;
+
+		&:hover {
+			color: @grayDarker;
+			border-bottom: 1px solid @grayDarker;
+		}
+	}
+	ul {
+		list-style: none;
+		margin: 0;
+	}
+	li {
+		padding: 0.4em 0;
+		margin: 0;
+	}
+	// Ancillary navigation
+	#ancillary {
+		margin: 0;
+		padding: @spacing @gutter;
+
+		ul {
+			padding: 1em 0 0 0;
+		}
+	}
+	.inner {
+		padding: 0;
+	}
+
+	ul#legalese {
+		padding: @spacing @gutter;
+		overflow: hidden;
+		text-align: right;
+		font-size: 0.85em;
+		color: #777;
+		background: @white;
+
+		li {
+			display: inline;
+			margin-left: 2em;
+			text-shadow: none;
+			color: #aaa;
+		}
+		.policy {
+			position: absolute;
+			margin: 0;
+			left: @gutter;
+			text-align: left;
+			line-height: 1.2;
+		}
+		a {
+			color: #777;
+
+			&:hover {
+				color: @grayDarker;
+				border-bottom: 1px solid @grayDarker;
+			}
+		}
+		.clearfix();
+	}
+}

@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        templates/hubbasic2013/css/pages/congrats.css
- * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @file        templates/kameleon/css/pages/congrats.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -15,11 +15,11 @@
 
 	@font-face {
 		font-family: 'Socicons';
-		src: url('/media/system/css/fonts/socicons-webfont.eot');
-		src: url('/media/system/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'), 
-			 url('/media/system/css/fonts/socicons-webfont.woff') format('woff'), 
-			 url('/media/system/css/fonts/socicons-webfont.ttf') format('truetype'),
-			 url('/media/system/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
+		src: url('../../../../media/system/css/fonts/socicons-webfont.eot');
+		src: url('../../../../media/system/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'), 
+			 url('../../../../media/system/css/fonts/socicons-webfont.woff') format('woff'), 
+			 url('../../../../media/system/css/fonts/socicons-webfont.ttf') format('truetype'),
+			 url('../../../../media/system/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
 		font-weight: normal;
 		font-style: normal;
 	}
@@ -162,7 +162,7 @@
 
 /* Freatured items */
 	#features {
-		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #ececec;
 		background: #fff;
 		padding: 0;
 	}
@@ -178,7 +178,7 @@
 		padding: 20px 30px 30px 30px;
 		margin: 0;
 		font-weight: normal;
-		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #f9f9f9;
 		position: relative;
 	}
 	#features h3:before,
@@ -318,7 +318,7 @@
 		padding: 0 30px;
 		margin: 0 -30px;
 		text-align: center;
-		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #e1e1e1;
 		color: #5a5a5a;
 		text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
 		-webkit-box-shadow: none;
@@ -430,7 +430,7 @@
 	
 /* Block section */
 	.blocks-section {
-		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #ececec;
 		position: relative;
 		z-index: 1;
 	}
@@ -454,7 +454,7 @@
 
 /* Support section */
 	.support-section {
-		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #f9f9f9;
 		padding: 0;
 		margin: 0;
 	}
