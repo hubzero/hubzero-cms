@@ -1,0 +1,85 @@
+<article>
+	<h1>Plugins</h1>
+
+	<p>The plug-in manager is accessed from the back-end Joomla! administrator panel. It is used to edit an installed plug-in's details and options.
+</p>
+<h2> <span class="mw-headline" id="How_to_Access">How to Access</span></h2>
+<p>Select <b>Extensions &#8594; Plug-in Manager</b> from the drop-down menu of the <i><b>Joomla! Administrator Panel</b></i>.
+</p>
+<h2> <span class="mw-headline" id="Description">Description</span></h2>
+<p>The Plug-in Manager allows you to enable and disable Joomla! plug-ins and to edit a plug-in's details and options. It is also useful for quickly enabling/disabling multiple plug-ins at once.
+</p>
+<h2> <span class="mw-headline" id="Screenshot">Screenshot</span></h2>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin-manager-screenshot.png" class="image"><img alt="Help25-plugin-manager-screenshot.png" src="http://docs.joomla.org/images/7/71/Help25-plugin-manager-screenshot.png" width="670" height="428" /></a>
+</p>
+<h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
+<ul><li> <b>Checkbox.</b> Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items.
+</li><li> <b>Name.</b> The name of the plug-in.
+</li></ul>
+<ul><li><b>Status.</b> (Published/Unpublished/Archived/Trashed) The published status of the item.
+</li><li> <b>Ordering.</b> Ordering. The order to display items. If the list is sorted by this column, you can change the order by clicking the arrows or by entering the sequential order and clicking the 'Save Order' icon which looks like a little floppy disk. Note that the display order on a page is set in the 'Advanced Options' section for each menu item. If that order is set to use something other than 'Order' (for example, 'Title - Alphabetical'), then the order value in this screen will be ignored. If the menu item's order option is set to use 'Order', then the items will display on the page based on the order in this screen.
+</li><li> <b>Type.</b> The Type of the plug-in. Some possible types are: authentication, content, editors, editors-xtd, search, system, and user. These are also the names of the website sub-directories where the plug-in files are located. For example, plug-ins with a type of 'authentication' are located in the website directory 'plugins/authentication'.
+</li><li> <b>Element.</b> The plug-in directory name which contains the plug-in's files. This directory will be located in the directory which corresponds to its type. For example, the 'Authentication - Joomla' plug-in is of type 'Authentication' and element 'joomla'. So the website directory it is located in is 'plugins/authentication/joomla'
+</li><li> <b>Access.</b> Which user 'access levels' have access to this item. You can change an item's Access Level by clicking on its name to open it up for editing. The default user 'access levels' which come preconfigured with Joomla! are:
+<ul><li> Public: Everyone has access including website visitors who have not logged in
+</li><li> Registered: Only users with registered status or higher will have access
+</li><li> Special: Only users with author status or higher have access
+</li></ul>
+</li></ul>
+<ul><li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.
+</li></ul>
+<h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
+<p>The list of plug-ins which appears on this screen may be very large. You can use one of the available filters or any combination of them to limit the number of plug-ins displayed to just the plug-ins which match your filter parameters.
+</p>
+<h3> <span class="mw-headline" id="Filter_by_Partial_Title">Filter by Partial Title</span></h3>
+<p>You can filter the list of items by typing part of the plugins name or the ID number of the plugin.
+<a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-banners-manage-filter-name.png" class="image"><img alt="Help25-banners-manage-filter-name.png" src="http://docs.joomla.org/images/2/2b/Help25-banners-manage-filter-name.png" width="286" height="25" /></a>
+</p><p>If you have a large number of items on the list, you can use this filter to find the desired item(s) quickly. Enter either all or part of the name and press 'Search' to display the matching items. You can enter in whole words or part of a word. For example, 'ooml' will match all titles with the word 'Joomla!' in them.
+</p>
+<h3> <span class="mw-headline" id="Filter_by_Published_State.2C_Client.2C_Category.2C_and_Language">Filter by Published State, Client, Category, and Language</span></h3>
+<p>In the upper right area, above the column headings, there are three drop-down list boxes as shown below:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin-manager-filter-attributes.png" class="image"><img alt="Help25-plugin-manager-filter-attributes.png" src="http://docs.joomla.org/images/b/bb/Help25-plugin-manager-filter-attributes.png" width="417" height="33" /></a>
+</p><p>The selections may be combined. Only items matching all selections will display in the list.
+</p>
+<ul><li><b>Filter by Viewing Access Level.</b> Lets you show only items that have a specified viewing access level. The list box will show the access levels defined for your site, similar to the example below. <div class="thumb tnone"><div class="thumbinner" style="width:189px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-access.png" class="image"><img alt="Help25-chunk-colheader-select-access.png" src="http://docs.joomla.org/images/8/8c/Help25-chunk-colheader-select-access.png" width="187" height="84" class="thumbimage" /></a>  <div class="thumbcaption"></div></div></div> 
+<ul><li><i>- Select Access -:</i> Show items with any viewing access level.
+</li><li><i>&lt;your access level&gt;:</i> Show items only with this viewing access level.
+</li></ul>
+</li></ul>
+<ul><li><b>Filter by Published Status.</b> Lets you show only items with the selected published status. <div class="thumb tnone"><div class="thumbinner" style="width:104px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-status.png" class="image"><img alt="Help25-chunk-colheader-select-status.png" src="http://docs.joomla.org/images/8/85/Help25-chunk-colheader-select-status.png" width="102" height="97" class="thumbimage" /></a>  <div class="thumbcaption"></div></div></div> 
+<ul><li><i>- Select Status -:</i> Shows items that are Published and Unpublished. Does <i>not</i> show items that are Trashed or Archived.
+</li><li><i>Published:</i> Shows only items that are Published.
+</li><li><i>Unpublished:</i> Shows only items that are Unpublished.
+</li><li><i>Archived:</i> Shows only items that are Archived.
+</li><li><i>Trashed:</i> Shows only items that are Trashed. <i>Important Note:</i> To permanently delete items:
+<ol><li> Change the status of the items to Trashed.
+</li><li> Change the Status filter to Trashed. At this point the trashed items will show and an icon called "Empty trash" will show in the toolbar.
+</li><li> Select the desired trashed items and click on "Empty Trash" in the toolbar. The items will be permanently deleted.
+</li></ol>
+</li><li><i>All:</i> Shows all items regardless of published status.
+</li></ul>
+</li></ul>
+<ul><li><b>Select Type.</b> Select a Type from the drop-down list box to show only plug-ins of the selected Type.
+</li></ul>
+<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+<p>At the top right you will see the toolbar:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-Edit-Enable-Disable-Checkin-Options-Help.png" class="image"><img alt="Help25-Toolbar-Edit-Enable-Disable-Checkin-Options-Help.png" src="http://docs.joomla.org/images/e/e1/Help25-Toolbar-Edit-Enable-Disable-Checkin-Options-Help.png" width="355" height="65" /></a>
+</p><p>The functions are:
+</p>
+<ul><li><b>Edit</b>. Opens the editing screen for the selected plug-in. If more than one plug-in is selected (where applicable), only the first plug-in will be opened. The editing screen can also be opened by clicking on the Title or Name of the plug-in.
+</li><li><b>Enable</b>. Makes the selected plug-in available for use on your website. You may also toggle between Enabled and Disabled by clicking on the icon in the 'Enabled' column.
+</li><li><b>Disable</b>. Makes the selected plug-ins unavailable for use on your website. You may also toggle between Enabled and Disabled by clicking on the icon in the 'Enabled' column.
+</li><li><b>Check In</b>. Checks-in the selected plug-ins. Works with one or multiple plug-ins selected.
+</li><li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.
+</li><li><b>Help</b>. Opens this help screen.
+</li></ul>
+<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+<ul><li>To enable or disable a group of Plug-ins, check the check box for each desired Plug-in and then click the Enable or Disable toolbar button.
+</li><li>Configurable plug-in settings are referred to as 'options'. In Joomla! 1.5 and lower these configurable settings were referred to as 'parameters'. You may see the terms 'options' and 'parameters' used interchangeably in help documentation and tutorials you encounter.
+</li></ul>
+<h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
+<ul><li>To change the Details or Options for a Plug-in: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Plugin_Manager_Edit" title="Help25:Extensions Plugin Manager Edit">Plugin Manager - Edit</a>
+</li><li>To install Plug-ins: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Install" title="Help25:Extensions Extension Manager Install">Extension Manager - Install</a>
+</li><li>To uninstall Plug-ins: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Manage" title="Help25:Extensions Extension Manager Manage">Extension Manager - Manage</a>
+</li></ul>
+</article>

@@ -72,6 +72,6 @@ class PluginsViewPlugin extends JViewLegacy
 		else {
 			$url = null;
 		}
-		JToolBarHelper::help($help->key, false, $url);
+		JToolBarHelper::help('plugin');// $help->key, false, $url);
 	}
 }

@@ -1,0 +1,452 @@
+<article>
+	<h1>Plugin</h1>
+
+	<h2> <span class="mw-headline" id="How_to_Access">How to Access</span></h2>
+<p>Navigate to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Plugin_Manager" title="Help25:Extensions Plugin Manager">Plug-in Manager</a>. Click on the Plug-in's Name or click on the Plug-in's checkbox and press the Edit button in the toolbar.
+</p>
+<h2> <span class="mw-headline" id="Description">Description</span></h2>
+<p>This screen allows you to edit the details and options for plug-ins. Some plug-ins have several configurable options, while others may not have any.
+</p>
+<h2> <span class="mw-headline" id="Screenshot">Screenshot</span></h2>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-screen.png" class="image"><img alt="Help25-plugin manager-edit-screen.png" src="http://docs.joomla.org/images/f/f4/Help25-plugin_manager-edit-screen.png" width="670" height="392" /></a>
+</p>
+<h2> <span class="mw-headline" id="Details">Details</span></h2>
+<p>The Details section is the same for all plug-ins and has the following fields:
+</p>
+<ul><li><b>Plug-in Name.</b> The Name of the Plug-in.
+</li><li><b>Enabled.</b> Whether or not this Plug-in is enabled.
+</li><li><b>Access.</b> Which user 'access levels' have access to this item. You can change an item's Access Level by clicking on its name to open it up for editing. The default user 'access levels' which come preconfigured with Joomla! are:
+<ul><li> Public: Everyone has access including website visitors who have not logged in
+</li><li> Registered: Only users with registered status or higher will have access
+</li><li> Special: Only users with author status or higher have access
+</li></ul>
+</li><li><b>Ordering.</b> A drop-down list of plug-ins of the same Type. The list of plug-ins is arranged by their current order. You can change this plug-in's order in relation to the other plug-ins by selecting the plug-in in the drop-down list that you want this plug-in to be ordered below.
+</li><li><b>Plug-in Type.</b> The Type of the Plug-in. This value cannot be changed.
+</li><li><b>Plug-in File.</b> The name of the Plug-in file. Each Plug-in has two files with this name. One has the file extension '.php' and the other has the file extension '.xml'.
+</li><li><b>ID.</b> The Plug-in's ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You cannot change this number.
+</li><li><b>Description.</b> The description of what this Plug-in does. This cannot be changed. The developer of the plug-in specifies this. This may be blank if the developer did not specify a description for the plug-in.
+</li></ul>
+<h2> <span class="mw-headline" id="Options">Options</span></h2>
+<p>If the plug-in has configurable options they will appear to the right of the details section. Usually you will see <i>Basic Options</i> which are general options which need to be configured for the basic operation of the plug-in. You may also see <i>Advanced Options</i> which are additional configurable options available for the plug-in which allows further customization of the plug-in. Finally you may see <i>Language Options</i> which are options related to the language functions of your Joomla! installation.
+</p><p>See specific Plug-in below for available options.
+</p>
+<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+<p>At the top right you will see the toolbar:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-Save-SaveClose-Close-Help.png" class="image"><img alt="Help25-Toolbar-Save-SaveClose-Close-Help.png" src="http://docs.joomla.org/images/7/7c/Help25-Toolbar-Save-SaveClose-Close-Help.png" width="250" height="65" /></a>
+</p><p>The functions are:
+</p>
+<ul><li><b>Save</b>. Saves the plug-in and stays in the current screen.
+</li><li><b>Save &amp; Close</b>. Saves the plug-in and closes the current screen.
+</li><li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.
+</li><li><b>Help</b>. Opens this help screen.
+</li></ul>
+<h2> <span class="mw-headline" id="Plug-in_Descriptions_and_Options">Plug-in Descriptions and Options</span></h2>
+<p>When Joomla! is installed, many plug-ins are included in the installation. These are described below, along with any options for the plug-in.
+</p>
+<h3> <span class="mw-headline" id="Authentication_-_Joomla">Authentication - Joomla</span></h3>
+<p>This plug-in processes the default User Authentication method in Joomla!. It has no options.
+</p>
+<h3> <span class="mw-headline" id="Authentication_-_GMail">Authentication - GMail</span></h3>
+<p>This plug-in processes User Authentication using GMail accounts. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-gmail-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-gmail-options-screen.png" src="http://docs.joomla.org/images/2/2f/Help25-plugin_manager-edit-gmail-options-screen.png" width="377" height="171" /></a>
+</p>
+<ul><li> <b>Apply Username Suffix.</b> This options allows you to automatically apply a suffix to the username a person enters when they log into your Joomla! installation. The suffix is the portion of the email address after the <i>@</i> symbol.
+</li><li> <b>Username Suffix.</b> This is the suffix portion of the GMail email addresses which will be used to log into your site. This is the portion of the mail address after the <i>@</i> symbol. Usually you will set this to <i>gmail.com</i> for regular GMail accounts. This option is present to allow you to use other GMail accounts that don't end in the typical <i>gmail.com</i> suffix. This would be the case with Google Apps for Domains email accounts.
+</li><li> <b>Verify Peer.</b> When your Joomla! installation attempts to verify the entered Gmail username it does so over an SSL connection. This option configures whether or not your Joomla! installation will check to ensure the CA certificate of the SSL connection is valid before proceeding with verification of the entered username/password. In some situations certificate verification fails in which case you can try setting this option to <i>No</i> to try to fix this.
+</li><li> <b>User Blacklist.</b> A comma separated list of usernames not allowed to log into your Joomla! installation.
+</li></ul>
+<p><b>To use the GMail plug-in:</b>
+</p>
+<ul><li> Create a Joomla! user account with the same username as a GMail account user. For example if the GMail email address of the person you want to add is bob1234@gmail.com you would create the Joomla! user account with the username <i>bob1234</i>.
+</li><li> Enable the GMail Plug-in.
+</li><li> Logout of Joomla!.
+</li><li> Login using the GMail username (without "@gmail.com") and the GMail password.
+</li></ul>
+<h3> <span class="mw-headline" id="Authentication_-_LDAP">Authentication - LDAP</span></h3>
+<p>This plug-in processes User Authentication against an LDAP server. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-ldap-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-ldap-options-screen.png" src="http://docs.joomla.org/images/3/30/Help25-plugin_manager-edit-ldap-options-screen.png" width="379" height="449" /></a>
+</p>
+<ul><li><b>Host.</b> The host URL. For example, "openldap.mycompany.org".
+</li><li><b>Port.</b> The port number. The default is 389.
+</li><li><b>LDAP V3.</b> Whether or not this host uses LDAP version 3. The default is LDAP v2.
+</li><li><b>Negotiate TLS.</b> Whether or not to use TLS encryption with this host. If set to "Yes", all traffic to and from this server must be encrypted.
+</li><li><b>Follow Referrals.</b> Whether to set the LDAP_OPT_REFERRALS flag to Yes or No. For Windows 2003 hosts this must be set to No.
+</li><li><b>Authorization Method.</b> "Bind Directly as User" or "Bind and Search".
+</li><li><b>Base DN.</b> The Base DN of your LDAP server.
+</li><li><b>Search String.</b> A query string used to search for a given User. The [search] keyword is replaced by the login typed by the User. For example: "uid=[search]". More than one Search String can be entered. Separate each by a semi-colon ";" character. This is only used when searching.
+</li><li><b>User's DN.</b> The [username] keyword is dynamically replaced by the username typed by the User. An example string is: "uid=[username], dc=[my-domain], dc=[com]". More than one string can be entered. Separate each with a semi-colon ";" character. This is only used if the Authorization Method above is set to "Bind Directly as User".
+</li><li><b>Connect Username and Connect Password.</b> These define connection parameters for the DN lookup phase. For anonymous lookup, leave both of these fields blank. For an Administrative Connection, the "Connect Username" is the username of an administrative account (for example, "Administrator"). In this case, the "Connect password" is the actual password to this administrative account.
+</li><li><b>Map: Full Name.</b> The LDAP attribute that contains the User's full name.
+</li><li><b>Map: E-mail.</b> The LDAP attribute that contains the User's e-mail address.
+</li><li><b>Map: User ID.</b> The LDAP attribute that contains the User's login ID. For Active Directory, this is "sAMAccountName".
+</li></ul>
+<h3> <span class="mw-headline" id="Captcha_-_Recaptcha">Captcha - Recaptcha </span></h3>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-captcha-recaptcha-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-captcha-recaptcha-options-screen.png" src="http://docs.joomla.org/images/9/96/Help25-plugin_manager-edit-captcha-recaptcha-options-screen.png" width="377" height="196" /></a>
+</p><p>This plug-in has the following <b>required</b> options or it will not function correctly:
+</p>
+<ul><li><b>Public Key</b>. Enter the 'Public Key' provided by reCaptcha web site associated with your reCaptcha account.
+</li><li><b>Private Key</b>. Enter the 'Private Key' provided by reCaptcha web site associated with your reCaptcha account.
+</li><li><b>Theme</b>. Choose a theme for visual style. Choices are: 
+</li></ul>
+<dl><dd><dl><dd><i>Clean</i> - &lt;default&gt;
+</dd><dd><i>White</i>
+</dd><dd><i>BlackGlass</i>
+</dd><dd><i>Red</i>
+</dd></dl>
+</dd></dl>
+<h3> <span class="mw-headline" id="Content_-_Load_Modules">Content - Load Modules</span></h3>
+<p>This plug-in allows you to place a Module inside an Article with the syntax: {loadposition xx}, where "xx" is a user-defined position code. For example, if you create a Module with the Position value of "myposition1", then typing the text "{loadposition myposition1}" inside an Article will cause that Module to show at that point in the Article.
+</p><p>This plug-in has the following option:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-load_modules-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-load modules-options-screen.png" src="http://docs.joomla.org/images/2/2a/Help25-plugin_manager-edit-load_modules-options-screen.png" width="380" height="126" /></a>
+</p>
+<ul><li><b>Style.</b> The Style for the loaded Module, the following are the options:
+<ul><li><i>Wrapped by a table(column)</i>
+</li><li><i>Wrapped by a table(horizontal)</i>
+</li><li><i>Wrapped by Divs</i>
+</li><li><i>Wrapped by Multiple Divs</i>
+</li><li><i>No wrapping (raw output)</i>
+</li></ul>
+</li></ul>
+<h3> <span class="mw-headline" id="Content_-_Joomla">Content - Joomla </span></h3>
+<p>Does category processing for core extensions and sends an email when new article is submitted in the frontend.
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-content-joomla-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-content-joomla-options-screen.png" src="http://docs.joomla.org/images/d/d4/Help25-plugin_manager-edit-content-joomla-options-screen.png" width="382" height="125" /></a>
+</p>
+<ul><li><b>Check Category Deletion.</b> Checks that the categories have no items in before they can be deleted.
+</li><li><b>Email on new site article.</b> Sends an email when a new article is submitted in the front end.
+</li></ul>
+<h3> <span class="mw-headline" id="Content_-_Smart_Search">Content - Smart Search </span></h3>
+<p>This plug-in enables Smart Search, it has no options to set.
+</p>
+<h3> <span class="mw-headline" id="Content_-_Email_Cloaking">Content - Email Cloaking</span></h3>
+<p>This plug-in cloaks all e-mails in content from spambots using JavaScript. This helps prevent e-mails contained in articles from being added to spam e-mail lists. You can disable Email Cloaking inside an article by inserting <code>{emailcloak=off}</code> anywhere in the text of the article. In this case, no e-mail addresses in the article will be cloaked by this plug-in.
+</p><p>Email Cloaking has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-email_cloaking-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-email cloaking-options-screen.png" src="http://docs.joomla.org/images/7/75/Help25-plugin_manager-edit-email_cloaking-options-screen.png" width="379" height="91" /></a>
+</p>
+<ul><li><b>Mode.</b> How the e-mails will be displayed. Options are "As linkable mailto address" or as "Non-linkable text".
+</li></ul>
+<h3> <span class="mw-headline" id="Content_-_Code_Highlighter_.28GeSHi.29">Content - Code Highlighter (GeSHi)</span></h3>
+<p>This plug-in displays formatted code in Articles based on the GeSHi highlighting engine. It has no options.
+</p>
+<pre>
+Syntax usage&#160;:
+&lt;pre xml:lang=&quot;php&quot;&gt;
+echo $test;
+&lt;/pre&gt;
+</pre>
+<h3> <span class="mw-headline" id="Content_-_Pagebreak">Content - Pagebreak</span></h3>
+<p>This plug-in adds table of contents functionality to a paginated Article. This is done automatically through the use of the Pagebreak button added to the lower part of the text panel in an Article. The HTML code is included here as a reference of what is available. The Pagebreak will itself display in the text window as a simple horizontal line.
+</p>
+<pre>
+ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
+ &lt;hr class=&quot;system-pagebreak&quot; title=&quot;The page title&quot; /&gt; or
+ &lt;hr class=&quot;system-pagebreak&quot; alt=&quot;The first page&quot; /&gt; or
+ &lt;hr class=&quot;system-pagebreak&quot; title=&quot;The page title&quot; alt=&quot;The first page&quot; /&gt; or
+ &lt;hr class=&quot;system-pagebreak&quot; alt=&quot;The first page&quot; title=&quot;The page title&quot; /&gt;
+ </pre>
+<p>This plug-in has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-pagebreak-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-pagebreak-options-screen.png" src="http://docs.joomla.org/images/d/d9/Help25-plugin_manager-edit-pagebreak-options-screen.png" width="379" height="243" /></a>
+</p>
+<ul><li><b>Show Site Title.</b> (Show/Hide) Whether or not the title and heading attributes from the plug-in will be added to the Site Title tag.
+</li><li><b>Article Index Heading.</b> (Show/Hide) Whether or not to show the heading on top of the table of contents
+</li><li><b>Custom Article Index Heading.</b> Add a custom Article Index heading here if desired to display on top of the table of contents.
+</li><li><b>Table of Contents.</b> (Show/Hide) Whether to Hide or Show a table of contents for multi-page Articles.
+</li><li><b>Show all.</b> (Show/Hide) Whether or not to give Users the option to show all pages of an Article.
+</li><li><b>Presentation Style.</b> (Pages/Slider/Tabs) Whether to layout the article with separate pages, a slider or tabs.
+</li></ul>
+<h3> <span class="mw-headline" id="Content_-_Page_Navigation">Content - Page Navigation</span></h3>
+<p>This plug-in allows you to add Next &amp; Previous navigation links  to Articles, for example when using a blog or list layout. This feature can be controlled with the following Joomla! options:
+</p>
+<ul><li>"Show Navigation" in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Options" title="Help25:Content Article Manager Options">Article Manager - Options</a> screen
+</li><li>"Show Navigation" in the Options - Component section of the Menu Item Manager - New/Edit screen for Article layouts.
+</li></ul>
+<p>Note that, if the Page Navigation plug-in is disabled in this screen, no Page Navigation will show and the options settings above will have no effect.
+</p><p>This plug-in has the following option:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-page_navigation-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-page navigation-options-screen.png" src="http://docs.joomla.org/images/6/6a/Help25-plugin_manager-edit-page_navigation-options-screen.png" width="375" height="119" /></a>
+</p>
+<ul><li><b>Position.</b> Position of the navigation link. Options are "Above" or "Below" the 'Relative to' setting for article content.
+</li><li><b>Relative to</b>. Sets relative location of position. Options are "Text" - article content and "Full Article" - above or below the full display of article content including Article title or Readmore.
+</li></ul>
+<h3> <span class="mw-headline" id="Content_-_Vote">Content - Vote</span></h3>
+<p>This plug-in adds the Voting functionality to Articles. It has no options.
+</p>
+<h3> <span class="mw-headline" id="Editor_-_CodeMirror">Editor - CodeMirror</span></h3>
+<p>This plug-in loads the CodeMirror editor. CodeMirror is a code editor which provides an editor more suited for source code. It provides code syntax highlighting for many programming languages. It can show you mismatched tags and also helps you maintain consistent indenting of your code. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-codemirror-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-codemirror-options-screen.png" src="http://docs.joomla.org/images/a/a0/Help25-plugin_manager-edit-codemirror-options-screen.png" width="376" height="124" /></a>
+</p>
+<ul><li> <b>Line numbers.</b> Display line numbers in the editor.
+</li><li> <b>Tab mode.</b> Causes tab to adjust the indentation of the selection or current line using the current parser's rules
+</li></ul>
+<h3> <span class="mw-headline" id="Editor_-_None">Editor - None</span></h3>
+<p>This plug-in loads a basic text editor. This option can be used when you are pasting HTML code from another source and you don't want the HTML to be altered by a WYSIWYG editor. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="Editor_-_TinyMCE">Editor - TinyMCE</span></h3>
+<p>This plug-in loads the TinyMCE editor. This is the default editor in Joomla!.
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Plugin.Tinymce_Output.png" class="image"><img alt="Plugin.Tinymce Output.png" src="http://docs.joomla.org/images/9/90/Plugin.Tinymce_Output.png" width="630" height="87" /></a>
+</p>
+<h4> <span class="mw-headline" id="Basic_Options">Basic Options</span></h4>
+<div class="floatright"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-tinymce-basic-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-tinymce-basic-options-screen.png" src="http://docs.joomla.org/images/3/36/Help25-plugin_manager-edit-tinymce-basic-options-screen.png" width="378" height="552" /></a></div>
+<ul><li><b>Functionality.</b> Select "Advanced" or "Simple" functionality. With "Simple" selected, the User has only 9 toolbar buttons: Bold, Italic, Underline, Strikethrough, Undo, Re-do, Clean up messy code, Bullets, and Numbering. With "Advanced" selected, the User has all of the TinyMCE toolbar buttons. "Advanced" is the default setting.
+</li><li><b>Skin.</b> Choose the skin which will be applied to the TinyMCE editor when displayed in your website.
+</li><li><b>Entity Encoding.</b> Controls how HTML elements are encoded. Recommended to be set to raw.
+</li><li><b>Automatic Language Selection.</b> Whether or not to match the selected UI language. Do not set to "Yes" unless the appropriate editor languages are installed. Default is "No".
+</li><li><b>Language Code.</b> Editor UI language code. This must be entered if Automatic Language Selection is "Off". Default is "en" for British English.
+</li><li><b>Text Direction.</b> Whether the language reads "Left to Right" or "Right to Left" (for example, like Arabic). Default is "Left to Right".
+</li><li><b>Template CSS classes.</b> Whether or not to load the "editor.css" file. If no such file is found for the default template, the "editor.css" file from the system template is used. Default is "Yes".
+</li><li><b>Custom CSS Classes.</b> Optional full URL path to a custom CSS file. If entered, this overrides the Template CSS classes setting.
+</li><li><b>URLs.</b> Whether to use Relative or Absolute URLs for links. The default is "Relative".
+</li><li><b>New Lines.</b> Whether to interpret new lines as "P Elements" or "BR Elements". Default is "P Elements".
+</li><li><b>Prohibited Elements.</b> The elements that will be cleaned from the text. Default is "applet", which will remove applet elements from the text.
+</li><li><b>Extended Valid Elements.</b> Optional list of valid HTML elements to add to the existing rule set.
+</li></ul>
+<div style="clear:both"></div>
+<h4> <span class="mw-headline" id="Advanced_options">Advanced options</span></h4>
+<div class="floatright"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-tinymce-advanced-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-tinymce-advanced-options-screen.png" src="http://docs.joomla.org/images/c/c0/Help25-plugin_manager-edit-tinymce-advanced-options-screen.png" width="376" height="1242" /></a></div>
+<ul><li><b>Toolbar.</b> Whether to show the toolbar above or below the editor window.
+</li><li><b>Toolbar align.</b> Whether to align the toolbar to the left or right
+</li><li><b>HTML Height.</b> The height, in pixels, of the HTML mode pop-up window.
+</li><li><b>HTML Width.</b> The width, in pixels, of the HTML mode pop-up window.
+</li><li><b>Resizing.</b> Enable or disable the resize button.
+</li><li><b>Horizontal Resizing.</b> Choose whether horizontal resizing should be enabled or not.
+</li><li><b>Element Path.</b> If set to "On", show the 'Set Classes' button for the marked text.
+</li></ul>
+<h5> <span class="mw-headline" id="Extended_Mode">Extended Mode</span></h5>
+<dl><dd>The following options only apply if the editor is in Extended Mode.
+</dd></dl>
+<ul><li><b>Fonts.</b> Hide or Show the 'Font' button.
+</li><li><b>Paste.</b> Hide or Show the 'Paste' button.
+</li><li><b>Search-Replace.</b> Hide or Show the 'Search and Replace' button.
+</li><li><b>Insert Date.</b> Hide or Show the 'Insert Date' button.
+</li><li><b>Date Format.</b> The Date format to use for Insert Date.
+</li><li><b>Insert Time.</b> Hide or Show the 'Insert Time' button.
+</li><li><b>Time Format.</b> The Time format to use for Insert Time.
+</li><li><b>Colors.</b> Hide or Show the 'Colors' control buttons.
+</li><li><b>Table.</b> Hide or Show the Table buttons.
+</li><li><b>Smilies.</b> Hide or Show the 'Smilies' button.
+</li><li><b>Media.</b> Hide or Show the 'Media' button.
+</li><li><b>Horizontal Rule.</b> Hide or Show the 'Horizontal Rule' button.
+</li><li><b>Directionality.</b> Hide or Show the 'Directionality' button.
+</li><li><b>Fullscreen.</b> Hide or Show the 'Fullscreen' button.
+</li><li><b>Style.</b> Hide or Show the 'CSS Style' button.
+</li><li><b>Layer.</b> Hide or Show the Layer buttons.
+</li><li><b>XHTMLxtras.</b> Hide or Show the additional XHTML features.
+</li><li><b>Visualchars.</b> Show invisible characters, specifically non-breaking spaces.
+</li><li><b>Visualblocks.</b> Show the outline of html blocks.
+</li><li><b>Nonbreaking.</b> Insert non-breaking space entities.
+</li><li><b>Template.</b> Hide or Show the 'Template' button.
+</li><li><b>Blockquote.</b> Turn on/off block quotes.
+</li><li><b>Wordcount.</b> Turn on/off word count.
+</li><li><b>Advanced image.</b> Turn on/off a more advanced image dialog box.
+</li><li><b>Advanced link.</b> Turn on/off a more advanced link dialog box.
+</li><li><b>Advanced List.</b> Turn on/off the ability to set number formats and bullet types in ordered and unordered lists.
+</li><li><b>Save Warning.</b> Whether or not to give a warning if the User cancels without saving the file. The default value is "Off".
+</li><li><b>Context menu.</b> Turn on/off the context menu.
+</li><li><b>Inline popups.</b> Turn on/off dialogs opening as floating DIV layers instead of popup windows. This option is useful to allow getting around popup blockers.
+</li><li><b>Custom plugin.</b> Add custom TinyMCE plug-ins to the editor by specifying them here.
+</li><li><b>Custom button.</b> Add custom TinyMCE buttons to the editor by specifying them here.
+</li></ul>
+<div style="clear:both"></div>
+<h3> <span class="mw-headline" id="Button_-_Article">Button - Article</span></h3>
+<p>This plug-in displays the Article button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It allows you to insert an Article link into an Article. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="Button_-_Image">Button - Image</span></h3>
+<p>This plug-in displays the Image button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It allows you to insert an image into an Article. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="Button_-_Pagebreak">Button - Pagebreak</span></h3>
+<p>This plug-in displays the Pagebreak button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It inserts a page break in the Article. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="Button_-_Readmore">Button - Readmore</span></h3>
+<p>This plug-in displays the "Read more..." button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It inserts a "Read more..." break in the Article that allows you to display just the first portion of an Article on a page. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="Extension_-_Joomla">Extension - Joomla</span></h3>
+<p>This plug-in manages the update sites for extensions. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="Smartsearch_-_Categories">Smartsearch - Categories</span></h3>
+<p>This plug-in indexes Categories for Smart-Search, it has no options to set.
+</p>
+<h3> <span class="mw-headline" id="Smartsearch_-_Contacts">Smartsearch - Contacts</span></h3>
+<p>This plug-in indexes Contact for Smart-Search, it has no options to set.
+</p>
+<h3> <span class="mw-headline" id="Smartsearch_-_Content">Smartsearch - Content</span></h3>
+<p>This plug-in indexes Content for Smart-Search, it has no options to set.
+</p>
+<h3> <span class="mw-headline" id="Smartsearch_-_Newsfeeds">Smartsearch - Newsfeeds</span></h3>
+<p>This plug-in indexes News Feeds for Smart-Search, it has no options to set.
+</p>
+<h3> <span class="mw-headline" id="Smartsearch_-_Weblinks">Smartsearch - Weblinks</span></h3>
+<p>This plug-in indexes Web Links for Smart-Search, it has no options to set.
+</p>
+<h3> <span class="mw-headline" id="Quick_Icon_-_Joomla.21_Update_Notification">Quick Icon - Joomla! Update Notification</span></h3>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-update-notification-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-update-notification-options-screen.png" src="http://docs.joomla.org/images/7/74/Help25-plugin_manager-edit-update-notification-options-screen.png" width="372" height="91" /></a>
+</p>
+<ul><li><b>Group</b>. The Group of this icon. This value is compared with group value of the "Quick Icons" modules used to inject icons.
+</li></ul>
+<h3> <span class="mw-headline" id="Quick_Icon_-_Joomla.21_Extensions_Updates_Notification">Quick Icon - Joomla! Extensions Updates Notification</span></h3>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-update-notification-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-update-notification-options-screen.png" src="http://docs.joomla.org/images/7/74/Help25-plugin_manager-edit-update-notification-options-screen.png" width="372" height="91" /></a>
+</p>
+<ul><li><b>Group</b>. The Group of this icon. This value is compared with group value of the "Quick Icons" modules used to inject icons.
+</li></ul>
+<h3> <span class="mw-headline" id="Search_-_Categories">Search - Categories</span></h3>
+<p>This plug-in enables searching for Category information. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-categories-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-categories-options-screen.png" src="http://docs.joomla.org/images/9/98/Help25-plugin_manager-edit-categories-options-screen.png" width="374" height="150" /></a>
+</p>
+<ul><li><b>Search Limit.</b> The maximum number of search results to return after a search is done.
+</li><li><b>Search Published.</b> Whether or not to include published items in the search results.
+</li><li><b>Search Archived.</b> Whether or not to include archived items in the search results.
+</li></ul>
+<h3> <span class="mw-headline" id="Search_-_Contacts">Search - Contacts</span></h3>
+<p>This plug-in enables searching for Contacts. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-contacts-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-contacts-options-screen.png" src="http://docs.joomla.org/images/2/20/Help25-plugin_manager-edit-contacts-options-screen.png" width="373" height="149" /></a>
+</p>
+<ul><li><b>Search Limit.</b> The maximum number of search results to return after a search is done.
+</li><li><b>Search Published.</b> Whether or not to include published items in the search results.
+</li><li><b>Search Archived.</b> Whether or not to include archived items in the search results.
+</li></ul>
+<h3> <span class="mw-headline" id="Search_-_Content">Search - Content</span></h3>
+<p>This plug-in enables searching for Articles. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-content-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-content-options-screen.png" src="http://docs.joomla.org/images/c/c8/Help25-plugin_manager-edit-content-options-screen.png" width="376" height="150" /></a>
+</p>
+<ul><li><b>Search Limit.</b> The maximum number of search results to return after a search is done.
+</li><li><b>Articles.</b> Whether or not to enable searching of all articles.
+</li><li><b>Archived Articles.</b> Whether or not to include archived articles in the search results.
+</li></ul>
+<h3> <span class="mw-headline" id="Search_-_Newsfeeds">Search - Newsfeeds</span></h3>
+<p>This plug-in enables searching for News Feeds. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-newsfeeds-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-newsfeeds-options-screen.png" src="http://docs.joomla.org/images/7/7f/Help25-plugin_manager-edit-newsfeeds-options-screen.png" width="374" height="148" /></a>
+</p>
+<ul><li><b>Search Limit.</b> The maximum number of search results to return after a search is done.
+</li><li><b>Search Published.</b> Whether or not to include published items in the search results.
+</li><li><b>Search Archived.</b> Whether or not to include archived items in the search results.
+</li></ul>
+<h3> <span class="mw-headline" id="Search_-_Weblinks">Search - Weblinks</span></h3>
+<p>This plug-in enables searching for Web Links. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-weblinks-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-weblinks-options-screen.png" src="http://docs.joomla.org/images/a/a8/Help25-plugin_manager-edit-weblinks-options-screen.png" width="375" height="150" /></a>
+</p>
+<ul><li><b>Search Limit.</b> The maximum number of search results to return after a search is done.
+</li><li><b>Search Published.</b> Whether or not to include published items in the search results.
+</li><li><b>Search Archived.</b> Whether or not to include archived items in the search results.
+</li></ul>
+<h3> <span class="mw-headline" id="System_-_Language_Filter">System - Language Filter</span></h3>
+<p>This plug-in filters the displayed content depending on language. It must be enabled when the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Language_Switcher" title="Help25:Extensions Module Manager Language Switcher">Language Switcher module</a> is published. 
+</p><p>This plug-in has the following options(image below shows default settings).
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-language-filter-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-language-filter-options-screen.png" src="http://docs.joomla.org/images/d/da/Help25-plugin_manager-edit-language-filter-options-screen.png" width="371" height="286" /></a>
+</p>
+<ul><li><b>Language Selection for new Visitors</b>. Site language or browser settings. Use site default or try to detect browser language settings to set site language. 
+</li><li><b>Automatic Language Change</b>. Yes or No. Automatically change the content language used in the frontend when a user site language is changed.
+</li><li><b>Menu associations</b>. Yes or No. Allow menu associations when switching from one language to another language.
+</li><li><b>Remove URL Language Code</b>. Yes or No. Remove the defined URL language code of the content language when Search Engine Friendly URLs is set to Yes.
+</li><li><b>Cookie Lifetime</b>. Session or Year. Language cookies set expiration time.
+</li><li><b>Add alternate meta tags</b>. Yes or No. Add alternate meta tags for menu items with associated menu items in other languages.
+</li></ul>
+<h3> <span class="mw-headline" id="System_-_P3P_Policy">System - P3P Policy</span></h3>
+<p>The P3P policy plugin allows Joomla! to send a customised string of P3P policy tags in the HTTP header. This is required for the sessions to work on certain browsers (i.e. Internet Explorer 6 and 7).
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-P3P-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-P3P-options-screen.png" src="http://docs.joomla.org/images/a/a1/Help25-plugin_manager-edit-P3P-options-screen.png" width="376" height="118" /></a>
+</p>
+<h3> <span class="mw-headline" id="System_-_Logout">System - Logout</span></h3>
+<p>The system logout plug-in enables Joomla to redirect the user to the home page if the user chooses to logout while the user is on a protected access page. This plug-in has no options to set.
+</p>
+<h3> <span class="mw-headline" id="System_-_Debug">System - Debug</span></h3>
+<p>This plug-in provides debugging information. The report is shown below the main screen of the front and backend interfaces of your Joomla! installation. To turn on the system you must activate it in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Debug_Settings" title="Help25:Site Global Configuration">Global Configuration Page</a>
+</p>
+<dl><dd>It has the following options:
+</dd></dl>
+<h4> <span class="mw-headline" id="Basic_Options_2">Basic Options</span></h4>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-debug-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-debug-options-screen.png" src="http://docs.joomla.org/images/1/14/Help25-plugin_manager-edit-debug-options-screen.png" width="373" height="330" /></a>
+</p>
+<ul><li><b>Allowed Groups.</b> User groups that will see the debug information when enabled.
+</li><li><b>Show Profiling</b> Whether or not to display the profiling waypoints information.
+</li><li><b>Show Queries.</b> Whether or not to include the SQL query log in the debug information.
+</li><li><b>Show Memory Usage.</b> Whether or not to include memory usage data in the debug information.
+</li></ul>
+<h4> <span class="mw-headline" id="Language_Debug_Options">Language Debug Options</span></h4>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-debug-language-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-debug-language-options-screen.png" src="http://docs.joomla.org/images/2/2d/Help25-plugin_manager-edit-debug-language-options-screen.png" width="373" height="398" /></a>
+</p>
+<ul><li><b>Show errors when parsing language files.</b> Whether or not to display a list of language files with errors due to their not being in compliance with the Joomla! language file specification.
+</li><li><b>Show Language Files.</b> Whether or not to display the language files that have been loaded to generate the page.
+</li><li><b>Show Language String.</b> Whether or not to include undefined language strings in the debug information.
+</li><li><b>Strip First Word.</b> Whether or not to always strip the first word in multi-word strings.
+</li><li><b>Strip From Start.</b> Strips the specified words from the beginning of the language string. For multiple words separate each word with the pipe ( <i>|</i> ) character like so: word1|word2
+</li><li><b>Strip From End.</b> Strips the specified words from the end of the language string. For multiple words separate each word with the pipe ( <i>|</i> ) character like so: word1|word2
+</li></ul>
+<h4> <span class="mw-headline" id="Logging_Options">Logging Options</span></h4>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-debug-logging-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-debug-logging-options-screen.png" src="http://docs.joomla.org/images/3/30/Help25-plugin_manager-edit-debug-logging-options-screen.png" width="372" height="91" /></a>
+</p>
+<ul><li><b>Log Deprecated API.</b> Shows any uses of deprecated functions by extensions.
+</li></ul>
+<h3> <span class="mw-headline" id="System_-_Log">System - Log</span></h3>
+<p>This plug-in enables system logging. A log is a file that contains information about the web site activity. It can be used to see a history of activity and to troubleshoot problems on the site.
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-debug-system-log-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-debug-system-log-options-screen.png" src="http://docs.joomla.org/images/3/36/Help25-plugin_manager-edit-debug-system-log-options-screen.png" width="374" height="94" /></a>
+</p>
+<ul><li><b>Log user names</b>. Log user names when an authentication fails.
+</li></ul>
+<h3> <span class="mw-headline" id="System_-_Redirect">System - Redirect</span></h3>
+<p>This plug-in enables the Joomla! Redirect system to catch missing pages and redirect users. It is required to be enabled to use the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Redirect_Manager" title="Help25:Components Redirect Manager">Redirect Component</a>. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="System_-_Highlight">System - Highlight</span></h3>
+<p>This plug-in enables the highlighting of specified terms. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="System_-_Remember_Me">System - Remember Me</span></h3>
+<p>This plug-in provides "Remember Me" functionality. This allows the website to "remember" your username and password so that you can automatically be logged in when you return to the site. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="System_-_SEF">System - SEF</span></h3>
+<p>This plug-in adds SEF support to links in the document. It operates directly on the HTML and does not require a special tag. This plug-in has no options.
+</p>
+<h3> <span class="mw-headline" id="System_-_Language_Code">System - Language Code</span></h3>
+<p>This plug-in changes the language code for the generated HTML document.
+</p><p>It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-language-code-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-language-code-options-screen.png" src="http://docs.joomla.org/images/f/fa/Help25-plugin_manager-edit-language-code-options-screen.png" width="375" height="293" /></a>
+</p>
+<ul><li> Change the language code as per directions in plug-in to reflect actual language location.
+</li></ul>
+<p><b>Note:</b> The options will only show when the plugin has been enabled.
+</p>
+<h3> <span class="mw-headline" id="System_-_Cache">System - Cache</span></h3>
+<p>This plug-in enables page caching. Page caching allows the web server to save snapshots of pages and use them when serving web pages. This improves the performance of your web site and reduces the workload of the server. This plug-in has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-cache-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-cache-options-screen.png" src="http://docs.joomla.org/images/1/1e/Help25-plugin_manager-edit-cache-options-screen.png" width="372" height="92" /></a>
+</p>
+<ul><li><b>Use Browser Caching.</b> Whether or not to use the mechanism for storing a page cache in the local browser. Default is "No".
+</li></ul>
+<h3> <span class="mw-headline" id="User_-_Profile">User - Profile</span></h3>
+<p>This plug-in adds user profile capability to your web site for registration. Web site users will be able to fill out profile fields that you enable in the options section of this plug-in. You can control what profile fields are shown in the new user registration form and/or each user's editable profile screen. To control what fields are shown in the new user registration form, set the field options in the section labeled <i>User profile information required at registration</i>. For profile fields shown in the user's profile screen which it editable after login, set the field option in the options section labeled <i>User profile fields for profile edit form</i>. For each field you have the following options.
+</p><p>Drop down field choices are the following:
+</p>
+<ul><li><b>Required.</b> The field is visible in user profiles and users are required to fill it out.
+</li><li><b>Optional.</b> The field is visible in user profiles but is optional and users do not need to fill it out.
+</li><li><b>Disabled.</b> The field is disabled and not visible in user profiles.
+</li></ul>
+<p>Button to select:
+</p>
+<ul><li><b>Select TOS Article</b>. Click to <i>Select/Change</i> button to select or change a 'Terms of Service' article from a modal popup window.
+</li></ul>
+<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-profile-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-profile-options-screen.png" src="http://docs.joomla.org/images/d/d8/Help25-plugin_manager-edit-profile-options-screen.png" width="372" height="796" /></a>
+</p>
+<h4> <span class="mw-headline" id="User_Front-end">User Front-end</span></h4>
+<ul><li> All profile fields are text fields with the exception of the <i>Terms of Service</i>(TOS). The TOS is a radio button the user can click on to signify their agreement with the website's terms of service when registering for a user account. The 'Front-End' or 'Web site' will show a link to click and view the article selected as the TOS article.
+</li></ul>
+<h4> <span class="mw-headline" id="Additional_Information">Additional Information</span></h4>
+<p>Options can easily be added and removed from the list here. See the <a href="/proxy/index.php?option=com_help&view=help&keyref=Creating_a_profile_plugin" title="Creating a profile plugin">Creating a profile Plugin</a> docs page for more information about creating your own profile plugin.
+</p>
+<h3> <span class="mw-headline" id="User_-_Contact_Creator">User - Contact Creator</span></h3>
+<p>This plug-in automatically creates contact information for new users. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-contact_creator-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-contact creator-options-screen.png" src="http://docs.joomla.org/images/8/88/Help25-plugin_manager-edit-contact_creator-options-screen.png" width="392" height="145" /></a>
+</p>
+<ul><li><b>Automatic Webpage.</b> A formatted string to automatically generate a contact's web page. [name] is replaced with the name, [username] is replaced with the username, [userid] is replaced with the user ID and [email] is replaced with the email.
+</li><li><b>Category.</b> Category to assign contacts to by default.
+</li><li><b>Autopublish the contact.</b> Optionally have the automatically created contact set to the published state and visible to your website visitors.
+</li></ul>
+<h3> <span class="mw-headline" id="User_-_Joomla.21">User - Joomla!</span></h3>
+<p>This plug-in handles the default user synchronization. It has the following options:
+</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-plugin_manager-edit-joomla-options-screen.png" class="image"><img alt="Help25-plugin manager-edit-joomla-options-screen.png" src="http://docs.joomla.org/images/1/13/Help25-plugin_manager-edit-joomla-options-screen.png" width="393" height="122" /></a>
+</p>
+<ul><li><b>Auto-create Users.</b> Whether or not to automatically create registered Joomla! users where possible. Default is "Yes".
+</li><li><b>Notification Mail to User</b>. Whether or not to send an email to a User with credentials (username and password) for user accounts created by a Administrator.
+</li></ul>
+<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+<ul><li>If you are using the TinyMCE editor, you can control which options appear on the editor's toolbar by setting the parameters in the "Editor - TinyMCE" plug-in.
+</li><li>Starting with Joomla! 1.6, configurable plug-in settings are referred to as 'options'. In previous versions of Joomla! these configurable settings were referred to as 'parameters'. You may see the terms 'options' and 'parameters' used interchangeably in help documentation and tutorials you encounter.
+</li><li>At least one authentication plugin must be enabled or you will loose all access to your site!
+</li></ul>
+<h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
+<ul><li>To install new Plug-in Extensions: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Install" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a>
+</li><li>To uninstall third-party Plug-ins: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Manage" title="Help25:Extensions Extension Manager Manage">Extension Manager - Manage</a>
+</li></ul>
+</article>
