@@ -42,6 +42,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('wish');
 
 jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
@@ -91,7 +93,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_WISHLIST_DETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-wishlist"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> <span class="required">required</span><br />
+				<label for="field-wishlist"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>: <span class="required">required</span></label><br />
 				<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('fieldassigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
 					<option value="0"<?php echo ($this->row->wishlist == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('[none]'); ?></option>
 			<?php if ($this->lists) { ?>
@@ -103,8 +105,8 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-subject"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>:</label> <span class="required">required</span><br />
-				<input type="text" name="fields[subject]" id="field-subject" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->subject)); ?>" />
+				<label for="field-subject"><?php echo JText::_('COM_WISHLIST_TITLE'); ?>: <span class="required">required</span></label><br />
+				<input type="text" name="fields[subject]" id="field-subject" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->subject)); ?>" />
 			</div>
 
 			<div class="input-wrap">
@@ -114,61 +116,52 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-tags"><?php echo JText::_('COM_WISHLIST_TAGS'); ?>:</label><br />
-				<input type="text" name="fields[tags]" id="field-tags" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->tags)); ?>" />
+				<input type="text" name="fields[tags]" id="field-tags" maxlength="150" value="<?php echo $this->escape(stripslashes($this->tags)); ?>" />
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_PLAN'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<?php if ($this->plan->id) { ?>
-					<tr>
-						<th class="key"><label for="plan-create_revision"><?php echo JText::_('COM_WISHLIST_PLAN_NEW_REVISION'); ?></label></th>
-						<td>
-							<input type="checkbox" class="option" name="plan[create_revision]" id="plan-create_revision" value="1" />
-						</td>
-					</tr>
-					<?php } ?>
-					<tr>
-						<th class="key"><?php echo JText::_('COM_WISHLIST_DUE'); ?>:</th>
-						<td>
-							<label for="field-due-never">
-								<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo ($this->row->due == '' || $this->row->due == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
-								<?php echo JText::_('COM_WISHLIST_DUE_NEVER'); ?>
-							</label>
-						</td>
-						<th class="key"><?php echo JText::_('COM_WISHLIST_OR'); ?></th>
-						<td>
-							<label for="field-due-on">
-								<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->due != '' && $this->row->due != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
-								<?php echo JText::_('COM_WISHLIST_DUE_ON'); ?>
-							</label>
-							<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="19" value="<?php echo $this->escape($this->row->due); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="fieldassigned"><?php echo JText::_('COM_WISHLIST_ASSIGNED'); ?>:</label></th>
-						<td colspan="3">
-							<select name="fields[assigned]" id="fieldassigned">
-<?php if ($this->assignees) { ?>
-	<?php foreach ($this->assignees as $assignee) { ?>
-								<option value="<?php echo $assignee->id; ?>"<?php echo ($this->row->assigned == $assignee->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($assignee->name)); ?></option>
-	<?php } ?>
-<?php } ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="plan-pagetext"><?php echo JText::_('COM_WISHLIST_PAGETEXT'); ?>:</label></th>
-						<td colspan="3">
-							<textarea name="plan[pagetext]" id="plan-pagetext" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->plan->pagetext)); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
+			<?php if ($this->plan->id) { ?>
+				<div class="input-wrap">
+					<input type="checkbox" class="option" name="plan[create_revision]" id="plan-create_revision" value="1" />
+					<label for="plan-create_revision"><?php echo JText::_('COM_WISHLIST_PLAN_NEW_REVISION'); ?></label>
+				</div>
+			<?php } ?>
+
+			<fieldset>
+				<legend><?php echo JText::_('COM_WISHLIST_DUE'); ?>:</legend>
+
+				<div class="input-wrap">
+					<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo ($this->row->due == '' || $this->row->due == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-due-never"><?php echo JText::_('COM_WISHLIST_DUE_NEVER'); ?></label>
+					<br />
+					<strong><?php echo JText::_('COM_WISHLIST_OR'); ?></strong>
+					<br />
+					<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->due != '' && $this->row->due != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
+					<label for="field-due-on"><?php echo JText::_('COM_WISHLIST_DUE_ON'); ?></label>
+
+					<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="19" value="<?php echo $this->escape($this->row->due); ?>" />
+				</div>
+			</fieldset>
+
+			<div class="input-wrap">
+				<label for="fieldassigned"><?php echo JText::_('COM_WISHLIST_ASSIGNED'); ?>:</label>
+				<select name="fields[assigned]" id="fieldassigned">
+			<?php if ($this->assignees) { ?>
+				<?php foreach ($this->assignees as $assignee) { ?>
+					<option value="<?php echo $assignee->id; ?>"<?php echo ($this->row->assigned == $assignee->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($assignee->name)); ?></option>
+				<?php } ?>
+			<?php } ?>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="plan-pagetext"><?php echo JText::_('COM_WISHLIST_PAGETEXT'); ?>:</label>
+				<textarea name="plan[pagetext]" id="plan-pagetext" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->plan->pagetext)); ?></textarea>
+			</div>
+
 			<input type="hidden" name="plan[id]" id="plan-id" value="<?php echo $this->plan->id; ?>" />
 			<input type="hidden" name="plan[wishid]" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="plan[version]" value="<?php echo $this->plan->version; ?>" />
@@ -214,46 +207,40 @@ function submitbutton(pressbutton)
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_PARAMETERS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><label for="field-anonymous"><?php echo JText::_('COM_WISHLIST_ANONYMOUS'); ?>:</label></th>
-						<td><input type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo $this->row->anonymous ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-private"><?php echo JText::_('COM_WISHLIST_PRIVATE'); ?>:</label></th>
-						<td><input type="checkbox" name="fields[private]" id="field-private" value="1" <?php echo $this->row->private ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-points"><?php echo JText::_('COM_WISHLIST_POINTS'); ?>:</label></th>
-						<td><input type="text" name="fields[points]" id="field-points" value="<?php echo $this->escape($this->row->points); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-status"><?php echo JText::_('COM_WISHLIST_STATUS'); ?>:</label></th>
-						<td>
-							<select name="fields[status]" id="field-status">
-								<option value="0"<?php echo ($this->row->status == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('new/pending'); ?></option>
-								<option value="1"<?php echo ($this->row->status == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('granted'); ?></option>
-								<option value="2"<?php echo ($this->row->status == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('deleted'); ?></option>
-								<option value="3"<?php echo ($this->row->status == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('rejected'); ?></option>
-								<option value="3"<?php echo ($this->row->status == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('withdrawn'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><label for="field-accepted"><?php echo JText::_('COM_WISHLIST_ACCEPTED'); ?>:</label></th>
-						<td><input type="checkbox" name="fields[accepted]" id="field-accepted" value="1" <?php echo $this->row->accepted ? 'checked="checked"' : ''; ?> /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<input type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo $this->row->anonymous ? 'checked="checked"' : ''; ?> />
+				<label for="field-anonymous"><?php echo JText::_('COM_WISHLIST_ANONYMOUS'); ?></label>
+			</div>
+			<div class="input-wrap">
+				<input type="checkbox" name="fields[private]" id="field-private" value="1" <?php echo $this->row->private ? 'checked="checked"' : ''; ?> />
+				<label for="field-private"><?php echo JText::_('COM_WISHLIST_PRIVATE'); ?></label>
+			</div>
+			<div class="input-wrap">
+				<input type="checkbox" name="fields[accepted]" id="field-accepted" value="1" <?php echo $this->row->accepted ? 'checked="checked"' : ''; ?> />
+				<label for="field-accepted"><?php echo JText::_('COM_WISHLIST_ACCEPTED'); ?></label>
+			</div>
+			<div class="input-wrap">
+				<label for="field-points"><?php echo JText::_('COM_WISHLIST_POINTS'); ?></label>
+				<input type="text" name="fields[points]" id="field-points" value="<?php echo $this->escape($this->row->points); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-status"><?php echo JText::_('COM_WISHLIST_STATUS'); ?></label>
+				<select name="fields[status]" id="field-status">
+					<option value="0"<?php echo ($this->row->status == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('new/pending'); ?></option>
+					<option value="1"<?php echo ($this->row->status == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('granted'); ?></option>
+					<option value="2"<?php echo ($this->row->status == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('deleted'); ?></option>
+					<option value="3"<?php echo ($this->row->status == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('rejected'); ?></option>
+					<option value="3"<?php echo ($this->row->status == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('withdrawn'); ?></option>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<?php /*if (version_compare(JVERSION, '1.6', 'ge')) { ?>
 		<?php if ($canDo->get('core.admin')): ?>
 			<div class="col width-100 fltlft">
@@ -266,11 +253,11 @@ function submitbutton(pressbutton)
 			<div class="clr"></div>
 		<?php endif; ?>
 	<?php }*/ ?>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="wishlist" value="<?php echo $this->wishlist; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
