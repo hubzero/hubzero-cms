@@ -86,7 +86,7 @@ $message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$this->ticket
 $message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($this->ticket->status)."\n";
 $message .= strtoupper(JText::_('Tags')).': '.$st->get_tag_string($this->ticket->id, 0, 0, NULL, 0, 1)."\n";
 $message .= '----------------------------'."\n\n";
-$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$this->ticket->id).': '.$this->comment->created_by."\n";
+$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$this->ticket->id).': '.$this->commentor->get('name') . '(' . $this->comment->created_by . ")\n";
 $message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$this->comment->created."\n\n";
 if ($this->comment->changelog) 
 {
