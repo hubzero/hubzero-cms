@@ -18,27 +18,46 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
 <fieldset class="batch">
 	<legend><?php echo JText::_('COM_CATEGORIES_BATCH_OPTIONS');?></legend>
-	<p><?php echo JText::_('COM_CATEGORIES_BATCH_TIP'); ?></p>
-	<?php echo JHtml::_('batch.access');?>
-	<?php echo JHtml::_('batch.language'); ?>
 
+	<p><?php echo JText::_('COM_CATEGORIES_BATCH_TIP'); ?></p>
+
+	<div class="col width-50 fltlft">
+		<div class="input-wrap">
+			<?php echo JHtml::_('batch.access');?>
+		</div>
+
+		<div class="input-wrap">
+			<?php echo JHtml::_('batch.language'); ?>
+		</div>
+	</div>
+	<div class="col width-50 fltrt">
 	<?php if ($published >= 0) : ?>
-		<label id="batch-choose-action-lbl" for="batch-category-id">
-			<?php echo JText::_('COM_CATEGORIES_BATCH_CATEGORY_LABEL'); ?>
-		</label>
-		<fieldset id="batch-choose-action" class="combo">
-		<select name="batch[category_id]" class="inputbox" id="batch-category-id">
-			<option value=""><?php echo JText::_('JSELECT') ?></option>
-			<?php echo JHtml::_('select.options', JHtml::_('category.categories', $extension, array('filter.published' => $published)));?>
-		</select>
-		<?php echo JHtml::_( 'select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
-		</fieldset>
+		<div class="input-wrap combo" id="batch-choose-action">
+			<label id="batch-choose-action-lbl" for="batch-category-id">
+				<?php echo JText::_('COM_CATEGORIES_BATCH_CATEGORY_LABEL'); ?>
+			</label><br />
+
+			<div class="col width-50 fltlft">
+			<select name="batch[category_id]" class="inputbox" id="batch-category-id">
+				<option value=""><?php echo JText::_('JSELECT') ?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('category.categories', $extension, array('filter.published' => $published)));?>
+			</select>
+			</div>
+			<div class="col width-50 fltrt">
+			<?php echo JHtml::_( 'select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+			</div>
+			<div class="clr"></div>
+		</div>
 	<?php endif; ?>
 
-	<button type="submit" onclick="submitbutton('category.batch');">
-		<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
-	</button>
-	<button type="button" onclick="$('3batch-category-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
-		<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
-	</button>
+		<div class="input-wrap">
+			<button type="submit" onclick="submitbutton('category.batch');">
+				<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
+			</button>
+			<button type="button" onclick="$('#batch-category-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
+				<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
+			</button>
+		</div>
+	</div>
+	<div class="clr"></div>
 </fieldset>
