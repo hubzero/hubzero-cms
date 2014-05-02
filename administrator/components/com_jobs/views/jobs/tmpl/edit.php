@@ -97,7 +97,7 @@ $expired = $this->subscription->expires && $this->subscription->expires < $now ?
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	var form = document.getElementById('jobForm');
+	var form = document.getElementById('item-form');
 
 	if (pressbutton == 'cancel') {
 		form.task.value = 'cancel';
@@ -122,141 +122,110 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" id="jobForm" name="adminForm">
+<form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Company'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label for="companyName"><?php echo JText::_('Name'); ?>: <span class="required">required</span></label><br />
-							<input type="text" name="companyName" id="companyName" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyName)); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="companyWebsite"><?php echo JText::_('URL'); ?>:</label><br />
-							<input type="text" name="companyWebsite" id="companyWebsite" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyWebsite)); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="companyLocation"><?php echo JText::_('Location'); ?>: <span class="required">required</span></label><br />
-							<input type="text" name="companyLocation" id="companyLocation" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyLocation)); ?>" />
-							<span class="hint"><?php echo JText::_('City, State'); ?></span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="companyName"><?php echo JText::_('Name'); ?>: <span class="required">required</span></label><br />
+				<input type="text" name="companyName" id="companyName" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyName)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="companyWebsite"><?php echo JText::_('URL'); ?>:</label><br />
+				<input type="text" name="companyWebsite" id="companyWebsite" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyWebsite)); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('City, State'); ?>">
+				<label for="companyLocation"><?php echo JText::_('Location'); ?>: <span class="required">required</span></label><br />
+				<input type="text" name="companyLocation" id="companyLocation" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyLocation)); ?>" />
+				<span class="hint"><?php echo JText::_('City, State'); ?></span>
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Job'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label for="cid"><?php echo JText::_('Category'); ?>:</label><br />
-							<?php echo JobsHtml::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?>
-						</td>
-						<td>
-							<label for="type"><?php echo JText::_('Type'); ?>:</label><br />
-							<?php echo JobsHtml::formSelect('type', $this->types, $this->row->type, '', ''); ?>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="companyLocationCountry"><?php echo JText::_('Country'); ?>:</label><br />
-						<?php if ($usonly) { ?>
-							<?php echo JText::_('United States'); ?>
-							<p class="hint"><?php echo JText::_('Only US-based jobs can be advertised on this site.'); ?></p>
-							<input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
-						<?php } else {
-							$out  = "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";
-							$out .= "\t\t\t\t".' <option value="">(select from list)</option>'."\n";
-							//$countries = getcountries();
+			<div class="input-wrap">
+				<label for="cid"><?php echo JText::_('Category'); ?>:</label><br />
+				<?php echo JobsHtml::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="type"><?php echo JText::_('Type'); ?>:</label><br />
+				<?php echo JobsHtml::formSelect('type', $this->types, $this->row->type, '', ''); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="companyLocationCountry"><?php echo JText::_('Country'); ?>:</label><br />
+				<?php if ($usonly) { ?>
+					<?php echo JText::_('United States'); ?>
+					<p class="hint"><?php echo JText::_('Only US-based jobs can be advertised on this site.'); ?></p>
+					<input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
+				<?php } else {
+					$out  = "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";
+					$out .= "\t\t\t\t".' <option value="">(select from list)</option>'."\n";
+					//$countries = getcountries();
 
-							$countries = \Hubzero\Geocode\Geocode::countries();
-							foreach ($countries as $country)
-							{
-								$out .= "\t\t\t\t".' <option value="' . $this->escape($country->name) . '"';
-								if ($country->name == $this->row->companyLocationCountry) 
-								{
-									$out .= ' selected="selected"';
-								}
-								$out .= '>' . $this->escape($country->name) . '</option>'."\n";
-							}
-							$out .= "\t\t\t".'</select>'."\n";
-							echo $out;
-						?>
-						<?php } ?>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="title"><?php echo JText::_('Title'); ?>: <span class="required">required</span></label><br />
-							<input type="text" name="title" id="title" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="description"><?php echo JText::_('Description'); ?>:</label><br />
-							<textarea name="description" id="description"  cols="55" rows="30"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
-							<span class="hint"><?php echo JText::_('Wiki formatting is enabled.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="startdate"><?php echo JText::_('Position Start Date'); ?>:</label><br />
-							<?php echo JHTML::_('calendar', $startdate, 'startdate', 'startdate', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-						<td>
-							<label for="closedate"><?php echo JText::_('Applications Due'); ?>:</label><br />
-							<?php echo JHTML::_('calendar', $closedate, 'closedate', 'closedate', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="applyExternalUrl"><?php echo JText::_('External URL for a job application'); ?>:</label><br />
-							<input type="text" name="applyExternalUrl" size="60" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->applyExternalUrl)); ?>" />
-							<span class="hint"><?php echo JText::_('Include http://'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input type="checkbox" class="option" name="applyInternal"  size="10" maxlength="10" value="1" <?php if ($this->row->applyInternal) { echo 'checked="checked"'; } ?>  />
-							<label><?php echo JText::_('Allow internal application'); ?></label>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+					$countries = \Hubzero\Geocode\Geocode::countries();
+					foreach ($countries as $country)
+					{
+						$out .= "\t\t\t\t".' <option value="' . $this->escape($country->name) . '"';
+						if ($country->name == $this->row->companyLocationCountry) 
+						{
+							$out .= ' selected="selected"';
+						}
+						$out .= '>' . $this->escape($country->name) . '</option>'."\n";
+					}
+					$out .= "\t\t\t".'</select>'."\n";
+					echo $out;
+				?>
+				<?php } ?>
+			</div>
+			<div class="input-wrap">
+				<label for="title"><?php echo JText::_('Title'); ?>: <span class="required">required</span></label><br />
+				<input type="text" name="title" id="title" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('Wiki formatting is enabled.'); ?>">
+				<label for="description"><?php echo JText::_('Description'); ?>:</label><br />
+				<textarea name="description" id="description"  cols="55" rows="30"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
+				<span class="hint"><?php echo JText::_('Wiki formatting is enabled.'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label for="startdate"><?php echo JText::_('Position Start Date'); ?>:</label><br />
+				<?php echo JHTML::_('calendar', $startdate, 'startdate', 'startdate'); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="closedate"><?php echo JText::_('Applications Due'); ?>:</label><br />
+				<?php echo JHTML::_('calendar', $closedate, 'closedate', 'closedate'); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="applyExternalUrl"><?php echo JText::_('External URL for a job application'); ?>:</label><br />
+				<input type="text" name="applyExternalUrl" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->applyExternalUrl)); ?>" />
+				<span class="hint"><?php echo JText::_('Include http://'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<input type="checkbox" class="option" name="applyInternal" value="1" <?php if ($this->row->applyInternal) { echo 'checked="checked"'; } ?>  />
+				<label><?php echo JText::_('Allow internal application'); ?></label>
+			</div>
 		</fieldset>
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Contact Information') . ' ' . JText::_('(optional)'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<th class="key"><label for="contactName"><?php echo JText::_('Contact Name'); ?>:</label></th>
-						<td><input type="text" name="contactName" id="contactName" size="60" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactName)); ?>" /></td>
-					</tr>
-					 <tr>
-						<th class="key"><label for="contactEmail"><?php echo JText::_('Contact Email'); ?>:</label></th>
-						<td><input type="text" name="contactEmail" id="contactEmail" size="60" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactEmail)); ?>" /></td>
-					</tr>
-					<tr>
-						<th class="key"><label for="contactPhone"><?php echo JText::_('Contact Phone'); ?>:</label></th>
-						<td><input type="text" name="contactPhone" id="contactPhone" size="60" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactPhone)); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="contactName"><?php echo JText::_('Contact Name'); ?>:</label>
+				<input type="text" name="contactName" id="contactName" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactName)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="contactEmail"><?php echo JText::_('Contact Email'); ?>:</label></th>
+				<input type="text" name="contactEmail" id="contactEmail" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactEmail)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="contactPhone"><?php echo JText::_('Contact Phone'); ?>:</label></th>
+				<input type="text" name="contactPhone" id="contactPhone" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactPhone)); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 <?php if ($this->row->id) { ?>
-		<table class="meta" summary="<?php echo JText::_('Metadata for this item'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('Added'); ?>:</th>
@@ -302,39 +271,30 @@ function submitbutton(pressbutton)
 <?php } ?>
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Manage this Job'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-				<?php if (!$this->isnew) { ?>
-					<tr>
-						<td class="key"><label><?php echo JText::_('Change Status / Take Action'); ?>:</label></td>
-						<td><input type="radio" name="action" value="message" /><?php echo JText::_('No action / Send message to author'); ?></td>
-					</tr>
-					<tr>
-						<th></th>
-						<td>
-							<?php if ($this->row->status != 1) { ?>
+
+			<?php if (!$this->isnew) { ?>
+				<fieldset>
+					<legend><span><?php echo JText::_('Change Status / Take Action'); ?>:</span></legend>
+
+					<div class="input-wrap">
+						<input type="radio" name="action" value="message" /><?php echo JText::_('No action / Send message to author'); ?><br />
+						<?php if ($this->row->status != 1) { ?>
 							<input type="radio" name="action" value="publish" /> <?php echo JText::_('Publish Ad'); ?>
-							<?php } else { ?>
+						<?php } else { ?>
 							<input type="radio" name="action" value="unpublish" /> <?php echo JText::_('Unpublish Ad'); ?>
-							<?php } ?>
-						</td>
-					</tr>
-					<tr>
-						<th></th>
-						<td><input type="radio" name="action" value="delete" /> <?php echo JText::_('Delete Ad'); ?></td>
-					</tr>
-					<tr>
-						<th></th>
-						<td><?php echo JText::_('Message to author'); ?>: <br /><textarea name="message" id="message"  cols="30" rows="5"></textarea></td>
-					</tr>
-				<?php } else { ?>
-					<tr>
-						<td><?php echo JText::_('This is a new job ad. Please save it as draft before admin option become available.'); ?></td>
-					</tr>
-				<?php } ?>
-				</tbody>
-			</table>
+						<?php } ?>
+						<br />
+						<input type="radio" name="action" value="delete" /> <?php echo JText::_('Delete Ad'); ?><br />
+					</div>
+				</fieldset>
+
+				<div class="input-wrap">
+					<?php echo JText::_('Message to author'); ?>: <br />
+					<textarea name="message" id="message"  cols="30" rows="5"></textarea>
+				</div>
+			<?php } else { ?>
+				<p><?php echo JText::_('This is a new job ad. Please save it as draft before admin option become available.'); ?></p>
+			<?php } ?>
 
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="isnew" value="<?php echo $this->isnew; ?>" />
@@ -347,6 +307,6 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

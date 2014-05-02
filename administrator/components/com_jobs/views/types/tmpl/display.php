@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = JobsHelper::getActions('type');
 
-JToolBarHelper::title('<a href="index.php?option=com_jobs">' . JText::_('Jobs Manager') . '</a>: <small><small>[ Types ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Jobs Manager') . ': Types', 'addedit.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
@@ -48,17 +48,17 @@ if ($canDo->get('core.delete'))
 }
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist" summary="<?php echo JText::_('A list of job types'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col" width="2%"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col" width="5%"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Title'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="3"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -78,15 +78,15 @@ if ($this->rows)
 					<?php echo $this->escape($avalue); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $avalue; ?>">
 						<span><?php echo $this->escape($alabel); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<span><?php echo $this->escape($alabel); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php

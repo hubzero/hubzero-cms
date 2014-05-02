@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = JobsHelper::getActions('category');
 
-JToolBarHelper::title('<a href="index.php?option=com_jobs">' . JText::_('Jobs Manager') . '</a>: <small><small>[ Categories ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Jobs Manager') . ': Categories', 'addedit.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
@@ -50,7 +50,7 @@ if ($canDo->get('core.delete'))
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist" summary="<?php echo JText::_('A list of job categories'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th>
@@ -91,15 +91,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input type="text" name="order[<?php echo $row->id; ?>]" size="5" value="<?php echo $row->ordernum; ?>" class="text_area" style="text-align: center" />
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<span><?php echo $this->escape(stripslashes($row->category)); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<span><?php echo $this->escape(stripslashes($row->category)); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -115,7 +115,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
-

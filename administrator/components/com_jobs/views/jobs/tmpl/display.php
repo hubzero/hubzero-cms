@@ -52,9 +52,9 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 
+$this->css();
+
 JHTML::_('behavior.tooltip');
-//jimport('joomla.html.html.grid');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -72,20 +72,20 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-	
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist" summary="<?php echo JText::_('A list of jobs and their relevant data'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JText::_('Code'); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Company & Location', 'location', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th scope="col"><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Owner', 'adminposting', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Added', 'added', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JText::_('Applications'); ?></th>
@@ -166,15 +166,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->code); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('Publish Information');?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="editlinktip hasTip" title="<?php echo JText::_('Publish Information');?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<span class="glyph company"><?php echo $this->escape($row->companyName); ?></span>, <br />
@@ -210,6 +210,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

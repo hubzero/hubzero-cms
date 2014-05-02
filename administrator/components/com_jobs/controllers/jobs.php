@@ -43,10 +43,6 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Push some styles to the template
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'jobs.css');
-
 		// Get configuration
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
@@ -120,7 +116,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Create a job posting
 	 * Displays the edit form
@@ -241,7 +237,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save Job Posting
 	 * 
@@ -394,7 +390,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			JText::_('Job successfully saved.') . ($statusmsg ? ' '.$statusmsg : '')
 		);
 	}
-	
+
 	/**
 	 * Check job ad quota depending on subscription
 	 * 
@@ -415,7 +411,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 
 		return $allowed_ads;
 	}
-	
+
 	/**
 	 * Remove Job Posting
 	 * 
@@ -454,7 +450,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			JText::_('Job(s) successfully removed')
 		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
@@ -468,4 +464,3 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		);
 	}
 }
-
