@@ -90,6 +90,13 @@ class Migration
 	private $callbacks;
 
 	/**
+	 * Table holding migration entries
+	 *
+	 * @var string
+	 **/
+	private $tbl_name = '#__migrations';
+
+	/**
 	 * Constructor
 	 *
 	 * @param $docroot - default null, which should then resolve to hub docroot
@@ -117,10 +124,10 @@ class Migration
 		// Try to figure out the date of the last file run
 		try
 		{
-			$this->db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `file` DESC LIMIT 1');
+			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'up\' ORDER BY `file` DESC LIMIT 1');
 			$rowup = $this->db->loadAssoc();
 
-			$this->db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\' ORDER BY `file` DESC LIMIT 1');
+			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'down\' ORDER BY `file` DESC LIMIT 1');
 			$rowdown = $this->db->loadAssoc();
 
 			if (count($rowup) > 0)
@@ -198,18 +205,24 @@ class Migration
 		}
 
 		// Check for the existance of the migrations table
-		try
+		$tables = $db->getTableList();
+		$prefix = $db->getPrefix();
+
+		if (in_array('migrations', $tables))
 		{
-			$db->setQuery("SELECT `id` FROM `migrations` LIMIT 1");
-			$db->query();
+			$this->tbl_name = 'migrations';
 		}
-		catch (\PDOException $e)
+		else if (in_array($prefix . 'migrations', $tables))
 		{
-			if ($this->createMigrationsTable($db) === false)
-			{
-				return false;
-			}
+			$this->tbl_name = '#__migrations';
 		}
+		else if ($this->createMigrationsTable($db) === false)
+		{
+			return false;
+		}
+
+		// Add a callback so that a migration can update $this in real time if necessary
+		$this->registerCallback('migration', $this);
 
 		return $db;
 	}
@@ -317,7 +330,7 @@ class Migration
 					if (is_numeric($this->last_run[$direction]) && $date <= $this->last_run[$direction] && !$force)
 					{
 						// This migration is older than the current, but let's see if we should inform that it should still be run
-						$this->db->setQuery("SELECT `direction` FROM migrations WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
+						$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
 						$row = $this->db->loadResult();
 
 						// Check if last run was either not in the current direction we're going,
@@ -345,7 +358,7 @@ class Migration
 			try
 			{
 				// Look to the database log to see the last run on this file
-				$this->db->setQuery("SELECT `direction` FROM migrations WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
+				$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
 				$row = $this->db->loadResult();
 
 				// If the last migration for this file doesn't exist, or, it was the opposite of $direction, we can go ahead and run it.
@@ -533,7 +546,7 @@ class Migration
 					'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : \JFactory::getUser()->get('id')
 				);
 
-			$this->db->insertObject('migrations', $obj);
+			$this->db->insertObject($this->get('tbl_name'), $obj);
 		}
 		catch (\PDOException $e)
 		{
@@ -560,6 +573,16 @@ class Migration
 	}
 
 	/**
+	 * Set the table name used for internal logging of migrations
+	 *
+	 * @return void
+	 **/
+	public function setTableName($tbl_name)
+	{
+		$this->tbl_name = $tbl_name;
+	}
+
+	/**
 	 * Register a callback
 	 *
 	 * @param  (string)  $name - callback name
@@ -580,7 +603,7 @@ class Migration
 	{
 		$this->log('Migrations table did not exist...attempting to create it now');
 
-		$query = "CREATE TABLE `migrations` (
+		$query = "CREATE TABLE `{$this->get('tbl_name')}` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`file` varchar(255) NOT NULL DEFAULT '',
 					`hash` char(32) NOT NULL DEFAULT '',
