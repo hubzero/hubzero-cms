@@ -63,6 +63,10 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">JOFF</option>
 					<option value="1">JON</option>
 				</field>
+				<field name="allowScriptTags" type="radio" default="0" description="Allow javascript tags?" label="Allow Javascript Tags">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<!--<field name="allowScriptTags" type="radio" default="0" description="Allow javascript tags?" label="Allow Javascript Tags">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
