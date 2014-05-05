@@ -73,6 +73,8 @@ switch ($this->filters['status'])
 		}
 	break;
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('membership');
 
 $database = JFactory::getDBO();
 

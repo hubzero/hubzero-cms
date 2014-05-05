@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = GroupsHelper::getActions('group');
 
-JToolBarHelper::title($this->group->get('description') . ': <small><small>[ ' . JText::_('Group Page Categories') . ' ]</small></small>', 'groups.png');
+JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group Page Categories'), 'groups.png');
 
 if ($canDo->get('core.edit')) 
 {
@@ -50,21 +50,18 @@ function submitbutton(pressbutton)
 
 <?php require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" id="adminForm" method="post">
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" id="item-form" method="post">
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('Page Category'); ?></span></legend>
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="type"><?php echo JText::_('Title'); ?>:</label></td>
-					<td><input type="text" name="category[title]" id="title" value="<?php echo $this->escape($this->category->get('title')); ?>" size="50" /></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="type"><?php echo JText::_('Color'); ?>:</label></td>
-					<td>#<input style="width: 98%" maxlength="6" type="text" name="category[color]" id="title" value="<?php echo $this->escape($this->category->get('color')); ?>" size="50" /></td>
-				</tr>
-			</tbody>
-		</table>
+
+		<div class="input-wrap">
+			<label for="field-type"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+			<input type="text" name="category[title]" id="field-title" value="<?php echo $this->escape($this->category->get('title')); ?>" />
+		</div>
+		<div class="input-wrap" data-hint="<?php echo JText::_('Hexadecimal color code (e.g., #000000) or any other format allowed by CSS'); ?>">
+			<label for="field-color"><?php echo JText::_('Color'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+			<input maxlength="6" type="text" name="category[color]" id="field-color" value="<?php echo $this->escape($this->category->get('color')); ?>" placeholder="#" />
+		</div>
 	</fieldset>
 	<input type="hidden" name="category[id]" value="<?php echo $this->category->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

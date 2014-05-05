@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = GroupsHelper::getActions('group');
 
-JToolBarHelper::title($this->group->get('description') . ': <small><small>[ ' . JText::_('Group Page Categories') . ' ]</small></small>', 'groups.png');
+JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group Page Categories'), 'groups.png');
 
 if ($canDo->get('core.create')) 
 {
@@ -63,7 +63,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th width="30px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->categories->count();?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->categories->count();?>);" /></th>
 				<th>Title</th>
 				<th>Color</th>
 			</tr>
@@ -84,10 +84,11 @@ function submitbutton(pressbutton)
 <?php endif; ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

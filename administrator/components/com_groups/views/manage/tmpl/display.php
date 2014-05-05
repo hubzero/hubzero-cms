@@ -49,6 +49,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('delete', 'delete');
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('groups');
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -100,7 +102,7 @@ function submitbutton(pressbutton)
 		
 		<input type="submit" value="<?php echo JText::_('COM_GROUPS_GO'); ?>" />
 		|
-		<a href="/administrator/index.php?option=com_groups&amp;controller=manage&amp;type=hub&amp;discoverability=&amp;policy=&amp;approved=&amp;published=&amp;created=" style="-webkit-appearance: push-button">Reset</a>
+		<a class="button" href="/administrator/index.php?option=com_groups&amp;controller=manage&amp;type=hub&amp;discoverability=&amp;policy=&amp;approved=&amp;published=&amp;created=">Reset</a>
 	</fieldset>
 	<div class="clr"></div>
 
