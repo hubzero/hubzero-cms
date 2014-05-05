@@ -42,9 +42,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+JToolBarHelper::spacer();
+JToolBarHelper::help('revision');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

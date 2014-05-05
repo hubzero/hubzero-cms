@@ -17,6 +17,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('revisions');
 
 ?>
 <script type="text/javascript">

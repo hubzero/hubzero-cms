@@ -41,6 +41,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::apply();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('comment');
 
 ?>
 <script type="text/javascript">

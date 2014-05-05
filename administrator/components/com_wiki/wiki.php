@@ -34,43 +34,36 @@ defined('_JEXEC') or die('Restricted access');
 $option = JRequest::getCmd('option', 'com_wiki');
 
 // Authorization check
-if (version_compare(JVERSION, '1.6', 'lt'))
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
 {
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
-	}
-}
-else 
-{
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
-
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'pagePermissions.php');
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'pagePermissions.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'parser.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'book.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'wiki.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'wiki.php');
 
 // Initiate controller
 $controllerName = JRequest::getCmd('controller', 'pages');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'pages';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'WikiController' . ucfirst($controllerName);
+
+JSubMenuHelper::addEntry(
+	JText::_('Wiki Pages'),
+	'index.php?option=com_wiki',
+	true
+);
+JSubMenuHelper::addEntry(
+	JText::_('Plugins'),
+	'index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki'
+);
+
 
 // Instantiate controller
 $controller = new $controllerName();
