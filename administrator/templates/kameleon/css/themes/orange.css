@@ -16,6 +16,7 @@
 /* Light header */
 	#login-body #toolbar-box,
 	div.configuration,
+	h2.modal-title,
 	.light .main-navigation {
 		background: #f9b96f;
 	}
@@ -32,7 +33,7 @@
 /* Dark header */
 	.dark #toolbar-box {
 		background: #f9b96f;
-		border-color: #fbaf41;
+		border-color: #f9b96f;
 	}
 	.dark #toolbar-box .pagetitle h2 {
 		color: #fff;

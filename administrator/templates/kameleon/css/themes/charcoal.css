@@ -12,7 +12,7 @@
 	a:hover {
 		color: #000;
 	}
-/* Form elements */
+/* Form elements 
 	.input-text:focus,
 	.input-username:focus,
 	.input-password:focus,
@@ -26,6 +26,7 @@
 /* Light header */
 	#login-body #toolbar-box,
 	div.configuration,
+	h2.modal-title,
 	.light .main-navigation {
 		background: #222;
 	}

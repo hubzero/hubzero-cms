@@ -16,6 +16,7 @@
 /* Light header */
 	#login-body #toolbar-box,
 	div.configuration,
+	h2.modal-title,
 	.light .main-navigation {
 		background: #2f8dc9;
 	}
