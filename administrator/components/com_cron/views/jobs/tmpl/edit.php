@@ -281,7 +281,9 @@ jQuery(document).ready(function($){
 							?>
 							<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
 								<legend><span><?php echo JText::_('Parameters'); ?></span></legend>
-								<?php echo $out; ?>
+								<div class="input-wrap">
+									<?php echo $out; ?>
+								</div>
 							</fieldset>
 							<?php
 						}

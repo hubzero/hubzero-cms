@@ -31,36 +31,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $option = JRequest::getCmd('option', 'com_cron');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
 {
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
-	// Authorization check
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
-	}
-}
-else 
-{
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
-	
-	//require_once(JPATH_COMPONENT . DS . 'models' . DS . 'job.php');
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cron' . DS . 'models' . DS . 'jobs.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'cron.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'jobs.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'cron.php');
 
 $controllerName = JRequest::getCmd('controller', 'jobs');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'jobs';
 }
@@ -75,7 +55,7 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron'
 );
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CronController' . ucfirst($controllerName);
 
 // initiate controller
