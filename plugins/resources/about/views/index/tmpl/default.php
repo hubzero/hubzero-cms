@@ -141,6 +141,10 @@ if (!$this->model->access('view-all')) {
 <?php
 	}
 	$citations = '';
+	if (!isset($schema->fields) || !is_array($schema->fields))
+	{
+		$schema->fields = array();
+	}
 	foreach ($schema->fields as $field)
 	{
 		if (isset($data[$field->name])) {
