@@ -236,7 +236,7 @@ class MwHost extends JTable
 		}
 
 		$query = "FROM $this->_tbl AS c";
-		$query .= " LEFT JOIN zone AS v ON v.id = c.zone_id";
+		$query .= " LEFT JOIN zones AS v ON v.id = c.zone_id";
 		if (isset($filters['hosttype']) && $filters['hosttype']) 
 		{
 			$query .= " JOIN hosttype AS t ON c.provisions & t.value != 0";
