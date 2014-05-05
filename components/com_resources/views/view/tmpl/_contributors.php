@@ -53,7 +53,7 @@ if ($this->contributors)
 		// Build the user's name and link to their profile
 		if ($contributor->name) 
 		{
-			$name = $contributor->name;
+			$name = $this->escape(stripslashes($contributor->name));
 		} 
 		else if ($contributor->surname || $contributor->givenName) 
 		{
