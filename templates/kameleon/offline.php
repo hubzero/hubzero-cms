@@ -49,7 +49,8 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
-		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/offline.css" />
+
+		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/offline.css?v=<?php echo filemtime(JPATH_ROOT . '/templates/' . $this->template . '/css/offline.css'); ?>" />
 	</head>
 	<body>
 
