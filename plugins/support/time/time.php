@@ -120,19 +120,15 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 		$record = JRequest::getVar('record', array(), 'post');
 		$record = array_map('trim', $record);
 
-		// Get suborinates of current user
-		/*$subordinates = TimeHTML::getSubordinates($juser->get('id'));
-
-		// Only create records for yourself or your subordinates
-		if ($record['user_id'] != $juser->get('id') 
-		 && !in_array($record['user_id'], $subordinates))
-		{
-			return;
-		}*/
-
 		// Combine the time entry
+		$record['user_id'] = $juser->get('id');
 		$record['time'] = $record['htime'] . '.' . $record['mtime'];
 		$record['description'] = $comment->comment;
+		// Don't attempt to save a record if no time or task was chosen
+		if (!$record['time'] || !$record['task_id'])
+		{
+			return;
+		}
 
 		// Create object and store new content
 		$records = new TimeRecords($db);
