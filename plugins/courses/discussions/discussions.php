@@ -104,9 +104,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Load the parent unit
 		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
+		$db = JFactory::getDBO();
 
 		// Attempt to load the category
-		$category = new ForumTableCategory(JFactory::getDBO());
+		$category = new ForumTableCategory($db);
 		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
 
 		// Is there a category already?
@@ -114,7 +115,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			// No category
 			// Is there a parent section?
-			$section = new ForumTableSection(JFactory::getDBO());
+			$section = new ForumTableSection($db);
 			$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
 			if (!$section->id)
 			{
