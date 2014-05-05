@@ -2209,6 +2209,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					exit();
 				}
 
+				JPluginHelper::importPlugin('support');
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('onTicketUpdate', array($row, $rowc));
+
 				$attach = new SupportAttachment($this->database);
 				if ($tmp = JRequest::getInt('tmp_dir'))
 				{
@@ -2275,7 +2279,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 					// Send e-mail to admin?
 					JPluginHelper::importPlugin('xmessage');
-					$dispatcher = JDispatcher::getInstance();
 
 					// Find a list of everyone watching this ticket
 					$watching = new SupportTableWatching($this->database);
