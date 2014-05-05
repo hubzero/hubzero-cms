@@ -1,0 +1,22 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/support/time/time.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* --------------------------
+	Edit Page
+----------------------------- */
+	#plg_time_records #time-group span {
+		padding-top: 1em;
+		position: relative;
+		display: block;
+	}
+	#plg_time_records #time-group select {
+		width: 45%;
+		margin-right: 5%;
+	}
+	#plg_time_records #time-group select:last-child {
+		margin-right: 0;
+	}
