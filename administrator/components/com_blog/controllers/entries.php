@@ -401,12 +401,13 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 			}
 		}
 
-		switch ($this->_task)
+		switch ($state)
 		{
-			case 'allow':
+			case 1:
 				$message = JText::sprintf('%s Item(s) successfully turned on Comments', count($ids));
 			break;
-			case 'disallow':
+			case 0:
+			default:
 				$message = JText::sprintf('%s Item(s) successfully turned off Comments', count($ids));
 			break;
 		}
