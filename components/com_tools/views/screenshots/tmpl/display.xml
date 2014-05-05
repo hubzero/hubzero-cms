@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Access Denied Layout">
+	<layout title="Tool Resource Page: Screenshots">
 		<message>
-			<![CDATA[STANDARD ACCESS DENIED LAYOUT DESC]]>
+			<![CDATA[Tool Resource Page: Screenshots]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Access Denied Layout</name>
-		<description>STANDARD ACCESS DENIED LAYOUT DESC</description>
+		<name>Tool Resource Page: Screenshots</name>
+		<description>Tool Resource Page: Screenshots</description>
 		<params>
 		</params>
 	</state>

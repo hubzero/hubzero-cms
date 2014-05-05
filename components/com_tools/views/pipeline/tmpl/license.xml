@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Tool Development Versions">
+	<layout title="Tool Pipeline: License">
 		<message>
-			<![CDATA[Tool Development Versions]]>
+			<![CDATA[Tool Pipeline: License]]>
 		</message>
 	</layout>
 	<state>
-		<name>Tool Development Versions</name>
-		<description>Tool Development Versions</description>
+		<name>Tool Pipeline: License</name>
+		<description>Tool Pipeline: License</description>
 		<params>
 		</params>
 	</state>

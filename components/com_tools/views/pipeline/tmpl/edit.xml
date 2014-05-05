@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Tool Development Pipeline">
+	<layout title="Tool Pipeline: Edit Tool">
 		<message>
-			<![CDATA[Tool Development Pipeline]]>
+			<![CDATA[Tool Pipeline: Edit Tool]]>
 		</message>
 	</layout>
 	<state>
-		<name>Tool Development Pipeline</name>
-		<description>Tool Development Pipeline</description>
+		<name>Tool Pipeline: Edit Tool</name>
+		<description>Tool Pipeline: Edit Tool</description>
 		<params>
 		</params>
 	</state>
