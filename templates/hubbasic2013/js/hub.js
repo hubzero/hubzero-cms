@@ -91,19 +91,21 @@ HUB.Base = {
 
 		// Init tooltips
 		$('.hasTip, .tooltips').tooltip({
-			position: 'top center',
-			effect: 'fade',
-			offset: [-4, 0],
-			onBeforeShow: function(event, position) {
-				var tip = this.getTip(),
-					tipText = tip[0].innerHTML;
+			position: {
+				my: 'center bottom',
+				at: 'center top'
+			},
+			create: function(event, ui) {
+				var tip = $(this),
+					tipText = tip.attr('title');
 
 				if (tipText.indexOf('::') != -1) {
 					var parts = tipText.split('::');
-					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
+					tip.attr('title', parts[1]);
 				}
-			}
-		}).dynamic();
+			},
+			tooltipClass: 'tooltip'
+		});
 
 		// Init fixed position DOM: tooltips
 		$('.fixedToolTip').tooltip({

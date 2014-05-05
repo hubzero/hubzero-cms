@@ -10,16 +10,17 @@
 // --------------------------------------------------
 
 .tooltip {
-	float: left;
+	//float: left;
 	min-width: 50px;
 	max-width: 200px;
 	z-index: @zindexTooltip;
-	font-size: 0.85em;
-	padding: 0.5em 1em;
-	color: @tooltipColor;
-	border: @tooltipBorder;
+	font-size: 0.85em !important;
+	padding: 0.5em 1em !important;
+	color: @tooltipColor !important;
+	border: @tooltipBorder !important;
 	.border-radius(@baseBorderRadius);
-	#gradient > .vertical(@tooltipBackgroundStart, @tooltipBackgroundEnd);
+	//#gradient > .vertical(@tooltipBackgroundStart, @tooltipBackgroundEnd);
+	background: #252525 !important;
 	.box-sizing(border-box);
 
 	// Arrow

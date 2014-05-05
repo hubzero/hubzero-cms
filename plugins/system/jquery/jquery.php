@@ -131,7 +131,7 @@ class plgSystemJquery extends JPlugin
 				}
 			}
 		}
-		if ($value = $this->params->get('jquerytools')) 
+		/*if ($value = $this->params->get('jquerytools')) 
 		{
 			if ($value == 1) 
 			{
@@ -143,7 +143,7 @@ class plgSystemJquery extends JPlugin
 			{
 				$document->addScript($this->params->get('jquerytoolscdnpath'));
 			}
-		}
+		}*/
 		if ($this->params->get('noconflict' . $client)) 
 		{
 			$document->addScript($root . '/media/system/js/jquery.noconflict.js');

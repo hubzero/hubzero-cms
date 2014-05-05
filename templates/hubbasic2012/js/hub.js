@@ -109,19 +109,21 @@ HUB.Base = {
 
 		// Init tooltips
 		$('.hasTip, .tooltips').tooltip({
-			position: 'top center',
-			effect: 'fade',
-			offset: [-4, 0],
-			onBeforeShow: function(event, position) {
-				var tip = this.getTip(),
-					tipText = tip[0].innerHTML;
+			position: {
+				my: 'center bottom',
+				at: 'center top'
+			},
+			create: function(event, ui) {
+				var tip = $(this),
+					tipText = tip.attr('title');
 
 				if (tipText.indexOf('::') != -1) {
 					var parts = tipText.split('::');
-					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
+					tip.attr('title', parts[1]);
 				}
-			}
-		}).dynamic();
+			},
+			tooltipClass: 'tooltip'
+		});
 
 		// Init fixed position DOM: tooltips
 		$('.fixedToolTip').tooltip({
@@ -130,9 +132,8 @@ HUB.Base = {
 		
 		HUB.Base.placeholderSupport();
 	},
-	
-	placeholderSupport: function()
-	{
+
+	placeholderSupport: function() {
 		var $ = this.jQuery;
 		
 		//test for placeholder support
@@ -140,37 +141,35 @@ HUB.Base = {
 		var placeholder_supported  = ('placeholder' in test);
 		
 		//if we dont have placeholder support mimic it with focus and blur events
-		if(!placeholder_supported)
-		{
+		if (!placeholder_supported) {
 			$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
 				var placeholderText = $(this).attr('placeholder');
-				
+
 				//make sure we have placeholder text
-				if(placeholderText != '' && placeholderText != null)
-				{
+				if (placeholderText != '' && placeholderText != null) {
 					//add plceholder text and class
-					if($(this).val() == '')
-					{
+					if ($(this).val() == '') {
 						$(this).addClass('placeholder-support').val( placeholderText );
 					}
-					
+
 					//attach event listeners to input
-					$(this).focus(function() {
-						if($(this).val() == placeholderText)
-						{
-							$(this).removeClass('placeholder-support').val('');
-						}
-					})
-					.blur(function(){
-						if($(this).val() == '')
-						{
-							$(this).addClass('placeholder-support').val( placeholderText );
-						}
-					});
+					$(this)
+						.on('focus', function() {
+							if($(this).val() == placeholderText)
+							{
+								$(this).removeClass('placeholder-support').val('');
+							}
+						})
+						.on('blur', function(){
+							if($(this).val() == '')
+							{
+								$(this).addClass('placeholder-support').val( placeholderText );
+							}
+						});
 				}
 			});
-			
-			$('form').submit(function(event){
+
+			$('form').on('submit', function(event){
 				$('.placeholder-support').each(function(i, el){
 					$(this).val('');
 				});
