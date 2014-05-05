@@ -25,38 +25,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
-	// Authorization check
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
-	}
-}
-else 
-{
-	$option = JRequest::getCmd('option', 'com_tools');
+$option = JRequest::getCmd('option', 'com_tools');
 
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
+{
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'mw.utils.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'tool.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'mw.utils.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tool.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 
 $controllerName = JRequest::getCmd('controller', 'pipeline');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'pipeline';
 }
@@ -87,7 +69,7 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'sessions'
 );
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ToolsController' . ucfirst($controllerName);
 
 // Instantiate controller
