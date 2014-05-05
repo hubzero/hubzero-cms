@@ -73,7 +73,9 @@ class Database implements CommandInterface
 	 **/
 	public function execute()
 	{
-		$this->output->addLine('Not implemented', 'warning');
+		$this->output = $this->output->getHelpOutput();
+		$this->help();
+		$this->output->render();
 	}
 
 	/**
@@ -84,7 +86,82 @@ class Database implements CommandInterface
 	 **/
 	public function dump()
 	{
-		$this->output->addLine('Not implemented', 'warning');
+		$db = \JFactory::getDbo();
+
+		$tables   = $db->getTableList();
+		$prefix   = $db->getPrefix();
+		$excludes = array();
+		$config   = new \JConfig();
+		$now      = \JFactory::getDate();
+		$exclude  = '';
+
+		if (!$this->arguments->getOpt('all-tables'))
+		{
+			foreach ($tables as $table)
+			{
+				if (strpos($table, $prefix) !== 0)
+				{
+					$excludes[] = $config->db . '.' . $table;
+				}
+			}
+
+			// Build exclude list string
+			$exclude = '--ignore-table=' . implode(' --ignore-table=', $excludes);
+		}
+
+		$home     = getenv('HOME');
+		$hostname = gethostname();
+		$filename = tempnam($home, "{$hostname}.mysql.dump." . $now->format('Y.m.d') . ".sql.");
+
+		// Build command
+		$cmd = "mysqldump -u {$config->user} -p{$config->password} {$config->db} --routines {$exclude} > {$filename}";
+
+		exec($cmd);
+	}
+
+	/**
+	 * Load a database dump
+	 *
+	 * @return void
+	 **/
+	public function load()
+	{
+		if (!$infile = $this->arguments->getOpt(3))
+		{
+			$this->output->error('Please provide an input file');
+		}
+		else
+		{
+			if (!is_file($infile))
+			{
+				$this->output->error("'{$infile}' does not appear to be a valid file");
+			}
+		}
+
+		// First, set some things aside that we need to reapply after the update
+		$params           = array();
+		$params['system'] = \JComponentHelper::getParams('com_system');
+		$params['tools']  = \JComponentHelper::getParams('com_tools');
+		$params['usage']  = \JComponentHelper::getParams('com_usage');
+
+		// Craft the command to be executed
+		$infile = escapeshellarg($infile);
+		$config = new \JConfig();
+		$cmd    = "mysql -u {$config->user} -p{$config->password} -D {$config->db} < {$infile}";
+
+		// Now push the big red button
+		exec($cmd);
+
+		$db = \JFactory::getDbo();
+
+		// Now load some things back up
+		foreach ($params as $k => $v)
+		{
+			$table = new \JTableExtension($db);
+			$table->load(array('element' => 'com_'.$k));
+			$table->bind(array('params'  => $v->toArray()));
+			$table->store();
+		}
 	}
 
 	/**
@@ -98,6 +175,14 @@ class Database implements CommandInterface
 			->output
 			->addOverview(
 				'Database utility functions.'
+			)
+			->addArgument(
+				'--all-tables: Include all tables',
+				'By default, the database dump does not include non-prefixed tables
+				(example: host, display, etc...). This option can be used to include
+				these tables. Use with caution when planning to evenutally load this
+				data into another host (ex: dev) as it rarely makes sense to reload 
+				tool sessions into another environment.'
 			);
 	}
 }
