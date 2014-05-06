@@ -132,25 +132,19 @@ class plgEditorCkeditor extends JPlugin
 		}
 		if (!is_array($params['class']))
 		{
-			//$params['class'] = array($params['class']);
-			$cls = $params['class'];
-			$params['class'] = array();
-			foreach ($this->_split(' ', $cls) as $piece)
-			{
-				$params['class'][] = $piece;
-			}
+			$params['class'] = array($params['class']);
 		}
-		/*if ($cls = $this->params->get('class'))
+		if ($cls = $this->params->get('class'))
 		{
 			foreach ($this->_split(' ', $cls) as $piece)
 			{
 				$params['class'][] = $piece;
 			}
-		}*/
+		}
 		$params['class'][] = 'ckeditor-content';
-
+		
 		// build config & json encode
-		$config = json_encode($this->_buildConfig($params['class']));
+		$config = json_encode($this->_buildConfig($params));
 
 		// fix script and php protected source
 		//$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
@@ -274,10 +268,10 @@ class plgEditorCkeditor extends JPlugin
 	 *
 	 * @return  object stdClass
 	 */
-	private function _buildConfig($classes = array())
+	private function _buildConfig($params = array())
 	{
-		// store params in local var for easier accessing
-		$params = $this->params;
+		// merge incoming params with 
+		$this->params->loadArray($params);
 
 		// object to hold our final config
 		$config                                = new stdClass;
@@ -320,7 +314,7 @@ class plgEditorCkeditor extends JPlugin
 		);
 
 		// if minimal toolbar
-		if (in_array('minimal', $classes))
+		if (in_array('minimal', $this->params->get('class')))
 		{
 			$config->toolbar                   = array(
 				array('Link', 'Unlink', 'Anchor'),
@@ -332,13 +326,13 @@ class plgEditorCkeditor extends JPlugin
 		}
 
 		// macros popup
-		if (in_array('macros', $classes))
+		if (in_array('macros', $this->params->get('class')))
 		{
 			$config->toolbar[] = array('HubzeroMacro');
 		}
 
 		// if no footer
-		if (in_array('no-footer', $classes))
+		if (in_array('no-footer', $this->params->get('class')))
 		{
 			$config->removePlugins = 'elementspath';
 		}
@@ -348,58 +342,58 @@ class plgEditorCkeditor extends JPlugin
 		$config->codemirror->autoFormatOnModeChange = false;
 
 		// startup mode
-		if (in_array($params->get('startupMode'), array('wysiwyg','source')))
+		if (in_array($this->params->get('startupMode'), array('wysiwyg','source')))
 		{
-			$config->startupMode = $params->get('startupMode');
+			$config->startupMode = $this->params->get('startupMode');
 		}
 
 		// show source button
-		if ($params->get('sourceViewButton'))
+		if ($this->params->get('sourceViewButton'))
 		{
 			array_unshift($config->toolbar[0], 'Source', '-');
 			$config->extraPlugins .= ',codemirror';
 		}
 
 		// autogrow auto-start
-		if (is_bool($params->get('autoGrowAutoStart')))
+		if (is_bool($this->params->get('autoGrowAutoStart')))
 		{
-			$config->hubzeroAutogrow_autoStart = $params->get('autoGrowAutoStart');
+			$config->hubzeroAutogrow_autoStart = $this->params->get('autoGrowAutoStart');
 		}
 
 		// auto grow min height
-		if (is_numeric($params->get('autoGrowMinHeight')))
+		if (is_numeric($this->params->get('autoGrowMinHeight')))
 		{
-			$config->hubzeroAutogrow_minHeight = $params->get('autoGrowMinHeight');
+			$config->hubzeroAutogrow_minHeight = $this->params->get('autoGrowMinHeight');
 		}
 
 		// autogrow max height
-		if (is_numeric($params->get('autoGrowMaxHeight')))
+		if (is_numeric($this->params->get('autoGrowMaxHeight')))
 		{
-			$config->hubzeroAutogrow_maxHeight = $params->get('autoGrowMaxHeight');
+			$config->hubzeroAutogrow_maxHeight = $this->params->get('autoGrowMaxHeight');
 		}
 
 		// auto start spell check
-		if (is_bool($params->get('spellCheckAutoStart')))
+		if (is_bool($this->params->get('spellCheckAutoStart')))
 		{
-			$config->scayt_autoStartup = $params->get('spellCheckAutoStart');
+			$config->scayt_autoStartup = $this->params->get('spellCheckAutoStart');
 		}
 
 		// spell check max suggesstions 
-		if (is_numeric($params->get('spellCheckMaxSuggesstions')))
+		if (is_numeric($this->params->get('spellCheckMaxSuggesstions')))
 		{
-			$config->scayt_maxSuggestions = $params->get('spellCheckMaxSuggesstions');
+			$config->scayt_maxSuggestions = $this->params->get('spellCheckMaxSuggesstions');
 		}
 
 		// class to add to ckeditor body
-		if ($params->get('contentBodyClass'))
+		if ($this->params->get('contentBodyClass'))
 		{
-			$config->bodyClass = $params->get('contentBodyClass');
+			$config->bodyClass = $this->params->get('contentBodyClass');
 		}
 
 		// add stylesheets to ckeditor content
-		if (is_array($params->get('contentCss')) && count($params->get('contentCss')))
+		if (is_array($this->params->get('contentCss')) && count($this->params->get('contentCss')))
 		{
-			$config->contentsCss = $params->get('contentCss');
+			$config->contentsCss = $this->params->get('contentCss');
 		}
 		else
 		{
@@ -439,43 +433,43 @@ class plgEditorCkeditor extends JPlugin
 		}
 
 		// file browsing
-		if ($params->get('fileBrowserBrowseUrl'))
+		if ($this->params->get('fileBrowserBrowseUrl'))
 		{
-			$config->filebrowserBrowseUrl = $params->get('fileBrowserBrowseUrl');
+			$config->filebrowserBrowseUrl = $this->params->get('fileBrowserBrowseUrl');
 		}
 
 		// image browsing
-		if ($params->get('fileBrowserImageBrowseUrl'))
+		if ($this->params->get('fileBrowserImageBrowseUrl'))
 		{
-			$config->filebrowserImageBrowseUrl = $params->get('fileBrowserImageBrowseUrl');
+			$config->filebrowserImageBrowseUrl = $this->params->get('fileBrowserImageBrowseUrl');
 		}
 
 		// file upload
-		if ($params->get('fileBrowserUploadUrl'))
+		if ($this->params->get('fileBrowserUploadUrl'))
 		{
-			$config->filebrowserUploadUrl = $params->get('fileBrowserUploadUrl');
+			$config->filebrowserUploadUrl = $this->params->get('fileBrowserUploadUrl');
 		}
 
 		// file browse popup size
-		if ($params->get('fileBrowserWindowWidth'))
+		if ($this->params->get('fileBrowserWindowWidth'))
 		{
-			$config->filebrowserWindowWidth = $params->get('fileBrowserWindowWidth');
+			$config->filebrowserWindowWidth = $this->params->get('fileBrowserWindowWidth');
 		}
-		if ($params->get('fileBrowserWindowHeight'))
+		if ($this->params->get('fileBrowserWindowHeight'))
 		{
-			$config->filebrowserWindowHeight = $params->get('fileBrowserWindowHeight');
+			$config->filebrowserWindowHeight = $this->params->get('fileBrowserWindowHeight');
 		}
 
 		// page templates
-		if ($params->get('templates_files') && is_object($params->get('templates_files')))
+		if ($this->params->get('templates_files') && is_object($this->params->get('templates_files')))
 		{
-			foreach ($params->get('templates_files') as $name => $template)
+			foreach ($this->params->get('templates_files') as $name => $template)
 			{
 				//make sure templates exists
 				if (file_exists(JPATH_ROOT . $template))
 				{
 					// do we want to replace original ones
-					if ($params->get('templates_replace'))
+					if ($this->params->get('templates_replace'))
 					{
 						$config->templates = array();
 						$config->templates_files = array();
@@ -490,18 +484,18 @@ class plgEditorCkeditor extends JPlugin
 		$config->templates = implode(',', $config->templates);
 
 		// allow scripts
-		if ($params->get('allowScriptTags'))
+		if ($this->params->get('allowScriptTags'))
 		{
 			$config->protectedSource[] = '/<script[^>]*>(.|\n)*<\/script>/ig';
 		}
 
 		// allow php
-		if ($params->get('allowPhpTags'))
+		if ($this->params->get('allowPhpTags'))
 		{
 			$config->protectedSource[] = '/<\?[\s\S]*?\?>/g';
 			$config->codemirror->mode = 'application/x-httpd-php';
 		}
-
+		
 		return $config;
 	}
 }
