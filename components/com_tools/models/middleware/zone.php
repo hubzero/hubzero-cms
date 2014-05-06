@@ -109,7 +109,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['locations.list'] instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_cache['locations.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->find('list', $filters))
 					{
@@ -122,7 +122,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 					{
 						$results = array();
 					}
-					$this->_cache['locations.list'] = new \Hubzero\ItemList($results);
+					$this->_cache['locations.list'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['locations.list'];
 			break;
