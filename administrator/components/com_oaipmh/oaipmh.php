@@ -28,27 +28,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $option = 'com_oaipmh';
 
-if (version_compare(JVERSION, '1.6', 'lt'))
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
 {
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-
-	// Authorization check
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
-	}
-}
-else 
-{
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 $controllerName = JRequest::getCmd('controller', 'config');

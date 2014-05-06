@@ -34,54 +34,34 @@ defined('_JEXEC') or die('Restricted access');
 $option = JRequest::getCmd('option', 'com_resources');
 $task = JRequest::getWord('task', '');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
 {
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
-	// Authorization check
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
-	}
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
-else 
-{
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
-}
-
-jimport('joomla.application.component.helper');
 
 // Include jtables
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'resource.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'assoc.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'review.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'doi.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'license.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.type.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'resource.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'assoc.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'doi.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'contributor.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'license.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'role.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'role.type.php');
 
 // include helpers
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'resources.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utilities.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'resources.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 
 // include importer
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'import' . DS . 'importer.php';
 
 // get controller name
 $controllerName = JRequest::getCmd('controller', 'items');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'items';
 }
@@ -132,7 +112,7 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'importhooks'
 );
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ResourcesController' . ucfirst($controllerName);
 
 // Instantiate controller

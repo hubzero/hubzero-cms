@@ -34,37 +34,17 @@ defined('_JEXEC') or die('Restricted access');
 // Get Option and Defautl to com_groups
 $option = JRequest::getCmd('option', 'com_groups');
 
-// Groups ACL
-if (version_compare(JVERSION, '1.6', 'lt'))
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
 {
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'admin', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-
-	// Authorization check
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
-	}
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
-else 
-{
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
 
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'group.php');
-	require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'group.php');
-}
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'group.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'group.php');
 
 // Include tables
-require_once JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php';
-require_once JPATH_COMPONENT . DS . 'tables' . DS . 'reason.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php';
 
 // include models
 require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'log' . DS . 'archive.php';
@@ -72,7 +52,7 @@ require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'page' . DS . 'archive.
 require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'module' . DS . 'archive.php';
 
 // Include Helpers
-require_once JPATH_COMPONENT . DS . 'helpers' . DS . 'groups.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'groups.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'view.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'pages.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'document.php';
@@ -80,12 +60,12 @@ require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'template.php';
 
 // build controller path
 $controllerName = JRequest::getCmd('controller', 'manage');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'manage';
 }
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'GroupsController' . ucfirst($controllerName);
 
 // Instantiate controller

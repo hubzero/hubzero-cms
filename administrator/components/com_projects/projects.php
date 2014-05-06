@@ -31,62 +31,39 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
-	// Authorization check
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
-	}
-}
-else 
-{
-	$option = JRequest::getCmd('option','');
+$option = JRequest::getCmd('option','com_projects');
 
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
+{
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
-
-jimport('joomla.application.component.helper');
 
 // Include scripts
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.activity.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.microblog.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.comment.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.owner.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php' );
-include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php' );
-include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php' );
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.activity.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.microblog.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.comment.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.owner.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 
 // Database development on?
-if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-		.'com_projects' . DS . 'tables' . DS . 'project.database.php'))
+if (is_file(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.php'))
 {
-	require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-			.'com_projects' . DS . 'tables' . DS . 'project.database.php');
-	require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-			.'com_projects' . DS . 'tables' . DS . 'project.database.version.php');
+	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.php');
+	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.version.php');
 }
 
 $controllerName = JRequest::getCmd('controller', 'projects');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'projects';
 }
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ProjectsController' . ucfirst($controllerName);
 
 // Instantiate controller
