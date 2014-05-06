@@ -133,6 +133,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
 			$this->deletePluginEntry('members', 'favorites');
 			$this->deletePluginEntry('resources', 'favorite');
+			$this->deletePluginEntry('publications', 'favorite');
+			$this->deleteModuleEntry('mod_myfavorites');
 		}
 	}
 
@@ -156,6 +158,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
 			$this->addPluginEntry('members', 'favorites');
 			$this->addPluginEntry('resources', 'favorite');
+			$this->addPluginEntry('publications', 'favorite');
+			$this->addModuleEntry('mod_myfavorites');
 		}
 	}
 }
