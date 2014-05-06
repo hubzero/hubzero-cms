@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
-jimport('joomla.application.component.helper');
-
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'articles'));

@@ -31,22 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'collections.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'collections.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'collections'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'collections';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CollectionsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

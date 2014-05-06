@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$option = 'com_groups';
-
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL('com_groups', 'manage', 'users', 'super administrator');
-	$jacl->addACL('com_groups', 'manage', 'users', 'administrator');
-	$jacl->addACL('com_groups', 'manage', 'users', 'manager');
-}
-
 // include tables
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php';
@@ -57,15 +47,15 @@ require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'document.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'template.php';
 
 //include abstract controller
-require_once JPATH_COMPONENT . DS . 'controllers' . DS . 'abstract.php';
+require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'abstract.php';
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'groups'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'groups';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'GroupsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute

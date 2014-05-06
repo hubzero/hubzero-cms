@@ -31,30 +31,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'date.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'repeat.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'event.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'config.php');
-include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'page.php');
-include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'respondent.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'date.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'repeat.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'event.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'config.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'page.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'respondent.php');
 
 $controllerName = JRequest::getCmd('controller', 'events');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'events';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'EventsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

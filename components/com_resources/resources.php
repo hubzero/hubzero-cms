@@ -31,14 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'resource.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'assoc.php');
@@ -49,17 +41,17 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'usage.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'usage.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'resources'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'resources';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ResourcesController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

@@ -31,18 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-}
-
-jimport('joomla.application.component.helper');
-
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'registration.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'controller.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'registration.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controller.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 
 // Instantiate controller

@@ -31,22 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL('com_tags', 'manage', 'users', 'super administrator');
-	$jacl->addACL('com_tags', 'manage', 'users', 'administrator');
-	$jacl->addACL('com_tags', 'manage', 'users', 'manager');
-}
-
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cloud.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'cloud.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'tags'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'tags';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'TagsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

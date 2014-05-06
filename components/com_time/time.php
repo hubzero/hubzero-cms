@@ -31,21 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-$option = JRequest::getCmd('option', 'com_time');
-
-jimport('joomla.application.component.view');
-jimport('joomla.filesystem.folder');
-
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'controllers'.DS.'time.php');
-
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-	$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-	$jacl->addACL( $option, 'manage', 'users', 'manager' );
-}
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'time.php');
 
 // Instantiate controller
 $controller = new TimeController();

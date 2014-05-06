@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // build controller path and name
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'help.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'help.php');
 $controllerName = 'HelpControllerHelp';
 
 // Instantiate controller and execute

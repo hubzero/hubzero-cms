@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL('com_forum', 'manage', 'users', 'super administrator');
-	$jacl->addACL('com_forum', 'manage', 'users', 'administrator');
-	$jacl->addACL('com_forum', 'manage', 'users', 'manager');
-}
-
-jimport('joomla.application.component.view');
-
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'forum.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'sections'));
