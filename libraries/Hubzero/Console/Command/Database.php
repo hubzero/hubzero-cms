@@ -94,12 +94,13 @@ class Database implements CommandInterface
 		$config   = new \JConfig();
 		$now      = \JFactory::getDate();
 		$exclude  = '';
+		$includes = ($this->arguments->getOpt('include-table')) ? (array)$this->arguments->getOpt('include-table') : array();
 
 		if (!$this->arguments->getOpt('all-tables'))
 		{
 			foreach ($tables as $table)
 			{
-				if (strpos($table, $prefix) !== 0)
+				if (strpos($table, $prefix) !== 0 && !in_array(str_replace('#__', $prefix, $table), $includes))
 				{
 					$excludes[] = $config->db . '.' . $table;
 				}
@@ -175,6 +176,12 @@ class Database implements CommandInterface
 			->output
 			->addOverview(
 				'Database utility functions.'
+			)
+			->addArgument(
+				'--include-table: Include a specific table',
+				'Specify a given table to be included in the dump. This primarily
+				would be used to include a given table from the non-prefixed namespace.',
+				'Example: --include-table=migration'
 			)
 			->addArgument(
 				'--all-tables: Include all tables',
