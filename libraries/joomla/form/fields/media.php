@@ -119,12 +119,10 @@ class JFormFieldMedia extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// The text field.
-		//$html[] = '<div class="fltlft">';
-		$html[] = '<div class="input-multimodal">';
-		$html[] = '	<div class="col width-60 fltlft">';
-		$html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . ' readonly="readonly"' . $attr . ' />';
-		//$html[] = '</div>';
+		$html[] = '<div class="input-modal">';
+		$html[] = '	<span class="input-cell">';
+		$html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . ' readonly="readonly"' . $attr . ' />';
+		$html[] = '	</span>';
 
 		$directory = (string) $this->element['directory'];
 		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
@@ -142,11 +140,9 @@ class JFormFieldMedia extends JFormField
 		{
 			$folder = '';
 		}
+
 		// The button.
-		//$html[] = '<div class="button2-left">';
-		//$html[] = '	<div class="blank">';
-		$html[] = '	</div>';
-		$html[] = '	<div class="col width-40 fltrt">';
+		$html[] = '	<span class="input-cell">';
 		$html[] = '		<a class="button modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
 			. ($this->element['readonly'] ? ''
 			: ($link ? $link
@@ -154,18 +150,16 @@ class JFormFieldMedia extends JFormField
 				. $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
 			. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
 		$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a>';
-		//$html[] = '	</div>';
-		//$html[] = '</div>';
+		$html[] = '	</span>';
 
-		//$html[] = '<div class="button2-left">';
-		//$html[] = '	<div class="blank">';
+		$html[] = '	<span class="input-cell">';
 		$html[] = '		<a class="button" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#" onclick="';
 		$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
 		$html[] = 'return false;';
 		$html[] = '">';
 		$html[] = JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
-		$html[] = '	</div>';
-		$html[] = '	<div class="clr"></div>';
+		$html[] = '	</span>';
+
 		$html[] = '</div>';
 
 		// The Preview.

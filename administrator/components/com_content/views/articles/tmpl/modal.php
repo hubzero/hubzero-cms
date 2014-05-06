@@ -22,21 +22,18 @@ $function	= JRequest::getCmd('function', 'jSelectArticle');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
+<h2 class="modal-title"><?php echo JText::_('Select Article'); ?></h2>
 <form action="<?php echo JRoute::_('index.php?option=com_content&view=articles&layout=modal&tmpl=component&function='.$function.'&'.JSession::getFormToken().'=1');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filter clearfix">
-		<div class="left">
-			<label for="filter_search">
-				<?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>
-			</label>
+		<div class="col width-40 fltlft">
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
 			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
 
-			<button type="submit">
-				<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();">
-				<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
-		<div class="right">
+		<div class="col width-60 fltrt">
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>

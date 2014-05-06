@@ -82,9 +82,12 @@ class JFormFieldMenutype extends JFormFieldList
 		");
 
 		$html[] = '<div class="input-modal">';
+		$html[] = '<span class="input-cell">';
 		$html[] = '<input type="text" id="'.$this->id.'" readonly="readonly" disabled="disabled" value="'.$value.'"'.$size.$class.' />';
+		$html[] = '</span><span class="input-cell">';
 		$html[] = '<input type="button" class="modal" value="'.JText::_('JSELECT').'" />';
 		$html[] = '<input type="hidden" name="'.$this->name.'" value="'.htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8').'" />';
+		$html[] = '</span>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);

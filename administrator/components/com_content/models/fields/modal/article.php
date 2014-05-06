@@ -68,15 +68,15 @@ class JFormFieldModal_Article extends JFormField
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
 		// The current user display field.
-		$html[] = '<div class="fltlft">';
-		$html[] = '  <input type="text" id="'.$this->id.'_name" value="'.$title.'" disabled="disabled" size="35" />';
-		$html[] = '</div>';
+		$html[] = '<div class="input-modal">';
+		$html[] = '  <span class="input-cell">';
+		$html[] = '    <input type="text" id="'.$this->id.'_name" value="'.$title.'" disabled="disabled" size="35" />';
+		$html[] = '  </span>';
 
 		// The user select button.
-		$html[] = '<div class="button2-left">';
-		$html[] = '  <div class="blank">';
-		$html[] = '	<a class="modal" title="'.JText::_('COM_CONTENT_CHANGE_ARTICLE').'"  href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_CONTENT_CHANGE_ARTICLE_BUTTON').'</a>';
-		$html[] = '  </div>';
+		$html[] = '  <span class="input-cell">';
+		$html[] = '    <a class="modal button" title="'.JText::_('COM_CONTENT_CHANGE_ARTICLE').'"  href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_CONTENT_CHANGE_ARTICLE_BUTTON').'</a>';
+		$html[] = '  </span>';
 		$html[] = '</div>';
 
 		// The active article id field.
