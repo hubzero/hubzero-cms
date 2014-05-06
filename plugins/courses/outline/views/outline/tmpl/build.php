@@ -48,7 +48,7 @@ $base = $this->course->offering()->link();
 	<p class="error-message">There was an error</p>
 </div>
 
-<div class="outline-main">
+<div id="outline-main" class="outline-main">
 	<div class="delete-tray">
 		<h4>Deleted Assets</h4>
 		<ul class="assets-deleted">
@@ -223,4 +223,10 @@ $base = $this->course->offering()->link();
 			</form>
 		</li>
 	</ul>
+</div>
+
+<div class="session-expired">
+	<h3>Session Expired</h3>
+	<p>Sorry. Your session has expired. You must login again to proceed.</p>
+	<p><a href="<?php echo JRoute::_('index.php?option=com_users&view=login&return='.base64_encode($_SERVER['REQUEST_URI'])); ?>" class="btn btn-warning">Login</a>
 </div>

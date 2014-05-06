@@ -50,6 +50,37 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// Do some craziness to try to indicate session timeout without being overly obtrusive
+	var sessionTimeout = 120 * 60,
+		lastCheck      = new Date().getTime();
+
+	// Get the session lifetime
+	$.ajax({
+		url  : '/api/system/getSessionLifetime',
+		type : 'GET'
+	}).done(function ( data ) {
+		sessionTimeout = data * 60;
+	});
+
+	// Add session tracking (is there a better way?)
+	var outline = document.getElementById('outline-main');
+	outline.addEventListener('click', function ( e ) {
+		var now  = new Date().getTime(),
+			diff = (now - lastCheck) / 1000;
+
+		if (diff > sessionTimeout) {
+			// You shall not pass!
+			e.stopPropagation();
+			e.preventDefault();
+
+			var content = $('.outline-main');
+			content.addClass('expired');
+			$('.session-expired').show();
+		} else {
+			lastCheck = now;
+		}
+	}, true);
+
 	// Initialize Objects
 	HUB.CoursesOutline.asset.init();
 	HUB.CoursesOutline.assetgroup.init();
