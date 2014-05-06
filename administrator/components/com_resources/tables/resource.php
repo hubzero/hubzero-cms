@@ -762,10 +762,7 @@ class ResourcesResource extends JTable
 		{
 			$query .= "LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable='resources' ";
 		}
-		if (isset($filters['favorite'])) 
-		{
-			$query .= ", #__xfavorites AS xf ";
-		}
+
 		if (isset($filters['tag'])) 
 		{
 			$query .= ", #__tags_object AS t, #__tags AS tg ";
@@ -787,10 +784,7 @@ class ResourcesResource extends JTable
 		{
 			$query .= "AND (aa.authorid=" . $this->_db->Quote(intval($filters['author'])) . ") "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect
 		}
-		if (isset($filters['favorite'])) 
-		{
-			$query .= "AND xf.uid=" . $this->_db->Quote($filters['favorite']) . " AND r.id=xf.oid AND xf.tbl='resources' ";
-		}
+
 		if (isset($filters['tag'])) {
 			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $this->_db->getEscaped($filters['tag']) . "' OR tg.alias='" . $this->_db->getEscaped($filters['tag']) . "') ";
 		}
