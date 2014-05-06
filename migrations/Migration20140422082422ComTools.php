@@ -1,17 +1,19 @@
 <?php
 
+use Hubzero\Content\Migration\Base;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Migration script to add params to session table
  **/
-class Migration20140422082422ComTools extends Hubzero_Migration
+class Migration20140422082422ComTools extends Base
 {
 	/**
 	 * Up
 	 **/
-	protected static function up($db)
+	public function up()
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 
@@ -33,7 +35,7 @@ class Migration20140422082422ComTools extends Hubzero_Migration
 	/**
 	 * Up
 	 **/
-	protected static function down($db)
+	public function down()
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 
