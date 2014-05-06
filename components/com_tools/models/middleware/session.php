@@ -183,7 +183,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['shared.list'] instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_cache['shared.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->loadViewperm($filters['sessnum']))
 					{
@@ -196,7 +196,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 					{
 						$results = array();
 					}
-					$this->_cache['shared.list'] = new \Hubzero\ItemList($results);
+					$this->_cache['shared.list'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['shared.list'];
 			break;
@@ -232,8 +232,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 		if ($group)
 		{
-			ximport('Hubzero_Group');
-			$hg = Hubzero_Group::getInstance($group);
+			$hg = \Hubzero\User\Group::getInstance($group);
 			$members = $hg->get('members');
 
 			// merge group members with any passed in username field

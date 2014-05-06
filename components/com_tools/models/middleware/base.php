@@ -31,7 +31,7 @@
 /**
  * Abstract model class
  */
-class MiddlewareModelBase extends \Hubzero\Model
+class MiddlewareModelBase extends \Hubzero\Base\Model
 {
 		/**
 	 * JRegistry
@@ -48,7 +48,7 @@ class MiddlewareModelBase extends \Hubzero\Model
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = MwUtils::getMWDBO();
+		$this->_db = \MwUtils::getMWDBO();
 
 		if ($this->_tbl_name)
 		{
@@ -90,7 +90,7 @@ class MiddlewareModelBase extends \Hubzero\Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_tools');
+			$this->_config = \JComponentHelper::getParams('com_tools');
 		}
 
 		if ($key)

@@ -38,7 +38,7 @@ require_once(__DIR__ . '/middleware/session.php');
 /**
  * Tools middleware model
  */
-class ToolsModelMiddleware extends \Hubzero\Object
+class ToolsModelMiddleware extends \Hubzero\Base\Object
 {
 	/**
 	 * \Hubzero\ItemList
@@ -167,7 +167,7 @@ class ToolsModelMiddleware extends \Hubzero\Object
 		// Find by region
 
 		// Find by country
-		$country = Hubzero_Geo::ipcountry($ip);
+		$country = \Hubzero\Geocode\Geocode::ipcountry($ip);
 		if (!$country)
 		{
 			return new MiddlewareModelZone();
@@ -183,7 +183,7 @@ class ToolsModelMiddleware extends \Hubzero\Object
 		}
 
 		// Find by continent
-		$continent = Hubzero_Geo::getContinentByCountry($country);
+		$continent = \Hubzero\Geocode\Geocode::getContinentByCountry($country);
 		if (!$continent)
 		{
 			return new MiddlewareModelZone();
@@ -225,7 +225,7 @@ class ToolsModelMiddleware extends \Hubzero\Object
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['zones.list'] instanceof \Hubzero\ItemList) || $clear)
+				if (!($this->_cache['zones.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->find('list', $filters))
 					{
@@ -238,7 +238,7 @@ class ToolsModelMiddleware extends \Hubzero\Object
 					{
 						$results = array();
 					}
-					$this->_cache['zones.list'] = new \Hubzero\ItemList($results);
+					$this->_cache['zones.list'] = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_cache['zones.list'];
 			break;
