@@ -76,7 +76,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 								// No item entry
 
 								// Get some resource data
-								$query = "SELECT id, title, introtect FROM `#__resources` WHERE id=" . $this->db->quote($result->oid);
+								$query = "SELECT id, title, introtext FROM `#__resources` WHERE id=" . $this->db->quote($result->oid);
 								$this->db->setQuery($query);
 								$resource = $this->db->loadObject();
 								if (!$resource || !$resource->id)
