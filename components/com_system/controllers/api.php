@@ -49,7 +49,8 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 
 		switch ($this->segments[0]) 
 		{
-			case 'overview': $this->overviewTask(); break;
+			case 'overview':           $this->overviewTask();           break;
+			case 'getSessionLifetime': $this->getSessionLifetimeTask(); break;
 			default:
 				$this->serviceTask();
 			break;
@@ -123,6 +124,23 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		JPluginHelper::importPlugin('hubzero');
 		$dispatcher = JDispatcher::getInstance();
 		$response->overview = $dispatcher->trigger('onSystemOverview');
+
+		$this->setMessage($response);
+	}
+
+	/**
+	 * Get session lifetime, in minutes
+	 *
+	 * @return    void
+	 */
+	private function getSessionLifetimeTask()
+	{
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+
+		$config = new \JConfig();
+
+		$response   = array();
+		$response[] = $config->lifetime;
 
 		$this->setMessage($response);
 	}
