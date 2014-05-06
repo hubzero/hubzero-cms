@@ -39,80 +39,12 @@
 	}
 
 // Tables
-	table {
-		width: 100%;
-		max-width: 100%;
-		margin: 0;
-		border-collapse: separate;
+@tableCaptionPadding:   0.41803399em 1.21803399em;
+@tableCellPadding:      0.61803399em;
+@tableCellPaddingFirst: 1.61803399em;
+@tableCellPaddingLast:  1.61803399em;
 
-		caption {
-			text-align: left;
-			//padding: 0.61803399em 1.61803399em;
-			padding: 0.41803399em 1.21803399em;
-			text-align: left;
-			color: #959595;
-			font-weight: bold;
-		}
-		th,
-		td {
-			padding: 0.61803399em;
-			text-align: left;
-		}
-		tfoot th,
-		tfoot td {
-			border-right: 1px solid #eee;
-		}
-		tbody th,
-		tbody td {
-			border-bottom: 1px solid #e1e1e1;
-			border-left: 1px dotted #e9e9e9;
-		}
-		tbody tr:hover td {
-			background-color: #ffe; //rgba(0, 0, 0, 0.1)
-		}
-		thead {
-			th {
-				text-align: left;
-				font-weight: bold;
-				white-space: nowrap;
-				border-bottom: 1px solid #ddd;
-				border-left: 1px solid #e9e9e9;
-				color: #888;
-
-				a,
-				a:link, 
-				a:active, 
-				a:visited {
-					color: #888;
-				}
-				a:hover {
-					color: #000;
-					text-decoration: none;
-				}
-				&.active,
-				a.active {
-					color: #333;
-				}
-			}
-		}
-		tfoot tr th:first-child,
-		tfoot tr td:first-child,
-		thead tr th:first-child,
-		thead tr td:first-child,
-		tbody tr th:first-child,
-		tbody tr td:first-child {
-			padding-left: 1.61803399em; //2.23606798em;
-			border-left: none;
-		}
-		tfoot tr th:last-child,
-		tfoot tr td:last-child,
-		thead tr th:last-child,
-		thead tr td:last-child,
-		tbody tr th:last-child,
-		tbody tr td:last-child {
-			padding-right: 1.61803399em; //2.23606798em;
-		}
-	}
+@import "_tables.less";
 
 // Tooltips
 @import "_hint.less";
@@ -123,39 +55,22 @@
 // Components: Alerts
 @import "_notifications.less";
 
+// Pagination
+@import "_pagination.less";
+
 // Utility classes
 @import "_utilities.less"; // Has to be last to override when necessary
 
-// Wrap
-/*#wrap {
-	width: 320px;
-	margin: 0 auto 100px auto;
-	.border-radius(0.27em);
-	.box-shadow(0 0 0 0.618em rgba(0, 0, 0, 0.08));
-}
-// Content
-#component-content {
-	padding: 0;
-	margin: 0;
-	background: #f2f2f2;
-	.border-radius(0.27em);
-	.box-shadow(0 0 2px rgba(0, 0, 0, 0.4));
-}
-// Main
-#main {
-	padding: 1.61803399em;
-	overflow: hidden;
-	zoom: 1;
-
-	p:last-child {
-		padding-bottom: 0;
-		margin-bottom: 0;
-	}
-}*/
 #component-form>fieldset {
 	margin: 0;
 }
-// Configuration
+#adminForm {
+	border-top: 1px solid transparent;
+	background: #f9f9f9;
+}
+
+// Modal Header
+h2.modal-title,
 div.configuration {
 	font-size: 1.1em;
 	line-height: 1;
@@ -174,7 +89,8 @@ div.configuration {
 	right: 0;
 	z-index: 555;
 	overflow: hidden;
-
+}
+div.configuration {
 	// Icon
 	&:before {
 		content: "\2699";
@@ -202,25 +118,8 @@ div.configuration {
 		}
 	}
 }
-h2.modal-title {
-	font-size: 1.1em;
-	line-height: 1;
-	font-weight: 400;
-	letter-spacing: 0.15em;
-	text-transform: uppercase;
-	color: #333;
-	margin: 0;
-	padding: 1em 1.618em;
-	background: #333;
-	color: #fff;
-	.box-shadow(0 2px 0 rgba(0, 0, 0, 0.06));
-	position: fixed;
-	left: 0;
-	top: 0;
-	right: 0;
-	z-index: 555;
-	overflow: hidden;
-}
+
+// Menu types
 .menu_types {
 	margin: 0.618em 1.618em;
 	list-style: none;
@@ -237,8 +136,10 @@ h2.modal-title {
 	display: none;
 }
 
+// Pane switcher
 @import "_panes.less";
 
+// Hide systme debug bar
 body #system-debug {
 	display: none !important;
 }

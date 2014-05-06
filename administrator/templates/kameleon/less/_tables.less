@@ -1,0 +1,158 @@
+//
+// @package     hubzero-cms
+// @file        templates/kameleon/less/_tables.less
+// @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Tables
+// --------------------------------------------------
+table {
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	border-collapse: separate;
+
+	caption {
+		text-align: left;
+		padding: @tableCaptionPadding;
+		text-align: left;
+		color: #959595;
+		font-weight: bold;
+	}
+	th,
+	td {
+		padding: @tableCellPadding;
+		text-align: left;
+	}
+	tfoot th,
+	tfoot td {
+		border-right: 1px solid #eee;
+	}
+	tbody th,
+	tbody td {
+		border-bottom: 1px solid #e9e9e9;
+		border-left: 1px dotted #f4f4f4;
+	}
+	thead {
+		th {
+			text-align: left;
+			font-weight: bold;
+			white-space: nowrap;
+			border-bottom: 1px solid #dddddd;
+			border-left: 1px solid #eee;
+			color: #888;
+
+			img {
+				margin-left: 0.2em;
+			}
+
+			a,
+			a:link, 
+			a:active, 
+			a:visited {
+				color: #888;
+			}
+			a:hover {
+				color: #000;
+				text-decoration: none;
+			}
+			&.active,
+			a.active {
+				color: #333;
+			}
+
+			a.sort:after {
+				content: "\2304";
+				font-family: "Fontcons";
+				margin-left: 0.4em;
+				color: #ccc;
+			}
+			a.sort:hover:after {
+				color: #000;
+			}
+			a.desc:after {
+				content: "\2303";
+			}
+			a.asc:after {
+				content: "\2304";
+			}
+			a.sort.active:after {
+				color: #333;
+			}
+		}
+	}
+	tfoot tr th:first-child,
+	tfoot tr td:first-child,
+	thead tr th:first-child,
+	thead tr td:first-child,
+	tbody tr th:first-child,
+	tbody tr td:first-child {
+		padding-left: @tableCellPaddingFirst;
+		border-left: none;
+	}
+	tfoot tr th:last-child,
+	tfoot tr td:last-child,
+	thead tr th:last-child,
+	thead tr td:last-child,
+	tbody tr th:last-child,
+	tbody tr td:last-child {
+		padding-right: @tableCellPaddingLast;
+	}
+
+	// Admin list
+	&.adminlist {
+		thead th {
+			font-weight: 500;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+			font-size: 0.85em;
+			padding: 1.15em;
+
+			&:first-child {
+				padding-left: 2.63606798em;
+			}
+			&:last-child {
+				padding-right: 2.63606798em;
+			}
+		}
+		tbody tr {
+			background-color: #fff;
+
+			// Archived entries
+			&.archived th,
+			&.archived td,
+			&.archived a {
+				color: #bbb;
+			}
+			// Highlight row on hover
+			&:hover td {
+				background-color: #ffe;
+			}
+			// Make the last row's border a little stronger
+			&:last-child th,
+			&:last-child td {
+				border-bottom: 1px solid #dddddd;
+			}
+		}
+
+		select,
+		.input-text,
+		input[type=text],
+		input[type=password],
+		input[type=email],
+		textarea {
+			width: 100%;
+			max-width: 100%;
+		}
+		td.order {
+			.input-text,
+			input[type=text],
+			input[type=password],
+			input[type=email],
+			textarea {
+				width: auto;
+			}
+		}
+	}
+}

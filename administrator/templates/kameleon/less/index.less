@@ -55,155 +55,14 @@ ul {
 		color: #000;
 		text-decoration: underline;
 	}
+
 // Tables
-	table {
-		width: 100%;
-		max-width: 100%;
-		margin: 0;
-		border-collapse: separate;
+@tableCaptionPadding:   0.61803399em 1.61803399em;
+@tableCellPadding:      1em;
+@tableCellPaddingFirst: 2.23606798em;
+@tableCellPaddingLast:  2.23606798em;
 
-		caption {
-			text-align: left;
-			padding: 0.61803399em 1.61803399em;
-			text-align: left;
-			color: #959595;
-			font-weight: bold;
-		}
-		th,
-		td {
-			padding: 1em;
-			text-align: left;
-		}
-		tfoot th,
-		tfoot td {
-			border-right: 1px solid #eee;
-		}
-		tbody th,
-		tbody td {
-			border-bottom: 1px solid #e9e9e9;
-			border-left: 1px dotted #f4f4f4;
-		}
-		thead {
-			th {
-				text-align: left;
-				font-weight: bold;
-				white-space: nowrap;
-				border-bottom: 1px solid #dddddd;
-				border-left: 1px solid #eee;
-				color: #888;
-
-				img {
-					margin-left: 0.2em;
-				}
-
-				a,
-				a:link, 
-				a:active, 
-				a:visited {
-					color: #888;
-				}
-				a:hover {
-					color: #000;
-					text-decoration: none;
-				}
-				&.active,
-				a.active {
-					color: #333;
-				}
-
-				a.sort:after {
-					content: "\2304";
-					font-family: "Fontcons";
-					margin-left: 0.4em;
-					color: #ccc;
-				}
-				a.sort:hover:after {
-					color: #000;
-				}
-				a.desc:after {
-					content: "\2303";
-				}
-				a.asc:after {
-					content: "\2304";
-				}
-				a.sort.active:after {
-					color: #333;
-				}
-			}
-		}
-		tfoot tr th:first-child,
-		tfoot tr td:first-child,
-		thead tr th:first-child,
-		thead tr td:first-child,
-		tbody tr th:first-child,
-		tbody tr td:first-child {
-			padding-left: 2.23606798em;
-			border-left: none;
-		}
-		tfoot tr th:last-child,
-		tfoot tr td:last-child,
-		thead tr th:last-child,
-		thead tr td:last-child,
-		tbody tr th:last-child,
-		tbody tr td:last-child {
-			padding-right: 2.23606798em;
-		}
-	}
-
-	// Admin list
-	table.adminlist {
-		thead th {
-			font-weight: 500;
-			letter-spacing: 0.15em;
-			text-transform: uppercase;
-			font-size: 0.85em;
-			padding: 1.15em;
-
-			&:first-child {
-				padding-left: 2.63606798em;
-			}
-			&:last-child {
-				padding-right: 2.63606798em;
-			}
-		}
-		tbody tr {
-			background-color: #fff;
-		}
-		/*tbody tr.archived {
-			background-color: rgba(255, 229, 229, 0.025);
-		}*/
-		tbody tr.archived th,
-		tbody tr.archived td,
-		tbody tr.archived a {
-			color: #bbb;
-		}
-		tbody tr:hover td {
-			background-color: #ffe;
-		}
-		tbody tr:last-child th,
-		tbody tr:last-child td {
-			border-bottom: 1px solid #dddddd;
-		}
-
-		select,
-		.input-text,
-		input[type=text],
-		input[type=password],
-		input[type=email],
-		textarea {
-			width: 100%;
-			max-width: 100%;
-		}
-		td.order {
-			.input-text,
-			input[type=text],
-			input[type=password],
-			input[type=email],
-			textarea {
-				width: auto;
-			}
-		}
-	}
+@import "_tables.less";
 
 	.active-sort {
 		display: inline-block;
@@ -240,20 +99,19 @@ ul {
 	}
 
 // Wrap
-	#wrap-container {
-	}
 	#wrap {
 		margin: 0;
 		padding: 0;
 		background: #f9f9f9;
-		//border-left: 1px solid #dadada;
 	}
+
 // Content
 	#component-content {
 		position: relative;
 		padding-top: 5.4em;
 		.clearfix();
 	}
+
 // Footer
 	@import "_footer.less";
 
@@ -272,37 +130,6 @@ ul {
 	}
 
 // filters
-	fieldset#filter-bar {
-		text-align: left;
-		border: none;
-		margin: 1.61803399em 0 0 0;
-		padding: 0 2.23606798em 1.61803399em 2.23606798em;
-		border-bottom: 1px solid #eee;
-		.clearfix();
-
-		label,
-		legend {
-			display: none;
-		}
-		button,
-		input,
-		select {
-			width: auto;
-			max-width: 11em;
-			margin-bottom: 0;
-		}
-		.selector {
-			margin-top: 0.2em;
-
-			select {
-				width: 100%;
-				max-width: 50em;
-			}
-		}
-		.fltrt {
-			text-align: right;
-		}
-	}
 	form#application-form,
 	form#item-form {
 		border: none;
@@ -331,10 +158,6 @@ ul {
 			visibility: hidden;
 			line-height: 0;
 		}
-
-		//&.radio {
-		//	display: block;
-		//}
 
 		&.adminform {
 			padding: 0;
@@ -393,6 +216,7 @@ ul {
 		}
 	}
 
+// Data container
 	.data-wrap {
 		background-color: rgba(0, 0, 0, 0.075);
 		border: 1px solid rgba(0, 0, 0, 0.1);
@@ -458,12 +282,13 @@ ul {
 		}
 	}
 
+// Access levels
 	.access {
 		&.public {
-			color: green; //#7F913C;
+			color: green;
 		}
 		&.registered {
-			color: blue; //#e84c3d;
+			color: blue;
 		}
 		&.special {
 			color: #111;
@@ -481,6 +306,7 @@ ul {
 		}
 	}
 
+// Calendar
 	.ui-datepicker {
 		background: #111111;
 		background: rgba(0, 0, 0, 0.8);
@@ -572,6 +398,7 @@ ul {
 		}
 	}
 
+// Tabs
 	dl.tabs {
 		float: left;
 		margin: 10px 0 -1px 0;
@@ -704,6 +531,7 @@ ul {
 		margin-bottom: 20px;
 	}*/
 
+// MEdia component
 .com_media {
 	legend {
 		text-indent: 0;
@@ -741,11 +569,21 @@ ul {
 // Tooltips
 @import "_hint.less";
 @import "_tooltip.less";
+
+// Meta info
 @import "_meta.less";
+
+// Icons
 @import "_icons.less";
+
+// Pane sliders
 @import "_panes.less";
+
+// Modal windows
 @import "_modal.less";
+
 // Utility classes
 @import "_utilities.less"; // Has to be last to override when necessary
 
+// Dark header
 @import "_dark.less";

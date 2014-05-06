@@ -39,6 +39,7 @@
 	#editor-xtd-buttons a,
 	a.button,
 	button,
+	input[type=button],
 	input[type=submit] {
 		font-family: @sansFontFamily;
 		display: inline-block;
@@ -71,6 +72,8 @@
 	a.button:focus,
 	button:hover,
 	button:focus,
+	input[type=button]:hover,
+	input[type=button]:focus,
 	input[type=submit]:hover,
 	input[type=submit]:focus {
 		background: #e8e8e8;
@@ -313,11 +316,16 @@
 		}
 	}
 	.input-modal {
-		.input-text,
-		input[type=text],
-		input[type=password],
-		input[type=email] {
-			width: 72%;
+		display: table;
+
+		span.input-cell {
+			display: table-cell;
+			padding-left: 0.5em;
+
+			&:first-child {
+				width: 100%;
+				padding-left: 0;
+			}
 		}
 	}
 
@@ -345,5 +353,37 @@
 				padding: 0;
 				margin: 0;
 			}
+		}
+	}
+
+	fieldset#filter-bar {
+		text-align: left;
+		border: none;
+		margin: 1.61803399em 0 0 0;
+		padding: 0 2.23606798em 1.61803399em 2.23606798em;
+		border-bottom: 1px solid #eee;
+		.clearfix();
+
+		label,
+		legend {
+			display: none;
+		}
+		button,
+		input,
+		select {
+			width: auto;
+			max-width: 11em;
+			margin-bottom: 0;
+		}
+		.selector {
+			margin-top: 0.2em;
+
+			select {
+				width: 100%;
+				max-width: 50em;
+			}
+		}
+		.fltrt {
+			text-align: right;
 		}
 	}
