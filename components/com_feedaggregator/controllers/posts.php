@@ -270,23 +270,34 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 						if(isset($page->entry) == TRUE)
 						{
 							$items = $page->entry;
+							$feedType = 'ATOM';
 						}
 						else
 						{
 							$items = $page->channel->item; //gets the items of the channel
+							$feedType = 'RSS';
 						}
 
 						foreach($items as $item)
 						{
-							if(in_array($item->link, $savedURLS) == FALSE) //checks to see if we have this item
+							if ($feedType == 'ATOM')
 							{
-								$post = new FeedAggregatorModelPosts;
-								$post->set('title', (string)$item->title);
-								$post->set('url', (string) $item->link);
-								$post->set('feed_id', (integer) $feed->id);
-								$post->set('status', 0);
-								if(isset($page->entry) == TRUE) //ATOM
+								// get the href attribute of the orignal content link
+								foreach($item->link->attributes() as $link)
 								{
+									$link = $link;
+								}
+								
+								if (in_array($link, $savedURLS) == FALSE) //checks to see if we have this item
+								{
+									$post = new FeedAggregatorModelPosts; //create post object
+									$post->set('title', (string)$item->title); 
+									$post->set('feed_id', (integer) $feed->id);
+									$post->set('status', 0);  //force new status
+									
+									//ATOM original content link
+									$post->set('url', (string) $link);
+									
 									if(isset($item->published) == TRUE)
 									{
 										$post->set('created', strtotime($item->published));
@@ -295,20 +306,27 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 									{
 										$post->set('created', strtotime($item->updated));
 									}
+									
+									$post->set('description', (string) strip_tags($item->summary, '<img>'));											
+								} // end check for prior existance 
+								
+							}
+							else if ($feedType == 'RSS')
+							{
+								$post = new FeedAggregatorModelPosts; //create post object
+								$post->set('title', (string)$item->title);
+								$post->set('feed_id', (integer) $feed->id);
+								$post->set('status', 0);  //force new status
+								$post->set('created', strtotime($item->pubDate));
+								$post->set('description', (string) strip_tags($item->description, '<img>'));
+								$post->set('url', (string) $item->link);
+							}
 
-									$post->set('description', (string) strip_tags($item->summary, '<img>'));
-								}
-								else // RSS
-								{
-									$post->set('created', strtotime($item->pubDate));
-									$post->set('description', (string) strip_tags($item->description, '<img>'));
-								}
-								$post->store();
-							} // end if
-
+							$post->store(); //save the post
 						} //end foreach
 					}//end if
 				}
+				
 				// Output messsage and redirect
 				$this->setRedirect(
 						'index.php?option=' . $this->_option . '&controller=posts&filterby=all',
