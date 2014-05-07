@@ -63,6 +63,10 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 		<jdoc:include type="head" />
 
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+		<![endif]-->
+
 		<!--[if IE 9]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
