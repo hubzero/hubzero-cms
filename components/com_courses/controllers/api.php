@@ -165,14 +165,17 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$unit->set('title', JRequest::getString('title', $title));
 		$unit->set('alias', strtolower(str_replace(' ', '', $unit->get('title'))));
 
+		$config = new \JConfig();
+		$offset = $config->offset;
+
 		// If we have dates coming in, save those
 		if($publish_up = JRequest::getVar('publish_up', false))
 		{
-			$unit->set('publish_up', $publish_up);
+			$unit->set('publish_up', JFactory::getDate($publish_up, $offset)->toSql());
 		}
 		if($publish_down = JRequest::getVar('publish_down', false))
 		{
-			$unit->set('publish_down', $publish_down);
+			$unit->set('publish_down', JFactory::getDate($publish_down, $offset)->toSql());
 		}
 
 		// When creating a new unit
