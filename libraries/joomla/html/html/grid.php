@@ -296,7 +296,7 @@ abstract class JHtmlGrid
 	 */
 	public static function order($rows, $image = 'save.png', $task = 'saveorder')
 	{
-		$image = JHtml::_('image','admin/'.$image, JText::_('JLIB_HTML_SAVE_ORDER'), NULL, true);
+		$image = '<span>' . JText::_('JLIB_HTML_SAVE_ORDER') . '</span>';//JHtml::_('image','admin/'.$image, JText::_('JLIB_HTML_SAVE_ORDER'), NULL, true);
 		$href = '<a href="javascript:saveorder(' . (count($rows) - 1) . ', \'' . $task . '\')" class="saveorder" title="' . JText::_('JLIB_HTML_SAVE_ORDER') . '">' . $image . '</a>';
 
 		return $href;
