@@ -40,6 +40,8 @@ HUB.Modules.MySessions = {
 	sessionSnapshots: function() {
 		var $ = this.jQuery;
 		
+		this.sessionSnapshotImages(false);
+
 		//show session snapshots in lightbox
 		$('.session-snapshot a').on('click',function(event) {
 			
@@ -61,6 +63,80 @@ HUB.Modules.MySessions = {
 							</div> \
 						</div>'
 			});
+		});
+	},
+
+	sessionSnapshotImages: function(retry)
+	{
+		var $      = this.jQuery
+			module = this;
+
+		$('.session').each(function(index, el) {
+			var session  = $(this),
+				snapshot = session.find('img.snapshot-main'),
+				source   = snapshot.attr('data-src');
+
+			if (snapshot.length && source != '')
+			{
+				$.ajax({
+					type: 'get',
+					url: source,
+					success: function()
+					{
+						session
+							.find('img.snapshot')
+							.removeAttr('data-src')
+							.addClass('refreshable')
+							.attr('src', source)
+							.parent().addClass('loaded');
+					},
+					error: function(jqXHR, status, error)
+					{
+						setTimeout(function(){
+							module.sessionSnapshotImages(true);
+						}, 5000);
+					}
+				});
+			}
+		});
+
+		// refresh snapshots
+		if (!retry)
+		{
+			setInterval(function() {
+				module.refreshSessionSnapshotImages();
+			}, 60000);
+		}
+	},
+
+	refreshSessionSnapshotImages: function()
+	{
+		var $ = this.jQuery,
+			d = new Date();
+
+		// retake screenshots
+		$.ajax({
+			type: 'post',
+			url: '/api/tools/screenshots',
+			success: function()
+			{
+				$('.session').each(function(index, el) {
+					var session  = $(this),
+						snapshot = session.find('img.snapshot-main'),
+						source   = snapshot.attr('src');
+
+					if (snapshot.hasClass('refreshable'))
+					{
+						// remove old version
+							source = source.replace(/&v=\d{13}/g,'');
+
+						// set new source
+						session
+							.find('img.snapshot')
+							.attr('src', source + '&v=' + d.getTime());
+					}					
+				});
+			}
 		});
 	},
 	

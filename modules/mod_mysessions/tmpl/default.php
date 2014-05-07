@@ -72,11 +72,11 @@ defined('_JEXEC') or die('Restricted access');
 						<?php if ($this->params->get('show_screenshots', 0)) : ?>
 							<?php if ($this->params->get('quick_launch', 0)) : ?>
 								<a class="session-title-quicklaunch tooltips" title="Quick Launch :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
-									<img src="<?php echo $snapshot; ?>" />
+									<img class="snapshot" data-src="<?php echo $snapshot; ?>" />
 								</a>
 							<?php else : ?>
 								<div class="session-title-icon">
-									<img src="<?php echo $snapshot; ?>" />
+									<img class="snapshot" data-src="<?php echo $snapshot; ?>" />
 								</div>
 							<?php endif; ?>
 						<?php else : ?>
@@ -94,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 							<div class="session-details-left">
 								<div class="session-snapshot">
 									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="<?php echo $session->sessname; ?>">
-										<img src="<?php echo $snapshot; ?>" />
+										<img class="snapshot snapshot-main" data-src="<?php echo $snapshot; ?>" />
 									</a>
 								</div>
 							</div>
@@ -116,16 +116,16 @@ defined('_JEXEC') or die('Restricted access');
 							<?php endif; ?>
 						
 							<div class="session-buttons">
-								<a class="btn resume" href="<?php echo $resumeLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
+								<a class="btn icon-resume resume" href="<?php echo $resumeLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 									<?php echo ucfirst( JText::_('MOD_MYSESSIONS_RESUME') ); ?>
 								</a>
 								<?php $tcls = ($this->params->get('terminate_double_check', 1)) ? 'terminate-confirm' : 'terminate'; ?>
 								<?php if($this->juser->get('username') == $session->username) : ?>
-									<a class="btn <?php echo $tcls; ?>" href="<?php echo $terminateLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>">
+									<a class="btn icon-terminate <?php echo $tcls; ?>" href="<?php echo $terminateLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>">
 										<?php echo ucfirst( JText::_('MOD_MYSESSIONS_TERMINATE') ); ?>
 									</a>
 								<?php else : ?>
-									<a class="btn disconnect" href="<?php echo $disconnectLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>">
+									<a class="btn icon-disconnect disconnect" href="<?php echo $disconnectLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>">
 										<?php echo ucfirst( JText::_('MOD_MYSESSIONS_DISCONNECT') ); ?>
 									</a>
 								<?php endif; ?>

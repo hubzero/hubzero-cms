@@ -95,6 +95,7 @@ div.draggable .session-list ul {
 .session-title-bar .session-title-icon {
 	display:block;
 	width:20px;
+	height:20px;
 	float:left;
 	border:none;
 	border: 1px solid #FFF;
@@ -102,6 +103,23 @@ div.draggable .session-list ul {
 	-moz-box-shadow: 0 0 1px rgba(0,0,0,1), 0 1px 1px rgba(0,0,0,0.3);
 	-o-box-shadow: 0 0 1px rgba(0,0,0,1), 0 1px 1px rgba(0,0,0,0.3);
 	box-shadow: 0 0 1px rgba(0,0,0,1), 0 1px 1px rgba(0,0,0,0.3);
+	background: #ccc;
+	position: relative;
+}
+.session-title-bar a.session-title-quicklaunch:before,
+.session-title-bar .session-title-icon:before {
+	content: '\f0c2';
+	font-family: 'Fontcons';
+	position: absolute;
+	top: 1px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	color: #888;
+}
+.session-title-bar a.session-title-quicklaunch.loaded:before,
+.session-title-bar .session-title-icon.loaded:before {
+	display: none;
 }
 .session-title-bar a.session-title-quicklaunch img,
 .session-title-bar .session-title-icon img {
@@ -233,7 +251,7 @@ div.draggable .session-list ul {
 .session-buttons a {
 	margin: 5px 5px 0 0;
 }
-
+/*
 .session-buttons a.btn {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
@@ -301,6 +319,7 @@ div.draggable .session-list ul {
 	-o-border-radius: 0.25em 0 0 0.25em;
 	border-radius: 0.25em 0 0 0.25em;
 }
+*/
 .session-buttons .resume:before {
 	content: '\25B6';
 }
