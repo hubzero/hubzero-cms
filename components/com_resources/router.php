@@ -168,7 +168,13 @@ function ResourcesParseRoute($segments)
 	{
 		switch ($segments[1])
 		{
-			case 'download': $vars['task'] = 'download'; break;
+			case 'download':
+				$vars['task'] = 'download';
+				if (isset($segments[2])) 
+				{
+					$vars['file'] = $segments[2];
+				}
+			break;
 			case 'play':     $vars['task'] = 'play';     break;
 			case 'watch':	 $vars['task'] = 'watch';	 break;
 			case 'video':	 $vars['task'] = 'video';	 break;
