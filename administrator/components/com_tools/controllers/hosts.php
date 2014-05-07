@@ -114,13 +114,6 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			$this->view->filters['limit']
 		);
 
-		$componentcss = JPATH_COMPONENT . DS . 'tools.css';
-		if (file_exists($componentcss)) 
-		{
-			$jdocument = JFactory::getDocument();
-			$jdocument->addStyleSheet('components' . DS . $this->_option . DS . 'tools.css?v=' . filemtime($componentcss));
-		}
-
 		// Set any errors
 		if ($this->getError())
 		{

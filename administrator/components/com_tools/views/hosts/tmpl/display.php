@@ -8,6 +8,8 @@ JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
 JToolBarHelper::help('hosts');
+
+$this->css();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

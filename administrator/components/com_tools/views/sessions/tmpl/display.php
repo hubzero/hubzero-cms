@@ -2,9 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(JText::_('Tools'), 'tools.png');
-//JToolBarHelper::spacer();
-//JToolBarHelper::addNew();
+JToolBarHelper::title(JText::_('Tools') . ': ' . JText::_('Sessions'), 'tools.png');
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
 JToolBarHelper::help('sessions');
@@ -27,7 +25,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<a class="refresh" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=&amp;appname=&amp;exechost=&amp;start=0">
+		<a class="refresh button" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=&amp;appname=&amp;exechost=&amp;start=0">
 			<span><?php echo JText::_('Clear filters'); ?></span>
 		</a>
 	</fieldset>
@@ -69,7 +67,7 @@ if ($this->rows)
 					</span>
 				</td>
 				<td>
-					<a class="user" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=<?php echo $row->username; ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=<?php echo $row->username; ?>">
 						<span><?php echo $this->escape($row->username); ?></span>
 					</a>
 				</td>
