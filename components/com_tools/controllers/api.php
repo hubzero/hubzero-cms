@@ -16,6 +16,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			case 'index':		$this->index();				break;
 			case 'info':		$this->info();				break;
 			case 'screenshot':	$this->screenshot();		break;
+			case 'screenshots': $this->screenshots();       break;
 			case 'invoke':		$this->invoke();			break;
 			case 'view':		$this->view();				break;
 			case 'stop':		$this->stop();				break;
@@ -210,6 +211,36 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//return result
 		$object = new stdClass();
 		$object->tool = $tool_info;
+		$this->setMessageType( $format );
+		$this->setMessage( $object );
+	}
+
+	/**
+	 * Method to take session screenshots for user
+	 *
+	 * @return     void
+	 */
+	private function screenshots()
+	{
+		// get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+
+		// make sure we have a user
+		if ($result === false)	return $this->not_found();
+
+		// request params
+		$format = JRequest::getVar('format', 'json');
+
+		// take new screenshots for user
+		$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . $result->get('username') . " 2>&1 </dev/null";
+		exec($cmd, $results, $status);
+
+		// object to return
+		$object = new stdClass();
+		$object->screenshots_taken = true;
+
+		// set format & return
 		$this->setMessageType( $format );
 		$this->setMessage( $object );
 	}
