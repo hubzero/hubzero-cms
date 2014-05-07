@@ -45,6 +45,10 @@ function toolsBuildRoute(&$query)
 
 	if (!empty($query['controller'])) 
 	{
+		if ($query['controller'] == 'media')
+		{
+			$segments[] = $query['controller'];
+		}
 		unset($query['controller']);
 	}
 	if (!empty($query['app'])) 
@@ -67,11 +71,6 @@ function toolsBuildRoute(&$query)
 		$segments[] = $query['sess'];
 		unset($query['sess']);
 	}*/
-	if (!empty($query['file'])) 
-	{
-		$segments[] = $query['file'];
-		unset($query['file']);
-	}
 	if (isset($query['return']) && $query['return'] == '') 
 	{
 		unset($query['return']);
@@ -101,6 +100,10 @@ function toolsParseRoute($segments)
 	{
 		switch ($segments[0])
 		{
+			case 'media':
+				$vars['controller'] = 'media';
+			break;
+
 			case 'pipeline':
 			case 'create':
 				$vars['task'] = $segments[0];
@@ -122,7 +125,7 @@ function toolsParseRoute($segments)
 				}
 				$vars['task'] = 'assets';
 				$vars['controller'] = 'tools';
-				$vars['type'] = $segments[1];
+     				$vars['type'] = $segments[1];
 				$vars['file'] = $segments[2];
 				return $vars;
 			break;
@@ -151,35 +154,6 @@ function toolsParseRoute($segments)
 				$vars['task'] = $segments[0];
 			break;
 
-			// Zones controller
-			case 'zones':
-				if (isset($segments[3]))
-				{
-					$vars['option'] = 'com_tools';
-					$vars['controller'] = 'zones';
-					$vars['task'] = $segments[1];
-
-					switch($vars['task'])
-					{
-						case 'assets':
-							$vars['id'] = $segments[2];
-							$vars['file'] = $segments[3]; //"/$segments[2]/$segments[3]";
-							array_pop($segments);
-							array_pop($segments);
-							array_pop($segments);
-							array_pop($segments);
-							break;
-						default:
-							$vars['task'] = 'notfound';
-							break;
-					}
-				}
-				else
-				{
-					$vars['task'] = 'notfound';
-				}
-				break;
-
 			default:
 				// This is an alias
 				// /tools/mytool => /resources/mytool
@@ -193,6 +167,13 @@ function toolsParseRoute($segments)
 	{
 		switch ($segments[1])
 		{
+			case 'delete':
+				if (isset($vars['controller']) && $vars['controller'] == 'media')
+				{
+					$vars['task'] = $segments[1];
+				}
+			break;
+
 			case 'publish':
 			case 'install':
 			case 'retire':
@@ -241,14 +222,12 @@ function toolsParseRoute($segments)
 			break;
 
 			// Sessions controller
-			case 'reinvoke':
 			case 'invoke':
 				$vars['option'] = 'com_tools';
 				$vars['controller'] = 'sessions';
-				$vars['app']  = $segments[0];
+				$vars['app'] = $segments[0];
 				$vars['task'] = $segments[1];
-				if (isset($segments[2])) 
-				{
+				if (isset($segments[2])) {
 					$vars['version'] = $segments[2];
 				}
 			break;
@@ -290,7 +269,6 @@ function toolsParseRoute($segments)
 				$vars['task'] = 'css';
 				$vars['controller'] = 'tools';
 			break;
-
 
 			default:
 				$vars['sess'] = $segments[1];
