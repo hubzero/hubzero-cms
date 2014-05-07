@@ -4,12 +4,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ( $this->task == 'edit' ? JText::_( 'Edit Host' ) : JText::_( 'New Host' ) );
 
-JToolBarHelper::title( JText::_( 'Tools' ).': <small><small>[ '. $text.' ]</small></small>', 'tools.png' );
+JToolBarHelper::title( JText::_( 'Tools' ).': '. $text, 'tools.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+JToolBarHelper::spacer();
+JToolBarHelper::help('host');
 
 ?>
 <script type="text/javascript">

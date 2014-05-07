@@ -34,6 +34,8 @@ JToolBarHelper::title(JText::_('Tools'), 'tools.png');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
+JToolBarHelper::spacer();
+JToolBarHelper::help('zones');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

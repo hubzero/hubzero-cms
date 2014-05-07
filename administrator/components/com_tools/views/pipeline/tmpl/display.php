@@ -4,6 +4,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( JText::_( 'Tools' ), 'tools.png' );
 JToolBarHelper::preferences('com_tools', '550');
+JToolBarHelper::spacer();
+JToolBarHelper::help('tools');
+
+$this->css();
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -24,7 +28,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('SEARCH'); ?></label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>

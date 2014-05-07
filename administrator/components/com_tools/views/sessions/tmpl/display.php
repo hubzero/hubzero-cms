@@ -6,6 +6,8 @@ JToolBarHelper::title(JText::_('Tools'), 'tools.png');
 //JToolBarHelper::spacer();
 //JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
+JToolBarHelper::spacer();
+JToolBarHelper::help('sessions');
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -46,7 +48,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>

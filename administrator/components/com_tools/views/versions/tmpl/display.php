@@ -4,6 +4,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( JText::_( 'Tools' ), 'tools.png' );
 JToolBarHelper::preferences('com_tools', '550');
+JToolBarHelper::spacer();
+JToolBarHelper::help('versions');
 ?>
 
 <script type="text/javascript">
@@ -20,7 +22,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th colspan="6">

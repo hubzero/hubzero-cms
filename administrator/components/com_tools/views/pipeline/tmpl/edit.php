@@ -7,6 +7,8 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 JToolBarHelper::title(JText::_('COM_TOOLS').': '. $text, 'tools.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('tool');
 ?>
 
 <script type="text/javascript">

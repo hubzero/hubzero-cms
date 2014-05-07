@@ -6,6 +6,8 @@ JToolBarHelper::title(JText::_('Tools'), 'tools.png');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
+JToolBarHelper::spacer();
+JToolBarHelper::help('hosts');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

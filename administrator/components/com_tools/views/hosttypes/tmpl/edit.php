@@ -7,6 +7,7 @@ $text = ($this->task == 'edit' ? JText::_('Edit Host') : JText::_('New Host'));
 JToolBarHelper::title(JText::_( 'Tools' ).': '. $text, 'tools.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+JToolBarHelper::help('hosttype');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

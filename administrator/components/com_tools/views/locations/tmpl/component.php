@@ -45,16 +45,14 @@ function submitbutton(pressbutton)
 }
 function setTask(task)
 {
-	$('task').value = task;
+	$('#task').value = task;
 }
-window.addEvent('domready', function() {
+jQuery(document).ready(function($){
 	//window.top.document.updateUploader && window.top.document.updateUploader();
-	$$('a.edit-asset').each(function(el) {
-		el.addEvent('click', function(e) {
-			new Event(e).stop();
+	$('a.edit-asset').on('click', function(e) {
+			e.preventDefault();
 			//window.top.document.assetform.fromElement(el);
-			window.top.document.assetform.open($(this).get('href'), {handler: 'iframe', size: {x: 570, y: 550}});
-		});
+			window.top.document.$.fancybox.open($(this).attr('href'), {handler: 'iframe', size: {x: 570, y: 550}});
 	});
 });
 

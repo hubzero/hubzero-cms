@@ -44,10 +44,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Push some styles to the template
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'tools.css');
-
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
