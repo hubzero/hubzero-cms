@@ -158,6 +158,6 @@ class CategoriesViewCategories extends JViewLegacy
 		else {
 			$url = null;
 		}
-		JToolBarHelper::help($ref_key, JComponentHelper::getParams( $component )->exists('helpURL'), $url);
+		JToolBarHelper::help('categories'); //$ref_key, JComponentHelper::getParams( $component )->exists('helpURL'), $url);
 	}
 }
