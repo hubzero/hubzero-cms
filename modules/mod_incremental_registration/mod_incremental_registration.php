@@ -322,7 +322,8 @@ class ModIncrementalRegistrationController
 
 						if ($award) 
 						{
-							$BTL = new \Hubzero\Bank\Teller($dbh, $uid);
+							ximport('Hubzero_Bank_Teller');
+							$BTL = new Hubzero_Bank_Teller($dbh, $uid);
 							$BTL->deposit($award, 'Profile completion award', 'registration', 0);
 						}
 
