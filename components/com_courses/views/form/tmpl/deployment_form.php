@@ -60,7 +60,7 @@
 		?>
 		<h3>Results</h3>
 		<p>While the form is open, show users:<br />
-			<input type="radio" name="deployment[resultsOpen]" value="confirmation" <? if ($resultPages['open'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that there submission was accepted<br />
+			<input type="radio" name="deployment[resultsOpen]" value="confirmation" <? if ($resultPages['open'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
 			<input type="radio" name="deployment[resultsOpen]" value="score" <? if ($resultPages['open'] == 'score' || !$resultPages['open']) echo 'checked="checked" '; ?>/> their score<br />
 			<input type="radio" name="deployment[resultsOpen]" value="details" <? if ($resultPages['open'] == 'details') echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
 			<? if ($showErrors && $this->dep->hasErrors('resultsOpen')): ?>
@@ -72,7 +72,7 @@
 			<? endif; ?>
 		</p>
 		<p>After the form is closed, show users:<br />
-			<input type="radio" name="deployment[resultsClosed]" value="confirmation" <? if ($resultPages['closed'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that there submission was accepted<br />
+			<input type="radio" name="deployment[resultsClosed]" value="confirmation" <? if ($resultPages['closed'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
 			<input type="radio" name="deployment[resultsClosed]" value="score" <? if ($resultPages['closed'] == 'score') echo 'checked="checked" '; ?>/> their score<br />
 			<input type="radio" name="deployment[resultsClosed]" value="details" <? if ($resultPages['closed'] == 'details' || !$resultPages['closed']) echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
 			<? if ($showErrors && $this->dep->hasErrors('resultsClosed')): ?>
