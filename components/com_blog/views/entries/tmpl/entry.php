@@ -62,120 +62,19 @@ $first = $this->model->entries('first', $filters);
 $entry_year  = substr($this->row->get('publish_up'), 0, 4);
 $entry_month = substr($this->row->get('publish_up'), 5, 2);
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
-<div id="content-header-extra">
-	<p>
-		<a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=archive'); ?>">
-			<?php echo JText::_('COM_BLOG_ARCHIVE'); ?>
-		</a>
-	</p>
-</div>
 
-<div class="main section">
-	<div class="aside">
-<?php if ($this->config->get('access-create-entry')) { ?>
+	<div id="content-header-extra">
 		<p>
-			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
-				<?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?>
+			<a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=archive'); ?>">
+				<?php echo JText::_('COM_BLOG_ARCHIVE'); ?>
 			</a>
 		</p>
-<?php } ?>
+	</div>
+</header>
 
- 		<div class="container blog-entries-years">
-			<h4><?php echo JText::_('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
-			<ol>
-		<?php 
-		if ($first->exists()) {
-			$start = intval(substr($first->get('publish_up'), 0, 4));
-			$now = JFactory::getDate()->format("Y");
-			//$mon = date("m");
-			for ($i=$now, $n=$start; $i >= $n; $i--)
-			{
-		?>
-			<li>
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year=' . $i); ?>">
-					<?php echo $i; ?>
-				</a>
-			<?php if ($i == $entry_year) { ?>
-				<ol>
-				<?php
-					$months = array(
-						'01' => JText::_('COM_BLOG_JANUARY'),
-						'02' => JText::_('COM_BLOG_FEBRUARY'),
-						'03' => JText::_('COM_BLOG_MARCH'),
-						'04' => JText::_('COM_BLOG_APRIL'),
-						'05' => JText::_('COM_BLOG_MAY'),
-						'06' => JText::_('COM_BLOG_JUNE'),
-						'07' => JText::_('COM_BLOG_JULY'),
-						'08' => JText::_('COM_BLOG_AUGUST'),
-						'09' => JText::_('COM_BLOG_SEPTEMBER'),
-						'10' => JText::_('COM_BLOG_OCTOBER'),
-						'11' => JText::_('COM_BLOG_NOVEMBER'),
-						'12' => JText::_('COM_BLOG_DECEMBER')
-					);
-					foreach ($months as $key => $month)
-					{
-						if (intval($key) <= $entry_month)
-						{
-						?>
-					<li>
-						<a <?php if ($entry_month == $key) { echo 'class="active" '; } ?>href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
-							<?php echo $month; ?>
-						</a>
-					</li>
-						<?php
-						}
-					}
-				?>
-				</ol>
-		<?php } ?>
-			</li>
-		<?php 
-			}
-		}
-		?>
-			</ol>
-		</div><!-- / .blog-entries-years -->
-
-		<div class="container blog-popular-entries">
-			<h4><?php echo JText::_('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
-		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
-			<ol>
-			<?php foreach ($popular as $row) { ?>
-				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				</li>
-			<?php } ?>
-			</ol>
-		<?php } else { ?>
-			<p><?php echo JText::_('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
-		</div><!-- / .blog-popular-entries -->
-
-		<?php /*
-		<div class="container blog-recent-entries">
-			<h4><?php echo JText::_('COM_BLOG_RECENT_ENTRIES'); ?></h4>
-		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
-			<ol>
-			<?php foreach ($recent as $row) { ?>
-				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				</li>
-			<?php } ?>
-			</ol>
-		<?php } else { ?>
-			<p><?php echo JText::_('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
-		</div><!-- / .blog-recent-entries -->
-		*/ ?>
-	</div><!-- / .aside -->
-
+<section class="main section">
 	<div class="subject">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
@@ -271,38 +170,98 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 		</div><!-- / .entry -->
 <?php } ?>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .main section -->
+
+	<aside class="aside">
+	<?php if ($this->config->get('access-create-entry')) { ?>
+		<p>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+				<?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?>
+			</a>
+		</p>
+	<?php } ?>
+
+		<div class="container blog-entries-years">
+			<h4><?php echo JText::_('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
+			<ol>
+		<?php 
+		if ($first->exists()) {
+			$start = intval(substr($first->get('publish_up'), 0, 4));
+			$now = JFactory::getDate()->format("Y");
+			//$mon = date("m");
+			for ($i=$now, $n=$start; $i >= $n; $i--)
+			{
+		?>
+			<li>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year=' . $i); ?>">
+					<?php echo $i; ?>
+				</a>
+			<?php if ($i == $entry_year) { ?>
+				<ol>
+				<?php
+					$months = array(
+						'01' => JText::_('COM_BLOG_JANUARY'),
+						'02' => JText::_('COM_BLOG_FEBRUARY'),
+						'03' => JText::_('COM_BLOG_MARCH'),
+						'04' => JText::_('COM_BLOG_APRIL'),
+						'05' => JText::_('COM_BLOG_MAY'),
+						'06' => JText::_('COM_BLOG_JUNE'),
+						'07' => JText::_('COM_BLOG_JULY'),
+						'08' => JText::_('COM_BLOG_AUGUST'),
+						'09' => JText::_('COM_BLOG_SEPTEMBER'),
+						'10' => JText::_('COM_BLOG_OCTOBER'),
+						'11' => JText::_('COM_BLOG_NOVEMBER'),
+						'12' => JText::_('COM_BLOG_DECEMBER')
+					);
+					foreach ($months as $key => $month)
+					{
+						if (intval($key) <= $entry_month)
+						{
+						?>
+					<li>
+						<a <?php if ($entry_month == $key) { echo 'class="active" '; } ?>href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
+							<?php echo $month; ?>
+						</a>
+					</li>
+						<?php
+						}
+					}
+				?>
+				</ol>
+		<?php } ?>
+			</li>
+		<?php 
+			}
+		}
+		?>
+			</ol>
+		</div><!-- / .blog-entries-years -->
+
+		<div class="container blog-popular-entries">
+			<h4><?php echo JText::_('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
+		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
+			<ol>
+			<?php foreach ($popular as $row) { ?>
+				<li>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</li>
+			<?php } ?>
+			</ol>
+		<?php } else { ?>
+			<p><?php echo JText::_('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
+		<?php } ?>
+		</div><!-- / .blog-popular-entries -->
+	</aside><!-- / .aside -->
+</section><!-- / .main section -->
 
 <?php if ($this->row->get('allow_comments')) { ?>
-<div class="below section">
-	<h3>
-		<!-- <a name="comments"></a> -->
-		<?php echo JText::_('COM_BLOG_COMMENTS_HEADER'); ?>
-	</h3>
-	<div class="aside">
-		<div class="container blog-entries-years">
-			<h4><?php echo JText::_('COM_BLOG_COMMENTS_FEED'); ?></h4>
-			<p>
-				<?php echo JText::_('COM_BLOG_COMMENTS_FEED_EXPLANATION'); ?>
-			</p>
-			<p>
-				<?php
-					$feed = JRoute::_($this->row->link() . '/comments.rss');
-					if (substr($feed, 0, 4) != 'http') 
-					{
-						$jconfig = JFactory::getConfig();
-						$live_site = rtrim(JURI::base(), '/');
-						
-						$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
-					}
-					$feed = str_replace('https:://', 'http://', $feed);
-				?>
-				<a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo JText::_('COM_BLOG_FEED'); ?></a>
-			</p>
-		</div>
-	</div><!-- / .aside -->
+<section class="below section">
 	<div class="subject">
+		<h3>
+			<?php echo JText::_('COM_BLOG_COMMENTS_HEADER'); ?>
+		</h3>
+
 	<?php if ($this->row->comments('count') > 0) { ?>
 		<?php 
 			$this->view('_list')
@@ -320,14 +279,11 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<?php echo JText::_('COM_BLOG_NO_COMMENTS'); ?>
 		</p>
 	<?php } ?>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
 
-	<h3>
-		<?php echo JText::_('COM_BLOG_POST_COMMENT'); ?>
-	</h3>
+		<h3>
+			<?php echo JText::_('COM_BLOG_POST_COMMENT'); ?>
+		</h3>
 
-	<div class="subject">
 		<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
 			<p class="comment-member-photo">
 				<?php
@@ -417,6 +373,28 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			</fieldset>
 		</form>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .below section -->
+
+	<aside class="aside">
+		<div class="container blog-entries-years">
+			<h4><?php echo JText::_('COM_BLOG_COMMENTS_FEED'); ?></h4>
+			<p>
+				<?php echo JText::_('COM_BLOG_COMMENTS_FEED_EXPLANATION'); ?>
+			</p>
+			<p>
+				<?php
+					$feed = JRoute::_($this->row->link() . '/comments.rss');
+					if (substr($feed, 0, 4) != 'http') 
+					{
+						$jconfig = JFactory::getConfig();
+						$live_site = rtrim(JURI::base(), '/');
+						
+						$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+					}
+					$feed = str_replace('https:://', 'http://', $feed);
+				?>
+				<a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo JText::_('COM_BLOG_FEED'); ?></a>
+			</p>
+		</div>
+	</aside><!-- / .aside -->
+</section><!-- / .below section -->
 <?php } ?>
