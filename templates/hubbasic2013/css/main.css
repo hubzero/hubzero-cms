@@ -291,6 +291,7 @@
 		font-size: 1em;
 		border-collapse: collapse;
 		border-bottom: 1px dashed #dadada;
+
 	}
 	table caption {
 		line-height: 1.6em;
@@ -1560,6 +1561,12 @@
 	section.section {
 		display: table;
 		table-layout: fixed;
+		width: 100%;
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
 	}
 	section.section .subject {
 		display: table-cell;
