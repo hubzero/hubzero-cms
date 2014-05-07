@@ -34,39 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
-<div class="main section">
+</header>
+
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 <?php } ?>
-	<div class="aside">
-	<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_COMMUNITY'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo JText::sprintf('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('COM_ANSWERS') . '</a>'); ?>
-			</p>
-		</div><!-- / .container -->
-	<?php } ?>
-	<?php if (JComponentHelper::isEnabled('com_wishlist')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_FEATURE_REQUEST'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_KB_FEATURE_TELL_US'); ?></a>
-			</p>
-		</div><!-- / .container -->
-	<?php } ?>
-	<?php if (JComponentHelper::isEnabled('com_support')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_TROUBLE_REPORT'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_KB_TROUBLE_TELL_US'); ?></a>
-			</p>
-		</div><!-- / .container -->
-	<?php } ?>
-	</div><!-- / .aside -->
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
 			<div class="container data-entry">
@@ -193,5 +168,31 @@ $this->css()
 			</div><!-- / .container -->
 		</form>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
+
+	<aside class="aside">
+	<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_KB_COMMUNITY'); ?></h3>
+			<p>
+				<?php echo JText::_('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo JText::sprintf('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('COM_ANSWERS') . '</a>'); ?>
+			</p>
+		</div><!-- / .container -->
+	<?php } ?>
+	<?php if (JComponentHelper::isEnabled('com_wishlist')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_KB_FEATURE_REQUEST'); ?></h3>
+			<p>
+				<?php echo JText::_('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_KB_FEATURE_TELL_US'); ?></a>
+			</p>
+		</div><!-- / .container -->
+	<?php } ?>
+	<?php if (JComponentHelper::isEnabled('com_support')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_KB_TROUBLE_REPORT'); ?></h3>
+			<p>
+				<?php echo JText::_('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_KB_TROUBLE_TELL_US'); ?></a>
+			</p>
+		</div><!-- / .container -->
+	<?php } ?>
+	</aside><!-- / .aside -->
 </div><!-- / .main section -->

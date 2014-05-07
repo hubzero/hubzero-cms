@@ -34,50 +34,22 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
-<div id="content-header-extra">
-	<p>
-		<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_KB_MAIN'); ?></a>
-	</p>
-</div>
-<div class="main section">
+
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_KB_MAIN'); ?></a>
+		</p>
+	</div>
+</header>
+
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 <?php } ?>
-	<div class="aside">
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
-			<ul class="categories">
-				<li>
-					<a <?php if ($this->get('catid') == 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
-						<?php echo JText::_('COM_KB_ALL_ARTICLES'); ?>
-					</a>
-				</li>
-			<?php foreach ($this->categories as $row) { ?>
-				<li>
-					<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
-					</a>
-				<?php if (count($this->subcategories) > 0 && $this->get('catid') == $row->get('id')) { ?>
-					<ul class="categories">
-					<?php foreach ($this->subcategories as $cat) { ?>
-						<li>
-							<a <?php if ($this->article->get('category') == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($cat->link()); ?>">
-								<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
-							</a>
-						</li>
-					<?php } ?>
-					</ul>
-				<?php } ?>
-				</li>
-			<?php } ?>
-			</ul>
-		</div><!-- / .container -->
-	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="container" id="entry-<?php echo $this->article->get('id'); ?>">
+		<article class="container" id="entry-<?php echo $this->article->get('id'); ?>">
 			<div class="container-block">
 				<h3><?php echo $this->escape(stripslashes($this->article->get('title'))); ?></h3>
 				<div class="entry-content">
@@ -115,12 +87,43 @@ $this->css()
 
 				<div class="clearfix"></div>
 			</div><!-- / .container-block -->
-		</div><!-- / .container -->
+		</article><!-- / .container -->
 	</div><!-- / .subject -->
-</div><!-- / .main section -->
+
+	<aside class="aside">
+		<div class="container">
+			<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
+			<ul class="categories">
+				<li>
+					<a <?php if ($this->get('catid') == 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
+						<?php echo JText::_('COM_KB_ALL_ARTICLES'); ?>
+					</a>
+				</li>
+			<?php foreach ($this->categories as $row) { ?>
+				<li>
+					<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
+					</a>
+				<?php if (count($this->subcategories) > 0 && $this->get('catid') == $row->get('id')) { ?>
+					<ul class="categories">
+					<?php foreach ($this->subcategories as $cat) { ?>
+						<li>
+							<a <?php if ($this->article->get('category') == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($cat->link()); ?>">
+								<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
+							</a>
+						</li>
+					<?php } ?>
+					</ul>
+				<?php } ?>
+				</li>
+			<?php } ?>
+			</ul>
+		</div><!-- / .container -->
+	</aside><!-- / .aside -->
+</section><!-- / .main section -->
 
 <?php if ($this->article->param('allow_comments')) { ?>
-<div class="below section" id="comments">
+<section class="below section" id="comments">
 	<h3 class="comments-title">
 		<?php echo JText::_('COM_KB_COMMENTS_ON_ENTRY'); ?>
 		<?php if ($this->article->param('feeds_enabled') && $this->article->comments('count') > 0) { ?>
@@ -130,9 +133,6 @@ $this->css()
 		<?php } ?>
 	</h3>
 
-	<div class="aside">
-
-	</div>
 	<div class="subject">
 		<?php
 		if ($this->article->comments('count') > 0)
@@ -252,6 +252,9 @@ $this->css()
 			</fieldset>
 		</form>
 	</div><!-- / .subject -->
-</div><!-- / .below -->
+	<aside class="aside">
+
+	</aside>
+</section><!-- / .below -->
 
 <?php } // if ($this->config->get('allow_comments')) ?>
