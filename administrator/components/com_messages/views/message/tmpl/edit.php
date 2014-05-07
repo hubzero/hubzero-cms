@@ -25,16 +25,20 @@ JHtml::_('behavior.keepalive');
 <form action="<?php echo JRoute::_('index.php?option=com_messages'); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-100">
 		<fieldset class="adminform">
-		<ul class="adminformlist">
-			<li><?php echo $this->form->getLabel('user_id_to'); ?>
-			<?php echo $this->form->getInput('user_id_to'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('user_id_to'); ?>
+				<?php echo $this->form->getInput('user_id_to'); ?>
+			</div>
 
-			<li><?php echo $this->form->getLabel('subject'); ?>
-			<?php echo $this->form->getInput('subject'); ?></li>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('subject'); ?>
+				<?php echo $this->form->getInput('subject'); ?>
+			</div>
 
-			<li><?php echo $this->form->getLabel('message'); ?>
-			<?php echo $this->form->getInput('message'); ?></li>
-		</ul>
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('message'); ?>
+				<?php echo $this->form->getInput('message'); ?>
+			</div>
 		</fieldset>
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
