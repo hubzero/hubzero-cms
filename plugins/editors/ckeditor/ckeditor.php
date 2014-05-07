@@ -132,15 +132,21 @@ class plgEditorCkeditor extends JPlugin
 		}
 		if (!is_array($params['class']))
 		{
-			$params['class'] = array($params['class']);
-		}
-		if ($cls = $this->params->get('class'))
-		{
+			//$params['class'] = array($params['class']);
+			$cls = $params['class'];
+			$params['class'] = array();
 			foreach ($this->_split(' ', $cls) as $piece)
 			{
 				$params['class'][] = $piece;
 			}
 		}
+		/*if ($cls = $this->params->get('class'))
+		{
+			foreach ($this->_split(' ', $cls) as $piece)
+			{
+				$params['class'][] = $piece;
+			}
+		}*/
 		$params['class'][] = 'ckeditor-content';
 		
 		// build config & json encode
