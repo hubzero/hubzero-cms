@@ -115,7 +115,7 @@ class Database implements CommandInterface
 		$filename = tempnam($home, "{$hostname}.mysql.dump." . $now->format('Y.m.d') . ".sql.");
 
 		// Build command
-		$cmd = "mysqldump -u {$config->user} -p{$config->password} {$config->db} --routines {$exclude} > {$filename}";
+		$cmd = "mysqldump -u {$config->user} -p'{$config->password}' {$config->db} --routines {$exclude} > {$filename}";
 
 		exec($cmd);
 	}
@@ -148,7 +148,7 @@ class Database implements CommandInterface
 		// Craft the command to be executed
 		$infile = escapeshellarg($infile);
 		$config = new \JConfig();
-		$cmd    = "mysql -u {$config->user} -p{$config->password} -D {$config->db} < {$infile}";
+		$cmd    = "mysql -u {$config->user} -p'{$config->password}' -D {$config->db} < {$infile}";
 
 		// Now push the big red button
 		exec($cmd);
