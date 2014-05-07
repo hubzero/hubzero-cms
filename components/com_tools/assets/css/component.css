@@ -34,6 +34,16 @@
 		border: none;
 		background-position: 0 -9px;
 	}
+	.delete {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		margin: 0;
+		padding: 0;
+		line-height: 1;
+		overflow: hidden;
+		white-space: nowrap;
+	}
 	td .caption {
 		margin-left: 25px;
 		font-size: 90%;
