@@ -307,22 +307,29 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 										$post->set('created', strtotime($item->updated));
 									}
 									
-									$post->set('description', (string) strip_tags($item->summary, '<img>'));											
+									$post->set('description', (string) strip_tags($item->summary, '<img>'));	
+									$post->store(); //save the post
+														
 								} // end check for prior existance 
 								
 							}
 							else if ($feedType == 'RSS')
 							{
-								$post = new FeedAggregatorModelPosts; //create post object
-								$post->set('title', (string)$item->title);
-								$post->set('feed_id', (integer) $feed->id);
-								$post->set('status', 0);  //force new status
-								$post->set('created', strtotime($item->pubDate));
-								$post->set('description', (string) strip_tags($item->description, '<img>'));
-								$post->set('url', (string) $item->link);
+								if (in_array($item->link, $savedURLS) == FALSE) //checks to see if we have this item
+								{
+									$post = new FeedAggregatorModelPosts; //create post object
+									$post->set('title', (string)$item->title);
+									$post->set('feed_id', (integer) $feed->id);
+									$post->set('status', 0);  //force new status
+									$post->set('created', strtotime($item->pubDate));
+									$post->set('description', (string) strip_tags($item->description, '<img>'));
+									$post->set('url', (string) $item->link);
+									
+									$post->store(); //save the post
+								}
+								
 							}
 
-							$post->store(); //save the post
 						} //end foreach
 					}//end if
 				}
