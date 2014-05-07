@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -64,6 +64,6 @@ class UsersViewLevels extends JViewLegacy
 			JToolBarHelper::preferences('com_users');
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_USERS_ACCESS_LEVELS');
+		JToolBarHelper::help('levels');
 	}
 }
