@@ -140,10 +140,11 @@ class Database implements CommandInterface
 		}
 
 		// First, set some things aside that we need to reapply after the update
-		$params           = array();
-		$params['system'] = \JComponentHelper::getParams('com_system');
-		$params['tools']  = \JComponentHelper::getParams('com_tools');
-		$params['usage']  = \JComponentHelper::getParams('com_usage');
+		$params                           = array();
+		$params['com_system']             = \JComponentHelper::getParams('com_system');
+		$params['com_tools']              = \JComponentHelper::getParams('com_tools');
+		$params['com_usage']              = \JComponentHelper::getParams('com_usage');
+		$params['plg_projects_databases'] = \JPluginHelper::getPlugin('projects', 'databases')->params;
 
 		// Craft the command to be executed
 		$infile = escapeshellarg($infile);
@@ -158,10 +159,18 @@ class Database implements CommandInterface
 		// Now load some things back up
 		foreach ($params as $k => $v)
 		{
-			$table = new \JTableExtension($db);
-			$table->load(array('element' => 'com_'.$k));
-			$table->bind(array('params'  => $v->toArray()));
-			$table->store();
+			if (!empty($k))
+			{
+				if (!$v instanceof JRegistry)
+				{
+					$v = new \JRegistry($v);
+				}
+
+				$table = new \JTableExtension($db);
+				$table->load(array('name'   => $k));
+				$table->bind(array('params' => $v->toArray()));
+				$table->store();
+			}
 		}
 	}
 
