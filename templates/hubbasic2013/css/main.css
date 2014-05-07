@@ -1557,6 +1557,23 @@
 		padding: 0;
 	}
 
+	section.section {
+		display: table;
+		table-layout: fixed;
+	}
+	section.section .subject {
+		display: table-cell;
+		vertical-align: top;
+		margin-right: 0;
+		padding-right: 30px;
+	}
+	section.section .aside {
+		float: none;
+		display: table-cell;
+		vertical-align: top;
+		width: 210px;
+	}
+
 /* Metadata */
 	.metadata p {
 		font-size: 90%;
