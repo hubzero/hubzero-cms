@@ -847,9 +847,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		{
 			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
 			{
-				$hconfig =  JComponentHelper::getParams('com_hub');
-				$r = $hconfig->get('LoginReturn');
-				$this->_redirect = ($r) ? $r : '/members/myaccount';
+				$this->_redirect = $this->config->get('LoginReturn', '/members/myaccount');
 				$session->set('badpassword','0');
 				$session->set('expiredpassword','0');
 			}
