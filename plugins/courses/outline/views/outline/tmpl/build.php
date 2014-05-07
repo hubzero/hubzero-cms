@@ -94,9 +94,9 @@ $base = $this->course->offering()->link();
 						<label for="title">Title:</label>
 						<input class="unit-edit-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" placeholder="title" />
 						<label for="publish_up">Publish start date:</label>
-						<input class="unit-edit-publish-up datepicker" name="publish_up" type="text" value="<?= JHTML::_('date', $unit->get('publish_up'), "Y-m-d H:i:s") ?>" placeholder="Publish start date" />
+						<input class="unit-edit-publish-up datepicker" name="publish_up" type="text" value="<?= ($unit->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $unit->get('publish_up'), "Y-m-d H:i:s") : '' ?>" placeholder="Publish start date" />
 						<label for="publish_down">Publish end date:</label>
-						<input class="unit-edit-publish-down datepicker" name="publish_down" type="text" value="<?= JHTML::_('date', $unit->get('publish_down'), "Y-m-d H:i:s") ?>" placeholder="Publish end date" />
+						<input class="unit-edit-publish-down datepicker" name="publish_down" type="text" value="<?= ($unit->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $unit->get('publish_down'), "Y-m-d H:i:s") : '' ?>" placeholder="Publish end date" />
 						<input class="unit-edit-save" type="submit" value="Save" />
 						<input class="unit-edit-reset" type="reset" value="Cancel" />
 						<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
