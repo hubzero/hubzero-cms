@@ -69,8 +69,8 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 				<li class="session <?php echo $cls; ?>">
 					<div class="session-title-bar">
-						<?php if ($this->params->get('show_screenshots', 0)) : ?>
-							<?php if ($this->params->get('quick_launch', 0)) : ?>
+						<?php if ($this->params->get('show_screenshots', 1)) : ?>
+							<?php if ($this->params->get('quick_launch', 1)) : ?>
 								<a class="session-title-quicklaunch tooltips" title="Quick Launch :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
 									<img class="snapshot" data-src="<?php echo $snapshot; ?>" />
 								</a>
@@ -90,7 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 					</div>
 				
 					<div class="session-details">
-						<?php if ($this->params->get('show_screenshots', 0)) : ?>
+						<?php if ($this->params->get('show_screenshots', 1)) : ?>
 							<div class="session-details-left">
 								<div class="session-snapshot">
 									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="<?php echo $session->sessname; ?>">
