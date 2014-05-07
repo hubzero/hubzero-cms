@@ -101,6 +101,13 @@ $view->display();
 				<?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
 				<?php echo JFactory::getEditor()->display('fulltxt', $this->escape(stripslashes($this->row->fulltxt)), '', '', 50, 20, false, 'field-fulltxt'); ?>
 			</label>
+
+			<fieldset>
+				<legend>Manage files</legend>
+				<div class="field-wrap">
+					<iframe width="100%" height="160" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;resource=<?php echo $this->row->id; ?>"></iframe>
+				</div>
+			</fieldset>
 		</fieldset><div class="clear"></div>
 <?php if ($fields) { ?>
 		<div class="explaination">

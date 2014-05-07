@@ -2188,6 +2188,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			}
 		}
 
+		if ($resource->standalone && !$resource->path)
+		{
+			$resource->path = DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($resource->created, $resource->id) . DS . 'media' . DS . JRequest::getVar('file');
+		}
+
 		$resource->path = trim($resource->path);
 
 		// Ensure we have a path
