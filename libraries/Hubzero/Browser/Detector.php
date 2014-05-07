@@ -296,17 +296,32 @@ class Detector extends Object
 			elseif (preg_match('|Chrome[/ ]([0-9.]+)|', $this->agent, $version))
 			{
 				$this->setBrowser('chrome');
-				list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+				//list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+
+				// [!] Changed to handle UAS that do not include the minor version (StatusCake)
+				$bits = explode('.', $version[1]);
+				$this->majorVersion = $bits[0];
+				$this->minorVersion = (isset($bits[1]) ? $bits[1] : 0);
 			}
 			elseif (preg_match('|CrMo[/ ]([0-9.]+)|', $this->agent, $version))
 			{
 				$this->setBrowser('chrome');
-				list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+				//list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+
+				// [!] Changed to handle UAS that do not include the minor version (StatusCake)
+				$bits = explode('.', $version[1]);
+				$this->majorVersion = $bits[0];
+				$this->minorVersion = (isset($bits[1]) ? $bits[1] : 0);
 			}
 			elseif (preg_match('|CriOS[/ ]([0-9.]+)|', $this->agent, $version))
 			{
 				$this->setBrowser('chrome');
-				list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+				//list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+				// [!] Changed to handle UAS that do not include the minor version (StatusCake)
+				$bits = explode('.', $version[1]);
+				$this->majorVersion = $bits[0];
+				$this->minorVersion = (isset($bits[1]) ? $bits[1] : 0);
+
 				$this->mobile = true;
 			}
 			elseif (strpos($this->lowerAgent, 'elaine/') !== false
