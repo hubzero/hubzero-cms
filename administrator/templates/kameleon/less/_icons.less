@@ -9,6 +9,7 @@
 // --------------------------------------------------
 
 	// States
+	.saveorder,
 	a.state,
 	a.state:link,
 	a.state:active,
@@ -43,6 +44,11 @@
 		img,
 		span {
 			display: none;
+		}
+	}
+	.saveorder {
+		&:before {
+			content: "\f063";
 		}
 	}
 	// Active / Inactive
