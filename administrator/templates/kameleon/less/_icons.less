@@ -63,6 +63,7 @@
 		}
 	}*/
 	// Publish
+	//.enabled,
 	.on,
 	.yes,
 	.publish,
@@ -76,6 +77,7 @@
 		}
 	}
 	// Unpublish
+	//.disabled,
 	.off,
 	.no,
 	.unpublish,
@@ -103,6 +105,16 @@
 	.trash {
 		&:before {
 			content: "\f014";
+		}
+		&:hover:before {
+			color: #111;
+		}
+	}
+	// Archived
+	.archived {
+		&:before {
+			content: "\f005";
+			color: #aaa;
 		}
 		&:hover:before {
 			color: #111;
@@ -342,7 +354,7 @@
 		.icon-32-menus:before        { content: "\f03a"; }
 		.icon-32-publish:before      { content: "\2714"; }
 		.icon-32-unblock:before      { content: "\f007"; }
-		.icon-32-unblock:after       { content: "\2611"; }
+		.icon-32-unblock:after       { content: "\f058"; top: auto; bottom: 0; right: 0; }
 		.icon-32-unpublish:before    { content: "\2298"; }
 		.icon-32-restore:before      { content: "\267B"; }
 		.icon-32-trash:before        { content: "\f014"; }
