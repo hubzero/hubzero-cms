@@ -194,7 +194,7 @@ class Assets
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime($base . $path), $type, $media, $attribs);
+				$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path . '?v=' . filemtime($base . $path), $type, $media, $attribs);
 				break;
 			}
 		}
@@ -239,7 +239,7 @@ class Assets
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
-				$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime(JPATH_ROOT . $path), $type, $defer, $async);
+				$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path . '?v=' . filemtime(JPATH_ROOT . $path), $type, $defer, $async);
 				break;
 			}
 		}
