@@ -44,134 +44,56 @@ if ($this->wishlist) {
 	} else {
 		$base = 'index.php?option=' . $this->option . '&task=wishlist&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid;
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
-				<?php echo JText::_('COM_WISHLIST_TASK_ADD'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
+					<?php echo JText::_('COM_WISHLIST_TASK_ADD'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-<?php 
-// Admin messages
-if ($this->admin && !$this->getError()) {
-	// Wish was deleted from the list
-	if ($this->task == 'deletewish') {
-		echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_DELETED').'</p>'."\n";
+<form method="get" action="index.php">
+	<?php 
+	// Admin messages
+	if ($this->admin && !$this->getError()) {
+		// Wish was deleted from the list
+		if ($this->task == 'deletewish') {
+			echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_DELETED').'</p>'."\n";
+		}
+		
+		// Wish was moved to a new list
+		if ($this->task == 'movewish') {
+			echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_MOVED').'</p>'."\n";
+		}
+		
+		switch ($this->wishlist->saved) 
+		{
+			case '1':
+				// List settings saved    
+				echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_LIST_SETTINGS_SAVED').'</p>'."\n";
+			break;
+			case '2':
+				// Changes to wish saved  
+				echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_CHANGES_SAVED').'</p>'."\n";
+			break;
+			case '3': 
+				// New wish posted     
+				echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_POSTED').'</p>'."\n";
+			break;
+		}
 	}
-	
-	// Wish was moved to a new list
-	if ($this->task == 'movewish') {
-		echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_MOVED').'</p>'."\n";
-	}
-	
-	switch ($this->wishlist->saved) 
-	{
-		case '1':
-			// List settings saved    
-			echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_LIST_SETTINGS_SAVED').'</p>'."\n";
-		break;
-		case '2':
-			// Changes to wish saved  
-			echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_CHANGES_SAVED').'</p>'."\n";
-		break;
-		case '3': 
-			// New wish posted     
-			echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_POSTED').'</p>'."\n";
-		break;
-	}
-}
-?>
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+	?>
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
 
-	<form method="get" action="index.php">
-		<div class="aside">
-<?php 
-	// Popular tags
-	if ($this->wishlist->category == 'general') {
-		$obj = new TagsTableTag($this->database);
-		$tags = $obj->getTopTags($this->config->get('maxtags', 10), 'wishlist', 'tcount DESC', 0);
-
-		if ($tags) { ?>
-			<div class="container">
-				<h3><?php echo JText::_('COM_WISHLIST_POPULAR_TAGS'); ?></h3>
-				<ol class="tags">
-				<?php
-					$lst = array();
-					$tll = array();
-					foreach ($tags as $tag)
-					{
-						if ($this->filters['tag'])
-						{
-							if (!in_array($tag->tag, $lst))
-							{
-								$lst[] = $tag->tag;
-							}
-						}
-						else
-						{
-							$lst = array($tag->tag);
-						}
-
-						$class = ($tag->admin == 1) ? ' class="admin"' : '';
-						
-						$append = '&tags=';
-						//$append.= $this->filters['tag'] ? $this->filters['tag'] . ',' : '';
-						$append.= $tag->tag;
-
-						$tll[$tag->tag] = '<li'.$class.'><a href="'.JRoute::_($base . '&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].$append).'">'.$this->escape(stripslashes($tag->raw_tag)).'</a></li>';
-					}
-					ksort($tll);
-					echo implode('',$tll);
-				?>
-				</ol>
-				<p>Click a tag to filter results.</p>
-			</div><!-- / .container -->
-<?php 
-		} // end if ($tags)
-	} // end if ($this->wishlist->category == 'general')
-	
-	$html = '';
-	if (isset($this->wishlist->resource) && $this->wishlist->category == 'resource') {
-		$html  = '<p>'.JText::sprintf('COM_WISHLIST_THIS_LIST_IS_FOR_RES', strtolower(substr($this->wishlist->resource->typetitle,0,strlen($this->wishlist->resource->typetitle) - 1)).' '.JText::_('COM_WISHLIST_RESOURCE_ENTITLED').' <a href="'.JRoute::_('index.php?option=com_resources&id='.$this->wishlist->referenceid).'">'.$this->escape($this->wishlist->resource->title).'</a>').'.</p>';
-	} else if ($this->wishlist->description) {
-		// $html  = '<p>'.$this->escape($this->wishlist->description).'<p>';
-	} else {
-		$html  = '<p>'.JText::sprintf('COM_WISHLIST_HELP_US_IMPROVE', $sitename).'</p>';
-	}				
-			
-	switch ($this->admin) 
-	{
-		case '1':
-			$html .= '<p class="info">'.JText::_('COM_WISHLIST_NOTICE_SITE_ADMIN').'</p>'."\n";
-		break;
-		case '2':
-			$html .= '<p class="info">'.JText::_('COM_WISHLIST_NOTICE_LIST_ADMIN').' Edit <a href="'.JRoute::_('index.php?option='.$this->option.'&task=settings&id='. $this->wishlist->id) .'">'.JText::_('COM_WISHLIST_LIST_SETTINGS').'</a>.</p>'."\n";
-		break;
-		case '3':
-			$html .= '<p class="info">'.JText::_('COM_WISHLIST_NOTICE_ADVISORY_ADMIN').'</p>'."\n";
-		break;
-	}
-	echo $html;	
-			
-	// Show what's popular
-	if (($this->admin == 2 || $this->admin == 3) 
-	 && count($this->wishlist->items) >= 10 
-	 && $this->wishlist->category == 'general' 
-	 && $this->filters['filterby'] == 'all') {
-		echo \Hubzero\Module\Helper::renderModules('wishvoters');
-	}
-?>
-		</div><!-- / .aside -->
+	<section class="main section">
 		<div class="subject">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_WISHLIST_SEARCH'); ?>" />
@@ -257,7 +179,7 @@ if ($this->admin && !$this->getError()) {
 						</span>
 					</caption>
 					<tbody>
-<?php
+				<?php
 				if ($this->wishlist->items) {
 					$y = 1;
 					$filters  = '';
@@ -308,7 +230,7 @@ if ($this->admin && !$this->getError()) {
 						if (!$item->anonymous) {
 							$item->authorname = '<a href="'.JRoute::_('index.php?option=com_members&id='.$item->proposed_by).'">'.$this->escape($item->authorname).'</a>';
 						}
-?>
+						?>
 						<tr class="<?php echo $state; ?>">
 							<th class="<?php echo $status; ?>">
 								<span class="entry-id"><?php echo $item->id; ?></span>
@@ -397,10 +319,10 @@ if ($this->admin && !$this->getError()) {
 							</td>
 						<?php } // end if (!$item->reports) ?>
 						</tr>
-<?php
+						<?php
 					} // end foreach wish
 				} else {
-?>
+					?>
 						<tr>
 							<td>
 							<?php if ($this->filters['filterby'] == 'all' && !$this->filters['tag']) { ?>
@@ -411,10 +333,9 @@ if ($this->admin && !$this->getError()) {
 							<?php } ?>
 							</td>
 						</tr>
-
-<?php
+					<?php
 				} // end if wishlist items
-?>
+				?>
 					</tbody>
 				</table>
 				<?php
@@ -428,8 +349,86 @@ if ($this->admin && !$this->getError()) {
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
-	</form>
-</div><!-- / .main section -->
+		<aside class="aside">
+			<?php 
+				// Popular tags
+				if ($this->wishlist->category == 'general') {
+					$obj = new TagsTableTag($this->database);
+					$tags = $obj->getTopTags($this->config->get('maxtags', 10), 'wishlist', 'tcount DESC', 0);
+
+					if ($tags) { ?>
+						<div class="container">
+							<h3><?php echo JText::_('COM_WISHLIST_POPULAR_TAGS'); ?></h3>
+							<ol class="tags">
+							<?php
+								$lst = array();
+								$tll = array();
+								foreach ($tags as $tag)
+								{
+									if ($this->filters['tag'])
+									{
+										if (!in_array($tag->tag, $lst))
+										{
+											$lst[] = $tag->tag;
+										}
+									}
+									else
+									{
+										$lst = array($tag->tag);
+									}
+
+									$class = ($tag->admin == 1) ? ' class="admin"' : '';
+									
+									$append = '&tags=';
+									//$append.= $this->filters['tag'] ? $this->filters['tag'] . ',' : '';
+									$append.= $tag->tag;
+
+									$tll[$tag->tag] = '<li'.$class.'><a href="'.JRoute::_($base . '&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].$append).'">'.$this->escape(stripslashes($tag->raw_tag)).'</a></li>';
+								}
+								ksort($tll);
+								echo implode('',$tll);
+							?>
+							</ol>
+							<p>Click a tag to filter results.</p>
+						</div><!-- / .container -->
+			<?php 
+					} // end if ($tags)
+				} // end if ($this->wishlist->category == 'general')
+				
+				$html = '';
+				if (isset($this->wishlist->resource) && $this->wishlist->category == 'resource') {
+					$html  = '<p>'.JText::sprintf('COM_WISHLIST_THIS_LIST_IS_FOR_RES', strtolower(substr($this->wishlist->resource->typetitle,0,strlen($this->wishlist->resource->typetitle) - 1)).' '.JText::_('COM_WISHLIST_RESOURCE_ENTITLED').' <a href="'.JRoute::_('index.php?option=com_resources&id='.$this->wishlist->referenceid).'">'.$this->escape($this->wishlist->resource->title).'</a>').'.</p>';
+				} else if ($this->wishlist->description) {
+					// $html  = '<p>'.$this->escape($this->wishlist->description).'<p>';
+				} else {
+					$html  = '<p>'.JText::sprintf('COM_WISHLIST_HELP_US_IMPROVE', $sitename).'</p>';
+				}				
+						
+				switch ($this->admin) 
+				{
+					case '1':
+						$html .= '<p class="info">'.JText::_('COM_WISHLIST_NOTICE_SITE_ADMIN').'</p>'."\n";
+					break;
+					case '2':
+						$html .= '<p class="info">'.JText::_('COM_WISHLIST_NOTICE_LIST_ADMIN').' Edit <a href="'.JRoute::_('index.php?option='.$this->option.'&task=settings&id='. $this->wishlist->id) .'">'.JText::_('COM_WISHLIST_LIST_SETTINGS').'</a>.</p>'."\n";
+					break;
+					case '3':
+						$html .= '<p class="info">'.JText::_('COM_WISHLIST_NOTICE_ADVISORY_ADMIN').'</p>'."\n";
+					break;
+				}
+				echo $html;	
+						
+				// Show what's popular
+				if (($this->admin == 2 || $this->admin == 3) 
+				 && count($this->wishlist->items) >= 10 
+				 && $this->wishlist->category == 'general' 
+				 && $this->filters['filterby'] == 'all') {
+					echo \Hubzero\Module\Helper::renderModules('wishvoters');
+				}
+			?>
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
+</form>
 <?php 	} // end if public ?>
 <?php } else { ?>
 	<p class="error"><?php echo JText::_('COM_WISHLIST_ERROR_LIST_NOT_FOUND'); ?></p>
