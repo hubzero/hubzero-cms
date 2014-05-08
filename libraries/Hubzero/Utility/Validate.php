@@ -416,6 +416,7 @@ class Validate
 				'haldaemon',
 				'hsqldb',
 				'irc',
+				'itisunix',
 				'jackuser',
 				'kmem',
 				'kvm',
