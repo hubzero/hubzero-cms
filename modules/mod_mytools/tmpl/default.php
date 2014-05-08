@@ -30,6 +30,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+// Push the module CSS to the template
+$this->css();
+$this->js();
 ?>
 <?php if ($this->fav || $this->no_html) { ?>
 	<?php echo $this->buildList($this->favtools, 'fav'); ?>

@@ -71,24 +71,24 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="show_tools" type="radio" default="1" label="Show tools separately" description="Select whether to show tool contributions separately from other types">
+				<field name="show_tools" type="radio" default="1" label="Show tools separately" description="Select whether to show tool contributions separately from other types" member_dashboard="1">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="get_questions" type="radio" default="1" label="Show questions on tools" description="Select whether to show open questions count on tools">
+				<field name="get_questions" type="radio" default="1" label="Show questions on tools" description="Select whether to show open questions count on tools" member_dashboard="1">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="get_wishes" type="radio" default="1" label="Show wishes on tools" description="Select whether to show open wishes count on tools">
+				<field name="get_wishes" type="radio" default="1" label="Show wishes on tools" description="Select whether to show open wishes count on tools" member_dashboard="1">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="get_tickets" type="radio" default="1" label="Show tickets on tools" description="Select whether to show open tickets count on tools">
+				<field name="get_tickets" type="radio" default="1" label="Show tickets on tools" description="Select whether to show open tickets count on tools" member_dashboard="1">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="limit_tools" type="text" size="6" default="10" label="Limit tools" description="Limit number of tool contributions displayed" />
-				<field name="limit_other" type="text" size="6" default="10" label="Limit other contributions" description="Limit number of other contributions displayed" />
+				<field name="limit_tools" type="text" size="6" default="10" label="Limit tools" description="Limit number of tool contributions displayed" member_dashboard="1" />
+				<field name="limit_other" type="text" size="6" default="10" label="Limit other contributions" description="Limit number of other contributions displayed" member_dashboard="1" />
 			</fieldset>
 		</fields>
 	</config>

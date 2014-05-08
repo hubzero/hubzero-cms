@@ -312,10 +312,6 @@ class modToolList extends \Hubzero\Module\Module
 			// Add the JavaScript that does the AJAX magic to the template
 			$document = JFactory::getDocument();
 
-			// Push the module CSS to the template
-			$this->css();
-			$this->js();
-
 			// Get a list of recent tools
 			$rt = new RecentTool($database);
 			$rows = $rt->getRecords($juser->get('id'));

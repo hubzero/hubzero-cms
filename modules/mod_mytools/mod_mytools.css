@@ -73,6 +73,8 @@
 		color: #fff;
 		font-weight: bold;
 		background-image: none;
+		margin-top: 0;
+		margin-bottom: 0;
 	}
 	.sortable .tab_titles li.active {
 		background-color: #fff;
