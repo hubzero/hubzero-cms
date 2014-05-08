@@ -213,6 +213,7 @@ class Hubzero_Validate
 			'operator',
 			'list',
 			'irc',
+			'itisunix',
 			'src',
 			'gnats',
 			'shadow',
