@@ -159,7 +159,7 @@ class Database implements CommandInterface
 		// Now load some things back up
 		foreach ($params as $k => $v)
 		{
-			if (!empty($k))
+			if (!empty($v))
 			{
 				if (!$v instanceof JRegistry)
 				{
