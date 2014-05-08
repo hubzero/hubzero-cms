@@ -168,7 +168,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			</div><!-- / #top -->
 
 			<div id="wrap">
-				<section id="content" class="<?php echo JRequest::getCmd('option', ''); ?>" role="main">
+				<main id="content" class="<?php echo JRequest::getCmd('option', ''); ?>" role="main">
 					<div class="inner">
 					<?php if ($this->countModules('left')) : ?>
 						<section class="main section withleft">
@@ -192,7 +192,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 						</section><!-- / .main section -->
 					<?php endif; ?>
 					</div><!-- / .inner -->
-				</section><!-- / #content -->
+				</main><!-- / #content -->
 
 				<footer id="footer">
 					<jdoc:include type="modules" name="footer" />
