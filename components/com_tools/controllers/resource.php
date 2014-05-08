@@ -120,9 +120,16 @@ class ToolsControllerResource extends Hubzero_Controller
 		}
 
 		// process first step
-		if ($nextstep == 3 && isset($_POST['nbtag'])) 
+		if ($nextstep == 3 && (isset($_POST['nbtag']) || isset($_POST['fulltxt']))) 
 		{
-		    $hztv = Hubzero_Tool_VersionHelper::getToolRevision($this->_toolid, $version);
+			if (!isset($_POST['fulltxt']) || !trim($_POST['fulltxt']))
+			{
+				$this->setError(JText::sprintf('COM_TOOLS_REQUIRED_FIELD_CHECK', 'Abstract'));
+				$step = 1;
+				$nextstep--;
+			}
+
+			$hztv = Hubzero_Tool_VersionHelper::getToolRevision($this->_toolid, $version);
 
 			$objV = new ToolVersion($this->database);
 			if (!$objV->bind($_POST)) 

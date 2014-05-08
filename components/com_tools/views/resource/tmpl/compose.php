@@ -77,7 +77,7 @@ $fields = $elements->render();
 			<input type="text" name="description" id="field-description" maxlength="256" value="<?php echo $this->escape(stripslashes($this->status['description'])); ?>" />
 		</label>
 		<label for="field-fulltxt">
-			<?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT'); ?>:
+			<?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT'); ?>: <span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 			<textarea name="fulltxt" id="field-fulltxt" cols="50" rows="20"><?php echo $this->escape(stripslashes($this->status['fulltxt'])); ?></textarea>
 			<span class="hint"><a href="/wiki/Help:WikiFormatting"><?php echo JText::_('COM_TOOLS_WIKI_FORMATTING'); ?></a> <?php echo JText::_('COM_TOOLS_COMPOSE_TIP_ALLOWED'); ?>.</span>
 		</label>
