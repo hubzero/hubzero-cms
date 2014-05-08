@@ -39,21 +39,9 @@ $this->js();
 
 $juser = JFactory::getUser();
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->page->get('title'); ?></h2>
-	</div><!-- /#content-header -->
-
-	<?php /*if (!$juser->get('guest') && $this->config->get('access-create')) { ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
-		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
-			<li>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
-					<?php echo JText::_('COM_WIKI_NEW_PAGE'); ?>
-				</a>
-			</li>
-		</ul>
-	</div><!-- / #content-header-extra -->
-	<?php }*/ ?>
+	</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -78,23 +66,23 @@ $juser = JFactory::getUser();
 	$view->display();
 ?>
 
-	<div class="main section">
+	<section class="main section">
 
-<?php
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'special',
-		'layout'    => strtolower($this->layout)
-	));
-	$view->option = $this->option;
-	$view->controller = $this->controller;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->config = $this->config;
-	$view->sub    = $this->sub;
-	$view->book   = $this->book;
-	//$view->revision = $this->revision;
-	$view->display()
-?>
+		<?php
+			$view = new JView(array(
+				'base_path' => $this->base_path, 
+				'name'      => 'special',
+				'layout'    => strtolower($this->layout)
+			));
+			$view->option = $this->option;
+			$view->controller = $this->controller;
+			$view->page   = $this->page;
+			$view->task   = $this->task;
+			$view->config = $this->config;
+			$view->sub    = $this->sub;
+			$view->book   = $this->book;
+			//$view->revision = $this->revision;
+			$view->display()
+		?>
 
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->

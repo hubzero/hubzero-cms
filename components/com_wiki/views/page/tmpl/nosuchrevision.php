@@ -37,7 +37,7 @@ if (!$this->sub)
 }
 $this->js();
 ?>
-<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
 	<?php
 	if (!$this->page->isStatic()) 
@@ -51,7 +51,7 @@ $this->js();
 		$view->display();
 	}
 	?>
-</div><!-- /#content-header -->
+</header><!-- /#content-header -->
 
 <?php
 if ($this->page->exists()) 
@@ -71,6 +71,6 @@ if ($this->page->exists())
 }
 ?>
 
-<div class="main section">
+<section class="main section">
 	<p class="warning"><?php echo JText::sprintf('A page could not be found matching the version number "%s".', $this->version); ?></p>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

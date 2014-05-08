@@ -39,57 +39,32 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a>
 			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
-		<?php /*if (!$this->comment->isReported() && !$this->comment->get('parent')) { ?>
-			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
-				<?php
-				$view = new JView(array(
-					'name'   => 'questions', 
-					'layout' => 'rateitem'
-				));
-				$view->option = $this->option;
-				$view->item   = $this->comment;
-				$view->type   = 'question';
-				$view->vote   = '';
-				$view->id     = '';
-				if (!$juser->get('guest')) 
-				{
-					if ($this->comment->get('created_by') == $juser->get('username')) 
-					{
-						$view->vote = $this->comment->get('vote');
-						$view->id   = $this->comment->get('id');
-					}
-				}
-				$view->display();
-				?>
-			</p><!-- / .comment-voting -->
-		<?php }*/ ?>
-		<?php 
-		if ($this->comment->get('rating')) 
-		{
-			switch ($this->comment->get('rating'))
+			<?php 
+			if ($this->comment->get('rating')) 
 			{
-				case 0:   $rcls = ' no-stars';        break;
-				case 0.5: $rcls = ' half-stars';      break;
-				case 1:   $rcls = ' one-stars';       break;
-				case 1.5: $rcls = ' onehalf-stars';   break;
-				case 2:   $rcls = ' two-stars';       break;
-				case 2.5: $rcls = ' twohalf-stars';   break;
-				case 3:   $rcls = ' three-stars';     break;
-				case 3.5: $rcls = ' threehalf-stars'; break;
-				case 4:   $rcls = ' four-stars';      break;
-				case 4.5: $rcls = ' fourhalf-stars';  break;
-				case 5:   $rcls = ' five-stars';      break;
-				default:  $rcls = ' no-stars';        break;
+				switch ($this->comment->get('rating'))
+				{
+					case 0:   $rcls = ' no-stars';        break;
+					case 0.5: $rcls = ' half-stars';      break;
+					case 1:   $rcls = ' one-stars';       break;
+					case 1.5: $rcls = ' onehalf-stars';   break;
+					case 2:   $rcls = ' two-stars';       break;
+					case 2.5: $rcls = ' twohalf-stars';   break;
+					case 3:   $rcls = ' three-stars';     break;
+					case 3.5: $rcls = ' threehalf-stars'; break;
+					case 4:   $rcls = ' four-stars';      break;
+					case 4.5: $rcls = ' fourhalf-stars';  break;
+					case 5:   $rcls = ' five-stars';      break;
+					default:  $rcls = ' no-stars';        break;
+				}
+				?>
+				<p><span class="avgrating<?php echo $rcls; ?>"><span><?php echo JText::sprintf('COM_WIKI_COMMENT_RATING', $this->comment->get('rating')); ?></span></span></p>
+				<?php
 			}
 			?>
-			<p><span class="avgrating<?php echo $rcls; ?>"><span><?php echo JText::sprintf('COM_WIKI_COMMENT_RATING', $this->comment->get('rating')); ?></span></span></p>
-			<?php
-		}
-		?>
 
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong> 

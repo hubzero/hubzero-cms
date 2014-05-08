@@ -37,7 +37,7 @@ if (!$this->sub)
 	     ->js();
 }
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
 		<?php
 		if (!$this->page->isStatic()) 
@@ -51,7 +51,7 @@ if (!$this->sub)
 			$view->display();
 		}
 		?>
-	</div><!-- /#content-header -->
+	</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -77,54 +77,27 @@ if (!$this->sub)
 ?>
 
 <?php if (!$this->sub) { ?>
-<div class="section">
-	<div class="aside">
-		<p><a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a></p>
-	</div><!-- / .aside -->
+<section class="section">
 	<div class="subject">
 <?php } ?>
 		<p><?php echo JText::_('COM_WIKI_COMMENTS_EXPLANATION'); ?></p>
 <?php if (!$this->sub) { ?>
 	</div><!-- / .subject -->
-</div><!-- / .section -->
-<div class="clear"></div>
+	<aside class="aside">
+		<p><a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a></p>
+	</aside><!-- / .aside -->
+</section><!-- / .section -->
 <?php } ?>
 
-<div class="main section">
-	<?php if ($this->sub) { ?>
-	<p class="comment-add-btn">
-		<a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
-	</p>
-	<?php } ?>
-	<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
-	<div class="clear"></div>
-
-	<div class="aside">
-		<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="get">
-			<fieldset class="controls">
-				<label for="filter-version">
-					<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
-					<select name="version" id="filter-version">
-						<option value=""><?php echo JText::_('ALL'); ?></option>
-						<?php
-						foreach ($this->page->revisions('list') as $ver)
-						{
-						?>
-						<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->get('version'); ?></option>
-						<?php
-						}
-						?>
-					</select>
-				</label>
-				<input type="hidden" name="task" value="comments" />
-				<p class="submit"><input type="submit" value="<?php echo JText::_('GO'); ?>" /></p>
-			<?php if ($this->sub) { ?>
-				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
-			<?php } ?>
-			</fieldset>
-		</form>
-	</div><!-- / .aside -->
+<section class="main section">
 	<div class="subject">
+		<?php if ($this->sub) { ?>
+			<p class="comment-add-btn">
+				<a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
+			</p>
+		<?php } ?>
+		<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
+
 		<?php
 		$filters = array('version' => '');
 		if ($this->v)
@@ -162,52 +135,40 @@ if (!$this->sub)
 		}
 		?>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .main section -->
+	<aside class="aside">
+		<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="get">
+			<fieldset class="controls">
+				<label for="filter-version">
+					<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
+					<select name="version" id="filter-version">
+						<option value=""><?php echo JText::_('ALL'); ?></option>
+						<?php
+						foreach ($this->page->revisions('list') as $ver)
+						{
+						?>
+						<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->get('version'); ?></option>
+						<?php
+						}
+						?>
+					</select>
+				</label>
+				<input type="hidden" name="task" value="comments" />
+				<p class="submit"><input type="submit" value="<?php echo JText::_('GO'); ?>" /></p>
+			<?php if ($this->sub) { ?>
+				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
+			<?php } ?>
+			</fieldset>
+		</form>
+	</aside><!-- / .aside -->
+</section><!-- / .main section -->
 
 <?php if (isset($this->mycomment) && is_a($this->mycomment, 'WikiModelComment')) { ?>
-<div class="below section">
-	<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="post" id="commentform">
-		<h3 id="commentform-title">
-			<a name="commentform"></a>
-			<?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?>
-		</h3>
-		<div class="aside">
-			<table class="wiki-reference" summary="Wiki Syntax Reference">
-				<caption>Wiki Syntax Reference</caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-				</tbody>
-			</table>
-		</div><!-- / .aside -->
+<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="post" id="commentform">
+	<section class="below section">
 		<div class="subject">
+			<h3 id="commentform-title">
+				<?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?>
+			</h3>
 			<p class="comment-member-photo">
 				<?php 
 				$juser = JFactory::getUser();
@@ -271,7 +232,41 @@ if (!$this->sub)
 				</div>
 			</fieldset>
 		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</form>
-</div><!-- / .below section -->
+		<aside class="aside">
+			<table class="wiki-reference">
+				<caption>Wiki Syntax Reference</caption>
+				<tbody>
+					<tr>
+						<td>'''bold'''</td>
+						<td><b>bold</b></td>
+					</tr>
+					<tr>
+						<td>''italic''</td>
+						<td><i>italic</i></td>
+					</tr>
+					<tr>
+						<td>__underline__</td>
+						<td><span style="text-decoration:underline;">underline</span></td>
+					</tr>
+					<tr>
+						<td>{{{monospace}}}</td>
+						<td><code>monospace</code></td>
+					</tr>
+					<tr>
+						<td>~~strike-through~~</td>
+						<td><del>strike-through</del></td>
+					</tr>
+					<tr>
+						<td>^superscript^</td>
+						<td><sup>superscript</sup></td>
+					</tr>
+					<tr>
+						<td>,,subscript,,</td>
+						<td><sub>subscript</sub></td>
+					</tr>
+				</tbody>
+			</table>
+		</aside><!-- / .aside -->
+	</section><!-- / .below section -->
+</form>
 <?php } ?>

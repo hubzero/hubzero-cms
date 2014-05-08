@@ -43,7 +43,7 @@ if (!$this->sub)
 // Include any Scripts
 $this->js();
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
 		<?php
 		if (!$this->page->isStatic()) 
@@ -57,7 +57,7 @@ $this->js();
 			$view->display();
 		}
 		?>
-	</div><!-- /#content-header -->
+	</header><!-- /#content-header -->
 
 <?php echo $this->page->event->afterDisplayTitle; ?>
 
@@ -95,10 +95,10 @@ if (!$this->page->isStatic()) {
 	$view->sub        = $this->sub;
 	$view->display();
 ?>
-	<div class="main section">
-		<div class="wikipage">
+	<section class="main section">
+		<article class="wikipage">
 			<?php echo $this->revision->get('pagehtml'); ?>
-		</div>
+		</article>
 		<p class="timestamp">
 			<?php echo JText::_('COM_WIKI_PAGE_CREATED').' <time datetime="' . $this->page->created() . '">'.$this->page->created('date') . '</time>, '.JText::_('COM_WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>'; ?>
 			<?php /*if ($stats = $this->page->getMetrics()) { ?>
@@ -113,7 +113,7 @@ if (!$this->page->isStatic()) {
 			<?php echo $this->page->tags('cloud'); ?>
 		</div>
 	<?php } ?>
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->
 <?php
 } else {
 	echo $this->revision->get('pagehtml');

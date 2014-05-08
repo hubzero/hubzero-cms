@@ -37,9 +37,9 @@ if (!$this->sub)
 }
 $this->js();
 ?>
-<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
-</div><!-- /#content-header -->
+</header><!-- /#content-header -->
 
 <?php
 	$view = new JView(array(
@@ -56,7 +56,7 @@ $this->js();
 	$view->display();
 ?>
 
-<div class="main section">
+<section class="main section">
 	<p class="warning">
 		This page does not exist. Would you like to <a href="<?php echo JRoute::_($this->page->link('new')); ?>">create it?</a>
 	</p>
@@ -74,5 +74,4 @@ $this->js();
 	<?php } ?>
 	</ul>
 <?php } ?>
-	<div class="clear"></div>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
