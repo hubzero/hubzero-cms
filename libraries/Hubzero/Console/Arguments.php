@@ -165,6 +165,18 @@ class Arguments
 					$parts = explode("=", $this->raw[$i], 2);
 					$key   = preg_replace("/^([-]{1,2})/", "", $parts[0]);
 					$value = ($parts[1]);
+
+					if (isset($this->opts[$key]))
+					{
+						$this->opts[$key] = (array)$this->opts[$key];
+						array_push($this->opts[$key], $value);
+					}
+					else
+					{
+						$this->opts[$key] = $value;
+					}
+
+					continue;
 				}
 				// Args with a dash but no equals sign will be considered TRUE if present
 				elseif (strpos($this->raw[$i], "-") !== false)
