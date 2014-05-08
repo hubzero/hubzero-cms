@@ -36,54 +36,34 @@ $this->css()
 
 $this->filters['sort'] = '';
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
-<div class="clear"></div>
+
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+					<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
-	<div class="main section">
-		<div class="aside">
-			<div class="container">
-			<?php /*if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-				
-			<?php } else {*/ ?>
-				<p>
-					<?php echo JText::_('COM_TAGS_BROWSE_EXPLANATION'); ?>
-				</p>
-				<p class="help">
-					<strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong>
-					<br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?>
-				</p>
-			<?php /*} 
-				<p class="info">
-					<?php echo JText::_('COM_TAGS_BROWSE_TAGGED_NOTE'); ?>
-				</p> */ ?>
-			</div><!-- / .container -->
-		</div><!-- / .aside -->
+	<section class="main section">
 		<div class="subject">
 
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<label for="entry-search-text">
-						<?php echo JText::_('COM_TAGS_SEARCH_TAGS'); ?>
-					</label>
+					<label for="entry-search-text"><?php echo JText::_('COM_TAGS_SEARCH_TAGS'); ?></label>
 					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TAGS_SEARCH_ENTER_TAGS'); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
 			<div class="container">
-				<ul class="entries-menu">
+				<ul class="entries-menu sort-options">
 					<li>
 						<?php
 							$cls = ($this->filters['sortby'] == 'total') ? ' class="active"' : '';
@@ -105,35 +85,36 @@ $this->filters['sort'] = '';
 				</ul>
 
 				<table class="entries" id="taglist">
-					<?php
-					if (!$this->filters['limit'])
-					{
-						$this->filters['limit'] = $this->total;
-					}
-					$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
-					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-					//$e = ($this->filters['limit'] > $this->total) ? $this->filters['start'] + $this->filters['limit'] : $this->filters['start'] + $this->filters['limit'];
-					?>
+					<caption>
+						<?php
+						if (!$this->filters['limit'])
+						{
+							$this->filters['limit'] = $this->total;
+						}
+						$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
+						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+
+						if ($this->filters['search'] != '') {
+							echo JText::sprintf('COM_TAGS_BROWSE_SEARCH_FOR_IN', $this->escape($this->filters['search']), JText::_('COM_TAGS'));
+						} else {
+							echo JText::_('COM_TAGS');
+						}
+						?>
+						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
+					</caption>
 					<thead>
 						<tr>
-						<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-							<th colspan="2"><?php echo JText::_('COM_TAGS_COL_ACTION'); ?></th>
-						<?php } ?>
-							<th>
-								<?php
-								if ($this->filters['search'] != '') {
-									echo JText::sprintf('COM_TAGS_BROWSE_SEARCH_FOR_IN', $this->escape($this->filters['search']), JText::_('COM_TAGS'));
-								} else {
-									echo JText::_('COM_TAGS');
-								}
-								?>
-								<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
+							<th scope="col">
+								<?php echo JText::_('COM_TAGS_TAG'); ?>
 							</th>
-						<?php //if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-							<th><?php echo JText::_('COM_TAGS_COL_ALIAS'); ?></th>
-						<?php /*} 
-							<th><?php echo JText::_('COM_TAGS_COL_NUMBER_TAGGED'); ?></th>
-							*/ ?>
+							<th scope="col">
+								<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
+							</th>
+						<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+							<th scope="col" colspan="2">
+								<?php echo JText::_('COM_TAGS_COL_ACTION'); ?>
+							</th>
+						<?php } ?>
 						</tr>
 					</thead>
 					<tbody>
@@ -146,6 +127,14 @@ $this->filters['sort'] = '';
 						$cls = ($cls == 'even' ? 'odd' : 'even');
 				?>
 						<tr class="<?php echo $cls . ($row->get('admin') ? ' admin' : ''); ?>">
+							<td>
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+									<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
+								</a>
+							</td>
+							<td>
+								<?php echo $row->get('substitutes') ? $this->escape(stripslashes($row->substitutes('string'))) : '<span>' . JText::_('COM_TAGS_NONE') . '</span>'; ?>
+							</td>
 					<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
 						<?php if ($this->config->get('access-delete-tag')) { ?>
@@ -162,19 +151,6 @@ $this->filters['sort'] = '';
 						<?php } ?>
 							</td>
 					<?php } ?>
-							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
-									<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
-								</a>
-							</td>
-					<?php //if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-							<td>
-								<?php echo $row->get('substitutes') ? $this->escape(stripslashes($row->substitutes('string'))) : '<span>' . JText::_('COM_TAGS_NONE') . '</span>'; ?>
-							</td>
-					<?php //}
-							/* <td>
-								<?php echo $this->escape($row->get('total')); ?>
-							</td> */ ?>
 						</tr>
 				<?php
 					}
@@ -191,6 +167,16 @@ $this->filters['sort'] = '';
 				<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 			</div><!-- / .container -->
 		</div><!-- / .main subject -->
-		<div class="clear"></div>
-	</div><!-- / .main section -->
+		<aside class="aside">
+			<div class="container">
+				<p>
+					<?php echo JText::_('COM_TAGS_BROWSE_EXPLANATION'); ?>
+				</p>
+				<p class="help">
+					<strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong>
+					<br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?>
+				</p>
+			</div><!-- / .container -->
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
 </form>

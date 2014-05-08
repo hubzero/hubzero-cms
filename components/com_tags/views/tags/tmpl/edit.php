@@ -34,25 +34,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
-<div class="clear"></div>
+
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+					<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 <?php } ?>
 
-<div class="main section">
+<section class="main section">
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_TAGS_NORMALIZED_TAG_EXPLANATION'); ?></p>
@@ -102,4 +102,4 @@ $this->css()
 			</a>
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
