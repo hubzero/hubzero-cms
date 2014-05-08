@@ -452,7 +452,7 @@ jQuery(document).ready(function($){
 					<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('created')); ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape(JHTML::_('date', $this->row->get('created'), 'Y-m-d H:i:s')); ?>" />
 					</td>
 				</tr>
 			<?php if ($this->row->get('modified')) { ?>
@@ -470,7 +470,7 @@ jQuery(document).ready(function($){
 					<th class="key"><?php echo JText::_('Modified Date'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('modified')); ?>
-						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->row->get('modified')); ?>" />
+						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape(JHTML::_('date', $this->row->get('modified'), 'Y-m-d H:i:s')); ?>" />
 					</td>
 				</tr>
 			<?php } ?>
