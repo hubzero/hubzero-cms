@@ -147,7 +147,6 @@ class plgSearchPublications extends SearchPlugin
 
 		$term_parser = $request->get_terms();
 		$terms = $request->get_term_ar();
-
 		$quoted_terms = array();
 		foreach ($terms['optional'] as $idx => $term)
 		{
@@ -177,6 +176,7 @@ class plgSearchPublications extends SearchPlugin
 			}
 		}
 
+		$weight_authors = 'a.name LIKE \'%'.implode(' ', $terms['optional']).'%\'';
 		$weight = $terms['stemmed'] ? 'match(v.title, v.description, v.abstract) against (\'' . join(' ', $terms['stemmed']) . '\')' : '0';
 		foreach ($quoted_terms as $term)
 		{
@@ -216,7 +216,32 @@ class plgSearchPublications extends SearchPlugin
 			WHERE 
 				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down) 
 				AND ($weight > 0)" .
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
+			"UNION
+			SELECT 
+				p.id,
+				v.publication_id,
+				v.title,
+				v.description,
+				concat('index.php?option=com_publications&id=', coalesce(case when p.alias = '' then null else p.alias end, p.id)) AS link,
+				1 AS weight,
+				v.published_up AS date,
+				c.alias AS section,
+				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+					AS contributors,
+				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+					AS contributor_ids,
+				NULL AS parents
+			FROM #__publication_authors a
+			INNER JOIN #__publication_versions v 
+				ON v.id = a.publication_version_id  
+			INNER JOIN #__publications p 
+				ON p.id = v.publication_id
+			LEFT JOIN #__publication_categories c 
+				ON c.id = p.category
+			WHERE 
+				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down) 
+				AND a.status = 1 AND $weight_authors"
 		);
 		$assoc = $sql->to_associative();
 
