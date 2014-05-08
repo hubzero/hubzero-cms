@@ -72,6 +72,10 @@ else {
 
 <div class="main section">
 	<form action="index.php" method="post" id="hubForm">
+		<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+		<?php } ?>
+
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
 <?php if ($this->step !=1 ) { ?>
 			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
