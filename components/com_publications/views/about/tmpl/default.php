@@ -120,7 +120,8 @@ if ($this->params->get('show_tags'))
 // Show version notes
 if ($this->params->get('show_notes') && $this->publication->release_notes) 
 {
-	$description = $model->notes('parsed');
+	$notes = $model->notes('parsed');
+	$html .= PublicationsHtml::tableRow( JText::_('COM_PUBLICATIONS_NOTES'), $notes );
 }
 
 // Page end
