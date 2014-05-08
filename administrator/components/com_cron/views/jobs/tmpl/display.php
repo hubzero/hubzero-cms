@@ -182,7 +182,7 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo $this->escape($row->get('next_run')); ?></time>
+						<time><?php echo $this->escape(($row->started() ? $row->get('next_run') : $row->get('publish_up'))); ?></time>
 					</span>
 				</td>
 				<!-- <td>
