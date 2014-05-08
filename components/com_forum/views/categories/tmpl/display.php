@@ -38,68 +38,19 @@ $juser = JFactory::getUser();
 $this->category->set('section_alias', $this->filters['section']);
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
-</div>
-<div id="content-header-extra">
-	<p><a class="icon-folder categories btn" href="<?php echo JRoute::_($this->category->link('base')); ?>"><?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?></a></p>
-</div>
-<div class="clear"></div>
+
+	<div id="content-header-extra">
+		<p><a class="icon-folder categories btn" href="<?php echo JRoute::_($this->category->link('base')); ?>"><?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?></a></p>
+	</div>
+</header>
 
 <?php foreach ($this->notifications as $notification) { ?>
 <p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 <?php } ?>
 
-<div class="main section">
-	<div class="aside">
-		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_LAST_POST'); ?></h3>
-			<p>
-			<?php
-			$last = $this->category->lastActivity();
-			if ($last->exists()) 
-			{
-				$lname = JText::_('COM_FORUM_ANONYMOUS');
-				if (!$last->get('anonymous')) 
-				{
-					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $last->creator('id')) . '">' . $this->escape(stripslashes($last->creator('name'))) . '</a>';
-				}
-				$last->set('category', $this->filters['category']);
-				$last->set('section', $this->filters['section']);
-			?>
-				<a href="<?php echo JRoute::_($last->link()); ?>" class="entry-date">
-					<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
-					<span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> 
-					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-					<span class="icon-date date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
-				</a>
-				<span class="entry-author">
-					<?php echo JText::sprintf('COM_FORUM_BY_USER', $lname); ?>
-				</span>
-			<?php } else { ?>
-				<?php echo JText::_('COM_FORUM_NONE'); ?>
-			<?php } ?>
-			</p>
-		</div><!-- / .container -->
-	<?php if ($this->config->get('access-create-thread')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN'); ?></h3>
-		<?php if (!$this->category->isClosed()) { ?>
-			<p>
-				<?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
-			</p>
-			<p>
-				<a class="icon-add add btn" href="<?php echo JRoute::_($this->category->link('newthread')); ?>"><?php echo JText::_('COM_FORUM_NEW_DISCUSSION'); ?></a>
-			</p>
-		<?php } else { ?>
-			<p class="warning">
-				<?php echo JText::_('COM_FORUM_CATEGORY_CLOSED'); ?>
-			</p>
-		<?php } ?>
-		</div><!-- / .container -->
-	<?php } ?>
-	</div><!-- / .aside -->
-
+<section class="main section">
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 			<div class="container data-entry">
@@ -264,5 +215,52 @@ $this->category->set('section_alias', $this->filters['section']);
 			</div><!-- / .container -->
 		</form>
 	</div><!-- /.subject -->
-	<div class="clear"></div>
-</div><!-- /.main -->
+	<aside class="aside">
+		<div class="container">
+			<h3><?php echo JText::_('COM_FORUM_LAST_POST'); ?></h3>
+			<p>
+			<?php
+			$last = $this->category->lastActivity();
+			if ($last->exists()) 
+			{
+				$lname = JText::_('COM_FORUM_ANONYMOUS');
+				if (!$last->get('anonymous')) 
+				{
+					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $last->creator('id')) . '">' . $this->escape(stripslashes($last->creator('name'))) . '</a>';
+				}
+				$last->set('category', $this->filters['category']);
+				$last->set('section', $this->filters['section']);
+			?>
+				<a href="<?php echo JRoute::_($last->link()); ?>" class="entry-date">
+					<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
+					<span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> 
+					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+					<span class="icon-date date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
+				</a>
+				<span class="entry-author">
+					<?php echo JText::sprintf('COM_FORUM_BY_USER', $lname); ?>
+				</span>
+			<?php } else { ?>
+				<?php echo JText::_('COM_FORUM_NONE'); ?>
+			<?php } ?>
+			</p>
+		</div><!-- / .container -->
+	<?php if ($this->config->get('access-create-thread')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN'); ?></h3>
+		<?php if (!$this->category->isClosed()) { ?>
+			<p>
+				<?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
+			</p>
+			<p>
+				<a class="icon-add add btn" href="<?php echo JRoute::_($this->category->link('newthread')); ?>"><?php echo JText::_('COM_FORUM_NEW_DISCUSSION'); ?></a>
+			</p>
+		<?php } else { ?>
+			<p class="warning">
+				<?php echo JText::_('COM_FORUM_CATEGORY_CLOSED'); ?>
+			</p>
+		<?php } ?>
+		</div><!-- / .container -->
+	<?php } ?>
+	</aside><!-- / .aside -->
+</section><!-- /.main -->

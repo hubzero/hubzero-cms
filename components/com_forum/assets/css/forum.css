@@ -217,6 +217,15 @@
 		color: #666;
 		border-bottom: 1px dotted #999;
 	}
+	.com_forum .pagination:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: right;
+	}
+	.com_forum .post-comment-title {
+		margin-top: 2em;
+	}
 
 /* Comments */
 	ol.comments + .list-footer {

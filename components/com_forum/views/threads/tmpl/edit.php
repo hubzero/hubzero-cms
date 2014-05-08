@@ -47,13 +47,13 @@ else
 	$action = $this->post->link('new');
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
-</div>
-<div id="content-header-extra">
-	<p><a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>"><?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?></a></p>
-</div>
-<div class="clear"></div>
+
+	<div id="content-header-extra">
+		<p><a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>"><?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?></a></p>
+	</div>
+</header>
 
 <?php
 	foreach ($this->notifications as $notification) 
@@ -62,24 +62,15 @@ else
 	}
 ?>
 
-<div class="main section">
-	<h3 class="post-comment-title">
-	<?php if ($this->post->exists()) { ?>
-		<?php echo JText::_('COM_FORUM_EDIT_DISCUSSION'); ?>
-	<?php } else { ?>
-		<?php echo JText::_('COM_FORUM_NEW_DISCUSSION'); ?>
-	<?php } ?>
-	</h3>			
-	<div class="aside">
-		<div class="container">
-			<p><strong><?php echo JText::_('COM_FORUM_WHAT_IS_STICKY'); ?></strong><br />
-			<?php echo JText::_('COM_FORUM_STICKY_EXPLANATION'); ?></p>
-
-			<p><strong><?php echo JText::_('COM_FORUM_WHAT_IS_LOCKING'); ?></strong><br />
-			<?php echo JText::_('COM_FORUM_LOCKING_EXPLANATION'); ?></p>
-		</div>
-	</div><!-- /.aside -->
+<section class="main section">
 	<div class="subject">
+		<h3>
+		<?php if ($this->post->exists()) { ?>
+			<?php echo JText::_('COM_FORUM_EDIT_DISCUSSION'); ?>
+		<?php } else { ?>
+			<?php echo JText::_('COM_FORUM_NEW_DISCUSSION'); ?>
+		<?php } ?>
+		</h3>
 		<form action="<?php echo JRoute::_($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
@@ -213,5 +204,13 @@ else
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .below section -->
+	<aside class="aside">
+		<div class="container">
+			<p><strong><?php echo JText::_('COM_FORUM_WHAT_IS_STICKY'); ?></strong><br />
+			<?php echo JText::_('COM_FORUM_STICKY_EXPLANATION'); ?></p>
+
+			<p><strong><?php echo JText::_('COM_FORUM_WHAT_IS_LOCKING'); ?></strong><br />
+			<?php echo JText::_('COM_FORUM_LOCKING_EXPLANATION'); ?></p>
+		</div>
+	</aside><!-- /.aside -->
+</section><!-- / .below section -->

@@ -40,17 +40,17 @@ $this->category->set('section_alias', $this->filters['section']);
 $this->thread->set('section', $this->filters['section']);
 $this->thread->set('category', $this->category->get('alias'));
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
-</div>
-<div id="content-header-extra">
-	<p>
-		<a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>">
-			<?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?>
-		</a>
-	</p>
-</div>
-<div class="clear"></div>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>">
+				<?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?>
+			</a>
+		</p>
+	</div>
+</header>
 
 <?php
 	foreach ($this->notifications as $notification) 
@@ -58,8 +58,169 @@ $this->thread->set('category', $this->category->get('alias'));
 		echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 	}
 ?>
-<div class="main section">
-	<div class="aside">
+<section class="main section">
+	<div class="subject">
+		<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
+			<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
+		</h3>
+		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
+			<?php
+			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
+			{
+				$view = new JView(
+					array(
+						'name'    => 'threads',
+						'layout'  => '_list'
+					)
+				);
+				$view->option     = $this->option;
+				$view->controller = $this->controller;
+
+				$view->comments   = $this->thread->posts($this->config->get('threading', 'list'));
+				$view->thread     = $this->thread;
+				$view->parent     = 0;
+
+				$view->config     = $this->config;
+				$view->depth      = 0;
+				$view->cls        = 'odd';
+				$view->filters    = $this->filters;
+				$view->category   = $this->category;
+
+				$view->display();
+			}
+			else
+			{
+				?>
+			<ol class="comments">
+				<li>
+					<p><?php echo JText::_('COM_FORUM_NO_REPLIES_FOUND'); ?></p>
+				</li>
+			</ol>
+				<?php
+			}
+
+			jimport('joomla.html.pagination');
+			$pageNav = new JPagination(
+				$this->thread->posts('count', $this->filters), 
+				$this->filters['start'], 
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
+			$pageNav->setAdditionalUrlParam('category', $this->category->get('alias'));
+			$pageNav->setAdditionalUrlParam('thread', $this->thread->get('id'));
+
+			echo $pageNav->getListFooter();
+			?>
+		</form>
+
+	<?php if (!$this->thread->get('closed')) { ?>
+		<h3 class="post-comment-title">
+			<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
+		</h3>
+		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
+			<p class="comment-member-photo">
+				<?php
+				$anon = (!$juser->get('guest') ? 0 : 1); 
+				$now  = JFactory::getDate();
+				?>
+				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('COM_FORUM_USER_PHOTO'); ?>" />
+			</p>
+
+			<fieldset>
+			<?php if ($juser->get('guest')) { ?>
+				<p class="warning"><?php echo JText::_('COM_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
+			<?php } else if ($this->config->get('access-create-post')) { ?>
+				<p class="comment-title">
+					<strong>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape(stripslashes($juser->get('name'))); ?></a>
+					</strong> 
+					<span class="permalink">
+						<span class="comment-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span> 
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+					</span>
+				</p>
+
+				<label for="fieldcomment">
+					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?>
+					<?php
+					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
+					?>
+				</label>
+
+				<label>
+					<?php echo JText::_('COM_FORUM_FIELD_YOUR_TAGS'); ?>
+					<?php 
+						$tags = $this->thread->tags('string');
+						
+						JPluginHelper::importPlugin('hubzero');
+						$dispatcher = JDispatcher::getInstance();
+						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)) );
+						if (count($tf) > 0) {
+							echo $tf[0];
+						} else {
+							echo '<input type="text" name="tags" value="' . $tags . '" />';
+						}
+					?>
+				</label>
+
+				<fieldset>
+					<legend><?php echo JText::_('COM_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
+					<div class="grid">
+						<div class="col span6">
+							<label for="upload">
+								<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?>:
+								<input type="file" name="upload" id="upload" />
+							</label>
+						</div>
+						<div class="col span6 omega">
+							<label for="field-description">
+								<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>:
+								<input type="text" name="description" id="field-description" value="" />
+							</label>
+						</div>
+					</div>
+				</fieldset>
+
+				<label for="field-anonymous" id="comment-anonymous-label">
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
+					<?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?>
+				</label>
+
+				<p class="submit">
+					<input type="submit" value="<?php echo JText::_('COM_FORUM_SUBMIT'); ?>" />
+				</p>
+			<?php } else { ?>
+				<p class="warning"><?php echo JText::_('COM_FORUM_PERMISSION_DENIED'); ?></p>
+			<?php } ?>
+
+				<div class="sidenote">
+					<p>
+						<strong><?php echo JText::_('COM_FORUM_KEEP_POLITE'); ?></strong>
+					</p>
+				</div>
+			</fieldset>
+			<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
+			<input type="hidden" name="fields[parent]" value="<?php echo $this->thread->get('id'); ?>" />
+			<input type="hidden" name="fields[state]" value="1" />
+			<input type="hidden" name="fields[id]" value="" />
+			<input type="hidden" name="fields[scope]" value="site" />
+			<input type="hidden" name="fields[scope_id]" value="0" />
+			<input type="hidden" name="fields[thread]" value="<?php echo $this->thread->get('id'); ?>" />
+			<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
+			<input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
+
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="threads" />
+			<input type="hidden" name="task" value="save" />
+
+			<?php echo JHTML::_('form.token'); ?>
+		</form>
+	<?php } ?>
+	</div><!-- / .subject -->
+
+	<aside class="aside">
 		<div class="container">
 			<h3><?php echo JText::_('COM_FORUM_ALL_TAGS'); ?></h3>
 		<?php if ($this->thread->tags('cloud')) { ?>
@@ -125,169 +286,5 @@ $this->thread->set('category', $this->category->get('alias'));
 			</ul>
 		</div><!-- / .container -->
 	<?php } ?>
-	</div><!-- / .aside -->
-	
-	<div class="subject">
-		<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
-			<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
-		</h3>
-		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
-			<?php
-			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
-			{
-				$view = new JView(
-					array(
-						'name'    => 'threads',
-						'layout'  => '_list'
-					)
-				);
-				$view->option     = $this->option;
-				$view->controller = $this->controller;
-
-				$view->comments   = $this->thread->posts($this->config->get('threading', 'list'));
-				$view->thread     = $this->thread;
-				$view->parent     = 0;
-
-				$view->config     = $this->config;
-				$view->depth      = 0;
-				$view->cls        = 'odd';
-				$view->filters    = $this->filters;
-				$view->category   = $this->category;
-
-				$view->display();
-			}
-			else
-			{
-				?>
-			<ol class="comments">
-				<li>
-					<p><?php echo JText::_('COM_FORUM_NO_REPLIES_FOUND'); ?></p>
-				</li>
-			</ol>
-				<?php
-			}
-
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination(
-				$this->thread->posts('count', $this->filters), 
-				$this->filters['start'], 
-				$this->filters['limit']
-			);
-			$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
-			$pageNav->setAdditionalUrlParam('category', $this->category->get('alias'));
-			$pageNav->setAdditionalUrlParam('thread', $this->thread->get('id'));
-
-			echo $pageNav->getListFooter();
-			?>
-		</form>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-
-<?php if (!$this->thread->get('closed')) { ?>
-
-	<h3 class="post-comment-title">
-		<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
-	</h3>
-	<div class="subject">
-		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
-			<p class="comment-member-photo">
-				<?php
-				$anon = (!$juser->get('guest') ? 0 : 1); 
-				$now  = JFactory::getDate();
-				?>
-				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('COM_FORUM_USER_PHOTO'); ?>" />
-			</p>
-
-			<fieldset>
-			<?php if ($juser->get('guest')) { ?>
-				<p class="warning"><?php echo JText::_('COM_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
-			<?php } else if ($this->config->get('access-create-post')) { ?>
-				<p class="comment-title">
-					<strong>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape(stripslashes($juser->get('name'))); ?></a>
-					</strong> 
-					<span class="permalink">
-						<span class="comment-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span> 
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
-					</span>
-				</p>
-
-				<label for="fieldcomment">
-					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?>
-					<?php
-					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
-					?>
-				</label>
-
-				<label>
-					<?php echo JText::_('COM_FORUM_FIELD_YOUR_TAGS'); ?>
-					<?php 
-						$tags = $this->thread->tags('string');
-						
-						JPluginHelper::importPlugin('hubzero');
-						$dispatcher = JDispatcher::getInstance();
-						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)) );
-						if (count($tf) > 0) {
-							echo $tf[0];
-						} else {
-							echo '<input type="text" name="tags" value="' . $tags . '" />';
-						}
-					?>
-				</label>
-
-				<fieldset>
-					<legend><?php echo JText::_('COM_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
-					<div class="grouping">
-						<label for="upload">
-							<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?>:
-							<input type="file" name="upload" id="upload" />
-						</label>
-
-						<label for="field-description">
-							<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>:
-							<input type="text" name="description" id="field-description" value="" />
-						</label>
-					</div>
-				</fieldset>
-
-				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
-					<?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?>
-				</label>
-
-				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('COM_FORUM_SUBMIT'); ?>" />
-				</p>
-			<?php } else { ?>
-				<p class="warning"><?php echo JText::_('COM_FORUM_PERMISSION_DENIED'); ?></p>
-			<?php } ?>
-
-				<div class="sidenote">
-					<p>
-						<strong><?php echo JText::_('COM_FORUM_KEEP_POLITE'); ?></strong>
-					</p>
-				</div>
-			</fieldset>
-			<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
-			<input type="hidden" name="fields[parent]" value="<?php echo $this->thread->get('id'); ?>" />
-			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[id]" value="" />
-			<input type="hidden" name="fields[scope]" value="site" />
-			<input type="hidden" name="fields[scope_id]" value="0" />
-			<input type="hidden" name="fields[thread]" value="<?php echo $this->thread->get('id'); ?>" />
-			<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
-			<input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
-
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="threads" />
-			<input type="hidden" name="task" value="save" />
-
-			<?php echo JHTML::_('form.token'); ?>
-		</form>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-<?php } ?>
-
-</div><!-- / .below section -->
+	</aside><!-- / .aside -->
+</section><!-- / .below section -->

@@ -35,39 +35,19 @@ $this->css()
 
 $juser = JFactory::getUser();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>
-</div>
-<div id="content-header-extra">
-	<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?></a></p>
-</div>
-<div class="clear"></div>
+
+	<div id="content-header-extra">
+		<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?></a></p>
+	</div>
+</header>
 
 <?php foreach ($this->notifications as $notification) { ?>
 <p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 <?php } ?>
 
-<div class="main section">
-	<div class="aside">
-	<?php if ($this->config->get('access-create-thread')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN'); ?></h3>
-		<?php if (!$this->category->isClosed()) { ?>
-			<p>
-				<?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
-			</p>
-			<p>
-				<a class="icon-add add btn" href="<?php echo JRoute::_($this->category->link('newthread')); ?>"><?php echo JText::_('COM_FORUM_NEW_DISCUSSION'); ?></a>
-			</p>
-		<?php } else { ?>
-			<p class="warning">
-				<?php echo JText::_('COM_FORUM_CATEGORY_CLOSED'); ?>
-			</p>
-		<?php } ?>
-		</div><!-- / .container -->
-	<?php } ?>
-	</div><!-- / .aside -->
-
+<section class="main section">
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 			<div class="container data-entry">
@@ -162,4 +142,23 @@ $juser = JFactory::getUser();
 			</div><!-- / .container -->
 		</form>
 	</div><!-- /.subject -->
-</div><!-- /.main -->
+	<aside class="aside">
+	<?php if ($this->config->get('access-create-thread')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN'); ?></h3>
+		<?php if (!$this->category->isClosed()) { ?>
+			<p>
+				<?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
+			</p>
+			<p>
+				<a class="icon-add add btn" href="<?php echo JRoute::_($this->category->link('newthread')); ?>"><?php echo JText::_('COM_FORUM_NEW_DISCUSSION'); ?></a>
+			</p>
+		<?php } else { ?>
+			<p class="warning">
+				<?php echo JText::_('COM_FORUM_CATEGORY_CLOSED'); ?>
+			</p>
+		<?php } ?>
+		</div><!-- / .container -->
+	<?php } ?>
+	</aside><!-- / .aside -->
+</section><!-- /.main -->

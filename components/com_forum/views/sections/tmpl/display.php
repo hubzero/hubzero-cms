@@ -35,109 +35,15 @@ $this->css()
 
 $juser = JFactory::getUser();
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
-</div>
+</header>
 
 <?php foreach ($this->notifications as $notification) { ?>
 <p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 <?php } ?>
 
-<div class="main section">
-	<div class="aside">
-		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_STATS'); ?></h3>
-			<table>
-				<tbody>
-					<tr>
-						<th><?php echo JText::_('COM_FORUM_CATEGORIES'); ?></th>
-						<td><span class="item-count"><?php echo $this->model->count('categories'); ?></span></td>
-					</tr>
-					<tr>
-						<th><?php echo JText::_('COM_FORUM_DISCUSSIONS'); ?></th>
-						<td><span class="item-count"><?php echo $this->model->count('threads'); ?></span></td>
-					</tr>
-					<tr>
-						<th><?php echo JText::_('COM_FORUM_POSTS'); ?></th>
-						<td><span class="item-count"><?php echo $this->model->count('posts'); ?></span></td>
-					</tr>
-				</tbody>
-			</table>
-		</div><!-- / .container -->
-		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_LAST_POST'); ?></h3>
-			<p>
-			<?php
-			if ($this->model->lastActivity()->exists()) 
-			{
-				$post = $this->model->lastActivity();
-
-				$lname = JText::_('COM_FORUM_ANONYMOUS');
-				if (!$post->get('anonymous')) 
-				{
-					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
-				}
-				foreach ($this->sections as $section)
-				{
-					if ($section->categories()->total() > 0) 
-					{
-						foreach ($section->categories() as $row) 
-						{
-							if ($row->get('id') == $post->get('category_id'))
-							{
-								$post->set('category', $row->get('alias'));
-								$post->set('section', $section->get('alias'));
-								break;
-							}
-						}
-					}
-				}
-				?>
-				<a class="entry-date" href="<?php echo JRoute::_($post->link()); ?>">
-					<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
-					<span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span> 
-					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-					<span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
-				</a>
-				<span class="entry-author">
-					<?php echo JText::sprintf('COM_FORUM_BY_USER', $lname); ?>
-				</span>
-			<?php } else { ?>
-				<?php echo JText::_('COM_FORUM_NONE'); ?>
-			<?php } ?>
-			</p>
-		</div><!-- / .container -->
-		
-<?php if ($this->config->get('access-create-section')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_SECTION'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_FORUM_SECTION_EXPLANATION'); ?>
-			</p>
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
-				<fieldset>
-					<legend><?php echo JText::_('COM_FORUM_NEW_SECTION'); ?></legend>
-					<label for="field-title">
-						<?php echo JText::_('COM_FORUM_FIELD_TITLE'); ?>
-						<input type="text" name="fields[title]" id="field-title" value="" />
-					</label>
-					<p class="submit">
-						<input type="submit" value="<?php echo JText::_('COM_FORUM_CREATE'); ?>" />
-					</p>
-					<input type="hidden" name="task" value="save" />
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="sections" />
-					<input type="hidden" name="fields[id]" value="" />
-					<input type="hidden" name="fields[scope]" value="site" />
-					<input type="hidden" name="fields[scope_id]" value="0" />
-					<input type="hidden" name="fields[access]" value="0" />
-					<?php echo JHTML::_('form.token'); ?>
-				</fieldset>
-			</form>
-		</div>
-<?php } ?>
-	</div><!-- / .aside -->
-
+<section class="main section">
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 			<div class="container data-entry">
@@ -266,5 +172,97 @@ foreach ($this->sections as $section)
 } 
 ?>
 	</div><!-- /.subject -->
-	<div class="clear"></div>
-</div><!-- /.main -->
+	<aside class="aside">
+		<div class="container">
+			<h3><?php echo JText::_('COM_FORUM_STATS'); ?></h3>
+			<table>
+				<tbody>
+					<tr>
+						<th><?php echo JText::_('COM_FORUM_CATEGORIES'); ?></th>
+						<td><span class="item-count"><?php echo $this->model->count('categories'); ?></span></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('COM_FORUM_DISCUSSIONS'); ?></th>
+						<td><span class="item-count"><?php echo $this->model->count('threads'); ?></span></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('COM_FORUM_POSTS'); ?></th>
+						<td><span class="item-count"><?php echo $this->model->count('posts'); ?></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!-- / .container -->
+		<div class="container">
+			<h3><?php echo JText::_('COM_FORUM_LAST_POST'); ?></h3>
+			<p>
+			<?php
+			if ($this->model->lastActivity()->exists()) 
+			{
+				$post = $this->model->lastActivity();
+
+				$lname = JText::_('COM_FORUM_ANONYMOUS');
+				if (!$post->get('anonymous')) 
+				{
+					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
+				}
+				foreach ($this->sections as $section)
+				{
+					if ($section->categories()->total() > 0) 
+					{
+						foreach ($section->categories() as $row) 
+						{
+							if ($row->get('id') == $post->get('category_id'))
+							{
+								$post->set('category', $row->get('alias'));
+								$post->set('section', $section->get('alias'));
+								break;
+							}
+						}
+					}
+				}
+				?>
+				<a class="entry-date" href="<?php echo JRoute::_($post->link()); ?>">
+					<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
+					<span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span> 
+					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+					<span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
+				</a>
+				<span class="entry-author">
+					<?php echo JText::sprintf('COM_FORUM_BY_USER', $lname); ?>
+				</span>
+			<?php } else { ?>
+				<?php echo JText::_('COM_FORUM_NONE'); ?>
+			<?php } ?>
+			</p>
+		</div><!-- / .container -->
+
+	<?php if ($this->config->get('access-create-section')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_FORUM_SECTION'); ?></h3>
+			<p>
+				<?php echo JText::_('COM_FORUM_SECTION_EXPLANATION'); ?>
+			</p>
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+				<fieldset>
+					<legend><?php echo JText::_('COM_FORUM_NEW_SECTION'); ?></legend>
+					<label for="field-title">
+						<?php echo JText::_('COM_FORUM_FIELD_TITLE'); ?>
+						<input type="text" name="fields[title]" id="field-title" value="" />
+					</label>
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('COM_FORUM_CREATE'); ?>" />
+					</p>
+					<input type="hidden" name="task" value="save" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="controller" value="sections" />
+					<input type="hidden" name="fields[id]" value="" />
+					<input type="hidden" name="fields[scope]" value="site" />
+					<input type="hidden" name="fields[scope_id]" value="0" />
+					<input type="hidden" name="fields[access]" value="0" />
+					<?php echo JHTML::_('form.token'); ?>
+				</fieldset>
+			</form>
+		</div>
+	<?php } ?>
+	</aside><!-- / .aside -->
+</section><!-- /.main -->
