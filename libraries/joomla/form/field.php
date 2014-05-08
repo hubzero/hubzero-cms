@@ -606,4 +606,49 @@ abstract class JFormField
 			return self::$generated_fieldname . self::$count;
 		}
 	}
+
+	/**
+	 * Method to get an attribute of the field
+	 *
+	 * @param   string  $name     Name of the attribute to get
+	 * @param   mixed   $default  Optional value to return if attribute not found
+	 *
+	 * @return  mixed             Value of the attribute / default
+	 *
+	 * @since   3.2
+	 */
+	public function getAttribute($name, $default = null)
+	{
+		if ($this->element instanceof SimpleXMLElement)
+		{
+			$attributes = $this->element->attributes();
+
+			// Ensure that the attribute exists
+			if (property_exists($attributes, $name))
+			{
+				$value = $attributes->$name;
+
+				if ($value !== null)
+				{
+					return (string) $value;
+				}
+			}
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Simple method to set the value
+	 *
+	 * @param   mixed  $value  Value to set
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function setValue($value)
+	{
+		$this->value = $value;
+	}
 }
