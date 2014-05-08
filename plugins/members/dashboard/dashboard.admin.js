@@ -182,7 +182,11 @@ HUB.Plugins.MemberDashboard = {
 				$(this).attr('href', href);
 			},
 			beforeShow: function() {
-				$("select, input[type=file]").uniform();
+				if (jQuery.uniform)
+				{
+					$("select, input[type=file]").uniform();
+				}
+				
 			},
 			afterShow: function() {
 				$('body').on('click','.dopush', function(event) {
