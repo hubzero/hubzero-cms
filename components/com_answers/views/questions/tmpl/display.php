@@ -43,19 +43,19 @@ if (!$this->filters['filterby'] == 'none')
 	$this->filters['filterby'] = 'all';
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-<div id="content-header-extra">
-	<p>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
-			<span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span>
-		</a>
-	</p>
-</div><!-- / #content-header-extra -->
-<div class="clear"></div>
 
-<div id="introduction" class="section">
+	<div id="content-header-extra">
+		<p>
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
+				<span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span>
+			</a>
+		</p>
+	</div><!-- / #content-header-extra -->
+</header>
+
+<section id="introduction" class="section">
 	<div class="grid">
 		<div class="col span-third">
 			<div class="container">
@@ -76,25 +76,9 @@ if (!$this->filters['filterby'] == 'none')
 			</div>
 		</div>
 	</div>
-</div>
+</section>
 
-<div class="main section">
-	<div class="aside">
-		<div class="container">
-			<h3><?php echo JText::_('Categories'); ?></h3>
-			<p class="starter">
-				<?php echo JText::_('COM_ANSWERS_CANT_FIND_ANSWER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('COM_ANSWERS_KNOWLEDGE_BASE'); ?></a> <?php echo JText::_('COM_ANSWERS_OR_BY').' '.JText::_('COM_ANSWERS_SEARCH').'? '.JText::_('COM_ANSWERS_ASK_YOUR_FELLOW').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_MEMBERS'); ?>!
-			</p>
-		</div><!-- / .container -->
-<?php if ($this->banking) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
-			<p class="starter">
-				<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
-			</p>
-		</div><!-- / .container -->
-<?php } ?>		
-	</div><!-- / .aside -->
+<section class="main section">
 	<div class="subject">
 		<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
 			
@@ -289,4 +273,20 @@ if (!$this->filters['filterby'] == 'none')
 			</div><!-- / .container -->
 		</form>
 	</div><!-- / .subject -->
-</div><!-- / .main section -->
+	<aside class="aside">
+		<div class="container">
+			<h3><?php echo JText::_('Categories'); ?></h3>
+			<p class="starter">
+				<?php echo JText::_('COM_ANSWERS_CANT_FIND_ANSWER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('COM_ANSWERS_KNOWLEDGE_BASE'); ?></a> <?php echo JText::_('COM_ANSWERS_OR_BY').' '.JText::_('COM_ANSWERS_SEARCH').'? '.JText::_('COM_ANSWERS_ASK_YOUR_FELLOW').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_MEMBERS'); ?>!
+			</p>
+		</div><!-- / .container -->
+<?php if ($this->banking) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
+			<p class="starter">
+				<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
+			</p>
+		</div><!-- / .container -->
+<?php } ?>
+	</aside><!-- / .aside -->
+</section><!-- / .main section -->

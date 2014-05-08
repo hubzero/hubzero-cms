@@ -46,35 +46,19 @@ if (!$this->filters['filterby'] == 'none')
 	$this->filters['filterby'] = 'all';
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>" class="icon-add add btn"><span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span></a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
-<div class="clear"></div>
 
-<div class="main section">
-	<div class="aside">
-		<div class="container">
-			<h3><?php echo JText::_('COM_ANSWERS_NEED_AN_ANSWER'); ?></h3>
-			<p>
-				<?php echo JText::sprintf('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . JRoute::_('index.php?option=com_kb') . '">' . JText::_('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', $jconfig->getValue('config.sitename')); ?>
-			</p>
-		</div><!-- / .container -->
-	<?php if ($this->config->get('banking')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
-			</p>
-		</div><!-- / .container -->
-	<?php } ?>
-	</div><!-- / .aside -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>" class="icon-add add btn"><span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span></a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
+
+<section class="main section">
 	<div class="subject">
 		<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 
@@ -268,5 +252,20 @@ if (!$this->filters['filterby'] == 'none')
 			</div><!-- / .container -->
 		</form>
 	</div><!-- / .subject -->
-</div><!-- / .main section -->
-
+	<aside class="aside">
+		<div class="container">
+			<h3><?php echo JText::_('COM_ANSWERS_NEED_AN_ANSWER'); ?></h3>
+			<p>
+				<?php echo JText::sprintf('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . JRoute::_('index.php?option=com_kb') . '">' . JText::_('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', $jconfig->getValue('config.sitename')); ?>
+			</p>
+		</div><!-- / .container -->
+	<?php if ($this->config->get('banking')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
+			<p>
+				<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
+			</p>
+		</div><!-- / .container -->
+	<?php } ?>
+	</aside><!-- / .aside -->
+</section><!-- / .main section -->
