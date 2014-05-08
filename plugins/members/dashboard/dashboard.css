@@ -1,470 +1,436 @@
-/**
- * @package     hubzero-cms
- * @file        components/com_myhub/myhub.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
+.member_dashboard {
+    margin: 20px !important;
+}
+/* Modules */
+.modules {
+	position: relative;
+}
+.modules > * {
+    margin: 0 auto;
+    /*
+    -webkit-transition: height .4s, width .4s;
+    -moz-transition: height .4s, width .4s;
+    -o-transition: height .4s, width .4s;
+    -ms-transition: height .4s, width .4s;
+    transition: height .4s, width .4s;
+    */
+}
+.modules .gs-w {
+    z-index: 2;
+    position: absolute;
+}
+.ready .modules .gs-w:not(.preview-holder) {
+    -webkit-transition: opacity .3s, left .3s, top .3s;
+    -moz-transition: opacity .3s, left .3s, top .3s;
+    -o-transition: opacity .3s, left .3s, top .3s;
+    transition: opacity .3s, left .3s, top .3s;
+}
+.ready .modules .gs-w:not(.preview-holder),
+.ready .modules .resize-preview-holder {
+    -webkit-transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
+    -moz-transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
+    -o-transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
+    transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
+}
+.modules .preview-holder {
+    z-index: 1;
+    position: absolute;
+    background-color: transparent;
+    border: 2px dashed #ccc;
+    opacity: 0.8;
+    list-style: none;
+}
+.modules .player-revert {
+    z-index: 10 !important;
+    -webkit-transition: left .3s, top .3s!important;
+    -moz-transition: left .3s, top .3s!important;
+    -o-transition: left .3s, top .3s!important;
+    transition:  left .3s, top .3s!important;
+}
+.modules .dragging,
+.modules .resizing {
+    z-index: 10!important;
+    -webkit-transition: all 0s !important;
+    -moz-transition: all 0s !important;
+    -o-transition: all 0s !important;
+    transition: all 0s !important;
+}
+.gs-resize-handle {
+    position: absolute;
+    z-index: 1;
+}
+.gs-resize-handle-both {
+    width: 20px;
+    height: 20px;
+    bottom: -8px;
+    right: -8px;
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg08IS0tIEdlbmVyYXRvcjogQWRvYmUgRmlyZXdvcmtzIENTNiwgRXhwb3J0IFNWRyBFeHRlbnNpb24gYnkgQWFyb24gQmVhbGwgKGh0dHA6Ly9maXJld29ya3MuYWJlYWxsLmNvbSkgLiBWZXJzaW9uOiAwLjYuMSAgLS0+DTwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DTxzdmcgaWQ9IlVudGl0bGVkLVBhZ2UlMjAxIiB2aWV3Qm94PSIwIDAgNiA2IiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHZlcnNpb249IjEuMSINCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiDQl4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjZweCIgaGVpZ2h0PSI2cHgiDT4NCTxnIG9wYWNpdHk9IjAuMzAyIj4NCQk8cGF0aCBkPSJNIDYgNiBMIDAgNiBMIDAgNC4yIEwgNCA0LjIgTCA0LjIgNC4yIEwgNC4yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPg0JPC9nPg08L3N2Zz4=');
+    background-position: top left;
+    background-repeat: no-repeat;
+    cursor: se-resize;
+    z-index: 20;
+}
+.gs-resize-handle-x {
+    top: 0;
+    bottom: 13px;
+    right: -5px;
+    width: 10px;
+    cursor: e-resize;
+}
+.gs-resize-handle-y {
+    left: 0;
+    right: 13px;
+    bottom: -5px;
+    height: 10px;
+    cursor: s-resize;
+}
+.customizable .gs-w:hover .gs-resize-handle,
+.customizable .resizing .gs-resize-handle {
+    opacity: 1;
+}
+.gs-resize-handle,
+.gs-w.dragging .gs-resize-handle {
+    opacity: 0;
+}
+.gs-resize-disabled .gs-resize-handle {
+    display: none !important;
+}
+[data-max-sizex="1"] .gs-resize-handle-x,
+[data-max-sizey="1"] .gs-resize-handle-y,
+[data-max-sizey="1"][data-max-sizex="1"] .gs-resize-handle {
+    display: none !important;
+}
+.gs-w.dragging {
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
 
-/*
+/* Js enabled */
+.js-enabled .customizable .module-links {
+    display: block;
+}
+.js-enabled .module {
+    position: absolute;
+    margin: 0 0 25px 0;
+    min-height: inherit;
+}
+.member_dashboard.js-enabled {
+    margin: 10px !important;
+}
 
-	-- -- -- -- -- -- --
-	com_myhub CSS
-	-- -- -- -- -- -- --
+/* Module */
+.module {
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	border: 1px solid #CCC;
+	background: #FFF;
+    border-radius: 2px;
+    position: relative;
+    width: 32%;
+    margin: 0 2% 2% 0;
+    min-height: 250px;
+    float: left;
+}
+.module:nth-child(3n) {
+    margin-right: 0;
+}
+.module-title {
+	background: #FFF;
+    color: #555;
+    border-bottom: 1px solid #CCC;
+    position: relative;
+}
+.ready .customizable .module-title:hover {
+	cursor: move;
+}
+.module-title h3 {
+    padding: 10px;
+    font-size: 14px;
+    margin: 0;
+}
+.module-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+    top: 0; 
+    right: 0;
+    bottom: 0;
+    text-align: right;
+    background: #FFF;
+    display: none;
+}
+.module-links li { 
+    float: left;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+.module-links li a {
+    display: block;
+    position: relative;
+    padding: 10px 20px;
+    margin: 0;
+    border: none;
+    border-left: 1px solid #E9E9E9;
+    text-decoration: none;
+    color: #555;
+}
+.module-links li a span {
+    width: 0;
+    display: inline-block;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    -webkit-transform: translateX(50px);
+    -moz-transform: translateX(50px);
+    -ms-transform: translateX(50px);
+    -o-transform: translateX(50px);
+    transform: translateX(50px);
+}
+.module-links a:before {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-family: 'Fontcons';
+}
+.module-links .remove.confirm {
+    color: #8e0606;
+}
+.module-links .remove:hover {
+    background: #f2e1e1;
+}
+.module-links .remove.confirm span {
+    width: 54px;
+    -webkit-transform: translateX(5px);
+    -moz-transform: translateX(5px);
+    -ms-transform: translateX(5px);
+    -o-transform: translateX(5px);
+    transform: translateX(5px);
+}
+.module-links .settings:before {
+    content: '\2699';
+}
+.module-links .remove:before {
+    content: '\2716';
+}
+.module-links .settings:hover {
+    background: #efefef;
+}
+.modifying-settings .settings,
+.modifying-settings .settings:hover {
+    background: #666;
+}
+.modifying-settings .settings:before {
+    color: #FFF;
+}
 
-*/
 
-	#page_options { 
-		width: 350px;
-	}
-	#page_options li {
-		margin: 0 0 0 5px;
-		float: right;
-	}
 
-	#page_options li#personalize {
-		position: relative;
-	}
-	
-	#page_options li#personalize a {
-		font-size: 1em;
-		line-height: 2em;
-	}
+/* Module Main */
+.module-main {
+    position: absolute;
+    top: 41px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+}
+.module:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background-image: -webkit-gradient(linear, top left, top right, from(rgba(255,255,255,0)), to(rgba(255,255,255,1)));
+    background-image: -webkit-linear-gradient(bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    background-image: -moz-linear-gradient(bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    background-image: -o-linear-gradient(bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+}
 
-	#page_options li#personalize a:before {
-		content: "\2699";
-	}
+/* Module Content */
+.module-content .custom {
+    padding: 10px;
+}
 
-	#page_options li#personalize #modules-dock:before {
-		content: "";
-		position: absolute;
-		top: 4px;
-		right: 20px;
-		width: 20px;
-		height: 13px;
-		background: url("/components/com_members/assets/img/tip.png") 90% 100% no-repeat;
-	}
-	#page_options li#personalize #modules-dock {
-		position: absolute;
-		left: -9999px;
-		top: 2em;
-		margin-left: -154px;
-		width: 320px;
-		padding: 6px 0 0 0;
-		z-index: 666;
-	}
-	#modules-dock form {
-		background: #efefef;
-		border: 1px solid #777;
-		margin: 10px 0;
-		padding: 20px;
-		-webkit-box-shadow: 0 0 4px #666;
-		-moz-box-shadow: 0 0 4px #666;
-		box-shadow: 0 0 4px #666;
-	}
-	#modules-dock fieldset {
-		padding: 10px;
-		border: 3px double #aaa;
-		background: #FFF;
-		max-height: 250px;
-		overflow-y: scroll;
-	}
-	#modules-dock ul {
-		margin: 0;
-		list-style: none;
-	}
-	#modules-dock form:before {
-		content: "Add Modules to your Dashboard";
-		display: block;
-		font-weight: 400;
-		font-size: 16px;
-		padding: 0 0 10px 0;
-	}
-	#modules-dock ul li {
-		float: none;
-		border: none;
-		margin: 0;
-		padding: 5px;
-		background: #FFF;
-		font-size: 12px;
-		border-bottom: 1px solid #efefef;
-		overflow: hidden;
-	}
-	#modules-dock ul li label {
-		float: left;
-	}
-	#modules-dock ul li input {
-		float: right;
-	}
-	#modules-dock ul li:first-child {
-		padding-top: 0;
-	}
-	#modules-dock ul li:last-child {
-		padding-bottom: 0;
-		border-bottom: none;
-	}
-	#page_options li#personalize:hover #modules-dock {
-		left: 0;
-	}
-	#modules-dock .warning {
-		margin: 0;
-	}
+/* Module Settings */
+.module-settings {
+	padding: 10px;
+	background: #f0f0f0;
+    border-bottom: 1px solid #CCC;
+	display: none;
+}
+.module-settings h4 {
+	color: #999;
+	font-size: 12px;
+    margin: 0 0 10px 0;
+    font-weight: 500;
+    display: none;
+}
+.module-settings form > label {
+    display: block;
+    margin: 0 0 10px 0;
+    font-size: 11px;
+    font-weight: bold;
+}
+.module-settings label input[type=text],
+.module-settings label select,
+.module-settings label textarea {
+    display: block;
+    width: 100%;
+    font-size: 11px;
+}
+.module-settings fieldset.radio ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.module-settings fieldset.radio ul li {
+    margin: 0;
+    padding: 0;
+}
+.module-settings fieldset.radio ul li input + label {
+    padding: 0 0 0 3px;
+    font-weight: normal;
+}
+.module-settings .form-controls {
+    display: block;
+    text-align: center;
+    margin: 20px 0 10px 0;
+    padding: 20px 0 0 0;
+    border-top: 1px solid #ccc;
+}
+.module-settings .form-controls button {
+    display: inline-block;
+    padding: 0.5em 0.71em 0.5em 0.71em;
+}
 
-/* Initally hide the personalize button to avoid screen flicker */
-	.member_dashboard #useroptions .hide {
-		display: none;
-	}
-/* Fix some content container problems */
-	.section-header-extra {
-		text-align: right;
-	}
-	.section-header-extra #useroptions {
-		margin: 0;
-		padding: 0 0 1em 0;
-	}
-	.member_dashboard .main {
-		padding: 0;
-		margin: 0;
-		position: static;
-		min-height: 500px;
-		border: none;
-	}
-/* Sortable Table */
-	#droppables {
-		table-layout: fixed;
-		border: none;
-		empty-cells: show;
-		width: 100%;
-		margin-top:5px; /* Fix so close links arent cut off */
-	}
-	#droppables tbody,
-	#droppables tbody tr td {
-		border: none;
-	}
-	.sortable {
-		vertical-align: top;
-	}
-	.sortable ul {
-		margin: 1em 0 1em 1.5em;
-	}
-	.sortable li {
-		margin: 0;
-		padding: 0;
-	}
-	#droppables tbody tr td#sortcol_0 {
-		padding: 0 5px 0 0;
-	}
-	#droppables tbody tr td#sortcol_1 {
-		padding: 0 5px 0 5px;
-	}
-	#droppables tbody tr td#sortcol_2 {
-		padding: 0 0 0 5px;
-	}
-	/* Firefox doesn't seem to support overflow scroll on fieldsets? */
-	@-moz-document url-prefix() {
-	html.firefox #modules-dock fieldset {
-		overflow: hidden;
-	}
-	html.firefox #modules-dock fieldset ul {
-		max-height: 250px;
-		overflow-y: scroll;
-	}
-	}
-/* Dragables */
-	.com_members div.draggable {
-		position: relative;
-		top: 0;
-		left: 0;
-		padding: 0;
-		margin: 0px 5px 20px 5px;
-	}
-	.com_members .module-placeholder {
-		padding: 0;
-		margin: 0px 5px 20px 5px;
-		border: 2px dashed #ddd;
-		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
-	}
-	.com_members div.draggable h3:first-child {
-		display: block;
-	}
-	.com_members div.draggable .cwrap {
-		margin: 0;
-		padding: 0;
-		position: relative;
-		border: 1px solid #bbb;
-		background-color: #fff;
-		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;
-		-moz-border-radius: 10px;	
-		border-radius: 10px;
-		-webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-		-o-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-	}
-	.com_members div.draggable .handle {
-		position: relative;
-		font-size: 12px;
-		font-weight: bold;
-		line-height: 1em;
-		margin: -1px -1px 0 -1px;
-		padding: 6px 10px;
-		color: #fff;
-		background: #5a5b60;
-		background: -webkit-gradient(linear, left top, left bottom, from(#737477), to(#5a5b60));
-		background: -webkit-linear-gradient(#737477, #5a5b60);
-		background: -moz-linear-gradient(center top, #737477 0%, #5a5b60 100%);
-		background: -moz-gradient(center top, #737477 0%, #5a5b60 100%);
-		background: -o-linear-gradient(#737477, #5a5b60);
-		filter: progid: DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#737477,endColorstr=#5a5b60);
-		-ms-filter: "progid: DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#737477, endColorstr=#5a5b60)";
-		-webkit-border-radius: 10px 10px 0 0;
-		-khtml-border-radius: 10px 10px 0 0;
-		-moz-border-radius: 10px 10px 0 0;
-		border-radius: 10px 10px 0 0;
-		text-shadow: 0 -1px 0 rgba(0, 0, 0, 1);
-	}
-	.com_members div.draggable .movable {
-		cursor: move;
-	}
-	.com_members div.draggable .emphasis .handle {
-		background-color: #777;
-		border-color: #777;
-	}
-	/*.com_members div.draggable li {
-		padding-left: 13px;
-	}*/
-	.com_members div.draggable div.body {
-		min-height: 50px;
-		padding: 0;
-		margin: 0;
-	}
-	.com_members div.draggable .emphasis {
-		background-color: #909090;
-		color: #ccc;
-		border-color: #777;
-	}
-	.com_members div.draggable .emphasis a,
-	.com_members div.draggable .emphasis .expandedlist li a,
-	.com_members div.draggable .emphasis .compactlist li a {
-		color: #fff;
-	}
-	.com_members div.draggable div.body p {
-		margin-right: 1em;
-		margin-left: 1em;
-	}
-	.com_members div.draggable div.body h4 {
-		background-color: #efefef;
-		margin: 0;
-		padding: 0.2em 0.5em;
-	}
-	.com_members div.draggable .close { 
-		background: url("/plugins/members/dashboard/images/close.png") 0 0 no-repeat; 
-		margin: -7px 0 0 0;
-		padding: 0;
-		width: 30px; 
-		height: 30px;
-		text-indent: -400em;
-		overflow: hidden;
-		border: none;
-		position: absolute;
-		right: -7px;
-		z-index: 999;
-		display: none;
-	}
-	.com_members div.draggable:hover .close {
-		display: block;
-	}
-	.com_members div.draggable .close:hover {
-		background-position: 0 -30px;
-		border: none;
-	}
-/* Module dock */
-	.member_dashboard #useroptions {
-		position: relative;
-		z-index: 597;
-		margin: 0 0 10px 0;
-		padding: 0;
-	}
-	.member_dashboard #useroptions li {
-		padding: 0;
-		margin: 0 0 0 5px;
-		display: inline-block;
-		border: 1px solid #999;
-		clear: right;
-	}
-	.member_dashboard #useroptions li>a {
-		display: block;
-		border-top: 1px solid white;
-		color: #333;
-		padding: 0 10px 2px 25px;
-		font-weight: bold;
-		font-size: 0.85em;
-		background: #EEE url("/components/com_members/images/edit.png") no-repeat 8px 5px;
-		z-index: 699;
-	}
-	.member_dashboard #useroptions li a:hover {
-		border: none;
-		border-top: 1px solid white;
-	}
-	.member_dashboard #useroptions li:hover {
-		
-	}
-	.member_dashboard #useroptions div {
-		visibility: hidden;
-		position: absolute;
-		top: 100%;
-		right: 0;
-		z-index: 598;
-		width: 300px;
-		background-color: #EEE;
-		border: 1px solid #999;
-		text-align: left;
-	}
-	.member_dashboard #useroptions li:hover > div,
-	.member_dashboard #useroptions li:focus > div {
-		visibility: visible;
-		margin-top: -1px;
-	}
-	.member_dashboard #useroptions div ul {
-		margin: 0;
-		padding: 0;
-	}
-	.member_dashboard #useroptions div li {
-		display: block;
-		border: none;
-		border-top: 1px solid #ddd;
-		text-align: left;
-		font-size: 85%;
-		padding: 5px 0;
-		margin: 0;
-	}
-	.member_dashboard #useroptions div form {
-		margin: 0;
-		padding: 0.5em 1em;
-	}
-	.member_dashboard #useroptions div li input {
-		float: right;
-		margin-top: 0;
-	}
-	.undo {
-		background: url("/plugins/members/dashboard/images/arrow_undo.png") 0 0 no-repeat;
-		padding-left: 20px;
-		margin: 0.5em 1em 0 1em;
-		border: 0;
-	}
-	.undo a {
-		padding: 0;
-		background: none;
-		border: none;
-	}
-	div.draggable ol,
-	div.draggable ul {
-		padding-left: 1em;
-	}
-	div.draggable li {
-		padding-left: 0;
-	}
-/* Module nav buttons */
-	div.draggable .module-nav {
-		margin-left: 1em;
-		margin-right: 1em;
-		padding-left: 0;
-	}
-	div.draggable .module-nav li {
-		display: inline;
-		padding: 0;
-		margin: 0 0.2em 0 0;
-	}
-	div.draggable .module-nav li a,
-	div.draggable .more a {
-		font-size: 90%;
-		border: 1px solid #ccc;
-		padding: 0em 0.7em;
-		margin: 0 0 0.1em 0;
-		background-color: #c1c1c1;
-		color: #fff;
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;	
-		border-radius: 10px;
-		display: inline-block;
-	}
-	div.draggable .module-nav li a:hover,
-	div.draggable .more a:hover {
-		background-color: #333;
-		color: #fff;
-	}
-/* Module info list */
-	div.draggable .expandedlist {
-		position: relative;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	div.draggable .expandedlist li {
-		border: none;
-		border-bottom: 1px solid #ddd;
-		margin: 0;
-		padding: 0.6em 0 0.6em 2.5em;
-		background-position: 0.7em 1em;
-	}
-	div.draggable .expandedlist li a {
-	}
-	div.draggable .expandedlist li span {
-		font-size: 85%;
-		color: #999;
-		display: block;
-	}
-	div.draggable .expandedlist li span span {
-		color: #999;
-		margin-left: 0;
-		margin-right: 1.5em;
-		font-size: 1em;
-		display: inline;
-	}
-/* Module compact list */
-	div.draggable .compactlist {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	div.draggable .compactlist li {
-		border: none;
-		border-bottom: 1px solid #ddd;
-		margin: 0;
-		padding: 0.6em 0 0.6em 2.5em;
-		position: relative;
-	}
-	div.draggable .compactlist li a {
-		margin-right: 4em;
-	}
-	div.draggable .compactlist li span {
-		color: #999;
-		margin-left: 20px;
-	}
-	div.draggable .compactlist li span span {
-		color: #999;
-		display: block;
-		position: absolute;
-		top: 0.7em;
-		right: 10px;
-		font-size: 90%;
-	}
-	
-/* IE 7 */
-	html>body .member_dashboard #useroptions li {
-		*width: 8.5em;
-		*list-style: none;
-	}
-	html>body .member_dashboard #useroptions li li {
-		*width: auto;
-	}
-	html>body .member_dashboard #useroptions li li input {
-		*margin-top: -1.5em;
-	}
-	html>body .member_dashboard #useroptions div {
-		*top: 90%;
-	}
+/* Modules Empty State */
+.modules-empty {
+    position: relative;
+    text-align: center;
+    display: none;
+}
+.modules-empty:before {
+    content: '\f009';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    font-family: 'Fontcons';
+    font-size: 200px;
+    line-height: 330px;
+    text-align: center;
+    color: #ccc;
+}
+.modules-empty h3 {
+    margin-bottom: 0;
+    padding-top: 300px;
+}
+
+
+
+/* Modules List */
+.module-list {
+    width: 100%;
+    height: 500px;
+    position: relative;
+}
+.module-list h2 {
+    box-sizing: border-box;
+    padding: 20px;
+    margin: 0;
+    max-height: 60px;
+    border-bottom: 1px solid #ccc;
+}
+.module-list-triggers {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    border-right: 1px solid #ccc;
+}
+.module-list-triggers li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.module-list-triggers li a {
+    display: block;
+    padding: 10px 20px;
+    color: #666;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+.module-list-triggers li:last-child a {
+    border-bottom: none;
+}
+.module-list-triggers li.installed a {
+    background: rgba(0, 0, 0, 0.035);
+}
+.module-list-triggers li.installed a:after {
+    content: '\2714';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: 'Fontcons';
+}
+.module-list-triggers li a:hover {
+    background: #ddd;
+}
+.module-list-triggers li a.active {
+    background: #666;
+    color: #fff;
+}
+.module-list-content {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    right: 0;
+    left: 201px;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+}
+.module-list-content li {
+    display: none;
+    margin: 0;
+}
+.module-list-content .module-title-bar {
+    padding: 20px;
+    border-bottom: 1px solid #efefef;
+    position: relative;
+}
+.module-list-content .module-title-bar a {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.module-list-content .module-title-bar h3 {
+    margin: 0;
+    color: #aaa;
+}
+.module-list-content .module-details {
+    padding: 15px;
+}
+.module-list-content .module-details dt {
+    color: #ccc;
+    font-size: 11px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.module-list-content .module-details dd {
+    margin: 0 0 20px 0;
+}
+.module-list-content .module-details img {
+    max-width: 100%;
+}

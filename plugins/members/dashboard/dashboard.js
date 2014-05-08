@@ -5,291 +5,470 @@
  * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-
-//-------------------------------------------------------------
-// My Hub (singleton)
-//-------------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Myhub = {
-	baseURL: '/index.php?option=com_members&active=dashboard&no_html=1&init=1',
-	
-	jQuery : jq,
-	
-	ready: true,
-	
-	settings : {
-		columns : '#droppables .sortable',
-		moduleSelector: '.draggable',
-		handleSelector: '.handle',
-		innerSelector: '.cwrap',
-		contentSelector: '.body',
-		moduleDefault : {
-			movable: true,
-			removable: true,
-			collapsible: false,
-			editable: false
-		},
-		moduleIndividual : {
-			intro : {
-				movable: false,
-				removable: false,
-				collapsible: false,
-				editable: false
-			}
-		}
-	},
-	
-	initialize: function () {
-		var myhub = this,
-			$ = this.jQuery,
-			settings = this.settings;
+//-------------------------------------------------------------
 
-		if (!jQuery().sortable) {
-			return;
-		}
+if (!HUB) {
+	var HUB = {};
+}
+if (!HUB.Plugins)
+{
+	HUB.Plugins = {};
+}
 
-		myhub.baseURL = $('#droppables').attr('data-site') + myhub.baseURL;
-		
-		this.addModuleControls();
-		this.makeSortable();
-	},
-	
-	getModuleSettings: function (id) {
-		var $ = this.jQuery,
-			settings = this.settings;
-		return (id && settings.moduleIndividual[id]) ? $.extend({},settings.moduleDefault,settings.moduleIndividual[id]) : settings.moduleDefault;
+//-------------------------------------------------------------
+
+HUB.Plugins.MemberDashboard = {
+	jQuery: jq,
+
+	modules: null,
+
+	settings: {
+		max_cols: 3,
+		col_margin_vert: 10,
+		col_margin_horz: 10,
+		col_width: 300,
+		col_height: 150,
+		remove_timeout: 4000
 	},
 
-	addModuleControls: function () {
-		var myhub = this,
-			$ = this.jQuery,
-			settings = this.settings;
-		
-		$(settings.handleSelector).each(function(i, elm) {
-			if (!$(elm).hasClass('movable')) {
-				$(elm).addClass('movable');
-			}
-		});
-		
-		$(settings.moduleSelector, $(settings.columns)).each(function () {
-			var thisModuleSettings = myhub.getModuleSettings(this.id);
+	initialize: function()
+	{
+		var $ = this.jQuery;
 
-			if (thisModuleSettings.removable && $(this).children(settings.handleSelector).children('.remove').length <= 0) {
-				$('<a href="#" class="close" title="Close"><span>CLOSE</span></a>').mousedown(function (e) {
-					e.stopPropagation();	
-				}).click(function () {
-					if (confirm('This module will be removed, ok?')) {
-						$(this).parents(settings.moduleSelector).animate({
-							opacity: 0	
-						},function () {
-							$(this).wrap('<div/>').parent().slideUp(function () {
-								$(this).remove();
-								myhub.saveOrder('rebuild');
-							});
-						});
-					}
-					return false;
-				}).insertBefore($(settings.handleSelector, this));
-			}
+		// tell the modules we have js
+		$('.member_dashboard').addClass('js-enabled');
 
-			if ($('.module-params',this).children().length > 0 && $(this).children(settings.handleSelector).children('.edit').length <= 0) {	
-				$('<a href="#" class="edit"><span>EDIT</span></a>').mousedown(function (e) {
-					e.stopPropagation();	
-				}).toggle(function () {
-					$(this).parents(settings.moduleSelector)
-							.find('.module-params').removeClass('collapsed').find('input').focus();
-					return false;
-				},function () {
-					$(this).parents(settings.moduleSelector)
-							.find('.module-params').addClass('collapsed');
-					myhub.saveParams($(this).closest(settings.moduleSelector).attr('id'));
-					return false;
-				}).appendTo($(settings.handleSelector,this));
-			}
+		// calculate working area
+		this._calculateWorkingArea();
 
-			if (thisModuleSettings.collapsible && $(this).children(settings.handleSelector).children('.collapse').length <= 0) {
-				$('<a href="#" class="collapse"><span>COLLAPSE</span></a>').mousedown(function (e) {
-					e.stopPropagation();	
-				}).toggle(function () {
-					if (!$(this).closest(settings.moduleSelector).hasClass('collapsed')) {
-						$(this).closest(settings.moduleSelector)
-							.addClass('collapsed');
-					} else {
-						$(this).closest(settings.moduleSelector)
-							.removeClass('collapsed');
-					}
-					myhub.saveToggle($(this).closest(settings.moduleSelector).attr('id'));
-					return false;
-				},function () {
-					if ($(this).closest(settings.moduleSelector).hasClass('collapsed')) {
-						$(this).closest(settings.moduleSelector)
-							.removeClass('collapsed');
-					} else {
-						$(this).closest(settings.moduleSelector)
-							.addClass('collapsed');
-					}
-					myhub.saveToggle($(this).closest(settings.moduleSelector).attr('id'));
-					return false;
-				}).prependTo($(settings.handleSelector, this));
-			}
-		});
+		// init grid
+		this.grid();
+
+		// init add modal
+		this.add();
+
+		// handle module events events
+		this.moduleClickEvents();
+
+		// do we have any modules?
+		this.emptyStateCheck();
 	},
 
-	removeModule: function (el) {
-		var myhub = this,
-			$ = this.jQuery,
-			settings = this.settings;
-	
-		//if (confirm('This module will be removed, ok?')) {
-			$(el).parents(settings.moduleSelector).animate({
-				opacity: 0	
-			},function () {
-				$(this).wrap('<div/>').parent().slideUp(function () {
-					$(this).remove();
-					myhub.saveOrder('rebuild');
+	grid: function()
+	{
+		// store vars for later
+		var $         = this.jQuery,
+			dashboard = this;
+
+		// instantiate gridster
+		dashboard.modules = $('.modules').gridster({
+			static_class: 'module-static',
+			widget_selector: '.module',
+			widget_margins: [dashboard.settings.col_margin_horz, dashboard.settings.col_margin_vert],
+			widget_base_dimensions: [dashboard.settings.col_width, dashboard.settings.col_height],
+			max_cols: dashboard.settings.max_cols,
+			serialize_params: function(element, specs)
+			{
+				var params = {};
+				$.each($(element).find('.module-settings form').serializeArray(), function() {
+				    var name = this.name.replace(/params\[([^\]]*)\]/g, "$1");
+				    params[name] = this.value;
 				});
-			});
-		//}
-		return false;
-	},
 
-	addModule: function (modId) {
-		var myhub = this,
-				$ = this.jQuery,
-				settings = this.settings;
-
-		var orders = [], col = 0, found = false, mods = [];
-		$(settings.columns).each(function(i, elm) {
-			orders.push($(elm).children(settings.moduleSelector).length);
-
-			$(elm).children(settings.moduleSelector).each(function(id, el) {
-				if (parseInt(modId) == parseInt(el.id.split('_')[1])) {
-					found = true;
+				// return module id, col, row, and sizes
+				return { 
+					module: $(element).data('moduleid'),
+					col: specs.col,
+					row: specs.row,
+					size_x: specs.size_x,
+					size_y: specs.size_y,
+					parameters: params
 				}
-				mods.push(el.id.split('_')[1])
-			});
-		});
-
-		if (found) {
-			return;
-		}
-
-		var order = Math.min.apply(Math, orders);
-		for (var i = 0; i < orders.length; i++) 
+			},
+			draggable: {
+				handle: 'h3', 
+				stop: function(event, ui) {
+					dashboard.save();	
+				}
+			},
+			resize: {
+				enabled: true, 
+				stop: function (event, ui, widget) {
+					dashboard.save();	
+				}
+			}
+		}).data('gridster');
+		
+		// is the dashboard customizable?
+		// if not disable dragging and resize
+		if (!$('.modules').hasClass('customizable'))
 		{
-			if (orders[i] == order) {
-				col = i; //(i + 1);
-				break;
-			}
+			dashboard.modules.disable();
+			dashboard.modules.disable_resize();
 		}
 
-		if (HUB.Myhub.ready) {
-			HUB.Myhub.ready = false;
-			$.get(myhub.baseURL+'&action=addmodule&id='+$('#uid').val()+'&mid='+modId, {}, function(data) {
-				if (data == 'ERROR') {
-					return;
+		// store for later
+		this.modules = dashboard.modules;
+
+		// handle window resize events
+		this.windowResize();
+	},
+
+	add: function()
+	{
+		var $        = this.jQuery,
+			dasboard = this;
+
+		$('.add-module').fancybox({
+			type: 'ajax',
+			width: 800,
+			height: 'auto',
+			autoSize: false,
+			fitToView: false,  
+			titleShow: false,
+			tpl: {
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+			},
+			beforeLoad: function() {
+				href = $(this).attr('href');
+				if (href.indexOf('?') == -1) {
+					href += '?no_html=1';
+				} else {
+					href += '&no_html=1';
 				}
-				var wrap = $('<div class="draggable" id="mod_'+modId+'"></div>').append(data);
-				$('#sortcol_' + col).append(wrap);
-				myhub.addModuleControls();
-				$(settings.columns).sortable('enable');
-				myhub.saveOrder('rebuild');
-				HUB.Myhub.ready = true;
+				$(this).attr('href', href);
+			},
+			afterShow: function() {
+				$('.module-list-triggers a').first().trigger('click');
+			}
+		});
+
+		$('body').on('click', '.module-list-triggers a', function(event) {
+			event.preventDefault();
+			var module = $(this).attr('data-module');
+
+			$('.module-list-triggers a').removeClass('active');
+			$(this).addClass('active');
+
+			$('.module-list-content li').hide();
+			$('.module-list-content li.' + module).show();
+		});
+
+		$('body').on('click', '.install-module', function(event) {
+			event.preventDefault();
+
+			// load module by id
+			var moduleid = $(this).attr('data-module');
+			dasboard.loadModule(moduleid);
+		});
+	},
+
+	loadModule: function( moduleid )
+	{
+		var $         = this.jQuery,
+			userid    = $('.modules').attr('data-userid'),
+			dashboard = this;
+
+		$.ajax({
+			type: 'post',
+			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=module', 
+			dataType: 'json',
+			data: {
+				moduleid: moduleid
+			},
+			success: function(data, status, jqXHR)
+			{
+				dashboard.addModuleAssets(data.assets);
+				dashboard.addModule(data.html);
+			},
+			error: function(jqXHR, status, error)
+			{
+				//console.log(status);
+				//console.log(error);
+			}
+		});
+	},
+
+	refreshModule: function( moduleid )
+	{
+		var $         = this.jQuery,
+			userid    = $('.modules').attr('data-userid'),
+			dashboard = this;
+
+		$.ajax({
+			type: 'post',
+			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=module', 
+			dataType: 'json',
+			data: {
+				moduleid: moduleid
+			},
+			success: function(data, status, jqXHR)
+			{
+				dashboard.addModuleAssets(data.assets);
+				dashboard.modules.replace_widget($('.module[data-moduleid='+moduleid+']'), data.html);
+			},
+			error: function(jqXHR, status, error)
+			{
+				//console.log(status);
+				//console.log(error);
+			}
+		});
+	},
+
+	addModule: function( moduleHtml )
+	{
+		var $         = this.jQuery
+			dashboard = this;
+
+		// calculate column to add module to
+		var colRow = dashboard._calculateColumnRow();
+		
+		// close fancybox
+		$.fancybox.close();
+
+		// add module and save prefs
+		dashboard.modules.add_widget(moduleHtml, 1, 2, colRow[0], colRow[1]);
+		dashboard.emptyStateCheck();
+		dashboard.save();
+	},
+
+	addModuleAssets: function(assets)
+	{
+		var $ = this.jQuery;
+
+		var head = document.getElementsByTagName('head')[0];
+		$.each(assets.scripts, function(index, s) {
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = s;
+			head.appendChild(script);
+		});
+		$.each(assets.stylesheets, function(index, s) {
+			var link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.href = s;
+			link.media = 'screen'
+			head.appendChild(link);
+		});
+	},
+
+	removeModule: function( module ) 
+	{
+		var $         = this.jQuery
+			dashboard = this;
+
+		dashboard.modules.remove_widget(module, function() {
+			dashboard.save();
+			$('.modules').height(0);
+			dashboard.emptyStateCheck();
+		});
+	},
+
+	windowResize: function()
+	{
+		var $         = this.jQuery
+			dashboard = this;
+
+		// on window resize end
+		// resizeEnd event provided with 3rd party extension
+		$(window).resizeEnd(function() {
+			dashboard._calculateWorkingArea();
+			dashboard.modules.resize_widget_dimensions({
+				widget_base_dimensions: [dashboard.settings.col_width,  dashboard.settings.col_height]
 			});
+		});
+
+		// trigger resize right away
+		$(window).trigger('resize');
+	},
+
+	save: function(callback)
+	{
+		var $      = this.jQuery,
+			userid = $('.modules').attr('data-userid'),
+			params = dashboard.modules.serialize(),
+			module_data = JSON.stringify(params);
+		
+		$.ajax({
+			type: 'post',
+			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=save&no_html=1', 
+			dataType: 'json',
+			data: {
+				modules: module_data
+			},
+			complete: function(){
+				if (callback)
+				{
+					callback.call();
+				}
+			},
+			success: function(data, status, jqXHR)
+			{
+				//console.log(data);
+			},
+			error: function(jqXHR, status, error)
+			{
+				console.log(status);
+				console.log(error);
+			}
+		});
+	},
+
+	emptyStateCheck: function()
+	{
+		var $     = this.jQuery,
+			count = $('.modules .module').length;
+
+		// hide/show empty state
+		if (count == 0)
+		{
+			$('.modules-empty').show();
+		}
+		else
+		{
+			$('.modules-empty').hide();
 		}
 	},
 
-	saveToggle: function (modId) {
-		var $ = this.jQuery;
-	
-		$.get(myhub.baseURL+'&action=toggle&id='+$('#uid').val()+'&mid='+modId, {});
-	},
-	
-	saveParams: function (modId) {
-		var $ = this.jQuery;
-	
-		data = $('#mod_' + modId + ' .module-params').serialize();
-		$.post($('#dashboard-info').attr('action')+'/params', data, function(data) {
-			$('#mod_' + modId + ' .body').html(data);
-		});
-	},
-	
-	makeSortable: function () {
-	   var myhub = this,
-			$ = this.jQuery,
-			settings = this.settings;
+	moduleClickEvents: function()
+	{
+		var $         = this.jQuery,
+			dashboard = this;
 
-		$(settings.columns).sortable({
-			connectWith: $(settings.columns),
-			handle: settings.handleSelector,
-			placeholder: 'module-placeholder',
-			forcePlaceholderSize: true,
-			revert: 300,
-			delay: 100,
-			opacity: 0.8,
-			containment: 'document',
-			start: function (e, ui) {
-				$(ui.helper).addClass('dragging');
-			},
-			stop: function (e, ui) {
-				$(ui.item).css({width:''}).removeClass('dragging');
-				$(settings.columns).sortable('enable');
-			},
-			update: function (e, ui) {
-				myhub.saveOrder('save');
-			}
+		$('.modules')
+			.on('click', '.module-links .remove', function(event) {
+				event.preventDefault();
+				var $this = $(this);
+				if (!$this.hasClass('confirm'))
+				{
+					$this.toggleClass('confirm');
+					setTimeout(function(){
+						$this.removeClass('confirm');
+					}, dashboard.settings.remove_timeout);
+				}
+			})
+			.on('click', '.module-links .confirm', function(event) {
+				event.preventDefault();
 
-		});
-	},
+				// get the module we are wanting to remvoe
+				var module = $(this).parents('.module');
 
-	serialize: function () {
-		var myhub = this,
-			$ = this.jQuery,
-			settings = this.settings;
-	
-		order = [];
-		$(settings.columns).each(function(i, elm) {
-			col = [];
-			$(elm).children(settings.moduleSelector).each(function(id, el) {
-				col.push(el.id.split('_')[1])
+				// remove module
+				dashboard.removeModule(module);
+			})
+			.on('click', '.module-links .settings', function(event) {
+				event.preventDefault();
+
+				$(this).parents('.module')
+					.toggleClass('modifying-settings')
+					.find('.module-settings')
+					.slideToggle("fast");
+			})
+			.on('click', '.module-settings .save', function(event) {
+				event.preventDefault();
+				var button = $(this);
+				button
+					.attr('disabled', 'disabled')
+					.html('Saving...');
+
+				dashboard.save(function(){
+					button
+						.parents('.module')
+						.toggleClass('modifying-settings')
+						.find('.module-settings')
+						.slideToggle("fast");
+
+					button.removeAttr('disabled')
+						.html('Save')
+
+					var moduleid = button.parents('.module').attr('data-moduleid');
+					dashboard.refreshModule(moduleid);
+				});
+			})
+			.on('click', '.module-settings .cancel', function(event) {
+				event.preventDefault();
+
+				$(this).parents('.module')
+					.removeClass('modifying-settings')
+					.find('.module-settings')
+					.slideToggle("fast");
 			});
-			order.push(col.join(','));
-		});
-		
-		return order;
 	},
 
-	saveOrder: function (task) {
-		var myhub = this,
-				$ = this.jQuery,
-				settings = this.settings;
-	
-		order = myhub.serialize();
-		
-		$('#serials').val(order.join(';'));
+	_calculateColumnRow: function()
+	{
+		var $         = this.jQuery,
+			dashboard = this,
+			map       = dashboard.modules.gridmap;
 
-		$.get(myhub.baseURL+'&action='+task+'&id='+$('#uid').val()+'&mids='+order.join(';'), {}, function(data) {
-			if (task == 'rebuild') {
-				$('#available').html(data);
+		var max = [];
+
+		for (var i=1; i < map.length; i++)
+		{
+			var col = map[i];
+			for (var n=0; n < col.length; n++)
+			{
+				if (col[n] == false)
+				{
+					max.push(n);
+					break;
+				}
 			}
-		});
+		}
+
+		// determine row and col
+		var row = Math.min.apply(Math, max);
+		if (max[0] == row)
+		{
+			col = 1;
+		}
+		else if (max[1] == row)
+		{
+			col = 2;
+		}
+		else
+		{
+			col = 3;
+		}
+
+		// return co/row
+		return [col, row];
+	},
+
+	_calculateWorkingArea: function()
+	{
+		var $                  = this.jQuery,
+			modulesAreasWidth  = 0,
+			moduleBaseWidth    = 0,
+			moduleBaseHeight   = 0,
+			innerWrapWidth     = $('.innerwrap').width(),
+			sidebarWidth       = $('#page_sidebar').width(),
+			pageContentMargins = 20;
+
+		// calculate total working area width
+		modulesAreasWidth = innerWrapWidth - sidebarWidth - pageContentMargins;
+
+		// get module width
+		moduleBaseWidth = parseInt(modulesAreasWidth / this.settings.max_cols);
+
+		// subtract margins
+		moduleBaseWidth -= (this.settings.col_margin_horz * 2);
+
+		// module height
+		moduleBaseHeight = parseInt(moduleBaseWidth / 2);
+
+		// set our col width & height
+		this.settings.col_width  = moduleBaseWidth;
+		this.settings.col_height = moduleBaseHeight;
 	}
 };
 
-// a global variable to hold our sortable object
-// done so the Myhub singleton can access the sortable object easily
-HUB.Sorts = null;
+//-------------------------------------------------------------
 
 jQuery(document).ready(function($){
-	HUB.Myhub.initialize();
+	HUB.Plugins.MemberDashboard.initialize();
 });
-

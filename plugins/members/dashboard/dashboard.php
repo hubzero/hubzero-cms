@@ -42,6 +42,34 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * 
+	 */
+	protected $_actionMap = array();
+
+	/**
+	 * Overloading Parent Constructor
+	 *
+	 * @param	array	$config		Optional configurations to be used
+	 * @return  void
+	 */
+	public function __construct($subject, $config)
+	{
+		// get all public methods ending in 'action'
+		$reflectionClass = new ReflectionClass($this);
+		foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+		{
+			$name = $method->getName();
+			if (substr(strtolower($name), -6) == 'action')
+			{
+				$this->_actionMap[] = $name;
+			}
+		}
+
+		// call parent constructor
+		parent::__construct($subject, $config);
+	}
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 * 
 	 * @param      object  $user   JUser
@@ -95,695 +123,274 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// Build the final HTML
 		if ($returnhtml) 
 		{
-			include_once(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'tables' . DS . 'params.php');
-			include_once(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'tables' . DS . 'prefs.php');
+			// include dasboard models
+			include_once JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'models' . DS . 'preferences.php';
 
-			$this->_act = JRequest::getVar('act', 'customize');
-
+			// add assets
 			\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard');
+			\Hubzero\Document\Assets::addPluginScript('members', 'dashboard');
+			\Hubzero\Document\Assets::addSystemScript('gridster');
+			\Hubzero\Document\Assets::addSystemScript('resizeEnd.min');
 
-			$this->view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'members',
-					'element' => 'dashboard',
-					'name'    => 'display'
-				)
-			);
-			$this->view->member = $this->member = $member;
-			$this->view->act = $this->_act;
-			$this->view->config = $this->params;
+			// set up some vars
+			$this->member   = $member;
+			$this->params   = $this->params;
+			$this->juser    = JFactory::getUser();
+			$this->database = JFactory::getDBO();
+			$this->option   = $option;
+			$this->action   = JRequest::getVar('action', 'display');
 
-			$this->juser = $this->view->juser = JFactory::getUser();
-			$this->database = $this->view->database = JFactory::getDBO();
-			$this->option = $this->view->option = $option;
-
-			$action = JRequest::getVar('action', '');
-			switch ($action)
+			// build the action
+			$doAction = strtolower($this->action) . 'Action';
+			
+			// make sure we have that action
+			if (in_array($doAction, $this->_actionMap))
 			{
-				case 'refresh':    $this->refresh();    break;
-				case 'rebuild':    $this->rebuild();    break;
-				case 'restore':    $this->restore();    break;
-				case 'save':       $this->save();       break;
-				case 'saveparams': $this->saveparams(); break;
-				case 'addmodule':  $this->addmodule();  break;
-
-				default: $this->dashboard(); break;
+				$arr['html'] = $this->$doAction();
 			}
-
-			if ($this->getError()) 
+			else
 			{
-				$this->view->setError($this->getError());
+				throw new Exception('Members dashboard action doesnt exist.');
 			}
-
-			$arr['html'] = $this->view->loadTemplate();
-		}
-
-		// Build the HTML meant for the "profile" tab's metadata overview
-		if ($returnmeta) 
-		{
-			//build the metadata
 		}
 
 		return $arr;
 	}
 
 	/**
-	 * Displays a dashboard (columns of selected modules)
+	 * Display Member Dashboard
 	 * 
-	 * @return     void
+	 * @return Void
 	 */
-	public function dashboard()
+	public function displayAction()
 	{
-		if ($this->params->get('allow_customization', 0) != 1) 
-		{
-			\Hubzero\Document\Assets::addPluginScript('members', 'dashboard');
-		}
-
-		$this->num_default = $this->params->get('defaultNumber', 6);
-
-		$myhub = new MyhubPrefs($this->database);
-		$myhub->load($this->juser->get('id'));
-
-		// Get all modules
-		$mp = new MyhubParams($this->database);
-		$this->modules = $mp->loadPosition($this->member->get('uidNumber'), $this->params->get('position', 'myhub'));
-
-		// No preferences found
-		if (trim($myhub->prefs) == '' && (!$myhub->modified || $myhub->modified == '0000-00-00 00:00:00'))
-		{
-			// Create a default set of preferences
-			$myhub->uid = $this->member->get('uidNumber');
-			$myhub->prefs = $this->_getDefaultModules();
-			if ($this->params->get('allow_customization', 0) != 1) 
-			{
-				if (!$myhub->check()) 
-				{
-					$this->setError($myhub->getError());
-				}
-				if (!$myhub->create()) 
-				{
-					$this->setError($myhub->getError());
-				}
-			}
-		}
-
-		// Splits string into columns
-		/*$mymods = explode(';', $myhub->prefs);
-		// Save array of columns for later work
-		$usermods = $mymods;
-
-		// Splits each column into modules, listed by the order they should appear
-		for ($i = 0; $i < count($mymods); $i++)
-		{
-			if (!trim($mymods[$i])) 
-			{
-				continue;
-			}
-			$mymods[$i] = explode(',', $mymods[$i]);
-		}*/
-		$mymods = $this->_processList($myhub->prefs);
-		
-		$usermods = array();
-		foreach ($mymods as $ky => $arr)
-		{
-			$usermods[$ky] = (is_array($arr)) ? implode(',', $arr) : '';
-		}
-
-		// Build a list of all modules being used by this user 
-		// so we know what to exclude from the list of modules they can still add
-		$allmods = array();
-
-		for ($i = 0; $i < count($mymods); $i++)
-		{
-			if (is_array($mymods[$i]))
-			{
-				$allmods = array_merge($allmods, $mymods[$i]);
-			}
-		}
-		
-		//check to see if we have any 
-		$mymods = $this->_resolveDeletedModules($this->modules, $mymods);
-
-		// The number of columns
-		$cols = 3;
-
-		// Instantiate a view
-		$this->view->usermods = $usermods;
-
-		if ($this->params->get('allow_customization', 0) != 1) 
-		{
-			$this->view->availmods = $this->_getUnusedModules($allmods);
-		} else {
-			$this->view->availmods = null;
-		}
-
-		$this->view->columns = array();
-		for ($c = 0; $c < $cols; $c++)
-		{
-			if (!isset($mymods[$c]))
-			{
-				$mymods[$c] = array();
-			}
-			$this->view->columns[$c] = $this->output_modules($mymods[$c], $this->member->get('uidNumber'), $this->_act);
-		}
-	}
-
-	/**
-	 * Convert a preference string into a multi-column list of IDs
-	 * 
-	 * @param      string $strng PReference string
-	 * @return     array
-	 */
-	protected function _processList($strng)
-	{
-		// Splits string into columns
-		if (strstr($strng, ';'))
-		{
-			$cols = explode(';', $strng);
-		}
-		else 
-		{
-			$cols = array($strng);
-		}
-
-		// Splits each column into modules, listed by the order they should appear
-		for ($i = 0; $i < count($cols); $i++)
-		{
-			if (!trim($cols[$i])) 
-			{
-				continue;
-			}
-			$cols[$i] = explode(',', $cols[$i]);
-			$cols[$i] = array_map('intval', $cols[$i]);
-		}
-
-		return $cols;
-	}
-
-	/**
-	 * Outputs a group of modules, each contained in a list item
-	 * 
-	 * @param      array $mods Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      string $act Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	protected function output_modules($mods, $uid, $act='')
-	{
-		$html = '';
-
-		if (!$this->modules || !is_array($this->modules))
-		{
-			return $html;
-		}
-		if (!is_array($mods) || count($mods) <= 0)
-		{
-			return $html;
-		}
-
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		// Loop through the modules and output
-		foreach ($mods as $mod)
-		{
-			if (isset($this->modules[$mod]) && isset($this->modules[$mod]->published)) 
-			{
-				$module = $this->modules[$mod];
-				if ($module->published != 1) 
-				{
-					continue;
-				}
-
-				$rendered = false;
-				// if the user has special prefs, load them. Otherwise, load default prefs
-				if ($module->myparams != '') 
-				{
-					$params = new $paramsClass($module->myparams);
-					$module->params .= $module->myparams;
-				} 
-				else 
-				{
-					$params = new $paramsClass($module->params);
-				}
-
-				if ($params) 
-				{
-					$rendered = false; //$this->render($params, $mainframe->getPath('mod0_xml', $module->module), 'module');
-				}
-
-				// Instantiate a view
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'members',
-						'element' => 'dashboard',
-						'name'    => 'module'
-					)
-				);
-				$view->module = $module;
-				$view->params = $params;
-				$view->container = true;
-				$view->extras = true;
-				$view->database = $this->database;
-				$view->option = $this->option;
-				$view->act = $act;
-				$view->config = $this->params;
-				$view->rendered = $rendered;
-				$view->juser = $this->juser;
-
-				$app = JFactory::getApplication();
-				$view->admin = $app->isAdmin();
-
-				$html .= $view->loadTemplate();
-			}
-		}
-
-		return $html;
-	}
-
-	/**
-	 * Rebuild the "available modules" list
-	 * 
-	 * @return     void
-	 */
-	protected function rebuild()
-	{
-		$id  = $this->save(1);
-
-		$ids = explode(';',$id);
-		if (!is_array($ids))
-		{
-			$ids = array(
-				'',
-				'',
-				''
-			);
-		}
-		for ($i = 0; $i < count($ids); $i++)
-		{
-			if (!trim($ids[$i])) 
-			{
-				$ids[$i] = array();
-				continue;
-			}
-			$ids[$i] = explode(',', $ids[$i]);
-		}
-
-		$allmods = array();
-		for ($i = 0; $i < count($ids); $i++)
-		{
-			$allmods = array_merge($allmods, $ids[$i]);
-		}
-
-		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(
+		// create view object
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'dashboard',
-				'name'    => 'list',
+				'name'    => 'display',
 			)
 		);
-		$this->view->modules = $this->_getUnusedModules($allmods);
-	}
 
-	/**
-	 * Save preferences (i.e., the list of modules to be displayed and their locations)
-	 * 
-	 * @param      integer $rtrn Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	protected function save($rtrn=0)
-	{
-		$app = JFactory::getApplication();
-		if ($app->isAdmin())
+		// load dashboard modules
+		$dashboardModules = $this->_loadModules($this->params->get('position', 'myhub'));
+		
+		// load member preferences
+		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
+		$preferences = json_decode($membersDashboardModelPreferences->get('preferences'));
+		
+		// if user doesnt have preferences, get default & store them
+		if (!isset($preferences) && !is_array($preferences))
 		{
-			return $this->saveTask($rtrn);
+			$preferences = $this->params->get('defaults', '[]');
+			$preferences = json_encode(json_decode($preferences));
+			
+			$dashboardPreferences = new MembersDashboardModelPreferences();
+			$dashboardPreferences->set('uidNumber', $this->juser->get('id'));
+			$dashboardPreferences->set('preferences', $preferences);
+			$dashboardPreferences->set('modified', JFactory::getDate()->toSql());
+			$dashboardPreferences->store();
+
+			// turn back into object for later
+			$preferences = json_decode($preferences);
 		}
 
-		// Incoming
-		$ids = JRequest::getVar('mids', '');
+		// var to hold modules
+		$view->modules = array();
 
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'data'
-			)
-		);
-
-		$uid = $this->member->get('uidNumber');
-
-		// Ensure we have a user ID ($uid)
-		if (!$uid) 
+		// check to see if which modules to display
+		foreach ($preferences as $preference)
 		{
-			if ($rtrn) 
+			if (isset($dashboardModules[$preference->module]))
 			{
-				return $ids;
+				// create module objects
+				$module                      = $dashboardModules[$preference->module];
+				$module->positioning         = new stdClass;
+				$module->positioning->col    = $preference->col;
+				$module->positioning->row    = $preference->row;
+				$module->positioning->size_x = $preference->size_x;
+				$module->positioning->size_y = $preference->size_y;
+
+				// merge user params with hub wide params
+				if (isset($preference->parameters))
+				{
+					$params  = new JRegistry($module->params);
+					$uparams = new JRegistry($preference->parameters);
+					$params->merge($uparams);
+					$module->params = $params->toString();
+				}
+				
+				$view->modules[] = $module;
 			}
 		}
 
-		// Instantiate object, bind data, and save
-		$myhub = new MyhubPrefs($this->database);
-		$myhub->load($uid);
-		$myhub->prefs = $ids;
-		$myhub->modified = JFactory::getDate()->toSql();
-		if (!$myhub->check()) 
-		{
-			$this->setError($myhub->getError());
-		}
-		if (!$myhub->store()) 
-		{
-			$this->setError($myhub->getError());
-		}
-		$this->view->data = $ids;
+		$application  = JFactory::getApplication();
+		$view->admin  = $application->isAdmin();
+		$view->juser  = $this->juser;
+		$view->params = $this->params;
 
-		if ($rtrn) 
-		{
-			return $ids;
-		}
+		// return rendered view
+		return $view->loadTemplate();
 	}
 
 	/**
-	 * Save the parameters for a module
+	 * Return Module Rendered & Ready For Display
 	 * 
-	 * @return     void
+	 * @return void
 	 */
-	protected function saveparams()
+	public function moduleAction()
 	{
-		// Incoming
-		$uid = $this->member->get('uidNumber');
-		$mid = JRequest::getVar('mid', '');
-		$update = JRequest::getInt('update', 0);
-		$params = JRequest::getVar('params', array());
+		// get module id
+		$moduleId = JRequest::getInt('moduleid', 0);
 
-		// Process parameters
-		$newparams = array();
-		foreach ($params as $aKey => $aValue)
-		{
-			$newparams[] = $aKey . '=' . $aValue;
-		}
+		// get list of modules
+		$modulesList = $this->_loadModules($this->params->get('position', 'myhub'));
 
-		// Instantiate object, bind data, and save
-		$myparams = new MyhubParams($this->database);
-		$myparams->loadParams($uid, $mid);
-		if (!$myparams->params) 
+		// load member preferences
+		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
+		$preferences = json_decode($membersDashboardModelPreferences->get('preferences'));
+
+		// get module preferences for moduleid
+		$preference = new stdClass;
+		foreach ($preferences as $p)
 		{
-			$myparams->uid = $uid;
-			$myparams->mid = $mid;
-			$new = true;
-		} 
-		else 
-		{
-			$new = false;
-		}
-		$myparams->params = implode($newparams, "\n");
-		if (!$myparams->check()) 
-		{
-			$this->setError($myparams->getError());
-		}
-		if (!$myparams->storeParams($new)) 
-		{
-			$this->setError($myparams->getError());
+			if ($p->module == $moduleId)
+			{
+				$preference = $p;
+				break;
+			}
 		}
 
-		if ($update) 
+		// get the module
+		$module = null;
+		if (in_array($moduleId, array_keys($modulesList)))
 		{
-			$this->getmodule();
+			$module                      = $modulesList[$moduleId];
+			$module->positioning         = new stdClass;
+			$module->positioning->col    = 1;
+			$module->positioning->row    = 1;
+			$module->positioning->size_x = 1;
+			$module->positioning->size_y = 2;
+		
+			// merge user params with hub wide params
+			if (isset($preference->parameters))
+			{
+				$params  = new JRegistry($module->params);
+				$uparams = new JRegistry($preference->parameters);
+				$params->merge($uparams);
+				$module->params = $params->toString();
+			}
 		}
-		else 
+		
+		// create view object
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'members',
+				'element' => 'dashboard',
+				'name'    => 'display',
+				'layout'  => 'module'
+			)
+		);
+
+		// get application location
+		$application  = JFactory::getApplication();
+		$view->admin  = $application->isAdmin();
+		$view->module = $module;
+		$content      = $view->loadTemplate();
+
+		$stylesheets = array();
+		$scripts     = array();
+		$document = JFactory::getDocument();
+		foreach ($document->_styleSheets as $strSrc => $strAttr)
 		{
+			if (strstr($strSrc, $module->module))
+			{
+				$stylesheets[] = $strSrc;
+			}
+		}
+		foreach ($document->_scripts as $strSrc => $strType) 
+		{
+			if (strstr($strSrc, $module->module))
+			{
+				$scripts[] = $strSrc;
+			}
+		}
+		
+		// return content
+		echo json_encode(array('html' => $content, 'assets' => array('scripts' => $scripts, 'stylesheets' => $stylesheets)));
+		exit();
+	}
+
+	/**
+	 * Display Add Module View
+	 *
+	 * @return void
+	 */
+	public function addAction()
+	{
+		// create view object
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'members',
+				'element' => 'dashboard',
+				'name'    => 'add',
+			)
+		);
+
+		// load dashboard modules
+		$view->modules = $this->_loadModules($this->params->get('position', 'myhub'));
+
+		// load member preferences
+		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
+		$preferences = json_decode($membersDashboardModelPreferences->get('preferences'));
+
+		// get list of install member modules
+		$view->mymodules = array_map(function($mod) {
+			return $mod->module;
+		}, $preferences);
+
+		// return rendered view
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Save Module Params for User
+	 *
+	 * @return void
+	 */
+	public function saveAction()
+	{
+		// get request vars
+		$modules = JRequest::getString('modules', '');
+
+		// make sure we have modules
+		if ($modules == '')
+		{
+			JError::raiseError(500,'Unable to save the users modules.');
 			exit();
 		}
-	}
 
-	/**
-	 * Displays a specific module
-	 * 
-	 * @param      boolean $extras Flag to display module params
-	 * @param      string  $act    Parameter description (if any) ...
-	 * @return     void
-	 */
-	protected function getmodule($extras=false, $act='')
-	{
-		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'module'
-			)
-		);
+		// load member preferences
+		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
+
+		// update the user preferences
+		$membersDashboardModelPreferences->set('preferences', $modules);
+		$membersDashboardModelPreferences->set('modified', JFactory::getDate()->toSql());
+
+		// attempt to save
+		if (!$membersDashboardModelPreferences->store())
+		{
+			JError::raiseError(500,'Unable to save the users modules.');
+			exit();
+		}
 		
-		$app = JFactory::getApplication();
-		
-		// Incoming
-		$mid = JRequest::getInt('mid', 0);
-		$uid = ($app->isAdmin()) ? $this->juser->get('id') : $this->member->get('uidNumber');
-
-		// Make sure we have a module ID to load
-		if (!$mid) 
-		{
-			$this->setError(JText::_('PLG_MEMBERS_DASHBOARD_ERROR_NO_MOD_ID'));
-			return;
-		}
-
-		// Get the module from the database
-		$myparams = new MyhubParams($this->database);
-		$module = $myparams->loadModule($uid, $mid);
-
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		// If the user has special prefs, load them.
-		// Otherwise, load default prefs
-		if ($module->myparams != '') 
-		{
-			$params = new $paramsClass($module->myparams);
-		} 
-		else 
-		{
-			$params = new $paramsClass($module->params);
-		}
-
-		if ($params) 
-		{
-			$rendered = false; //$this->render($params, $mainframe->getPath('mod0_xml', $module->module), 'module');
-		}
-		$module->params = $module->myparams;
-
-		// Output the module
-		$this->view->module = $module;
-		$this->view->params = $params;
-		$this->view->container = false;
-		$this->view->extras = $extras;
-		$this->view->rendered = $rendered;
-		$this->view->config = $this->params;
-		$this->view->act = $this->_act;
-		$this->view->option = $this->option;
-		$this->view->juser = $this->juser;
-		$this->view->database = $this->database;
-		if (!$app->isAdmin())
-		{
-			$this->view->member = $this->member;
-		}
-
-		$this->view->admin = $app->isAdmin();
-	}
-
-	/**
-	 * Reload the contents of a module
-	 * 
-	 * @return     void
-	 */
-	protected function refresh()
-	{
-		$this->getmodule(false, '');
-	}
-
-	/**
-	 * Builds the HTML for a module
-	 * 
-	 * NOTE: this is different from the method above in that
-	 * it also builds the title, parameters form, and container
-	 * for the module
-	 * 
-	 * @return     void
-	 */
-	protected function addmodule()
-	{
-		$myhub = new MyhubPrefs($this->database);
-		$myhub->load($this->member->get('uidNumber'));
-
-		$mid = JRequest::getInt('mid', 0);
-
-		$mods = array();
-		$cols = $this->_processList($myhub->prefs);
-		foreach ($cols as $col)
-		{
-			if (!is_array($col))
-			{
-				continue;
-			}
-			foreach ($col as $arr)
-			{
-				$mods[] = $arr;
-			}
-		}
-
-		if (in_array($mid, $mods))
-		{
-			// This module already exists
-			$app = JFactory::getApplication();
-			if (!$app->isAdmin())
-			{
-				return 'ERROR';
-			}
-		}
-
-		$this->getmodule(true, 'customize');
-	}
-
-	/**
-	 * Build a list of unused modules
-	 * 
-	 * @param      array $mods Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	private function _getUnusedModules($mods)
-	{
-		// Get all modules
-		if (!isset($this->modules) || !$this->modules)
-		{
-			$mp = new MyhubParams($this->database);
-			$this->modules = $mp->loadPosition($this->juser->get('id'), $this->params->get('position', 'myhub'));
-		}
-
-		$modules = array();
-
-		if ($this->modules)
-		{
-			foreach ($this->modules as $module)
-			{
-				if (!in_array($module->id, $mods))
-				{
-					$modules[] = $module;
-				}
-			}
-		}
-
-		return $modules;
-	}
-
-	/**
-	 * Build a list of the default modules
-	 * 
-	 * @return     string Return description (if any) ...
-	 */
-	private function _getDefaultModules()
-	{
-		$string = '';
-
-		if ($this->params->get('defaults')) 
-		{
-			$string = $this->params->get('defaults');
-		} 
-		else 
-		{
-			$position = $this->params->get('position', 'myhub');
-
-			if ($this->modules)
-			{
-				$i = 0;
-				$k = 0;
-				$j = 0;
-				$mods = array();
-				$num = $this->params->get('defaultNumber', 6);
-				foreach ($this->modules as $module)
-				{
-					$i++;
-					$j++;
-					if ($j <= $num)
-					{
-						if (!isset($mods[$k]) || !is_array($mods[$k]))
-						{
-							$mods[$k] = array();
-						}
-						$mods[$k][] = $module->id;
-						if ($i == 2) 
-						{
-							$i = 0;
-							$mods[$k] = implode(',', $mods[$k]);
-							$k++;
-						}
-					}
-				}
-				$string = (!empty($mods)) ? implode(';', $mods) : $string;
-			}
-		}
-
-		return $string;
-	}
-
-	/**
-	 * loop through each column of modules then through each module in each column to 
-	 * see if that module id exists in available modules if doesn't exist unset from user module prefs
-	 * 
-	 * @param      array $hub_modules  Dashboard modules list
-	 * @param      array $user_modules Current user's module list
-	 * @return     array
-	 */
-	private function _resolveDeletedModules($hub_modules, $user_modules)
-	{
-		// get the id's foreach module for the 'myhub/dashboard' position
-		$modules = array();
-		foreach ($hub_modules as $hub_module)
-		{
-			$modules[] = $hub_module->id;
-		}
-
-		// loop through each column of modules then through each module in each column to see if that module id exists in available modules
-		// if doesn't exist unset from user module prefs
-		$prefs = '';
-		foreach ($user_modules as $column => $user_module)
-		{
-			if (is_array($user_module))
-			{
-				foreach ($user_module as $k => $v)
-				{
-					if (!in_array($v, $modules))
-					{
-						unset($user_modules[$column][$k]);
-					}
-					else
-					{
-						$prefs .= $v . ",";
-					}
-				}
-			}
-			$prefs .= ';';
-		}
-
-		//we need to rewrite the user myhub prefs
-		$myhub = new MyhubPrefs($this->database);
-		$myhub->load($this->member->get('uidNumber'));
-		$myhub->prefs = rtrim(str_replace(",;", ";", $prefs), ";");
-		$myhub->modified = JFactory::getDate()->toSql();
-		if (!$myhub->check()) 
-		{
-			$this->setError($myhub->getError());
-		}
-		if (!$myhub->store()) 
-		{
-			$this->setError($myhub->getError());
-		}
-
-		return $user_modules;
+		// build return
+		echo json_encode(array(
+			'saved' => true, 
+			'modules' => $modules
+		));
+		exit();
 	}
 
 	/**
@@ -801,317 +408,321 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	 * 
 	 * @param      string $option     Component name
 	 * @param      string $controller Cotnroller to use
-	 * @param      string $task       Task to perform
+	 * @param      string $action     Action to perform
 	 * @return     string
 	 */
-	public function onManage($option, $controller='plugins', $task='default')
+	public function onManage($option, $controller='plugins', $action='default')
 	{
-		$task = ($task) ?  $task : 'default';
-
-		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'tables' . DS . 'params.php');
-		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'tables' . DS . 'prefs.php');
-
-		$this->option = $option;
+		$this->option     = $option;
 		$this->controller = $controller;
-		$this->task = $task;
-		$this->database = JFactory::getDBO();
-		$this->juser = JFactory::getUser();
-		$this->_act = JRequest::getVar('act', 'customize');
+		$this->action     = $action;
+		$this->database   = JFactory::getDBO();
+		$this->juser      = JFactory::getUser();
 
-		$method = strtolower($task) . 'Task';
+		// include dasboard models
+		include_once JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'models' . DS . 'preferences.php';
 
-		return $this->$method();
+		// add assets
+		\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard');
+		\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard', 'dashboard.admin');
+		\Hubzero\Document\Assets::addPluginScript('members', 'dashboard', 'dashboard.admin');
+		\Hubzero\Document\Assets::addSystemScript('gridster');
+		\Hubzero\Document\Assets::addSystemScript('resizeEnd.min');
+
+		// build method name and call action
+		$methodName = 'Manage' . ucfirst(strtolower($action)) . 'Action';
+		return $this->$methodName();
 	}
 
 	/**
-	 * Displays the default module layout
+	 * Display Main Dashboard Manage
 	 * 
-	 * @return     string
+	 * @return void
 	 */
-	public function defaultTask()
+	public function manageDefaultAction()
 	{
-		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(
+		// create view object
+		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
 				'element' => 'dashboard',
-				'name'    => 'admin',
-				'layout'  => 'default'
+				'name'    => 'manage',
 			)
 		);
-		$this->view->option = $this->option;
-		$this->view->controller = $this->controller;
-		$this->view->task = $this->task;
-		$this->view->juser = $this->juser;
 
-		$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+		// var to hold modules
+		$view->modules = array();
 
-		$document = JFactory::getDocument();
-		$document->addStylesheet($base . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.css');
+		// load dashboard modules
+		$dashboardModules = $this->_loadModules($this->params->get('position', 'myhub'));
 
-		// Select user's list of modules from database
-		$myhub = new MyhubPrefs($this->database);
-		$myhub->load($this->juser->get('id'));
+		// get default prefs
+		$preferences = $this->params->get('defaults', '[]');
+		$preferences = json_decode($preferences);
 
-		// Get all modules
-		$mp = new MyhubParams($this->database);
-		$this->modules = $mp->loadPosition($this->juser->get('id'), $this->params->get('position', 'myhub'));
-
-		// Create a default set of preferences
-		$myhub->uid = $this->juser->get('id');
-		$myhub->prefs = $this->_getDefaultModules();
-
-		$this->num_default = $this->params->get('defaultNumber', 6);
-
-		// Splits string into columns
-		$mymods = explode(';', $myhub->prefs);
-		// Save array of columns for later work
-		$usermods = $mymods;
-
-		// Splits each column into modules, listed by the order they should appear
-		for ($i = 0; $i < count($mymods); $i++)
+		// check to see if which modules to display
+		foreach ($preferences as $preference)
 		{
-			if (!trim($mymods[$i])) {
-				continue;
-			}
-			$mymods[$i] = explode(',', $mymods[$i]);
-		}
-
-		// Build a list of all modules being used by this user 
-		// so we know what to exclude from the list of modules they can still add
-		$allmods = array();
-		
-		for ($i = 0; $i < count($mymods); $i++)
-		{
-			if (is_array($mymods[$i]))
+			if (isset($dashboardModules[$preference->module]))
 			{
-				$allmods = array_merge($allmods, $mymods[$i]);
+				// create module objects
+				$module                      = $dashboardModules[$preference->module];
+				$module->positioning         = new stdClass;
+				$module->positioning->col    = $preference->col;
+				$module->positioning->row    = $preference->row;
+				$module->positioning->size_x = $preference->size_x;
+				$module->positioning->size_y = $preference->size_y;
+				
+				$view->modules[] = $module;
 			}
 		}
 
-		// The number of columns
-		$cols = 3;
+		$application = JFactory::getApplication();
+		$view->admin = $application->isAdmin();
 
-		// Instantiate a view
-		$this->view->usermods = $usermods;
-
-		if ($this->params->get('allow_customization', 0) != 1) 
-		{
-			$this->view->availmods = $this->_getUnusedModules($allmods);
-		} else {
-			$this->view->availmods = null;
-		}
-
-		$this->view->columns = array();
-		for ($c = 0; $c < $cols; $c++)
-		{
-			$this->view->columns[$c] = $this->output_modules($mymods[$c], $this->juser->get('id'), 'customize');
-		}
-
-		if ($this->getError()) 
-		{
-			$this->view->setError($this->getError());
-		}
-		
-		$this->view->messages = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
-		
-		return $this->view->loadTemplate();
+		// return rendered view
+		return $view->loadTemplate();
 	}
 
 	/**
-	 * Select a module to push to all users
+	 * Save Module Defaults
 	 * 
-	 * @return     string
+	 * @return void
 	 */
-	public function selectTask()
+	public function manageSaveAction()
 	{
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'admin',
-				'layout'  => 'select'
-			)
-		);
-		$this->view->option = $this->option;
-		$this->view->controller = $this->controller;
-		$this->view->task = $this->task;
-		$this->view->juser = $this->juser;
-
-		// Include a needed file
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'module.php');
-		$jmodule = new JTableModule($this->database);
-
-		$position = $this->params->get('position', 'myhub');
-
-		// Select all available modules
-		$this->database->setQuery("SELECT m.id, m.title FROM " . $jmodule->getTableName() . " AS m WHERE m.position='$position'");
-		$this->view->modules = $this->database->loadObjectList();
-
-		// Set any errors
-		if ($this->getError()) 
-		{
-			$this->view->setError($this->getError());
-		}
-
-		// Output the HTML
-		return $this->view->loadTemplate();
-	}
-
-	/**
-	 * Push a module to all users
-	 * 
-	 * @return     string
-	 */
-	public function pushTask() 
-	{
-		// Incoming
-		$module   = JRequest::getInt('module', 0);
-		$column   = JRequest::getInt('column', 1);
-		$position = JRequest::getVar('position', 'first');
-
-		// Ensure we have a module
-		if (!$module) 
-		{
-			echo "<script type=\"text/javascript\"> alert('".JText::_('Error: no module selected')."'); window.history.go(-1); </script>\n";
-			return;
-		}
-
-		// Get all entries that do NOT have the selected module
-		$mp = new MyhubPrefs($this->database);
-		$rows = $mp->getPrefs($module);
+		// get request vars
+		$modules = JRequest::getString('modules', '');
 		
-		// Did we get any results?
-		if ($rows) 
-		{
-			// Loop through the results
-			foreach ($rows as $row) 
-			{
-				// Break the prefs into their columns
-				$bits = explode(';', $row->prefs);
-
-				// Determine the position and column the module needs to be added to
-				if ($position == 'first') 
-				{
-					$bits[$column] = $module . ',' . $bits[$column];
-				} 
-				else 
-				{
-					$bits[$column] .= ',' . $module;
-				}
-				$prefs = implode(';', $bits);
-
-				// Save the updated prefs
-				$myhub = new MyhubPrefs($this->database);
-				$myhub->uid   = $row->uid;
-				$myhub->prefs = $prefs;
-				if (!$myhub->check()) 
-				{
-					$this->setError($myhub->getError());
-				}
-				if (!$myhub->store()) 
-				{
-					$this->setError($myhub->getError());
-				}
-			}
-		}
-
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard',
-			JText::_('Module successfully pushed')
-		);
-		return;
-	}
-
-	/**
-	 * Redirect
-	 *
-	 * @return	void
-	 */
-	public function setRedirect($url, $msg=null, $type='message')
-	{
-		if ($msg !== null)
-		{
-			$this->addPluginMessage($msg, $type);
-		}
-		$this->redirect($url);
-	}
-
-	/**
-	 * Save preferences (i.e., the list of modules 
-	 * to be displayed and their locations)
-	 * 
-	 * @return     string
-	 */
-	public function saveTask($rtrn=0)
-	{
-		// Incoming
-		$ids = JRequest::getVar('mids', '');
-
-		$this->params->set('defaults', $ids);
+		// set our new defaults
+		$this->params->set('defaults', $modules);
 		
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$query = "UPDATE #__extensions SET params='" . $this->params->toString() . "' WHERE `folder`='members' AND `element`='dashboard'";
-		}
-		else 
-		{
-			$query = "UPDATE #__plugins SET params='" . $this->params->toString() . "' WHERE `folder`='members' AND `element`='dashboard'";
-		}
+		// save
+		$query = "UPDATE #__extensions SET params=" . $this->database->quote($this->params->toString()) . " WHERE `folder`='members' AND `element`='dashboard'";
 		$this->database->setQuery($query);
 		if ($this->database->query()) 
 		{
 			$this->setError($this->database->getErrorMsg());
 		}
 
-		if ($rtrn) 
-		{
-			return $ids;
-		}
+		//quit now
+		exit();
 	}
 
 	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
+	 * Display Add Module View
+	 * 
+	 * @return void
 	 */
-	public function cancelTask()
+	public function manageAddAction()
 	{
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard'
+		// create view object
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'members',
+				'element' => 'dashboard',
+				'name'    => 'add',
+			)
 		);
-		return;
+
+		// load dashboard modules
+		$view->modules = $this->_loadModules($this->params->get('position', 'myhub'));
+
+		// get default prefs
+		$preferences = $this->params->get('defaults', '[]');
+		$preferences = json_decode($preferences);
+
+		// get list of default modules
+		$view->mymodules = array_map(function($mod) {
+			return $mod->module;
+		}, $preferences);
+
+		// return rendered view
+		return $view->loadTemplate();
 	}
 
 	/**
-	 * Rebuild the "available modules" list
+	 * Return Rendered Module 
 	 * 
-	 * @return     void
+	 * @return void
 	 */
-	protected function rebuildTask()
+	public function manageModuleAction()
 	{
-		$this->rebuild();
-		return $this->view->loadTemplate();
-	}
+		// get module id
+		$moduleId = JRequest::getInt('moduleid', 0);
 
-	/**
-	 * Builds the HTML for a module
-	 * 
-	 * NOTE: this is different from the method above in that
-	 * it also builds the title, parameters form, and container
-	 * for the module
-	 * 
-	 * @return     void
-	 */
-	protected function addmoduleTask()
-	{
-		$this->member = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
-		if ($this->addmodule() == 'ERROR')
+		// get list of modules
+		$modulesList = $this->_loadModules($this->params->get('position', 'myhub'));
+
+		// get the module
+		$module = null;
+		if (in_array($moduleId, array_keys($modulesList)))
 		{
-			return 'ERROR';
+			$module                      = $modulesList[$moduleId];
+			$module->positioning         = new stdClass;
+			$module->positioning->col    = 1;
+			$module->positioning->row    = 1;
+			$module->positioning->size_x = 1;
+			$module->positioning->size_y = 2;
 		}
-		return $this->view->loadTemplate();
+		
+		// create view object
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'members',
+				'element' => 'dashboard',
+				'name'    => 'display',
+				'layout'  => 'module'
+			)
+		);
+
+		// get application location
+		$application  = JFactory::getApplication();
+		$view->admin  = $application->isAdmin();
+		$view->module = $module;
+		$content      = $view->loadTemplate();
+		
+		// return content
+		echo json_encode(array('html' => $content));
+		exit();
+	}
+
+	/**
+	 * Display Push Module View
+	 * 
+	 * @return void
+	 */
+	public function managePushAction()
+	{
+		// create view object
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'members',
+				'element' => 'dashboard',
+				'name'    => 'manage',
+				'layout'  => 'push'
+			)
+		);
+
+		// get list of modules
+		$view->modules = $this->_loadModules($this->params->get('position', 'myhub'));
+
+		// return rendered view
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * [manageDoPushAction description]
+	 * @return [type] [description]
+	 */
+	public function manageDoPushAction()
+	{
+		// get request vars
+		$module   = JRequest::getInt('module', null);
+		$column   = JRequest::getInt('column', 1);
+		$position = JRequest::getCmd('position', 'first');
+		$width    = JRequest::getInt('width', 1);
+		$height   = JRequest::getInt('height', 2);
+
+		// make sure we have a module
+		if ($module == 0 || $module == null)
+		{
+			JError::raiseError(406, 'You must provide a module.');
+			return;
+		}
+
+		// load all member preferences
+		$this->database->setQuery("SELECT * from `#__xprofiles_dashboard_preferences`");
+		$memberPreferences = $this->database->loadObjectList();
+
+		// loop through each member preference and attempt to push module
+		foreach ($memberPreferences as $memberPreference)
+		{
+			// load their member preferences
+			$params = json_decode($memberPreference->preferences);
+
+			// get a list of installed modules
+			$modules = array_map(function($param) {
+				return $param->module;
+			}, $params);
+
+			// if we already have the module were done
+			if (in_array($module, $modules))
+			{
+				continue;
+			}
+
+			// calculate the heights for each column
+			$maxForCols = array('1' => 0, '2' => 0, '3' => 0);
+			foreach ($params as $param)
+			{
+				$col    = $param->col;
+				$height = $param->size_y;
+				$maxForCols[$col] += $height;
+			}
+
+			// create new module object
+			$newModule = new stdClass;
+			$newModule->module = $module;
+			$newModule->col    = $column;
+			$newModule->size_x = $width;
+			$newModule->size_y = $height;
+
+			// add new module
+			if ($position == 'last')
+			{
+				$newModule->row = $maxForCols[$column] + 1;
+				array_push($params, $newModule);
+			}
+			else
+			{	
+				$newModule->row = 1;
+				array_unshift($params, $newModule);
+
+				// run through following params (modules) and adjust their position
+				$mins = array('1' => 0, '2' => 0, '3' => 0);
+				foreach ($params as $param)
+				{
+					$col = $param->col;
+					$min = $param->row + $param->size_y;
+					if ($min <= $mins[$col])
+					{
+						$param->row = $min;
+					}
+					$mins[$col] += $min;
+				}
+			}
+				
+			// encode params
+			$params = json_encode($params);
+			
+			// update user params
+			$sql = "UPDATE `#__xprofiles_dashboard_preferences` SET `preferences`=" . $this->database->quote($params) . " WHERE `uidNumber`=" . $memberPreference->uidNumber;
+			$this->database->setQuery($sql);
+			$this->database->query();
+		}
+
+		// return message
+		echo json_encode(array('module_pushed' => true));
+		exit();
+	}
+
+	/**
+	 * [_loadModules description]
+	 * @param  string $position [description]
+	 * @return [type]           [description]
+	 */
+	private function _loadModules( $position = '' )
+	{
+		$query = "SELECT * 
+		          FROM `#__modules` AS m
+		          WHERE position=" . $this->database->quote($position)  . "
+		          AND m.published=1 
+		          AND m.client_id=0 
+		          ORDER BY m.ordering";
+		$this->database->setQuery($query);
+		$modules = $this->database->loadObjectList('id');
+		
+		return $modules;
 	}
 }

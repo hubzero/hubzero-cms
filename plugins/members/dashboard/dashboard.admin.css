@@ -1,0 +1,20 @@
+.admin-header {
+	padding: 0 20px;
+}
+.admin-header a.button {
+	float: right;
+	margin: 20px 0 0 10px;
+}
+.module-list .section-header {
+	line-height: 1em;
+}
+.module-title-bar h3 {
+	padding: 0;
+	font-size: 14px;
+}
+.module .module-title h3 {
+	line-height: 1.5em;
+}
+p.submit {
+	text-align: center;
+}

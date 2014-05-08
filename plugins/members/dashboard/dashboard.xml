@@ -47,12 +47,11 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="allow_customization" type="radio" default="0" label="Allow Customization" description="Allow users to customize the page or not">
-					<option value="0">Yes</option>
-					<option value="1">No</option>
+					<option value="1">Yes</option>
+					<option value="0">No</option>
 				</field>
 				<field name="position" type="text" menu="hide" label="Module position" default="myhub" description="The module position to use to gather draggable modules" />
 				<field name="defaults" type="text" menu="hide" label="Defaults" default="" description="The default list of modules to show" />
-				<field name="static" type="text" menu="hide" label="Static" default="" description="Modules that cannot be removed by the user." />
 			</fieldset>
 		</fields>
 	</config>
