@@ -109,16 +109,17 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 					switch ($this->filters['task'])
 					{
-						case 'manager':
-						case 'instructor':
-						case 'ta':
-							$cls = 'manager';
-							$dateText = JText::_('PLG_MEMBERS_COURSES_EMPOWERED');
-						break;
-						
 						case 'student':
 							$cls = 'student';
 							$dateText = JText::_('PLG_MEMBERS_COURSES_ENROLLED');
+						break;
+
+						case 'manager':
+						case 'instructor':
+						case 'ta':
+						default:
+							$cls = 'manager';
+							$dateText = JText::_('PLG_MEMBERS_COURSES_EMPOWERED');
 						break;
 					}
 			?>
