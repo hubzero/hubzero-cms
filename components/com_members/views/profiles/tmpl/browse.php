@@ -33,54 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="post">
-		<div class="aside">
-			<div class="container">
-				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_SITE_MEMBERS'); ?></h3>
-				<p><?php echo JText::_('COM_MEMBERS_BROWSE_EXPLANATION'); ?></p>
-				<p><?php echo JText::_('COM_MEMBERS_BROWSE_SORTING_EXPLANATION'); ?></p>
-				<p><?php echo JText::_('COM_MEMBERS_BROWSE_SEARCH_EXPLANATION'); ?></p>
-			</div><!-- / .container -->
-
-			<div class="container">
-				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_MEMBER_STATS'); ?></h3>
-				<table>
-					<tbody>
-						<tr>
-							<th><?php echo JText::_('COM_MEMBERS_BROWSE_TOTAL_MEMBERS'); ?></th>
-							<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
-						</tr>
-						<tr>
-							<th><?php echo JText::_('COM_MEMBERS_BROWSE_PRIVATE_PROFILES'); ?></th>
-							<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
-						</tr>
-						<tr>
-							<th><?php echo JText::_('COM_MEMBERS_BROWSE_NEW_PROFILES'); ?></th>
-							<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
-						</tr>
-					</tbody>
-				</table>
-				<p class="align-right">
-					<a href="<?php echo JRoute::_('index.php?option=com_usage#tot'); ?>">
-						<?php echo JText::_('COM_MEMBERS_BROWSE_ALL_MEMBER_USAGE'); ?>
-					</a>
-				</p>
-			</div><!-- / .container -->
-
-			<div class="container">
-				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_LOOKING_FOR_GROUPS'); ?></h3>
-				<p>
-					<?php echo JText::sprintf('COM_MEMBERS_BROWSE_GO_TO_GROUPS', JRoute::_('index.php?option=com_groups')); ?>
-				</p>
-			</div><!-- / .container -->
-		</div><!-- / .aside -->
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="post">
+	<section class="main section">
 		<div class="subject">
-
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_MEMBERS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
@@ -147,7 +106,7 @@ $juser = JFactory::getUser();
 					</li>
 					<?php } ?>
 				</ul>
-				
+
 				<ul class="entries-menu filter-options">
 					<li>
 						<a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_BY_ALL'); ?>">
@@ -201,182 +160,182 @@ $juser = JFactory::getUser();
 						</tr>
 					</thead>
 					<tbody>
-<?php
-if (count($this->rows) > 0) 
-{
-	// Get plugins
-	JPluginHelper::importPlugin('members');
-	$dispatcher = JDispatcher::getInstance();
-
-	$areas = array();
-	$activeareas = $dispatcher->trigger('onMembersContributionsAreas', array($this->authorized));
-	foreach ($activeareas as $area)
-	{
-		$areas = array_merge($areas, $area);
-	}
-
-	$cols = 2;
-
-	$cls = ''; //'even';
-
-	// Default thumbnail
-	$config = JComponentHelper::getParams('com_members');
-	$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
-
-	$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
-	$dfthumb = \Hubzero\User\Profile\Helper::thumbit($dfthumb);
-
-	// User messaging
-	$messaging = false;
-	if ($this->config->get('user_messaging') > 0 && !$juser->get('guest')) 
-	{
-		switch ($this->config->get('user_messaging'))
-		{
-			case 1:
-				// Get the groups the visiting user
-				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
-				$usersgroups = array();
-				if (!empty($xgroups)) 
-				{
-					foreach ($xgroups as $group)
+					<?php
+					if (count($this->rows) > 0) 
 					{
-						if ($group->regconfirmed) 
+						// Get plugins
+						JPluginHelper::importPlugin('members');
+						$dispatcher = JDispatcher::getInstance();
+
+						$areas = array();
+						$activeareas = $dispatcher->trigger('onMembersContributionsAreas', array($this->authorized));
+						foreach ($activeareas as $area)
 						{
-							$usersgroups[] = $group->cn;
+							$areas = array_merge($areas, $area);
 						}
-					}
-				}
-			break;
 
-			case 2:
-			case 0:
-			default:
-			break;
-		}
-		$messaging = true;
-	}
+						$cols = 2;
 
-	foreach ($this->rows as $row)
-	{
-		//$cls = ($cls == 'odd') ? 'even' : 'odd';
-		$cls = '';
-		if ($row->public != 1) 
-		{
-			$cls = 'private';
-		}
+						$cls = ''; //'even';
 
-		if ($row->uidNumber < 0) 
-		{
-			$id = 'n' . -$row->uidNumber;
-		} 
-		else 
-		{
-			$id = $row->uidNumber;
-		}
+						// Default thumbnail
+						$config = JComponentHelper::getParams('com_members');
+						$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
 
-		if ($row->uidNumber == $juser->get('id')) 
-		{
-			$cls .= ($cls) ? ' me' : 'me';
-		}
+						$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
+						$dfthumb = \Hubzero\User\Profile\Helper::thumbit($dfthumb);
 
-		// User name
-		$row->name       = stripslashes($row->name);
-		$row->surname    = stripslashes($row->surname);
-		$row->givenName  = stripslashes($row->givenName);
-		$row->middelName = stripslashes($row->middleName);
-
-		if (!$row->surname) 
-		{
-			$bits = explode(' ', $row->name);
-			$row->surname = array_pop($bits);
-			if (count($bits) >= 1) 
-			{
-				$row->givenName = array_shift($bits);
-			}
-			if (count($bits) >= 1) 
-			{
-				$row->middleName = implode(' ', $bits);
-			}
-		}
-
-		$name = ($row->surname) ? stripslashes($row->surname) : '';
-		if ($row->givenName) 
-		{
-			$name .= ($row->surname) ? ', ' : '';
-			$name .= stripslashes($row->givenName);
-			$name .= ($row->middleName) ? ' ' . stripslashes($row->middleName) : '';
-		}
-		if (!trim($name)) 
-		{
-			$name = JText::_('COM_MEMBERS_UNKNOWN') . ' (' . $row->username . ')';
-		}
-
-		// User picture
-		$new_thumb = '';
-		$old_thumb = '';
-		if ($row->picture) 
-		{
-			$new_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . 'thumb.png';
-			
-			$old_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
-			$old_thumb = \Hubzero\User\Profile\Helper::thumbit($old_thumb);
-		}
-
-		if ($new_thumb && is_file(JPATH_ROOT . $new_thumb)) 
-		{
-			$p = $new_thumb;
-		}
-		else if($old_thumb && is_file(JPATH_ROOT . $old_thumb))
-		{
-			$p = $old_thumb;
-		} 
-		else 
-		{
-			$p = $dfthumb;
-		}
-
-		// User messaging
-		$messageuser = false;
-		if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) 
-		{
-			switch ($this->config->get('user_messaging'))
-			{
-				case 1:
-					// Get the groups of the profile
-					$pgroups = \Hubzero\User\Helper::getGroups($row->uidNumber, 'all');
-					// Get the groups the user has access to
-					$profilesgroups = array();
-					if (!empty($pgroups)) 
-					{
-						foreach ($pgroups as $group)
+						// User messaging
+						$messaging = false;
+						if ($this->config->get('user_messaging') > 0 && !$juser->get('guest')) 
 						{
-							if ($group->regconfirmed) 
+							switch ($this->config->get('user_messaging'))
 							{
-								$profilesgroups[] = $group->cn;
+								case 1:
+									// Get the groups the visiting user
+									$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+									$usersgroups = array();
+									if (!empty($xgroups)) 
+									{
+										foreach ($xgroups as $group)
+										{
+											if ($group->regconfirmed) 
+											{
+												$usersgroups[] = $group->cn;
+											}
+										}
+									}
+								break;
+
+								case 2:
+								case 0:
+								default:
+								break;
 							}
+							$messaging = true;
 						}
-					}
 
-					// Find the common groups
-					$common = array_intersect($usersgroups, $profilesgroups);
+						foreach ($this->rows as $row)
+						{
+							//$cls = ($cls == 'odd') ? 'even' : 'odd';
+							$cls = '';
+							if ($row->public != 1) 
+							{
+								$cls = 'private';
+							}
 
-					if (count($common) > 0) 
-					{
-						$messageuser = true;
-					}
-				break;
+							if ($row->uidNumber < 0) 
+							{
+								$id = 'n' . -$row->uidNumber;
+							} 
+							else 
+							{
+								$id = $row->uidNumber;
+							}
 
-				case 2:
-					$messageuser = true;
-				break;
+							if ($row->uidNumber == $juser->get('id')) 
+							{
+								$cls .= ($cls) ? ' me' : 'me';
+							}
 
-				case 0:
-				default:
-					$messageuser = false;
-				break;
-			}
-		}
-?>
+							// User name
+							$row->name       = stripslashes($row->name);
+							$row->surname    = stripslashes($row->surname);
+							$row->givenName  = stripslashes($row->givenName);
+							$row->middelName = stripslashes($row->middleName);
+
+							if (!$row->surname) 
+							{
+								$bits = explode(' ', $row->name);
+								$row->surname = array_pop($bits);
+								if (count($bits) >= 1) 
+								{
+									$row->givenName = array_shift($bits);
+								}
+								if (count($bits) >= 1) 
+								{
+									$row->middleName = implode(' ', $bits);
+								}
+							}
+
+							$name = ($row->surname) ? stripslashes($row->surname) : '';
+							if ($row->givenName) 
+							{
+								$name .= ($row->surname) ? ', ' : '';
+								$name .= stripslashes($row->givenName);
+								$name .= ($row->middleName) ? ' ' . stripslashes($row->middleName) : '';
+							}
+							if (!trim($name)) 
+							{
+								$name = JText::_('COM_MEMBERS_UNKNOWN') . ' (' . $row->username . ')';
+							}
+
+							// User picture
+							$new_thumb = '';
+							$old_thumb = '';
+							if ($row->picture) 
+							{
+								$new_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . 'thumb.png';
+								
+								$old_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
+								$old_thumb = \Hubzero\User\Profile\Helper::thumbit($old_thumb);
+							}
+
+							if ($new_thumb && is_file(JPATH_ROOT . $new_thumb)) 
+							{
+								$p = $new_thumb;
+							}
+							else if($old_thumb && is_file(JPATH_ROOT . $old_thumb))
+							{
+								$p = $old_thumb;
+							} 
+							else 
+							{
+								$p = $dfthumb;
+							}
+
+							// User messaging
+							$messageuser = false;
+							if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) 
+							{
+								switch ($this->config->get('user_messaging'))
+								{
+									case 1:
+										// Get the groups of the profile
+										$pgroups = \Hubzero\User\Helper::getGroups($row->uidNumber, 'all');
+										// Get the groups the user has access to
+										$profilesgroups = array();
+										if (!empty($pgroups)) 
+										{
+											foreach ($pgroups as $group)
+											{
+												if ($group->regconfirmed) 
+												{
+													$profilesgroups[] = $group->cn;
+												}
+											}
+										}
+
+										// Find the common groups
+										$common = array_intersect($usersgroups, $profilesgroups);
+
+										if (count($common) > 0) 
+										{
+											$messageuser = true;
+										}
+									break;
+
+									case 2:
+										$messageuser = true;
+									break;
+
+									case 0:
+									default:
+										$messageuser = false;
+									break;
+								}
+							}
+					?>
 						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 							<th class="entry-img">
 								<img width="50" height="50" src="<?php echo $p; ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_BROWSE_AVATAR', $this->escape($name)); ?>" />
@@ -398,21 +357,21 @@ if (count($this->rows) > 0)
 							</td>
 							<td class="message-member">
 							<?php if ($messageuser) { ?>
-								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $juser->get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
+								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $juser->get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="<?php echo JText::sprintf('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
 									<?php echo JText::sprintf('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO', $this->escape($name)); ?>
 								</a>
 							<?php } ?>
 							</td>
 						</tr>
-<?php
-	}
-} else { ?>
+					<?php
+						}
+					} else { ?>
 						<tr>
 							<td colspan="4">
 								<p class="warning"><?php echo JText::_('NO_MEMBERS_FOUND'); ?></p>
 							</td>
 						</tr>
-<?php } ?>
+					<?php } ?>
 					</tbody>
 				</table>
 				<?php
@@ -424,6 +383,46 @@ if (count($this->rows) > 0)
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</form>
-</div><!-- / .main section -->
+
+		<aside class="aside">
+			<div class="container">
+				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_SITE_MEMBERS'); ?></h3>
+				<p><?php echo JText::_('COM_MEMBERS_BROWSE_EXPLANATION'); ?></p>
+				<p><?php echo JText::_('COM_MEMBERS_BROWSE_SORTING_EXPLANATION'); ?></p>
+				<p><?php echo JText::_('COM_MEMBERS_BROWSE_SEARCH_EXPLANATION'); ?></p>
+			</div><!-- / .container -->
+
+			<div class="container">
+				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_MEMBER_STATS'); ?></h3>
+				<table>
+					<tbody>
+						<tr>
+							<th><?php echo JText::_('COM_MEMBERS_BROWSE_TOTAL_MEMBERS'); ?></th>
+							<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
+						</tr>
+						<tr>
+							<th><?php echo JText::_('COM_MEMBERS_BROWSE_PRIVATE_PROFILES'); ?></th>
+							<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
+						</tr>
+						<tr>
+							<th><?php echo JText::_('COM_MEMBERS_BROWSE_NEW_PROFILES'); ?></th>
+							<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="align-right">
+					<a href="<?php echo JRoute::_('index.php?option=com_usage#tot'); ?>">
+						<?php echo JText::_('COM_MEMBERS_BROWSE_ALL_MEMBER_USAGE'); ?>
+					</a>
+				</p>
+			</div><!-- / .container -->
+
+			<div class="container">
+				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_LOOKING_FOR_GROUPS'); ?></h3>
+				<p>
+					<?php echo JText::sprintf('COM_MEMBERS_BROWSE_GO_TO_GROUPS', JRoute::_('index.php?option=com_groups')); ?>
+				</p>
+			</div><!-- / .container -->
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
+</form>
