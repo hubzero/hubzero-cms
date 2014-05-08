@@ -52,6 +52,12 @@
 		padding: 0;
 		border: none;
 	}
+	#introduction ul.token-input-list-act {
+		background: transparent;
+		padding: 3px 3px 2px 3px;
+		border: 1px solid #ddd;
+		border: 1px solid rgba(0, 0, 0, 0.175);
+	}
 	#introduction li {
 		margin: 0;
 		padding: 0 0 0 5px;
@@ -96,7 +102,8 @@
 		padding: 0 30px 30px 30px;
 	}*/
 	#introduction .data-entry {
-		margin-top: 0;
+		margin: 0;
+		padding: 0;
 	}
 
 /* Four Columns */

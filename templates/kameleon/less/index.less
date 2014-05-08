@@ -16,39 +16,9 @@
 // Grid system and page structure
 @import "../../../media/system/less/grid.less";
 
-a,
-a:active, 
-a:visited {
-	text-decoration: none;
-	color: #444;
-	border: none;
-}
-a:hover,
-a:hover:visited {
-	color: #222;
-	border-bottom: 1px solid #999;
-}
-
-// Components: Alerts
-@import "_notifications.less";
-
-// Components: Nav
-@import "_tabs.less";
-@import "_pagination.less";
-
-// Components: Popovers
-@import "_tooltip.less";
-
-// Components: Misc
-@import "_tags.less";
-//@import "../../../media/system/less/voting.less";
-//@import "../../../media/system/less/comments.less";
-
 // Root node
 	html {
 		font-family: sans-serif;
-		//-ms-text-size-adjust: 100%;
-		//-webkit-text-size-adjust: 100%;
 	}
 
 // Body
@@ -60,6 +30,20 @@ a:hover:visited {
 		color: #666;
 		background: #ececec;
 		text-rendering: optimizeLegibility;
+	}
+
+// Links
+	a,
+	a:active, 
+	a:visited {
+		text-decoration: none;
+		color: #444;
+		border: none;
+	}
+	a:hover,
+	a:hover:visited {
+		color: #222;
+		border-bottom: 1px solid #999;
 	}
 
 // Inputs
@@ -231,6 +215,7 @@ a:hover:visited {
 		font-size: 1em;
 		border-collapse: collapse;
 		border-bottom: 1px dashed #dadada;
+		//border-bottom: 1px dashed #dadada;
 
 		caption {
 			line-height: 1.6em;
@@ -249,20 +234,6 @@ a:hover:visited {
 			white-space: nowrap;
 		}
 	}
-
-/* Core classes 
-	.nowrap {
-		white-space: nowrap;
-	}
-	.highlight {
-		background-color: #FFFF99;
-	}
-
-// Top container
-	#top {
-		margin: 0;
-		padding: 0;
-	}*/
 
 // Splash
 	#splash .inner-wrap .inner .wrap {
@@ -346,7 +317,7 @@ a:hover:visited {
 // Sections
 @import "_sections.less";
 
-.com_content {
+	.com_content {
 		ul.actions {
 			display: none;
 		}
@@ -598,6 +569,21 @@ a:hover:visited {
 
 // Buttons
 @import "_buttons.less";
+
+// Components: Alerts
+@import "_notifications.less";
+
+// Components: Nav
+@import "_tabs.less";
+@import "_pagination.less";
+
+// Components: Popovers
+@import "_tooltip.less";
+
+// Components: Misc
+@import "_tags.less";
+//@import "../../../media/system/less/voting.less";
+@import "_comments.less";
 
 // Containers & listings
 @import "_layout.less";

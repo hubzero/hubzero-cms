@@ -7,18 +7,18 @@
 
 // Content blocks
 	.container {
-		margin: 0;
+		margin: 30px 0 0 0;
 		padding: 0;
 	}
-	.container + .container {
+	/*.container + .container {
 		margin-top: 30px;
 	}
 	.data-entry {
 		padding: 0;
 		border: none;
 		margin: 30px 0 0 0;
-	}
-	.container-block {
+	}*/
+	/*.container-block {
 		.border-radius(@baseBorderRadius);
 		border-color: @containerBlockBorder;
 
@@ -62,9 +62,6 @@
 		padding: 0.5em 0.7em;
 		border-bottom: 2px solid #e9e9e9;
 		font-size: 135%;
-		//background-image: url("/media/system/images/light-stripes.png");
-		//#gradient > .striped(#f8f8f8, -45deg, .5);
-		//.background-size(30px 30px); // Controls the size of the stripes
 	}
 	.subject .container h3 {
 		border: 2px solid #e9e9e9;
@@ -77,80 +74,91 @@
 	.subject .container h3 span,
 	.container-block h3 span {
 		color: #aaa;
-	}
+	}*/
 
 /* Entries search */
-	.entry-search {
-		margin: 0 1em 0 0;
-		border: none;
-		padding: 0;
-		background: transparent;
+	.data-entry {
+		background: #fff;
+		margin: 0px -30px 0 -60px;
+		padding: 30px 30px 30px 60px;
+		//border-bottom: 1px solid #eaeaea;
 
-		legend,
-		label {
-			display: none;
-		}
-		input[type="text"],
-		input {
-			width: 100%;
-			border: 1px solid #ddd;
-			border: 1px solid rgba(0, 0, 0, 0.175);
+		fieldset {
+			margin: 0 1em 0 0;
+			padding: 0;
+			border: none;
 			background: transparent;
-			padding: 0.618em 1em;
-			margin: 0;
-			.box-sizing(border-box);
-			.background-clip(padding-box);
-			outline: none;
-			font-size: 1em;
-			line-height: 1.61803399em;
-			display: inline-block;
-			//.ie7-inline-block();
-			padding: 7px 5px 8px 5px\9;
-			.border-radius(0);
 
-			&:hover,
-			&:focus {
-				background: #fff;
-				border-color: #333;
+			legend,
+			label {
+				display: none;
 			}
 		}
-	}
-	.data-entry input.entry-search-submit {
-		width: auto;
-		float: right;
-		.border-radius(0);
-		.box-sizing(border-box);
-		.background-clip(padding-box);
-		font-size: 1em;
-		padding: 0.618em 1em;
-		margin: 0 0 0 0.2em;
-		display: inline-block;
-		.ie7-inline-block();
-		line-height: 1.61803399em;
-		outline: none;
-		background: transparent;
-		color: #666;
-		border: 1px solid #ddd;
-		border: 1px solid rgba(0, 0, 0, 0.175);
-		cursor: pointer;
-		.transition(all 0.1s ease-out);
+			input[type="submit"],
+			input[type="text"],
+			input {
+				width: 100%;
+				border: 1px solid #ddd;
+				border: 1px solid rgba(0, 0, 0, 0.175);
+				background: transparent;
+				padding: 0.618em 1em;
+				margin: 0;
+				.box-sizing(border-box);
+				.background-clip(padding-box);
+				outline: none;
+				font-size: 1em;
+				line-height: 1.61803399em;
+				display: inline-block;
+				//.ie7-inline-block();
+				padding: 7px 5px 8px 5px\9;
+				.border-radius(0);
+				.transition(all 0.1s ease-out);
 
-		&:hover,
-		&:focus,
-		&:active {
-			background: #3e3e3e;
-			color: #fff;
-			border-color: #3e3e3e;
+				&:hover,
+				&:focus {
+					background: #fff;
+					border-color: #333;
+				}
+			}
+		//}
+
+		input.entry-search-submit {
+			width: auto;
+			float: right;
+			//.border-radius(0);
+			//.box-sizing(border-box);
+			//.background-clip(padding-box);
+			//font-size: 1em;
+			padding: 0.618em 1em;
+			margin: 0 0 0 0.2em;
+			display: inline-block;
+			.ie7-inline-block();
+			//line-height: 1.61803399em;
+			//outline: none;
+			//background: transparent;
+			color: #666;
+			//border: 1px solid #ddd;
+			//border: 1px solid rgba(0, 0, 0, 0.175);
+			cursor: pointer;
+			//.transition(all 0.1s ease-out);
+
+			&:hover,
+			&:focus,
+			&:active {
+				background: #3e3e3e;
+				color: #fff;
+				border-color: #3e3e3e;
+			}
 		}
-	}
-	.data-entry .applied-tags {
-		margin-top: 0px;
-		padding: 0.5em 1em;
-		background-color: #888;
-		background-color: rgba(255, 255, 255, 0.2);
-		background-color: #888\9;
-		*background-color: #888;
-		.border-radius(0 0 0.25em 0.25em);
+		.applied-tags {
+			margin-top: 0px;
+			padding: 0.5em 1em;
+			//background-color: #888;
+			//background-color: rgba(255, 255, 255, 0.2);
+			//background-color: #888\9;
+			//*background-color: #888;
+			//.border-radius(0 0 0.25em 0.25em);
+		}
 	}
 	// [!] Target Opera
 	html.opera .data-entry input.entry-search-submit {
@@ -165,11 +173,11 @@
 
 // Aside
 	.aside .container {
-		margin: 0 0 1em 0;
+		/*margin: 0 0 1em 0;
 		padding: 0;
 		background: transparent;
 		border: none;
-		box-shadow: none;
+		box-shadow: none;*/
 
 		// Paragraphs
 		p {

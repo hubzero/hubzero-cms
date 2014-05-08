@@ -1,0 +1,224 @@
+@import url("../../../../plugins/hubzero/autocompleter/autocompleter.css");
+
+	.entry-search ul.textboxlist-holder,
+	.entry-search ul.token-input-list-act {
+		background: transparent;
+		padding: 3px 3px 2px 3px;
+		border-color: #eee;
+	}
+	.entry-search ul.token-input-list-act li input[type="text"],
+	.entry-search ul.token-input-list-act li input,
+	.entry-search ul.textboxlist-holder li input {
+		background: transparent;
+		border: none !important;
+		padding-bottom: 6px;
+	}
+	/* [!] Target Opera */
+	html.opera .entry-search ul.token-input-list-act li input[type="text"],
+	html.opera .entry-search ul.token-input-list-act li input,
+	html.opera .entry-search ul.textboxlist-holder li input {
+		padding-bottom: 8px;
+	}
+	/* [!] Target Firefox */
+	@-moz-document url-prefix() {
+		.entry-search ul.token-input-list-act li input[type="text"],
+		.entry-search ul.token-input-list-act li input,
+		.entry-search ul.textboxlist-holder li input {
+			padding-bottom: 8px;
+		}
+	}
+
+/* MooTools version */
+	ul.textboxlist-holder li.bit-box { 
+		background: #ddd;
+	}
+
+/* Field - Match styles for form inputs */
+	#commentform ul.token-input-list-act li input, 
+	#commentform ul.token-input-list-acg li input, 
+	#commentform ul.token-input-list-acm li input,
+	#commentform ul.token-input-list-act li input:focus, 
+	#commentform ul.token-input-list-acg li input:focus, 
+	#commentform ul.token-input-list-acm li input:focus,
+	#commentform ul.token-input-list-act li input[type=text], 
+	#commentform ul.token-input-list-acg li input[type=text], 
+	#commentform ul.token-input-list-acm li input[type=text],
+	#commentform ul.token-input-list-act li input[type=text]:focus, 
+	#commentform ul.token-input-list-acg li input[type=text]:focus, 
+	#commentform ul.token-input-list-acm li input[type=text]:focus,
+	#hubForm ul.token-input-list-act li input, 
+	#hubForm ul.token-input-list-acg li input, 
+	#hubForm ul.token-input-list-acm li input,
+	#hubForm ul.token-input-list-act li input:focus, 
+	#hubForm ul.token-input-list-acg li input:focus, 
+	#hubForm ul.token-input-list-acm li input:focus,
+	#hubForm ul.token-input-list-act li input[type=text], 
+	#hubForm ul.token-input-list-acg li input[type=text], 
+	#hubForm ul.token-input-list-acm li input[type=text],
+	#hubForm ul.token-input-list-act li input[type=text]:focus, 
+	#hubForm ul.token-input-list-acg li input[type=text]:focus, 
+	#hubForm ul.token-input-list-acm li input[type=text]:focus,
+	ul.token-input-list-act li input:focus, 
+	ul.token-input-list-acg li input:focus, 
+	ul.token-input-list-acm li input:focus,
+	ul.token-input-list-act li input, 
+	ul.token-input-list-acg li input, 
+	ul.token-input-list-acm li input {
+		background: transparent;
+	}
+	ul.token-input-list-act, 
+	ul.token-input-list-acg, 
+	ul.token-input-list-acm {
+		background: #F0F0F0;
+		border: 1px solid #D9D9D9;
+		background-color: rgba(0, 0, 0, .039);
+		border-color: rgba(0, 0, 0, .19) rgba(0, 0, 0, .13) rgba(0, 0, 0, .07);
+	}
+	.entry-search ul.token-input-list-act, 
+	.entry-search ul.token-input-list-acg, 
+	.entry-search ul.token-input-list-acm {
+		border: 1px solid #ddd;
+	}
+
+/* Field - focus */
+	.entry-search ul.token-input-list-act:hover,
+	.entry-search ul.token-input-list-acg:hover,
+	.entry-search ul.token-input-list-acm:hover {
+		border-color: #222;
+	}
+	.entry-search ul.token-input-list-focus-act,
+	.entry-search ul.token-input-list-focus-acg,
+	.entry-search ul.token-input-list-focus-acm,
+	ul.token-input-list-focus-act,
+	ul.token-input-list-focus-acg,
+	ul.token-input-list-focus-acm {
+		background-color: #fff;
+		border-color: #222;
+	}
+
+/* Tags */
+	li.token-input-token-act,
+	li.token-input-token-acg,
+	li.token-input-token-acm {
+		border-color: #ddd;
+		background: #ddd;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+	}
+	/*li.token-input-token-act {
+		background: transparent;
+	}
+	li.token-input-token-act p,
+	li.token-input-token-acg p,
+	li.token-input-token-acm p {
+		font-size: 10px !important;
+		position: relative;
+		display: inline-block !important;
+		border: 0;
+		margin: 0 0 0 6px;
+		-webkit-border-radius: 0 !important;
+		-moz-border-radius: 0 !important;
+		-ms-border-radius: 0 !important;
+		-o-border-radius: 0 !important;
+		border-radius: 0 !important;
+		line-height: 2em !important;
+		padding: 2px 6px 2px 6px !important;
+	}
+	li.token-input-token-act p {
+		background: #ddd !important;
+	}*/
+	/*#commentform label li.token-input-token-act span,
+	#commentform label li.token-input-token-acg span,
+	#commentform label li.token-input-token-acm span,
+	li.token-input-token-act span,
+	li.token-input-token-acg span,
+	li.token-input-token-acm span {
+		background-color: rgba(0, 0, 0, 0.15);
+		display: inline-block;
+		margin: 0;
+		color: #fff;
+		padding: 2px 6px 2px 6px;
+		-webkit-border-radius: 0 3px 3px 0;
+		-moz-border-radius: 0 3px 3px 0;
+		-ms-border-radius: 0 3px 3px 0;
+		-o-border-radius: 0 3px 3px 0;
+		border-radius: 0 3px 3px 0;
+		position: static;
+	}*/
+	#commentform label li.token-input-token-act span,
+	li.token-input-token-act span {
+		/*background-color: #d0d0d0;*/
+		color: #aaa;
+	}
+	/*#commentform label li.token-input-token-act span:hover,
+	li.token-input-token-act span:hover {
+		color: #fff;
+	}
+	#commentform label li.token-input-token-acg span:hover,
+	#commentform label li.token-input-token-acm span:hover,
+	li.token-input-token-acg span:hover,
+	li.token-input-token-acm span:hover {
+		color: #333;
+	}
+	li.token-input-token-act p:before {
+		content: "";
+		border-color: transparent #fadea3 transparent transparent !important;
+		border-style: dashed solid dashed dashed !important;
+		border-width: 12px 12px 12px 0 !important;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 0 !important;
+		left: -12px !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	li.token-input-token-act p:after {
+		content: "";
+		height: 4px;
+		width: 4px;
+		display: block;
+		position: absolute;
+		top: 10px;
+		left: -3px;
+		background-color: #f6f6f6;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-ms-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
+	}
+
+/* Hover 
+	li.token-input-token-act:hover p {
+		background: #f3ae22 !important;
+	}
+	li.token-input-token-act:hover p:before {
+		border-color: transparent #f3ae22 transparent transparent !important;
+	}
+	#commentform label li.token-input-token-act:hover span,
+	li.token-input-token-act:hover span {
+		color: #222;
+		background-color: #f7ce7a;
+	}
+
+/* Highlight selected tag */
+	li.token-input-selected-token-act,
+	li.token-input-selected-token-act p {
+		color: #fff !important;
+		background: #666;
+		border-color: #666;
+	}
+	/*#commentform label li.token-input-selected-token-act span,
+	li.token-input-selected-token-act span {
+		color: #fff !important;
+		background-color: #11b6dd;
+	}
+	li.token-input-selected-token-act p:before {
+		border-color: transparent #0fa1ca transparent transparent !important;
+	}*/
