@@ -78,7 +78,7 @@ $fields = $elements->render();
 			<input type="text" name="description" id="field-description" maxlength="256" value="<?php echo $this->escape(stripslashes($this->status['description'])); ?>" />
 		</label>
 		<label for="field-fulltxt">
-			<?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT'); ?>:
+			<?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT'); ?>: <span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 			<?php echo JFactory::getEditor()->display('fulltxt', $this->escape(stripslashes($this->status['fulltxt'])), '', '', 50, 20, false, 'field-fulltxt'); ?>
 		</label>
 

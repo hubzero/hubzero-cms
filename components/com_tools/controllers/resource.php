@@ -116,9 +116,16 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		}
 
 		// process first step
-		if ($nextstep == 3 && isset($_POST['nbtag'])) 
+		if ($nextstep == 3 && (isset($_POST['nbtag']) || isset($_POST['fulltxt']))) 
 		{
-		    $hztv = ToolsHelperVersion::getToolRevision($this->_toolid, $version);
+			if (!isset($_POST['fulltxt']) || !trim($_POST['fulltxt']))
+			{
+				$this->setError(JText::sprintf('COM_TOOLS_REQUIRED_FIELD_CHECK', 'Abstract'));
+				$step = 1;
+				$nextstep--;
+			}
+
+			$hztv = ToolsHelperVersion::getToolRevision($this->_toolid, $version);
 
 			$objV = new ToolVersion($this->database);
 			if (!$objV->bind($_POST)) 
@@ -189,7 +196,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 				if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required) 
 				{
-					$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
+					$this->setError(JText::sprintf('COM_TOOLS_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 				}
 
 				$found[] = $tagname;
@@ -200,7 +207,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 				if (!in_array($field->name, $found) && $field->required)
 				{
 					$found[] = $field->name;
-					$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
+					$this->setError(JText::sprintf('COM_TOOLS_REQUIRED_FIELD_CHECK', $field->label));
 				}
 			}
 
@@ -210,7 +217,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 			if (!$hztv->update()) 
 			{
-				JError::raiseError(500, JText::_('COM_TOOLS_Error updating tool tables.'));
+				JError::raiseError(500, JText::_('Error updating tool tables.'));
 				return;
 			} 
 			else 
