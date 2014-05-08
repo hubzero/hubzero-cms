@@ -32,23 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
-?>
-<div id="content-header" class="full">
-	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
-		<div class="aside">
-			<fieldset>
-				<legend><?php echo JText::_('COM_WHATSNEW_FILTER'); ?></legend>
-				<label for="period">
-					<?php echo JText::_('COM_WHATSNEW_TIME_PERIOD'); ?>
-					<?php echo JHTMLSelect::genericlist($this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
-				</label>
-				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WHATSNEW_GO'); ?>" /></p>
-			</fieldset>
-<?php
 // Add the "all" category
 $all = array(
 	'category' => '',
@@ -143,230 +127,243 @@ foreach ($this->cats as $cat)
 		$links[] = $l;
 	}
 }
-// Do we actually have any links?
-// NOTE: this method prevents returning empty list tags "<ul></ul>"
-if (count($links) > 0) { ?>
+?>
+<header id="content-header">
+	<h2><?php echo $this->title; ?></h2>
+</header><!-- / #content-header -->
+
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
+	<section class="main section">
+		<div class="subject">
+			<div class="container">
+			<?php
+			$jconfig = JFactory::getConfig();
+			$juri = JURI::getInstance();
+			$foundresults = false;
+			$dopaging = false;
+			$html = '';
+			$k = 1;
+
+			foreach ($this->results as $category)
+			{
+				$amt = count($category);
+
+				if ($amt > 0) 
+				{
+					$foundresults = true;
+
+					// Is this category the active category?
+					if (!$this->active || $this->active == $this->cats[$k]['category']) 
+					{
+						// It is - get some needed info
+						$name  = $this->cats[$k]['title'];
+						$total = $this->cats[$k]['total'];
+						$divid = 'search' . $this->cats[$k]['category'];
+
+						if ($this->active == $this->cats[$k]['category']) 
+						{
+							$dopaging = true;
+						}
+					} 
+					else 
+					{
+						// It is not - does this category have sub-categories?
+						if (isset($this->cats[$k]['_sub']) && is_array($this->cats[$k]['_sub'])) 
+						{
+							// It does - loop through them and see if one is the active category
+							foreach ($this->cats[$k]['_sub'] as $sub)
+							{
+								if ($this->active == $sub['category']) 
+								{
+									// Found an active category
+									$name  = $sub['title'];
+									$total = $sub['total'];
+									$divid = 'search' . $sub['category'];
+
+									$dopaging = true;
+									break;
+								}
+							}
+						}
+					}
+
+					$num = ($total > 1) ? JText::sprintf('COM_WHATSNEW_RESULTS', $total) : JText::sprintf('COM_WHATSNEW_RESULT', $total);
+					$this->total = $num;
+
+					// A function for category specific items that may be needed
+					// Check if a function exist (using old style plugins)
+					$f = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']) . 'Doc';
+					if (function_exists($f)) 
+					{
+						$f();
+					}
+					// Check if a method exist (using JPlugin style)
+					$obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+					if (method_exists($obj, 'documents')) 
+					{
+						$html .= call_user_func(array($obj, 'documents'));
+					}
+
+					$act = ($this->active) ? $this->active : $this->cats[$k]['category'];
+
+					$feed = JRoute::_('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
+					if (substr($feed, 0, 4) != 'http') 
+					{
+						if (substr($feed, 0, 1) != DS) 
+						{
+							$feed = DS . $feed;
+						}
+						$jconfig = JFactory::getConfig();
+						$live_site = rtrim(JURI::base(),'/');
+							
+						$feed = $live_site . $feed;
+					}
+					$feed = str_replace('https:://', 'http://', $feed);
+
+					// Build the category HTML
+					$html .= '<div class="container-block" id="' . $divid . '">' . "\n";
+					$html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="' . $feed . '">' . JText::_('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
+
+					// Does this category have custom output?
+					// Check if a function exist (using old style plugins)
+					$func = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']).'Before';
+					if (function_exists($func)) 
+					{
+						$html .= $func($this->period);
+					}
+					// Check if a method exist (using JPlugin style)
+					$obj = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']);
+					if (method_exists($obj, 'before')) 
+					{
+						$html .= call_user_func(array($obj,'before'), $this->period);
+					}
+
+					$html .= '<ol class="entries">'."\n";
+					foreach ($category as $row)
+					{
+						$row->href = str_replace('&amp;', '&', $row->href);
+						$row->href = str_replace('&', '&amp;', $row->href);
+
+						// Does this category have a unique output display?
+						$func = 'plgWhatsnew' . ucfirst($row->section) . 'Out';
+						// Check if a method exist (using JPlugin style)
+						$obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+
+						if (function_exists($func)) 
+						{
+							$html .= $func($row, $this->period);
+						} 
+						elseif (method_exists($obj, 'out')) 
+						{
+							$html .= call_user_func(array($obj,'out'), $row, $this->period);
+						} 
+						else 
+						{
+							if (strstr( $row->href, 'index.php' )) 
+							{
+								$row->href = JRoute::_($row->href);
+							}
+							if (substr($row->href,0,1) == '/') 
+							{
+								$row->href = substr($row->href, 1, strlen($row->href));
+							}
+
+							$html .= "\t" . '<li>' . "\n";
+							$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+							if ($row->text) {
+								$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
+							}
+							$html .= "\t\t" . '<p class="href">' . $juri->base() . $row->href . '</p>' . "\n";
+							$html .= "\t" . '</li>' . "\n";
+						}
+					}
+					$html .= '</ol>' . "\n";
+
+					// Initiate paging if we we're displaying an active category
+					if ($dopaging) 
+					{
+						jimport('joomla.html.pagination');
+						$pageNav = new JPagination(
+							$this->total, 
+							$this->start, 
+							$this->limit
+						);
+
+						$pageNav->setAdditionalUrlParam('category', urlencode(strToLower($this->active)));
+						$pageNav->setAdditionalUrlParam('period', $this->period);
+
+						$html .= $pageNav->getListFooter();
+						$html .= '<div class="clearfix"></div>';
+					} 
+					else 
+					{
+						$html .= '<p class="moreresults">' . JText::sprintf('COM_WHATSNEW_TOP_SHOWN', $amt);
+						// Add a "more" link if necessary
+						$ttl = 0;
+						if (isset($this->totals[$k])) 
+						{
+							if (is_array($this->totals[$k])) 
+							{
+								foreach ($this->totals[$k] as $t)
+								{
+									$ttl += $t;
+								}
+							} 
+							else 
+							{
+								$ttl = $this->totals[$k];
+							}
+						}
+						if ($ttl > 5) 
+						{
+							$html .= ' | <a href="' . JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period))) . '">' . JText::_('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
+						}
+						$html .= '</p>' . "\n\n";
+					}
+
+					// Does this category have custom output?
+					// Check if a function exist (using old style plugins)
+					$func = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']) . 'After';
+					if (function_exists($func)) 
+					{
+						$html .= $func($this->period);
+					}
+					// Check if a method exist (using JPlugin style)
+					$obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+					if (method_exists($obj, 'after')) 
+					{
+						$html .= call_user_func(array($obj,'after'), $this->period);
+					}
+
+					$html .= '</div><!-- / #' . $divid . ' -->' . "\n";
+				}
+				$k++;
+			}
+			echo $html;
+			?>
+			<?php if (!$foundresults) { ?>
+				<p class="warning"><?php echo JText::_('COM_WHATSNEW_NO_RESULTS'); ?></p>
+			<?php } ?>
+			</div><!-- / .container -->
+		</div><!-- / .subject -->
+		<aside class="aside">
+			<fieldset>
+				<legend><?php echo JText::_('COM_WHATSNEW_FILTER'); ?></legend>
+				<label for="period">
+					<?php echo JText::_('COM_WHATSNEW_TIME_PERIOD'); ?>
+					<?php echo JHTMLSelect::genericlist($this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
+				</label>
+				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WHATSNEW_GO'); ?>" /></p>
+			</fieldset>
+
+		<?php if (count($links) > 0) { ?>
 			<div class="container">
 				<ul class="sub-nav">
 					<?php echo implode( "\n", $links ); ?>
 				</ul>
 			</div>
-<?php } ?>
+		<?php } ?>
 			<input type="hidden" name="category" value="<?php echo $this->escape($this->active); ?>" />
-		</div><!-- / .aside -->
-		<div class="subject">
-			<div class="container">
-<?php
-$jconfig = JFactory::getConfig();
-$juri = JURI::getInstance();
-$foundresults = false;
-$dopaging = false;
-$html = '';
-$k = 1;
-
-foreach ($this->results as $category)
-{
-	$amt = count($category);
-
-	if ($amt > 0) 
-	{
-		$foundresults = true;
-
-		// Is this category the active category?
-		if (!$this->active || $this->active == $this->cats[$k]['category']) 
-		{
-			// It is - get some needed info
-			$name  = $this->cats[$k]['title'];
-			$total = $this->cats[$k]['total'];
-			$divid = 'search' . $this->cats[$k]['category'];
-
-			if ($this->active == $this->cats[$k]['category']) 
-			{
-				$dopaging = true;
-			}
-		} 
-		else 
-		{
-			// It is not - does this category have sub-categories?
-			if (isset($this->cats[$k]['_sub']) && is_array($this->cats[$k]['_sub'])) 
-			{
-				// It does - loop through them and see if one is the active category
-				foreach ($this->cats[$k]['_sub'] as $sub)
-				{
-					if ($this->active == $sub['category']) 
-					{
-						// Found an active category
-						$name  = $sub['title'];
-						$total = $sub['total'];
-						$divid = 'search' . $sub['category'];
-
-						$dopaging = true;
-						break;
-					}
-				}
-			}
-		}
-
-		$num = ($total > 1) ? JText::sprintf('COM_WHATSNEW_RESULTS', $total) : JText::sprintf('COM_WHATSNEW_RESULT', $total);
-		$this->total = $num;
-
-		// A function for category specific items that may be needed
-		// Check if a function exist (using old style plugins)
-		$f = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']) . 'Doc';
-		if (function_exists($f)) 
-		{
-			$f();
-		}
-		// Check if a method exist (using JPlugin style)
-		$obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
-		if (method_exists($obj, 'documents')) 
-		{
-			$html .= call_user_func(array($obj, 'documents'));
-		}
-
-		$act = ($this->active) ? $this->active : $this->cats[$k]['category'];
-
-		$feed = JRoute::_('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
-		if (substr($feed, 0, 4) != 'http') 
-		{
-			if (substr($feed, 0, 1) != DS) 
-			{
-				$feed = DS . $feed;
-			}
-			$jconfig = JFactory::getConfig();
-			$live_site = rtrim(JURI::base(),'/');
-				
-			$feed = $live_site . $feed;
-		}
-		$feed = str_replace('https:://', 'http://', $feed);
-
-		// Build the category HTML
-		$html .= '<div class="container-block" id="' . $divid . '">' . "\n";
-		$html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="' . $feed . '">' . JText::_('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
-
-		// Does this category have custom output?
-		// Check if a function exist (using old style plugins)
-		$func = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']).'Before';
-		if (function_exists($func)) 
-		{
-			$html .= $func($this->period);
-		}
-		// Check if a method exist (using JPlugin style)
-		$obj = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']);
-		if (method_exists($obj, 'before')) 
-		{
-			$html .= call_user_func(array($obj,'before'), $this->period);
-		}
-
-		$html .= '<ol class="entries">'."\n";
-		foreach ($category as $row)
-		{
-			$row->href = str_replace('&amp;', '&', $row->href);
-			$row->href = str_replace('&', '&amp;', $row->href);
-
-			// Does this category have a unique output display?
-			$func = 'plgWhatsnew' . ucfirst($row->section) . 'Out';
-			// Check if a method exist (using JPlugin style)
-			$obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
-
-			if (function_exists($func)) 
-			{
-				$html .= $func($row, $this->period);
-			} 
-			elseif (method_exists($obj, 'out')) 
-			{
-				$html .= call_user_func(array($obj,'out'), $row, $this->period);
-			} 
-			else 
-			{
-				if (strstr( $row->href, 'index.php' )) 
-				{
-					$row->href = JRoute::_($row->href);
-				}
-				if (substr($row->href,0,1) == '/') 
-				{
-					$row->href = substr($row->href, 1, strlen($row->href));
-				}
-
-				$html .= "\t" . '<li>' . "\n";
-				$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-				if ($row->text) {
-					$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
-				}
-				$html .= "\t\t" . '<p class="href">' . $juri->base() . $row->href . '</p>' . "\n";
-				$html .= "\t" . '</li>' . "\n";
-			}
-		}
-		$html .= '</ol>' . "\n";
-
-		// Initiate paging if we we're displaying an active category
-		if ($dopaging) 
-		{
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination(
-				$this->total, 
-				$this->start, 
-				$this->limit
-			);
-
-			$pageNav->setAdditionalUrlParam('category', urlencode(strToLower($this->active)));
-			$pageNav->setAdditionalUrlParam('period', $this->period);
-
-			$html .= $pageNav->getListFooter();
-			$html .= '<div class="clearfix"></div>';
-		} 
-		else 
-		{
-			$html .= '<p class="moreresults">' . JText::sprintf('COM_WHATSNEW_TOP_SHOWN', $amt);
-			// Add a "more" link if necessary
-			$ttl = 0;
-			if (isset($this->totals[$k])) 
-			{
-				if (is_array($this->totals[$k])) 
-				{
-					foreach ($this->totals[$k] as $t)
-					{
-						$ttl += $t;
-					}
-				} 
-				else 
-				{
-					$ttl = $this->totals[$k];
-				}
-			}
-			if ($ttl > 5) 
-			{
-				$html .= ' | <a href="' . JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period))) . '">' . JText::_('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
-			}
-			$html .= '</p>' . "\n\n";
-		}
-
-		// Does this category have custom output?
-		// Check if a function exist (using old style plugins)
-		$func = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']) . 'After';
-		if (function_exists($func)) 
-		{
-			$html .= $func($this->period);
-		}
-		// Check if a method exist (using JPlugin style)
-		$obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
-		if (method_exists($obj, 'after')) 
-		{
-			$html .= call_user_func(array($obj,'after'), $this->period);
-		}
-
-		$html .= '</div><!-- / #' . $divid . ' -->' . "\n";
-	}
-	$k++;
-}
-echo $html;
-?>
-<?php if (!$foundresults) { ?>
-				<p class="warning"><?php echo JText::_('COM_WHATSNEW_NO_RESULTS'); ?></p>
-<?php } ?>
-			</div><!-- / .container -->
-		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</form>
-</div><!-- / .main section -->
-
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
+</form>
