@@ -47,6 +47,36 @@ class Migration extends Scaffolding
 	 **/
 	public function construct()
 	{
+		switch ($this->arguments->getOpt(4))
+		{
+			case 'for':
+				$db     = \JFactory::getDbo();
+				$prefix = $db->getPrefix();
+				$tables = $db->getTableList();
+
+				if (!$table = $this->arguments->getOpt(5))
+				{
+					$this->output->error('Please specify the table for which a migration is being created');
+				}
+				else if (!in_array($table, $tables))
+				{
+					$this->output->error('Table does not exist');
+				}
+
+				$this->addReplacement('description', "creating table {$table}")
+					 ->addReplacement('table_name', str_replace($prefix, '#__', $table))
+					 ->addReplacement('up', '$^create.table^$')
+					 ->addReplacement('down', '$^drop.table^$')
+					 ->addReplacement('create_table', $this->showCreateTable($table));
+				break;
+
+			default:
+				$this->addReplacement('description', '...')
+					 ->addReplacement('up', '')
+					 ->addReplacement('down', '');
+				break;
+		}
+
 		// Extension
 		$extension = null;
 		if ($this->arguments->getOpt('e') || $this->arguments->getOpt('extension'))
@@ -93,13 +123,57 @@ class Migration extends Scaffolding
 		$classname   = 'Migration' . \JFactory::getDate()->format("YmdHis") . $ext;
 		$destination = JPATH_ROOT . DS . 'migrations' . DS . $classname . '.php';
 
-		$this->getQueryType()
-			 ->addTemplateFile("{$this->getType()}.tmpl", $destination)
+		$this->addTemplateFile("{$this->getType()}.tmpl", $destination)
 			 ->addReplacement('class_name', $classname)
 			 ->make();
 
 		// Open in editor
 		system("{$editor} {$destination} > `tty`");
+	}
+
+	/**
+	 * Simple helper function to check validity of provided extension name
+	 *
+	 * @return bool - whether or not extension is valid
+	 **/
+	private function isValidExtension($extension)
+	{
+		$ext = explode("_", $extension);
+		$dir = '';
+
+		switch ($ext[0])
+		{
+			case 'com':
+				$dir = JPATH_ROOT . DS . 'components' . DS . $extension;
+			break;
+			case 'mod':
+				$dir = JPATH_ROOT . DS . 'modules' . DS . $extension;
+			break;
+			case 'plg':
+				$dir = JPATH_ROOT . DS . 'plugins' . DS . $ext[1] . DS . $ext[2];
+			break;
+		}
+
+		return (is_dir($dir)) ? true : false;
+	}
+
+	/**
+	 * Get table creation string
+	 *
+	 * @return (string) table creation syntax
+	 **/
+	private function showCreateTable($tableName)
+	{
+		$db     = \JFactory::getDbo();
+		$prefix = $db->getPrefix();
+
+		$create = $db->getTableCreate($tableName);
+		$create = $create[$tableName];
+		$create = str_replace("CREATE TABLE `{$prefix}", 'CREATE TABLE `#__', $create);
+		$create = str_replace("\n", "\n\t\t\t\t", $create);
+		$create = preg_replace('/(AUTO_INCREMENT=)([0-9]*)/', '${1}0', $create);
+
+		return $create;
 	}
 
 	/**
@@ -123,23 +197,10 @@ class Migration extends Scaffolding
 				true
 			)
 			->addArgument(
-				'--table: specify the table name',
-				'Specify what table the migration should apply to. If the table
-				exists, the migration will create an alter statement, otherwise
-				it will create the table.',
-				'Example: --table=jos_courses_assets'
-			)
-			->addArgument(
-				'--fields: specify the fields',
-				'Specify the fields that should be involved in the migration.
-				Again, if the table already exists, the fields involved will
-				be used in the alter statement. Otherwise, the fields will
-				compose the newly created table.',
-				'Example: --fields="id=>int(11)=>NOT NULL=>AUTO_INCREMENT"'
-			)
-			->addArgument(
 				'--editor: editor',
-				'Specify the editor to use in creating the migration file.',
+				'Specify the editor to use when creating the migration file.
+				You\'ll be dropped into this editor after scaffolding pre-populates
+				everything it can',
 				'Example: --editor=nano'
 			)
 			->addSection(
@@ -223,104 +284,5 @@ class Migration extends Scaffolding
 				No arguments are expected.',
 				'Example: $this->callback(\'progress\', \'done\');'
 			);
-	}
-
-	/**
-	 * Simple helper function to check validity of provided extension name
-	 *
-	 * @return bool - whether or not extension is valid
-	 **/
-	private function isValidExtension($extension)
-	{
-		$ext = explode("_", $extension);
-		$dir = '';
-
-		switch ($ext[0])
-		{
-			case 'com':
-				$dir = JPATH_ROOT . DS . 'components' . DS . $extension;
-			break;
-			case 'mod':
-				$dir = JPATH_ROOT . DS . 'modules' . DS . $extension;
-			break;
-			case 'plg':
-				$dir = JPATH_ROOT . DS . 'plugins' . DS . $ext[1] . DS . $ext[2];
-			break;
-		}
-
-		return (is_dir($dir)) ? true : false;
-	}
-
-	/**
-	 * Craft our query - based on arguments provided
-	 *
-	 * @return (object) $this - for method chaining
-	 **/
-	private function getQueryType()
-	{
-		if ($table = $this->arguments->getOpt('table'))
-		{
-			// Check if table exists
-			$dbo    = \JFactory::getDbo();
-			$prefix = $dbo->getPrefix();
-			$table  = str_replace($prefix, '#__', $table);
-
-			if (!in_array(str_replace('#__', $prefix, $table), $dbo->getTableList()))
-			{
-				$this->addReplacement('query_up', '$^create.table^$');
-				$this->addReplacement('query_down', '$^drop.table^$');
-				$this->addReplacement('table_name', $table);
-
-				if ($fields = $this->arguments->getOpt('fields'))
-				{
-					$this->parseFields($fields);
-				}
-			}
-			else
-			{
-				$this->addReplacement('query_up', '');
-				$this->addReplacement('query_down', '');
-			}
-		}
-		else
-		{
-			$this->addReplacement('query_up', '');
-			$this->addReplacement('query_down', '');
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Parse incoming fields var into something usable
-	 *
-	 * @return void
-	 **/
-	private function parseFields($fields)
-	{
-		$parsed = array();
-		$fields = explode(',', $fields);
-		$i      = 0;
-
-		foreach ($fields as $field)
-		{
-			$field  = trim($field);
-			$parts  = explode("=>", $field);
-
-			$parsed[] = array(
-				'field_name'      => $parts[0],
-				'field_data_type' => $parts[1],
-				'field_null'      => ((isset($parts[2])) ? $parts[2] : 'NOT NULL'),
-				'field_default'   => ((isset($parts[3])) ? $parts[3] : '')
-			);
-
-			if ($i == 0)
-			{
-				$this->addReplacement('pk_field_name', $parts[0]);
-			}
-			$i++;
-		}
-
-		$this->addReplacement('field', $parsed);
 	}
 }

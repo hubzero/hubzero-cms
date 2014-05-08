@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for %=description=%
  **/
 class %=class_name=% extends Base
 {
@@ -15,13 +15,7 @@ class %=class_name=% extends Base
 	 **/
 	public function up()
 	{
-		$query = "%=query_up=%";
-
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+%=up=%
 	}
 
 	/**
@@ -29,12 +23,6 @@ class %=class_name=% extends Base
 	 **/
 	public function down()
 	{
-		$query = "%=query_down=%";
-
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+%=down=%
 	}
 }

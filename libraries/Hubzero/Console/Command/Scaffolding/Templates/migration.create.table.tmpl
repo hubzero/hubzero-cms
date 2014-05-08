@@ -1,4 +1,6 @@
-CREATE TABLE `%=table_name=%` (
-$^field^$
-PRIMARY KEY (`%=pk_field_name=%`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8
+		if (!$this->db->tableExists('%=table_name=%'))
+		{
+			$query = "%=create_table=%";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
