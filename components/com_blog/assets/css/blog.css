@@ -12,40 +12,7 @@
 	-- -- -- -- -- -- --
 
 */
-	.com_blog .container h3 {
-		font-size: 115%;
-		background-color: #f8f8f8;
-		background-image: url("/media/system/images/light-stripes.png");
-		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-											color-stop(.25, rgba(255, 255, 255, .5)), color-stop(.25, transparent),
-											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .5)),
-											color-stop(.75, rgba(255, 255, 255, .5)), color-stop(.75, transparent),
-											to(transparent));
-		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
-										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
-										transparent 75%, transparent);
-		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
-										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
-										transparent 75%, transparent);
-		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
-										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
-										transparent 75%, transparent);
-		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
-										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
-										transparent 75%, transparent);
-		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
-										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
-										transparent 75%, transparent);
-		-webkit-background-size: 30px 30px;
-		   -moz-background-size: 30px 30px;
-		    -ms-background-size: 30px 30px;
-		     -o-background-size: 30px 30px;
-		        background-size: 30px 30px; /* Controls the size of the stripes */
-		border: 2px solid #e9e9e9;
-		border-bottom: 1px solid #e9e9e9;
-		padding: 0.5em 0.7em;
-		margin: 0;
-	}
+
 /* Entries listing */
 	ol.blog-entries {
 		list-style-type: none !important;
@@ -364,34 +331,6 @@
 	.entry-content blockquote:before {
 		display: none;
 	}
-	.entry-content pre {
-		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
-		color: #555;
-		background-color: #f7f7f7;
-		border: 1px solid #d7d7d7;
-		margin: 1em 1.75em;
-		padding: .25em;
-		overflow: auto;
-		font-size: 0.85em;
-		line-height: 1.95em;
-		white-space: pre;
-		white-space: pre-wrap;
-		word-wrap: break-word;
-		white-space: -moz-pre-wrap;
-		white-space: -pre-wrap;
-		white-space: -o-pre-wrap;
-	}
-	.entry-content .pre {
-		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
-		color: #555;
-		background-color: #f7f7f7;
-		border: 1px solid #d7d7d7;
-		margin: 1em 1.35em;
-		padding: .25em;
-		overflow: auto;
-		font-size: 1.15em;
-		line-height: 1.35em;
-	}
 	.entry-content tt,
 	.entry-content code {
 		display: inline-block;
@@ -404,11 +343,6 @@
 		        border-radius: 0.25em;
 		padding: 0 0.3em;
 		background: #fafafa;
-	}
-
-	.com_wiki .wiki .modified-date {
-		color: #aaa;
-		font-size: 90%;
 	}
 	.entry-content hr {
 		border-top: 1px solid #ccc;
@@ -567,7 +501,7 @@
 		padding: 4px;
 	}
 	.entry-content .figure img {
-		margin: 0; /*.5em;*/
+		margin: 0;
 		padding: 0;
 		background: transparent;
 		text-align: center;
