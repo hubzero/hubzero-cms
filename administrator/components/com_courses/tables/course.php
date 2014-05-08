@@ -470,7 +470,13 @@ class CoursesTableCourse extends JTable
 		switch ($type)
 		{
 			case 'all':
-				$query = "( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY title ASC"; //( $query1 ) UNION 
+				$query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM $this->_tbl AS c 
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $this->_db->Quote($uid);
 			break;
 			case 'manager':
 				$query = $query2; //"( $query1 ) UNION ( $query2 )";
@@ -483,6 +489,16 @@ class CoursesTableCourse extends JTable
 			break;
 			case 'ta':
 				$query = $query5;
+			break;
+
+			default:
+				$query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM $this->_tbl AS c 
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND r.alias=" . $this->_db->Quote($type);
 			break;
 		}
 
