@@ -55,14 +55,15 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 	$this->entry->set('publish_down', '');
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
-<div id="content-header-extra">
-	<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
-</div>
 
-<div class="main section">
+	<div id="content-header-extra">
+		<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
+	</div>
+</header>
+
+<section class="main section">
 <?php /*if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php }*/ ?>
@@ -163,4 +164,4 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			</a>
 		</p>
 	</form>
-</div><!-- / .section -->
+</section><!-- / .section -->
