@@ -105,7 +105,7 @@ class ModIncrementalRegistrationController
 		}
 
 		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER['REDIRECT_REQUEST_URI'];
-		if (preg_match('%^/(?:members|session|legal/privacy)%', $uri)) 
+		if (preg_match('%(?:members|invoke|session|privacy)%', $uri))
 		{
 			return;
 		}
