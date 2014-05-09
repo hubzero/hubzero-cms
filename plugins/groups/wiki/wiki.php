@@ -245,6 +245,42 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Update wiki pages if a group changes its CN
+	 * 
+	 * @param      object $before Group before changed
+	 * @param      object $after  Group after changed
+	 */
+	public function onGroupAfterSave($before, $after)
+	{
+		if (!$before->get('cn') || $after->get('cn') == $before->get('cn'))
+		{
+			return;
+		}
+
+		$database = JFactory::getDBO();
+		$database->setQuery("UPDATE `#__wiki_page` SET `group_cn`=" . $database->quote($after->get('cn')) . " WHERE `group_cn`=" . $database->quote($before->get('cn')));
+		if (!$database->query())
+		{
+			return;
+		}
+
+		$database->setQuery("SELECT id, scope FROM `#__wiki_page` WHERE `group_cn`=" . $database->quote($after->get('cn')));
+		if ($results = $database->loadObjectList())
+		{
+			$pattern = '^' . str_replace(array('-', ':'), array('\-', '\:'), $before->get('cn'));
+			foreach ($results as $result)
+			{
+				$result->scope = preg_replace("/$pattern/i", $after->get('cn'), $result->scope);
+				$database->setQuery("UPDATE `#__wiki_page` SET `scope`=" . $database->quote($result->scope) . " WHERE `id`=" . $database->quote($result->id));
+				if (!$database->query())
+				{
+					$this->setError($database->getErrorMsg());
+				}
+			}
+		}
+	}
+
+	/**
 	 * Remove any associated resources when group is deleted
 	 * 
 	 * @param      object $group Group being deleted
