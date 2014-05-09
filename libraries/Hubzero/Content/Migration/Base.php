@@ -111,7 +111,7 @@ class Base
 		$secrets   = DS . 'etc'  . DS . 'hubzero.secrets';
 		$conf_file = DS . 'root' . DS . '.my.cnf';
 
-		if (file_exists($secrets))
+		if (is_file($secrets) && is_readable($secrets))
 		{
 			$conf = parse_ini_file($secrets);
 			$user = 'root';
@@ -123,7 +123,7 @@ class Base
 			}
 		}
 
-		if (file_exists($conf_file))
+		if (is_file($conf_file) && is_readable($conf_file))
 		{
 			$conf = parse_ini_file($conf_file, true);
 			$user = $conf['client']['user'];
