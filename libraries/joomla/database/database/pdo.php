@@ -779,6 +779,11 @@ class JDatabasePDO extends JDatabase
 		$this->setQuery( 'SHOW FIELDS FROM ' . $table );
 		$fields = $this->loadObjectList('Field');
 
+		if (!is_array($fields))
+		{
+			return false;
+		}
+
 		return (in_array($field, array_keys($fields))) ? true : false;
 	}
 
@@ -794,6 +799,11 @@ class JDatabasePDO extends JDatabase
 	{
 		$this->setQuery( 'SHOW KEYS FROM ' . $table );
 		$keys = $this->loadObjectList('Key_name');
+
+		if (!is_array($keys))
+		{
+			return false;
+		}
 
 		return (in_array($key, array_keys($keys))) ? true : false;
 	}
