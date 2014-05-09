@@ -161,7 +161,7 @@ class Database implements CommandInterface
 		{
 			if (!empty($v))
 			{
-				if (!$v instanceof JRegistry)
+				if (!method_exists($v, 'toArray'))
 				{
 					$v = new \JRegistry($v);
 				}
