@@ -60,7 +60,7 @@ class Migration20140421112851ComTools extends Hubzero_Migration
 		}
 		if (!$mwdb->tableHasField('zones', 'title'))
 		{
-			$query = "ALTER TABLE `session` ADD `title` varchar(255) DEFAULT NULL;";
+			$query = "ALTER TABLE `zones` ADD `title` varchar(255) DEFAULT NULL;";
 			$mwdb->setQuery($query);
 			$mwdb->query();
 		}
