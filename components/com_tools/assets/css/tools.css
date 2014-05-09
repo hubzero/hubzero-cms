@@ -383,9 +383,9 @@
 		border-radius: 0.27em;
 		font-size: 90%;
 	}
-	#app-zone form select {
+	/*#app-zone form select {
 		max-width: 10em;
-	}
+	}*/
 /* Disk usage */
 	#diskusage { 
 		margin: 0;
