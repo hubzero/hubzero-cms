@@ -306,7 +306,7 @@ class ToolsControllerLocations extends Hubzero_Controller
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
