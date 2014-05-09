@@ -18,6 +18,16 @@ class Migration20140422082422ComTools extends Base
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 
 		$mwdb = MwUtils::getMWDBO();
+
+		if (!$mwdb->connected())
+		{
+			$return = new \stdClass();
+			$return->error = new \stdClass();
+			$return->error->type = 'warning';
+			$return->error->message = 'Failed to connect to the middleware database';
+			return $return;
+		}
+
 		if (!$mwdb->tableHasField('session', 'params'))
 		{
 			$query = "ALTER TABLE `session` ADD `params` TEXT  NULL;";
@@ -40,6 +50,16 @@ class Migration20140422082422ComTools extends Base
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 
 		$mwdb = MwUtils::getMWDBO();
+
+		if (!$mwdb->connected())
+		{
+			$return = new \stdClass();
+			$return->error = new \stdClass();
+			$return->error->type = 'warning';
+			$return->error->message = 'Failed to connect to the middleware database';
+			return $return;
+		}
+
 		if ($mwdb->tableHasField('session', 'params'))
 		{
 			$query = "ALTER TABLE `session` DROP `params`;";
