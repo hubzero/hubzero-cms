@@ -48,14 +48,14 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('SUPPORT_COL_ID'); ?></th>
-				<th><?php echo JText::_('SUPPORT_COL_CATEGORY'); ?></th>
-				<th><?php echo JText::_('SUPPORT_COL_SECTION'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Alias', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -71,10 +71,22 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	$row = &$this->rows[$i];
 ?>
 			<tr>
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $this->escape($row->category); ?></a></td>
-				<td><?php echo $this->escape($row->section); ?></td>
+				<td>
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+				</td>
+				<td>
+					<?php echo $this->escape($row->id); ?>
+				</td>
+				<td>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+						<?php echo $this->escape($row->title); ?>
+					</a>
+				</td>
+				<td>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+						<?php echo $this->escape($row->alias); ?>
+					</a>
+				</td>
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -87,6 +99,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

@@ -281,6 +281,27 @@ class SupportModelConditions extends JObject
 			),
 			$items
 		);
+
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'category.php');
+		$sc = new SupportCategory($this->database);
+		$categories = $sc->find('list');
+		$items = 'text';
+		if (isset($categories) && is_array($categories)) 
+		{
+			$items = array();
+			foreach ($categories as $anode) 
+			{
+				$sel = false;
+				$items[] = $this->_value($this->escape($anode->alias), $this->escape(stripslashes($anode->title)), $sel);
+			}
+		}
+		$conditions->category = $this->_expression(
+			array(
+				$this->_operator('=', 'is', true),
+				$this->_operator('!=', 'is not', false)
+			),
+			$items
+		);
 		return $conditions;
 	}
 

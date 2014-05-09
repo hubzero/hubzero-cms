@@ -66,17 +66,6 @@ $oses = array(
 	'Other' => 'Other'
 );
 
-$topics = array(
-	'???' => 'Unsure/Don\'t know',
-	'Access Denied' => 'Access Denied',
-	'Account/Login' => 'Account/Login',
-	'Content' => 'Content',
-	'Contributions' => 'Contributions',
-	'Online Meetings' => 'Online Meetings',
-	'Tools' => 'Tools',
-	'other' => 'other'
-);
-
 //are we remotely loading ticket form
 $tmpl = (JRequest::getVar("tmpl", "")) ? "&tmpl=component" : "";
 
@@ -227,35 +216,55 @@ $group = JRequest::getVar("group", "");
 				</label>
 			</div>
 			<div class="clear"></div>
-	
-			<div class="group">
-				<label for="ticket-field-severity">
-					<?php echo JText::_('COMMENT_SEVERITY'); ?>
-					<?php echo SupportHtml::selectArray('problem[severity]', $this->lists['severities'], 'normal'); ?>
-				</label>
-			
-				<label for="ticket-field-status">
-					<?php echo JText::_('COMMENT_STATUS'); ?>
-					<select name="problem[resolved]" id="ticket-field-status">
-						<option value=""><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
-						<option value="1"><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
-						<optgroup label="<?php echo JText::_('Closed'); ?>">
-							<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
-<?php
-			if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
-			{
-				foreach ($this->lists['resolutions'] as $anode) 
-				{
-?>
-							<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
-<?php
-				}
-			}
-?>
-						</optgroup>
-					</select>
-				</label>
+
+			<div class="grid">
+				<div class="col span6">
+					<label for="ticket-field-severity">
+						<?php echo JText::_('COMMENT_SEVERITY'); ?>
+						<?php echo SupportHtml::selectArray('problem[severity]', $this->lists['severities'], 'normal'); ?>
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label for="ticket-field-status">
+						<?php echo JText::_('COMMENT_STATUS'); ?>
+						<select name="problem[resolved]" id="ticket-field-status">
+							<option value=""><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
+							<option value="1"><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
+							<optgroup label="<?php echo JText::_('Closed'); ?>">
+								<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
+								<?php
+								if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+								{
+									foreach ($this->lists['resolutions'] as $anode) 
+									{
+										?>
+										<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
+										<?php
+									}
+								}
+								?>
+							</optgroup>
+						</select>
+					</label>
+				</div>
 			</div>
+
+			<?php if (isset($this->lists['categories']) && $this->lists['categories'])  { ?>
+			<label for="ticket-field-category">
+				<?php echo JText::_('Category'); ?>
+				<select name="problem[category]" id="ticket-field-category">
+					<option value=""><?php echo JText::_('[ none ]'); ?></option>
+					<?php
+					foreach ($this->lists['categories'] as $category) 
+					{
+						?>
+						<option value="<?php echo $this->escape($category->alias); ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
+						<?php
+					}
+					?>
+				</select>
+			</label>
+			<?php } ?>
 
 			<label>
 				<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php 

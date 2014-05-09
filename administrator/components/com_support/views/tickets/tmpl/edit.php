@@ -212,7 +212,7 @@ if ($this->row->id) {
 				} ?></dd>
 		</dl>
 
-		<table class="meta" summary="<?php echo JText::_('meta_tbl_summary'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th scope="row"><?php echo JText::_('ticket_details_severity'); ?></th>
@@ -478,17 +478,17 @@ if ($this->row->id) {
 								<option value="1"><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
 								<optgroup label="<?php echo JText::_('Closed'); ?>">
 									<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
-<?php
+							<?php
 							if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
 							{
 								foreach ($this->lists['resolutions'] as $anode) 
 								{
-?>
+									?>
 									<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
-<?php
+									<?php
 								}
 							}
-?>
+							?>
 								</optgroup>
 							</select>
 						</td>
@@ -536,23 +536,23 @@ if ($this->row->id) {
 						<label for="comment-field-template">
 							<select name="messages" id="comment-field-template">
 								<option value="custom"><?php echo JText::_('COMMENT_CUSTOM'); ?></option>
-<?php
-						$hi = array();
-						$jconfig = JFactory::getConfig();
-						foreach ($this->lists['messages'] as $message)
-						{
-							$message->message = str_replace('"','&quot;',stripslashes($message->message));
-							$message->message = str_replace('&quote;','&quot;',$message->message);
-							$message->message = str_replace('#XXX','#'.$this->row->id,$message->message);
-							$message->message = str_replace('{ticket#}',$this->row->id,$message->message);
-							$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
-							$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
-?>
-								<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
-<?php
-							$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape(stripslashes($message->message)) . '" />';
-						}
-?>
+								<?php
+								$hi = array();
+								$jconfig = JFactory::getConfig();
+								foreach ($this->lists['messages'] as $message)
+								{
+									$message->message = str_replace('"','&quot;',stripslashes($message->message));
+									$message->message = str_replace('&quote;','&quot;',$message->message);
+									$message->message = str_replace('#XXX','#'.$this->row->id,$message->message);
+									$message->message = str_replace('{ticket#}',$this->row->id,$message->message);
+									$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
+									$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
+									?>
+										<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
+									<?php
+									$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape(stripslashes($message->message)) . '" />';
+								}
+								?>
 							</select>
 							<?php echo implode("\n", $hi); ?>
 						</label>
@@ -644,7 +644,24 @@ if ($this->row->id) {
 						</label>
 					</div>
 					<div class="clr"></div>
-					
+
+				<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
+					<label for="ticket-field-category">
+						<?php echo JText::_('Category'); ?>
+						<select name="category" id="ticket-field-category">
+							<option value=""><?php echo JText::_('[ none ]'); ?></option>
+							<?php
+							foreach ($this->lists['categories'] as $category) 
+							{
+								?>
+							<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($category->alias == $this->row->category) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+								<?php
+							}
+							?>
+						</select>
+					</label>
+				<?php } ?>
+
 					<div class="col width-50 fltlft">
 						<label for="ticket-field-severity">
 							<?php echo JText::_('COMMENT_SEVERITY'); ?>
@@ -665,17 +682,17 @@ if ($this->row->id) {
 								<option value="1"<?php if ($this->row->status == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
 								<optgroup label="<?php echo JText::_('Closed'); ?>">
 									<option value="noresolution"<?php if ($this->row->open == 0 && $this->row->resolved == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
-<?php
-							if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
-							{
-								foreach ($this->lists['resolutions'] as $anode) 
-								{
-?>
-									<option value="<?php echo $this->escape($anode->alias); ?>"<?php if ($anode->alias == $this->row->resolved) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($anode->title)); ?></option>
-<?php
-								}
-							}
-?>
+									<?php
+									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+									{
+										foreach ($this->lists['resolutions'] as $anode) 
+										{
+											?>
+											<option value="<?php echo $this->escape($anode->alias); ?>"<?php if ($anode->alias == $this->row->resolved) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($anode->title)); ?></option>
+											<?php
+										}
+									}
+									?>
 								</optgroup>
 							</select>
 						</label>

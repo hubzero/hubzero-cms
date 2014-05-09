@@ -422,7 +422,7 @@ $cc = array();
 					if (count($tf) > 0) {
 						echo $tf[0];
 					} else { ?>
-						<input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="35" />
+						<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" size="35" />
 					<?php } ?>
 					</label>
 
@@ -476,8 +476,25 @@ $cc = array();
 						</label>
 			<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 					</div>
-			<?php } ?>
 					<div class="clear"></div>
+
+					<?php if (isset($this->lists['categories']) && $this->lists['categories'])  { ?>
+					<label for="ticket-field-category">
+						<?php echo JText::_('Category'); ?>
+						<select name="ticket[category]" id="ticket-field-category">
+							<option value=""><?php echo JText::_('[ none ]'); ?></option>
+							<?php
+							foreach ($this->lists['categories'] as $category) 
+							{
+								?>
+								<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($this->row->category == $category->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+								<?php
+							}
+							?>
+						</select>
+					</label>
+					<?php } ?>
+			<?php } ?>
 				</fieldset>
 	<?php } else { ?>
 				<input type="hidden" name="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" />

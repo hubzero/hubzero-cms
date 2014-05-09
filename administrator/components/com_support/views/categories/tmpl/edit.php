@@ -31,8 +31,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( JText::_( 'Category' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Ticket Category' ).': '. $text, 'addedit.png' );
+JToolBarHelper::apply();
 JToolBarHelper::save();
+JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 
 ?>
@@ -41,13 +43,13 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	
-	if (pressbutton == 'cancelcat') {
+	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
 	
 	// form field validation
-	if ($('category').value == '') {
+	if ($('#field-title').val() == '') {
 		alert( '<?php echo JText::_('CATEGORY_ERROR_NO_TEXT'); ?>' );
 	} else {
 		submitform( pressbutton );
@@ -55,35 +57,71 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-	<fieldset class="adminform">
-		<table class="admintable">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-60 fltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->title); ?>" />
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('Letters, numbers, and dashes allowed. If no alias provided, one will be generated form the title.'); ?>">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label>
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->alias); ?>" />
+			</div>
+		</fieldset>
+	</div>
+	<div class="col width-40 fltrt">
+		<table class="meta">
 			<tbody>
 				<tr>
-					<td class="key"><label for="section"><?php echo JText::_('CATEGORY_SECTION'); ?>: <span class="required">*</span></label></td>
+					<th class="key"><?php echo JText::_('ID'); ?>:</th>
 					<td>
-						<select name="cat[section]" id="section">
-<?php
-					foreach ($this->sections as $anode)
-					{
-						$selected = ($anode->txt == $this->row->section)
-								  ? ' selected="selected"'
-								  : '';
-						echo ' <option value="'.$anode->id.'"'.$selected.'>'.stripslashes($anode->txt).'</option>'."\n";
-					}
-?>
-						</select>
+						<?php echo $this->row->id; ?>
+						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->id); ?>" />
+					</td>
+				</tr>
+			<?php if ($this->row->created_by) { ?>
+				<tr>
+					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<td>
+						<?php echo JHTML::_('date', $this->row->created, 'Y-m-d H:i:s'); ?>
 					</td>
 				</tr>
 				<tr>
-					<td class="key"><label for="category"><?php echo JText::_('CATEGORY_TEXT'); ?>: <span class="required">*</span></label></td>
-					<td><input type="text" name="cat[category]" id="category" value="<?php echo $this->escape($this->row->category); ?>" size="50" /></td>
+					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
+					<td>
+						<?php 
+						$user = JUser::getInstance($this->row->created_by);
+						echo $this->escape($user->get('name'));
+						?>
+					</td>
 				</tr>
+				<?php if ($this->row->modified_by) { ?>
+					<tr>
+						<th class="key"><?php echo JText::_('Modified'); ?>:</th>
+						<td>
+							<?php echo JHTML::_('date', $this->row->modified, 'Y-m-d H:i:s'); ?>
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('Modified by'); ?>:</th>
+						<td>
+							<?php 
+							$user = JUser::getInstance($this->row->modified_by);
+							echo $this->escape($user->get('name'));
+							?>
+						</td>
+					</tr>
+				<?php } ?>
+			<?php } ?>
 			</tbody>
 		</table>
-	</fieldset>
-	
-	<input type="hidden" name="cat[id]" value="<?php echo $this->row->id; ?>" />
+	</div>
+	<div class="clr"></div>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="save" />

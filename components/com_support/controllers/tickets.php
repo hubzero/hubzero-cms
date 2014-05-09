@@ -783,6 +783,9 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			// Get resolutions
 			$sr = new SupportResolution($this->database);
 			$this->view->lists['resolutions'] = $sr->getResolutions();
+
+			$sc = new SupportCategory($this->database);
+			$this->view->lists['categories'] = $sc->find('list');
 		}
 		$this->view->acl        = $this->acl;
 		$this->view->title      = $this->_title;
@@ -1087,7 +1090,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$data['login']     = $reporter['login'];
 		$data['severity']  = (isset($problem['severity'])) ? $problem['severity'] : 'normal';
 		$data['owner']     = (isset($problem['owner'])) ? $problem['owner'] : null;
-		$data['category']  = (isset($problem['topic'])) ? $problem['topic'] : '';
+		$data['category']  = (isset($problem['category'])) ? $problem['category'] : '';
 		//$data['summary']   = htmlentities($problem['short'], ENT_COMPAT, 'UTF-8');
 		//$data['report']    = htmlentities($problem['long'], ENT_COMPAT, 'UTF-8');
 		$data['summary']   = $problem['short'];
@@ -1877,6 +1880,9 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$sr = new SupportResolution($this->database);
 		$this->view->lists['resolutions'] = $sr->getResolutions();
 
+		$sc = new SupportCategory($this->database);
+		$this->view->lists['categories'] = $sc->find('list');
+
 		// Get messages
 		$sm = new SupportMessage($this->database);
 		$this->view->lists['messages'] = $sm->getMessages();
@@ -2143,6 +2149,14 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					'field'  => JText::_('TICKET_FIELD_STATUS'),
 					'before' => SupportHtml::getStatus($old->open, $old->status),
 					'after'  => SupportHtml::getStatus($row->open, $row->status)
+				);
+			}
+			if ($row->category != $old->category) 
+			{
+				$log['changes'][] = array(
+					'field'  => JText::_('Category'),
+					'before' => ($old->category ? $old->category : JText::_('BLANK')),
+					'after'  => ($row->category ? $row->category : JText::_('BLANK'))
 				);
 			}
 
