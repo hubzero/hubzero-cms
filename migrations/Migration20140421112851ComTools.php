@@ -19,6 +19,15 @@ class Migration20140421112851ComTools extends Base
 
 		$mwdb = MwUtils::getMWDBO();
 
+		if (!$mwdb->connected())
+		{
+			$return = new \stdClass();
+			$return->error = new \stdClass();
+			$return->error->type = 'warning';
+			$return->error->message = 'Failed to connect to the middleware database';
+			return $return;
+		}
+
 		/* We can just drop the old tables because they were never used on a live hub */
 
 		if ($mwdb->tableExists('venues'))

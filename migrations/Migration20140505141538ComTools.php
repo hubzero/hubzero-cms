@@ -19,6 +19,15 @@ class Migration20140505141538ComTools extends Base
 
 		$mwdb = MwUtils::getMWDBO();
 
+		if (!$mwdb->connected())
+		{
+			$return = new \stdClass();
+			$return->error = new \stdClass();
+			$return->error->type = 'warning';
+			$return->error->message = 'Failed to connect to the middleware database';
+			return $return;
+		}
+
 		if ($mwdb->tableExists('host')
 			&& $mwdb->tableHasField('host', 'venue_id')
 			&& !$mwdb->tableHasField('host', 'zone_id'))
@@ -37,6 +46,15 @@ class Migration20140505141538ComTools extends Base
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 
 		$mwdb = MwUtils::getMWDBO();
+
+		if (!$mwdb->connected())
+		{
+			$return = new \stdClass();
+			$return->error = new \stdClass();
+			$return->error->type = 'warning';
+			$return->error->message = 'Failed to connect to the middleware database';
+			return $return;
+		}
 
 		if ($mwdb->tableExists('host')
 			&& !$mwdb->tableHasField('host', 'venue_id')
