@@ -481,6 +481,11 @@ $cc = array();
 	<?php } // ACL can update tickets ?>
 
 <?php if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
+				<?php
+					JPluginHelper::importPlugin('support');
+					$results = $dispatcher->trigger('onTicketComment', array($this->row));
+					echo implode("\n", $results);
+				?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
 <?php if ($this->acl->check('create', 'comments') > 0 || $this->acl->check('create', 'private_comments')) { ?>
