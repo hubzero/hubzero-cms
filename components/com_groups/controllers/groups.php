@@ -829,13 +829,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//are we editing or creating
 		if($g_gidNumber)
 		{
-			$group = \Hubzero\User\Group::getInstance( $g_gidNumber );
+			$group = \Hubzero\User\Group::getInstance($g_gidNumber);
 			$this->_task = 'edit';
+			$before = \Hubzero\User\Group::getInstance($g_gidNumber);
 		}
 		else
 		{
 			$this->_task = 'new';
-			$group = new \Hubzero\User\Group();
+			$group  = new \Hubzero\User\Group();
+			$before = new \Hubzero\User\Group();
 		}
 		
 		// Check for any missing info
@@ -897,10 +899,10 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->editTask();
 			return;
 		}
-		
+
 		// Get some needed objects
 		$jconfig = JFactory::getConfig();
-		
+
 		// Build the e-mail message
 		if ($this->_task == 'new') 
 		{
@@ -912,8 +914,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$subject = JText::sprintf('COM_GROUPS_SAVE_EMAIL_UPDATED_SUBJECT', $g_cn);
 			$type = 'groups_changed';
 		}
-		
-		if($this->_task == 'new')
+
+		if ($this->_task == 'new')
 		{
 			$group->set('cn', $g_cn);
 			$group->set('type', 1);
@@ -925,7 +927,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$group->add('members', array($this->juser->get('id')));
 			$group->create();
 		}
-		
+
 		//set group vars & Save group
 		$group->set('description', $g_description);
 		$group->set('public_desc', $g_public_desc);
@@ -945,6 +947,11 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Rename the temporary upload directory if it exist
 		$log_comments = '';
 
+		// Get plugins
+		JPluginHelper::importPlugin('groups');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onGroupAfterSave', array($before, $group));
+
 		if ($this->_task == 'new') 
 		{
 			if ($lid != $group->get('gidNumber')) 
@@ -958,10 +965,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			$log_action = 'group_created';
-
-			// Get plugins
-			JPluginHelper::importPlugin('groups');
-			$dispatcher = JDispatcher::getInstance();
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted

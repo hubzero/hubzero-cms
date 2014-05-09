@@ -266,6 +266,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// Set the task - if anything fails and we re-enter edit mode 
 			// we need to know if we were creating new or editing existing
 			$this->_task = 'new';
+			$before = new \Hubzero\User\Group();
 		}
 		else
 		{
@@ -273,6 +274,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 			// Load the group
 			$group->read($g['gidNumber']);
+			$before = clone($group);
 		}
 		
 		$task = ($this->_task == 'edit') ? 'edit' : 'create';
@@ -394,7 +396,12 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$group->set('plugins', $g['plugins']);
 		$group->set('params', $params);
 		$group->update();
-		
+
+		// Get plugins
+		JPluginHelper::importPlugin('groups');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onGroupAfterSave', array($before, $group));
+
 		// log edit
 		GroupsModelLog::log(array(
 			'gidNumber' => $group->get('gidNumber'),

@@ -53,7 +53,7 @@ $display_system_users = $gparams->get('display_system_users', 'global');
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	var form = document.adminForm;
+	var form = document.getElementById('item-form');
 	
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
@@ -61,9 +61,9 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if (form.getElementById('field-description').value == '') {
+	if ($('#field-description').val() == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
-	} else if (form.getElementById('field-cn').value == '') {
+	} else if ($('#field-cn').val() == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
