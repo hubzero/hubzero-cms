@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -37,7 +37,7 @@ function controller_exec()
 		$task_func = 'dv_' . $task;
 		if (function_exists($task_func)) {
 			if (file_exists(JPATH_COMPONENT . DS . 'tasks' . DS . 'html' . DS . $task . '.js')) {
-				$document = &JFactory::getDocument();
+				$document =  JFactory::getDocument();
 				$document->addScript(DB_PATH . DS . 'tasks' . DS . 'html' . DS . $task . '.js?v=2');
 			}
 			$task_func();
@@ -48,15 +48,14 @@ function controller_exec()
 function authorized()
 {
 	global $conf;
-	$juser =& JFactory::getUser();
-	ximport('Hubzero_User_Helper');
+	$juser = JFactory::getUser();
 
 	if ($conf['access_limit_to_group'] === false) {
 		return true;
 	}
 
 	if ($conf['access_limit_to_group'] !== false && !$juser->get('guest')) {
-		$groups = Hubzero_User_Helper::getGroups($juser->get('id'));
+		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
 		if ($groups && count($groups)) {
 			foreach ($groups as $g) {
 				if ($g->cn == $conf['access_limit_to_group']) {

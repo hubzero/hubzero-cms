@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -10,23 +10,19 @@
 
 defined('_JEXEC') or die;
 
-error_reporting(E_ERROR);
 if (JFactory::getConfig()->getValue('config.debug')) {
 	error_reporting(E_ALL);
-	@ini_set('display_errors', '1');
+	ini_set('display_errors', '1');
+	ini_set('display_startup_errors', '1');
+} else {
+	error_reporting(0);
+	ini_set('display_errors', '0');
 }
-
-/*
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
-*/
-
 
 mb_internal_encoding('UTF-8');
 
 // Session Timeout
-$config =& JFactory::getConfig();
+$config = JFactory::getConfig();
 $config->setValue('lifetime', '60');
 
 require_once(JPATH_COMPONENT . DS . 'config.php');
@@ -37,7 +33,7 @@ require_once(JPATH_COMPONENT . DS . 'libs' . DS . 'lib_security.php');
 require_once(JPATH_COMPONENT . DS . 'libs' . DS . 'lib_json.php');
 
 
-$document = &JFactory::getDocument();
+$document =  JFactory::getDocument();
 
 // CSRF token
 $document->addCustomTag('<meta name="csrf-token" content="' . DB_RID . '" />');
@@ -53,4 +49,7 @@ $document->setTitle($conf['app_title']);
 
 require_once(JPATH_COMPONENT . DS . 'controller.php');
 controller_exec();
+
+// Restore umask
+umask($conf['sys_umask']);
 ?>

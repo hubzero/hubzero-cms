@@ -5,6 +5,9 @@
 	white-space: nowrap;
 }
 
+.ui-autocomplete.ui-menu {
+	min-width: 70px;
+}
 
 /* Data viewer spreadsheet specific */
 .hand {
@@ -20,6 +23,10 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+	margin: 0;
+	width: inherit;
+	min-width: 100%;
+	min-height: 100%;
 	z-index: 1000;
 	background: white;
 	overflow: auto;
@@ -126,10 +133,14 @@ table.dataTable thead th div.DataTables_sort_wrapper {
 	height: 100px;
 }
 
-#dv-spreadsheet ul li { 
+ul.ui-autocomplete li { 
 	margin: 1em 0;
 	padding: 0 0 0 13px;
 	background: none;
+}
+
+ul.ui-autocomplete li a { 
+	border-bottom: none;
 }
 
 
@@ -141,14 +152,6 @@ table.dataTable thead th div.DataTables_sort_wrapper {
 	-o-text-overflow:ellipsis;
 	-ms-text-overflow:ellipsis;
 }
-
-/* Firefox 7 and above support this now
-@-moz-document url-prefix() {
-	.truncateafter:before {
-		content: "...";
-	}
-}
-*/
 
 .scrollcell:hover {
 	margin-right: -5px; 
@@ -222,4 +225,38 @@ a.dv-file-missing {
 
 img.dv-file-missing {
 	border: 1px solid red;
+}
+
+a.dv-link > i.icon-external-link {
+	margin-left: 5px;
+	font-size: .85em;
+	white-space: nowrap;
+	opacity: 0.7;
+}
+
+/* Restoring fontawesome font */
+#dv-spreadsheet [class^="icon-"]:before, #dv-spreadsheet [class*="icon-"]:before {
+	font-family: "FontAwesome";
+}
+
+#dv-spreadsheet input[type=text], #dv-spreadsheet input[type=password], #dv-spreadsheet input[type=email], #dv-spreadsheet textarea {
+-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 1em;
+	line-height: 1.61803399em;
+	max-width: 100%;
+	padding: 0.4045084975em;
+	outline: none;
+	background: #F0F0F0;
+	border: 1px solid #D9D9D9;
+	background-color: rgba(0, 0, 0, .039);
+	border-color: rgba(0, 0, 0, .19) rgba(0, 0, 0, .13) rgba(0, 0, 0, .07);
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	border-radius: 1px;
+	-webkit-transition: all 0.1s ease-out;
+	-moz-transition: all 0.1s ease-out;
+	transition: all 0.1s ease-out;
+	-webkit-background-clip: padding-box;
 }

@@ -52,12 +52,25 @@ function task_file($db_id)
 	}
 }
 
+
+function task_stream_file($db_id)
+{
+	$hash = JRequest::getVar('hash');
+	stream_file($hash);
+	exit;
+}
+
 function task_view($db_id)
 {
 	global $dv_conf;
 	$view = 'spreadsheet';
 
 	$dd = get_dd($db_id);
+
+	if (!$dd) {
+		JError::raiseError('404', 'Invalid DataView', 'Invalid DataView');
+		return;
+	}
 
 	if (!authorize($dd)) {
 		print ('<br /><p class="warning">Sorry, you are not authorized to view this page.</p>');
@@ -69,7 +82,6 @@ function task_view($db_id)
 	if (file_exists($file)) {
 		require_once ($file);
 	}
-
 
 	pathway($dd);
 
@@ -114,9 +126,8 @@ function task_data($db_id)
 function authorize($dd)
 {
 	global $dv_conf;
-	ximport('Hubzero_Group');
-	ximport('Hubzero_User_Helper');
-	$juser =& JFactory::getUser();
+
+	$juser = JFactory::getUser();
 
 	if (isset($dd['acl']['allowed_users']) && (is_array($dd['acl']['allowed_users']) || $dd['acl']['allowed_users'] === false || $dd['acl']['allowed_users'] == 'registered')) {
 		$dv_conf['acl']['allowed_users'] = $dd['acl']['allowed_users'];
@@ -149,7 +160,7 @@ function authorize($dd)
 	}
 	
 	if ($dv_conf['acl']['allowed_groups'] !== false && is_array($dv_conf['acl']['allowed_groups']) && !$juser->get('guest')) {
-		$groups = Hubzero_User_Helper::getGroups($juser->get('id'));
+		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
 		if ($groups && count($groups)) {
 			foreach ($groups as $g) {
 				if (in_array($g->cn, $dv_conf['acl']['allowed_groups'])) {

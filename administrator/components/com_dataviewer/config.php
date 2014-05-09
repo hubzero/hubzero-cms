@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -21,7 +21,7 @@ if (!isset($_SESSION['db']['__rid'])) {
 define('DB_RID', $_SESSION['db']['__rid']);
 
 global $conf, $com_name;
-$document = &JFactory::getDocument();
+$document =  JFactory::getDocument();
 $com_name = str_replace(JPATH_BASE.'/components/', '', JPATH_COMPONENT);
 $com_name = str_replace('com_', '' , $com_name);
 
@@ -37,18 +37,26 @@ $conf['com_name'] = $com_name;
 $conf['com_path'] = $com_path;
 $conf['app_title'] = 'Dataviewer';
 
-$conf['dir_base'] = '/data/db';
+// Base directory
+$db_params = JComponentHelper::getParams('com_databases');
+$conf['dir_base'] = $db_params->get('base_dir');
+if ($conf['dir_base'] == NULL || $conf['dir_base'] == '') {
+	$conf['dir_base'] = '/db/databases';
+}
 
-$mode_db_enabled = &JComponentHelper::getParams('com_dataviewer')->get('mode_db') == '1' ? true : false;
+$mode_db_enabled =  JComponentHelper::getParams('com_dataviewer')->get('mode_db') == '1' ? true : false;
 $conf['modes']['db'] = array('enabled' => $mode_db_enabled);
 
 // ACL
 $conf['access_limit_to_group'] = false;
 if ($conf['modes']['db']['enabled']) {
-	$db_params = &JComponentHelper::getParams('com_databases');
-
 	if ($db_params->get('access_limit_to_group') != '') {
 		$conf['access_limit_to_group'] = $db_params->get('access_limit_to_group');
 	}
 }
+
+
+// Makesure the files are not accessible by other
+$conf['sys_umask'] = umask(0007);
+
 ?>

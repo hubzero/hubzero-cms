@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 function dv_add_script($script, $local = true)
 {
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 
 	if (!$local) {
 		$document->addScript($script);
@@ -44,7 +44,7 @@ function dv_add_script($script, $local = true)
 
 function dv_add_css($css, $local = true)
 {
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 
 	if (!$local) {
 		$document->addStyleSheet($css);

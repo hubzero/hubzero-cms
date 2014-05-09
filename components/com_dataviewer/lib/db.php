@@ -32,7 +32,7 @@ function get_db($db = false) {
 
 	mysql_set_charset('utf8');
 
-	mysql_query("SET SESSION group_concat_max_len = 2048");
+	mysql_query("SET SESSION group_concat_max_len = 16384");
 
 	return $link;
 }
@@ -175,6 +175,17 @@ function query_gen(&$dd)
 	$cols_sql = array();
 
 	foreach($dd['cols'] as $id=>$conf) {
+
+		if (isset($conf['field_type']) && $conf['field_type'] === 'point') {
+			$conf['raw'] = "CONCAT(X($id), ',', Y($id))";
+		}
+
+		if (isset($conf['field_type']) && $conf['field_type'] === 'polygon') {
+			$conf['raw'] = "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(AsText($id), '),(', ';'), ' ', ','), 'POLYGON((', ''), '))', ''), ';', '; ')";
+			$dd['cols'][$id]['truncate'] = 'truncate';
+			$dd['cols'][$id]['width'] = isset($dd['cols'][$id]['width']) ? $dd['cols'][$id]['width'] : '200';
+		}
+
 		$expr = $id;
 		$aggr = false;
 		$raw = false;
@@ -237,7 +248,7 @@ function query_gen(&$dd)
 		$col = $cols[$col_id];
 		$searchable = JRequest::getString('bSearchable_' . $i, 'false');
 		$fieldtype = JRequest::getString('fieldtype_' . $i, 'string');
-		$search_str = JRequest::getString('sSearch_' . $i, '');
+		$search_str = JRequest::getVar('sSearch_' . $i, '', 'default', null, JREQUEST_ALLOWRAW);
 
 		if ($searchable === 'true' && $search_str !== '') {
 			if ($col['aggr']) {
@@ -251,7 +262,7 @@ function query_gen(&$dd)
 	}
 
 	// Filtered views
-	$filters = JRequest::getVar('filter', false);
+	$filters = JRequest::getVar('filter', false, 'default', null, JREQUEST_ALLOWRAW);
 	if ($filters !== false) {
 		$filters = explode('||', $filters);
 		foreach($filters as $filter) {
@@ -260,13 +271,14 @@ function query_gen(&$dd)
 			$col = $cols[$col_id];
 			$filter_str = $filter[1];
 			$fieldtype = isset($filter[2]) ? $filter[2] : 'string';
+			$filter_type = isset($filter[3]) ? $filter[3] : 'exact';
 
 			if ($col['aggr']) {
-				$having_filter[$col_id] = array('val' => $filter_str, 'col' => '`' . $col_id . '`', 'fieldtype' => $fieldtype, 'filtered_view' => true);
+				$having_filter[$col_id] = array('val' => $filter_str, 'col' => '`' . $col_id . '`', 'fieldtype' => $fieldtype, 'filtered_view' => true, 'filter_type' => $filter_type);
 			} elseif ($col['raw']) {
-				$where_filter[$col_id] = array('val' => $filter_str, 'col' => $col['expr'], 'fieldtype' => $fieldtype, 'filtered_view' =>  true);
+				$where_filter[$col_id] = array('val' => $filter_str, 'col' => $col['expr'], 'fieldtype' => $fieldtype, 'filtered_view' =>  true, 'filter_type' => $filter_type);
 			} else {
-				$where_filter[$col_id] = array('val' => $filter_str, 'col' => $col_id, 'fieldtype' => $fieldtype, 'filtered_view' =>  true);
+				$where_filter[$col_id] = array('val' => $filter_str, 'col' => $col_id, 'fieldtype' => $fieldtype, 'filtered_view' =>  true, 'filter_type' => $filter_type);
 			}
 		}
 	}
@@ -341,7 +353,11 @@ function query_gen(&$dd)
 					$where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
 				}
 			} elseif (isset($val['filtered_view'])) {
-				$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
+				if (isset($val['filter_type']) && $val['filter_type'] == 'like') {
+					$where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
+				} else {
+					$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
+				}
 			} elseif (strpos($val['val'], '!=') === 0) {
 				$val['val'] = trim(str_replace('!=', '', $val['val']));
 				$where_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
@@ -352,7 +368,16 @@ function query_gen(&$dd)
 				$val['val'] = trim(str_replace('!', '', $val['val']));
 				$where_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
 			} else {
-				$where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
+				$v_arr = explode(' ', $val['val']);
+				if (count($v_arr) > 1) {
+					$list = array();
+					foreach($v_arr as $v) {
+						$list[] = $val['col'] . " LIKE '%" . $v . "%'";
+					}
+					$where_filter_arr[] = '(' . implode(' AND ', $list) . ')';
+				} elseif(trim($v_arr[0]) != '') {
+					$where_filter_arr[] = $val['col'] . " LIKE '%" . $v_arr[0] . "%'";
+				}
 			}
 		}
 
@@ -428,7 +453,11 @@ function query_gen(&$dd)
 					$having_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
 				}
 			} elseif (isset($val['filtered_view'])) {
-				$having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
+				if (isset($val['filter_type']) && $val['filter_type'] == 'like') {
+					$having_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
+				} else {
+					$having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
+				}
 			} elseif (strpos($val['val'], '!=') === 0) {
 				$val['val'] = trim(str_replace('!=', '', $val['val']));
 				$having_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
@@ -439,7 +468,16 @@ function query_gen(&$dd)
 				$val['val'] = trim(str_replace('!', '', $val['val']));
 				$having_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
 			} else {
-				$having_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
+				$v_arr = explode(' ', $val['val']);
+				if (count($v_arr) > 1) {
+					$list = array();
+					foreach($v_arr as $v) {
+						$list[] = $val['col'] . " LIKE '%" . $v . "%'";
+					}
+					$having_filter_arr[] = '(' . implode(' AND ', $list) . ')';
+				} elseif(trim($v_arr[0]) != '') {
+					$having_filter_arr[] = $val['col'] . " LIKE '%" . $v_arr[0] . "%'";
+				}
 			}
 		}
 
@@ -456,7 +494,7 @@ function query_gen(&$dd)
 	$where_search = array();
 	$having_search = array();
 
-	$search_str = JRequest::getString('sSearch', '');
+	$search_str = JRequest::getVar('sSearch', '', 'default', null, JREQUEST_ALLOWRAW);
 	if ($search_str != '') {
 		for ($i = 0; $i < count($cols_vis); $i++) {
 			$col_id = $cols_vis[$i];

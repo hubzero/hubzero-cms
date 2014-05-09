@@ -35,6 +35,11 @@ function filter($res, &$dd, $ob_mode = false)
 
 	//Header
 	$h_arr = mysql_fetch_assoc($data);
+	if (!$h_arr) {
+		print 'No data available';
+		return;
+	}
+
 	foreach ($h_arr as $key => $val) {
 		if (!isset($dd['cols'][$key]['hide'])) {
 			$label = isset($dd['cols'][$key]['label']) ? $dd['cols'][$key]['label'] : $key;
@@ -68,10 +73,8 @@ function filter($res, &$dd, $ob_mode = false)
 
 				if($val == NULL) {
 					$val = '';
-				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'date') {
-					$val = strtotime($val);
-					$val = date("m/d/Y", $val);
 				}
+
 				$val = str_replace('"', '""', $val);
 				$row .= $w . $val . $w . $s;
 			}

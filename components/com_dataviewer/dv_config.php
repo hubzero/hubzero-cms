@@ -25,7 +25,7 @@ define('DV_COM_PATH', $com_path);
 define('DV_COM_HTML', DV_COM_PATH . DS . 'html');
 define('DV_PATH_HTML', JPATH_COMPONENT . DS . 'html');
 
-$params = &JComponentHelper::getParams('com_dataviewer');
+$params =  JComponentHelper::getParams('com_dataviewer');
 
 $dv_conf['settings']['num_rows'] = array('labels'=>array(5, 10, 25, 50, 100), 'values'=>array(5, 10, 25, 50, 100));
 $dv_conf['settings']['limit'] = $params->get('record_display_limit') == '' ? 10 : $params->get('record_display_limit');

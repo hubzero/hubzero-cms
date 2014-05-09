@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     hubzero.cms.site
+ * @package     hubzero.cms.admin
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando sudheera@xconsole.org
@@ -15,7 +15,7 @@ function dv_data_definition()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document = &JFactory::getDocument();
+	$document =  JFactory::getDocument();
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
 	$db_id = JRequest::getString('db', false);
@@ -110,6 +110,6 @@ function dv_data_definition()
 		<input name="update" type="hidden" value="true" />
 		<input name="dd_text" type="hidden" value="" />
 	</form>
-<?
+<?php
 }
 ?>
