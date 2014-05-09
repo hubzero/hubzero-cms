@@ -67,7 +67,8 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onSave()
 	{
-		return;
+		$js = "for (instance in CKEDITOR.instances) { CKEDITOR.instances[instance].updateElement(); }";
+		return $js;
 	}
 
 	/**
