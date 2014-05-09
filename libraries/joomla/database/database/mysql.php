@@ -884,4 +884,52 @@ class JDatabaseMySQL extends JDatabase
 
 		return $this;
 	}
+
+	/**
+	 * Check for the existance of a table
+	 *
+	 * @access	public
+	 * @param 	string $table - table we're looking for
+	 * @return 	bool
+	 */
+	public function tableExists($table)
+	{
+		$query = 'SHOW TABLES LIKE ' . str_replace('#__', $this->tablePrefix, $this->Quote($table, false));
+		$this->setQuery($query);
+		$this->query();
+
+		return ($this->getAffectedRows() > 0) ? true : false;
+	}
+
+	/**
+	 * Returns whether or not the given table has a given field
+	 *
+	 * @access	public
+	 * @param 	string $table - A table name
+	 * @param	string $field - A field name
+	 * @return	bool          - true if table has field, false otherwise
+	 */
+	public function tableHasField($table, $field)
+	{
+		$this->setQuery( 'SHOW FIELDS FROM ' . $table );
+		$fields = $this->loadObjectList('Field');
+
+		return (in_array($field, array_keys($fields))) ? true : false;
+	}
+
+	/**
+	 * Returns whether or not the given table has a given key
+	 *
+	 * @access	public
+	 * @param 	string $table - A table name
+	 * @param	string $key   - A key name
+	 * @return	bool          - true if table has key, false otherwise
+	 */
+	public function tableHaskey($table, $key)
+	{
+		$this->setQuery( 'SHOW KEYS FROM ' . $table );
+		$keys = $this->loadObjectList('Key_name');
+
+		return (in_array($key, array_keys($keys))) ? true : false;
+	}
 }
