@@ -312,6 +312,12 @@ class Migration
 			$this->log("Ignore dates: all eligible files will be included!");
 		}
 
+		// Now, fire hooks
+		if (!$dryrun && !$logOnly)
+		{
+			$this->fireHooks('onBeforeMigrate');
+		}
+
 		// Loop through files and run their '$direction' method
 		foreach ($this->files as $file)
 		{
@@ -519,7 +525,69 @@ class Migration
 			}
 		}
 
+		// Now, fire hooks
+		if (!$dryrun && !$logOnly)
+		{
+			$this->fireHooks('onAfterMigrate');
+		}
+
 		return true;
+	}
+
+	/**
+	 * Fire migration pre/post hooks
+	 *
+	 * @param  (string) $timing - which hooks to fire
+	 * @return void
+	 **/
+	private function fireHooks($timing)
+	{
+		$exclude = array(".", "..");
+		$hooks   = array_diff(scandir($this->docroot . DS . 'migrations' . DS . 'hooks'), $exclude);
+
+		if (count($hooks) > 0)
+		{
+			foreach ($hooks as $hook)
+			{
+				// Get the file name
+				$info     = pathinfo($hook);
+				$fullpath = $this->docroot . DS . 'migrations' . DS . 'hooks' . DS . $hook;
+
+				// Include the file
+				if (is_file($fullpath))
+				{
+					require_once $fullpath;
+				}
+				else
+				{
+					continue;
+				}
+
+				// Set classname
+				$classname = $info['filename'];
+
+				// Instantiate our class
+				$class = new $classname($this->db, $this->callbacks);
+				$hookTiming = $class->getOption('timing');
+
+				if ($hookTiming != $timing && $hookTiming != 'onAll')
+				{
+					continue;
+				}
+
+				if (method_exists($class, 'fire'))
+				{
+					$result = $class->fire();
+
+					if (is_array($result) && !$result['success'])
+					{
+						// Just a warning...display message and carry on (my wayward son)
+						$message = (isset($result['message']) && !empty($result['message'])) ? $result['message'] : '[no message provided]';
+						$this->log("Warning: post hook '{$hook}' resulted in an error: {$message}", 'warning');
+					}
+				}
+			}
+		}
 	}
 
 	/**

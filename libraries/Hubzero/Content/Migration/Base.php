@@ -53,6 +53,13 @@ class Base
 	protected $callbacks = array();
 
 	/**
+	 * Options
+	 *
+	 * @var array
+	 **/
+	protected $options = array();
+
+	/**
 	 * Constructor
 	 *
 	 * @return void
@@ -81,6 +88,17 @@ class Base
 
 		// Call function
 		call_user_func_array(array($this->callbacks[$callback], $func), $args);
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @param  (string) $key
+	 * @return (string) $value
+	 **/
+	public function getOption($key)
+	{
+		return (isset($this->options[$key])) ? $this->options[$key] : false;
 	}
 
 	/**
