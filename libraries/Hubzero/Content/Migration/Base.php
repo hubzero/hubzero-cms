@@ -84,7 +84,7 @@ class Base
 	}
 
 	/**
-	 * Try to get the root credentials from the .my.cnf file
+	 * Try to get the root credentials from a variety of locations
 	 *
 	 * @return (mixed) $return - array of creds or false on failure
 	 **/
@@ -92,6 +92,7 @@ class Base
 	{
 		$secrets   = DS . 'etc'  . DS . 'hubzero.secrets';
 		$conf_file = DS . 'root' . DS . '.my.cnf';
+		$hub_maint = DS . 'etc'  . DS . 'mysql' . DS . 'hubmaint.cnf';
 
 		if (file_exists($secrets))
 		{
@@ -108,6 +109,18 @@ class Base
 		if (file_exists($conf_file))
 		{
 			$conf = parse_ini_file($conf_file, true);
+			$user = $conf['client']['user'];
+			$pw   = $conf['client']['password'];
+
+			if ($user && $pw)
+			{
+				return array('user' => $user, 'password' => $pw);
+			}
+		}
+
+		if (is_file($hub_maint) && is_readable($hub_maint))
+		{
+			$conf = parse_ini_file($hub_maint, true);
 			$user = $conf['client']['user'];
 			$pw   = $conf['client']['password'];
 
