@@ -34,6 +34,10 @@ class Migration20140505141538ComTools extends Base
 	 **/
 	public function down()
 	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+
+		$mwdb = MwUtils::getMWDBO();
+
 		if ($mwdb->tableExists('host')
 			&& !$mwdb->tableHasField('host', 'venue_id')
 			&& $mwdb->tableHasField('host', 'zone_id'))
