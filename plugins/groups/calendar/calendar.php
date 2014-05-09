@@ -924,6 +924,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//make sure we found a user
 		if(!is_object($user) || $user->id == '' || $user->id == 0)
 		{
+			JFactory::getAuthLogger()->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
+			apache_note('auth','invalid');
+
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
 			die( JText::_('You must enter a valid username and password.') );
@@ -940,6 +943,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//make sure password matches stored password
 		if ($storedPassword != $httpBasicPassword)
 		{
+			JFactory::getAuthLogger()->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
+			apache_note('auth','invalid');
+			
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
 			die( JText::_('You must enter a valid username and password.') );
