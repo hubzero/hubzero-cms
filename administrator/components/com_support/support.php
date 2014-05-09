@@ -65,7 +65,7 @@ JSubMenuHelper::addEntry(
 JSubMenuHelper::addEntry(
 	JText::_('Categories'),
 	'index.php?option=com_support&controller=categories',
-	$controllerName == 'Categories'
+	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Queries'),
