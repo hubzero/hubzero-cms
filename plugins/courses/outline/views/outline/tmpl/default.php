@@ -64,6 +64,12 @@ if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
+	<?php if ($this->course->access('manage')) { ?>
+		<div class="manager-options">
+			<span><strong>Manage the content of the outline here.</strong></span> <a class="btn edit icon-edit" href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Build outline</a>
+		</div>
+	<?php } ?>
+
 	<div id="course-outline">
 		<div class="outline-head">
 			<?php
@@ -75,9 +81,13 @@ if (!$this->course->offering()->access('view')) { ?>
 				));
 				// Output results
 				echo implode("\n", $results);
+
+				$this->member = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+				$progress = $this->course->offering()->gradebook()->progress($this->member->get('id'));
 			?>
 		</div>
-<?php if ($this->course->offering()->units($filters)->total() > 0) : ?>
+
+<?php if ($this->course->offering()->units()->total() > 0) : ?>
 	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
 		<?php if ((!$isManager && $unit->isPublished()) || $isManager) { 
 				$cls = '';
@@ -98,167 +108,140 @@ if (!$this->course->offering()->access('view')) { ?>
 				{
 					continue;
 				}
-				
-			?>
+		?>
+
+		<?php
+			$complete = isset($progress[$this->member->get('id')][$unit->get('id')]['percentage_complete'])
+					? $progress[$this->member->get('id')][$unit->get('id')]['percentage_complete']
+					: 0;
+			$margin   = 100 - $complete;
+			$done     = ($complete == 100) ? ' complete' : '';
+		?>
+
 		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1); echo $cls; ?>">
+			<div class="unit-fill">
+				<div class="unit-fill-inner<?php echo $done; ?>" style="height:<?php echo $complete; ?>%;margin-top:<?php echo $margin; ?>%;"></div>
+			</div>
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>">
 					<h3 class="unit-content-available">
-						<span><?php echo $this->escape(stripslashes($unit->get('title'))); ?></span> 
-						<?php echo $this->escape(stripslashes($unit->get('description'))); ?>
+						<?php echo $this->escape(stripslashes($unit->get('title'))); ?>
 					</h3>
 
+					<div class="unit-availability<?php if (!$unit->started()) { echo ' comingSoon'; } ?>">
+						<div class="details">
+							<div class="unit-description">
+								<?php echo $this->escape(stripslashes($unit->get('description'))); ?>
+							</div>
+
 				<?php if (!$isManager && !$unit->started()) { ?>
-					<div class="unit-availability comingSoon">
-						<!-- <p class="status">Coming soon</p> -->
-						<p class="info">
-							Content for this unit will be available starting <?php echo JHTML::_('date', $unit->get('publish_up'), "F j, Y, g:i a T"); ?>.
-						</p>
+							<div class="grid">
+								<p class="info">
+									Content for this unit will be available starting <?php echo JHTML::_('date', $unit->get('publish_up'), "F j, Y, g:i a T"); ?>.
+								</p>
+							</div>
 				<?php } else { ?>
-					<div class="unit-availability">
-						
-						<!-- <p class="status posted">Posted</p> -->
-					<?php if (!$unit->assetgroups(null, $filters)->total() && !$unit->assets()->total()) { ?>
-						<div class="details empty">
-							<p class="info">
-								No content found for this unit.
-							</p>
-					<?php } else { ?>
-						<div class="details notempty clearfix">
-							<div class="detailsWrapper">
-								<?php foreach ($unit->assetgroups() as $agt) { ?>
-									<?php if ((($agt->isAvailable() && $agt->isPublished()) || $isManager) && count($agt->children()) > 0) { 
+						<?php $i = 0; ?>
+
+						<?php foreach ($unit->assetgroups(null, $filters) as $agt) { ?>
+							<?php if ((($agt->isAvailable() && $agt->isPublished()) || $isManager) && count($agt->children()) > 0) { ?>
+									<?php
+									$cls = '';
+									if (!$agt->started())
+									{
+										$cls = ' pending';
+									}
+									if ($agt->ended())
+									{
+										$cls = ' unpublished';
+									}
+									if ($agt->isDraft())
+									{
+										$cls = ' draft';
+									}
+									
+									if ($agt->isUnpublished())
+									{
+										$cls = ' unpublished';
+									}
+									
+									if ($agt->isDeleted())
+									{
+										continue;
+									}
+									?>
+									<div class="grid <?php echo $cls; ?>">
+										<div class="col span4">
+											<h4 class="asset-group-title">
+												<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
+											</h4>
+										<?php if ($agt->get('description')) { ?>
+											<p class="asset-group-description">
+												<?php echo $this->escape(stripslashes($agt->get('description'))); ?>
+											</p>
+										<?php } ?>
+										</div>
+
+										<div class="col span8 omega">
+									<?php foreach ($agt->children() as $ag) { ?>
+										<?php if (($ag->isAvailable() && $ag->isPublished()) || $isManager) : 
 											$cls = '';
-											if (!$agt->isAvailable())
-											{
-												$cls = ' pending';
-											}
-											if ($agt->isDraft())
+											if ($ag->isDraft())
 											{
 												$cls = ' draft';
 											}
-											
-											if ($agt->isUnpublished())
+											if (!$ag->started())
+											{
+												$cls = ' pending';
+											}
+											if ($ag->ended())
+											{
+												$cls = ' unpublished';
+											}
+											if ($ag->isUnpublished())
 											{
 												$cls = ' unpublished';
 											}
 											
-											if ($agt->isDeleted())
+											if ($ag->isDeleted())
 											{
 												continue;
 											}
 											
 										?>
-										<div class="weeksection">
-											<div class="weeksectioninner<?php echo $cls; ?>">
-												<h4>
-													<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
-												</h4>
-											<?php if ($agt->get('description')) { ?>
-												<p class="asset-group-description">
-													<?php echo $this->escape(stripslashes($agt->get('description'))); ?>
-												</p>
-											<?php } ?>
-											<?php foreach ($agt->children() as $ag) { ?>
-												<?php if (($ag->isAvailable() && $ag->isPublished()) || $isManager) : 
-													$cls = '';
-													if ($ag->isDraft())
-													{
-														$cls = ' draft';
-													}
-													if (!$ag->isAvailable())
-													{
-														$cls = ' pending';
-													}
-													if ($ag->isUnpublished())
-													{
-														$cls = ' unpublished';
-													}
-													
-													if ($ag->isDeleted())
-													{
-														continue;
-													}
-													
-												?>
-													<div class="asset-group<?php echo $cls; ?>">
-														<?php if (trim($ag->get('title')) !== '--') : ?>
-															<h5>
-																<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
-															</h5>
-														<?php endif; ?>
-														<?php if ($ag->assets($filters)->total()) { ?>
-														<ul class="asset-list">
-															<?php
-															// Loop through the assets
-															foreach ($ag->assets() as $a)
-															{
-																if ((($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished()) || $isManager)
-																{
-																	$cls = '';
-																	if (!$a->isAvailable())
-																	{
-																		$cls = ' pending';
-																	}
-																	if ($a->isDraft())
-																	{
-																		$cls = ' draft';
-																	}
-																	
-																	if ($a->isUnpublished())
-																	{
-																		$cls = ' unpublished';
-																	}
-																	
-																	if ($a->isDeleted())
-																	{
-																		continue;
-																	}
-																	
-
-																	$href = JRoute::_($base . '&asset=' . $a->get('id'));
-																	$target = ' target="_blank"';
-																	if ($a->get('type') == 'video')
-																	{
-																		$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-																		$target = '';
-																	}
-																	else if ($a->get('type') == 'form')
-																	{
-																		$target = '';
-																	}
-																	echo '<li><a class="asset ' . $a->get('subtype') . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
-																}
-															}
-															?>
-														</ul>
-														<?php } ?>
-													</div>
-												<?php endif; ?>
-											<?php } ?>
-
-											<?php if ($agt->assets($filters)->total()) { ?>
+											<div class="asset-group<?php echo $cls; ?>">
 												<ul class="asset-list">
-													<?php
-													foreach ($agt->assets() as $a)
-													{
-														if ($a->isAvailable() || $isManager)
-														{
-															if ($a->get('subtype') == 'note')
-															{
-																continue;
-															}
+												<?php 
+												$title = '';
+												if (trim($ag->get('title')) !== '--')
+												{
+													$title = $this->escape(stripslashes($ag->get('title')));
+												}
 
+												$link = '<span class="asset-primary unavailable">' . $title . '</span>';
+
+												if ($ag->assets()->total()) 
+												{
+													// Loop through the assets
+													foreach ($ag->assets() as $a)
+													{
+														if ((($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished()) || $isManager)
+														{
 															$cls = '';
-															
-															if (!$a->isAvailable())
+
+															if (!$a->started())
 															{
 																$cls = ' pending';
+															}
+															if ($a->ended())
+															{
+																$cls = ' ended';
 															}
 															if ($a->isDraft())
 															{
 																$cls = ' draft';
 															}
+															
 															if ($a->isUnpublished())
 															{
 																$cls = ' unpublished';
@@ -268,71 +251,140 @@ if (!$this->course->offering()->access('view')) { ?>
 															{
 																continue;
 															}
-															
 
-															$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+															$href = JRoute::_($base . '&asset=' . $a->get('id'));
 															$target = ' target="_blank"';
 															if ($a->get('type') == 'video')
 															{
-																$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+																$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 																$target = '';
 															}
 															else if ($a->get('type') == 'form')
 															{
 																$target = '';
 															}
-															echo '<li><a class="asset ' . $a->get('subtype') . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+															// ' . $a->get('subtype') . '
+															$link = '<a class="asset-primary' . $cls . '" href="' . $href . '"' . $target . '>' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</a>';
+															break;
 														}
 													}
-													?>
-												</ul>
+												} 
+												echo '<li>' . $link . '</li>';
+												?>
+											</ul>
+											</div><!-- / .asset-group -->
+										<?php endif; ?>
+									<?php } // foreach ($agt->children() as $ag) ?>
+
+										<?php if ($agt->assets()->total()) { ?>
+											<ul class="asset-list">
 												<?php
-												$agt->assets()->rewind();
 												foreach ($agt->assets() as $a)
 												{
 													if ($a->isAvailable() || $isManager)
 													{
-														if ($a->get('subtype') != 'note')
+														if ($a->get('subtype') == 'note')
 														{
 															continue;
 														}
-														echo '<p class="info">' . stripslashes($a->get('content')) . '</p>';
+
+														$cls = '';
+
+														if (!$a->started())
+														{
+															$cls = ' pending';
+														}
+														if ($a->ended())
+														{
+															$cls = ' unpublished';
+														}
+														if ($a->isDraft())
+														{
+															$cls = ' draft';
+														}
+														if ($a->isUnpublished())
+														{
+															$cls = ' unpublished';
+														}
+														
+														if ($a->isDeleted())
+														{
+															continue;
+														}
+														$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+														$target = ' target="_blank"';
+														if ($a->get('type') == 'video')
+														{
+															$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+															$target = '';
+														}
+														else if ($a->get('type') == 'form')
+														{
+															$target = '';
+														}
+														echo '<li><a class="asset-primary ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 													}
 												}
 												?>
-											<?php } ?>
-											</div><!-- .weeksectioninner -->
-										</div><!-- / .weekSection -->
-									<?php } ?>
-								<?php } //$i++; ?>
-							</div>
-							<?php if ($unit->assets()->total()) { ?>
-							<ul class="asset-list">
-						<?php
-						foreach ($unit->assets($filters) as $a)
-						{
-							if ($a->isAvailable() || $isManager)
-							{
-								$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
-								$target = ' target="_blank"';
-								if ($a->get('type') == 'video')
-								{
-									$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
-									$target = '';
-								}
-								else if ($a->get('type') == 'form')
-								{
-									$target = '';
-								}
-								echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
-							}
-						}
-						?>
-							</ul>
+											</ul>
+											<?php
+											$agt->assets()->rewind();
+											foreach ($agt->assets() as $a)
+											{
+												if ($a->isAvailable())
+												{
+													if ($a->get('subtype') != 'note')
+													{
+														continue;
+													}
+													echo '<p class="info">' . stripslashes($a->get('content')) . '</p>';
+												}
+											}
+											?>
+										<?php } ?>
+										</div><!-- / .col -->
+									</div><!--  .grid -->
+
+								<?php $i++; ?>
 							<?php } ?>
-					<?php } ?>
-						</div><!-- / .details -->
+						<?php } // foreach ($unit->assetgroups() as $agt) ?>
+
+						<?php if ($unit->assets()->total()) { ?>
+							<ul class="asset-list">
+								<?php
+								foreach ($unit->assets() as $a)
+								{
+									if ($a->isAvailable() || $isManager)
+									{
+										$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+										$target = ' target="_blank"';
+										if ($a->get('type') == 'video')
+										{
+											$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+											$target = '';
+										}
+										else if ($a->get('type') == 'form')
+										{
+											$target = '';
+										}
+										echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+										$i++;
+									}
+								}
+								?>
+							</ul>
+						<?php } ?>
+
+						<?php if (!$i) { ?>
+							<div class="grid">
+								<p class="info">
+									No content found for this unit.
+								</p>
+							</div>
+						<?php } ?>
+
 				<?php } // close else ?>
+						</div><!-- / .details -->
 					</div><!-- / .unit-availability -->
 				</div><!-- / .unit-content -->
 			</div><!-- / .unit-wrap -->
@@ -340,7 +392,7 @@ if (!$this->course->offering()->access('view')) { ?>
 		<?php } ?>
 	<?php } // close foreach ?>
 <?php elseif($this->course->offering()->access('manage')) : ?>
-		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Outline Builder</a> to begin creating your course outline.</p>
+		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Outline Builder</a> to being creating your course outline</p>
 <?php else : ?>
 		<p class="info">There is currently no outline available for this course</p>
 <?php endif; ?>

@@ -61,25 +61,6 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Return html for display on top of the outline
-	 * 
-	 * @return     string
-	 */
-	public function onCourseBeforeOutline($course, $offering)
-	{
-		$html = '';
-
-		if ($course->access('manage'))
-		{
-			$url = $offering->link() . '&active=outline&action=build';
-
-			$html = '<a class="btn edit icon-edit" href="' . JRoute::_($url) . '">Build outline</a>';
-		}
-
-		return $html;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 * 
 	 * @param      object  $course      Current course
