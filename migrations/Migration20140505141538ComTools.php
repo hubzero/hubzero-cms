@@ -15,13 +15,17 @@ class Migration20140505141538ComTools extends Base
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('host')
-			&& $this->db->tableHasField('host', 'venue_id')
-			&& !$this->db->tableHasField('host', 'zone_id'))
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+
+		$mwdb = MwUtils::getMWDBO();
+
+		if ($mwdb->tableExists('host')
+			&& $mwdb->tableHasField('host', 'venue_id')
+			&& !$mwdb->tableHasField('host', 'zone_id'))
 		{
 			$query = "ALTER TABLE `host` CHANGE `venue_id` `zone_id` INT(11) NULL DEFAULT NULL";
-			$this->db->setQuery($query);
-			$this->db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 	}
 
@@ -30,13 +34,13 @@ class Migration20140505141538ComTools extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('host')
-			&& !$this->db->tableHasField('host', 'venue_id')
-			&& $this->db->tableHasField('host', 'zone_id'))
+		if ($mwdb->tableExists('host')
+			&& !$mwdb->tableHasField('host', 'venue_id')
+			&& $mwdb->tableHasField('host', 'zone_id'))
 		{
 			$query = "ALTER TABLE `host` CHANGE `zone_id` `venue_id` INT(11) NULL DEFAULT NULL";
-			$this->db->setQuery($query);
-			$this->db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 	}
 }
