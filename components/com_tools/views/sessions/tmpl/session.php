@@ -158,30 +158,24 @@ if (!$this->app->sess) {
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
 					<form name="share" id="app-zone" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
-						<div class="grid">
-							<div class="col span-half">
-								<label for="field-zone">
-									<?php echo JText::_('Run elsewhere:'); ?><br />
-									<select name="zone" id="field-zone">
-										<option value=""><?php echo JText::_('Select ...'); ?></option>
-									<?php 
-									foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone) 
-									{
-										if ($zone->get('id') == $this->zone->get('id'))
-										{
-											continue;
-										}
-									?>
-										<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
-									<?php } ?>
-									</select>
-								</label>
-								<input type="submit" value="Go" />
-							</div><!-- / .col span6 omega -->
-							<div class="col span-half omega">
-								<p><?php echo JText::_('<strong>Warning:</strong> Changing zones will terminate this session.'); ?></p>
-							</div><!-- / .col span6 omega -->
-						</div><!-- / .grid -->
+						<p><?php echo JText::_('<strong>Warning:</strong> Changing zones will terminate this session.'); ?></p>
+						<p><label for="field-zone">
+							<?php echo JText::_('Run elsewhere:'); ?>
+							<select name="zone" id="field-zone">
+								<option value=""><?php echo JText::_('Select ...'); ?></option>
+							<?php 
+							foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone) 
+							{
+								if ($zone->get('id') == $this->zone->get('id'))
+								{
+									continue;
+								}
+							?>
+								<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
+							<?php } ?>
+							</select>
+						</label>
+						<input type="submit" value="Go" /></p>
 					</form>
 				</div><!-- / .col span6 omega -->
 			</div><!-- .grid -->
