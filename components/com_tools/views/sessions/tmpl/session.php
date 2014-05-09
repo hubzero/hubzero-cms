@@ -158,10 +158,9 @@ if (!$this->app->sess) {
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
 					<form name="share" id="app-zone" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
-						<div class="grid">
-							<div class="col span-half">
-								<label for="field-zone">
-									<?php echo JText::_('Run elsewhere:'); ?><br />
+								<p><?php echo JText::_('<strong>Warning:</strong> Changing zones will terminate this session.'); ?></p>
+								<p><label for="field-zone">
+									<?php echo JText::_('Run elsewhere:'); ?>
 									<select name="zone" id="field-zone">
 										<option value=""><?php echo JText::_('Select ...'); ?></option>
 									<?php 
@@ -176,12 +175,8 @@ if (!$this->app->sess) {
 									<?php } ?>
 									</select>
 								</label>
-								<input type="submit" value="Go" />
-							</div><!-- / .col span6 omega -->
-							<div class="col span-half omega">
-								<p><?php echo JText::_('<strong>Warning:</strong> Changing zones will terminate this session.'); ?></p>
-							</div><!-- / .col span6 omega -->
-						</div><!-- / .grid -->
+								<input type="submit" value="Go" /></p>
+
 					</form>
 				</div><!-- / .col span6 omega -->
 			</div><!-- .grid -->

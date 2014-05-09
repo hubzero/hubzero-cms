@@ -644,7 +644,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			{
 				if ($zone->exists())
 				{
-					//$toolparams .= ' zone=' . $zone->get('zone');
+					$toolparams .= ' ' . $zone->get('zone');
 					$app->zone_id = $zone->get('id');
 				}
 			}
@@ -750,7 +750,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			$mwz = $middleware->zone($zone);
 			if ($mwz->exists())
 			{
-				$toolparams .= ' zone=' . $mwz->get('zone');
+				$toolparams .= ' ' . $mwz->get('zone');
 			}
 		}
 
@@ -776,6 +776,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$reinvoked = $middleware->session($new_id, $this->config->get('access-manage-session'));
 		$reinvoked->set('sessname', $session->get('sessname'));
 		$reinvoked->set('params', $params);
+		$reinvoked->set('zone_id', $zone);
 		if (!$reinvoked->store()) 
 		{
 			JError::raiseError(500, $reinvoked->getError());
@@ -786,7 +787,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$rtrn = JRequest::getVar('return', '');
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (JRequest::getInt('novnc', 0) ? '&novnc=1' : ''), false)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $session->app() . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (JRequest::getInt('novnc', 0) ? '&novnc=1' : ''), false)
 		);
 	}
 
