@@ -384,7 +384,7 @@ class plgMembersResume extends JPlugin
 	 * 
 	 * @param      object  $database  JDatabase
 	 * @param      string  $option    Component name
-	 * @param      object  $member    Hubzero_Profile
+	 * @param      object  $member    \Hubzero\User\Profile
 	 * @param      integer $emp       Is user employer?
 	 * @param      integer $edittitle Parameter description (if any) ...
 	 * @param      integer $editpref  Parameter description (if any) ...

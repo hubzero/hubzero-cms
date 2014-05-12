@@ -362,7 +362,7 @@ class Geocode
 	 */
 	public static function getContinentByCountry($country='')
 	{
-		if (!$country || !($gdb = Hubzero_Geo::getGeoDBO())) 
+		if (!$country || !($gdb = self::getGeoDBO())) 
 		{
 			return array();
 		}

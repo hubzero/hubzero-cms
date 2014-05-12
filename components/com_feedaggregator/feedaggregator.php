@@ -46,7 +46,6 @@ $controllerName = JRequest::getCmd('controller', 'posts');
 $taskName = JRequest::getCmd('task', '');
 
 //import the component view?
-ximport('Hubzero_View_Helper_Html');
 
 /*JSubMenuHelper::addEntry(
 		JText::_('New Posts'),

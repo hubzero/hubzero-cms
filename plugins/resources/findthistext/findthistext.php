@@ -99,7 +99,6 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			ximport('Hubzero_Document');
 			Hubzero\Document\Assets::addPluginStyleSheet('resources', $this->_name);
 
 			// Instantiate a view

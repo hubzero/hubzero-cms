@@ -338,7 +338,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	/**
 	 * Get a user's ID
 	 * 
-	 * Accepts a user ID, JUser object, Hubzero_User_Profile object
+	 * Accepts a user ID, JUser object, \Hubzero\User\Profile object
 	 * or username
 	 *
 	 * @param      mixed   $user Object, ID, or username

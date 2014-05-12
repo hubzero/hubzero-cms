@@ -549,7 +549,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$country = Hubzero_Geo::ipcountry($app->ip);
+		$country = \Hubzero\Geo::ipcountry($app->ip);
 
 		//die($app->ip . $country);
 
@@ -751,7 +751,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// We've passed all checks so let's actually start the new session
-		ximport('Hubzero_Environment');
 
 		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . Hubzero_Environment::ipAddress() . " app=" . $session->app() . " version=" . $session->app('version') . $toolparams, $output);
 		if ($this->getError())

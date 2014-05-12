@@ -59,8 +59,7 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 		     ->set('category', 'group')
 		     ->set('option', $this->_segments['option']);
 
-		ximport('Hubzero_Group');
-		$this->_item = Hubzero_Group::getInstance($referenceid);
+		$this->_item = \Hubzero\Group::getInstance($referenceid);
 
 		$this->_segments['cn']     = $this->_item->get('cn');
 		$this->_segments['active'] = 'wishlist';

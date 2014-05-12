@@ -441,7 +441,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		}
 		if ($size > $sizeLimit) 
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
 			return;
 		}
@@ -514,7 +514,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
 			'id'        => $id,
-			'size'      => Hubzero_View_Helper_Html::formatSize($this_size),
+			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
 			'width'     => $width,
 			'height'    => $height
 		));

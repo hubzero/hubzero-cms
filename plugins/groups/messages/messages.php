@@ -484,7 +484,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		{
 			// Get invite emails
 			$db = JFactory::getDBO();
-			$group_inviteemails = new Hubzero_Group_InviteEmail($db);
+			$group_inviteemails = new \Hubzero\Group\InviteEmail($db);
 			$current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
 
 			$headers  = 'From: ' . $from['name'] . ' <' . $from['email'] . '>' . "\r\n";

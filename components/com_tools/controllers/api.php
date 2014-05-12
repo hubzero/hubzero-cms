@@ -224,7 +224,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 	{
 		// get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
-		$result = Hubzero_User_Profile::getInstance($userid);
+		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		// make sure we have a user
 		if ($result === false)	return $this->not_found();
