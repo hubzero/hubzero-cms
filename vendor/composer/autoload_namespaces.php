@@ -13,5 +13,7 @@ return array(
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
+    'Gitlab\\' => array($vendorDir . '/m4tthumphrey/php-gitlab-api/lib'),
     'Geocoder' => array($vendorDir . '/willdurand/geocoder/src'),
+    'Buzz' => array($vendorDir . '/kriswallsmith/buzz/lib'),
 );

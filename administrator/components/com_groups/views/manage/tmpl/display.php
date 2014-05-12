@@ -33,9 +33,18 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = GroupsHelper::getActions('group');
 
 JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
+
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences('com_groups', '550');
+	JToolBarHelper::spacer();
+
+	if ($this->config->get('super_gitlab', 0))
+	{
+		JToolBarHelper::custom('pull', 'pull', '', 'Pull Code');
+		JToolBarHelper::spacer();
+	}
+
 }
 if ($canDo->get('core.create')) 
 {

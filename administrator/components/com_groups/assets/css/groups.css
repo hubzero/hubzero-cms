@@ -121,3 +121,14 @@
 	.code table td.code {
 		background: #FFF;
 	}
+
+	.adminlist.success th {
+		background: #def6e2;
+	}
+	.adminlist.failed th {
+		background: #f6dede;
+	}
+	.adminlist.success pre {
+		font-size: 12px;
+		line-height: 16px;
+	}
