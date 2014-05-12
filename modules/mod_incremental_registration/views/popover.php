@@ -389,7 +389,7 @@ $defaultCountries = array(
 				<?php endif; ?>
 				<?php if (isset($row['countryorigin'])): ?> 
 					<li>
-						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : \Hubzero\Geo::ipcountry(JRequest::ip()); ?>
+						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip()); ?>
 							<label>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryorigin'])): ?>
@@ -404,7 +404,7 @@ $defaultCountries = array(
 								<select style="display: block" name="countryorigin" id="countryorigin">
 									<option value="">Select country...</option>
 								<?php
-									$countries = \Hubzero\Geo::getcountries();
+									$countries = \Hubzero\Geocode\Geocode::getcountries();
 									if (!$countries) {
 										$countries = $defaultCountries;
 									}
@@ -422,7 +422,7 @@ $defaultCountries = array(
 				<?php endif; ?>
 				<?php if (isset($row['countryresident'])): ?> 
 					<li>
-						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : \Hubzero\Geo::ipcountry(JRequest::ip()); ?>
+						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip()); ?>
 							<label>Do you currently live in the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryresident'])): ?>
@@ -437,7 +437,7 @@ $defaultCountries = array(
 								<select style="display: block" name="countryresident" id="countryresident">
 									<option value="">Select country...</option>
 								<?php
-									$countries = \Hubzero\Geo::getcountries();
+									$countries = \Hubzero\Geocode\Geocode::getcountries();
 									if (!$countries) {
 										$countries = $defaultCountries;
 									}
