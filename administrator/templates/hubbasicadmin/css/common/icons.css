@@ -128,6 +128,7 @@
 	.toolbar-box .icon-32-scan:before             { content: "\2622"; }
 	.toolbar-box .icon-32-csv:before             { content: "\f00c"; }
 	.toolbar-box .icon-32-script:before             { content: "\f07d"; }
+	.toolbar-box .icon-32-pull:before         { content: "\2193"; }
 
 /* Header */
 	.toolbar-box .icon-48-generic                        { }

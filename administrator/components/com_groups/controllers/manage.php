@@ -158,6 +158,9 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			}
 		}
 
+		// pass config to view
+		$this->view->config = $this->config;
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -413,6 +416,9 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if ($group->isSuperGroup())
 		{
 			$this->_handleSuperGroup($group);
+
+			// git lab stuff
+			$this->_handSuperGroupGitlab($group);
 		}
 		
 		// Output messsage and redirect
@@ -463,7 +469,6 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// make sure files are all group owned properly
 		shell_exec("chmod -R 2770 $uploadPath");
 		shell_exec("chgrp -R " . $this->config->get('super_group_file_owner', 'access-content') . " " . $uploadPath);
-
 		
 		// create super group DB if doesnt already exist
 		$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
@@ -509,6 +514,212 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			'action'    => 'super_group_created',
 			'comments'  => ''
 		));
+	}
+
+	/**
+	 * [_handSuperGroupGitlab description]
+	 * @param  [type] $group [description]
+	 * @return [type]        [description]
+	 */
+	private function _handSuperGroupGitlab($group)
+	{
+		// get needed config vars
+		$gitlabManagement = $this->config->get('super_gitlab', 0);
+		$gitlabUrl        = $this->config->get('super_gitlab_url', '');
+		$gitlabKey        = $this->config->get('super_gitlab_key', '');
+
+		// do we have repo management on
+		// make sure we have a url and key
+		if (!$gitlabManagement || $gitlabUrl == '' || $gitlabKey == '')
+		{
+			JFactory::getApplication()
+					->enqueueMessage('Gitlab is not setup properly for managing super group repositories. Please complete setup in the Groups params and save the super group again.', 'warning');
+			return;
+		}
+
+		// make sure this is production hub
+		$environment = strtolower(JFactory::getConfig()->get('application_env', 'development'));
+		if ($environment != 'production')
+		{
+			return;
+		}
+
+		// build group & project names
+		$host        = explode('.', $_SERVER['HTTP_HOST']);
+		$groupName   = strtolower($host[0]);
+		$projectName = $group->get('cn');
+
+		// instantiate new gitlab client
+		$client = new \Gitlab\Client($gitlabUrl);
+		$client->authenticate($gitlabKey, \Gitlab\Client::AUTH_URL_TOKEN);
+
+		// get list of groups
+		$groups = $client->api('groups')->all();
+
+		// attempt to get already existing group
+		$gitLabGroup = null;
+		foreach ($groups as $g)
+		{
+			if ($groupName == $g['name'])
+			{
+				$gitLabGroup = $g;
+				break;
+			}
+		}
+
+		// create group if doesnt exist
+		if ($gitLabGroup == null)
+		{
+			$gitLabGroup = $client->api('groups')
+				->create($groupName, strtolower($groupName));
+		}
+
+		//get groups projects
+		$projects = $client->api('projects')->all();
+
+		// attempt to get already existing project
+		$gitLabProject = null;
+		foreach ($projects as $p)
+		{
+			if ($projectName == $p['name'] && $p['namespace']['id'] == $gitLabGroup['id'])
+			{
+				$gitLabProject = $p;
+				break;
+			}
+		}
+
+		// create project if doesnt exist
+		if ($gitLabProject == null)
+		{
+			$gitLabProject = $client->api('projects')->create($projectName, array(
+				'namespace_id' => $gitLabGroup['id'],
+				'name'         => $projectName,
+				'description'  => $group->get('description'),
+				'issues_enabled' => true,
+				'merge_requests_enabled' => true,
+				'wiki_enabled' => true,
+				'snippets_enabled' => true,
+			));
+		}
+
+		// path to group folder
+		$uploadPath = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+
+		// build author info for making first commit 
+		$authorInfo = '"' . JFactory::getConfig()->get('sitename') . ' Groups <groups@' . $_SERVER['HTTP_HOST'] . '>"';
+
+		// check to see if we already have git repo
+		// only run gitlab setup once.
+		if (is_dir($uploadPath . DS . '.git'))
+		{
+			return;
+		} 
+
+		// build command to run via shell
+		// this will init the git repo, make the inital commit and push to the repo management machine
+		$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
+		$cmd .= $uploadPath  . ' ' . $authorInfo . ' ' . $gitLabProject['ssh_url_to_repo'] . ' 2>&1';
+		
+		// execute command
+		$output = shell_exec($cmd);
+		
+		// make sure everything went well
+		if (preg_match("/Host key verification failed/uis", $output))
+		{
+			JFactory::getApplication()
+					->enqueueMessage('Gitlab is not setup properly for managing super group repositories. Please make sure the hub has a valid SSH key and has been added to Gitlab to allow the HUB to make commits.', 'warning');
+			return;
+		}
+
+		// protect master branch
+		// allows only admins to accept Merge Requests
+		$project = new \Gitlab\Model\Project($gitLabProject['id'], $client);
+		$project->protectBranch('master');
+	}
+
+	/**
+	 * Pull from Gitlab
+	 * @return void
+	 */
+	public function pullTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (!is_array($ids))
+		{
+			$ids = array();
+		}
+
+		// vars to hold results of pull
+		$success = array();
+		$failed  = array();
+
+		// loop through each group and pull code from repos
+		foreach ($ids as $id)
+		{
+			// Load the group page
+			$group = \Hubzero\User\Group::getInstance($id);
+
+			// Ensure we found the group info
+			if (!$group)
+			{
+				continue;
+			}
+
+			// make sure its a super group
+			if (!$group->isSuperGroup())
+			{
+				$failed[] = array('group' => $group->get('cn'), 'message' => 'Not a super group.');
+				continue;
+			}
+			
+			// path to group folder
+			$uploadPath = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+
+			// make sure we have an upload path
+			if (!is_dir($uploadPath))
+			{
+				$failed[] = array('group' => $group->get('cn'), 'message' => 'Group upload path does not exist.');
+				continue;
+			}
+
+			// make sure we have a git repo
+			if (!is_dir($uploadPath . DS . '.git'))
+			{
+				$failed[] = array('group' => $group->get('cn'), 'message' => 'Group assets are not versioned by git.');
+				continue;
+			}
+
+			// build command to run via shell
+			// this will run a "git pull --rebase origin master"
+			$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_pull.sh ';
+			$cmd .= $uploadPath . ' 2>&1';
+			
+			// execute command
+			$output = shell_exec($cmd);
+
+			// did we succeed
+			if (preg_match("/First, Rewinding head to replay your work on top of it/uis", $output) || preg_match("/Current branch master is up to date./uis", $output))
+			{
+				$success[] = array('group' => $group->get('cn'), 'message' => $output);
+			}
+			else
+			{
+				$failed[] = array('group' => $group->get('cn'), 'message' => $output);
+			}
+		}
+
+		// display view
+		$this->view->setLayout('pull');
+		$this->view->success = $success;
+		$this->view->failed  = $failed;
+		$this->view->config  = $this->config;
+		$this->view->display();
 	}
 
 	/**
