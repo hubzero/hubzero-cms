@@ -2149,7 +2149,15 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
-		} 
+		}
+		// allow for temp resource uploads
+		elseif (substr($id, 0, 4) == '9999')
+		{
+			$resource->id         = $id;
+			$resource->standalone = 1;
+			$resource->path       = null;
+			$resource->created    = JFactory::getDate()->format('Y-m-d 00:00:00');
+		}
 		elseif (!$resource->load($id)) 
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
@@ -2200,7 +2208,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		if ($resource->standalone && !$resource->path)
 		{
-			$resource->path = DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($resource->created, $resource->id) . DS . 'media' . DS . JRequest::getVar('file');
+			$resource->path = DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($resource->created, $resource->id, '') . DS . 'media' . DS . JRequest::getVar('file');
 		}
 
 		$resource->path = trim($resource->path);
