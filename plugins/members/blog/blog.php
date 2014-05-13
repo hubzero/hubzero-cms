@@ -549,6 +549,12 @@ class plgMembersBlog extends JPlugin
 			return $this->_login();
 		}
 
+		if ($juser->get('id') != $this->member->get('uidNumber'))
+		{
+			$this->setError(JText::_('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
+			return $this->_browse();
+		}
+
 		// Instantiate view
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -615,6 +621,12 @@ class plgMembersBlog extends JPlugin
 			return $this->_login();
 		}
 
+		if ($juser->get('id') != $this->member->get('uidNumber'))
+		{
+			$this->setError(JText::_('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
+			return $this->_browse();
+		}
+
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
 		
 		// make sure we dont want to turn off comments
@@ -663,7 +675,7 @@ class plgMembersBlog extends JPlugin
 			return;
 		}
 
-		if ($this->user->get('id') != $this->member->get('uidNumber'))
+		if ($juser->get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(JText::_('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -848,7 +860,7 @@ class plgMembersBlog extends JPlugin
 			return;
 		}
 
-		if ($this->user->get('id') != $this->member->get('uidNumber'))
+		if ($juser->get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(JText::_('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -896,7 +908,7 @@ class plgMembersBlog extends JPlugin
 			return;
 		}
 
-		if ($this->user->get("id") != $this->member->get("uidNumber"))
+		if ($juser->get("id") != $this->member->get("uidNumber"))
 		{
 			$this->setError(JText::_('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
