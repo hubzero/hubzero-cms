@@ -254,7 +254,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$this->view->hosttypes = $ht->getRecords();
 
 		$v = new MwZones($mwdb);
-		$this->view->zones = $v->getRecords();
+		$this->view->zones = $v->find('list');
 		
 		//make sure we have a hostname
 		if($this->view->row->hostname != '')
