@@ -60,6 +60,12 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 
 		$row = new ResourcesResource($this->database);
 		$row->load($resource);
+		
+		// allow for temp resource uploads
+		if (!$row->created || $row->created == '0000-00-00 00:00:00')
+		{
+			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
+		}
 
 		$path =  JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
 
@@ -143,6 +149,12 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming sub-directory
 		//$subdir = JRequest::getVar('subdir', '');
+		
+		// allow for temp resource uploads
+		if (!$row->created || $row->created == '0000-00-00 00:00:00')
+		{
+			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
+		}
 
 		$path =  JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
 
@@ -207,6 +219,12 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 		//$this->view->path = ResourcesUtilities::buildUploadPath($this->view->listdir, $this->view->subdir);
 		$row = new ResourcesResource($this->database);
 		$row->load($this->view->resource);
+
+		// allow for temp resource uploads
+		if (!$row->created || $row->created == '0000-00-00 00:00:00')
+		{
+			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
+		}
 
 		$this->view->path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $this->view->resource, '') . DS . 'media';
 

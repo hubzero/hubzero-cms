@@ -354,6 +354,18 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$row->type = $type;
 				$row->published = 2;
 				$row->group_owner = $group;
+
+				// generate a random number for file uploader
+				$session = JFactory::getSession();
+				if (!$session->get('resources_temp_id'))
+				{
+					$row->id = '9999' . rand(1000,10000);
+					$session->set('resources_temp_id', $row->id);
+				}
+				else
+				{
+					$row->id = $session->get('resources_temp_id');
+				}
 			}
 		}
 
@@ -706,7 +718,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		$isNew = $row->id < 1;
+		$isNew = $row->id < 1 || substr($row->id, 0, 4) == '9999';
 
 		$row->created    = ($row->created)    ? $row->created    : JFactory::getDate()->toSql();
 		$row->created_by = ($row->created_by) ? $row->created_by : $this->juser->get('id');
@@ -827,6 +839,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// reset id
+		if ($isNew)
+		{
+			$row->id = null;
+		}
+
 		// Store new content
 		if (!$row->store()) 
 		{
@@ -836,6 +854,29 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$this->view->setLayout('compose');
 			$this->step_compose($row);
 			return;
+		}
+
+		// build path to temp upload folder and future permanent folder
+		$session = JFactory::getSession();
+		$created = JFactory::getDate()->format('Y-m-d 00:00:00');
+		$oldPath = trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($created, $session->get('resources_temp_id') ,'');
+		$newPath = trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $row->id, '');
+
+		// if we have a temp dir, move it to permanent location
+		if (is_dir($oldPath))
+		{
+			JFolder::move($oldPath, $newPath);
+
+			$old = DS . 'resources' . DS . $session->get('resources_temp_id') . DS . 'download' . DS;
+			$new = DS . 'resources' . DS . $row->id . DS . 'download' . DS;
+
+			// update all images in abstract
+			$row->introtext = str_replace($old, $new, $row->introtext);
+			$row->fulltxt   = str_replace($old, $new, $row->fulltxt);
+			$row->store();
+
+			// clear temp id
+			$session->clear('resources_temp_id');
 		}
 
 		// Checkin the resource
