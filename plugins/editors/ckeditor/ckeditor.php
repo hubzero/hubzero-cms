@@ -67,7 +67,10 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onSave()
 	{
-		$js = "for (instance in CKEDITOR.instances) { CKEDITOR.instances[instance].updateElement(); }";
+		$js = "for (instance in CKEDITOR.instances) {
+				CKEDITOR.instances[instance].fire('beforeSave');
+				CKEDITOR.instances[instance].updateElement();
+			}";
 		return $js;
 	}
 
@@ -158,6 +161,7 @@ class plgEditorCkeditor extends JPlugin
 		$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
 		$config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
 		$config = str_replace('"\/<group:include([^\\\\\/]*)\\\\\/>\/g"', '/<group:include([^\\/]*)\\/>/g', $config);
+		$config = str_replace('"\/{xhub:([^}]*)}\/gi"', '/{xhub:([^}]*)}/gi', $config);
 
 		// script to actually make ckeditor
 		$script  = '<script type="text/javascript">';
@@ -292,7 +296,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->removePlugins                 = 'resize';
 		$config->resize_enabled                = false;
 		$config->emailProtection               = 'encode';
-		$config->protectedSource               = array('/<group:include([^\\/]*)\\/>/g');
+		$config->protectedSource               = array('/<group:include([^\\/]*)\\/>/g', '/{xhub:([^}]*)}/gi');
 		$config->extraAllowedContent           = 'mark(*)[*]; *(*)[*]';
 		$config->disableNativeSpellChecker     = false;
 		$config->scayt_autoStartup             = true;
@@ -355,11 +359,11 @@ class plgEditorCkeditor extends JPlugin
 		}
 
 		// show source button
-		if ($this->params->get('sourceViewButton'))
-		{
+		//if ($this->params->get('sourceViewButton'))
+		//{
 			array_unshift($config->toolbar[0], 'Source', '-');
 			$config->extraPlugins .= ',codemirror';
-		}
+		//}
 
 		// autogrow auto-start
 		if (is_bool($this->params->get('autoGrowAutoStart')))
