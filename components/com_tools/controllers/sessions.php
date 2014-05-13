@@ -752,7 +752,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// We've passed all checks so let's actually start the new session
 
-		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . Hubzero_Environment::ipAddress() . " app=" . $session->app() . " version=" . $session->app('version') . $toolparams, $output);
+		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . JRequest::ip() . " app=" . $session->app() . " version=" . $session->app('version') . $toolparams, $output);
 		if ($this->getError())
 		{
 			$this->setRedirect(
