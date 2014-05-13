@@ -145,13 +145,13 @@
 				<field
 					name="direction"
 					type="list"
-					default="ASC"
+					default="DESC"
 					label="MOD_ARTICLES_NEWS_FIELD_DIRECTION_LABEL"
 					description="MOD_ARTICLES_NEWS_FIELD_DIRECTION_DESC">
 					<option
-						value="ASC">MOD_ARTICLES_NEWS_FIELD_DIRECTION_DIRECTIONASC</option>
+						value="DESC">MOD_ARTICLES_NEWS_FIELD_DIRECTION_DIRECTIONASC</option>
 					<option
-						value="DESC">MOD_ARTICLES_NEWS_FIELD_DIRECTION_DIRECTIONDESC</option>
+						value="ASC">MOD_ARTICLES_NEWS_FIELD_DIRECTION_DIRECTIONDESC</option>
 				</field>
 
 			</fieldset>
