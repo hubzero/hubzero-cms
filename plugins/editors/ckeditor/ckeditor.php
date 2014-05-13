@@ -359,11 +359,11 @@ class plgEditorCkeditor extends JPlugin
 		}
 
 		// show source button
-		//if ($this->params->get('sourceViewButton'))
-		//{
+		if ($this->params->get('sourceViewButton'))
+		{
 			array_unshift($config->toolbar[0], 'Source', '-');
 			$config->extraPlugins .= ',codemirror';
-		//}
+		}
 
 		// autogrow auto-start
 		if (is_bool($this->params->get('autoGrowAutoStart')))
