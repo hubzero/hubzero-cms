@@ -444,7 +444,8 @@ class plgCoursesProgress extends JPlugin
 		$members = $this->course->offering()->section()->members(array('student'=>1));
 
 		// Refresh the grades
-		$this->course->offering()->gradebook()->refresh();
+		// @FIXME: This seems to cause memory problems...neeed trigger based solution, rather than one-time computation
+		//$this->course->offering()->gradebook()->refresh();
 
 		// Get the grades
 		$grades = $this->course->offering()->gradebook()->grades();
