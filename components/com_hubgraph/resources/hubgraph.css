@@ -11,39 +11,40 @@
 .search-bar {
 	padding-right: 211px;
 	position: relative;
-	height: 40px;
 }
 .search-bar input {
 	height: 100%;
 	width: 100%;
 	border-top-left-radius: 6px;
 }
+.search-bar > a:after {
+	content: "x";
+}
 .search-bar a {
-	position: absolute;
-	top: 0.6em;
-	right: 225px;
-	font-size: 1.2em;
-	font-family: sans-serif;
-	color: #aaa;
+	border: 0 none;
+	color: #AAAAAA;
 	display: none;
+	font-family: sans-serif;
+	position: absolute;
+	right: 210px;
+	top: 4px;
 }
 .search-bar:hover a {
 	display: inline;
 }
 .search-bar input, .search-bar button {
-	line-height: 2em;
 	padding: 2px 6px 2px 6px;
 	font-size: small;
 }
 .search-bar button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	height: 100%;
-	width: 214px;
-	text-align: center;
-	border: 1px outset #ddd;
+	border: 1px outset #DDDDDD;
 	border-top-right-radius: 6px;
+	height: 100%;
+	position: absolute;
+	right: 100px;
+	text-align: center;
+	top: 0;
+	width: 100px;
 }
 .pages {
 	margin-right: 240px;
@@ -293,6 +294,10 @@ ol.related {
 	width: 208px;
 	max-height: 400px;
 	overflow: auto;
+	font-size: x-small;
+}
+.criteria ol button:after {
+    content: ",";
 }
 .clear {
 	clear: left !important;
