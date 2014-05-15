@@ -258,13 +258,17 @@ class ModIncrementalRegistrationAwards
 		self::$dbh->setQuery($completeSql.' WHERE user_id = '.$this->uid);
 		self::$dbh->execute();
 
-		if ($alreadyComplete) 
-		{
+		if ($alreadyComplete) {
 			self::$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$this->uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$this->uid.')), 0)');
 			$newAmount = self::$dbh->loadResult() + $alreadyComplete;
 
-
-			$BTL = new \Hubzero\Bank\Teller( self::$dbh, $this->uid );
+			if (class_exists('Hubzero\Bank\Teller')) {
+				$BTL = new \Hubzero\Bank\Teller(self::$dbh, $this->uid);
+			}
+			else {
+				ximport('Hubzero_Bank');
+				$BTL = new Hubzero_Bank_Teller(self::$dbh, $this->uid);
+			}
 			$BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0); 
 		}
 		return array(
