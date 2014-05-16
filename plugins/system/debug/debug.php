@@ -269,6 +269,25 @@ class plgSystemDebug extends JPlugin
 		$html .= '</div>';
 
 		$html .= "<script type=\"text/javascript\">
+		if (!document.getElementsByClassName) {
+			document.getElementsByClassName = (function(){
+				function traverse (node, callback) {
+					callback(node);
+					for (var i=0;i < node.childNodes.length; i++) {
+						traverse(node.childNodes[i],callback);
+					}
+				}
+				return function (name) {
+					var result = [];
+					traverse(document.body,function(node){
+						if (node.className && (' ' + node.className + ' ').indexOf(' ' + name + ' ') > -1) {
+							result.push(node);
+						}
+					});
+					return result;
+				}
+			})();
+		}
 		Debugger = {
 			toggleShortFull: function(id) {
 				var d = document.getElementById('debug-' + id + '-short');

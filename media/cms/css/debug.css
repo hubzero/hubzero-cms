@@ -402,6 +402,7 @@
 	}
 	#system-debug.dark .debug-head h1 {
 		color: #282828;
+		border-color: #323232;
 		border-color: rgba(0, 0, 0, 0.4);
 	}
 	#system-debug.dark .debug-tab,
@@ -409,6 +410,7 @@
 	#system-debug.dark .debug-close-btn {
 		color: #e0e0e0;
 		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
+		border-color: #323232;
 		border-color: rgba(0, 0, 0, 0.4);
 	}
 	#system-debug.dark .debug-tab {
@@ -452,6 +454,7 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#222222, endColorstr=#323232)";
 	}
 	#system-debug.dark .debug-tab .badge {
+		background: #777;
 		background: rgba(255, 255, 255, 0.3);
 		color: #eee;
 	}
