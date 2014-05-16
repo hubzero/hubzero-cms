@@ -76,10 +76,6 @@ $juser = JFactory::getUser();
 			$info = ($row->checked_out_time != '0000-00-00 00:00:00')
 					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')).'<br />'
 					 : '';
-			if ($row->editor) 
-			{
-				$info .= JText::_('CHECKED_OUT_BY').': '.$row->editor;
-			}
 		} 
 		else
 		{
