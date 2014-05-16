@@ -279,6 +279,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 		if (!($this->_creator instanceof JUser))
 		{
 			$this->_creator = JUser::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new JUser();
+			}
 		}
 		if ($property)
 		{
