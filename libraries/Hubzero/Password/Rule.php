@@ -334,6 +334,11 @@ class Rule
 	{
 		$word = self::normalize_word($word);
 
+		if (empty($word))
+		{
+			return false;
+		}
+
 		$names = explode(" ", $name);
 
 		$count = count($names);
