@@ -240,6 +240,18 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		$p = new $paramsClass('');
 		$p->$mthd(JRequest::getVar('params', '', 'post'));
 
+		$paramsClass = 'JParameter';
+		$mthd = 'bind';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+			$mthd = 'loadArray';
+		}
+
+		// Make sure the logo gets carried over
+		$op = new $paramsClass($model->get('params'));
+		$p->set('logo', $op->get('logo'));
+
 		$model->set('params', $p->toString());
 
 		if (!$model->store(true))
