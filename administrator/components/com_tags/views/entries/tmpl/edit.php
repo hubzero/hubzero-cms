@@ -46,19 +46,18 @@ JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('edit');
 
+JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	var form = document.adminForm;
-
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
 
 	// do field validation
-	if (form.raw_tag.value == '') {
+	if ($('#field-raw_tag').val() == '') {
 		alert('<?php echo JText::_('ERROR_EMPTY_TAG'); ?>');
 	} else {
 		submitform(pressbutton);
