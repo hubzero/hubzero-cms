@@ -1,0 +1,7 @@
+@import url("/components/com_members/assets/css/members.css");
+
+	#page_sidebar {
+		background: #fff;
+		border-right: 1px solid #f0f0f0;
+		width: 214px;
+	}
