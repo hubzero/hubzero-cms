@@ -194,7 +194,7 @@ window.addEvent("domready", function() {
 
 					$param = new $paramsClass(
 						(is_object($data) ? $data->toString() : $data),
-						JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . ($pth ? DS . $plugin['name'] : '') . '.xml'
+						JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . ? DS . $plugin['name'] . '.xml'
 					);
 					foreach ($default->toArray() as $k => $v)
 					{
@@ -204,6 +204,7 @@ window.addEvent("domready", function() {
 						}
 					}
 					$out = $param->render('params', 'onAssetgroupEdit');
+
 					if (!$out) 
 					{
 						continue;
