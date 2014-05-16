@@ -178,6 +178,10 @@ class WikiModelComment extends \Hubzero\Base\Model
 		{
 			//$this->_creator = JUser::getInstance($this->get('created_by'));
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property) //JUser
 		{
