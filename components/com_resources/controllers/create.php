@@ -448,6 +448,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Output HTML
 		$this->view->next_step = $this->step + 1;
 		$this->view->task = 'draft';
+		if (!isset($this->view->progress) || !$this->view->progress)
+		{
+			$this->_checkProgress($this->view->id);
+			$this->view->progress = $this->progress;
+		}
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
