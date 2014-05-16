@@ -30,6 +30,8 @@
 
 namespace Hubzero\Content\Migration;
 
+use Hubzero\Config\Processor\Ini;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -96,7 +98,7 @@ class Base
 
 		if (file_exists($secrets))
 		{
-			$conf = parse_ini_file($secrets);
+			$conf = Ini::parse($secrets);
 			$user = 'root';
 			$pw   = $conf['MYSQL-ROOT'];
 
@@ -108,7 +110,7 @@ class Base
 
 		if (file_exists($conf_file))
 		{
-			$conf = parse_ini_file($conf_file, true);
+			$conf = Ini::parse($conf_file, true);
 			$user = $conf['client']['user'];
 			$pw   = $conf['client']['password'];
 
@@ -120,7 +122,7 @@ class Base
 
 		if (is_file($hub_maint) && is_readable($hub_maint))
 		{
-			$conf = parse_ini_file($hub_maint, true);
+			$conf = Ini::parse($hub_maint, true);
 			$user = $conf['client']['user'];
 			$pw   = $conf['client']['password'];
 
