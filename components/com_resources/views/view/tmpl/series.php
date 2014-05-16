@@ -268,17 +268,17 @@ $juser = JFactory::getUser();
 		{
 			// Build the results
 			$sortbys = array(
-				'date'     => JText::_('DATE'),
-				'title'    => JText::_('TITLE'),
-				'author'   => JText::_('AUTHOR'),
-				'ordering' => JText::_('ORDERING')
+				'date'     => JText::_('Date'),
+				'title'    => JText::_('Title'),
+				'author'   => JText::_('Author'),
+				'ordering' => JText::_('Ordering')
 			);
 			if ($this->model->params->get('show_ranking')) 
 			{
 				$sortbys['ranking'] = JText::_('RANKING');
 			}
 
-			$defaultsort = 'date';
+			$defaultsort = 'ordering';
 			$defaultsort = ($this->model->params->get('show_ranking')) ? 'ranking' : $defaultsort;
 
 			$filters = array(
