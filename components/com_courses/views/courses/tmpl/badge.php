@@ -93,7 +93,9 @@ switch ($this->action)
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
 
-		$memberBadge = new CoursesTableMemberBadge(JFactory::getDBO());
+		$db = JFactory::getDBO();
+
+		$memberBadge = new CoursesTableMemberBadge($db);
 		$memberBadge->load(array('validation_token'=>$this->token));
 
 		if (!$memberBadge->get('id'))
@@ -101,11 +103,11 @@ switch ($this->action)
 			JError::raiseError(421, 'Invalid request');
 		}
 
-		$memberTbl = new CoursesTableMember(JFactory::getDBO());
+		$memberTbl = new CoursesTableMember($db);
 		$memberTbl->loadByMemberId($memberBadge->member_id);
 		$user_id = $memberTbl->get('user_id');
 
-		$criteria = new CoursesTableSectionBadgeCriteria(JFactory::getDBO());
+		$criteria = new CoursesTableSectionBadgeCriteria($db);
 		$criteria->load($memberBadge->get('criteria_id'));
 
 		$title = "Badge Validation";
