@@ -84,13 +84,13 @@ class TagsModelTag extends \Hubzero\Base\Model
 		$this->_tbl = new TagsTableTag($this->_db);
 
 		// Load record
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_string($oid))
+		if (is_string($oid))
 		{
 			$this->_tbl->loadTag($oid);
+		}
+		else if (is_numeric($oid))
+		{
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid) || is_array($oid))
 		{

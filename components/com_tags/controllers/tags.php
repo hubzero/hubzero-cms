@@ -757,7 +757,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		else 
 		{
 			// Incoming
-			$this->view->tag = new TagsModelTag(JRequest::getInt('id', 0, 'request'));
+			$this->view->tag = new TagsModelTag(intval(JRequest::getInt('id', 0, 'request')));
 		}
 
 		$this->view->filters = array();
@@ -818,7 +818,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$tag = JRequest::getVar('fields', array(), 'post');
 
 		// Bind incoming data
-		$row = new TagsModelTag($tag['id']);
+		$row = new TagsModelTag(intval($tag['id']));
 		if (!$row->bind($tag)) 
 		{
 			$this->setError($row->getError());
@@ -881,6 +881,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		foreach ($ids as $id)
 		{
+			$id = intval($id);
+
 			// Remove references to the tag
 			$dispatcher->trigger('onTagDelete', array($id));
 
