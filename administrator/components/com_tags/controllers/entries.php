@@ -147,7 +147,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 			// Incoming
 			$id = JRequest::getInt('id', 0, 'request');
 
-			$this->view->tag = new TagsModelTag($id);
+			$this->view->tag = new TagsModelTag(intval($id));
 		}
 
 		// Set any errors
@@ -189,7 +189,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 
 		$fields = JRequest::getVar('fields', array(), 'post');
 
-		$row = new TagsModelTag($fields['id']);
+		$row = new TagsModelTag(intval($fields['id']));
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -257,6 +257,8 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 
 		foreach ($ids as $id)
 		{
+			$id = intval($id);
+
 			// Remove references to the tag
 			$dispatcher->trigger('onTagDelete', array($id));
 
@@ -312,7 +314,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				foreach ($ids as $id)
 				{
 					// Add the tag object to an array
-					$this->view->tags[] = new TagsModelTag($id);
+					$this->view->tags[] = new TagsModelTag(intval($id));
 				}
 
 				// Get all tags
@@ -382,7 +384,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 						continue;
 					}
 
-					$oldtag = new TagsModelTag($id);
+					$oldtag = new TagsModelTag(intval($id));
 					if (!$oldtag->mergeWith($mtag))
 					{
 						$this->setError($oldtag->getError());
@@ -442,7 +444,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				foreach ($ids as $id)
 				{
 					// Load the tag's info
-					$this->view->tags[] = new TagsModelTag($id);
+					$this->view->tags[] = new TagsModelTag(intval($id));
 				}
 
 				// Get all tags
@@ -506,7 +508,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 						continue;
 					}
 
-					$oldtag = new TagsModelTag($id);
+					$oldtag = new TagsModelTag(intval($id));
 					if (!$oldtag->copyTo($mtag))
 					{
 						$this->setError($oldtag->getError());
