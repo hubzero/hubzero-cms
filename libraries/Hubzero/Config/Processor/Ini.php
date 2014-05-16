@@ -138,7 +138,7 @@ class Ini
 
 				if (strpos($line, "=") !== false)
 				{
-					$parts = explode("=", $line);
+					$parts = explode("=", $line, 2);
 					$key   = trim($parts[0]);
 					$value = trim($parts[1]);
 
