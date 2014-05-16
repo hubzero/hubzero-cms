@@ -435,7 +435,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 				// Strip html from feed item description text
 				$description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($row->text));
-				$description = \Hubzero\Utility\String::truncate($description, 300, 0);
+				$description = \Hubzero\Utility\String::truncate($description, 300);
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
