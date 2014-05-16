@@ -1532,7 +1532,7 @@ class SimplePie
 		$this->sanitize->pass_file_data($this->file_class, $this->timeout, $this->useragent, $this->force_fsockopen);
 
 		if ($this->feed_url !== null || $this->raw_data !== null)
-		{
+		{			
 			$this->data = array();
 			$this->multifeed_objects = array();
 			$cache = false;
