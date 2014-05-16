@@ -52,7 +52,7 @@ $this->css('posts');
 			<a href="#feedbox" id="generateFeed" class="fancybox-inline icon-feed btn">Generate RSS Feed</a>
 		</li>
 		<li>
-		<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retrieve New Posts'); ?></a>
+		<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retrieve New Posts'); ?></a>
 		</li>
 	
 		<li>
@@ -78,15 +78,7 @@ $this->css('posts');
 		<li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=approved'); ?>"><?php echo JText::_('Approved'); ?></a></li>
 		<li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=removed'); ?>"><?php echo JText::_('Removed'); ?></a></li>
 	</ul>
-<!-- <select name="timesort" id="timesort">
-<option value="0">--</option>
-<option value="day">Past 24 hours</option>
-<option value="week">Past Week</option>
-<option value="month">Past Month</option>
-<option value="quarter">Past Quarter</option>
-<option value="year">Past Year</option>
-<option value="greater">> 1 Year</option>
-</select> -->
+
 	<table class="ideas entries feedtable">
 	<caption>Showing <?php echo $this->filters['filterby'];?> posts</caption>
 		<tbody>	
@@ -137,7 +129,7 @@ $this->css('posts');
 				<div class="postpreview" id="content-fancybox<?php echo $post->id;?>">
 						<h1><?php echo $post->title; ?></h1>
 						<p class="description"><?php echo $post->description; ?></p>
-						<p><a target="_blank" href="<?php echo $post->link; ?>">Link to original post.</a></p>
+						<p><a target="_blank" href="<?php echo urldecode($post->link); ?>">Link to original post.</a></p>
 						<div class="button-container">
 						<hr />
 						<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="actionBtn approveBtn btn <?php echo 'btnGrp'.$post->id; ?> " value="Approve" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?> >
@@ -171,9 +163,9 @@ if ($this->fromfeed != TRUE)
 	<div class="postpreview" id="feedbox">
 	<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER'); ?></h2>
 	<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?></p>
-	<p><a href="<?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?>"><?php echo JRoute::_(JFactory::getURI()->base().'index.php?option=com_feedaggregator&task=generateFeed&no_html=1'); ?></a></p>
+	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=generateFeed');?>">
+	<?php echo substr_replace(JFactory::getURI()->base(),"",-1). JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=generateFeed');?></a>
 	</div>
 </div>
-
 </div><!-- /.main section -->
 </div> <!--  main page -->

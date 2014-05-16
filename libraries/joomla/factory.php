@@ -344,6 +344,9 @@ abstract class JFactory
 
 		$cache = self::getCache('feed_parser', 'callback');
 
+		$cache_time = 0;
+		$cache->setLifeTime(0);
+		
 		if ($cache_time > 0)
 		{
 			$cache->setLifeTime($cache_time);
@@ -354,9 +357,9 @@ abstract class JFactory
 		$simplepie->enable_cache(false);
 		$simplepie->set_feed_url($url);
 		$simplepie->force_feed(true);
-
+	
 		$contents = $cache->get(array($simplepie, 'init'), null, false, false);
-
+		
 		if ($contents)
 		{
 			return $simplepie;
@@ -390,6 +393,7 @@ abstract class JFactory
 
 		switch (strtolower($type))
 		{
+			
 			case 'rss':
 			case 'atom':
 				$cache_time = isset($options['cache_time']) ? $options['cache_time'] : 0;

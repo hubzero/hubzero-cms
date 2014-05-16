@@ -38,7 +38,6 @@ require_once(JPATH_ROOT.DS."components".DS."com_feedaggregator".DS."models".DS."
  */
 class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 {
-	
 	/**
 	 * Default component view
 	 *

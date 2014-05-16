@@ -259,6 +259,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 			try {
 
 				Guzzle\Http\StaticClient::mount();
+				
 
 				foreach ($feeds as $feed)
 				{
@@ -291,7 +292,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 								if (in_array($link, $savedURLS) == FALSE) //checks to see if we have this item
 								{
 									$post = new FeedAggregatorModelPosts; //create post object
-									$post->set('title', (string)$item->title); 
+									$post->set('title', html_entity_decode(strip_tags($item->title))); 
 									$post->set('feed_id', (integer) $feed->id);
 									$post->set('status', 0);  //force new status
 									
@@ -307,7 +308,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 										$post->set('created', strtotime($item->updated));
 									}
 									
-									$post->set('description', (string) strip_tags($item->summary, '<img>'));	
+									$post->set('description', (string) html_entity_decode(strip_tags($item->content, '<img>')));	
 									$post->store(); //save the post
 														
 								} // end check for prior existance 
@@ -318,16 +319,15 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 								if (in_array($item->link, $savedURLS) == FALSE) //checks to see if we have this item
 								{
 									$post = new FeedAggregatorModelPosts; //create post object
-									$post->set('title', (string)$item->title);
+									$post->set('title',  (string) html_entity_decode(strip_tags($item->title)));
 									$post->set('feed_id', (integer) $feed->id);
 									$post->set('status', 0);  //force new status
 									$post->set('created', strtotime($item->pubDate));
-									$post->set('description', (string) strip_tags($item->description, '<img>'));
+									$post->set('description', (string) html_entity_decode(strip_tags($item->description, '<img>')));
 									$post->set('url', (string) $item->link);
 									
 									$post->store(); //save the post
 								}
-								
 							}
 
 						} //end foreach
@@ -356,21 +356,20 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		// Get the approved posts
 		$model = new FeedAggregatorModelPosts;
 		$posts = $model->getPostsByStatus(1000,0,2);
-
-
+		
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		$doc = JFactory::getDocument();
+		$doc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-		$doc->link = JRoute::_('index.php?option=com_feedaggregator&task=generateFeed&no_html=1');
+		//$doc->link = urlencode(JRoute::_('index.php?option=com_feedaggregator&task=generateFeed&no_html=1'));
 
 		// Build some basic RSS document information
 		$jconfig = JFactory::getConfig();
 
 		$doc->title       =  $jconfig->getValue('config.sitename'). " Aggregated Feed";
-		$doc->description =  JText::_("Feed aggregator description");
+		$doc->description =  JText::_($jconfig->getValue('config.sitename'). ' Aggregated Feed, selected reading.');
 		$doc->copyright   = JText::sprintf(date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category    = JText::_('External content');
 
@@ -381,19 +380,21 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 			{
 				$item = new JFeedItem();
 
+
 				// Load individual item creator class
-				$item->title       = html_entity_decode(strip_tags($post->title));
+				$item->title       = htmlspecialchars($post->title);
 				$item->link        = $post->link;
 				$item->date        = date($post->created);
-				$item->description = $post->description;
-
-				// Loads item info into rss array
+				$item->description = (string) html_entity_decode(strip_tags($post->description, '<img>'));
+				
 				$doc->addItem($item);
-			}
+			} 
 		}
 		// Output the feed
+		header("Content-Type: application/rss+xml");
 		echo $doc->render();
-		return;
+		die;
+		
 	}
 
 } // end class

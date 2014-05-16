@@ -644,6 +644,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Output the feed
 		echo $doc->render();
+		die;
 	}
 
 	/**
