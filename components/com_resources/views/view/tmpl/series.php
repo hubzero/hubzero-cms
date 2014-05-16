@@ -271,7 +271,7 @@ $juser = JFactory::getUser();
 				'date'     => JText::_('Date'),
 				'title'    => JText::_('Title'),
 				'author'   => JText::_('Author'),
-				'ordering' => JText::_('Oordering')
+				'ordering' => JText::_('Ordering')
 			);
 			if ($this->model->params->get('show_ranking')) 
 			{
