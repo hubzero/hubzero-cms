@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?php if ($this->details && count($this->details) > 0) : ?>
+	<?php ksort($this->details); ?>
 	<?php foreach ($this->details as $question_id => $responses) : ?>
 		<div class="question-box">
 			<div class="question-label">
