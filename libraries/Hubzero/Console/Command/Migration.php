@@ -252,7 +252,8 @@ class Migration implements CommandInterface
 								{
 									$pending[] = $matches[1];
 								}
-								if (preg_match('/completed up\(\) in (Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches))
+								if (preg_match('/completed up\(\) in (Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches)
+									|| preg_match('/would ignore up\(\) (Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches))
 								{
 									$complete[] = $matches[1];
 								}
