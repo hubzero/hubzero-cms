@@ -125,9 +125,6 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		//build pathway
 		$this->_buildPathway();
 
-		// Push some needed styles to the template
-		$this->_getStyles($this->_option, 'intro.css');
-
 		// Push some needed scripts to the template
 		$model = CoursesModelCourses::getInstance();
 
