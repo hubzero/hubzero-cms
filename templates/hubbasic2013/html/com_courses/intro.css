@@ -1,0 +1,21 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_courses/assets/css/intro.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+@import url("../../../../components/com_courses/assets/css/intro.css");
+
+	.data-entry {
+		padding: 0;
+		background: transparent;
+	}
+	.data-entry input.entry-search-submit,
+	.data-entry .entry-search input[type="text"], 
+	.data-entry .entry-search input {
+		border-color: rgba(0, 0, 0, .19);
+	}
+	#introduction p {
+		font-size: 1.2em;
+	}
