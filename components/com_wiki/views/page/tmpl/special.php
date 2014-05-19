@@ -67,7 +67,7 @@ $juser = JFactory::getUser();
 ?>
 
 	<section class="main section">
-
+		<article class="wikipage">
 		<?php
 			$view = new JView(array(
 				'base_path' => $this->base_path, 
@@ -84,5 +84,5 @@ $juser = JFactory::getUser();
 			//$view->revision = $this->revision;
 			$view->display()
 		?>
-
+		</article>
 	</section><!-- / .main section -->

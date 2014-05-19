@@ -102,22 +102,19 @@ $pageNav = new JPagination(
 
 //$altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
-<div class="wikipage-search" style="margin-top: 2em">
-
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="post">
-		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
-			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search pages'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($term); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="page" />
-				<input type="hidden" name="pagename" value="Special:Search" />
-				<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
-			</fieldset>
-		</div><!-- / .container -->
-	</form>
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="post">
+	<div class="container data-entry">
+		<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+		<fieldset class="entry-search">
+			<legend><?php echo JText::_('Search pages'); ?></legend>
+			<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+			<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($term); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="page" />
+			<input type="hidden" name="pagename" value="Special:Search" />
+			<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
+		</fieldset>
+	</div><!-- / .container -->
 
 	<div class="container">
 		<table class="file entries">
@@ -178,4 +175,4 @@ echo $pageNav->getListFooter();
 ?>
 		<div class="clear"></div>
 	</div>
-</div>
+</form>

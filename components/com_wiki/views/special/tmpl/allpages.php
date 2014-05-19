@@ -82,23 +82,23 @@ $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !=
 $database->setQuery($query);
 $rows = $database->loadObjectList();
 ?>
-<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
-	<div class="wikipage">
-	<fieldset>
-		<legend><?php echo JText::_('Filter list'); ?></legend>
-		
-		<label for="field-namespace">
-			<?php echo JText::_('Namespace'); ?>
-			<select name="namespace" id="field-namespace">
-				<option value=""<?php if ($namespace == '') { echo ' selected="selected"'; } ?>>all</option>
-				<option value="Help:"<?php if ($namespace == 'Help:') { echo ' selected="selected"'; } ?>>Help:</option>
-				<option value="Template:"<?php if ($namespace == 'Template:') { echo ' selected="selected"'; } ?>>Template:</option>
-			</select>
-		</label>
-		
-		<input type="submit" value="<?php echo JText::_('Go'); ?>" />
-	</fieldset>
-	
+	<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
+		<fieldset>
+			<legend><?php echo JText::_('Filter list'); ?></legend>
+
+			<label for="field-namespace">
+				<?php echo JText::_('Namespace'); ?>
+				<select name="namespace" id="field-namespace">
+					<option value=""<?php if ($namespace == '') { echo ' selected="selected"'; } ?>>all</option>
+					<option value="Help:"<?php if ($namespace == 'Help:') { echo ' selected="selected"'; } ?>>Help:</option>
+					<option value="Template:"<?php if ($namespace == 'Template:') { echo ' selected="selected"'; } ?>>Template:</option>
+				</select>
+			</label>
+
+			<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+		</fieldset>
+
+		<div class="grid">
 <?php
 if ($rows) 
 {
@@ -110,56 +110,60 @@ if ($rows)
 	{
 		switch ($i)
 		{
-			case 0: $cls = 'first'; break;
-			case 1: $cls = 'second'; break;
-			case 2: $cls = 'third'; break;
+			case 0: $cls = ''; break;
+			case 1: $cls = ''; break;
+			case 2: $cls = 'omega'; break;
 		}
 ?>
-		<div class="three columns <?php echo $cls; ?>">
-			<?php
-		if (count($column) > 0)
-		{
-			$k = 0;
-			foreach ($column as $row)
+			<div class="col span4 <?php echo $cls; ?>">
+				<?php
+			if (count($column) > 0)
 			{
-				if (strtoupper(substr($row->title, 0, 1)) != $index)
+				$k = 0;
+				foreach ($column as $row)
 				{
-					$index = strtoupper(substr($row->title, 0, 1));
-					?>
-					</ul>
-					<h3><?php echo $index; ?></h3>
-					<ul>
-					<?php
-				} 
-				else if ($k == 0)
-				{
-					?>
-					<h3><?php echo $index; ?> contd.</h3>
-					<ul>
-					<?php
+					if (strtoupper(substr($row->title, 0, 1)) != $index)
+					{
+						$index = strtoupper(substr($row->title, 0, 1));
+						if ($k != 0) {
+						?>
+						</ul>
+						<?php } ?>
+						<h3><?php echo $index; ?></h3>
+						<ul>
+						<?php
+					} 
+					else if ($k == 0)
+					{
+						?>
+						<h3><?php echo $index; ?> contd.</h3>
+						<ul>
+						<?php
+					}
+				?>
+					<li>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</a>
+					</li>
+				<?php
+					$k++;
 				}
-			?>
-				<li>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</a>
-				</li>
-			<?php
-				$k++;
+				?>
+				</ul>
+			<?php 
 			}
 			?>
-			</ul>
-		<?php 
-		}
-		?>
-		</div>
+			</div>
 <?php
 		$i++;
 	}
 }
 ?>
-		<div class="clear"></div>
+		</div>
+
 		<hr />
+
 		<h3><?php echo JText::_('Special Pages'); ?></h3>
 		<ul>
 		<?php
@@ -179,5 +183,4 @@ if ($rows)
 		}
 		?>
 		</ul>
-	</div>
-</form>
+	</form>
