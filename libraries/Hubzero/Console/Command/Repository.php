@@ -211,6 +211,62 @@ class Repository implements CommandInterface
 	}
 
 	/**
+	 * Repository log
+	 *
+	 * @return void
+	 **/
+	public function log()
+	{
+		$mode   = $this->output->getMode();
+		$length = ($this->arguments->getOpt('length')) ? $this->arguments->getOpt('length') : 10;
+		$start  = ($this->arguments->getOpt('start')) ? $this->arguments->getOpt('start') : 0;
+		$format = '%an: %s';
+		$count  = false;
+		if ($mode == 'minimal')
+		{
+			$format = '%H||%an||%ae||%ad||%s';
+		}
+		if ($this->arguments->getOpt('count'))
+		{
+			$count = true;
+		}
+		$logs = $this->mechanism->log($length, $start, $format, $count);
+
+		if ($count)
+		{
+			$this->output->addLine($logs);
+			return;
+		}
+
+		if ($mode != 'minimal')
+		{
+			$output = array();
+			foreach ($logs as $log)
+			{
+				$output[] = array('message'=>$log);
+			}
+
+			$this->output->addLinesFromArray($output);
+		}
+		else
+		{
+			foreach ($logs as $log)
+			{
+				$entry = array();
+				$parts = explode('||', $log);
+				$entry[$parts[0]] = array(
+					'name'    => $parts[1],
+					'email'   => $parts[2],
+					'date'    => $parts[3],
+					'subject' => $parts[4]
+				);
+
+				$this->output->addLine($entry);
+			}
+		}
+	}
+
+	/**
 	 * Check and report whether or not the repository is eligible for upgrade/update
 	 *
 	 * @return void

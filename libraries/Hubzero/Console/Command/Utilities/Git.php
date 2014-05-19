@@ -128,6 +128,60 @@ class Git
 	}
 
 	/**
+	 * Get the log
+	 *
+	 * @param  (int)    $length - number of entires to return
+	 * @param  (int)    $start  - commit number to start at
+	 * @param  (string) $format - format of response
+	 * @param  (bool)   $count  - return count of entires
+	 * @return (array)  $response
+	 **/
+	public function log($length=null, $start=null, $format='%an: %s', $count=false)
+	{
+		$args = array();
+
+		if ($count)
+		{
+			$total = $this->call('rev-list', array('HEAD', '--count'));
+			return trim($total);
+		}
+
+		if (isset($length))
+		{
+			if ($length == 'upcoming')
+			{
+				$args[] = 'HEAD..origin/master';
+			}
+			else
+			{
+				$args[] = '-'.(int)$length;
+			}
+		}
+		if (isset($start))
+		{
+			$args[] = '--skip='.(int)$start;
+		}
+		if (isset($format))
+		{
+			$args[] = '--pretty=format:"'.$format.'"';
+		}
+
+		$log      = $this->call('log', $args);
+		$logs     = explode("\n", $log);
+		$response = array();
+
+		if (count($log) > 0)
+		{
+			foreach ($logs as $entry)
+			{
+				$response[] = $entry;
+			}
+		}
+
+		return $response;
+	}
+
+	/**
 	 * Pull the latest updates
 	 *
 	 * You should probably call isEligibleForUpdate beforehand, althought it isn't required.
