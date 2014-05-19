@@ -34,19 +34,19 @@ defined('_JEXEC') or die('Restricted access');
 //$maxtextlen = 42;
 $juser = JFactory::getUser();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<?php if ($this->config->get('access-create-course')) { ?>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('Create Course'); ?></a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
-<?php } ?>
+	<?php if ($this->config->get('access-create-course')) { ?>
+	<nav id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('Create Course'); ?></a>
+			</li>
+		</ul>
+	</nav><!-- / #content-header-extra -->
+	<?php } ?>
+</header>
 
 <?php
 	foreach ($this->notifications as $notification) {
@@ -55,24 +55,7 @@ $juser = JFactory::getUser();
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
-	<div class="main section">
-		<div class="aside">
-			<div class="container">
-				<h3><?php echo JText::_('Finding a course'); ?></h3>
-				<p><?php echo JText::_('Use the sorting and filtering options to see courses listed alphabetically by title, alias, or popularity.'); ?></p>
-				<p><?php echo JText::_('Use the "Search" to find specific courses by title or description if you would like to check out their offerings.'); ?></p>
-			</div><!-- / .container -->
-			<div class="container">
-				<h3><?php echo JText::_('Popular Categories'); ?></h3>
-				<?php 
-				$tags = $this->model->tags('cloud', 20, $this->filters['tag']);
-				if ($tags) {
-					echo $tags;
-				} else {
-					echo '<p>' . JText::_('No categories have been set.') . '</p>';
-				} ?>
-			</div><!-- / .container -->
-		</div><!-- / .aside -->
+	<section class="main section">
 		<div class="subject">
 
 			<div class="container data-entry">
@@ -147,7 +130,7 @@ $juser = JFactory::getUser();
 				</ul>
 
 				<?php
-				$url  = 'index.php?option=' . $this->option . '&task=browse';
+				/*$url  = 'index.php?option=' . $this->option . '&task=browse';
 				$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 				$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 				$url .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
@@ -169,12 +152,11 @@ $juser = JFactory::getUser();
 						$html .= ' class="active-index"';
 					}
 					$html .= '>' . strtoupper($letter) . '</a> ' . "\n";
-				}
+				}*/
 				?>
 				<div class="clearfix"></div>
 
-				<table class="courses entries">
-					<caption>
+				<h3>
 					<?php
 						$s = $this->filters['start']+1;
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
@@ -193,21 +175,11 @@ $juser = JFactory::getUser();
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
 					<?php if ($this->courses->total() > 0) { ?>
-						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
+						<span><?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?></span>
 					<?php } ?>
-					</caption>
-					<thead>
-						<tr>
-							<th colspan="2<?php //echo ($this->config->get('access-admin-component')) ? '4' : '3'; ?>">
-								<span class="index-wrap">
-									<span class="index">
-										<?php echo $html; ?>
-									</span>
-								</span>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
+				</h3>
+
+				<ol class="courses entries">
 				<?php
 				if ($this->courses->total() > 0) 
 				{
@@ -229,48 +201,58 @@ $juser = JFactory::getUser();
 							$status = 'new';
 						}
 				?>
-						<tr<?php echo ($status) ? ' class="' . $status . '"' : ''; ?>>
-							<th>
-								<span class="entry-id"><?php echo $course->get('id'); ?></span>
-							</th>
-							<td>
-								<a class="entry-title" href="<?php echo JRoute::_($course->link()); ?>">
-									<?php echo $this->escape(stripslashes($course->get('title'))); ?>
-								</a><br />
-							<?php
-								$instructors = $course->instructors();
-								if (count($instructors) > 0) 
-								{
-									$names = array();
-									foreach ($instructors as $i)
+						<li<?php echo ($status) ? ' class="' . $status . '"' : ''; ?>>
+							<article>
+								<h4>
+									<a class="entry-title" href="<?php echo JRoute::_($course->link()); ?>">
+										<?php echo $this->escape(stripslashes($course->get('title'))); ?>
+									</a>
+								</h4>
+								<p class="course-identity">
+									<a href="<?php echo JRoute::_($course->link()); ?>">
+								<?php if ($logo = $course->logo()) { ?>
+									<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+								<?php } else { ?>
+									<span></span>
+								<?php } ?>
+									</a>
+								</p>
+								<dl class="entry-meta">
+									<dt>
+										<span>
+											<?php echo JText::sprintf('Course #%s', $course->get('id')); ?>
+										</span>
+									</dt>
+									<dd class="instructors">
+								<?php
+									$instructors = $course->instructors();
+									if (count($instructors) > 0) 
 									{
-										$instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
+										$names = array();
+										foreach ($instructors as $i)
+										{
+											$instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
 
-										$names[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $i->get('user_id')) . '">' . $this->escape(stripslashes($instructor->get('name'))) . '</a>';
+											$names[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $i->get('user_id')) . '">' . $this->escape(stripslashes($instructor->get('name'))) . '</a>';
+										}
+								?>
+										Instructors: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span>
+								<?php
 									}
-							?>
-								<span class="entry-details">
-									Instructors: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span>
-								</span>
-							<?php
-								}
-							?>
-								<span class="entry-content">
+								?>
+									</dd>
+								</dl>
+								<p class="entry-content">
 									<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
-								</span>
-							</td>
-						</tr>
+								</p>
+							</article>
+						</li>
 				<?php 
 					} // for loop 
 				} else { ?>
-						<tr>
-							<td colspan="2<?php //echo ($this->authorized) ? '4' : '3'; ?>">
-								<p class="warning"><?php echo JText::_('No results found'); ?></p>
-							</td>
-						</tr>
+						<p class="warning"><?php echo JText::_('No results found'); ?></p>
 				<?php } ?>
-					</tbody>
-				</table>
+				</ol>
 
 				<?php
 				$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
@@ -281,6 +263,22 @@ $juser = JFactory::getUser();
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
-	</div><!-- / .main section -->
-	<div class="clear"></div>
+		<aside class="aside">
+			<div class="container">
+				<h3><?php echo JText::_('Finding a course'); ?></h3>
+				<p><?php echo JText::_('Use the sorting and filtering options to see courses listed alphabetically by title, alias, or popularity.'); ?></p>
+				<p><?php echo JText::_('Use the "Search" to find specific courses by title or description if you would like to check out their offerings.'); ?></p>
+			</div><!-- / .container -->
+			<div class="container">
+				<h3><?php echo JText::_('Popular Categories'); ?></h3>
+				<?php 
+				$tags = $this->model->tags('cloud', 20, $this->filters['tag']);
+				if ($tags) {
+					echo $tags;
+				} else {
+					echo '<p>' . JText::_('No categories have been set.') . '</p>';
+				} ?>
+			</div><!-- / .container -->
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
 </form>

@@ -9,11 +9,15 @@
 	.course {
 		padding: 0 30px 0 0;
 	}
+	section.course .subject,
 	.course .subject {
+		padding: 0;
 		margin-right: 300px;
 	}
+	section.course .aside,
 	.course .aside {
 		width: 270px;
+		min-width: 270px;
 	}
 	.course .aside:after {
 		display: none;
