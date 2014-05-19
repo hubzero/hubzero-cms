@@ -736,7 +736,7 @@ class Detector extends Object
 		$this->majorVersion = 0;
 		$this->minorVersion = 0;
 
-		Log::notice("Can't identify browser version. Agent: " . $this->agent);
+		\JFactory::getLogger()->notice("Can't identify browser version. Agent: " . $this->agent);
 	}
 
 	/**
