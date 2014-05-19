@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for deleting usage chart plugin
  **/
 class Migration20140305081020PlgUsageChart extends Base
 {

@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding fulltext key to collections tables
  **/
 class Migration20131106152023ComCollections extends Base
 {

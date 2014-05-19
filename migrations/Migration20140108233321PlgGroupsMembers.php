@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for group roles permission
  **/
 class Migration20140108233321PlgGroupsMembers extends Base
 {

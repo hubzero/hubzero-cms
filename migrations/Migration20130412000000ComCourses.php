@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding section grade policy id field
+ **/
 class Migration20130412000000ComCourses extends Base
 {
 	public function up()

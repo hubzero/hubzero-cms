@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding faq, store, and related plugins
+ **/
 class Migration20130331000000ComCourses extends Base
 {
 	public function up()

@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for changing group_id to scope_id in forums
+ **/
 class Migration20121130000000ComForum extends Base
 {
 	public function up()

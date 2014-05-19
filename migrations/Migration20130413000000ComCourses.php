@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for grade book unique index and form asset id reference
+ **/
 class Migration20130413000000ComCourses extends Base
 {
 	public function up()

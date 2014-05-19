@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding ckeditor plugin entry
  **/
 class Migration20140108233320PlgEditorsCkeditor extends Base
 {

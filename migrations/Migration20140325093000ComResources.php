@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding levenshtein function to mysql
  **/
 class Migration20140325093000ComResources extends Base
 {

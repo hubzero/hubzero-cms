@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding id column to dashboard preferences
  **/
 class Migration20140508122800PlgMembersDashboard extends Base
 {

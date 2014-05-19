@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding storefront tables
  **/
 class Migration20130812201731ComStorefront extends Base
 {

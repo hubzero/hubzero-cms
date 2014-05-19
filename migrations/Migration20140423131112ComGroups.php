@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for deleting duplicate groups and enforcing with index
  **/
 class Migration20140423131112ComGroups extends Base
 {

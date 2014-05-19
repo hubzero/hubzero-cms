@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for tracking total viewing time in media tracking table
  **/
 class Migration20130731203037ComResources extends Base
 {

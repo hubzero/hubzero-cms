@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for distinguishing between unanswered and no in profile mail preference column
  **/
 class Migration20130618144751PlgMembersProfile extends Base
 {

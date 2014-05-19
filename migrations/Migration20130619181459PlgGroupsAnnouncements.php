@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding general announcements table and hiding group messaging tab
  **/
 class Migration20130619181459PlgGroupsAnnouncements extends Base
 {

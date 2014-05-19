@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for merging duplicate tags
  **/
 class Migration20140310130202ComTags extends Base
 {

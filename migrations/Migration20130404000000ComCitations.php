@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding citations sponsers
+ **/
 class Migration20130404000000ComCitations extends Base
 {
 	public function up()

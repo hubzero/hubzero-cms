@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for feedaggregator tables
+ **/
 class Migration20140311150000ComFeedaggregator extends Base
 {
 	public function up()

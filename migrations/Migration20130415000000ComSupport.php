@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for support ticket closed date
+ **/
 class Migration20130415000000ComSupport extends Base
 {
 	public function up()

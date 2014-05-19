@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for getting rid of show_pdf_icon in extension params
  **/
 class Migration20130517101308ComContent extends Base
 {

@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for fixing newletter character set
  **/
 class Migration20130820135328ComNewsletter extends Base
 {

@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for updates to member dashboard features
  **/
 class Migration20140508120000PlgMembersDashboard extends Base
 {

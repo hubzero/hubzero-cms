@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for getting rid of member favorites plugin
  **/
 class Migration20140506104910PlgMembersFavorites extends Base
 {

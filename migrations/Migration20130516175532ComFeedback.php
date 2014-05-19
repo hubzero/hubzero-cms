@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for feedback image update based on asset relocation
  **/
 class Migration20130516175532ComFeedback extends Base
 {

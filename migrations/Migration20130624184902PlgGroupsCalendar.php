@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding group calendar functionality
  **/
 class Migration20130624184902PlgGroupsCalendar extends Base
 {

@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding venue_id to host table
+ **/
 class Migration20130214000000Core extends Base
 {
 	public function up()

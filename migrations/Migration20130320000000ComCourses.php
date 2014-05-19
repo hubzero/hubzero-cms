@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding courses gradebook table
+ **/
 class Migration20130320000000ComCourses extends Base
 {
 	public function up()

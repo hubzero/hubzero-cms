@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for tracking when linked accounts are created
+ **/
 class Migration20130403000000Core extends Base
 {
 	public function up()

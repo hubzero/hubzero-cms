@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for tracking group announcement emails
  **/
 class Migration20131016184016PlgGroupsAnnouncements extends Base
 {

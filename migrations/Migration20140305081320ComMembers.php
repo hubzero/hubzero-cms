@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for dropping profile tags table
  **/
 class Migration20140305081320ComMembers extends Base
 {

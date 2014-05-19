@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding object id to forum tables
+ **/
 class Migration20121217000000ComForum extends Base
 {
 	public function up()

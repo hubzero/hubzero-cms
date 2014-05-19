@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding wikitoolbar editor
  **/
 class Migration20140211083020PlgEditorsWikitoolbar extends Base
 {

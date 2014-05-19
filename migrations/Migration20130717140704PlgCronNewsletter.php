@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for populating newletter cron job
  **/
 class Migration20130717140704PlgCronNewsletter extends Base
 {

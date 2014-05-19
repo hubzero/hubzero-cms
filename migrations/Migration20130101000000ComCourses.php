@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for creating courses tables
+ **/
 class Migration20130101000000ComCourses extends Base
 {
 	public function up()

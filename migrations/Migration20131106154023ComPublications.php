@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding publication version fulltext key
  **/
 class Migration20131106154023ComPublications extends Base
 {

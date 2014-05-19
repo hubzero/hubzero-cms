@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding course grading policies
+ **/
 class Migration20130411000000ComCourses extends Base
 {
 	public function up()

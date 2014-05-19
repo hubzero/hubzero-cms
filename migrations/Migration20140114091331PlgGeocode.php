@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding geocode plugins
  **/
 class Migration20140114091331PlgGeocode extends Base
 {

@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for dropping feature history table
  **/
 class Migration20140416082740ComFeatures extends Base
 {

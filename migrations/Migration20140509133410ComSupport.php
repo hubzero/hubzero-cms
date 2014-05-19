@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for updating support categories field names
  **/
 class Migration20140509133410ComSupport extends Base
 {

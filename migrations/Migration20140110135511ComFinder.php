@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for deleting com_finder
  **/
 class Migration20140110135511ComFinder extends Base
 {

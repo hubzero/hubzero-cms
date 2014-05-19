@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for courses badges cleanup
  **/
 class Migration20131111200831ComCourses extends Base
 {

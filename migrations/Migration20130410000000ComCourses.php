@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for courses member notes indices
+ **/
 class Migration20130410000000ComCourses extends Base
 {
 	public function up()

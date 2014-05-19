@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for creating centralized comments table
+ **/
 class Migration20130311000000PlgHubzeroComments extends Base
 {
 	public function up()

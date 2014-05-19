@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for tracking newsletter email bounces
  **/
 class Migration20130814185755ComNewsletter extends Base
 {

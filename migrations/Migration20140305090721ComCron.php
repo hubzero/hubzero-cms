@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding publish_up and publish_down fields to cron table
  **/
 class Migration20140305090721ComCron extends Base
 {

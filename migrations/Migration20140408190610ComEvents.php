@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for changing how event rules are tracked
  **/
 class Migration20140408190610ComEvents extends Base
 {

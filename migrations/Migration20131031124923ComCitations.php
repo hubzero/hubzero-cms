@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for defaulting citations field to 0 rather than null
  **/
 class Migration20131031124923ComCitations extends Base
 {

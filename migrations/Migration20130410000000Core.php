@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for cleaning up indices
+ **/
 class Migration20130410000000Core extends Base
 {
 	public function up()

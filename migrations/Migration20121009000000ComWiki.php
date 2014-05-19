@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for converting topics plugins to wiki
+ **/
 class Migration20121009000000ComWiki extends Base
 {
 	public function up()

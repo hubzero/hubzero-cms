@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding resources findthistext plugin
  **/
 class Migration20140115171149PlgResourcesFindthistext extends Base
 {

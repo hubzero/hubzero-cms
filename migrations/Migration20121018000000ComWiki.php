@@ -5,6 +5,9 @@ use Hubzero\Content\Migration\Base;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Migration script for adding modified, version_id, and length fields to wiki table
+ **/
 class Migration20121018000000ComWiki extends Base
 {
 	public function up()
