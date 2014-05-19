@@ -170,25 +170,33 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<div id="wrap">
 				<main id="content" class="<?php echo JRequest::getCmd('option', ''); ?>" role="main">
 					<div class="inner">
-					<?php if ($this->countModules('left')) : ?>
-						<section class="main section withleft">
-							<div class="aside">
-								<jdoc:include type="modules" name="left" />
-							</div><!-- / #column-left -->
-							<div class="subject">
-					<?php endif; ?>
-					<?php if ($this->countModules('right')) : ?>
+					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">
-							<div class="aside">
-								<jdoc:include type="modules" name="right" />
-							</div><!-- / .aside -->
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="left" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+					<?php if ($this->countModules('left or right')) : ?>
 							<div class="subject">
 					<?php endif; ?>
+
 								<!-- start component output -->
 								<jdoc:include type="component" />
 								<!-- end component output -->
+
 					<?php if ($this->countModules('left or right')) : ?>
 							</div><!-- / .subject -->
+					<?php endif; ?>
+					<?php if ($this->countModules('right')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="right" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left or right')) : ?>
 						</section><!-- / .main section -->
 					<?php endif; ?>
 					</div><!-- / .inner -->

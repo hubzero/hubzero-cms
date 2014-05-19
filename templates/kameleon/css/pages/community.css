@@ -15,16 +15,15 @@
 
 	#content {
 		padding: 0;
-		color: #859197;
 	}
 
-	.com_content .contentpaneopen {
+	/*.com_content .contentpaneopen {
 		padding: 0;
 	}
 	.com_content .content-header h2,
 	#content-header h2 {
 		padding: 30px 60px;
-	}
+	}*/
 
 	.com_content .tagline {
 		font-size: 2em;

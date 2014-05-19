@@ -16,12 +16,12 @@
 	#content {
 		padding: 0;
 	}
-	.com_content .contentpaneopen {
+	/*.com_content .contentpaneopen {
 		padding: 0;
 	}
 	.com_content .content-header {
 		margin: 0 30px;
-	}
+	}*/
 	.grid {
 		padding: 30px 60px;
 	}
@@ -30,6 +30,8 @@
 	}
 
 	.below + .grid {
+		border-top: 1px solid #eaeaea;
+		border-bottom: 1px solid #eaeaea;
 		background-color: #fff;
 	}
 

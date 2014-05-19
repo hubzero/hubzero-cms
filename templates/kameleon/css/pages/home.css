@@ -36,15 +36,14 @@
 	#wrap {
 		border: none;
 	}
-	#content {
+	#content.com_content {
 		padding: 0;
 		margin: 0;
-		color: #859197;
 	}
 
 /* Splash area */
 	#splash .wrap {
-		padding: 30px;
+		padding: 30px 60px;
 	}
 	#splash .inner-wrap .inner .wrap:before,
 	#splash .inner-wrap .inner .wrap:after {

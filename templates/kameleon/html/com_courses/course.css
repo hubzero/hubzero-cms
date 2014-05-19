@@ -1,0 +1,70 @@
+@import url("../../../../components/com_courses/assets/css/course.css");
+
+#content {
+	padding: 0;
+}
+section.course .subject {
+	padding: 0px 30px 0px 60px;
+}
+section.section .subject + .aside {
+	min-width: 270px;
+}
+section.course {
+	margin: 0;
+}
+section.course.intro {
+	background: #fff;
+	/*padding: 0 60px;*/
+	border-bottom: 1px solid #e1e1e1;
+}
+section.course.intro .subject {
+	padding: 30px 30px 30px 60px;
+}
+
+section.intro .subject,
+section.intro .aside,
+section.intro .subject + .aside {
+	background: transparent;
+	border: none;
+}
+p.course-identity {
+	margin-bottom: 30px;
+}
+section.course .inner-section {
+	padding: 0;
+}
+
+#splash .inner-wrap .inner .wrap {
+	min-height: 0 !important;
+}
+
+#content.com_courses .sub-menu {
+	margin-left: 0px;
+	margin-right: 0px;
+	padding: 30px 0 0 0;
+}
+/*#content.com_courses .inner-section {
+	padding-left: 60px;
+}*/
+
+ul.sub-menu {
+	background: transparent;
+}
+ul.sub-menu li a {
+	border: none;
+	background: transparent;
+	color: #999;
+	text-shadow: none;
+	padding: 0.618em 1em;
+}
+ul.sub-menu li.active a {
+	border: 1px solid #BABABA;
+	border-bottom: none;
+}
+
+#splash .inner-wrap .inner .wrap {
+	min-height: 8.7em;
+}
+.com_courses #content-header {
+	margin: 0;
+}

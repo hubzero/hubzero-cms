@@ -1,0 +1,37 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_courses/assets/css/browse.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+@import url("../../../../components/com_courses/assets/css/browse.css");
+
+.com_courses .pagination {
+	margin-bottom: 30px;
+}
+
+.com_courses .subject h3 {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #666;
+	font-size: 115%;
+	padding: 1em 0; /*.4045084975em 0;.61803399em;*/
+	margin: 0;
+}
+.com_courses .subject h3 span {
+	float: right;
+	text-transform: none;
+	font-size: 85%;
+	color: #aaa;
+}
+
+form .data-entry fieldset.applied-tags {
+	margin: 1em 0 1.7em;
+	-webkit-border-radius: 0;
+	   -moz-border-radius: 0;
+	    -ms-border-radius: 0;
+	     -o-border-radius: 0;
+	        border-radius: 0;
+}

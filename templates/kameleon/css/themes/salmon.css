@@ -18,6 +18,7 @@
 	a:visited {
 		color: #ff6f6f; /* red */
 	}
+	#content-header,
 	#outer-wrap,
 	.highlight-section:before {
 		background: #ff6f6f; /* Red, darker red: #d95f5e */;

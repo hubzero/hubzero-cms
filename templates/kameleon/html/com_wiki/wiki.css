@@ -1,0 +1,59 @@
+@import url("../../../../components/com_wiki/assets/css/wiki.css");
+
+	#content-header {
+		margin: 0;
+	}
+	#content {
+		padding: 0;
+	}
+	section.section {
+		margin: 0;
+		width: 100%;
+	}
+	section.section .wikipage {
+		padding: 30px 60px;
+		display: table-cell;
+	}
+
+	ul.sub-menu {
+		padding-left: 60px;
+		padding-right: 60px;
+	}
+
+	div[class^="admon-"] {
+		background-color: #fffbe2;
+		border-color: #d5ca78;
+		color: #918263;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+		position: relative;
+	}
+	div[class^="admon-"]:before {
+		content: "";
+		position: absolute;
+		top: 0.81803399em;
+		width: 2em;
+		height: 2em;
+		font-size: 2em;
+		line-height: 1;
+		display: inline-block;
+		left: 0.81803399em;
+		font-family: 'Fontcons';
+		margin-top: -0.25em;
+	}
+	div.admon-caution:before,
+	div.admon-warning:before {
+		content: "\26A0";
+	}
+	div.admon-important:before {
+		content: "\f05a";
+	}
+	div.admon-note:before {
+		content: "\270D";
+	}
+	div.admon-tip:before {
+		content: "\f078";
+	}

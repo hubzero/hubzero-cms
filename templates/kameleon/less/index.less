@@ -232,7 +232,7 @@
 
 // Splash
 	#splash .inner-wrap .inner .wrap {
-		min-height: 90px;
+		//min-height: 90px;
 		position: relative;
 	}
 
@@ -252,16 +252,17 @@
 	#wrap {
 		background: #f9f9f9;
 		z-index: 222;
-		border-top: 1px solid transparent;
+		//border-top: 1px solid transparent;
 	}
 
 // Content
 	#content {
 		margin: 0;
 		padding: 0 @spacing;
-		margin-top: -7.2em;
+		//margin-top: -7.2em;
 		position: relative;
 		.clearfix();
+		border: none;
 
 		#system-message,
 		.section #system-message {
@@ -272,8 +273,8 @@
 	header.content-header,
 	.com_content .content-header,
 	#content-header {
-		margin: 0;
-		padding: 0;
+		margin: 0 -@spacing;
+		padding: 0 @spacing;
 
 		h2 {
 			margin: 0;
@@ -312,17 +313,27 @@
 // Sections
 @import "_sections.less";
 
-	.com_content {
+	#content.com_content {
+		margin-top: 7.2em;
+
+		.content-header {
+			height: 7.2em;
+			position: absolute;
+			top: -7.2em;
+			left: 30px;
+			right: 30px;
+		}
+
 		ul.actions {
 			display: none;
 		}
-		.contentpaneopen {
+		/*.contentpaneopen {
 			padding: 30px;
-		}
+		}*/
 		.heading {
 			padding: 0;
 		}
-		.withleft {
+		/*.withleft {
 			padding-top: 7.2em;
 
 			.content-header {
@@ -335,6 +346,11 @@
 			.contentpaneopen {
 				padding: 0;
 			}
+		}*/
+		section.section .aside,
+		section.section .subject {
+			padding-top: 30px;
+			padding-bottom: 30px;
 		}
 	}
 
