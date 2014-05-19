@@ -1,0 +1,35 @@
+@import url("/components/com_courses/assets/css/browse.css");
+
+.com_courses .subject h3 span {
+	float: right;
+}
+.com_courses ol.entries {
+	background: #fff;
+	border: 2px solid #e9e9e9;
+	border-top: none;
+}
+.com_courses ol.entries>li {
+	padding: 1em 0 1em 180px;
+}
+.com_courses ol.entries li article {
+	padding: 0 1em;
+}
+.com_courses ol.entries .entry-details {
+	padding: 0.7em 0 0.7em 0;
+}
+p.course-identity {
+	left: 1em;
+	top: 1em;
+}
+.com_courses .aside .tags {
+	padding-left: 10px;
+}
+.entries-menu:before,
+.entries-menu:after {
+	content: "";
+	line-height: 0;
+	display: table;
+}
+.entries-menu:after {
+	clear: right;
+}
