@@ -103,7 +103,7 @@ class plgSystemDebug extends JPlugin
 		}
 
 		// No debug for Safari and Chrome redirection
-		if (strstr(strtolower($_SERVER['HTTP_USER_AGENT']), 'webkit') !== false
+		if (isset($_SERVER['HTTP_USER_AGENT']) && strstr(strtolower($_SERVER['HTTP_USER_AGENT']), 'webkit') !== false
 			&& substr($contents, 0, 50) == '<html><head><meta http-equiv="refresh" content="0;')
 		{
 			echo $contents;
