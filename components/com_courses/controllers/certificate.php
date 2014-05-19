@@ -58,7 +58,8 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure specified user is enrolled in the course
-		$student = $offering->member($this->juser->get('id'));
+		//$student = $offering->member($this->juser->get('id'));
+		$student = CoursesModelMember::getInstance($this->juser->get('id'), $course->get('id'), $offering->get('id'), null, 1);
 		if (!$student->exists())
 		{
 			$this->setRedirect(
@@ -150,7 +151,8 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure specified user is enrolled in the course
-		$this->view->student = $this->view->offering->member(JRequest::getInt('u', 0));
+		//$this->view->student = $this->view->offering->member(JRequest::getInt('u', 0));
+		$this->view->student = CoursesModelMember::getInstance(JRequest::getInt('u', 0), $this->view->course->get('id'), $this->view->offering->get('id'), null, 1);
 		if (!$this->view->student->exists())
 		{
 			JError::raiseError(404, JText::_('User is not a student of specified course.'));
