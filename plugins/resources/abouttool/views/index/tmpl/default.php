@@ -147,27 +147,6 @@ if ($shots) {
 <?php
 	}
 
-	if ($this->model->contributors('submitter')) {
-?>
-			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></h4>
-			<div class="resource-content">
-				<span id="submitterlist">
-					<?php 
-					$view = new JView(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
-						'name'   => 'view',
-						'layout' => '_submitters',
-					));
-					$view->option = $this->option;
-					$view->contributors = $this->model->contributors('submitter');
-					$view->badges = $this->params->get('badges', 0);
-					$view->showorgs = 1;
-					$view->display();
-					?>
-				</span>
-			</div>
-<?php
-	}
 	$citations = '';
 	if (!isset($schema->fields) || !is_array($schema->fields))
 	{
@@ -254,6 +233,29 @@ if ($shots) {
 <?php
 	}
 }
+
+	if ($this->model->contributors('submitter')) {
+	?>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></h4>
+			<div class="resource-content">
+				<span id="submitterlist">
+					<?php 
+					$view = new JView(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
+						'name'   => 'view',
+						'layout' => '_submitters',
+					));
+					$view->option = $this->option;
+					$view->contributors = $this->model->contributors('submitter');
+					$view->badges = $this->params->get('badges', 0);
+					$view->showorgs = 1;
+					$view->display();
+					?>
+				</span>
+			</div>
+	<?php
+	}
+
 // Tags
 
 	if ($this->model->params->get('show_assocs')) {
