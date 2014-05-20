@@ -85,14 +85,6 @@ JToolBarHelper::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_VIEWREPEAT'); ?></td>
-					<td><?php
-					$viewr[] = JHTML::_('select.option', 'YES', JText::_('YES'), 'value', 'text' );
-					$viewr[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $viewr, 'config[repeatview]', '', 'value', 'text', $this->config->repeatview, false, false );
-					?></td>
-				</tr>
-				<tr>
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_DATEFORMAT'); ?></td>
 					<td><?php
 					$datef[] = JHTML::_('select.option', '0', JText::_('French-English'), 'value', 'text' );
@@ -133,31 +125,6 @@ JToolBarHelper::cancel();
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_NUMEVENTS'); ?></td>
 					<td><input type="text" size="3" name="config[calEventListRowsPpg]" value="<?php echo $this->config->calEventListRowsPpg; ?>" /></td>
 				</tr>
-				<tr>
-					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_SIMPLEFORM'); ?></td>
-					<td><?php
-					$formOpt[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
-					$formOpt[] = JHTML::_('select.option', 'YES', JText::_('YES'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $formOpt, 'config[calSimpleEventForm]', '', 'value', 'text', $this->config->calSimpleEventForm, false, false );
-					?></td>
-				</tr>
-				<!-- <tr>
-					<td class="key">Default Event Color ?</td>
-					<td><?php
-					$defColor[] = JHTML::_('select.option', 'random', JText::_('Random'), 'value', 'text' );
-					$defColor[] = JHTML::_('select.option', 'none', JText::_('None'), 'value', 'text' );
-					$defColor[] = JHTML::_('select.option', 'category', JText::_('Category'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $defColor, 'config[defColor]', '', 'value', 'text', $this->config->defColor, false, false );
-					?></td>
-				</tr>
-				<tr>
-					<td class="key">Hide Event Color Selection in Event Form, and force Event Color to Category Color<br/>(front end only, back end event entry unaffected)</td>
-					<td><?php
-					$colCatOpt[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
-					$colCatOpt[] = JHTML::_('select.option', 'YES', JText::_('YES'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $colCatOpt, 'config[calForceCatColorEventForm]', '', 'value', 'text', $this->config->calForceCatColorEventForm, false, false );
-					?></td>
-				</tr> -->
 			</tbody>
 		</table>
 	</fieldset>

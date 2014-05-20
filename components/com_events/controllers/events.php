@@ -1482,25 +1482,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$registerby_date = JHTML::_('date', $row->registerby, 'Y-m-d', $timezone);
 			$registerby_time = JHTML::_('date', $row->registerby, 'H:i', $timezone);
 
-			$row->reccurday_month = 99;
-			$row->reccurday_week = 99;
-			$row->reccurday_year = 99;
-
-			if ($row->reccurday <> '') 
-			{
-				if ($row->reccurtype == 1) 
-				{
-					$row->reccurday_week = $row->reccurday;
-				} 
-				elseif ($row->reccurtype == 3) 
-				{
-					$row->reccurday_month = $row->reccurday;
-				} 
-				elseif ($row->reccurtype == 5) 
-				{
-					$row->reccurday_year = $row->reccurday;
-				}
-			}
 			$arr = array(
 				JHTML::_('select.option', 0, strtolower(JText::_('EVENTS_NO')), 'value', 'text'),
 				JHTML::_('select.option', 1, strtolower(JText::_('EVENTS_YES')), 'value', 'text'),
@@ -1556,12 +1537,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 
 			// If user hits refresh, try to maintain event form state
 			$row->bind($_POST);
-			$row->reccurday_month = -1;
-			$row->reccurday_week = -1;
-			$row->reccurday_year = -1;
-			$row->created_by_alias = $this->juser->get('username');
 			$row->created_by = $this->juser->get('id');
-			$row->reccurtype = 0;
 
 			$lists = '';
 		}
