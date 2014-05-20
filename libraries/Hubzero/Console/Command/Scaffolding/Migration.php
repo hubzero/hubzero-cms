@@ -145,16 +145,19 @@ class Migration extends Scaffolding
 		{
 			case 'com':
 				$dir = JPATH_ROOT . DS . 'components' . DS . $extension;
+				$alt = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $extension;
 			break;
 			case 'mod':
 				$dir = JPATH_ROOT . DS . 'modules' . DS . $extension;
+				$alt = JPATH_ROOT . DS . 'administrator' . DS . 'modules' . DS . $extension;
 			break;
 			case 'plg':
 				$dir = JPATH_ROOT . DS . 'plugins' . DS . $ext[1] . DS . $ext[2];
+				$alt = 'invalidfilepath';
 			break;
 		}
 
-		return (is_dir($dir)) ? true : false;
+		return (is_dir($dir) || is_dir($alt)) ? true : false;
 	}
 
 	/**
