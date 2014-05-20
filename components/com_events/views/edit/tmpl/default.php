@@ -144,14 +144,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<?php echo EventsHtml::buildTimeZoneSelect($this->times['time_zone'], ''); ?>
 				</label>
 			</fieldset>
-			<?php if ($this->row->id) { ?>
-			<label>
-				<?php echo JText::_('EVENTS_E_PUBLISHING'); ?>
-				<?php echo $this->lists['state']; ?>
-			</label>
-			<?php } else { ?>
 			<input type="hidden" name="state" value="<?php echo $this->escape($this->row->state); ?>" />
-			<?php } ?>
 		</fieldset><div class="clear"></div>
 
 		<input type="hidden" name="email" value="<?php echo $this->escape(stripslashes($this->row->email)); ?>" />
