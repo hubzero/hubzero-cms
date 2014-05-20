@@ -60,6 +60,13 @@ class Git
 	private $baseCmd;
 
 	/**
+	 * Get upstream branch name (when needing to compare master with upstream branch)
+	 *
+	 * @var string
+	 **/
+	private $upstream = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param  (string) $root - git root directory (not including .git suffix)
@@ -70,6 +77,10 @@ class Git
 		$this->dir      = $root . DS . '.git';
 		$this->workTree = $root;
 		$this->baseCmd  = "git --git-dir={$this->dir} --work-tree={$this->workTree}";
+
+		// Save upstream branch name
+		$this->upstream = $this->call('rev-parse', array('--abbrev-ref', '--symbolic-full-name', '@{u}'));
+		$this->upstream = trim($this->upstream);
 	}
 
 	/**
@@ -143,55 +154,129 @@ class Git
 	/**
 	 * Get the log
 	 *
-	 * @param  (int)    $length - number of entires to return
-	 * @param  (int)    $start  - commit number to start at
-	 * @param  (string) $format - format of response
-	 * @param  (bool)   $count  - return count of entires
+	 * @param  (int)    $length    - number of entires to return
+	 * @param  (int)    $start     - commit number to start at
+	 * @param  (bool)   $upcoming  - whether or not to include upcoming commits in response
+	 * @param  (bool)   $installed - whether or not to include installed commits in response
+	 * @param  (string) $search    - filter by search string
+	 * @param  (string) $format    - format of response
+	 * @param  (bool)   $count     - return count of entires
 	 * @return (array)  $response
 	 **/
-	public function log($length=null, $start=null, $format='%an: %s', $count=false)
+	public function log($length=null, $start=null, $upcoming=false, $installed=true, $search=null, $format='%an: %s', $count=false)
 	{
 		$args = array();
 
+		// Count trumps all, just compute and return
 		if ($count)
 		{
-			$total = $this->call('rev-list', array('HEAD', '--count'));
-			return trim($total);
+			return $this->countLogs($installed, $upcoming, $search);
 		}
 
+		if ($upcoming)
+		{
+			$args['upcoming'] = "HEAD..{$this->upstream}";
+		}
 		if (isset($length))
 		{
-			if ($length == 'upcoming')
-			{
-				$args[] = 'HEAD..origin/master';
-			}
-			else
-			{
-				$args[] = '-'.(int)$length;
-			}
+			$args['length'] = '-'.(int)$length;
 		}
 		if (isset($start))
 		{
-			$args[] = '--skip='.(int)$start;
+			$args['skip'] = '--skip='.(int)$start;
 		}
 		if (isset($format))
 		{
-			$args[] = '--pretty=format:"'.$format.'"';
+			$args['format'] = '--pretty=format:"'.$format.'"';
+		}
+		if (isset($search))
+		{
+			$args['case-insensitive'] = '-i';
+			$args['search'] = '--grep="'.$search.'"';
 		}
 
-		$log      = $this->call('log', $args);
-		$logs     = explode("\n", $log);
+		// If upcoming is set, we have to pull those commits first
+		$upcomingCount = 0;
+		$upcomingTotal = 0;
+		if ($upcoming)
+		{
+			$upcomingLog = $this->call('log', $args);
+
+			if (isset($upcomingLog))
+			{
+				$upcomingLogs  = explode("\n", $upcomingLog);
+				$upcomingCount = count($upcomingLogs);
+			}
+
+			$upcomingTotal = $this->countLogs(false, true, $search);
+		}
+
+		if ($upcomingCount < $length)
+		{
+			if (isset($args['upcoming']))
+			{
+				unset($args['upcoming']);
+			}
+			$args['length'] = '-' . ($length - $upcomingCount);
+			$args['skip']   = '--skip=' . ((($start - $upcomingTotal) >= 0) ? ($start - $upcomingTotal) : 0);
+			$currentLog     = $this->call('log', $args);
+			$currentLogs    = (!empty($currentLog)) ? explode("\n", $currentLog) : array();
+		}
+
 		$response = array();
 
-		if (count($log) > 0)
+		if ($upcomingCount > 0)
 		{
-			foreach ($logs as $entry)
+			foreach ($upcomingLogs as $entry)
+			{
+				$response[] = '* ' . $entry;
+			}
+		}
+		if (isset($currentLogs) && count($currentLogs) > 0 && $installed)
+		{
+			foreach ($currentLogs as $entry)
 			{
 				$response[] = $entry;
 			}
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Count log entries
+	 *
+	 * @return (int) count of logs
+	 **/
+	private function countLogs($installed=true, $upcoming=false, $search=null)
+	{
+		$total     = 0;
+		$countArgs = array('--count');
+
+		if (isset($search))
+		{
+			$countArgs[] = '-i';
+			$countArgs[] = '--grep="'.$search.'"';
+		}
+
+		if ($installed)
+		{
+			$installedArgs = $countArgs;
+			array_unshift($installedArgs, 'HEAD');
+			$total = $this->call('rev-list', $installedArgs);
+			$total = trim($total);
+		}
+
+		if ($upcoming)
+		{
+			$upcomingArgs = $countArgs;
+			array_unshift($upcomingArgs, "HEAD..{$this->upstream}");
+			$upcomingTotal = $this->call('rev-list', $upcomingArgs);
+			$upcomingTotal = trim($upcomingTotal);
+			$total += $upcomingTotal;
+		}
+
+		return trim($total);
 	}
 
 	/**
@@ -271,7 +356,7 @@ class Git
 			// Build arguments
 			$arguments = array(
 				'--pretty=format:"%an: \"%s\" (%ar)"',
-				'HEAD..origin/master'
+				"HEAD..{$this->upstream}"
 			);
 
 			// Make call to get log differences between us and origin

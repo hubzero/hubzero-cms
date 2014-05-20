@@ -177,20 +177,21 @@ class Repository implements CommandInterface
 	 **/
 	public function log()
 	{
-		$mode   = $this->output->getMode();
-		$length = ($this->arguments->getOpt('length')) ? $this->arguments->getOpt('length') : 10;
-		$start  = ($this->arguments->getOpt('start')) ? $this->arguments->getOpt('start') : 0;
-		$format = '%an: %s';
-		$count  = false;
+		$mode      = $this->output->getMode();
+		$length    = ($this->arguments->getOpt('length')) ? $this->arguments->getOpt('length') : 20;
+		$start     = ($this->arguments->getOpt('start')) ? $this->arguments->getOpt('start') : null;
+		$upcoming  = $this->arguments->getOpt('include-upcoming');
+		$installed = ($this->arguments->getOpt('exclude-installed')) ? false : true;
+		$search    = ($this->arguments->getOpt('search')) ? $this->arguments->getOpt('search') : null;
+		$format    = '%an: %s';
+		$count     = $this->arguments->getOpt('count');
+
 		if ($mode == 'minimal')
 		{
 			$format = '%H||%an||%ae||%ad||%s';
 		}
-		if ($this->arguments->getOpt('count'))
-		{
-			$count = true;
-		}
-		$logs = $this->mechanism->log($length, $start, $format, $count);
+
+		$logs = $this->mechanism->log($length, $start, $upcoming, $installed, $search, $format, $count);
 
 		if ($count)
 		{
@@ -210,18 +211,21 @@ class Repository implements CommandInterface
 		}
 		else
 		{
-			foreach ($logs as $log)
+			if (is_array($logs) && count($logs) > 0)
 			{
-				$entry = array();
-				$parts = explode('||', $log);
-				$entry[$parts[0]] = array(
-					'name'    => $parts[1],
-					'email'   => $parts[2],
-					'date'    => $parts[3],
-					'subject' => $parts[4]
-				);
+				foreach ($logs as $log)
+				{
+					$entry = array();
+					$parts = explode('||', $log);
+					$entry[$parts[0]] = array(
+						'name'    => $parts[1],
+						'email'   => $parts[2],
+						'date'    => $parts[3],
+						'subject' => $parts[4]
+					);
 
-				$this->output->addLine($entry);
+					$this->output->addLine($entry);
+				}
 			}
 		}
 	}
