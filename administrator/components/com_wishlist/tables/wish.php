@@ -263,7 +263,9 @@ class Wish extends JTable
 			$sql .= "\n LEFT JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
 
-		$sql .="\n WHERE ws.wishlist='" . $listid . "'";
+		$sql .= " WHERE 1=1 ";
+		$sql .= ($listid > 0) ? " AND ws.wishlist='" . $listid . "'" : '';
+		
 		// list  filtering
 		switch ($filters['filterby'])
 		{
