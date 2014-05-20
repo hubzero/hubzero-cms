@@ -148,6 +148,12 @@ class NewsletterMailinglist extends JTable
 	 */
 	public function getListEmailsCount($filters)
 	{
+		// are we loading default list
+		if (isset($filters['lid']) && $filters['lid'] == -1)
+		{
+			return count($this->_getHubMailingList());
+		}
+
 		$sql = "SELECT COUNT(*) FROM {$this->_tbl_assoc} AS mle";
 		$wheres = array();
 
