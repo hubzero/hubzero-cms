@@ -1132,21 +1132,9 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
 			die( JText::_('You must enter a valid username and password.') );
 		}
-		
-		//parse stored passhash
-		//preg_match('/({[^}]*})(.+)/', $user->passhash, $matches);
-		//$encryption     = preg_replace('/{|}/', '', strtolower($matches[1]));
-		//$storedPassword = $matches[2];
-		//
-		//run hashing on password entered to see if it matches db
-		//$httpBasicPassword = base64_encode(pack('H*', $encryption($httpBasicPassword)));
-		//
-		//make sure password matches stored password
-		//if ($storedPassword != $httpBasicPassword)
-		//{
-		//
 
-		if (Hubzero_User_Password::comparePasswords($user->passhash, $httpBasicPassword))
+		// compare user hash to password passed in
+		if (!Hubzero_User_Password::comparePasswords($user->passhash, $httpBasicPassword))
 		{
 			Hubzero_Factory::getAuthLogger()->logAuth($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
 			apache_note('auth','invalid');
