@@ -174,6 +174,12 @@ class plgProjectsPublications extends JPlugin
 			}
 		}
 		
+		$database = JFactory::getDBO();
+		if (!$project)
+		{
+			$project = new Project( $database );
+		}
+		
 		// Is the user logged in?
 		if ( !$authorized && !$project->owner ) 
 		{
@@ -182,7 +188,6 @@ class plgProjectsPublications extends JPlugin
 		
 		// Load language file
 		$this->loadLanguage();		
-		$database = JFactory::getDBO();
 				
 		// Get JS & CSS
 		\Hubzero\Document\Assets::addPluginScript('projects', 'publications');
@@ -215,7 +220,7 @@ class plgProjectsPublications extends JPlugin
 		$this->_database = $database;
 		
 		// Contribute process outside of projects
-		if (!is_object($project) or !$project->id) 
+		if (!$project->id) 
 		{			
 			$ajax_tasks = array('showoptions', 'save', 'showitem');
 			$this->_task = $action == 'start' ? 'start' : 'contribute';
@@ -1918,7 +1923,10 @@ class plgProjectsPublications extends JPlugin
 					if (!$this->_project->id) 
 					{
 						$this->_project->checkin();
-					}				
+					}
+					
+					// Get types helper
+					$this->_pubTypeHelper = new PublicationTypesHelper($this->_database, $this->_project);									
 				}
 				
 				// Determine publication type
