@@ -389,7 +389,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		$group->set('restrict_msg', $g['restrict_msg']);
 		$group->set('logo', $g['logo']);
 		$group->set('overview_type', $g['overview_type']);
-		$group->set('overview_content', $g['overview_content']);
+		$group->set('overview_content', JRequest::getVar('overview_content', '', 'post', none, 2));
 		$group->set('plugins', $g['plugins']);
 		$group->set('params', $params);
 

@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key" valign="top"><label for="overview_content"><?php echo JText::_('COM_GROUPS_OVERVIEW_CONTENT'); ?>:</label></td>
 						<td>
-							<?php echo $editor->display('group[overview_content]', $this->escape(stripslashes($this->group->overview_content)), '360px', '200px', '40', '10'); ?>
+							<?php echo $editor->display('overview_content', $this->escape(stripslashes($this->group->overview_content)), '360px', '200px', '40', '10'); ?>
 						</td>
 					</tr>
 				</tbody>
