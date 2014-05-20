@@ -213,7 +213,7 @@ class Output
 	{
 		foreach ($lines as $line)
 		{
-			$this->addLine($line['message'], $line['type']);
+			$this->addLine($line['message'], ((isset($line['type'])) ? $line['type'] : null));
 		}
 	}
 
