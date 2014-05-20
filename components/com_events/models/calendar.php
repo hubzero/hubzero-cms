@@ -156,13 +156,6 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 					$end   = JFactory::getDate($filters['publish_down']);
 					unset($filters['publish_up']);
 					unset($filters['publish_down']);
-
-					// echo '<pre>';
-					// print_r($start);
-					// echo '</pre>';
-					// echo '<pre>';
-					// print_r($end);
-					// echo '</pre>';
 					
 					// find any events that match our filters
 					$tbl = new EventsEvent($this->_db);
