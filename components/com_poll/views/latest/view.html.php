@@ -32,7 +32,7 @@ class PollViewLatest extends JView
 		$mainframe = JFactory::getApplication();
 		$db        = JFactory::getDBO();
 		$document  = JFactory::getDocument();
-		$pathway   =& $mainframe->getPathway();
+		$pathway   = $mainframe->getPathway();
 
 		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'poll.php');
 		$model = new PollModelPoll();
