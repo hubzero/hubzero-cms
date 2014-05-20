@@ -175,10 +175,6 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		$database = JFactory::getDBO();
-		if (!$project)
-		{
-			$project = new Project( $database );
-		}
 		
 		// Is the user logged in?
 		if ( !$authorized && !$project->owner ) 
@@ -220,7 +216,7 @@ class plgProjectsPublications extends JPlugin
 		$this->_database = $database;
 		
 		// Contribute process outside of projects
-		if (!$project->id) 
+		if (!$project || !is_object($project) || !$project->id) 
 		{			
 			$ajax_tasks = array('showoptions', 'save', 'showitem');
 			$this->_task = $action == 'start' ? 'start' : 'contribute';
@@ -3363,7 +3359,7 @@ class plgProjectsPublications extends JPlugin
 		$base 	= JRequest::getVar( 'base', '' );
 		
 		// Contribute process outside of projects
-		if (!is_object($this->_project) or !$this->_project->id) 
+		if (!$this->_project or !is_object($this->_project) or !$this->_project->id) 
 		{
 			$this->_project = new Project( $this->_database );
 			$this->_project->provisioned = 1;

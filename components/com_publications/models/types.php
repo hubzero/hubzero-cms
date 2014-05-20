@@ -214,7 +214,7 @@ class PublicationTypesHelper extends JObject
 		$attProperties	= $this->_helper->_attProperties;
 		$attPrimeProp	= 'A.' .$attProperties[0];	
 		
-		if (!$this->_project)
+		if (!$this->_project || !$this->_project->id)
 		{
 			return false;
 		}
