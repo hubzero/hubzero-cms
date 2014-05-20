@@ -62,8 +62,8 @@ if ($this->getError()) { ?>
 					?>
 			<tr class="<?php echo $cls; ?>">
 				<td class="event-date">
-					<span class="month"><?php echo date('M', $eventDate); ?></span>
-					<span class="day"><?php echo date('d', $eventDate); ?></span>
+					<span class="month"><?php echo JHtml::_('date', $dayEvent->publish_up, 'M'); ?></span>
+					<span class="day"><?php echo JHtml::_('date', $dayEvent->publish_up, 'd'); ?></span>
 				</td>
 				<td class="event-title">
 					<a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id=' . $dayEvent->id); ?>"><?php echo $this->escape(stripslashes($dayEvent->title)); ?></a>
