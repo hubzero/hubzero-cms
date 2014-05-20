@@ -62,6 +62,11 @@ if ($chm || $cam)
 		$menu->addSeparator();
 	}
 
+	if ($user->authorise('core.admin'))
+	{
+		$menu->addChild(new JMenuNode(JText::_('Update'), 'index.php?option=com_update', 'class:update'));
+	}
+
 	$menu->addChild(new JMenuNode(JText::_('LDAP'), 'index.php?option=com_system&controller=ldap', 'class:ldap'));
 	$menu->addChild(new JMenuNode(JText::_('Geo DB'), 'index.php?option=com_system&controller=geodb', 'class:geo'));
 	$menu->addChild(new JMenuNode(JText::_('APC'), 'index.php?option=com_system&controller=apc', 'class:apc'));
