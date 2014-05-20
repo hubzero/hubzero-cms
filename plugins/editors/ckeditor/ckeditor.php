@@ -283,7 +283,7 @@ class plgEditorCkeditor extends JPlugin
 	{
 		// merge incoming params with 
 		$this->params->loadArray($params);
-
+		
 		// object to hold our final config
 		$config                                = new stdClass;
 		$config->startupMode                   = 'wysiwyg';
@@ -349,8 +349,10 @@ class plgEditorCkeditor extends JPlugin
 		}
 
 		// setup codemirror
-		$config->codemirror = new stdClass;
+		$config->codemirror                         = new stdClass;
 		$config->codemirror->autoFormatOnModeChange = false;
+		$config->codemirror->autoCloseTags          = false;
+		$config->codemirror->autoCloseBrackets      = false;
 
 		// startup mode
 		if (in_array($this->params->get('startupMode'), array('wysiwyg','source')))
