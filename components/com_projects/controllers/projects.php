@@ -494,10 +494,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 */
 	protected function _login() 
 	{		
-		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option 
+			. '&task=' . $this->_task), 'server');
 		
-		// Fix for weird bug refusing to redirect to /files
-		if (substr($rtrn, -6, 6) == '/files')
+		if (substr($rtrn, -1, 1) != '/')
 		{
 			$rtrn .= DS;
 		}
