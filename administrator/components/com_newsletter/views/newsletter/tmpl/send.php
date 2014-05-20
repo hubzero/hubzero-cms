@@ -41,45 +41,41 @@ JToolBarHelper::cancel();
 
 <script type="text/javascript">
 
-window.addEvent('domready', function(){
-	//get elements
-	var mailingList = document.getElementById("mailinglist"),
-		count = document.getElementById("mailinglist-count"),
-		count_count = document.getElementById("mailinglist-count-count"),
-		emails = document.getElementById("mailinglist-emails");
-	
-	//hide count
-	count.style.display = "none";
-	
-	//handle when user picks mailing list
-	mailingList.onchange = function(event) {
-		var value = mailingList.value;
+
+jQuery(document).ready(function($){
+	var $ = jq;
+
+	$('#mailinglist').on('change', function(event) {
+		console.log('chagne');
+		var value = $(this).val();
 		if (value != '' && value != 0)
 		{
-			//get count
-			var myAjax = new Ajax('index.php?option=com_newsletter&controller=mailinglist&task=emailcount&mailinglistid='+value+'&no_html=1', {
-				method: 'get',
-				onSuccess: function(data) {
-					var json = JSON.parse(data)
-						email_count = json.length;
+			$.ajax({
+				type: 'get',
+				dataType: 'json',
+				url: 'index.php?option=com_newsletter&controller=mailinglist&task=emailcount&mailinglistid='+value+'&no_html=1',
+				success: function(data)
+				{
+					var emailCount = data.length;
 					
 					//show count
-					count.style.display = "block";
+					$('#mailinglist-count').show();
 					
 					//set actual counter
-					count_count.innerHTML = email_count;
-					
+					$('#mailinglist-count').find('#mailinglist-count-count').html(emailCount);		
+
 					//add list of emails
-					emails.innerHTML = '<br />--------------------------------<br />' + json.join('<br />');
+					$('#mailinglist-emails').html('<br />--------------------------------<br />' + data.join('<br />'));
 				}
-			}).request();
+			});
 		}
 		else
-		{	
-			//hide count
-			count.style.display = "none";
+		{
+			$('#mailinglist-count').hide();
 		}
-	};
+	});
+
+	$('#mailinglist-count').hide();
 });
 
 function submitbutton(pressbutton) 
