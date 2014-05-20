@@ -100,17 +100,27 @@ class Git
 			$lines  = explode("\n", $status);
 
 			$response = array(
+				'added'     => array(),
 				'modified'  => array(),
 				'deleted'   => array(),
-				'untracked' => array()
+				'untracked' => array(),
+				'merged'    => array()
 			);
 			foreach ($lines as $line)
 			{
 				$line  = trim($line);
-				preg_match('/([D|M|?]{1,2})[ ]{1,2}([[:alnum:]_\.\/]*)/', $line, $parts);
+				preg_match('/([A|D|M|?]{1,2})[ ]{1,2}([[:alnum:]_\.\/]*)/', $line, $parts);
+
+				if (strlen($parts[1]) == 2 && $parts[1] != '??')
+				{
+					$parts[1] = 'merged';
+				}
 
 				switch ($parts[1])
 				{
+					case 'A':
+						$response['added'][] = $parts[2];
+						break;
 					case 'D':
 						$response['deleted'][] = $parts[2];
 						break;
@@ -119,6 +129,9 @@ class Git
 						break;
 					case '??':
 						$response['untracked'][] = $parts[2];
+						break;
+					case 'merged':
+						$response['merged'][] = $parts[2];
 						break;
 				}
 			}

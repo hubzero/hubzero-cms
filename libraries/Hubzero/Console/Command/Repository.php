@@ -128,83 +128,43 @@ class Repository implements CommandInterface
 			);
 		}
 
-		if (isset($status['modified']) && count($status['modified']) > 0)
-		{
-			if ($mode == 'minimal')
-			{
-				$this->output->addLine(
-					array(
-						'modified' => $status['modified']
-					)
-				);
-			}
-			else
-			{
-				$this->output->addSpacer();
-				$this->output->addLine('Modified files:');
-				foreach ($status['modified'] as $file)
-				{
-					$this->output->addLine(
-						$file,
-						array(
-							'color'       => 'yellow',
-							'indentation' => 2
-						)
-					);
-				}
-			}
-		}
+		$colorMap = array(
+			'added'     => 'green',
+			'modified'  => 'yellow',
+			'deleted'   => 'cyan',
+			'untracked' => 'blue',
+			'merged'    => 'red'
+		);
 
-		if (isset($status['deleted']) && count($status['deleted']) > 0)
+		if (is_array($status) && count($status) > 0)
 		{
-			if ($mode == 'minimal')
+			foreach ($status as $k => $v)
 			{
-				$this->output->addLine(
-					array(
-						'deleted' => $status['deleted']
-					)
-				);
-			}
-			else
-			{
-				$this->output->addSpacer();
-				$this->output->addLine('Deleted files:');
-				foreach ($status['deleted'] as $file)
+				if (count($v) > 0)
 				{
-					$this->output->addLine(
-						$file,
-						array(
-							'color'       => 'red',
-							'indentation' => 2
-						)
-					);
-				}
-			}
-		}
-
-		if (isset($status['untracked']) && count($status['untracked']) > 0)
-		{
-			if ($mode == 'minimal')
-			{
-				$this->output->addLine(
-					array(
-						'untracked' => $status['untracked']
-					)
-				);
-			}
-			else
-			{
-				$this->output->addSpacer();
-				$this->output->addLine('Untracked files:');
-				foreach ($status['untracked'] as $file)
-				{
-					$this->output->addLine(
-						$file,
-						array(
-							'color'       => 'blue',
-							'indentation' => 2
-						)
-					);
+					if ($mode == 'minimal')
+					{
+						$this->output->addLine(
+							array(
+								$k => $v
+							)
+						);
+					}
+					else
+					{
+						$this->output->addSpacer();
+						$this->output->addLine(ucfirst($k) . ' files:');
+						foreach ($v as $file)
+						{
+							$this->output->addLine(
+								$file,
+								array(
+									'color'       => $colorMap[$k],
+									'indentation' => 2
+								)
+							);
+						}
+					}
 				}
 			}
 		}
