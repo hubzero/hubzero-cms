@@ -698,8 +698,9 @@ class EventsEvent extends JTable
 		// publish up/down
 		if (isset($filters['publish_up']) && isset($filters['publish_down']))
 		{
-			$q = "(publish_up >=" . $this->_db->quote( $filters['publish_up'] );
-			$q .= " OR (publish_down <> '0000-00-00 00:00:00' AND publish_down <=" . $this->_db->quote( $filters['publish_down'] ) . "))";
+			$q  = "(publish_up >=" . $this->_db->quote( $filters['publish_up'] );
+			$q .= " OR (publish_down <> '0000-00-00 00:00:00' AND publish_down <=" . $this->_db->quote( $filters['publish_down'] ) . ")";
+			$q .= " OR (publish_up <= " . $this->_db->quote( $filters['publish_up'] ) . " AND publish_down >=" . $this->_db->quote( $filters['publish_down'] ) . "))";
 			$where[] = $q;
 		}
 
