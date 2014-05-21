@@ -90,7 +90,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		
 		//get jquery plugin & parse params
 		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
-		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
+		$params = (isset($jqueryPlugin->params)) ? $jqueryPlugin->params : null;
+		$jqueryPluginParams = new JParameter( $params );
 
 		$document = JFactory::getDocument();
 		
