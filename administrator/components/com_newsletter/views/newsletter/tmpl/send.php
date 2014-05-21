@@ -135,7 +135,11 @@ function submitbutton(pressbutton)
 									<font color="green">
 										<strong><?php echo JText::_('Yes'); ?></strong>
 									</font>-
-									<?php echo JHTML::_('date', $lastDateSent, "l, F d, Y @ g:ia"); ?>
+									<?php if ($lastDateSent) : ?>
+										<?php echo JHTML::_('date', $lastDateSent, "l, F d, Y @ g:ia"); ?>
+									<?php else : ?>
+										<?php echo JText::_('no record of mailing was found.'); ?>
+									<?php endif; ?>
 								<?php else : ?>
 									<strong>
 										<font color="red"><?php echo JText::_('No'); ?></font>
