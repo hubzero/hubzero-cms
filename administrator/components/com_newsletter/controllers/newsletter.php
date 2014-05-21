@@ -91,17 +91,19 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//get jquery plugin & parse params
 		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
 		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
+
+		$document = JFactory::getDocument();
 		
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
 		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
 		{
-			$document = JFactory::getDocument();
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.fancybox.js' );
-			$document->addStylesheet( DS . 'media' . DS . 'system' . DS . 'css' . DS . 'jquery.fancybox.css' );
-			$document->addScript( 'components/com_newsletter/assets/js/newsletter.jquery.js' );
+			$document->addStylesheet( DS . 'media' . DS . 'system' . DS . 'css' . DS . 'jquery.fancybox.css' );	
 		}
+
+		$document->addScript( 'components/com_newsletter/assets/js/newsletter.jquery.js' );
 		
 		// Set any errors if we have any
 		if ($this->getError())
