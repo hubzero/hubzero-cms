@@ -262,7 +262,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		//get list of groups
 		$filters = array(
 			'fields' => array('gidNumber','description'),
-			'type' => array('hub','project','partner','course')
+			'type' => array('hub','project','super','course')
 		);
 		$this->view->groups = \Hubzero\User\Group::find( $filters );
 		
