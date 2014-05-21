@@ -1866,6 +1866,7 @@ class ResourcesHtml
 	 */
 	public static function getFileAttribs($path, $base_path='', $fsize=0)
 	{
+		$path = '/www/myhub/components';
 		// Return nothing if no path provided
 		if (!$path) 
 		{
@@ -1881,6 +1882,11 @@ class ResourcesHtml
 		{
 			$type = 'HTM';
 			$fs = '';
+		}
+		// Check if the path has the extension (e.g. Databases don't)
+		elseif(strrpos($path, '.') === false) {
+			// no caption
+			return '';
 		}
 		else
 		{
