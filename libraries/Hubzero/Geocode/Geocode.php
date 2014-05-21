@@ -294,7 +294,7 @@ class Geocode
 			}
 		}
 
-		if (\JError::isError($instance)) 
+		if (\JError::isError($instance) || !$instance->getConnection()) 
 		{
 			return null;
 		}
