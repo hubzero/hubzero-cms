@@ -78,6 +78,13 @@ class Scaffolding implements CommandInterface
 	private $type = false;
 
 	/**
+	 * Whether or not to look for template vars or just do a blind replacement
+	 *
+	 * @var bool
+	 **/
+	private $doBlindReplacements = false;
+
+	/**
 	 * Constructor - sets output mechanism and arguments for use by command
 	 *
 	 * @return void
@@ -188,6 +195,40 @@ class Scaffolding implements CommandInterface
 	}
 
 	/**
+	 * Copy item and attempt to rename appropriatly
+	 *
+	 * @return void
+	 **/
+	public function copy()
+	{
+		$class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst($this->type);
+
+		if (class_exists($class))
+		{
+			$obj = new $class($this->output, $this->arguments);
+		}
+		else
+		{
+			if (empty($this->type))
+			{
+				$this->output->error('Error: Sorry, scaffolding can\'t copy nothing. Try telling it what you want to copy.');
+			}
+			else
+			{
+				$this->output->error('Error: Sorry, scaffolding doesn\'t know how to copy a ' . $this->type);
+			}
+		}
+
+		if (!method_exists($obj, 'doCopy'))
+		{
+			$this->output->error('Error: scaffolding doesn\'t know how to copy a ' . $this->type);
+		}
+
+		// Do the actual copy
+		$obj->doCopy();
+	}
+
+	/**
 	 * Get the type of template we're making
 	 *
 	 * @return (string) $type
@@ -195,6 +236,18 @@ class Scaffolding implements CommandInterface
 	protected function getType()
 	{
 		return $this->type;
+	}
+
+	/**
+	 * Set blind replacement var
+	 *
+	 * @return (object) $this - for method chaining
+	 **/
+	protected function doBlindReplacements()
+	{
+		$this->doBlindReplacements = true;
+
+		return $this;
 	}
 
 	/**
@@ -253,14 +306,15 @@ class Scaffolding implements CommandInterface
 	/**
 	 * Add a new template file
 	 *
-	 * @param  (string) $filename - template filename
+	 * @param  (string) $filename    - template filename
 	 * @param  (string) $destination - final location of template file after making
-	 * @return (object) $this - for method chaining
+	 * @param  (bool)   $fullPath    - true if full path is given
+	 * @return (object) $this        - for method chaining
 	 **/
-	protected function addTemplateFile($filename, $destination)
+	protected function addTemplateFile($filename, $destination, $fullPath=false)
 	{
 		$this->templateFiles[] = array(
-			'path'        => __DIR__ . DS . 'Scaffolding' . DS . 'Templates' . DS . $filename,
+			'path'        => ((!$fullPath) ? __DIR__ . DS . 'Scaffolding' . DS . 'Templates' . DS . $filename : $filename),
 			'destination' => $destination
 		);
 
@@ -321,6 +375,11 @@ class Scaffolding implements CommandInterface
 
 					// Now do all basic replacements
 					$contents = str_replace("%={$k}=%", $v, $contents);
+
+					if ($this->doBlindReplacements)
+					{
+						$contents = str_replace($k, $v, $contents);
+					}
 				}
 			}
 		}
