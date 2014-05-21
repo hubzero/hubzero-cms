@@ -367,7 +367,12 @@ defined('_JEXEC') or die('Restricted access');
 				if ($this->task == 'proxycreate') {
 					$html .= "\t\t".RegistrationHelperHtml::warning('Important! The user <strong>MUST</strong> click on the email confirmation link that you will send them in order for them to start using the account you have created for them.');
 				} else if ($this->task == 'create') {
-					$html .= "\t\t".RegistrationHelperHtml::warning(JText::sprintf('COM_REGISTER_YOU_MUST_CONFIRM_EMAIL', RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom'))));
+					$usersConfig    =  JComponentHelper::getParams('com_users');
+					$useractivation = $usersConfig->get('useractivation', 1);
+					if ($useractivation != 0)
+					{
+						$html .= "\t\t".RegistrationHelperHtml::warning(JText::sprintf('COM_REGISTER_YOU_MUST_CONFIRM_EMAIL', RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom'))));
+					}
 				} else {
 					$html .= "\t\t".RegistrationHelperHtml::warning('Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from '.RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom')).' in order to re-activate your account.');
 				}

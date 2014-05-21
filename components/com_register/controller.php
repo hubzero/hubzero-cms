@@ -886,16 +886,17 @@ class RegisterController extends \Hubzero\Component\SiteController
 				$date = JFactory::getDate();
 				$user->set('registerDate', $date->toMySQL());
 
-				/*
-				// If user activation is turned on, we need to set the activation information
-				$useractivation = $usersConfig->get('useractivation');
-				if ($useractivation == '1')
+				// Check joomla user activation setting
+				// 0 = automatically confirmed
+				// 1 = require email confirmation (the norm)
+				// 2 = require admin confirmation
+				$useractivation = $usersConfig->get('useractivation', 1);
+
+				// If requiring admin approval, set user to block
+				if ($useractivation == 2)
 				{
-					jimport('joomla.user.helper');
-					$user->set('activation', JUtility::getHash(JUserHelper::genRandomPassword()));
-					$user->set('block', '1');
+					$user->set('approved', 0);
 				}
-				*/
 
 				// If there was an error with registration, set the message and display form
 				if ($user->save()) 
@@ -940,6 +941,10 @@ class RegisterController extends \Hubzero\Component\SiteController
 							{
 								$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
 							}
+						}
+						else if ($useractivation == 0)
+						{
+							$xprofile->set('emailConfirmed', 1);
 						}
 
 						$xprofile->set('public', 0);

@@ -195,6 +195,38 @@ class JRouterSite extends JRouter
 				return $vars;
 			}
 
+			if (!$juser->get('approved'))
+			{
+				if ($vars['option'] == 'com_users')
+				{
+					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
+					{
+						return $vars;
+					}
+				}
+				else if ($uri->getPath() == 'legal/terms')
+				{
+					return $vars;
+				}
+				else if ($vars['option'] == 'com_support' && $vars['controller'] == 'tickets' && $vars['task'] == 'save')
+				{
+					return $vars;
+				}
+				else if ($vars['option'] == 'com_support' && $vars['controller'] == 'tickets' && $vars['task'] == 'new')
+				{
+					return $vars;
+				}
+
+				$vars = array();
+				$vars['option'] = 'com_users';
+				$vars['view']   = 'unapproved';
+
+				$this->setVars($vars);
+				JRequest::set($vars, 'get', true ); // overwrite existing
+
+				return $vars;
+			}
+
 			$badpassword = $session->get('badpassword',false);
 			$expiredpassword = $session->get('expiredpassword',false);
 
