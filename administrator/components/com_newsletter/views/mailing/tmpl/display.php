@@ -93,7 +93,16 @@ function submitbutton(pressbutton)
 							<?php echo JHTML::_('date', $mailing->mailing_date, "F d, Y @ g:ia"); ?>
 						</td>
 						<td>
-							<?php echo ($mailing->emails_sent/$mailing->emails_total) * 100; ?>% 
+							<?php 
+								if ($mailing->emails_total != 0) 
+								{
+									echo number_format(($mailing->emails_sent/$mailing->emails_total) * 100, 2) . ' %';
+								}
+								else
+								{
+									echo '0%';
+								}
+							 ?>
 							(<?php echo number_format($mailing->emails_sent); ?> of <?php echo number_format($mailing->emails_total); ?> emails sent)
 						</td>
 					</tr>
