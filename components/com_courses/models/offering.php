@@ -1331,7 +1331,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$course = CoursesModelCourse::getInstance($this->get('course_id'));
 				$this->set('course_alias', $course->get('alias'));
 			}
-			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('course_alias') . '&offering=' . $this->alias();
+			$this->_link  = 'index.php?option=com_courses&controller=offering&gid=' . $this->get('course_alias') . '&offering=' . $this->alias();
 		}
 
 		// If it doesn't exist or isn't published
