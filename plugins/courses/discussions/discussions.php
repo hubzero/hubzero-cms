@@ -1063,7 +1063,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				}
 
 				$cview->config     = $this->params;
-				$cview->depth      = 1;
+				$cview->depth      = JRequest::getInt('depth', 1, 'post');
 				$cview->cls        = 'odd';
 				$cview->base       = $this->base;
 				$cview->attach     = new ForumTableAttachment($this->database);
