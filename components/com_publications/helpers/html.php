@@ -155,7 +155,7 @@ class PublicationsHtml
 	 *
 	 * @return     string
 	 */
-	public function createThumbName( $image=null, $tn='_thumb', $ext = '' )
+	public static function createThumbName( $image=null, $tn='_thumb', $ext = '' )
 	{
 		if (!$image) 
 		{

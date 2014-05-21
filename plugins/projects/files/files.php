@@ -7195,7 +7195,11 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		$obj->formattedSize = $obj->size ? ProjectsHtml::formatSize($obj->size) : NULL;
-		$obj->ext			= strtolower(end(explode('.', $file)));
+		
+		// Get file extention
+		$parts 		= explode('.', $file);
+		$ext   		= count($parts) > 1 ? array_pop($parts) : '';
+		$obj->ext   = strtolower($ext);
 		
 		// Get last commit data
 		if (isset($this->_fileinfo) && $this->_fileinfo && isset($this->_fileinfo[$obj->localPath]))
