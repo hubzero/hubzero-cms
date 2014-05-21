@@ -267,7 +267,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 					case 'answers':
 						$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.anonymous  ";
-						$query .= ", (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount ";
+						$query .= ", (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.question_id=C.id) AS rcount ";
 						$query .= " FROM #__answers_questions AS C ";
 						$query .= " WHERE C.state=0 ";
 						$query .= " AND (C.reward > 0 OR C.helpful > 0) ";
