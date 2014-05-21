@@ -109,7 +109,7 @@ defined('_JEXEC') or die('Restricted access');
 					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?><!-- 
 				--></a>
-				<?php if ($juser->get('username') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid') && $this->depth <= 1) { ?>
+				<?php if ($juser->get('id') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid') && $this->depth <= 1) { ?>
 					<a class="accept" href="<?php echo JRoute::_($this->comment->link('accept')); ?>"><?php echo JText::_('COM_ANSWERS_ACCEPT_ANSWER'); ?></a>
 				<?php } ?>
 			<?php } ?>
