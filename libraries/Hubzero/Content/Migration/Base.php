@@ -449,6 +449,53 @@ class Base
 	}
 
 	/**
+	 * Add, as needed, templates to the CMS
+	 *
+	 * @param $element - (string) template element
+	 * @param $name    - (string) template name
+	 * @param $client  - (int)    admin or site client
+	 * @param $enabled - (int)    whether or not the template should be enabled
+	 * @param $home    - (int)    whether or not this should become the enabled template
+	 * @param $styles  - (array)  template styles
+	 * @return bool
+	 **/
+	public function addTemplateEntry($element, $name=null, $client=1, $enabled=1, $home=0, $styles='')
+	{
+		if ($this->db->tableExists('#__extensions'))
+		{
+			// First, see if it already exists
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type` = 'template' AND `element` = '{$element}' AND `client_id` = '{$client}'";
+			$this->db->setQuery($query);
+
+			if (!$this->db->loadResult())
+			{
+				if (!isset($name))
+				{
+					$name = $element;
+				}
+
+				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
+				$query .= " VALUES ('{$name}', 'template', '{$element}', '', '{$client}', '{$enabled}', '1', '0', '{}', '{}', '', '', '0', '0000-00-00 00:00:00', '0', '0')";
+				$this->db->setQuery($query);
+				$this->db->query();
+
+				// If we're setting this template to be default, disable others first
+				if ($home)
+				{
+					$query = "UPDATE `#__template_styles` SET `home` = 0 WHERE `client_id` = '{$client}'";
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+
+				$query  = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`)";
+				$query .= " VALUES ('{$element}', '{$client}', '{$home}', '{$name}', '".json_encode($styles)."')";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
+	}
+
+	/**
 	 * Remove component entries from the appropriate table, depending on the Joomla version
 	 *
 	 * @param $name - (string) component name
@@ -545,6 +592,36 @@ class Base
 		}
 	}
 
+	/**
+	 * Remove template entires from the appropriate tables
+	 *
+	 * @param $name   - (string) template element name
+	 * @param $client - (int) client id 
+	 * @return bool
+	 **/
+	public function deleteTemplateEntry($element, $client=1)
+	{
+		if ($this->db->tableExists('#__extensions'))
+		{
+			$query = "DELETE FROM `#__extensions` WHERE `type` = 'template' AND `element` = '{$element}' AND `client_id` = '{$client}'";
+			$this->db->setQuery($query);
+			$this->db->query();
+
+			$query = "DELETE FROM `#__template_styles` WHERE `template` = '{$element}' AND `client_id` = '{$client}'";
+			$this->db->setQuery($query);
+			$this->db->query();
+
+			// Now make sure we have an enabled template (don't really care which one it is)
+			$query = "SELECT `id` FROM `#__template_styles` WHERE `home` = 1 AND `client_id` = '{$client}'";
+			$this->db->setQuery($query);
+			if (!$this->db->loadResult())
+			{
+				$query = "UPDATE `#__template_styles` SET `home` = 1 WHERE `client_id` = '{$client}' LIMIT 1";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
+	}
 	/**
 	 * Enable plugin
 	 *
