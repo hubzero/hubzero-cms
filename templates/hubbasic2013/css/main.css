@@ -846,13 +846,15 @@
 	#nav ul.menu a:focus { 
 		color: #111;
 	}
-	#nav ul.menu li.parent:hover > a,
-	#nav ul.menu li.parent:focus > a
+	#nav ul.menu li.parent:hover>a,
+	#nav ul.menu li.parent:focus>a,
 	#nav ul.menu li.parent>a:hover,
 	#nav ul.menu li.parent>a:focus {
 		background-color: #FFF;
 	}
-	#nav ul.menu ul li.active a,
+	#nav ul.menu li.active:hover>a,
+	#nav ul.menu li.active:focus>a,
+	#nav ul.menu ul li.active>a,
 	#nav ul.menu ul li a:hover,
 	#nav ul.menu ul li a:focus,
 	#nav ul.menu li.parent>ul li a:hover,
