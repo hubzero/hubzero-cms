@@ -292,6 +292,16 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//update the modified info
 		$newsletter['modified'] 		= JFactory::getDate()->toSql();
 		$newsletter['modified_by'] 		= $this->juser->get('id');
+
+		// if no plain text was entered lets take the html content
+		if (!isset($newsletter['plain_content']) || $newsletter['plain_content'] == '')
+		{
+			$newsletter['plain_content'] = strip_tags($newsletter['html_content']);
+			$newsletter['plain_content'] = preg_replace('/(?:(?:\r\n|\r|\n)\s*){2}\n/', '', $newsletter['plain_content']);
+		}
+
+		// remove html from plain content
+		$newsletter['plain_content']    = strip_tags($newsletter['plain_content']);
 		
 		//save campaign
 		if (!$newsletterNewsletter->save( $newsletter ))
@@ -305,7 +315,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 			$this->newsletter->template 		= $newsletterNewsletter->template;
 			$this->newsletter->published		= $newsletterNewsletter->published;
 			$this->newsletter->sent 			= $newsletterNewsletter->sent;
-			$this->newsletter->content			= $newsletterNewsletter->content;
+			$this->newsletter->html_content	    = $newsletterNewsletter->html_content;
+			$this->newsletter->plain_content    = $newsletterNewsletter->plain_content;
 			$this->newsletter->tracking			= $newsletterNewsletter->tracking;
 			$this->newsletter->created			= $newsletterNewsletter->created;
 			$this->newsletter->created_by		= $newsletterNewsletter->created_by;
@@ -567,10 +578,11 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$newsletterNewsletter->load( $newsletterId );
 		
 		//build newsletter for sending
-		$newsletterNewsletterContent = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
+		$newsletterNewsletterHtmlContent  = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
+		$newsletterNewsletterPlainContent = $newsletterNewsletter->buildNewsletterPlainTextPart( $newsletterNewsletter );
 		
 		//send campaign
-		$this->_send( $newsletterNewsletter, $newsletterNewsletterContent, $goodEmails, $newsletterMailinglist = null, $sendingTest = true );
+		$this->_send( $newsletterNewsletter, $newsletterNewsletterHtmlContent, $newsletterNewsletterPlainContent, $goodEmails, $newsletterMailinglist = null, $sendingTest = true );
 		
 		//get application
 		$application = JFactory::getApplication();
@@ -688,11 +700,12 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 
 		// build newsletter for sending
-		$newsletterNewsletterContent = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
+		$newsletterNewsletterHtmlContent  = $newsletterNewsletter->buildNewsletter( $newsletterNewsletter );
+		$newsletterNewsletterPlainContent = $newsletterNewsletter->buildNewsletterPlainTextPart( $newsletterNewsletter );
 
 		// send campaign
 		// purposefully send no emails, will create later
-		$newsletterMailing = $this->_send( $newsletterNewsletter, $newsletterNewsletterContent, array(), $mailinglistId, $sendingTest = false );
+		$newsletterMailing = $this->_send( $newsletterNewsletter, $newsletterNewsletterHtmlContent, $newsletterNewsletterPlainContent, array(), $mailinglistId, $sendingTest = false );
 
 		// array of filters
 		$filters = array(
@@ -706,7 +719,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		// get count of emails
 		$count = $newsletterMailinglist->getListEmailsCount($filters);
 		$left  = $count;
-
+		
 		// make sure we have emails
 		if ($count < 1)
 		{
@@ -753,7 +766,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	 *
 	 * @return 	void
 	 */
-	private function _send( $newsletter, $newsletterContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false )
+	private function _send( $newsletter, $newsletterHtmlContent, $newsletterPlainContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false )
 	{
 		//get site config
 		$config = JFactory::getConfig();
@@ -783,7 +796,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		
 		//set subject and body
 		$mailSubject 	= ($newsletter->name) ? $newsletter->name : 'Your '.$config->getValue("sitename").'.org Newsletter';
-		$mailBody		= $newsletterContent;
+		$mailHtmlBody   = $newsletterHtmlContent;
+		$mailPlainBody  = $newsletterPlainContent;
 		
 		//set mail headers
 		$mailHeaders  = "MIME-Version: 1.0" . "\r\n";
@@ -866,15 +880,16 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		}
 		
 		//create mailing object
-		$mailing 			= new stdClass;
-		$mailing->nid 		= $newsletter->id;
-		$mailing->lid 		= $newsletterMailinglist;
-		$mailing->subject 	= $mailSubject;
-		$mailing->body 		= $mailBody;
-		$mailing->headers 	= $mailHeaders;
-		$mailing->args 		= $mailArgs;
-		$mailing->tracking  = $newsletter->tracking;
-		$mailing->date		= $scheduledDate;
+		$mailing 			 = new stdClass;
+		$mailing->nid 		 = $newsletter->id;
+		$mailing->lid 		 = $newsletterMailinglist;
+		$mailing->subject 	 = $mailSubject;
+		$mailing->html_body  = $mailHtmlBody;
+		$mailing->plain_body = $mailPlainBody;
+		$mailing->headers 	 = $mailHeaders;
+		$mailing->args 	 	 = $mailArgs;
+		$mailing->tracking   = $newsletter->tracking;
+		$mailing->date		 = $scheduledDate;
 		
 		//save mailing object
 		$newsletterMailing = new NewsletterMailing( $this->database );

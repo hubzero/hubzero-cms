@@ -66,7 +66,14 @@ class NewsletterMailing extends JTable
 	 * 
 	 * @var text
 	 */
-	var $body 			= NULL;
+	var $html_body		= NULL;
+
+	/**
+	 * Mailing Body
+	 * 
+	 * @var text
+	 */
+	var $plain_body		= NULL;
 	
 	/**
 	 * Mailing Headers
