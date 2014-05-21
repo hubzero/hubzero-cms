@@ -49,6 +49,24 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onInit()
 	{
+		// get joomla application object
+		$app = JFactory::getApplication();
+		
+		// get jquery plugin & parse params
+		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
+		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
+		
+		// are we in the admin?
+		if ($app->getName() == 'administrator')
+		{
+			// show user message if jquery is off or not enabled for admin
+			if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
+			{
+				$app->enqueueMessage('jQuery must be enabled for the administrator section in order for CKEditor to work properly.<br />Edit the jQuery plugin through the Plug-in Manager to enable it. The settings are located under advanced options. This only needs to be set once.', 'error');
+			}
+		}
+		
+
 		// add ckeditor stylesheet
 		Hubzero\Document\Assets::addPluginStylesheet('editors', 'ckeditor');
 
