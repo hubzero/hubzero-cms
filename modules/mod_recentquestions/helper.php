@@ -63,9 +63,9 @@ class modRecentQuestions extends \Hubzero\Module\Module
 		
 		if ($this->tag) 
 		{
-			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
+			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount"
 				." FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg"
-				." WHERE a.id=t.questionid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='" . $this->tag . "' OR tg.raw_tag='" . $this->tag . "' OR tg.alias='" . $this->tag . "')";
+				." WHERE a.id=t.objectid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='" . $this->tag . "' OR tg.raw_tag='" . $this->tag . "' OR tg.alias='" . $this->tag . "')";
 			if ($st) 
 			{
 				$query .= " AND " . $st;
@@ -73,7 +73,7 @@ class modRecentQuestions extends \Hubzero\Module\Module
 		} 
 		else 
 		{
-			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
+			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount"
 				." FROM #__answers_questions AS a";
 			if ($st) 
 			{
