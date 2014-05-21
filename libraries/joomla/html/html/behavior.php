@@ -58,8 +58,30 @@ abstract class JHtmlBehavior
 			//JHtml::_('stylesheet', 'system/jquery.ui.css', array(), true);
 		}
 
-		JHtml::_('script', 'system/jquery' . ($type != 'core' ? '.' . $type : '') . '.js', false, true, false, false, $debug);
-		JHtml::_('script', 'system/core.js', false, true);
+		// We need to make sure the framework is first, regardless of where/when 
+		// JHTML::_('behavior.framework') is called. For instance, if called in the template
+		// then the framework needs to be pushed before any custom scripts the component
+		// or plugins may have already pushed.
+		if ($type == 'core')
+		{
+			$document = JFactory::getDocument();
+			$data = $document->getHeadData();
+			$scripts = $data['scripts'];
+			$data['scripts'] = array();
+			$data['scripts'][str_replace('/administrator', '', JURI::base(true)) . '/media/system/js/jquery' . ($type != 'core' ? '.' . $type : '') . '.js'] = array('mime' => 'text/javascript', 'defer' => false, 'async' => false);
+
+			$document->setHeadData($data);
+			JHtml::_('script', 'system/core.js', false, true);
+			foreach ($scripts as $key => $foo)
+			{
+				$document->addScript($key);
+			}
+		}
+		else
+		{
+			JHtml::_('script', 'system/jquery' . ($type != 'core' ? '.' . $type : '') . '.js', false, true, false, false, $debug);
+			JHtml::_('script', 'system/core.js', false, true);
+		}
 		self::$loaded[__METHOD__][$type] = true;
 
 		return;
