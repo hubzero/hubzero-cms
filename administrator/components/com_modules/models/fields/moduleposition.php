@@ -69,14 +69,14 @@ class JFormFieldModulePosition extends JFormFieldText
 		// The current user display field.
 		//$html[] = '<div class="fltlft">';
 		$html[] = '<div class="input-modal">';
+		$html[] = '<span class="input-cell">';
 		$html[] = parent::getInput();
-		//$html[] = '</div>';
+		$html[] = '</span>';
 
 		// The user select button.
-		//$html[] = '<div class="button2-left">';
-		//$html[] = '  <div class="blank">';
-		$html[] = '	<a class="button modal" title="'.JText::_('COM_MODULES_CHANGE_POSITION_TITLE').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_MODULES_CHANGE_POSITION_BUTTON').'</a>';
-		//$html[] = '  </div>';
+		$html[] = '<span class="input-cell">';
+		$html[] = '<a class="button modal" title="'.JText::_('COM_MODULES_CHANGE_POSITION_TITLE').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_MODULES_CHANGE_POSITION_BUTTON').'</a>';
+		$html[] = '</span>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);
