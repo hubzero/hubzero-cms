@@ -104,7 +104,7 @@ class plgWhatsnewEvents extends JPlugin
 				. " e.publish_up AS publish_up,"
 				. " 'events' AS section, NULL AS subsection";*/
 		$e_fields = "SELECT e.id, e.title, NULL AS alias, e.content AS itext, NULL AS ftext, e.state, e.created, e.modified, e.publish_up, NULL AS params, 
-					CONCAT('index.php?option=com_events&task=details&id=', e.id) AS href, 'events' AS section, NULL AS area, NULL AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking, e.access ";
+					CONCAT('index.php?option=com_events&task=details&id=', e.id) AS href, 'events' AS section, NULL AS area, NULL AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking ";
 		$e_from = " FROM #__events AS e";
 
 		$e_where = "e.created > '$period->cStartDate' AND e.created < '$period->cEndDate' AND scope='events'";
