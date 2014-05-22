@@ -161,6 +161,8 @@ class WishlistControllerLists extends Hubzero_Controller
 				$this->view->setError($error);
 			}
 		}
+		
+		$this->view->juser = $this->juser;
 
 		// Output the HTML
 		$this->view->display();

@@ -119,17 +119,18 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo JText::_('Created'); ?>:</th>
 					<td>
 						<time datetime="<?php echo $this->row->created; ?>"><?php echo $this->row->created; ?></time>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created ? $this->row->created : JFactory::getDate()->toSql(); ?>" />
 					</td>
 				</tr>
 				<tr>
 					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
 					<td>
-						<?php 
-						$editor = JUser::getInstance($this->row->created_by);
-						echo $this->escape(stripslashes($editor->get('name'))); 
+						<?php  
+						$creator = $this->row->created_by ? $this->row->created_by : $this->juser->get('id');
+						$editor  = JUser::getInstance($creator);
+						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown');  
 						?>
-						<input type="hidden" name="fields[create_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $creator; ?>" />
 					</td>
 				</tr>
 			</tbody>
