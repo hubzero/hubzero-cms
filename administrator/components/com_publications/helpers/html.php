@@ -96,6 +96,7 @@ class PublicationsHtml
 				<li class="ready"><span>ready</span> = <?php echo JText::_('Draft ready'); ?></li>
 				<li class="new"><span>pending</span> = <?php echo JText::_('New, awaiting approval'); ?></li>
 				<!--<li class="pending"><span>coming</span> = <?php echo JText::_('Published, but is coming'); ?></li>//-->
+				<li class="preserving" style="width:auto"><span>current</span> = <?php echo JText::_('Preserving'); ?></li>
 				<li class="published"><span>current</span> = <?php echo JText::_('Published and is current'); ?></li>
 				<li class="archived"><span>archived</span> = <?php echo JText::_('Dark archive'); ?></li>
 				<!--<li class="expired"><span>expired</span> = <?php echo JText::_('Published, but expired'); ?></li>//-->
@@ -673,6 +674,11 @@ class PublicationsHtml
 			case 6: 
 				$class  = 'archived';
 				$status = JText::_('COM_PUBLICATIONS_VERSION_DARKARCHIVE');
+				break;
+				
+			case 10:
+				$class	= 'preserving';
+				$status = JText::_('COM_PUBLICATIONS_VERSION_PRESERVING');
 				break;	
 		}
 		

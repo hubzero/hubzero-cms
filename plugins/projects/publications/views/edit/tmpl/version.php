@@ -302,16 +302,17 @@ $showCitations = $typeParams->get('show_citations', 0);
 				<?php } ?>
 			<?php } ?>
 			
-			<?php if ($this->row->state == 5) { // pending approval ?>
+			<?php if ($this->row->state == 5 || $this->row->state == 10) { // pending approval ?>
 				<li id="next-pending">
 					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING');  ?>	</p>
 					<?php if($this->row->doi) { 
 						echo '<p>' . JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING_DOI_ISSUED') . '</p>' 
 						. '<div class="citeit">' . $citation . '</div>'; } ?>
 				</li>
+				<?php if ($this->row->state == 5) { ?>
 				<li id="next-ready"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING_REVERT');  
 				echo ' <a href="' . $this->url . '/?action=revert' . a . 'version=' . $this->version . '" id="confirm-revert">'
-				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT').' &raquo;</a> ';  ?></p></li>					
+				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT').' &raquo;</a> ';  ?></p></li><?php } ?>					
 			<?php } ?>
 			
 			<?php if ($this->row->state == 0) { // unpublished				

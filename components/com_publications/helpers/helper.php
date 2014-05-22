@@ -784,6 +784,7 @@ class PublicationHelper extends JObject
 				break;
 				
 			case 5: 
+			case 10:
 				$class  = 'pending';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PENDING');
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
@@ -797,7 +798,7 @@ class PublicationHelper extends JObject
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
 					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
-				break;	
+				break;			
 		}
 		
 		switch ($get) 

@@ -193,6 +193,7 @@ class PublicationVersion extends JTable
 	 * 4 - ready
 	 * 5 - pending approval
 	 * 6 - dark archive
+	 * 10 - preserving
 	 */
 	var $state  					= NULL;
 	

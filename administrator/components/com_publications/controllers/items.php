@@ -636,8 +636,21 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			switch ($action) 
 			{
 				case 'publish': 
-				case 'republish':      	 
-					$row->state = 1;  
+				case 'republish':  
+				    	 
+					// MKAIP --------------> 
+					$mkaip = JPATH_BASE . '/../cli/mkaip/bin/mkaip';
+
+					if (file_exists($mkaip))
+					{
+						$row->state = 10;	// preserving (generating AIP)
+					}
+					else
+					{
+						$row->state = 1;	// published
+					}
+					// MKAIP -------------->
+					  
 				 	$activity = $action == 'publish' 
 						? JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_PUBLISHED')
 						: JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_REPUBLISHED');   
@@ -695,6 +708,41 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					}
 					$row->modified = JFactory::getDate()->toSql();
 					$row->modified_by = $this->juser->get('id');
+					
+					// MKAIP -------------->
+					// Create OAIS Archival Information Package
+					if (!$this->getError() && file_exists($mkaip))
+					{
+						$mkaipOutput =
+							'mkaip-'
+							. str_replace(
+								'/',
+								'__',
+								$row->doi
+							)
+							. '.out';
+
+						// "fire and forget" mkaip --
+						// must use proc_open / proc_close()
+						// or we cannot run mkaip in the
+						// background on:
+						//     Debian GNU/Linux 6.0.7 (squeeze)
+						// [ Mark Leighton Fisher, 2014-04-28 ]
+						$handles = array();
+						$pipes	 = array();
+						proc_close(
+							proc_open(
+								'( /usr/bin/nohup '
+								. '/usr/bin/php -q '
+								. $mkaip . ' ' . $row->doi . ' '
+								. '2>&1 > '
+								. "/www/tmp/$mkaipOutput & ) &",
+								$handles,
+								$pipes
+							)
+						);
+					}					
+					// MKAIP -------------->
 					
 					if (!$this->getError()) 
 					{

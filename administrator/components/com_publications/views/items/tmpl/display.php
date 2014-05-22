@@ -71,6 +71,7 @@ function submitbutton(pressbutton)
 				<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Draft'); ?></option>
 				<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Pending'); ?></option>
 				<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
+				<option value="10"<?php echo ($this->filters['status'] == 10) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Preserving'); ?></option>
 				<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
 				<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Ready'); ?></option>
 			</select>
