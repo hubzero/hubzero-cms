@@ -1829,7 +1829,7 @@ class ResourcesHtml
 		if ($disabled)
 		{
 			$out .= "\t" . '<p id="primary-document">' . "\n";
-			$out .= "\t\t" . '<span class="' . $class . '">' . $msg . '</span>' . "\n";
+			$out .= "\t\t" . '<span class="btn disabled ' . $class . '">' . $msg . '</span>' . "\n";
 			$out .= "\t" . '</p>' . "\n";
 		}
 		else
@@ -1837,8 +1837,8 @@ class ResourcesHtml
 			$title = htmlentities($title, ENT_QUOTES);
 
 			$out .= "\t" . '<p id="primary-document">' . "\n";
-			$out .= "\t\t" . '<a';
-			$out .= ($class)  ? ' class="' . $class . '"' : '';
+			$out .= "\t\t" . '<a class="btn btn-primary';
+			$out .= ($class)  ? ' ' . $class . '"' : '"';
 			$out .= ($href)   ? ' href="' . $href . '"'   : '';
 			$out .= ($title)  ? ' title="' . $title . '"' : '';
 			$out .= ($action) ? ' ' . $action             : '';
@@ -1866,7 +1866,7 @@ class ResourcesHtml
 	 */
 	public static function getFileAttribs($path, $base_path='', $fsize=0)
 	{
-		$path = '/www/myhub/components';
+		//$path = '/www/myhub/components';
 		// Return nothing if no path provided
 		if (!$path) 
 		{

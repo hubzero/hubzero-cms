@@ -26,114 +26,21 @@
 	}
 /* Get started button */
 	#getstarted {
-		margin: 0em 0 0 0;
+		margin: 0 0 1.5em 0;
 		padding: 0;
 	}
-	#getstarted a {
-		display: inline-block;
-		zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
-		*display: inline;
-		vertical-align: baseline;
-		margin: 0 2px;
-		outline: none;
-		cursor: pointer;
-		text-align: center;
-		text-decoration: none;
-		font-weight: bold;
-		padding: .5em 3.2em .55em;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		-webkit-border-radius: .25em; 
-		-moz-border-radius: .25em;
-		-ms-border-radius: .25em;
-		-o-border-radius: .25em;
-		border-radius: .25em;
-		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		-ms-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		-o-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		color: #fff;
-		border: solid 1px #333;
-		background: #333;
-		background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#000000));
-		background: -webkit-linear-gradient(#666666, #000000);
-		background: -moz-linear-gradient(center top, #666666 0%, #000000 100%);
-		background: -moz-gradient(center top, #666666 0%, #000000 100%);
-		background: -o-linear-gradient(#666666, #000000);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#000000);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#000000)";
+	#getstarted .btn,
+	.type-button .btn {
+		display: block;
 	}
-	#getstarted a:hover,
-	#getstarted a:active {
-		text-decoration: none;
-		color: #fef4e9;
-		border: solid 1px #da7c0c;
-		background: #f78d1d;
-		background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
-		background: -webkit-linear-gradient(#faa51a, #f47a20);
-		background: -moz-linear-gradient(center top, #faa51a 0%, #f47a20 100%);
-		background: -moz-gradient(center top, #faa51a 0%, #f47a20 100%);
-		background: -o-linear-gradient(#faa51a, #000000);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a,endColorstr=#f47a20);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a, endColorstr=#f47a20)";
+	.type-button .btn {
+		text-align: left;
 	}
 
-	.type-button a {
-		border: 1px solid #CCC;
-		-webkit-box-shadow: inset 0 0 1px #fff;
-		-moz-box-shadow: inset 0 0 1px #fff;
-		-ms-box-shadow: inset 0 0 1px #fff;
-		-o-box-shadow: inset 0 0 1px #fff;
-		box-shadow: inset 0 0 1px #fff;
-		text-shadow: 0 1px 0 #fff;
-		border-color: #CCC #CCC #AAA #AAA;
-		color: #555;
-		background: #e0e0e0;
-		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
-		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
-		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
-		padding: 0.4em 0.91em 0.4em 2.91em;
-		text-align: left;
-		font-weight: bold;
-		-webkit-background-clip: padding-box;
-		display: block;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		outline: 0;
-		font-size: 1em;
-		white-space: nowrap;
-		word-wrap: normal;
-		vertical-align: middle;
-		cursor: pointer;
-		position: relative;
-	}
 	.type-button a:before {
-		background: rgba(0, 0, 0, 0.08);
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		width: 1em;
-		text-align: center;
-		font-size: 1.2em;
-		font-weight: normal;
-		line-height: 2.2;
-		padding: 0 0.5em;
-		-webkit-border-radius: 0.25em 0 0 0.25em;
-		-moz-border-radius: 0.25em 0 0 0.25em;
-		-ms-border-radius: 0.25em 0 0 0.25em;
-		-o-border-radius: 0.25em 0 0 0.25em;
-		border-radius: 0.25em 0 0 0.25em;
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
+		content: "\270D";
 	}
+
 	.wiki .type-button a:before {
 		content: "\f072";
 	}
@@ -168,23 +75,8 @@
 	.workshop .type-button a:before {
 		content: "\f096";
 	}
-	.type-button a:hover {
-		background: #e8e8e8;
-		background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#e8e8e8));
-		background: -webkit-linear-gradient(#f1f1f1, #e8e8e8);
-		background: -moz-linear-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
-		background: -moz-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
-		background: -o-linear-gradient(#f1f1f1, #e8e8e8);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1,endColorstr=#e8e8e8);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1, endColorstr=#e8e8e8)";
-		border: 1px solid #aaaaaa;
-		-webkit-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-	}
-/* Four Columns */
+
+/* Columns */
 	.aside h3 {
 		margin-top: 0;
 	}

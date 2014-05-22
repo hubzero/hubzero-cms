@@ -33,27 +33,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig = JFactory::getConfig();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
-			<?php echo JText::_('Main page'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-main btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+				<?php echo JText::_('Main page'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<div class="main section">
-	<div class="aside">
-		<h3>Select a type</h3>
-		<p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
-	</div><!-- /.aside -->
+<section class="main section">
 	<div class="subject">
 		<div class="grid">
 <?php
@@ -96,7 +92,7 @@ $jconfig = JFactory::getConfig();
 ?>
 		<div class="col span-third <?php echo $clm; ?>">
 			<div class="type-container <?php echo $cls; ?>">
-				<p class="type-button"><a href="<?php echo $url; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></a></p>
+				<p class="type-button"><a class="btn icon-<?php echo $cls; ?>" href="<?php echo $url; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></a></p>
 				<p><?php echo $this->escape(stripslashes($type->description)); ?></p>
 			</div>
 		</div><!-- / .col span-third <?php echo $clm; ?> -->
@@ -175,5 +171,8 @@ $jconfig = JFactory::getConfig();
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
 	</div><!-- /.subject -->
-	<div class="clear"></div>
-</div><!-- /.main section -->
+	<aside class="aside">
+		<h3>Select a type</h3>
+		<p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
+	</aside><!-- /.aside -->
+</section><!-- /.main section -->
