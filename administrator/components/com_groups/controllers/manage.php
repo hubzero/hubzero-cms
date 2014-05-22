@@ -435,17 +435,35 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		
 		// get the source path
 		$srcPath = JPATH_COMPONENT . DS . 'super' . DS . 'default' . DS . '.';
+
+		// create group folder if one doesnt exist
+		if (!is_dir($uploadPath))
+		{
+			if (!JFolder::create($uploadPath))
+			{
+				JFactory::getApplication()
+					->enqueueMessage('Unable to create group folder. Please try again later.', 'error');
+			}
+		}
+
+		// make sure folder is writable
+		if (!is_writable($uploadPath))
+		{
+			JFactory::getApplication()
+					->enqueueMessage('Group folder ('.$uploadPath.') is not writable. Plase modify the folder permissions and try again later.', 'error');
+			return;
+		}
 		
 		// copy over default template recursively
 		// must have  /. at the end of source path to get all items in that directory
 		// also doesnt overwrite already existing files/folders
 		shell_exec("cp -rn $srcPath $uploadPath");
 		
-		// make sure files are all owned by www-data
-		// make sure files are all group owned by access-content
 		// make sure files are group read and writable
-		shell_exec("chown -R www-data.access-content $uploadPath");
+		// make sure files are all group owned properly
 		shell_exec("chmod -R 2770 $uploadPath");
+		shell_exec("chgrp -R " . $this->config->get('super_group_file_owner', 'access-content') . " " . $uploadPath);
+
 		
 		// create super group DB if doesnt already exist
 		$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
