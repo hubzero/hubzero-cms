@@ -160,6 +160,8 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 			}
 		}
 
+		$this->view->juser = $this->juser;
+		
 		// Output the HTML
 		$this->view->display();
 	}
