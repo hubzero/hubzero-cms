@@ -48,7 +48,7 @@ if ($canDo->get('core.create'))
 	JToolBarHelper::addNew();
 }
 JToolBarHelper::spacer();
-JToolBarHelper::help('entries');
+JToolBarHelper::help('comments');
 
 JHTML::_('behavior.tooltip');
 ?>

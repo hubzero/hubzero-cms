@@ -42,7 +42,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
-
+JToolBarHelper::spacer();
+JToolBarHelper::help('comment');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -68,7 +69,7 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo JText::_('When marked anonymous a commenter\'s name and picture are hidden. No specific identifying information should be accessible by other users.'); ?>">
 				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> />
 				<label for="field-anonymous"><?php echo JText::_('Anonymous (commenter\'s name and picture are hidden)'); ?></label>
 			</div>
@@ -80,36 +81,34 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<fieldset class="adminform">
-			<table class="meta">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
-						<td>
-							<?php 
-							$editor = JUser::getInstance($this->row->get('created_by'));
-							echo $this->escape($editor->get('name')); 
-							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
-						<td>
-							<?php echo $this->row->get('created'); ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('Entry #'); ?>:</th>
-						<td>
-							<?php echo $this->row->get('entry_id'); ?>
-							<input type="hidden" name="fields[entry_id]" id="field-entry_id" value="<?php echo $this->row->get('entry_id'); ?>" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th><?php echo JText::_('Created By'); ?>:</th>
+					<td>
+						<?php 
+						$editor = JUser::getInstance($this->row->get('created_by'));
+						echo $this->escape($editor->get('name')); 
+						?>
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Created Date'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('created'); ?>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Entry #'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('entry_id'); ?>
+						<input type="hidden" name="fields[entry_id]" id="field-entry_id" value="<?php echo $this->escape($this->row->get('entry_id')); ?>" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div class="clr"></div>
 
