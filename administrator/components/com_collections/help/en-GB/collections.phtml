@@ -1,5 +1,118 @@
 <article>
 	<h1><span>Collections Manager</span></h1>
 
-	<p>-- Needs filling in --</p>
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+		<li><a href="#list-filters">List Filters</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>Here you will a list of collections.</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<p>Click on the column heading to sort the list by that column's value. The list will be sorted in order by that column and a sort icon will show next to the column name. Click a second time to reverse the sort to high-to-low. The sort icon will change to high-to-low.</p>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</dd>
+
+			<!-- 
+			<dt>ID</dt>
+			<dd>This is a unique identification number for this item assigned automatically by the system. It is used to identify the item internally and cannot be changed. When creating a new item, this field is 0 until the entry is saved, at which point a new ID is assigned to it.</dd>
+			-->
+
+			<dt>Title</dt>
+			<dd>The title of the collection. This field is required. You can open the collection for editing by clicking on the Title.</dd>
+
+			<dt>Published</dt>
+			<dd>(Public/Private/Registered/Trashed) The published status of the item.</dd>
+
+			<dt>Access</dt>
+			<dd>Which user 'access levels' have access to this item. You can change an item's Access Level by clicking on its name to open it up for editing. The default user 'access levels' which come preconfigured are:
+				<ul>
+					<li>Public: Everyone has access including website visitors who have not logged in</li>
+					<li>Registered: Only users with registered status or higher will have access</li>
+					<li>Special: Only users with author status or higher have access</li>
+				</ul>
+			</dd>
+
+			<dt>Owner</dt>
+			<dd>The creator of the entry. Because both members and entire groups can own a collection, this is presented as <i>owner type (owner ID)</i>.</dd>
+
+			<dt>Posts</dt>
+			<dd>How many items have been added to the collection. Clicking the number will present a list of posts for that specific collection.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Options</dt>
+			<dd>Opens the Options window where settings such as default parameters or permissions can be edited.</dd>
+
+			<dt>Publish</dt>
+			<dd>Makes the selected posts available to visitors to the site.</dd>
+
+			<dt>Unpublish</dt>
+			<dd>Makes the selected posts unavailable to visitors to the site.</dd>
+
+			<dt>New</dt>
+			<dd>Opens the editing screen to create a new question.</dd>
+
+			<dt>Edit</dt>
+			<dd>Opens the editing screen for the selected item. If more than one item is selected (where applicable), only the first item will be opened. The editing screen can also be opened by clicking on the Title of the item.</dd>
+
+			<dt>Delete</dt>
+			<dd>Permanently deletes selected items and their associated content.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, above the filters, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Collections</dt>
+			<dd>Show all collections.</dd>
+			<dt>Posts</dt>
+			<dd>Show posts made to collections. If a collection ID is passed in the URL, the list will be filtered to display only posts in that collection.</dd>
+		</dl>
+	</section>
+	<section id="list-filters">
+		<h2><span>List Filters</span></h2>
+
+		<dl>
+			<dt>Search</dt>
+			<dd>Above the column headers is a search box for filtering results by a keyword or phrase.</dd>
+		</dl>
+
+		<p>Click Clear to clear the Filter field and restore the list to its unfiltered state.</p>
+
+		<h3>Page Controls</h3>
+		<p>When the number of items is more than one page, you will see a page control bar as shown below.</p>
+
+		<dl>
+			<dt>Display #</dt>
+			<dd>Select the number of items to show on one page.</dd>
+			<dt>Start</dt>
+			<dd>Click to go to the first page.</dd>
+			<dt>Prev</dt>
+			<dd>Click to go to the previous page.</dd>
+			<dt>Page numbers</dt>
+			<dd>Click to go to the desired page.</dd>
+			<dt>Next</dt>
+			<dd>Click to go to the next page.</dd>
+			<dt>End</dt>
+			<dd>Click to go to the last page.</dd>
+		</dl>
+	</section>
 </article>
