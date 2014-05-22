@@ -159,6 +159,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="super_group_file_owner" type="text" default="access-content" label="Super Group Group Owner" description="Filesystem owner of super group folder assets." size="50" />
 	</fieldset>
 </config>
 
