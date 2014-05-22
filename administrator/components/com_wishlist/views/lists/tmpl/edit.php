@@ -133,7 +133,7 @@ function submitbutton(pressbutton)
 						$editor  = JUser::getInstance($creator);
 						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown');
 						?>
-						<input type="hidden" name="fields[create_by]" id="field-created_by" value="<?php echo $editor; ?>" />
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $creator; ?>" />
 					</td>
 				</tr>
 			</tbody>
