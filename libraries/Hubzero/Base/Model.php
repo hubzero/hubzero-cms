@@ -402,11 +402,19 @@ abstract class Model extends Object
 
 			if ($this->_context)
 			{
-				$this->importPlugin('content')->trigger('onContentBeforeSave', array(
+				$results = $this->importPlugin('content')->trigger('onContentBeforeSave', array(
 					$this->_context,
 					&$this, 
 					$this->exists()
 				));
+				foreach ($results as $result)
+				{
+					if ($result === false)
+					{
+						$this->setError(\JText::_('Content failed validation.'));
+						return false;
+					}
+				}
 			}
 		}
 

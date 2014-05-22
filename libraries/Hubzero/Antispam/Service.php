@@ -61,10 +61,10 @@ class Service
 	 * @var array
 	 */
 	protected $_invokableClasses = array(
-		'simple'       => 'Hubzero\Antispam\Adapter\Simple',
-		'akismet'      => 'Hubzero\Antispam\Adapter\Akismet',
-		'mollom'       => 'Hubzero\Antispam\Adapter\Mollom',
-		'spamassassin' => 'Hubzero\Antispam\Adapter\SpamAssassin'
+		'simple'       => 'Hubzero\Antispam\Adapter\Simple'
+		//'akismet'      => 'Hubzero\Antispam\Adapter\Akismet',
+		//'mollom'       => 'Hubzero\Antispam\Adapter\Mollom',
+		//'spamassassin' => 'Hubzero\Antispam\Adapter\SpamAssassin'
 	);
 
 	/**

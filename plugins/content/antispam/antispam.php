@@ -46,47 +46,57 @@ class plgContentAntispam extends JPlugin
 	 * @param	bool		If the content is just about to be created
 	 * @since   2.5
 	 */
-	public function onContentBeforeSave($context, $content, $isNew)
+	public function onContentBeforeSave($context, $article, $isNew)
 	{
-		if (is_object($content))
+		if ($article instanceof \Hubzero\Base\Object)
+		{
+			$key = $this->_key($context);
+
+			$content = ltrim($article->get($key));
+		}
+		else if (is_object($article) || is_array($article))
 		{
 			return;
 		}
-
-		if (!($s = $this->params->get('service')))
+		else
 		{
-			return;
+			$content = $article;
 		}
 
-		$service = new \Hubzero\Antispam\Service($s);
-		$service->set('apiPublicKey', $this->params->get('apiPublicKey'));
-		$service->set('apiPrivateKey', $this->params->get('apiPrivateKey'));
-		if ($properties = $this->params->get('options'))
-		{
-			$options = array();
+		if (!$content) return;
 
-			$lines = explode("\n", $properties);
-			foreach ($lines as $line)
-			{
-				$bits = explode('=', $line);
-				if (count($bits) <= 1) 
-				{
-					continue;
-				}
-				$options[trim($bits[0])] = trim($bits[1]);
-			}
-			$service->setProperties($options);
-		}
+		$service = new \Hubzero\Antispam\Service('simple');
 
-		/*
-		$service->set('user_email', $item->creator('email'));
-		$service->set('user_id', $item->creator('id'));
-		$service->set('user_name', $item->creator('name'));
-		*/
+		$service->set('linkFrequency', $this->params->get('linkFrequency', 5))
+		        ->set('blacklist', $this->params->get('blacklist'))
+		        ->set('badwords', $this->params->get('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
+				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
+				. 'debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, '
+				. 'orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
+				. 'porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, '
+				. 'texas holdem, fisting'));
 
 		if ($service->isSpam($content))
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Check if the context provided the content field name as
+	 * it may vary between models.
+	 *
+	 * @param   string $context A dot-notation string
+	 * @return  string
+	 */
+	private function _key($context)
+	{
+		$parts = explode('.', $context);
+		$key = 'content';
+		if (isset($parts[2]))
+		{
+			$key = $parts[2];
+		}
+		return $key;
 	}
 }
