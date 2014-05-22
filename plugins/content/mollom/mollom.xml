@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/content/mollom/mollom.xml
+@copyright      Copyright 2005-2013 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="2.5" type="plugin" group="content">
+	<name>plg_content_mollom</name>
+	<author>HUBzero</author>
+	<creationDate>October 2013</creationDate>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>2.5.0</version>
+	<description>PLG_CONTENT_MOLLOM_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="mollom">mollom.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_content_mollom.ini</language>
+		<language tag="en-GB">en-GB.plg_content_mollom.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="apiPublicKey" type="text" size="10" default="" label="API Public Key" description="The API Public Key of the service selected, if applicable." />
+				<field name="apiPrivateKey" type="text" size="10" default="" label="API Private Key" description="The API Private Key of the service selected, if applicable." />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
