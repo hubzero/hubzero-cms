@@ -1596,6 +1596,14 @@
 		color: #555;
 		border-color: #CCC #CCC #AAA #AAA;
 	}
+	a.btn-primary,
+	.btn-primary {
+		color: #fff;
+	}
+	a.btn-primary:hover,
+	.btn-primary:hover {
+		background: orange;
+	}
 	.btn-success {
 		/*border-color: #51a351 #51a351 #387038;*/
 		border-color: #287728 #1b511b #1b511b #287728;
