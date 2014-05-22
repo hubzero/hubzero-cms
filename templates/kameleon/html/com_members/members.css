@@ -1,0 +1,114 @@
+@import url("../../../../components/com_members/assets/css/members.css");
+
+	.com_members .innerwrap {
+		position: relative;
+	}
+	#content-header {
+		margin: 0;
+	}
+	#page_options + #page_header {
+		margin-right: 0;
+		padding-right: 11em;
+	}
+/* Content blocks */
+	body #page_header {
+		padding: 30px !important;
+		margin-bottom: 0;
+	}
+	#page_header h2 {
+		/*line-height: 1.3;*/
+		padding: 0;
+	}
+	#page_header h2 a {
+		color: #fff;
+		border: none;
+	}
+	#page_header span {
+		color: rgba(255, 255, 255, 0.6);
+	}
+	#page_header h3 {
+		color: #fff;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+		padding: 0.25em 0;
+		letter-spacing: 0.15em;
+	}
+	#page_header #profile-privacy {
+		top: 30px;
+		left: 0;
+	}
+	#page_header #profile-privacy:before {
+		color: rgba(0, 0, 0, 0.2);
+	}
+
+	#page_identity {
+		margin: 25px 25px 0px 60px;
+	}
+	#page_identity a,
+	#page_identity a:hover,
+	#page_identity a:active {
+		border: none;
+		background: transparent;
+	}
+	#page_identity img {
+		border: none;
+		-webkit-box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
+	}
+	#page_sidebar {
+		width: 245px;
+		min-width: 245px;
+		max-width: 245px;
+		background: #f6f6f6;
+		border-right: 1px solid #eaeaea;
+		border-right: 1px solid rgba(0, 0, 0, 0.05);
+
+		background: #e9e9e9;
+	}
+	#page_menu li {
+		padding: 0 45px 0 80px;
+		border-bottom: 1px solid #d1d1d1;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.075);
+	}
+	#page_menu li a {
+		padding: 0.6em 0;
+	}
+	#page_menu li a:before {
+		top: 0.5em;
+	}
+	#page_menu li:first-child {
+		border-top: 1px solid #d1d1d1;
+		border-top: 1px solid rgba(0, 0, 0, 0.075);
+	}
+	#page_menu li .meta .count {
+		background: #d1d1d1;
+		background: rgba(0, 0, 0, 0.1);
+		color: #888;
+	}
+	#page_menu li ul li a,
+	#page_menu li a, 
+	#page_menu li span {
+		color: #888;
+	}
+	#page_menu li a:before {
+		color: #444;
+	}
+	#page_menu li.active {
+		background: #444;
+	}
+	#page_menu li.active:after {
+		border: 8px solid #f9f9f9;
+		border-color: transparent #f9f9f9 transparent transparent;
+		background: transparent;
+		width: 0;
+		height: 0;
+		top: 50%;
+		right: -2px;
+		margin-top: -8px;
+	}
+	#page_content {
+		margin: 0;
+		padding: 30px 60px 30px 30px;
+	}

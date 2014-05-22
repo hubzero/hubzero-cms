@@ -1,0 +1,574 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_blog/assets/css/blog.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	blog CSS
+	-- -- -- -- -- -- --
+
+*/
+	.data-entry {
+		margin: 0 -30px;
+	}
+
+/* Entries listing */
+	ol.blog-entries {
+		list-style-type: none !important;
+		margin: 0;
+		padding: 0;
+	}
+	ol.blog-entries h4 {
+		margin: 0 0 0.5em 0;
+		line-height: 1;
+	}
+	ol.blog-entries p {
+		margin-bottom: 0;
+	}
+	ol.blog-entries > li {
+		clear: left;
+		margin: 0 !important;
+		padding: 30px 0;
+		border-top: 1px solid #efefef;
+		border-top: 1px solid rgba(0, 0, 0, 0.075);
+		position: relative;
+	}
+	ol.blog-entries .entry-title .edit,
+	ol.blog-entries .entry-title .delete {
+		top: 30px;
+	}
+	ol.blog-entries > li:first-child {
+		border-top: none;
+	}
+
+	ol.blog-entries dl.entry-meta {
+		margin: 0.5em 0;
+		padding: 0;
+		color: #999;
+		font-size: 0.85em;
+		font-style: italic;
+	}
+	ol.blog-entries .name {
+		color: #777;
+		font-size: 12px;
+	}
+	ol.blog-entries .entry-author {
+		color: #aaa;
+		font-size: 85%;
+		margin: -0.5em 0 0 0;
+		padding: 0;
+	}
+	ol.blog-entries .expired .entry-title:before {
+		content: "\f070";
+		font-family: "Fontcons";
+		font-weight: normal;
+	}
+	ol.blog-entries .expired .entry-content {
+		color: #ccc;
+	}
+	ol.blog-entries li dl.entry-meta dt a.comment-counter:link,
+	ol.blog-entries li dl.entry-meta dt a.comment-counter:visited,
+	ol.blog-entries li dl.entry-meta dt a.comment-counter:active {
+		color: #999 !important;
+	}
+	ol.blog-entries li dl.entry-meta dt a.comment-counter:hover {
+		color: #ff6600 !important;
+	}
+	/* Metadata */
+	dl.entry-meta dt {
+		display: none;
+	}
+	dl.entry-meta dd {
+		margin: 0 1.5em 0 0;
+		padding: 0;
+		display: inline;
+	}
+	dl.entry-meta dd a {
+		border: none;
+		color: #999;
+	}
+	dl.entry-meta dd a:hover {
+		color: #111;
+		border-bottom: 1px solid #111;
+	}
+
+/* Entry */
+	div.entry {
+		margin: 0 0 2em 0;
+		padding: 0;
+	}
+	div.entry dl.entry-meta {
+		margin: 1em 0 2em 0;
+		padding: 0.618em 1em;
+		background: #eee;
+		color: #999;
+		font-size: 11px;
+		position: relative;
+	}
+	div.entry dl.entry-meta dt {
+		display: none;
+	}
+	div.entry dl.entry-meta dd {
+		margin: 0 1.5em 0 0;
+		padding: 0;
+		display: inline;
+	}
+	div.entry dl.entry-meta dd.entry-options a {
+		margin-left: 1.5em;
+	}
+	div.entry dl.entry-meta dd.entry-options a.edit,
+	div.entry dl.entry-meta dd.entry-options a.delete {
+		display: block;
+		width: 1em;
+		height: 1em;
+		font-size: 1.2em;
+		line-height: 1;
+		overflow: hidden;
+		border: none;
+		top: 0;
+		right: 0.5em;
+		position: absolute;
+	}
+	div.entry dl.entry-meta dd.entry-options a:before,
+	div.entry dl.entry-meta dd.entry-options a:before {
+		margin-right: 1em;
+		font-weight: normal;
+	}
+	div.entry dl.entry-meta dd.entry-options a.delete {
+		right: 2em;
+	}
+	div.entry .entry-content {
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		-webkit-box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
+	}
+	div.entry .entry-content:before,
+	div.entry .entry-content:after {
+		display: none;
+	}
+
+	.entry .tags {
+		margin: 2em 0 0 0;
+		padding: 0 0 0 20px;
+	}
+	.entry .tags li {
+		margin: 0;
+	}
+	h2.entry-title {
+		font-weight: normal;
+		letter-spacing: 1px;
+		position: relative;
+		border: none;
+		color: #333;
+		margin-top: 0;
+	}
+
+	.entry-title .edit,
+	.entry-title .delete {
+		display: block;
+		width: 1em;
+		height: 1em;
+		font-size: 1.2em;
+		line-height: 1;
+		overflow: hidden;
+		border: none;
+		top: 0;
+		right: 0;
+		position: absolute;
+		color: #bbb;
+	}
+	dd.entry-options .edit:before,
+	dd.entry-options .delete:before,
+	.entry-title .edit:before,
+	.entry-title .delete:before {
+		margin-right: 1em;
+		font-family: "Fontcons";
+		font-weight: normal;
+	}
+	dd.entry-options .edit:before,
+	.entry-title .edit:before {
+		content: "\270E";
+	}
+	dd.entry-options .delete:before,
+	.entry-title .delete:before {
+		content: "\f014";
+	}
+	.entry-title .edit:hover {
+		color: #222;
+	}
+	.entry-title .delete:hover {
+		color: red;
+	}
+	.entry-title .delete {
+		right: 1.5em;
+	}
+	.no-comments {
+		font-style: italic;
+		color: #aaa;
+	}
+/* Entry author */
+	.entry-author {
+		margin: 2em 0 2em 0;
+		background: #EEE;
+		font-size: 1em;
+	}
+	.entry-author h3 {
+		margin: 0;
+		padding: 1em;
+		border-bottom: 1px solid #fff;
+	}
+	.entry-author h4 {
+		font-size: 1.2em;
+		padding: 0;
+		margin: 0;
+	}
+	.entry-author h4 a {
+		color: #333;
+		border: none;
+	}
+	.entry-author-photo {
+		margin: 1em;
+		padding: 0;
+		float: left;
+		border: 5px solid #fff;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		    -ms-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		width: 50px;
+		height: 50px;
+		overflow: hidden;
+	}
+	.entry-author-photo img {
+		margin: 0;
+		padding: 0;
+	}
+	.entry-author-content {
+		padding: 1em;
+		margin: 0 0 0 75px;
+		font-size: 1em;
+		color: #666;
+	}
+/* Sections */
+	.section h3 .feed {
+		float: right;
+		margin-right: 270px;
+	}
+/* File manager */
+	iframe {
+		border: 1px solid #fff;
+		border-top: 1px solid #ddd;
+		margin: 0;
+		padding: 0;
+	}
+	body#attachments,
+	body#attachments form,
+	body#attachments fieldset {
+		background: #fff;
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	body#attachments iframe {
+		border: 1px solid #ddd;
+		margin: 0;
+		padding: 0;
+	}
+	body#attachments h1 {
+		font-size: 1em;
+		background: #aaa;
+		color: #fff;
+		margin: 0 1.5% 0 0;
+		padding: 0.2em 0.5em;
+		border: 1px solid #aaa;
+	}
+	#files-header {
+		margin: 0;
+		padding: 1em 1em 0.4em 1em;
+		font-size: 85%;
+	}
+
+	#hubForm .submit input,
+	#hubForm .submit a {
+		display: inline-block;
+		*display: inline;
+		vertical-align: baseline;
+	}
+	#hubForm .submit a {
+		margin-left: 2em;
+	}
+
+	.entry-content ul,
+	.entry-content ol {
+		padding: 0;
+		margin: 0 0 1em 0;
+	}
+	.entry-content ul {
+		list-style-type: disc;
+	}
+	.entry-content ol {
+		list-style-type: decimal;
+	}
+	.entry-content li {
+		padding: 0;
+		margin: 0em 0 0em 2em;
+	}
+	.entry-content ul li {
+	}
+	.entry-content dd {
+		color: #888;
+	}
+	.entry-content table {
+		border: 2px solid #ccc;
+		width: auto;
+	}
+	.entry-content table td, 
+	.entry-content table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+	}
+	.entry-content blockquote {
+		margin: 2em 0 2.5em 0;
+		padding: 5px 0 5px 10px;
+		border-left: 2px solid #ccc;
+	}
+	.entry-content blockquote:before {
+		display: none;
+	}
+	/*.entry-content pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.75em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 0.85em;
+		line-height: 1.95em;
+		white-space: pre;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+	}
+	.entry-content .pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.35em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 1.15em;
+		line-height: 1.35em;
+	}*/
+	.entry-content tt,
+	.entry-content code {
+		display: inline-block;
+		color: #666;
+		border: 1px solid #ddd;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+		padding: 0 0.3em;
+		background: #fafafa;
+	}
+
+	.com_wiki .wiki .modified-date {
+		color: #aaa;
+		font-size: 90%;
+	}
+	.entry-content hr {
+		border-top: 1px solid #ccc;
+		background-image: none;
+		height: 1px;
+		width: auto;
+		visibility: visible;
+		display: block;
+	}
+
+	/* Links */
+	.entry-content a.ext-link:before {
+		font-family: "Fontcons";
+		content: "\f08e";
+		color: #ccc;
+		margin-right: 0.2em;
+	}
+	.entry-content a.missing:before {
+		content: "?";
+		color: #ccc;
+		margin-right: 0.2em;
+	}
+
+	.entry-content .mbox-content {
+		border: 1px solid #aaa;
+		background: #fff;
+		border-left: 10px solid #f28500;
+		padding: 0;
+		width: 250px;
+		font-size: 0.85em;
+		position: relative;
+	}
+	.entry-content .mbox-content p.mbox-text {
+		padding: 0.4em 0.4em 0.4em 4.4em;
+		margin: 0;
+		line-height: 1.4em;
+	}
+	.entry-content .mbox-content .mbox-date {
+		font-style: italic;
+	}
+	.entry-content .mbox-unreferenced p:before {
+		font-family: "Fontcons";
+		content: "\275D"; /* \f072 */
+		color: #ddd;
+		font-size: 3em;
+		line-height: 1;
+		position: absolute;
+		top: 0.1em;
+		left: 0.3em;
+		font-weight: normal;
+	}
+	.entry-content .rellink {
+		font-style: italic;
+		padding-left: 1.6em;
+		margin-bottom: 0.5em;
+	}
+	.entry-content td {
+		background-color: #fff;
+	}
+	.entry-content th {
+		background-color: #f7f7f7;
+	}
+	.entry-content hr {
+		clear: left;
+	}
+
+	.entry-content fieldset {
+		border: 1px solid #ccc;
+		background: #fff;
+		margin: 1em -18px;
+		padding: 1em;
+	}
+	.entry-content fieldset legend {
+		margin: 0 1em;
+		padding: 0 1em;
+	}
+
+	ol.comments .comment-options a {
+		visibility: hidden;
+	}
+	ol.comments .comment-options,
+	ol.comments .comment-options:hover a,
+	ol.comments .comment-options a.reply {
+		visibility: visible;
+	}
+	ol.comments .comment-options a {
+		color: #ccc;
+		border: none;
+	}
+	ol.comments .comment-options:hover a {
+		color: #999;
+	}
+	ol.comments .comment-options a.active,
+	ol.comments .comment-options a:hover {
+		color: #333;
+	}
+	ol.comments .comment-options a.abuse:hover,
+	ol.comments .comment-options a.delete:hover {
+		color: #c00;
+	}
+	ol.comments .comment-options a:before {
+		margin-right: 0.4em;
+	}
+	ol.comments .comment-options a.active:before {
+		content: "\2716";
+	}
+/* Add comment */
+	.comment-add {
+		margin: 0 -1.61803399em -0.61803399em -1.61803399em;
+		padding: 1.61803399em;
+		border: 1px solid #ddd;
+		background-color: #f1f1f1;
+		border: none;
+		border-top: 1px solid #ddd;
+	}
+	.comment-add legend {
+		display: none;
+	}
+	.comment-add label {
+		display: block;
+	}
+	.comment-add label span.label-text {
+		display: none;
+	}
+	.comment-add .cancelreply {
+		margin-left: 2em;
+	}
+	.comment-add .submit {
+		clear: both;
+		margin: -1.5em 0 0 0;
+		padding: 0;
+		text-align: right;
+	}
+	.comment-add input, 
+	.comment-add select, 
+	.comment-add textarea {
+		margin: 0.25em 0 0.5em 0;
+		width: 100%;
+	}	
+	.comment-add .submit input,
+	.comment-add .option {
+		width: auto;
+	}
+	.comment-add .upload-label {
+		margin-bottom: 0.5em;
+	}
+	.comment-add .reply-anonymous-label {
+		width: 50%;
+	}
+
+/* Figures */
+	.entry-content .figure {
+		display: inline-block;
+		background: #efefef;
+		border: 1px solid #e1e1e1;
+		padding: 4px;
+	}
+	.entry-content .figure img {
+		margin: 0; /*.5em;*/
+		padding: 0;
+		background: transparent;
+		text-align: center;
+		display: block;
+	}
+	.entry-content .figure a {
+		border: none;
+	}
+	.entry-content .figcaption {
+		display: block;
+		margin: 0;
+		padding: 0.5em 0;
+		background: #efefef;
+		font-size: 0.85em;
+	}
+
+	#attachments .delete {
+		width: 1em; 
+		overflow: hidden;
+		display: block;
+		white-space: nowrap;
+	}
