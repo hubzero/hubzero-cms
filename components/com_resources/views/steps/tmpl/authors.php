@@ -33,35 +33,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $accesses = array('Public','Registered','Special','Protected','Private');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
-			<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+				<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-<?php
-	$view = new JView(array(
-		'name'   => 'steps',
-		'layout' => 'steps'
-	));
-	$view->option = $this->option;
-	$view->step = $this->step;
-	$view->steps = $this->steps;
-	$view->id = $this->id;
-	$view->resource = $this->row;
-	$view->progress = $this->progress;
-	$view->display();
-?>
-<?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo $this->getError(); ?></p>
-<?php } ?>
+<section class="main section">
+	<?php
+		$this->view('steps')
+		     ->set('option', $this->option)
+		     ->set('step', $this->step)
+		     ->set('steps', $this->steps)
+		     ->set('id', $this->id)
+		     ->set('resource', $this->row)
+		     ->set('progress', $this->progress)
+		     ->display();
+	?>
+
+	<?php if ($this->getError()) { ?>
+		<p class="warning"><?php echo $this->getError(); ?></p>
+	<?php } ?>
+
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_CONTRIBUTE_GROUPS_HEADER'); ?></h4>
@@ -69,56 +68,61 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTRIBUTE_GROUPS_OWNERSHIP'); ?></legend>
-<?php if ($this->groups && count($this->groups) > 0) { ?>
-			<div class="group">
-			<label for="group_owner">
-				<?php echo JText::_('COM_CONTRIBUTE_GROUPS_GROUP'); ?>: <span class="optional"><?php echo JText::_('COM_CONTRIBUTE_OPTIONAL'); ?></span>
-				<select name="group_owner" id="group_owner">
-					<option value=""><?php echo JText::_('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
-<?php
-				if ($this->groups && count($this->groups) > 0) {
-					foreach ($this->groups as $group)
-					{
-?>
-					<option value="<?php echo $group->cn; ?>"<?php if ($this->row->group_owner == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
-<?php
-					}
-				}
-?>
-				</select>
-			</label>
-			<label for="access">
-				<?php echo JText::_('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo JText::_('COM_CONTRIBUTE_OPTIONAL'); ?></span>
-				<select name="access" id="access">
-<?php
-				for ($i=0, $n=count( $accesses ); $i < $n; $i++)
-				{
-					if ($accesses[$i] != 'Registered' && $accesses[$i] != 'Special') {
-?>
-					<option value="<?php echo $i; ?>"<?php if ($this->row->access == $i) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CONTRIBUTE_ACCESS_'.strtoupper($accesses[$i])); ?></option>
-<?php
-					}
-				}
-?>
-				</select>
-			</label>
+
+		<?php if ($this->groups && count($this->groups) > 0) { ?>
+			<div class="grid">
+				<div class="col span6">
+					<label for="group_owner">
+						<?php echo JText::_('COM_CONTRIBUTE_GROUPS_GROUP'); ?>: <span class="optional"><?php echo JText::_('COM_CONTRIBUTE_OPTIONAL'); ?></span>
+						<select name="group_owner" id="group_owner">
+							<option value=""><?php echo JText::_('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
+							<?php
+							if ($this->groups && count($this->groups) > 0) {
+								foreach ($this->groups as $group)
+								{
+								?>
+								<option value="<?php echo $group->cn; ?>"<?php if ($this->row->group_owner == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
+								<?php
+								}
+							}
+							?>
+						</select>
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label for="access">
+						<?php echo JText::_('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo JText::_('COM_CONTRIBUTE_OPTIONAL'); ?></span>
+						<select name="access" id="access">
+						<?php
+						for ($i=0, $n=count( $accesses ); $i < $n; $i++)
+						{
+							if ($accesses[$i] != 'Registered' && $accesses[$i] != 'Special') {
+							?>
+							<option value="<?php echo $i; ?>"<?php if ($this->row->access == $i) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CONTRIBUTE_ACCESS_'.strtoupper($accesses[$i])); ?></option>
+							<?php
+							}
+						}
+						?>
+						</select>
+					</label>
+				</div>
 			</div>
 			<p>
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION'); ?><br />
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION'); ?>
 			</p>
-<?php } else { ?>
+		<?php } else { ?>
 			<p class="information">
 				<?php echo JText::_('Once you have joined one or more groups you may restrict access to this contribution to one of your groups.'); ?>
 			</p>
-<?php } ?>
+		<?php } ?>
 		</fieldset><div class="clear"></div>
-		
+
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NO_LOGIN'); ?></h4>
 			<p><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NO_LOGIN_EXPLANATION'); ?></p>
-		
+
 			<h4><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NOT_AUTHOR'); ?></h4>
 			<p><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NOT_AUTHOR_EXPLANATION'); ?></p>
 		</div>
@@ -133,9 +137,9 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 		</fieldset><div class="clear"></div>
-		
+
 		<div class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
 		</div>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

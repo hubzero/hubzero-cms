@@ -42,37 +42,21 @@ $sortbys['date'] = JText::_('COM_RESOURCES_DATE_PUBLISHED');
 $sortbys['date_modified'] = JText::_('COM_RESOURCES_DATE_MODIFIED');
 $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
-			<?php echo JText::_('Submit a resource'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+				<?php echo JText::_('Submit a resource'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="get">
-		<div class="aside">
-			<div class="container">
-				<h3>Finding a resource</h3>
-				<p>Use the sorting or filtering options to sort results and/or narrow down the list of resources.</p>
-				<p>Use the 'Search' to find specific resources by title or description.</p>
-			</div><!-- / .container -->
-			<div class="container">
-				<h3>Popular Tags</h3>
-				<?php
-				$rt = new ResourcesTags($database);
-				echo $rt->getTopTagCloud(20, $this->filters['tag']);
-				?>
-				<p>Click a tag to see only resources with that tag.</p>
-			</div>
-		</div><!-- / .aside -->
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="get">
+	<section class="main section">
 		<div class="subject">
-
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
@@ -84,29 +68,29 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 					<input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 				</fieldset>
 				<?php if ($this->filters['tag']) { ?>
-				<fieldset class="applied-tags">
-					<ol class="tags">
-					<?php
-					$url  = 'index.php?option=' . $this->option . '&task=browse';
-					$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-					$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-					$url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
-
-					$tags = $rt->parseTopTags($this->filters['tag']);
-					foreach ($tags as $tag)
-					{
-						?>
-						<li>
-							<a href="<?php echo JRoute::_($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
-								<?php echo $this->escape(stripslashes($tag)); ?>
-								<span class="remove">x</a>
-							</a>
-						</li>
+					<fieldset class="applied-tags">
+						<ol class="tags">
 						<?php
-					}
-					?>
-					</ol>
-				</fieldset>
+						$url  = 'index.php?option=' . $this->option . '&task=browse';
+						$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+						$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+						$url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
+
+						$tags = $rt->parseTopTags($this->filters['tag']);
+						foreach ($tags as $tag)
+						{
+							?>
+							<li>
+								<a href="<?php echo JRoute::_($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
+									<?php echo $this->escape(stripslashes($tag)); ?>
+									<span class="remove">x</a>
+								</a>
+							</li>
+							<?php
+						}
+						?>
+						</ol>
+					</fieldset>
 				<?php } ?>
 			</div><!-- / .container -->
 
@@ -129,36 +113,37 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 				$qs .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
 				?>
-			<?php if (count($this->types) > 0) { ?>
-				<ul class="entries-menu filter-options">
-					<li>
-						<a<?php echo (!$this->filters['type']) ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&type=' . $qs); ?>"><?php echo JText::_('All'); ?></a>
-					</li>
-				<?php foreach ($this->types as $item) { ?>
-					<li>
-						<a<?php echo ($this->filters['type'] == $item->id) ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&type=' . $item->alias . $qs); ?>"><?php echo $this->escape(stripslashes($item->type)); ?></a>
-					</li>
+				<?php if (count($this->types) > 0) { ?>
+					<ul class="entries-menu filter-options">
+						<li>
+							<a<?php echo (!$this->filters['type']) ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&type=' . $qs); ?>"><?php echo JText::_('All'); ?></a>
+						</li>
+					<?php foreach ($this->types as $item) { ?>
+						<li>
+							<a<?php echo ($this->filters['type'] == $item->id) ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&type=' . $item->alias . $qs); ?>"><?php echo $this->escape(stripslashes($item->type)); ?></a>
+						</li>
+					<?php } ?>
+					</ul>
 				<?php } ?>
-				</ul>
-			<?php } ?>
 
-			<div class="clearfix"></div>
-			<div class="container-block">
-				<?php
-				if ($this->results) {
-					switch ($this->filters['sortby'])
-					{
-						case 'date_created': $show_date = 1; break;
-						case 'date_modified': $show_date = 2; break;
-						case 'date':
-						default: $show_date = 3; break;
-					}
-					echo ResourcesHtml::writeResults($database, $this->results, $this->authorized, $show_date);
-					echo '<div class="clear"></div>';
-				} else { ?>
-					<p class="warning"><?php echo JText::_('COM_RESOURCES_NO_RESULTS'); ?></p>
-				<?php } ?>
-			</div>
+				<div class="clearfix"></div>
+
+				<div class="container-block">
+					<?php
+					if ($this->results) {
+						switch ($this->filters['sortby'])
+						{
+							case 'date_created': $show_date = 1; break;
+							case 'date_modified': $show_date = 2; break;
+							case 'date':
+							default: $show_date = 3; break;
+						}
+						echo ResourcesHtml::writeResults($database, $this->results, $this->authorized, $show_date);
+						echo '<div class="clear"></div>';
+					} else { ?>
+						<p class="warning"><?php echo JText::_('COM_RESOURCES_NO_RESULTS'); ?></p>
+					<?php } ?>
+				</div>
 				<?php
 				$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
 				$this->pageNav->setAdditionalUrlParam('type', $this->filters['type']);
@@ -169,6 +154,20 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</form>
-</div><!-- / .main section -->
+		<aside class="aside">
+			<div class="container">
+				<h3>Finding a resource</h3>
+				<p>Use the sorting or filtering options to sort results and/or narrow down the list of resources.</p>
+				<p>Use the 'Search' to find specific resources by title or description.</p>
+			</div><!-- / .container -->
+			<div class="container">
+				<h3>Popular Tags</h3>
+				<?php
+				$rt = new ResourcesTags($database);
+				echo $rt->getTopTagCloud(20, $this->filters['tag']);
+				?>
+				<p>Click a tag to see only resources with that tag.</p>
+			</div>
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
+</form>

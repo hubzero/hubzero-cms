@@ -34,13 +34,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Import share CSS to style share features on right side of trifold
 \Hubzero\Document\Assets::addPluginStylesheet('resources', 'share');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+
+	<?php foreach ($this->types as $type) { ?>
+		<?php if ($type->id == $this->filters['type']) { ?>
+		<div id="content-header-extra">
+			<p>
+				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=2&type=' . $type->id); ?>">
+					<?php 
+					$name = $type->type;
+					/*if (substr($type->type, -3) == 'ies') 
+					{
+						$name = $type->type; //substr($type->type, 0, -3) . 'y';
+					} 
+					else */
+					if (substr($type->type, -1) == 's') 
+					{
+						$name = substr($type->type, 0, -1);
+					}
+					echo JText::sprintf('Start a new %s', $this->escape(stripslashes($name))); ?>
+				</a>
+			</p>
+		</div>
+		<?php } ?>
+	<?php } ?>
+</header><!-- / #content-header -->
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get" id="tagBrowserForm">
-
-	<div id="content-header-extra">
+	<section class="main section" id="browse-resources">
 		<fieldset>
 			<label for="browse-type">
 				<span><?php echo JText::_('COM_RESOURCES_TYPE'); ?>:</span> 
@@ -53,11 +75,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>"/>
 			<input type="hidden" name="task" value="browsetags" />
 		</fieldset>
-	</div><!-- / #content-header-extra -->
 
-	<div class="main section" id="browse-resources">
 		<div id="tagbrowser">
 			<p class="info"><?php echo JText::_('COM_RESOURCES_TAGBROWSER_EXPLANATION'); ?></p>
+
 			<div id="level-1">
 				<h3><?php echo JText::_('COM_RESOURCES_TAG'); ?></h3>
 				<ul>
@@ -76,50 +97,49 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<li><?php echo JText::_('COM_RESOURCES_TAGBROWSER_COL_EXPLANATION'); ?></li>
 				</ul>
 			</div><!-- / #level-3 -->
+
 			<input type="hidden" name="pretype" id="pretype" value="<?php echo $this->escape($this->filters['type']); ?>" />
 			<input type="hidden" name="id" id="id" value="" />
 			<input type="hidden" name="preinput" id="preinput" value="<?php echo $this->escape($this->tag); ?>" />
 			<input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->escape($this->tag2); ?>" />
 			<div class="clear"></div>
 		</div><!-- / #tagbrowser -->
-	
+
 		<p id="viewalltools"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$this->filters['type']); ?>"><?php echo JText::_('COM_RESOURCES_VIEW_MORE'); ?></a></p>
 		<div class="clear"></div>
 
-<?php
-$database = JFactory::getDBO();
+		<?php
+		$database = JFactory::getDBO();
 
-if ($this->supportedtag) {
-	include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
+		if ($this->supportedtag) {
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 
-	$tag = new TagsTableTag( $database );
-	$tag->loadTag($this->supportedtag);
+			$tag = new TagsTableTag( $database );
+			$tag->loadTag($this->supportedtag);
 
-	$sl = $this->config->get('supportedlink');
-	if ($sl) {
-		$link = $sl;
-	} else {
-		$link = JRoute::_('index.php?option=com_tags&tag='.$tag->tag);
-	}
-?>
-		<p class="supported"><?php echo JText::_('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo JText::sprintf('COM_RESOURCES_ABOUT_TAG', $tag->raw_tag); ?></a></p>
-<?php
-}
-?>
-	</div>
-	<div class="below section">
-<?php
-if ($this->results) {
-?>
-		<h3><?php echo JText::_('COM_RESOURCES_TOP_RATED'); ?></h3>
-		<div class="aside">
-			<p><?php echo JText::_('COM_RESOURCES_TOP_RATED_EXPLANATION'); ?></p>
-		</div><!-- / .aside -->
+			$sl = $this->config->get('supportedlink');
+			if ($sl) {
+				$link = $sl;
+			} else {
+				$link = JRoute::_('index.php?option=com_tags&tag='.$tag->tag);
+			}
+		?>
+		<p class="supported">
+			<?php echo JText::_('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo JText::sprintf('COM_RESOURCES_ABOUT_TAG', $tag->raw_tag); ?></a>
+		</p>
+		<?php
+		}
+		?>
+	</section>
+	<section class="below section">
+	<?php if ($this->results) { ?>
 		<div class="subject">
+			<h3><?php echo JText::_('COM_RESOURCES_TOP_RATED'); ?></h3>
 			<?php echo ResourcesHtml::writeResults( $database, $this->results, $this->authorized ); ?>
 		</div><!-- / .subject -->
-<?php
-}
-?>
+	<?php } ?>
+		<aside class="aside">
+			<p><?php echo JText::_('COM_RESOURCES_TOP_RATED_EXPLANATION'); ?></p>
+		</aside><!-- / .aside -->
 	</div><!-- / .main section -->
 </form>
