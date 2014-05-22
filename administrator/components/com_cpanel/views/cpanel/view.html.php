@@ -26,7 +26,7 @@ class CpanelViewCpanel extends JViewLegacy
 	{
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_CPANEL'), 'cpanel.png');
-		JToolBarHelper::help('screen.cpanel');
+		JToolBarHelper::help('cpanel');
 
 		/*
 		 * Set the template - this will display cpanel.php
