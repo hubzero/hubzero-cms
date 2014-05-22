@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/content/spamassassin/spamassassin.xml
+@copyright      Copyright 2005-2013 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="2.5" type="plugin" group="content">
+	<name>plg_content_spamassassin</name>
+	<author>HUBzero</author>
+	<creationDate>October 2013</creationDate>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>2.5.0</version>
+	<description>PLG_CONTENT_SPAMASSASSIN_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="spamassassin">spamassassin.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_content_spamassassin.ini</language>
+		<language tag="en-GB">en-GB.plg_content_spamassassin.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="client" type="list" default="local" label="Client" description="The client type. Local will use a local SpamAssassin service.">
+					<option value="local">Local</option>
+					<option value="remote">Remote</option>
+				</field>
+			</fieldset>
+			<fieldset name="local">
+				<field name="hostname" type="text" size="10" default="localhost" label="Hostname" description="Hostname to use." />
+				<field name="port" type="text" size="10" default="783" label="Port" description="Port to use." />
+				<field name="protocolVersion" type="text" size="10" default="1.5" label="Protocol Version" description="PRotocol version to use." />
+				<field name="socket" type="text" size="10" default="" label="Socket" description="Socket to use." />
+				<field name="socketPath" type="text" size="10" default="" label="Socket Path" description="Socket path to use" />
+				<field name="enableZlib" type="list" default="0" label="Enable Zlib" description="Enable Zlib or not.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+			</fieldset>
+			<fieldset name="remote">
+				<field name="server" type="text" size="10" default="http://spamcheck.postmarkapp.com/filter" label="Server" description="Remote client server to submit to." />
+				<field name="verbose" type="list" default="0" label="Verbose report" description="Return a short or long report.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
