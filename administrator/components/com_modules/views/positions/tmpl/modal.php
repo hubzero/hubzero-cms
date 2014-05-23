@@ -21,8 +21,8 @@ $state		= $this->state->get('filter.state');
 $template	= $this->state->get('filter.template');
 $type		= $this->state->get('filter.type');
 ?>
+<h2 class="modal-title"><?php echo JText::_('COM_MODULES'); ?></h2>
 <form action="<?php echo JRoute::_('index.php?option=com_modules&view=positions&layout=modal&tmpl=component&function='.$function.'&client_id=' .$clientId);?>" method="post" name="adminForm" id="adminForm">
-	<h2 class="modal-title"><?php echo JText::_('COM_MODULES'); ?></h2>
 	<fieldset id="filter-bar" class="filters clearfix">
 		<div class="col width-40 fltlft">
 			<label for="filter_search">
