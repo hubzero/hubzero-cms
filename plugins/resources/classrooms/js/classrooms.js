@@ -48,7 +48,6 @@ jQuery(function() {
 			return ratios[node.cluster].hit/ratios[node.cluster].total >= th;
 		});
 
-		console.log(nodes);
 		nodes.forEach(function(node) {
 			// track min and max dates so we know what range to generate for columns
 			node.first_use = new Date(node.first_use);
@@ -286,7 +285,7 @@ jQuery(function() {
 	prnt
 		.append(yearList)
 		.append(semesterList)
-		.append($('<p>Show clusters with at least </p>').append(threshold).append(document.createTextNode(' usage of this tool')))
+		.append($('<p>Showing classroom tool usage comproside of at least </p>').append(threshold).append(document.createTextNode(' sessions with this tool')))
 		;
 	for (var year in byYear) {	
 		var yearLi = $('<li>/li>').text(year);
