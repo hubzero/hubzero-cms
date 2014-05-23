@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Browse Blog Entries Layout">
+	<layout title="Latest collection Posts">
 		<message>
-			<![CDATA[STANDARD BROWSE BLOG ENTRIES LAYOUT DESC]]>
+			<![CDATA[Latest collection Posts]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Browse Blog Entries Layout</name>
-		<description>STANDARD BROWSE BLOG ENTRIES LAYOUT DESC</description>
+		<name>Latest collection Posts</name>
+		<description>Latest collection Posts</description>
 		<params>
 		</params>
 	</state>

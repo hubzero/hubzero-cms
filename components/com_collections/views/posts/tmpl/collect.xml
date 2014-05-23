@@ -19,15 +19,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Edit Blog Entry Layout">
+	<layout title="Collect an item">
 		<message>
-			<![CDATA[STANDARD EDIT BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[Collect an item]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Edit Blog Entry Layout</name>
-		<description>STANDARD EDIT BLOG ENTRY LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

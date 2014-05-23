@@ -19,15 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Edit Blog Entry Layout">
+	<layout title="Edit a Post">
 		<message>
-			<![CDATA[STANDARD EDIT BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[Edit a Post]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Edit Blog Entry Layout</name>
-		<description>STANDARD EDIT BLOG ENTRY LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
+	<fields name="params">
+		<fieldset name="basic">
+			<field name="post" type="text" label="Post ID" description="Enter the ID for the a specific post to display" />
+		</fieldset>
+	</fields>
 </metadata>
