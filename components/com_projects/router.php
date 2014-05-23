@@ -44,6 +44,7 @@ function ProjectsBuildRoute(&$query)
 	
 	if (!empty($query['controller'])) 
 	{
+		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
     if (!empty($query['alias'])) 
@@ -186,7 +187,16 @@ function ProjectsParseRoute($segments)
 	// Alias?
 	if (!is_numeric($segments[0])) 
 	{
-		if (in_array($segments[0], $tasks)) 
+		if ($segments[0] == 'reports')
+		{
+			$vars['controller'] = 'reports';
+			if (!empty($segments[1])) 
+			{
+				$vars['task'] = $segments[1];
+			}
+			return $vars;
+		}
+		elseif (in_array($segments[0], $tasks))
 		{
 			$vars['task'] = $segments[0];
 			if (in_array($vars['task'], $mediaTasks))

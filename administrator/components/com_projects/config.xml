@@ -57,7 +57,7 @@
 		<param name="admingroup" type="text" menu="hide" default="projectsadmin" label="Admin group" description="Alias of an administrative group that gets notified when a new project is created or over quota" />
 		<param name="sdata_group" type="text" menu="hide" default="hipaa_reviewers" label="Sensitive data reviewers group" description="Alias of an administrative group that can access a special project listing to review info on HIPAA/FERPA/export control" />
 		<param name="ginfo_group" type="text" menu="hide" default="sps_reviewers" label="Sponsored projects reviewers group" description="Alias of an administrative group that can access a special project listing to review and edit sponsored project information and bump up quota" />
-		
+		<param name="reportgroup" type="text" menu="hide" default="projectsadmin" label="Report access group" description="Alias of an administrative group that has access to custom reports" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="min_name_length" type="text" menu="hide" default="6" label="Minimum characters in name" description="Min number of characters a project alias name can contain" />
 		<param name="max_name_length" type="text" menu="hide" default="25" label="Maximum characters in name" description="Max number of characters a project alias name can contain" />
@@ -161,7 +161,8 @@
 		<field name="creatorgroup" type="text" menu="hide" default="" label="Restrict project creation to group" description="Alias of a group that can create projects (optional, will restrict all others!)" />
 		<field name="admingroup" type="text" menu="hide" default="projectsadmin" label="Admin group" description="Alias of an administrative group that gets notified when a new project is created or over quota" />
 		<field name="sdata_group" type="text" menu="hide" default="hipaa_reviewers" label="Sensitive data reviewers group" description="Alias of an administrative group that can access a special project listing to review info on HIPAA/FERPA/export control" />
-		<field name="ginfo_group" type="text" menu="hide" default="sps_reviewers" label="Sponsored projects reviewers group" description="Alias of an administrative group that can access a special project listing to review and edit sponsored project information and bump up quota" />		
+		<field name="ginfo_group" type="text" menu="hide" default="sps_reviewers" label="Sponsored projects reviewers group" description="Alias of an administrative group that can access a special project listing to review and edit sponsored project information and bump up quota" />
+		<field name="reportgroup" type="text" menu="hide" default="projectsadmin" label="Report access group" description="Alias of an administrative group that has access to custom reports" />			
 	</fieldset>
 	<fieldset name="FILEREPO">
 		<field name="webpath" type="text" menu="hide" default="/srv/projects" label="Files Git repo path" description="Master path for storing project file repos" />
