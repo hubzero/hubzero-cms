@@ -84,7 +84,7 @@ function submitbutton(pressbutton)
 		<div id="submenu-box">
 			<div class="submenu-box">
 				<div class="submenu-pad">
-					<ul id="submenu" class="member">
+					<ul id="submenu" class="member-nav">
 						<li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
 						<li><a href="#" onclick="return false;" id="demographics">Demographics</a></li>
 						<?php if (is_object($this->password)) : ?>
