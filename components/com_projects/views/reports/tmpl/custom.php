@@ -51,15 +51,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</fieldset>
 			<div class="report-content">
 				<div class="groupblock">
-				<h6><?php echo JText::_('Download publication data:'); ?></h6>
-				<label>
-					<?php $ph = JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m'); ?>
-					<?php echo JText::_('From'); ?>: <input type="text" value="<?php echo $ph; ?>" id="from-date" name="fromdate" placeholder="<?php echo $ph; ?>" maxlength="7" />
-				</label>
-				<label>
-					<?php $ph = JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m'); ?>
-					<?php echo JText::_('To'); ?>: <input type="text" value="<?php echo $ph; ?>" id="to-date"  name="todate" placeholder="<?php echo $ph; ?>" maxlength="7" />
-				</label>
+					<h6><?php echo JText::_('Download publication data:'); ?></h6>
+					<label>
+						<?php $ph = JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m'); ?>
+						<?php echo JText::_('From'); ?>: <input type="text" value="<?php echo $ph; ?>" id="from-date" name="fromdate" placeholder="<?php echo $ph; ?>" maxlength="7" />
+					</label>
+					<label>
+						<?php $ph = JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m'); ?>
+						<?php echo JText::_('To'); ?>: <input type="text" value="<?php echo $ph; ?>" id="to-date"  name="todate" placeholder="<?php echo $ph; ?>" maxlength="7" />
+					</label>
 				</div>
 				<h6><?php echo JText::_('Include the following information:'); ?></h6>
 				<div class="groupblock element-choice">
@@ -100,5 +100,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</p>
 			</div>
 		</form>
-	<div>
+	</div>
 </div>
