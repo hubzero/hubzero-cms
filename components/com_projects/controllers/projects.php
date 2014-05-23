@@ -68,8 +68,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	{
 		// Publishing enabled?
 		$this->_publishing = 
-			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'publication.php')
+			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
+				. 'com_publications' . DS . 'tables' . DS . 'publication.php')
 			&& JPluginHelper::isEnabled('projects', 'publications')
 			? 1 : 0;
 		
@@ -187,11 +187,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			// Authentication for outside services	
 			case 'auth':			
 				$this->_auth(); 	
-				break;
-				
-			// Stats reports
-			case 'reports':			
-				$this->_reports(); 	
 				break;
 				
 			// Public view
@@ -2683,82 +2678,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 		$this->_task = 'view';
 		$this->_view();	
-	}
-	
-	/**
-	 * Stats
-	 * 
-	 * @return     void
-	 */
-	protected function _reports() 
-	{
-		// Incoming
-		$period = JRequest::getVar( 'period', 'alltime');
-		
-		// Instantiate a project and related classes
-		$obj = new Project( $this->database );
-		$objAA = new ProjectActivity ( $this->database );
-		
-		// Is user in special admin group to view advanced stats?
-		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);
-							
-		// Get all test projects
-		$testProjects = $obj->getTestProjects();
-							
-		// Instantiate a new view
-		$view = new JView( array('name'=>'reports') );
-		
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Set the pathway
-		$this->_buildPathway(null);
-
-		// Set the page title
-		$this->_buildTitle(null);
-		$view->title = $this->title;
-		
-		// Log activity
-		$this->_logActivity();
-		
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.stats.php'))
-		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
-
-			// Add stylesheet
-			$document = JFactory::getDocument();
-			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
-			
-			$objStats = new ProjectStats($this->database);
-			
-			$monthly = $objStats->monthlyStats(2, true);
-			$view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
-		}
-		else
-		{
-			$view->monthly = NULL;
-		}
-					
-		// Output HTML
-		$view->task 		= $this->_task;
-		$view->admin 		= $admin;
-		$view->option 		= $this->_option;
-		$view->config 		= $this->config;
-		$view->uid 			= $this->juser->get('id');
-		$view->guest 		= $this->juser->get('guest');
-		$view->stats		= $obj->getStats($period, $admin, $this->config, $testProjects, $this->_publishing);
-		$view->publishing	= $this->_publishing;
-		
-		if ($this->getError()) 
-		{
-			$view->setError( $this->getError() );
-		}
-		
-		$view->msg = isset($this->_msg) ? $this->_msg : '';
-		$view->display();
-		return;		
 	}
 	
 	/**

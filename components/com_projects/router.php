@@ -44,6 +44,7 @@ function ProjectsBuildRoute(&$query)
 	
 	if (!empty($query['controller'])) 
 	{
+		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
     if (!empty($query['alias'])) 
@@ -73,6 +74,22 @@ function ProjectsBuildRoute(&$query)
 	{
 		$segments[] = $query['pid'];
 		unset($query['pid']);
+	}
+	// Publications
+	if (!empty($query['section'])) 
+	{
+		$segments[] = $query['section'];
+		unset($query['section']);
+	}
+	if (!empty($query['move'])) 
+	{
+		$segments[] = $query['move'];
+		unset($query['move']);
+	}
+	if (!empty($query['step'])) 
+	{
+		$segments[] = $query['step'];
+		unset($query['step']);
 	}
 	if (!empty($query['tool'])) 
 	{
@@ -115,6 +132,7 @@ function ProjectsBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
+	
 	return $segments;
 }
 
@@ -161,7 +179,7 @@ function ProjectsParseRoute($segments)
 		'edit', 'start', 'save', 'register', 'attach', 'source',
 		'cancel', 'update', 'message', 'update'
 	);
-		
+			
 	if (empty($segments[0]))
 	{
 		return $vars;
@@ -186,7 +204,16 @@ function ProjectsParseRoute($segments)
 	// Alias?
 	if (!is_numeric($segments[0])) 
 	{
-		if (in_array($segments[0], $tasks)) 
+		if ($segments[0] == 'reports')
+		{
+			$vars['controller'] = 'reports';
+			if (!empty($segments[1])) 
+			{
+				$vars['task'] = $segments[1];
+			}
+			return $vars;
+		}
+		elseif (in_array($segments[0], $tasks)) 
 		{
 			$vars['task'] = $segments[0];
 			if (in_array($vars['task'], $mediaTasks))
@@ -215,15 +242,67 @@ function ProjectsParseRoute($segments)
 				if (is_numeric($segments[2])) 
 				{
 					$vars['pid'] = $segments[2];
-					if (!empty($segments[3])) 
+					$blocks = array();
+					
+					if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+						. DS . 'com_publications' . DS . 'tables' . DS . 'block.php'))
 					{
-						$vars['action'] = $segments[3];
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+							. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
+						$database = JFactory::getDBO();
+
+						$b = new PublicationBlock($database);
+						$blocks = $b->getBlocks('block');
+					}
+										
+					if (!empty($segments[3]) && in_array($segments[3], $blocks)) 
+					{
+						$vars['section'] = $segments[3];
+						
+						if (!empty($segments[4]) && $segments[4] == 'continue') 
+						{
+							$vars['move'] = $segments[4];
+							
+							if (!empty($segments[5]))
+							{
+								if (is_numeric($segments[5])) 
+								{
+									$vars['step'] = $segments[5];
+
+									if (!empty($segments[6]))
+									{
+										$vars['action'] = $segments[6];
+									}
+								}
+								else
+								{
+									$vars['action'] = $segments[5];
+								}
+							}
+						}
+						elseif (!empty($segments[4]))
+						{
+							if (is_numeric($segments[4])) 
+							{
+								$vars['step'] = $segments[4];
+								
+								if (!empty($segments[5]))
+								{
+									$vars['action'] = $segments[5];
+								}
+							}
+							else
+							{
+								$vars['action'] = $segments[4];
+							}							
+						}
 					}
 				}
 				else 
 				{
 					$vars['action'] = $segments[2];
 				}
+				return $vars;
 			}
 			
 			// Apps
