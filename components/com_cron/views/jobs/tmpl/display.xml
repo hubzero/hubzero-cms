@@ -19,15 +19,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Browse Blog Entries Layout">
+	<layout title="Cron job results">
 		<message>
-			<![CDATA[STANDARD BROWSE BLOG ENTRIES LAYOUT DESC]]>
+			<![CDATA[Cron job results]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Browse Blog Entries Layout</name>
-		<description>STANDARD BROWSE BLOG ENTRIES LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

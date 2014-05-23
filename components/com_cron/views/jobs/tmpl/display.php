@@ -33,18 +33,16 @@ defined('_JEXEC') or die('Restricted access');
 
 if (!$this->no_html) {
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('Cron'); ?></h2>
-</div>
+</header>
 
-<div class="main section">
+<section class="main section">
 
 	<p>tock...</p>
-<pre>
-<?php echo json_encode($this->output); ?>
-</pre>
+	<pre><?php echo json_encode($this->output); ?></pre>
 
-</div><!-- / .main section -->
+</section><!-- / .main section -->
 <?php
 } else {
 	session_write_close();
