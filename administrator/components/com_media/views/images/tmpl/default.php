@@ -14,6 +14,7 @@ $user = JFactory::getUser();
 var image_base_path = '<?php $params = JComponentHelper::getParams('com_media');
 echo $params->get('image_path', 'images');?>/';
 </script>
+<h2 class="modal-title"><?php echo JText::_('COM_MEDIA'); ?></h2>
 <form action="index.php?option=com_media&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
 		<span id="message"></span><?php echo JHtml::_('image', 'media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
