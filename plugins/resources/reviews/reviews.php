@@ -143,6 +143,8 @@ class plgResourcesReviews extends JPlugin
 			$rtrn = '';
 		}
 
+		include_once(__DIR__ . '/models/review.php');
+
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $model->resource;
@@ -162,8 +164,6 @@ class plgResourcesReviews extends JPlugin
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			include_once(__DIR__ . '/models/review.php');
-
 			\Hubzero\Document\Assets::addPluginStylesheet('resources', 'reviews');
 			\Hubzero\Document\Assets::addPluginScript('resources', 'reviews');
 
@@ -554,11 +554,11 @@ class PlgResourcesReviewsHelper extends JObject
 					'folder'  => 'resources',
 					'element' => 'reviews',
 					'name'    => 'browse',
-					'layout'  => 'rateitem'
+					'layout'  => '_rateitem'
 				)
 			);
 			$view->option = $this->_option;
-			$view->item = $response[0];
+			$view->item = new ResourcesModelReview($response[0]);
 			$view->rid = $rid;
 
 			$view->display();

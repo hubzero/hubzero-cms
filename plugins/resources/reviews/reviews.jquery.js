@@ -10,11 +10,7 @@ if (!jq) {
 }
 
 String.prototype.nohtml = function () {
-	if (this.indexOf('?') == -1) {
-		return this + '?no_html=1';
-	} else {
-		return this + '&no_html=1';
-	}
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
 };
 
 jQuery(document).ready(function(jq){
@@ -46,7 +42,7 @@ jQuery(document).ready(function(jq){
 	});
 
 	// review ratings
-	$('.vote-button').on('click', function (e) {
+	$('#reviews-section').on('click', '.vote-button', function (e) {
 		e.preventDefault();
 
 		var item = $(this);
