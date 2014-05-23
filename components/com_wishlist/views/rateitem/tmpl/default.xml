@@ -28,15 +28,9 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Rate Item Layout">
+	<layout title="Rate Item Layout">
 		<message>
-			<![CDATA[STANDARD RATE ITEM LAYOUT DESC]]>
+			<![CDATA[Rate Item Layout]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Rate Item Layout</name>
-		<description>STANDARD RATE ITEM LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

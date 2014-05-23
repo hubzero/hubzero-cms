@@ -28,15 +28,17 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Question Layout">
+	<layout title="Display a Wish">
 		<message>
-			<![CDATA[STANDARD QUESTION LAYOUT DESC]]>
+			<![CDATA[Display a Wish]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Question Layout</name>
-		<description>STANDARD QUESTION LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
+	<fields name="params">
+		<fieldset name="basic">
+			<field name="wishid" type="text" label="Wish ID" description="Enter the ID for the a specific post to display" />
+			<field name="id" type="text" label="List ID" description="Enter the ID of the list the wish is in" />
+			<field name="rid" type="text" label="Reference ID" description="Enter the reference ID for the a specific post to display" />
+			<field name="category" type="text" label="Reference Category" description="Enter the reference category for the a specific post to display" />
+		</fieldset>
+	</fields>
 </metadata>
