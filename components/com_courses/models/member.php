@@ -35,6 +35,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'prerequisite.php');
 
 /**
  * Courses model class for a course
@@ -61,6 +62,13 @@ class CoursesModelMember extends CoursesModelAbstract
 	 * @var object
 	 */
 	private $_badge = NULL;
+
+	/**
+	 * CoursesModelPrerequisites
+	 *
+	 * @var array
+	 **/
+	private $_prerequisites = null;
 
 	/**
 	 * Constructor
@@ -137,6 +145,22 @@ class CoursesModelMember extends CoursesModelAbstract
 		}
 
 		return $this->_badge; 
+	}
+
+	/**
+	 * Get courses prerequisites per member
+	 * 
+	 * @param  (object) $gradebook
+	 * @return     obj
+	 */
+	public function prerequisites($gradebook)
+	{
+		if (!isset($this->_prerequisites))
+		{
+			$this->_prerequisites = new CoursesModelPrerequisite($this->get('section_id'), $gradebook, $this->get('id'));
+		}
+
+		return $this->_prerequisites;
 	}
 
 	/**

@@ -488,6 +488,31 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			}
 		}
 
+		// Check prerequisites
+		$member        = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+		$prerequisites = $member->prerequisites($this->course->offering()->gradebook());
+
+		if (!$this->course->offering()->access('manage') && !$prerequisites->hasMet('asset', $asset->get('id')))
+		{
+			$prereqs      = $prerequisites->get('asset', $asset->get('id'));
+			$requirements = array();
+			foreach ($prereqs as $pre)
+			{
+				$reqAsset = new CoursesModelAsset($pre['scope_id']);
+				$requirements[] = $reqAsset->get('title');
+			}
+
+			$requirements = implode(', ', $requirements);
+
+			// Redirect back to the course outline
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
+				'This asset has prerequisites that have not been met. Please complete '.$requirements.' before trying again.',
+				'warning'
+			);
+			return;
+		}
+
 		// If requesting a file from a wiki type asset, then serve that up directly
 		if ($asset->get('subtype') == 'wiki' && JRequest::getVar('file', false))
 		{

@@ -82,10 +82,20 @@ if (!$this->course->offering()->access('view')) { ?>
 				// Output results
 				echo implode("\n", $results);
 
-				$this->member = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
-				$progress = $this->course->offering()->gradebook()->progress($this->member->get('id'));
+				$this->member  = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+				$progress      = $this->course->offering()->gradebook()->progress($this->member->get('id'));
+				$prerequisites = $this->member->prerequisites($this->course->offering()->gradebook());
 			?>
 		</div>
+
+<?php
+	// Build array of unit titles
+	$unitTitles = array();
+	foreach ($this->course->offering()->units() as $unit)
+	{
+		$unitTitles[$unit->get('id')] = $unit->get('title');
+	}
+?>
 
 <?php if ($this->course->offering()->units()->total() > 0) : ?>
 	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
@@ -138,6 +148,15 @@ if (!$this->course->offering()->access('view')) { ?>
 							<div class="grid">
 								<p class="info">
 									Content for this unit will be available starting <?php echo JHTML::_('date', $unit->get('publish_up'), "F j, Y, g:i a T"); ?>.
+								</p>
+							</div>
+				<?php } else if (!$isManager && !$prerequisites->hasMet('unit', $unit->get('id'))) { ?>
+							<div class="grid">
+								<p class="info">
+									This unit has prerequisites that have not yet been met. Begin by completing: 
+									<?php foreach ($prerequisites->get('unit', $unit->get('id')) as $prereq) : ?>
+										<?php echo $unitTitles[$prereq['scope_id']]; ?>
+									<?php endforeach; ?>
 								</p>
 							</div>
 				<?php } else { ?>

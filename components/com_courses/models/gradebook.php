@@ -201,6 +201,15 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 */
 	public function progress($member_id=null)
 	{
+		static $instances;
+
+		$key = (!is_null($member_id)) ? $member_id : 'all';
+
+		if (isset($instances[$key]))
+		{
+			return $instances[$key];
+		}
+
 		$progress_calculation = $this->course->config()->get('progress_calculation', 'all');
 
 		$filters = array(
@@ -275,7 +284,40 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			}
 		}
 
+		$instances[$key] = $progress;
+
 		return $progress;
+	}
+
+	/**
+	 * Get asset views/completions
+	 *
+	 * @param  (int) $member_id
+	 * @return (array)
+	 **/
+	public function views($member_id)
+	{
+		$filters = array(
+			'section_id' => $this->course->offering()->section()->get('id'),
+			'member_id'  => $member_id
+		);
+
+		// Get the asset views
+		$database   = JFactory::getDBO();
+		$assetViews = new CoursesTableAssetViews($database);
+		$results    = $assetViews->find($filters);
+
+		$views = array();
+
+		if ($results && count($results) > 0)
+		{
+			foreach ($results as $result)
+			{
+				$views[$result->member_id][] = $result->asset_id;
+			}
+		}
+
+		return $views;
 	}
 
 	/**
