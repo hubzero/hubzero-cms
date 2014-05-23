@@ -464,5 +464,68 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 		// Remove this record from the database and log the event
 		return parent::delete();
 	}
+
+	/**
+	 * Copy an entry and associated data
+	 * 
+	 * @param   integer $unit_id New unit to copy to
+	 * @param   boolean $deep    Copy associated data?
+	 * @return  boolean True on success, false on error
+	 */
+	public function copy($unit_id=null, $deep=true)
+	{
+		// Get some old info we may need
+		//  - Asset group ID
+		//  - Unit ID
+		$a_id = $this->get('id');
+		$u_id = $this->get('unit_id');
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+		// Are we copying to a new offering?
+		if ($unit_id)
+		{
+			$this->set('unit_id', $unit_id);
+		}
+		else
+		{
+			// Copying to the same offering so we want to distinguish
+			// this unit from the one we copied from
+			$this->set('title', $this->get('title') . ' (copy)');
+		}
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		if ($deep)
+		{
+			// Copy assets
+			$tbl = new CoursesTableAssetAssociation($this->_db);
+			//foreach ($this->assets(array('asset_scope_id' => $u_id)) as $asset)
+			foreach ($tbl->find(array('scope_id' => $a_id, 'scope' => 'asset_group')) as $asset)
+			{
+				$tbl->bind($asset);
+				$tbl->id = 0;
+				$tbl->scope_id = $this->get('id');
+				//if (!$asset->copy($this->get('id')))
+				if (!$tbl->store())
+				{
+					$this->setError($tbl->getError());
+				}
+			}
+
+			// Copy asset groups
+			foreach ($this->children(null, array('unit_id' => $u_id)) as $assetgroup)
+			{
+				if (!$assetgroup->copy($this->get('id')))
+				{
+					$this->setError($assetgroup->getError());
+				}
+			}
+		}
+
+		return true;
+	}
 }
 

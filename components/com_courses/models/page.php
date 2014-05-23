@@ -134,5 +134,84 @@ class CoursesModelPage extends CoursesModelAbstract
 			break;
 		}
 	}
+
+	/**
+	 * Copy an entry and associated data
+	 * 
+	 * @param   integer $course_id   New course to copy to
+	 * @param   integer $offering_id New offering to copy to
+	 * @param   integer $section_id  New section to copy to
+	 * @return  boolean True on success, false on error
+	 */
+	public function copy($course_id=null, $offering_id=null, $section_id=null)
+	{
+		// Get some old info we may need
+		//  - Unit ID
+		//  - Offering ID
+		$p_id = $this->get('id');
+		$c_id = $this->get('course_id');
+		$o_id = $this->get('offering_id');
+		$s_id = $this->get('section_id');
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+		// Are we copying to a new offering?
+		if ($course_id || $offering_id)
+		{
+			if ($course_id)
+			{
+				$this->set('course_id', $course_id);
+			}
+			if ($offering_id)
+			{
+				$this->set('offering_id', $offering_id);
+			}
+		}
+		else
+		{
+			// Copying to the same offering so we want to distinguish
+			// this unit from the one we copied from
+			$this->set('title', $this->get('title') . ' (copy)');
+		}
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		// Copy assets
+		$src  = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $c_id;
+		if ($s_id)
+		{
+			$src .= DS . 'sections' . DS . $s_id . DS . 'pagefiles';
+		}
+		else
+		{
+			$src .= DS . 'pagefiles' . ($o_id ? DS . $o_id : '');
+		}
+
+		if (file_exists(JPATH_ROOT . $src))
+		{
+			$dest = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id');
+			if ($this->get('section_id'))
+			{
+				$dest .= DS . 'sections' . DS . $this->get('section_id') . DS . 'pagefiles';
+			}
+			else
+			{
+				$dest .= DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : '');
+			}
+
+			if (!file_exists(JPATH_ROOT . $desc))
+			{
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::copy($src, $dest))
+				{
+					$this->setError(JText::_('Failed to copy page files.'));
+				}
+			}
+		}
+
+		return true;
+	}
 }
 

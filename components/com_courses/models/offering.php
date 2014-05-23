@@ -1208,12 +1208,122 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function delete()
 	{
+		// Remove pages
+		foreach ($this->pages(array('active' => array(0, 1)), true) as $page)
+		{
+			if (!$page->delete())
+			{
+				$this->setError($page->getError());
+			}
+		}
+
+		// Remove announcements
+		foreach ($this->announcements(array('section_id' => -1, 'state' => -1)) as $announcement)
+		{
+			if (!$announcement->delete())
+			{
+				$this->setError($announcement->getError());
+			}
+		}
+
+		// Remove any units
+		foreach ($this->units(array('section_id' => -1), true) as $unit)
+		{
+			if (!$unit->delete())
+			{
+				$this->setError($unit->getError());
+			}
+		}
+
+		// Remove sections
+		// Each section will also remove any students in that section
+		foreach ($this->sections() as $section)
+		{
+			if (!$section->delete())
+			{
+				$this->setError($section->getError());
+			}
+		}
+
 		$value = parent::delete();
 
 		$this->importPlugin('courses')
 		     ->trigger('onOfferingDelete', array($this));
 
 		return $value;
+	}
+
+	/**
+	 * Copy an entry and associated data
+	 * 
+	 * @param   integer $course_id New course to copy to
+	 * @param   boolean $deep      Copy associated data?
+	 * @return  boolean True on success, false on error
+	 */
+	public function copy($course_id=null, $deep=true)
+	{
+		// Get some old info we may need
+		//  - Offering ID
+		//  - Course ID
+		$o_id = $this->get('id');
+		$c_id = $this->get('course_id');
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+		// Are we copying to a new course?
+		if ($course_id)
+		{
+			$this->set('course_id', $course_id);
+		}
+		else
+		{
+			// Copying to the same course so we want to distinguish
+			// this offering from the one we copied from
+			$this->set('title', $this->get('title') . ' (copy)');
+		}
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		if ($deep)
+		{
+			// Copy pages
+			foreach ($this->pages(array('offering_id' => $o_id, 'active' => array(0, 1)), true) as $page)
+			{
+				if (!$page->copy($this->get('course_id'), $this->get('id')))
+				{
+					$this->setError($page->getError());
+				}
+			}
+
+			// Copy units
+			foreach ($this->units(array('offering_id' => $o_id, 'section_id' => -1), true) as $unit)
+			{
+				if (!$unit->copy($this->get('id')))
+				{
+					$this->setError($unit->getError());
+				}
+			}
+
+			// Copy logo
+			if ($file = $this->logo('file'))
+			{
+				$src  = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $c_id . '/offerings/' . $o_id . '/' . $file;
+				if (file_exists(JPATH_ROOT . $src))
+				{
+					$dest = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/offerings/' . $this->get('id') . '/' . $file;
+
+					jimport('joomla.filesystem.file');
+					if (!JFile::copy($src, $dest))
+					{
+						$this->setError(JText::_('Failed to copy offering logo.'));
+					}
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/**

@@ -870,5 +870,82 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 		return $content;
 	}
+
+	/**
+	 * Copy an entry and associated data
+	 * 
+	 * @param   boolean $deep Copy associated data?
+	 * @return  boolean True on success, false on error
+	 */
+	public function copy($deep=true)
+	{
+		// Get some old info we may need
+		//  - Course ID
+		$c_id = $this->get('id');
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+		// We want to distinguish this course from the one we copied from
+		$this->set('title', $this->get('title') . ' (copy)');
+
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		if ($deep)
+		{
+			// Copy pages
+			foreach ($this->pages(array('course_id' => $c_id, 'active' => array(0, 1)), true) as $page)
+			{
+				if (!$page->copy($this->get('course_id')))
+				{
+					$this->setError($page->getError());
+				}
+			}
+
+			// Copy units
+			foreach ($this->offerings(array('course_id' => $c_id), true) as $offering)
+			{
+				if (!$offering->copy($this->get('id')))
+				{
+					$this->setError($offering->getError());
+				}
+			}
+
+			// Copy managers
+			foreach ($this->managers(array('course_id' => $c_id), true) as $manager)
+			{
+				$manager->set('id', 0);
+				$manager->set('course_id', $this->get('id'));
+				if (!$manager->store())
+				{
+					$this->setError($manager->getError());
+				}
+			}
+
+			// Copy logo
+			if ($file = $this->get('logo'))
+			{
+				$src  = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $c_id . '/' . $file;
+				if (file_exists(JPATH_ROOT . $src))
+				{
+					$dest = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('id') . '/' . $file;
+
+					jimport('joomla.filesystem.file');
+					if (!JFile::copy($src, $dest))
+					{
+						$this->setError(JText::_('Failed to copy course logo.'));
+					}
+				}
+			}
+
+			// Copy tags
+			$tagger = new CoursesTags($this->_db);
+			$tagger->tag_object(JFactory::getUser()->get('id'), $this->get('id'), $tagger->get_tag_string($c_id), 1);
+		}
+
+		return true;
+	}
 }
 
