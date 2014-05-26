@@ -22,7 +22,13 @@ function get_conf($db_id)
 
 	$dv_conf['db']['database'] = 'ds_' . $db_id['name'];
 
-	$dv_conf['base_path'] = '/data/datastores/' . $db_id['name'];
+	// DataStores base directory
+	$ds_base_dir = $params->get('base_dir');
+	if ($ds_base_dir == '') {
+		$ds_base_dir = '/data/datastores'; // Switch the default to /db when it's created
+	}
+
+	$dv_conf['base_path'] = $ds_base_dir . '/' . $db_id['name'];
 
 	return $dv_conf;
 }
@@ -88,7 +94,7 @@ function get_dd($db_id)
 		}
 	} else {
 		$dsid = $db_id['name'];
-		$path = "/data/datastores/$dsid/datadefinitions";
+		$path = "{$dv_conf['base_path']}/datadefinitions";
 		$dd_file = "$dv_id.json";
 		if(file_exists("$path/$dd_file")) {
 			$dd = json_decode(file_get_contents("$path/$dd_file"), true);
