@@ -1,5 +1,98 @@
 <article>
 	<h1><span>Forum Manager: Edit Category</span></h1>
 
-	<p>-- Needs filling in --</p>
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#details">Details</a></li>
+		<li><a href="#publishing">Publishing</a></li>
+	</ul>
+
+	<section id="description">
+		<h2><span>Description</span></h2>
+		<p>This is where you can add a new Section or edit an existing Section.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save &amp; Close</dt>
+			<dd>Save changes and return to the listing of entries.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Discard any changes made and return to the listing of entries.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="details">
+		<h2><span>Details</span></h2>
+
+		<dl>
+			<dt>Scope</dt>
+			<dd>(Site/Course/Group) The type of forum the entry resides in.</dd>
+
+			<dt>Scope ID</dt>
+			<dd>The unique identifier associated with the Scope type.</dd>
+
+			<dt>Section</dt>
+			<dd>The section this entry can be found under.</dd>
+
+			<dt>Title</dt>
+			<dd>The Title for this item. This may or may not display on the page, depending on the parameter values you choose.</dd>
+
+			<dt>Alias</dt>
+			<dd>The internal name of the item. Normally, you can leave this blank and the system will fill in a default value. The default value is the Title or Name in lower case and with dashes instead of spaces. You may enter the Alias manually. The Alias should consist of lowercase letters, numbers, and hyphens (-). No blank spaces or underscores are allowed. The Alias will be used in the URL when SEF is activated.</dd>
+
+			<dt>Description</dt>
+			<dd>A short one or two lines to describe the category and give users a better idea as to the subject of threads and posts within.</dd>
+		</dl>
+	</section>
+	<section id="publishing">
+		<h2><span>Publishing</span></h2>
+
+		<dl>
+			<dt>Lock Category</dt>
+			<dd>The locked status of the entry. Locked categories will <strong>disallow</strong> any new threads and posts. This can be thought of as an archival feature where one mght want the content within still available for reading but not alteration.</dd>
+
+			<dt>State</dt>
+			<dd>The published status of the entry. Unpublished and trashed entries will not be displayed.</dd>
+
+			<dt>Access Level</dt>
+			<dd>Who has access to this item. Current options are:
+				<ul>
+					<li><span style="color:green">Public</span>: Everyone has access</li>
+					<li><span style="color:red">Registered</span>: Only registered users have access</li>
+					<li><span style="color:black">Special</span>: Only users with author status or higher have access</li>
+				</ul>
+
+				<p>Enter the desired level using the drop-down list box.</p>
+			</dd>
+
+			<dt>Permissions</dt>
+			<dd>
+				<p>The permissions section for the entry will be at the bottom of the screen. The options allowed are:</p>
+
+				<dl>
+					<dt>Create&#160;</dt>
+					<dd>Create new items in the section</dd>
+					<dt>Delete&#160;</dt>
+					<dd>Delete existing items in the section</dd>
+					<dt>Edit&#160;</dt>
+					<dd>Edit existing items in the section</dd>
+					<dt>Edit State&#160;</dt>
+					<dd>Change an items state (Publish, Unpublish, Archive, and Trash) in the section.</dd>
+					<dt>Edit Own&#160;</dt>
+					<dd>Edit existing items in the section that the logged in user has created.</dd>
+				</dl>
+
+				<p>There are two very important points to understand from this screen. The first is to see how the permissions can be inherited from the parent Group. The second is to see how you can control the default permissions by Group and by Action.</p>
+				<p>This provides a lot of flexibility. For example, if you wanted Shop Suppliers to be able to have the ability to create an item in the category, you could just change their Create value to "Allowed". If you wanted to not allow members of Administrator group to delete objects or change their state, you would change their permissions in these columns to Inherited (or Denied).</p>
+				<p>It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.</p>
+				<p>Please note the inherited values will come from the Permissions set in the <a href="index.php?option=com_help&component=com_config&page=global_config" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+			</dd>
+		</dl>
+	</section>
 </article>

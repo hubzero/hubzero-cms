@@ -1,5 +1,109 @@
 <article>
 	<h1><span>Forum Manager: Edit Post</span></h1>
 
-	<p>-- Needs filling in --</p>
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#details">Details</a></li>
+		<li><a href="#publishing">Publishing</a></li>
+	</ul>
+
+	<section id="description">
+		<h2><span>Description</span></h2>
+		<p>This is where you can add a new Section or edit an existing Section.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save &amp; Close</dt>
+			<dd>Save changes and return to the listing of entries.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Discard any changes made and return to the listing of entries.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="details">
+		<h2><span>Details</span></h2>
+
+		<dl>
+			<dt>Scope</dt>
+			<dd>(Site/Course/Group) The type of forum the entry resides in.</dd>
+
+			<dt>Scope ID</dt>
+			<dd>The unique identifier associated with the Scope type.</dd>
+
+			<dt>Section/Category</dt>
+			<dd>The section/category this entry can be found under. <em>This applies to thread-starter posts only (all threads must have an initial post).</em></dd>
+
+			<dt>Title</dt>
+			<dd>The Title for this item. This may or may not display on the page, depending on if the post is the thread starter or not. When not, the title is automatically generated from the first few characters of the comments.</dd>
+
+			<dt>Comments</dt>
+			<dd>The content of the post.</dd>
+		</dl>
+	</section>
+	<section id="details">
+		<h2><span>Attachment</span></h2>
+
+		<dl>
+			<dt>File</dt>
+			<dd>A file associated with this particular post.</dd>
+
+			<dt>Description</dt>
+			<dd>A description for the associated file. If none is provided, the file's name will be used.</dd>
+		</dl>
+	</section>
+	<section id="publishing">
+		<h2><span>Publishing</span></h2>
+
+		<dl>
+			<dt>Post anonymously</dt>
+			<dd>When checked, user names will not be displayed or linked back to the user's profile.</dd>
+
+			<dt>Make discussion sticky</dt>
+			<dd><em>This applies to thread-starter posts only.</em> Sticky threads will appear at the top of the list of threads, regardless of the sorting or age. This is a way of ensuring users see certain threads deemed important.</dd>
+
+			<dt>State</dt>
+			<dd>The published status of the entry. Unpublished and trashed entries will not be displayed.</dd>
+
+			<dt>Access Level</dt>
+			<dd>Who has access to this item. Current options are:
+				<ul>
+					<li><span style="color:green">Public</span>: Everyone has access</li>
+					<li><span style="color:red">Registered</span>: Only registered users have access</li>
+					<li><span style="color:black">Special</span>: Only users with author status or higher have access</li>
+				</ul>
+
+				<p>Enter the desired level using the drop-down list box.</p>
+			</dd>
+
+			<dt>Permissions</dt>
+			<dd>
+				<p>The permissions section for the entry will be at the bottom of the screen. The options allowed are:</p>
+
+				<dl>
+					<dt>Create&#160;</dt>
+					<dd>Create new items in the section</dd>
+					<dt>Delete&#160;</dt>
+					<dd>Delete existing items in the section</dd>
+					<dt>Edit&#160;</dt>
+					<dd>Edit existing items in the section</dd>
+					<dt>Edit State&#160;</dt>
+					<dd>Change an items state (Publish, Unpublish, Archive, and Trash) in the section.</dd>
+					<dt>Edit Own&#160;</dt>
+					<dd>Edit existing items in the section that the logged in user has created.</dd>
+				</dl>
+
+				<p>There are two very important points to understand from this screen. The first is to see how the permissions can be inherited from the parent Group. The second is to see how you can control the default permissions by Group and by Action.</p>
+				<p>This provides a lot of flexibility. For example, if you wanted Shop Suppliers to be able to have the ability to create an item in the category, you could just change their Create value to "Allowed". If you wanted to not allow members of Administrator group to delete objects or change their state, you would change their permissions in these columns to Inherited (or Denied).</p>
+				<p>It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.</p>
+				<p>Please note the inherited values will come from the Permissions set in the <a href="index.php?option=com_help&component=com_config&page=global_config" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+			</dd>
+		</dl>
+	</section>
 </article>

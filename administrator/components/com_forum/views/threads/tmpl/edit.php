@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
@@ -80,25 +80,25 @@ function submitbutton(pressbutton)
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
 					<label for="field-scope"><?php echo JText::_('Scope'); ?>:</label><br />
-					<input type="text" name="fields[scope]" id="field-scope" size="35" maxlength="150" value="<?php echo $this->escape($this->row->scope); ?>" />
+					<input type="text" name="fields[scope]" id="field-scope" maxlength="150" value="<?php echo $this->escape($this->row->scope); ?>" />
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
 					<label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label><br />
-					<input type="text" name="fields[scope_id]" id="field-scope_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->scope_id); ?>" />
+					<input type="text" name="fields[scope_id]" id="field-scope_id" maxlength="11" value="<?php echo $this->escape($this->row->scope_id); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
 
 			<div class="input-wrap">
 				<label for="field-object_id"><?php echo JText::_('Object ID'); ?>:</label><br />
-				<input type="text" name="fields[object_id]" id="field-object_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->object_id); ?>" />
+				<input type="text" name="fields[object_id]" id="field-object_id" maxlength="11" value="<?php echo $this->escape($this->row->object_id); ?>" />
 			</div>
 
 		<?php if (!$this->row->parent) { ?>
 			<div class="input-wrap">
-				<label for="field-section_id"><?php echo JText::_('COM_FORUM_FIELD_SECTION'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-section_id"><?php echo JText::_('COM_FORUM_FIELD_SECTION'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<select name="fields[category_id]" id="field-category_id">
 					<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
 			<?php foreach ($this->sections as $group => $sections) { ?>
@@ -134,7 +134,7 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-comment"><?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-comment"><?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape($post->content('raw')); ?></textarea>
 			</div>
 		</fieldset>
