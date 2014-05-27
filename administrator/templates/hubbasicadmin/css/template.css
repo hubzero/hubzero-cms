@@ -1091,6 +1091,8 @@
 	a.state:link,
 	a.state:active,
 	a.state:visited,
+	.grid_true,
+	.grid_false,
 	.state {
 		position: relative;
 		z-index: 1;
@@ -1105,6 +1107,8 @@
 		text-decoration: none;
 		border: none;
 	}
+	.grid_true:before,
+	.grid_false:before,
 	.state:before {
 		font-size: 16px;
 		line-height: 16px;
@@ -1114,6 +1118,8 @@
 		bottom: 0;
 		left: 0;
 	}
+	.grid_true,
+	.grid_false,
 	.state:hover,
 	a.state:hover {
 		text-decoration: none;
@@ -1123,23 +1129,27 @@
 		display: none;
 	}
 	/* Publish */
+	.grid_true:before,
 	.state.yes:before,
 	.state.publish:before,
 	.state.published:before {
 		content: "\2714";
 		font-size: 16px;
 	}
+	.grid_true:hover:before,
 	.state.yes:hover:before,
 	.state.publish:hover:before,
 	.state.published:hover:before {
 		color: #7F913C;
 	}
 	/* Unpublish */
+	.grid_false:before,
 	.state.no:before,
 	.state.unpublish:before,
 	.state.unpublished:before {
 		content: "\2298";
 	}
+	.grid_false:hover:before,
 	.no:hover:before,
 	.unpublish:hover:before,
 	.unpublished:hover:before {
