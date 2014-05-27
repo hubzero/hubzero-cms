@@ -443,6 +443,7 @@ HUB.Plugins.CoursesForum = {
 						} else {
 							$('#mine' + data.thread.lastid).remove();
 							$('#thread' + data.thread.lastid).remove();
+							$('#comments-container li.thread' + data.thread.lastid).remove();
 
 							// Add active class
 							abtn.addClass('active');

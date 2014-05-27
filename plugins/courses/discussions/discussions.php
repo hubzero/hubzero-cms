@@ -2630,13 +2630,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Update replies if this is a parent (thread starter)
-		if (!$model->parent)
-		{
+		//if (!$model->parent)
+		//{
 			if (!$model->updateReplies(array('state' => 2), $model->id))  /* 0 = unpublished, 1 = published, 2 = deleted */
 			{
 				$this->setError($model->getError());
 			}
-		}
+		//}
 
 		// Delete the topic itself
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */

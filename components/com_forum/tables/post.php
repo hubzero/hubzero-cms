@@ -1061,7 +1061,10 @@ class ForumTablePost extends JTable
 		}
 		$values = implode(', ', $set);
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=" . $this->_db->Quote($parent));
+		$this->_db->setQuery("SELECT lft, rgt, thread FROM $this->_tbl WHERE id=" . $this->_db->Quote($parent));
+		$row = $this->_db->loadObject();
+
+		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=" . $this->_db->Quote($parent) . " OR (thread=" . $this->_db->Quote($row->thread) . " AND lft > " . $this->_db->Quote($row->lft) . " AND rgt < " . $this->_db->Quote($row->rgt) . ")"); // parent=" . $this->_db->Quote($parent));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

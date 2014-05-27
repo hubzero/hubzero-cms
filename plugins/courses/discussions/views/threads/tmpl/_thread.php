@@ -70,7 +70,7 @@ if (!$this->thread->thread)
 	$this->thread->thread = $this->thread->id;
 }
 ?>
-					<li class="thread<?php if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
+					<li class="thread thread<?php echo $this->thread->thread; if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . ($this->thread->parent ? $this->thread->id . '-' : '') . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
 						<?php 
 							$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 							$huser = '';
