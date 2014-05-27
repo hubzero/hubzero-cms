@@ -1,5 +1,103 @@
 <article>
 	<h1><span>Groups Manager: Edit Group</span></h1>
 
-	<p>-- Needs filling in --</p>
+	<section id="description">
+		<h2><span>Description</span></h2>
+		<p>This is where you can add a new Group or edit an existing Group.</p>
+	</section>
+	<section id="details">
+		<h2><span>Details</span></h2>
+		<dl>
+			<dt>Type</dt>
+			<dd>The Title for this item. This may or may not display on the page, depending on the parameter values you choose.</dd>
+
+			<dt>CN</dt>
+			<dd>The internal name of the item. The CN should consist of letters, numbers, underscores, and hyphens (-). No blank spaces allowed.</dd>
+
+			<dt>Title</dt>
+			<dd>The Title for this item. This may or may not display on the page, depending on the parameter values you choose.</dd>
+
+			<dt>Group Logo</dt>
+			<dd>The name of the file to serve as the group's logo.</dd>
+
+			<dt>Public Text</dt>
+			<dd>This is a description, message, or piece of content about the group to be displayed publicly.</dd>
+
+			<dt>Private Text</dt>
+			<dd>This is a welcome message, description, or piece of content to be displayed to <em>members</em> immediately upon entering the group. It is visible only to group members.</dd>
+		</dl>
+	</section>
+	<section id="membership">
+		<h2><span>Membership</span></h2>
+		<p>The options in this section control how and when users can join or request membership to the group.</p>
+
+		<dl>
+			<dt>Control membership within the group?</dt>
+			<dd>When checked, group managers may control membership within the group via the site interface.</dd>
+
+			<dt>Join Policy</dt>
+			<dd>
+				<ul>
+					<li><i>Open:</i> Anyone can join the group.</li>
+					<li><i>Restricted:</i> Users must apply for membership in the group.</li>
+					<li><i>Invite only:</i> Only users that have received an invitation may join the group.</li>
+					<li><i>Closed:</i> No further membership requests or additions will be allowed.</li>
+				</ul>
+			</dd>
+
+			<dt>Credentials</dt>
+			<dd>
+				<p>This applies only to the <strong>Restricted</strong> join policy. It is a message and/or list of credentials to presented to a user when requesting membership to the group.</p>
+			</dd>
+		</dl>
+	</section>
+	<section id="access">
+		<h3><span>Access</span></h3>
+
+		<p>This section allows for specifying the visiblity of the group as a whole and its individual plugins.</p>
+		<dl>
+			<dt>Discoverability</dt>
+			<dd>
+				<p>Discoverability controls how users can find or discover the group on the site.</p>
+				<ul>
+					<li><i>Visible:</i> The group displays in the groups browse listing and search results.</li>
+					<li><i>Hidden:</i> The group does <strong>not</strong> display in the groups browse listing or search results.</li>
+				</ul>
+			</dd>
+
+			<dt>Plugin Access</dt>
+			<dd>
+				<p>This field lists all the plugins and their access settings for a specific group. Accepted values are:</p>
+				<ul>
+					<li><i>anyone:</i> Any site visitor, logged in or not, can view/access.</li>
+					<li><i>registered:</i> Only registered site users can view/access.</li>
+					<li><i>members:</i> Only group members have access.</li>
+					<li><i>nobody:</i> Disabled/off. The plugin is not displayed.</li>
+				</ul>
+			</dd>
+
+			<dt>Show System Users</dt>
+			<dd>
+				<ul>
+					<li><i>Global:</i> Value is inherited from the component settings.</li>
+					<li><i>No:</i> Do not show system users</li>
+					<li><i>Yes:</i> Do show system users.</li>
+				</ul>
+			</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar. The functions are:</p>
+		<dl>
+			<dt>Save &amp; Close</dt>
+			<dd>Saves the content category and closes the current screen.</dd>
+
+			<dt>Cancel/Close</dt>
+			<dd>Closes the current screen and returns to the previous screen without saving any modifications you may have made.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
 </article>
