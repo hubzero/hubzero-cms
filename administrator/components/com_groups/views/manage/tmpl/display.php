@@ -218,13 +218,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if (!$group->get('approved')) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Approve Group'); ?>">
+					<a class="jgrid state no" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Approve Group'); ?>">
 						<span class="not-approved">
 							<span class="text"><?php echo JText::_('Approve Group'); ?></span>
 						</span>
 					</a>
 					<?php } else { ?>
-						<span class="approved">
+						<span class="state yes approved">
 							<span class="text"><?php echo JText::_('Approved'); ?></span>
 						</span>
 					<?php } ?>
