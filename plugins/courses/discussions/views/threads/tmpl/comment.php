@@ -148,10 +148,10 @@ defined('_JEXEC') or die('Restricted access');
 
 						<?php echo JHTML::_('form.token'); ?>
 
-						<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
+						<label for="comment_<?php echo $this->comment->get('id'); ?>_reply">
 							<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 							<?php
-							echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_' . $this->comment->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
+							echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'comment_' . $this->comment->get('id') . '_reply', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 

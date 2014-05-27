@@ -81,7 +81,7 @@ if (!($this->post instanceof ForumModelPost))
 			</p>
 			<?php } ?>
 
-			<label for="field_comment">
+			<label for="field_<?php echo $this->post->get('id'); ?>_comment">
 				<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 				<?php
 				/* <textarea name="fields[comment]" id="field_<?php echo $this->post->get('id'); ?>_comment" cols="35" rows="5"><?php echo $this->escape($this->post->content('raw')); ?></textarea> */
