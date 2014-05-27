@@ -120,10 +120,18 @@ table {
 			background-color: #fff;
 
 			// Archived entries
+			&.disabled th,
+			&.disabled td,
+			&.disabled a,
 			&.archived th,
 			&.archived td,
-			&.archived a {
+			&.archived a,
+			&.archived .state:before {
 				color: #bbb;
+			}
+			&.disabled .state:before,
+			&.archived .state:before {
+				color: #ccc;
 			}
 			// Highlight row on hover
 			&:hover td {
