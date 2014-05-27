@@ -109,7 +109,7 @@ $loggeduser = JFactory::getUser();
 				$canChange	= false;
 			}
 		?>
-			<tr class="row<?php echo $i % 2; ?>">
+			<tr class="row<?php echo $i % 2; if (!$canChange) { echo ' disabled'; } ?>">
 				<td class="center">
 					<?php if ($canEdit) : ?>
 						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
@@ -122,14 +122,16 @@ $loggeduser = JFactory::getUser();
 						<?php echo JHtml::_('users.addNote', $item->id); ?>
 					</div>
 					<?php if ($canEdit) : ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id='.(int) $item->id); ?>" title="<?php echo JText::sprintf('COM_USERS_EDIT_USER', $this->escape($item->name)); ?>">
-						<?php echo $this->escape($item->name); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id='.(int) $item->id); ?>" title="<?php echo JText::sprintf('COM_USERS_EDIT_USER', $this->escape($item->name)); ?>">
+							<?php echo $this->escape($item->name); ?>
+						</a>
 					<?php else : ?>
 						<?php echo $this->escape($item->name); ?>
 					<?php endif; ?>
 					<?php if (JDEBUG) : ?>
-						<div class="fltrt"><div class="button2-left smallsub"><div class="blank"><a href="<?php echo JRoute::_('index.php?option=com_users&view=debuguser&user_id='.(int) $item->id);?>">
-						<?php echo JText::_('COM_USERS_DEBUG_USER');?></a></div></div></div>
+						<a class="permissions button" href="<?php echo JRoute::_('index.php?option=com_users&view=debuguser&user_id='.(int) $item->id);?>">
+							<?php echo JText::_('COM_USERS_DEBUG_USER');?>
+						</a>
 					<?php endif; ?>
 				</td>
 				<td class="center">
@@ -143,7 +145,7 @@ $loggeduser = JFactory::getUser();
 							<?php echo JHtml::_('grid.boolean', $i, !$item->block, 'users.block', null); ?>
 						<?php endif; ?>
 					<?php else : ?>
-						<?php echo JText::_($item->block ? 'JNO' : 'JYES'); ?>
+						<span class="state <?php echo JText::_($item->block ? 'no' : 'yes'); ?>"><span><?php echo JText::_($item->block ? 'JNO' : 'JYES'); ?></span></span>
 					<?php endif; ?>
 				</td>
 				<td class="center">
