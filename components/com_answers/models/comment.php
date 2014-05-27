@@ -233,7 +233,7 @@ class AnswersModelComment extends AnswersModelAbstract
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('parsed'));
+				$content = html_entity_decode(strip_tags($this->content('parsed')), ENT_COMPAT, 'UTF-8');
 			break;
 
 			case 'raw':

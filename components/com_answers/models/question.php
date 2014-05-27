@@ -563,7 +563,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('parsed'));
+				$content = html_entity_decode(strip_tags($this->content('parsed')), ENT_COMPAT, 'UTF-8');
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 
@@ -627,7 +627,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->subject('parsed'));
+				$content = html_entity_decode(strip_tags($this->subject('parsed')), ENT_COMPAT, 'UTF-8');
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 
