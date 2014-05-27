@@ -119,7 +119,7 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 	 *
 	 * @return array
 	 **/
-	public function get($scope, $scope_id)
+	public function get($scope, $scope_id=null)
 	{
 		return (isset($this->prerequisites[$scope.'.'.$scope_id])) ? $this->prerequisites[$scope.'.'.$scope_id] : false;
 	}
