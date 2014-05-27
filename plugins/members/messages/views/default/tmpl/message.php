@@ -16,7 +16,7 @@
 			</tr>
 			<tr>
 				<th><?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
-				<td><?php echo $this->escape($this->from); ?></td>
+				<td><?php echo $this->from; ?></td>
 			</tr>
 			<tr>
 				<th><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
