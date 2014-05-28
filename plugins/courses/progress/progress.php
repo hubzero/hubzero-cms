@@ -374,6 +374,27 @@ class plgCoursesProgress extends JPlugin
 			)
 		);
 
+		// Get gradebook auxiliary assets
+		$auxiliary = $asset->find(
+			array(
+				'w' => array(
+					'course_id'     => $this->course->get('id'),
+					'asset_type'    => 'gradebook',
+					'asset_subtype' => 'auxiliary',
+					'graded'        => true,
+					'state'         => 1
+				),
+				'order_by'  => 'title',
+				'order_dir' => 'ASC'
+			)
+		);
+
+		$assets = array_merge($assets, $auxiliary);
+
+		usort($assets, function($a, $b) {
+			return strcasecmp($a->title, $b->title);
+		});
+
 		echo json_encode(
 			array(
 				'assets'    => $assets,
