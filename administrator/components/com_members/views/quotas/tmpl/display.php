@@ -38,32 +38,37 @@ JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'Default');
 ?>
 
 <script type="text/javascript">
-	window.addEvent('domready', function() {
-		var rows = $$('.quota-row');
+	jQuery(document).ready(function ( $ ) {
+		setTimeout(doWork, 10);
 
-		rows.each(function ( val, key ) {
-			var id    = val.getElements('.row-id')[0].value;
-			var usage = val.getElements('.usage-outer')[0];
+		function doWork() {
+			var rows = $('.quota-row');
 
-			var req = new Request.JSON({
-				url: 'index.php?option=com_members&controller=quotas&task=getQuotaUsage',
-				onSuccess: function ( data ) {
-					if (data.percent > 100) {
-						data.percent = 100;
-						usage.getChildren('.usage-inner').addClass('max');
+			rows.each(function ( i, el ) {
+				var id = $(el).find('.row-id').val();
+				var usage = $(el).find('.usage-outer');
+
+				$.ajax({
+					url      : 'index.php?option=com_members&controller=quotas&task=getQuotaUsage',
+					dataType : 'JSON',
+					type     : 'GET',
+					data     : {"id":id},
+					success  : function ( data, textStatus, jqXHR ) {
+						if (data.percent > 100) {
+							data.percent = 100;
+							usage.find('.usage-inner').addClass('max');
+						}
+						usage.prev('.usage-calculating').hide();
+						usage.fadeIn();
+						usage.find('.usage-inner').css('width', data.percent+"%");
+					},
+					error : function ( ) {
+						usage.prev('.usage-calculating').hide();
+						usage.next('.usage-unavailable').show();
 					}
-					usage.setStyle('display', 'block');
-					usage.getPrevious('.usage-calculating').setStyle('display', 'none');
-					usage.getChildren('.usage-inner').setStyle('width', data.percent+"%");
-				},
-				onError: function ( ) {
-					usage.getPrevious('.usage-calculating').setStyle('display', 'none');
-					usage.getNext('.usage-unavailable').setStyle('display', 'block');
-				}
-			}).get({
-				'id' : id
+				});
 			});
-		});
+		};
 	});
 </script>
 
