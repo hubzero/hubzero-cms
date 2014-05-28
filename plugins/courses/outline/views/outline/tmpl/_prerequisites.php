@@ -36,6 +36,7 @@ $db = JFactory::getDbo();
 $this->css('prerequisites');
 $this->js('prerequisites');
 \Hubzero\Document\Assets::AddSystemScript('handlebars');
+$includeForm = (isset($this->includeForm)) ? $this->includeForm : true;
 
 $prereqs  = new CoursesTablePrerequisites($db);
 $existing = $prereqs->loadAllByScope($this->scope, $this->scope_id);
@@ -55,7 +56,7 @@ foreach ($existing as $value)
 	</li>
 </script>
 
-<form class="prerequisites-form">
+<?php if ($includeForm) : ?><form class="prerequisites-form"><?php endif; ?>
 	<div class="prerequisites-wrap">
 		<div class="title">Prerequisites:</div>
 		<ul>
@@ -89,4 +90,4 @@ foreach ($existing as $value)
 	<input type="hidden" name="item_id" value="<?php echo $this->scope_id; ?>" />
 	<input type="hidden" name="requisite_scope" value="<?php echo $this->scope; ?>" />
 	<input type="hidden" name="section_id" value="<?php echo $this->section_id; ?>" />
-</form>
+<?php if ($includeForm) : ?></form><?php endif; ?>

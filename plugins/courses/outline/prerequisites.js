@@ -21,7 +21,7 @@ if (!jq) {
 }
 
 jQuery(document).ready(function($) {
-	$('.unit')
+	$('.unit, .edit-asset')
 		.on('change', '.add-prerequisite select', function ( e ) {
 			var wrap  = $(this).parents('.prerequisites-wrap'),
 				title = $(this).find(':selected').text(),
@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
 				url      : '/api/courses/prerequisite/new',
 				dataType : 'json',
 				type     : 'POST',
-				data     : $(this).parents('.prerequisites-form').serializeArray(),
+				data     : $(this).parents('form').serializeArray(),
 				success  : function ( data, textStatus, jqXHR ) {
 
 					var source   = $('#prerequisite-item').html(),
