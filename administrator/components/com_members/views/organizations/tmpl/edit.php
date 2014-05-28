@@ -28,40 +28,58 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
+$text = ($this->task == 'edit' ? JText::_('Edit Organization') : JText::_('New Organization'));
+
+JToolBarHelper::title(JText::_('Member Registration') . ': ' . $text, 'user.png');
+JToolBarHelper::save();
+JToolBarHelper::cancel();
 
 ?>
-
-<?php
-	$this->view('_submenu')
-	     ->display();
-?>
+<script type="text/javascript">
+function submitbutton(pressbutton) 
+{
+	var form = document.adminForm;
+	
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
+		return;
+	}
+	
+	submitform(pressbutton);
+}
+</script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-50 fltlft">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span>Find User Details</span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td><label for="uid">UID:</label></td>
-						<td><input type="text" name="uid" id="uid" size="30" maxlength="250" value="" /> <input type="submit" value="Go" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-organization"><?php echo JText::_('Organization'); ?>:</label><br />
+				<input type="text" name="organization" id="field-organization" value="<?php echo $this->escape($this->model->organization); ?>" size="50" />
+			</div>
 		</fieldset>
 	</div>
-	<div class="col width-50 fltrt">
-		<p class="info">Enter a user ID to view their point history and balance.</p>
+	<div class="col width-40 fltrt">
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<td>
+						<?php echo $this->model->id; ?>
+						<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="edit" />
-	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<input type="hidden" name="task" value="save" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

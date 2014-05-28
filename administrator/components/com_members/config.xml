@@ -29,35 +29,28 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<params>
-		<param name="privacy" type="list" default="0" label="Default Privacy" description="Set the default privacy for new profiles">
-			<option value="0">Private</option>
-			<option value="1">Public</option>
-		</param>
-		<param name="bankAccounts" type="list" default="0" label="Bank Accounts" description="Enable Bank Accounts">
-			<option value="1">On</option>
-			<option value="0">Off</option>
-		</param>
-		<param name="defaultpic" type="text" menu="hide" default="/components/com_members/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="webpath" type="text" menu="hide" default="/site/members" label="Upload path" description="File path for pictures" />
-		<param name="homedir" type="text" menu="hide" default="" label="Home directory path" description="Hub users' home directory path (typically '/home/{hubname}')" />
-		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<param name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="user_messaging" type="list" default="1" label="User-To-User Messaging" description="Allow/Disallow user-to-user messaging">
-			<option value="0">None</option>
-			<option value="1">Users with common groups</option>
-			<option value="2">Any User</option>
-		</param>
-		<param name="employeraccess" type="list" default="0" label="Allow Employer Access" description="Determine whether to show resume on a private profile to subscribed employers (if Jobs Component is active)">
-			<option value="0">Disallow</option>
-			<option value="1">Allow</option>
-		</param>
-		<param name="gidNumber" type="text" default="100" label="Group ID number" />
-		<param name="gid" type="text" default="users" label="Group ID" />
-		<param name="shadowMax" type="text" default="" label="Shadow Maximum" />
-		<param name="shadowMin" type="text" default="0" label="Shadow Minimum" />
-		<param name="shadowWarning" type="text" default="7" label="Shadow Warning" />
+		<param name="registrationUsername"  type="text" menu="hide" default="RRUU" label="Username" description="" />
+		<param name="registrationPassword"  type="text" menu="hide" default="RRUU" label="Password" description="" />
+		<param name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />
+		<param name="registrationFullname"  type="text" menu="hide" default="RRUU" label="Full Name" description="" />
+		<param name="registrationEmail"  type="text" menu="hide" default="RRUU" label="Email" description="" />
+		<param name="registrationConfirmEmail"  type="text" menu="hide" default="RRUU" label="Email Confirmation" description="" />
+		<param name="registrationURL"  type="text" menu="hide" default="OHHO" label="URL" description="" />
+		<param name="registrationPhone"  type="text" menu="hide" default="OHHO" label="Phone" description="" />
+		<param name="registrationEmployment"  type="text" menu="hide" default="RORO" label="Employment" description="" />
+		<param name="registrationOrganization"  type="text" menu="hide" default="OOOO" label="Organization" description="" />
+		<param name="registrationCitizenship"  type="text" menu="hide" default="RHRH" label="Citizenship" description="" />
+		<param name="registrationResidency"  type="text" menu="hide" default="RHRH" label="Residency" description="" />
+		<param name="registrationSex"  type="text" menu="hide" default="RHRH" label="Sex" description="" />
+		<param name="registrationDisability"  type="text" menu="hide" default="RHRH" label="Disability" description="" />
+		<param name="registrationHispanic"  type="text" menu="hide" default="RHRH" label="Hispanic" description="" />
+		<param name="registrationRace"  type="text" menu="hide" default="OHHH" label="Race" description="" />
+		<param name="registrationInterests"  type="text" menu="hide" default="OOOO" label="Interests" description="" />
+		<param name="registrationReason"  type="text" menu="hide" default="OOOO" label="Reason" description=""/>
+		<param name="registrationOptIn"  type="text" menu="hide" default="OOUU" label="OptIn" description="" />
+		<param name="registrationCAPTCHA"  type="text" menu="hide" default="RHHH" label="CAPTCHA" description="CAPTCHA check" />
+		<param name="registrationTOU"  type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
+		<param name="registrationAddress"  type="text" menu="hide" default="--OO" label="Address" description="" />
 	</params>
 	<fieldset name="basic">
 		<field name="contribution_counting" type="list" default="1" label="Contribution Counting" description="Enable (potentially slow) contribution counting in browse view">
@@ -99,5 +92,35 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="shadowMax" type="text" default="" label="Shadow Maximum" />
 		<field name="shadowMin" type="text" default="0" label="Shadow Minimum" />
 		<field name="shadowWarning" type="text" default="7" label="Shadow Warning" />
+	</fieldset>
+	<fieldset name="registration">
+		<field name="LoginReturn" type="text" menu="hide" default="" label="Login Return URL" description="Redirect here after login..." />
+		<field name="ConfirmationReturn" type="text" menu="hide" default="" label="Confirmation Return URL" description="Redirect here after confirming email..." />
+		<field name="passwordMeter" type="radio" default="1" label="Password Strength Meter" description="Show a password strength indicator or not">
+			<option value="0">Off</option>
+			<option value="1">On</option>
+		</field>
+		<field name="registrationUsername"  type="text" menu="hide" default="RRUU" label="Username" description="" />
+		<field name="registrationPassword"  type="text" menu="hide" default="RRUU" label="Password" description="" />
+		<field name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />
+		<field name="registrationFullname"  type="text" menu="hide" default="RRUU" label="Full Name" description="" />
+		<field name="registrationEmail"  type="text" menu="hide" default="RRUU" label="Email" description="" />
+		<field name="registrationConfirmEmail"  type="text" menu="hide" default="RRUU" label="Email Confirmation" description="" />
+		<field name="registrationURL"  type="text" menu="hide" default="OHHO" label="URL" description="" />
+		<field name="registrationPhone"  type="text" menu="hide" default="OHHO" label="Phone" description="" />
+		<field name="registrationEmployment"  type="text" menu="hide" default="RORO" label="Employment" description="" />
+		<field name="registrationOrganization"  type="text" menu="hide" default="OOOO" label="Organization" description="" />
+		<field name="registrationCitizenship"  type="text" menu="hide" default="RHRH" label="Citizenship" description="" />
+		<field name="registrationResidency"  type="text" menu="hide" default="RHRH" label="Residency" description="" />
+		<field name="registrationSex"  type="text" menu="hide" default="RHRH" label="Sex" description="" />
+		<field name="registrationDisability"  type="text" menu="hide" default="RHRH" label="Disability" description="" />
+		<field name="registrationHispanic"  type="text" menu="hide" default="RHRH" label="Hispanic" description="" />
+		<field name="registrationRace"  type="text" menu="hide" default="OHHH" label="Race" description="" />
+		<field name="registrationInterests"  type="text" menu="hide" default="OOOO" label="Interests" description="" />
+		<field name="registrationReason"  type="text" menu="hide" default="OOOO" label="Reason" description=""/>
+		<field name="registrationOptIn"  type="text" menu="hide" default="OOUU" label="OptIn" description="" />
+		<field name="registrationCAPTCHA"  type="text" menu="hide" default="RHHH" label="CAPTCHA" description="CAPTCHA check" />
+		<field name="registrationTOU"  type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
+		<field name="registrationAddress"  type="text" menu="hide" default="--OO" label="Address" description="" />
 	</fieldset>
 </config>

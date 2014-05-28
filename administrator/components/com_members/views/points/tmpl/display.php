@@ -34,18 +34,15 @@ JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
 JToolBarHelper::preferences('com_members', '550');
 
 ?>
-<div role="navigation" class="sub-navigation">
-	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" class="active">Summary</a></li> 
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit">Look up User Balance</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=config">Configuration</a></li> 
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=batch">Batch Transaction</a></li>
-	</ul>
-</div>
+
+<?php
+	$this->view('_submenu')
+	     ->display();
+?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <?php if ($this->rows) { ?>
-		<table class="adminlist" summary="A list of Top 15 earners and their points">
+		<table class="adminlist">
 			<caption>Top Earners</caption>
 			<thead>
 				<tr>

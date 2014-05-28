@@ -74,11 +74,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_members&controller=points',
 	$controllerName == 'points'
 );
-JSubMenuHelper::addEntry(
+/*JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
 	'index.php?option=' . $option . '&controller=plugins', //'index.php?option=com_plugins&view=plugins&filter_folder=members&filter_type=members'
 	$controllerName == 'plugins'
-);
+);*/
 JSubMenuHelper::addEntry(
 	JText::_('Password Rules'),
 	'index.php?option=com_members&controller=passwordrules',
@@ -95,10 +95,12 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'quotas'
 );
 
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'members';
-}
+JSubMenuHelper::addEntry(
+	JText::_('Registration'), 
+	'index.php?option=' .  $option . '&controller=registration',
+	(in_array($controllerName, array('registration', 'organizations', 'employers', 'incremental', 'premis')))
+);
+
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'MembersController' . ucfirst($controllerName);
 

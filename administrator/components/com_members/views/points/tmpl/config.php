@@ -30,19 +30,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'MEMBERS' ).': <small><small>[ Manage Points ]</small></small>', 'user.png' );
+JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
 JToolBarHelper::save( 'saveconfig', 'Save Configuration' );
 JToolBarHelper::cancel();
 
 ?>
-<div role="navigation" class="sub-navigation">
-	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Summary</a></li> 
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit">Look up User Balance</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=config" class="active">Configuration</a></li> 
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=batch">Batch Transaction</a></li>
-	</ul>
-</div>
+
+<?php
+	$this->view('_submenu')
+	     ->display();
+?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

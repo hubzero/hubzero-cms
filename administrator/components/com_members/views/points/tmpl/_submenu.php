@@ -28,40 +28,15 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
-
+$task = JRequest::getCmd('task', '');
 ?>
-
-<?php
-	$this->view('_submenu')
-	     ->display();
-?>
-
-<form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-50 fltlft">
-		<fieldset class="adminform">
-			<legend><span>Find User Details</span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td><label for="uid">UID:</label></td>
-						<td><input type="text" name="uid" id="uid" size="30" maxlength="250" value="" /> <input type="submit" value="Go" /></td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
-	</div>
-	<div class="col width-50 fltrt">
-		<p class="info">Enter a user ID to view their point history and balance.</p>
-	</div>
-	<div class="clr"></div>
-	
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="edit" />
-	
-	<?php echo JHTML::_( 'form.token' ); ?>
-</form>
+<nav role="navigation" class="sub sub-navigation">
+	<ul>
+		<li><a<?php if (!$task) { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Summary</a></li> 
+		<li><a<?php if ($task == 'edit') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit">Look up User Balance</a></li>
+		<li><a<?php if ($task == 'config') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=config">Configuration</a></li> 
+		<li><a<?php if ($task == 'batch') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=batch">Batch Transaction</a></li>
+	</ul>
+</nav><!-- / .sub-navigation -->

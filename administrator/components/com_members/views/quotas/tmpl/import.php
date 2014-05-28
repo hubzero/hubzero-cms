@@ -39,13 +39,10 @@ JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 	}
 </style>
 
-<div role="navigation" class="sub-navigation">
-	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Members</a></li> 
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=displayClasses">Quota Classes</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=import" class="active">Import</a></li>
-	</ul>
-</div>
+<?php
+	$this->view('_submenu')
+	     ->display();
+?>
 
 <?php if ($this->getError()) : ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -60,27 +57,15 @@ JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="processImport" />
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key" width="300px">
-							<label for="conf_text"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT'); ?>:</label>
-							<p class="info conf-text-note"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT_NOTE'); ?></p>
-						</td>
-						<td>
-							<textarea name="conf_text" id="conf_text" cols="30" rows="10"></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class="key" width="300px">
-							<label for="overwrite_existing"><?php echo JText::_('COM_MEMBERS_QUOTA_OVERWRITE_EXISTING'); ?></label>
-						</td>
-						<td>
-							<input type="checkbox" name="overwrite_existing" value="1" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="conf_text"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT'); ?>:</label>
+				<p class="info conf-text-note"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT_NOTE'); ?></p>
+				<textarea name="conf_text" id="conf_text" cols="30" rows="10"></textarea>
+			</div>
+			<div class="input-wrap">
+				<label for="overwrite_existing"><?php echo JText::_('COM_MEMBERS_QUOTA_OVERWRITE_EXISTING'); ?></label>
+				<input type="checkbox" name="overwrite_existing" value="1" />
+			</div>
 			<p class="submit-button">
 				<input class="btn btn-primary" type="submit" value="<?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
 			</p>

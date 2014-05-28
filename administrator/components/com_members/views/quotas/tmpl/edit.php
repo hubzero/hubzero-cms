@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS').': <small><small>[ '. $text.' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS').': '. $text, 'user.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -51,26 +51,21 @@ JToolBarHelper::cancel();
 		submitform( pressbutton );
 	}
 
-	window.addEvent('domready', function() {
-		$$('#class_id').addEvent('change', function ( e ) {
-			e.stop();
+	jQuery(document).ready(function($){
+		$('#class_id').on('change', function (e) {
+			//e.preventDefault();
 
-			var req = new Request.JSON({
-				url: 'index.php?option=com_members&controller=quotas&task=getClassValues',
-				onSuccess: function ( data ) {
-					Object.each(data, function ( val, key ) {
-						var item = $$('#field-'+key);
-						item.set("value", val);
+			var req = $.getJSON('index.php?option=com_members&controller=quotas&task=getClassValues&class_id=' + $(this).val(), {}, function (data) {
+				$.each(data, function (key, val) {
+					var item = $('#field-'+key);
+					item.val(val);
 
-						if (e.target.options[e.target.selectedIndex].text == 'custom') {
-							item.removeProperty("readonly");
-						} else {
-							item.setProperty("readonly", true);
-						}
-					});
-				}
-			}).get({
-				'class_id' : e.target.value
+					if (e.target.options[e.target.selectedIndex].text == 'custom') {
+						item.prop("readonly", false);
+					} else {
+						item.prop("readonly", true);
+					}
+				});
 			});
 		});
 	});
@@ -148,11 +143,11 @@ JToolBarHelper::cancel();
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('COM_MEMBERS_QUOTA_SPACE'); ?></th>
-					<td><?php echo $this->du['info']['space'] / 1024; ?> blocks (<?php echo $this->du['percent']; ?>%)</td>
+					<td><?php echo (isset($this->du['info']['space']) ? $this->du['info']['space'] / 1024 : 0); ?> blocks (<?php echo $this->du['percent']; ?>%)</td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('COM_MEMBERS_QUOTA_FILES'); ?></th>
-					<td><?php echo $this->du['info']['files']; ?></td>
+					<td><?php echo (isset($this->du['info']['files']) ? $this->du['info']['files'] : 0); ?></td>
 				</tr>
 			</tbody>
 		</table>
