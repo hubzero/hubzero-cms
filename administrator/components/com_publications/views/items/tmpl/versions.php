@@ -60,11 +60,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th class="tdmini"></th>	
-				<th class="tdmini"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION'); ?></th>
-				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></th>
-				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></th>
-				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOI').'/'.JText::_('PLG_PROJECTS_PUBLICATIONS_ARK'); ?></th>
-				<th><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONS')); ?></th>
+				<th class="tdmini"><?php echo JText::_('COM_PUBLICATIONS_VERSION'); ?></th>
+				<th><?php echo JText::_('COM_PUBLICATIONS_TITLE'); ?></th>
+				<th><?php echo JText::_('COM_PUBLICATIONS_STATUS'); ?></th>
+				<th><?php echo JText::_('COM_PUBLICATIONS_DOI').'/'.JText::_('COM_PUBLICATIONS_ARK'); ?></th>
+				<th><?php echo ucfirst(JText::_('COM_PUBLICATIONS_OPTIONS')); ?></th>
 			</tr>
 		 </thead>
 		<tbody>
@@ -80,7 +80,7 @@ $k = 0;
 		$doi_notice = $doi ? $doi : $ark;	
 	}
 	else {
-		$doi_notice = JText::_('PLG_PROJECTS_PUBLICATIONS_NA');	
+		$doi_notice = JText::_('COM_PUBLICATIONS_NA');	
 	}
 				
 	// Version status
@@ -90,7 +90,7 @@ $k = 0;
 			
 	$options = '<a href="index.php?option=' . $this->option . '&amp;controller=' 
 		. $this->controller . '&amp;task=edit&amp;id[]=' . $this->pub->id . '&amp;version='.$v->version_number.'">'
-	.JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION').'</a>';
+	.JText::_('COM_PUBLICATIONS_MANAGE_VERSION').'</a>';
 	
 	?>
 	<tr class="mini <?php if($v->main == 1) { echo ' vprime'; } ?>">
