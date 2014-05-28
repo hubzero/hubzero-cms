@@ -203,7 +203,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	{
 		static $instances;
 
-		$key = (!is_null($member_id)) ? $member_id : 'all';
+		$key = (!is_null($member_id)) ? serialize($member_id) : 'all';
 
 		if (isset($instances[$key]))
 		{
