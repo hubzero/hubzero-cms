@@ -407,6 +407,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 			}
 		}
 
+		ob_clean();
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Cache-Control: no-store, no-cache, must-revalidate');
 		header('Cache-Control: post-check=0, pre-check=0', FALSE);
@@ -480,6 +481,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 			$x += ($size *2);
 		}
 
+		ob_clean();
 		header('Content-type: image/png');
 		imagepng($image);
 	}
