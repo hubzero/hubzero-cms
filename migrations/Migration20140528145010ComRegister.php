@@ -40,7 +40,7 @@ class Migration20140528145010ComRegister extends Base
 		//$menutype = $this->db->loadResult();
 
 		// Check if there's a menu item for com_register
-		$this->db->setQuery("SELECT id FROM `#__menu` WHERE `alias`='register' AND `path`='register"); //" AND menutype=" . $this->db->quote($menutype));
+		$this->db->setQuery("SELECT id FROM `#__menu` WHERE `alias`='register' AND `path`='register'"); //" AND menutype=" . $this->db->quote($menutype));
 		if ($id = $this->db->loadResult())
 		{
 			// There is!
