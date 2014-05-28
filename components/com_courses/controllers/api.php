@@ -104,6 +104,16 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				}
 			break;
 
+			// Forms
+			case 'prerequisite':
+				switch ($this->segments[1])
+				{
+					case 'new':    $this->prerequisiteNew();    break;
+					case 'delete': $this->prerequisiteDelete(); break;
+					default:       $this->method_not_found();   break;
+				}
+			break;
+
 			// Passport
 			case 'passport':                $this->passport();             break;
 
@@ -240,6 +250,24 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// Set the status code
 		$status = ($id) ? array('code'=>200, 'text'=>'OK') : array('code'=>201, 'text'=>'Created');
 
+		// Need to return the content of the prerequisites view (not sure of a better way to do this at the moment)
+		$view = new \Hubzero\Plugin\View(array(
+			'folder'  => 'courses',
+			'element' => 'outline',
+			'name'    => 'outline',
+			'layout'  => '_prerequisites'
+		));
+
+		$view->set('scope', 'unit')
+		     ->set('scope_id', $unit->get('id'))
+		     ->set('section_id', $this->course->offering()->section()->get('id'))
+		     ->set('items', clone($this->course->offering()->units()));
+
+		ob_start();
+		$view->display();
+		$prerequisites = ob_get_contents();
+		ob_end_clean();
+
 		// Return message
 		$this->setMessage(
 			array(
@@ -249,7 +277,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				'assetgroups'    => $assetGroups,
 				'course_alias'   => $this->course->get('alias'),
 				'offering_alias' => $this->offering_alias,
-				'section_id'     => (isset($section_id) ? $section_id : $this->course->offering()->section()->get('id'))
+				'section_id'     => (isset($section_id) ? $section_id : $this->course->offering()->section()->get('id')),
+				'prerequisites'  => $prerequisites
 			),
 			$status['code'],
 			$status['text']);
@@ -1198,6 +1227,61 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$this->setMessage('Failed to serve the image', 500, 'Server Error');
 			return;
 		}
+	}
+
+	/**
+	 * Add a new prerequisite
+	 *
+	 * @return 201 Created
+	 **/
+	private function prerequisiteNew()
+	{
+		$this->setMessageType($this->format);
+
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
+
+		$tbl = new CoursesTablePrerequisites($this->db);
+		$tbl->set('item_scope', JRequest::getWord('item_scope', 'asset'));
+		$tbl->set('item_id', JRequest::getInt('item_id', 0));
+		$tbl->set('requisite_scope', JRequest::getWord('requisite_scope', 'asset'));
+		$tbl->set('requisite_id', JRequest::getInt('requisite_id', 0));
+		$tbl->set('section_id', JRequest::getInt('section_id', 0));
+
+		if (!$tbl->store())
+		{
+			$this->setMessage('Failed to save new prerequisite', 500, 'Server Error');
+			return;
+		}
+		else
+		{
+			$this->setMessage(array('success'=>true, 'id'=>$tbl->get('id')), 201, 'Created');
+			return;
+		}
+	}
+
+	/**
+	 * Delete a prerequisite
+	 *
+	 * @return 200 Ok
+	 **/
+	private function prerequisiteDelete()
+	{
+		$this->setMessageType($this->format);
+
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
+
+		if (!$id = JRequest::getInt('id', false))
+		{
+			$this->setMessage("No ID provided", 422, 'Unprocessable entity');
+			return;
+		}
+
+		$tbl = new CoursesTablePrerequisites($this->db);
+		$tbl->load($id);
+		$tbl->delete();
+
+		$this->setMessage('Item successfully deleted', 200, 'Ok');
+		return;
 	}
 
 	/**

@@ -479,6 +479,11 @@ ul {
 .unit-edit {
 	display: none;
 }
+.unit-edit-wrap,
+.unit-prerequisites {
+	width: 50%;
+	float: left;
+}
 .unit-title-arrow {
 	cursor: pointer;
 }
@@ -557,7 +562,7 @@ ul {
 }
 .unit-edit form,
 .asset-group-title-container form {
-	padding: 10px;
+	padding: 10px 20px;
 }
 .asset-group-title-container form {
 	display: none;
@@ -573,6 +578,9 @@ ul {
 }
 .unit-edit form input[type="text"] {
 	display: block;
+	width: 100%;
+	margin: 0.5em 0;
+	padding: 8px;
 }
 .unit-edit form .unit-edit-save,
 .unit-edit form .unit-edit-reset,

@@ -103,4 +103,19 @@ class CoursesTablePrerequisites extends JTable
 
 		return $results;
 	}
+
+	/**
+	 * Get all prereqs for a given scope/scope_id
+	 *
+	 * @return array $results
+	 **/
+	public function loadAllByScope($scope, $scope_id)
+	{
+		$query = "SELECT * FROM `{$this->_tbl}` WHERE `item_scope` = '{$scope}' AND `item_id` = '{$scope_id}' ORDER BY `requisite_id` ASC";
+
+		$this->_db->setQuery($query);
+		$results = $this->_db->loadObjectList();
+
+		return $results;
+	}
 }

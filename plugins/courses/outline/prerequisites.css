@@ -1,0 +1,74 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/courses/outline/asset.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.prerequisites-wrap {
+	padding: 10px 20px;
+}
+.requisite-item {
+	display: block;
+}
+.remove-requisite {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 15px;
+	display: none;
+	background: #FF0000;
+	opacity: 0.4;
+	color: #FFFFFF;
+	padding: 8px;
+}
+.prerequisites-wrap ul li:hover .remove-requisite {
+	display: block;
+	cursor: pointer;
+}
+.remove-requisite:hover {
+	opacity: 0.7;
+}
+form.prerequisites-form {
+	margin: 0;
+	padding: 0;
+}
+.prerequisites-wrap ul li {
+	border: 1px solid #AAAAAA;
+	padding: 8px;
+	text-align: center;
+	margin-bottom: 30px;
+	position: relative;
+	border-radius: 3px;
+	background: #FFFFFF;
+}
+.prerequisites-wrap ul li:before {
+	content: "";
+	width: 1px;
+	height: 31px;
+	position: absolute;
+	left: 50%;
+	top: 100%;
+	background: #AAAAAA;
+}
+.prerequisites-wrap ul li:after {
+	content: "";
+	border-style: solid;
+	border-color: #AAAAAA transparent transparent transparent;
+	border-width: 6px;
+	position: absolute;
+	left: 50%;
+	bottom: -37px;
+	margin-left: -6px;
+}
+.prerequisites-wrap .add-prerequisite {
+	border: 1px solid #AAAAAA;
+	padding: 8px;
+	background: #FFFFFF;
+	text-align: center;
+	border-radius: 3px;
+}
+.prerequisites-wrap .add-prerequisite select {
+	width: 100%;
+}
