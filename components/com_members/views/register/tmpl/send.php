@@ -23,16 +23,31 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css('register')
+     ->js('register');
 ?>
-This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
+<header id="content-header">
+	<h2><?php echo $this->title; ?></h2>
+</header>
 
-Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
-
-<?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->confirm); ?>
+<section class="main section">
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php } else { ?>
+	<p class="passed">A confirmation email has been sent to "<?php echo $this->escape($this->email); ?>".  You must click the link in that email to activate your account and resume using <?php echo $this->hubName; ?>.</p>
+	<?php if ($this->show_correction_faq) { ?>
+		<h4>Wrong email address?</h4>
+		<p>You can correct your email address by <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=change&return=' . $this->return); ?>">clicking here</a>.</p>
+	<?php } ?>
+	<h4>Never received or cannot find the confirmation email?</h4>
+	<p>You can have a new confirmation email sent to "<?php echo $this->escape($this->email); ?>" by <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resend&return=' . $this->return); ?>">clicking here</a>.</p>
+<?php } ?>
+</section><!-- / .section -->

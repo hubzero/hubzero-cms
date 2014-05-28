@@ -31,8 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
+Thank you for updating your account on <?php echo $this->sitename; ?>!
 
-Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
+Since you have changed your e-mail address you must click the following link to confirm your new email address and reactivate your account:
+<?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . 'task=confirm&confirm=' . -$this->xprofile->get('emailConfirmed')); ?>
 
-<?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->confirm); ?>
+Do not reply to this email.  Replying to this email will not confirm or activate your account.

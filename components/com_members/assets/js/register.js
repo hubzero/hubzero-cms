@@ -279,39 +279,56 @@ HUB.Register = {
 	disableDisabilitySubgroups: function() {
 		var $ = HUB.Register.jQuery;
 
-		if($('#disabilityyes').attr('checked')){
-			$('#disabilityblind').attr('checked', HUB.Register.disabilityblind);
-			$('#disabilityblind').attr('disabled', false);
-			$('#disabilitydeaf').attr('checked', HUB.Register.disabilitydeaf);
-			$('#disabilitydeaf').attr('disabled', false);
-			$('#disabilityphysical').attr('checked', HUB.Register.disabilityphysical);
-			$('#disabilityphysical').attr('disabled', false);
-			$('#disabilitylearning').attr('checked', HUB.Register.disabilitylearning);
-			$('#disabilitylearning').attr('disabled', false);
-			$('#disabilityvocal').attr('checked', HUB.Register.disabilityvocal);
-			$('#disabilityvocal').attr('disabled', false);
-			$('#disabilityother').val(HUB.Register.disabilityother);
-			$('#disabilityother').attr('disabled', false);
+		if ($('#disabilityyes').attr('checked')){
+			$('#disabilityblind')
+				.attr('checked', HUB.Register.disabilityblind)
+				.attr('disabled', false);
+			$('#disabilitydeaf')
+				.attr('checked', HUB.Register.disabilitydeaf)
+				.attr('disabled', false);
+			$('#disabilityphysical')
+				.attr('checked', HUB.Register.disabilityphysical)
+				.attr('disabled', false);
+			$('#disabilitylearning')
+				.attr('checked', HUB.Register.disabilitylearning)
+				.attr('disabled', false);
+			$('#disabilityvocal')
+				.attr('checked', HUB.Register.disabilityvocal)
+				.attr('disabled', false);
+			$('#disabilityother')
+				.val(HUB.Register.disabilityother)
+				.attr('disabled', false);
 		}
-		else if(!$('#disabilityother').attr('disabled')) {
-			$('#disabilityblind').attr('disabled', true);
+		else if (!$('#disabilityother').attr('disabled')) {
 			HUB.Register.disabilityblind = $('#disabilityblind').attr('checked');
-			$('#disabilityblind').attr('checked', false);
-			$('#disabilitydeaf').attr('disabled', true);
+			$('#disabilityblind')
+				.attr('disabled', true)
+				.attr('checked', false);
+
 			HUB.Register.disabilitydeaf = $('#disabilitydeaf').attr('checked');
-			$('#disabilitydeaf').attr('checked', false);
-			$('#disabilityphysical').attr('disabled', true);
+			$('#disabilitydeaf')
+				.attr('disabled', true)
+				.attr('checked', false);
+
 			HUB.Register.disabilityphysical = $('#disabilityphysical').attr('checked');
-			$('#disabilityphysical').attr('checked', false);
-			$('#disabilitylearning').attr('disabled', true);
+			$('#disabilityphysical')
+				.attr('disabled', true)
+				.attr('checked', false);
+
 			HUB.Register.disabilitylearning = $('#disabilitylearning').attr('checked');
-			$('#disabilitylearning').attr('checked', false);
-			$('#disabilityvocal').attr('disabled', true);
+			$('#disabilitylearning')
+				.attr('disabled', true)
+				.attr('checked', false);
+
 			HUB.Register.disabilityvocal = $('#disabilityvocal').attr('checked');
-			$('#disabilityvocal').attr('checked', false);
-			$('#disabilityother').attr('disabled', true);
+			$('#disabilityvocal')
+				.attr('disabled', true)
+				.attr('checked', false);
+
 			HUB.Register.disabilityother = $('#disabilityother').val();
-			$('#disabilityother').val("");
+			$('#disabilityother')
+				.attr('disabled', true)
+				.val("");
 		}
 	},
 	
@@ -386,17 +403,16 @@ HUB.Register = {
 				var name = $(input).attr('name');
 				var value = $(input).val();
 				var checked = $(input).attr('checked');
-			    if (name == 'domain' && value != '') {
-					$(input).click(HUB.Register.disableIndie);
+				if (name == 'domain' && value != '') {
+					$(input).on('click', HUB.Register.disableIndie);
 
-					if (checked == 'checked')
-					{
+					if (checked == 'checked') {
 						$('#username').attr('disabled', false);
 						$('#passwd').attr('disabled', false);
 					}
 				}
 			});
-			$(typeindie).click(HUB.Register.disableDomains);
+			$(typeindie).on('click', HUB.Register.disableDomains);
 		} else {
 			// Not found - this should mean we're on the full
 			// registration form
@@ -472,9 +488,8 @@ HUB.Register = {
 
 		var userlogin = $('#userlogin');
 		var usernameStatusAfter = $('#userlogin');
-		
-		if(userlogin.length > 0) {
-			
+
+		if (userlogin.length > 0) {
 			usernameStatusAfter.after('<p class="hint" id="usernameStatus">&nbsp;</p>');
 			
 			userlogin.focusout(function(obj) {
@@ -491,7 +506,7 @@ HUB.Register = {
 		}
 		passwd = $('#password').val();
 
-		$.post('/register/passwordstrength?no_html=1', {'format': 'raw', 'pass':passwd, 'user':usernm}, function(data) {
+		$.post($('#base_uri').val() + '/members/register/passwordstrength?no_html=1', {'format': 'raw', 'pass':passwd, 'user':usernm}, function(data) {
 			$('#meter-container').html(data);
 		});
 	},
@@ -499,7 +514,7 @@ HUB.Register = {
 	checkLogin: function() {
 		var $ = HUB.Register.jQuery;
 		var username = $('#userlogin').val();
-		var submitTo = '/register/checkusername?userlogin=' + username;
+		var submitTo = $('#base_uri').val() + '/members/register/checkusername?userlogin=' + username;
 		var usernameStatus = $('#usernameStatus');
 
 		$.getJSON(submitTo, function(data) {

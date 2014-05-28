@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css('register');
 ?>
 <header id="content-header">
 	<h2>Racial and Ethnic Heritage Identification</h2>

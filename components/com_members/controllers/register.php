@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 
 /**
- * Controller class for registration
+ * Controller class for member registration
  */
 class MembersControllerRegister extends \Hubzero\Component\SiteController
 {
@@ -45,45 +45,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		//$app = JFactory::getApplication();
-		//$this->jconfig = JFactory::getConfig();
-
-		//$juri = JURI::getInstance();
-		//$this->baseURL = rtrim($juri->base(), DS);
-
 		// Make sure we're using a secure connection
 		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
 		{
 			JFactory::getApplication()->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '', 'message', true);
 			die('insecure connection and redirection failed');
 		}
-
-		//$this->_task = strtolower(JRequest::getVar('task', ''));
-		$act = strtolower(JRequest::getVar('act', '', 'post'));
-
-		/*switch ($this->_task)
-		{
-			// Account creation/updating
-			case 'select': $this->select($act); break;
-			case 'create': $this->create($act); break;
-			case 'edit':   $this->edit($act);   break;
-			case 'update': $this->update($act); break;
-			case 'proxy':  $this->proxycreate($act);  break;
-			case 'proxycreate': $this->proxycreate($act); break;
-
-			// AJAX methods
-			case 'passwordstrength': $this->passwordstrength($act); break;
-			case 'checkusername': $this->checkusername(); break;
-			
-			// Account confirmation
-			case 'resend':      $this->resend();      break;
-			case 'change':      $this->change();      break;
-			case 'confirm':     $this->confirm();     break;
-			case 'unconfirmed': $this->unconfirmed(); break;
-
-			case 'raceethnic': $this->raceethnic(); break;
-			default: $this->create(); break;
-		}*/
 
 		$this->baseURL = rtrim(JURI::getInstance()->base(), DS);
 		$this->jconfig = JFactory::getConfig();
@@ -94,20 +61,18 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Short description for 'edit'
+	 * Display a form for editing profile info
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return  void
 	 */
 	public function editTask()
 	{
-		$app = JFactory::getApplication();
-		
 		if ($this->juser->get('guest')) 
 		{
-			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_GUEST_SESSION_EDITING'));
+			return JError::raiseError(500, JText::_('COM_MEMBERS_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
+
+		$app = JFactory::getApplication();
 
 		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$jsession = JFactory::getSession();
@@ -133,14 +98,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if (!$admin && !$self) 
 		{
-			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_INVALID_SESSION_EDITING'));
+			return JError::raiseError(500, JText::_('COM_MEMBERS_REGISTER_ERROR_INVALID_SESSION_EDITING'));
 		}
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add some Javascript to the template
-		$this->_getScripts();
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -165,7 +124,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if ($username != $xregistration->get('login')) 
 		{
-			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_REGISTRATION_DATA_MISMATCH'));
+			return JError::raiseError(500, JText::_('COM_MEMBERS_REGISTER_ERROR_REGISTRATION_DATA_MISMATCH'));
 		}
 
 		if (!$xregistration->check('edit')) 
@@ -224,13 +183,17 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Notify the user
 			if ($updateEmail) 
 			{
-				$subject  = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+				$subject  = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-				$eview = new JView(array('name'=>'emails','layout'=>'update'));
-				$eview->option = $this->_option;
-				$eview->sitename = $this->jconfig->getValue('config.sitename');
-				$eview->xprofile = $target_xprofile;
-				$eview->baseURL = $this->baseURL;
+				$eview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'update'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eview->xprofile   = $target_xprofile;
+				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
@@ -243,19 +206,23 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 				if (!$msg->send()) 
 				{
-					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+					$this->setError(JText::sprintf('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
 					// @FIXME: LOG ERROR CONDITION SOMEWHERE
 				}
 			}
 
 			// Notify administration
-			$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_UPDATE');
+			$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
-			$eaview = new JView(array('name'=>'emails','layout'=>'adminupdate'));
-			$eaview->option = $this->_option;
-			$eaview->sitename = $this->jconfig->getValue('config.sitename');
-			$eaview->xprofile = $target_xprofile;
-			$eaview->baseURL = $this->baseURL;
+			$eaview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'adminupdate'
+			));
+			$eaview->option     = $this->_option;
+			$eaview->controller = $this->_controller;
+			$eaview->sitename   = $this->jconfig->getValue('config.sitename');
+			$eaview->xprofile   = $target_xprofile;
+			$eaview->baseURL    = $this->baseURL;
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
@@ -280,13 +247,17 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		{
 			if ($updateEmail) 
 			{
-				$subject  = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+				$subject  = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-				$eview = new JView(array('name'=>'emails','layout'=>'updateproxy'));
-				$eview->option = $this->_option;
-				$eview->sitename = $this->jconfig->getValue('config.sitename');
-				$eview->xprofile = $target_profile;
-				$eview->baseURL = $this->baseURL;
+				$eview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'updateproxy'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eview->xprofile   = $target_profile;
+				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
@@ -299,19 +270,23 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 				if (!$msg->send()) 
 				{
-					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+					$this->setError(JText::sprintf('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
 					// @FIXME: LOG ERROR CONDITION SOMEWHERE
 				}
 			}
 
 			// Notify administration
-			$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_UPDATE');
+			$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
-			$eaview = new JView(array('name'=>'emails','layout'=>'adminupdateproxy'));
-			$eaview->option = $this->_option;
-			$eaview->sitename = $this->jconfig->getValue('config.sitename');
-			$eaview->xprofile = $target_xprofile;
-			$eaview->baseURL = $this->baseURL;
+			$eaview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'adminupdateproxy'
+			));
+			$eaview->option     = $this->_option;
+			$eaview->controller = $this->_controller;
+			$eaview->sitename   = $this->jconfig->getValue('config.sitename');
+			$eaview->xprofile   = $target_xprofile;
+			$eaview->baseURL    = $this->baseURL;
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
@@ -334,9 +309,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate a new view
-		//$this->view = new JView(array('name'=>'update'));
-		//$this->view->option = $this->_option;
-		$this->view->title = JText::_('COM_REGISTER_UPDATE');
+		$this->view->setLayout('update');
+		$this->view->title = JText::_('COM_MEMBERS_REGISTER_UPDATE');
 		$this->view->sitename = $this->jconfig->getValue('config.sitename');
 		$this->view->xprofile = $target_xprofile;
 		$this->view->self = $self;
@@ -348,202 +322,22 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Short description for 'proxycreate'
+	 * Display a form for updating profile info
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $action Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	/*protected function proxycreate($action='show')
-	{
-		$action = ($action) ? $action : 'show';
-
-		$admin = $this->juser->authorize($this->_option, 'manage');
-
-		if (!$admin) 
-		{
-			return JError::raiseError(404, JText::_('COM_REGISTER_ERROR_INVALID_REQUEST'));
-		}
-
-		if ($action != 'submit' && $action != 'show') 
-		{
-			return JError::raiseError(404, JText::_('COM_REGISTER_ERROR_INVALID_REQUEST'));
-		}
-
-		if ($this->juser->get('guest')) 
-		{
-			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_GUEST_PROXY_CREATE'));
-		}
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add some Javascript to the template
-		$this->_getScripts();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Set the page title
-		$this->_buildTitle();
-
-		// Instantiate a new registration object
-		$xregistration = new MembersModelRegistration();
-
-		// Show the form if needed
-		if ($action == 'show') 
-		{
-			$username = JRequest::getVar('username','','get');
-
-			$xregistration->set('login', $username);
-
-			return $this->_show_registration_form($xregistration, 'proxycreate');
-		}
-
-		// Load POSTed data
-		if ($action == 'submit') 
-		{
-			$xregistration->loadPost();
-		}
-
-		// Perform field validation
-		if (!$xregistration->check('proxy')) 
-		{
-			return $this->_show_registration_form($xregistration, 'proxycreate');
-		}
-
-		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
-
-		// Get some settings
-		$jconfig = JFactory::getConfig();
-		$this->jconfig = $jconfig;
-		$params = JComponentHelper::getParams('com_members');
-		$hubHomeDir = rtrim($params->get('homedir'),'/');
-		
-		jimport('joomla.application.component.helper');
-		$config   = JComponentHelper::getParams('com_users');
-		$usertype = $config->get('new_usertype', 'Registered');
-
-		$acl = JFactory::getACL();
-
-		// Create a new Joomla user
-		$target_juser = new JUser();
-		$target_juser->set('id',0);
-		$target_juser->set('name', $xregistration->get('name'));
-		$target_juser->set('username', $xregistration->get('login'));
-		$target_juser->set('password_clear','');
-		$target_juser->set('email', $xregistration->get('email'));
-
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$target_juser->set('gid', $acl->get_group_id('', $usertype));
-			$target_juser->set('usertype', $usertype);
-		}
-		else
-		{
-			// There's got to be a better way to do this!
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
-				->select('id')
-				->from('#__usergroups')
-				->where('title = ' . $db->quote(trim($usertype)));
-			$db->setQuery($query);
-			$result = $db->loadResult();
-
-			$target_juser->set('groups', array($result));
-		}
-
-		$target_juser->save();
-
-		// Attempt to retrieve the new user
-		$target_xprofile = \Hubzero\User\Profile::getInstance($target_juser->get('id'));
-		$result = is_object($target_xprofile);
-
-		// Did we successully create an account?
-		if ($result) 
-		{
-			$target_xprofile->loadRegistration($xregistration);
-			$target_xprofile->set('homeDirectory', $hubHomeDir . '/' . $target_xprofile->get('username'));
-			$target_xprofile->set('jobsAllowed', 3);
-			$target_xprofile->set('regIP', JRequest::getVar('REMOTE_ADDR','','server'));
-			$target_xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
-			
-			if (isset($_SERVER['REMOTE_HOST'])) 
-			{
-				$target_xprofile->set('regHost', JRequest::getVar('REMOTE_HOST','','server'));
-			}
-
-			$target_xprofile->set('registerDate', JFactory::getDate()->toSql());
-			$target_xprofile->set('proxyUidNumber', $this->juser->get('id'));
-			$target_xprofile->set('proxyPassword', $xregistration->get('password'));
-
-			// Update the account
-			$result = $target_xprofile->update();
-		}
-
-		// add member interests
-		$interests = $xregistration->get('interests');
-		if (!empty($interests))
-		{
-			$mt = new MembersTags($this->database);
-			$mt->tag_object($target_xprofile->get('uidNumber'), $target_xprofile->get('uidNumber'), $interests, 1, 1);
-		}
-
-		if ($result) 
-		{
-			$result = \Hubzero\User\Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
-			// Now expire the password
-			\Hubzero\User\Password::expirePassword($target_xprofile->get('username'));
-		}
-		
-		// Did we successully create/update an account?
-		if (!$result) 
-		{
-			// @FIXME: Should delete partially created records on failure
-			$this->view = new JView(array('name'=>'error'));
-			$this->view->title = JText::_('COM_REGISTER_PROXY_CREATE');
-			$this->view->setError(JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT')); //, $hubMonitorEmail
-			// @FIXME: LOG ERROR CONDITION SOMEWHERE
-			$this->view->display();
-			return;
-		}
-
-		// Instantiate a new view
-		$this->view = new JView(array('name'=>'proxycreate'));
-		$this->view->option = $this->_option;
-		$this->view->title = JText::_('COM_REGISTER_PROXY_CREATE');
-		$this->view->sitename = $this->jconfig->getValue('config.sitename');
-		$this->view->target_juser = $target_juser;
-		$this->view->target_xprofile = $target_xprofile;
-		$this->view->xprofile = $xprofile;
-		$this->view->live_site = $this->baseURL;
-		if ($this->getError()) 
-		{
-			$this->view->setError($this->getError());
-		}
-		$this->view->display();
-	}*/
-
-	/**
-	 * Short description for 'update'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return  void
 	 */
 	public function updateTask()
 	{
+		// Check if the user is logged in
+		if ($this->juser->get('guest')) 
+		{
+			return JError::raiseError(500, JText::_('COM_MEMBERS_REGISTER_ERROR_SESSION_EXPIRED'));
+		}
+
 		$app = JFactory::getApplication();
-		
+
 		$force = false;
 		$updateEmail = false;
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add some Javascript to the template
-		$this->_getScripts();
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -551,20 +345,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Set the page title
 		$this->_buildTitle();
 
-		// Check if the user is logged in
-		if ($this->juser->get('guest')) 
-		{
-			$this->view = new JView(array('name'=>'error'));
-			$this->view->title = JText::_('COM_REGISTER_UPDATE');
-			$this->view->setError(JText::_('COM_REGISTER_ERROR_SESSION_EXPIRED'));
-			$this->view->display();
-			return false;
-		}
-
 		// Instantiate a new registration object
 		$xregistration = new MembersModelRegistration();
 
-		$xprofile    = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$jsession = JFactory::getSession();
 
 		$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
@@ -604,21 +388,22 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if (!$force && $check && JRequest::getMethod() == 'GET') 
 		{
 			$jsession->set('registration.incomplete', false);
-			if ($_SERVER['REQUEST_URI'] == '/register/update')
+			if ($_SERVER['REQUEST_URI'] == rtrim(JURI::base(true), '/') . '/register/update' 
+			 || $_SERVER['REQUEST_URI'] == rtrim(JURI::base(true), '/') . '/members/register/update')
 			{
-				$app->redirect('/', '', 'message', true);
+				$this->setRedirect(rtrim(JURI::base(true), '/') . '/');
 			}
 			else
 			{
-				$app->redirect($_SERVER['REQUEST_URI'], '', 'message', true);
+				$this->setRedirect($_SERVER['REQUEST_URI']);
 			}
 			return(true);
 		}
 
 		if (!$force && $check && JRequest::getMethod() == 'POST') 
 		{
-			$params = JComponentHelper::getParams('com_members');
-			$hubHomeDir = rtrim($params->get('homedir'),'/');
+			//$params = JComponentHelper::getParams('com_members');
+			$hubHomeDir = rtrim($this->config->get('homedir'),'/');
 
 			$updateEmail     = false;
 
@@ -641,7 +426,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				if (isset($_SERVER['REMOTE_HOST'])) 
 				{
-				$xprofile->set('regHost', JRequest::getVar('REMOTE_HOST','','server'));
+					$xprofile->set('regHost', JRequest::getVar('REMOTE_HOST','','server'));
 				}
 			}
 
@@ -669,7 +454,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			}
 
 			$xprofile->loadRegistration($xregistration);
-
 			$xprofile->update();
 
 			// Update juser table
@@ -703,13 +487,17 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Notify the user
 			if ($updateEmail) 
 			{
-				$subject  = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+				$subject  = $this->jconfig->getValue('config.sitename') . ' ' . JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-				$eview = new JView(array('name'=>'emails','layout'=>'update'));
-				$eview->option = $this->_option;
-				$eview->sitename = $this->jconfig->getValue('config.sitename');
-				$eview->xprofile = $xprofile;
-				$eview->baseURL = $this->baseURL;
+				$eview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'update'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eview->xprofile   = $xprofile;
+				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
@@ -722,7 +510,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 				if (!$msg->send()) 
 				{
-					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*,$hubMonitorEmail*/));
+					$this->setError(JText::sprintf('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*,$hubMonitorEmail*/));
 					// @FIXME: LOG ERROR SOMEWHERE
 				}
 			}
@@ -730,13 +518,17 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Notify administration
 			if (JRequest::getMethod() == 'POST') 
 			{
-				$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_UPDATE');
+				$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
-				$eaview = new JView(array('name'=>'emails','layout'=>'adminupdate'));
-				$eaview->option = $this->_option;
-				$eaview->sitename = $this->jconfig->getValue('config.sitename');
-				$eaview->xprofile  = $xprofile;
-				$eaview->baseURL = $this->baseURL;
+				$eaview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'adminupdate'
+				));
+				$eaview->option     = $this->_option;
+				$eaview->controller = $this->_controller;
+				$eaview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eaview->xprofile   = $xprofile;
+				$eaview->baseURL    = $this->baseURL;
 				$message = $eaview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
@@ -752,22 +544,25 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 			if (!$updateEmail) 
 			{
-				$suri = JRequest::getVar('REQUEST_URI','/','server');
+				$suri = JRequest::getVar('REQUEST_URI', '/', 'server');
 				if ($suri == '/register/update')
 				{
-					$app->redirect('/members/myaccount','','message',true);
+					$this->setRedirect(
+						JRoute::_('index.php?option=' . $this->_option . '&task=myaccount')
+					);
 				}
 				else
 				{
-					$app->redirect($suri,'','message',true);
+					$this->setRedirect(
+						$suri
+					);
 				}
+				return;
 			} 
 			else 
 			{
 				// Instantiate a new view
-				$this->view = new JView(array('name'=>'update'));
-				$this->view->option = $this->_option;
-				$this->view->title = JText::_('COM_REGISTER_UPDATE');
+				$this->view->title = JText::_('COM_MEMBERS_REGISTER_UPDATE');
 				$this->view->sitename = $this->jconfig->getValue('config.sitename');
 				$this->view->xprofile = $xprofile;
 				$this->view->self = true;
@@ -794,11 +589,15 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 */
 	public function createTask()
 	{
-		// Add the CSS to the template
-		//$this->_getStyles();
-
-		// Add some Javascript to the template
-		//$this->_getScripts();
+		if (!$this->juser->get('guest') && !$this->juser->get('tmp_user')) 
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&task=myaccount'),
+				JText::_('COM_MEMBERS_REGISTER_ERROR_NONGUEST_SESSION_CREATION'),
+				'warning'
+			);
+			return;
+		}
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -806,30 +605,16 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Set the page title
 		$this->_buildTitle();
 
-		if (!$this->juser->get('guest') && !$this->juser->get('tmp_user')) 
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=myaccount'),
-				JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION'),
-				"warning"
-			);
-			return;
-		}
-
-		$usersConfig =  JComponentHelper::getParams('com_users');
+		$usersConfig = JComponentHelper::getParams('com_users');
 		if ($usersConfig->get('allowUserRegistration') == '0') 
 		{
-			JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
-			return;
+			return JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
 		}
 
+		$hzal = null;
 		if ($this->juser->get('auth_link_id')) 
 		{
 			$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
-		}
-		else 
-		{
-			$hzal = null;
 		}
 
 		// Instantiate a new registration object
@@ -885,15 +670,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 				// Set some initial user values
 				$user->set('id', 0);
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					$user->set('usertype', $newUsertype);
-					$user->set('gid', $authorize->get_group_id('', $newUsertype, 'ARO'));
-				}
-				else
-				{
-					$user->set('groups', array($newUsertype));
-				}
+				$user->set('groups', array($newUsertype));
 
 				$date = JFactory::getDate();
 				$user->set('registerDate', $date->toMySQL());
@@ -977,7 +754,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					// add member interests
 					$interests = $xregistration->get('interests');
 					$mt = new MembersTags($this->database);
-					if (!empty($interests)) {
+					if (!empty($interests)) 
+					{
 						$mt->tag_object($xprofile->get('uidNumber'), $xprofile->get('uidNumber'), $interests, 1, 1);
 					}
 
@@ -987,28 +765,27 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						// Set password back here in case anything else down the line is looking for it
 						$xprofile->set('password', $xregistration->get('password'));
 					}
-					
+
 					// Did we successfully create/update an account?
 					if (!$result) 
 					{
-						$this->view = new JView(array('name'=>'error'));
-						$this->view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
-						$this->view->setError(JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT'/*, $hubMonitorEmail*/));
-						// @FIXME: LOG ERROR SOMEWHERE
-						$this->view->display();
-						return;
+						return JError::raiseError(500, JText::_('COM_MEMBERS_REGISTER_ERROR_CREATING_ACCOUNT'));
 					}
 
 					if ($xprofile->get('emailConfirmed') < 0) 
 					{
 						// Notify the user
-						$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+						$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-						$eview = new JView(array('name'=>'emails','layout'=>'create'));
-						$eview->option = $this->_option;
-						$eview->sitename = $this->jconfig->getValue('config.sitename');
-						$eview->xprofile = $xprofile;
-						$eview->baseURL = $this->baseURL;
+						$eview = new \Hubzero\Component\View(array(
+							'name'   => 'emails',
+							'layout' => 'create'
+						));
+						$eview->option        = $this->_option;
+						$eview->controller    = $this->_controller;
+						$eview->sitename      = $this->jconfig->getValue('config.sitename');
+						$eview->xprofile      = $xprofile;
+						$eview->baseURL       = $this->baseURL;
 						$eview->xregistration = $xregistration;
 						$message = $eview->loadTemplate();
 						$message = str_replace("\n", "\r\n", $message);
@@ -1022,19 +799,23 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 						if (!$msg->send()) 
 						{
-							$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+							$this->setError(JText::sprintf('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
 							// @FIXME: LOG ERROR SOMEWHERE
 						}
 					}
 
 					// Notify administration
-					$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_CREATION');
+					$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION');
 
-					$eaview = new JView(array('name'=>'emails','layout'=>'admincreate'));
-					$eaview->option = $this->_option;
-					$eaview->sitename= $this->jconfig->getValue('config.sitename');
-					$eaview->xprofile = $xprofile;
-					$eaview->baseURL = $this->baseURL;
+					$eaview = new \Hubzero\Component\View(array(
+						'name'   => 'emails',
+						'layout' => 'admincreate'
+					));
+					$eaview->option     = $this->_option;
+					$eaview->controller = $this->_controller;
+					$eaview->sitename   = $this->jconfig->getValue('config.sitename');
+					$eaview->xprofile   = $xprofile;
+					$eaview->baseURL    = $this->baseURL;
 					$message = $eaview->loadTemplate();
 					$message = str_replace("\n", "\r\n", $message);
 
@@ -1048,9 +829,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					// @FIXME: LOG ACCOUNT CREATION ACTIVITY SOMEWHERE
 
 					// Instantiate a new view
-					$this->view = new JView(array('name'=>'create'));
-					$this->view->option = $this->_option;
-					$this->view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
+					$this->view->setLayout('create');
+					$this->view->title = JText::_('COM_MEMBERS_REGISTER_CREATE_ACCOUNT');
 					$this->view->sitename = $this->jconfig->getValue('config.sitename');
 					$this->view->xprofile = $xprofile;
 					
@@ -1076,7 +856,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					$this->juser->set('username', $xregistration->get('login'));
 					$this->juser->set('email', $xregistration->get('email'));
 					$this->juser->set('id', $user->get('id'));
-					
+
 					return;
 				}
 			}
@@ -1103,20 +883,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Short description for 'raceethnic'
-	 * 
-	 * Long description (if any) ...
+	 * Display race/ethnicity info
 	 * 
 	 * @return     void
 	 */
 	public function raceethnicTask()
 	{
-		// Add the CSS to the template
-		//$this->_getStyles();
-
-		// Add some Javascript to the template
-		//$this->_getScripts();
-
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -1124,9 +896,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 
 		// Instantiate a new view
-		//$this->view = new JView(array('name'=>'registration', 'layout'=>'raceethnic'));
-		//$this->view->option = $this->_option;
-		$this->view->title = JText::_('COM_REGISTER_SELECT_METHOD');
+		$this->view->title = JText::_('COM_MEMBERS_REGISTER_SELECT_METHOD');
 		$this->view->sitename = $this->jconfig->getValue('config.sitename');
 		if ($this->getError()) 
 		{
@@ -1158,8 +928,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			default:            $index = 0; break;
 		}
 
-		//$hconfig = JComponentHelper::getParams('com_register');
-
 		$default = str_pad($default, 4, '-');
 		$configured = $this->config->get($name);
 		if (empty($configured)) 
@@ -1188,22 +956,16 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Short description for '_show_registration_form'
+	 * Display the form for registering an account
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$xregistration Parameter description (if any) ...
-	 * @param      string $task Parameter description (if any) ...
+	 * @param      object &$xregistration
+	 * @param      string $task
 	 * @return     void
 	 */
 	private function _show_registration_form(&$xregistration=null, $task='create')
 	{
-		// Instantiate a new view
-		//$this->view = new JView(array('name'=>'registration'));
 		$this->view->setLayout('default');
-		//$this->view->option = $this->_option;
-		//$this->view->task = $task;
-		$this->view->title = JText::_('COM_REGISTER');
+		$this->view->title = JText::_('COM_MEMBERS_REGISTER');
 		$this->view->sitename = $this->jconfig->getValue('config.sitename');
 
 		$username = JRequest::getVar('username', $this->juser->get('username'),'get');
@@ -1313,15 +1075,14 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	/**
 	 * Check the strength of a password
 	 * 
-	 * @param      unknown $act Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
-	protected function passwordstrength($act)
+	public function passwordstrengthTask()
 	{
 		// Incoming
-		$no_html = JRequest::getInt('no_html',0);
-		$password = JRequest::getVar('pass','','post');
-		$username = JRequest::getVar('user','','post');
+		$no_html  = JRequest::getInt('no_html', 0);
+		$password = JRequest::getVar('pass', '', 'post');
+		$username = JRequest::getVar('user', '', 'post');
 
 		// Instantiate a new registration object
 		$xregistration = new MembersModelRegistration();
@@ -1333,22 +1094,22 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if ($score < PASS_SCORE_MEDIOCRE) 
 		{
 			$cls = 'bad';
-			$txt = JText::_('COM_REGISTER_PASS_BAD');
+			$txt = JText::_('COM_MEMBERS_REGISTER_PASS_BAD');
 		} 
 		else if ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) 
 		{
 			$cls = 'mediocre';
-			$txt = JText::_('COM_REGISTER_PASS_MEDIOCRE');
+			$txt = JText::_('COM_MEMBERS_REGISTER_PASS_MEDIOCRE');
 		} 
 		else if ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) 
 		{
 			$cls = 'good';
-			$txt = JText::_('COM_REGISTER_PASS_GOOD');
+			$txt = JText::_('COM_MEMBERS_REGISTER_PASS_GOOD');
 		} 
 		else if ($score >= PASS_SCORE_STRONG) 
 		{
 			$cls = 'strong';
-			$txt = JText::_('COM_REGISTER_PASS_STRONG');
+			$txt = JText::_('COM_MEMBERS_REGISTER_PASS_STRONG');
 		}
 
 		// Build the HTML
@@ -1358,21 +1119,17 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if ($no_html) 
 		{
 			echo $html;
-		} 
-		else 
-		{
-			return $html;
 		}
+
+		return $html;
 	}
-	
+
 	/**
-	 * Short description for 'checkusername'
+	 * Check if a username is available
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string 
+	 * @return  string 
 	 */
-	protected function checkusername()
+	public function checkusernameTask()
 	{
 		// Incoming
 		$username = JRequest::getVar('userlogin', '', 'get');
@@ -1383,8 +1140,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Check the username
 		$usernamechecked = $xregistration->checkusername($username);
 
-		$ret = json_encode($usernamechecked);
-		echo $ret;
+		echo json_encode($usernamechecked);
 		die;
 	}
 
@@ -1393,14 +1149,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function resend()
+	public function resendTask()
 	{
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add some Javascript to the template
-		$this->_getScripts();
-
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -1410,12 +1160,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Check if the user is logged in
 		if ($this->juser->get('guest')) 
 		{
-			// Instantiate a new view
-			$this->view = new JView(array('name'=>'login'));
-			$this->view->option = $this->_option;
-			$this->view->title = JText::_('COM_REGISTER_RESEND');
-			$this->view->setError(JText::_('COM_REGISTER_ERROR_LOGIN_TO_RESEND'));
-			$this->view->display();
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
+				JText::_('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_RESEND'),
+				'warning'
+			);
 			return;
 		}
 
@@ -1436,14 +1186,18 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$xprofile->set('emailConfirmed', $confirm);
 			$xprofile->update();
 
-			$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+			$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-			$eview = new JView(array('name'=>'emails','layout'=>'confirm'));
-			$eview->option = $this->_option;
-			$eview->sitename = $this->jconfig->getValue('config.sitename');
-			$eview->login = $login;
-			$eview->baseURL = $this->baseURL;
-			$eview->confirm = $confirm;
+			$eview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'confirm'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->sitename   = $this->jconfig->getValue('config.sitename');
+			$eview->login      = $login;
+			$eview->baseURL    = $this->baseURL;
+			$eview->confirm    = $confirm;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
@@ -1456,13 +1210,11 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 			if (!$msg->send()) 
 			{
-				$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $email));
+				$this->setError(JText::sprintf('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION', $email));
 			}
 
-			// Instantiate a new view
-			$this->view = new JView(array('name'=>'send'));
-			$this->view->option = $this->_option;
-			$this->view->title = JText::_('COM_REGISTER_RESEND');
+			$this->view->setLayout('send');
+			$this->view->title = JText::_('COM_MEMBERS_REGISTER_RESEND');
 			$this->view->login = $login;
 			$this->view->email = $email;
 			$this->view->return = $return;
@@ -1485,15 +1237,9 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function change()
+	public function changeTask()
 	{
 		$app = JFactory::getApplication();
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add some Javascript to the template
-		$this->_getScripts();
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -1504,12 +1250,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Check if the user is logged in
 		if ($this->juser->get('guest')) 
 		{
-			// Instantiate a new view
-			$this->view = new JView(array('name' => 'login'));
-			$this->view->option = $this->_option;
-			$this->view->title = JText::_('COM_REGISTER_CHANGE');
-			$this->view->setError(JText::_('COM_REGISTER_ERROR_LOGIN_TO_UPDATE'));
-			$this->view->display();
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
+				JText::_('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_UPDATE'),
+				'warning'
+			);
 			return;
 		}
 
@@ -1519,9 +1265,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
 		// Instantiate a new view
-		$this->view = new JView(array('name' => 'change'));
-		$this->view->option = $this->_option;
-		$this->view->title = JText::_('COM_REGISTER_CHANGE');
+		$this->view->title = JText::_('COM_MEMBERS_REGISTER_CHANGE');
 		$this->view->login = $login;
 		$this->view->email = $email;
 		$this->view->email_confirmed = $email_confirmed;
@@ -1540,7 +1284,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		{
 			if (!$pemail) 
 			{
-				$this->setError(JText::_('COM_REGISTER_ERROR_INVALID_EMAIL'));
+				$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_INVALID_EMAIL'));
 			}
 			if ($pemail && RegisterHelperUtility::validemail($pemail) /*&& ($newemail != $email)*/) 
 			{
@@ -1567,12 +1311,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						} 
 						else 
 						{
-							$this->setError(JText::_('COM_REGISTER_ERROR_UPDATING_ACCOUNT'));
+							$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_UPDATING_ACCOUNT'));
 						}
 					} 
 					else 
 					{
-						$this->setError(JText::_('COM_REGISTER_ERROR_UPDATING_ACCOUNT'));
+						$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_UPDATING_ACCOUNT'));
 					}
 
 					// Any errors returned?
@@ -1587,14 +1331,18 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$xprofile->set('emailConfirmed', $confirm);
 						$xprofile->update();
 
-						$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+						$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-						$eview = new JView(array('name'=>'emails','layout'=>'confirm'));
-						$eview->option = $this->_option;
-						$eview->sitename = $this->jconfig->getValue('config.sitename');
-						$eview->login = $login;
-						$eview->baseURL = $this->baseURL;
-						$eview->confirm = $confirm;
+						$eview = new \Hubzero\Component\View(array(
+							'name'   => 'emails',
+							'layout' => 'confirm'
+						));
+						$eview->option     = $this->_option;
+						$eview->controller = $this->_controller;
+						$eview->sitename   = $this->jconfig->getValue('config.sitename');
+						$eview->login      = $login;
+						$eview->baseURL    = $this->baseURL;
+						$eview->confirm    = $confirm;
 						$message = $eview->loadTemplate();
 						$message = str_replace("\n", "\r\n", $message);
 
@@ -1607,7 +1355,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 						if (!$msg->send()) 
 						{
-							$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $pemail));
+							$this->setError(JText::sprintf('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION', $pemail));
 						}
 
 						// Show the success form
@@ -1617,7 +1365,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			} 
 			else 
 			{
-				$this->setError(JText::_('COM_REGISTER_ERROR_INVALID_EMAIL'));
+				$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_INVALID_EMAIL'));
 			}
 		}
 
@@ -1635,22 +1383,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function confirm()
+	public function confirmTask()
 	{
-		$app = JFactory::getApplication();
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add some Javascript to the template
-		$this->_getScripts();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Set the page title
-		$this->_buildTitle();
-
 		// Incoming
 		$code = JRequest::getVar('confirm', false);
 		if (!$code) 
@@ -1661,13 +1395,22 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Check if the user is logged in
 		if ($this->juser->get('guest')) 
 		{
-			//send to login form with return to confirm
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=' . $this->_task . '&confirm=' . $code));
-			$this->_message = "Please login in so we can confirm your account.";
-			$this->_messageType = "Warning";
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code, false, true));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
+				JText::_('Please login in so we can confirm your account.'),
+				'warning'
+			);
 			return;
 		}
+
+		$app = JFactory::getApplication();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Set the page title
+		$this->_buildTitle();
 
 		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 
@@ -1681,29 +1424,28 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$this->setError('login mismatch');
 
 				// Build logout/login/confirm redirect flow
-				$login_return  = base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=' . $this->_task . '&confirm=' . $code));
-				$logout_return = base64_encode(JRoute::_('index.php?option=com_login&return=' . $login_return));
+				$login_return  = base64_encode(JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
+				$logout_return = base64_encode(JRoute::_('index.php?option=com_users&view=login&return=' . $login_return));
 
-				$redirect = JRoute::_('index.php?option=com_logout&return=' . $logout_return);
+				$redirect = JRoute::_('index.php?option=com_users&view=logout&return=' . $logout_return);
 			}
 		} 
 		elseif ($email_confirmed < 0 && $email_confirmed == -$code) 
 		{
 			//var to hold return path
 			$return = '';
-			
+
 			// get com_register return path
-			$hconfig =  JComponentHelper::getParams('com_register');
-			$cReturn = $hconfig->get('ConfirmationReturn');
+			$cReturn = $this->config->get('ConfirmationReturn');
 			if ($cReturn) 
 			{
 				$return = $cReturn;
 			}
-			
+
 			//load user profile
 			$profile = new \Hubzero\User\Profile();
 			$profile->load($xprofile->get('username'));
-			
+
 			//check to see if we have a return param
 			$pReturn = base64_decode($profile->getParam('return'));
 			if ($pReturn) 
@@ -1711,27 +1453,27 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$return = $pReturn;
 				$profile->setParam('return','');
 			}
-			
+
 			// make as confirmed
 			$profile->set('emailConfirmed', 1);
-			
+
 			// set public setting
-			$mconfig = JComponentHelper::getParams('com_members');
-			$profile->set('public', $mconfig->get('privacy', '0'));
-			
+			$profile->set('public', $this->config->get('privacy', '0'));
+
 			// upload profile
 			if (!$profile->update()) 
 			{
-				$this->setError(JText::_('COM_REGISTER_ERROR_CONFIRMING'));
+				$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_CONFIRMING'));
 			}
-			
+
 			// Redirect
 			if (empty($return)) 
 			{
 				$r = $hconfig->get('LoginReturn');
 				$return = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
 				// consume cookie (yum) if available to return to whatever action prompted registration
-				if (isset($_COOKIE['return'])) {
+				if (isset($_COOKIE['return']))
+				{
 					$return = $_COOKIE['return'];
 					setcookie('return', '', time() - 3600);
 				}
@@ -1741,13 +1483,11 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		} 
 		else 
 		{
-			$this->setError(JText::_('COM_REGISTER_ERROR_INVALID_CONFIRMATION'));
+			$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_INVALID_CONFIRMATION'));
 		}
 
 		// Instantiate a new view
-		$this->view = new JView(array('name' => 'confirm'));
-		$this->view->option   = $this->_option;
-		$this->view->title    = JText::_('COM_REGISTER_CONFIRM');
+		$this->view->title    = JText::_('COM_MEMBERS_REGISTER_CONFIRM');
 		$this->view->login    = $xprofile->get('username');
 		$this->view->email    = $xprofile->get('email');
 		$this->view->code     = $code;
@@ -1765,7 +1505,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function unconfirmed()
+	public function unconfirmedTask()
 	{
 		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 		$email_confirmed = $xprofile->get('emailConfirmed');
@@ -1776,12 +1516,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Check if the email has been confirmed
 		if (($email_confirmed != 1) && ($email_confirmed != 3)) 
 		{
-			// Add the CSS to the template
-			$this->_getStyles();
-
-			// Add some Javascript to the template
-			$this->_getScripts();
-
 			// Set the pathway
 			$this->_buildPathway();
 
@@ -1791,19 +1525,17 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Check if the user is logged in
 			if ($this->juser->get('guest')) 
 			{
-				// Instantiate a new view
-				$this->view = new JView(array('name' => 'login'));
-				$this->view->option = $this->_option;
-				$this->view->title = JText::_('COM_REGISTER_CONFIRM');
-				$this->view->setError(JText::_('COM_REGISTER_ERROR_LOGIN_TO_CONFIRM'));
-				$this->view->display();
+				$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
+				$this->setRedirect(
+					JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
+					JText::_('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_CONFIRM'),
+					'warning'
+				);
 				return;
 			}
 
 			// Instantiate a new view
-			$this->view = new JView(array('name' => 'unconfirmed'));
-			$this->view->option   = $this->_option;
-			$this->view->title    = JText::_('COM_REGISTER_UNCONFIRMED');
+			$this->view->title    = JText::_('COM_MEMBERS_REGISTER_UNCONFIRMED');
 			$this->view->email    = $xprofile->get('email');
 			$this->view->return   = $return;
 			$this->view->sitename = $this->jconfig->getValue('config.sitename');
@@ -1831,14 +1563,14 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_('COM_REGISTER'),
+				JText::_('COM_MEMBERS_REGISTER'),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task) 
 		{
 			$pathway->addItem(
-				JText::_('COM_REGISTER_' . strtoupper($this->_task)),
+				JText::_('COM_MEMBERS_REGISTER_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -1853,11 +1585,11 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	{
 		if ($this->_task) 
 		{
-			$title = JText::_('COM_REGISTER_' . strtoupper($this->_task));
+			$title = JText::_('COM_MEMBERS_REGISTER_' . strtoupper($this->_task));
 		} 
 		else 
 		{
-			$title = JText::_('COM_REGISTER');
+			$title = JText::_('COM_MEMBERS_REGISTER');
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle($title);
@@ -1880,22 +1612,20 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				$juri = JURI::getInstance();
 				$juri->setVar('cookie', 'no');
-				return $app->redirect($juri->toString(),'','message',true);
+
+				$this->setRedirect($juri->toString());
+				return;
 			}
 
-			$this->view = new JView(array('name' => 'error'));
-			$this->view->title = JText::_('COM_REGISTER');
-			$this->view->setError(JText::_('COM_REGISTER_ERROR_COOKIES'));
-			$this->view->display();
-
-			return false;
+			return JError::raiseError(500, JText::_('COM_MEMBERS_REGISTER_ERROR_COOKIES'));
 		} 
 		else if (JRequest::getVar('cookie', '', 'get') == 'no') 
 		{
 			$juri = JURI::getInstance();
 			$juri->delVar('cookie');
 
-			return $app->redirect($juri->toString(),'','message',true);
+			$this->setRedirect($juri->toString());
+			return;
 		}
 
 		return true;

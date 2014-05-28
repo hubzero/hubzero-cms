@@ -33,10 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
-$this->css()
-     ->js();
-
-$html = '';
+$this->css('register')
+     ->js('register');
 
 // get return url
 $form_redirect = '';
@@ -556,439 +554,429 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 			<div class="clear"></div>
 		<?php } ?>
 
-	<?php if ($this->registrationCitizenship != REG_HIDE
-	 || $this->registrationResidency != REG_HIDE
-	 || $this->registrationSex != REG_HIDE
-	 || $this->registrationDisability != REG_HIDE
-	 || $this->registrationHispanic != REG_HIDE
-	 || $this->registrationRace != REG_HIDE
-	) {
-		$html .= "\t".'<div class="explaination">'."\n";
+		<?php if ($this->registrationCitizenship != REG_HIDE
+		 || $this->registrationResidency != REG_HIDE
+		 || $this->registrationSex != REG_HIDE
+		 || $this->registrationDisability != REG_HIDE
+		 || $this->registrationHispanic != REG_HIDE
+		 || $this->registrationRace != REG_HIDE
+		) { ?>
+			<div class="explaination">
+				<?php if ($this->registrationHispanic != REG_HIDE) { ?>
+					<p>All users are asked to clarify if they are of Hispanic origin or descent.
+				<?php } ?>
+				<?php if ($this->registrationRace != REG_HIDE) { ?>
+					, but only United States citizens and Permanent Resident Visa holders need answer the next section
+				<?php } ?>
+				<?php if ($this->registrationHispanic != REG_HIDE) { ?>
+					</p>
+				<?php } ?>
+				<p>Please provide this information if you feel comfortable doing so. This information will not affect the level of service you receive.</p>
+			</div>
+			<fieldset>
+				<legend><?php echo JText::_('Demographics'); ?></legend>
 
-		if ($this->registrationHispanic != REG_HIDE) {
-			$html .= "\t\t".'<p>All users are asked to clarify if they are of Hispanic origin or descent.';
-		}
-		if ($this->registrationRace != REG_HIDE) {
-			$html .= ', but only United States citizens and Permanent Resident Visa holders need answer the next section';
-		}
-		$html .= '</p>'."\n";
+				<?php if ($this->registrationCitizenship != REG_HIDE) { ?>
+					<?php 
+					$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? '<span class="error">' . $this->xregistration->_invalid['countryorigin'] . '</span>' : '';
+					$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
-		$html .= "\t\t".'<p>Please provide this information if you feel comfortable doing so. This information will not affect the level of service you receive.</p>'."\n";
-		$html .= "\t".'</div>'."\n";
-		$html .= "\t".'<fieldset>'."\n";
-		$html .= "\t\t".'<legend>'.JText::_('Demographics').'</legend>'."\n";
+					if (!$this->registration['countryorigin'])
+					{
+						$userCountry = \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip());
+						$this->registration['countryorigin'] = $userCountry;
+					}
+					?>
+					<fieldset<?php echo $fieldclass; ?>>
+						<legend>
+							Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>? 
+							<?php echo ($this->registrationCitizenship == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
+						</legend>
 
-		// Citizenship
-		if ($this->registrationCitizenship != REG_HIDE) {
-			$required = ($this->registrationCitizenship == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? '<span class="error">' . $this->xregistration->_invalid['countryorigin'] . '</span>' : '';
-			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
+						<?php echo ($message) ? $message . "\n" : ''; ?>
 
-			if (!$this->registration['countryorigin']) {
-				$userCountry = \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip());
-				$this->registration['countryorigin'] = $userCountry;
-			}
+						<label>
+							<input type="radio" class="option" name="corigin_us" id="corigin_usyes" value="yes"<?php if (strcasecmp($this->registration['countryorigin'],'US') == 0) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_YES'); ?>
+						</label>
 
-			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>? ';
-			$html .= $required;
-			$html .= '</legend>'."\n";
-			$html .= ($message) ? "\t\t\t" . $message . "\n" : '';
+						<label>
+							<input type="radio" class="option" name="corigin_us" id="corigin_usno" value="no"<?php if (!empty($this->registration['countryorigin']) && (strcasecmp($this->registration['countryorigin'], 'US') != 0)) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_NO'); ?>
+						</label>
 
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="corigin_us" id="corigin_usyes" value="yes"';
-			if (strcasecmp($this->registration['countryorigin'],'US') == 0) {
-				$html .= ' checked="checked"';
-			}
-			$html .= ' /> '.JText::_('COM_MEMBERS_REGISTER_FORM_YES').'</label>'."\n";
+						<label>
+							<?php echo JText::_('Citizen or Permanent Resident of'); ?>:
+							<select name="corigin" id="corigin">
+								<?php if (!$this->registration['countryorigin'] || $this->registration['countryorigin'] == 'US') { ?>
+									<option value=""><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
+								<?php } ?>
+								<?php
+								$countries = \Hubzero\Geocode\Geocode::getcountries();
+								if ($countries) 
+								{
+									foreach ($countries as $country)
+									{
+										?>
+										<option value="<?php echo $country['code']; ?>"<?php if ($this->registration['countryorigin'] == $country['code']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
+										<?php 
+									}
+								}
+								?>
+							</select>
+						</label>
+					</fieldset>
+				<?php } ?>
 
-			$html .= "\t\t\t\t".'<label><input type="radio" class="option" name="corigin_us" id="corigin_usno" value="no"';
-			if (!empty($this->registration['countryorigin']) && (strcasecmp($this->registration['countryorigin'], 'US') != 0)) {
-				$html .= ' checked="checked"';
-			}
-			$html .= ' /> '.JText::_('COM_MEMBERS_REGISTER_FORM_NO').'</label>'."\n";
+				<?php if ($this->registrationResidency != REG_HIDE) { ?>
+					<?php
+					$message = (!empty($this->xregistration->_invalid['countryresident'])) ? '<span class="error">' . $this->xregistration->_invalid['countryresident'] . '</span>' : '';
+					$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
-			$html .= "\t\t\t".'<label>'."\n";
-			$html .= "\t\t\t\t".JText::_('Citizen or Permanent Resident of').':'."\n";
-			$html .= "\t\t\t\t".'<select name="corigin" id="corigin">'."\n";
-
-			if (!$this->registration['countryorigin'] || $this->registration['countryorigin'] == 'US') {
-				$html .= "\t\t\t\t\t".'<option value="">'.JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST').'</option>'."\n";
-			}
-
-			$countries = \Hubzero\Geocode\Geocode::getcountries();
-			if ($countries) {
-				foreach ($countries as $country)
-				{
-					//if (strtoupper($country['code']) != 'US') {
-						$html .= "\t\t\t\t\t".'<option value="' . $country['code'] . '"';
-						if ($this->registration['countryorigin'] == $country['code']) {
-							$html .= ' selected="selected"';
+					if (!$this->registration['countryresident']) 
+					{
+						if (!isset($userCountry) || !$userCountry) 
+						{
+							$userCountry = \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip());
 						}
-						$html .= '>' . htmlentities($country['name'], ENT_COMPAT, 'UTF-8') . '</option>'."\n";
-					//}
-				}
-			}
-			$html .= "\t\t\t\t".'</select>'."\n";
-			$html .= "\t\t\t".'</label>'."\n";
-			$html .= "\t\t".'</fieldset>'."\n";
-		}
+						$this->registration['countryresident'] = $userCountry;
+					}
+					?>
+					<fieldset<?php echo $fieldclass; ?>>
+						<legend>
+							<?php echo JText::_('Do you Currently Live in the <abbr title="United States">US</abbr>?'); ?> 
+							<?php echo ($this->registrationResidency == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
+						</legend>
 
-		// Residency
-		if ($this->registrationResidency != REG_HIDE) {
-			$required = ($this->registrationResidency == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['countryresident'])) ? '<span class="error">' . $this->xregistration->_invalid['countryresident'] . '</span>' : '';
-			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
+						<?php echo ($message) ? $message . "\n" : ''; ?>
 
-			if (!$this->registration['countryresident']) {
-				if (!isset($userCountry) || !$userCountry) {
-					$userCountry = \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip());
-				}
-				$this->registration['countryresident'] = $userCountry;
-			}
+						<label>
+							<input type="radio" class="option" name="cresident_us" id="cresident_usyes" value="yes"<?php if (strcasecmp($this->registration['countryresident'], 'US') == 0) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_YES'); ?>
+						</label>
 
-			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>'.JText::_('Do you Currently Live in the <abbr title="United States">US</abbr>?').' ';
-			$html .= $required;
-			$html .= '</legend>'."\n";
-			$html .= ($message) ? "\t\t\t" . $message . "\n" : '';
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="cresident_us" id="cresident_usyes" value="yes"';
-			if (strcasecmp($this->registration['countryresident'], 'US') == 0) {
-				$html .= ' checked="checked"';
-			}
-			$html .= ' /> '.JText::_('COM_MEMBERS_REGISTER_FORM_YES').'</label>'."\n";
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="cresident_us" id="cresident_usno" value="no"';
-			if (!empty($this->registration['countryresident']) && strcasecmp($this->registration['countryresident'], 'US') != 0) {
-				$html .= ' checked="checked"';
-			}
-			$html .= ' /> '.JText::_('COM_MEMBERS_REGISTER_FORM_NO').'</label>'."\n";
-			$html .= "\t\t\t".'<label>'."\n";
-			$html .= "\t\t\t\t".JText::_('Currently Living in').':'."\n";
-			$html .= "\t\t\t\t".'<select name="cresident" id="cresident">'."\n";
+						<label>
+							<input type="radio" class="option" name="cresident_us" id="cresident_usno" value="no"<?php if (!empty($this->registration['countryresident']) && strcasecmp($this->registration['countryresident'], 'US') != 0) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_NO'); ?>
+						</label>
 
-			if (!$this->registration['countryresident'] || strcasecmp($this->registration['countryresident'], 'US') == 0) {
-				$html .= "\t\t\t\t\t".'<option value="">'.JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST').'</option>'."\n";
-			}
+						<label>
+							<?php echo JText::_('Currently Living in'); ?>:
+							<select name="cresident" id="cresident">
+								<?php if (!$this->registration['countryresident'] || strcasecmp($this->registration['countryresident'], 'US') == 0) { ?>
+									<option value=""><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
+								<?php } ?>
+								<?php
+								if (!isset($countries) || !$countries) 
+								{
+									$countries = \Hubzero\Geocode\Geocode::getcountries();
+								}
+								if ($countries) 
+								{
+									foreach ($countries as $country)
+									{
+										?>
+										<option value="<?php echo $country['code']; ?>"<?php if (strcasecmp($this->registration['countryresident'], $country['code']) == 0) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
+										<?php
+									}
+								}
+								?>
+							</select>
+						</label>
+					</fieldset>
+				<?php } ?>
 
-			if (!isset($countries) || !$countries) {
-				$countries = \Hubzero\Geocode\Geocode::getcountries();
-			}
-			if ($countries) {
-				foreach ($countries as $country) {
-					//if (strcasecmp($country['code'], 'US') != 0) {
-						$html .= "\t\t\t\t\t".'<option value="' . $country['code'] . '"';
-						if (strcasecmp($this->registration['countryresident'], $country['code']) == 0) {
-							$html .= ' selected="selected"';
+				<?php if ($this->registrationSex != REG_HIDE) { ?>
+					<fieldset<?php echo (!empty($this->xregistration->_invalid['sex'])) ? ' class="fieldsWithErrors"' : ''; ?>>
+						<legend><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_GENDER'); ?>: <?php echo ($this->registrationSex == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?></legend>
+						<?php echo (!empty($this->xregistration->_invalid['sex'])) ? '<span class="error">' . $this->xregistration->_invalid['sex'] . '</span>' : ''; ?>
+						<input type="hidden" name="sex" value="unspecified" />
+						<label><input class="option" type="radio" name="sex" valie="male"<?php echo ($this->registration['sex'] == 'male' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_MALE'); ?></label>
+						<label><input class="option" type="radio" name="sex" valie="female"<?php echo ($this->registration['sex'] == 'female' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_FEMALE'); ?></label>
+						<label><input class="option" type="radio" name="sex" valie="refused"<?php echo ($this->registration['sex'] == 'refused' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_REFUSED'); ?></label>
+					</fieldset>
+				<?php } ?>
+
+				<?php if ($this->registrationDisability != REG_HIDE) { ?>
+					<?php 
+					$required = ($this->registrationDisability == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '';
+					$message = (!empty($this->xregistration->_invalid['disability'])) ? '<span class="error">' . $this->xregistration->_invalid['disability'] . '</span>' : '';
+					$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
+
+					$disabilityyes = false;
+					$disabilityother = '';
+
+					if (!is_array($this->registration['disability']))
+					{
+						$this->registration['disability'] = array();
+					}
+
+					foreach ($this->registration['disability'] as $disabilityitem)
+					{
+						if ($disabilityitem != 'no' && $disabilityitem != 'refused')
+						{
+							if (!$disabilityyes)
+							{
+								$disabilityyes = true;
+							}
+							if ($disabilityitem != 'blind'
+							 && $disabilityitem != 'deaf'
+							 && $disabilityitem != 'physical'
+							 && $disabilityitem != 'learning'
+							 && $disabilityitem != 'vocal'
+							 && $disabilityitem != 'yes'
+							)
+							{
+								$disabilityother = $disabilityitem;
+							}
 						}
-						$html .= '>' . htmlentities($country['name'], ENT_COMPAT, 'UTF-8') . '</option>'."\n";
-					//}
-				}
-			}
-			$html .= "\t\t\t\t".'</select>'."\n";
-			$html .= "\t\t\t".'</label>'."\n";
-			$html .= "\t\t".'</fieldset>'."\n";
-		}
-
-		// Sex
-		if ($this->registrationSex != REG_HIDE) {
-			$required = ($this->registrationSex == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['sex'])) ? '<span class="error">' . $this->xregistration->_invalid['sex'] . '</span>' : '';
-			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
-
-			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>'.JText::_('COM_MEMBERS_REGISTER_FORM_GENDER').': '.$required.'</legend>'."\n";
-			$html .= ($message) ? "\t\t\t" . $message . "\n" : '';
-			$html .= "\t\t\t".'<input type="hidden" name="sex" value="unspecified" />'."\n";
-			$html .= "\t\t\t".'<label><input class="option" type="radio" name="sex" valie="male"' . ($this->registration['sex'] == 'male' ? ' checked="checked"' : '') . ' /> '.JText::_('COM_MEMBERS_REGISTER_FORM_MALE').'</label>'."\n";
-			$html .= "\t\t\t".'<label><input class="option" type="radio" name="sex" valie="female"' . ($this->registration['sex'] == 'female' ? ' checked="checked"' : '') . ' /> '.JText::_('COM_MEMBERS_REGISTER_FORM_FEMALE').'</label>'."\n";
-			$html .= "\t\t\t".'<label><input class="option" type="radio" name="sex" valie="refused"' . ($this->registration['sex'] == 'refused' ? ' checked="checked"' : '') . ' /> '.JText::_('COM_MEMBERS_REGISTER_FORM_REFUSED').'</label>'."\n";
-			$html .= "\t\t".'</fieldset>'."\n";
-		}
-
-		// Disability
-		if ($this->registrationDisability != REG_HIDE) {
-			$required = ($this->registrationDisability == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['disability'])) ? '<span class="error">' . $this->xregistration->_invalid['disability'] . '</span>' : '';
-			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
-
-			$disabilityyes = false;
-			$disabilityother = '';
-
-			if (!is_array($this->registration['disability'])) {
-				$this->registration['disability'] = array();
-			}
-
-			foreach ($this->registration['disability'] as $disabilityitem) {
-				if ($disabilityitem != 'no' && $disabilityitem != 'refused') {
-					if (!$disabilityyes) {
-						$disabilityyes = true;
 					}
-					if ($disabilityitem != 'blind'
-					 && $disabilityitem != 'deaf'
-					 && $disabilityitem != 'physical'
-					 && $disabilityitem != 'learning'
-					 && $disabilityitem != 'vocal'
-					 && $disabilityitem != 'yes'
-					) {
-						$disabilityother = $disabilityitem;
+					?>
+					<fieldset<?php echo $fieldclass; ?>>
+						<legend><?php echo JText::_('Disability'); ?>: <?php echo $required; ?></legend>
+						<?php echo ($message) ? $message : ''; ?>
+
+						<label>
+							<input type="radio" class="option" name="disability" id="disabilityyes" value="yes"<?php if ($disabilityyes) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('Yes'); ?>
+						</label>
+
+						<fieldset>
+							<label>
+								<input type="checkbox" class="option" name="disabilityblind" id="disabilityblind" <?php if (in_array('blind', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/> 
+								<?php echo JText::_('Blind / Visually Impaired'); ?>
+							</label>
+
+							<label>
+								<input type="checkbox" class="option" name="disabilitydeaf" id="disabilitydeaf" <?php if (in_array('deaf', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/> 
+								<?php echo JText::_('Deaf / Hard of Hearing'); ?>
+							</label>
+
+							<label>
+								<input type="checkbox" class="option" name="disabilityphysical" id="disabilityphysical" <?php if (in_array('physical', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/> 
+								<?php echo JText::_('Physical / Orthopedic Disability'); ?>
+							</label>
+
+							<label>
+								<input type="checkbox" class="option" name="disabilitylearning" id="disabilitylearning" <?php if (in_array('learning', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/> 
+								<?php echo JText::_('Learning / Cognitive Disability'); ?>
+							</label>
+
+							<label>
+								<input type="checkbox" class="option" name="disabilityvocal" id="disabilityvocal" <?php if (in_array('vocal', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/> 
+								<?php echo JText::_('Vocal / Speech Disability'); ?>
+							</label>
+
+							<label>
+								<?php echo JText::_('Other (please specify)'); ?>:
+								<input name="disabilityother" id="disabilityother" type="text" value="<?php echo $this->escape($disabilityother); ?>" />
+							</label>
+						</fieldset>
+
+						<label>
+							<input type="radio" class="option" name="disability" id="disabilityno" value="no"<?php if (in_array('no', $this->registration['disability'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('No (none)'); ?>
+						</label>
+
+						<label>
+							<input type="radio" class="option" name="disability" id="disabilityrefused" value="refused"<?php if (in_array('refused', $this->registration['disability'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('Do not wish to reveal'); ?>
+						</label>
+					</fieldset>
+				<?php } ?>
+
+				<?php if ($this->registrationHispanic != REG_HIDE) { ?>
+					<?php 
+					$required = ($this->registrationHispanic == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '';
+					$message = (!empty($this->xregistration->_invalid['hispanic'])) ? '<span class="error">' . $this->xregistration->_invalid['hispanic'] . '</span>' : '';
+					$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
+
+					$hispanicyes = false;
+					$hispanicother = '';
+
+					if (!is_array($this->registration['hispanic']))
+					{
+						$this->registration['hispanic'] = array();
 					}
-				}
-			}
 
-			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>'.JText::_('Disability').': '.$required.'</legend>'."\n";
-			$html .= ($message) ? "\t\t\t" . $message . "\n" : '';
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityyes" value="yes"';
-			if ($disabilityyes) {
-				$html .= ' checked="checked"';
-			}
-			$html .= ' /> '.JText::_('Yes').'</label>'."\n";
-			$html .= "\t\t\t".'<fieldset>'."\n";
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityblind" id="disabilityblind" ';
-			if (in_array('blind', $this->registration['disability'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Blind / Visually Impaired').'</label>'."\n";
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilitydeaf" id="disabilitydeaf" ';
-			if (in_array('deaf', $this->registration['disability'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Deaf / Hard of Hearing').'</label>'."\n";
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityphysical" id="disabilityphysical" ';
-			if (in_array('physical', $this->registration['disability'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Physical / Orthopedic Disability').'</label>'."\n";
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilitylearning" id="disabilitylearning" ';
-			if (in_array('learning', $this->registration['disability'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Learning / Cognitive Disability').'</label>'."\n";
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityvocal" id="disabilityvocal" ';
-			if (in_array('vocal', $this->registration['disability'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Vocal / Speech Disability').'</label>'."\n";
-			$html .= "\t\t\t\t".'<label>'.JText::_('Other (please specify)').':'."\n";
-			$html .= "\t\t\t\t".'<input name="disabilityother" id="disabilityother" type="text" value="'. $this->escape($disabilityother) .'" /></label>'."\n";
-			$html .= "\t\t\t".'</fieldset>'."\n";
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityno" value="no"';
-			if (in_array('no', $this->registration['disability'])) {
-				$html .= ' checked="checked" ';
-			}
-			$html .= '/> '.JText::_('No (none)').'</label>'."\n";
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityrefused" value="refused"';
-			if (in_array('refused', $this->registration['disability'])) {
-				$html .= ' checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Do not wish to reveal').'</label>'."\n";
-			$html .= "\t\t".'</fieldset>'."\n";
-		}
-
-		// Hispanic
-		if ($this->registrationHispanic != REG_HIDE) {
-			$required = ($this->registrationHispanic == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['hispanic'])) ? '<span class="error">' . $this->xregistration->_invalid['hispanic'] . '</span>' : '';
-			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
-
-			$hispanicyes = false;
-			$hispanicother = '';
-
-			if (!is_array($this->registration['hispanic'])) {
-				$this->registration['hispanic'] = array();
-			}
-
-			foreach ($this->registration['hispanic'] as $hispanicitem) {
-				if ($hispanicitem != 'no' && $hispanicitem != 'refused') {
-					if (!$hispanicyes) {
-						$hispanicyes = true;
+					foreach ($this->registration['hispanic'] as $hispanicitem)
+					{
+						if ($hispanicitem != 'no' && $hispanicitem != 'refused')
+						{
+							if (!$hispanicyes)
+							{
+								$hispanicyes = true;
+							}
+							if ($hispanicitem != 'cuban'
+							 && $hispanicitem != 'mexican'
+							 && $hispanicitem != 'puertorican'
+							)
+							{
+								$hispanicother = $hispanicitem;
+							}
+						}
 					}
-					if ($hispanicitem != 'cuban'
-					 && $hispanicitem != 'mexican'
-					 && $hispanicitem != 'puertorican'
-					) {
-						$hispanicother = $hispanicitem;
+					?>
+					<fieldset<?php echo $fieldclass; ?>>
+						<legend>Hispanic or Latino (<a class="popup 700x500" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raceethnic'); ?>">more information</a>) <?php echo $required; ?></legend>
+						<?php echo $message; ?>
+
+						<label>
+							<input type="radio" class="option" name="hispanic" id="hispanicyes" value="yes" <?php if ($hispanicyes) { echo 'checked="checked"'; } ?> /> 
+							<?php echo JText::_('Yes (Hispanic Origin or Descent)'); ?>
+						</label>
+
+						<fieldset>
+							<label>
+								<input type="checkbox" class="option" name="hispaniccuban" id="hispaniccuban" <?php if (in_array('cuban', $this->registration['hispanic'])) { echo 'checked="checked"'; } ?> /> 
+								<?php echo JText::_('Cuban'); ?>
+							</label>
+
+							<label>
+								<input type="checkbox" class="option" name="hispanicmexican" id="hispanicmexican" <?php if (in_array('mexican', $this->registration['hispanic'])) { echo 'checked="checked"'; } ?> /> 
+								<?php echo JText::_('Mexican American or Chicano'); ?>
+							</label>
+
+							<label>
+								<input type="checkbox" class="option" name="hispanicpuertorican" id="hispanicpuertorican" <?php if (in_array('puertorican', $this->registration['hispanic'])) { echo 'checked="checked"'; } ?> /> 
+								<?php echo JText::_('Puerto Rican'); ?>
+							</label>
+
+							<label>
+								<?php echo JText::_('Other Hispanic or Latino'); ?>:
+								<input name="hispanicother" id="hispanicother" type="text" value="<?php echo $this->escape($hispanicother); ?>" />
+							</label>
+						</fieldset>
+
+						<label>
+							<input type="radio" class="option" name="hispanic" id="hispanicno" value="no"<?php if (in_array('no', $this->registration['hispanic'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('No (not Hispanic or Latino)'); ?>
+						</label>
+
+						<label>
+							<input type="radio" class="option" name="hispanic" id="hispanicrefused" value="refused"<?php if (in_array('refused', $this->registration['hispanic'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('Do not wish to reveal'); ?>
+						</label>
+					</fieldset>
+				<?php } ?>
+
+				<?php if ($this->registrationRace != REG_HIDE) { ?>
+					<?php
+					$required = ($this->registrationRace == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '';
+					$message = (!empty($this->xregistration->_invalid['race'])) ? '<span class="error">' . $this->xregistration->_invalid['race'] . '</span>' : '';
+					$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
+
+					if (!is_array($this->registration['race'])) 
+					{
+						$this->registration['race'] = array(trim($this->registration['race']));
 					}
-				}
+					?>
+					<fieldset<?php echo $fieldclass; ?>>
+						<legend>U.S. Citizens and Permanent Residents Only (<a class="popup 675x678" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raceethnic'); ?>">more information</a>) <?php echo $required; ?></legend>
+
+						<p class="hint"><?php echo JText::_('Select one or more that apply.'); ?></p>
+
+						<label>
+							<input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="nativeamerican"<?php if (in_array('nativeamerican', $this->registration['race'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('American Indian or Alaska Native'); ?>
+						</label>
+
+						<label class="indent">
+							<?php echo JText::_('Tribal Affiliation(s)'); ?>: 
+							<input name="racenativetribe" id="racenativetribe" type="text" value="<?php echo $this->escape($this->registration['nativetribe']); ?>" />
+						</label>
+
+						<label>
+							<input type="checkbox" class="option" name="raceasian" id="raceasian"<?php if (in_array('asian', $this->registration['race'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('Asian'); ?>
+						</label>
+
+						<label>
+							<input type="checkbox" class="option" name="raceblack" id="raceblack"<?php if (in_array('black', $this->registration['race'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('Black or African American'); ?>
+						</label>
+
+						<label>
+							<input type="checkbox" class="option" name="racehawaiian" id="racehawaiian"<?php if (in_array('hawaiian', $this->registration['race'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('Native Hawaiian or Other Pacific Islander'); ?>
+						</label>
+
+						<label>
+							<input type="checkbox" class="option" name="racewhite" id="racewhite"<?php if (in_array('white', $this->registration['race'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('White'); ?>
+						</label>
+
+						<label>
+							<input type="checkbox" class="option" name="racerefused" id="racerefused"<?php if (in_array('refused', $this->registration['race'])) { echo ' checked="checked" '; } ?>/> 
+							<?php echo JText::_('Do not wish to reveal'); ?>
+						</label>
+
+						<?php echo ($message) ? $message . "\n" : ''; ?>
+					</fieldset>
+				<?php } ?>
+			</fieldset>
+			<div class="clear"></div>
+		<?php } ?>
+
+		<?php if ($this->registrationOptIn != REG_HIDE) { ?>
+			<?php
+			$message = (!empty($this->xregistration->_invalid['mailPreferenceOption'])) ? '<span class="error">' . $this->xregistration->_invalid['mailPreferenceOption'] . '</span>' : '';
+			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
+
+			//define mail preference options
+			$options = array(
+				'-1' => '- Select email option &mdash;',
+				'1'  => 'Yes, send me emails',
+				'0'  => 'No, don\'t send me emails'
+			);
+
+			//if we dont have a mail pref option set to unanswered
+			if (!isset($this->registration['mailPreferenceOption']) || $this->registration['mailPreferenceOption'] == '')
+			{
+				$this->registration['mailPreferenceOption'] = '-1';
 			}
+			?>
+			<fieldset>
+				<legend><?php echo JText::_('Receive Email Updates'); ?></legend>
 
-			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>Hispanic or Latino (<a class="popup 700x500" href="/register/raceethnic">more information</a>) ';
+				<label for="mailPreferenceOption"<?php echo $fieldclass; ?>>
+					Would you like to receive email updates (newsletters, etc.)? <?php echo ($this->registrationOptIn == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+					<select name="mailPreferenceOption">
+						<?php foreach ($options as $key => $value) { ?>
+							<option <?php echo ($key == $this->registration['mailPreferenceOption']) ? 'selected="selected"' : ''; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
+						<?php } ?>
+					</select>
+				</label>
+				<?php echo $message; ?>
+			</fieldset><div class="clear"></div>
+		<?php } ?>
 
-			$html .= $required;
-			$html .= '</legend>'."\n";
-			$html .= $message;
 
-			$html .= "\t\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicyes" value="yes" ';
-			if ($hispanicyes) {
-				$html .= 'checked="checked"';
-			}
-			$html .= ' /> '.JText::_('Yes (Hispanic Origin or Descent)').'</label>'."\n";
+		<?php if ($this->registrationCAPTCHA != REG_HIDE) { ?>
+			<?php
+			$required = ($this->registrationCAPTCHA == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
+			$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<span class="error">' . $this->xregistration->_invalid['captcha'] . '</span>' : '';
 
-			$html .= "\t\t\t".'<fieldset>'."\n";
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher = JDispatcher::getInstance();
+			$captchas = $dispatcher->trigger( 'onGetCaptcha' );
 
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispaniccuban" id="hispaniccuban" ';
-			if (in_array('cuban', $this->registration['hispanic'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Cuban').'</label>'."\n";
+			if (count($captchas) > 0) { ?>
+				<fieldset>
+					<legend><?php echo JText::_('Human Check'); ?></legend>
+					<?php echo ($message) ? $message : ''; ?>
+			<?php } ?>
 
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispanicmexican" id="hispanicmexican" ';
-			if (in_array('mexican', $this->registration['hispanic'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Mexican American or Chicano').'</label>'."\n";
+			<label id="botcheck-label" for="botcheck">
+				<?php echo JText::_('Please leave this field blank.'); ?> <?php echo $required; ?>
+				<input type="text" name="botcheck" id="botcheck" value="" />
+			</label>
 
-			$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispanicpuertorican" id="hispanicpuertorican" ';
-			if (in_array('puertorican', $this->registration['hispanic'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Puerto Rican').'</label>'."\n";
-
-			$html .= "\t\t\t\t".'<label>'."\n";
-			$html .= "\t\t\t\t\t".JText::_('Other Hispanic or Latino').':'."\n";
-			$html .= "\t\t\t\t\t".'<input name="hispanicother" id="hispanicother" type="text" value="'. $this->escape($hispanicother) .'" />'."\n";
-			$html .= "\t\t\t\t".'</label>'."\n";
-			$html .= "\t\t\t".'</fieldset>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicno" value="no"';
-			if (in_array('no', $this->registration['hispanic'])) {
-				$html .= ' checked="checked" ';
-			}
-			$html .= '/> '.JText::_('No (not Hispanic or Latino)').'</label>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicrefused" value="refused"';
-			if (in_array('refused', $this->registration['hispanic'])) {
-				$html .= ' checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Do not wish to reveal').'</label>'."\n";
-
-			$html .= "\t\t".'</fieldset>'."\n";
-		}
-
-		// Racial background
-		if ($this->registrationRace != REG_HIDE) {
-			$required = ($this->registrationRace == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['race'])) ? '<span class="error">' . $this->xregistration->_invalid['race'] . '</span>' : '';
-			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
-
-			if (!is_array($this->registration['race'])) {
-				$this->registration['race'] = array(trim($this->registration['race']));
-			}
-
-			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>U.S. Citizens and Permanent Residents Only (<a class="popup 675x678" href="/register/raceethnic">more information</a>) '.$required.'</legend>'."\n";
-			$html .= "\t\t\t".'<p class="hint">'.JText::_('Select one or more that apply.').'</p>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="nativeamerican" ';
-			if (in_array('nativeamerican', $this->registration['race'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('American Indian or Alaska Native').'</label>'."\n";
-
-			$html .= "\t\t\t".'<label class="indent">'."\n";
-			$html .= "\t\t\t\t".JText::_('Tribal Affiliation(s)').': '."\n";
-			$html .= "\t\t\t\t".'<input name="racenativetribe" id="racenativetribe" type="text" value="'. $this->escape($this->registration['nativetribe']) .'" />'."\n";
-			$html .= "\t\t\t".'</label>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceasian" id="raceasian" ';
-			if (in_array('asian', $this->registration['race'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Asian').'</label>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceblack" id="raceblack" ';
-			if (in_array('black', $this->registration['race'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Black or African American').'</label>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racehawaiian" id="racehawaiian" ';
-			if (in_array('hawaiian', $this->registration['race'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Native Hawaiian or Other Pacific Islander').'</label>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racewhite" id="racewhite" ';
-			if (in_array('white', $this->registration['race'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('White').'</label>'."\n";
-
-			$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racerefused" id="racerefused" ';
-			if (in_array('refused', $this->registration['race'])) {
-				$html .= 'checked="checked" ';
-			}
-			$html .= '/> '.JText::_('Do not wish to reveal').'</label>'."\n";
-
-			$html .= ($message) ? "\t\t\t" . $message . "\n" : '';
-			$html .= "\t\t".'</fieldset>'."\n";
-		}
-		$html .= "\t".'</fieldset>'."\n";
-		$html .= "\t".'<div class="clear"></div>'."\n";
-	}
-
-	// Newsletter Opt-In
-	if ($this->registrationOptIn != REG_HIDE) {
-		$required = ($this->registrationOptIn == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-		$message = (!empty($this->xregistration->_invalid['mailPreferenceOption'])) ? '<span class="error">' . $this->xregistration->_invalid['mailPreferenceOption'] . '</span>' : '';
-		$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
-		
-		//define mail preference options
-		$options = array(
-			'-1' => '- Select email option &mdash;',
-			'1'  => 'Yes, send me emails',
-			'0'  => 'No, don\'t send me emails'
-		);
-		
-		//if we dont have a mail pref option set to unanswered
-		if(!isset($this->registration['mailPreferenceOption']) || $this->registration['mailPreferenceOption'] == '')
-		{
-			$this->registration['mailPreferenceOption'] = '-1';
-		}
-		
-		$html .= "\t".'<fieldset>'."\n";
-		$html .= "\t\t".'<legend>'.JText::_('Receive Email Updates').'</legend>'."\n";
-		$html .= '<label for="mailPreferenceOption">';
-		$html .= 'Would you like to receive email updates (newsletters, etc.)? ' . $required;
-		$html .= '<select name="mailPreferenceOption">';
-		foreach ($options as $key => $value)
-		{
-			$sel = ($key == $this->registration['mailPreferenceOption']) ? 'selected="selected"' : '';
-			$html .= '<option '.$sel.' value="'. $key .'">' . $value . '</option>';
-		}
-		$html .= '</select>';
-		$html .= '</label>';
-		$html .= $message;
-		$html .= "\t".'</fieldset><div class="clear"></div>'."\n";
-	}
-
-	// CAPTCHA
-	if ($this->registrationCAPTCHA != REG_HIDE) {
-		$required = ($this->registrationCAPTCHA == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
-		$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<span class="error">' . $this->xregistration->_invalid['captcha'] . '</span>' : '';
-
-		JPluginHelper::importPlugin( 'hubzero' );
-		$dispatcher = JDispatcher::getInstance();
-		$captchas = $dispatcher->trigger( 'onGetCaptcha' );
-
-		if (count($captchas) > 0) {
-			$html .= "\t".'<fieldset>'."\n";
-			$html .= "\t\t".'<legend>'.JText::_('Human Check').'</legend>'."\n";
-			$html .= ($message) ? $message : '';
-		}
-		$html .= "\t\t".'<label id="botcheck-label" for="botcheck">'."\n";
-		$html .= "\t\t\t".JText::_('Please leave this field blank.').' '.$required."\n";
-		$html .= "\t\t\t".'<input type="text" name="botcheck" id="botcheck" value="" />'."\n";
-		$html .= "\t\t".'</label>'."\n";
-		if (count($captchas) > 0) {
-			foreach ($captchas as $captcha) {
-				$html .= $captcha;
-			}
-			$html .= "\t".'</fieldset>'."\n";
-		}
-	}
-	echo $html;
-	?>
+			<?php if (count($captchas) > 0) {
+					echo implode("\n", $captchas); ?>
+				</fieldset>
+			<?php } ?>
+		<?php } ?>
 
 		<?php if ($this->registrationTOU != REG_HIDE) { ?>
 			<fieldset>
@@ -1018,7 +1006,8 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 		<input type="hidden" name="act" value="submit" />
 		<?php echo JHTML::_( 'form.token' ); ?>
 
-		<input type="hidden" name="return" value="<?php echo urlencode($form_redirect); // urlencode is XSS protection added to this field, see ticket 1411 ?>" />
+		<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
 
+		<input type="hidden" name="return" value="<?php echo urlencode($form_redirect); // urlencode is XSS protection added to this field, see ticket 1411 ?>" />
 	</form>
 </section><!-- / .main section -->

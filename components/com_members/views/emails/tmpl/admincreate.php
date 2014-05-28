@@ -31,8 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
+<?php echo $this->xprofile->get('name');
+if ($this->xprofile->get('orginization')) {
+	echo ' / ' . $this->xprofile->get('orginization');
+} ?> (<?php echo $this->xprofile->get('email'); ?>) has requested the new account '<?php echo $this->xprofile->get('username'); ?>' on <?php echo $this->sitename; ?>.
 
-Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
-
-<?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->confirm); ?>
+Click the following link to review this user's account:
+<?php echo $this->baseURL . JRoute::_('index.php?option=com_members&id==' . $this->xprofile->get('id')); ?>
