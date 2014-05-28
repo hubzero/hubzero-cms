@@ -30,12 +30,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 $base = JURI::base();
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 {
-        $base = str_replace('http://', 'https://', $base);
+	$base = str_replace('http://', 'https://', $base);
 }
 
+$controller = JRequest::getCmd('controller', '');
 ?>
 
 <div class="captcha-block">
@@ -43,14 +45,14 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 		<tbody>
 			<tr>
 				<td>
-					<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
+					<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
 				</td>
 				<td>
 					<script type="text/javascript">
 					//<![CDATA[
 					function reloadCapthcha<?php echo $this->total; ?>(instanceNo)
 					{
-						var captchaSrc = "<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&task=<?php echo $this->task; ?>&no_html=1&showCaptcha=True&instanceNo="+instanceNo+"&time="+ new Date().getTime();
+						var captchaSrc = "<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&controller=<?php echo $controller; ?>&task=<?php echo $this->task; ?>&no_html=1&showCaptcha=True&instanceNo="+instanceNo+"&time="+ new Date().getTime();
 						document.getElementById('captchaCode'+instanceNo).src = captchaSrc;
 					}
 					//]]>
