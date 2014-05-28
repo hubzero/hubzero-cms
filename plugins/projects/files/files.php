@@ -5146,7 +5146,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Go through untracked files
-		if ($limited == false && count($untracked) > 0)
+		if (count($untracked) > 0)
 		{
 			foreach ($untracked as $ut)
 			{
