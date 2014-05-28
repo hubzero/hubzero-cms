@@ -171,6 +171,34 @@
 		#grid > .offset(1);
 	}
 
+@media (max-width: 800px) {
+	/*.grid .span-half,
+	.grid .span6 {
+		float: none;
+		width: auto;
+		margin-left: 0;
+		margin-right: 0;
+	}*/
+	.grid .span-quarter,
+	.grid .span3 {
+		#grid > .span(6);
+		&:nth-child(2) {
+			margin-right: 0;
+		}
+	}
+	.grid .span2 {
+		#grid > .span(4);
+		&:nth-child(3) {
+			margin-right: 0;
+		}
+	}
+	.grid .span1 {
+		#grid > .span(2);
+		&:nth-child(6) {
+			margin-right: 0;
+		}
+	}
+}
 @media (max-width: 460px) {
 	.columns,
 	.grid [class*="span"] {
