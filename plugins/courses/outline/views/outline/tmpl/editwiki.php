@@ -32,8 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Load asset if applicable
-$id = JRequest::getInt('asset_id', null);
-$asset = new CoursesModelAsset($id);
+$id     = JRequest::getInt('asset_id', null);
+$asset  = new CoursesModelAsset($id);
+$assets = array();
 
 ?>
 
@@ -69,7 +70,10 @@ $asset = new CoursesModelAsset($id);
 								$assetgroups[] = array('id'=>$ag->get('id'), 'title'=>$ag->get('title'));
 								if ($ag->assets()->total()) :
 									foreach ($ag->assets() as $a) :
-										//echo "<li>" . $a->get('title') . "</li>";
+										if ($a->isPublished()) :
+											$assets[] = $a;
+											//echo "<li>" . $a->get('title') . "</li>";
+										endif;
 									endforeach;
 								endif;
 							endforeach;
@@ -129,6 +133,23 @@ $asset = new CoursesModelAsset($id);
 			<input name="graded" type="checkbox" value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
 			<input type="hidden" name="edit_graded" value="1" />
 		</p>
+
+		<div class="prerequisites">
+			<?php
+				usort($assets, function($a, $b) {
+					return strnatcasecmp($a->get('title'), $b->get('title'));
+				});
+
+				$this->view('_prerequisites')
+				     ->set('scope', 'asset')
+				     ->set('scope_id', $asset->get('id'))
+				     ->set('section_id', $this->course->offering()->section()->get('id'))
+				     ->set('items', $assets)
+				     ->set('includeForm', false)
+				     ->display();
+			?>
+		</div>
+
 
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />

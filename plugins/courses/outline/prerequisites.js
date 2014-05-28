@@ -21,7 +21,7 @@ if (!jq) {
 }
 
 jQuery(document).ready(function($) {
-	$('.unit, .edit-asset')
+	$('.unit, .edit-asset, .wiki-edit')
 		.on('change', '.add-prerequisite select', function ( e ) {
 			var wrap  = $(this).parents('.prerequisites-wrap'),
 				title = $(this).find(':selected').text(),

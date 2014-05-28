@@ -11,6 +11,11 @@
 .wiki-edit input[type="text"] {
 	width: 100%;
 }
+.wiki-edit .prerequisites {
+	background: #F1F1F1;
+	margin-bottom: 20px;
+	border: 1px solid #AAAAAA;
+}
 .wiki-edit .wiki-asterisk {
 	font-size: 11px;
 }
