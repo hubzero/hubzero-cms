@@ -50,6 +50,7 @@ function membersBuildRoute(&$query)
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
+
 	if (!empty($query['active'])) 
 	{
 		$segments[] = $query['active'];
@@ -61,6 +62,13 @@ function membersBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
+
+	if (!empty($query['controller']) && $query['controller'] == 'register') 
+	{
+		$segments[] = $query['controller'];
+		unset($query['controller']);
+	}
+
 	if (empty($query['id']) && !empty($query['task'])) 
 	{
 		$segments[] = $query['task'];
@@ -84,11 +92,20 @@ function membersParseRoute($segments)
 	{
 		return $vars;
 	}
-	
+
 	if (isset($segments[0])) 
 	{
 		switch ($segments[0])
 		{
+			case 'register':
+				$vars['controller'] = $segments[0];
+				if (isset($segments[1])) 
+				{
+					$vars['task'] = $segments[1];
+				}
+				return $vars;
+			break;
+
 			case 'myaccount':
 				$juser = JFactory::getUser();
 				if (!$juser->get('guest'))

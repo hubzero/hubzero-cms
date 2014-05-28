@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 
 /**
  * Members controller class for profiles
@@ -88,7 +88,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		require_once JPATH_BASE . '/administrator/components/com_register/tables/incremental.php';
+		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental.php';
 		$ia = new ModIncrementalRegistrationAwards($profile);
 		$ia->optOut();
 
