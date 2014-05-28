@@ -592,7 +592,7 @@ class MembersModelRegistration
 			break;
 		}
 
-		$hconfig = JComponentHelper::getParams('com_register');
+		$hconfig = JComponentHelper::getParams('com_members');
 
 		$default    = str_pad($default, 4, '-');
 		$configured  = $hconfig->get($name);

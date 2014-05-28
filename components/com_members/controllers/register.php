@@ -1179,7 +1179,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if (($email_confirmed != 1) && ($email_confirmed != 3)) 
 		{
-			$confirm = RegisterHelperUtility::genemailconfirm();
+			$confirm = MembersHelperUtility::genemailconfirm();
 
 			$xprofile = new \Hubzero\User\Profile();
 			$xprofile->load($login);
@@ -1286,7 +1286,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_INVALID_EMAIL'));
 			}
-			if ($pemail && RegisterHelperUtility::validemail($pemail) /*&& ($newemail != $email)*/) 
+			if ($pemail && MembersHelperUtility::validemail($pemail) /*&& ($newemail != $email)*/) 
 			{
 				// Check if the email address was actually changed
 				if ($pemail == $email) 
@@ -1324,7 +1324,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					{
 						// No errors
 						// Attempt to send a new confirmation code
-						$confirm = RegisterHelperUtility::genemailconfirm();
+						$confirm = MembersHelperUtility::genemailconfirm();
 
 						$xprofile = new \Hubzero\User\Profile();
 						$xprofile->load($login);
@@ -1419,7 +1419,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if (($email_confirmed == 1) || ($email_confirmed == 3)) 
 		{
 			// The current user is confirmed - check to see if the incoming code is valid at all
-			if (RegisterHelperUtility::isActiveCode($code))
+			if (MembersHelperUtility::isActiveCode($code))
 			{
 				$this->setError('login mismatch');
 
@@ -1435,7 +1435,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			//var to hold return path
 			$return = '';
 
-			// get com_register return path
+			// get return path
 			$cReturn = $this->config->get('ConfirmationReturn');
 			if ($cReturn) 
 			{

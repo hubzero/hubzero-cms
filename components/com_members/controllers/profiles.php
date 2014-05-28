@@ -1117,7 +1117,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for editing a profile
 	 * 
-	 * @param      object $xregistration RegisterModelRegistration
+	 * @param      object $xregistration MembersModelRegistration
 	 * @param      object $profile       \Hubzero\User\Profile
 	 * @return     void
 	 */
@@ -1214,7 +1214,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($xregistration)) 
 		{
-			$xregistration = new RegisterModelRegistration();
+			$xregistration = new MembersModelRegistration();
 		}
 		$this->view->xregistration = $xregistration;
 
@@ -1280,7 +1280,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			default:       $index = 0; break;
 		}
 
-		$hconfig = JComponentHelper::getParams('com_register');
+		$hconfig = JComponentHelper::getParams('com_members');
 
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
@@ -1381,8 +1381,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JRequest::setVar('interests', $tags, 'post');
 		}
 
-		// Instantiate a new RegisterModelRegistration
-		$xregistration = new RegisterModelRegistration();
+		// Instantiate a new MembersModelRegistration
+		$xregistration = new MembersModelRegistration();
 		$xregistration->loadPOST();
 
 		// Push the posted data to the profile
@@ -1395,7 +1395,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			if ($oldemail != $xregistration->_registration['email']) 
 			{
 				// Get a new confirmation code
-				$confirm = RegisterHelperUtility::genemailconfirm();
+				$confirm = MembersHelperUtility::genemailconfirm();
 
 				$profile->set('emailConfirmed', $confirm);
 			}

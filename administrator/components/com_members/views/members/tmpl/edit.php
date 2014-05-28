@@ -141,9 +141,9 @@ function submitbutton(pressbutton)
 				<select name="profile[orgtype]" id="field-orgtype">
 					<option value=""<?php if (!$this->profile->get('orgtype')) { echo ' selected="selected"'; } ?>><?php echo JText::_('(select from list)'); ?></option>
 					<?php
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
+					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 
-					$rot = new RegisterOrganizationType(JFactory::getDBO());
+					$rot = new MembersTableOrganizationType(JFactory::getDBO());
 					$types = $rot->getTypes();
 
 					if (!$types || count($types) <= 0) 

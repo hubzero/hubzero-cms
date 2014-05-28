@@ -212,7 +212,7 @@ class MembersTableOrganizationType extends JTable
 	}
 
 	/**
-	 * Loads a database row into the RegisterOrganizationType object
+	 * Loads a database row into the MembersOrganizationType object
 	 *
 	 * @param	string	$type	The organization type field
 	 * @return	boolean

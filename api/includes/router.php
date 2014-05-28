@@ -99,16 +99,17 @@ class JRouterApi extends JRouter
 						return $vars;
 				}
 
-				if ($vars['option'] == 'com_register') // register component can be accessed with incomplete registration
+				if ($vars['option'] == 'com_members' && ((isset($vars['controller']) && $vars['controller'] == 'register') || (isset($vars['view']) && $vars['view'] == 'register'))) // register component can be accessed with incomplete registration
 				{
-						return $vars;
+					return $vars;
 				}
 
 				if ($uri->getPath() != 'legal/terms')
 				{
 					$vars = array();
 					/*
-					$vars['option'] = 'com_register';
+					$vars['option'] = 'com_members';
+					$vars['controller'] = 'register';
 
 					if ($juser->get('tmp_user'))
 						$vars['task'] = 'create';
@@ -141,7 +142,7 @@ class JRouterApi extends JRouter
 				{
 					return $vars;
 				}
-				else if ($vars['option'] == 'com_register')
+				else if ($vars['option'] == 'com_members' && ((isset($vars['controller']) && $vars['controller'] == 'register') || (isset($vars['view']) && $vars['view'] == 'register')))
 				{
 					if (!empty($vars['task']))
 						if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
@@ -149,7 +150,8 @@ class JRouterApi extends JRouter
 				}
 
 				$vars = array();
-				$vars['option'] = 'com_register';
+				$vars['option'] = 'com_members';
+				$vars['controller'] = 'register';
 				$vars['task'] = 'unconfirmed';
 
 				$this->setVars($vars);

@@ -47,7 +47,7 @@ $step = (int) JRequest::getInt('step', 1);
 			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=2'); ?>">
 				<div data-step="1" class="button next forward">Yes</div>
 			</a>
-			<a href="<?php echo JRoute::_('index.php?option=com_register&task=update'); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register&task=update'); ?>">
 				<div data-step="1" class="button backwards">No</div>
 			</a>
 		</div>
@@ -61,7 +61,7 @@ $step = (int) JRequest::getInt('step', 1);
 			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=3'); ?>">
 				<div data-step="2" class="button next link">Link</div>
 			</a>
-			<a href="<?php echo JRoute::_('index.php?option=com_register&task=update'); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register&task=update'); ?>">
 				<div data-step="2" class="button create-new">Create new</div>
 			</a>
 		</div>

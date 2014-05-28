@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->juser->get('guest')) { ?>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_register'); ?>"><?php echo JText::_('Join now!'); ?></a></li>
+		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>"><?php echo JText::_('Join now!'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>

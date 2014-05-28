@@ -103,7 +103,8 @@ class JRouterSite extends JRouter
 						return $vars;
 				}
 
-				if ($vars['option'] == 'com_register') // register component can be accessed with incomplete registration
+				if ($vars['option'] == 'com_members'
+				 && ((isset($vars['controller']) && $vars['controller'] == 'register') || (isset($vars['view']) && $vars['view'] == 'register'))) // register component can be accessed with incomplete registration
 				{
 					$session->set('linkaccount', false);
 					return $vars;
@@ -116,7 +117,8 @@ class JRouterSite extends JRouter
 
 					if ($juser->get('tmp_user')) // joomla tmp users
 					{
-						$vars['option'] = 'com_register';
+						$vars['option'] = 'com_members';
+						$vars['controller']	= 'register';
 						$vars['task']	= 'create';
 						$vars['act']	= '';
 					}
@@ -135,7 +137,8 @@ class JRouterSite extends JRouter
 						}
 						else
 						{
-							$vars['option'] = 'com_register';
+							$vars['option'] = 'com_members';
+							$vars['controller']	= 'register';
 							$vars['task']	= 'update';
 							$vars['act']	= '';
 						}
@@ -178,7 +181,7 @@ class JRouterSite extends JRouter
 				{
 					return $vars;
 				}
-				else if ($vars['option'] == 'com_register')
+				else if ($vars['option'] == 'com_members' && ((isset($vars['controller']) && $vars['controller'] == 'register') || (isset($vars['view']) && $vars['view'] == 'register')))
 				{
 					if (!empty($vars['task']))
 						if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
@@ -186,7 +189,8 @@ class JRouterSite extends JRouter
 				}
 
 				$vars = array();
-				$vars['option'] = 'com_register';
+				$vars['option'] = 'com_members';
+				$vars['controller'] = 'register';
 				$vars['task'] = 'unconfirmed';
 
 				$this->setVars($vars);

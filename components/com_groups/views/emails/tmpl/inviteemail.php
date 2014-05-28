@@ -58,7 +58,7 @@ $message .= "--------------------------------------------\n\n";
 
 //$message .= "If you do not have an account on ".$this->sitename.", you must first click or copy and paste the first link, where you will register for an account. Then you must come back to click or copy and paste link two. \n\n";
 
-//$sef = JRoute::_('index.php?option=com_register');
+//$sef = JRoute::_('index.php?option=com_members&controller=register');
 //if (substr($sef,0,1) == '/') {
 //	$sef = substr($sef,1,strlen($sef));
 //}
@@ -75,7 +75,7 @@ $message .= "If you DO NOT have an account on " . $this->sitename . ", please fo
 $return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept?token=" . $this->token;
 //$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept";
 
-$sef = JRoute::_('index.php?option=com_register');
+$sef = JRoute::_('index.php?option=com_members&controller=register');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }

@@ -3781,8 +3781,8 @@ class plgProjectsPublications extends JPlugin
 					else
 					{
 						// Instantiate a new registration object
-						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
-						$xregistration = new RegisterModelRegistration();
+						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+						$xregistration = new MembersModelRegistration();
 						
 						$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 						// Is this an email?
@@ -3888,8 +3888,8 @@ class plgProjectsPublications extends JPlugin
 		$objO = new ProjectOwner( $this->_database );
 		
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
-		$xregistration = new RegisterModelRegistration();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		$xregistration = new MembersModelRegistration();
 		
 		// Get current owners
 		$owners = $objO->getIds($this->_project->id, 'all', 1);		

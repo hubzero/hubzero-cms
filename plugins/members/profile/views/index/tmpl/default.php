@@ -56,7 +56,7 @@ if(isset($this->registration_update))
 }
 
 //incremental registration
-require_once JPATH_BASE.'/administrator/components/com_register/tables/incremental.php';
+require_once JPATH_BASE.'/administrator/components/com_members/tables/incremental.php';
 $uid = (int)$this->profile->get('uidNumber');
 $incrOpts = new ModIncrementalRegistrationOptions;
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
@@ -275,9 +275,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						<?php
 							//get list of organizations from db
-							include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organization.php' );
+							include_once( JPATH_ROOT.DS.'administrator' . DS .'components'.DS.'com_members'.DS.'tables'.DS.'organization.php' );
 							$database = JFactory::getDBO();
-							$xo = new RegisterOrganization( $database );
+							$xo = new MembersTableOrganization( $database );
 							$orgs = $xo->getOrgs();
 						
 							//create select for organizations and optional text input
@@ -342,9 +342,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE'); ?></div>
 						<?php
 							//get organization types from db
-							include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organizationtype.php' );
+							include_once( JPATH_ROOT.DS.'administrator' . DS .'components'.DS.'com_members'.DS.'tables'.DS.'organizationtype.php' );
 							$database = JFactory::getDBO();
-							$xot = new RegisterOrganizationType( $database );
+							$xot = new MembersTableOrganizationType( $database );
 							$orgtypes = $xot->getTypes();
 
 							//output value

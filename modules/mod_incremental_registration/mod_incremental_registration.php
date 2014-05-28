@@ -96,7 +96,7 @@ class ModIncrementalRegistrationController
 
 		$dbh = JFactory::getDBO();
 
-		require_once JPATH_BASE . '/administrator/components/com_register/tables/incremental.php';
+		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental.php';
 			
 		$opts = new ModIncrementalRegistrationOptions;
 		if (!$opts->isEnabled($uid)) 
@@ -137,7 +137,7 @@ class ModIncrementalRegistrationController
 
 			if ($row) 
 			{
-				$dbh->setQuery('SELECT popover_text, award_per FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
+				$dbh->setQuery('SELECT popover_text, award_per FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
 				list($introText, $awardPer) = $dbh->loadRow();
 				
 				if ($_SERVER['REQUEST_METHOD'] == 'GET') 

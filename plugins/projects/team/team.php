@@ -409,8 +409,8 @@ class plgProjectsTeam extends JPlugin
 		$objO = new ProjectOwner($this->_database);
 		
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
-		$xregistration = new RegisterModelRegistration();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		$xregistration = new MembersModelRegistration();
 							
 		// Owner names not supplied
 		if (!$members && !$groups) 

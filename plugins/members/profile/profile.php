@@ -83,7 +83,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		
 		//include address library
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php' );
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 
 		$arr = array(
 			'html' => '',
@@ -173,7 +173,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$session = JFactory::getSession();
 		if ($session->get('registration.incomplete'))
 		{
-			$xreg = new RegisterModelRegistration();
+			$xreg = new MembersModelRegistration();
 			$juser =  JFactory::getUser(); 
 			$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 
@@ -235,7 +235,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			default:       $index = 0; break;
 		}
 
-		$hconfig = JComponentHelper::getParams('com_register');
+		$hconfig = JComponentHelper::getParams('com_members');
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
 		
@@ -298,7 +298,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		unset($fields->_errors);
 
 		//load the user profile
-		$registration = new RegisterModelRegistration();
+		$registration = new MembersModelRegistration();
 		$registration->loadProfile($profile);
 
 		//add tags to the registration object

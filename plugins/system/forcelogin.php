@@ -78,7 +78,7 @@ class plgSystemForceLogin extends JPlugin
 		switch( JRequest::getCmd('option') )
 		{
 			case 'com_user':
-			case 'com_register':
+			case 'com_members':
 				break;
 
 			default:
