@@ -560,7 +560,6 @@ class View extends Object
 		}
 		else
 		{
-			print_r($this->_path['template']); die();
 			throw new InvalidLayoutException(\JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
 		}
 	}
