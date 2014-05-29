@@ -52,38 +52,31 @@ else
 	$lid = JRequest::getInt('lid', (time() . rand(0,10000)), 'post');
 }
 ?>
-<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
 	<?php 
 	//if ($this->page->exists()) 
 	//{
-		$view = new JView(array(
-			'base_path' => $this->base_path, 
-			'name'      => 'page',
-			'layout'    => 'authors'
-		));
-		$view->page   = $this->page;
-		$view->display();
+		$this->view('authors')
+		     ->setBasePath($this->base_path)
+		     ->set('page', $this->page)
+		     ->display();
 	//}
 	?>
-</div><!-- /#content-header -->
+</header><!-- /#content-header -->
 
 <?php 
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'submenu'
-	));
-	$view->option = $this->option;
-	$view->controller = $this->controller;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	//$view->config = $this->config;
-	$view->sub    = $this->sub;
-	$view->display();
+	$this->view('submenu')
+	     ->setBasePath($this->base_path)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('page', $this->page)
+	     ->set('task', $this->task)
+	     ->set('sub', $this->sub)
+	     ->display();
 ?>
 
-<div class="main section">
+<section class="main section">
 <?php
 if ($this->page->exists() && !$this->page->access('modify')) {
 	if ($this->page->param('allow_changes') == 1) { ?>
@@ -104,14 +97,14 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 <?php if ($this->preview) { ?>
 	<div id="preview">
-		<div class="main section">
+		<section class="main section">
 			<p class="warning"><?php echo JText::_('This a preview only. Changes will not take affect until saved.'); ?></p>
 
 			<div class="wikipage">
 				<?php echo $this->revision->get('pagehtml'); ?>
 			</div>
-		</div><!-- / .section -->
-	</div><div class="clear"></div>
+		</section><!-- / .section -->
+	</div>
 <?php } ?>
 
 <form action="<?php echo JRoute::_($this->page->link()); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
@@ -136,67 +129,70 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<fieldset>
 		<legend><?php echo JText::_('Page'); ?></legend>
 
-		<div class="group">
-		<label for="parent">
-			<?php echo JText::_('Parent page'); ?>:
-			<select name="scope" id="parent">
-				<option value=""><?php echo JText::_('[ none ]'); ?></option>
-			<?php
-				if ($this->tree) 
-				{
-					foreach ($this->tree as $item) 
-					{
-						if ($this->page->get('pagename') == $item->get('pagename'))
+		<div class="grid">
+			<div class="col span6">
+				<label for="parent">
+					<?php echo JText::_('Parent page'); ?>:
+					<select name="scope" id="parent">
+						<option value=""><?php echo JText::_('[ none ]'); ?></option>
+					<?php
+						if ($this->tree) 
 						{
-							continue;
-						}
-			?>
-				<option value="<?php echo $this->escape(stripslashes($item->get('scope'))); ?>"<?php if ($this->page->get('scope') == $item->get('scope')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($item->get('scopeName'))); ?></option>
-			<?php
-					}
-				}
-			?>
-			</select>
-		</label>
-
-		<label for="templates">
-			<?php echo JText::_('Template'); ?>:
-			<select name="tplate" id="templates">
-				<option value="tc"><?php echo JText::_('Select a template...'); ?></option>
-				<?php
-					$hi = array();
-
-					foreach ($this->book->templates('list', array(), true) as $template)
-					{
-						$tmpltags = $template->tags('string');
-						if (strtolower($this->tplate) == strtolower($template->get('pagename'))) 
-						{
-							$tags = $tmpltags;
-						}
-
-						echo "\t".'<option value="t'.$template->get('id').'"';
-						if (strtolower($this->tplate) == strtolower($template->get('pagename'))
-						 || strtolower($this->tplate) == 't' . $template->get('id')) 
-						{
-							echo ' selected="selected"';
-							if (!$this->page->exists()) 
+							foreach ($this->tree as $item) 
 							{
-								$this->revision->set('pagetext', stripslashes($template->revision()->get('pagetext')));
+								if ($this->page->get('pagename') == $item->get('pagename'))
+								{
+									continue;
+								}
+					?>
+						<option value="<?php echo $this->escape(stripslashes($item->get('scope'))); ?>"<?php if ($this->page->get('scope') == $item->get('scope')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($item->get('scopeName'))); ?></option>
+					<?php
 							}
 						}
-						echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>'."\n";
+					?>
+					</select>
+				</label>
+			</div>
+			<div class="col span6 omega">
+				<label for="templates">
+					<?php echo JText::_('Template'); ?>:
+					<select name="tplate" id="templates">
+						<option value="tc"><?php echo JText::_('Select a template...'); ?></option>
+						<?php
+							$hi = array();
 
-						$j  = '<input type="hidden" name="t'.$template->get('id').'" id="t'.$template->get('id').'" value="'.$this->escape(stripslashes($template->revision()->get('pagetext'))).'" />'."\n";
-						$j .= '<input type="hidden" name="t'.$template->get('id').'_tags" id="t'.$template->get('id').'_tags" value="'.$this->escape(stripslashes($tmpltags)).'" />'."\n";
+							foreach ($this->book->templates('list', array(), true) as $template)
+							{
+								$tmpltags = $template->tags('string');
+								if (strtolower($this->tplate) == strtolower($template->get('pagename'))) 
+								{
+									$tags = $tmpltags;
+								}
 
-						$hi[] = $j;
-					}
-				?>
-			</select>
-			<?php echo implode("\n", $hi); ?>
-		</label>
+								echo "\t".'<option value="t'.$template->get('id').'"';
+								if (strtolower($this->tplate) == strtolower($template->get('pagename'))
+								 || strtolower($this->tplate) == 't' . $template->get('id')) 
+								{
+									echo ' selected="selected"';
+									if (!$this->page->exists()) 
+									{
+										$this->revision->set('pagetext', stripslashes($template->revision()->get('pagetext')));
+									}
+								}
+								echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>'."\n";
+
+								$j  = '<input type="hidden" name="t'.$template->get('id').'" id="t'.$template->get('id').'" value="'.$this->escape(stripslashes($template->revision()->get('pagetext'))).'" />'."\n";
+								$j .= '<input type="hidden" name="t'.$template->get('id').'_tags" id="t'.$template->get('id').'_tags" value="'.$this->escape(stripslashes($tmpltags)).'" />'."\n";
+
+								$hi[] = $j;
+							}
+						?>
+					</select>
+					<?php echo implode("\n", $hi); ?>
+				</label>
+			</div>
 		</div>
-		
+
 	<?php if ($this->page->access('edit')) { ?>
 		<label for="title">
 			<?php echo JText::_('COM_WIKI_FIELD_TITLE'); ?>:
@@ -378,4 +374,4 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<input type="submit" name="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

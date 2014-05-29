@@ -36,21 +36,18 @@ if (!$this->sub)
 	$this->css();
 }
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
 		<?php
 		if (!$this->page->isStatic()) 
 		{
-			$view = new JView(array(
-				'base_path' => $this->base_path, 
-				'name'      => 'page',
-				'layout'    => 'authors'
-			));
-			$view->page     = $this->page;
-			$view->display();
+			$this->view('authors', 'page')
+			     ->setBasePath($this->base_path)
+			     ->set('page', $this->page)
+			     ->display();
 		}
 		?>
-	</div><!-- /#content-header -->
+	</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -61,21 +58,17 @@ if (!$this->sub)
 <?php } ?>
 
 <?php
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'submenu'
-	));
-	$view->option     = $this->option;
-	$view->controller = $this->controller;
-	$view->page       = $this->page;
-	$view->task       = $this->task;
-	$view->config     = $this->config;
-	$view->sub        = $this->sub;
-	$view->display();
+	$this->view('submenu', 'page')
+	     ->setBasePath($this->base_path)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('page', $this->page)
+	     ->set('task', $this->task)
+	     ->set('sub', $this->sub)
+	     ->display();
 ?>
 
-<div class="main section">
+<section class="main section">
 	<div class="grid">
 		<div class="col span-half">
 			<p>Versions are listed in reverse-chronological order (newest to oldest). For any version listed below, click on its date to view it. For more help, see <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename=Help:PageHistory'); ?>">Help:Page history</a>.</p> 
@@ -229,4 +222,4 @@ foreach ($this->page->revisions('list', array('sortby' => 'version DESC'), true)
 		<input type="hidden" name="task" value="compare" />
 	<?php } ?>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

@@ -44,13 +44,10 @@ $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('
 		<?php
 		if (!$this->page->isStatic()) 
 		{
-			$view = new JView(array(
-				'base_path' => $this->base_path, 
-				'name'      => 'page',
-				'layout'    => 'authors'
-			));
-			$view->page     = $this->page;
-			$view->display();
+			$this->view('authors', 'page')
+			     ->setBasePath($this->base_path)
+			     ->set('page', $this->page)
+			     ->display();
 		}
 		?>
 	</header><!-- /#content-header -->
@@ -64,18 +61,14 @@ $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('
 <?php } ?>
 
 <?php
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'submenu'
-	));
-	$view->option     = $this->option;
-	$view->controller = $this->controller;
-	$view->page       = $this->page;
-	$view->task       = $this->task;
-	$view->config     = $this->config;
-	$view->sub        = $this->sub;
-	$view->display();
+	$this->view('submenu', 'page')
+	     ->setBasePath($this->base_path)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('page', $this->page)
+	     ->set('task', $this->task)
+	     ->set('sub', $this->sub)
+	     ->display();
 ?>
 
 <section class="main section">

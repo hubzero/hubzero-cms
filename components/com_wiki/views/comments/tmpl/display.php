@@ -42,13 +42,10 @@ if (!$this->sub)
 		<?php
 		if (!$this->page->isStatic()) 
 		{
-			$view = new JView(array(
-				'base_path' => $this->base_path, 
-				'name'      => 'page',
-				'layout'    => 'authors'
-			));
-			$view->page     = $this->page;
-			$view->display();
+			$this->view('authors', 'page')
+			     ->setBasePath($this->base_path)
+			     ->set('page', $this->page)
+			     ->display();
 		}
 		?>
 	</header><!-- /#content-header -->
@@ -62,18 +59,14 @@ if (!$this->sub)
 <?php } ?>
 
 <?php
-	$view = new JView(array(
-		'base_path' => $this->base_path, 
-		'name'      => 'page',
-		'layout'    => 'submenu'
-	));
-	$view->option     = $this->option;
-	$view->controller = $this->controller;
-	$view->page       = $this->page;
-	$view->task       = $this->task;
-	$view->config     = $this->config;
-	$view->sub        = $this->sub;
-	$view->display();
+	$this->view('submenu', 'page')
+	     ->setBasePath($this->base_path)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('page', $this->page)
+	     ->set('task', $this->task)
+	     ->set('sub', $this->sub)
+	     ->display();
 ?>
 
 <?php if (!$this->sub) { ?>
@@ -107,20 +100,17 @@ if (!$this->sub)
 
 		if ($this->page->comments('list', $filters)->total()) 
 		{
-			$view = new JView(array(
-				'base_path' => JPATH_ROOT . '/components/com_wiki',
-				'name'      => 'comments',
-				'layout'    => '_list'
-			));
-			$view->parent     = 0;
-			$view->page       = $this->page;
-			$view->option     = $this->option;
-			$view->comments   = $this->page->comments();
-			$view->config     = $this->config;
-			$view->depth      = 0;
-			$view->version    = $this->v;
-			$view->cls        = 'odd';
-			$view->display();
+			$this->view('_list', 'comments')
+			     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+			     ->set('parent', 0)
+			     ->set('page', $this->page)
+			     ->set('option', $this->option)
+			     ->set('comments', $this->page->comments())
+			     ->set('config', $this->config)
+			     ->set('depth', 0)
+			     ->set('version', $this->v)
+			     ->set('cls', 'odd')
+			     ->display();
 		} 
 		else 
 		{
