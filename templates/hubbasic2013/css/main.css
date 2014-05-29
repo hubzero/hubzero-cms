@@ -2361,17 +2361,29 @@ System styles
 		display: none;
 	}
 }
-@media (max-width: 600px) {
-	#hubForm .grid .span4 {
-		float: none;
-		width: auto;
-		margin-right: 0;
-	}
+@media (max-width: 700px) {
 	#masthead h1 {
 		font-size: 2em;
 		float: none;
 		border-right: none;
 		border-bottom: 1px dashed #ddd;
 		text-align: center;
+	}
+}
+@media (max-width: 600px) {
+	#splash,
+	#content,
+	#ancillary {
+		margin: 0;
+	}
+	#masthead,
+	#sub-masthead,
+	#footer .inner {
+		padding: 0;
+	}
+	#hubForm .grid .span4 {
+		float: none;
+		width: auto;
+		margin-right: 0;
 	}
 }
