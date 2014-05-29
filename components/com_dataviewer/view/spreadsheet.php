@@ -42,7 +42,7 @@ function view($dd = false) {
 	dv_add_script('datatables.plugins.js');
 
 	dv_add_script('jqplot/jquery.jqplot.js');
-	dv_add_script('jqplot/plugins.dev');
+	dv_add_script('jqplot/plugins');
 	dv_add_css('jqplot/jquery.jqplot.css');
 
 	dv_add_script('spreadsheet.js');
