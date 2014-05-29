@@ -31,11 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
-<div class="main section">
+<section class="main section">
 	<div id="cartcontent">
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
@@ -138,4 +138,4 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / #balanceupdate -->
 	
 	<div class="clear"></div>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

@@ -31,11 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
-<div class="main section">
+<section class="main section">
 	<div id="cartcontent">
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
@@ -88,7 +88,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p class="process"><input type="submit" class="button finalize_order" value="finalize" /></p>
 		</form>
 	</div><!-- / #cartcontent -->
-	
+
 	<div id="balanceupdate">
 		<div class="order_summary">
 			<h4><span class="coin">&nbsp;</span><?php echo JText::_('COM_STORE_ORDER_SUMMARY'); ?></h4>
@@ -121,6 +121,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		<p class="sidenotes"><?php echo JText::_('COM_STORE_CONSULT'); ?> <a href="/legal/terms"><?php echo JText::_('COM_STORE_TERMS'); ?></a></p>
 	</div><!-- / #balanceupdate -->
-	
 	<div class="clear"></div>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

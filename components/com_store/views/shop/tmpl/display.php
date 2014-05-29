@@ -31,18 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_STORE_STOREFRONT'); ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>" class="icon-basket shoppingcart btn"><?php echo JText::_('COM_STORE_CART'); ?></a></li>
-	</ul>
-</div>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>" class="icon-basket shoppingcart btn"><?php echo JText::_('COM_STORE_CART'); ?></a></li>
+		</ul>
+	</div>
+</header>
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
-	<div class="main section">
+	<section class="main section">
 		<h3><?php echo JText::_('COM_STORE_SPEND_MERCHANDISE_AND_PREMIUM_SERVICES'); ?></h3>
 <?php
 if ($this->rows) {
@@ -101,5 +101,5 @@ if ($row->category != 'service') {
 <?php } else { ?>
 		<p><?php echo JText::_('COM_STORE_NO_PRODUCTS'); ?></p>
 <?php } ?>
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->
 </form>
