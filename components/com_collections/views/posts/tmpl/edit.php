@@ -75,19 +75,19 @@ if (!$dir)
 	$dir = 'tmp' . time(); // . rand(0, 100);
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_COLLECTIONS'); ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="about btn" href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=about'); ?>">
-				<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
-			</a>
-		</li>
-	</ul>
-</div>
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="about btn" href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=about'); ?>">
+					<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</header>
 
 <form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller); ?>" id="collections">
 	<fieldset class="filters">
@@ -116,7 +116,7 @@ if (!$dir)
 	</fieldset>
 </form>
 
-<div class="main section">
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -230,7 +230,8 @@ if (!$dir)
 			</div><!-- / #post-type-form -->
 
 	<?php if ($this->entry->get('original')) { ?>
-			<div class="group">
+			<div class="grid">
+				<div class="col span6">
 	<?php } ?>
 			<?php if ($this->collections->total() > 0) { ?>
 				<label for="post-collection_id">
@@ -251,6 +252,8 @@ if (!$dir)
 			<?php } ?>
 
 	<?php if ($this->entry->get('original')) { ?>
+				</div>
+				<div class="col span6 omega">
 				<label>
 					<?php echo JText::_(strtoupper($this->option) . '_FIELD_TAGS'); ?>
 					<?php 
@@ -261,8 +264,8 @@ if (!$dir)
 					<?php } ?>
 					<span class="hint"><?php echo JText::_(strtoupper($this->option) . '_FIELD_TAGS_HINT'); ?></span>
 				</label>
+				</div>
 			</div>
-			<div class="clear"></div>
 	<?php } ?>
 		</fieldset>
 
@@ -289,4 +292,4 @@ if (!$dir)
 		<?php } ?>
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

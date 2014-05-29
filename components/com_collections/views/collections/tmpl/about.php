@@ -35,47 +35,47 @@ $this->css();
 
 $base = 'index.php?option=' . $this->option;
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_COLLECTIONS'); ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
-				<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
-			</a>
-		</li>
-	</ul>
-</div>
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
+					<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</header>
 
 <form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
 	<fieldset class="filters">
 		<div class="filters-inner">
-		<ul>
-			<li>
-				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->total); ?></span>
-				</a>
-			</li>
-		</ul>
-		<div class="clear"></div>
-		<p>
-			<label for="filter-search">
-				<span><?php echo JText::_('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
-				<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COLLECTIONS_SEARCH_PLACEHOLDER'); ?>" />
-			</label>
-			<input type="submit" class="filter-submit" value="<?php echo JText::_('COM_COLLECTIONS_GO'); ?>" />
-		</p>
+			<ul>
+				<li>
+					<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
+						<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
+					</a>
+				</li>
+				<li>
+					<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
+						<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->total); ?></span>
+					</a>
+				</li>
+			</ul>
+			<div class="clear"></div>
+			<p>
+				<label for="filter-search">
+					<span><?php echo JText::_('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
+					<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COLLECTIONS_SEARCH_PLACEHOLDER'); ?>" />
+				</label>
+				<input type="submit" class="filter-submit" value="<?php echo JText::_('COM_COLLECTIONS_GO'); ?>" />
+			</p>
 		</div>
 	</fieldset>
 
-	<div class="main section about">
+	<section class="main section about">
 
 		<p class="tagline"><?php echo JText::_('COM_COLLECTIONS_TAGLINE'); ?></p>
 
@@ -114,5 +114,5 @@ $base = 'index.php?option=' . $this->option;
 			</p>
 		</div>
 
-	</div>
+	</section>
 </form>

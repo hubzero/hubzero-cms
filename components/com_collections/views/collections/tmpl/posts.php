@@ -49,19 +49,19 @@ $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option;
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_COLLECTIONS'); ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=about'); ?>">
-				<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
-			</a>
-		</li>
-	</ul>
-</div>
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=about'); ?>">
+					<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</header>
 
 <form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
 	<fieldset class="filters">
@@ -89,7 +89,7 @@ $base = 'index.php?option=' . $this->option;
 		</div><!-- / .filters-inner -->
 	</fieldset>
 
-	<div class="main section">
+	<section class="main section">
 		<div id="posts" data-base="<?php echo JURI::base(true); ?>">
 <?php 
 if ($this->rows->total() > 0) 
@@ -200,5 +200,5 @@ else
 		</div><!-- / #posts -->
 		<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
 		<div class="clear"></div>
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->
 </form>
