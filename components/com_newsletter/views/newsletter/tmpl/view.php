@@ -32,36 +32,48 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
-	
-<div id="content-header-extra">
-	<ul>
-		<?php if (isset($this->id) && $this->id != 0) : ?>
+
+	<div id="content-header-extra">
+		<ul>
+			<?php if (isset($this->id) && $this->id != 0) : ?>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn icon-file">Save as PDF</a>
+				</li>
+			<?php endif; ?>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn icon-file">Save as PDF</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn icon-feed">Subscribe To Mailing Lists</a>
 			</li>
+		</ul>
+	</div>
+</header>
+
+<section class="main section">
+	<div class="subject newsletter">
+		<?php
+			if ($this->getError())
+			{
+				echo '<p class="error">' . $this->getError() . '</p>';
+			}
+		?>
+
+		<?php if ($this->newsletter != '') : ?>
+			<div class="container">
+				<iframe id="newsletter-iframe" width="100%" height="0" src="index.php?option=com_newsletter&amp;id=<?php echo $this->id; ?>&amp;no_html=1"></iframe>
+			</div>
+		<?php else : ?>
+			<p class="info">
+				<?php echo JText::_('Currently there are no HUB newsletters.'); ?>
+			</p>
 		<?php endif; ?>
-		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn icon-feed">Subscribe To Mailing Lists</a>
-		</li>
-	</ul>
-</div>
-	
-<div class="main section">
-	<?php
-		if ($this->getError())
-		{
-			echo '<p class="error">' . $this->getError() . '</p>';
-		}
-	?>
-	<div class="aside">
+	</div><!-- /.subject -->
+	<aside class="aside">
 		<div class="container">
 			<h3>Past Newsletters &amp; Updates</h3>
 			<ul>
-				<?php foreach($this->newsletters as $newsletter) : ?>
-					<?php if($newsletter->published) : ?>
+				<?php foreach ($this->newsletters as $newsletter) : ?>
+					<?php if ($newsletter->published) : ?>
 						<li>
 							<a class="<?php if ($this->id == $newsletter->id) { echo "active"; } ?>" href="<?php echo JRoute::_('index.php?option=com_newsletter&id='.$newsletter->id); ?>">
 								<?php echo $newsletter->name; ?>
@@ -79,17 +91,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</li>
 			</ul>
 		</div>
-	</div><!-- /.aside -->
-	
-	<div class="subject newsletter">
-		<?php if ($this->newsletter != '') : ?>
-			<div class="container">
-				<iframe id="newsletter-iframe" width="100%" height="0" src="index.php?option=com_newsletter&amp;id=<?php echo $this->id; ?>&amp;no_html=1"></iframe>
-			</div>
-		<?php else : ?>
-			<p class="info">
-				<?php echo JText::_('Currently there are no HUB newsletters.'); ?>
-			</p>
-		<?php endif; ?>
-	</div><!-- /.subject -->
-</div><!-- /.main .section -->
+	</aside><!-- /.aside -->
+</section><!-- /.main .section -->

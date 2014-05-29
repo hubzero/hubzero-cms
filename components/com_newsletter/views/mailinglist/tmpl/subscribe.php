@@ -33,28 +33,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 $mylistIds = array();
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=com_newsletter'); ?>">
-				<?php echo JText::_('COM_NEWSLETTER_BROWSE'); ?>
-			</a>
-		</li>
-	</ul>
-</div>
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=com_newsletter'); ?>">
+					<?php echo JText::_('COM_NEWSLETTER_BROWSE'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
+</header>
 
-<div class="main section">
+<section class="main section">
 	<?php
 		if ($this->getError())
 		{
 			echo '<p class="error">' . $this->getError() . '</p>';
 		}
 	?>
-	<div class="subject subscribe">
+	<div class="subscribe">
 		<form action="index.php" method="post" id="hubForm">
 			<?php if (count($this->mylists) > 0) : ?>
 				<fieldset>
@@ -122,4 +122,4 @@ $mylistIds = array();
 			<input type="hidden" name="task" value="domultisubscribe" />
 		</form>
 	</div>
-</div>
+</section>
