@@ -75,10 +75,10 @@ $lang->load('tpl_' . $this->template);
 				</h1>
 			</header>
 
-			<section id="content" class="<?php echo 'code' . $this->error->getCode(); ?>" role="main">
+			<main id="content" class="<?php echo 'code' . $this->error->getCode(); ?>" role="main">
 				<div class="inner">
 
-					<div class="main section">
+					<section class="main section">
 						<div class="grid">
 							<div class="col span6">
 								<div id="errormessage">
@@ -123,7 +123,7 @@ $lang->load('tpl_' . $this->template);
 								</div><!-- / #errorbox -->
 							</div><!-- / .two columns second -->
 						</div>
-					</div><!-- / .main section -->
+					</section><!-- / .main section -->
 
 				<?php if ($this->debug) { ?>
 					<footer id="footer">
@@ -136,7 +136,7 @@ $lang->load('tpl_' . $this->template);
 					</footer><!-- / #footer -->
 				<?php } ?>
 				</div><!-- / .inner -->
-			</section><!-- / #content -->
+			</main><!-- / #content -->
 		</div><!-- / #wrap -->
 
 	</body>
