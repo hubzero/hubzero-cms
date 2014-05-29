@@ -538,6 +538,23 @@
 	right: 0;
 	border-right: 1px solid #CCCCCC;
 }
+.gradebook-container .slidable-outer.nodata {
+	background: #F1F1F1 url('/components/com_courses/assets/img/light-stripes.png');
+	border-top: 1px solid #CCCCCC;
+}
+.gradebook-container .slidable-outer.nodata:before {
+	content: "No data currently available";
+	font-size: 1.3em;
+	font-style: italic;
+	color: #AAAAAA;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -100px;
+	margin-top: -10px;
+	height: 20px;
+	width: 200px;
+}
 .gradebook-container .slidable {
 	position: absolute;
 	top: 0;
