@@ -34,15 +34,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -82,4 +82,4 @@ $this->css()
 			</a>
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
