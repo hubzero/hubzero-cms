@@ -57,13 +57,28 @@ $asset  = new CoursesTableAsset(JFactory::getDBO());
 $assets = $asset->find(
 	array(
 		'w' => array(
-			'course_id'  => $this->course->get('id'),
-			'section_id' => $this->course->offering()->section()->get('id'),
-			'graded'     => true,
-			'state'      => 1
+			'course_id'   => $this->course->get('id'),
+			'section_id'  => $this->course->offering()->section()->get('id'),
+			'offering_id' => $this->course->offering()->get('id'),
+			'graded'      => true,
+			'state'       => 1
 		)
 	)
 );
+
+// Get gradebook auxiliary assets
+$auxiliary = $asset->findByScope(
+	'offering',
+	$this->course->offering()->get('id'),
+	array(
+		'asset_type'    => 'gradebook',
+		'asset_subtype' => 'auxiliary',
+		'graded'        => true,
+		'state'         => 1
+	)
+);
+
+$assets = array_merge($assets, $auxiliary);
 
 foreach($assets as $asset)
 {
