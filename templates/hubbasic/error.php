@@ -63,6 +63,10 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/hub.jquery.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/modules/mod_reportproblems/mod_reportproblems.js"></script>
 
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+		<![endif]-->
+
 		<!--[if IE 9]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
@@ -76,7 +80,6 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 	<body>
 		<?php \Hubzero\Module\Helper::displayModules('notices'); ?>
 		<div id="top">
-			<a name="top"></a>
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
 			<p id="tab">
 				<a href="/support/" title="Need help? Send a trouble report to our support team.">
@@ -85,12 +88,11 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			</p>
 			<div class="clear"></div>
 		</div><!-- / #top -->
-	
+
 		<?php \Hubzero\Module\Helper::displayModules('helppane'); ?>
-	
-		<div id="header">
+
+		<header id="header">
 			<div id="header-wrap">
-				<a name="header"></a>
 				<h1>
 					<a href="." title="<?php echo $config->getValue('config.sitename'); ?>">
 						<?php echo $config->getValue('config.sitename'); ?> 
@@ -114,26 +116,24 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a></li>
 <?php } ?>
 				</ul>
-		
+
 				<?php \Hubzero\Module\Helper::displayModules('search'); ?>
 			</div><!-- / #header-wrap -->
-		</div><!-- / #header -->
-	
-		<div id="nav">
-			<a name="nav"></a>
+		</header><!-- / #header -->
+
+		<nav id="nav">
 			<h2>Navigation</h2>
 			<?php \Hubzero\Module\Helper::displayModules('user3'); ?>
 			<div class="clear"></div>
-		</div><!-- / #nav -->
+		</nav><!-- / #nav -->
 
 		<div id="trail">
 			<?php \Hubzero\Module\Helper::displayModules('breadcrumbs'); ?>
 		</div><!-- / #trail -->
 
 		<div id="wrap">
-			<div id="content" class="<?php echo JRequest::getCmd('option', ''); ?>">
+			<main id="content" class="<?php echo JRequest::getCmd('option', ''); ?>">
 				<div id="content-wrap">
-					<a name="content"></a>
 
 					<div id="outline">
 						<div id="errorbox" class="code-<?php echo $this->error->getCode(); ?>">
@@ -175,15 +175,14 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					</div>
 <?php } ?>
 				</div><!-- / #content-wrap -->
-			</div><!-- / #content -->
+			</main><!-- / #content -->
 		</div><!-- / #wrap -->
-	
-		<div id="footer">
-			<a name="footer"></a>
+
+		<footer id="footer">
 			<!-- Start footer modules output -->
 			<?php \Hubzero\Module\Helper::displayModules('footer'); ?>
 			<!-- End footer modules output -->
-		</div><!-- / #footer -->
+		</footer><!-- / #footer -->
 		<jdoc:include type="modules" name="endpage" />
 	</body>
 </html>

@@ -80,7 +80,6 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 	<body <?php if ($this->countModules('banner or welcome')) { echo 'class="frontpage"'; } ?>>
 		<jdoc:include type="modules" name="notices" />
 		<div id="top">
-			<a name="top"></a>
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
 <?php if ($this->countModules('helppane')) : ?>
 			<p id="tab">
@@ -91,10 +90,10 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <?php endif; ?>
 			<div class="clear"></div>
 		</div><!-- / #top -->
-	
+
 		<jdoc:include type="modules" name="helppane" />
-	
-		<div id="header">
+
+		<header id="header">
 			<div id="header-wrap">
 				<a name="header"></a>
 				<h1>
@@ -124,17 +123,16 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a></li>
 <?php } ?>
 				</ul>
-		
+
 				<jdoc:include type="modules" name="search" />
 			</div><!-- / #header-wrap -->
-		</div><!-- / #header -->
-	
-		<div id="nav">
-			<a name="nav"></a>
+		</header><!-- / #header -->
+
+		<nav id="nav">
 			<h2>Navigation</h2>
 			<jdoc:include type="modules" name="user3" />
 			<div class="clear"></div>
-		</div><!-- / #nav -->
+		</nav><!-- / #nav -->
 
 <?php if ($this->countModules('banner or welcome') && $option == 'com_content') : ?>
 		<div id="home-splash">
@@ -159,44 +157,49 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <?php endif; ?>
 
 		<div id="wrap">
-			<div id="content" class="<?php echo JRequest::getCmd('option'); ?>">
+			<main id="content" class="<?php echo JRequest::getCmd('option'); ?>">
 				<div id="content-wrap">
 					<?php if ($this->getBuffer('message')) : ?>
 						<jdoc:include type="message" />
 					<?php endif; ?>
-					<a name="content"></a>
-<?php if ($this->countModules('left')) : ?>
-					<div class="main section withleft">
-						<div class="aside">
-							<jdoc:include type="modules" name="left" />
-						</div><!-- / .aside -->
-						<div class="subject">
-<?php endif; ?>
-<?php if ($this->countModules('right')) : ?>
-					<div class="main section">
-						<div class="aside">
-							<jdoc:include type="modules" name="right" />
-						</div><!-- / .aside -->
-						<div class="subject">
-<?php endif; ?>
-					<!-- Start component output -->
-					<jdoc:include type="component" />
-					<!-- End component output -->
-<?php if ($this->countModules('left or right')) : ?>
-						</div><!-- / .subject -->
-						<div class="clear"></div>
-					</div><!-- / .main section -->
-<?php endif; ?>
+					<?php if ($this->countModules('left or right')) : ?>
+						<section class="main section">
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="left" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+					<?php if ($this->countModules('left or right')) : ?>
+							<div class="subject">
+					<?php endif; ?>
+
+								<!-- start component output -->
+								<jdoc:include type="component" />
+								<!-- end component output -->
+
+					<?php if ($this->countModules('left or right')) : ?>
+							</div><!-- / .subject -->
+					<?php endif; ?>
+					<?php if ($this->countModules('right')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="right" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left or right')) : ?>
+						</section><!-- / .main section -->
+					<?php endif; ?>
 				</div><!-- / #content-wrap -->
-			</div><!-- / #content -->
+			</main><!-- / #content -->
 		</div><!-- / #wrap -->
-	
-		<div id="footer">
-			<a name="footer"></a>
+
+		<footer id="footer">
 			<!-- Start footer modules output -->
 			<jdoc:include type="modules" name="footer" />
 			<!-- End footer modules output -->
-		</div><!-- / #footer -->
+		</footer><!-- / #footer -->
 		<jdoc:include type="modules" name="endpage" />
 	</body>
 </html>
