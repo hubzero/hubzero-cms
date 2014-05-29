@@ -33,27 +33,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig = JFactory::getConfig();
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div id="introduction" class="section">
-	<div class="aside">
-		<h3><?php echo JText::_('COM_FEEDBACK_PARTICIPATE'); ?></h3>
-		<ul>
-			<li><a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>"><?php echo JText::_('COM_FEEDBACK_LINK_ANSWERS'); ?></a></li>
-			<li><a href="<?php echo JRoute::_('index.php?option=com_forum'); ?>"><?php echo JText::_('COM_FEEDBACK_LINK_FORUM'); ?></a></li>
-			<li><a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>"><?php echo JText::_('COM_FEEDBACK_LINK_GROUPS'); ?></a></li>
-		</ul>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<h3><?php echo JText::_('COM_FEEDBACK_HAVE_SOMETHING_TO_SAY'); ?></h3>
-		<p><?php echo JText::sprintf('COM_FEEDBACK_INTRO', $jconfig->getValue('config.sitename')); ?></p>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / #introduction.section -->
+<section id="introduction" class="section">
+	<div class="grid">
+		<div class="col span8">
+			<h3><?php echo JText::_('COM_FEEDBACK_HAVE_SOMETHING_TO_SAY'); ?></h3>
+			<p><?php echo JText::sprintf('COM_FEEDBACK_INTRO', $jconfig->getValue('config.sitename')); ?></p>
+		</div><!-- / .subject -->
+		<div class="col span4 omega">
+			<h3><?php echo JText::_('COM_FEEDBACK_PARTICIPATE'); ?></h3>
+			<ul>
+				<li><a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>"><?php echo JText::_('COM_FEEDBACK_LINK_ANSWERS'); ?></a></li>
+				<li><a href="<?php echo JRoute::_('index.php?option=com_forum'); ?>"><?php echo JText::_('COM_FEEDBACK_LINK_FORUM'); ?></a></li>
+				<li><a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>"><?php echo JText::_('COM_FEEDBACK_LINK_GROUPS'); ?></a></li>
+			</ul>
+		</div><!-- / .aside -->
+	</div>
+</section><!-- / #introduction.section -->
 
-<div class="section">
+<section class="section">
 	<div class="grid">
 		<div class="col span3">
 			<h2><?php echo JText::_('COM_FEEDBACK_WAYS_TO_SUBMIT'); ?></h2>
@@ -75,7 +76,7 @@ $jconfig = JFactory::getConfig();
 					</div>
 				</div><!-- / .col span6 omega -->
 			</div><!-- / .grid -->
-<?php if ($this->wishlist || $this->xpoll) { ?>
+		<?php if ($this->wishlist || $this->xpoll) { ?>
 			<div class="grid">
 				<div class="col span6">
 				<?php if ($this->wishlist) { ?>
@@ -96,7 +97,7 @@ $jconfig = JFactory::getConfig();
 				<?php } ?>
 				</div><!-- / .col span6 omega -->
 			</div><!-- / .grid -->
-<?php } ?>
+		<?php } ?>
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
-</div><!-- / .section -->
+</section><!-- / .section -->

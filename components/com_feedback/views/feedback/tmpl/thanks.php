@@ -63,24 +63,24 @@ else
 	$mh = $oh;
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+					<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
+<section class="main section">
 	<p class="passed"><?php echo JText::_('COM_FEEDBACK_STORY_THANKS'); ?></p>
-	
-	<table class="storybox" summary="<?php echo JText::_('COM_FEEDBACK_SUCCESS_STORY_OVERVIEW'); ?>">
+
+	<table class="storybox">
 		<tbody>
 			<tr>
 				<td><img src="<?php echo $img; ?>" width="<?php echo $mw; ?>" height="<?php echo $mh; ?>" alt="" /></td>
@@ -96,4 +96,4 @@ else
 			</tr>
 		</tbody>
 	</table>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

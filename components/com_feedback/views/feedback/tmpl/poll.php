@@ -33,21 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.module.helper');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+					<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
+<section class="main section">
 	<h3><?php echo JText::_('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo JText::_('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>
 	
 <?php if (count(JModuleHelper::isEnabled('mod_poll')) > 0) { ?>
@@ -57,5 +57,5 @@ jimport('joomla.application.module.helper');
 <?php } else { ?>
 	<p class="warning"><?php echo JText::_('COM_FEEDBACK_NO_ACTIVE_POLLS'); ?></p>
 <?php } ?>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
 

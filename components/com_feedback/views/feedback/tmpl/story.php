@@ -33,21 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig = JFactory::getConfig();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+					<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_FIELDS'); ?></p>
 <?php } ?>
@@ -84,9 +84,9 @@ $jconfig = JFactory::getConfig();
 				<?php echo JText::_('COM_FEEDBACK_STORY_DESCRIPTION'); ?>
 				<textarea name="fields[quote]" id="quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
 			</label>
-<?php if ($this->getError() && $this->row->quote == '') { ?>
+		<?php if ($this->getError() && $this->row->quote == '') { ?>
 			<p class="error"><?php echo JText::_('COM_FEEDBACK_STORY_MISSING_DESCRIPTION'); ?></p>
-<?php } ?>
+		<?php } ?>
 
 			<label for="publish_ok">
 				<input type="checkbox" name="fields[publish_ok]" id="publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) { echo ' checked="checked"'; } ?> />
@@ -107,4 +107,4 @@ $jconfig = JFactory::getConfig();
 			</a>
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
