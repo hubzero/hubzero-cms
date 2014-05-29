@@ -1200,6 +1200,7 @@ HUB.Plugins.CoursesProgress = {
 			'margin-right' : 0,
 			'margin-left'  : 0
 		});
+		$('.slidable-outer').removeClass('nodata');
 
 		// Calculate width of each column (range 100 - 150 px)
 		var w      = $('.slidable-outer').width(),
@@ -1226,10 +1227,14 @@ HUB.Plugins.CoursesProgress = {
 		// Check if all columns are showing and disable next button as necessary
 		if (offset <= 0) {
 			$('.nxt').addClass('disabled');
-			$('.main-container').css({
-				'margin-right' : ((offset*-1)/2)+'px',
-				'margin-left'  : ((offset*-1)/2)+'px'
-			});
+			if (rowCnt > 0) {
+				$('.main-container').css({
+					'margin-right' : ((offset*-1)/2)+'px',
+					'margin-left'  : ((offset*-1)/2)+'px'
+				});
+			} else {
+				$('.slidable-outer').addClass('nodata');
+			}
 			$('.navigation').fadeOut();
 		} else {
 			$('.nxt').removeClass('disabled');
