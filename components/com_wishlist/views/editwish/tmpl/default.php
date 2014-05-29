@@ -61,20 +61,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		$wish->about = trim(stripslashes($wish->about));
 ?>
-	<div id="content-header">
+	<header id="content-header">
 		<h2><?php echo $this->escape($this->title); ?></h2>
-	</div>
-	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a class="icon-wish nav_wishlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category='. $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
-					<?php echo JText::_('COM_WISHLIST_WISHES_ALL'); ?>
-				</a>
-			</li>
-		</ul>
-	</div><!-- / #content-header-extra -->
 
-	<div class="main section">
+		<div id="content-header-extra">
+			<ul id="useroptions">
+				<li class="last">
+					<a class="icon-wish nav_wishlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category='. $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
+						<?php echo JText::_('COM_WISHLIST_WISHES_ALL'); ?>
+					</a>
+				</li>
+			</ul>
+		</div><!-- / #content-header-extra -->
+	</header>
+
+	<section class="main section">
 		<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 			<?php if ($this->getError()) { ?>
 				<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -88,71 +89,69 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</p>
 				<?php } ?>
 			</div><!-- / .aside -->
-				<fieldset>
-			<?php if ($task == 'editwish') { ?>
+			<fieldset>
+		<?php if ($task == 'editwish') { ?>
+				<label>
+					<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?>: <span class="required"><?php echo JText::_('COM_WISHLIST_REQUIRED'); ?></span>
+					<input name="by" maxlength="50" id="by" type="text" value="<?php echo $login; ?>" />
+				</label>
+		<?php } ?>
+				<input type="hidden" id="proposed_by" name="proposed_by" value="<?php echo $wish->proposed_by; ?>" />
+				<label>
+					<input class="option" type="checkbox" name="anonymous" value="1" <?php echo ($wish->anonymous) ? 'checked="checked"' : ''; ?>/> 
+					<?php echo JText::_('COM_WISHLIST_WISH_POST_ANONYMOUSLY'); ?>
+				</label>
+		<?php if ($admin == 2 && $wishlist->public) { // list owner ?>
 					<label>
-						<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?>: <span class="required"><?php echo JText::_('COM_WISHLIST_REQUIRED'); ?></span>
-						<input name="by" maxlength="50" id="by" type="text" value="<?php echo $login; ?>" />
-					</label>
-			<?php } ?>
-					<input type="hidden" id="proposed_by" name="proposed_by" value="<?php echo $wish->proposed_by; ?>" />
-					<label>
-						<input class="option" type="checkbox" name="anonymous" value="1" <?php echo ($wish->anonymous) ? 'checked="checked"' : ''; ?>/> 
-						<?php echo JText::_('COM_WISHLIST_WISH_POST_ANONYMOUSLY'); ?>
-					</label>
-			<?php if ($admin == 2 && $wishlist->public) { // list owner ?>
- 					<label>
-						<input class="option" type="checkbox" name="private" value="1" <?php echo ($wish->private) ? 'checked="checked"' : ''; ?>/>
-						<?php echo JText::_('COM_WISHLIST_WISH_MAKE_PRIVATE'); ?>
-					</label>
-			<?php } ?>
-					<input type="hidden"  name="task" value="savewish" />
-					<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $wishlist->id; ?>" />
-					<input type="hidden" id="status" name="status" value="<?php echo $wish->status; ?>" />
-					<input type="hidden" id="id" name="id" value="<?php echo $wish->id; ?>" />
-					
-					<label for="subject">
-						<?php echo JText::_('COM_WISHLIST_SUMMARY_OF_WISH'); ?> <span class="required"><?php echo JText::_('COM_WISHLIST_REQUIRED'); ?></span>
-						<input name="subject" maxlength="120" id="subject" type="text" value="<?php echo $wish->subject; ?>" />
-					</label>
-					<label for="field_about">
-						<?php echo JText::_('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>: 
-						<?php
-						$model = new WishlistModelWish($wish);
-
-						echo JFactory::getEditor()->display('about', $this->escape($model->content('raw')), '', '', 35, 10, false, 'field_about', null, null, array('class' => 'minimal no-footer'));
-						?>
-					</label>
-					<label>
-						<?php echo JText::_('COM_WISHLIST_WISH_ADD_TAGS'); ?>: <br />
-			<?php 
-			// Tag editor plug-in
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher = JDispatcher::getInstance();
-			$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $wish->tags)) );
-			if (count($tf) > 0) {
-				echo $tf[0];
-			} else { ?>
-						<textarea name="tags" id="tags-men" rows="6" cols="35"><?php echo $wish->tags; ?></textarea>
-			<?php } ?>
-					</label>
-			<?php if ($this->banking && $task != 'editwish') { ?>
-					<label>
-						<?php echo JText::_('COM_WISHLIST_ASSIGN_REWARD'); ?>:<br />
-						<input type="text" name="reward" value="" size="5"<?php if ($funds <= 0 ) { echo ' disabled="disabled" style="background:#e2e2e2;"'; } ?> /> 
-						<span class="subtext"><?php echo JText::_('COM_WISHLIST_YOU_HAVE'); ?> <strong><?php echo $funds; ?></strong> <?php echo JText::_('COM_WISHLIST_POINTS_TO_SPEND'); ?>.</span>
-					</label>
-					<input type="hidden"  name="funds" value="<?php echo $funds; ?>" />
-			<?php } ?>
-					
-				</fieldset>
-				<div class="clear"></div>
+					<input class="option" type="checkbox" name="private" value="1" <?php echo ($wish->private) ? 'checked="checked"' : ''; ?>/>
+					<?php echo JText::_('COM_WISHLIST_WISH_MAKE_PRIVATE'); ?>
+				</label>
+		<?php } ?>
+				<input type="hidden"  name="task" value="savewish" />
+				<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $wishlist->id; ?>" />
+				<input type="hidden" id="status" name="status" value="<?php echo $wish->status; ?>" />
+				<input type="hidden" id="id" name="id" value="<?php echo $wish->id; ?>" />
 				
-				<p class="submit"><input type="submit" id="send-wish" value="<?php echo JText::_('COM_WISHLIST_FORM_SUBMIT'); ?>" /></p>
-			</form>
+				<label for="subject">
+					<?php echo JText::_('COM_WISHLIST_SUMMARY_OF_WISH'); ?> <span class="required"><?php echo JText::_('COM_WISHLIST_REQUIRED'); ?></span>
+					<input name="subject" maxlength="120" id="subject" type="text" value="<?php echo $wish->subject; ?>" />
+				</label>
+				<label for="field_about">
+					<?php echo JText::_('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>: 
+					<?php
+					$model = new WishlistModelWish($wish);
 
-		
-	</div><!-- / .main section -->
+					echo JFactory::getEditor()->display('about', $this->escape($model->content('raw')), '', '', 35, 10, false, 'field_about', null, null, array('class' => 'minimal no-footer'));
+					?>
+				</label>
+				<label>
+					<?php echo JText::_('COM_WISHLIST_WISH_ADD_TAGS'); ?>: <br />
+		<?php 
+		// Tag editor plug-in
+		JPluginHelper::importPlugin( 'hubzero' );
+		$dispatcher = JDispatcher::getInstance();
+		$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $wish->tags)) );
+		if (count($tf) > 0) {
+			echo $tf[0];
+		} else { ?>
+					<textarea name="tags" id="tags-men" rows="6" cols="35"><?php echo $wish->tags; ?></textarea>
+		<?php } ?>
+				</label>
+		<?php if ($this->banking && $task != 'editwish') { ?>
+				<label>
+					<?php echo JText::_('COM_WISHLIST_ASSIGN_REWARD'); ?>:<br />
+					<input type="text" name="reward" value="" size="5"<?php if ($funds <= 0 ) { echo ' disabled="disabled" style="background:#e2e2e2;"'; } ?> /> 
+					<span class="subtext"><?php echo JText::_('COM_WISHLIST_YOU_HAVE'); ?> <strong><?php echo $funds; ?></strong> <?php echo JText::_('COM_WISHLIST_POINTS_TO_SPEND'); ?>.</span>
+				</label>
+				<input type="hidden"  name="funds" value="<?php echo $funds; ?>" />
+		<?php } ?>
+				
+			</fieldset>
+			<div class="clear"></div>
+			
+			<p class="submit"><input type="submit" id="send-wish" value="<?php echo JText::_('COM_WISHLIST_FORM_SUBMIT'); ?>" /></p>
+		</form>
+	</section><!-- / .main section -->
 	<?php } else { ?>
 	<p class="error"><?php echo JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'); ?></p>
 	<?php } ?>

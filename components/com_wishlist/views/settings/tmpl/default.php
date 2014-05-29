@@ -42,28 +42,28 @@ defined('_JEXEC') or die('Restricted access');
 
 		// Can't view wishes on a private list if not list admin
 	if (!$wishlist->public && $admin!= 2) { ?>
-		<div id="content-header">
+		<header id="content-header">
 			<h2><?php echo JText::_('COM_WISHLIST_PRIVATE_LIST'); ?></h2>
-		</div><!-- / #content-header -->
-		<div class="main section">
+		</header><!-- / #content-header -->
+		<section class="main section">
 			<p class="error"><?php echo JText::_('COM_WISHLIST_ALERTNOTAUTH_PRIVATE_LIST'); ?></p>
-		</div><!-- / .main section -->
+		</section><!-- / .main section -->
 	<?php } else { ?>
-		<div id="content-header">
+		<header id="content-header">
 			<h2><?php echo $this->title; ?></h2>
-		</div><!-- / #content-header -->
 
-		<div id="content-header-extra">
-			<ul id="useroptions">
-				<li class="last">
-					<a class="icon-wish nav_wishlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
-						<?php echo JText::_('COM_WISHLIST_WISHES_ALL'); ?>
-					</a>
-				</li>
-			</ul>
-		</div><!-- / #content-header-extra -->
+			<div id="content-header-extra">
+				<ul id="useroptions">
+					<li class="last">
+						<a class="icon-wish nav_wishlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
+							<?php echo JText::_('COM_WISHLIST_WISHES_ALL'); ?>
+						</a>
+					</li>
+				</ul>
+			</div><!-- / #content-header-extra -->
+		</header><!-- / #content-header -->
 
-		<div class="main section">
+		<section class="main section">
 			<form id="hubForm" method="post"  action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=savesettings&listid=' . $wishlist->id); ?>">
 				<div class="explaination">
 					<p><?php echo JText::_('COM_WISHLIST_SETTINGS_INFO'); ?></p>
@@ -287,13 +287,13 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } // -- end if allow advisory ?>
 
 				<p class="submit">
-					<input type="submit" name="submit" value="<?php echo JText::_('COM_WISHLIST_SAVE'); ?>" />
+					<input class="btn btn-success" type="submit" name="submit" value="<?php echo JText::_('COM_WISHLIST_SAVE'); ?>" />
 					<span class="cancelaction">
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
+						<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
 							<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>
 						</a>
 					</span>
 				</p>
 			</form>
-		</div>
+		</section>
 	<?php } // end if authorized ?>
