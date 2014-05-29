@@ -31,12 +31,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
-<div class="main section" id="statistics">
-	
+<section class="main section" id="statistics">
+
 	<table class="activeusers">
 		<caption><?php echo JText::_('COM_MEMBERS_ACTIVITY_TABLE1'); ?></caption>
 		<thead>
@@ -164,4 +164,4 @@ defined('_JEXEC') or die('Restricted access');
 		</tbody>
 	</table>
 
-</div><!-- / .section -->
+</section><!-- / .section -->

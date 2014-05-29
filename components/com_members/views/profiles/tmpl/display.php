@@ -32,58 +32,59 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<?php if ($this->juser->get('guest')) { ?>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>"><?php echo JText::_('Join now!'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
-<?php } ?>
+	<?php if ($this->juser->get('guest')) { ?>
+		<div id="content-header-extra">
+			<ul id="useroptions">
+				<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>"><?php echo JText::_('Join now!'); ?></a></li>
+			</ul>
+		</div><!-- / #content-header-extra -->
+	<?php } ?>
+</header>
 
-<div id="introduction" class="section">
-	<div class="aside">
-		<ul>
-			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">Forgot your username?</a>
-			</li>
-			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">Forgot your password?</a>
-			</li>
-			<li>
-				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=members'); ?>">Need Help?</a>
-			</li>
-			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">Groups</a>
-			</li>
-		</ul>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="grid">
-			<div class="col span6">
-				<h3>Why be a member?</h3>
-				<p>As a member, you instantly become part of a community designed
-				for you and your colleagues.  Being part of the community provides quick and easy access to share knowledge with
-				fellow researchers around the world helping you achieve more of your
-				goals.  Membership is free, get started today!</p>
-			</div><!-- / .col span6 -->
-			<div class="col span6 omega">
-				<h3>How do I become a member?</h3>
-				<p>To become a member, click on the register link at the top of the page,
-				create a username and password, and complete the rest of the form.  After
-				submitting, you will receive a confirmation email momentarily; please
-				follow the instructions within.  You are now part of the unique experience
-				that is the HUB!</p>
-			</div><!-- / .col span6 -->
-		</div><!-- / .grid -->
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / #introduction.section -->
+<section id="introduction" class="section">
+	<div class="grid">
+		<div class="col span9">
+			<div class="grid">
+				<div class="col span6">
+					<h3>Why be a member?</h3>
+					<p>As a member, you instantly become part of a community designed
+					for you and your colleagues.  Being part of the community provides quick and easy access to share knowledge with
+					fellow researchers around the world helping you achieve more of your
+					goals.  Membership is free, get started today!</p>
+				</div><!-- / .col span6 -->
+				<div class="col span6 omega">
+					<h3>How do I become a member?</h3>
+					<p>To become a member, click on the register link at the top of the page,
+					create a username and password, and complete the rest of the form.  After
+					submitting, you will receive a confirmation email momentarily; please
+					follow the instructions within.  You are now part of the unique experience
+					that is the HUB!</p>
+				</div><!-- / .col span6 -->
+			</div>
+		</div>
+		<div class="col span3 omega">
+			<ul>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">Forgot your username?</a>
+				</li>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">Forgot your password?</a>
+				</li>
+				<li>
+					<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=members'); ?>">Need Help?</a>
+				</li>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">Groups</a>
+				</li>
+			</ul>
+		</div>
+	</div><!-- / .grid -->
+</section><!-- / #introduction.section -->
 
-<div class="section">
+<section class="section">
 
 	<div class="grid">
 		<div class="col span3">
@@ -201,7 +202,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	else
 	{
 ?>
-		<p>No contributors found. <a href="<?php echo JRoute::_('index.php?option=com_resources&task=new'); ?>">Be the first!</a></p>
+			<p>No contributors found. <a href="<?php echo JRoute::_('index.php?option=com_resources&task=new'); ?>">Be the first!</a></p>
 <?php
 	}
 ?>
@@ -209,4 +210,4 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 <?php } // div class grid ?>
-</div><!-- / .section -->
+</section><!-- / .section -->

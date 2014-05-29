@@ -46,17 +46,16 @@ if (!$surname) {
 	}
 }
 
-$html  = '<div id="content-header">'."\n";
+$html  = '<header id="content-header">'."\n";
 $html .= "\t".'<h2>'.$this->title.'</h2>'."\n";
-$html .= '</div><!-- / #content-header-extra -->'."\n";
-
-
 $html .= '<div id="content-header-extra">'."\n";
 $html .= "\t".'<ul id="useroptions">'."\n";
 $html .= "\t\t".'<li class="last"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=cancel&id='. $this->profile->get('uidNumber')) .'">'.JText::_('CANCEL').'</a></li>'."\n";
 $html .= "\t".'</ul>'."\n";
 $html .= '</div><!-- / #content-header-extra -->'."\n";
-$html .= '<div class="main section">'."\n"; 
+$html .= '</header><!-- / #content-header-extra -->'."\n";
+
+$html .= '<section class="main section">'."\n"; 
 
 
 $html .= "\t".'<form id="hubForm" class="edit-profile" method="post" action="index.php" enctype="multipart/form-data">'."\n";
@@ -704,8 +703,8 @@ $html .= "\t\t".'<legend>'.JText::_('MEMBER_PICTURE').'</legend>'."\n";
 $html .= "\t\t".'<iframe width="100%" height="350" border="0" name="filer" id="filer" src="index.php?option='.$this->option.'&amp;controller=media&amp;tmpl=component&amp;file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('uidNumber').'"></iframe>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 
-$html .= "\t".'<p class="submit"><input type="submit" name="submit" value="'.JText::_('SAVE').'" /></p>'."\n";
+$html .= "\t".'<p class="submit"><input class="btn btn-success" type="submit" name="submit" value="'.JText::_('SAVE').'" /></p>'."\n";
 $html .= '</form>'."\n";
-$html .= '</div>'."\n";
+$html .= '</section>'."\n";
 
 echo $html;

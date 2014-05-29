@@ -30,28 +30,18 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$c_user = 'user';
-}
-else
-{
-	$c_user = 'users';
-}
-
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last"><a class="member btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('My Account'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last"><a class="member btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('My Account'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
+<section class="main section">
 	<?php if ($this->getError()) { ?>
 		<p class="error" id="errors"><?php echo $this->getError(); ?> </p>
 	<?php } else { ?>
@@ -61,54 +51,68 @@ else
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword', true, true); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
-			<p>If you don't remember your current password, you'll have to <a href="<?php echo JRoute::_('index.php?option=com_'.$c_user.'&task=logout&return='.base64_encode('/'.$c_user.'/reset')); ?>">reset your password</a></p>
+			<p>If you don't remember your current password, you'll have to <a href="<?php echo JRoute::_('index.php?option=com_users&task=logout&return='.base64_encode('/users/reset')); ?>">reset your password</a></p>
 		</div>
 		<fieldset>
 			<label<?php echo ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('MEMBER_FIELD_CURRENT_PASS'); ?>
 				<input name="oldpass" id="oldpass" type="password" value="" />
 			</label>
-<?php
-					if ($this->change && !$this->oldpass) {
-						echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
-					}
-					if ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true)) {
-						echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
-					}
-?>
-			<div class="group twoup">
-				
-				<label<?php echo ($this->change && (!$this->newpass || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : ''; ?>>
-					<?php echo JText::_('MEMBER_FIELD_NEW_PASS'); ?>
-					<input name="newpass" id="newpass" type="password" value="" />
-<?php
-					if ($this->change && !$this->newpass) {
-						echo '<span class="error">'.JText::_('MEMBERS_PASS_BLANK').'</span>';
-					}
-?>
-				</label>
+			<?php
+			if ($this->change && !$this->oldpass) 
+			{
+				echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
+			}
+			if ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true)) 
+			{
+				echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
+			}
+			?>
 
-				<label<?php echo ($this->change && (!$this->newpass2 || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : ''; ?>>
-					<?php echo JText::_('MEMBER_FIELD_PASS_CONFIRM'); ?>
-					<input name="newpass2" id="newpass2" type="password" value="" />
-<?php
-					if ($this->change && !$this->newpass2) {
-						echo '<span class="error">'.JText::_('MEMBERS_PASS_MUST_CONFIRM').'</span>';
-					}
-					if ($this->change && $this->newpass && $this->newpass2 && ($this->newpass != $this->newpass2)) {
-						echo '<span class="error">'.JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH').'</span>';
-					}
-?>
-				</label>
+			<div class="grid">
+				<div class="col span6">
+					<label<?php echo ($this->change && (!$this->newpass || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : ''; ?>>
+						<?php echo JText::_('MEMBER_FIELD_NEW_PASS'); ?>
+						<input name="newpass" id="newpass" type="password" value="" />
+						<?php
+						if ($this->change && !$this->newpass) 
+						{
+							echo '<span class="error">'.JText::_('MEMBERS_PASS_BLANK').'</span>';
+						}
+						?>
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label<?php echo ($this->change && (!$this->newpass2 || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : ''; ?>>
+						<?php echo JText::_('MEMBER_FIELD_PASS_CONFIRM'); ?>
+						<input name="newpass2" id="newpass2" type="password" value="" />
+						<?php
+						if ($this->change && !$this->newpass2) 
+						{
+							echo '<span class="error">'.JText::_('MEMBERS_PASS_MUST_CONFIRM').'</span>';
+						}
+						if ($this->change && $this->newpass && $this->newpass2 && ($this->newpass != $this->newpass2)) 
+						{
+							echo '<span class="error">'.JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH').'</span>';
+						}
+						?>
+					</label>
+				</div>
 			</div>
-<?php
-			if (count($this->password_rules) > 0) {
+			<?php
+			if (count($this->password_rules) > 0) 
+			{
 				echo "\t\t<ul id=\"passrules\">\n";
-				foreach ($this->password_rules as $rule) {
-					if (!empty($rule)) {
-						if (is_array($this->validated)) {
+				foreach ($this->password_rules as $rule) 
+				{
+					if (!empty($rule)) 
+					{
+						if (is_array($this->validated)) 
+						{
 							$err = in_array($rule, $this->validated);
-						} else {
+						} 
+						else 
+						{
 							$err = '';
 						}
 
@@ -116,21 +120,24 @@ else
 						echo "\t\t\t<li $mclass>".$rule."</li>\n";
 					}
 				}
-				if (is_array($this->validated)) {
-					foreach ($this->validated as $msg) {
-						if (!in_array($msg,$this->password_rules)) {
+				if (is_array($this->validated)) 
+				{
+					foreach ($this->validated as $msg) 
+					{
+						if (!in_array($msg, $this->password_rules)) 
+						{
 							echo "\t\t\t".'<li class="error">'.$msg."</li>\n";
 						}
 					}
 				}
 				echo "\t\t\t</ul>\n";
 			}
-?>
+		?>
 		</fieldset><div class="clear"></div>
 		<p class="submit">
 			<input type="hidden" id="pass_no_html" name="no_html" value="0" />
 			<input type="hidden" name="change" value="1" />
-			<input name="submit" id="password-change-save" type="submit" value="<?php echo JText::_('CHANGEPASSWORD'); ?>" />
+			<input class="btn btn-success" name="submit" id="password-change-save" type="submit" value="<?php echo JText::_('CHANGEPASSWORD'); ?>" />
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
