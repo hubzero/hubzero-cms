@@ -939,6 +939,16 @@
 		background: #fff;
 		border-bottom: 1px dotted #e1e1e1;
 	}
+	#content.com_content .withmenu {
+		padding-top: 5.2em;
+	}
+	#content.com_content .withmenu .content-header {
+		height: 5.2em;
+		position: absolute;
+		top: -5.2em;
+		left: 0;
+		right: 0;
+	}
 	.com_content .content-header:before,
 	.com_content .content-header:after,
 	#content-header:before,
@@ -1483,7 +1493,7 @@
 		padding: 0;
 	}
 
-/* NOTE: added to some containing div to dictate what side (left or right) an "aside" column will appear. */
+/* NOTE: added to some containing div to dictate what side (left or right) an "aside" column will appear. 
 	.withleft {
 		border: none;
 	}
@@ -1493,12 +1503,12 @@
 	.withleft h2:first-child {
 		margin-top: 0;
 	}
-/* Subjects (with left aside) */
+/* Subjects (with left aside) 
 	.withleft .subject {
 		margin-right: 0;
 		margin-left: 270px;
 	}
-/* Asides (left side) */
+/* Asides (left side) 
 	.withleft .aside {
 		float: left;
 		padding: 0 30px 0 0;
@@ -1506,7 +1516,7 @@
 	/* 
 	Reposition the side fade to the left-hand side 
 	Also, alter the gradient so it fades in the right direction (darker/right to lighter/left)
-	*/
+	
 	.withleft .aside:before {
 		top: 120px;
 		right: auto;
@@ -1540,7 +1550,7 @@
 	.withleft .aside li a span, 
 	.withleft .aside li span span {
 		border: none;
-	}
+	}*/
 
 
 	.subject #hubForm fieldset fieldset {
@@ -1556,9 +1566,9 @@
 	.com_content .heading {
 		padding: 0;
 	}
-	.com_content .withleft .contentpaneopen {
+	/*.com_content .withleft .contentpaneopen {
 		padding: 0;
-	}
+	}*/
 
 	section.section {
 		display: table;
@@ -1576,11 +1586,31 @@
 		margin-right: 0;
 		padding-right: 30px;
 	}
+	section.section .subject .contentpaneopen {
+		padding: 0;
+	}
 	section.section .aside {
 		float: none;
 		display: table-cell;
 		vertical-align: top;
 		width: 210px;
+		padding: 0 30px 0 0;
+	}
+	section.section .aside:before {
+		left: 269px;
+		right: auto;
+		top: 30px;
+	}
+	section.section .aside + .subject {
+		padding-left: 30px;
+		padding-right: 0;
+	}
+	section.section .subject + .aside {
+		padding: 0 0 0 30px;
+	}
+	section.section .subject + .aside:before {
+		left: auto;
+		right: 269px;
 	}
 
 /* Metadata */
@@ -1830,6 +1860,13 @@
 		display: inline;
 		float: none;
 		width: auto;
+	}
+	#hubForm .grid {
+		margin: 0 2em;
+	}
+	#hubForm .grid label {
+		padding-left: 0;
+		padding-right: 0;
 	}
 	#hubForm label em {
 		display: block;

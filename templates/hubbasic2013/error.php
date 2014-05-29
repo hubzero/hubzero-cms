@@ -44,6 +44,10 @@ $v = $browser->major();
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/hub.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/modules/mod_reportproblems/mod_reportproblems.js"></script>
 
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+		<![endif]-->
+
 		<!--[if IE 10]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie10.css" />
 		<![endif]-->
@@ -62,7 +66,7 @@ $v = $browser->major();
 		<?php \Hubzero\Module\Helper::displayModules('helppane'); ?>
 
 		<div id="top">
-			<div id="masthead">
+			<header id="masthead">
 				<div class="inner">
 					<h1>
 						<a href="<?php echo empty($this->baseurl) ? "/" : $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
@@ -117,7 +121,7 @@ $v = $browser->major();
 						<?php \Hubzero\Module\Helper::displayModules('user3'); ?>
 					</div><!-- / #nav -->
 				</div><!-- / .inner -->
-			</div><!-- / #masthead -->
+			</header><!-- / #masthead -->
 
 			<div id="sub-masthead">
 				<div class="inner">
@@ -146,10 +150,10 @@ $v = $browser->major();
 		</div><!-- / #top -->
 
 		<div id="wrap">
-			<div id="content" class="<?php echo JRequest::getCmd('option', ''); ?> <?php echo 'code' . $this->error->getCode(); ?>" role="main">
+			<main id="content" class="<?php echo JRequest::getCmd('option', ''); ?> <?php echo 'code' . $this->error->getCode(); ?>" role="main">
 				<div class="inner">
 
-					<div class="main section">
+					<section class="main section">
 						<div class="grid">
 							<div class="col span-half">
 								<div id="errormessage">
@@ -205,19 +209,19 @@ $v = $browser->major();
 							<?php echo $this->error->getMessage(); ?>
 						</p>
 					<?php } ?>
-					</div><!-- / .main section -->
+					</section><!-- / .main section -->
 
 				<?php if ($this->debug) { ?>
-					<div id="techinfo">
+					<section id="techinfo">
 						<?php echo $this->renderBacktrace(); ?>
-					</div><!-- / #techinfo -->
+					</section><!-- / #techinfo -->
 				<?php } ?>
 				</div><!-- / .inner -->
-			</div><!-- / #content -->
+			</main><!-- / #content -->
 
-			<div id="footer">
+			<footer id="footer">
 				<?php \Hubzero\Module\Helper::displayModules('footer'); ?>
-			</div><!-- / #footer -->
+			</footer><!-- / #footer -->
 		</div><!-- / #wrap -->
 
 		<?php \Hubzero\Module\Helper::displayModules('endpage'); ?>
