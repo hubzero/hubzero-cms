@@ -70,7 +70,7 @@ $next_month->addMonths( +1 );
 $prev = JRoute::_( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
 $next = JRoute::_( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
 
-$content  = '<table class="ecalendar" summary="'.JText::_('EVENTS_CAL_TABLE_SUMMARY').'">'."\n";
+$content  = '<table class="ecalendar">'."\n";
 $content .= ' <caption>';
 if ($this->shownav) {
 	$content .= '<a class="prv" href="'.$prev.'" title="'.JText::_('EVENTS_CAL_LANG_PREVIOUSMONTH').'">&lsaquo;</a> <a class="nxt" href="'.$next.'" title="'.JText::_('EVENTS_CAL_LANG_NEXTMONTH').'">&rsaquo;</a> ';

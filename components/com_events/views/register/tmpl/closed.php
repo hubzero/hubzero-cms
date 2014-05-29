@@ -31,34 +31,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-
-$params = new $paramsClass( $this->event->params );
+$params = new JRegistry( $this->event->params );
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<?php if ($this->authorized) { ?>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
-<?php } ?>
+	<?php if ($this->authorized) { ?>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+	<?php } ?>
+</header><!-- / #content-header -->
 
+<nav>
 	<ul class="sub-menu">
 		<li<?php if ($this->task == 'year') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
 		<li<?php if ($this->task == 'month') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
 		<li<?php if ($this->task == 'week') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day.'&task=week'); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
 		<li<?php if ($this->task == 'day') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
 	</ul>
+</nav>
 
-<div class="main section noaside">
+<section class="main section noaside">
 	<h3><?php echo stripslashes($this->event->title); ?></h3>
 <?php
 		$html  = '<div id="sub-sub-menu">'."\n";
@@ -94,4 +90,4 @@ $params = new $paramsClass( $this->event->params );
 	<form method="post" action="index.php" id="hubForm">
 		<p class="warning"><?php echo JText::_('EVENTS_CLOSED_REGISTRATION'); ?></p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
