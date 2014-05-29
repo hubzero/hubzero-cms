@@ -305,6 +305,50 @@ class CoursesTableAsset extends JTable
 	}
 
 	/**
+	 * Find all assets for a given scope/scope_id
+	 * 
+	 * @param  string $scope
+	 * @param  int    $scope_id
+	 * @param  array  $filters
+	 * @return object Return course assets
+	 */
+	public function findByScope($scope, $scope_id, $filters=array())
+	{
+		$query  = "SELECT DISTINCT ca.*";
+		$query .= " FROM {$this->_tbl} AS ca";
+		$query .= " LEFT JOIN `#__courses_asset_associations` AS caa ON caa.asset_id = ca.id";
+		$query .= " LEFT JOIN `#__courses_{$scope}s` AS scope ON caa.scope_id = scope.id";
+		$query .= " WHERE caa.scope = '{$scope}'";
+		$query .= " AND caa.scope_id = '{$scope_id}'";
+
+		$where = array();
+
+		if (isset($filters['state']) && $filters['state'] >= 0) 
+		{
+			$where[] = "ca.state=" . $this->_db->Quote($filters['state']);
+		}
+		if (!empty($filters['asset_type']))
+		{
+			$where[] = "ca.type=" . $this->_db->Quote((string) $filters['asset_type']);
+		}
+		if (!empty($filters['asset_subtype']))
+		{
+			$where[] = "ca.subtype=" . $this->_db->Quote((string) $filters['asset_subtype']);
+		}
+		if (!empty($filters['graded']))
+		{
+			$where[] = "ca.graded=1";
+		}
+		if (count($where) > 0)
+		{
+			$query .= " AND " . implode(" AND ", $where);
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
 	 * Check to see if this asset has any associations connected to it
 	 * 
 	 * @return bool

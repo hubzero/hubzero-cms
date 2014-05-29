@@ -375,17 +375,14 @@ class plgCoursesProgress extends JPlugin
 		);
 
 		// Get gradebook auxiliary assets
-		$auxiliary = $asset->find(
+		$auxiliary = $asset->findByScope(
+			'offering',
+			$this->course->offering()->get('id'),
 			array(
-				'w' => array(
-					'course_id'     => $this->course->get('id'),
-					'asset_type'    => 'gradebook',
-					'asset_subtype' => 'auxiliary',
-					'graded'        => true,
-					'state'         => 1
-				),
-				'order_by'  => 'title',
-				'order_dir' => 'ASC'
+				'asset_type'    => 'gradebook',
+				'asset_subtype' => 'auxiliary',
+				'graded'        => true,
+				'state'         => 1
 			)
 		);
 
@@ -440,17 +437,14 @@ class plgCoursesProgress extends JPlugin
 		);
 
 		// Get gradebook auxiliary assets
-		$auxiliary = $asset->find(
+		$auxiliary = $asset->findByScope(
+			'offering',
+			$this->course->offering()->get('id'),
 			array(
-				'w' => array(
-					'course_id'     => $this->course->get('id'),
-					'asset_type'    => 'gradebook',
-					'asset_subtype' => 'auxiliary',
-					'graded'        => true,
-					'state'         => 1
-				),
-				'order_by'  => 'title',
-				'order_dir' => 'ASC'
+				'asset_type'    => 'gradebook',
+				'asset_subtype' => 'auxiliary',
+				'graded'        => true,
+				'state'         => 1
 			)
 		);
 
@@ -682,7 +676,11 @@ class plgCoursesProgress extends JPlugin
 			exit();
 		}
 
-		$asset = new CoursesTableAsset(JFactory::getDBO());
+		$dbo = JFactory::getDBO();
+
+		$asset = new CoursesTableAsset($dbo);
+
+		$new = false;
 
 		// Get request variables
 		if ($asset_id = JRequest::getInt('asset_id', false))
@@ -707,12 +705,30 @@ class plgCoursesProgress extends JPlugin
 			$asset->set('course_id', $this->course->get('id'));
 			$asset->set('graded', 1);
 			$asset->set('grade_weight', 'exam');
+
+			$new = true;
 		}
 
 		if (!$asset->store())
 		{
 			echo json_encode(array('success'=>false));
 			exit();
+		}
+
+		if ($new)
+		{
+			// Create asset assoc object
+			$assoc = new CoursesTableAssetAssociation($dbo);
+			$assoc->set('asset_id', $asset->get('id'));
+			$assoc->set('scope', 'offering');
+			$assoc->set('scope_id', $this->course->offering()->get('id'));
+
+			// Save the asset association
+			if (!$assoc->store())
+			{
+				echo json_encode(array('success'=>false));
+				exit();
+			}
 		}
 
 		echo json_encode(array('id'=>$asset->get('id'), 'title'=>$asset->get('title')));
