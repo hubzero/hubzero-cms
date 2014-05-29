@@ -180,10 +180,10 @@ $juser = JFactory::getUser();
 
 						// Default thumbnail
 						$config = JComponentHelper::getParams('com_members');
-						$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
+						//$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
 
-						$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
-						$dfthumb = \Hubzero\User\Profile\Helper::thumbit($dfthumb);
+						//$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
+						//$dfthumb = \Hubzero\User\Profile\Helper::thumbit($dfthumb);
 
 						// User messaging
 						$messaging = false;
@@ -271,7 +271,7 @@ $juser = JFactory::getUser();
 							}
 
 							// User picture
-							$new_thumb = '';
+							/*$new_thumb = '';
 							$old_thumb = '';
 							if ($row->picture) 
 							{
@@ -292,7 +292,13 @@ $juser = JFactory::getUser();
 							else 
 							{
 								$p = $dfthumb;
-							}
+							}*/
+							$profile = new \Hubzero\User\Profile();
+							$profile->set('uidNumber', $row->uidNumber);
+							$profile->set('email', $row->email);
+							$profile->set('picture', $row->picture);
+
+							$p = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 
 							// User messaging
 							$messageuser = false;

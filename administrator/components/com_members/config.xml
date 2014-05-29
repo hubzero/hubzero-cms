@@ -66,6 +66,15 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">Off</option>
 		</field>
 		<field name="defaultpic" type="text" menu="hide" default="/components/com_members/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
+		<field name="identicon" type="list" default="0" label="Random Picture" description="Enable generation of a random picture for profiles that do not have one set">
+			<option value="1">On</option>
+			<option value="0">Off</option>
+		</field>
+		<field name="identicon_color" type="text" menu="hide" default="" label="Random Picture Color" description="Specify a color to use when generating random pictures. Otherwise, the color is auto-determined from the string (email) passed to the generator." />
+		<field name="gravatar" type="list" default="0" label="Gravatar Picture" description="Enable Gravatar user pictures">
+			<option value="1">On</option>
+			<option value="0">Off</option>
+		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="webpath" type="text" menu="hide" default="/site/members" label="Upload path" description="File path for pictures" />
 		<field name="homedir" type="text" menu="hide" default="" label="Home directory path" description="Hub users' home directory path (typically '/home/{hubname}')" />
