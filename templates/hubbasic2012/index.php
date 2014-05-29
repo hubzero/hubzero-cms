@@ -86,15 +86,15 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<li><a href="<?php echo $this->baseurl; ?>/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
 						<jdoc:include type="modules" name="search" />
-<?php if ($this->countModules('helppane')) : ?>
+					<?php if ($this->countModules('helppane')) : ?>
 						<p id="tab">
 							<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
 								<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
 							</a>
 						</p>
-<?php endif; ?>
+					<?php endif; ?>
 					</div><!-- / #topbar -->
-					<div id="masthead" role="banner">
+					<header id="masthead" role="banner">
 						<div class="inner">
 							<h1>
 								<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
@@ -104,9 +104,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							</h1>
 
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
-<?php if (!$juser->get('guest')) { 
-		$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
-?>
+							<?php if (!$juser->get('guest')) { 
+									$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+							?>
 								<li id="account-info">
 									<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />
 									<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
@@ -129,75 +129,79 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 										</li>
 									</ul>
 								</li>
-<?php } else { ?>
+							<?php } else { ?>
 								<li id="account-login">
 									<a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
 								</li>
 								<li id="account-register">
 									<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
 								</li>
-<?php } ?>
+							?php } ?>
 							</ul><!-- / #account -->
 
-							<div id="nav" role="main navigation">
-								<a name="nav"></a>
+							<nav id="nav" role="menu">
 								<jdoc:include type="modules" name="user3" />
-							</div><!-- / #nav -->
+							</nav><!-- / #nav -->
 						</div><!-- / .inner -->
-					</div><!-- / #header -->
+					</header><!-- / #header -->
 
 					<div id="sub-masthead">
-<?php if (!$this->countModules('welcome')) : ?>
+					<?php if (!$this->countModules('welcome')) : ?>
 						<div id="trail">
 							<jdoc:include type="modules" name="breadcrumbs" />
 							<div class="clear"></div>
 						</div>
-<?php else: ?>
+					<?php else: ?>
 						<div id="splash">
 							<jdoc:include type="modules" name="welcome" />
 						</div><!-- / #splash -->
-<?php endif; ?>
-<?php if ($this->getBuffer('message')) : ?>
+					<?php endif; ?>
+					<?php if ($this->getBuffer('message')) : ?>
 						<jdoc:include type="message" />
-<?php endif; ?>
+					<?php endif; ?>
 					</div><!-- / #sub-masthead -->
 				</div><!-- / .inner -->
 			</div><!-- / .inner-wrap -->
 		</div><!-- / #top -->
 		<div id="wrap">
-			<div id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
+			<main id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
 				<div class="inner">
-					<a name="content" id="content-anchor"></a>
-<?php if ($this->countModules('left')) : ?>
-					<div class="main section withleft">
-						<div class="aside">
-							<jdoc:include type="modules" name="left" />
-						</div><!-- / #column-left -->
-						<div class="subject">
-<?php endif; ?>
-<?php if ($this->countModules('right')) : ?>
-					<div class="main section">
-						<div class="aside">
-							<jdoc:include type="modules" name="right" />
-						</div><!-- / .aside -->
-						<div class="subject">
-<?php endif; ?>
-							<!-- start component output -->
-							<jdoc:include type="component" />
-							<!-- end component output -->
-<?php if ($this->countModules('left or right')) : ?>
-						</div><!-- / .subject -->
-						<div class="clear"></div>
-					</div><!-- / .main section -->
-<?php endif; ?>
+					<?php if ($this->countModules('left or right')) : ?>
+						<section class="main section">
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="left" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+					<?php if ($this->countModules('left or right')) : ?>
+							<div class="subject">
+					<?php endif; ?>
+
+								<!-- start component output -->
+								<jdoc:include type="component" />
+								<!-- end component output -->
+
+					<?php if ($this->countModules('left or right')) : ?>
+							</div><!-- / .subject -->
+					<?php endif; ?>
+					<?php if ($this->countModules('right')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="right" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left or right')) : ?>
+						</section><!-- / .main section -->
+					<?php endif; ?>
 				</div><!-- / .inner -->
-			</div><!-- / #content -->
+			</main><!-- / #content -->
 		</div><!-- / #wrap -->
 
-		<div id="footer">
-			<a name="footer" id="footer-anchor"></a>
+		<footer id="footer">
 			<jdoc:include type="modules" name="footer" />
-		</div><!-- / #footer -->
+		</footer><!-- / #footer -->
 
 		<jdoc:include type="modules" name="endpage" />
 	</body>

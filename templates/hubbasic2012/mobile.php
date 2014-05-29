@@ -22,6 +22,10 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/mobile.css" />
 		<jdoc:include type="head" />
 		<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/mobile.js"></script>
+
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+		<![endif]-->
 	</head>
 	<body>
 		<jdoc:include type="modules" name="notices" />
@@ -29,7 +33,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 		<div id="top" class="mobile-top">
 			<div class="inner-wrap">
 				<div class="inner">
-					<div id="masthead" role="banner">
+					<header id="masthead" role="banner">
 						<div class="inner">
 							<h1>
 								<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
@@ -49,44 +53,49 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 							<select name="menu" id="mobile-nav">
 							</select>
 						</div><!-- / .inner -->
-					</div><!-- / #header -->
+					</header><!-- / #header -->
 				</div><!-- / .inner -->
 			</div><!-- / .inner-wrap -->
 		</div><!-- / #top -->
 		<div id="wrap" class="mobile-wrap">
-			<div id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
+			<main id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
 				<div class="inner">
-					<a name="content" id="content-anchor"></a>
-<?php if ($this->countModules('left')) : ?>
-					<div class="main section withleft">
-						<div class="aside">
-							<jdoc:include type="modules" name="left" />
-						</div><!-- / #column-left -->
-						<div class="subject">
-<?php endif; ?>
-<?php if ($this->countModules('right')) : ?>
-					<div class="main section">
-						<div class="aside">
-							<jdoc:include type="modules" name="right" />
-						</div><!-- / .aside -->
-						<div class="subject">
-<?php endif; ?>
-							<!-- start component output -->
-							<jdoc:include type="component" />
-							<!-- end component output -->
-<?php if ($this->countModules('left or right')) : ?>
-						</div><!-- / .subject -->
-						<div class="clear"></div>
-					</div><!-- / .main section -->
-<?php endif; ?>
+					<?php if ($this->countModules('left or right')) : ?>
+						<section class="main section">
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="left" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+					<?php if ($this->countModules('left or right')) : ?>
+							<div class="subject">
+					<?php endif; ?>
+
+								<!-- start component output -->
+								<jdoc:include type="component" />
+								<!-- end component output -->
+
+					<?php if ($this->countModules('left or right')) : ?>
+							</div><!-- / .subject -->
+					<?php endif; ?>
+					<?php if ($this->countModules('right')) : ?>
+							<aside class="aside">
+								<jdoc:include type="modules" name="right" />
+							</aside><!-- / .aside -->
+					<?php endif; ?>
+
+					<?php if ($this->countModules('left or right')) : ?>
+						</section><!-- / .main section -->
+					<?php endif; ?>
 				</div><!-- / .inner -->
-			</div><!-- / #content -->
+			</main><!-- / #content -->
 		</div><!-- / #wrap -->
 
-		<div id="footer" class="mobile-footer">
-			<a name="footer" id="footer-anchor"></a>
+		<footer id="footer" class="mobile-footer">
 			<a href="?tmpl=fullsite">View Full Site</a>
-		</div><!-- / #footer -->
+		</footer><!-- / #footer -->
 
 		<jdoc:include type="modules" name="endpage" />
 	</body>
