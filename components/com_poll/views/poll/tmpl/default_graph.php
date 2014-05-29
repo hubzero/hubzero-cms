@@ -1,21 +1,6 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 
-<div class="aside">
-	<p>
-		<strong><?php echo JText::_( 'Number of Voters' ); ?></strong><br />
-		<?php echo (isset($this->votes[0])) ? $this->votes[0]->voters : '--'; ?>
-	</p>
-	<p>
-		<strong><?php echo JText::_( 'First Vote' ); ?></strong><br />
-		<?php echo ($this->first_vote) ? $this->escape($this->first_vote) : '--'; ?>
-	</p>
-	<p>
-		<strong><?php echo JText::_( 'Last Vote' ); ?></strong><br />
-		<?php echo ($this->last_vote) ? $this->escape($this->last_vote) : '--'; ?>
-	</p>
-	<p class="warning">This whole thing is wildly inaccurate. Rounding errors, ballot stuffers, dynamic IPs, firewalls. If you're using these numbers to do anything important, you're insane.</p>
-</div><!-- / .aside -->
 <div class="subject">
 <?php if ($this->poll->id) { ?>
 	<table class="pollresults" summary="<?php echo JText::_('Results for this pull'); ?>">
@@ -50,3 +35,17 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</p>
 <?php } ?>
 </div><!-- / .subject -->
+<aside class="aside">
+	<p>
+		<strong><?php echo JText::_( 'Number of Voters' ); ?></strong><br />
+		<?php echo (isset($this->votes[0])) ? $this->votes[0]->voters : '--'; ?>
+	</p>
+	<p>
+		<strong><?php echo JText::_( 'First Vote' ); ?></strong><br />
+		<?php echo ($this->first_vote) ? $this->escape($this->first_vote) : '--'; ?>
+	</p>
+	<p>
+		<strong><?php echo JText::_( 'Last Vote' ); ?></strong><br />
+		<?php echo ($this->last_vote) ? $this->escape($this->last_vote) : '--'; ?>
+	</p>
+</aside><!-- / .aside -->

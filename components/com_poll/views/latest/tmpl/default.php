@@ -34,15 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('stylesheet', 'poll_bars.css', 'components/com_poll/assets/');
 ?>
-<div id="content-header" class="full">
+<header id="content-header" class="full">
 	<h2><?php echo JText::_('Polls').': '.JText::_('Latest'); ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<p><a class="browse btn" href="<?php echo JRoute::_('index.php?option=com_poll'); ?>"><?php echo JText::_('Browse polls'); ?></a></p>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<p><a class="browse btn" href="<?php echo JRoute::_('index.php?option=com_poll'); ?>"><?php echo JText::_('Browse polls'); ?></a></p>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
+<section class="main section">
 <?php if (count($this->options) > 0) { ?>
 	<form id="pollform" method="post" action="<?php echo JRoute::_('index.php?option=com_poll&task=vote'); ?>">
 		<h3><?php echo stripslashes($this->poll->title); ?></h3>
@@ -72,4 +72,4 @@ JHTML::_('stylesheet', 'poll_bars.css', 'components/com_poll/assets/');
 <?php } else { ?>
 	<p><?php echo JText::_('There are no polls to display.'); ?></p>
 <?php } ?>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
