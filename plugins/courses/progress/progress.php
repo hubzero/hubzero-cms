@@ -428,15 +428,37 @@ class plgCoursesProgress extends JPlugin
 		$assets = $asset->find(
 			array(
 				'w' => array(
-					'course_id'  => $this->course->get('id'),
-					'section_id' => $this->course->offering()->section()->get('id'),
-					'graded'     => true,
-					'state'      => 1
+					'course_id'   => $this->course->get('id'),
+					'section_id'  => $this->course->offering()->section()->get('id'),
+					'offering_id' => $this->course->offering()->get('id'),
+					'graded'      => true,
+					'state'       => 1
 				),
 				'order_by'  => 'title',
 				'order_dir' => 'ASC'
 			)
 		);
+
+		// Get gradebook auxiliary assets
+		$auxiliary = $asset->find(
+			array(
+				'w' => array(
+					'course_id'     => $this->course->get('id'),
+					'asset_type'    => 'gradebook',
+					'asset_subtype' => 'auxiliary',
+					'graded'        => true,
+					'state'         => 1
+				),
+				'order_by'  => 'title',
+				'order_dir' => 'ASC'
+			)
+		);
+
+		$assets = array_merge($assets, $auxiliary);
+
+		usort($assets, function($a, $b) {
+			return strcasecmp($a->title, $b->title);
+		});
 
 		echo json_encode(
 			array(
