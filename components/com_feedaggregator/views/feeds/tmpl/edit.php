@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //this is a quick and dirty way to get the one single object
-if(isset($this->feed) == TRUE)
+if (isset($this->feed) == TRUE)
 {
 	$feed = $this->feed;
 }
@@ -43,28 +43,27 @@ else
 $this->js('feeds');
 ?>
 
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-
+<section class="main section">
 <?php if ($this->getErrors()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form method="post" id="hubForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . ' &task=save'); ?>">
-<div class="explaination">
-<p>
-<?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFO_ASIDE')?>
-</p>
-</div>
-	<fieldset>
-		<legend>Feed Information</legend>
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-		<input type="hidden" name="id" value="<?php echo (is_object($feed) ? $feed->id : ''); ?>">
-		<input type="hidden" name="enabled" value="<?php echo (isset($feed->enabled) ? $feed->enabled : '1'); ?>">
-		<input type="hidden" name="task" value="save" />
+	<form method="post" id="hubForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . ' &task=save'); ?>">
+		<div class="explaination">
+			<p>
+			<?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFO_ASIDE')?>
+			</p>
+		</div>
+		<fieldset>
+			<legend>Feed Information</legend>
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+			<input type="hidden" name="id" value="<?php echo (is_object($feed) ? $feed->id : ''); ?>">
+			<input type="hidden" name="enabled" value="<?php echo (isset($feed->enabled) ? $feed->enabled : '1'); ?>">
+			<input type="hidden" name="task" value="save" />
 
 			<label for="feed-title">
 				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?>
@@ -73,21 +72,20 @@ $this->js('feeds');
 			</label>
 
 			<label for="url">
-				<?php //echo JText::_('COM_GROUPS_CN'); ?>Feed URL
+				<?php echo JText::_('Feed URL'); ?>
 				<span class="required">required</span>
 				<input type="text" class="required-field" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $feed->url : ''); ?>" />
 			</label>
 
 			<label for="description">
-				<?php //echo JText::_('COM_GROUPS_CN'); ?>Description
+				<?php echo JText::_('Description'); ?>
 				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $feed->description : ''); ?>" />
 			</label>
-			<!--  <span><p style="float:left";>Auto Approve<input type="checkbox" id="autoApproveCheckbox" name="autoapprove">
-			</p></span> -->
 		</fieldset>
-	<p class="submit">
-		<input type="submit" id="submitBtn" class="btn" name="formsubmitBtn" value="Submit<?php //echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />
-	</p>
-<?php echo JHTML::_('form.token'); ?>
-</form>
-</div><!-- / .main section -->
+		<p class="submit">
+			<input type="submit" id="submitBtn" class="btn" name="formsubmitBtn" value="Submit<?php //echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />
+		</p>
+
+		<?php echo JHTML::_('form.token'); ?>
+	</form>
+</section><!-- / .main section -->
