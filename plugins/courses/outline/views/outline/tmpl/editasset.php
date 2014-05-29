@@ -73,10 +73,12 @@ $tool_path = $config->get('tool_path');
 			<label for="title">Title:</label>
 			<input type="text" name="title" value="<?= $asset->get('title') ?>" placeholder="Asset Title" />
 		</p>
+		<?php if ($asset->get('type') != 'form') : ?>
 		<p>
 			<label for="title">URL:</label>
 			<input type="text" name="url" value="<?= $asset->get('url') ?>" placeholder="Asset URL" />
 		</p>
+		<?php endif; ?>
 		<p>
 			<label for="type">Type:</label>
 			<select name="type">

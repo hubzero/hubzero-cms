@@ -121,6 +121,7 @@ HUB.CoursesOutline = {
 				.on('click', '.asset-delete', this.remove)
 				.on('click', '.asset-edit', this.edit)
 				.on('click', '.asset-edit-deployment', this.editDeployment)
+				.on('click', '.asset-edit-layout', this.editLayout)
 				.on('click', '.published-checkbox', this.state)
 				.on('click', '.asset-preview', this.preview)
 				.on('click', '.aux-attachments a:not(.browse-files, .attach-wiki, .help-info)', this.auxAttachmentShow)
@@ -404,6 +405,10 @@ HUB.CoursesOutline = {
 							formId = data.form_id;
 							depId  = data.deployment_id;
 
+							if (!formId || !depId) {
+								HUB.CoursesOutline.message.show('This item has yet to be published. Please publish first.');
+							}
+
 							$.fancybox({
 								fitToView: false,
 								autoResize: false,
@@ -427,6 +432,70 @@ HUB.CoursesOutline = {
 									// Listen for deployment create call from iframe
 									$('body').on('deploymentsave', function () {
 										// Close fancybox
+										$.fancybox.close();
+									});
+								}
+							});
+						}
+					}
+				});
+			}
+		},
+
+		/*
+		 * Edit a form type asset layout
+		 * @FIXME: code specific to the form type assets shouldn't be here...
+		 *         need to figure out a better way to handle this, and where it should go
+		 */
+		editLayout: function ( e ) {
+			var $       = HUB.CoursesOutline.jQuery,
+			t           = $(this),
+			form        = t.siblings('.next-step-publish'),
+			item        = form.parent('.asset-item');
+
+			e.preventDefault();
+
+			if(item.hasClass('form')){
+				var assetA    = item.find('a.asset-preview');
+				var assetHref = assetA.attr('href');
+
+				// Create ajax call to get the form id
+				$.ajax({
+					url: '/api/courses/asset/getformanddepid',
+					data: [{'name':'id', 'value':form.find('.asset_id').val()}],
+					statusCode: {
+						200: function ( data ) {
+							formId = data.form_id;
+
+							$.fancybox({
+								fitToView: false,
+								autoResize: false,
+								autoSize: false,
+								height: ($(window).height())*2/3,
+								closeBtn: false,
+								modal: true,
+								type: 'iframe',
+								iframe: {
+									preload : false
+								},
+								href: window.location.href.match(/(.*)\/outline/)[1]+'/form.layout?formId='+formId+'&tmpl=component',
+								afterLoad: function() {
+									// Highjack the 'done' button to close the iframe
+									var iframe = $('.fancybox-iframe');
+									iframe.load(function() {
+										var frameContents = $('.fancybox-iframe').contents();
+										frameContents.find('#done').bind('click', function(e) {
+											e.preventDefault();
+
+											$.fancybox.close();
+										});
+
+										var navHeight = frameContents.find('.navbar').height();
+										frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
+									});
+
+									// Listen for savesuccessful call from iframe
+									$('body').on('savesuccessful', function() {
 										$.fancybox.close();
 									});
 								}
@@ -1172,6 +1241,9 @@ HUB.CoursesOutline = {
 					'<a class="asset-preview" href="<%= asset_url %>" title="preview"></a>',
 					'<a class="asset-edit" href="#" title="edit"></a>',
 					'<a class="asset-edit-deployment" href="#" title="edit deployment" style="display:none;"></a>',
+					'<% if (asset_type == "form") { %>',
+						'<a class="asset-edit-layout" href="#" title="edit layout"></a>',
+					'<% }; %>',
 					'<a class="asset-delete" href="#" title="delete"></a>',
 					'<form action="/api/courses/asset/togglepublished" class="next-step-publish">',
 						'<span class="next-step-publish">',

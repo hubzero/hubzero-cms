@@ -192,67 +192,6 @@ class FormAssetHandler extends ContentAssetHandler
 	}
 
 	/**
-	 * Edit method for this handler
-	 *
-	 * @param  object $asset - asset
-	 * @return array((string) type, (string) text)
-	 **/
-	public function edit($asset)
-	{
-		// Get form object
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
-		$form = PdfForm::loadByAssetId($asset->get('id'));
-
-		// Make sure we got a proper object
-		if (!is_object($form))
-		{
-			return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
-		}
-
-		$gid = JRequest::getVar('course_id');
-		$oid = JRequest::getVar('offering');
-
-		// Compile our return var
-		$js =
-			"// Open up forms in a lightbox
-			$.fancybox({
-				fitToView: false,
-				autoResize: false,
-				autoSize: false,
-				height: ($(window).height())*2/3,
-				closeBtn: false,
-				modal: true,
-				type: 'iframe',
-				iframe: {
-					preload : false
-				},
-				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&tmpl=component',
-				afterLoad: function() {
-					// Highjack the 'done' button to close the iframe
-					var iframe = $('.fancybox-iframe');
-					iframe.load(function() {
-						var frameContents = $('.fancybox-iframe').contents();
-						frameContents.find('#done').bind('click', function(e) {
-							e.preventDefault();
-
-							$.fancybox.close();
-						});
-
-						var navHeight = frameContents.find('.navbar').height();
-						frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
-					});
-
-					// Listen for savesuccessful call from iframe
-					$('body').on('savesuccessful', function() {
-						$.fancybox.close();
-					});
-				}
-			});";
-
-		return array('type'=>'js', 'value'=>$js);
-	}
-
-	/**
 	 * Preview method for this handler
 	 *
 	 * @param  object $asset - asset

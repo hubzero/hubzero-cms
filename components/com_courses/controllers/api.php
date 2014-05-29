@@ -1425,11 +1425,11 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$depId = $this->db->loadResult();
 
 		// Check
-		if (!is_numeric($depId))
+		/*if (!is_numeric($depId))
 		{
 			$this->setMessage("Failed to retrieve the deployment ID", 500, 'Internal server error');
 			return;
-		}
+		}*/
 
 		// Return message
 		$this->setMessage(array('form_id' => $formId, 'deployment_id' => $depId), 200, 'OK');
