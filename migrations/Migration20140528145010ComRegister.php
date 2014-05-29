@@ -38,6 +38,8 @@ class Migration20140528145010ComRegister extends Base
 		// Get the default menu identifier
 		//$this->db->setQuery("SELECT menutype FROM `#__menu` WHERE home='1' LIMIT 1;");
 		//$menutype = $this->db->loadResult();
+		$this->db->setQuery("SELECT extension_id FROM `#__extensions` WHERE `type`='component' AND `element`='com_members'");
+		$component = $this->db->loadResult();
 
 		// Check if there's a menu item for com_register
 		$this->db->setQuery("SELECT id FROM `#__menu` WHERE `alias`='register' AND `path`='register'"); //" AND menutype=" . $this->db->quote($menutype));
@@ -45,16 +47,13 @@ class Migration20140528145010ComRegister extends Base
 		{
 			// There is!
 			// So, just update its link
-			$this->db->setQuery("UPDATE `#__menu` SET `link`='index.php?option=com_members&view=register&layout=create' WHERE `id`=" . $this->db->quote($id));
+			$this->db->setQuery("UPDATE `#__menu` SET `link`='index.php?option=com_members&view=register&layout=create', `component_id`=" . $this->db->quote($component) . " WHERE `id`=" . $this->db->quote($id));
 			$this->db->query();
 		}
 		else
 		{
 			$this->db->setQuery("SELECT menutype FROM `#__menu` WHERE `home`='1' LIMIT 1;");
 			$menutype = $this->db->loadResult();
-
-			$this->db->setQuery("SELECT extension_id FROM `#__extensions` WHERE `type`='component' AND `element`='com_members'");
-			$component = $this->db->loadResult();
 
 			$this->db->setQuery("SELECT ordering FROM `#__menu` WHERE `menutype`=" . $this->db->quote($menutype) . " ORDER BY ordering DESC LIMIT 1");
 			$ordering = intval($this->db->loadResult());
