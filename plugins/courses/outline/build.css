@@ -136,7 +136,9 @@
 }
 .delete-tray .asset-delete,
 .delete-tray .asset-preview,
-.delete-tray .asset-edit {
+.delete-tray .asset-edit,
+.delete-tray .asset-edit-deployment,
+.delete-tray .asset-edit-layout {
 	display: none;
 }
 .delete-tray .restore {
