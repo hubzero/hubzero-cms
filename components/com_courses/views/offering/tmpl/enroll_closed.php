@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('offering');
 ?>
-	<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
+	<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
@@ -61,9 +61,9 @@ $this->css('offering');
 				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
 			</span>
 		</p>
-	</div><!-- #content-header -->
+	</header><!-- #content-header -->
 
-	<div class="main section enroll-closed">
+	<section class="main section enroll-closed">
 
 		<div id="offering-introduction">
 			<div class="instructions">
@@ -77,4 +77,4 @@ $this->css('offering');
 			</div><!-- / .questions -->
 		</div><!-- / #offering-introduction -->
 
-	</div><!-- /.main section -->
+	</section><!-- /.main section -->

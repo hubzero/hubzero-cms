@@ -44,21 +44,22 @@ $levels = array(
 );
 ?>
 
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last"><a class="course" href="<?php echo JRoute::_($this->course->link()); ?>"><?php echo JText::_('Back to Course'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last"><a class="course" href="<?php echo JRoute::_($this->course->link()); ?>"><?php echo JText::_('Back to Course'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
+
 	<?php
 		foreach($this->notifications as $notification) {
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
-<div class="main section">
+<section class="main section">
 	<form name="customize" method="POST" action="index.php" id="hubForm">
 		<div class="explaination">
 			<div id="asset_browser">
@@ -161,10 +162,12 @@ $levels = array(
 			<p><a class="leave_area" rel="You are about to leave the course customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=managepages'); ?>">Manage Course Pages</a></p>
 		</fieldset>
 		
-		<p class="submit"><input type="submit" name="course[submit]" value="Save Course Customization" /></p>
+		<p class="submit">
+			<input class="btn btn-success" type="submit" name="course[submit]" value="Save Course Customization" />
+		</p>
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 		<input type="hidden" name="task" value="savecustomization">
 		<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>">
 	</form>
-</div>
+</section>

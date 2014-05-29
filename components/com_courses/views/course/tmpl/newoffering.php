@@ -33,19 +33,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!$this->no_html) {
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-prev btn" href="<?php echo $this->course->link(); ?>"><?php echo JText::_('Back'); ?></a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-prev btn" href="<?php echo $this->course->link(); ?>"><?php echo JText::_('Back'); ?></a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
+<section class="main section">
 <?php } ?>
 
 	<?php
@@ -90,10 +90,10 @@ if (!$this->no_html) {
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('Save'); ?>" />
 		</p>
 	</form>
 
 <?php if (!$this->no_html) { ?>
-</div><!-- / .section -->
+</section><!-- / .section -->
 <?php } ?>

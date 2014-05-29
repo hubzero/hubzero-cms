@@ -31,17 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last"><a class="course" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn')); ?>"><?php echo JText::_('Back to Course'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last"><a class="course" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias')); ?>"><?php echo JText::_('Back to Course'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
+<section class="main section">
 	<?php
 		foreach($this->notifications as $notification) {
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
@@ -58,32 +58,37 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=edit'); ?>">&raquo; Click here to edit course settings</a></p>
 			<!--
 			<div class="admin-options">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=view'); ?>"><?php echo JText::_('COURSES_VIEW_COURSE'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=edit'); ?>"><?php echo JText::_('COURSES_EDIT_COURSE'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=customize'); ?>"><?php echo JText::_('COURSES_CUSTOMIZE_COURSE'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=invite'); ?>"><?php echo JText::_('COURSES_INVITE_USERS'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=view'); ?>"><?php echo JText::_('COURSES_VIEW_COURSE'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=edit'); ?>"><?php echo JText::_('COURSES_EDIT_COURSE'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=customize'); ?>"><?php echo JText::_('COURSES_CUSTOMIZE_COURSE'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=invite'); ?>"><?php echo JText::_('COURSES_INVITE_USERS'); ?></a></p>
 			</div>
 			-->
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('COURSES_DELETE_HEADER'); ?></h3>
 
-	 		<p class="warning" style="margin-top:2em"><?php echo JText::sprintf('COURSES_DELETE_WARNING',$this->course->get('description')).'<br /><br />'.$this->log; ?></p>
+	 		<p class="warning"><?php echo JText::sprintf('COURSES_DELETE_WARNING',$this->course->get('description')).'<br /><br />'.$this->log; ?></p>
 
 			<label>
 				<?php echo JText::_('COURSES_DELETE_MESSAGE'); ?>
-				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities($this->msg); ?></textarea>
+				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo $this->escape($this->msg); ?></textarea>
 			</label>
+
 			<label>
 				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
 				<?php echo JText::_('COURSES_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
+
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('cn'); ?>" />
 		<input type="hidden" name="task" value="delete" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<p class="submit"><input type="submit" value="<?php echo JText::_('DELETE'); ?>" /></p>
+
+		<p class="submit">
+			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('DELETE'); ?>" />
+		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

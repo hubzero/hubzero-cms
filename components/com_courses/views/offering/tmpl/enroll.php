@@ -37,11 +37,10 @@ $database 	= JFactory::getDBO();
 
 $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 ?>
-	<div id="content-header">
-		<h2>
-			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-		</h2>
-	</div>
+<header id="content-header">
+	<h2>
+		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+	</h2>
 	<div id="content-header-extra">
 		<ul>
 			<li>
@@ -51,7 +50,8 @@ $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this-
 			</li>
 		</ul>
 	</div>
+</header>
 
-	<div class="main section">
-Congrats!
-	</div><!-- /.innerwrap -->
+<section class="main section">
+	<p>Congrats!</p>
+</section>

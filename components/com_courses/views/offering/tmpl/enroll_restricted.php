@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('offering');
 ?>
-	<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
+	<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
@@ -61,9 +61,9 @@ $this->css('offering');
 				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
 			</span>
 		</p>
-	</div><!-- #content-header -->
+	</header><!-- #content-header -->
 
-	<div class="main section enroll-restricted">
+	<section class="main section enroll-restricted">
 		<?php
 			foreach ($this->notifications as $notification) 
 			{
@@ -95,7 +95,7 @@ $this->css('offering');
 			<input type="hidden" name="task" value="enroll" />
 
 			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('Redeem'); ?>" />
+				<input class="btn btn-success" type="submit" value="<?php echo JText::_('Redeem'); ?>" />
 			</p>
 		</form>
-	</div><!-- /.main section -->
+	</section><!-- /.main section -->

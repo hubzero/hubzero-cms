@@ -128,10 +128,10 @@ switch ($this->action)
 }
 ?>
 
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo JText::_($title); ?></h2>
-</div>
+</header>
 
-<div class="main section">
+<section class="main section">
 	<?php echo $body; ?>
-</div>
+</section>

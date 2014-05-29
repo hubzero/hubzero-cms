@@ -36,7 +36,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 $tmpl    = JRequest::getWord('tmpl', false);
 
 if (!$no_html && $tmpl != 'component') : ?>
-	<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
+	<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
@@ -62,7 +62,7 @@ if (!$no_html && $tmpl != 'component') : ?>
 				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
 			</span>
 		</p>
-	</div><!-- / #content-header -->
+	</header><!-- / #content-header -->
 
 	<div class="innerwrap">
 		<div id="page_container">
