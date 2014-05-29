@@ -541,6 +541,7 @@
 .gradebook-container .slidable-outer.nodata {
 	background: #F1F1F1 url('/components/com_courses/assets/img/light-stripes.png');
 	border-top: 1px solid #CCCCCC;
+	border-left: 1px solid #CCCCCC;
 }
 .gradebook-container .slidable-outer.nodata:before {
 	content: "No data currently available";
