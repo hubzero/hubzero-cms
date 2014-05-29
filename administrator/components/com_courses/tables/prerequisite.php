@@ -92,6 +92,7 @@ class CoursesTablePrerequisites extends JTable
 	/**
 	 * Get all prereqs for a given section
 	 *
+	 * @param  int   $section_id
 	 * @return array $results
 	 **/
 	public function loadAllBySectionId($section_id)
@@ -107,11 +108,14 @@ class CoursesTablePrerequisites extends JTable
 	/**
 	 * Get all prereqs for a given scope/scope_id
 	 *
-	 * @return array $results
+	 * @param  string $scope
+	 * @param  int    $scope_id
+	 * @param  int    $section_id
+	 * @return array  $results
 	 **/
-	public function loadAllByScope($scope, $scope_id)
+	public function loadAllByScope($scope, $scope_id, $section_id)
 	{
-		$query = "SELECT * FROM `{$this->_tbl}` WHERE `item_scope` = '{$scope}' AND `item_id` = '{$scope_id}' ORDER BY `requisite_id` ASC";
+		$query = "SELECT * FROM `{$this->_tbl}` WHERE `item_scope` = '{$scope}' AND `item_id` = '{$scope_id}' AND `section_id` = '{$section_id}' ORDER BY `requisite_id` ASC";
 
 		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();

@@ -39,7 +39,7 @@ $this->js('prerequisites');
 $includeForm = (isset($this->includeForm)) ? $this->includeForm : true;
 
 $prereqs  = new CoursesTablePrerequisites($db);
-$existing = $prereqs->loadAllByScope($this->scope, $this->scope_id);
+$existing = $prereqs->loadAllByScope($this->scope, $this->scope_id, $this->section_id);
 $ids      = array();
 foreach ($existing as $value)
 {
