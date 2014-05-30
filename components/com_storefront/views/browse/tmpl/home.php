@@ -33,11 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2>Browse home</h2>
-</div>
+</header>
 
-<section>
+<section class="main section">
 	<div class="section-inner">
 
 		<p>This is a default browsing home -- not sure what is going here.</p>

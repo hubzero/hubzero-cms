@@ -41,24 +41,24 @@ $citations_require_no_attention = $this->citations_require_no_attention;
 //dont show array
 $no_show = array("errors","duplicate");
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
-<div id="import" class="section">
-	
+<section id="import" class="section">
+
 	<?php
 		foreach($this->messages as $message) {
 			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 		}
 	?>
-	
+
 	<ul id="steps">
 		<li><a href="/citations/import" class="passed">Step 1<span>Upload citations file</span></a></li>
 		<li><a class="active">Step 2<span>Preview imported citations</span></a></li>
 		<li><a>Step 3<span>Browse uploaded citations</span></a></li>
 	</ul><!-- / #steps -->
-	
+
 	<form method="post" action="<?php echo JRoute::_('index.php?option='. $this->option . '&task=import_save'); ?>">
 		<?php if($citations_require_attention) : ?>
 			<table class="upload-list require-action">
@@ -171,10 +171,10 @@ $no_show = array("errors","duplicate");
 				<tbody>
 			</table>
 		<?php endif; ?>
-	
+
 		<!-- /////////////////////////////////////// -->
-		
-		<?php if($citations_require_no_attention) : ?>
+
+		<?php if ($citations_require_no_attention) : ?>
 			<table class="upload-list no-action">
 				<thead>
 					<tr>
@@ -224,12 +224,12 @@ $no_show = array("errors","duplicate");
 				</tbody>
 			</table>
 		<?php endif; ?>
-	
+
 		<p class="submit">
 			<input type="submit" name="submit" value="Submit Imported Citations" />
 		</p>
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="import_save" />
 	</form>
-</div><!-- / .section -->
+</section><!-- / .section -->

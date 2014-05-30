@@ -1176,7 +1176,7 @@ class PublicationsHtml
 		$txt = '';
 		$txt .= stripslashes($publication->title);	
 		$html  = '<h2>' . $txt . '</h2>' . "\n";
-		$html  = '<div id="content-header" class="full">' . $html . '</div>';
+		$html  = '<header id="content-header">' . $html . '</header>';
 		
 		return $html;
 	}

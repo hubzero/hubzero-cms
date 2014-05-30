@@ -33,9 +33,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?= $this->asset->title ?></h2>
-</div>
+</header>
 
 <object type="application/x-shockwave-flash" width="100%" height="100%"> 
 	<param name="movie" value="<?php echo JRoute::_($this->model->path($this->course->get('id'))); ?>"></param> 

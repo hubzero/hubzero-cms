@@ -48,11 +48,11 @@ if (!empty($errors))
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->product->pName; ?></h2>
-</div>
+</header>
 
-<section>
+<section class="main section">
 	<div class="section-inner">
 
 	<?php

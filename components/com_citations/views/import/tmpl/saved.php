@@ -41,7 +41,7 @@ $template = $citationsFormat->getDefaultFormat();
 $batch_download = $this->config->get("citation_batch_download", 1);
 
 //do we want to number li items
-if($label == "none") {
+if ($label == "none") {
 	$citations_label_class = " no-label";
 } elseif($label == "type") {
 	$citations_label_class = " type-label";
@@ -49,22 +49,22 @@ if($label == "none") {
 	$citations_label_class = " both-label";
 }
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
-<div id="import" class="section">
-	
+<section id="import" class="section">
+
 	<?php
 		foreach($this->messages as $message) {
 			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 		}
 	?>
-	
+
 	<ul id="steps">
-		<li><a href="/citations/import" class="passed">Step 1<span>Upload citations file</span></a></li>
-		<li><a href="/citations/import_review" class="passed">Step 2<span>Preview imported citations</span></a></li>
-		<li><a href="/citations/import_saved" class="active">Step 3<span>Browse Uploaded citations</span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="passed">Step 1<span>Upload citations file</span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import_review" class="passed">Step 2<span>Preview imported citations</span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import_saved" class="active">Step 3<span>Browse Uploaded citations</span></a></li>
 	</ul><!-- / #steps -->
 
 	<?php if(count($this->citations) > 0) : ?>
@@ -75,7 +75,7 @@ if($label == "none") {
 			$counter = 1;
 		?>
 		<div style="float:right;" class="back-links">
-			<a href="/citations/import">Import More Citations</a> | <a href="/citations/browse">Browse all Citations</a>
+			<a href="<?php echo JURI::base(true); ?>/citations/import">Import More Citations</a> | <a href="<?php echo JURI::base(true); ?>/citations/browse">Browse all Citations</a>
 		</div>
 		<h3>Successfully Uploaded Citations</h3>
 		<table class="citations">
@@ -134,5 +134,5 @@ if($label == "none") {
 				<?php endforeach; ?>
 			</tbody>
 		</table>
-		<?php endif; ?>
-</div><!-- / .section -->
+	<?php endif; ?>
+</section><!-- / .section -->

@@ -35,9 +35,9 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo  JText::_('COM_CART'); ?></h2>
-</div>
+</header>
 
 <section class="main">
 	<div class="section-inner">

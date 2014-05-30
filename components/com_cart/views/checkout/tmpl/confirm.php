@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2>Payment confirmation</h2>
-</div>
+</header>
 
 <div class="section">
 

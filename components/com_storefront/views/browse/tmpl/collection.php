@@ -33,11 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2>Browsing collection</h2>
-</div>
+</header>
 
-<section>
+<section class="main section">
 	<div class="section-inner">
 
 	<?php

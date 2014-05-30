@@ -61,7 +61,7 @@ $juser = JFactory::getUser();
 	<div class="subject">
 		<div class="grid overviewcontainer">
 			<div class="col span8">
-				<div id="content-header">
+				<header id="content-header">
 					<h2>
 						<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
 						<?php if ($this->model->params->get('access-edit-resource')) { ?>
@@ -69,7 +69,7 @@ $juser = JFactory::getUser();
 						<?php } ?>
 					</h2>
 					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
-				</div>
+				</header>
 
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
 					<div id="authorslist">

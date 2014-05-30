@@ -33,11 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo  JText::_('COM_STOREFRONT'); ?> homepage</h2>
-</div>
+</header>
 
-<section>
+<section class="main section">
 	<div class="section-inner">
 		<h3>Product categories</h3>
 		

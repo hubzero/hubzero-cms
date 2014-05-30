@@ -37,9 +37,9 @@ $sitename = $jconfig->getValue('config.sitename');
 if ($this->wishlist) {	
 	if (!$this->wishlist->public && !$this->admin) {
 ?>
-		<div class="main section">
+		<section class="main section">
 			<p class="waring"><?php echo JText::_('WARNING_NOT_AUTHORIZED_PRIVATE_LIST'); ?></p>
-		</div><!-- / .main section -->
+		</section><!-- / .main section -->
 <?php
 	} else {
 		$base = 'index.php?option=' . $this->option . '&task=wishlist&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid;

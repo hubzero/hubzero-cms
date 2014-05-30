@@ -34,9 +34,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 $step = (int) JRequest::getInt('step', 1);
 ?>
 
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2>Account Setup</h2>
-</div>
+</header>
 
 <div class="prompt-wrap">
 	<div class="prompt-container prompt1" style="display:<?php echo ($step === 1) ? 'block': 'none'; ?>">

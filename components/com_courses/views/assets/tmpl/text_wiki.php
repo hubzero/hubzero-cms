@@ -49,9 +49,9 @@ $this->model->set('content', stripslashes($this->model->get('content')));
 ));
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->asset->title; ?></h2>
-</div>
+</header>
 
 <div class="wiki-page-body">
 	<p>

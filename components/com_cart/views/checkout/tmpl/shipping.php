@@ -35,9 +35,9 @@ $states = Cart_Helper::getUsStates();
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2>Checkout: shipping information</h2>
-</div>
+</header>
 
 <section class="main">
 	<div class="section-inner">
@@ -63,23 +63,23 @@ $states = Cart_Helper::getUsStates();
 				<form name="cartShippingInfo" id="cartShippingInfo" method="post" class="hubForm">
 				
 					<label for="shippingToFirst">First name:
-					<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo JRequest::getVar('shippingToFirst', false, 'post'); ?>" />
+						<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo JRequest::getVar('shippingToFirst', false, 'post'); ?>" />
 					</label>
 					
 					<label for="shippingToLast">Last name:
-					<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
+						<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
 					</label> 
 					
 					<label for="shippingAddress">Shipping address:
-					<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
+						<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
 					</label> 
 					
 					<label for="shippingCity">City:
-					<input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
+						<input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
 					</label> 
 					
 					<label for="shippingZip">Zip:
-					<input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
+						<input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
 					</label> 
 					
 					<label for="shippingState">State:

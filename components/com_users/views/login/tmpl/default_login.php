@@ -48,9 +48,9 @@ $primary     = JRequest::getWord('primary', false);
 ?>
 
 <?php if ($this->params->get('show_page_title', 1)) : ?>
-	<div id="content-header">
+	<header id="content-header">
 		<h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
-	</div>
+	</header>
 <?php endif; ?>
 
 	<div class="hz_user">

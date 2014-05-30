@@ -984,7 +984,7 @@ class ResourcesHtml
 
 		$html .= '<input type="hidden" name="rid" id="rid" value="' . $resource->id . '" />' . "\n";
 
-		return '<div id="content-header" class="full">' . $html . '</div>';
+		return '<header id="content-header">' . $html . '</header>';
 	}
 
 	/**

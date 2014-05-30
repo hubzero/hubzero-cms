@@ -33,11 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2>Thank you!</h2>
-</div>
+</header>
 
-<section>	
+<section class="main section">
 	<div class="section-inner">
 		<p>Thank you for your order.</p> 
 		<p>You will receive an email confirmation shortly the the email address associated with your account. Your transaction is now complete.</p>

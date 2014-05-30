@@ -51,19 +51,19 @@ if (!$this->question->get('anonymous'))
 }
 
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_ANSWERS'); ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-search search btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
-				<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-search search btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
+					<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
 <section class="main section">
 	<?php if ($this->getError()) { ?>
@@ -438,10 +438,10 @@ if (!$this->question->get('anonymous'))
 			<div class="aside">
 				<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != $this->juser->get('id')) { ?>
 					<div class="container">
-					<p><a class="icon-add add btn" href="<?php 
-					$route = JRoute::_($this->question->link('answer'), false, true);
-					echo ($this->juser->get('guest') ? JRoute::_('index.php?option=com_login&return=' . base64_encode($route)) : $route);
-					?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
+						<p><a class="icon-add add btn" href="<?php 
+						$route = JRoute::_($this->question->link('answer'), false, true);
+						echo ($this->juser->get('guest') ? JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route);
+						?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 					</div><!-- / .container -->
 				<?php } ?>
 

@@ -86,10 +86,10 @@ if ($this->wishlist && $this->wish) {
 			
 			// Can't view wishes on a private list if not list admin
 	if (!$this->wishlist->public && !$this->admin) {
-		$html .= '<div id="content-header"><h2>' . JText::_('COM_WISHLIST_PRIVATE_LIST') . '</h2></div>';
-		$html .= '<div class="main section">'."\n";
+		$html .= '<header id="content-header"><h2>' . JText::_('COM_WISHLIST_PRIVATE_LIST') . '</h2></header>';
+		$html .= '<section class="main section">'."\n";
 		$html .= '<p class="error">' . JText::_('COM_WISHLIST_WARNING_NOT_AUTHORIZED_PRIVATE_LIST') . '</p>' ."\n";
-		$html .= '</div>'."\n";	
+		$html .= '</section>'."\n";	
 	 } else {
 		
 		$filters  = '';

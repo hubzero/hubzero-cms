@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php $link = JRoute::_($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb()); ?>
 
-<div class="main section courses-form">
+<section class="main section courses-form">
 	<p class="distribution-link">Link to distribute: <a href="<?php echo $link ?>"><?php echo $link ?></a><span class="state <?php echo $this->dep->getState() ?>"><?php echo $this->dep->getState() ?></span></p>
 	<form action="<?php echo JRoute::_($this->base); ?>" method="post" id="deployment">
 		<?php require 'deployment_form.php'; ?>
@@ -50,9 +50,9 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="tmpl" value="<?php echo $tmpl ?>" />
 			<?php endif; ?>
 			<div class="navbar">
-				<div><a href="/courses/form" id="done">Done</a></div>
+				<div><a href="<?php echo JURI::baser(true); ?>/courses/form" id="done">Done</a></div>
 				<button type="submit">Update deployment</button>
 			</div>
 		</fieldset>
 	</form>
-</div>
+</section>

@@ -32,9 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!$this->no_html) { ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
 	<ul class="sub-menu">
 <?php

@@ -32,16 +32,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
-<div id="import" class="section">
-	
-<?php foreach ($this->messages as $message) { ?>
-	<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
-<?php } ?>
-	
+<section id="import" class="section">
+
+	<?php foreach ($this->messages as $message) { ?>
+		<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
+	<?php } ?>
+
 	<ul id="steps">
 		<li><a href="/citations/import" class="active">Step 1<span>Upload citations file</span></a></li>
 		<li><a>Step 2<span>Preview imported citations</span></a></li>
@@ -68,5 +68,4 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="import_upload" />
 	</form>
-</div><!-- / .section -->
-
+</section><!-- / .section -->

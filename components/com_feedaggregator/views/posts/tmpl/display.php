@@ -60,7 +60,7 @@ $this->js('posts')
 	</div><!-- / #content-header-extra -->
 </header>
 
-<div class="main section">
+<section class="main section">
 	<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 		<div id="page-main">
 
@@ -162,4 +162,4 @@ $this->js('posts')
 			</div>
 		</div> <!--  main page -->
 	</form>
-</div><!-- /.main section -->
+</section><!-- /.main section -->
