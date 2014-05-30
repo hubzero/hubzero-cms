@@ -1109,75 +1109,6 @@
 		clear: left;
 	}
 
-/* Introduction */
-	body #introduction {
-		background: #e1e1e1 url("../images/layout/noise-lite.png");
-		border: none;
-		color: #666;
-		margin: -1px 0px 3em 0px;
-	}
-	/* White background for icon */
-	body #introduction small.intro-before,
-	body #introduction:before {
-		top: 32px;
-		left: 32px;
-		border: none;
-		-webkit-border-radius: 69px;
-		   -moz-border-radius: 69px;
-		    -ms-border-radius: 69px;
-		     -o-border-radius: 69px;
-		        border-radius: 69px;
-		background-color: #FEFEFE;
-	}
-	/* Icon */
-	body #introduction small.intro-after,
-	body #introduction:after {
-		color: #666;
-		font-size: 40px;
-		top: 48px;
-		left: 49px;
-	}
-	/* Text styles */
-	body #introduction h3 {
-		color: #747474;
-	}
-	body #introduction li:before {
-		content: "";
-		display: none;
-	}
-	body #introduction p {
-		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
-	}
-	/* Side shadows */
-	body #introduction .clear:before,
-	body #introduction .clear:after {
-		content: "";
-		display: block;
-		margin: 0;
-		padding: 0;
-		position: absolute;
-		z-index: 100;
-		top: 0;
-		bottom: 0;
-		width: 30px;
-		left: -30px;
-		background: #e1e1e1 url("../images/layout/noise-lite.png");
-		-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		   -moz-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		    -ms-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		     -o-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		        box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-	}
-	body #introduction .clear:after {
-		left: auto;
-		right: -30px;
-		-webkit-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		   -moz-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		    -ms-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		     -o-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-		        box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-	}
-
 /* Content columns */
 	.section {
 		padding: 30px;
@@ -1185,9 +1116,6 @@
 	}
 	.section .section {
 		padding: 30px 0;
-	}
-	#introduction + .section {
-		padding: 0 30px 30px 30px;
 	}
 	body #page_content .main {
 		background: none;
@@ -1269,14 +1197,6 @@
 	.section .section .aside small.aside-after,
 	.section .section .aside:before,
 	.section .section .aside:after {
-		display: none;
-	}
-	#introduction .subject small.subject-before,
-	#introduction .aside small.aside-before,
-	#introduction .aside small.aside-after,
-	#introduction .subject:before,
-	#introduction .aside:before, 
-	#introduction .aside:after {
 		display: none;
 	}
 	.aside p {

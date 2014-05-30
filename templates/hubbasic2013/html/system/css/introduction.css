@@ -1,0 +1,253 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kameleon/html/system/css/introduction.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+	Commonly used styles for the first page (introduction) of components
+*/
+
+/* Four Columns */
+	/*div[class^="com_"] .four,
+	div[class*=" com_"] .four*/
+	#content .grid,
+	#content .three,
+	#content .four {
+		border: none;
+		border-top: 1px solid #e0e0e0;
+		position: relative;
+		margin-bottom: 3em;
+	}
+	#content .grid .grid {
+		border: none;
+		margin-bottom: 0;
+	}
+	#content .four {
+		margin-right: 0;
+		padding-right: 5%;
+		border-top: 1px solid #e0e0e0;
+		margin-bottom: 3em;
+		width: 26.25%;
+	}
+	#content .fourth,
+	#content .third.fourth,
+	#content .second.third.fourth {
+		padding-right: 0;
+		width: 21.25%;
+	}
+	#content .third.fourth {
+		width: 47.5%;
+	}
+	#content .second.third.fourth {
+		width: 73.75%;
+	}
+	#content .col h3,
+	#content .four h3 { 
+		color: #000; 
+		margin-top: 1em; 
+		padding-top: 0em;
+	}
+	#content .col h3 a,
+	#content .four h3 a { 
+		color: #000; 
+		border-bottom: none; 
+	}
+	#content .four ul {
+		margin: 1em 0;
+	}
+	#content .four li {
+		margin: 1em 0;
+	}
+	#content .grid h2,
+	#content .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border: none;
+		border-top: 2px solid #e0e0e0;
+	}
+	#content .big {
+		height: 3em;
+	}
+	#content .browse a {
+		font-weight: bold;
+		font-size: 1.2em;
+	}
+	#content form.search {
+		background-position: 0 0.9em;
+		border: 1px solid #fff;
+	}
+	#content form.search p label {
+		display: none;
+	}
+	#content form.search,
+	#content .browse {
+		position: relative;
+		padding-left: 25px;
+	}
+	#content .browse:before,
+	#content form.search:before {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0.75em;
+		width: 20px;
+		height: 20px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		content: "\f002";
+	}
+	#content .browse:before {
+		content: "\f00b";
+		top: 0;
+	}
+	#content #introduction .grid {
+		border: none;
+		margin-bottom: 0;
+	}
+
+/* Intro */
+	#introduction {
+		padding: 25px 15px 25px 120px;
+		position: relative;
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		border: none;
+		color: #666;
+		margin: -1px 0px 3em 0px;
+	}
+	#introduction small.intro-before,
+	#introduction small.intro-after,
+	#introduction:before,
+	#introduction:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		z-index: 100;
+	}
+	#introduction small.intro-before,
+	#introduction:before {
+		width: 69px;
+		height: 69px;
+		top: 32px;
+		left: 32px;
+		border: none;
+		-webkit-border-radius: 69px;
+		   -moz-border-radius: 69px;
+		    -ms-border-radius: 69px;
+		     -o-border-radius: 69px;
+		        border-radius: 69px;
+		background-color: #FEFEFE;
+	}
+	#introduction small.intro-after,
+	#introduction:after {
+		font-family: 'Fontcons';
+		line-height: 1;
+		color: #666;
+		font-size: 40px;
+		top: 48px;
+		left: 49px;
+	}
+	#introduction .aside,
+	#introduction .subject {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		background: transparent;
+		border: none;
+	}
+	#content #introduction h3 {
+		margin-top: 0;
+		color: #747474;
+	}
+	#introduction .columns {
+		border: none;
+	}
+	#introduction p {
+		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+	}
+	#introduction ul,
+	#introduction li {
+		list-style: none;
+		margin: 1em 0;
+		padding: 0;
+	}
+	#introduction ul {
+		border-top: 1px solid #ccc;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	#introduction li {
+		margin: 0;
+		/*padding: 0 0 0 5px;*/
+		position: relative;
+		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		padding: 0;
+	}
+	#introduction li:before {
+		display: none;
+	}
+	#introduction li a {
+		display: block;
+		padding: 0.4em 0;
+		border: none;
+	}
+	#introduction .clear:before,
+	#introduction .clear:after,
+	#introduction>.grid>.omega:before,
+	#introduction>.grid>.omega:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		z-index: 100;
+		top: -25px;
+		bottom: -25px;
+		width: 30px;
+		left: -150px;
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		   -moz-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		    -ms-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		     -o-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		        box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+	}
+	#introduction .clear:before {
+		top: 0;
+		bottom: 0;
+		left: -30px;
+	}
+	#introduction .clear:after,
+	#introduction>.grid>.omega:after {
+		left: auto;
+		right: -45px;
+		-webkit-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		   -moz-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		    -ms-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		     -o-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		        box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+	}
+	#introduction .clear:after {
+		top: 0;
+		bottom: 0;
+		right: -30px;
+	}
+	#introduction .subject small.subject-before,
+	#introduction .aside small.aside-before,
+	#introduction .aside small.aside-after,
+	#introduction .subject:before,
+	#introduction .aside:before, 
+	#introduction .aside:after {
+		display: none;
+	}
+	#introduction + .section {
+		padding: 0 30px 30px 30px;
+	}
