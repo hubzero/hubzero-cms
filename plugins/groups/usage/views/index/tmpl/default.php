@@ -1,25 +1,25 @@
 <?php
 /**
- * @package		HUBzero                                  CMS
- * @author		Christopher                               Smoak <csmoak@purdue.edu>
- * @copyright	Copyright                               2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *                                                    
- *                                                    Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
- *                                                    All rights reserved.
- *                                                    
- *                                                    This program is free software; you can redistribute it and/or
- *                                                    modify it under the terms of the GNU General Public License,
- *                                                    version 2 as published by the Free Software Foundation.
- *                                                    
- *                                                    This program is distributed in the hope that it will be useful,
- *                                                    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *                                                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *                                                    GNU General Public License for more details.
- *                                                    
- *                                                    You should have received a copy of the GNU General Public License
- *                                                    along with this program; if not, write to the Free Software
- *                                                    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     HUBzero CMS
+ * @author      Christopher <csmoak@purdue.edu>
+ * @copyright   Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -39,12 +39,11 @@ $invites_accepted     = $logger->logs('list', array('gidNumber' => $this->group-
 $promotions           = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_promoted'), true)->count();
 $demotions            = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'membership_demoted'), true)->count();
 ?>
-<a name="usage"></a>
 <h3 class="heading"><?php echo JText::_('USAGE'); ?></h3>
 
-<div class="main section">
+<section class="main section">
 	<div id="page_views">
-	
+
 		<div id="page_views_heading">
 			<h3>Group Page Views</h3>
 			<div id="page_view_settings">
@@ -63,15 +62,15 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 				</form>
 			</div><!-- /.end page_view_settings -->
 		</div><!-- /.end page_views_heading -->
-		
+
 		<div id="page_views_chart">
 			<noscript>
-				<p class="info" style="margin:15px;">To view this page views graph, Javascript must be enabled.</p>
+				<p class="info">To view this page views graph, Javascript must be enabled.</p>
 			</noscript>
 		</div>
 	</div>
-	
-	<table class="data" summary="<?php echo JText::_('TBL_SUMMARY_OVERVIEW'); ?>">
+
+	<table class="data">
 		<caption><?php echo JText::_('TBL_CAPTION_OVERVIEW'); ?></caption>
 		<thead>
 			<tr>
@@ -126,8 +125,8 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 			</tr>
 		</tbody>
 	</table>
-	
-	<table class="data" summary="<?php echo JText::_('TBL_SUMMARY_ACTIVITY'); ?>">
+
+	<table class="data">
 		<caption><?php echo JText::_('TBL_CAPTION_ACTIVITY'); ?></caption>
 		<thead>
 			<tr>
@@ -174,5 +173,4 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 			</tr>
 		</tbody>
 	</table>
-	
-</div><!-- /.main section -->
+</section><!-- /.main section -->

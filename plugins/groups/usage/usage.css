@@ -1,143 +1,156 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/groups/usage/usage.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Groups Usage plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
 .group_usage {
-	}
+}
 .group_usage h3.heading {
-	display:none;
-	}
+	display: none;
+}
 .group_usage .main,
 .group_usage .section {
-	border:none;
-	padding:0;
-	}
-	
+	border: none;
+	padding: 0;
+}
+
 #page_views {
-	border:1px solid #ccc;
-	margin-bottom:0px;
-	}
+	border: 1px solid #ccc;
+	margin-bottom: 0px;
+}
 #page_views #page_views_heading {
-	background:#efefef;
-	border-bottom:1px solid #CCC;
-	padding:5px;
-	overflow:hidden;
-	}
+	background: #efefef;
+	border-bottom: 1px solid #CCC;
+	padding: 5px;
+	overflow: hidden;
+}
 #page_views_heading h3 {
-	margin:2px 0 0 3px;
-	float:left;
-	}
+	margin: 2px 0 0 3px;
+	float: left;
+}
 #page_views_heading #page_view_settings {
-	float:right;
-	overflow:hidden;
-	}	
-		
+	float: right;
+	overflow: hidden;
+}
 #page_view_settings select {
-	float:left;
-	margin-right:10px;
-	}
+	float: left;
+	margin-right: 10px;
+}
 #page_view_settings #page_view_dates {
-	float:left;
-	width:200px;
-	padding:3px 0 4px 0;
-	text-align:center;
-	border:1px solid #ccc;
-	font-weight:bold;
-	background:#FFF url('images/calendar_icon.png') no-repeat 183px 50%;
-	}
+	float: left;
+	width: 200px;
+	padding: 3px 0 4px 0;
+	text-align: center;
+	border: 1px solid #ccc;
+	font-weight: bold;
+	background: #FFF url('images/calendar_icon.png') no-repeat 183px 50%;
+}
 #page_view_settings input[type=submit] {
-	margin:2px 0 0 10px;
-	float:left;
-	}	
-	
-	
+	margin: 2px 0 0 10px;
+	float: left;
+}
+
 /* Data tables */
-.data {
-    border-collapse: collapse;
-    margin: 1em 0 2.5em 0;
-    padding: 0;
-    border-top: 2px solid #ccc;
-    border-bottom: 2px solid #eee;
-    font-size: 90%;
-    }
-.data th {
-    font-weight: bold;
-    }
-.data caption {
-    text-align: left;
-    margin-bottom: 1em;
-    padding-bottom: 0;
-    }
-.data thead {
-    border-top: none;
-    border-bottom: 2px solid #ccc;
-    }
-.data thead th,
-.data thead td { 
-    padding: 0.5em 1em;
-    vertical-align: top;
-    border-top: none;
-    }
-.data .group {
-    background-image: none;
-    }
-.data tbody th,
-.data tbody td { 
-    padding: 0.5em 1em 0.5em 1em;
-    }
-.data tbody th {
-    text-align: left;
-    }
-.data tbody td {
-    text-align: right;
-    }
-.data .textual-data {
-    text-align: left;
-    }
-.data .numerical-data {
-    text-align: right;
-    }
-.data .odd {
-    background-color: #f6f6f1;
-    }
-.data .odd .highlight {
-    background-color: #e1eae8;
-    }
-.data .odd .group {
-    background-color: #eeeee9;
-    background-image: none;
-    }
-.data .odd .increase {
-    background-color: #e1eddc;
-    }
-.data .odd .decrease {
-    background-color: #ede2dc;
-    }
-.data .even {
-    }
-.data .even .highlight {
-    background-color: #edf3f1;
-    }
-.data .even .group {
-    background-color: #f7f7f7;
-    background-image: none;
-    }
-.data .even .increase {
-    background-color: #e9f5e8;
-    }
-.data .even .decrease {
-    background-color: #f5eae8;
-    }
-.data .summary {
-    background-color: #edf3f1;
-    border-top: 2px solid #ccc;
-    }
-.data .summary .highlight {
-    background-color: #d1dedc;
-    }
-#statistics .summary .group {
-    background-color: #e1eae8;
-    background-image: none;
-    }
-#statistics .summary .increase {
-    background-color: #dce6d3;
-    }
-#statistics .summary .decrease {
-    background-color: #e8dbd3;
-    }
+	.data {
+		border-collapse: collapse;
+		margin: 1em 0 2.5em 0;
+		padding: 0;
+		border-top: 2px solid #ccc;
+		border-bottom: 2px solid #eee;
+		font-size: 90%;
+	}
+	.data th {
+		font-weight: bold;
+	}
+	.data caption {
+		text-align: left;
+		margin-bottom: 1em;
+		padding-bottom: 0;
+	}
+	.data thead {
+		border-top: none;
+		border-bottom: 2px solid #ccc;
+	}
+	.data thead th,
+	.data thead td { 
+		padding: 0.5em 1em;
+		vertical-align: top;
+		border-top: none;
+	}
+	.data .group {
+		background-image: none;
+	}
+	.data tbody th,
+	.data tbody td { 
+		padding: 0.5em 1em 0.5em 1em;
+	}
+	.data tbody th {
+		text-align: left;
+	}
+	.data tbody td {
+		text-align: right;
+	}
+	.data .textual-data {
+		text-align: left;
+	}
+	.data .numerical-data {
+		text-align: right;
+	}
+	.data .odd {
+		background-color: #f6f6f1;
+	}
+	.data .odd .highlight {
+		background-color: #e1eae8;
+	}
+	.data .odd .group {
+		background-color: #eeeee9;
+		background-image: none;
+	}
+	.data .odd .increase {
+		background-color: #e1eddc;
+	}
+	.data .odd .decrease {
+		background-color: #ede2dc;
+	}
+	.data .even {
+	}
+	.data .even .highlight {
+		background-color: #edf3f1;
+	}
+	.data .even .group {
+		background-color: #f7f7f7;
+		background-image: none;
+	}
+	.data .even .increase {
+		background-color: #e9f5e8;
+	}
+	.data .even .decrease {
+		background-color: #f5eae8;
+	}
+	.data .summary {
+		background-color: #edf3f1;
+		border-top: 2px solid #ccc;
+	}
+	.data .summary .highlight {
+		background-color: #d1dedc;
+	}
+	#statistics .summary .group {
+		background-color: #e1eae8;
+		background-image: none;
+	}
+	#statistics .summary .increase {
+		background-color: #dce6d3;
+	}
+	#statistics .summary .decrease {
+		background-color: #e8dbd3;
+	}
