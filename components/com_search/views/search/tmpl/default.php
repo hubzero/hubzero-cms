@@ -37,56 +37,11 @@ $this->css()
 
 $show_weight = array_key_exists('show_weight', $_GET);
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo JText::_('Search'); ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-	<div class="aside">
-		<div class="container">
-			<h3>
-				Filter results
-			</h3>
-		<?php if ($this->results->get_total_count()): ?>
-			<ul class="sub-nav">
-				<li>
-					<?php if ($this->plugin): ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $this->url_terms); ?>">All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
-					<?php else: ?>
-						<strong>All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
-					<?php endif; ?>
-				</li>
-			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
-				<?php if ($def['count']): ?>
-					<li>
-						<?php if ($this->plugin == $cat && !$this->section): ?>
-							<strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
-						<?php else: ?> 
-							<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
-						<?php endif; ?>
-						<?php 
-						$fc_child_flag = 'plgsearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
-						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1):
-						?>
-							<ul>
-							<?php foreach ($def['sections'] as $section_key=>$sdef): ?>
-								<?php 
-								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
-								?>
-									<li><a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
-								<?php else: ?>
-									<li><strong><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
-								<?php endif; ?>
-							<?php endforeach; ?>
-							</ul>
-						<?php endif; ?>
-					</li>
-				<?php endif; ?>
-			<?php endforeach; ?>
-			</ul>
-		<?php endif; ?>
-		</div><!-- / .container -->
-	</div><!-- / .aside -->
+<section class="main section">
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
@@ -236,4 +191,49 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php endif; ?>
 <?php endif; ?>
 	</div><!-- / .subject -->
-</div><!-- / .main section -->
+	<div class="aside">
+		<div class="container">
+			<h3>
+				Filter results
+			</h3>
+		<?php if ($this->results->get_total_count()): ?>
+			<ul class="sub-nav">
+				<li>
+					<?php if ($this->plugin): ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $this->url_terms); ?>">All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
+					<?php else: ?>
+						<strong>All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
+					<?php endif; ?>
+				</li>
+			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
+				<?php if ($def['count']): ?>
+					<li>
+						<?php if ($this->plugin == $cat && !$this->section): ?>
+							<strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
+						<?php else: ?> 
+							<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
+						<?php endif; ?>
+						<?php 
+						$fc_child_flag = 'plgsearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
+						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1):
+						?>
+							<ul>
+							<?php foreach ($def['sections'] as $section_key=>$sdef): ?>
+								<?php 
+								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
+								?>
+									<li><a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
+								<?php else: ?>
+									<li><strong><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							</ul>
+						<?php endif; ?>
+					</li>
+				<?php endif; ?>
+			<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
+		</div><!-- / .container -->
+	</div><!-- / .aside -->
+</section><!-- / .main section -->
