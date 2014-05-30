@@ -53,6 +53,8 @@ $primary     = JRequest::getWord('primary', false);
 	</div>
 <?php endif; ?>
 
+	<div class="hz_user">
+
 <?php if ($primary && $primary != 'hubzero') : ?>
 	<a class="primary" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $primary . $this->returnQueryString); ?>">
 		<div class="<?php echo $primary; ?> upper"></div>
@@ -112,10 +114,10 @@ $primary     = JRequest::getWord('primary', false);
 					<div class="input-error">blah blah</div>
 				</div>
 				<div class="submission">
-					<input type="submit" value="Sign in" class="login-submit"/>
+					<input type="submit" value="Sign in" class="login-submit btn btn-primary"/>
 					<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
 						<div class="remember-wrap">
-							<input type="checkbox" class="option" name="remember" class="remember" value="yes" alt="Remember Me" <?php echo ($this->remember_me_default) ? 'checked="checked"' : ''; ?> />
+							<input type="checkbox" class="option" name="remember" id="remember" class="remember" value="yes" alt="Remember Me" <?php echo ($this->remember_me_default) ? 'checked="checked"' : ''; ?> />
 							<label for="remember" class="remember-me-label"><?php echo JText::_('Keep me logged in?'); ?></label>
 						</div>
 					<?php endif; ?>
@@ -149,3 +151,5 @@ $primary     = JRequest::getWord('primary', false);
 		</a>
 	</p>
 <?php endif; ?>
+
+	</div> <!-- / .hz_user -->
