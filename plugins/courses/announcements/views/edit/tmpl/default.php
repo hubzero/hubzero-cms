@@ -37,7 +37,7 @@ $this->js('jquery.timepicker.js', 'system')
 
 $juser = JFactory::getUser();
 ?>
-<div class="main section">
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
@@ -108,4 +108,4 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
