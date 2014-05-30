@@ -158,6 +158,10 @@ jQuery.fn.dataTableExt.oSort['numrange-desc']  = function(a,b) {
 	return ((x < y) ?  1 : ((x > y) ? -1 : 0));
 };
 
+// Field type: date
+jQuery.fn.dataTableExt.oSort['date-pre'] = function (a) {
+	return Date.parse(a.replace(/-/g, '/')) || Date.parse('01/01/1970 00:00:00');
+};
 
 // Field type: datetime
 jQuery.fn.dataTableExt.oSort['datetime-pre'] = jQuery.fn.dataTableExt.oSort['date-pre'];
@@ -167,12 +171,7 @@ jQuery.fn.dataTableExt.oSort['datetime-desc'] = jQuery.fn.dataTableExt.oSort['da
 
 // Field type: time
 jQuery.fn.dataTableExt.oSort['time-pre'] = function (a) {
-	var x = Date.parse('1970-01-01T' + a);
-
-	if (isNaN(x) || x === '') {
-		x = Date.parse('1970-01-01T00:00:00');
-	}
-	return x;
+	return Date.parse('1970/01/01 ' + a) || Date.parse('1970/01/01 00:00:00');
 };
 
 jQuery.fn.dataTableExt.oSort['time-asc'] = jQuery.fn.dataTableExt.oSort['date-asc'];
