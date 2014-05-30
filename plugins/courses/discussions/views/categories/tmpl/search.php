@@ -5,32 +5,12 @@ $juser = JFactory::getUser();
 
 $base = $this->offering->alias() . '&active=forum';
 ?>
-<div class="main section">
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-<?php } ?>
+<section class="main section">
+	<!-- <div class="subject"> -->
+		<?php foreach ($this->notifications as $notification) { ?>
+			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+		<?php } ?>
 
-	<?php /*<div class="aside">
-<?php if ($this->config->get('access-create-thread')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
-<?php if (!$this->category->closed) { ?>
-			<p>
-				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
-			</p>
-			<p class="add">
-				<a href="<?php echo JRoute::_($base . '&action=add'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
-			</p>
-<?php } else { ?>
-			<p class="warning">
-				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
-			</p>
-<?php } ?>
-		</div>
-<?php } ?>
-	</div><!-- / .aside -->
-
-	<div class="subject"> */ ?>
 		<form action="<?php echo JRoute::_($base); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
@@ -47,37 +27,38 @@ $base = $this->offering->alias() . '&active=forum';
 					<input type="hidden" name="action" value="search" />
 				</fieldset>
 			</div><!-- / .container -->
-			
+
 			<div class="container">
 				<table class="entries">
 					<caption>
 						<?php echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search'])); ?>
 					</caption>
 					<tbody>
-<?php
-			if ($this->rows) {
-				foreach ($this->rows as $row) 
+				<?php
+				if ($this->rows)
 				{
-					$name = JText::_('Anonymous');
-					if (!$row->anonymous)
+					foreach ($this->rows as $row) 
 					{
-						$creator = JUser::getInstance($row->created_by);
-						if (is_object($creator)) 
+						$name = JText::_('Anonymous');
+						if (!$row->anonymous)
 						{
-							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
+							$creator = JUser::getInstance($row->created_by);
+							if (is_object($creator)) 
+							{
+								$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
+							}
 						}
-					}
-					
-					if ($row->parent)
-					{
-						$p = new ForumTablePost(JFactory::getDBO());
-						$thread = $p->getThread($row->parent);
-					}
-					else
-					{
-						$thread = $row;
-					}
-?>
+						
+						if ($row->parent)
+						{
+							$p = new ForumTablePost(JFactory::getDBO());
+							$thread = $p->getThread($row->parent);
+						}
+						else
+						{
+							$thread = $row;
+						}
+					?>
 						<tr<?php if ($row->sticky) { echo ' class="sticky"'; } ?>>
 							<th>
 								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
@@ -115,28 +96,46 @@ $base = $this->offering->alias() . '&active=forum';
 								</span>
 							</td>
 						</tr>
-<?php 
-				}
-			} else { ?>
+				<?php 
+					}
+				} else { ?>
 						<tr>
 							<td><?php echo JText::_('No discussions found.'); ?></td>
 						</tr>
-<?php 		} ?>
+				<?php } ?>
 					</tbody>
 				</table>
-<?php 
-			if ($this->pageNav) 
-			{
-				$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
-				$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
-				$this->pageNav->setAdditionalUrlParam('active', 'forum');
-				$this->pageNav->setAdditionalUrlParam('action', 'search');
-				$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-				echo $this->pageNav->getListFooter();
-			}
-?>
-				<div class="clear"></div>
+				<?php 
+				if ($this->pageNav) 
+				{
+					$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+					$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+					$this->pageNav->setAdditionalUrlParam('active', 'forum');
+					$this->pageNav->setAdditionalUrlParam('action', 'search');
+					$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+					echo $this->pageNav->getListFooter();
+				}
+				?>
 			</div><!-- / .container -->
 		</form>
-	</div><!-- /.subject -->
-</div><!-- /.main -->
+	<?php /*</div><!-- /.subject -->
+	<aside class="aside">
+	<?php if ($this->config->get('access-create-thread')) { ?>
+		<div class="container">
+			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
+		<?php if (!$this->category->closed) { ?>
+			<p>
+				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
+			</p>
+			<p class="add">
+				<a href="<?php echo JRoute::_($base . '&action=add'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+			</p>
+		<?php } else { ?>
+			<p class="warning">
+				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
+			</p>
+		<?php } ?>
+		</div>
+	<?php } ?>
+	</aside><!-- / .aside -->*/ ?>
+</section><!-- /.main -->

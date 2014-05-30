@@ -32,21 +32,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 ?>
-<div class="main section">
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-<?php } ?>
-	<h3 class="post-comment-title">
-<?php if ($this->model->id) { ?>
-		<?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT_CATEGORY'); ?>
-<?php } else { ?>
-		<?php echo JText::_('PLG_COURSES_DISCUSSIONS_NEW_CATEGORY'); ?>
-<?php } ?>
-	</h3>
-	<div class="aside">
-		<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_HINT'); ?></p>
-	</div><!-- /.aside -->
+<section class="main section">
 	<div class="subject">
+		<?php foreach ($this->notifications as $notification) { ?>
+			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+		<?php } ?>
+
+		<h3 class="post-comment-title">
+		<?php if ($this->model->id) { ?>
+			<?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT_CATEGORY'); ?>
+		<?php } else { ?>
+			<?php echo JText::_('PLG_COURSES_DISCUSSIONS_NEW_CATEGORY'); ?>
+		<?php } ?>
+		</h3>
+
 		<form action="<?php echo JRoute::_($this->offering->link() . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<?php
@@ -102,5 +101,7 @@ $juser = JFactory::getUser();
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .main section -->
+	<aside class="aside">
+		<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_HINT'); ?></p>
+	</aside><!-- /.aside -->
+</section><!-- / .main section -->
