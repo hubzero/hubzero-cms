@@ -28,21 +28,21 @@ function view($dd = false) {
 	dv_add_css('bootstrap/css/bootstrap.css');
 
 	/* jQuery-UI */
-	dv_add_script('jquery-ui/jquery-ui.js');
+	dv_add_script('jquery-ui/jquery-ui.min.js');
 	dv_add_css('jquery-ui/smoothness/jquery-ui.min.css');
 
 	dv_add_css('font-awesome/css/font-awesome.css');
 
 	dv_add_script('excanvas.js');
 
-	dv_add_script('jquery-datatables/jquery.dataTables.js');
+	dv_add_script('jquery-datatables/jquery.dataTables.min.js');
 	dv_add_css('jquery-datatables/css/jquery.dataTables_themeroller.css');
 	dv_add_css('jquery-datatables/css/jquery.dataTables_dv.css');
 
 	dv_add_script('datatables.plugins.js');
 
-	dv_add_script('jqplot/jquery.jqplot.js');
-	dv_add_script('jqplot/plugins');
+	dv_add_script('jqplot/jquery.jqplot.min.js');
+	dv_add_script('jqplot/plugins.dev');
 	dv_add_css('jqplot/jquery.jqplot.css');
 
 	dv_add_script('spreadsheet.js');
@@ -467,6 +467,7 @@ function view($dd = false) {
 		if (JRequest::getVar('show_filters', 'false') === 'true') {
 			$dv_show_filters = 'true';
 		}
+
 	?>
 		<!-- Start: Dialog boxes -->
 		<div id="truncated_text_dialog" style="display: none; overflow: auto;" title="Full Text"></div>
