@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<div class="main section">
+<section class="main section">
 	<h3>Would you like to completely log out of your <?php echo $this->display_name; ?> account?</h2>
 	<p>
 		Your <?php echo $this->sitename; ?> session has ended.
@@ -46,9 +46,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</a>
 	</p>
 	<p>
-		<a class="home btn" href="/">
+		<a class="home btn" href="<?php echo JURI::base(); ?>">
 			Leave other <?php echo $this->display_name; ?> account sessions untouched.
 		</a>
 	</p>
-</div>
-<div class="clear"></div>
+</section>

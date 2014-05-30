@@ -32,14 +32,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2>Pending Approval</h2>
-</div>
+</header>
 
-<div class="main section">
+<section class="main section">
 	<p>
 		Your account is currently pending approval from a site administrator.
 		If you feel you are receiving this message in error, please 
-		<a href="/support/ticket/new">contact the site administrator</a>.
+		<a href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">contact the site administrator</a>.
 	</p>
-</div>
+</section>
