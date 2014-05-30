@@ -32,36 +32,30 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <?php if ($this->no_html) { ?>
-<!-- <html>
-<head>
-</head>
-<body onload="window.top.window.HUB.ReportProblem.hideTimer();"> -->
-<div id="report-response">
-	<div>
-		<p><?php echo JText::_('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id='.$this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
-		<p><button onclick="javascript:HUB.ReportProblem.resetForm();" title="<?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?>"><?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?></button></p>
+	<div id="report-response">
+		<div>
+			<p><?php echo JText::_('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id='.$this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
+			<p><button onclick="javascript:HUB.ReportProblem.resetForm();" title="<?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?>"><?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?></button></p>
+		</div>
+		<p>
+			<?php echo JText::_('COM_FEEDBACK_TROUBLE_THANKS'); ?><br /><br />
+			<?php echo JText::_('COM_FEEDBACK_TROUBLE_TICKET_TIMES'); ?>
+		</p>
 	</div>
-	<p>
-		<?php echo JText::_('COM_FEEDBACK_TROUBLE_THANKS'); ?><br /><br />
-		<?php echo JText::_('COM_FEEDBACK_TROUBLE_TICKET_TIMES'); ?>
-	</p>
-</div>
-<script type="text/javascript">window.top.window.HUB.ReportProblem.hideTimer();</script>
-<!-- </body>
-</html> -->
+	<script type="text/javascript">window.top.window.HUB.ReportProblem.hideTimer();</script>
 <?php } else { ?>
-<div id="content-header" class="full">
-	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+	<header id="content-header">
+		<h2><?php echo $this->title; ?></h2>
+	</header><!-- / #content-header -->
 
-<div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_THANKS'); ?></p>
-	<p class="information"><?php echo JText::_('COM_FEEDBACK_TROUBLE_TICKET_TIMES'); ?></p>
-<?php if ($this->ticket) { ?>
-	<p><?php echo JText::sprintf('COM_FEEDBACK_TROUBLE_TICKET_REFERENCE',$this->ticket); ?></p>
-<?php } ?>
-</div><!-- / .main section -->
+	<section class="main section">
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php } ?>
+		<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_THANKS'); ?></p>
+		<p class="information"><?php echo JText::_('COM_FEEDBACK_TROUBLE_TICKET_TIMES'); ?></p>
+		<?php if ($this->ticket) { ?>
+			<p><?php echo JText::sprintf('COM_FEEDBACK_TROUBLE_TICKET_REFERENCE',$this->ticket); ?></p>
+		<?php } ?>
+	</section><!-- / .main section -->
 <?php } ?>

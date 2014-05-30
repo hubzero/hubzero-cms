@@ -118,23 +118,24 @@ function getMonthName($month)
 }
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li>
-			<a class="icon-browse browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>">
-				<?php echo JText::_('Tickets'); ?>
-			</a>
-		</li>
-		<li class="last">
-			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
-				<?php echo JText::_('SUPPORT_NEW_TICKET'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li>
+				<a class="icon-browse browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>">
+					<?php echo JText::_('Tickets'); ?>
+				</a>
+			</li>
+			<li class="last">
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
+					<?php echo JText::_('SUPPORT_NEW_TICKET'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
 <ul class="sub-menu">
 	<li id="sm-1"<?php if ($this->type == 0) { echo ' class="active"'; } ?>>
@@ -150,7 +151,7 @@ function getMonthName($month)
 </ul>
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
-	<div class="main section" id="ticket-stats">
+	<section class="main section" id="ticket-stats">
 		<div class="grid">
 			<div class="col span-half">
 				<!-- <h3 class="time-range">
@@ -705,5 +706,5 @@ function getMonthName($month)
 	}
 	?>
 
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->
 </form>

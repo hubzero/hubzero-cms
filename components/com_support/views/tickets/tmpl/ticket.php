@@ -118,33 +118,33 @@ if (!trim($this->row->report))
 
 $cc = array();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-<?php if ($prev) { ?>
-		<li>
-			<a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-				<?php echo JText::_('COM_SUPPORT_PREV'); ?>
-			</a>
-		</li>
-<?php } ?>
-		<li>
-			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-				<?php echo JText::_('COM_SUPPORT_TICKETS'); ?>
-			</a>
-		</li>
-<?php if ($next) { ?>
-		<li>
-			<a class="icon-next next opposite btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-				<?php echo JText::_('COM_SUPPORT_NEXT'); ?>
-			</a>
-		</li>
-<?php } ?>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+		<?php if ($prev) { ?>
+			<li>
+				<a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+					<?php echo JText::_('COM_SUPPORT_PREV'); ?>
+				</a>
+			</li>
+		<?php } ?>
+			<li>
+				<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+					<?php echo JText::_('COM_SUPPORT_TICKETS'); ?>
+				</a>
+			</li>
+		<?php if ($next) { ?>
+			<li>
+				<a class="icon-next next opposite btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+					<?php echo JText::_('COM_SUPPORT_NEXT'); ?>
+				</a>
+			</li>
+		<?php } ?>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
 <?php if ($this->getError()) { ?>
 <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -167,35 +167,12 @@ $cc = array();
 	}*/
 ?>
 
-<div class="main section">
-
-	<div class="aside">
-		<div class="ticket-status">
-			<p class="<?php echo (!$this->row->open) ? 'closed' : 'open'; ?>"><strong><?php echo (!$this->row->open) ? JText::_('TICKET_STATUS_CLOSED_TICKET') : JText::_('TICKET_STATUS_OPEN_TICKET'); ?></strong></p>
-<?php if (!$this->row->open) { ?>
-			<p><strong>Note:</strong> To reopen this issue, add a comment below.</p>
-<?php } ?>
-			<!-- <p class="entry-number">#<strong><?php echo $this->row->id; ?></strong></p> -->
-		</div><!-- / .entry-status -->
-	
-		<div class="ticket-watch">
-		<?php if ($watching->id) { ?>
-			<div id="watching">
-				<p>This ticket is saved in your watch list.</p>
-				<p><a class="stop-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start'] . '&watch=stop'); ?>">Stop watching</a></p>
-			</div>
-		<?php } ?>
-		<?php if (!$watching->id) { ?>
-			<p><a class="start-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start'] . '&watch=start'); ?>">Watch ticket</a></p>
-		<?php } ?>
-			<p>When watching a ticket, you will be notified of any comments added or changes made. You may stop watching at any time.</p>
-		</div>
-	</div><!-- / .aside -->
+<section class="main section">
 
 	<div class="subject">
 		<div class="ticket entry" id="t<?php echo $this->row->id; ?>">
 			<p class="entry-member-photo">
-				<span class="entry-anchor"><a name="ticket"></a></span>
+				<span class="entry-anchor"></span>
 				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($submitter, $unknown); ?>" alt="" />
 			</p><!-- / .entry-member-photo -->
 			<div class="entry-content">
@@ -210,7 +187,7 @@ $cc = array();
 					<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
 				</div><!-- / .entry-body -->
 			</div><!-- / .entry-content -->
-<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
+			<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 				<div class="entry-details">
 					<table summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
 						<tbody>
@@ -238,32 +215,45 @@ $cc = array();
 								<th scope="row"><?php echo JText::_('TICKET_DETAILS_INSTANCES'); ?>:</th>
 								<td><?php echo $this->escape($this->row->instances); ?></td>
 							</tr>
-<?php 			if ($this->row->uas) { ?>
+						<?php if ($this->row->uas) { ?>
 							<tr>
 								<td colspan="2"><?php echo $this->escape($this->row->uas); ?></td>
 							</tr>
-<?php 			} ?>
+						<?php } ?>
 						</tbody>
 					</table>
 				</div><!-- / .entry-details -->
-<?php } ?>
+			<?php } ?>
 		</div><!-- / .ticket -->
 	</div><!-- / .subject -->
-</div><!-- / .main section -->
+	<aside class="aside">
+		<div class="ticket-status">
+			<p class="<?php echo (!$this->row->open) ? 'closed' : 'open'; ?>"><strong><?php echo (!$this->row->open) ? JText::_('TICKET_STATUS_CLOSED_TICKET') : JText::_('TICKET_STATUS_OPEN_TICKET'); ?></strong></p>
+			<?php if (!$this->row->open) { ?>
+				<p><strong>Note:</strong> To reopen this issue, add a comment below.</p>
+			<?php } ?>
+		</div><!-- / .entry-status -->
+
+		<div class="ticket-watch">
+			<?php if ($watching->id) { ?>
+				<div id="watching">
+					<p>This ticket is saved in your watch list.</p>
+					<p><a class="stop-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start'] . '&watch=stop'); ?>">Stop watching</a></p>
+				</div>
+			<?php } ?>
+			<?php if (!$watching->id) { ?>
+				<p><a class="start-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start'] . '&watch=start'); ?>">Watch ticket</a></p>
+			<?php } ?>
+			<p>When watching a ticket, you will be notified of any comments added or changes made. You may stop watching at any time.</p>
+		</div>
+	</aside><!-- / .aside -->
+</section><!-- / .main section -->
 
 <?php if ($this->acl->check('read', 'comments')) { ?>
-<div class="below section">
-	<h3><a name="comments"></a><?php echo JText::_('TICKET_COMMENTS'); ?></h3>
-			
-	<div class="aside">
-<?php if ($this->acl->check('create', 'comments')) { ?>
-		<p>
-			<a class="icon-add add btn" href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a>
-		</p>
-<?php } ?>
-	</div><!-- / .aside -->
-
+<section class="below section">
 	<div class="subject">
+		<h3><?php echo JText::_('TICKET_COMMENTS'); ?></h3>
+
 	<?php if (count($this->comments) > 0) { ?>
 		<ol class="comments">
 		<?php
@@ -362,97 +352,104 @@ $cc = array();
 		<p class="no-comments"><?php echo JText::_('No comments found.'); ?></p>
 	<?php } ?>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .below section -->
+	<aside class="aside">
+		<?php if ($this->acl->check('create', 'comments')) { ?>
+			<p>
+				<a class="icon-add add btn" href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a>
+			</p>
+		<?php } ?>
+	</aside><!-- / .aside -->
+</section><!-- / .below section -->
 <?php } // ACL can read comments ?>
 
 <?php if ($this->acl->check('create', 'comments') || $this->acl->check('update', 'tickets')) { ?>
-<div class="below section">
-	<h3>
-		<?php echo JText::_('COMMENT_FORM'); ?>
-	</h3>
-	
-	<div class="aside">
-		<p>Please remember to describe problems in detail, including any steps you may have taken before encountering an error.</p>
-	</div><!-- / .aside -->
-	
+<section class="below section">
 	<div class="subject">
+		<h3>
+			<?php echo JText::_('COMMENT_FORM'); ?>
+		</h3>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update'); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
-				<span class="comment-anchor"><a name="commentform"></a></span>
-			<?php
-				if (!$juser->get('guest')) {
-					$jxuser = new \Hubzero\User\Profile();
-					$jxuser->load($juser->get('id'));
-					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, 0);
-				} else {
-					$config = JComponentHelper::getParams('com_members');
-					$thumb = DS . ltrim($config->get('defaultpic'), DS);
-					$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
-				}
-			?>
+				<span class="comment-anchor"></span>
+				<?php
+					if (!$juser->get('guest')) {
+						$jxuser = new \Hubzero\User\Profile();
+						$jxuser->load($juser->get('id'));
+						$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, 0);
+					} else {
+						$config = JComponentHelper::getParams('com_members');
+						$thumb = DS . ltrim($config->get('defaultpic'), DS);
+						$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
+					}
+				?>
 				<img src="<?php echo $thumb; ?>" alt="" />
 			</p>
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="ticket[id]" id="ticketid" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
-				
+
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="update" />
-				
+
 				<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 				<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
 				<input type="hidden" name="limit" value="<?php echo $this->escape($this->filters['limit']); ?>" />
 				<input type="hidden" name="limistart" value="<?php echo $this->escape($this->filters['start']); ?>" />
-<?php if (!$this->acl->check('create', 'private_comments')) { ?>
-				<input type="hidden" name="access" value="0" />
-<?php } ?>
+				<?php if (!$this->acl->check('create', 'private_comments')) { ?>
+					<input type="hidden" name="access" value="0" />
+				<?php } ?>
 
-	<?php if ($this->acl->check('update', 'tickets')) { ?>
+			<?php if ($this->acl->check('update', 'tickets')) { ?>
 				<fieldset>
-			<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
+				<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 					<legend><span><?php echo JText::_('Ticket Details'); ?></span></legend>
+
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
 						<?php 
-					$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '',$this->lists['tags'])));
+						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '',$this->lists['tags'])));
 
-					if (count($tf) > 0) {
-						echo $tf[0];
-					} else { ?>
-						<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" size="35" />
-					<?php } ?>
+						if (count($tf) > 0) {
+							echo $tf[0];
+						} else { ?>
+							<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" size="35" />
+						<?php } ?>
 					</label>
 
-					<div class="grouping">
-						<label>
-							<?php echo JText::_('COMMENT_GROUP'); ?>:
-							<?php 
-						$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '',$this->row->group, '', 'ticketowner')));
-						if (count($gc) > 0) {
-							echo $gc[0];
-						} else { ?>
-							<input type="text" name="ticket[group]" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
-						<?php } ?>
-						</label>
-
-						<label>
-							<?php echo JText::_('COMMENT_OWNER'); ?>:
-							<?php echo $this->lists['owner']; ?>
-						</label>
+					<div class="grid">
+						<div class="col span6">
+							<label>
+								<?php echo JText::_('COMMENT_GROUP'); ?>:
+								<?php 
+								$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '',$this->row->group, '', 'ticketowner')));
+								if (count($gc) > 0) {
+									echo $gc[0];
+								} else { ?>
+									<input type="text" name="ticket[group]" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
+								<?php } ?>
+							</label>
+						</div>
+						<div class="col span6 omega">
+							<label>
+								<?php echo JText::_('COMMENT_OWNER'); ?>:
+								<?php echo $this->lists['owner']; ?>
+							</label>
+						</div>
 					</div>
-					<div class="clear"></div>
 
-					<div class="grouping">
-						<label>
-							<?php echo JText::_('COMMENT_SEVERITY'); ?>:
-							<?php echo SupportHtml::selectArray('ticket[severity]', $this->lists['severities'], $this->row->severity); ?>
-						</label>
-			<?php } else { ?>
+					<div class="grid">
+						<div class="col span6">
+							<label>
+								<?php echo JText::_('COMMENT_SEVERITY'); ?>:
+								<?php echo SupportHtml::selectArray('ticket[severity]', $this->lists['severities'], $this->row->severity); ?>
+							</label>
+						</div>
+						<div class="col span6 omega">
+				<?php } else { ?>
 						<input type="hidden" name="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" />
-			<?php } // ACL can update ticket (admin) ?>
+				<?php } // ACL can update ticket (admin) ?>
 						<label>
 							<?php echo JText::_('COMMENT_STATUS'); ?>:
 							<select name="ticket[resolved]" id="status">
@@ -460,23 +457,23 @@ $cc = array();
 								<option value="1"<?php if ($this->row->open && $this->row->status == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
 								<optgroup label="Closed">
 									<option value="noresolution"<?php if (!$this->row->open && $this->row->resolved == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
-						<?php 
-						if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
-							foreach ($this->lists['resolutions'] as $anode)
-							{
-								$selected = ($anode->alias == $this->row->resolved)
-										  ? ' selected="selected"'
-										  : '';
-								echo '<option value="'.$anode->alias.'"'.$selected.'>'.$this->escape(stripslashes($anode->title)).'</option>';
-							}
-						}
-						?>
+									<?php 
+									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
+										foreach ($this->lists['resolutions'] as $anode)
+										{
+											$selected = ($anode->alias == $this->row->resolved)
+													  ? ' selected="selected"'
+													  : '';
+											echo '<option value="'.$anode->alias.'"'.$selected.'>'.$this->escape(stripslashes($anode->title)).'</option>';
+										}
+									}
+									?>
 								</optgroup>
 							</select>
 						</label>
-			<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
+				<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
+						</div>
 					</div>
-					<div class="clear"></div>
 
 					<?php if (isset($this->lists['categories']) && $this->lists['categories'])  { ?>
 					<label for="ticket-field-category">
@@ -494,13 +491,13 @@ $cc = array();
 						</select>
 					</label>
 					<?php } ?>
-			<?php } ?>
+				<?php } ?>
 				</fieldset>
-	<?php } else { ?>
+			<?php } else { ?>
 				<input type="hidden" name="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" />
-	<?php } // ACL can update tickets ?>
+			<?php } // ACL can update tickets ?>
 
-<?php if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
+			<?php if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
 				<?php
 					JPluginHelper::importPlugin('support');
 					$results = $dispatcher->trigger('onTicketComment', array($this->row));
@@ -508,10 +505,11 @@ $cc = array();
 				?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
-<?php if ($this->acl->check('create', 'comments') > 0 || $this->acl->check('create', 'private_comments')) { ?>
+
+				<?php if ($this->acl->check('create', 'comments') > 0 || $this->acl->check('create', 'private_comments')) { ?>
 					<div class="top grouping">
-<?php } ?>
-<?php if ($this->acl->check('create', 'comments') > 0) { ?>
+				<?php } ?>
+					<?php if ($this->acl->check('create', 'comments') > 0) { ?>
 						<label>
 							<?php
 							$hi = array();
@@ -536,17 +534,17 @@ $cc = array();
 							echo $o . $hi;
 							?>
 						</label>
-<?php } // ACL can create comment (admin) ?>
-<?php if ($this->acl->check('create', 'private_comments')) { ?>
+					<?php } // ACL can create comment (admin) ?>
+					<?php if ($this->acl->check('create', 'private_comments')) { ?>
 						<label>
 							<input class="option" type="checkbox" name="access" id="make-private" value="1" />
 							<?php echo JText::_('COMMENT_PRIVATE'); ?>
 						</label>
-<?php } // ACL can create private comments ?>
-<?php if ($this->acl->check('create', 'comments') > 0 || $this->acl->check('create', 'private_comments')) { ?>
+					<?php } // ACL can create private comments ?>
+				<?php if ($this->acl->check('create', 'comments') > 0 || $this->acl->check('create', 'private_comments')) { ?>
 					</div>
 					<div class="clear"></div>
-<?php } // ACL can create comments (admin) or private comments ?>
+				<?php } // ACL can create comments (admin) or private comments ?>
 					<textarea name="comment" id="comment" rows="13" cols="35"></textarea>
 				</fieldset>
 
@@ -582,8 +580,9 @@ $cc = array();
 					<input type="hidden" name="tmp_dir" id="comment-tmp_dir" value="<?php echo $tmp; ?>" />
 					<!-- <script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script> -->
 				</fieldset>
-<?php } //if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
-<?php if ($this->acl->check('create', 'comments') > 0) { ?>
+			<?php } //if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
+
+			<?php if ($this->acl->check('create', 'comments') > 0) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_EMAIL'); ?>:</legend>
 					<div class="grouping">
@@ -608,16 +607,18 @@ $cc = array();
 						<?php } ?>
 					</label>
 				</fieldset>
-<?php } else { ?>
+			<?php } else { ?>
 				<input type="hidden" name="email_submitter" id="email_submitter" value="1" />
 				<input type="hidden" name="email_owner" id="email_owner" value="1" />
-<?php } // ACL can create comments (admin) ?>
+			<?php } // ACL can create comments (admin) ?>
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('SUBMIT_COMMENT'); ?>" />
 				</p>
 			</fieldset>
 		</form>
 	</div><!-- / .subject -->
-</div><!-- / .section -->
+	<aside class="aside">
+		<p>Please remember to describe problems in detail, including any steps you may have taken before encountering an error.</p>
+	</aside><!-- / .aside -->
+</section><!-- / .section -->
 <?php } // ACL can create comments ?>
-<div class="clear"></div>

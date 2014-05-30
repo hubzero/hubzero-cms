@@ -52,7 +52,7 @@ if (!$this->no_html)
 	</div>
 	<script type="text/javascript">window.top.window.HUB.Modules.ReportProblems.hideTimer();</script>
 <?php } else { ?>
-	<div class="main section">
+	<section class="main section">
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php } ?>
@@ -76,5 +76,5 @@ if (!$this->no_html)
 				</div>
 			</div><!-- / .col span-half omega -->
 		</div><!-- / .grid -->
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->
 <?php } ?>

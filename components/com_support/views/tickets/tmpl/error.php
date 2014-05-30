@@ -30,23 +30,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-if(JPluginHelper::isEnabled('system', 'jquery')) {
-	$rpNamespace = 'HUB.Modules.ReportProblems';
-}
-else {
-	$rpNamespace = 'HUB.ReportProblem';
-}
-
 ?>
 <div id="report-response">
 	<div>
 		<p><?php echo JText::_('COM_SUPPORT_ERROR_PROCESSING_FORM'); ?></p>
-		<p><a href="javascript:<?php echo $rpNamespace; ?>.reshowForm();" title="<?php echo JText::_('COM_SUPPORT_EDIT_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_EDIT_REPORT'); ?></a></p>
+		<p><a href="javascript:HUB.Modules.ReportProblems.reshowForm();" title="<?php echo JText::_('COM_SUPPORT_EDIT_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_EDIT_REPORT'); ?></a></p>
 	</div>
 	<h3><?php echo JText::_('COM_SUPPORT_ERROR'); ?></h3>
 	<p><?php echo JText::_('COM_SUPPORT_ERROR_PROCESSING_DESCRIPTION'); ?></p>
 <?php if ($this->getError()) { echo '<p>' . $this->getError() . '</p>'; } ?>
 </div>
 
-<script type="text/javascript">window.top.window.<?php echo $rpNamespace; ?>.hideTimer();</script>
+<script type="text/javascript">window.top.window.HUB.Modules.ReportProblems.hideTimer();</script>

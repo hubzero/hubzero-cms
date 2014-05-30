@@ -32,9 +32,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('Support'); ?></h2>
-</div><!-- / #content-header -->
-<div class="main section">
+</header><!-- / #content-header -->
+<section class="main section">
 	<p class="error"><?php echo JText::_('Nothing here to see.'); ?></p>
-</div>
+</section>
