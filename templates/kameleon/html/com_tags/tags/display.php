@@ -67,12 +67,10 @@ $this->css('introduction.css', 'system')
 
 <section class="section">
 
-	<div class="grid recent-tags">
-		<div class="col span3">
+	<div class="grid">
+		<div class="col span6 recent-tags">
 			<h2><?php echo JText::_('COM_TAGS_RECENTLY_USED'); ?></h2>
-		</div><!-- / .col span3 -->
-		<div class="col span9 omega">
-			<div class="block">
+
 			<?php
 			$cloud = $this->cloud->render('html', array(
 				'limit'    => 25,
@@ -90,16 +88,11 @@ $this->css('introduction.css', 'system')
 				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			}
 			?>
-			</div><!-- / .block -->
-		</div><!-- / .col span9 omega -->
-	</div><!-- / .grid -->
+		</div><!-- / .col span6 -->
 
-	<div class="grid top-tags">
-		<div class="col span3">
+		<div class="col span6 omega top-tags">
 			<h2><?php echo JText::_('COM_TAGS_TOP_100'); ?></h2>
-		</div><!-- / .col span3 -->
-		<div class="col span9 omega">
-			<div class="block">
+
 			<?php
 			$cloud = $this->cloud->render('html', array(
 				'limit'    => 100,
@@ -117,34 +110,7 @@ $this->css('introduction.css', 'system')
 				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			}
 			?>
-			</div><!-- / .block -->
-		</div><!-- / .col span9 omega -->
-	</div><!-- / .grid -->
-
-	<div class="grid find-tags">
-		<div class="col span3">
-			<h2><?php echo JText::_('COM_TAGS_FIND_A_TAG'); ?></h2>
-		</div><!-- / .col span3 -->
-		<div class="col span9 omega">
-			<div class="grid">
-				<div class="col span6">
-					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
-						<fieldset>
-							<p>
-								<label for="tsearch"><?php echo JText::_('CON_TAGS_FIND_LABEL'); ?></label>
-								<input type="text" name="search" id="tsearch" value="" />
-								<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
-							</p>
-						</fieldset>
-					</form>
-				</div><!-- / .col span6 -->
-				<div class="col span6 omega">
-					<div class="browse">
-						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
-					</div><!-- / .browse -->
-				</div><!-- / .col span6 omega -->
-			</div><!-- / .grid -->
-		</div><!-- / .col span9 omega -->
+		</div><!-- / .col span6 omega -->
 	</div><!-- / .grid -->
 
 </dsection><!-- / .section -->
