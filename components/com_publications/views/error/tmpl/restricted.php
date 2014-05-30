@@ -29,11 +29,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
-<div class="main section">
+<section class="main section">
 	<p class="error"><?php echo $this->error; ?></p>
-</div><!-- / .section -->
+</section><!-- / .section -->
 

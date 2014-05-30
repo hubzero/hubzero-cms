@@ -36,73 +36,73 @@ $sortbys['date_oldest'] = JText::_('Oldest');
 $sortbys['title'] = JText::_('COM_PUBLICATIONS_TITLE');
 
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="post">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="post">
+	<section class="main section">
+		<div class="subject">
+			<?php
+			if ($this->results) {
+				switch ($this->filters['sortby']) 
+				{
+					case 'date_created': $show_date = 1; break;
+					case 'date_modified': $show_date = 2; break;
+					case 'date':
+					default: $show_date = 3; break;
+				}
+				echo PublicationsHtml::writeResults( $database, $this->results, $this->filters, $show_date );
+				echo '<div class="clear"></div>';
+			} else { ?>
+				<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_NO_RESULTS'); ?></p>
+			<?php }
+
+			$pn = $this->pageNav->getListFooter();
+			$pn = str_replace('/?/&amp;','/?',$pn);
+			$f = 'task=browse';
+			foreach ($this->filters as $k=>$v) 
+			{
+				$f .= ($v && ($k == 'tag' || $k == 'category')) ? '&amp;'.$k.'='.$v : '';
+			}
+			$pn = str_replace('?','?'.$f.'&amp;',$pn);
+			echo $pn;
+			?>
+		</div><!-- / .subject -->
 		<div class="aside">
 			<fieldset>
 				<label>
 					<?php echo JText::_('COM_PUBLICATIONS_TYPE'); ?>: 
 					<select name="category" id="category">
 						<option value=""><?php echo JText::_('COM_PUBLICATIONS_ALL'); ?></option>
-<?php
-			if (count($this->categories) > 0) {
-				foreach ($this->categories as $cat)
-				{
-?>
-						<option value="<?php echo $cat->id; ?>"<?php echo ($this->filters['category'] == $cat->id) ? ' selected="selected"' : ''; ?>><?php echo $cat->name; ?></option>
-<?php
-				}
-			}
-?>
+						<?php
+						if (count($this->categories) > 0)
+						{
+							foreach ($this->categories as $cat)
+							{
+							?>
+									<option value="<?php echo $cat->id; ?>"<?php echo ($this->filters['category'] == $cat->id) ? ' selected="selected"' : ''; ?>><?php echo $cat->name; ?></option>
+							<?php
+							}
+						}
+						?>
 					</select>
 				</label>
 				<label>
 					<?php echo JText::_('COM_PUBLICATIONS_SORT_BY'); ?>:
 					<select name="sortby" id="sortby">
-<?php
+					<?php
 						foreach ($sortbys as $avalue => $alabel) 
 						{
-?>
+						?>
 						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->filters['sortby'] || $alabel == $this->filters['sortby']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
-<?php
+						<?php
 						}
-?>
+					?>
 					</select>
 				</label>
 				<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_GO'); ?>" />
 			</fieldset>
 		</div><!-- / .aside -->
-		<div class="subject">
-<?php
-if ($this->results) {
-	switch ($this->filters['sortby']) 
-	{
-		case 'date_created': $show_date = 1; break;
-		case 'date_modified': $show_date = 2; break;
-		case 'date':
-		default: $show_date = 3; break;
-	}
-	echo PublicationsHtml::writeResults( $database, $this->results, $this->filters, $show_date );
-	echo '<div class="clear"></div>';
-} else { ?>
-			<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_NO_RESULTS'); ?></p>
-<?php }
-
-$pn = $this->pageNav->getListFooter();
-$pn = str_replace('/?/&amp;','/?',$pn);
-$f = 'task=browse';
-foreach ($this->filters as $k=>$v) 
-{
-	$f .= ($v && ($k == 'tag' || $k == 'category')) ? '&amp;'.$k.'='.$v : '';
-}
-$pn = str_replace('?','?'.$f.'&amp;',$pn);
-echo $pn;
-?>
-		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</form>
-</div><!-- / .main section -->
+	</section><!-- / .main section -->
+</form>
