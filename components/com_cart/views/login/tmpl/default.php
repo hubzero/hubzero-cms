@@ -31,13 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<header id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
+<section class="main section">
 	<p class="warning"><?php echo JText::_('COM_CART_NOT_LOGGEDIN'); ?></p>
 <?php
 \Hubzero\Module\Helper::displayModules('force_mod');
 ?>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
