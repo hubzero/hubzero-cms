@@ -39,6 +39,11 @@ if ($this->model->params->get('show_ranking', 0))
 	$citations = $this->model->citations();
 
 	$lastCitation = end($citations);
+	if (!is_object($lastCitation))
+	{
+		$lastCitation = new stdClass;
+		$lastCitation->created = null;
+	}
 
 	if ($this->model->isTool())
 	{
@@ -52,13 +57,11 @@ if ($this->model->params->get('show_ranking', 0))
 	$rank = round($this->model->resource->ranking, 1);
 
 	$r = (10*$rank);
-	if (intval($r) < 10) 
-	{
-		$r = '0' . $r;
-	}
 ?>
 	<dl class="rankinfo">
-		<dt class="ranking"><span class="rank-<?php echo $r; ?>">This resource has a</span> <?php echo number_format($rank, 1); ?> Ranking</dt>
+		<dt class="ranking">
+			<span class="rank"><span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;">This resource has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
+		</dt>
 		<dd>
 			<p>
 				Ranking is calculated from a formula comprised of <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=reviews'); ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>

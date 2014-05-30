@@ -48,273 +48,240 @@ if ($mode != 'preview')
 
 $juser = JFactory::getUser();
 ?>
-		<div class="main section upperpane">
-			<div class="aside rankarea">
-<?php
-	// Show metadata
-	if ($this->model->params->get('show_metadata', 1)) 
-	{
-		$view = new JView(array(
-			'name'   => 'view',
-			'layout' => '_metadata',
-		));
-		$view->option   = $this->option;
-		$view->sections = $this->sections;
-		$view->model    = $this->model;
-		$view->display();
-	} // if ($this->model->params->get('show_metadata', 1)) 
-?>
-			</div><!-- / .aside -->
+<section class="main section upperpane">
+	<div class="subject">
+		<div class="grid overviewcontainer">
+			<div class="col span8">
+				<div id="content-header">
+					<h2>
+						<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
+						<?php if ($this->model->params->get('access-edit-resource')) { ?>
+							<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
+						<?php } ?>
+					</h2>
+					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
+				</div>
 
-			<div class="subject">
-				<div class="overviewcontainer">
-					<div id="content-header">
-						<h2>
-							<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
-							<?php 
-								if ($this->model->params->get('access-edit-resource')) 
-								{ 
-							?>
-								<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
-							<?php 
-								} // if ($this->model->params->get('access-edit-resource')) 
-							?>
-						</h2>
-						<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
-					</div>
-<?php
-	// Display authors
-	if ($this->model->params->get('show_authors', 1)) 
-	{
-?>
+				<?php if ($this->model->params->get('show_authors', 1)) { ?>
 					<div id="authorslist">
-<?php
-		$view = new JView(array(
-			'name'   => 'view',
-			'layout' => '_contributors',
-		));
-		$view->option = $this->option;
-		$view->contributors = $this->model->contributors('!submitter');
-		$view->display();
-?>
+						<?php
+						$view = new JView(array(
+							'name'   => 'view',
+							'layout' => '_contributors',
+						));
+						$view->option = $this->option;
+						$view->contributors = $this->model->contributors('!submitter');
+						$view->display();
+						?>
 					</div><!-- / #authorslist -->
-<?php
-	} // if ($this->model->params->get('show_authors', 1)) 
-?>
-				</div><!-- / .overviewcontainer -->
+				<?php } ?>
+			</div><!-- / .overviewcontainer -->
 
-				<div class="aside launcharea">
-<?php 
-	// Private/Public resource access check
-	if (!$this->model->access('view-all')) 
-	{
-		$ghtml = array();
-		foreach ($this->model->resource->getGroups() as $allowedgroup)
-		{
-			$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
-		}
-?>
-					<p class="warning">
-						<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
-					</p>
-<?php
-	} 
-	else 
-	{
-		$ccount = count($this->model->children('standalone'));
-
-		if ($ccount > 0) 
-		{
-			echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
-		}
-		
-		$video = 0;
-		$audio = 0;
-		$notes = 0;
-
-		$children = $this->model->children('standalone');
-
-		if (!empty($children))
-		{
-			foreach ($children as $child)
-			{
-				$rhelper = new ResourcesHelper($child->id, $this->database);
-
-				$rhelper->getChildren();
-
-				if ($rhelper->children && count($rhelper->children) > 0) 
+			<div class="col span4 omega launcharea">
+				<?php 
+				// Private/Public resource access check
+				if (!$this->model->access('view-all')) 
 				{
-					foreach ($rhelper->children as $grandchild)
+					$ghtml = array();
+					foreach ($this->model->resource->getGroups() as $allowedgroup)
 					{
-						switch (ResourcesHtml::getFileExtension($grandchild->path))
+						$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+					}
+				?>
+				<p class="warning">
+					<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+				</p>
+				<?php
+				} 
+				else 
+				{
+					$ccount = count($this->model->children('standalone'));
+
+					if ($ccount > 0) 
+					{
+						echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
+					}
+					
+					$video = 0;
+					$audio = 0;
+					$notes = 0;
+
+					$children = $this->model->children('standalone');
+
+					if (!empty($children))
+					{
+						foreach ($children as $child)
 						{
-							case 'm4v':
-							case 'mp4':
-							case 'wmv':
-							case 'mov':
-							case 'qt':
-							case 'mpg':
-							case 'mpeg':
-							case 'mpe':
-							case 'mp2':
-							case 'mpv2':
-								$videos++;
-							break;
+							$rhelper = new ResourcesHelper($child->id, $this->database);
 
-							case 'mp3':
-							case 'm4a':
-							case 'aiff':
-							case 'aif':
-							case 'wav':
-							case 'ra':
-							case 'ram':
-								$audio++;
-							break;
+							$rhelper->getChildren();
 
-							case 'ppt':
-							case 'pps':
-							case 'pdf':
-							case 'doc':
-							case 'txt':
-							case 'html':
-							case 'htm':
-								$notes++;
-							break;
+							if ($rhelper->children && count($rhelper->children) > 0) 
+							{
+								foreach ($rhelper->children as $grandchild)
+								{
+									switch (ResourcesHtml::getFileExtension($grandchild->path))
+									{
+										case 'm4v':
+										case 'mp4':
+										case 'wmv':
+										case 'mov':
+										case 'qt':
+										case 'mpg':
+										case 'mpeg':
+										case 'mpe':
+										case 'mp2':
+										case 'mpv2':
+											$videos++;
+										break;
+
+										case 'mp3':
+										case 'm4a':
+										case 'aiff':
+										case 'aif':
+										case 'wav':
+										case 'ra':
+										case 'ram':
+											$audio++;
+										break;
+
+										case 'ppt':
+										case 'pps':
+										case 'pdf':
+										case 'doc':
+										case 'txt':
+										case 'html':
+										case 'htm':
+											$notes++;
+										break;
+									}
+								}
+							}
 						}
+					}
+
+					$live_site = rtrim(JURI::base(),'/');
+					
+					if ($notes || $audio || $video) 
+					{
+						?>
+						<p>
+						<?php if ($audio) { ?>
+							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo JText::_('Audio podcast'); ?></a><br />
+						<?php } ?>
+						<?php if ($video) { ?>
+							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo JText::_('Video podcast'); ?></a><br />
+						<?php } ?>
+						<?php if ($notes) { ?>
+							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
+						<?php } ?>
+						</p>
+						<?php
+					}
+					if ($this->tab != 'play')
+					{
+						echo ResourcesHtml::license($this->model->params->get('license', ''));
+					}
+				} // --- end else (if group check passed)
+				?>
+			</div><!-- / .aside launcharea -->
+		</div>
+	</div><!-- / .subject -->
+	<aside class="aside rankarea">
+		<?php
+		// Show metadata
+		if ($this->model->params->get('show_metadata', 1)) 
+		{
+			$view = new JView(array(
+				'name'   => 'view',
+				'layout' => '_metadata',
+			));
+			$view->option   = $this->option;
+			$view->sections = $this->sections;
+			$view->model    = $this->model;
+			$view->display();
+		}
+		?>
+	</aside><!-- / .aside -->
+</section>
+
+<?php if ($this->model->access('view-all')) { ?>
+	<section class="main section">
+		<div class="subject tabbed">
+			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
+			<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+		</div><!-- / .subject -->
+		<aside class="aside extracontent">
+			<?php
+			// Get Releated Resources plugin
+			JPluginHelper::importPlugin('resources', 'related');
+			$dispatcher = JDispatcher::getInstance();
+
+			// Show related content
+			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
+			if (count($out) > 0) 
+			{
+				foreach ($out as $ou)
+				{
+					if (isset($ou['html'])) 
+					{
+						echo $ou['html'];
 					}
 				}
 			}
-		}
-
-		$live_site = rtrim(JURI::base(),'/');
-		
-		if ($notes || $audio || $video) 
-		{
-?>
-					<p>
-					<?php if ($audio) { ?>
-						<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo JText::_('Audio podcast'); ?></a><br />
-					<?php } ?>
-					<?php if ($video) { ?>
-						<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo JText::_('Video podcast'); ?></a><br />
-					<?php } ?>
-					<?php if ($notes) { ?>
-						<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
-					<?php } ?>
-					</p>
-<?php
-		}
-		if ($this->tab != 'play')
-		{
-			echo ResourcesHtml::license($this->model->params->get('license', ''));
-		}
-	} // --- end else (if group check passed)
-?>
-				</div><!-- / .aside launcharea -->
-			</div><!-- / .subject -->
-
-<?php 
-	// If the resource is restricted
-	//  and ((there is a group assigned and the user is not in the group) or the user is not an admin)
-	if (!$this->model->access('view-all')) 
-	{ 
-		// show nothing else
-?>
-		</div><!-- / .main section -->
-<?php 
-	} 
-	else 
-	{ 
-?>
-			<div class="clear sep"></div>
-		</div><!-- / .main section -->
-
-		<div class="main section noborder">
-			<div class="aside extracontent">
-<?php
-		// Get Releated Resources plugin
-		JPluginHelper::importPlugin('resources', 'related');
-		$dispatcher = JDispatcher::getInstance();
-
-		// Show related content
-		$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
-		if (count($out) > 0) 
-		{
-			foreach ($out as $ou)
+			// Show what's popular
+			if ($this->tab == 'about') 
 			{
-				if (isset($ou['html'])) 
-				{
-					echo $ou['html'];
-				}
+				echo \Hubzero\Module\Helper::renderModules('extracontent');
 			}
-		}
-		// Show what's popular
-		if ($this->tab == 'about') 
+			?>
+		</aside><!-- / .aside extracontent -->
+	</section>
+
+	<?php
+	// Show course listings under 'about' tab
+	if ($this->tab == 'about' && $ccount > 0) 
+	{
+		// Build the results
+		$sortbys = array(
+			'date'     => JText::_('Date'),
+			'title'    => JText::_('Title'),
+			'author'   => JText::_('Author'),
+			'ordering' => JText::_('Ordering')
+		);
+		if ($this->model->params->get('show_ranking')) 
 		{
-			echo \Hubzero\Module\Helper::renderModules('extracontent');
+			$sortbys['ranking'] = JText::_('Ranking');
 		}
-?>
-			</div><!-- / .aside extracontent -->
 
-			<div class="subject tabbed">
-				<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-				<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
-			</div><!-- / .subject -->
-			<div class="clear"></div>
+		$defaultsort = 'ordering';
+		$defaultsort = ($this->model->params->get('show_ranking')) ? 'ranking' : $defaultsort;
 
-<?php
-		// Show course listings under 'about' tab
-		if ($this->tab == 'about' && $ccount > 0) 
+		$filters = array(
+			'sortby' => JRequest::getWord('sortby', $defaultsort),
+			'limit'  => JRequest::getInt('limit', 0),
+			'start'  => JRequest::getInt('limitstart', 0),
+			'id'     => $this->model->resource->id
+		);
+
+		if (!isset($sortbys[$filters['sortby']]))
 		{
-			// Build the results
-			$sortbys = array(
-				'date'     => JText::_('Date'),
-				'title'    => JText::_('Title'),
-				'author'   => JText::_('Author'),
-				'ordering' => JText::_('Ordering')
-			);
-			if ($this->model->params->get('show_ranking')) 
-			{
-				$sortbys['ranking'] = JText::_('Ranking');
-			}
+			$filters['sortby'] = $defaultsort;
+		}
 
-			$defaultsort = 'ordering';
-			$defaultsort = ($this->model->params->get('show_ranking')) ? 'ranking' : $defaultsort;
-
-			$filters = array(
-				'sortby' => JRequest::getWord('sortby', $defaultsort),
-				'limit'  => JRequest::getInt('limit', 0),
-				'start'  => JRequest::getInt('limitstart', 0),
-				'id'     => $this->model->resource->id
-			);
-
-			if (!isset($sortbys[$filters['sortby']]))
-			{
-				$filters['sortby'] = $defaultsort;
-			}
-
-			// Get children
-			$children = $this->model->children('standalone', $filters['limit'], $filters['start'], $filters['sortby']);
-?>
-			<h3>
-				<a name="series"></a>
-				<?php echo JText::_('In This Series'); ?>
-			</h3>
-			<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
-				<div class="aside">
-					<fieldset class="controls">
-						<label for="sortby">
-							<?php echo JText::_('COM_RESOURCES_SORT_BY'); ?>:
-							<?php echo ResourcesHtml::formSelect('sortby', $sortbys, $filters['sortby'], ''); ?>
-						</label>
-						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
-						</p>
-					</fieldset>
-				</div><!-- / .aside -->
+		// Get children
+		$children = $this->model->children('standalone', $filters['limit'], $filters['start'], $filters['sortby']);
+		?>
+		<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
+			<section class="section">
 				<div class="subject">
+					<h3>
+						<?php echo JText::_('In This Series'); ?>
+					</h3>
+
 					<?php echo ResourcesHtml::writeResults($this->database, $children, $this->model->access('edit')); ?>
 					<div class="clear"></div><!-- / .clear -->
+
 					<?php 
 					// Initiate paging for children
 					jimport('joomla.html.pagination');
@@ -329,13 +296,18 @@ $juser = JFactory::getUser();
 					echo $pageNav->getListFooter();
 					?>
 				</div><!-- / .subject -->
-				<div class="clear"></div><!-- / .clear -->
-			</form>
-<?php
-		} // if ($this->tab == 'about' && $ccount > 0) 
-?>
-		</div><!-- / .main section -->
-<?php
-	} // If the resource is restricted
-?>
-		<div class="clear"></div>
+				<div class="aside">
+					<fieldset class="controls">
+						<label for="sortby">
+							<?php echo JText::_('COM_RESOURCES_SORT_BY'); ?>:
+							<?php echo ResourcesHtml::formSelect('sortby', $sortbys, $filters['sortby'], ''); ?>
+						</label>
+						<p class="submit">
+							<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
+						</p>
+					</fieldset>
+				</div><!-- / .aside -->
+			</section><!-- / .main section -->
+		</form>
+	<?php } // if ($this->tab == 'about' && $ccount > 0) ?>
+<?php } ?>

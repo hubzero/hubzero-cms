@@ -230,44 +230,48 @@ class RecommendedTags
 }
 
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
-			<?php echo JText::_('New submission'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+				<?php echo JText::_('New submission'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-<?php
-	$view = new JView( array('name'=>'steps','layout'=>'steps') );
-	$view->option = $this->option;
-	$view->step = $this->step;
-	$view->steps = $this->steps;
-	$view->id = $this->id;
-	$view->resource = $this->row;
-	$view->progress = $this->progress;
-	$view->display();
+<section class="main section">
+	<?php
+		$this->view('steps')
+		     ->set('option', $this->option)
+		     ->set('step', $this->step)
+		     ->set('steps', $this->steps)
+		     ->set('id', $this->id)
+		     ->set('resource', $this->row)
+		     ->set('progress', $this->progress)
+		     ->display();
+
 	$recommended = new RecommendedTags($this->id, $this->existing);
-	
-	function fa_controls($idx, $fas, $fa_props, $existing, $parent = NULL, $depth = 1) {
-		foreach ($fas as $fa) {
+
+	function fa_controls($idx, $fas, $fa_props, $existing, $parent = NULL, $depth = 1)
+	{
+		foreach ($fas as $fa)
+		{
 			$props = $fa_props[$fa['label']];
 			$multiple = !is_null($props['multiple_depth']) && $props['multiple_depth'] <= $depth;
 			echo '<div class="fa'.($depth === 1 ? ' top-level' : '').'">';
 			echo '<input class="option" class="'.($multiple ? 'checkbox' : 'radio').'" type="'.($multiple ? 'checkbox' : 'radio').'" '.(isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '' ).'id="tagfa-'.$idx.'-'.$fa['tag'].'" name="tagfa-'.$idx.($parent ? '-'.$parent : '').'[]" value="' . $fa['tag'] . '"';
 			echo ' /><label style="display: inline;" for="tagfa-'.$idx.'-'.$fa['tag'].'">'.$fa['raw_tag'].'</label>';
-			if ($fa['children']) {
+			if ($fa['children'])
+			{
 				echo fa_controls($idx, $fa['children'], $fa_props, $existing, $fa['tag'], $depth + 1);
 			}
 			echo '</div>';
 		}
 	}
-?>
+	?>
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -284,21 +288,21 @@ class RecommendedTags
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 
 			<legend><?php echo JText::_('COM_CONTRIBUTE_TAGS_ADD'); ?></legend>
-<?php 
-	if (count($this->fas) > 0): 
-		$fa_existing = $recommended->get_existing_focus_areas_map();
-		$fa_props = $recommended->get_focus_area_properties();
-		$idx = 0;
-		foreach ($this->fas as $label=>$fas):
-?>
-			<fieldset>
-				<legend><?php echo 'Select '.$label.': '.($fa_props[$label]['mandatory_depth'] ? '<span class="required">required</span>' : ''); ?></legend>
-				<?php fa_controls(++$idx, $fas, $fa_props, $fa_existing); ?>
-			</fieldset>
-<?php 
-		endforeach;
-	endif;
- ?>
+			<?php 
+				if (count($this->fas) > 0): 
+					$fa_existing = $recommended->get_existing_focus_areas_map();
+					$fa_props = $recommended->get_focus_area_properties();
+					$idx = 0;
+					foreach ($this->fas as $label=>$fas):
+					?>
+						<fieldset>
+							<legend><?php echo 'Select '.$label.': '.($fa_props[$label]['mandatory_depth'] ? '<span class="required">required</span>' : ''); ?></legend>
+							<?php fa_controls(++$idx, $fas, $fa_props, $fa_existing); ?>
+						</fieldset>
+					<?php 
+					endforeach;
+				endif;
+			?>
 			<label>
 				<?php echo JText::_('COM_CONTRIBUTE_TAGS_ASSIGNED'); ?>:
 				<?php
@@ -318,7 +322,7 @@ class RecommendedTags
 			<p><?php echo JText::_('COM_CONTRIBUTE_TAGS_NEW_EXPLANATION'); ?></p>
 			<?php if (($rec = $recommended->get_tags())): ?>
 			<p>Suggested tags: <span class="js-only">(click to add to your contribution)</span></p>
-			<ul class="suggested tags" style="margin-bottom: 2em;">
+			<ul class="suggested tags">
 				<?php foreach ($rec as $tag): ?>
 				<li><a class="suggested-tag" href=""><?php echo $tag['text']; ?></a></li>
 				<?php endforeach; ?>
@@ -326,9 +330,9 @@ class RecommendedTags
 			<div class="clear"></div>
 			<?php endif; ?>
 		</fieldset><div class="clear"></div>
-		
+
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

@@ -31,35 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
-			<?php echo JText::_('New submission'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+				<?php echo JText::_('New submission'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-<?php
-	$view = new JView(array(
-		'name'   => 'steps',
-		'layout' => 'steps'
-	));
-	$view->option   = $this->option;
-	$view->step     = $this->step;
-	$view->steps    = $this->steps;
-	$view->id       = $this->id;
-	$view->resource = $this->row;
-	$view->progress = $this->progress;
-	$view->display();
-?>
-<?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
+<section class="main section">
+	<?php
+		$this->view('steps', 'steps')
+		     ->set('option', $this->option)
+		     ->set('step', $this->step)
+		     ->set('steps', $this->steps)
+		     ->set('id', $this->id)
+		     ->set('resource', $this->row)
+		     ->set('progress', $this->progress)
+		     ->display();
+	?>
+
+	<?php if ($this->getError()) { ?>
+		<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<?php } ?>
+
 	<form name="hubForm" id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=discard&step=2&id=' . $this->row->id); ?>" class="contrib">
 		<div class="explaination">
 			<p class="warning"><?php echo JText::_('COM_CONTRIBUTE_DELETE_WARNING'); ?><p>
@@ -71,15 +70,15 @@ defined('_JEXEC') or die('Restricted access');
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="discard" />
 			<input type="hidden" name="step" value="2" />
-			
+
 			<p><strong><?php echo $this->escape(stripslashes($this->row->title)); ?></strong><br />
 			<?php echo $this->escape(stripslashes($this->row->typetitle)); ?></p>
-			
+
 			<label><input type="checkbox" name="confirm" value="confirmed" class="option" /> <?php echo JText::_('COM_CONTRIBUTE_DELETE_CONFIRM'); ?></label>
 		</fieldset><div class="clear"></div>
-		
+
 		<div class="submit">
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" />
 		</div>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

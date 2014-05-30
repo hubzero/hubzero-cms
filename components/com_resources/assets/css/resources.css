@@ -17,31 +17,6 @@
 		content: "\270D";
 	}
 
-	.com_resources .three,
-	.com_resources .four {
-		margin-right: 0;
-		padding-right: 5%;
-	}
-	.com_resources .three {
-		width: 35%;
-	}
-	.com_resources .four {
-		width: 25%;
-	}
-	.com_resources .three {
-		margin-top: -1px;
-	}
-	.com_resources .four .third {
-		width: 30%;
-	}
-	.com_resources .four .third,
-	.com_resources .fourth {
-		padding-right: 0;
-	}
-	.com_resources .three,
-	.com_resources .four {
-		position: relative;
-	}
 	.extracontent li {
 		list-style: none;
 	}
@@ -49,13 +24,13 @@
 		padding-left: 25px;
 	}
 	.extracontent li a:before,
-	.com_resources .four .columns div:before,
-	.com_resources .four .columns div:after {
+	.com_resources .resource-type:before,
+	.com_resources .resource-type:after {
 		content: "";
 		display: block;
 		position: absolute;
 		left: 0;
-		top: 1em;
+		top: 0;
 		width: 20px;
 		height: 20px;
 		font-size: 20px;
@@ -64,69 +39,65 @@
 		border: none;
 	}
 	.extracontent li a:before,
-	.com_resources .four .columns div:before {
+	.com_resources .resource-type:before {
 		content: "\270D";
 	}
 	.extracontent li a:before {
 		top: 0.7em;
 	}
-	.com_resources .four .columns div {
+	.com_resources .resource-type {
 		padding-left: 25px;
+		position: relative;
 	}
-	/*.extracontent .topicpage:before,
-	.extracontent .wiki:before,*/
-	.com_resources .four div.topicpage:before {
+
+	.com_resources .resource-type.topicpage:before {
 		content: "\f072";
 	}
 	.extracontent .seminar a:before,
-	.com_resources .four div.seminar:before,
 	.extracontent .onlinepresentation a:before,
-	.com_resources .four div.onlinepresentation:before {
+	.com_resources .resource-type.seminar:before,
+	.com_resources .resource-type.onlinepresentation:before {
 		content: "\f040";
 	}
 	.extracontent .animation a:before,
-	.com_resources .four div.animation:before {
+	.com_resources .resource-type.animation:before {
 		content: "\f008";
 	}
 	.extracontent .course a:before,
-	.com_resources .four div.course:before {
-		content: "\f09c"; /* \f02d */
+	.com_resources .resource-type.course:before {
+		content: "\f09c";
 	}
 	.extracontent .download a:before,
-	.com_resources .four div.download:before {
+	.com_resources .resource-type.download:before {
 		content: "\f019";
 	}
 	.extracontent .note a:before,
-	.com_resources .four div.note:before {
+	.com_resources .resource-type.note:before {
 		content: "\f02a";
 	}
 	.extracontent .learningmodule a:before,
-	.com_resources .four div.learningmodule:before {
+	.com_resources .resource-type.learningmodule:before {
 		content: "\f078";
 	}
 	.extracontent .publication a:before,
-	.com_resources .four div.publication:before {
+	.com_resources .resource-type.publication:before {
 		content: "\f016";
 	}
 	.extracontent .series a:before,
-	.com_resources .four div.series:before {
+	.com_resources .resource-type.series:before {
 		content: "\f060";
 	}
 	.extracontent .tool a:before,
-	.com_resources .four div.tool:before {
+	.com_resources .resource-type.tool:before {
 		content: "\2692";
 	}
 	.extracontent .teachingmaterial a:before,
-	.com_resources .four div.teachingmaterial:before {
+	.com_resources .resource-type.teachingmaterial:before {
 		content: "\f000";
 	}
 	.extracontent .workshop a:before,
-	.com_resources .four div.workshop:before {
+	.com_resources .resource-type.workshop:before {
 		content: "\f096";
-	}
-	.com_resources .firstset .four,
-	.com_resources .firstset .three {
-		border: none;
 	}
 
 	/* Item listing */
@@ -162,9 +133,10 @@
 	.com_resources .filter-options {
 		width: 60%;
 	}
+
 /* Get started button */
 	#getstarted {
-		margin: 0e;
+		margin: 0;
 		padding: 0;
 	}
 
@@ -180,12 +152,8 @@
 	.com_resources .read-more span {
 		display: none;
 	}
-	.aside #recommendations li,
 
 /* Tabbed view specifics */
-	.sep {
-		margin-top: 0;
-	}
 	#authorslist p {
 		line-height: 1.4em;
 		margin: 0.5em 0;
@@ -278,8 +246,8 @@
 		font-size: 85%;
 		padding: 0 0 0.8em 30px;
 		background: url("../img/childlink.gif") 10px 0 no-repeat;
-		}	
-	.com_resources .aside ul.supdocln {
+	}
+	.com_resources .launcharea ul.supdocln {
 		list-style: none;
 		background: none;
 		font-size: 85%;
@@ -287,9 +255,9 @@
 		margin: -0.5em -0.2em 1.5em -0.2em;
 		padding: 0 0 0.8em 30px;
 		background: url("../img/childlink.gif") 10px 0 no-repeat;
-		width: auto;		
-		}
-	.com_resources .aside ul.supdocln li a {
+		width: auto;
+	}
+	.com_resources .launcharea ul.supdocln li a {
 		margin: 0;
 		padding-left: 20px;
 		padding-bottom: 0.5em;
@@ -297,20 +265,20 @@
 		text-decoration: underline;
 		display: inline;
 	}
-	.com_resources .aside ul.supdocln li.otherdocs a {
+	.com_resources .launcharea ul.supdocln li.otherdocs a {
 		padding-left: 0;
 		margin-left: 15px;
-		}
-	.com_resources .aside ul.supdocln li a:hover {
+	}
+	.com_resources .launcharea ul.supdocln li a:hover {
 		border: none;
 		text-decoration: none;
 		background: none;
 	}
-	.com_resources .aside ul.supdocln li {
+	.com_resources .launcharea ul.supdocln li {
 		border: none;
 		display: inline;
-	}	
-	.com_resources .aside ul.supdocln li a:before {
+	}
+	.com_resources .launcharea ul.supdocln li a:before {
 		content: "\f0da";
 		width: 12px;
 		height: 12px;
@@ -328,27 +296,27 @@
 		margin-top: -2px;
 		padding: 0.3em;
 	}
-	.com_resources .aside ul.supdocln li a.video:before,
-	.com_resources .aside ul.supdocln li a.youtube:before,
-	.com_resources .aside ul.supdocln li a.vimeo:before {
+	.com_resources .launcharea ul.supdocln li a.video:before,
+	.com_resources .launcharea ul.supdocln li a.youtube:before,
+	.com_resources .launcharea ul.supdocln li a.vimeo:before {
 		content: "\f03d";
 	}
-	.com_resources .aside ul.supdocln li a.audio:before {
+	.com_resources .launcharea ul.supdocln li a.audio:before {
 		content: "\f025";
 	}
-	.com_resources .aside ul.supdocln li a.slides:before {
+	.com_resources .launcharea ul.supdocln li a.slides:before {
 		content: "\f040";
 	}
-	.com_resources .aside ul.supdocln li a.syllabus:before {
+	.com_resources .launcharea ul.supdocln li a.syllabus:before {
 		content: "\f02d";
 	}
-	.com_resources .aside ul.supdocln li a.itunes:before {
+	.com_resources .launcharea ul.supdocln li a.itunes:before {
 		content: "\266B";
 	}
-	.com_resources .aside ul.supdocln li a.itunesu:before {
+	.com_resources .launcharea ul.supdocln li a.itunesu:before {
 		content: "\f09c";
 	}
-	.com_resources .aside ul.supdocln li a.userguide:before {
+	.com_resources .launcharea ul.supdocln li a.userguide:before {
 		content: "\f083";
 	}
 
@@ -454,8 +422,11 @@
 	.com_resources .upperpane + .section {
 		padding-top: 0;
 	}
+	section.upperpane .subject,
 	.upperpane .subject {
 		margin-bottom: 1em !important;
+		width: 100%;
+		padding: 0;
 	}
 	.upperpane .rankarea, 
 	.section .extracontent, 
@@ -464,10 +435,9 @@
 		padding-top: 0 !important;
 	}
 	.overviewcontainer {
-		width: 60%; 
-		float: left;
-		margin-right: -3em;
+		min-width: 100%;
 	}
+
 
 /* Tabbed content */
 	.com_resources .tabbed {
@@ -593,22 +563,37 @@
 	.rankinfo dd {
 		position: absolute;
 		left: -999em;
-		margin: -37px 0 0 0;
+		margin: -2.7em 0 0 0;
 		padding: 0;
 		border: none;
-		width: 250px;
+		width: 15em;
 		color: #f4f4f4;
+		background: #222;
+		background: rgba(0, 0, 0, 0.85);
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
+		padding: 1em;
+		-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+		-ms-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	}
-	.metadata .rankinfo dd p,
+	.rankinfo dd:after {
+		content: "";
+		border: 1em solid #222;
+		border-color: transparent transparent transparent #222;
+		border-color: transparent transparent transparent rgba(0, 0, 0, 0.85);
+		position: absolute;
+		top: 1.5em;
+		right: -1.9em;
+	}
 	.rankinfo dd p {
-		margin: 0;
-		padding: 20px 30px 0 20px;
+		margin: 0 !important;
 		color: #ccc;
-		background: url("/components/com_resources/assets/img/ranking_popup.png") left top no-repeat;
-	}
-	.rankinfo dd div {
-		background: url("/components/com_resources/assets/img/ranking_popup.png") left bottom no-repeat;
-		padding: 10px 30px 15px 20px;
 	}
 	.rankinfo dd a { 
 		color: #7EBEFD;
@@ -618,139 +603,53 @@
 		color: #FDC07E;
 		border-bottom: 1px solid #E07A14;
 	}
-	.rankinfo.active dt {
-		background-color: #fff;
-	}
+
 	.rankinfo.active dd {
-		left: -246px;
+		left: -17.5em;
 		z-index: 888;
 	}
+
 	.rankinfo dt {
 		margin: 0;
 		padding: 0;
-		background: url("/components/com_resources/assets/img/ranking_bar_base.gif") 0 0 no-repeat;
 		text-transform: uppercase;
 		text-align: right; 
 		letter-spacing: 1px;
 		font-size: 85%;
 		line-height: 1em;
 		color: #999;
+	}
+
+	.rank {
+		margin: 0;
+		padding: 0;
+		background: #ffdfaf;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-ms-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
+		height: 9px;
+		width: 100px;
+		display: inline-block;
+		overflow: hidden;
 		position: relative;
 	}
-	.rankinfo dt span { 
+	.rank span { 
 		display: block;
 		margin: 0;
 		padding: 0;
 		height: 9px;
-		background: url("/components/com_resources/assets/img/ranking_bar.gif") 0 0 no-repeat;
-		text-indent: -555em;
+		background: #df7821;
+		text-indent: 55em;
+		white-space: nowrap;
 		overflow: hidden;
 		position: absolute;
 		top: 0;
 		left: 0;
 		text-align: left;
 	}
-	.rank-00 { width: 0px; display: none; }
-	.rank-01 { width: 1px; }
-	.rank-02 { width: 2px; }
-	.rank-03 { width: 3px; }
-	.rank-04 { width: 4px; }
-	.rank-05 { width: 5px; }
-	.rank-06 { width: 6px; }
-	.rank-07 { width: 7px; }
-	.rank-08 { width: 8px; }
-	.rank-09 { width: 9px; }
-	.rank-10 { width: 10px; }
-	.rank-11 { width: 11px; }
-	.rank-12 { width: 12px; }
-	.rank-13 { width: 13px; }
-	.rank-14 { width: 14px; }
-	.rank-15 { width: 15px; }
-	.rank-16 { width: 16px; }
-	.rank-17 { width: 17px; }
-	.rank-18 { width: 18px; }
-	.rank-19 { width: 19px; }
-	.rank-20 { width: 20px; }
-	.rank-21 { width: 21px; }
-	.rank-22 { width: 22px; }
-	.rank-23 { width: 23px; }
-	.rank-24 { width: 24px; }
-	.rank-25 { width: 25px; }
-	.rank-26 { width: 26px; }
-	.rank-27 { width: 27px; }
-	.rank-28 { width: 28px; }
-	.rank-29 { width: 29px; }
-	.rank-30 { width: 30px; }
-	.rank-31 { width: 31px; }
-	.rank-32 { width: 32px; }
-	.rank-33 { width: 33px; }
-	.rank-34 { width: 34px; }
-	.rank-35 { width: 35px; }
-	.rank-36 { width: 36px; }
-	.rank-37 { width: 37px; }
-	.rank-38 { width: 38px; }
-	.rank-39 { width: 39px; }
-	.rank-40 { width: 40px; }
-	.rank-41 { width: 41px; }
-	.rank-42 { width: 42px; }
-	.rank-43 { width: 43px; }
-	.rank-44 { width: 44px; }
-	.rank-45 { width: 45px; }
-	.rank-46 { width: 46px; }
-	.rank-47 { width: 47px; }
-	.rank-48 { width: 48px; }
-	.rank-49 { width: 49px; }
-	.rank-50 { width: 50px; }
-	.rank-51 { width: 51px; }
-	.rank-52 { width: 52px; }
-	.rank-53 { width: 53px; }
-	.rank-54 { width: 54px; }
-	.rank-55 { width: 55px; }
-	.rank-56 { width: 56px; }
-	.rank-57 { width: 57px; }
-	.rank-58 { width: 58px; }
-	.rank-59 { width: 59px; }
-	.rank-60 { width: 60px; }
-	.rank-61 { width: 61px; }
-	.rank-62 { width: 62px; }
-	.rank-63 { width: 63px; }
-	.rank-64 { width: 64px; }
-	.rank-65 { width: 65px; }
-	.rank-66 { width: 66px; }
-	.rank-67 { width: 67px; }
-	.rank-68 { width: 68px; }
-	.rank-69 { width: 69px; }
-	.rank-70 { width: 70px; }
-	.rank-71 { width: 71px; }
-	.rank-72 { width: 72px; }
-	.rank-73 { width: 73px; }
-	.rank-74 { width: 74px; }
-	.rank-75 { width: 75px; }
-	.rank-76 { width: 76px; }
-	.rank-77 { width: 77px; }
-	.rank-78 { width: 78px; }
-	.rank-79 { width: 79px; }
-	.rank-80 { width: 80px; }
-	.rank-81 { width: 81px; }
-	.rank-82 { width: 82px; }
-	.rank-83 { width: 83px; }
-	.rank-84 { width: 84px; }
-	.rank-85 { width: 85px; }
-	.rank-86 { width: 86px; }
-	.rank-87 { width: 87px; }
-	.rank-88 { width: 88px; }
-	.rank-89 { width: 89px; }
-	.rank-90 { width: 90px; }
-	.rank-91 { width: 91px; }
-	.rank-92 { width: 92px; }
-	.rank-93 { width: 93px; }
-	.rank-94 { width: 94px; }
-	.rank-95 { width: 95px; }
-	.rank-96 { width: 96px; }
-	.rank-97 { width: 97px; }
-	.rank-98 { width: 98px; }
-	.rank-99 { width: 99px; }
-	.rank-100 { width: 100px; }
+
 	.rankinfo table {
 		margin: 0;
 		border-collapse: collapse;

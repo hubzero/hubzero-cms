@@ -33,31 +33,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = rtrim(JURI::getInstance()->base(true), '/');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
-			<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+				<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
+<section class="main section">
 	<?php
-		$view = new JView(array(
-			'name'   => 'steps',
-			'layout' => 'steps'
-		));
-		$view->option   = $this->option;
-		$view->step     = $this->step;
-		$view->steps    = $this->steps;
-		$view->id       = $this->id;
-		$view->resource = $this->row;
-		$view->progress = $this->progress;
-		$view->display();
+		$this->view('steps')
+		     ->set('option', $this->option)
+		     ->set('step', $this->step)
+		     ->set('steps', $this->steps)
+		     ->set('id', $this->id)
+		     ->set('resource', $this->row)
+		     ->set('progress', $this->progress)
+		     ->display();
 	?>
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
@@ -100,4 +97,4 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
 		</div>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

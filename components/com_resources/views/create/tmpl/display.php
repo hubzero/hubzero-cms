@@ -57,15 +57,17 @@ if (!$juser->get('guest')) {
 
 <section id="introduction" class="contribute section">
 	<div class="grid">
-		<div class="col span4">
-			<h3>Present your work!</h3>
-			<p>Become a contributor and share your work with the community! Contributing content is easy. Our step-by-step forms will guide you through the process.</p>
+		<div class="col span9">
+			<div class="col span6">
+				<h3>Present your work!</h3>
+				<p>Become a contributor and share your work with the community! Contributing content is easy. Our step-by-step forms will guide you through the process.</p>
+			</div>
+			<div class="col span6 omega">
+				<h3>What do I need?</h3>
+				<p>The submission process will guide you through step-by-step, but for more detailed instructions on what can be submitted and how, please see the list of submission types below.</p>
+			</div>
 		</div>
-		<div class="col span4">
-			<h3>What do I need?</h3>
-			<p>The submission process will guide you through step-by-step, but for more detailed instructions on what can be submitted and how, please see the list of submission types below.</p>
-		</div>
-		<div class="col span3 offset1 omega">
+		<div class="col span3 omega">
 			<p id="getstarted">
 				<a class="btn btn-primary" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=draft'); ?>">Get Started &rsaquo;</a>
 			</p>

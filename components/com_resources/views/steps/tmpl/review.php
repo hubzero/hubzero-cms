@@ -34,43 +34,34 @@ defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 $jconfig = JFactory::getConfig();
 
-$paramsClass = 'JRegistry';
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$paramsClass = 'JParameter';
-}
-
 // Get parameters
-$rparams = new $paramsClass($this->resource->params);
+$rparams = new JRegistry($this->resource->params);
 $params = $this->config;
 $params->merge($rparams);
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
-			<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+				<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-<?php
-	$view = new JView(array(
-		'name'   => 'steps',
-		'layout' => 'steps'
-	));
-	$view->option = $this->option;
-	$view->step = $this->step;
-	$view->steps = $this->steps;
-	$view->id = $this->id;
-	$view->resource = $this->resource;
-	$view->progress = $this->progress;
-	$view->display();
-?>
+<section class="main section">
+	<?php
+		$this->view('steps')
+		     ->set('option', $this->option)
+		     ->set('step', $this->step)
+		     ->set('steps', $this->steps)
+		     ->set('id', $this->id)
+		     ->set('resource', $this->row)
+		     ->set('progress', $this->progress)
+		     ->display();
+	?>
 
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -96,7 +87,7 @@ $params->merge($rparams);
 				<?php echo JText::_('COM_CONTRIBUTE_LICENSE_LABEL'); ?>
 				<select name="license" id="license">
 					<option value=""><?php echo JText::_('COM_CONTRIBUTE_SELECT_LICENSE'); ?></option>
-<?php 
+				<?php 
 				$l = array();
 				$c = false;
 				$preview = JText::_('COM_CONTRIBUTE_LICENSE_PREVIEW');
@@ -104,18 +95,18 @@ $params->merge($rparams);
 				{
 					if (substr($license->name, 0, 6) == 'custom') 
 					{
-?>
+					?>
 					<option value="custom"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo JText::_('Custom'); ?></option>
-<?php 
+					<?php 
 						$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
 						$c = $this->escape(nl2br($license->text));
 					} 
 				}
 				if (!$c && $this->config->get('cc_license_custom'))
 				{
-?>
+					?>
 					<option value="custom"><?php echo JText::_('COM_CONTRIBUTE_CUSTOM_LICENSE'); ?></option>
-<?php
+					<?php
 					$c = $this->escape(JText::_('COM_CONTRIBUTE_ENTER_LICENSE_HERE'));
 					$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
 				}
@@ -127,9 +118,9 @@ $params->merge($rparams);
 					}
 					else 
 					{
-?>
+					?>
 					<option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($license->title); ?></option>
-<?php
+					<?php
 					} 
 					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
 					if ($params->get('license') == $license->name)
@@ -137,7 +128,7 @@ $params->merge($rparams);
 						$preview = nl2br($this->escape($license->text));
 					}
 				} 
-?>
+				?>
 				</select>
 				<div id="license-preview" style="display:none;"><?php echo $preview; ?></div>
 				<?php echo implode("\n", $l); ?>
@@ -249,4 +240,4 @@ $params->merge($rparams);
 		<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview'); ?>"></iframe>
 	</div>
 <?php } ?>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

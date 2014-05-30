@@ -57,7 +57,7 @@ if ($this->resource->id)
 }
 ?>
 <div class="meta-container">
-	<table class="meta" summary="<?php echo JText::_('Metadata for this entry'); ?>">
+	<table class="meta">
 		<thead>
 			<tr>
 				<th scope="col"><?php echo JText::_('Type'); ?></th>

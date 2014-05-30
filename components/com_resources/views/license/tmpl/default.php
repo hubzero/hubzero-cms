@@ -52,7 +52,7 @@ if ($this->no_html) {
 			<div id="main">
 				<h3><?php echo $this->title; ?></h3>
 <?php } else { ?>
-	<div id="content-header" class="full">
+	<header id="content-header">
 		<h2><?php echo $this->title; ?></h2>
 	<?php if ($this->tool) { ?>
 		<?php if ($this->row->codeaccess=='@OPEN') { ?>
@@ -61,8 +61,8 @@ if ($this->no_html) {
 		<p><?php echo JText::sprintf('COM_RESOURCES_CLOSED_SOURCE', $this->row->version); ?></p>
 		<?php } ?>
 	<?php } ?>
-	</div><!-- / #content-header.full -->
-	<div class="main section">
+	</header><!-- / #content-header.full -->
+	<section class="main section">
 <?php } ?>
 
 <?php if ($this->row->license) { ?>
@@ -77,5 +77,5 @@ if ($this->no_html) {
 	</body>
 </html>
 <?php } else { ?>
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->
 <?php } ?>

@@ -74,12 +74,10 @@ switch ($this->line->access)
 				$this->line->ranking = round($this->line->ranking, 1);
 
 				$r = (10 * $this->line->ranking);
-				if (intval($r) < 10) 
-				{
-					$r = '0' . $r;
-				}
 				?>
-				<span class="rank-<?php echo $r; ?>"><?php echo JText::_('COM_RESOURCES_THIS_HAS'); ?></span> 
+				<span class="rank">
+					<span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;"><?php echo JText::_('COM_RESOURCES_THIS_HAS'); ?></span> 
+				</span>
 				<?php echo number_format($this->line->ranking, 1) . ' ' . JText::_('COM_RESOURCES_RANKING'); ?>
 			</dt>
 			<dd>

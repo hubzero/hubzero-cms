@@ -47,54 +47,31 @@ if ($mode != 'preview')
 	}
 }
 
-    	$thumb = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id."_th.gif";
-    	$full = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id.".gif";
-	if (file_exists(JPATH_ROOT . $thumb)) {
-		$html .= '</br>';
-		$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';
-        	$html .= '<img src="'.$thumb.'" alt="'.$resource->id.' Impact Graph"/></a>';
-	}
-	$juser = JFactory::getUser();
+$thumb = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id."_th.gif";
+$full = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id.".gif";
+if (file_exists(JPATH_ROOT . $thumb)) 
+{
+	$html .= '</br>';
+	$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';
+	$html .= '<img src="'.$thumb.'" alt="'.$resource->id.' Impact Graph"/></a>';
+}
+$juser = JFactory::getUser();
 ?>
-		<div class="main section upperpane">
-			<div class="aside rankarea">
-<?php
-	// Show metadata
-	if ($this->model->params->get('show_metadata', 1)) 
-	{
-		$view = new JView(array(
-			'name'   => 'view',
-			'layout' => '_metadata',
-		));
-		$view->option   = $this->option;
-		$view->sections = $this->sections;
-		$view->model    = $this->model;
-		$view->display();
-	} // if ($this->model->params->get('show_metadata', 1)) 
-?>
-			</div><!-- / .aside -->
+<section class="main section upperpane">
+	<div class="subject">
+		<div class="grid overviewcontainer">
+			<div class="col span8">
+				<div id="content-header">
+					<h2>
+						<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
+						<?php if ($this->model->params->get('access-edit-resource')) { ?>
+							<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
+						<?php } ?>
+					</h2>
+					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
+				</div>
 
-			<div class="subject">
-				<div class="overviewcontainer">
-					<div id="content-header">
-						<h2>
-							<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
-							<?php 
-								if ($this->model->params->get('access-edit-resource')) 
-								{ 
-							?>
-								<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
-							<?php 
-								} // if ($this->model->params->get('access-edit-resource')) 
-							?>
-						</h2>
-						<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
-					</div>
-<?php
-	// Display authors
-	if ($this->model->params->get('show_authors', 1)) 
-	{
-?>
+				<?php if ($this->model->params->get('show_authors', 1)) { ?>
 					<div id="authorslist">
 						<?php
 						$view = new JView(array(
@@ -106,77 +83,86 @@ if ($mode != 'preview')
 						$view->display();
 						?>
 					</div><!-- / #authorslist -->
-<?php
-	} // if ($this->model->params->get('show_authors', 1)) 
-?>
-				</div><!-- / .overviewcontainer -->
+				<?php } ?>
+			</div><!-- / .overviewcontainer -->
 
-				<div class="aside launcharea">
-<?php
-	// Private/Public resource access check
-	if (!$this->model->access('view-all')) 
-	{
-		$ghtml = array();
-		foreach ($this->model->resource->getGroups() as $allowedgroup)
-		{
-			$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
-		}
-?>
-					<p class="warning">
-						<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
-					</p>
-<?php
-	} 
-	else 
-	{
-		$ccount = count($this->model->children('standalone'));
+			<div class="col span4 omega launcharea">
+				<?php
+					// Private/Public resource access check
+					if (!$this->model->access('view-all')) 
+					{
+						$ghtml = array();
+						foreach ($this->model->resource->getGroups() as $allowedgroup)
+						{
+							$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+						}
+				?>
+				<p class="warning">
+					<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+				</p>
+				<?php
+				} 
+				else 
+				{
+					$ccount = count($this->model->children('standalone'));
 
-		if ($ccount > 0) 
-		{
-			echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
-		}
+					if ($ccount > 0) 
+					{
+						echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
+					}
 
-		// get launch button
-		$firstChild = $this->model->children(0);
+					// get launch button
+					$firstChild = $this->model->children(0);
 
-		// Display some supporting documents
-		$children = $this->model->children('!standalone');
-				
-		// Sort out supporting docs
-		$html .= $children && count($children) > 1
-			   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children ) 
-			   : '';
-		
-		echo $html;
-		
-		$live_site = rtrim(JURI::base(),'/');
-?>
+					// Display some supporting documents
+					$children = $this->model->children('!standalone');
+							
+					// Sort out supporting docs
+					$html .= $children && count($children) > 1
+						   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children ) 
+						   : '';
+					
+					echo $html;
+					
+					$live_site = rtrim(JURI::base(),'/');
+					?>
 					<p>
 						<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo JText::_('Audio podcast'); ?></a><br />
 						<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo JText::_('Video podcast'); ?></a><br />
 						<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
 					</p>
-<?php
+					<?php
 					echo $this->tab != 'play' ? ResourcesHtml::license( $this->model->params->get( 'license', '' ) ) : '';
-	} // --- end else (if group check passed)
-?>
-				</div><!-- / .aside launcharea -->
-			</div><!-- / .subject -->
-<?php
-	if (!$this->model->access('view-all')) 
-	{ // show nothing else 
-?>
-		</div><!-- / .main section -->
-<?php 
-	} 
-	else 
-	{
-?>
-			<div class="clear sep"></div>
-		</div><!-- / .main section -->
-		
-		<div class="main section noborder">
-			<div class="aside extracontent">
+				} // --- end else (if group check passed)
+				?>
+			</div><!-- / .aside launcharea -->
+		</div>
+	</div><!-- / .subject -->
+	<aside class="aside rankarea">
+		<?php
+		// Show metadata
+		if ($this->model->params->get('show_metadata', 1)) 
+		{
+			$view = new JView(array(
+				'name'   => 'view',
+				'layout' => '_metadata',
+			));
+			$view->option   = $this->option;
+			$view->sections = $this->sections;
+			$view->model    = $this->model;
+			$view->display();
+		}
+		?>
+	</aside><!-- / .aside -->
+</section>
+
+<?php if ($this->model->access('view-all')) { ?>
+	<section class="main section noborder">
+		<div class="subject tabbed">
+			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
+			<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+		</div><!-- / .subject -->
+		<div class="aside extracontent">
 			<?php
 			// Get Releated Resources plugin
 			JPluginHelper::importPlugin('resources', 'related');
@@ -201,28 +187,22 @@ if ($mode != 'preview')
 				echo \Hubzero\Module\Helper::renderModules('extracontent');
 			}
 			?>
-			</div><!-- / .aside extracontent -->
+		</div><!-- / .aside extracontent -->
+	</section>
 
-			<div class="subject tabbed">
-				<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-				<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
-			</div><!-- / .subject -->
-			<div class="clear"></div>
-		
-
-		<?php
-		// Show course listings under 'about' tab
-		if ($this->tab == 'about') 
+	<?php
+	// Show course listings under 'about' tab
+	if ($this->tab == 'about') 
+	{
+		// Course children
+		$schildren = $this->model->children('standalone');
+		if ($schildren) 
 		{
-			// Course children
-			$schildren = $this->model->children('standalone');
-			if ($schildren) 
-			{
-				//$html .= ResourcesHtml::writeResultsTable( $this->database, $this->model->resource, $schildren, $this->option );
-				$o = 'even';
-		?>
-		<a name="series"></a>
-		<table class="child-listing" summary="<?php echo JText::_('A table of resources associated to this resource'); ?>">
+			//$html .= ResourcesHtml::writeResultsTable( $this->database, $this->model->resource, $schildren, $this->option );
+			$o = 'even';
+	?>
+	<section class="section">
+		<table class="child-listing">
 			<colgroup class="lecture_name"></colgroup>
 			<colgroup class="lecture_online"></colgroup>
 			<colgroup class="lecture_video"></colgroup>
@@ -240,7 +220,7 @@ if ($mode != 'preview')
 				</tr>
 			</thead>
 			<tbody>
-<?php
+			<?php
 				$this->model->paramsClass = 'JParameter';
 				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
@@ -337,7 +317,7 @@ if ($mode != 'preview')
 							}
 						}
 
-						if($hubpresenter) {
+						if ($hubpresenter) {
 							$html .= "\t\t\t".'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
 						} else {
 							$html .= "\t\t\t".'<td>'.$breeze.'</td>'."\n";
@@ -362,16 +342,12 @@ if ($mode != 'preview')
 					}
 				}
 				echo $html;
-?>
+				?>
 				</tbody>
 			</table>
-<?php 
+			<?php 
 			}
 		}
-?>
-		</div><!-- / .main section -->
-<?php
-	}
-?>
-	<div class="clear"></div>
-
+		?>
+	</section><!-- / .main section -->
+<?php } ?>

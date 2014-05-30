@@ -124,7 +124,7 @@ if ($this->categories) {
 				}
 				?>
 				<div class="col span-third <?php echo $clm; ?>">
-					<div class="<?php echo $cls; ?>">
+					<div class="resource-type <?php echo $cls; ?>">
 						<h3>
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
 								<?php echo $this->escape(stripslashes($category->type)); ?>

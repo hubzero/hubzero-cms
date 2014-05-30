@@ -59,35 +59,30 @@ if ($this->resource->id)
 	$tags = $rt->getTags($this->resource->id);
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<p>
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
-			<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
-		</a>
-	</p>
-</div><!-- / #content-header -->
-
-<div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
-
-	<div class="aside">
+	<div id="content-header-extra">
 		<p>
-			<a class="icon-prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">Return to start</a>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+				<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
+			</a>
 		</p>
-	</div><!-- /.aside -->
+	</div><!-- / #content-header -->
+</header><!-- / #content-header -->
+
+<section class="main section">
 	<div class="subject">
+		<?php if ($this->getError()) { ?>
+			<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
+		<?php } ?>
+
 		<p class="passed">
 			Thank you for your contribution!
 		</p>
 
 		<div class="container">
-			<table class="summary" summary="<?php echo JText::_('Metadata for this entry'); ?>">
+			<table class="summary">
 				<caption>Contribution submitted:</caption>
 				<tbody>
 					<tr>
@@ -136,19 +131,19 @@ if ($this->resource->id)
 				<div class="entry-content">
 					<ul class="faq-list"> 
 						<li><a href="#submission">What happens now?</a></li> 
-<?php if ($this->config->get('autoapprove', 0) != 1) { ?>
+					<?php if ($this->config->get('autoapprove', 0) != 1) { ?>
 						<li><a href="#status">How will I know when my contribution is accepted?</a></li> 
-<?php } ?>
+					<?php } ?>
 						<li><a href="#retract">Ooops! I missed something and/or submitted too early!</a></li> 
 					</ul>
 				</div>
-<?php if ($this->config->get('autoapprove', 0) != 1) { ?>
-				<div class="entry-content">
-					<h4><a name="submission"></a>What happens now?</h4>
+			<?php if ($this->config->get('autoapprove', 0) != 1) { ?>
+				<div class="entry-content" id="submission">
+					<h4>What happens now?</h4>
 					<p>After submitting your contribution, it will be reviewed for completeness. If all appears satisfactory, the contribution will be approved and immediately appear in the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
 				</div>
-				<div class="entry-content">
-					<h4><a name="submission"></a>How will I know when my contribution is accepted?</h4>
+				<div class="entry-content" id="status">
+					<h4>How will I know when my contribution is accepted?</h4>
 					<p>When a contribution passes the review stage and is published (made publicly available), an email is sent to all authors listed on the contribution.</p>
 					<p>You may also continually monitor the status by:</p>
 					<ul>
@@ -157,14 +152,14 @@ if ($this->resource->id)
 						<li>visiting the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page</li>
 					</ul>
 				</div>
-<?php } else { ?>
-				<div class="entry-content">
-					<h4><a name="submission"></a>What happens now?</h4>
+			<?php } else { ?>
+				<div class="entry-content" id="submission">
+					<h4>What happens now?</h4>
 					<p>Your contribution is now publicly available. You may view it <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id); ?>">here</a>.</p>
 				</div>
-<?php } ?>
-				<div class="entry-content">
-					<h4><a name="retract"></a>Ooops! I missed something and/or submitted too early!</h4>
+			<?php } ?>
+				<div class="entry-content" id="retract">
+					<h4>Ooops! I missed something and/or submitted too early!</h4>
 					<p>No worries! You can retract a submission by following these steps:</p>
 					<ul>
 						<li>Visit the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page.</li>
@@ -175,5 +170,9 @@ if ($this->resource->id)
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
 	</div><!-- /.subject -->
-	<div class="clear"></div>
-</div><!-- / .main section -->
+	<aside class="aside">
+		<p>
+			<a class="icon-prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">Return to start</a>
+		</p>
+	</aside><!-- /.aside -->
+</section><!-- / .main section -->
