@@ -32,28 +32,21 @@
 defined('_JEXEC') or die('Restricted access');
 
 //add styles and scripts
-$this->css();
-$this->js();
+$this->css()
+     ->js();
 ?>
 <?php if ($this->total > 0) : ?>
 	<div class="scontainer">
 		<?php foreach ($this->rows as $row) : ?>
 			<?php
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'groups',
-						'element' => 'announcements',
-						'name'    => 'browse',
-						'layout'  => 'item'
-					)
-				);
-				$view->option       = $this->option;
-				$view->group        = $this->group;
-				$view->juser        = $this->juser;
-				$view->authorized   = $this->authorized;
-				$view->announcement = new GroupsModelAnnouncement($row);
-				$view->showClose    = true;
-				$view->display();
+				$this->view('item')
+				     ->set('option', $this->option)
+				     ->set('group', $this->group)
+				     ->set('juser', $this->juser)
+				     ->set('authorized', $this->authorized)
+				     ->set('announcement', new GroupsModelAnnouncement($row))
+				     ->set('showClose', true)
+				     ->display();
 			?>
 		<?php endforeach; ?>
 	</div>

@@ -32,12 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 //add styles and scripts
-$this->css();
-$this->js();
+$this->css()
+     ->css('jquery.datepicker.css', 'system')
+     ->css('jquery.timepicker.css', 'system');
 
-\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.datepicker.css');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.timepicker.css');
+$this->js()
+     ->js('jquery.timepicker', 'system');
 ?>
 
 <ul id="page_options">
@@ -48,7 +48,7 @@ $this->js();
 	</li>
 </ul>
 
-<div class="main section">
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
@@ -56,7 +56,7 @@ $this->js();
 		<div class="explaination">
 			<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_HINT'); ?>
 		</div><!-- /.aside -->
-		
+
 		<fieldset>
 			<legend>
 				<?php if ($this->announcement->get('id')) : ?>
@@ -146,4 +146,4 @@ $this->js();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-</div>
+</section>

@@ -46,10 +46,11 @@ $this->js();
 	</ul>
 <?php endif; ?>
 
-<div class="main section">
+<section class="main section">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
+
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements'); ?>" method="post">
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SEARCH'); ?>" />
@@ -59,26 +60,19 @@ $this->js();
 				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
-		
+
 		<div class="acontainer">
 			<?php if ($this->total > 0) : ?>
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'  => 'groups',
-								'element' => 'announcements',
-								'name'    => 'browse',
-								'layout'  => 'item'
-							)
-						);
-						$view->option       = $this->option;
-						$view->group        = $this->group;
-						$view->juser        = $this->juser;
-						$view->authorized   = $this->authorized;
-						$view->announcement = new GroupsModelAnnouncement($row);
-						$view->showClose    = false;
-						$view->display();
+						$this->view('item')
+						     ->set('option', $this->option)
+						     ->set('group', $this->group)
+						     ->set('juser', $this->juser)
+						     ->set('authorized', $this->authorized)
+						     ->set('announcement', new GroupsModelAnnouncement($row))
+						     ->set('showClose', false)
+						     ->display();
 					?>
 				<?php endforeach; ?>
 			<?php else : ?>
@@ -86,7 +80,7 @@ $this->js();
 					<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_NO_RESULTS'); ?>
 				</p>
 			<?php endif; ?>
-			
+
 			<?php 
 				jimport('joomla.html.pagination');
 				$pageNav = new JPagination(
@@ -101,4 +95,4 @@ $this->js();
 			<div class="clearfix"></div>
 		</div><!-- / .acontainer -->
 	</form>
-</div>
+</section>
