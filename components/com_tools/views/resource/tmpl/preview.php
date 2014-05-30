@@ -54,35 +54,32 @@ $attribs = new $paramsClass($this->resource->attribs);
 $helper = new ResourcesHelper($this->resource->id, $database);
 
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a class="icon-status status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->resource->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>" class="icon-add add btn"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="icon-status status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->resource->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+			<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>" class="icon-add add btn"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="section steps-section">
-<?php	
-	$view = new JView(array(
-		'name'   => $this->controller,
-		'layout' => 'stage'
-	));
-	$view->stage = $this->step;
-	$view->option = $this->option;
-	$view->controller = $this->controller;
-	$view->version = $this->version;
-	$view->row = $this->resource;
-	$view->status = $this->status;
-	$view->vnum = 0;
-	$view->display();
-?>
-</div>
+<section class="section steps-section">
+	<?php
+	$this->view('stage')
+	     ->set('stage', $this->step)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('version', $this->version)
+	     ->set('row', $this->row)
+	     ->set('status', $this->status)
+	     ->set('vnum', 0)
+	     ->display();
+	?>
+</section>
 
-<div class="main section">
+<section class="main section">
 	<form action="index.php" method="post" id="hubForm">
 		<input type="hidden" name="app" value="<?php echo $this->resource->alias; ?>" />
 		<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
@@ -107,4 +104,4 @@ $helper = new ResourcesHelper($this->resource->id, $database);
 	<div id="preview-pane">
 		<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->resource->id . '&tmpl=component&mode=preview&rev=' . $this->version); ?>"></iframe>
 	</div>
-</div>
+</section>

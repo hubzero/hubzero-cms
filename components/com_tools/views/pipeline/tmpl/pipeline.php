@@ -31,16 +31,17 @@ $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#',
 $project_path 	= $this->config->get('project_path', '/tools/');
 $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
 
-<div class="main section">
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
+
+<section class="main section">
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>" method="get">
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TOOLS_SEARCH'); ?>" />
@@ -58,10 +59,10 @@ $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 				<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); ?>" />
 			</fieldset>
 		</div><!-- / .container data-entry -->
-		
+
 		<div class="container">
 			<ul class="entries-menu order-options">
-				<?php if ($this->admin) { ?>	
+				<?php if ($this->admin) { ?>
 				<li>
 					<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.priority, f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.priority, f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS'); ?>">
 						&darr; <?php echo JText::_('COM_TOOLS_STATUS'); ?>
@@ -97,7 +98,7 @@ $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 				</li>
 				<?php } ?>
 			</ul>
-			
+
 			<ul class="entries-menu filter-options">
 				<li>
 					<a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_ALL'); ?>">
@@ -122,8 +123,8 @@ $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 				</li>
 				<?php } ?>
 			</ul>
-			
-			<table class="tools entries" summary="<?php echo JText::_('COM_TOOLS_IN_THE_PIPELINE'); ?>">
+
+			<table class="tools entries">
 				<caption>
 					<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?> 
 					<span>
@@ -141,18 +142,18 @@ $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 					</tr>
 				</thead>
 				<tbody>
-<?php
-$k = 0;
+				<?php
+				$k = 0;
 
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
+				for ($i=0, $n=count($this->rows); $i < $n; $i++)
+				{
+					$row = &$this->rows[$i];
 
-	$row->state_changed = ($row->state_changed != '0000-00-00 00:00:00') ? $row->state_changed : $row->registered;
-	$row->title .= ($row->version) ? ' v' . $row->version : '';
-	
-	ToolsHelperHtml::getStatusName($row->state, $status);
-?>
+					$row->state_changed = ($row->state_changed != '0000-00-00 00:00:00') ? $row->state_changed : $row->registered;
+					$row->title .= ($row->version) ? ' v' . $row->version : '';
+					
+					ToolsHelperHtml::getStatusName($row->state, $status);
+				?>
 					<tr class="<?php echo strtolower($status); if (!$this->admin) { echo (' user-submitted'); } ?>">
 						<th>
 							<span class="entry-id">
@@ -207,13 +208,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<?php } ?>
 						</td>
 					</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+				<?php
+					$k = 1 - $k;
+				}
+				?>
 				</tbody>
 			</table>
-		
+
 			<?php 
 			$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 			$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
@@ -221,7 +222,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			
 			echo $this->pageNav->getListFooter();
 			?>
-			<div class="clearfix"></div>
 		</div><!-- / .container -->
 	</form>
-</div><!-- /.main section -->
+</section><!-- /.main section -->

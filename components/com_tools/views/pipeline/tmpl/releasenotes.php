@@ -49,27 +49,27 @@ if ($this->licenses)
 	}
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
+			<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-<?php
-	if ($this->action == 'confirm') {
-		ContribtoolHtml::writeApproval('Confirm license');
-	}
-	//$license = ($this->status['license'] && !$open) ? $this->status['license'] : '' ;
-?>
+<section class="main section">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
+	<?php
+		if ($this->action == 'confirm') {
+			ContribtoolHtml::writeApproval('Confirm license');
+		}
+		//$license = ($this->status['license'] && !$open) ? $this->status['license'] : '' ;
+	?>
 	<div class="grid">
 		<div class="col span-half">
 			<h3>
@@ -135,4 +135,4 @@ if ($this->licenses)
 			</p>
 		</div><!-- / .col span-half omega -->
 	</div><!-- / .grid -->
-</div><!-- / .main section -->
+</section><!-- / .main section -->

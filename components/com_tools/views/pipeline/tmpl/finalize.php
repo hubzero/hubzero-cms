@@ -32,18 +32,18 @@ $codeaccess = ToolsHelperHtml::getCodeAccess($this->status['code']);
 // get wiki access text
 $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a class="idon-status status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="idon-status status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+			<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
+<section class="main section">
 	<?php ToolsHelperHtml::writeApproval('Approve'); ?>
 
 	<?php if ($this->getError()) { ?>
@@ -93,4 +93,4 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 			</div>
 		</fieldset>
 	</form>
-</div>
+</section>

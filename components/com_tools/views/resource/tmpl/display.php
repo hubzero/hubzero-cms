@@ -42,96 +42,93 @@ else {
 	$v = $this->status['version'];
 }
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+			<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="section steps-section">
-<?php	
-	$view = new JView(array(
-		'name' => $this->controller,
-		'layout' => 'stage'
-	));
-	$view->stage = $this->step;
-	$view->option = $this->option;
-	$view->controller = $this->controller;
-	$view->version = $this->version;
-	$view->row = $this->row;
-	$view->status = $this->status;
-	$view->vnum = $v;
-	$view->display();
-?>
-</div>
+<section class="section steps-section">
+	<?php
+	$this->view('stage')
+	     ->set('stage', $this->step)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('version', $this->version)
+	     ->set('row', $this->row)
+	     ->set('status', $this->status)
+	     ->set('vnum', $v)
+	     ->display();
+	?>
+</section>
 
-<div class="main section">
+<section class="main section">
 	<form action="index.php" method="post" id="hubForm">
 		<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php } ?>
 
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
-<?php if ($this->step !=1 ) { ?>
+		<?php if ($this->step !=1 ) { ?>
 			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
-<?php } ?>
+		<?php } ?>
 			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
 		</div>
 		<div class="clear"></div>
 
-<?php 
-	switch ($this->step) 
-	{
-		//  registered
-		case 1: 
-			$view = new JView(array(
-				'name' => $this->controller,
-				'layout' => 'compose'
-			));
-		break;
-		case 2:
-			$view = new JView(array(
-				'name' => $this->controller,
-				'layout' => 'authors'
-			));
-			// authors
-			//ContribtoolHtml::stepAuthors( $rid, $this->version, $this->option);
-		break;
-		case 3:
-			$view = new JView(array(
-				'name' => $this->controller,
-				'layout' => 'attach'
-			));
-			// attachments
-			//ContribtoolHtml::stepAttach( $rid, $this->option, $this->version, $this->status['published']);
-		break;
-		case 4:
-			$view = new JView(array(
-				'name' => $this->controller,
-				'layout' => 'tags'
-			));
-			// tags
-			//ContribtoolHtml::stepTags( $rid, $tags, $tagfa, $fat, $this->option, $this->status['published'], $this->version );
-		break;
-	}
-	$view->step = $this->step;
-	$view->option = $this->option;
-	$view->controller = $this->controller;
-	$view->version = $this->version;
-	$view->row = $this->row;
-	$view->status = $this->status;
-	$view->dev = $dev;
-	$view->tags = $this->tags;
-	$view->tagfa = $this->tagfa;
-	$view->fats = $this->fats;
-	$view->authors = $this->authors;
-	$view->display();
-?>
+		<?php 
+			switch ($this->step) 
+			{
+				//  registered
+				case 1: 
+					$view = new JView(array(
+						'name' => $this->controller,
+						'layout' => 'compose'
+					));
+				break;
+				case 2:
+					$view = new JView(array(
+						'name' => $this->controller,
+						'layout' => 'authors'
+					));
+					// authors
+					//ContribtoolHtml::stepAuthors( $rid, $this->version, $this->option);
+				break;
+				case 3:
+					$view = new JView(array(
+						'name' => $this->controller,
+						'layout' => 'attach'
+					));
+					// attachments
+					//ContribtoolHtml::stepAttach( $rid, $this->option, $this->version, $this->status['published']);
+				break;
+				case 4:
+					$view = new JView(array(
+						'name' => $this->controller,
+						'layout' => 'tags'
+					));
+					// tags
+					//ContribtoolHtml::stepTags( $rid, $tags, $tagfa, $fat, $this->option, $this->status['published'], $this->version );
+				break;
+			}
+			$view->step = $this->step;
+			$view->option = $this->option;
+			$view->controller = $this->controller;
+			$view->version = $this->version;
+			$view->row = $this->row;
+			$view->status = $this->status;
+			$view->dev = $dev;
+			$view->tags = $this->tags;
+			$view->tagfa = $this->tagfa;
+			$view->fats = $this->fats;
+			$view->authors = $this->authors;
+			$view->display();
+		?>
 		</fieldset><div class="clear"></div>
 		<input type="hidden" name="app" value="<?php echo $this->row->alias; ?>" />
 		<input type="hidden" name="rid" value="<?php echo $this->row->id; ?>" />
@@ -143,11 +140,11 @@ else {
 		<input type="hidden" name="toolname" value="<?php echo $this->status['toolname']; ?>" />
 
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
-<?php if ($this->step != 1) { ?>
+		<?php if ($this->step != 1) { ?>
 			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
-<?php } ?>
+		<?php } ?>
 			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
 		</div>
 		<div class="clear"></div>
 	</form>
-</div>
+</section>

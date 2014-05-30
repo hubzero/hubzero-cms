@@ -34,38 +34,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 $juser = JFactory::getUser();
 $jconfig = JFactory::getConfig();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo JText::_('COM_TOOLS_STORAGE'); ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-<?php 
-echo $this->monitor;
-?>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<?php echo $this->monitor; ?>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-<div class="main section">
-
-<?php if ($this->exceeded) { ?>
+<section class="main section">
+	<?php if ($this->exceeded) { ?>
 		<p class="warning"><?php echo JText::_('COM_TOOLS_ERROR_STORAGE_EXCEEDED'); ?></p>
-<?php } ?>
+	<?php } ?>
 
-<?php if ($this->output) { ?>
+	<?php if ($this->output) { ?>
 		<p class="passed"><?php echo $this->output; ?></p>
-<?php } else if ($this->getError()) { ?>
+	<?php } else if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+	<?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=storage'); ?>" method="post" id="hubForm">
-			<div class="explaination">
-				<p class="help">
-					<strong>What does "purge" do to my files?</strong><br />
-					The <strong>purge</strong> option is an easy way to free up space on your account.  It goes through the "data" directory where your simulation results are stored, and discards all of the results that have built up since you started using the site, or since your last purge. <a href="/kb/tools/purge">Learn more</a>.
-				</p>
-			</div>
-			<fieldset>	
-				<legend>Automatic</legend>
-				<div class="group">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=storage'); ?>" method="post" id="hubForm">
+		<div class="explaination">
+			<p class="help">
+				<strong>What does "purge" do to my files?</strong><br />
+				The <strong>purge</strong> option is an easy way to free up space on your account.  It goes through the "data" directory where your simulation results are stored, and discards all of the results that have built up since you started using the site, or since your last purge. <a href="/kb/tools/purge">Learn more</a>.
+			</p>
+		</div>
+		<fieldset>	
+			<legend>Automatic</legend>
+			<div class="grid">
+				<div class="col span6">
 					<label>
 						Clean up Disk Space
 						<select name="degree">
@@ -76,23 +74,25 @@ echo $this->monitor;
 							<option value="all">all</option>
 						</select>
 					</label>
+				</div>
+				<div class="col span6 omega">
 					<label>
 						<br />
 						<input type="submit" class="option" name="action" value="Purge" /> 
 					</label>
 				</div>
-				<p class="hint"><strong>minimally</strong> means the purge operation will delete the oldest simulation results first, and continue deleting newer and newer results, stopping as soon as you are under quota.</p>
-			</fieldset>
-			<fieldset>
-				<legend>Manual</legend>
-				<div class="filebrowser field-wrap">
-					Browse your storage space
-					<iframe src="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="300" border="0" frameborder="0"></iframe>
-				</div>
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				<input type="hidden" name="task" value="purge" />
-			</fieldset><div class="clear"></div>
-		</form>
-
-</div><!-- / .main section -->
+			</div>
+			<p class="hint"><strong>minimally</strong> means the purge operation will delete the oldest simulation results first, and continue deleting newer and newer results, stopping as soon as you are under quota.</p>
+		</fieldset>
+		<fieldset>
+			<legend>Manual</legend>
+			<div class="filebrowser field-wrap">
+				Browse your storage space
+				<iframe src="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="300" border="0" frameborder="0"></iframe>
+			</div>
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			<input type="hidden" name="task" value="purge" />
+		</fieldset><div class="clear"></div>
+	</form>
+</section><!-- / .main section -->
