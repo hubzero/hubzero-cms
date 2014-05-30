@@ -39,6 +39,9 @@ if ($this->post->exists()) {
 } else {
 	$action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias');
 }
+
+$this->css()
+     ->js();
 ?>
 <ul id="page_options">
 	<li>
@@ -48,25 +51,22 @@ if ($this->post->exists()) {
 	</li>
 </ul>
 
-<div class="main section">
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-<?php } ?>
-	
-	<h3 class="post-comment-title">
-	<?php if ($this->post->exists()) { ?>
-		<?php echo JText::_('PLG_GROUPS_FORUM_EDIT_DISCUSSION'); ?>
-	<?php } else { ?>
-		<?php echo JText::_('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
-	<?php } ?>
-	</h3>
-	<div class="aside">
-		<p><?php echo JText::_('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>
-	</div><!-- /.aside -->
+<section class="main section">
 	<div class="subject">
+		<?php foreach ($this->notifications as $notification) { ?>
+			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+		<?php } ?>
+
+		<h3 class="post-comment-title">
+			<?php if ($this->post->exists()) { ?>
+				<?php echo JText::_('PLG_GROUPS_FORUM_EDIT_DISCUSSION'); ?>
+			<?php } else { ?>
+				<?php echo JText::_('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
+			<?php } ?>
+		</h3>
+
 		<form action="<?php echo JRoute::_($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
-				<a class="comment-anchor" name="commentform"></a>
 				<?php
 				$jxuser = new \Hubzero\User\Profile();
 				$jxuser->load($juser->get('id'));
@@ -90,8 +90,6 @@ if ($this->post->exists()) {
 						</label>
 					</div>
 				</div>
-
-				
 			<?php } else { ?>
 				<input type="hidden" name="fields[sticky]" id="field-sticky" value="<?php echo $this->escape($this->post->get('sticky')); ?>" />
 				<input type="hidden" name="fields[closed]" id="field-closed" value="<?php echo $this->escape($this->post->get('closed')); ?>" />
@@ -173,7 +171,7 @@ if ($this->post->exists()) {
 				</label>
 
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+					<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
 				</p>
 
 				<div class="sidenote">
@@ -197,5 +195,7 @@ if ($this->post->exists()) {
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / .below section -->
+	<aside class="aside">
+		<p><?php echo JText::_('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>
+	</aside><!-- /.aside -->
+</section><!-- / .below section -->

@@ -5,6 +5,9 @@ $juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
+$this->css()
+     ->js();
+
 if ($this->config->get('access-manage-section')) {
 ?>
 <ul id="page_options">

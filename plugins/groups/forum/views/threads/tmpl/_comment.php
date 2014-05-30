@@ -179,29 +179,18 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) 
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'groups',
-					'element' => 'forum',
-					'name'    => 'threads',
-					'layout'  => '_list'
-				)
-			);
-			$view->option     = $this->option;
-			$view->group      = $this->group;
-
-			$view->parent     = $this->comment->get('id');
-			$view->thread     = $this->comment->get('thread');
-			$view->comments   = $this->comment->get('replies');
-
-			$view->thread     = $this->thread;
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->filters    = $this->filters;
-			$view->category   = $this->category;
-
-			$view->display();
+			$this->view('_list')
+			     ->set('option', $this->option)
+			     ->set('group', $this->group)
+			     ->set('comments', $this->comment->get('replies'))
+			     ->set('thread', $this->comment->get('thread'))
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('config', $this->config)
+			     ->set('depth', $this->depth)
+			     ->set('cls', $cls)
+			     ->set('filters', $this->filters)
+			     ->set('category', $this->category)
+			     ->display();
 		}
 		?>
 	</li>

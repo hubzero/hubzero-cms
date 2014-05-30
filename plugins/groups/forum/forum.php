@@ -249,10 +249,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 			$action = JRequest::getVar('action', $action, 'post');
 
-			//push the stylesheet to the view
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', $this->_name);
-			\Hubzero\Document\Assets::addPluginScript('groups', $this->_name);
-
 			switch ($action)
 			{
 				// Settings
@@ -262,18 +258,18 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				case 'sections':       $arr['html'] .= $this->sections();       break;
 				case 'savesection':    $arr['html'] .= $this->savesection();    break;
 				case 'deletesection':  $arr['html'] .= $this->deletesection();  break;
-				
+
 				case 'categories':     $arr['html'] .= $this->categories();     break;
 				case 'savecategory':   $arr['html'] .= $this->savecategory();   break;
 				case 'newcategory':    $arr['html'] .= $this->editcategory();   break;
 				case 'editcategory':   $arr['html'] .= $this->editcategory();   break;
 				case 'deletecategory': $arr['html'] .= $this->deletecategory(); break;
-				
+
 				case 'threads':        $arr['html'] .= $this->threads();        break;
 				case 'savethread':     $arr['html'] .= $this->savethread();     break;
 				case 'editthread':     $arr['html'] .= $this->editthread();     break;
 				case 'deletethread':   $arr['html'] .= $this->deletethread();   break;
-				
+
 				case 'download':       $arr['html'] .= $this->download();       break;
 				case 'search':         $arr['html'] .= $this->search();         break;
 
