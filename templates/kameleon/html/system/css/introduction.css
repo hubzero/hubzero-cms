@@ -36,6 +36,7 @@
 		right: 60px;
 		text-align: right;
 	}
+	#introduction .grid,
 	#introduction .aside,
 	#introduction .subject {
 		z-index: 2;
@@ -63,16 +64,6 @@
 		padding: 0 0 0 5px;
 		position: relative;
 	}
-	/*#introduction li:before {
-		content: '›';
-		font-size: 18px;
-		line-height: 18px;
-		padding-right: 5px;
-		margin-top: -9px;
-		position: absolute;
-		left: 0;
-		top: 50%;
-	}*/
 	#introduction p {
 		margin: 1em 0 0 0;
 		font-size: 1.2em;
@@ -94,120 +85,11 @@
 
 	#introduction + .section {
 		padding: 0;
-		margin: 0 30px;
+		margin: 0 30px 60px 30px;
 		display: block;
 		border-top: 1px solid #e0e0e0;
 	}
-	/*#introduction + .section {
-		padding: 0 30px 30px 30px;
-	}*/
 	#introduction .data-entry {
 		margin: 0;
 		padding: 0;
 	}
-
-/* Four Columns */
-	/*div[class^="com_"] .four,
-	div[class*=" com_"] .four
-	#content .grid,
-	#content .three,
-	#content .four {
-		border: none;
-		border-top: 1px solid #e0e0e0;
-		position: relative;
-		margin-bottom: 3em;
-	}
-	#content .grid .grid {
-		border: none;
-		margin-bottom: 0;
-	}
-	#content .four {
-		margin-right: 0;
-		padding-right: 5%;
-		border-top: 1px solid #e0e0e0;
-		margin-bottom: 3em;
-		width: 26.25%;
-	}
-	#content .fourth,
-	#content .third.fourth,
-	#content .second.third.fourth {
-		padding-right: 0;
-		width: 21.25%;
-	}
-	#content .third.fourth {
-		width: 47.5%;
-	}
-	#content .second.third.fourth {
-		width: 73.75%;
-	}
-	#content .col h3,
-	#content .four h3 { 
-		color: #000; 
-		margin-top: 1em; 
-		padding-top: 0em;
-	}
-	#content .col h3 a,
-	#content .four h3 a { 
-		color: #000; 
-		border-bottom: none; 
-	}
-	#content .four ul {
-		margin: 1em 0;
-	}
-	#content .four li {
-		margin: 1em 0;
-	}
-	#content .grid h2,
-	#content .first h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1em;
-		border: none;
-		border-top: 2px solid #e0e0e0;
-	}
-	#content .big {
-		height: 3em;
-	}
-	#content .browse a {
-		font-weight: bold;
-		font-size: 1.2em;
-	}
-	#content form.search {
-		background-position: 0 0.9em;
-		border: 1px solid #fff;
-	}
-	#content form.search p label {
-		display: none;
-	}
-	#content form.search,
-	#content .browse {
-		position: relative;
-		padding-left: 25px;
-	}
-	#content .browse:before,
-	#content form.search:before {
-		content: "";
-		display: block;
-		position: absolute;
-		left: 0;
-		top: 0.75em;
-		width: 20px;
-		height: 20px;
-		font-size: 20px;
-		font-family: 'Fontcons';
-		color: #aaa;
-		content: "\f002";
-	}
-	#content .browse:before {
-		content: "\f00b";
-		top: 0;
-	}
-	#content #introduction .grid {
-		border: none;
-		margin-bottom: 0;
-	}
-	.columns,
-	.grid .col {
-		*behavior: url(/media/system/css/boxsizing.htc);
-	}*/
