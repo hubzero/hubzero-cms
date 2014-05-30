@@ -32,6 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
+
+$this->css()
+     ->js();
 ?>
 <ul id="page_options">
 	<li>
@@ -104,7 +107,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 		<input type="hidden" name="action" value="savesettings" />
 		
 		<p class="submit">
-			<input class="btn btn-succes" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
 
 			<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>">
 				<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>

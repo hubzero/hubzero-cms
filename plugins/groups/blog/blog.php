@@ -125,7 +125,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			{
 				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
-				$this->redirect( "/login?return=" . base64_encode($url), $message, 'warning' );
+				$this->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)), $message, 'warning');
 				return;
 			}
 
@@ -155,10 +155,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			//get the plugins params
 			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
-
-			//push the css to the doc
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', $this->_name);
-			\Hubzero\Document\Assets::addPluginScript('groups', $this->_name);
 
 			// Append to document the title
 			$document = JFactory::getDocument();

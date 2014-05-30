@@ -111,23 +111,16 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3)) 
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'groups',
-					'element' => 'blog',
-					'name'    => 'comments',
-					'layout'  => '_list'
-				)
-			);
-			$view->parent     = $this->comment->get('id');
-			$view->option     = $this->option;
-			$view->comments   = $this->comment->replies();
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->base       = $this->base;
-			$view->group      = $this->group;
-			$view->display();
+			$this->view('_list', 'comments')
+			     ->set('group', $this->group)
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('cls', $cls)
+			     ->set('depth', $this->depth)
+			     ->set('option', $this->option)
+			     ->set('comments', $this->comment->replies())
+			     ->set('config', $this->config)
+			     ->set('base', $this->base)
+			     ->display();
 		}
 		?>
 	</li>

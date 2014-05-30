@@ -42,6 +42,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 }
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
+
+$this->css()
+     ->js();
 ?>
 <ul id="page_options">
 	<li>

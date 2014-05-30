@@ -33,7 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
-$base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog'
+$base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
+
+$this->css()
+     ->js();
 ?>
 <?php if ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 	<ul id="page_options">
@@ -54,62 +57,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 	</ul>
 <?php } ?>
 
-<div class="entry-container">
-	<div class="aside">
-	<?php 
-	$limit = $this->filters['limit']; 
-	$this->filters['limit'] = 5;
-	?>
-		<div class="container blog-popular-entries">
-			<h4><?php echo JText::_('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
-		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
-			<ol>
-			<?php foreach ($popular as $row) { ?>
-				<?php 
-					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
-					{
-						continue;
-					}
-				?>
-				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				</li>
-			<?php } ?>
-			</ol>
-		<?php } else { ?>
-			<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
-		</div><!-- / .blog-popular-entries -->
-
-		<div class="container blog-recent-entries">
-			<h4><?php echo JText::_('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
-		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
-			<ol>
-			<?php foreach ($recent as $row) { ?>
-				<?php 
-					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
-					{
-						continue;
-					}
-				?>
-				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				</li>
-			<?php } ?>
-			</ol>
-		<?php } else { ?>
-			<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
-		</div><!-- / .blog-recent-entries -->
-	<?php
-	$this->filters['limit'] = $limit; 
-	?>
-	</div><!-- /.aside -->
-	
+<section class="main section entry-container">
 	<div class="subject">
 		<?php
 			$cls = '';
@@ -200,40 +148,80 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			?>
 		</div>
 	</div><!-- /.subject -->
-	<div class="clear"></div>
+	<aside class="aside">
+	<?php 
+	$limit = $this->filters['limit']; 
+	$this->filters['limit'] = 5;
+	?>
+		<div class="container blog-popular-entries">
+			<h4><?php echo JText::_('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
+		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
+			<ol>
+			<?php foreach ($popular as $row) { ?>
+				<?php 
+					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+					{
+						continue;
+					}
+				?>
+				<li>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</li>
+			<?php } ?>
+			</ol>
+		<?php } else { ?>
+			<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+		<?php } ?>
+		</div><!-- / .blog-popular-entries -->
 
-	<?php if ($this->row->get('allow_comments')) { ?>
-		<div class="aside aside-below">
-			<p>
-				<a class="add btn" href="#post-comment">
-					<?php echo JText::_('PLG_GROUPS_BLOG_ADD_A_COMMENT'); ?>
-				</a>
-			</p>
-		</div><!-- / .aside -->
+		<div class="container blog-recent-entries">
+			<h4><?php echo JText::_('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
+		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
+			<ol>
+			<?php foreach ($recent as $row) { ?>
+				<?php 
+					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+					{
+						continue;
+					}
+				?>
+				<li>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</li>
+			<?php } ?>
+			</ol>
+		<?php } else { ?>
+			<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+		<?php } ?>
+		</div><!-- / .blog-recent-entries -->
+	<?php
+	$this->filters['limit'] = $limit; 
+	?>
+	</aside><!-- /.aside -->
+</section>
 
-		<div class="subject below">
+<?php if ($this->row->get('allow_comments')) { ?>
+	<section class="section below">
+		<div class="subject">
 			<h3 class="below_heading">
 				<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
 				<?php 
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder'  => 'groups',
-							'element' => 'blog',
-							'name'    => 'comments',
-							'layout'  => '_list'
-						)
-					);
-					$view->group      = $this->group;
-					$view->parent     = 0;
-					$view->cls        = 'odd';
-					$view->depth      = 0;
-					$view->option     = $this->option;
-					$view->comments   = $this->row->comments('list');
-					$view->config     = $this->config;
-					$view->base       = $this->row->link();
-					$view->display();
+					$this->view('_list', 'comments')
+					     ->set('group', $this->group)
+					     ->set('parent', 0)
+					     ->set('cls', 'odd')
+					     ->set('depth', 0)
+					     ->set('option', $this->option)
+					     ->set('comments', $this->row->comments('list'))
+					     ->set('config', $this->config)
+					     ->set('base', $this->row->link())
+					     ->display();
 				?>
 			<?php } else { ?>
 				<p class="no-comments">
@@ -300,7 +288,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 						</p>
 					<?php } else { ?>
 						<p class="warning">
-							<?php echo JText::sprintf('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="/login?return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true)) . '">' . JText::_('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
+							<?php echo JText::sprintf('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="'. JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true))) . '">' . JText::_('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
 						</p>
 					<?php } ?>
 
@@ -325,5 +313,12 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 				</fieldset>
 			</form>
 		</div><!-- / .subject -->
-	<?php } //end if allow comments ?>
-</div><!-- /.entry-container -->
+		<aside class="aside">
+			<p>
+				<a class="icon-add btn" href="#post-comment">
+					<?php echo JText::_('PLG_GROUPS_BLOG_ADD_A_COMMENT'); ?>
+				</a>
+			</p>
+		</aside><!-- / .aside -->
+	</section>
+<?php } //end if allow comments ?>
