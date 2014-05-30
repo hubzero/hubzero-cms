@@ -31,80 +31,68 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $juser = $this->juser;
+
+$this->css();
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<a name="projects"></a><h3 class="heading">Group Projects</h3>
+<h3 class="heading">Group Projects</h3>
 
-<div class="main section" id="s-projects">
-	<div class="aside">
-		<div class="container">
-			<h3>Create a Project</h3>
-			<p class="starter"><span class="starter-point"></span></p>
-			<p class="starter">Have a new project? Want to create a dedicated space for project collaboration? Create a project today!</p>
-			<p class="add"><a href="/projects/start?gid=<?php echo $this->group->get('gidNumber'); ?>">Add Project</a></p>
-		</div>
-		<div class="container">
-			<h3>Your Projects</h3>
-			<p class="starter"><span class="starter-point"></span></p>
-			<p class="starter">View a list of all the projects you collaborate on.</p>
-			<p class="starter">Go to <a href="/members/<?php echo $juser->get('id'); ?>/projects">your projects</a></p>
-		</div>
-	</div><!-- /.aside -->
-	
+<section class="main section" id="s-projects">
 	<div class="subject">
 		<div class="entries-filters">
 			<ul class="entries-menu">
 				<li>
-					<a class="active" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects').'?action=all'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
+					<a class="active" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects&action=all'); ?>">
+						<?php echo JText::_('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
 					</a>
 				</li>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects').'?action=updates'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects&action=updates'); ?>">
+						<?php echo JText::_('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
 					</a>
 				</li>
 			</ul>
 		</div>
 		<div class="container">
 			<div id="myprojects">
-			<?php if($this->which == 'all')  { 
-				
-				// Show owned projects first
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'=>'groups',
-						'element'=>'projects',
-						'name'=>'browse',
-						'layout'=>'list'
-					)
-				);
-				$view->option = $this->option;
-				$view->rows = $this->owned;
-				$view->which = 'owned';
-				$view->config = $this->config;
-				$view->juser = $this->juser;
-				echo $view->loadTemplate();
-			}	
+				<?php
+				if ($this->which == 'all')
+				{
+					// Show owned projects first
+					$this->view('list')
+					     ->set('option', $this->option)
+					     ->set('rows', $this->owned)
+					     ->set('config', $this->config)
+					     ->set('juser', $this->juser)
+					     ->set('which', 'owned')
+					     ->display();
+				}
 				// Show rows
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'=>'groups',
-						'element'=>'projects',
-						'name'=>'browse',
-						'layout'=>'list'
-					)
-				);
-				$view->option = $this->option;
-				$view->rows = $this->rows;
-				$view->config = $this->config;
-				$view->juser = $this->juser;
-				$view->which = $this->filters['which'];
-				echo $view->loadTemplate();
-			?>
+				$this->view('list')
+				     ->set('option', $this->option)
+				     ->set('rows', $this->rows)
+				     ->set('config', $this->config)
+				     ->set('juser', $this->juser)
+				     ->set('which', $this->filters['which'])
+				     ->display();
+				?>
 			</div>
 		</div>
 	</div><!-- /.subject -->
-</div><!-- /.main section -->
+	<aside class="aside">
+		<div class="container">
+			<h3>Create a Project</h3>
+			<p>Have a new project? Want to create a dedicated space for project collaboration? Create a project today!</p>
+			<p><a class="icon-add btn" href="/projects/start?gid=<?php echo $this->group->get('gidNumber'); ?>">Add Project</a></p>
+		</div>
+		<div class="container">
+			<h3>Your Projects</h3>
+			<p>View a list of all the projects you collaborate on.</p>
+			<p>Go to <a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=projects'); ?>">your projects</a></p>
+		</div>
+	</aside><!-- /.aside -->
+</section><!-- /.main section -->

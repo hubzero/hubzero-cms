@@ -35,6 +35,13 @@ defined('_JEXEC') or die('Restricted access');
 class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$subject Event observer
@@ -45,17 +52,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->loadLanguage();
-
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin('groups', 'projects');
-		$this->_params = new $paramsClass($this->_plugin->params);
 		$this->_config = JComponentHelper::getParams('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
@@ -72,11 +68,11 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	public function &onGroupAreas() 
 	{
 		$area = array(
-			'name' => 'projects',
-			'title' => JText::_('PLG_GROUPS_PROJECTS'),
-			'default_access' => $this->params->get('plugin_access','members'),
+			'name'             => $this->_name,
+			'title'            => JText::_('PLG_GROUPS_PROJECTS'),
+			'default_access'   => $this->params->get('plugin_access','members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
-			'icon' => 'f03f'
+			'icon'             => 'f03f'
 		);
 		return $area;
 	}
@@ -97,7 +93,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null) 
 	{
 		$return = 'html';
-		$active = 'projects';
+		$active = $this->_name;
 
 		// The output array we're returning
 		$arr = array(
@@ -116,18 +112,17 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				$return = 'metadata';
 			}
 		}
-		
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		
+
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+
 		// Set filters
 		$filters = array();
 		$filters['group']  = $group->get('gidNumber');
 		$filters['mine']     = 1;
-		
+
 		// Get a record count
-		$obj 				= new Project($this->_database);
-		$this->_projects 	= $obj->getGroupProjectIds($group->get('gidNumber'), $this->_juser->get('id'));
+		$obj = new Project($this->_database);
+		$this->_projects = $obj->getGroupProjectIds($group->get('gidNumber'), $this->_juser->get('id'));
 
 		//if we want to return content
 		if ($return == 'html') 
@@ -174,9 +169,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
-			//push styles to the view
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'projects');
-
 			// Load classes
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php');
@@ -192,13 +184,13 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				default:        $arr['html'] = $this->_view('all');   break;
 			}
 		}
-		
+
 		//get meta
 		$arr['metadata'] = array();
 
 		//return total message count
 		$arr['metadata']['count'] = count($this->_projects);
-		
+
 		// Return the output
 		return $arr;
 	}

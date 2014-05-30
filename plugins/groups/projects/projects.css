@@ -1,77 +1,22 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/groups/calendar/calendar.css
+ * @file        plugins/groups/projects/projects.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-@import url("/media/system/css/fontcons.css");
-
-	.group_projects {}
-
 	.group_projects h3.heading {
 		display:none;
-		}
-	.group_projects .section {
-		padding:0;
-		}
-	.group_projects .main {
-		border:none;
-		}	
-	.group_projects .subject {
-		padding-top:0;
-		}
-	.group_projects .container {
-		background-color:#f4f4f4;
-		border:10px solid #f4f4f4;
-		}
-	#page_menu li .projects:before { content: "\f03f"; }
-
-/* Aside */
-	.group_projects .aside {
-		padding:0;
-		}
-	.group_projects .aside .container {
-	    margin: 0 0 1em 0;
-	    padding: 0;
-	    background-color: #F4F4ee;
-	    border: 10px solid #F4F4ee;
-	    }
-
-/* Headers */
-	.group_projects .aside .container h3,
-	.group_projects .aside .container h4 {
-	    margin: -10px -10px 1em -10px;
-	    padding: 5px 10px;
-	    background-color: #999;
-	    color: #fff;
-	    font-size: 1em;
-	    }
-	
-/* Paragraphs */
-	.group_projects .aside .container p {
-	    margin: 1em 0 0 0;
-	    }
-	.group_projects .aside .container .starter {
-	    padding: 0 0 0 0;
-	    position: relative;
-	    }
+	}
 
 /* Entries Table */
-	.entries {
-		border: 2px solid #e9e9e9;
-	    border-top: none;
-	    background-color: #FFF;
-	    margin: 0;
-	    padding: 0;
-	    }
-	.entries caption, h4.th_header {		
+	h4.th_header {
 		font-size: 115%;
 		background: #f8f8f8 url('../../../components/com_groups/assets/img/light-stripes.png');
 		border: 2px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		margin-right: -2px; /* Fix 2px issue */
-		}
+	}
 	h4.th_header {
 		padding: 0.5em;
 		font-size: 115%;
@@ -83,39 +28,39 @@
 	.container-block h4 span,
 	.entries caption span {
 		color: #aaa;
-	    }
+	}
 
-/* tbody */
+/* tbody 
 	.entries tbody td {
 		text-align: left;
 		border-bottom: 1px solid #eee;
 		padding: 10px;
-		background-color:#fff;å
-		}
+		background-color:#fff;
+	}*/
 	.entries tbody td img {
 		max-width:100%;
-		}	
+	}
 	.entries td.thumb {
 		width:50px;
-		}
+	}
 	.entries td.details a {
 		font-weight:bold;
 		font-size:105%;
-		}
+	}
 	.entries td.details a.created_by {
 		font-weight:normal;
 		font-size:90%;
-		}
+	}
 	.entries td.details .created {
-		color:#999;		
+		color:#999;
 		font-size:90%;
 		margin:0 0 0 20px
-		}
+	}
 	.entries td.details .created_by {
 		margin-left:10px;
-		}	
+	}
 	.entries td.owner {
-		}
+	}
 	.entries td.owner .group_owned,
 	.entries td.owner .group_collab {
 		-webkit-border-radius:5px;
@@ -124,7 +69,7 @@
 		font-weight:700;
 		padding:2px 5px;
 		font-size:90%;
-		}	
+	}
 	.entries td.owner .group_collab {
 		background-color:#777;
 	}
