@@ -28,13 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Login Layout">
+	<layout title="Login Layout">
 		<message>
-			<![CDATA[STANDARD LOGIN LAYOUT DESC]]>
+			<![CDATA[SLOGIN LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Login Layout</name>
+		<name>Login Layout</name>
 		<description>STANDARD LOGIN LAYOUT DESC</description>
 		<params>
 		</params>

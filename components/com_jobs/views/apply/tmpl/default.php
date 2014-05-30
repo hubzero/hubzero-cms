@@ -30,103 +30,108 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	/* Application Form */
+/* Application Form */
 
-	// load some classes
-	$jconfig = JFactory::getConfig();
-	$sitename = $jconfig->getValue('config.sitename');
-	$juser 	  = JFactory::getUser();
-	
-	$jobsHtml = new JobsHtml();
+// load some classes
+$jconfig = JFactory::getConfig();
+$sitename = $jconfig->getValue('config.sitename');
+$juser 	  = JFactory::getUser();
 
-	$job = $this->job;
-	$seeker = $this->seeker;
-	$application = $this->application;
-	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
+$jobsHtml = new JobsHtml();
 
+$job = $this->job;
+$seeker = $this->seeker;
+$application = $this->application;
+$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-    <ul id="useroptions">
-    <?php if($juser->get('guest')) { ?> 
-    	<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-    <?php } else if($this->emp && $this->allowsubscriptions) {  ?>
-    	<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-        <li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
-    <?php } else if($this->admin) { ?>
-    	<li><?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
-        	<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
-	<?php } else { ?>  
-    	<li><a class="alljobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>"><?php echo JText::_('COM_JOBS_ALL_JOBS'); ?></a></li>
-    <?php } ?>  
-</ul>
-</div><!-- / #content-header-extra -->
-<?php
-	if (!$seeker) { ?>
-		<p class="warning"><?php echo JText::_('COM_JOBS_APPLY_TO_APPLY').' '.$sitename.' '.JText::_('COM_JOBS_APPLY_NEED_RESUME') ?></p>
-        <p>
-			<?php echo '<a href="'. JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=resume').'" class="add">'.JText::_('COM_JOBS_ACTION_CREATE_PROFILE').'</a>'; ?>
-        </p>
-	<?php 
-	return;
-	}
-		$html = '';
+	<div id="content-header-extra">
+		<ul id="useroptions">
+		<?php if ($juser->get('guest')) { ?> 
+			<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
+			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+			<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
+		<?php } else if ($this->admin) { ?>
+			<li>
+				<?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
+				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
+			</li>
+		<?php } else { ?>  
+			<li><a class="alljobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>"><?php echo JText::_('COM_JOBS_ALL_JOBS'); ?></a></li>
+		<?php } ?>  
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
+<?php if (!$seeker) { ?>
+	<p class="warning"><?php echo JText::_('COM_JOBS_APPLY_TO_APPLY').' '.$sitename.' '.JText::_('COM_JOBS_APPLY_NEED_RESUME') ?></p>
+	<p>
+		<?php echo '<a href="'. JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=resume').'" class="add">'.JText::_('COM_JOBS_ACTION_CREATE_PROFILE').'</a>'; ?>
+	</p>
+<?php } else { ?>
+	<section class="main section">
+		<?php
 		$job->title = trim(stripslashes($job->title));
 		$appid = $application->status !=2 ? $application->id : 0;
-		$html .= '<div class="main section">'."\n";
+		?>
 
-		if((!$this->admin && $juser->get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) {
-		 $html .= '<p class="warning">'.JText::_('COM_JOBS_APPLY_WARNING_OWN_AD').'</p>'."\n";
-		}
+		<?php if ((!$this->admin && $juser->get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) { ?>
+			<p class="warning"><?php echo JText::_('COM_JOBS_APPLY_WARNING_OWN_AD'); ?></p>
+		<?php } ?>
 
-		$html .= '<div id="applyinfo">'."\n";
-		$html .= '<h3>'.$job->title.' - ';
-		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName;
-		$html .= ', '.$job->companyLocation.', '.$job->companyLocationCountry.'<span>'.JText::_('COM_JOBS_JOB_REFERENCE_CODE').': '.$job->code.'</span></h3>'."\n";
-		$html .= '</div>'."\n";
+		<div id="applyinfo">
+			<h3>
+				<?php echo $job->title; ?> - 
+				<?php echo preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName; ?>, 
+				<?php echo $job->companyLocation; ?>, 
+				<?php echo $job->companyLocationCountry; ?> <span><?php echo JText::_('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
+			</h3>
+		</div>
 
-		// message to employer
-		$html .= ' <form id="hubForm" method="post" action="index.php?option='.$this->option.'">'."\n";
-		$html .= '<fieldset>'."\n";
-		$html .= '	  <input type="hidden"  name="task" value="saveapp" />'."\n";
-		$html .= '	  <input type="hidden" id="code" name="code" value="'.$job->code.'" />'."\n";
-		$html .= '	  <input type="hidden" id="jid" name="jid" value="'.$job->id.'" />'."\n";
-		$html .= '	  <input type="hidden" id="appid" name="appid" value="'.$appid.'" />'."\n";
-		$html .= '	  <input type="hidden" id="uid" name="uid" value="'.$juser->get('id').'" />'."\n";
-		$html .= '	  <h3>'.JText::_('COM_JOBS_APPLY_MSG_TO_EMPLOYER').' <span class="opt">('.JText::_('COM_JOBS_OPTIONAL').')</span></h3>'."\n";
-		$html .= '	  <label>'."\n";
-		$html .= '	  <textarea name="cover" id="cover" rows="10" cols="15">'.$application->cover.'</textarea>'."\n";
-		$html .= '	  </label>'."\n";
-		$html .= '</fieldset>'."\n";
-		$html .= '<div class="explaination">'."\n";
-		$html .= '<p>'.JText::_('COM_JOBS_APPLY_HINT_COVER_LETTER').'</p>'."\n";
-		$html .= '</div>'."\n";
-		$html .= ' <div class="clear"></div>'."\n";
+		<form id="hubForm" method="post" action="index.php?option=<?php echo $this->option; ?>">
+			<fieldset>
+				<input type="hidden"  name="task" value="saveapp" />
+				<input type="hidden" id="code" name="code" value="<?php echo $job->code; ?>" />
+				<input type="hidden" id="jid" name="jid" value="<?php echo $job->id; ?>" />
+				<input type="hidden" id="appid" name="appid" value="<?php echo $appid; ?>" />
+				<input type="hidden" id="uid" name="uid" value="<?php echo $juser->get('id'); ?>" />
+				<h3><?php echo JText::_('COM_JOBS_APPLY_MSG_TO_EMPLOYER'); ?> <span class="opt">(<?php echo JText::_('COM_JOBS_OPTIONAL'); ?>)</span></h3>
+				<label>
+					<textarea name="cover" id="cover" rows="10" cols="15"><?php echo $application->cover; ?></textarea>
+				</label>
+			</fieldset>
+			<div class="explaination">
+				<p><?php echo JText::_('COM_JOBS_APPLY_HINT_COVER_LETTER'); ?></p>
+			</div>
+			<div class="clear"></div>
 
-		$html .= ' <div class="subject custom">'."\n";
-		// profile info
-		if($seeker) {
-			JPluginHelper::importPlugin( 'members','resume' );
-			$dispatcher = JDispatcher::getInstance();
-			// show seeker info
-			$out   = $dispatcher->trigger( 'showSeeker', array($seeker, $this->emp, $this->admin, 'com_members', $list=0) );
-			if (count($out) > 0) {
-				$html .= $out[0];
-			}
-		}
-		$html .= '</div>'."\n";
-		$html .= '<p class="submit"><input type="submit" name="submit" value="';
-		$html .= $this->task=='editapp' ? JText::_('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : JText::_('COM_JOBS_ACTION_APPLY_THIS_JOB');
-		$html .= '" />';
-		$html .= '<span class="cancelaction">';
-		$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&id='.$job->code).'">';
-		$html .= JText::_('COM_JOBS_CANCEL').'</a></span></p>'."\n";
-		$html .= ' </form>'."\n";
-		$html .= '</div>'."\n";
-
-		echo $html;
- ?>
+			<div class="subject custom">
+				<?php
+				// profile info
+				if ($seeker)
+				{
+					JPluginHelper::importPlugin( 'members','resume' );
+					$dispatcher = JDispatcher::getInstance();
+					// show seeker info
+					$out = $dispatcher->trigger( 'showSeeker', array($seeker, $this->emp, $this->admin, 'com_members', $list=0) );
+					if (count($out) > 0) 
+					{
+						echo implode("\n", $out);
+					}
+				}
+				?>
+			</div>
+			<p class="submit">
+				<input type="submit" name="submit" value="<?php echo $this->task=='editapp' ? JText::_('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : JText::_('COM_JOBS_ACTION_APPLY_THIS_JOB'); ?>" />
+				<span class="cancelaction">
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=job&id='.$job->code); ?>">
+						<?php echo JText::_('COM_JOBS_CANCEL'); ?>
+					</a>
+				</span>
+			</p>
+		</form>
+	</section>
+<?php } ?>

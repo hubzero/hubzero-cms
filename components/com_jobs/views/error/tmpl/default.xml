@@ -28,15 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Groups Error Layout">
+	<layout title="Error Message">
 		<message>
-			<![CDATA[STANDARD GROUPS ERROR LAYOUT DESC]]>
+			<![CDATA[Error Message]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Groups Error Layout</name>
-		<description>STANDARD GROUPS ERROR LAYOUT DESC</description>
-		<params>
-		</params>
+		<name>Error Message</name>
+		<description>Error Message</description>
 	</state>
 </metadata>

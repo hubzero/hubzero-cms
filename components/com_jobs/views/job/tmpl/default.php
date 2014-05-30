@@ -54,53 +54,51 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?>
-    <?php if($owner) { echo '<a class="edit button" href="'. JRoute::_('index.php?option='.$this->option.'&task=editjob&code='.$job->code) .'" title="'. JText::_('COM_JOBS_ACTION_EDIT_JOB') .'">'. JText::_('COM_JOBS_ACTION_EDIT_JOB') .'</a>'; } ?>
-    </h2>
-</div><!-- / #content-header -->
+		<?php if ($owner) { echo '<a class="edit button" href="'. JRoute::_('index.php?option='.$this->option.'&task=editjob&code='.$job->code) .'" title="'. JText::_('COM_JOBS_ACTION_EDIT_JOB') .'">'. JText::_('COM_JOBS_ACTION_EDIT_JOB') .'</a>'; } ?>
+	</h2>
 
-<div id="content-header-extra">
-    <ul id="useroptions">
-    <?php if($juser->get('guest')) { ?> 
-    	<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-    <?php } else if($this->emp && $this->allowsubscriptions) {  ?>
-    	<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-        <li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
-		<li><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
-    <?php } else if($this->admin) { ?>
-    	<li>
-        	<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
-		<li><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
-	<?php } else { ?>  
-    	<li><a class="myresume btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_MY_RESUME'); ?></a></li>
-    <?php } ?>  		
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+		<?php if ($juser->get('guest')) { ?> 
+			<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
+			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+			<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
+			<li><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
+		<?php } else if ($this->admin) { ?>
+			<li>
+				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
+			<li><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
+		<?php } else { ?>  
+			<li><a class="myresume btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_MY_RESUME'); ?></a></li>
+		<?php } ?>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
+
 <?php
+	$job->title = trim(stripslashes($job->title));
+	$job->description = trim(stripslashes($job->description));
+	$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
+	$job->description = $jobsHtml->txt_unpee($job->description);
+?>
 
-		$html = '';
-
-		$job->title = trim(stripslashes($job->title));
-		$job->description = trim(stripslashes($job->description));
-		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
-		$job->description = $jobsHtml->txt_unpee($job->description);
-
-		$html .= '<div class="clear"></div>'."\n";
-		$html .= '<div class="main section">'."\n";
-
-	if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+<section class="main section">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php }
 	if ($this->msg_warning) { ?>
-	<p class="warning"><?php echo $this->msg_warning; ?></p>
+		<p class="warning"><?php echo $this->msg_warning; ?></p>
 	<?php }
 	if ($this->msg_passed) { ?>
-	<p class="passed"><?php echo $this->msg_passed; ?></p>
+		<p class="passed"><?php echo $this->msg_passed; ?></p>
 	<?php }
-		if($owner) {
+		if ($owner)
+		{
 			// admin status message
-			switch( $job->status )
+			switch ( $job->status )
 			{
 				case 1:
 				$html .= '<p class="statusmsg activead">'.JText::_('COM_JOBS_JOB_AD_PUBLISHED').' '.JText::_('You can').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=editjob&code='.$job->code).'">'.strtolower(JText::_('COM_JOBS_ACTION_EDIT_JOB')).'</a> '.JText::_('COM_JOBS_JOB_AD_PUBLISHED_TIPS').'</p>';
@@ -117,64 +115,66 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		}
 
-		$html .= t.'<div id="jobinfo">'."\n";
-		$html .= t.t.'<h3><span>'.JText::_('COM_JOBS_JOB_REFERENCE_CODE').': '.$job->code.'</span>'.$job->title.' - ';
+		$html = '';
+		$html .= '<div id="jobinfo">'."\n";
+		$html .= '<h3><span>'.JText::_('COM_JOBS_JOB_REFERENCE_CODE').': '.$job->code.'</span>'.$job->title.' - ';
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName;
 		$html .= ', '.$job->companyLocation;
 		$html .= $job->companyLocationCountry ? ', ' . strtoupper($job->companyLocationCountry) : '';
 		$html .= '</h3>'."\n";
 		$html .= '<div class="clear"></div>'."\n";
-		$html .= t.t.'<div class="apply"><p>'."\n";
-		if($job->applied) {
-			$html .= t.t.'<span class="alreadyapplied">'.JText::_('COM_JOBS_JOB_APPLIED_ON').' '.JHTML::_('date', $job->applied, JText::_('DATE_FORMAT_HZ1')).'<span>'."\n";
-			$html .= t.t.'<span><a href="'.JRoute::_('index.php?option='.$this->option.'&task=editapp&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_EDIT_APPLICATION').'</a> | <a href="'.JRoute::_('index.php?option='.$this->option.'&task=withdraw&code='.$job->code).'" id="showconfirm">'.JText::_('COM_JOBS_ACTION_WITHDRAW_APPLICATION').'</a><span>'."\n";
+		$html .= '<div class="apply"><p>'."\n";
+		if ($job->applied) {
+			$html .= '<span class="alreadyapplied">'.JText::_('COM_JOBS_JOB_APPLIED_ON').' '.JHTML::_('date', $job->applied, JText::_('DATE_FORMAT_HZ1')).'<span>'."\n";
+			$html .= '<span><a href="'.JRoute::_('index.php?option='.$this->option.'&task=editapp&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_EDIT_APPLICATION').'</a> | <a href="'.JRoute::_('index.php?option='.$this->option.'&task=withdraw&code='.$job->code).'" id="showconfirm">'.JText::_('COM_JOBS_ACTION_WITHDRAW_APPLICATION').'</a><span>'."\n";
 		}
-		else if($job->withdrawn) {
-			$html .= t.t.'<span class="withdrawn">'.JText::_('COM_JOBS_JOB_WITHDREW_ON').' '.JHTML::_('date', $job->withdrawn, JText::_('DATE_FORMAT_HZ1')).'<span>'."\n";
-			$html .= t.t.'<span><a href="'.JRoute::_('index.php?option='.$this->option.'&task=apply&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_REAPPLY').'</a><span>'."\n";
+		else if ($job->withdrawn) {
+			$html .= '<span class="withdrawn">'.JText::_('COM_JOBS_JOB_WITHDREW_ON').' '.JHTML::_('date', $job->withdrawn, JText::_('DATE_FORMAT_HZ1')).'<span>'."\n";
+			$html .= '<span><a href="'.JRoute::_('index.php?option='.$this->option.'&task=apply&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_REAPPLY').'</a><span>'."\n";
 		}
 		else {
-			if($job->applyExternalUrl) {
+			if ($job->applyExternalUrl) {
 				
-				if(strpos($job->applyExternalUrl, "http://") !== false || strpos($job->applyExternalUrl, "https://") !== false)
+				if (strpos($job->applyExternalUrl, "http://") !== false || strpos($job->applyExternalUrl, "https://") !== false)
 				{
 					$url = $job->applyExternalUrl;
 				}
 				else {
 					$url = "http://" .  $job->applyExternalUrl;
 				}
-				$html .= t.t.'<a class="extlink" href="'.$url.'" rel="external">'.JText::_('COM_JOBS_ACTION_APPLY_EXTERNALLY').'</a>'."\n";
+				$html .= '<a class="extlink" href="'.$url.'" rel="external">'.JText::_('COM_JOBS_ACTION_APPLY_EXTERNALLY').'</a>'."\n";
 				$html .= $job->applyInternal ? '<span class="or">'.strtolower(JText::_('COM_JOBS_OR')).'</span>'."\n" : ''."\n";
 			}
-			if($job->applyInternal) {
-				$html .= t.t.'<span class="applybtn"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=apply&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_APPLY_THROUGH_HUB').' '.$sitename.'</a></span>'."\n";
+			if ($job->applyInternal) {
+				$html .= '<span class="applybtn"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=apply&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_APPLY_THROUGH_HUB').' '.$sitename.'</a></span>'."\n";
 			}
 		}
-		$html .= t.t.'</p>';
+		$html .= '</p>';
 		$html .= ($job->applied) ? $jobsHtml->confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=job&code='.$job->code), JRoute::_('index.php?option='.$this->option.'&task=withdraw&code='.$job->code), $action = "withdrawapp")."\n" : '';
 		$html .='</div>'."\n";
 		$html .= '<div>'."\n";
-		$html .= t.t.'<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_CATEGORY').'</span>'."\n";
-		$html .= t.t.'<p>'.$job->cat.'</p>'."\n";
-		$html .= t.t.'<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_TYPE').'</span>'."\n";
-		$html .= t.t.'<p>'.$job->type.'</p>'."\n";
-		$html .= t.t.'<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_START_DATE').'</span>'."\n";
-		$html .= t.t.'<p>'.$startdate.'</p>'."\n";
-		$html .= t.t.'<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_EXPIRES').'</span>'."\n";
-		$html .= t.t.'<p>'.$closedate.'</p>'."\n";
-		$html .= t.t.'<div class="reg details">'.$maintext.'</div>'."\n";
-		if($job->contactName) {
-			$html .= t.t.'<p class="reg details">'.JText::_('COM_JOBS_JOB_INFO_CONTACT').':</p>'."\n";
-			$html .= t.t.'<p class="reg">'."\n";
-			$html .= t.t.'<span class="contactname">'.$job->contactName.'</span>'."\n";
+		$html .= '<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_CATEGORY').'</span>'."\n";
+		$html .= '<p>'.$job->cat.'</p>'."\n";
+		$html .= '<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_TYPE').'</span>'."\n";
+		$html .= '<p>'.$job->type.'</p>'."\n";
+		$html .= '<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_START_DATE').'</span>'."\n";
+		$html .= '<p>'.$startdate.'</p>'."\n";
+		$html .= '<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_EXPIRES').'</span>'."\n";
+		$html .= '<p>'.$closedate.'</p>'."\n";
+		$html .= '<div class="reg details">'.$maintext.'</div>'."\n";
+		if ($job->contactName) {
+			$html .= '<p class="reg details">'.JText::_('COM_JOBS_JOB_INFO_CONTACT').':</p>'."\n";
+			$html .= '<p class="reg">'."\n";
+			$html .= '<span class="contactname">'.$job->contactName.'</span>'."\n";
 			$html .= $job->contactPhone ? '<span class="contactinfo">'.JText::_('COM_JOBS_JOB_TABLE_TEL').': '.$job->contactPhone.'</span>'."\n" : '';
 			$html .= $job->contactEmail ? '<span class="contactinfo">'.JText::_('COM_JOBS_JOB_TABLE_EMAIL').': '.$job->contactEmail.'</span>'."\n" : '';
-			$html .= t.t.'</p>'."\n";
+			$html .= '</p>'."\n";
 		}
-		$html .= t.'</div>'."\n";
+		$html .= '</div>'."\n";
 		$html .= '</div>'."\n";
 
-		if($owner) {
+		if ($owner)
+		{
 			// admin options
 			switch( $job->status )
 			{
@@ -190,53 +190,51 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		}
 		echo $html;
-?>
- <?php if($owner) {  ?>
- 	<a name="applications"></a>
-    <h3><?php echo JText::_('COM_JOBS_APPLICATIONS').' ('.count($job->applications).' '.JText::_('COM_JOBS_TOTAL').')'; ?></h3>
-    <?php if (count($job->applications) <= 0 ){  ?>
-    <p><?php echo JText::_('COM_JOBS_NOTICE_APPLICATIONS_NONE'); ?></p>
-    <?php }  else {
+	?>
+	<?php if ($owner) { ?>
+		<h3><?php echo JText::_('COM_JOBS_APPLICATIONS').' ('.count($job->applications).' '.JText::_('COM_JOBS_TOTAL').')'; ?></h3>
+		<?php if (count($job->applications) <= 0 ){  ?>
+		<p><?php echo JText::_('COM_JOBS_NOTICE_APPLICATIONS_NONE'); ?></p>
+		<?php }  else {
 
-		$html = '';
-		$html.= '<ul id="candidates">'."\n";
+			$html  = '';
+			$html .= '<ul id="candidates">'."\n";
 
-		JPluginHelper::importPlugin( 'members','resume' );
-		$dispatcher = JDispatcher::getInstance();
-		$k = 1;
-		for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {
-			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
-				$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, JText::_('DATE_FORMAT_HZ1')) : JText::_('N/A');
-				$html  .= '<li class="applic">'."\n";
-				$html  .= '<span class="countc">'.$k.'</span> '.$job->applications[$i]->seeker->name.' '.JText::_('applied on').' '.$applied."\n";
-				$html  .= $job->applications[$i]->cover ? '<blockquote>'.trim(stripslashes($job->applications[$i]->cover)).'</blockquote>' : '';
-				$html  .= '</li>'."\n";
-				$html  .= '<li>'."\n";
-				// show seeker info
-				$out   = $dispatcher->trigger( 'showSeeker', array($job->applications[$i]->seeker, $this->emp, $this->admin, 'com_members', $list=0) );
-				if (count($out) > 0) {
-					$html .= $out[0];
+			JPluginHelper::importPlugin( 'members','resume' );
+			$dispatcher = JDispatcher::getInstance();
+			$k = 1;
+			for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {
+				if ($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
+					$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, JText::_('DATE_FORMAT_HZ1')) : JText::_('N/A');
+					$html  .= '<li class="applic">'."\n";
+					$html  .= '<span class="countc">'.$k.'</span> '.$job->applications[$i]->seeker->name.' '.JText::_('applied on').' '.$applied."\n";
+					$html  .= $job->applications[$i]->cover ? '<blockquote>'.trim(stripslashes($job->applications[$i]->cover)).'</blockquote>' : '';
+					$html  .= '</li>'."\n";
+					$html  .= '<li>'."\n";
+					// show seeker info
+					$out   = $dispatcher->trigger( 'showSeeker', array($job->applications[$i]->seeker, $this->emp, $this->admin, 'com_members', $list=0) );
+					if (count($out) > 0) {
+						$html .= $out[0];
+					}
+					$html  .= '</li>'."\n";
+					$html  .= '<li class="applicbot"></li>'."\n";
+					$k++;
 				}
-				$html  .= '</li>'."\n";
-				$html  .= '<li class="applicbot"></li>'."\n";
-				$k++;
 			}
-		}
-		if(count($job->withdrawnlist) > 0) {
-			for ($i=0, $n=count( $job->withdrawnlist ); $i < $n; $i++) {
-				$n = $k;
+			if (count($job->withdrawnlist) > 0) {
+				for ($i=0, $n=count( $job->withdrawnlist ); $i < $n; $i++) {
+					$n = $k;
 
-				$n++;
+					$n++;
+				}
 			}
-		}
 
-		$html  .= '</ul>'."\n";
-		if(count($job->withdrawnlist) > 0) {
-			$html  .= '<p>'.count($job->withdrawnlist).' '.JText::_('COM_JOBS_NOTICE_CANDIDATES_WITHDREW').'</p>'."\n";
-		}
+			$html  .= '</ul>'."\n";
+			if (count($job->withdrawnlist) > 0) {
+				$html  .= '<p>'.count($job->withdrawnlist).' '.JText::_('COM_JOBS_NOTICE_CANDIDATES_WITHDREW').'</p>'."\n";
+			}
 
-		echo $html;
-	} ?>
- <?php } ?>
- </div>
-
+			echo $html;
+		} ?>
+	<?php } ?>
+</section>

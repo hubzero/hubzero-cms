@@ -27,23 +27,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Section Layout">
+	<layout title="Edit Job">
 		<message>
-			<![CDATA[STANDARD SECTION LAYOUT DESC]]>
+			<![CDATA[Edit Job]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Section Layout</name>
-		<description>STANDARD SECTION LAYOUT DESC</description>
-		<url>
-			<param name="id" type="section" label="Section" description="Choose a section..." />
-		</url>
-		<params>
-	 		<param name="show_description" type="radio" default="0" label="Description" description="Show/Hide the Category Description">
-	 			<option value="0">Hide</option>
-	 			<option value="1">Show</option>
-	 		</param>
-		</params>
+		<name>Edit Job</name>
+		<description>Edit Job</description>
 	</state>
 </metadata>
 

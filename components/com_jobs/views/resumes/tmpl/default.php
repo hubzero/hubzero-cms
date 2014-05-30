@@ -36,69 +36,32 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jobsHtml = new JobsHtml();
 
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-<?php if ($this->emp or $this->admin) {  ?>
-<div id="content-header-extra">
-	<ul id="useroptions">
-	<?php if ($this->emp) {  ?>
-		<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Employer Dashboard'); ?></a></li>
-		<?php if ($filters['filterby'] == 'shortlisted') { ?>
-		<li><a class="complete btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo JText::_('All Candidates'); ?></a></li>
-		<?php } else { ?>
-		<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('Candidate Shortlist'); ?></a></li>
-		<?php } ?>
-	<?php } else {  ?>
-		<li>
-			<!-- <?php echo JText::_('You are logged in as a site administrator.'); ?> -->
-			<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Administrator Dashboard'); ?></a>
-		</li>
-	<?php } ?>
-	</ul>
-</div><!-- / #content-header-extra -->
-<?php } ?>
 
-<div class="main section">
-	<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>">
-		<div class="aside">
-		<?php if ($filters['filterby'] != 'shortlisted') { ?>
-			<fieldset id="matchsearch">
-				<label>
-					<?php echo JText::_('Sort by'); ?>: 
-					<div class="together">
-						<input class="option" type="radio" name="sortby" value="lastupdate"<?php if ($filters['sortby']!='bestmatch') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('last update'); ?> &nbsp; 
-						<input class="option" type="radio" name="sortby" value="bestmatch"<?php if ($filters['sortby']=='bestmatch') { echo ' checked="checked"'; } else if (!$filters['match']) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('best match'); ?>
-					</div>
-				</label>
-				<label>
-					<?php echo JText::_('Keywords'); ?>: 
-					<span class="questionmark tooltips" title="Keywords Search :: Use skill and action keywords separated by commas, e.g. XML, web, MBA etc."></span>
-					<input name="q" maxlength="250" type="text" value="<?php echo $this->escape($filters['search']); ?>" />
-				</label>
-				<label>
-					<?php echo JText::_('Category sought'); ?>:
-					<?php echo $jobsHtml->formSelect('category', $cats, $filters['category'], '', ''); ?>
-				</label>
-				<label>
-					<?php echo JText::_('Type sought'); ?>:
-					<?php echo $jobsHtml->formSelect('type', $types, $filters['type'], '', ''); ?>
-				</label>
-				<label>
-					<input class="option" type="checkbox" name="saveprefs" value="1" checked="checked" /> 
-					<?php echo JText::_('Save my search preferences'); ?>
-				</label>
-				<input type="hidden" name="performsearch" value="1" />
-				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('Search'); ?>" />
-				</p>
-			</fieldset>
-		<?php } else { ?>
-			<p>
-				<?php echo JText::_('The listed candidates are those you bookmarked for further contact. Return to a list of '); ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo JText::_('All Candidates'); ?></a>.
-			</p>
+	<?php if ($this->emp or $this->admin) {  ?>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+		<?php if ($this->emp) {  ?>
+			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Employer Dashboard'); ?></a></li>
+			<?php if ($filters['filterby'] == 'shortlisted') { ?>
+			<li><a class="complete btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo JText::_('All Candidates'); ?></a></li>
+			<?php } else { ?>
+			<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('Candidate Shortlist'); ?></a></li>
+			<?php } ?>
+		<?php } else {  ?>
+			<li>
+				<!-- <?php echo JText::_('You are logged in as a site administrator.'); ?> -->
+				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Administrator Dashboard'); ?></a>
+			</li>
 		<?php } ?>
-		</div><!-- / .aside -->
+		</ul>
+	</div><!-- / #content-header-extra -->
+	<?php } ?>
+</header><!-- / #content-header -->
+
+<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>">
+	<section class="main section">
 		<div class="subject">
 		<?php if ($filters['filterby']== 'shortlisted') { ?>
 			<h4><?php echo JText::_('Candidate Shortlist '); ?></h4>
@@ -158,7 +121,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 		echo $this->pageNav->getListFooter();
 		?>
 		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</form>
-</div>
+		<div class="aside">
+		<?php if ($filters['filterby'] != 'shortlisted') { ?>
+			<fieldset id="matchsearch">
+				<label>
+					<?php echo JText::_('Sort by'); ?>: 
+					<div class="together">
+						<input class="option" type="radio" name="sortby" value="lastupdate"<?php if ($filters['sortby']!='bestmatch') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('last update'); ?> &nbsp; 
+						<input class="option" type="radio" name="sortby" value="bestmatch"<?php if ($filters['sortby']=='bestmatch') { echo ' checked="checked"'; } else if (!$filters['match']) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('best match'); ?>
+					</div>
+				</label>
+				<label>
+					<?php echo JText::_('Keywords'); ?>: 
+					<span class="questionmark tooltips" title="Keywords Search :: Use skill and action keywords separated by commas, e.g. XML, web, MBA etc."></span>
+					<input name="q" maxlength="250" type="text" value="<?php echo $this->escape($filters['search']); ?>" />
+				</label>
+				<label>
+					<?php echo JText::_('Category sought'); ?>:
+					<?php echo $jobsHtml->formSelect('category', $cats, $filters['category'], '', ''); ?>
+				</label>
+				<label>
+					<?php echo JText::_('Type sought'); ?>:
+					<?php echo $jobsHtml->formSelect('type', $types, $filters['type'], '', ''); ?>
+				</label>
+				<label>
+					<input class="option" type="checkbox" name="saveprefs" value="1" checked="checked" /> 
+					<?php echo JText::_('Save my search preferences'); ?>
+				</label>
+				<input type="hidden" name="performsearch" value="1" />
+				<p class="submit">
+					<input type="submit" value="<?php echo JText::_('Search'); ?>" />
+				</p>
+			</fieldset>
+		<?php } else { ?>
+			<p>
+				<?php echo JText::_('The listed candidates are those you bookmarked for further contact. Return to a list of '); ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo JText::_('All Candidates'); ?></a>.
+			</p>
+		<?php } ?>
+		</div><!-- / .aside -->
+	</section>
+</form>
  

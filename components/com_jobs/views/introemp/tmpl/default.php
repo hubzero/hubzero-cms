@@ -40,61 +40,53 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$maxads = $this->config->get('maxads') ? $this->config->get('maxads') : 3;
 
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
-<?php	
-	$html  = '';
-	$html .= '<div class="main section">'.n;
-	$html .= t.'<div class="process_steps threecol">'.n;
-	$html .= t.t.'<div class="current">'.n;
-	$html .= t.t.t.'<h3><span>1</span> '.JText::_('COM_JOBS_STEP_LOGIN').' '.JText::_('COM_JOBS_TO').' '.$sitename.'</h3>'.n;
-	$html .= t.t.'</div>'.n;
 
-	$html .= t.t.'<div>'.n;
-	$html .= t.t.t.'<h3><span>2</span> ';
-	$html .= JText::_('COM_JOBS_STEP_SUBSCRIBE');
-	$html .= '</h3>'.n;
-	$html .= t.t.'</div>'.n;
+<section class="main section process_steps">
 
-	$html .= t.t.'<div>'.n;
-	$html .= t.t.t.'<h3><span>3</span> ';
-	$html .= ($this->task=='addjob') ? JText::_('COM_JOBS_ACTION_POST_AND_BROWSE') : JText::_('COM_JOBS_ACTION_BROWSE_AND_POST');
-	$html .='</h3>'.n;
-	$html .= t.t.'</div>'.n;
-	$html .= t.'</div><div class="clear"></div>'.n;
+	<div class="grid">
+		<div class="col span-third">
+			<div class="current">
+				<h3><span>1</span> <?php echo JText::_('COM_JOBS_STEP_LOGIN').' '.JText::_('COM_JOBS_TO').' '.$sitename; ?></h3>
+			</div>
 
-	$html .= '<div class="grid">';
-	$html .= '<div class="col span-third">'.n;
-	$html .= \Hubzero\Module\Helper::renderModules('force_mod_mini');
-	$html .= t.'<p>'.JText::_('COM_JOBS_LOGIN_NO_ACCOUNT').' <a href="/register">'.JText::_('COM_JOBS_LOGIN_REGISTER_NOW').'</a>. '.JText::_('COM_JOBS_LOGIN_IT_IS_FREE').'</p>';
-	$html .= '</div>'.n;
+			<?php echo \Hubzero\Module\Helper::renderModules('force_mod_mini'); ?>
+			<p><?php echo JText::_('COM_JOBS_LOGIN_NO_ACCOUNT').' <a href="/register">'.JText::_('COM_JOBS_LOGIN_REGISTER_NOW').'</a>. '.JText::_('COM_JOBS_LOGIN_IT_IS_FREE'); ?></p>
+		</div>
 
-	$html .= '<div class="col span-third">'.n;
-	$html .= t.t.'<div>'.n;
-	$html .= t.t.t.'<p>';
-	$html .= JText::_('COM_JOBS_INTRO_TO_ACCESS').' ';
-	$html .= JText::_('COM_JOBS_EMPLOYER_SERVICES').' ';
-	$html .= JText::_('COM_JOBS_INTRO_SUBSCRIPTION_REQUIRED').' '.JText::_('COM_JOBS_INTRO_HOW_TO_SUBSCRIBE') ;
-	$html .= '</p>';
-	$html .= $promoline ? '<p class="promo">'.$promoline.'</p>'.n : '';
-	$html .= t.t.'</div>'.n;
-	$html .= '</div>'.n;
+		<div class="col span-third">
+			<div>
+				<h3><span>2</span> <?php echo JText::_('COM_JOBS_STEP_SUBSCRIBE'); ?></h3>
+			</div>
+			<div>
+				<p>
+					<?php echo JText::_('COM_JOBS_INTRO_TO_ACCESS').' '; ?>
+					<?php echo JText::_('COM_JOBS_EMPLOYER_SERVICES').' '; ?>
+					<?php echo JText::_('COM_JOBS_INTRO_SUBSCRIPTION_REQUIRED').' '.JText::_('COM_JOBS_INTRO_HOW_TO_SUBSCRIBE'); ?>
+				</p>
+				<?php echo $promoline ? '<p class="promo">'.$promoline.'</p>' : ''; ?>
+			</div>
+		</div>
 
-	$html .= '<div class="col span-third omega">'.n;
-	$html .= t.t.'<div>'.n;
-	$html .= t.t.t.'<p>';
-	$html .= ($this->task=='addjob')
-			? JText::_('COM_JOBS_INTRO_POST_UP_TO').' '.$maxads.' '.JText::_('COM_JOBS_INTRO_POST_DETAILS')
-			: JText::_('COM_JOBS_INTRO_BROWSE_INFO').' '.JText::_('COM_JOBS_INTRO_BROWSE_DETAILS');
-	$html .= ($this->task=='addjob')
-			? '<img src="'.DS.'components'.DS.$this->option.DS.'assets/img'.DS.'helper_job_search.gif" alt="'.JText::_('COM_JOBS_ACTION_POST_JOB').'" />'
-			: '<img src="'.DS.'components'.DS.$this->option.DS.'assets/img'.DS.'helper_browse_resumes.gif" alt="'.JText::_('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';
-	$html .= '</p>';
-	$html .= t.t.'</div>'.n;
-	$html .= '</div>'.n;
-	$html .= '</div><!-- / .grid -->'.n;
-	$html .= '</div><!-- / .main section -->'.n;
-
-	echo $html;
-?>
+		<div class="col span-third omega">
+			<div>
+				<h3><span>3</span> <?php echo ($this->task=='addjob') ? JText::_('COM_JOBS_ACTION_POST_AND_BROWSE') : JText::_('COM_JOBS_ACTION_BROWSE_AND_POST'); ?></h3>
+			</div>
+			<div>
+				<p>
+					<?php 
+					echo ($this->task=='addjob') 
+							? JText::_('COM_JOBS_INTRO_POST_UP_TO').' '.$maxads.' '.JText::_('COM_JOBS_INTRO_POST_DETAILS') 
+							: JText::_('COM_JOBS_INTRO_BROWSE_INFO').' '.JText::_('COM_JOBS_INTRO_BROWSE_DETAILS'); ?>
+					<?php 
+					echo ($this->task=='addjob')
+							? '<img src="'.JURI::Base(true).'/components/'.$this->option.'/assets/img/helper_job_search.gif" alt="'.JText::_('COM_JOBS_ACTION_POST_JOB').'" />'
+							: '<img src="'.JURI::Base(true).'/components/'.$this->option.'/assets/img/helper_browse_resumes.gif" alt="'.JText::_('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';
+					?>
+				</p>
+			</div>
+		</div>
+	</div><!-- / .grid -->
+</section><!-- / .main section -->

@@ -27,45 +27,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Section Layout">
+	<layout title="Jobs Main Page">
 		<message>
-			<![CDATA[STANDARD SECTION LAYOUT DESC]]>
+			<![CDATA[Jobs Main Page]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Section Layout</name>
-		<description>STANDARD SECTION LAYOUT DESC</description>
-		<url>
-			<param name="id" type="section" label="Section" description="Choose a section..." />
-		</url>
-		<params>
-	 		<param name="show_description" type="radio" default="0" label="Description" description="Show/Hide the Category Description">
-	 			<option value="0">Hide</option>
-	 			<option value="1">Show</option>
-	 		</param>
-			<param name="show_description_image" type="radio" default="0" label="Description Image" description="Show/Hide the Category Description">
-	 			<option value="0">Hide</option>
-	 			<option value="1">Show</option>
-	 		</param>
-
-			<param name="@spacer" type="spacer" default="" label="" description="" />
-			<param name="show_categories" type="radio" default="1" label="Category List - Section" description="PARAMOTHERCATSECTION">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
-			</param>
-			<param name="show_empty_categories" type="radio" default="0" label="Empty Categories in Section" description="Show/Hide empty(no items) categories in Section view">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
-			</param>
-			<param name="show_cat_num_articles" type="radio" default="1" label="Num Category Items" description="PARAMCATITEMS">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
-			</param>
-			<param name="show_category_description" type="radio" default="1" label="Category Description" description="PARAMSHOWHIDE">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
-			</param>
-		</params>
+		<name>Jobs Main Page</name>
+		<description>Jobs Main Page</description>
 	</state>
 </metadata>
 

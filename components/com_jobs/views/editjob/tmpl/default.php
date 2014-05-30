@@ -52,23 +52,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$hubzero_Geo = new \Hubzero\Geocode\Geocode();
 	$countries = $hubzero_Geo->getcountries();
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-	<?php if($this->emp) {  ?>
-		<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-		<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
-	 <?php } else { ?> 
-	 	<li>
-			<!-- <?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?> -->
-			<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
-		</li> 
-	 <?php } ?>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+		<?php if ($this->emp) {  ?>
+			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+			<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
+		<?php } else { ?> 
+			<li>
+				<!-- <?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?> -->
+				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
+			</li> 
+		<?php } ?>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
 <?php
 	if ($this->getError()) { ?>
@@ -86,25 +86,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$job->companyWebsite = $id ? $job->companyWebsite : $employer->companyWebsite;
 		$usonly = $this->config->get('usonly', 0);
 ?>
-<div class="main section">
+<section class="main section">
 	<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_JOBS_EDITJOB_OVERVIEW_INFO'); ?></p>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_JOBS_EDITJOB_JOB_OVERVIEW'); ?></legend>
-			
+
 			<input type="hidden" name="task" value="savejob" />
 			<input type="hidden" name="code" value="<?php echo $job->code; ?>" />
 			<input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
 			<input type="hidden" name="status" value="<?php echo $status; ?>" />
 			<input type="hidden" name="employerid" value="<?php echo $this->uid; ?>" />
-			
+
 			<label for="title">
 				<?php echo JText::_('COM_JOBS_EDITJOB_JOB_TITLE'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<input name="title" maxlength="190" id="title" type="text" value="<?php echo $this->escape($job->title); ?>" />
 			</label>
-			
+
 			<label for="companyLocation">
 				<?php echo JText::_('COM_JOBS_EDITJOB_JOB_LOCATION'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<input name="companyLocation" maxlength="190" id="companyLocation" type="text" value="<?php echo $this->escape(stripslashes($job->companyLocation)); ?>" />
@@ -114,15 +114,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('COM_JOBS_EDITJOB_COUNTRY'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<select name="companyLocationCountry" id="companyLocationCountry">
 					<option value=""><?php echo JText::_('COM_JOBS_OPTION_SELECT_FROM_LIST'); ?></option>
-				<?php 				
-				foreach ($countries as $country) 
-				{
-					$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States';
-					?>
-					<option value="<?php echo $this->escape($country['name']); ?>"<?php if (strtoupper($country['name']) == strtoupper($selected)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
 					<?php 
-				}				
-				?>
+					foreach ($countries as $country) 
+					{
+						$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States';
+						?>
+						<option value="<?php echo $this->escape($country['name']); ?>"<?php if (strtoupper($country['name']) == strtoupper($selected)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
+						<?php 
+					}
+					?>
 				</select>
 			</label>
 		<?php } else { ?>
@@ -184,7 +184,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('COM_JOBS_EDITJOB_ALLOW_INTERNAL_APPLICATION'); ?>
 			</label>
 		</fieldset>
-		
+
 		<div class="explaination">
 			<p><?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_DETAILS'); ?></p>
 		</div>
@@ -205,10 +205,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 		</fieldset>
 		<p class="submit">
-			<input type="submit" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? JText::_('COM_JOBS_ACTION_SAVE_PREVIEW') : JText::_('COM_JOBS_ACTION_SAVE'); ?>" />
+			<input type="submit" class="btn btn-success" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? JText::_('COM_JOBS_ACTION_SAVE_PREVIEW') : JText::_('COM_JOBS_ACTION_SAVE'); ?>" />
 			<span class="cancelaction">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_CANCEL'); ?></a>
+				<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_CANCEL'); ?></a>
 			</span>
 		</p>
 	</form>
-</div>
+</section>
