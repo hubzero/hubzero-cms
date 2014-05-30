@@ -31,31 +31,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
-				<?php echo JText::_('Back to Group'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
+					<?php echo JText::_('Back to Group'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
-	
+<section class="main section">
 	<?php foreach ($this->notifications as $notification) : ?>
 		<p class="<?php echo $notification['type']; ?>">
 			<?php echo $notification['message']; ?>
 		</p>
 	<?php endforeach; ?>
-	
+
 	<div class="group-page-manager">
-		
 		<ul class="tabs clearfix">
 			<li><a href="#pages"><?php echo JText::_('Manage Pages'); ?></a></li>
 			<li><a href="#categories"><?php echo JText::_('Manage Page Categories'); ?></a></li>
@@ -63,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<li><a href="#modules"><?php echo JText::_('Manage Modules'); ?></a></li>
 			<?php endif ;?>
 		</ul>
-		
+
 		<form action="index.php" method="post" id="hubForm" class="full">
 			<fieldset>
 				<!-- <legend><?php echo JText::_('Manage Pages'); ?></legend> -->
@@ -91,7 +88,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$view->display();
 				?>
 			</fieldset>
-			
+
 			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
 				<fieldset>
 					<!-- <legend><?php echo JText::_('Manage Modules'); ?></legend> -->
@@ -107,7 +104,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</fieldset>
 			<?php endif; ?>
 		</form>
-		
 	</div>
-	
-</div>
+</section>

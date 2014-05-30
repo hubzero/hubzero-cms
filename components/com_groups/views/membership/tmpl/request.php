@@ -32,21 +32,21 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
-				<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_ALL_GROUPS'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
+					<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_ALL_GROUPS'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
+<section class="main section">
 	<?php
 		foreach($this->notifications as $notification) 
 		{
@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php if ($this->group->get('restrict_msg')) { ?>
 				<p class="warning"><?php echo JText::_('NOTE') . ': ' . $this->escape(stripslashes($this->group->get('restrict_msg'))); ?></p>
 			<?php } ?>
-			
+
 			<label for="reason">
 				<?php echo JText::_('COM_GROUPS_JOIN_REASON'); ?>
 				<textarea name="reason" id="reason" rows="10" cols="50"></textarea>
@@ -74,8 +74,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="task" value="dorequest" />
 		</fieldset>
 		<div class="clear"></div>
+
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_GROUPS_JOIN_BTN_TEXT'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_GROUPS_JOIN_BTN_TEXT'); ?>" />
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

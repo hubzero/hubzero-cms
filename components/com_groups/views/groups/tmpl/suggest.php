@@ -32,9 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
 <?php
 	foreach($this->notifications as $notification) 

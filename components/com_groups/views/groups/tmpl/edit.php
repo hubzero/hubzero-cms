@@ -59,7 +59,7 @@ $referrer = JRequest::getVar("HTTP_REFERER", "", "SERVER");
 
 //check to make sure referrer is a valid url
 //check to make sure the referrer is a link within the HUB
-if(filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == "" || strpos($referrer, $host) === false)
+if (filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == "" || strpos($referrer, $host) === false)
 {
 	$link = JRoute::_('index.php?option='.$this->option);
 }
@@ -69,7 +69,7 @@ else
 }
 
 //if we are in edit mode we want to redirect back to group
-if($this->task == "edit") 
+if ($this->task == "edit") 
 {
 	$link = JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn'));
 	$title = "Back to Group";
@@ -79,21 +79,21 @@ else
 	$title = "Back";
 }
 ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="btn icon-group" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="btn icon-group" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
+<section class="main section">
 	<?php
-		foreach($this->notifications as $notification) {
+		foreach ($this->notifications as $notification) {
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
@@ -290,7 +290,7 @@ else
 		</div>
 		
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_GROUPS_EDIT_SUBMIT_BTN_TEXT'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_GROUPS_EDIT_SUBMIT_BTN_TEXT'); ?>" />
 		</p>
 		
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
@@ -298,4 +298,4 @@ else
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
-</div><!-- / .section -->
+</section><!-- / .section -->

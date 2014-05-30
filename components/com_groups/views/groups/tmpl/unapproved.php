@@ -31,10 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 
 <div class="group-unapproved">
 	<span class="name">
@@ -48,5 +47,5 @@ defined('_JEXEC') or die('Restricted access');
 		<hr />
 	<?php endif; ?>
 	
-	<a class="all-groups" href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="/members/myaccount/groups">Go to My Groups &rsaquo;</a>
+	<a class="all-groups" href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="<?php echo JRout::_('index.php?option=com_members&task=myaccount&active=groups'); ?>">Go to My Groups &rsaquo;</a>
 </div>

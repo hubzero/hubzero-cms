@@ -34,18 +34,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id');
 
 ?>
-
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo JText::sprintf('Page Versions: %s', $this->page->get('title')); ?></h2>
-</div>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a class="icon-edit edit btn" href="<?php echo JRoute::_($editPageUrl); ?>">Edit Page</a></li>
-	</ul>
-</div>
 
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="icon-edit edit btn" href="<?php echo JRoute::_($editPageUrl); ?>">Edit Page</a></li>
+		</ul>
+	</div>
+</header>
 
-<div class="main section group-page-versions">
+<section class="main section group-page-versions">
 	<table>
 		<thead>
 			<tr>
@@ -130,4 +129,4 @@ $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&contr
 			<?php endforeach; ?>
 		</tbody>
 	</table>
-</div>
+</section>

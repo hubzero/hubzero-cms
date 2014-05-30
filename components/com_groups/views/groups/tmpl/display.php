@@ -32,19 +32,19 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>">
-				<?php echo JText::_('COM_GROUPS_NEW'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>">
+					<?php echo JText::_('COM_GROUPS_NEW'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
 <?php
 	foreach($this->notifications as $notification) 
@@ -53,34 +53,35 @@ defined('_JEXEC') or die('Restricted access');
 	}
 ?>
 
-<div id="introduction" class="section">
-	<div class="aside">
-		<h3>Questions?</h3>
-		<ul>
-			<li>
-				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=index'); ?>">
-					<?php echo JText::_('Need Help?'); ?>
-				</a>
-			</li>
-		</ul>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="grid">
-			<div class="col span-half">
-				<h3><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_TITLE'); ?></h3>
-				<p><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
+<section id="introduction" class="section">
+	<div class="grid">
+		<div class="col span9">
+			<div class="grid">
+				<div class="col span-half">
+					<h3><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_TITLE'); ?></h3>
+					<p><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
+				</div>
+				<div class="col span-half omega">
+					<h3><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_TITLE'); ?></h3>
+					<p><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_DESC'); ?></p>
+				</div>
 			</div>
-			<div class="col span-half omega">
-				<h3><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_TITLE'); ?></h3>
-				<p><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_DESC'); ?></p>
-			</div>
-		</div>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / #introduction.section -->
+		</div><!-- / .subject -->
+		<div class="col span3 omega">
+			<h3>Questions?</h3>
+			<ul>
+				<li>
+					<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=index'); ?>">
+						<?php echo JText::_('Need Help?'); ?>
+					</a>
+				</li>
+			</ul>
+		</div><!-- / .aside -->
+	</div>
+</section><!-- / #introduction.section -->
 
-<div class="section">
-	<?php if(isset($this->mygroups['invitees']) && count($this->mygroups['invitees']) > 0) : ?>
+<section class="section">
+	<?php if (isset($this->mygroups['invitees']) && count($this->mygroups['invitees']) > 0) : ?>
 		<div class="invites">
 			<div class="header">
 				<h2>Group Invites</h2>
@@ -94,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	<?php endif; ?>
 		
-	<?php if(isset($this->mygroups['applicants']) && count($this->mygroups['applicants']) > 0) : ?>
+	<?php if (isset($this->mygroups['applicants']) && count($this->mygroups['applicants']) > 0) : ?>
 		<div class="requests">
 			<div class="header">
 				<h2>Group Requests</h2>
@@ -140,8 +141,8 @@ defined('_JEXEC') or die('Restricted access');
 		</div><!-- / .col span9 -->
 	</div><!-- / .grid -->
 	
-	<?php if(!$this->juser->get("guest")) : ?>
-		<?php if($this->config->get("intro_mygroups", 1)) : ?>
+	<?php if (!$this->juser->get("guest")) : ?>
+		<?php if ($this->config->get("intro_mygroups", 1)) : ?>
 			<div class="grid mygroups">
 				<div class="col span3">
 					<h2><?php echo JText::_('COM_GROUPS_INTRO_MY_GROUPS_TITLE'); ?></h2>
@@ -157,8 +158,8 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endif; ?>
 	<?php endif; ?>
 
-	<?php if(!$this->juser->get("guest")) : ?>
-		<?php if($this->config->get("intro_interestinggroups", 1)) : ?>
+	<?php if (!$this->juser->get("guest")) : ?>
+		<?php if ($this->config->get("intro_interestinggroups", 1)) : ?>
 			<div class="grid interestinggroups">
 				<div class="col span3">
 					<h2><?php echo JText::_('COM_GROUPS_INTRO_INTERESTING_GROUPS_TITLE'); ?></h2>
@@ -172,7 +173,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endif; ?>
 	<?php endif; ?>
 
-	<?php if($this->config->get("intro_populargroups", 1)) : ?>
+	<?php if ($this->config->get("intro_populargroups", 1)) : ?>
 		<div class="grid populargroups">
 			<div class="col span3">
 				<h2><?php echo JText::_('COM_GROUPS_INTRO_POPULAR_GROUPS_TITLE'); ?></h2>
@@ -185,7 +186,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div><!-- / .grid -->
 	<?php endif; ?>
 	
-	<?php if($this->config->get("intro_featuredgroups", 1) && count($this->featuredgroups) > 0) : ?>
+	<?php if ($this->config->get("intro_featuredgroups", 1) && count($this->featuredgroups) > 0) : ?>
 		<div class="grid featuredgroups">
 			<div class="col span3">
 				<h2><?php echo JText::_('COM_GROUPS_INTRO_FEATURED_GROUPS_TITLE'); ?></h2>
@@ -197,4 +198,4 @@ defined('_JEXEC') or die('Restricted access');
 			</div><!-- / .col span9 omega -->
 		</div><!-- / .grid -->
 	<?php endif; ?>
-</div><!-- / .section -->
+</section><!-- / .section -->

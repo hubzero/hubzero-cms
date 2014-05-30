@@ -42,21 +42,21 @@ foreach ($menus as $menu)
 	$activeMenu[] = $menu->get('pageid');
 }
 ?>
-
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo ($this->module->get('id')) ? 'Edit Module' : 'Add Module'; ?></h2>
-</div>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a class="icon-prev prev btn" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Modules</a></li>
-	</ul>
-</div>
 
-<div class="main section edit-group-module">
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="icon-prev prev btn" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Modules</a></li>
+		</ul>
+	</div>
+</header>
+
+<section class="main section edit-group-module">
 	<?php foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
 	<?php } ?>
-	
+
 	<form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=save'); ?>" method="POST" id="hubForm" class="full">
 		<div class="grid">
 			<div class="col span9">
@@ -182,11 +182,11 @@ foreach ($menus as $menu)
 				</fieldset>
 			</div>
 		</div>
-		
+
 		<input type="hidden" name="module[id]" value="<?php echo $this->module->get('id'); ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="modules" />
 		<input type="hidden" name="return" value="<?php echo JRequest::getVar('return', '','get'); ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
-</div>
+</section>

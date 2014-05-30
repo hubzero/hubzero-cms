@@ -38,17 +38,18 @@ if ($this->category->get('id'))
 }
 ?>
 <?php if (!JRequest::getInt('no_html', 0)) : ?>
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo JText::_($title); ?></h2>
-</div>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#pagecategories'); ?>">Back to Manage Pages</a></li>
-	</ul>
-</div>
+
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#pagecategories'); ?>">Back to Manage Pages</a></li>
+		</ul>
+	</div>
+</header>
 <?php endif; ?>
 
-<div class="main section">
+<section class="main section">
 	<?php foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
 	<?php } ?>
@@ -67,7 +68,7 @@ if ($this->category->get('id'))
 				<input type="text" maxlength="6" name="category[color]" id="field-category-color" value="<?php echo $this->escape($this->category->get('color')); ?>" />
 			</label>
 		</fieldset>
-		
+
 		<p class="submit">
 			<button type="submit" class="btn btn-info save icon-save"><?php echo JText::_('Save Category'); ?></button>
 		</p>
@@ -76,4 +77,4 @@ if ($this->category->get('id'))
 		<input type="hidden" name="task" value="save" />
 		<input type="hidden" name="category[id]" value="<?php echo $this->category->get('id'); ?>" />
 	</form>
-</div>
+</section>

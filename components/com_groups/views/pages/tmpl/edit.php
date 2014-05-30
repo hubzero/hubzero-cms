@@ -68,23 +68,23 @@ if ($this->page->get('id'))
 	$pageHeading = JText::sprintf("Edit Page: %s", $title);
 }
 ?>
-
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo $pageHeading; ?></h2>
-</div>
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li><a class="icon-prev prev btn" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
-	</ul>
-</div>
 
-<div class="main section edit-group-page">
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="icon-prev prev btn" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
+		</ul>
+	</div>
+</header>
+
+<section class="main section edit-group-page">
 	<?php foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
 	<?php } ?>
-	
+
 	<form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=save'); ?>" method="POST" id="hubForm" class="full">
-		
+
 		<div class="grid">
 			<div class="col span9">
 				<fieldset>
@@ -260,4 +260,4 @@ if ($this->page->get('id'))
 		<input type="hidden" name="return" value="<?php echo JRequest::getVar('return', '','get'); ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
-</div>
+</section>

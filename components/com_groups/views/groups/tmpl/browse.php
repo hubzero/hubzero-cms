@@ -32,19 +32,19 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>">
-				<?php echo JText::_('COM_GROUPS_NEW'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>">
+					<?php echo JText::_('COM_GROUPS_NEW'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
 <?php
 	foreach ($this->notifications as $notification) 
@@ -54,20 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get">
-	<div class="main section">
-		<div class="aside">
-			<div class="container">
-				<h3><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_TITLE'); ?></h3>
-				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_ONE'); ?></p>
-				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_TWO'); ?></p>
-				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_THREE'); ?></p>
-			</div><!-- / .container -->
-			
-			<div class="container">
-				<h3><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
-				<p><?php echo JText::sprintf('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', JRoute::_('index.php?option=com_members')); ?></p>
-			</div><!-- / .container -->
-		</div><!-- / .aside -->
+	<section class="main section">
 		<div class="subject">
 
 			<div class="container data-entry">
@@ -106,56 +93,57 @@ defined('_JEXEC') or die('Restricted access');
 					<li><a class="filter-closed<?php echo ($this->filters['policy'] == 'closed') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=closed' . $fltrs); ?>" title="Show groups with a Closed join policy">Closed</a></li>
 				</ul>
 
-<?php
-$qs = array();
-foreach ($this->filters as $f=>$v)
-{
-	$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'type' && $f != 'fields') ? $f.'='.$v : '';
-}
-$qs[] = 'limitstart=0';
-$qs = implode('&amp;',$qs);
+				<?php
+				$qs = array();
+				foreach ($this->filters as $f=>$v)
+				{
+					$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'type' && $f != 'fields') ? $f.'='.$v : '';
+				}
+				$qs[] = 'limitstart=0';
+				$qs = implode('&amp;',$qs);
 
-$url  = 'index.php?option='.$this->option.'&task=browse';
-$url .= ($qs) ? '&'.$qs : '';
+				$url  = 'index.php?option='.$this->option.'&task=browse';
+				$url .= ($qs) ? '&'.$qs : '';
 
-$html  = '<a href="'.JRoute::_($url).'"';
-if ($this->filters['index'] == '') {
-	$html .= ' class="active-index"';
-}
-$html .= '>'.JText::_('ALL').'</a> '."\n";
+				$html  = '<a href="'.JRoute::_($url).'"';
+				if ($this->filters['index'] == '') {
+					$html .= ' class="active-index"';
+				}
+				$html .= '>'.JText::_('ALL').'</a> '."\n";
 
-$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-foreach ($letters as $letter)
-{
-	$url  = 'index.php?option='.$this->option.'&task=browse&index='.strtolower($letter);
-	$url .= ($qs) ? '&'.$qs : '';
+				$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+				foreach ($letters as $letter)
+				{
+					$url  = 'index.php?option='.$this->option.'&task=browse&index='.strtolower($letter);
+					$url .= ($qs) ? '&'.$qs : '';
 
-	$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
-	if ($this->filters['index'] == strtolower($letter)) {
-		$html .= ' class="active-index"';
-	}
-	$html .= '>'.$letter.'</a> '."\n";
-}
-?>
+					$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
+					if ($this->filters['index'] == strtolower($letter)) {
+						$html .= ' class="active-index"';
+					}
+					$html .= '>'.$letter.'</a> '."\n";
+				}
+				?>
 				<div class="clearfix"></div>
 
 				<table class="groups entries">
 					<caption>
-<?php
+						<?php
 						$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
-						if ($this->filters['search'] != '') {
+						if ($this->filters['search'] != '')
+						{
 							echo 'Search for "'.$this->filters['search'].'" in ';
 						}
-?>
+						?>
 						<?php echo JText::_('Groups'); ?> 
-<?php if ($this->filters['index']) { ?>
+						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
-<?php } ?>
-<?php if ($this->groups) { ?>
-						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
-<?php } ?>
+						<?php } ?>
+						<?php if ($this->groups) { ?>
+							<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
+						<?php } ?>
 					</caption>
 					<thead>
 						<tr>
@@ -169,45 +157,45 @@ foreach ($letters as $letter)
 						</tr>
 					</thead>
 					<tbody>
-<?php
-if ($this->groups) {
-	foreach ($this->groups as $group)
-	{
-		//
-		$g = \Hubzero\User\Group::getInstance($group->gidNumber);
-		$invitees = $g->get('invitees');
-		$applicants = $g->get('applicants');
-		$members = $g->get('members');
-		$managers = $g->get('managers');
-		
-		//get status
-		$status = '';
-		
-		//determine group status
-		if($g->get('published') && in_array($this->juser->get('id'), $managers))
-		{
-			$status = 'manager';
-		}
-		elseif($g->get('published') && in_array($this->juser->get('id'), $members))
-		{
-			$status = 'member';
-		}
-		elseif($g->get('published') && in_array($this->juser->get('id'), $invitees))
-		{
-			$status = 'invitee';
-		}
-		elseif($g->get('published') && in_array($this->juser->get('id'), $applicants))
-		{
-			$status = 'pending';
-		}
-		else
-		{
-			if(!$g->get('published'))
-			{
-				$status = 'new';
-			}
-		}
-?>
+					<?php
+					if ($this->groups) {
+						foreach ($this->groups as $group)
+						{
+							//
+							$g = \Hubzero\User\Group::getInstance($group->gidNumber);
+							$invitees = $g->get('invitees');
+							$applicants = $g->get('applicants');
+							$members = $g->get('members');
+							$managers = $g->get('managers');
+							
+							//get status
+							$status = '';
+							
+							//determine group status
+							if($g->get('published') && in_array($this->juser->get('id'), $managers))
+							{
+								$status = 'manager';
+							}
+							elseif($g->get('published') && in_array($this->juser->get('id'), $members))
+							{
+								$status = 'member';
+							}
+							elseif($g->get('published') && in_array($this->juser->get('id'), $invitees))
+							{
+								$status = 'invitee';
+							}
+							elseif($g->get('published') && in_array($this->juser->get('id'), $applicants))
+							{
+								$status = 'pending';
+							}
+							else
+							{
+								if(!$g->get('published'))
+								{
+									$status = 'new';
+								}
+							}
+					?>
 						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
 							<th>
 								<span class="entry-id"><?php echo $group->gidNumber; ?></span>
@@ -228,7 +216,7 @@ if ($this->groups) {
 									case 0:
 									default: echo '<span class="open join-policy">'.JText::_('Open').'</span>'."\n"; break;
 								}
-?>
+								?>
 							</td>
 							<td>
 								<span class="<?php echo $status; ?> status"><?php
@@ -244,29 +232,41 @@ if ($this->groups) {
 								?></span>
 							</td>
 						</tr>
-<?php 
-	} // for loop 
-} else {
-?>
+					<?php 
+						} // for loop 
+					} else {
+					?>
 						<tr>
 							<td colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
 								<p class="warning"><?php echo JText::_('No results found'); ?></p>
 							</td>
 						</tr>
-<?php } ?>
+					<?php } ?>
 					</tbody>
 				</table>
-<?php
-$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
-$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-$this->pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
-$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				<?php
+				$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				$this->pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
+				$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 
-echo $this->pageNav->getListFooter();
-?>
+				echo $this->pageNav->getListFooter();
+				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
-	</div><!-- / .main section -->
-	<div class="clear"></div>
+		<aside class="aside">
+			<div class="container">
+				<h3><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_TITLE'); ?></h3>
+				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_ONE'); ?></p>
+				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_TWO'); ?></p>
+				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_THREE'); ?></p>
+			</div><!-- / .container -->
+			
+			<div class="container">
+				<h3><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
+				<p><?php echo JText::sprintf('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', JRoute::_('index.php?option=com_members')); ?></p>
+			</div><!-- / .container -->
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
 </form>

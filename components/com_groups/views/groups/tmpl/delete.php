@@ -32,21 +32,21 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
-				<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
+					<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header>
 
-<div class="main section">
+<section class="main section">
 	<?php foreach ($this->notifications as $notification) : ?>
 		<p class="<?php echo $notification['type']; ?>">
 			<?php echo $notification['message']; ?>
@@ -74,17 +74,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('COM_GROUPS_DELETE_CONFIRM_BOX_MESSAGE_LABEL'); ?>
 				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities($this->msg); ?></textarea>
 			</label>
+
 			<label for="confirmdel">
 				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
 				<?php echo JText::_('COM_GROUPS_DELETE_CONFIRM_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="task" value="dodelete" />
+
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('DELETE'); ?>" />
+			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('DELETE'); ?>" />
 		</p>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
