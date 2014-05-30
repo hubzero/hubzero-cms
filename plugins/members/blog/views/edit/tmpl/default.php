@@ -89,34 +89,40 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_TAGS_HINT'); ?></span>
 			</label>
 			
-			<div class="group">
-				<label for="field-allow_comments">
-					<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
-					<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
-				</label>
-
-				<label for="field-state">
-					<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PRIVACY'); ?>
-					<select name="entry[state]" id="field-state">
-						<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_PUBLIC'); ?></option>
-						<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_REGISTERED'); ?></option>
-						<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_PRIVATE'); ?></option>
-					</select>
-				</label>
+			<div class="grid">
+				<div class="col span6">
+					<label for="field-allow_comments">
+						<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label for="field-state">
+						<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PRIVACY'); ?>
+						<select name="entry[state]" id="field-state">
+							<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_PUBLIC'); ?></option>
+							<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_REGISTERED'); ?></option>
+							<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_PRIVATE'); ?></option>
+						</select>
+					</label>
+				</div>
 			</div>
-			
-			<div class="group">
-				<label for="field-publish_up">
-					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
-					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
-					<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
-				</label>
 
-				<label for="field-publish_down">
-					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
-					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
-					<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
-				</label>
+			<div class="grid">
+				<div class="col span6">
+					<label for="field-publish_up">
+						<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
+						<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+						<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label for="field-publish_down">
+						<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
+						<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
+						<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+					</label>
+				</div>
 			</div>
 		</fieldset>
 		<div class="clear"></div>

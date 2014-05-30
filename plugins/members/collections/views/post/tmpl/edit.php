@@ -125,7 +125,6 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 <?php } ?>
 		<div id="post-type-form">
 			<div id="post-file" class="fieldset">
-				<a name="file"></a>
 
 <?php if ($this->entry->get('original')) { ?>
 				<div class="field-wrap" id="ajax-uploader-list">
@@ -185,7 +184,8 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 		</div><!-- / #post-type-form -->
 
 <?php if ($this->entry->get('original')) { ?>
-		<div class="group">
+		<div class="grid">
+			<div class="col span6">
 <?php } ?>
 		<?php if ($this->collections->total() > 0) { ?>
 			<label for="post-collection_id">
@@ -206,18 +206,20 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 		<?php } ?>
 
 <?php if ($this->entry->get('original')) { ?>
-			<label>
-				<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
-				<?php 
-				if (count($tf) > 0) {
-					echo $tf[0];
-				} else { ?>
-					<input type="text" name="tags" value="<?php echo $item->tags('string'); ?>" />
-				<?php } ?>
-				<span class="hint"><?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
-			</label>
+			</div>
+			<div class="col span6 omega">
+				<label>
+					<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
+					<?php 
+					if (count($tf) > 0) {
+						echo $tf[0];
+					} else { ?>
+						<input type="text" name="tags" value="<?php echo $item->tags('string'); ?>" />
+					<?php } ?>
+					<span class="hint"><?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
+				</label>
+			</div>
 		</div>
-		<div class="clear"></div>
 <?php } ?>
 	</fieldset>
 

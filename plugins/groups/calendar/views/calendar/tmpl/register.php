@@ -90,29 +90,35 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 	<fieldset>
 		<legend><?php echo JText::_('Name &amp; Title'); ?></legend>
 		
-		<div class="group">
-			<label><?php echo JText::_('First Name:'); ?> <span class="required">Required</span>
-				<input type="text" name="register[first_name]" value="<?php echo (isset($this->register['first_name'])) ? $this->register['first_name'] : ''; ?>" />
-			</label>
-
-			<label><?php echo JText::_('Last Name:'); ?> <span class="required">Required</span>
-				<input type="text" name="register[last_name]" value="<?php echo (isset($this->register['last_name'])) ? $this->register['last_name'] : ''; ?>" />
-			</label>
-		</div>
-		
-		<?php if ($this->params->get('show_affiliation') || $this->params->get('show_title')) : ?>
-			<div class="group">
-				<?php if ($this->params->get('show_affiliation')) : ?>
-				<label><?php echo JText::_('Affiliation:'); ?> <span class="required">Required</span>
-					<input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->register['affiliation'] : ''; ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label><?php echo JText::_('First Name:'); ?> <span class="required">Required</span>
+					<input type="text" name="register[first_name]" value="<?php echo (isset($this->register['first_name'])) ? $this->register['first_name'] : ''; ?>" />
 				</label>
+			</div>
+			<div class="col span6 omega">
+				<label><?php echo JText::_('Last Name:'); ?> <span class="required">Required</span>
+					<input type="text" name="register[last_name]" value="<?php echo (isset($this->register['last_name'])) ? $this->register['last_name'] : ''; ?>" />
+				</label>
+			</div>
+		</div>
+
+		<?php if ($this->params->get('show_affiliation') || $this->params->get('show_title')) : ?>
+			<div class="grid">
+				<div class="col span6">
+				<?php if ($this->params->get('show_affiliation')) : ?>
+					<label><?php echo JText::_('Affiliation:'); ?> <span class="required">Required</span>
+						<input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->register['affiliation'] : ''; ?>" />
+					</label>
 				<?php endif; ?>
-				
+				</div>
+				<div class="col span6 omega">
 				<?php if ($this->params->get('show_title')) : ?>
 					<label><?php echo JText::_('Title:'); ?> <span class="optional">Optional</span>
 						<input type="text" name="register[title]" value="<?php echo (isset($this->register['title'])) ? $this->register['title'] : ''; ?>" />
 					</label>
 				<?php endif; ?>
+				</div>
 			</div>
 		<?php endif; ?>
 	</fieldset>
@@ -120,52 +126,67 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 	<fieldset>
 		<legend><?php echo JText::_('Contact Information'); ?></legend>
 		<?php if ($this->params->get('show_address')) : ?>
-			<div class="group">
-				<label><?php echo JText::_('City:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="register[city]" value="<?php echo (isset($this->register['city'])) ? $this->register['city'] : ''; ?>" />
-				</label>
-				
-				<label><?php echo JText::_('State/Province:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="register[state]" value="<?php echo (isset($this->register['state'])) ? $this->register['state'] : ''; ?>" />
-				</label>
+			<div class="grid">
+				<div class="col span6">
+					<label><?php echo JText::_('City:'); ?> <span class="optional">Optional</span>
+						<input type="text" name="register[city]" value="<?php echo (isset($this->register['city'])) ? $this->register['city'] : ''; ?>" />
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label><?php echo JText::_('State/Province:'); ?> <span class="optional">Optional</span>
+						<input type="text" name="register[state]" value="<?php echo (isset($this->register['state'])) ? $this->register['state'] : ''; ?>" />
+					</label>
+				</div>
 			</div>
-			<div class="group">
-				<label><?php echo JText::_('Zip/Postal code:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="register[zip]" value="<?php echo (isset($this->register['zip'])) ? $this->register['zip'] : ''; ?>" />
-				</label>
-				<label><?php echo JText::_('Country:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="register[country]" value="<?php echo (isset($this->register['country'])) ? $this->register['country'] : ''; ?>" />
-				</label>
+			<div class="grid">
+				<div class="col span6">
+					<label><?php echo JText::_('Zip/Postal code:'); ?> <span class="optional">Optional</span>
+						<input type="text" name="register[zip]" value="<?php echo (isset($this->register['zip'])) ? $this->register['zip'] : ''; ?>" />
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label><?php echo JText::_('Country:'); ?> <span class="optional">Optional</span>
+						<input type="text" name="register[country]" value="<?php echo (isset($this->register['country'])) ? $this->register['country'] : ''; ?>" />
+					</label>
+				</div>
 			</div>
 		<?php endif; ?>
 		
 		<?php if ($this->params->get('show_telephone') || $this->params->get('show_fax')) : ?>
-			<div class="group">
+			<div class="grid">
+				<div class="col span6">
 				<?php if ($this->params->get('show_telephone')) : ?>
 					<label><?php echo JText::_('Telephone:'); ?> <span class="optional">Optional</span>
 						<input type="text" name="register[telephone]" value="<?php echo (isset($this->register['telephone'])) ? $this->register['telephone'] : ''; ?>" />
 					</label>
 				<?php endif; ?>
+				</div>
+				<div class="col span6 omega">
 				<?php if ($this->params->get('show_fax')) : ?>
 					<label><?php echo JText::_('Fax:'); ?> <span class="optional">Optional</span>
 						<input type="text" name="register[fax]" value="<?php echo (isset($this->register['fax'])) ? $this->register['fax'] : ''; ?>" />
 					</label>
 				<?php endif; ?>
+				</div>
 			</div>
 		<?php endif; ?>
 		
 		<?php if ($this->params->get('show_email') || $this->params->get('show_website')) : ?>
-			<div class="group">
+			<div class="grid">
+				<div class="col span6">
 				<?php if ($this->params->get('show_email')) : ?>
 					<label><?php echo JText::_('E-mail:'); ?> <span class="required">required</span>
 						<input type="text" name="register[email]" value="<?php echo (isset($this->register['email'])) ? $this->register['email'] : ''; ?>" />
 					</label>
 				<?php endif; ?>
+				</div>
+				<div class="col span6 omega">
 				<?php if ($this->params->get('show_website')) : ?>
 					<label><?php echo JText::_('Website:'); ?> <span class="optional">Optional</span>
 						<input type="text" name="register[website]" value="<?php echo (isset($this->register['website'])) ? $this->register['website'] : ''; ?>" />
 					</label>
 				<?php endif; ?>
+				</div>
 			</div>
 		<?php endif; ?>
 	</fieldset>

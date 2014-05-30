@@ -100,22 +100,29 @@ $params = new JRegistry( $this->event->params );
 		</div>
 		<fieldset>
 			<legend>Name &amp; Title</legend>
-			<div class="group">
-				<label>First Name <span class="required">required</span>
-				<input type="text" name="register[firstname]" value="<?php echo (isset($this->register['firstname'])) ? $this->register['firstname'] : ''; ?>" /></label>
-
-				<label>Last Name <span class="required">required</span>
-				<input type="text" name="register[lastname]" value="<?php echo (isset($this->register['lastname'])) ? $this->register['lastname'] : ''; ?>" /></label>
+			<div class="grid">
+				<div class="col span6">
+					<label>First Name <span class="required">required</span>
+					<input type="text" name="register[firstname]" value="<?php echo (isset($this->register['firstname'])) ? $this->register['firstname'] : ''; ?>" /></label>
+				</div>
+				<div class="col span6 omega">
+					<label>Last Name <span class="required">required</span>
+					<input type="text" name="register[lastname]" value="<?php echo (isset($this->register['lastname'])) ? $this->register['lastname'] : ''; ?>" /></label>
+				</div>
 			</div>
-			<div class="group">
+			<div class="grid">
+				<div class="col span6">
 				<?php if ($params->get('show_affiliation')) { ?>
 					<label>Affiliation <span class="required">required</span>
 					<input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->register['affiliation'] : ''; ?>" /></label>
 				<?php } ?>
+				</div>
+				<div class="col span6 omega">
 				<?php if ($params->get('show_title')) { ?>
 					<label>Title
 					<input type="text" name="register[title]" value="<?php echo (isset($this->register['title'])) ? $this->register['title'] : ''; ?>" /></label>
 				<?php } ?>
+				</div>
 			</div>
 
 			<input type="hidden" name="id" value="<?php echo $this->event->id; ?>" />
@@ -130,40 +137,54 @@ $params = new JRegistry( $this->event->params );
 		<fieldset>
 			<legend>Contact Information</legend>
 			<?php if ($params->get('show_address')) { ?>
-			<div class="group">
-				<label>City
-				<input type="text" name="register[city]" value="<?php echo (isset($this->register['city'])) ? $this->register['city'] : ''; ?>" /></label>
-
-				<label>State/Province
-				<input type="text" name="register[state]" value="<?php echo (isset($this->register['state'])) ? $this->register['state'] : ''; ?>" /></label>
+			<div class="grid">
+				<div class="col span6">
+					<label>City
+					<input type="text" name="register[city]" value="<?php echo (isset($this->register['city'])) ? $this->register['city'] : ''; ?>" /></label>
+				</div>
+				<div class="col span6 omega">
+					<label>State/Province
+					<input type="text" name="register[state]" value="<?php echo (isset($this->register['state'])) ? $this->register['state'] : ''; ?>" /></label>
+				</div>
 			</div>
-			<div class="group">
-				<label>Zip/Postal code
-				<input type="text" name="register[postalcode]" value="<?php echo (isset($this->register['postalcode'])) ? $this->register['postalcode'] : ''; ?>" /></label>
-
-				<label>Country
-				<input type="text" name="register[country]" value="<?php echo (isset($this->register['country'])) ? $this->register['country'] : ''; ?>" /></label>
+			<div class="grid">
+				<div class="col span6">
+					<label>Zip/Postal code
+					<input type="text" name="register[postalcode]" value="<?php echo (isset($this->register['postalcode'])) ? $this->register['postalcode'] : ''; ?>" /></label>
+				</div>
+				<div class="col span6 omega">
+					<label>Country
+					<input type="text" name="register[country]" value="<?php echo (isset($this->register['country'])) ? $this->register['country'] : ''; ?>" /></label>
+				</div>
 			</div>
 			<?php } ?>
-			<div class="group">
+			<div class="grid">
+				<div class="col span6">
 				<?php if ($params->get('show_telephone')) { ?>
-				<label>Telephone
-				<input type="text" name="register[telephone]" value="<?php echo (isset($this->register['telephone'])) ? $this->register['telephone'] : ''; ?>" /></label>
+					<label>Telephone
+					<input type="text" name="register[telephone]" value="<?php echo (isset($this->register['telephone'])) ? $this->register['telephone'] : ''; ?>" /></label>
 				<?php } ?>
+				</div>
+				<div class="col span6 omega">
 				<?php if ($params->get('show_fax')) { ?>
-				<label>Fax
-				<input type="text" name="register[fax]" value="<?php echo (isset($this->register['fax'])) ? $this->register['fax'] : ''; ?>" /></label>
+					<label>Fax
+					<input type="text" name="register[fax]" value="<?php echo (isset($this->register['fax'])) ? $this->register['fax'] : ''; ?>" /></label>
 				<?php } ?>
+				</div>
 			</div>
-			<div class="group">
+			<div class="grid">
+				<div class="col span6">
 				<?php if ($params->get('show_email')) { ?>
-				<label>E-mail <span class="required">required</span>
-				<input type="text" name="register[email]" value="<?php echo (isset($this->register['email'])) ? $this->register['email'] : ''; ?>" /></label>
+					<label>E-mail <span class="required">required</span>
+					<input type="text" name="register[email]" value="<?php echo (isset($this->register['email'])) ? $this->register['email'] : ''; ?>" /></label>
 				<?php } ?>
+				</div>
+				<div class="col span6 omega">
 				<?php if ($params->get('show_website')) { ?>
-				<label>Website
-				<input type="text" name="register[website]" value="<?php echo (isset($this->register['website'])) ? $this->register['website'] : ''; ?>" /></label>
+					<label>Website
+					<input type="text" name="register[website]" value="<?php echo (isset($this->register['website'])) ? $this->register['website'] : ''; ?>" /></label>
 				<?php } ?>
+				</div>
 			</div>
 		</fieldset>
 	<?php } ?>

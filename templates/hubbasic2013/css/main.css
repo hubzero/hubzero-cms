@@ -1669,9 +1669,6 @@
 	#hubForm .indent { 
 		margin-left: 1.75em; 
 	}
-	#hubForm .group {
-		margin: 0 2em;
-	}
 	#hubForm .field-wrap,
 	#hubForm p {
 		display: block;
@@ -1681,42 +1678,12 @@
 	#hubForm label + .field-wrap {
 		margin: 0 2em 0 2em;
 	}
-	#hubForm legend + .group label{
-		padding-top: 0.5em;
-	}
-	#hubForm legend + .group p {
-		margin-top: 0.5em;
-	}
 	#hubForm label + input {
 		margin-left: 2em;
 		margin-right: 2em;
 		width: 92.5%;
 	}
-	#hubForm .group>label,
-	#hubForm .group>p {
-		padding-left: 0;
-		padding-right: 0;
-		float: left;
-		width: 47.5%;
-		margin-left: 5%;
-	}
-	#hubForm .group p {
-		margin-right: 0;
-	}
-	#hubForm .group label:first-child {
-		margin-left: 0;
-	}
-	#hubForm .threeup label {
-		width: 30%;
-	}
-	#hubForm .group:after {
-		content: ".";
-		display: block;
-		height: 0;
-		clear: both;
-		visibility: hidden;
-	}
-	#hubForm .group .options label {
+	#hubForm .grid .options label {
 		display: inline;
 		float: none;
 		width: auto;

@@ -77,7 +77,7 @@ function submitbutton(pressbutton) {
 		<fieldset>
 			<legend><?php echo JText::_('Publishing'); ?></legend>
 
-			<div class="group">
+			<div class="grid">
 				<div class="col span6">
 					<label>
 						<?php echo JText::_( 'Section' ); ?>:
@@ -93,7 +93,7 @@ function submitbutton(pressbutton) {
 			</div>
 
 	<?php if ($this->user->authorize('com_content', 'publish', 'content', 'all')) : ?>
-			<div class="group">
+			<div class="grid">
 				<div class="col span6">
 					<fieldset class="options">
 						<legend><?php echo JText::_( 'Published' ); ?>:</legend>
