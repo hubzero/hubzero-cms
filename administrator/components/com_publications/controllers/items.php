@@ -60,7 +60,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Get configuration
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
-			
+
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
@@ -942,7 +942,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$subject = $subject ? $subject : JText::_('COM_PUBLICATIONS_STATUS_UPDATE');
 			
 			// Get message body
-			$eview 					= new JView( array('name'=>'emails', 'layout' => 'admin_plain' ) );
+			$eview 					= new \Hubzero\Component\View( array('name'=>'emails', 'layout' => 'admin_plain' ) );
 			$eview->option 			= $this->_option;
 			$eview->subject 		= $subject;
 			$eview->action 			= $action;
