@@ -1588,7 +1588,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$subject = $jconfig->getValue('config.sitename') .' account email confirmation';
 
 		// Email message
-		$eview = new JView(array(
+		$eview = new \Hubzero\Component\View(array(
 			'name'   => 'emails',
 			'layout' => 'confirm'
 		));

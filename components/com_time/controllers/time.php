@@ -229,7 +229,7 @@ class TimeController extends \Hubzero\Component\SiteController
 	protected function view()
 	{
 		// Force login if user isn't already
-		if($this->juser->get('guest'))
+		if ($this->juser->get('guest'))
 		{
 			// Set the active tab and action if we need to
 			$active = ($this->active_tab != 'overview') ? '&active=' . $this->active_tab : '';
@@ -272,7 +272,7 @@ class TimeController extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output the HTML
-		$view                = new JView(array('name'=>'view'));
+		$view                = new \Hubzero\Component\View(array('name'=>'view'));
 		$view->option        = $this->_option;
 		$view->title         = $this->_title;
 		$view->active_tab    = $this->active_tab;
@@ -312,7 +312,7 @@ class TimeController extends \Hubzero\Component\SiteController
 		$title = ($title) ? $title : JText::_(strtoupper($this->_name));
 
 		// Output HTML
-		$view                = new JView(array('name'=>'login'));
+		$view                = new \Hubzero\Component\View(array('name'=>'login'));
 		$view->title         = $title;
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();

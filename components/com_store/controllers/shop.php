@@ -558,7 +558,7 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 			$subject = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_STORE_ORDER') . ' #' . $orderid;
 
 			// Compose confirmation message
-			$eview = new JView(array(
+			$eview = new \Hubzero\Component\View(array(
 				'name'   => 'emails',
 				'layout' => 'confirmation'
 			));
