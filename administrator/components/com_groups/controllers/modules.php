@@ -562,18 +562,14 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// do we get errors?
 		if ($return != 0)
 		{
-			$view = new JView(array(
-				'name' => 'modules',
-				'layout' => 'errors'
-			));
-			$view->error = (isset($output[0])) ? $output[0] : '';
-			$view->error = str_replace($file, '"' . $module->get('title') . '"', $view->error);
-			$view->module = $module;
-			$view->option = $this->_option;
-			$view->controller = $this->_controller;
-			$view->group = $this->group;
-			$this->_getStyles();
-			$view->display();
+			$this->view->setLayout('errors')
+			$this->view->error = (isset($output[0])) ? $output[0] : '';
+			$this->view->error = str_replace($file, '"' . $module->get('title') . '"', $view->error);
+			$this->view->module = $module;
+			$this->view->option = $this->_option;
+			$this->view->controller = $this->_controller;
+			$this->view->group = $this->group;
+			$this->view->display();
 			return;
 		}
 		
@@ -686,17 +682,13 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// handle issues
 		if ($issues->count != 0)
 		{
-			$view = new JView(array(
-				'name' => 'modules',
-				'layout' => 'scan'
-			));
-			$view->issues = $issues;
-			$view->module = $module;
-			$view->option = $this->_option;
-			$view->controller = $this->_controller;
-			$view->group = $this->group;
-			$this->_getStyles();
-			$view->display();
+			$this->view->setLayout('scan');
+			$this->view->issues = $issues;
+			$this->view->module = $module;
+			$this->view->option = $this->_option;
+			$this->view->controller = $this->_controller;
+			$this->view->group = $this->group;
+			$this->view->display();
 			return;
 		}
 		

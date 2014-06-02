@@ -30,6 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 JToolBarHelper::title($this->group->get('description').': '.$this->page->get('title').' - Page Scan', 'groups.png');
 JToolBarHelper::custom('markscanned', 'check', 'check', 'Mark Scanned', false);
 JToolBarHelper::spacer();

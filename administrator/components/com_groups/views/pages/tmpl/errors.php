@@ -30,6 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 JToolBarHelper::title($this->group->get('description').': '.$this->page->get('title').' - Page Errors', 'groups.png');
 JToolBarHelper::custom('errorscheckagain', 'check', 'check', 'Check Again', false);
 JToolBarHelper::cancel();

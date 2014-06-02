@@ -406,17 +406,13 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// handle issues
 		if ($issues->count != 0)
 		{
-			$view = new JView(array(
-				'name' => 'pages',
-				'layout' => 'scan'
-			));
-			$view->issues = $issues;
-			$view->page = $page;
-			$view->option = $this->_option;
-			$view->controller = $this->_controller;
-			$view->group = $this->group;
-			$this->_getStyles();
-			$view->display();
+			$this->view->setLayout('scan');
+			$this->view->issues = $issues;
+			$this->view->page = $page;
+			$this->view->option = $this->_option;
+			$this->view->controller = $this->_controller;
+			$this->view->group = $this->group;
+			$this->view->display();
 			return;
 		}
 		
@@ -486,18 +482,14 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// do we get errors?
 		if ($return != 0)
 		{
-			$view = new JView(array(
-				'name' => 'pages',
-				'layout' => 'errors'
-			));
-			$view->error = (isset($output[0])) ? $output[0] : '';
-			$view->error = str_replace($file, '"' . $page->get('title') . '"', $view->error);
-			$view->page = $page;
-			$view->option = $this->_option;
-			$view->controller = $this->_controller;
-			$view->group = $this->group;
-			$this->_getStyles();
-			$view->display();
+			$this->view->setLayout('errors');
+			$this->view->error = (isset($output[0])) ? $output[0] : '';
+			$this->view->error = str_replace($file, '"' . $page->get('title') . '"', $view->error);
+			$this->view->page = $page;
+			$this->view->option = $this->_option;
+			$this->view->controller = $this->_controller;
+			$this->view->group = $this->group;
+			$this->view->display();
 			return;
 		}
 		

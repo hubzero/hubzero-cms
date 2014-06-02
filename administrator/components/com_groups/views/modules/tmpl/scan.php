@@ -30,7 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title($this->group->get('description').': <small><small>['.$this->module->get('title').' - Module Scan]</small></small>', 'groups.png');
+$this->css();
+
+JToolBarHelper::title($this->group->get('description').': ['.$this->module->get('title').' - Module Scan]', 'groups.png');
 JToolBarHelper::custom('markscanned', 'check', 'check', 'Mark Scanned', false);
 JToolBarHelper::spacer();
 JToolBarHelper::custom('scanagain', 'check', 'check', 'Scan Again', false);
