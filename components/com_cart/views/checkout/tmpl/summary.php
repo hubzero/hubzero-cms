@@ -71,11 +71,11 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 			
 			if (!empty($meta['membershipInfo']))
 			{
-				$membershipInfo = $meta['membershipInfo'];		
+				$membershipInfo = $meta['membershipInfo'];
 			}
 		}
 		
-		$view = new JView(array('name'=>'shared', 'layout' => 'messages'));
+		$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'messages'));
 		$view->setError($this->getError());
 		$view->display();
 		
@@ -85,7 +85,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 			
 			<?php
 			
-			$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_items'));
+			$view = new \Hubzero\Component\View(array('name'=>'checkout', 'layout' => 'checkout_items'));
 			
 			$view->perks = $perks;
 			$view->membershipInfo = $membershipInfo;
@@ -132,7 +132,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 		
 		if (in_array('shipping', $this->transactionInfo->steps))
 		{
-			$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_shippinginfo'));
+			$view = new \Hubzero\Component\View(array('name'=>'checkout', 'layout' => 'checkout_shippinginfo'));
 			$view->transactionInfo = $this->transactionInfo;
 			$view->display();
 		}

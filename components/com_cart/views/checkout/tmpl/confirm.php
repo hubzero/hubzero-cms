@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <?php
 
-$view = new JView(array('name'=>'shared', 'layout' => 'messages'));
+$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'messages'));
 $errors = $this->getError();
 $view->setError($this->getError());
 $view->display();
