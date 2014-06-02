@@ -183,27 +183,18 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) 
 		{
-			$view = new JView(
-				array(
-					'name'    => 'threads',
-					'layout'  => '_list'
-				)
-			);
-			$view->option     = $this->option;
-			$view->controller = $this->controller;
-
-			$view->parent     = $this->comment->get('id');
-			$view->thread     = $this->comment->get('thread');
-			$view->comments   = $this->comment->get('replies');
-
-			$view->thread     = $this->thread;
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->filters    = $this->filters;
-			$view->category   = $this->category;
-
-			$view->display();
+			$this->view('_list')
+			     ->set('option', $this->option)
+			     ->set('controller', $this->controller)
+			     ->set('comments', $this->comment->get('replies'))
+			     ->set('thread', $this->comment->get('thread'))
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('config', $this->config)
+			     ->set('depth', $this->depth)
+			     ->set('cls', $cls)
+			     ->set('filters', $this->filters)
+			     ->set('category', $this->category)
+			     ->display();
 		}
 		?>
 	</li>

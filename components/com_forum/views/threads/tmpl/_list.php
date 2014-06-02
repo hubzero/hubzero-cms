@@ -51,25 +51,17 @@ if ($this->comments && $this->comments->total() > 0)
 
 	foreach ($this->comments as $comment) 
 	{
-		$view = new JView(
-			array(
-				'name'    => 'threads',
-				'layout'  => '_comment'
-			)
-		);
-		$view->option     = $this->option;
-		$view->controller = $this->controller;
-
-		$view->comment    = $comment;
-
-		$view->thread     = $this->thread;
-		$view->config     = $this->config;
-		$view->depth      = $this->depth;
-		$view->cls        = $cls;
-		$view->filters    = $this->filters;
-		$view->category   = $this->category;
-
-		$view->display();
+		$this->view('_comment')
+		     ->set('option', $this->option)
+		     ->set('controller', $this->controller)
+		     ->set('comment', $comment)
+		     ->set('thread', $this->thread)
+		     ->set('config', $this->config)
+		     ->set('depth', $this->depth)
+		     ->set('cls', $cls)
+		     ->set('filters', $this->filters)
+		     ->set('category', $this->category)
+		     ->display();
 	}
 }
 ?>

@@ -67,26 +67,18 @@ $this->thread->set('category', $this->category->get('alias'));
 			<?php
 			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
 			{
-				$view = new JView(
-					array(
-						'name'    => 'threads',
-						'layout'  => '_list'
-					)
-				);
-				$view->option     = $this->option;
-				$view->controller = $this->controller;
-
-				$view->comments   = $this->thread->posts($this->config->get('threading', 'list'));
-				$view->thread     = $this->thread;
-				$view->parent     = 0;
-
-				$view->config     = $this->config;
-				$view->depth      = 0;
-				$view->cls        = 'odd';
-				$view->filters    = $this->filters;
-				$view->category   = $this->category;
-
-				$view->display();
+				$this->view('_list')
+				     ->set('option', $this->option)
+				     ->set('controller', $this->controller)
+				     ->set('comments', $this->thread->posts($this->config->get('threading', 'list')))
+				     ->set('thread', $this->thread)
+				     ->set('parent', 0)
+				     ->set('config', $this->config)
+				     ->set('depth', 0)
+				     ->set('cls', 'odd')
+				     ->set('filters', $this->filters)
+				     ->set('category', $this->category)
+				     ->display();
 			}
 			else
 			{
