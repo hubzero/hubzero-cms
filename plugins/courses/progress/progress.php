@@ -303,7 +303,16 @@ class plgCoursesProgress extends JPlugin
 		$policy->quiz_weight     = $gradePolicy->get('quiz_weight') * 100;
 		$policy->homework_weight = $gradePolicy->get('homework_weight') * 100;
 		$policy->threshold       = $gradePolicy->get('threshold') * 100;
-		$policy->editable        = ($this->course->config()->get('section_grade_policy', true) || $this->course->offering()->access('manage')) ? true : false;
+		$policy->editable        = false;
+
+		if ($this->course->config()->get('section_grade_policy', true))
+		{
+			$policy->editable = true;
+		}
+		else if ($this->course->offering()->access('manage') && $this->course->offering()->section()->get('is_default'))
+		{
+			$policy->editable = true;
+		}
 
 		// Get our units
 		$unitsObj = $this->course->offering()->units();
