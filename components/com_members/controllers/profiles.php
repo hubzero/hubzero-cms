@@ -152,6 +152,27 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$filters['start']  = 0;
 		$filters['search'] = strtolower(trim(JRequest::getString('value', '')));
 
+		// allow search of name by pieces
+		$searchWhere  = ""; 
+		$searchPieces = explode(' ', $filters['search']);
+		switch (count($searchPieces))
+		{
+			case 3:
+				$searchWhere  = "(LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%'";
+				$searchWhere .= " OR LOWER(xp.name) LIKE '" . $this->database->getEscaped($searchPieces[0]) . "%'";
+				$searchWhere .= " OR LOWER(xp.name) LIKE '%" . $this->database->getEscaped($searchPieces[1]) . "%'";
+				$searchWhere .= " OR LOWER(xp.name) LIKE '%" . $this->database->getEscaped($searchPieces[2]) . "')";
+				break;
+			case 2:
+				$searchWhere  = "(LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%'";
+				$searchWhere .= " OR LOWER(xp.name) LIKE '" . $this->database->getEscaped($searchPieces[0]) . "%'";
+				$searchWhere .= " OR LOWER(xp.name) LIKE '%" . $this->database->getEscaped($searchPieces[1]) . "')";
+				break;
+			case 1:
+			default:
+				$searchWhere  = "(LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%')";
+		}
+
 		// Fetch results
 		/*$query = "SELECT u.id, u.name, u.username 
 				FROM #__users AS u 
@@ -162,10 +183,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
 				FROM #__xprofiles AS xp 
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed>0 $restrict 
+				WHERE $searchWhere AND xp.emailConfirmed>0 $restrict 
 				ORDER BY xp.name ASC
 				LIMIT " . $filters['start'] . "," . $filters['limit'];
-
 		$this->database->setQuery($query);
 		$rows = $this->database->loadObjectList();
 
