@@ -101,7 +101,7 @@ class StorefrontControllerBrowse extends ComponentController
 	 */
 	private function browseCollection($cId) 
 	{
-		$view = new JView(array('name'=>'browse', 'layout' => 'collection') );
+		$view = new \Hubzero\Component\View(array('name'=>'browse', 'layout' => 'collection') );
 		
 		// Get the collection products
 		$this->warehouse->addLookupCollection($cId);

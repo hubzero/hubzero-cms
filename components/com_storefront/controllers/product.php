@@ -87,7 +87,7 @@ class StorefrontControllerProduct extends ComponentController
 	 */
 	private function displayProduct($pId) 
 	{
-		$view = new JView( array('name'=>'product', 'layout' => 'display') );
+		$view = new \Hubzero\Component\View( array('name'=>'product', 'layout' => 'display') );
 		$view->pId = $pId;
 		
 		$doc = JFactory::getDocument();
