@@ -251,31 +251,16 @@ function popratings()
 			<tbody>
 				<tr>
 					<td>
-						<label>Synopsis (250 chars. max):</label>
-						<?php
-						if($canedit) {
-							echo $editor->display('abstract', $this->escape(stripslashes($this->row->abstract)), '100%', '50px', '45', '10', false);
-						}
-						else {
-							echo stripslashes($this->row->abstract);
-						}
-						?>
+						<label>Synopsis (250 chars. max):
+						<textarea name="abstract" id="pub_abstract" cols="40" rows="3" class="pubinput"><?php echo $this->row->abstract; ?></textarea>
+						</label>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<label>Abstract/Description</label>
-						<?php
-						$model = new PublicationsModelPublication($this->row);
-						if ($canedit)
-						{ 
-							echo $editor->display('description', $this->escape($model->description('raw')), '', '', 35, 10, false, 'description', null, null, array('class' => 'minimal no-footer'));
-						}
-						else
-						{
-							echo $model->description('parsed');
-						}
-						?>
+						<label>Abstract/Description
+						<textarea name="description" id="pub_description" cols="40" rows="10" class="pubinput"><?php echo $this->row->description; ?></textarea>
+						</label>
 					</td>
 				</tr>
 			</tbody>
@@ -295,10 +280,9 @@ function popratings()
 			<tbody>
 				<tr>
 					<td>
-						<label><?php echo JText::_('Release Notes'); ?>  - <?php echo JText::_('Version').' '.$this->row->version_label; ?> (Release #<?php echo $this->row->version_number; ?>)</label>
-						<?php
-						echo $editor->display('release_notes', $this->escape($model->notes('raw')), '100%', '200px', '45', '10', false, 'release_notes', null, null, array('class' => 'minimal no-footer'));
-						?>
+						<label><?php echo JText::_('Release Notes'); ?>  - <?php echo JText::_('Version').' '.$this->row->version_label; ?> (Release #<?php echo $this->row->version_number; ?>)
+						<textarea name="release_notes" id="release_notes" cols="40" rows="10" class="pubinput"><?php echo $this->row->release_notes; ?></textarea>	
+						</label>						
 					</td>
 				</tr>
 			</tbody>
