@@ -1,5 +1,6 @@
 @import url("/components/com_courses/assets/css/course.css");
 
-.course .aside:before {
+.com_courses section.section .aside:before {
 	right: 329px;
+	top: 0;
 }
