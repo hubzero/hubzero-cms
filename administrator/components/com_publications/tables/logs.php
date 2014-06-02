@@ -529,9 +529,10 @@ class PublicationLog extends JTable
 	 * @param      string 	$from		Date from
 	 * @param      string 	$to			Date to
 	 * @param      array 	$data		Data to extract
+	 * @param      string 	$filter		Tag name to match
 	 * @return     void
 	 */	
-	public function getCustomStats ( $from = NULL, $to = NULL, $exclude = array() ) 
+	public function getCustomStats ( $from = NULL, $to = NULL, $exclude = array(), $filter = NULL ) 
 	{		
 		// Parse dates
 		$parts 	= explode('-', $from);
@@ -566,8 +567,15 @@ class PublicationLog extends JTable
 					AND tbl='publication' 
 					WHERE CA.oid=V.publication_id  
 					AND C.created <= '" . $citeTo . "' ) AS citations ";		
-								
-		$query .= " FROM #__publications as C, #__publication_categories AS t, #__publication_versions as V ";
+		
+		$query .= "FROM ";
+		if ($filter)
+		{
+			$query .= "#__tags_object AS RTA ";
+			$query .= "INNER JOIN #__tags AS TA ON RTA.tagid = TA.id AND RTA.tbl='publications', ";
+		}
+							
+		$query .= " #__publications as C, #__publication_categories AS t, #__publication_versions as V ";
 		$query .= " LEFT JOIN #__publication_authors as A 
 					ON A.publication_version_id=V.id 
 					AND A.ordering=1 AND status=1";
@@ -586,7 +594,24 @@ class PublicationLog extends JTable
 			$tquery = substr($tquery,0,strlen($tquery) - 1);
 			$query .= $tquery . " ) ";
 		}
-
+		
+		if ($filter)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+				. DS . 'helpers' . DS . 'tags.php' );
+			$tagging = new PublicationTags( $this->_db );
+			$tags = $tagging->_parse_tags($filter);
+		
+			$query .= " AND RTA.objectid=C.id AND (TA.tag IN (";
+			$tquery = '';
+			foreach ($tags as $tagg)
+			{
+				$tquery .= "'".$tagg."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$query .= $tquery."))";
+		}
+		
 		$query .= " GROUP BY V.publication_id ";
 		$query .= " ORDER BY V.publication_id ASC ";
 

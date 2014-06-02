@@ -113,9 +113,10 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 	public function generateTask() 
 	{		
 		// Incoming
-		$data = JRequest::getVar( 'data', array(), 'post', 'array' );
-		$from = JRequest::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
-		$to   = JRequest::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
+		$data   = JRequest::getVar( 'data', array(), 'post', 'array' );
+		$from   = JRequest::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
+		$to     = JRequest::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
+		$filter = JRequest::getVar( 'searchterm', '');
 		
 		if (empty($data))
 		{
@@ -167,7 +168,7 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 			// Get all test projects
 			$exclude = $obj->getTestProjects();
 			
-			$stats = $objLog->getCustomStats($from, $to, $exclude);
+			$stats = $objLog->getCustomStats($from, $to, $exclude, $filter);
 			
 			$filename = 'from_' . $from . '_to_' . $to .'_report.csv';
 			
@@ -202,15 +203,17 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->setError(JText::_('Nothing to report for selected date range'));
+				$this->setError(JText::_('Nothing to report for selected date range and/or search term'));
 			}
 		}
 		
 		// Redirect on error
 		if ($this->getError())
-		{
+		{			
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=reports&task=custom'),
+				JRoute::_('index.php?option=' . $this->_option 
+				. '&controller=reports&task=custom'
+				. '&searchterm=' . $filter),
 				$this->getError(),
 				'error'
 			);
@@ -349,11 +352,6 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 	 */
 	protected function _authorize( $curatorgroups = array() ) 
 	{
-		// Check if they are logged in
-		if ($this->juser->get('guest')) 
-		{
-			return false;
-		}
 		
 		$authorized = false;
 		
@@ -367,6 +365,12 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 		$reportgroup = $this->config->get('reportgroup', '');
 		if ($reportgroup && $group = \Hubzero\User\Group::getInstance($reportgroup))
 		{
+			// Check if they are logged in
+			if ($this->juser->get('guest')) 
+			{
+				return false;
+			}
+			
 			// Check if they're a member of this group
 			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 			if ($ugs && count($ugs) > 0) 
@@ -380,6 +384,11 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 					}
 				}
 			}
+		}
+		else
+		{
+			// No group set - anyone can access
+			$authorized = true;
 		}
 			
 		return $authorized;
