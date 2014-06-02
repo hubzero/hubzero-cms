@@ -164,18 +164,18 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 					<?php if (!$item->reports) { ?>
 						<td class="voting">
 							<?php
-								$view = new JView(array(
+								$view = new \Hubzero\Component\View(array(
 									'name'      => 'rateitem', 
 									'base_path' => JPATH_ROOT.DS.'components'.DS.'com_wishlist'
 								));
-								$view->option  = 'com_wishlist';
-								$view->item    = $item;
-								$view->listid  = $this->wishlist->id;
-								$view->plugin  = 0;
-								$view->admin   = 0;
-								$view->page    = 'wishlist';
-								$view->filters = $this->filters;
-								$view->display();
+								$view->set('option', 'com_wishlist')
+								     ->set('item ', $item)
+								     ->set('listid', $this->wishlist->id)
+								     ->set('plugin', 0)
+								     ->set('admin', 0)
+								     ->set('page', 'wishlist')
+								     ->set('filters', $this->filters)
+								     ->display();
 							?>
 						</td>
 						<td class="ranking">
