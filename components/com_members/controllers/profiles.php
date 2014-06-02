@@ -216,10 +216,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		// Include some needed styles and scripts
-		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-		$this->_getStyles();
-
 		$this->view->title = JText::_('MEMBERS');
 
 		$this->view->contribution_counting = $this->config->get('contribution_counting', true);
@@ -258,10 +254,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function browseTask()
 	{
-		// Include some needed styles and scripts
-		$this->_getStyles();
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
@@ -435,7 +427,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=myaccount'))),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=myaccount'))),
 				JText::_('You must be a logged in to access this area.'),
 				'warning'
 			);
@@ -468,10 +460,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option
 			);
 		}
-
-		// Include some needed styles and scripts
-		$this->_getStyles();
-		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);
@@ -683,10 +671,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JError::raiseError(404, JText::_('MEMBERS_NOT_FOUND'));
 			return;
 		}
-
-		// Include some needed styles and scripts
-		$this->_getStyles();
-		$this->_getScripts('assets/js/changepassword');
 
 		// Add to the pathway
 		$pathway->addItem(
@@ -913,9 +897,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JError::raiseError(403, JText::_('MEMBERS_NOT_AUTH'));
 			return;
 		}
-
-		// Include some needed styles and scripts
-		$this->_getStyles();
 
 		// Initiate profile class
 		$profile = \Hubzero\User\Profile::getInstance($id);
@@ -1174,9 +1155,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JError::raiseError(403, JText::_('MEMBERS_NOT_AUTH'));
 			return;
 		}
-
-		// Include some needed styles and scripts
-		$this->_getStyles();
 
 		// Initiate profile class if we don't already have one and load info
 		// Note: if we already have one then we just came from $this->save()
@@ -1693,10 +1671,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JText::_(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&task=' . $this->_task
 		);
-
-		// Push some styles to the template
-		$this->_getStyles();
-		$this->_getStyles('usage');
 
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 

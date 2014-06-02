@@ -30,6 +30,9 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+$this->css()
+     ->css('usage.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

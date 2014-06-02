@@ -76,6 +76,8 @@ if ($juser->get("guest"))
 }
 
 if (!$no_html) {
+	$this->css()
+	     ->js();
 ?>
 <div class="innerwrap">
 	<div id="page_container">

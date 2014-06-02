@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $surname = stripslashes($this->profile->get('surname'));
 $givenName = stripslashes($this->profile->get('givenName'));
 $middleName = stripslashes($this->profile->get('middleName'));
