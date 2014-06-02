@@ -31,31 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Resources Plugin class for wishlist items
  */
-class plgResourcesWishlist extends JPlugin
+class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-
-		$this->config = JComponentHelper::getParams('com_wishlist');
-
-		$lang = JFactory::getLanguage();
-		$lang->load('com_wishlist');
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -108,6 +94,11 @@ class plgResourcesWishlist extends JPlugin
 		{
 			return $arr;
 		}
+
+		$this->config = JComponentHelper::getParams('com_wishlist');
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_wishlist');
 
 		$database = JFactory::getDBO();
 		$juser    = JFactory::getUser();

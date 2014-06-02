@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Resources Plugin class for questions and answers
  */
-class plgResourcesQuestions extends JPlugin
+class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -439,7 +430,7 @@ class plgResourcesQuestions extends JPlugin
 			// Build the message
 			$juser = JFactory::getUser();
 
-			$eview = new JView(array(
+			$eview = new \Hubzero\Component\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
 				'name'   => 'emails',
 				'layout' => 'question_plaintext'

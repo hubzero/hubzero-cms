@@ -216,7 +216,7 @@ if ($this->model->attribs->get('location', '')) {
 			<div class="resource-content">
 				<span id="submitterlist">
 					<?php 
-					$view = new JView(array(
+					$view = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
 						'name'   => 'view',
 						'layout' => '_submitters',

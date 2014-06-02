@@ -32,7 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 	<h3 class="section-header">
-		<a name="wishlist"></a>
 		<?php echo JText::_('PLG_RESOURCES_WISHLIST'); ?>
 	</h3>
 	<div class="container">
@@ -47,21 +46,27 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</caption>
 			<tbody>
 <?php
-	if ($this->wishlist->items) {
+	if ($this->wishlist->items)
+	{
 		foreach ($this->wishlist->items as $item) 
 		{ 
 			$item->subject = $this->escape(stripslashes($item->subject));
 
 			$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
 			
-			if ($item->reports) {
-				$status = 'outstanding';
-			} else if (isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($this->admin==2 or $this->admin==3))  {
-				$status = 'unranked';
-			} else {
+			if ($item->reports)
+			{
 				$status = 'outstanding';
 			}
-			
+			else if (isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($this->admin==2 or $this->admin==3))
+			{
+				$status = 'unranked';
+			}
+			else 
+			{
+				$status = 'outstanding';
+			}
+
 			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
 			$state .= ($item->private) ? ' private' : '' ;
 			switch ($item->status) 
@@ -84,9 +89,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 				break;
 			}
-			
+
 			$name = JText::_('COM_WISHLIST_ANONYMOUS');
-			if (!$item->anonymous) {
+			if (!$item->anonymous)
+			{
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->authorname) . '</a>';
 			}
 ?>
@@ -95,7 +101,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<span class="entry-id"><?php echo $item->id; ?></span>
 					</th>
 					<td>
-<?php 			if (!$item->reports) { ?>
+					<?php if (!$item->reports) { ?>
 						<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 						<span class="entry-details">
 							<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
@@ -104,27 +110,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<span class="entry-details-divider">&bull;</span>
 							<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 						</span>
-<?php 			} else { ?>
+					<?php } else { ?>
 						<span class="warning adjust"><?php echo JText::_('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?></span>
-<?php 			} ?>
+					<?php } ?>
 					</td>
-<?php 			if ($this->config->get('banking')) { ?>
+				<?php if ($this->config->get('banking')) { ?>
 					<td class="reward">
 						<span class="entry-reward">
-<?php 					if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
+						<?php if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
 							<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('COM_WISHLIST_MULTIPLE_USERS').' '.JText::_('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('COM_WISHLIST_POINTS').' '.JText::_('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
-<?php 					} else if ($item->status == 0 || $item->status == 6) { ?>
+						<?php } else if ($item->status == 0 || $item->status == 6) { ?>
 							<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' :: '.JText::_('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
-<?php 					} else { ?>
+						<?php } else { ?>
 							<span class="inactive" title="<?php echo JText::_('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
-<?php 					} ?>
+						<?php } ?>
 						</span>
 					</td>
-<?php 			} ?>
-<?php 			if (!$item->reports) { ?>
+				<?php } ?>
+				<?php if (!$item->reports) { ?>
 					<td class="voting">
-<?php
-						$view = new JView( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option) );
+					<?php
+						$view = new \Hubzero\Component\View(array(
+							'name'=>'rateitem',
+							'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option
+						));
 						$view->option = $this->option;
 						$view->item = $item;
 						$view->listid = $this->wishlist->id;
@@ -133,10 +142,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$view->page = 'wishlist';
 						$view->filters = $this->filters;
 						$view->display();
-?>
+						?>
 					</td>
 					<td class="ranking">
-<?php 						/*if ($this->admin 
+					<?php /*if ($this->admin 
 						|| $item->status == 1 
 						|| ($item->status == 0 && $item->accepted == 1) 
 						|| $item->status == 3 
@@ -146,9 +155,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 						switch ($item->status) 
 						{
 							case 0:
-								if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3)) {
+								if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3))
+								{
 									$html .= '<a class="rankit" href="index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.JText::_('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
-								} else if (isset($item->ranked) && $item->ranked) {
+								}
+								else if (isset($item->ranked) && $item->ranked)
+								{
 									//$html .= JText::_('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
 									$html .= '<span class="priority-level-base">
 										<span class="priority-level" style="width: '.(($item->ranking/50)*100).'%">
@@ -156,7 +168,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 										</span>
 									</span>';
 								}
-								if ($item->accepted == 1) {
+								if ($item->accepted == 1)
+								{
 									$html .= '<span class="accepted">'.JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED').'</span>';
 								}
 							break;
@@ -176,7 +189,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						echo $html;
 					//} ?>
 					</td>
-<?php 			} ?>
+				<?php } ?>
 				</tr>
 <?php
 		} // end foreach
