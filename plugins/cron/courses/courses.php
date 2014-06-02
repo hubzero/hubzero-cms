@@ -282,7 +282,7 @@ class plgCronCourses extends JPlugin
 									$latest_cnt = count($latest);
 								}
 
-								$eview = new JView(array(
+								$eview = new \Hubzero\Component\View(array(
 									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
 									'name'      => 'emails', 
 									'layout'    => 'digest_plain'

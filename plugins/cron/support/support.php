@@ -381,7 +381,7 @@ class plgCronSupport extends JPlugin
 			}
 
 			// Plain text
-			$eview = new JView(array(
+			$eview = new \Hubzero\Component\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails', 
 				'layout'    => 'tickets_plain'
@@ -782,7 +782,7 @@ class plgCronSupport extends JPlugin
 				continue;
 			}
 
-			$eview = new JView(array(
+			$eview = new \Hubzero\Component\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails', 
 				'layout'    => 'ticketlist_plain'
