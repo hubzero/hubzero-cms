@@ -53,6 +53,8 @@ if ($canDo->get('core.delete'))
 JToolBarHelper::spacer();
 JToolBarHelper::custom('manage', 'config','config','Manage',false);
 
+$this->css();
+
 // include modal for raw version links
 JHtml::_('behavior.modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen'=>true));
 ?>

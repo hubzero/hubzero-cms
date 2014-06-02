@@ -109,9 +109,6 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// pass group to view
 		$this->view->group = $this->group;
 		
-		// add styles
-		$this->_getStyles();
-		
 		// Set any errors
 		if ($this->getError())
 		{

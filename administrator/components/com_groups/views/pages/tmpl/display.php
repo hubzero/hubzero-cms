@@ -55,6 +55,8 @@ JToolBarHelper::custom('manage', 'config','config','Manage',false);
 JToolBarHelper::spacer();
 JToolBarHelper::help('pages');
 
+$this->css();
+
 // include modal for raw version links
 JHtml::_('behavior.modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen'=>true));
 ?>
