@@ -433,7 +433,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	 */
 	public function renderTask()
 	{
-		$this->view = new JView(array(
+		$this->view = new \Hubzero\Component\View(array(
 			'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
 			'name'      => 'certificate',
 			'layout'    => 'render'
