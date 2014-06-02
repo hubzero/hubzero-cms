@@ -166,7 +166,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 		<?php if ($this->event->get('content') != '') : ?>
 			<tr>
 				<th class="details"></th>
-				<td colspan="3"><?php echo nl2br($this->event->get('content')); ?></td>
+				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText(nl2br($this->event->get('content'))); ?></td>
 			</tr>
 		<?php endif; ?>
 		
