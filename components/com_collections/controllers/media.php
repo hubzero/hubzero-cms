@@ -388,7 +388,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'media',
 			'layout' => '_asset'
 		));

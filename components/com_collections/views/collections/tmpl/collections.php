@@ -103,16 +103,11 @@ if ($this->rows->total() > 0)
 		<div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&controller=collection&id=' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 				<?php
-					$view = new JView(
-						array(
-							'name'    => 'posts',
-							'layout'  => 'display_' . $item->type()
-						)
-					);
-					$view->option     = $this->option;
-					$view->params     = $this->config;
-					$view->row        = $row;
-					$view->display();
+					$this->view('display_' . $item->type(), 'posts')
+					     ->set('option', $this->option)
+					     ->set('params', $this->config)
+					     ->set('row', $row)
+					     ->display();
 				?>
 			<?php if (count($item->tags()) > 0) { ?>
 				<div class="tags-wrap">
