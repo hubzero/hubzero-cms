@@ -43,46 +43,21 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		$this->dateFormat = '%d %b %Y';
-		$this->dateFormatShort = '%d %b';
-		$this->timeFormat = '%I:%M %p';
-		$this->yearFormat  = "%Y";
-		$this->monthFormat = "%m";
-		$this->dayFormat   = "%d";
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = JText::_('DATE_FORMAT_HZ1');
-			$this->dateFormatShort = 'd M';
-			$this->timeFormat = 'h:i A';
-			$this->yearFormat  = "Y";
-			$this->monthFormat = "m";
-			$this->dayFormat   = "d";
-			$this->tz = false;
-		}
+		$this->dateFormat = JText::_('DATE_FORMAT_HZ1');
+		$this->dateFormatShort = 'd M';
+		$this->timeFormat = 'h:i A';
+		$this->yearFormat  = "Y";
+		$this->monthFormat = "m";
+		$this->dayFormat   = "d";
 
 		$this->_setup();
 
-		$this->_getStyles();
-
 		$this->_task = ($this->_task) ? $this->_task : JRequest::getString('task', $this->config->getCfg('startview'));
 
-		switch ($this->_task)
-		{
-			case 'delete':   $this->delete();   break;
-			case 'add':      $this->edit();     break;
-			case 'edit':     $this->edit();     break;
-			case 'save':     $this->save();     break;
-			case 'details':  $this->details();  break;
-			case 'day':      $this->day();      break;
-			case 'week':     $this->week();     break;
-			case 'month':    $this->month();    break;
-			case 'year':     $this->year();     break;
-			case 'register': $this->register(); break;
-			case 'process':  $this->process();  break;
+		$this->registerTask('register', 'eventregister');
+		$this->registerTask('add', 'edit');
 
-			default: $this->month(); break;
-		}
+		parent::execute();
 	}
 
 	/**
@@ -312,7 +287,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 				//$month = $fmonth;
 			}
 		}
-*/
+		*/
 		$this->year  = $year;
 		$this->month = $month;
 		$this->day   = $day;
@@ -327,7 +302,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function year()
+	public function yearTask()
 	{
 		// Get some needed info
 		$year   = $this->year;
@@ -365,30 +340,27 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HMTL
-		$view = new JView(array(
-			'name'   => 'browse',
-			'layout' => 'year'
-		));
-		$view->option = $this->_option;
-		$view->title = $this->_title;
-		$view->task = $this->_task;
-		$view->year = $year;
-		$view->month = $month;
-		$view->day = $day;
-		$view->rows = $rows;
-		$view->authorized = $authorized;
-		$view->fields = $this->config->getCfg('fields');
-		$view->category = $this->category;
-		$view->categories = $categories;
-		$view->offset = $offset;
+		$this->view->setLayout('year')->setName('browse');
+		$this->view->option = $this->_option;
+		$this->view->title = $this->_title;
+		$this->view->task = $this->_task;
+		$this->view->year = $year;
+		$this->view->month = $month;
+		$this->view->day = $day;
+		$this->view->rows = $rows;
+		$this->view->authorized = $authorized;
+		$this->view->fields = $this->config->getCfg('fields');
+		$this->view->category = $this->category;
+		$this->view->categories = $categories;
+		$this->view->offset = $offset;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$view->setError($error);
+				$this->view->setError($error);
 			}
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -396,7 +368,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function month()
+	public function monthTask()
 	{
 		// Get some needed info
 		$offset = $this->offset;
@@ -440,33 +412,28 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		// Build the pathway
 		$this->_buildPathway();
 
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Output HTML
-		$view = new JView(array(
-			'name'   => 'browse',
-			'layout' => 'month'
-		));
-		$view->option = $this->_option;
-		$view->title = $this->_title;
-		$view->task = $this->_task;
-		$view->year = $year;
-		$view->month = $month;
-		$view->day = $day;
-		$view->rows = $rows;
-		$view->authorized = $authorized;
-		$view->fields = $this->config->getCfg('fields');
-		$view->category = $this->category;
-		$view->categories = $categories;
-		$view->offset = $offset;
+		$this->view->setLayout('month')->setName('browse');
+		$this->view->option = $this->_option;
+		$this->view->title = $this->_title;
+		$this->view->task = $this->_task;
+		$this->view->year = $year;
+		$this->view->month = $month;
+		$this->view->day = $day;
+		$this->view->rows = $rows;
+		$this->view->authorized = $authorized;
+		$this->view->fields = $this->config->getCfg('fields');
+		$this->view->category = $this->category;
+		$this->view->categories = $categories;
+		$this->view->offset = $offset;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$view->setError($error);
+				$this->view->setError($error);
 			}
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -474,7 +441,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function week()
+	public function weekTask()
 	{
 		// Get some needed info
 		$offset = $this->offset;
@@ -496,8 +463,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$this_enddate = clone($this_date);
 		$this_enddate->addDays(+6);
 
-		$sdt = JHTML::_('date', $this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00', $this->dateFormatShort, $this->tz);
-		$edt = JHTML::_('date', $this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00', $this->dateFormatShort, $this->tz);
+		$sdt = JHTML::_('date', $this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00', $this->dateFormatShort);
+		$edt = JHTML::_('date', $this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00', $this->dateFormatShort);
 
 		$this_currentdate = $this_date;
 
@@ -543,33 +510,30 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML;
-		$view = new JView(array(
-			'name'   => 'browse',
-			'layout' => 'week'
-		));
-		$view->option = $this->_option;
-		$view->title = $this->_title;
-		$view->task = $this->_task;
-		$view->year = $year;
-		$view->month = $month;
-		$view->day = $day;
-		$view->rows = $rows;
-		$view->authorized = $authorized;
-		$view->fields = $this->config->getCfg('fields');
-		$view->category = $this->category;
-		$view->categories = $categories;
-		$view->offset = $offset;
-		$view->startdate = $sdt;
-		$view->enddate = $edt;
-		$view->week = $week;
+		$this->view->setLayout('week')->setName('browse');
+		$this->view->option = $this->_option;
+		$this->view->title = $this->_title;
+		$this->view->task = $this->_task;
+		$this->view->year = $year;
+		$this->view->month = $month;
+		$this->view->day = $day;
+		$this->view->rows = $rows;
+		$this->view->authorized = $authorized;
+		$this->view->fields = $this->config->getCfg('fields');
+		$this->view->category = $this->category;
+		$this->view->categories = $categories;
+		$this->view->offset = $offset;
+		$this->view->startdate = $sdt;
+		$this->view->enddate = $edt;
+		$this->view->week = $week;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$view->setError($error);
+				$this->view->setError($error);
 			}
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -577,7 +541,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function day()
+	public function dayTask()
 	{
 		// Get some needed info
 		$year   = $this->year;
@@ -627,30 +591,27 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		$view = new JView(array(
-			'name'   => 'browse',
-			'layout' => 'day'
-		));
-		$view->option = $this->_option;
-		$view->title = $this->_title;
-		$view->task = $this->_task;
-		$view->year = $year;
-		$view->month = $month;
-		$view->day = $day;
-		$view->rows = $events;
-		$view->authorized = $authorized;
-		$view->fields = $this->config->getCfg('fields');
-		$view->category = $this->category;
-		$view->categories = $categories;
-		$view->offset = $offset;
+		$this->view->setLayout('day')->setName('browse');
+		$this->view->option = $this->_option;
+		$this->view->title = $this->_title;
+		$this->view->task = $this->_task;
+		$this->view->year = $year;
+		$this->view->month = $month;
+		$this->view->day = $day;
+		$this->view->rows = $events;
+		$this->view->authorized = $authorized;
+		$this->view->fields = $this->config->getCfg('fields');
+		$this->view->category = $this->category;
+		$this->view->categories = $categories;
+		$this->view->offset = $offset;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$view->setError($error);
+				$this->view->setError($error);
 			}
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -658,7 +619,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function details()
+	public function detailsTask()
 	{
 		// Get some needed info
 		$offset = $this->offset;
@@ -882,37 +843,35 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		}
 
 		// Build the HTML
-		$view = new JView(array(
-			'name' => 'details'
-		));
+		$this->view->setLayout('default')->setName('details');
 		if (JRequest::getVar('no_html', 0))
 		{
-			$view->setLayout('modal');
+			$this->view->setLayout('modal');
 		}
-		$view->option = $this->_option;
-		$view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task));
-		$view->task = $this->_task;
-		$view->year = $eyear;
-		$view->month = $emonth;
-		$view->day = $eday;
-		$view->row = $row;
-		$view->authorized = $authorized;
-		$view->fields = $fields;
-		$view->config = $this->config;
-		$view->categories = $categories;
-		$view->offset = $offset;
-		$view->tags = $tags;
-		$view->auth = $auth;
-		$view->page = $page;
-		$view->pages = $pages;
+		$this->view->option = $this->_option;
+		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task));
+		$this->view->task = $this->_task;
+		$this->view->year = $eyear;
+		$this->view->month = $emonth;
+		$this->view->day = $eday;
+		$this->view->row = $row;
+		$this->view->authorized = $authorized;
+		$this->view->fields = $fields;
+		$this->view->config = $this->config;
+		$this->view->categories = $categories;
+		$this->view->offset = $offset;
+		$this->view->tags = $tags;
+		$this->view->auth = $auth;
+		$this->view->page = $page;
+		$this->view->pages = $pages;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$view->setError($error);
+				$this->view->setError($error);
 			}
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -938,7 +897,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function register()
+	public function eventregisterTask()
 	{
 		$document = JFactory::getDocument();
 
@@ -1050,53 +1009,54 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 				if ($event->restricted == $passwrd) 
 				{
 					// Instantiate a view
-					$view = new JView(array('name' => 'register'));
-					$view->state = 'open';
+					$this->view->setLayout('default');
+					$this->view->state = 'open';
 				} 
 				else 
 				{
 					// Instantiate a view
-					$view = new JView(array('name' => 'register', 'layout' => 'restricted'));
-					$view->state = 'restricted';
+					$this->view->setLayout('restricted');
+					$this->view->state = 'restricted';
 				}
 			} 
 			else 
 			{
 				// Instantiate a view
-				$view = new JView(array('name' => 'register'));
-				$view->state = 'open';
+				$this->view->setLayout('default');
+				$this->view->state = 'open';
 			}
 		} 
 		else 
 		{
 			// Instantiate a view
-			$view = new JView(array('name' => 'register', 'layout' => 'closed'));
-			$view->state = 'closed';
+			$this->view->setLayout('closed');
+			$this->view->state = 'closed';
 		}
 
 		// Output HTML
-		$view->option = $this->_option;
-		$view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('EVENTS_REGISTER');
-		$view->task = $this->_task;
-		$view->year = $year;
-		$view->month = $month;
-		$view->day = $day;
-		$view->offset = $offset;
-		$view->event = $event;
-		$view->authorized = $auth;
-		$view->page = $page;
-		$view->pages = $pages;
-		$view->register = $register;
-		$view->arrival = null;
-		$view->departure = null;
+		$this->view->setName('register');
+		$this->view->option = $this->_option;
+		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('EVENTS_REGISTER');
+		$this->view->task = $this->_task;
+		$this->view->year = $year;
+		$this->view->month = $month;
+		$this->view->day = $day;
+		$this->view->offset = $offset;
+		$this->view->event = $event;
+		$this->view->authorized = $auth;
+		$this->view->page = $page;
+		$this->view->pages = $pages;
+		$this->view->register = $register;
+		$this->view->arrival = null;
+		$this->view->departure = null;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$view->setError($error);
+				$this->view->setError($error);
 			}
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -1104,7 +1064,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function process()
+	public function processTask()
 	{
 		$document = JFactory::getDocument();
 
@@ -1240,7 +1200,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('EVENTS_EVENT_REGISTRATION')
 			);
 
-			$eview = new JView(array('name'=>'register','layout'=>'email'));
+			$eview = new \Hubzero\Component\View(array('name'=>'register','layout'=>'email'));
 			$eview->option = $this->_option;
 			$eview->sitename= $jconfig->getValue('config.sitename');
 			$eview->register = $register;
@@ -1258,32 +1218,33 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 
 			$this->_log($register);
 
-			$view = new JView(array('name' => 'register', 'layout' => 'thanks'));
+			$this->view->setLayout('thanks');
 		} 
 		else 
 		{
-			$view = new JView(array('name' => 'register'));
+			$this->view->setLayout('default');
 		}
-		$view->state = 'open';
-		$view->option = $this->_option;
-		$view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('EVENTS_REGISTER');
-		$view->task = $this->_task;
-		$view->year = $year;
-		$view->month = $month;
-		$view->day = $day;
-		$view->offset = $offset;
-		$view->event = $event;
-		$view->authorized = $auth;
-		$view->page = $page;
-		$view->pages = $pages;
-		$view->register = $register;
-		$view->arrival = $arrival;
-		$view->departure = $departure;
+		$this->view->setName('register');
+		$this->view->state = 'open';
+		$this->view->option = $this->_option;
+		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('EVENTS_REGISTER');
+		$this->view->task = $this->_task;
+		$this->view->year = $year;
+		$this->view->month = $month;
+		$this->view->day = $day;
+		$this->view->offset = $offset;
+		$this->view->event = $event;
+		$this->view->authorized = $auth;
+		$this->view->page = $page;
+		$this->view->pages = $pages;
+		$this->view->register = $register;
+		$this->view->arrival = $arrival;
+		$this->view->departure = $departure;
 		if ($this->getError()) 
 		{
-			$view->setError($this->getError());
+			$this->view->setError($this->getError());
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -1387,11 +1348,11 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function login()
+	public function loginTask()
 	{
 		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			JText::_('EVENTS_LOGIN_NOTICE'),
 			'warning'
 		);
@@ -1405,7 +1366,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * @param      mixed $row Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	protected function edit($row=NULL)
+	public function editTask($row=NULL)
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
@@ -1425,16 +1386,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 
 			$this->login();
 			return;
-		}
-
-		// Push some styles to the tmeplate
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
-
-		$this->_getScripts('assets/js/' . $this->_name);
-		if (!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$this->_getScripts('assets/js/calendar.rc4');
 		}
 
 		// We need at least one category before we can proceed
@@ -1649,24 +1600,22 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		}
 
 		// Output HTML
-		$view = new JView(array(
-			'name' => 'edit'
-		));
-		$view->option = $this->_option;
-		$view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task));
-		$view->task = $this->_task;
-		$view->config = $this->config;
-		$view->row = $row;
-		$view->fields = $fields;
-		$view->times = $times;
-		$view->lists = $lists;
-		$view->gid = $this->gid;
-		$view->admin = $this->_authorize();
+		$this->view->setLayout('default')->setName('edit');
+		$this->view->option = $this->_option;
+		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task));
+		$this->view->task = $this->_task;
+		$this->view->config = $this->config;
+		$this->view->row = $row;
+		$this->view->fields = $fields;
+		$this->view->times = $times;
+		$this->view->lists = $lists;
+		$this->view->gid = $this->gid;
+		$this->view->admin = $this->_authorize();
 		if ($this->getError()) 
 		{
-			$view->setError($this->getError());
+			$this->view->setError($this->getError());
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -1674,7 +1623,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function delete()
+	public function deleteTask()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
@@ -1733,7 +1682,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$subject  = '[' . $jconfig->getValue('config.sitename') . ' ' . JText::_('EVENTS') . '] - ' . JText::_('EVENTS_EVENT_DELETED');
 
 		// Build the message to be e-mailed
-		$eview = new JView(array(
+		$eview = new \Hubzero\Component\View(array(
 			'name'   => 'emails',
 			'layout' => 'deleted'
 		));
@@ -1756,7 +1705,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	 * 
 	 * @return     void
 	 */
-	protected function save()
+	public function saveTask()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
@@ -1978,13 +1927,13 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		{
 			$subject  = '[' . $jconfig->getValue('config.sitename') . ' ' . JText::_('EVENTS_CAL_LANG_CAL_TITLE') . '] - ' . JText::_('EVENTS_CAL_LANG_MAIL_ADDED');
 
-			$eview = new JView(array('name'=>'emails','layout'=>'created'));
+			$eview = new \Hubzero\Component\View(array('name'=>'emails','layout'=>'created'));
 		} 
 		else 
 		{
 			$subject  = '[' . $jconfig->getValue('config.sitename') . ' ' . JText::_('EVENTS_CAL_LANG_CAL_TITLE') . '] - ' . JText::_('EVENTS_CAL_LANG_MAIL_ADDED');
 
-			$eview = new JView(array('name'=>'emails','layout'=>'edited'));
+			$eview = new \Hubzero\Component\View(array('name'=>'emails','layout'=>'edited'));
 		}
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');

@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -66,18 +67,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<?php
 						foreach ($this->rows as $row)
 						{
-							$view = new JView( array('name'=>'browse','layout'=>'item') );
-							$view->option = $this->option;
-							$view->task = $this->task;
-							$view->row = $row;
-							$view->fields = $this->fields;
-							$view->categories = $this->categories;
-							$view->showdate = 0;
-							if ($this->getError()) 
-							{
-								$view->setError( $this->getError() );
-							}
-							$view->display();
+							$this->view('item')
+							     ->set('option', $this->option)
+							     ->set('task', $this->task)
+							     ->set('row', $row)
+							     ->set('fields', $this->fields)
+							     ->set('categories', $this->categories)
+							     ->set('showdate', 0)
+							     ->display();
 						}
 					?>
 					</ul>
@@ -128,18 +125,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		<div class="calendarwrap">
 			<?php
-			$view = new JView( array('name'=>'browse','layout'=>'calendar') );
-			$view->option = $this->option;
-			$view->task = $this->task;
-			$view->year = $this->year;
-			$view->month = $this->month;
-			$view->day = $this->day;
-			$view->offset = $this->offset;
-			$view->shownav = 1;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
-			$view->display();
+			$this->view('calendar')
+			     ->set('option', $this->option)
+			     ->set('task', $this->task)
+			     ->set('year', $this->year)
+			     ->set('month', $this->month)
+			     ->set('day', $this->day)
+			     ->set('offset', $this->offset)
+			     ->set('shownav', 1)
+			     ->display();
 			?>
 		</div><!-- / .calendarwrap -->
 	</div><!-- / .aside -->

@@ -32,6 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $params = new JRegistry( $this->event->params );
+
+$this->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -56,7 +59,7 @@ $params = new JRegistry( $this->event->params );
 
 <section class="main section noaside">
 	<h3><?php echo stripslashes($this->event->title); ?></h3>
-<?php
+	<?php
 		$html  = '<div id="sub-sub-menu">'."\n";
 		$html .= '<ul>'."\n";
 		$html .= "\t".'<li';
@@ -83,10 +86,12 @@ $params = new JRegistry( $this->event->params );
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '</div>'."\n";
 		echo $html;
-?>
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+	?>
+
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
+
 	<form method="post" action="index.php" id="hubForm">
 		<p class="passed"><?php echo JText::_('EVENTS_REGISTRATION_COMPLETE'); ?></p>
 	</form>

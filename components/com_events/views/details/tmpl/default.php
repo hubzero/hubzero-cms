@@ -32,6 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
+
+$this->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -229,19 +232,15 @@ $juser = JFactory::getUser();
 	<div class="aside">
 		<div class="calendarwrap">
 			<?php
-			$view = new JView( array('name'=>'browse','layout'=>'calendar') );
-			$view->option = $this->option;
-			$view->task = $this->task;
-			$view->year = $this->year;
-			$view->month = $this->month;
-			$view->day = $this->day;
-			$view->offset = $this->offset;
-			$view->shownav = 0;
-			if ($this->getError())
-			{
-				$view->setError( $this->getError() );
-			}
-			$view->display();
+			$this->view('calendar', 'browse')
+			     ->set('option', $this->option)
+			     ->set('task', $this->task)
+			     ->set('year', $this->year)
+			     ->set('month', $this->month)
+			     ->set('day', $this->day)
+			     ->set('offset', $this->offset)
+			     ->set('shownav', 1)
+			     ->display();
 			?>
 		</div><!-- / .calendarwrap -->
 	</div><!-- / .aside -->

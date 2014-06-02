@@ -32,6 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $params = new JRegistry( $this->event->params );
+
+$this->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -54,7 +57,7 @@ $params = new JRegistry( $this->event->params );
 	</ul>
 </nav>
 
-<section class="main section noaside">
+<section class="main section">
 	<h3><?php echo stripslashes($this->event->title); ?></h3>
 <?php
 		$html  = '<div id="sub-sub-menu">'."\n";
