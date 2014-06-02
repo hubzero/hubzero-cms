@@ -100,45 +100,36 @@ if (!$this->app->sess) {
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
 			<?php
-			$view = new JView(array(
-				'name'   => 'sessions',
-				'layout' => 'session_' . (JRequest::getInt('novnc', 0) ? 'novnc' : 'java')
-			));
-			$view->option   = $this->option;
-			$view->output   = $this->output;
-			$view->app      = $this->app;
-			$view->readOnly = $readOnly;
-			$view->display();
+			$this->view('session_' . (JRequest::getInt('novnc', 0) ? 'novnc' : 'java'), 'sessions')
+			     ->set('option', $this->option)
+			     ->set('output', $this->output)
+			     ->set('app', $this->app)
+			     ->set('readOnly', $readOnly)
+			     ->display();
 			?>
 		</div><!-- / #app-content -->
 		<div id="app-footer">
 			<?php 
 			if ($this->config->get('show_storage')) 
 			{
-				$view = new JView(array(
-					'name'   => 'storage', 
-					'layout' => 'diskusage'
-				));
-				$view->option    = $this->option;
-				$view->amt       = $this->app->percent;
-				$view->du        = NULL;
-				$view->percent   = 0;
-				$view->msgs      = 0;
-				$view->ajax      = 0;
-				$view->writelink = 1;
-				$view->total     = $this->total;
-				$view->display();
+				$this->view('diskusage', 'storage')
+				     ->set('option', $this->option)
+				     ->set('amt', $this->app->percent)
+				     ->set('du', NULL)
+				     ->set('percent', 0)
+				     ->set('msgs', 0)
+				     ->set('ajax', 0)
+				     ->set('writelink', 1)
+				     ->set('total', $this->total)
+				     ->display();
 
 				if ($this->app->percent >= 100 && isset($this->app->remaining)) 
 				{
-					$view = new JView(array(
-						'name'   => 'storage',
-						'layout' => 'warning'
-					));
-					$view->sec      = $this->app->remaining;
-					$view->padHours = false;
-					$view->option   = $this->option;
-					$view->display();
+					$this->view('warning', 'storage')
+					     ->set('sec', $this->app->remaining)
+					     ->set('padHours', false)
+					     ->set('option', $this->option)
+					     ->display();
 				}
 			} 
 			?>

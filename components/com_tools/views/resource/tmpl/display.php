@@ -86,48 +86,31 @@ else {
 			{
 				//  registered
 				case 1: 
-					$view = new JView(array(
-						'name' => $this->controller,
-						'layout' => 'compose'
-					));
+					$layout = 'compose';
 				break;
 				case 2:
-					$view = new JView(array(
-						'name' => $this->controller,
-						'layout' => 'authors'
-					));
-					// authors
-					//ContribtoolHtml::stepAuthors( $rid, $this->version, $this->option);
+					$layout = 'authors';
 				break;
 				case 3:
-					$view = new JView(array(
-						'name' => $this->controller,
-						'layout' => 'attach'
-					));
-					// attachments
-					//ContribtoolHtml::stepAttach( $rid, $this->option, $this->version, $this->status['published']);
+					$layout = 'attach';
 				break;
 				case 4:
-					$view = new JView(array(
-						'name' => $this->controller,
-						'layout' => 'tags'
-					));
-					// tags
-					//ContribtoolHtml::stepTags( $rid, $tags, $tagfa, $fat, $this->option, $this->status['published'], $this->version );
+					$layout = 'tags';
 				break;
 			}
-			$view->step = $this->step;
-			$view->option = $this->option;
-			$view->controller = $this->controller;
-			$view->version = $this->version;
-			$view->row = $this->row;
-			$view->status = $this->status;
-			$view->dev = $dev;
-			$view->tags = $this->tags;
-			$view->tagfa = $this->tagfa;
-			$view->fats = $this->fats;
-			$view->authors = $this->authors;
-			$view->display();
+			$this->view($layout)
+			     ->set('step', $this->step)
+			     ->set('option', $this->option)
+			     ->set('controller', $this->controller)
+			     ->set('version', $this->version)
+			     ->set('row', $this->row)
+			     ->set('status', $this->status)
+			     ->set('dev', $dev)
+			     ->set('tags', $this->tags)
+			     ->set('tagfa', $this->tagfa)
+			     ->set('fats', $this->fats)
+			     ->set('authors', $this->authors)
+			     ->display();
 		?>
 		</fieldset><div class="clear"></div>
 		<input type="hidden" name="app" value="<?php echo $this->row->alias; ?>" />

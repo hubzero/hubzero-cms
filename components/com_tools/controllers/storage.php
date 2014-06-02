@@ -174,7 +174,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 			$this->getDiskUsage();
 			$this->_redirect = '';
 
-			$view = new JView(array(
+			$view = new \Hubzero\Component\View(array(
 				'name'   => $this->_controller, 
 				'layout' => 'diskusage'
 			));
