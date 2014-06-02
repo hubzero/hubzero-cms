@@ -45,10 +45,10 @@ $this->css()
 </header>
 
 <section class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
-<?php } ?>
 	<div class="subject">
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
+		<?php } ?>
 		<article class="container" id="entry-<?php echo $this->article->get('id'); ?>">
 			<div class="container-block">
 				<h3><?php echo $this->escape(stripslashes($this->article->get('title'))); ?></h3>
@@ -64,16 +64,13 @@ $this->css()
 
 				<p class="entry-voting voting">
 					<?php 
-						$view = new JView(array(
-							'name'   => $this->controller,
-							'layout' => '_vote'
-						));
-						$view->option = $this->option;
-						$view->item   = $this->article;
-						$view->type   = 'entry';
-						$view->vote   = $this->vote;
-						$view->id     = 0; //$this->article->get('id');
-						$view->display();
+						$this->view('_vote')
+						     ->set('option', $this->option)
+						     ->set('item', $this->article)
+						     ->set('type', 'entry')
+						     ->set('vote', $this->vote)
+						     ->set('id', 0) //$this->article->get('id');
+						     ->display();
 					?>
 				</p>
 
@@ -124,33 +121,28 @@ $this->css()
 
 <?php if ($this->article->param('allow_comments')) { ?>
 <section class="below section" id="comments">
-	<h3 class="comments-title">
-		<?php echo JText::_('COM_KB_COMMENTS_ON_ENTRY'); ?>
-		<?php if ($this->article->param('feeds_enabled') && $this->article->comments('count') > 0) { ?>
-			<a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo JText::_('COM_KB_COMMENT_FEED'); ?>">
-				<?php echo JText::_('COM_KB_FEED'); ?>
-			</a>
-		<?php } ?>
-	</h3>
-
 	<div class="subject">
+		<h3 class="comments-title">
+			<?php echo JText::_('COM_KB_COMMENTS_ON_ENTRY'); ?>
+			<?php if ($this->article->param('feeds_enabled') && $this->article->comments('count') > 0) { ?>
+				<a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo JText::_('COM_KB_COMMENT_FEED'); ?>">
+					<?php echo JText::_('COM_KB_FEED'); ?>
+				</a>
+			<?php } ?>
+		</h3>
+
 		<?php
 		if ($this->article->comments('count') > 0)
 		{
-			$view = new JView(
-				array(
-					'name'    => $this->controller,
-					'layout'  => '_list'
-				)
-			);
-			$view->parent     = 0;
-			$view->cls        = 'odd';
-			$view->depth      = 0;
-			$view->option     = $this->option;
-			$view->article    = $this->article;
-			$view->comments   = $this->article->comments('list');
-			$view->base       = $this->article->link();
-			$view->display();
+			$this->view('_list')
+			     ->set('parent', 0)
+			     ->set('cls', 'odd')
+			     ->set('depth', 0)
+			     ->set('option', $this->option)
+			     ->set('article', $this->article)
+			     ->set('comments', $this->article->comments('list'))
+			     ->set('base', $this->article->link())
+			     ->display();
 		}
 		else
 		{
@@ -165,7 +157,7 @@ $this->css()
 		</h3>
 		<form method="post" action="<?php echo JRoute::_($this->article->link()); ?>" id="commentform">
 			<p class="comment-member-photo">
-				<span class="comment-anchor"><!-- <a name="post-comment"></a> --></span>
+				<span class="comment-anchor"></span>
 				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, (!$this->juser->get('guest') ? 0 : 1)); ?>" alt="" />
 			</p>
 			<fieldset>

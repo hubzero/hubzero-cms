@@ -109,21 +109,18 @@ $this->css()
 							</td>
 							<td class="voting">
 								<?php
-								$view = new JView(array(
-									'name'   => $this->controller,
-									'layout' => '_vote'
-								));
-								$view->option = $this->option;
-								$view->item   = $row;
-								$view->type   = 'entry';
-								$view->vote   = '';
-								$view->id     = '';
+								$view = $this->view('_vote')
+									     ->set('option', $this->option)
+									     ->set('item', $row)
+									     ->set('type', 'entry')
+									     ->set('vote', '')
+									     ->set('id', '');
 								if (!$this->juser->get('guest')) 
 								{
 									if ($row->get('user_id') == $this->juser->get('id')) 
 									{
-										$view->vote = $row->get('vote');
-										$view->id   = $row->get('id');
+										$view->set('vote', $row->get('vote'))
+										$view->set('id', $row->get('id'))
 									}
 								}
 								$view->display();

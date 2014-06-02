@@ -45,21 +45,18 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if (!$this->comment->isReported() && $this->comment->get('entry_id')) { ?>
 			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
-				$view = new JView(array(
-					'name'   => 'articles', 
-					'layout' => '_vote'
-				));
-				$view->option = $this->option;
-				$view->item   = $this->comment;
-				$view->type   = 'comment';
-				$view->vote   = '';
-				$view->id     = '';
+				$view = $this->view('_vote')
+						     ->set('option', $this->option)
+						     ->set('item', $this->comment)
+						     ->set('type', 'comment')
+						     ->set('vote', '')
+						     ->set('id', '');
 				if (!$juser->get('guest')) 
 				{
-					$view->vote = $this->comment->get('vote');
+					$view->set('vote', $this->comment->get('vote'));
 					if ($this->comment->get('created_by') == $juser->get('id')) 
 					{
-						$view->id   = $this->comment->get('id');
+						$view->set('id', $this->comment->get('id'));
 					}
 				}
 				$view->display();
@@ -161,20 +158,15 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		if ($this->depth < $this->article->param('comments_depth', 3)) 
 		{
-			$view = new JView(
-				array(
-					'name'    => 'articles',
-					'layout'  => '_list'
-				)
-			);
-			$view->parent     = $this->comment->get('id');
-			$view->article    = $this->article;
-			$view->option     = $this->option;
-			$view->comments   = $this->comment->replies();
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->base       = $this->base;
-			$view->display();
+			$this->view('_list')
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('cls', $cls)
+			     ->set('depth', $this->depth)
+			     ->set('option', $this->option)
+			     ->set('article', $this->article)
+			     ->set('comments', $this->comment->replies())
+			     ->set('base', $this->base)
+			     ->display();
 		}
 		?>
 	</li>
