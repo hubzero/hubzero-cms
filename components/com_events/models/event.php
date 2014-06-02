@@ -245,12 +245,42 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
 		$created  = gmdate('Ymd', strtotime($this->get('created'))) . 'T' . gmdate('His', strtotime($this->get('created'))) . 'Z';
 		$modified = gmdate('Ymd', strtotime($this->get('modified'))) . 'T' . gmdate('His', strtotime($this->get('modified'))) . 'Z';
-		
+			
 		//create ouput
 		$output  = "BEGIN:VCALENDAR\r\n";
 		$output .= "VERSION:2.0\r\n";
 		$output .= "PRODID:PHP\r\n";
 		$output .= "METHOD:PUBLISH\r\n";
+
+		// get daylight start and end
+		$ttz = new DateTimezone(timezone_name_from_abbr('EST'));
+		$first = JFactory::getDate(date('Y') . '-01-02 00:00:00')->toUnix();
+		$last = JFactory::getDate(date('Y') . '-12-30 00:00:00')->toUnix();
+		$transitions = $ttz->getTransitions($first, $last);
+		$daylightStart = JFactory::getDate($transitions[1]['ts']);
+		$daylightEnd = JFactory::getDate($transitions[2]['ts']);
+
+		// output timezone block
+		$output .= "BEGIN:VTIMEZONE\r\n";
+		$output .= "TZID:{$tzName}\r\n";
+		$output .= "X-LIC-LOCATION:{$tzName}\r\n";
+		$output .= "BEGIN:DAYLIGHT\r\n";
+		$output .= "TZNAME:Daylight\r\n";
+		$output .= "RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=2SU;BYMONTH=3\r\n";
+		$output .= "TZOFFSETFROM:-0500\r\n";
+		$output .= "TZOFFSETTO:-0400\r\n";
+		$output .= "DTSTART:" . $daylightStart->format('Ymd\THis') . "\r\n";
+		$output .= "END:DAYLIGHT\r\n";
+		$output .= "BEGIN:STANDARD\r\n";
+		$output .= "TZNAME:Standard\r\n";
+		$output .= "RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=1SU;BYMONTH=11\r\n";
+		$output .= "TZOFFSETFROM:-0400\r\n";
+		$output .= "TZOFFSETTO:-0500\r\n";
+		$output .= "DTSTART:" . $daylightEnd->format('Ymd\THis') . "\r\n";
+		$output .= "END:STANDARD\r\n";
+		$output .= "END:VTIMEZONE\r\n";
+
+		// ouput event info
 		$output .= "BEGIN:VEVENT\r\n";
 		$output .= "UID:{$id}\r\n";
 		$output .= "DTSTAMP:{$now}\r\n";

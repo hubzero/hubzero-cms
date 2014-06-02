@@ -155,6 +155,34 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 		$output .= "X-PUBLISHED-TTL:PT15M\r\n";
 		$output .= "X-ORIGINAL-URL:https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\r\n";
 		$output .= "CALSCALE:GREGORIAN\r\n";
+
+		// get daylight start and end
+		$ttz = new DateTimezone(timezone_name_from_abbr('EST'));
+		$first = JFactory::getDate(date('Y') . '-01-02 00:00:00')->toUnix();
+		$last = JFactory::getDate(date('Y') . '-12-30 00:00:00')->toUnix();
+		$transitions = $ttz->getTransitions($first, $last);
+		$daylightStart = JFactory::getDate($transitions[1]['ts']);
+		$daylightEnd = JFactory::getDate($transitions[2]['ts']);
+
+		// output timezone block
+		$output .= "BEGIN:VTIMEZONE\r\n";
+		$output .= "TZID:America/New_York\r\n";
+		$output .= "X-LIC-LOCATION:America/New_York\r\n";
+		$output .= "BEGIN:DAYLIGHT\r\n";
+		$output .= "TZNAME:Daylight\r\n";
+		$output .= "RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=2SU;BYMONTH=3\r\n";
+		$output .= "TZOFFSETFROM:-0500\r\n";
+		$output .= "TZOFFSETTO:-0400\r\n";
+		$output .= "DTSTART:" . $daylightStart->format('Ymd\THis') . "\r\n";
+		$output .= "END:DAYLIGHT\r\n";
+		$output .= "BEGIN:STANDARD\r\n";
+		$output .= "TZNAME:Standard\r\n";
+		$output .= "RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=1SU;BYMONTH=11\r\n";
+		$output .= "TZOFFSETFROM:-0400\r\n";
+		$output .= "TZOFFSETTO:-0500\r\n";
+		$output .= "DTSTART:" . $daylightEnd->format('Ymd\THis') . "\r\n";
+		$output .= "END:STANDARD\r\n";
+		$output .= "END:VTIMEZONE\r\n";
 		
 		// loop through events
 		foreach ($events as $event)
@@ -192,7 +220,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 			$output .= "BEGIN:VEVENT\r\n";
 			$output .= "UID:{$uid}\r\n";
 			$output .= "SEQUENCE:{$sequence}\r\n";
-			$output .= "DTSTAMP:{$now}Z\r\n";
+			$output .= "DTSTAMP:{$now}\r\n";
 			$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
 			if($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
 			{
@@ -228,7 +256,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 
 		// close calendar
 		$output .= "END:VCALENDAR";
-
+		
 		// set headers and output
 		header('Content-type: text/calendar; charset=utf-8');
 		header('Content-Disposition: attachment; filename="'. $name .'.ics"');
