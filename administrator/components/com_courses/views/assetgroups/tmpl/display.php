@@ -55,6 +55,8 @@ if ($canDo->get('core.delete'))
 JToolBarHelper::spacer();
 JToolBarHelper::help('assetgroups');
 
+$this->css();
+
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">

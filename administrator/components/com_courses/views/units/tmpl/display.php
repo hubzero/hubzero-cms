@@ -48,6 +48,8 @@ if ($canDo->get('core.delete'))
 JToolBarHelper::spacer();
 JToolBarHelper::help('units');
 
+$this->css();
+
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
