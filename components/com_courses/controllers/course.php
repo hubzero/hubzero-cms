@@ -150,13 +150,6 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Push some needed styles to the template
-		// Pass in course type to include special css for paying courses
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-
-		// Push some needed scripts to the template
-		$this->_getScripts();
-
 		// Build the title
 		$this->_buildTitle();
 
@@ -239,12 +232,6 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		// Build pathway
 		$this->_buildPathway();
-
-		// Push some needed styles to the template
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-
-		// Push some needed scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
 
 		if (is_object($model))
 		{
@@ -613,12 +600,6 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			);
 			return;
 		}*/
-
-		// Push some needed styles to the template
-		$this->_getStyles();
-
-		// Push some needed scripts to the template
-		$this->_getScripts();
 
 		// Get number of course members
 		//$members  = $this->course->get('members');

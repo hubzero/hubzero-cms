@@ -210,12 +210,6 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
-		// Push some needed styles to the template
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-
-		// Push some needed scripts to the template
-		$this->_getScripts();
-
 		// Build the title
 		$this->_buildTitle();
 

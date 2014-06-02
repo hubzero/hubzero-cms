@@ -247,9 +247,6 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 			$this->view->filters['limit']
 		);
 
-		// Push some styles to the template
-		$this->_getStyles($this->_option, $this->_task . '.css');
-
 		//build the title
 		$this->_buildTitle();
 
@@ -293,9 +290,6 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 			JError::raiseError(500, 'Badge not found');
 			return;
 		}
-
-		// Push some styles to the template
-		$this->_getStyles($this->_option, $this->_task . '.css');
 
 		$this->view->display();
 	}

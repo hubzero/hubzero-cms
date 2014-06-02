@@ -42,6 +42,9 @@ $levels = array(
 	'members' => 'Only Course Members',
 	'nobody' => 'Disabled/Off'
 );
+
+$this->css('course.css')
+     ->js();
 ?>
 
 <header id="content-header">

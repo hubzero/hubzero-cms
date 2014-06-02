@@ -39,7 +39,9 @@ $offerings = $this->course->offerings(array(
 	'sort'      => 'publish_up'
 ), true);
 
-$this->js('courses.overview.js');
+$this->css('course.css')
+     ->js()
+     ->js('courses.overview.js');
 ?>
 <header id="content-header">
 	<h2><?php echo JText::_('COM_COURSES'); ?></h2>

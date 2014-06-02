@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('course.css')
+     ->js();
+
 //tag editor
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();

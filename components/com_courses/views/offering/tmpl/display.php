@@ -35,7 +35,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 $no_html = JRequest::getInt( 'no_html', 0 );
 $tmpl    = JRequest::getWord('tmpl', false);
 
-if (!$no_html && $tmpl != 'component') : ?>
+if (!$no_html && $tmpl != 'component') : 
+	$this->css('offering.css')
+	     ->js('courses.offering.js');
+	?>
 	<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
