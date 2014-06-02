@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 //database object
 $database = JFactory::getDBO();
 
@@ -48,19 +51,19 @@ $no_show = array("errors","duplicate");
 <section id="import" class="section">
 
 	<?php
-		foreach($this->messages as $message) {
+		foreach ($this->messages as $message) {
 			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 		}
 	?>
 
 	<ul id="steps">
-		<li><a href="/citations/import" class="passed">Step 1<span>Upload citations file</span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="passed">Step 1<span>Upload citations file</span></a></li>
 		<li><a class="active">Step 2<span>Preview imported citations</span></a></li>
 		<li><a>Step 3<span>Browse uploaded citations</span></a></li>
 	</ul><!-- / #steps -->
 
 	<form method="post" action="<?php echo JRoute::_('index.php?option='. $this->option . '&task=import_save'); ?>">
-		<?php if($citations_require_attention) : ?>
+		<?php if ($citations_require_attention) : ?>
 			<table class="upload-list require-action">
 				<thead>
 					<tr>
@@ -70,7 +73,7 @@ $no_show = array("errors","duplicate");
 				</thead>
 				<tbody>
 					<?php $counter = 0; ?>
-					<?php foreach($citations_require_attention as $c) : ?>
+					<?php foreach ($citations_require_attention as $c) : ?>
 						<?php
 							//load the duplicate citation
 							$cc = new CitationsCitation($database);
@@ -124,8 +127,8 @@ $no_show = array("errors","duplicate");
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach(array_keys($c) as $k) : ?>
-											<?php if(!in_array($k, $no_show)) : ?>
+										<?php foreach (array_keys($c) as $k) : ?>
+											<?php if (!in_array($k, $no_show)) : ?>
 												<tr>
 													<td class="key">
 														<?php echo str_replace("_", " ", $k); ?>
@@ -143,8 +146,8 @@ $no_show = array("errors","duplicate");
 																<td>
 																	<span class="old delete">
 																		<?php 
-																			switch($k)
-																			{   
+																			switch ($k)
+																			{
 																				case 'type':	echo $type_title;		break;
 																				case 'tags':	echo $tags;				break;
 																				case 'badges':	echo $badges;			break;
@@ -184,13 +187,13 @@ $no_show = array("errors","duplicate");
 				</thead>
 				<tbody>
 					<?php $counter = 0; ?>
-						<?php foreach($citations_require_no_attention as $c) : ?>
+						<?php foreach ($citations_require_no_attention as $c) : ?>
 						<tr>
 							<td><input type="checkbox" class="check-single" name="citation_action_no_attention[<?php echo $counter++; ?>]" checked="checked" value="1" /></td>
 							<td>
 								<span class="citation-title">
 									<?php 
-										if(array_key_exists("title", $c))
+										if (array_key_exists("title", $c))
 										{
 											echo html_entity_decode($c['title']);
 										} 
@@ -208,8 +211,8 @@ $no_show = array("errors","duplicate");
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach(array_keys($c) as $k) : ?>
-											<?php if(!in_array($k, $no_show)) : ?>
+										<?php foreach (array_keys($c) as $k) : ?>
+											<?php if (!in_array($k, $no_show)) : ?>
 												<tr>
 													<td class="key"><?php echo str_replace("_", " ", $k); ?></td>
 													<td><?php echo html_entity_decode(nl2br($c[$k])); ?></td>

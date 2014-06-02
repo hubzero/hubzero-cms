@@ -31,19 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </header>
 
 <section id="import" class="section">
-
 	<?php foreach ($this->messages as $message) { ?>
 		<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
 	<?php } ?>
 
 	<ul id="steps">
-		<li><a href="/citations/import" class="active">Step 1<span>Upload citations file</span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="active">Step 1<span>Upload citations file</span></a></li>
 		<li><a>Step 2<span>Preview imported citations</span></a></li>
 		<li><a>Step 3<span>Browse uploaded citations</span></a></li>
 	</ul><!-- / #steps -->

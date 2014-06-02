@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 $allow_tags = $this->config->get("citation_allow_tags","no");
 $allow_badges = $this->config->get("citation_allow_badges","no");
 

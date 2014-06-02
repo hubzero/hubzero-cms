@@ -66,11 +66,6 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 	{
 		$this->view->setLayout('display');
 
-		// Push some styles to the template
-		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-		$this->_getStyles();
-		$this->_getStyles('com_usage');
-
 		// Set the page title
 		$this->_buildTitle();
 
@@ -320,19 +315,6 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			$this->view->openurl['icon'] = $resolver->linkIcon;
 		}
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		//push jquery to doc
-		if (!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$document = JFactory::getDocument();
-			$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
-		}
-
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Set the page title
 		$this->_buildTitle();
 
@@ -393,12 +375,6 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		
 		//open url stuff
 		$this->view->openUrl = $this->openUrl();
-		
-		// Push some styles to the template
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
 		
 		//make sure title isnt too long
 		$this->view->maxTitleLength = 50;
@@ -667,23 +643,12 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		//push jquery to doc
 		$document = JFactory::getDocument();
-		if (!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
-		}
 		$document->addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
-		
 		// Instantiate a new view
-		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ' 
-			. JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		$this->view->config = $this->config;
-				
+
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
 		if (!$id) 
@@ -698,7 +663,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			$this->view->badges = array();
 		} 
 		else 
-		{			
+		{
 			//tags & badges
 			$this->view->tags = CitationFormat::citationTags($this->view->row, $this->database, false);
 			$this->view->badges = CitationFormat::citationBadges($this->view->row, $this->database, false);
@@ -731,18 +696,15 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			return false;
 		}
-		if (!is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'publication.php'))
+		if (!is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php'))
 		{
 			return false;
 		}
-		
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'publication.php');
-			
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.owner.php');
-		
+
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+
 		// Get connections to publications		
 		foreach ($assocs as $entry)
 		{
@@ -754,7 +716,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				if ($objP->load($pubID))
 				{
 					$objO = new ProjectOwner($this->database);
-					
+
 					if ($objO->isOwner($this->juser->get('id'), $objP->project_id))
 					{
 						return true;
@@ -762,7 +724,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		
+
 		return false;
 	}
 

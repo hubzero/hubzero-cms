@@ -95,12 +95,6 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Set the page title
 		$this->_buildTitle();
 
@@ -167,7 +161,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 		// load citation import plugins
 		JPluginHelper::importPlugin('citation');
-        $dispatcher = JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// call the plugins
 		$citations = $dispatcher->trigger('onImport' , array($file));
@@ -238,16 +232,6 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
-
-		// push jquery to doc
-		$document = JFactory::getDocument();
-		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
-
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Set the page title
 		$this->_buildTitle();
@@ -543,12 +527,6 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
-
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts();
 
 		// Set the page title
 		$this->_buildTitle();
