@@ -219,7 +219,7 @@ class GroupsHelperView
 	public static function displaySections( $group, $classOrId = 'id="page_menu"' )
 	{
 		// create view object
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'groups',
 			'layout' => '_menu'
 		));
@@ -275,7 +275,7 @@ class GroupsHelperView
 	public static function displaySectionsContent( $group, $overviewSection = null )
 	{
 		// create view object
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'groups',
 			'layout' => '_content'
 		));
@@ -358,7 +358,7 @@ class GroupsHelperView
 	public static function displayToolbar( $group, $classOrId = 'id="group_options"', $displayLogoutLink = false )
 	{
 		// create view object
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'groups',
 			'layout' => '_toolbar'
 		));

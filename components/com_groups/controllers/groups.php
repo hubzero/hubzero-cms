@@ -458,7 +458,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		ob_end_clean();
 		
 		// create view object
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'pages',
 			'layout' => '_view_component'
 		));
@@ -505,7 +505,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		ob_end_clean();
 		
 		// create view object
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'pages',
 			'layout' => '_view_php'
 		));
@@ -623,7 +623,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	public function getDefaultHomePage( $group )
 	{
 		// create view object
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'pages',
 			'layout' => '_view_default'
 		));
@@ -988,7 +988,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// Build the e-mail message
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
-		$eview = new JView(array('name' => 'emails', 'layout' => 'saved'));
+		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'saved'));
 		$eview->option = $this->_option;
 		$eview->juser  = $this->juser;
 		$eview->group  = $group;
@@ -1307,7 +1307,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$subject = JText::sprintf('COM_GROUPS_DELETE_MESSAGE_SUBJECT', $deletedgroup->get('cn'));
 
 		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails','layout' => 'deleted'));
+		$eview = new \Hubzero\Component\View(array('name' => 'emails','layout' => 'deleted'));
 		$eview->option 		= $this->_option;
 		$eview->sitename 	= $jconfig->getValue('config.sitename');
 		$eview->juser 		= $this->juser;

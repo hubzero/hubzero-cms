@@ -65,27 +65,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<fieldset>
 				<!-- <legend><?php echo JText::_('Manage Pages'); ?></legend> -->
 				<?php
-					$view = new JView(array(
-						'name'   => 'pages',
-						'layout' => 'list'
-					));
-					$view->group      = $this->group;
-					$view->categories = $this->categories;
-					$view->pages      = $this->pages;
-					$view->display();
+					$this->view('list')
+					     ->set('group', $this->group)
+					     ->set('categories', $this->categories)
+					     ->set('pages', $this->pages)
+					     ->display();
 				?>
 			</fieldset>
 
 			<fieldset>
 				<!-- <legend><?php echo JText::_('Manage Page Categories'); ?></legend> -->
 				<?php
-					$view = new JView(array(
-						'name'   => 'categories',
-						'layout' => 'list'
-					));
-					$view->group      = $this->group;
-					$view->categories = $this->categories;
-					$view->display();
+					$this->view('list', 'categories')
+					     ->set('group', $this->group)
+					     ->set('categories', $this->categories)
+					     ->display();
 				?>
 			</fieldset>
 
@@ -93,13 +87,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<fieldset>
 					<!-- <legend><?php echo JText::_('Manage Modules'); ?></legend> -->
 					<?php
-						$view = new JView(array(
-							'name'   => 'modules',
-							'layout' => 'list'
-						));
-						$view->group   = $this->group;
-						$view->modules = $this->modules;
-						$view->display();
+						$this->view('list', 'modules')
+						     ->set('group', $this->group)
+						     ->set('modules', $this->modules)
+						     ->display();
 					?>
 				</fieldset>
 			<?php endif; ?>

@@ -112,7 +112,7 @@ class GroupsHelperPages
 		);
 		
 		// build html email
-		$eview = new JView(array(
+		$eview = new \Hubzero\Component\View(array(
 			'name'   => 'emails', 
 			'layout' => $type
 		));
@@ -182,7 +182,7 @@ class GroupsHelperPages
 		);
 		
 		// build html email
-		$eview = new JView(array(
+		$eview = new \Hubzero\Component\View(array(
 			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_groups',
 			'name'   => 'emails', 
 			'layout' => $type
@@ -394,7 +394,7 @@ class GroupsHelperPages
 	public static function displayPage( $group, $page, $markHit = true )
 	{
 		// create view object
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'pages',
 			'layout' => '_view'
 		));

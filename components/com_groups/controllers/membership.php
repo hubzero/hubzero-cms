@@ -315,7 +315,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$subject = JText::sprintf('COM_GROUPS_INVITE_EMAIL_SUBJECT', $this->view->group->get('cn'));
 
 		// Message body for HUB user
-		$eview = new JView(array('name' => 'emails', 'layout' => 'invite'));
+		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'invite'));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
@@ -351,7 +351,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		foreach ($inviteemails as $mbr)
 		{
 			// Message body for HUB user
-			$eview2 = new JView(array('name' => 'emails', 'layout' => 'inviteemail'));
+			$eview2 = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'inviteemail'));
 			$eview2->option = $this->_option;
 			$eview2->sitename = $jconfig->getValue('config.sitename');
 			$eview2->juser = $this->juser;
@@ -564,7 +564,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$subject = JText::sprintf('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_SUBJECT', $this->view->group->get('cn'));
 
 		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails', 'layout' => 'accepted'));
+		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'accepted'));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
@@ -696,7 +696,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$subject = JText::sprintf('COM_GROUPS_EMAIL_MEMBERSHIP_CANCELLED_SUBJECT', $this->view->group->get('cn'));
 
 		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails', 'layout' => 'cancelled'));
+		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'cancelled'));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
@@ -944,7 +944,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$subject = JText::sprintf('COM_GROUPS_JOIN_REQUEST_EMAIL_SUBJECT', $this->view->group->get('cn'));
 
 		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails', 'layout' => 'request'));
+		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'request'));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
