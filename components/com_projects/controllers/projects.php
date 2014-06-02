@@ -466,7 +466,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option 
 			. '&task=' . $this->_task), 'server');
 		
-		if (substr($rtrn, -1, 1) != '/')
+		if (substr($rtrn, -1, 1) != '/' 
+			&& substr($rtrn, -9, 9) != 'sponsored' 
+			&& substr($rtrn, -9, 9) != 'sensitive')
 		{
 			$rtrn .= DS;
 		}
