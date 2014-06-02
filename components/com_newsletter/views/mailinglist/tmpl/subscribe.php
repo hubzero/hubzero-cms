@@ -30,7 +30,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 $mylistIds = array();
+
+$this->css()
+     ->js();
 ?>
 
 <header id="content-header">

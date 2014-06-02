@@ -165,12 +165,6 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		//build pathway
 		$this->_buildPathway( $currentNewsletter );
 		
-		//push styles
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		
 		//set vars for view
 		$this->view->title = $this->_title;
 		
