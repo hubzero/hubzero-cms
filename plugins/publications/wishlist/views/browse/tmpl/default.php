@@ -132,7 +132,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <?php 			if (!$item->reports) { ?>
 					<td class="voting">
 <?php
-						$view = new JView( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option) );
+						$view = new \Hubzero\Component\View( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option) );
 						$view->option = $this->option;
 						$view->item = $item;
 						$view->listid = $this->wishlist->id;
