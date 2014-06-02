@@ -113,9 +113,10 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 	public function generateTask() 
 	{		
 		// Incoming
-		$data = JRequest::getVar( 'data', array(), 'post', 'array' );
-		$from = JRequest::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
-		$to   = JRequest::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
+		$data   = JRequest::getVar( 'data', array(), 'post', 'array' );
+		$from   = JRequest::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
+		$to     = JRequest::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
+		$filter = JRequest::getVar( 'searchterm', '');
 		
 		if (empty($data))
 		{
@@ -167,7 +168,7 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 			// Get all test projects
 			$exclude = $obj->getTestProjects();
 			
-			$stats = $objLog->getCustomStats($from, $to, $exclude);
+			$stats = $objLog->getCustomStats($from, $to, $exclude, $filter);
 			
 			$filename = 'from_' . $from . '_to_' . $to .'_report.csv';
 			
@@ -202,15 +203,17 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->setError(JText::_('Nothing to report for selected date range'));
+				$this->setError(JText::_('Nothing to report for selected date range and/or search term'));
 			}
 		}
 		
 		// Redirect on error
 		if ($this->getError())
-		{
+		{			
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=reports&task=custom'),
+				JRoute::_('index.php?option=' . $this->_option 
+				. '&controller=reports&task=custom'
+				. '&searchterm=' . $filter),
 				$this->getError(),
 				'error'
 			);
