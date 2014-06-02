@@ -33,6 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $no_html = JRequest::getInt('no_html', 0);
 
+if (!$no_html)
+{
+	$this->css();
+}
+
 $assets = $this->item->assets();
 if ($assets->total() > 0) 
 { 

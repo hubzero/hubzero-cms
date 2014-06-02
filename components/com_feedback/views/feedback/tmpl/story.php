@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $jconfig = JFactory::getConfig();
 ?>
 <header id="content-header">

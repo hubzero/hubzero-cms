@@ -30,31 +30,33 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css();
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist" onsubmit="return validate();">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-	<table summary="<?php echo JText::_('COM_FEEDBACK_MEMBER_PICTURE'); ?>">
+	<table>
 		<tbody>
-<?php
-	$k = 0;
+		<?php
+			$k = 0;
 
-	if ($this->file && file_exists( JPATH_ROOT . $this->file_path . DS . $this->file )) {
-		$this_size = filesize(JPATH_ROOT . $this->file_path . DS . $this->file);
-		list($ow, $oh, $type, $attr) = getimagesize(JPATH_ROOT . $this->file_path . DS . $this->file);
+			if ($this->file && file_exists( JPATH_ROOT . $this->file_path . DS . $this->file )) {
+				$this_size = filesize(JPATH_ROOT . $this->file_path . DS . $this->file);
+				list($ow, $oh, $type, $attr) = getimagesize(JPATH_ROOT . $this->file_path . DS . $this->file);
 
-		// scale if image is bigger than 120w x120h
-		$num = max($ow/120, $oh/120);
-		if ($num > 1) {
-			$mw = round($ow/$num);
-			$mh = round($oh/$num);
-		} else {
-			$mw = $ow;
-			$mh = $oh;
-		}
-?>
+				// scale if image is bigger than 120w x120h
+				$num = max($ow/120, $oh/120);
+				if ($num > 1) {
+					$mw = round($ow/$num);
+					$mh = round($oh/$num);
+				} else {
+					$mw = $ow;
+					$mh = $oh;
+				}
+		?>
 			<tr>
 				<td>
 					<img src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" /> 
@@ -66,7 +68,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<input type="submit" name="submit" value="<?php echo JText::_('DELETE'); ?>" />
 				</td>
 			</tr>
-<?php } else { ?>
+		<?php } else { ?>
 			<tr>
 				<td>
 					<img src="<?php echo $this->default_picture; ?>" alt="" id="oimage" name="oimage" />
@@ -83,10 +85,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<input type="file" name="upload" id="upload" size="10" /> <input type="submit" value="<?php echo JText::_('COM_FEEDBACK_UPLOAD'); ?>" />
 				</td>
 			</tr>
-<?php } ?>
+		<?php } ?>
 		</tbody>
 	</table>
-		
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="tmpl" value="component" />

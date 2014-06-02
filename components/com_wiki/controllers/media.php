@@ -647,8 +647,6 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->name    = $this->_name;
 		$this->view->sub     = $this->_sub;
 
-		$this->_getStyles();
-
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

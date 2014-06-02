@@ -33,7 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $no_html = JRequest::getVar('no_html', 0);
 
-if (!$no_html) { ?>
+if (!$no_html) {
+	$this->css();
+	?>
 <script type="text/javascript">
 	function updateDir()
 	{

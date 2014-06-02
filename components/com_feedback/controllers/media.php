@@ -204,9 +204,6 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		// Build the directory path
 		$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
 
-		// Push some styles to the template
-		$this->_getStyles();
-
 		// Output form with error messages
 		$this->view->title     = $this->_title;
 		$this->view->webpath   = $this->config->get('uploadpath', '/site/quotes');

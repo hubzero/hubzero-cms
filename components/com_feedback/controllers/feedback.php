@@ -109,10 +109,6 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Push some styles to the template
-		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-		$this->_getStyles();
-
 		// Set any messages
 		if ($this->getError()) 
 		{
@@ -137,7 +133,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		{
 			$here = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($here)),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($here)),
 				JText::_('To submit a success story, you need to be logged in. Please login using the form below:'),
 				'warning'
 			);
@@ -158,9 +154,6 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		// Push some styles to the template
-		$this->_getStyles();
 
 		$this->view->user = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 
@@ -201,9 +194,6 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		// Push some styles to the template
-		$this->_getStyles();
 
 		// Set error messages
 		if ($this->getError()) 
@@ -288,9 +278,6 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		// Push some styles to the template
-		$this->_getStyles();
 
 		// Set error messages
 		if ($this->getError()) 

@@ -302,8 +302,6 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 	{
 		$this->view->setLayout('display');
 
-		$this->_getStyles();
-
 		// Output HTML
 		$this->view->config = $this->config;
 		$this->view->id = JRequest::getInt('id', 0);
@@ -420,8 +418,6 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 			ksort($folders);
 			ksort($docs);
 		}
-
-		$this->_getStyles();
 
 		$this->view->docs    = $docs;
 		$this->view->folders = $folders;

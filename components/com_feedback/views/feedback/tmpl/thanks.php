@@ -62,6 +62,8 @@ else
 	$mw = $ow;
 	$mh = $oh;
 }
+
+$this->css();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

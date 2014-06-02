@@ -76,11 +76,6 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 		// Incoming
 		$enddate = JRequest::getVar('selectedPeriod', 0, 'post');
 
-		// Push some scripts and styles to the tmeplate
-		$this->_getStyles();
-
-		$this->_getScripts();
-
 		// Establish a connection to the usage database
 		$udb = UsageHelper::getUDBO();
 		if (!is_object($udb)) 

@@ -613,8 +613,6 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->config  = $this->config;
 		$this->view->listdir = $listdir;
 
-		$this->_getStyles();
-
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

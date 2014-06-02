@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 jimport('joomla.filesystem.file');
 ?>
 	<script type="text/javascript">
