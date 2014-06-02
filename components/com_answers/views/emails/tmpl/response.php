@@ -60,18 +60,15 @@ if ($this->plaintext)
 }
 else
 {
-	$eview = new JView(array(
-		'name'   => 'emails',
-		'layout' => 'response_plaintext'
-	));
-	$eview->option   = $this->option;
-	$eview->sitename = $this->sitename;
-	$eview->juser    = $this->juser;
-	$eview->question = $this->question;
-	$eview->row      = $this->row;
-	$eview->id       = $this->id;
-	$eview->boundary = $this->boundary;
-	$eview->link     = $link;
+	$eview = $this->view('question_plaintext')
+			     ->set('option', $this->option)
+			     ->set('sitename', $this->sitename)
+			     ->set('juser', $this->juser)
+			     ->set('question', $this->question)
+			     ->set('row', $this->row)
+			     ->set('id', $this->id)
+			     ->set('boundary', $this->boundary)
+			     ->set('link', $link);
 
 	echo $eview->loadTemplate();
 }

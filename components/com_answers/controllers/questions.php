@@ -866,7 +866,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$message = array();
 
 			// Plain text message
-			$eview = new JView(array(
+			$eview = new \Hubzero\Component\View(array(
 				'name'   => 'emails',
 				'layout' => 'question_plaintext'
 			));
@@ -995,7 +995,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 				$message = array();
 
 				// Plain text message
-				$eview = new JView(array(
+				$eview = new \Hubzero\Component\View(array(
 					'name'   => 'emails',
 					'layout' => 'removed_plaintext'
 				));
@@ -1114,7 +1114,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$message = array();
 
 		// Plain text message
-		$eview = new JView(array(
+		$eview = new \Hubzero\Component\View(array(
 			'name'   => 'emails',
 			'layout' => 'response_plaintext'
 		));
