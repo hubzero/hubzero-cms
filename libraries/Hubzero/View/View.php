@@ -229,11 +229,11 @@ class View extends Object
 	 * an object, an associative array, or a single value by name.
 	 *
 	 * You are not allowed to set variables that begin with an underscore;
-	 * these are either private properties for JView or private variables
+	 * these are either private properties for View or private variables
 	 * within the template script itself.
 	 *
 	 * <code>
-	 * $view = new JView;
+	 * $view = new View;
 	 *
 	 * // Assign directly
 	 * $view->var1 = 'something';
