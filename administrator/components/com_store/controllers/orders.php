@@ -125,9 +125,6 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Push some styles to the view
-		$this->_getStyles();
-
 		// Set any errors
 		if ($this->getError())
 		{

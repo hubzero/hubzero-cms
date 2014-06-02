@@ -116,9 +116,6 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Push some styles to the view
-		//$this->_getStyles();
-
 		// Set any errors
 		if ($this->getError())
 		{
@@ -165,13 +162,8 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 
 		if ($id)
 		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
 			// Get parameters
-			$params = new $paramsClass($this->view->row->params);
+			$params = new JRegistry($this->view->row->params);
 			$this->view->row->size  = $params->get('size', '');
 			$this->view->row->color = $params->get('color', '');
 		}
@@ -262,8 +254,10 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('COM_STORE_MSG_SAVED');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('COM_STORE_MSG_SAVED')
+		);
 	}
 
 	/**

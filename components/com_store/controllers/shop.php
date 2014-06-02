@@ -182,12 +182,6 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 		$obj = new Store($this->database);
 		$this->view->rows = $obj->getItems('retrieve', $this->view->filters, $this->config);
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/store', $this->_option);
-
 		// Set page title
 		$this->_buildTitle();
 
@@ -224,12 +218,6 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 		}
 
 		$this->view->setLayout('cart');
-
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/store', $this->_option);
 
 		// Set page title
 		$this->_buildTitle();
@@ -366,12 +354,6 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/store', $this->_option);
-
 		// Set page title
 		$this->_buildTitle();
 
@@ -436,12 +418,6 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 	 */
 	public function finalizeTask()
 	{
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/store', $this->_option);
-
 		// Set page title
 		$this->_buildTitle();
 
@@ -617,12 +593,6 @@ class StoreControllerShop extends \Hubzero\Component\SiteController
 			$this->loginTask();
 			return;
 		}
-
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/store', $this->_option);
 
 		// Set page title
 		$this->_buildTitle();
