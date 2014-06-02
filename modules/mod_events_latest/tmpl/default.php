@@ -36,41 +36,23 @@ if ($this->getError()) { ?>
 <?php } else { ?>
 	<table class="latest_events_tbl">
 		<tbody>
-		<?php if ($this->eventsByRelDay) { ?>
+		<?php if (count($this->events) > 0) { ?>
 			<?php
 			$cls = 'even';
-			foreach ($this->eventsByRelDay as $relDay => $daysEvents)
+			foreach ($this->events as $event)
 			{
-				reset($daysEvents);
-
-				// Get all of the events for this day
-				foreach ($daysEvents as $dayEvent)
-				{
-					// Get the title and start time
-					$startDate = $dayEvent->publish_up;
-					$eventDate = mktime(substr($startDate, 11, 2), substr($startDate, 14, 2), substr($startDate, 17, 2), date('m'), date('d') + $relDay, date('Y'));
-					$startDate = mktime(substr($startDate, 11, 2), substr($startDate, 14, 2), substr($startDate, 17, 2), substr($startDate, 5, 2), substr($startDate, 8, 2), substr($startDate, 0, 4));
-
-					$endDate = $dayEvent->publish_down;
-					$endDate = mktime(substr($endDate, 11, 2), substr($endDate, 14, 2), substr($endDate, 17, 2), substr($endDate, 5, 2), substr($endDate, 8, 2), substr($endDate, 0, 4));
-
-					$year  = date('Y', $startDate);
-					$month = date('m', $startDate);
-					$day   = date('d', $startDate);
-
-					$cls = ($cls == 'even') ? 'odd' : 'even';
-					?>
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+			?>
 			<tr class="<?php echo $cls; ?>">
 				<td class="event-date">
-					<span class="month"><?php echo JHtml::_('date', $dayEvent->publish_up, 'M'); ?></span>
-					<span class="day"><?php echo JHtml::_('date', $dayEvent->publish_up, 'd'); ?></span>
+					<span class="month"><?php echo JHtml::_('date', $event->publish_up, 'M'); ?></span>
+					<span class="day"><?php echo JHtml::_('date', $event->publish_up, 'd'); ?></span>
 				</td>
 				<td class="event-title">
-					<a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id=' . $dayEvent->id); ?>"><?php echo $this->escape(stripslashes($dayEvent->title)); ?></a>
+					<a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id=' . $event->id); ?>"><?php echo $this->escape(stripslashes($event->title)); ?></a>
 				</td>
 			</tr>
-			<?php 
-				}
+			<?php
 			}
 			?>
 		<?php } else { ?>

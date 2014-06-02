@@ -258,110 +258,117 @@ class modEventsLatest extends \Hubzero\Module\Module
 
 		// Display events
 		$query = "SELECT #__events.* FROM #__events, #__categories as b"
-			. "\nWHERE #__events.catid = b.id " // AND b.access <= $gid AND #__events.access <= $gid 
-                        . "\n   AND (#__events.state='1')"
+			. "\nWHERE #__events.catid = b.id "
+            . "\n   AND #__events.state='1'"
 			. "\n	AND ((publish_up <= '$todayBegin%' AND publish_down >= '$todayBegin%')"
 			. "\n	OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
 			. "\n   OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"
 			. "\n   OR (publish_down <= '$endDate%' AND publish_down >= '$todayBegin%'))"
 			. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
-			. "\nORDER BY publish_up ASC";
+			. "\nORDER BY publish_up ASC LIMIT $maxEvents";
 		
 		// Retrieve the list of returned records as an array of objects
 		$database->setQuery($query);
-		$rows = $database->loadObjectList();
+		$this->events = $database->loadObjectList();
 
-		// Determine the events that occur each day within our range
-		$events = 0;
-		$date = mktime(0, 0, 0);
-		$lastDate = mktime(0, 0, 0, intval(substr($endDate, 5, 2)), intval(substr($endDate, 8, 2)), intval(substr($endDate, 0, 4)));
-		$i = 0;
+		// // Determine the events that occur each day within our range
+		// $events = 0;
+		// $date = mktime(0, 0, 0);
+		// $lastDate = mktime(0, 0, 0, intval(substr($endDate, 5, 2)), intval(substr($endDate, 8, 2)), intval(substr($endDate, 0, 4)));
+		// $i = 0;
 
-		$content  = '';
-		$seenThisEvent = array();
+		// $content  = '';
+		// $seenThisEvent = array();
 
-		if (count($rows))
-		{
-			while ($date <= $lastDate)
-			{
-				// Get the events for this $date
-				$eventsThisDay = $this->_getEventsByDate($rows, $date, $seenThisEvent);
-				if (count($eventsThisDay))
-				{
-					// dmcd May 7/04  bug fix to not exceed maxEvents
-					$eventsToAdd = min($maxEvents-$events, count($eventsThisDay));
-					$eventsThisDay = array_slice($eventsThisDay, 0, $eventsToAdd);
-					$eventsByRelDay[$i] = $eventsThisDay;
-					$events += count($eventsByRelDay[$i]);
-				}
-				if ($events >= $maxEvents)
-				{
-					break;
-				}
-				$date = mktime(0, 0, 0, date('m', $date), date('d', $date) + 1, date('Y', $date));
-				$i++;
-			}
-		}
+		// if (count($rows))
+		// {
+		// 	while ($date <= $lastDate)
+		// 	{
+		// 		// Get the events for this $date
+		// 		$eventsThisDay = $this->_getEventsByDate($rows, $date, $seenThisEvent);
+		// 		echo '<pre>';
+		// 		print_r($eventsThisDay);
+		// 		echo '</pre>';
+		// 		if (count($eventsThisDay))
+		// 		{
+		// 			// dmcd May 7/04  bug fix to not exceed maxEvents
+		// 			$eventsToAdd = min($maxEvents-$events, count($eventsThisDay));
+		// 			$eventsThisDay = array_slice($eventsThisDay, 0, $eventsToAdd);
+		// 			$eventsByRelDay[$i] = $eventsThisDay;
+		// 			$events += count($eventsByRelDay[$i]);
+		// 		}
+		// 		if ($events >= $maxEvents)
+		// 		{
+		// 			break;
+		// 		}
+		// 		$date = mktime(0, 0, 0, date('m', $date), date('d', $date) + 1, date('Y', $date));
+		// 		$i++;
+		// 	}
+		// }
+
+		// echo '<pre>';
+		// print_r(this);
+		// echo '</pre>';
 		
-		// Do we actually have any events to display?
-		if ($events < $maxEvents && ($mode==1 || $mode==3))
-		{
-			// Display some recent previous events too up to a total of $maxEvents
-			// Changed by Swaroop to display only events that are not announcements
-			$query = "SELECT #__events.* FROM #__events, #__categories as b"
-				. "\nWHERE #__events.catid = b.id AND b.access <= $gid AND #__events.access <= $gid AND (#__events.state='1' $ancmnt AND #__events.checked_out='0')"
-				. "\n	AND ((publish_up <= '$beginDate%' AND publish_down >= '$beginDate%')"
-				. "\n	OR (publish_up <= '$yesterdayEnd%' AND publish_down >= '$yesterdayEnd%')"
-				. "\n   OR (publish_up <= '$yesterdayEnd%' AND publish_up >= '$beginDate%')"
-				. "\n   OR (publish_down <= '$yesterdayEnd%' AND publish_down >= '$beginDate%'))"
-				. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
-				. "\n  ORDER BY publish_up DESC";
+		// // Do we actually have any events to display?
+		// if ($events < $maxEvents && ($mode==1 || $mode==3))
+		// {
+		// 	// Display some recent previous events too up to a total of $maxEvents
+		// 	// Changed by Swaroop to display only events that are not announcements
+		// 	$query = "SELECT #__events.* FROM #__events, #__categories as b"
+		// 		. "\nWHERE #__events.catid = b.id AND b.access <= $gid AND #__events.access <= $gid AND (#__events.state='1' $ancmnt AND #__events.checked_out='0')"
+		// 		. "\n	AND ((publish_up <= '$beginDate%' AND publish_down >= '$beginDate%')"
+		// 		. "\n	OR (publish_up <= '$yesterdayEnd%' AND publish_down >= '$yesterdayEnd%')"
+		// 		. "\n   OR (publish_up <= '$yesterdayEnd%' AND publish_up >= '$beginDate%')"
+		// 		. "\n   OR (publish_down <= '$yesterdayEnd%' AND publish_down >= '$beginDate%'))"
+		// 		. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
+		// 		. "\n  ORDER BY publish_up DESC";
 
-			// Initialise the query in the $database connector
-			// This translates the '#__' prefix into the real database prefix
-			$database->setQuery($query);
+		// 	// Initialise the query in the $database connector
+		// 	// This translates the '#__' prefix into the real database prefix
+		// 	$database->setQuery($query);
 
-			// Retrieve the list of returned records as an array of objects
-			$prows = $database->loadObjectList();
+		// 	// Retrieve the list of returned records as an array of objects
+		// 	$prows = $database->loadObjectList();
 
-			if (count($prows))
-			{
-				// Start from yesterday
-				$date = mktime(23, 59, 59, date('m'), date('d') - 1, date('Y'));
-				$lastDate = mktime(0, 0, 0, intval(substr($beginDate, 5, 2)), intval(substr($beginDate, 8, 2)), intval(substr($beginDate, 0, 4)));
-				$i = -1;
+		// 	if (count($prows))
+		// 	{
+		// 		// Start from yesterday
+		// 		$date = mktime(23, 59, 59, date('m'), date('d') - 1, date('Y'));
+		// 		$lastDate = mktime(0, 0, 0, intval(substr($beginDate, 5, 2)), intval(substr($beginDate, 8, 2)), intval(substr($beginDate, 0, 4)));
+		// 		$i = -1;
 
-				while ($date >= $lastDate)
-				{
-					// Get the events for this $date
-					$eventsThisDay = $this->_getEventsByDate($prows, $date, $seenThisEvent, $norepeat);
-					if (count($eventsThisDay))
-					{
-						$eventsByRelDay[$i] = $eventsThisDay;
-						$events += count($eventsByRelDay[$i]);
-					}
-					if ($events >= $maxEvents)
-					{
-						break;
-					}
-					$date = mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date));
-					$i--;
-				}
-			}
-		}
+		// 		while ($date >= $lastDate)
+		// 		{
+		// 			// Get the events for this $date
+		// 			$eventsThisDay = $this->_getEventsByDate($prows, $date, $seenThisEvent, $norepeat);
+		// 			if (count($eventsThisDay))
+		// 			{
+		// 				$eventsByRelDay[$i] = $eventsThisDay;
+		// 				$events += count($eventsByRelDay[$i]);
+		// 			}
+		// 			if ($events >= $maxEvents)
+		// 			{
+		// 				break;
+		// 			}
+		// 			$date = mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date));
+		// 			$i--;
+		// 		}
+		// 	}
+		// }
 
-		if (isset($eventsByRelDay) && count($eventsByRelDay))
-		{
-			// Now to display these events, we just start at the smallest index of the $eventsByRelDay array and work our way up.
-			ksort($eventsByRelDay, SORT_NUMERIC);
-			reset($eventsByRelDay);
+		// if (isset($eventsByRelDay) && count($eventsByRelDay))
+		// {
+		// 	// Now to display these events, we just start at the smallest index of the $eventsByRelDay array and work our way up.
+		// 	ksort($eventsByRelDay, SORT_NUMERIC);
+		// 	reset($eventsByRelDay);
 
-			$this->eventsByRelDay = $eventsByRelDay;
-		}
-		else
-		{
-			$this->eventsByRelDay = null;
-		}
+		// 	$this->eventsByRelDay = $eventsByRelDay;
+		// }
+		// else
+		// {
+		// 	$this->eventsByRelDay = null;
+		// }
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
