@@ -164,29 +164,23 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			$orderitems = $oi->getOrderItems($id);
 			if ($orderitems)
 			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
 				foreach ($orderitems as $r)
 				{
-					$params = new $paramsClass($r->params);
-					$selections = new $paramsClass($r->selections);
+					$params = new JRegistry($r->params);
+					$selections = new JRegistry($r->selections);
 
 					// Get size selection
-					$r->sizes    		= $params->get('size', '');
-					$r->sizes 			= str_replace(" ","",$r->sizes);
-					$r->selectedsize    = trim($selections->get('size', ''));
-					$r->sizes    		= preg_split('#,#',$r->sizes);
-					$r->sizeavail		= in_array($r->selectedsize, $r->sizes) ? 1 : 0;
+					$r->sizes        = $params->get('size', '');
+					$r->sizes        = str_replace(' ', '', $r->sizes);
+					$r->selectedsize = trim($selections->get('size', ''));
+					$r->sizes        = preg_split('/,/', $r->sizes);
+					$r->sizeavail    = in_array($r->selectedsize, $r->sizes) ? 1 : 0;
 
 					// Get color selection
-					$r->colors    		= $params->get('color', '');
-					$r->colors 			= str_replace(" ","",$r->colors);
-					$r->selectedcolor   = trim($selections->get('color', ''));
-					$r->colors    		= preg_split('#,#',$r->colors);
+					$r->colors        = $params->get('color', '');
+					$r->colors        = str_replace(' ', '', $r->colors);
+					$r->selectedcolor = trim($selections->get('color', ''));
+					$r->colors        = preg_split('/,/', $r->colors);
 				}
 			}
 			else
@@ -209,9 +203,9 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// Include needed libraries
-	//	require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
+		// require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
 
 		// Get the Joomla config
 		$jconfig = JFactory::getConfig();
@@ -253,7 +247,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;				
 		
 		// Get front-end template name
-		$sql = "SELECT template FROM #__templates_menu WHERE client_id=0";
+		$sql = "SELECT template FROM `#__templates_menu` WHERE client_id=0";
 		$this->database->setQuery( $sql );
 		$tmpl = $this->database->loadResult();
 
@@ -294,19 +288,19 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 		$pdf->AddPage();
 		
 		// HTML content
-		$view = new JView( array('name'=>'orders', 'layout'=>'receipt' ) );
-		$view->hubaddress  		= $hubaddress;
-		$view->headertext_ln1 	= $headertext_ln1;
-		$view->headertext_ln2 	= $headertext_ln2;
-		$view->receipt_note 	= $receipt_note;
-		$view->receipt_title 	= $receipt_title;
-		$view->option 			= $this->_option;
-		$view->url				= $webpath;
-		$view->customer			= $customer;
-		$view->row				= $row;
-		$view->orderitems		= $orderitems;
+		$this->view->setLayout('receipt');
+		$this->view->hubaddress     = $hubaddress;
+		$this->view->headertext_ln1 = $headertext_ln1;
+		$this->view->headertext_ln2 = $headertext_ln2;
+		$this->view->receipt_note   = $receipt_note;
+		$this->view->receipt_title  = $receipt_title;
+		$this->view->option         = $this->_option;
+		$this->view->url            = $webpath;
+		$this->view->customer       = $customer;
+		$this->view->row            = $row;
+		$this->view->orderitems     = $orderitems;
 
-		$html = $view->loadTemplate();
+		$html = $this->view->loadTemplate();
 
 		// output the HTML content
 		$pdf->writeHTML($html, true, false, true, false, '');
@@ -375,16 +369,10 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			$this->view->orderitems = $oi->getOrderItems($id);
 			if (count($this->view->orderitems) > 0)
 			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
 				foreach ($this->view->orderitems as $r)
 				{
-					$params = new $paramsClass($r->params);
-					$selections = new $paramsClass($r->selections);
+					$params = new JRegistry($r->params);
+					$selections = new JRegistry($r->selections);
 
 					// Get size selection
 					$r->sizes = $params->get('size', '');
@@ -556,7 +544,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			}
 			
 			if ($data['message'])
-			{ // add custom message			
+			{ // add custom message
 				$emailbody .= $data['message']."\r\n";
 			}
 
