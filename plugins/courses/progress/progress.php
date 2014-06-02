@@ -367,7 +367,8 @@ class plgCoursesProgress extends JPlugin
 					'section_id'  => $this->course->offering()->section()->get('id'),
 					'offering_id' => $this->course->offering()->get('id'),
 					'graded'      => true,
-					'state'       => 1
+					'state'       => 1,
+					'asset_scope' => 'asset_group'
 				),
 				'order_by'  => 'title',
 				'order_dir' => 'ASC'
@@ -429,7 +430,8 @@ class plgCoursesProgress extends JPlugin
 					'section_id'  => $this->course->offering()->section()->get('id'),
 					'offering_id' => $this->course->offering()->get('id'),
 					'graded'      => true,
-					'state'       => 1
+					'state'       => 1,
+					'asset_scope' => 'asset_group'
 				),
 				'order_by'  => 'title',
 				'order_dir' => 'ASC'
@@ -492,15 +494,35 @@ class plgCoursesProgress extends JPlugin
 		$assets = $asset->find(
 			array(
 				'w' => array(
-					'course_id'  => $this->course->get('id'),
-					'section_id' => $this->course->offering()->section()->get('id'),
-					'graded'     => true,
-					'state'      => 1
+					'course_id'   => $this->course->get('id'),
+					'section_id'  => $this->course->offering()->section()->get('id'),
+					'offering_id' => $this->course->offering()->get('id'),
+					'graded'      => true,
+					'state'       => 1,
+					'asset_scope' => 'asset_group'
 				),
 				'order_by'  => 'title',
 				'order_dir' => 'ASC'
 			)
 		);
+
+		// Get gradebook auxiliary assets
+		$auxiliary = $asset->findByScope(
+			'offering',
+			$this->course->offering()->get('id'),
+			array(
+				'asset_type'    => 'gradebook',
+				'asset_subtype' => 'auxiliary',
+				'graded'        => true,
+				'state'         => 1
+			)
+		);
+
+		$assets = array_merge($assets, $auxiliary);
+
+		usort($assets, function($a, $b) {
+			return strcasecmp($a->title, $b->title);
+		});
 
 		$section  = $this->course->offering()->section()->get('alias');
 		$filename = $this->course->get('alias') . '.' . $section . '.gradebook.csv';

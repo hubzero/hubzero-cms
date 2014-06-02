@@ -230,7 +230,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				$filters['asset_type'] = 'video';
 			default:
 				// Get the asset views
-				$database = JFactory::getDBO();
+				$database   = JFactory::getDBO();
 				$assetViews = new CoursesTableAssetViews($database);
 				$views      = $assetViews->find($filters);
 			break;
@@ -258,9 +258,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					$asset = new CoursesTableAsset(JFactory::getDBO());
 					$filters = array(
 						'w' => array(
-							'course_id'  => $this->course->get('id'),
-							'unit_id'    => $unit_id,
-							'state'      => 1
+							'course_id'   => $this->course->get('id'),
+							'unit_id'     => $unit_id,
+							'state'       => 1,
+							'asset_scope' => 'asset_group'
 						)
 					);
 

@@ -138,7 +138,7 @@ class CoursesTableAssetViews extends JTable
 		$from = array();
 		$from[] = "#__courses_assets AS ca";
 		$from[] = "INNER JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id";
-		$from[] = "INNER JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
+		$from[] = "INNER JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id AND caa.scope = 'asset_group'";
 		$from[] = "INNER JOIN #__courses_asset_views AS cav ON ca.id = cav.asset_id";
 		$from[] = "INNER JOIN #__courses_members AS cm ON cav.viewed_by = cm.id";
 		$from[] = "INNER JOIN #__courses_units AS cu ON cag.unit_id = cu.id AND cm.offering_id = cu.offering_id";
