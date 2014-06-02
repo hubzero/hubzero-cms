@@ -210,12 +210,15 @@ HUB.ProjectMicroblog = {
 				e.preventDefault();
 
 				var link = $('#more-updates').find("a");
-				var url = link.attr('href') + '&no_html=1&ajax=1&action=update';
+				if (link.length)
+				{
+					var url = link.attr('href') + '&no_html=1&ajax=1&action=update';
 
-				$.get(url, {}, function(data) {
-					$('#latest_activity').html(data);
-					HUB.ProjectMicroblog.initialize();
-				});
+					$.get(url, {}, function(data) {
+						$('#latest_activity').html(data);
+						HUB.ProjectMicroblog.initialize();
+					});
+				}
 			});	
 		}
 	}
