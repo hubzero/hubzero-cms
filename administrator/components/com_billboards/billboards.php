@@ -42,22 +42,28 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'billboard.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'collection.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controller.php');
 
-$task = 'billboards';
+$controllerName = JRequest::getCmd('controller', 'billboards');
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'billboards';
+}
 
 JSubMenuHelper::addEntry(
 	JText::_('Billboards'),
-	'index.php?option=com_billboards&task=billboards',
-	$task == 'billboards'
+	'index.php?option=com_billboards&controller=billboards',
+	$controllerName == 'billboards'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Collections'),
-	'index.php?option=com_billboards&task=collections',
-	$task == 'collections'
+	'index.php?option=com_billboards&controller=collections',
+	$controllerName == 'collections'
 );
 
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'BillboardsController' . ucfirst($controllerName);
+
 // Initiate controller
-$controller = new BillboardsController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();

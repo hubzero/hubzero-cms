@@ -61,13 +61,14 @@ function submitbutton(pressbutton)
 		<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="name"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+			<label for="name"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 			<input type="text" name="collection[name]" id="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 		</div>
 	</fieldset>
 	<input type="hidden" name="collection[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="savesec" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

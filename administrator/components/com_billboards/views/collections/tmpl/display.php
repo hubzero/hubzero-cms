@@ -64,7 +64,7 @@ JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'deletecollect
 			<tr>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editcollection&amp;id[]=<? echo $row->id; ?>"><?php echo stripslashes($row->name); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>"><?php echo stripslashes($row->name); ?></a></td>
 			</tr>
 
 <?php 
@@ -75,8 +75,9 @@ JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'deletecollect
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="task" value="collections" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
 	<?php echo JHTML::_('form.token'); ?>
