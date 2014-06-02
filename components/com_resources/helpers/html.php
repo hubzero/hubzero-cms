@@ -39,110 +39,6 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpe
 class ResourcesHtml
 {
 	/**
-	 * Encode some basic characters
-	 * 
-	 * @param      string  $str    Text to convert
-	 * @param      integer $quotes Include quotes?
-	 * @return     string
-	 */
-	public static function encode_html($str, $quotes=1)
-	{
-		$str = stripslashes($str);
-		$a = array(
-			'&' => '&#38;',
-			'<' => '&#60;',
-			'>' => '&#62;',
-		);
-		if ($quotes) $a = $a + array(
-			"'" => '&#39;',
-			'"' => '&#34;',
-		);
-
-		return strtr($str, $a);
-	}
-
-	/**
-	 * Clean text of potential XSS and other unwanted items such as
-	 * HTML comments and javascript. Also shortens text.
-	 * 
-	 * @param      string  $text    Text to clean
-	 * @param      integer $desclen Length to shorten to
-	 * @return     string
-	 */
-	public static function cleanText($text, $desclen=300)
-	{
-		$elipse = false;
-
-		$text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
-		$text = str_replace('{mosimage}', '', $text);
-		$text = str_replace("\n", ' ', $text);
-		$text = str_replace("\r", ' ', $text);
-		$text = preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i', '\\2', $text);
-		$text = preg_replace('/<!--.+?-->/', '', $text);
-		$text = preg_replace('/{.+?}/', '', $text);
-		$text = strip_tags($text);
-		if (strlen($text) > $desclen) 
-		{
-			$elipse = true;
-		}
-		$text = substr($text, 0, $desclen);
-		if ($elipse) 
-		{
-			$text .= '&#8230;';
-		}
-		$text = trim($text);
-
-		return $text;
-	}
-
-	/**
-	 * Display an element with warning class
-	 * 
-	 * @param      string $msg Message to display
-	 * @param      string $tag HTML element
-	 * @return     string HTML
-	 */
-	public static function warning($msg, $tag='p')
-	{
-		return '<' . $tag . ' class="warning">' . $msg . '</' . $tag . '>' . "\n";
-	}
-
-	/**
-	 * Display an element with archive class
-	 * 
-	 * @param      string $msg Message to display
-	 * @param      string $tag HTML element
-	 * @return     string HTML
-	 */
-	public static function archive($msg, $tag='p')
-	{
-		return '<' . $tag . ' class="archive">' . $msg . '</' . $tag . '>' . "\n";
-	}
-
-	/**
-	 * Display a javascript alert
-	 * 
-	 * @param      string $msg Message to display
-	 * @return     string HTML
-	 */
-	public static function alert($msg)
-	{
-		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
-	}
-
-	/**
-	 * Generate an HTML header
-	 * 
-	 * @param      string $level Header level 1-6
-	 * @param      string $txt   Header text
-	 * @return     string HTML
-	 */
-	public static function hed($level, $txt)
-	{
-		return '<h' . $level . '>' . $txt . '</h' . $level . '>';
-	}
-
-	/**
 	 * Generate a select form
 	 * 
 	 * @param      string $name  Field name
@@ -164,82 +60,6 @@ class ResourcesHtml
 		}
 		$out .= '</select>' . "\n";
 		return $out;
-	}
-
-	/**
-	 * Draw a table row
-	 * 
-	 * @param      string $h Header cell
-	 * @param      string $c Cell content
-	 * @param      string $s Secondary cell content
-	 * @return     string HTML
-	 */
-	public static function tableRow($h, $c='', $s='')
-	{
-		$html  = '  <tr>' . "\n";
-		$html .= '   <th>' . $h . '</th>' . "\n";
-		$html .= '   <td>';
-		$html .= ($c) ? $c : '&nbsp;';
-		$html .= '</td>' . "\n";
-		if ($s) 
-		{
-			$html .= '   <td class="secondcol">';
-			$html .= $s;
-			$html .= '</td>' . "\n";
-		}
-		$html .= '  </tr>' . "\n";
-
-		return $html;
-	}
-
-	/**
-	 * Display an edit link
-	 * 
-	 * @param      integer $id         Resource ID
-	 * @param      integer $published  Resource published date
-	 * @param      integer $show_edit  Show edit controls?
-	 * @param      integer $created_by Resource creator ID
-	 * @param      integer $type       Link type
-	 * @param      string  $r_type     Resource type ID
-	 * @return     string HTML
-	 */
-	public static function adminIcon($id, $published, $show_edit, $created_by=0, $type, $r_type)
-	{
-		$juser = JFactory::getUser();
-
-		if ($published < 0) 
-		{
-			return;
-		}
-
-		if (!$show_edit) 
-		{
-			return;
-		}
-
-		switch ($type)
-		{
-			case 'edit':
-				if ($r_type == '7') 
-				{
-					$resource = new ResourcesResource(JFactory::getDBO());
-					$resource->load($id);
-					$link = 'index.php?option=com_tools&task=resource&step=1&app=' . $resource->alias;
-				} 
-				else 
-				{
-					$link = JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $id);
-				}
-				$txt = JText::_('COM_RESOURCES_EDIT');
-			break;
-
-			default:
-				$txt  = '';
-				$link = '';
-			break;
-		}
-
-		return ' <a class="edit button" href="' . $link . '" title="' . $txt . '">' . $txt . '</a>';
 	}
 
 	/**
@@ -323,20 +143,20 @@ class ResourcesHtml
 	 */
 	public static function sortSupportingDocs( $publication, $option, $children ) 
 	{
-		// Set counts		
+		// Set counts
 		$docs 	= 0;
-		
+
 		$html 	= '';
 		$supln  = '<ul class="supdocln">'."\n";
 		$supli  = array();
 		$shown 	= array();
-				
+
 		if ($children)
 		{
 			foreach ($children as $child) 
-			{			
-				$docs++;									
-				$child->title = $child->title ? stripslashes($child->title) : '';				
+			{
+				$docs++;
+				$child->title = $child->title ? stripslashes($child->title) : '';
 				$child->title = str_replace( '"', '&quot;', $child->title );
 				$child->title = str_replace( '&amp;', '&', $child->title );
 				$child->title = str_replace( '&', '&amp;', $child->title );
@@ -348,20 +168,20 @@ class ResourcesHtml
 						
 				$params = new JParameter( $child->params );
 				
-				$ftype 	  = ResourcesHtml::getFileExtension($child->path);
+				$ftype 	  = self::getFileExtension($child->path);
 				//$class    = $params->get('class', $ftype);
 				$doctitle = $params->get('title', $title);
 				
 				// Things we want to highlight
 				$toShow = array('User Guide', 'Syllabus', 'iTunes', 'iTunes U', 'Audio', 'Video', 'Slides', 'YouTube', 'Vimeo');
 
-				$url = ResourcesHtml::processPath($option, $child, $publication->id);
+				$url = self::processPath($option, $child, $publication->id);
 				$extra = '';
-				
+
 				foreach ($toShow as $item)
 				{
-					if (strtolower($doctitle) !=  preg_replace('/' . strtolower($item) . '/', '', strtolower($doctitle))
-						&& !in_array($item, $shown)) 
+					if (strtolower($doctitle) !=  preg_replace('/' . strtolower($item) . '/', '', strtolower($doctitle)) 
+					 && !in_array($item, $shown)) 
 					{
 						$class = str_replace(' ', '', strtolower($item));
 						$childParams  = new JParameter($child->params);
@@ -369,23 +189,20 @@ class ResourcesHtml
 						$linkAction = $childParams->get('link_action', 0);
 						$width      = $childAttribs->get('width', 640);
 						$height     = $childAttribs->get('height', 360);
-						
+
 						if ($linkAction == 1)
 						{
-							$supli[] = ' <li><a class="'.$class.'" rel="external" href="'.$url.'" title="'.$child->title.'"' 
-							. $extra . '>'.$item.'</a></li>'."\n";
+							$supli[] = ' <li><a class="'.$class.'" rel="external" href="'.$url.'" title="'.$child->title.'"' . $extra . '>'.$item.'</a></li>'."\n";
 						}
 						elseif ($linkAction == 2)
 						{
 							$class .= ' play';
 							$class .= ' ' . $width . 'x' . $height;
-							$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' 
-							. $extra . '>'.$item.'</a></li>'."\n";
+							$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' . $extra . '>'.$item.'</a></li>'."\n";
 						}
 						else
 						{
-							$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' 
-							. $extra . '>'.$item.'</a></li>'."\n";
+							$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' . $extra . '>'.$item.'</a></li>'."\n";
 						}
 
 						$shown[] = $item;
@@ -422,154 +239,6 @@ class ResourcesHtml
 		$supln .= '</ul>'."\n";
 		$html .= $sdocs ? $supln : '';
 		return $html;			
-	}
-
-	/**
-	 * Display a list of screenshots for a tool
-	 * 
-	 * @param      integer $id        Tool ID
-	 * @param      string  $created   Created date
-	 * @param      string  $upath     Upload path
-	 * @param      string  $wpath     Web path for display
-	 * @param      integer $versionid Version ID
-	 * @param      array   $sinfo     Screenshots information
-	 * @param      integer $slidebar  Display slidebar?
-	 * @param      string  $path      Path
-	 * @return     string HTML
-	 */
-	public static function screenshots($id, $created, $upath, $wpath, $versionid=0, $sinfo=array(), $slidebar=0, $path='')
-	{
-		$path = self::build_path($created, $id, '');
-
-		// Get contribtool parameters
-		$tconfig = JComponentHelper::getParams('com_tools');
-		$allowversions = $tconfig->get('screenshot_edit');
-
-		if ($versionid && $allowversions) 
-		{
-			// Add version directory
-			$path .= DS . $versionid;
-		}
-
-		$d = @dir(JPATH_ROOT . $upath . $path);
-
-		$images = array();
-		$tns = array();
-		$all = array();
-		$ordering = array();
-		$html = '';
-
-		if ($d) 
-		{
-			while (false !== ($entry = $d->read()))
-			{
-				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
-				{
-					if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file)) 
-					{
-						$images[] = $img_file;
-					}
-					if (preg_match("/-tn/i", $img_file)) 
-					{
-						$tns[] = $img_file;
-					}
-					$images = array_diff($images, $tns);
-				}
-			}
-
-			$d->close();
-		}
-
-		$b = 0;
-		if ($images) 
-		{
-			foreach ($images as $ima)
-			{
-				$new = array();
-				$new['img'] = $ima;
-				$new['type'] = explode('.', $new['img']);
-
-				// get title and ordering info from the database, if available
-				if (count($sinfo) > 0) 
-				{
-					foreach ($sinfo as $si)
-					{
-						if ($si->filename == $ima) 
-						{
-							$new['title'] = stripslashes($si->title);
-							$new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
-							$new['ordering'] = $si->ordering;
-						}
-					}
-				}
-
-				$ordering[] = isset($new['ordering']) ? $new['ordering'] : $b;
-				$b++;
-				$all[] = $new;
-			}
-		}
-
-		if (count($sinfo) > 0)
-		{
-			// Sort by ordering
-			array_multisort($ordering, $all);
-		} 
-		else 
-		{
-			// Sort by name
-			sort($all);
-		}
-		$images = $all;
-
-		$els = '';
-		$k = 0;
-		$g = 0;
-		for ($i=0, $n=count($images); $i < $n; $i++)
-		{
-			$tn = self::thumbnail($images[$i]['img']);
-			$els .=  ($slidebar && $i==0) ? '<div class="showcase-pane">' . "\n" : '';
-
-			if (is_file(JPATH_ROOT . $upath . $path . DS . $tn)) 
-			{
-				if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov') 
-				{
-					$g++;
-					$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO') . ' #' . $g;
-					$els .= $slidebar ? '' : '<li>';
-					$els .= ' <a class="popup" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
-					$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
-					$els .= $slidebar ? '' : '</li>' . "\n";
-				} 
-				else 
-				{
-					$k++;
-					$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: JText::_('SCREENSHOT') . ' #' . $k;
-					$els .= $slidebar ? '' : '<li>';
-					$els .= ' <a rel="lightbox" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
-					$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
-					$els .= $slidebar ? '' : '</li>' . "\n";
-				}
-			}
-			$els .=  ($slidebar && $i == ($n - 1)) ? '</div>' . "\n" : '';
-		}
-
-		if ($els) 
-		{
-			$html .= $slidebar ? '<div id="showcase">' . "\n" : '';
-			$html .= $slidebar ? '  <div id="showcase-prev" ></div>' . "\n" : '';
-			$html .= $slidebar ? '  <div id="showcase-window">' . "\n" : '';
-			$html .= $slidebar ? '' : '<ul class="screenshots">' . "\n";
-			$html .= $els;
-			$html .= $slidebar ? '' : '</ul>' . "\n";
-			$html .= $slidebar ? '  </div>' . "\n" : '';
-			$html .= $slidebar ? '  <div id="showcase-next" ></div>' . "\n" : '';
-			$html .= $slidebar ? '</div>' . "\n" : '';
-		}
-
-		return $html;
 	}
 
 	/**
@@ -613,7 +282,7 @@ class ResourcesHtml
 	 */
 	public static function skillLevelTable($labels = array(), $audiencelink)
 	{
-		$html  = '<table class="skillset" summary="' . JText::_('Resource Audience Skill Rating Table') . '">' . "\n";
+		$html  = '<table class="skillset">' . "\n";
 		$html .= "\t".'<thead>' . "\n";
 		$html .= "\t\t".'<tr>' . "\n";
 		$html .= "\t\t".'<td colspan = "2" class="combtd">' . JText::_('Difficulty Level') . '</td>' . "\n";
@@ -624,7 +293,12 @@ class ResourcesHtml
 		foreach ($labels as $key => $label)
 		{
 			$ul = self::skillLevelCircle($labels, $key);
-			$html .= self::tableRow($ul, $label['title'], $label['desc']);
+
+			$html .= '  <tr>' . "\n";
+			$html .= '   <th>' . $ul . '</th>' . "\n";
+			$html .= '   <td>' . $label['title'] . '</td>' . "\n";
+			$html .= '   <td class="secondcol">' . $label['desc'] . '</td>' . "\n";
+			$html .= '  </tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
 		$html .= '</table>' . "\n";
@@ -721,60 +395,6 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Write metadata information for a resource
-	 * 
-	 * @param      object  $params    Resource params
-	 * @param      integer $ranking   Resource ranking
-	 * @param      string  $statshtml Usage data to append
-	 * @param      integer $id        Resource ID
-	 * @param      array   $sections  Active plugins' names
-	 * @param      string  $xtra      Extra content to append
-	 * @return     string HTML
-	 */
-	public static function metadata($params, $ranking, $statshtml, $id, $sections, $xtra='')
-	{
-		/*$html = '';
-		if ($params->get('show_ranking')) 
-		{
-			$rank = round($ranking, 1);
-
-			$r = (10*$rank);
-			if (intval($r) < 10) 
-			{
-				$r = '0' . $r;
-			}
-
-			$html .= '<dl class="rankinfo">' . "\n";
-			$html .= "\t".'<dt class="ranking"><span class="rank-' . $r . '">This resource has a</span> ' . number_format($rank, 1) . ' Ranking</dt>' . "\n";
-			$html .= "\t".'<dd>' . "\n";
-			$html .= "\t\t".'<p>' . "\n";
-			$html .= "\t\t\t".'Ranking is calculated from a formula comprised of <a href="' . JRoute::_('index.php?option=com_resources&id=' . $id . '&active=reviews') . '">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>' . "\n";
-			$html .= "\t\t".'</p>' . "\n";
-			$html .= "\t\t".'<div>' . "\n";
-			$html .= $statshtml;
-			$html .= "\t\t".'</div>' . "\n";
-			$html .= "\t".'</dd>' . "\n";
-			$html .= '</dl>' . "\n";
-		}
-		$html .= ($xtra) ? $xtra : '';
-		foreach ($sections as $section)
-		{
-			$html .= (isset($section['metadata'])) ? $section['metadata'] : '';
-		}
-		$html .= '<div class="clear"></div>';
-
-		return '<div class="metadata">' . $html . '</div>';*/
-		$view = new JView(array(
-			'name'   => 'view',
-			'layout' => '_metadata',
-		));
-		$view->option = 'com_resources';
-		$view->sections = $sections;
-		$view->model = ResourcesModelResource::getInstance($id);
-		return $view->loadTemplate();
-	}
-
-	/**
 	 * ===MARKED FOR DEPRECATION===
 	 *
 	 * Write a header and container for supporting documents
@@ -784,7 +404,7 @@ class ResourcesHtml
 	 */
 	public static function supportingDocuments($content)
 	{
-		$html  = self::hed(3,JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS')) . "\n";
+		$html  = '<h3>' . JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS') . '</h3>' . "\n";
 		$html .= $content;
 
 		return '<div class="supportingdocs">' . $html . '</div>';
@@ -960,10 +580,22 @@ class ResourcesHtml
 		$txt .= stripslashes($resource->title);
 		if ($mode != 'preview')
 		{
-			$txt .= self::adminIcon($resource->id, $resource->published, $show_edit, 0, 'edit', $resource->type);
+			if ($resource->published && $show_edit) 
+			{
+				if ($resource->type == '7') 
+				{
+					$link = 'index.php?option=com_tools&task=resource&step=1&app=' . $resource->alias;
+				} 
+				else 
+				{
+					$link = JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $resource->id);
+				}
+
+				$txt .= ' <a class="edit button" href="' . $link . '" title="' . JText::_('COM_RESOURCES_EDIT') . '">' . JText::_('COM_RESOURCES_EDIT') . '</a>';
+			}
 		}
 		
-		$html  = self::hed(2, $txt) . "\n";
+		$html  = '<h2>' . $txt . '</h2>' . "\n";
 
 		if ($show_posted) 
 		{
@@ -1481,7 +1113,7 @@ class ResourcesHtml
 				if (!$mconfig->get('mw_on')
 				 || ($mconfig->get('mw_on') > 1 && !$authorized)) 
 				{
-					$pop   = self::warning(JText::_('Session invocation is currently disabled.'));
+					$pop   = '<p class="warning">' . JText::_('Session invocation is currently disabled.') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
 					return $html;
 				}
@@ -1574,9 +1206,9 @@ class ResourcesHtml
 
 				if (!$juser->get('guest') && !$ingroup && $toolgroups) 
 				{ // see if tool is restricted to a group and if current user is in that group
-					$pop = self::warning(JText::_('
+					$pop = '<p class="warning">' . JText::_('
 						WARNING: This tool is currently restricted to authorized members of the hub.
-						If you need access, please submit a ticket to that effect and include the reason for your request.'));
+						If you need access, please submit a ticket to that effect and include the reason for your request.') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
 				} 
 				else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) 
@@ -1586,16 +1218,15 @@ class ResourcesHtml
 						//$html .= self::primaryButton('launchtool disabled', $lurl, 'Launch Tool');
 						//$html .= self::warning('You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
 					//} else {
-						$pop = ($juser->get('guest')) ? self::warning(JText::_('You must login before you can run this tool.')) : '';
-						$pop = ($resource->revision =='dev') ? self::warning(JText::_('Warning: This tool version is under development and may not be run until it is installed.')) : $pop;
+						$pop = ($juser->get('guest')) ? '<p class="warning">' . JText::_('You must login before you can run this tool.') . '</p>' : '';
+						$pop = ($resource->revision =='dev') ? '<p class="warning">' . JText::_('Warning: This tool version is under development and may not be run until it is installed.') . '</p>' : $pop;
 						$html .= self::primaryButton('launchtool', $lurl, JText::_('Launch Tool'), '', '', '', 0, $pop);
 					//}
 				} 
 				else 
 				{ // tool unpublished
-					$pop   = self::warning(JText::_('This tool version is unpublished and cannot be run. If you would like to have this version staged, you can put a request through HUB Support.'));
+					$pop   = '<p class="warning">' . JText::_('This tool version is unpublished and cannot be run. If you would like to have this version staged, you can put a request through HUB Support.') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
-					//$html .= self::warning($pop)."\n";
 				}
 			break;
 

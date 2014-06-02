@@ -160,7 +160,7 @@ if ($mode != 'preview')
 							$msg .= ' <br />'.JText::_('COM_RESOURCES_LATEST_VERSION').': <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a>.';
 						}
 						$msg .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.JText::_('All versions').'</a>';
-						$html .= ResourcesHtml::archive($msg)."\n";
+						$html .= '<p class="archive">' . $msg . '</p>' . "\n";
 					}
 
 					// doi message

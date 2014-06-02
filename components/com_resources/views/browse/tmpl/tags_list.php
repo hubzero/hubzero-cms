@@ -211,7 +211,7 @@ switch ($this->level)
 				$ghtml .= '<a href="'.JRoute::_('index.php?option=com_groups&cn='.$allowedgroup).'">'.$allowedgroup.'</a>, ';
 			}
 			$ghtml = substr($ghtml,0,strlen($ghtml) - 2);
-			$html .= ResourcesHtml::warning( $ghtml )."\n";
+			$html .= '<p class="warning">' . $ghtml . '</p>' ."\n";
 		} else {
 			if ($helper->firstChild || $resource->type == 7) {
 				$html .= $primary_child;
@@ -247,7 +247,15 @@ switch ($this->level)
 		}
 
 		if ($params->get('show_metadata')) {
-			$html .= ResourcesHtml::metadata($params, $resource->ranking, $statshtml, $resource->id, $sections, $xtra);
+			$view = new JView(array(
+				'name'   => 'view',
+				'layout' => '_metadata',
+			));
+			$view->option = 'com_resources';
+			$view->sections = $sections;
+			$view->model = ResourcesModelResource::getInstance($resource->id);
+
+			$html .= $view->loadTemplate();
 		}
 		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" /></li>';
 		$html .= '</ul><script type="text/javascript">HUB.Base.popups();HUB.Base.launchTool();</script>';

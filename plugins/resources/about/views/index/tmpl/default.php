@@ -70,7 +70,7 @@ $schema = $elements->getSchema();
 if ($this->model->resource->introtext) 
 {
 	$document = JFactory::getDocument();
-	$document->setDescription(ResourcesHtml::encode_html(strip_tags($this->model->resource->introtext)));
+	$document->setDescription(strip_tags($this->model->resource->introtext));
 }
 
 // Check if there's anything left in the fulltxt after removing custom fields

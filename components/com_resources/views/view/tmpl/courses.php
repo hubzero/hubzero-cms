@@ -236,7 +236,7 @@ $juser = JFactory::getUser();
 					$child_params = new $this->model->paramsClass($child->params);
 					$link_action = $child_params->get( 'link_action', '' );
 
-					$child->title = ResourcesHtml::encode_html($child->title);
+					$child->title = $this->escape($child->title);
 
 					$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -267,7 +267,7 @@ $juser = JFactory::getUser();
 						$grandchildren 	= $this->helper->children;
 						foreach ($grandchildren as $grandchild)
 						{
-							$grandchild->title = ResourcesHtml::encode_html($grandchild->title);
+							$grandchild->title = $this->escape($grandchild->title);
 							$grandchild->path = ResourcesHtml::processPath($this->option, $grandchild, $child->id);
 
 							$grandchild_rt = new ResourcesType( $this->database );
@@ -281,10 +281,10 @@ $juser = JFactory::getUser();
 									$videoi .= (!$videoi) ? '<a href="'.$grandchild->path.'">'.JText::_('View').'</a>' : '';
 									break;
 								case "breeze":
-									$breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="'.$grandchild->path.'&amp;no_html=1" title="'.htmlentities(stripslashes($grandchild->title)).'">'.JText::_('View Flash').'</a>' : '';
+									$breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="'.$grandchild->path.'&amp;no_html=1" title="'.$this->escape(stripslashes($grandchild->title)).'">'.JText::_('View Flash').'</a>' : '';
 									break;
 								case "hubpresenter":
-									$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.htmlentities(stripslashes($grandchild->title)).'">'.JText::_('View HTML').'</a>' : '';
+									$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.JText::_('View HTML').'</a>' : '';
 									break;
 								case "pdf":
 								default:
