@@ -549,7 +549,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$country = Hubzero_Geo::ipcountry($app->ip);
+		$country = \Hubzero\Geocode\Geocode::ipcountry($app->ip);
 
 		//die($app->ip . $country);
 
