@@ -35,4 +35,16 @@ namespace Hubzero\Component;
  */
 class AdminController extends SiteController
 {
+	/**
+	 * Cancels a task and redirects to default view
+	 * 
+	 * @return     void
+	 */
+	public function cancelTask()
+	{
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : '')
+		);
+	}
 }
