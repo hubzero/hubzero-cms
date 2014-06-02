@@ -1474,71 +1474,57 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			$this->setError($results[0]);
 		}
 
-		$output = new stdClass();
-
 		if (is_array($results))
 		{
-			// HTML
-			// Print out the applet tags or the error message, as the case may be.
-			foreach ($results as $line)
-			{
-				$line = trim($line);
+			$results = implode('', $results);
+		}
+		$results = trim($results);
 
-				// If it's a new session, catch the session number...
-				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess)) 
+		try
+		{
+			$output = @json_decode($results);
+
+			if ($output === null && json_last_error() !== JSON_ERROR_NONE)
+			{
+				throw new \Exception(JText::_('Incorrect or missing data.'));
+			}
+		}
+		catch (Exception $e)
+		{
+			$output = new stdClass();
+
+			// If it's a new session, catch the session number...
+			if ($retval && preg_match("/^Session is ([0-9]+)/", $results, $sess)) 
+			{
+				$retval = $sess[1];
+				$output->session = $sess[1];
+			} 
+			else 
+			{
+				$patterns = array(
+					'width' => 'width=\"(\d+)\"',
+					'height' => 'height=\"(\d+)\"',
+					'port' => '<param name=\"PORT\" value=\"?(\d+)\"?>',
+					'password' => '<param name=\"ENCPASSWORD\" value=\"?([^>]+)\"?>',
+					'connect' => '<param name=\"CONNECT\" value=\"?([^>]+)\"?>',
+					'encoding' => '<param name=\"ENCODING\" value=\"?([^>]+)\"?>',
+					'show_local_cursor' => '<param name=\"ShowLocalCursor\" value=\"?([^>]+)\"?>',
+					'show_controls' => '<param name=\"Show Controls\" value=\"?([^>]+)\"?>',
+					'debug' => '<param name=\"Debug\" value=\"?([^>]+)\"?>'
+				);
+				foreach ($patterns as $key => $pattern)
 				{
-					$retval = $sess[1];
-					$output->session = $sess[1];
-				} 
-				else 
-				{
-					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
+					if (preg_match("/$pattern/i", $results, $param))
 					{
-						$output->width = trim($param[1], '"');
-					}
-					if (preg_match("/height=\"(\d+)\"/i", $line, $param))
-					{
-						$output->height = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"PORT\" value=\"?(\d+)\"?>/i", $line, $param))
-					{
-						$output->port = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCPASSWORD\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->password = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"CONNECT\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->connect = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->encoding = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ShowLocalCursor\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->show_local_cursor = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"Show Controls\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->show_controls = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"Debug\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->debug = trim($param[1], '"');
+						$output->$key = trim($param[1], '"');
 					}
 				}
 			}
 		}
-		else 
+
+		if ($output == null || (is_object($output) && count(get_object_vars($output)) <= 0))
 		{
-			// JSON
-			$output = json_decode($results);
-			if ($output == null)
-			{
-				$retval = false;
-			}
+			$retval = false;
 		}
 
 		return $retval;
