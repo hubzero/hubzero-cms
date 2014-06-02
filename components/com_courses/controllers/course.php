@@ -691,7 +691,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		$subject = JText::sprintf('COM_COURSES_SUBJECT_COURSE_DELETED', $gcn);
 
 		// Build the e-mail message
-		$eview = new JView(array(
+		$eview = new \Hubzero\Component\View(array(
 			'name'   => 'emails',
 			'layout' => 'deleted'
 		));

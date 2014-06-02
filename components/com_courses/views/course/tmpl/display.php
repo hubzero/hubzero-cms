@@ -502,13 +502,10 @@ $this->js('courses.overview.js');
 			<?php
 			foreach ($instructors as $i)
 			{
-				$view = new JView(array(
-					'name'   => 'course',
-					'layout' => '_instructor'
-				));
-				$view->biolength  = 200;
-				$view->instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
-				$view->display();
+				$this->view('_instructor')
+				     ->set('biolength', 200)
+				     ->set('instructor', \Hubzero\User\Profile::getInstance($i->get('user_id')))
+				     ->display();
 			}
 			?>
 		</div>

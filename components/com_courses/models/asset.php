@@ -274,7 +274,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 			$layout = $type;
 		}
 
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
 			'name'      => 'assets',
 			'layout'    => $layout
