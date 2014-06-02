@@ -166,22 +166,17 @@ defined('_JEXEC') or die('Restricted access');
 				$filters['version'] = 'AND version=' . $this->version;
 			}
 
-			$view = new JView(
-				array(
-					'base_path' => JPATH_ROOT . '/components/com_wiki',
-					'name'    => 'comments',
-					'layout'  => '_list'
-				)
-			);
-			$view->parent     = $this->comment->get('id');
-			$view->page       = $this->page;
-			$view->option     = $this->option;
-			$view->comments   = $this->comment->replies('list', $filters);
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->version    = $this->version;
-			$view->cls        = $cls;
-			$view->display();
+			$this->view('_list', 'comments')
+			     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+			     ->set('parent', $this->comment->get('id'))
+			     ->set('page', $this->page)
+			     ->set('option', $this->option)
+			     ->set('comments', $this->comment->replies('list', $filters))
+			     ->set('config', $this->config)
+			     ->set('depth', $this->depth)
+			     ->set('version', $this->version)
+			     ->set('cls', $cls)
+			     ->display();
 		}
 		?>
 	</li>

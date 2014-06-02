@@ -41,21 +41,16 @@ if ($this->comments instanceof \Hubzero\Base\ItemList)
 	{
 		$comment->set('pageid', $this->page->get('id'));
 
-		$view = new JView(
-			array(
-				'base_path' => JPATH_ROOT . '/components/com_wiki',
-				'name'      => 'comments',
-				'layout'    => '_comment'
-			)
-		);
-		$view->option     = $this->option;
-		$view->comment    = $comment;
-		$view->config     = $this->config;
-		$view->depth      = $this->depth;
-		$view->page       = $this->page;
-		$view->version    = $this->version;
-		$view->cls        = $cls;
-		$view->display();
+		$this->view('_comment', 'comments')
+		     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+		     ->set('option', $this->option)
+		     ->set('comment', $comment)
+		     ->set('config', $this->config)
+		     ->set('depth', $this->depth)
+		     ->set('page', $this->page)
+		     ->set('version', $this->version)
+		     ->set('cls', $cls)
+		     ->display();
 	}
 } 
 ?>
