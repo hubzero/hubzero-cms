@@ -78,7 +78,9 @@
 	table.admintable .query input[type="email"], 
 	table.admintable .query textarea,
 	table.admintable .query input,
-	.query fieldset input {
+	.query fieldset input,
+	.query fieldset select,
+	.sort select {
 		width: auto;
 		background: #fff;
 	}

@@ -30,9 +30,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+JHtml::_('behavior.framework');
+
 // Push some styles to the template
-$document = JFactory::getDocument();
-$document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'conditions.css');
+$this->css('conditions.css')
+     ->js('json2.js')
+     ->js('condition.builder.js');
 
 $tmpl = JRequest::getVar('tmpl', '');
 
@@ -80,16 +83,13 @@ $juser = JFactory::getUser();
 											$condition = json_decode($this->row->conditions);
 											//foreach ($conditions as $condition)
 											//{
-												$view = new JView(array(
-													'name'   => $this->controller,
-													'layout' => 'condition'
-												));
-												$view->option     = $this->option;
-												$view->controller = $this->controller;
-												$view->condition  = $condition;
-												$view->conditions = $this->conditions;
-												$view->row        = $this->row;
-												$view->display();
+												$this->view('condition')
+												     ->set('option', $this->option)
+												     ->set('controller', $this->controller)
+												     ->set('condition', $condition)
+												     ->set('conditions', $this->conditions)
+												     ->set('row', $this->row)
+												     ->display();
 											//}
 										}
 									?>
@@ -139,8 +139,6 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
 	<script type="text/javascript">
 		function submitbutton(pressbutton) 
 		{
@@ -188,25 +186,22 @@ $juser = JFactory::getUser();
 		</fieldset>
 
 		<fieldset class="query">
-<?php
-	if ($this->row->conditions)
-	{
-		$condition = json_decode($this->row->conditions);
-		//foreach ($conditions as $condition)
-		//{
-			$view = new JView(array(
-				'name'   => $this->controller,
-				'layout' => 'condition'
-			));
-			$view->option     = $this->option;
-			$view->controller = $this->controller;
-			$view->condition  = $condition;
-			$view->conditions = $this->conditions;
-			$view->row        = $this->row;
-			$view->display();
-		//}
-	}
-?>
+			<?php
+				if ($this->row->conditions)
+				{
+					$condition = json_decode($this->row->conditions);
+					//foreach ($conditions as $condition)
+					//{
+						$this->view('condition')
+						     ->set('option', $this->option)
+						     ->set('controller', $this->controller)
+						     ->set('condition', $condition)
+						     ->set('conditions', $this->conditions)
+						     ->set('row', $this->row)
+						     ->display();
+					//}
+				}
+			?>
 		</fieldset>
 
 		<fieldset class="fields sort">
@@ -246,8 +241,6 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
 	<script type="text/javascript">
 		function submitbutton(pressbutton) 
 		{

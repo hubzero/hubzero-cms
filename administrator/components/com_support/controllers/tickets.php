@@ -738,7 +738,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					//$rowc->comment   = $attach->parse($rowc->comment);
 					$rowc->changelog = $log;
 
-					/*$eview = new JView(array(
+					/*$eview = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
 						'name'      => 'emails',
 						'layout'    => 'comment'
@@ -754,7 +754,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$message['multipart'] = $eview->loadTemplate();
 					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);*/
 					// Plain text email
-					$eview = new JView(array(
+					$eview = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
 						'name'      => 'emails', 
 						'layout'    => 'comment_plain'

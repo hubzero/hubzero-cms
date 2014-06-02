@@ -66,21 +66,21 @@ if (!jq) {
 }
 
 var Conditions = {
-	jQuery: jq,
+	//jQuery: jq,
 
 	addqueryroot: function (sel, isroot) {
-		var $ = this.jQuery;
+		//var $ = this.jQuery;
 		
 		var q = $(sel).find('fieldset');
 		var l = q.length;
 
-		//if (l < 1) {
+		if (l < 1) {
 			$(sel).append(rootcondition);
 			q = $(sel).find('fieldset');
 			l = q.length;
 		//} else {
 			//rootcondition = q;
-		//}
+		}
 		var elem = q;
 
 		if (l > 1) {
@@ -156,7 +156,7 @@ var Conditions = {
 					if (this.sel) {
 						val = this.val;
 					}
-				    options.append($("<option />").val(this.val).text(this.label));
+					options.append($("<option />").val(this.val).text(this.label));
 				});
 				options.val(val);
 
@@ -195,8 +195,8 @@ var Conditions = {
 	},
 
 	populate: function(val, options) {
-		var $ = this.jQuery;
-		
+		//var $ = this.jQuery;
+
 		var values = Conditions.option[val].values;
 		var select = $('<input type="text" class="val" />');
 
@@ -206,7 +206,7 @@ var Conditions = {
 				if (this.sel) {
 					val = this.val;
 				}
-			    select.append('<option value="' + this.val + '">' + this.label + '</option>');
+				select.append('<option value="' + this.val + '">' + this.label + '</option>');
 			});
 			select.val(val);
 		}
@@ -216,7 +216,7 @@ var Conditions = {
 
 	//Recursive method to parse the condition and generate the query. Takes the selector for the root condition
 	getCondition: function (rootsel) {
-		var $ = this.jQuery;
+		//var $ = this.jQuery;
 		
 		//Get the columns from table (to find a clean way to do it later) //tbody>tr>td
 		var elem = $(rootsel).children();
@@ -260,8 +260,8 @@ var Conditions = {
 
 	// Recursive method to iterate over the condition tree and generate the query
 	getQuery: function (condition) {
-		var $ = this.jQuery;
-		
+		//var $ = this.jQuery;
+
 		var op = [' ', condition.operator, ' '].join('');
 
 		var e = [];
@@ -284,10 +284,8 @@ var Conditions = {
 		}
 
 		var q = [];
-		if (e.length > 0)
-			q.push(e.join(op));
-		if (n.length > 0)
-			q.push(n.join(op));
+		if (e.length > 0) q.push(e.join(op));
+		if (n.length > 0) q.push(n.join(op));
 
 		return ['(', q.join(op), ')'].join(' ');
 	}

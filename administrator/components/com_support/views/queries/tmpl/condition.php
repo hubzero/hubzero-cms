@@ -48,7 +48,7 @@ if ($this->condition->expressions)
 	{
 		$operators = $this->conditions->{$expression->fldval}->operators;
 		$values    = $this->conditions->{$expression->fldval}->values;
-?>
+		?>
 		<p class="conditions"><button class="remove" alt="Remove">&times;</button> <select class="fld">
 				<option value="open"<?php if ($expression->fldval == 'open') { echo ' selected="selected"'; } ?>>Open/Closed</option>
 				<option value="status"<?php if ($expression->fldval == 'status') { echo ' selected="selected"'; } ?>>Status</option>
@@ -65,33 +65,33 @@ if ($this->condition->expressions)
 				<option value="category"<?php if ($expression->fldval == 'category') { echo ' selected="selected"'; } ?>>Category</option>
 			</select>
 			<select class="op">
-<?php 
-		if ($operators)
-		{
-			foreach ($operators as $operator)
-			{
-?>
-				<option value="<?php echo $operator->val; ?>"<?php if ($expression->opval == $operator->val) { echo ' selected="selected"'; } ?>><?php echo $operator->label; ?></option>
-<?php 
-			}
-		}
-?>
+				<?php 
+				if ($operators)
+				{
+					foreach ($operators as $operator)
+					{
+						?>
+						<option value="<?php echo $operator->val; ?>"<?php if ($expression->opval == $operator->val) { echo ' selected="selected"'; } ?>><?php echo $operator->label; ?></option>
+						<?php 
+					}
+				}
+				?>
 			</select>
-<?php 
+		<?php 
 		if (is_array($values))
 		{
-?>
+			?>
 			<select class="val">
-<?php
+			<?php
 			foreach ($values as $value)
 			{
-?>
+				?>
 				<option value="<?php echo $value->val; ?>"<?php if ($expression->val == $value->val) { echo ' selected="selected"'; } ?>><?php echo $value->label; ?></option>
-<?php 
+				<?php 
 			}
-?>
+			?>
 			</select>
-<?php
+			<?php
 		}
 		else 
 		{
@@ -100,13 +100,13 @@ if ($this->condition->expressions)
 				$juser = JFactory::getUser();
 				$expression->val = $juser->get('username');
 			}
-?>
+			?>
 			<input type="text" class="val" value="<?php echo $this->escape(stripslashes($expression->val)); ?>" />
-<?php
+			<?php
 		}
-?>
+		?>
 		</p>
-<?php
+		<?php
 	}
 }
 ?>
@@ -116,22 +116,19 @@ if ($this->condition->expressions)
 			</span>
 		</div>
 	</div>
-<?php
+	<?php
 	if ($this->condition->nestedexpressions && count($this->condition->nestedexpressions) > 0)
 	{
 		foreach ($this->condition->nestedexpressions as $nested)
 		{
-			$view = new JView(array(
-				'name'   => $this->controller,
-				'layout' => 'condition'
-			));
-			$view->option     = $this->option;
-			$view->controller = $this->controller;
-			$view->condition  = $nested;
-			$view->conditions = $this->conditions;
-			$view->row        = $this->row;
-			$view->display();
+			$this->view('condition')
+			     ->set('option', $this->option)
+			     ->set('controller', $this->controller)
+			     ->set('condition', $nested)
+			     ->set('conditions', $this->conditions)
+			     ->set('row', $this->row)
+			     ->display();
 		}
 	}
-?>
+	?>
 </fieldset>
