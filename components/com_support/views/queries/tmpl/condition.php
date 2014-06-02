@@ -120,16 +120,13 @@ if ($this->condition->expressions)
 	{
 		foreach ($this->condition->nestedexpressions as $nested)
 		{
-			$view = new JView(array(
-				'name'   => $this->controller,
-				'layout' => 'condition'
-			));
-			$view->option     = $this->option;
-			$view->controller = $this->controller;
-			$view->condition  = $nested;
-			$view->conditions = $this->conditions;
-			$view->row        = $this->row;
-			$view->display();
+			$this->view('condition')
+			     ->set('option', $this->option)
+			     ->set('controller', $this->controller)
+			     ->set('condition', $nested)
+			     ->set('conditions', $this->conditions)
+			     ->set('row', $this->row)
+			     ->display();
 		}
 	}
 ?>

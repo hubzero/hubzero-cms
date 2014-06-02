@@ -1170,7 +1170,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$from['multipart'] = md5(date('U'));
 
 		// Plain text email
-		$eview = new JView(array(
+		$eview = new \Hubzero\Component\View(array(
 			'name'   => 'emails', 
 			'layout' => 'ticket_plain'
 		));
@@ -1339,7 +1339,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$rowc->changelog = $log;
 
 			// Plain text email
-			$eview = new JView(array(
+			$eview = new \Hubzero\Component\View(array(
 				'name'   => 'emails', 
 				'layout' => 'comment_plain'
 			));
@@ -2264,7 +2264,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					$rowc->changelog = $log;
 
 					// Plain text email
-					$eview = new JView(array(
+					$eview = new \Hubzero\Component\View(array(
 						'name'   => 'emails', 
 						'layout' => 'comment_plain'
 					));

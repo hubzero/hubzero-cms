@@ -72,16 +72,13 @@ if (!$tmpl && !$no_html) {
 											$condition = json_decode($this->row->conditions);
 											//foreach ($conditions as $condition)
 											//{
-												$view = new JView(array(
-													'name'   => $this->controller,
-													'layout' => 'condition'
-												));
-												$view->option     = $this->option;
-												$view->controller = $this->controller;
-												$view->condition  = $condition;
-												$view->conditions = $this->conditions;
-												$view->row        = $this->row;
-												$view->display();
+												$this->view('condition')
+												     ->set('option', $this->option)
+												     ->set('controller', $this->controller)
+												     ->set('condition', $condition)
+												     ->set('conditions', $this->conditions)
+												     ->set('row', $this->row)
+												     ->display();
 											//}
 										}
 									?>
@@ -131,9 +128,6 @@ if (!$tmpl && !$no_html) {
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<!--
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script> -->
 	<script type="text/javascript">
 		function submitbutton(pressbutton) 
 		{
@@ -189,16 +183,13 @@ if (!$tmpl && !$no_html) {
 		$condition = json_decode($this->row->conditions);
 		//foreach ($conditions as $condition)
 		//{
-			$view = new JView(array(
-				'name'   => $this->controller,
-				'layout' => 'condition'
-			));
-			$view->option     = $this->option;
-			$view->controller = $this->controller;
-			$view->condition  = $condition;
-			$view->conditions = $this->conditions;
-			$view->row        = $this->row;
-			$view->display();
+			$this->view('condition')
+			     ->set('option', $this->option)
+			     ->set('controller', $this->controller)
+			     ->set('condition', $condition)
+			     ->set('conditions', $this->conditions)
+			     ->set('row', $this->row)
+			     ->display();
 			
 		//}
 	}
@@ -243,9 +234,6 @@ if (!$tmpl && !$no_html) {
 		<?php echo JHTML::_('form.token'); ?>
 		</fieldset>
 	</form>
-	<!--
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script> -->
 	<script type="text/javascript">
 		/*function submitbutton(pressbutton) 
 		{
