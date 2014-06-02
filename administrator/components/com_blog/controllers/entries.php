@@ -424,7 +424,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	 * 
 	 * @return     void
 	 */
-	public function cancel()
+	public function cancelTask()
 	{
 		// Set the redirect
 		$this->setRedirect(
