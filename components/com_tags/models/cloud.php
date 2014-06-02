@@ -472,13 +472,13 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			default:
 				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
-					$view = new JView(array(
+					$view = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . '/components/com_tags',
 						'name'      => 'tags',
 						'layout'    => '_cloud'
 					));
-					$view->config = $this->_config;
-					$view->tags   = $this->tags('list', $filters, $clear);
+					$view->set('config', $this->_config)
+					     ->set('tags', $this->tags('list', $filters, $clear));
 
 					$this->_cache['tags_cloud'] = $view->loadTemplate();
 				}
