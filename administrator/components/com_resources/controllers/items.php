@@ -812,7 +812,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			}
 
 			// Build <select> of contributors
-			$authorslist = new JView(array(
+			$authorslist = new \Hubzero\Component\View(array(
 				'name'   => $this->_controller, 
 				'layout' => 'authors'
 			));
