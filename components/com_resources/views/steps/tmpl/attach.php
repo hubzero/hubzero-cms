@@ -32,6 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $base = rtrim(JURI::getInstance()->base(true), '/');
+
+$this->css('create.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -94,7 +96,7 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 		</fieldset><div class="clear"></div>
 		<div class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
 		</div>
 	</form>
 </section><!-- / .main section -->

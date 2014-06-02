@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css('create.css');
 ?>
  <div id="small-page">
 <?php if ($this->getError()) { ?>

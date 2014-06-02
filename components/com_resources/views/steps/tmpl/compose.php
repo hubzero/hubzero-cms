@@ -53,6 +53,8 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'model
 
 $elements = new ResourcesElements($data, $type->customFields);
 $fields = $elements->render();
+
+$this->css('create.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -132,7 +134,7 @@ $fields = $elements->render();
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
 		</p>
 	</form>
 </section><!-- / .main section -->

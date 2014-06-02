@@ -229,6 +229,7 @@ class RecommendedTags
 	}
 }
 
+$this->css('create.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -332,7 +333,7 @@ class RecommendedTags
 		</fieldset><div class="clear"></div>
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
 		</p>
 	</form>
 </section><!-- / .main section -->

@@ -30,6 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css('create.css')
+     ->js('create.js');
 ?>
 	<div id="small-page">
 		<?php if (!JRequest::getInt('hideform', 0)) { ?>

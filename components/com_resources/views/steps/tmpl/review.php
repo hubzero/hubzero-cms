@@ -38,6 +38,9 @@ $jconfig = JFactory::getConfig();
 $rparams = new JRegistry($this->resource->params);
 $params = $this->config;
 $params->merge($rparams);
+
+$this->css('create.css')
+     ->css('resources.css', 'com_resources');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -58,7 +61,7 @@ $params->merge($rparams);
 		     ->set('step', $this->step)
 		     ->set('steps', $this->steps)
 		     ->set('id', $this->id)
-		     ->set('resource', $this->row)
+		     ->set('resource', $this->resource)
 		     ->set('progress', $this->progress)
 		     ->display();
 	?>

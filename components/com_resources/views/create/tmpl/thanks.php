@@ -58,6 +58,9 @@ if ($this->resource->id)
 
 	$tags = $rt->getTags($this->resource->id);
 }
+
+
+$this->css('create.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

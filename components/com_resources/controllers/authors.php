@@ -448,8 +448,6 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 		$this->view->roles = $rt->getRolesForType($resource->type);
 
-		$this->_getStyles($this->_option, 'create.css');
-
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

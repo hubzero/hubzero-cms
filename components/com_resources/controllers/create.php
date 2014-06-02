@@ -187,10 +187,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		// Push some styles to the template
-		$this->_getStyles($this->_option, 'introduction.css', true);
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-
 		$this->view->title = $this->_title;
 		if ($this->getError()) 
 		{
@@ -243,8 +239,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function draftTask()
 	{
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-
 		// Determine the current step
 		$steps = $this->steps;
 		$step  = $this->step;
@@ -638,9 +632,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
 		}
-
-		// Push some needed styles to the tmeplate
-		$this->_getStyles('com_resources');
 
 		// Get some needed libraries
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
@@ -1219,8 +1210,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$authorized = JRequest::getInt('authorization', 0);
 		if (!$authorized && !$published) 
 		{
-			$this->_getStyles($this->_option, $this->_controller . '.css');
-
 			$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
 			$this->_checkProgress($id);
 			$this->step_review();
@@ -1263,8 +1252,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 			if (!$contributors || count($contributors) <= 0) 
 			{
-				$this->_getStyles($this->_option, $this->_controller . '.css');
-
 				$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
 				$this->_checkProgress($id);
 				$this->step_review();
@@ -1284,8 +1271,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$licenseText = JRequest::getVar('license-text', '');
 				if ($licenseText == '[ENTER LICENSE HERE]') 
 				{
-					$this->_getStyles($this->_option, $this->_controller . '.css');
-
 					$this->setError(JText::_('Please enter a license.'));
 					$this->_checkProgress($id);
 					$this->step_review();
@@ -1328,8 +1313,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-
 		// Output HTML
 		$this->setView($this->_controller, 'thanks');
 		$this->view->title    = $this->_title;
@@ -1371,8 +1354,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		switch ($step)
 		{
 			case 1:
-				$this->_getStyles($this->_option, $this->_controller . '.css');
-
 				// Check progress
 				$this->_checkProgress($id);
 
@@ -1405,10 +1386,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				if ($confirm != 'confirmed') 
 				{
 					$this->setError(JText::_('Please confirm.'));
-					/*$this->setRedirect(
-						JRoute::_('index.php?option=' . $this->_option)
-					);*/
-					$this->_getStyles($this->_option, $this->_controller . '.css');
 
 					// Check progress
 					$this->_checkProgress($id);

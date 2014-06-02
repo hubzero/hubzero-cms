@@ -1062,12 +1062,6 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$this->view->path     = '';
 		$this->view->id       = $id;
 
-		// Push some styles to the template
-		$this->_getStyles($this->_option, 'create.css');
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/create');
-
 		// Set errors to view
 		if ($this->getError())
 		{

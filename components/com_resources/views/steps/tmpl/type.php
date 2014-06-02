@@ -32,6 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig = JFactory::getConfig();
+
+$this->css('create.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

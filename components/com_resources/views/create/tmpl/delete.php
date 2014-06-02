@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css('create.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -78,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 		</fieldset><div class="clear"></div>
 
 		<div class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" />
+			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" />
 		</div>
 	</form>
 </section><!-- / .main section -->

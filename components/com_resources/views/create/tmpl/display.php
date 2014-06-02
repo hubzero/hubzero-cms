@@ -50,6 +50,9 @@ if (!$juser->get('guest')) {
 	$database->setQuery($query);
 	$submissions = $database->loadObjectList();
 }
+
+$this->css('introduction.css', 'system')
+     ->css('create.css');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
