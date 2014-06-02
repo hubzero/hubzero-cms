@@ -42,12 +42,20 @@ $juser = JFactory::getUser();
 
 $database = JFactory::getDBO();
 
+if (JRequest::getInt('force_fix', 0))
+{
+	$cn = JRequest::getVar('cn', '');
+	$query = "UPDATE `#__wiki_page` SET version_id=0 WHERE " . ($cn ? "group_cn=" . $database->quote($cn) : "(group_cn='' OR group_cn IS NULL)");
+	$database->setQuery($query);
+	$database->query();
+}
+
 $query = "SELECT wv.pageid, wv.id AS versionid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.version, wv.created_by, wv.created  
 			FROM #__wiki_version AS wv 
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wp.version_id = '0'
-				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
+				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY created DESC";
 
 //$query = "SELECT wv.id, wv.pageid, wv.pagetext FROM #__wiki_page AS wv WHERE wv.length = '0'";
