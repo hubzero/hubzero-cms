@@ -178,6 +178,15 @@ class plgSystemDebug extends JPlugin
 			{
 				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-errors\');"><span class="text">' . JText::_('PLG_DEBUG_ERRORS') . '</span></a>';
 			}
+
+			$dumper = \Hubzero\Utility\Debug::getInstance();
+			if ($dumper->hasMessages())
+			{
+				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-debug\');"><span class="text">' . JText::_('PLG_DEBUG_CONSOLE') . '</span>';
+				$html .= '<span class="badge">' . count($dumper->messages()) . '</span>';
+				$html .= '</a>';
+			}
+
 			$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-request\');"><span class="text">' . JText::_('PLG_DEBUG_REQUEST_DATA') . '</span></a>';
 			$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-session\');"><span class="text">' . JText::_('PLG_DEBUG_SESSION') . '</span></a>';
 			if ($this->params->get('profile', 1))
@@ -225,6 +234,11 @@ class plgSystemDebug extends JPlugin
 			if (\JError::getErrors())
 			{
 				$html .= $this->display('errors');
+			}
+
+			if ($dumper->hasMessages())
+			{
+				$html .= $this->display('debug');
 			}
 
 			$html .= $this->display('request');
@@ -570,6 +584,18 @@ class plgSystemDebug extends JPlugin
 		</dl>';
 
 		return $html;
+	}
+
+	/**
+	 * Display super global data
+	 *
+	 * @return  string
+	 */
+	protected function displayDebug()
+	{
+		$dumper = \Hubzero\Utility\Debug::getInstance();
+
+		return $dumper->render();
 	}
 
 	/**

@@ -225,8 +225,17 @@
 	}
 
 	/* Var list */
+	#system-debug pre,
 	#system-debug .debug-varlist {
 		font-family: monospace;
+	}
+
+	#system-debug pre {
+		background: transparent;
+		text-shadow: none;
+		border: none;
+		color: inherit;
+		font-size: 1em;
 	}
 
 /* Lists */
@@ -404,6 +413,9 @@
 		color: #282828;
 		border-color: #323232;
 		border-color: rgba(0, 0, 0, 0.4);
+	}
+	#system-debug.dark pre {
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 	}
 	#system-debug.dark .debug-tab,
 	#system-debug.dark .debug-indicator,
