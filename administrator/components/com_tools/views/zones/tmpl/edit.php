@@ -174,7 +174,7 @@ function submitbutton(pressbutton)
 								</tr>
 								<tr>
 									<td><?php echo JText::_('SIZE'); ?>:</td>
-									<td><span id="img-size"><?php echo Hubzero_View_Helper_Html::formatsize($this_size); ?></span></td>
+									<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
 								</tr>
 								<tr>
 									<td><?php echo JText::_('WIDTH'); ?>:</td>

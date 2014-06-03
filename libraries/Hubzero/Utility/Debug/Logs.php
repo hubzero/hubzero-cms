@@ -51,7 +51,7 @@ class Logs extends AbstractRenderer
 	{
 		parent::__construct($messages);
 
-		$this->_logger = \Hubzero_Factory::getLogger();
+		$this->_logger = \JFactory::getLogger();
 	}
 
 	/**

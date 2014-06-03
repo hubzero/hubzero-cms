@@ -388,8 +388,7 @@ function saveAndUpdate()
 							<select name="fields[countrySHORT]" id="field-countrySHORT">
 								<option value=""<?php if ($this->row->get('continent') == '') { echo ' selected="selected"'; } ?>>- Select -</option>
 								<?php
-								//ximport('Hubzero_Geo');
-								//if ($countries = Hubzero_Geo::getcountries()) 
+								//if ($countries = \Hubzero\Geocode\Geocode::countries()) 
 								if ($countries)
 								{
 									if (!$this->row->get('continent'))

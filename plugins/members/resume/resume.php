@@ -31,8 +31,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for resumes
  */
@@ -360,7 +358,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 * 
 	 * @param      object  $database  JDatabase
 	 * @param      string  $option    Component name
-	 * @param      object  $member    Hubzero_Profile
+	 * @param      object  $member    \Hubzero\User\Profile
 	 * @param      integer $emp       Is user employer?
 	 * @param      integer $edittitle Parameter description (if any) ...
 	 * @param      integer $editpref  Parameter description (if any) ...

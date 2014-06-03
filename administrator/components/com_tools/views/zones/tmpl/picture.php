@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 				</tr>
 				<tr>
 					<th><?php echo JText::_('SIZE'); ?>:</th>
-					<td><?php echo Hubzero_View_Helper_Html::formatsize($this_size); ?></td>
+					<td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('WIDTH'); ?>:</th>

@@ -781,7 +781,7 @@ class WishlistModelWish extends WishlistModelAbstract
 		$tbl->referenceid = $this->get('id');
 		$tbl->category    = 'wish';
 		$tbl->voter       = $juser->get('id');
-		$tbl->ip          = Hubzero_Environment::ipAddress();
+		$tbl->ip          = JRequest::ip();
 		$tbl->voted       = JFactory::getDate()->toSql();
 		$tbl->helpful     = $vote;
 

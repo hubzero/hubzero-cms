@@ -31,13 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'middleware.php');
 
 /**
  * Controller class for tools (default)
  */
-class ToolsControllerZones extends Hubzero_Controller
+class ToolsControllerZones extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Page Not found
@@ -129,7 +128,7 @@ class ToolsControllerZones extends Hubzero_Controller
 			return $this->notFoundTask();
 		}
 
-		$xserver = new Hubzero_Content_Server();
+		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($file);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support

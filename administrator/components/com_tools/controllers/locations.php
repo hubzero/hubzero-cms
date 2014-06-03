@@ -31,14 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'middleware.php');
 
 /**
  * Administrative tools controller for zones
  */
-class ToolsControllerLocations extends Hubzero_Controller
+class ToolsControllerLocations extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of hosts

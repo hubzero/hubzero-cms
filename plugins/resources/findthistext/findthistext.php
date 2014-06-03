@@ -37,18 +37,11 @@ defined('_JEXEC') or die('Restricted access');
 class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -99,11 +92,10 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			ximport('Hubzero_Document');
-			Hubzero\Document\Assets::addPluginStyleSheet('resources', $this->_name);
+			\Hubzero\Document\Assets::addPluginStyleSheet('resources', $this->_name);
 
 			// Instantiate a view
-			$view = new Hubzero\Plugin\View(
+			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'resources',
 					'element' => $this->_name,
