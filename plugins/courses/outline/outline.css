@@ -272,9 +272,6 @@
 	}
 	#course-outline .unit-fill-inner {
 		background: blue;
-		-webkit-border-radius: 50%;
-		-moz-border-radius: 50%;
-		border-radius: 50%;
 	}
 	#course-outline .unit-fill-inner.complete:before {
 		position: absolute;
