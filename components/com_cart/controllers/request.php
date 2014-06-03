@@ -35,65 +35,63 @@ defined('_JEXEC') or die('Restricted access');
  *	Cart AJAX requests
  */
 class CartControllerRequest extends ComponentController
-{	
+{
 	/**
 	 * Execute a task
 	 * 
 	 * @return     void
 	 */
 	public function execute()
-	{		
+	{
 		// Get the task
 		$this->_task  = JRequest::getVar('task', '');
-		
-		$this->_getStyles();
-				
+
 		parent::execute();
 	}
-	
+
 	public function addTask()
-	{		
+	{
 		$response->status = 'ok';
-		
+
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();
-		
+
 		// update cart
-		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');		
+		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');
 		$pIds = JRequest::getVar('pId', false, 'post');
-		
+
 		//print_r($pIds); die;
-		
+
 		// If pIds are posted, convert them to SKUs
 		if (!empty($pIds))
-		{		
+		{
 			$skus = array();
 			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 			$warehouse = new StorefrontModelWarehouse();
-			
-			foreach($pIds as $pId => $qty)
+
+			foreach ($pIds as $pId => $qty)
 			{
 				$product_skus = $warehouse->getProductSkus($pId);
-				
+
 				// must be only one sku to work
 				if (sizeof($product_skus) != 1)
 				{
 					// each pId must map to one SKU, otherwise ignored
 					continue;
 				}
-								
-				$skus[$product_skus[0]] = $qty;								
-			}			
-			
+
+				$skus[$product_skus[0]] = $qty;
+			}
 		}
-		else {
+		else 
+		{
 			$skus = JRequest::getVar('skus', false, 'post');
-		}		
+		}
 		//print_r($skus); die;
-		
+
 		// Initialize errors array
 		$errors = array();
-		
+
 		if ($updateCartRequest && $skus)
 		{
 			// Turn off syncing to prevent redundant session update queries
@@ -110,7 +108,7 @@ class CartControllerRequest extends ComponentController
 				}
 			}
 		}
-		
+
 		// add coupon if needed
 		$addCouponRequest = JRequest::getVar('addCouponCode', false, 'post');
 		$couponCode = JRequest::getVar('couponCode', false, 'post');
@@ -119,10 +117,10 @@ class CartControllerRequest extends ComponentController
 		{
 			// Sync cart before pontial coupons applying
 			$cart->getCartInfo(true);
-			
+
 			// Initialize errors array
 			$errors = array();
-						
+
 			// Add coupon
 			try
 			{
@@ -133,13 +131,13 @@ class CartControllerRequest extends ComponentController
 				$errors[] = $e->getMessage();
 			}
 		}
-		
+
 		if (!empty($errors)) 
 		{
 			$response->status = 'error';
 			$response->errors = $errors;
 		}
-		
+
 		echo htmlspecialchars(json_encode($response), ENT_NOQUOTES);
 		die();
 	}

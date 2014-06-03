@@ -33,6 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
+$this->css()
+     ->js()
 ?>
 
 <header id="content-header">
@@ -41,9 +43,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 <section class="main">
 	<div class="section-inner">
-	
 		<?php
-		
 		$errors = $this->getError();
 		if (!empty($errors))
 		{
@@ -52,13 +52,12 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 				echo '<p class="error">' . $error . '</p>';
 			}
 		}
-		
 		?>
 
 		<div class="grid break3">
 
 			<div id="cartItems" class="col span8">
-			
+
 				<form name="shoppingCart" id="shoppingCart" method="post">
 				<?php
 				
@@ -241,9 +240,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 						<input type="submit" name="addCouponCode" id="addCouponCode" class="btn" value="Apply">
 					</form>
 				</div>
-			
+
 			</div> <!-- // cart info -->
-	
-			
-	</div>	
+	</div>
 </section>

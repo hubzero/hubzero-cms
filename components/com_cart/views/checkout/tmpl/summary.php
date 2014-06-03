@@ -33,6 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
+$this->css();
 ?>
 
 <header id="content-header">
@@ -41,9 +42,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 <section class="main">
 	<div class="section-inner">
-	
 		<?php
-				
 		$errors = $this->getError();
 		if (!empty($errors))
 		{
@@ -51,8 +50,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 			{
 				echo '<p class="error">' . $error . '</p>';
 			}
-		}	
-		
+		}
 		?>
 
 		<?php
@@ -74,19 +72,15 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 				$membershipInfo = $meta['membershipInfo'];
 			}
 		}
-		
+
 		$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'messages'));
 		$view->setError($this->getError());
 		$view->display();
-		
 		?>
-		
+
 		<div class="grid">
-			
 			<?php
-			
 			$view = new \Hubzero\Component\View(array('name'=>'checkout', 'layout' => 'checkout_items'));
-			
 			$view->perks = $perks;
 			$view->membershipInfo = $membershipInfo;
 			$view->transactionItems = $this->transactionItems;
@@ -104,11 +98,11 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 			{
 				$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
 				$discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
-				
+
 				echo '<h2>Order summary:</h2>';
-				
+
 				echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
-				
+
 				if ($this->transactionInfo->tiShipping > 0)
 				{
 					echo '<p>Shipping: ' . money_format('%n', $this->transactionInfo->tiShipping) . '</p>';
@@ -117,29 +111,23 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 				{
 					echo '<p>Discounts: ' . money_format('%n', $discount) . '</p>';
 				}
-				
-				echo '<p class="orderTotal">Order total: ' . money_format('%n', $orderTotal) . '</p>';		
-					
+
+				echo '<p class="orderTotal">Order total: ' . money_format('%n', $orderTotal) . '</p>';
 			}
 			
 			echo '</div>';
-			
 			?>
-			
 		</div>
-		
 		<?php
-		
 		if (in_array('shipping', $this->transactionInfo->steps))
 		{
 			$view = new \Hubzero\Component\View(array('name'=>'checkout', 'layout' => 'checkout_shippinginfo'));
 			$view->transactionInfo = $this->transactionInfo;
 			$view->display();
 		}
-		
+
 		$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
-		
-		
+
 		if ($orderTotal > 0)
 		{
 			$buttonLabel = 'Proceed to payment';
@@ -150,12 +138,9 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 			$buttonLabel = 'Place order';
 			$buttonLink = JRoute::_('index.php?option=com_cart/order/place/' . $this->token);
 		}
-		
 		?>
-		
 		<p class="submit">
 			<a href="<?php echo $buttonLink; ?>" class="btn"><?php echo $buttonLabel; ?></a>
 		</p>
-		
 	</div>
 </div>

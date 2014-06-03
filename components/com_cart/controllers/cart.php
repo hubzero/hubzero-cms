@@ -35,28 +35,26 @@ defined('_JEXEC') or die('Restricted access');
  * Cart controller class
  */
 class CartControllerCart extends ComponentController
-{	
+{
 	/**
 	 * Execute a task
 	 * 
 	 * @return     void
 	 */
 	public function execute()
-	{		
+	{
 		// Get the task
 		$this->_task  = JRequest::getVar('task', '');
-		
-		$this->_getStyles();
-		
+
 		if (empty($this->_task))
 		{
 			$this->_task = 'home';
 			$this->registerTask('__default', $this->_task);
 		}
-		
+
 		parent::execute();
 	}
-	
+
 	/**
 	 * Display default page
 	 * 
@@ -66,45 +64,45 @@ class CartControllerCart extends ComponentController
 	{
 		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();
-		
+
 		// update cart if needed for non-ajax transactions
 		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');
-		
+
 		$pIds = JRequest::getVar('pId', false, 'post');
-		
+
 		//print_r($pIds); die;
-		
+
 		// If pIds are posted, convert them to SKUs
 		if (!empty($pIds))
-		{		
+		{
 			$skus = array();
 			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 			$warehouse = new StorefrontModelWarehouse();
-			
-			foreach($pIds as $pId => $qty)
+
+			foreach ($pIds as $pId => $qty)
 			{
 				$product_skus = $warehouse->getProductSkus($pId);
-				
+
 				// must be only one sku to work
 				if (sizeof($product_skus) != 1)
 				{
 					continue;
 				}
-				
+
 				$skus[$product_skus[0]] = $qty;
-				
+
 				// each pId must map to one SKU, otherwise ignored
-			}			
-			
+			}
 		}
-		else {
+		else
+		{
 			$skus = JRequest::getVar('skus', false, 'post');
-		}		
+		}
 		//print_r($skus); die;
-		
+
 		// Initialize errors array
 		$errors = array();
-		
+
 		if ($updateCartRequest && $skus)
 		{
 			// Turn off syncing to prevent redundant session update queries
@@ -120,27 +118,27 @@ class CartControllerCart extends ComponentController
 					$updateErrors[] = $e->getMessage();
 				}
 			}
-			
+
 			if (!empty($errors)) 
 			{
 				$redirect = false;
 			}
-			else {
+			else
+			{
 				// set flag to redirect
-				$redirect = true;				
-			}			
-			
+				$redirect = true;
+			}
 		}
-		
+
 		// add coupon if needed
 		$addCouponRequest = JRequest::getVar('addCouponCode', false, 'post');
 		$couponCode = JRequest::getVar('couponCode', false, 'post');
-		
+
 		if ($addCouponRequest && $couponCode)
 		{
 			// Sync cart before pontial coupons applying
 			$cart->getCartInfo(true);
-						
+
 			// Add coupon
 			try
 			{
@@ -150,56 +148,53 @@ class CartControllerCart extends ComponentController
 			{
 				$errors[] = $e->getMessage();
 			}
-			
+
 			if (!empty($errors)) 
 			{
 				$redirect = false;
 			}
-			else {
+			else
+			{
 				// set flag to redirect
 				$redirect = true;
 			}
 		}
-		
+
 		if (!empty($redirect) && $redirect)
 		{
 			// prevent resubmitting form by refresh
 			// If not an ajax call, redirect to cart
-			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-			$app  =  JFactory::getApplication();
-			$app->redirect($redirect_url);		
+			$redirect_url = JRoute::_('index.php?option=' . 'com_cart');
+			$app = JFactory::getApplication();
+			$app->redirect($redirect_url);
 		}
-		
+
 		// Set errors
 		$this->view->setError($errors);
-		
+
 		// Get the latest synced cart info, it will also enable cart syncing that was turned off before
 		$cartInfo = $cart->getCartInfo(true);
 		//print_r($cartInfo); die;
 		$this->view->cartInfo = $cartInfo;
-		
+
 		// Handle coupons
 		$couponPerks = $cart->getCouponPerks(); 
 		//print_r($couponPerks); die;
 		$this->view->couponPerks = $couponPerks;
-		
+
 		// Handle memberships
 		$membershipInfo = $cart->getMembershipInfo(); 
 		//print_r($membershipInfo); die;
 		$this->view->membershipInfo = $membershipInfo;
-		
+
 		// Check if there are changes to display
 		if ($cart->cartChanged())
 		{
 			$cartChanges = $cart->getCartChanges();
 			$this->view->setError($cartChanges);
 		}
-		
-		$doc = JFactory::getDocument();
-		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'cart.js');
-				
-		$this->view->display();		
-	}
 
+		$this->view->display();
+	}
 }
 
