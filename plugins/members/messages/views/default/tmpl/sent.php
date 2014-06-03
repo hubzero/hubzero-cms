@@ -31,9 +31,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //get the database object
 $database = JFactory::getDBO();
+
+$this->css()
+     ->js();
 ?>
-
-
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>" method="post">
 	<table class="data">
 		<thead>
@@ -87,7 +88,6 @@ $database = JFactory::getDBO();
 						//date received
 						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
 					?>
-				
 					<tr>
 						<td><?php echo $subject; ?></td>
 						<td><?php echo $to; ?></td>

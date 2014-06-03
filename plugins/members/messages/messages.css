@@ -2,8 +2,6 @@
 	Member Messages CSS
 */
 
-	.member_messages {
-	}
 	.member_messages .section {
 		padding: 0;
 		border: 10px solid #F4F4F4;
@@ -31,7 +29,7 @@
 	#message-toolbar li a,
 	#message-options li a {
 		display: block;
-		padding: 3px 10px 3px 30px;
+		padding: 0.3em 0.8em;
 		margin: 0;
 		background-color: #efefef;
 		color: #777;
@@ -57,35 +55,29 @@
 		border-bottom: 2px solid #FFF;
 		text-shadow: none;
 	}
-	#message-toolbar li .inbox {
-		background-image: url("/plugins/members/messages/images/inbox.png");
-		background-repeat: no-repeat;
-		background-position: 8px 50%;
+	#message-toolbar li .inbox:before {
+		content: "\f01c";
+		font-family: "Fontcons";
 	}
-	#message-toolbar li .sent {
-		background-image: url("/plugins/members/messages/images/sent.png");
-		background-repeat: no-repeat;
-		background-position: 8px 48%;
+	#message-toolbar li .sent:before {
+		content: "\f0a9";
+		font-family: "Fontcons";
 	}
-	#message-toolbar li .archive {
-		background-image: url("/plugins/members/messages/images/archive.png");
-		background-repeat: no-repeat;
-		background-position: 8px 45%;
+	#message-toolbar li .archive:before {
+		content: "\f005";
+		font-family: "Fontcons";
 	}
-	#message-toolbar li .trash {
-		background-image: url("/plugins/members/messages/images/trash.png");
-		background-repeat: no-repeat;
-		background-position: 8px 50%;
+	#message-toolbar li .trash:before {
+		content: "\f014";
+		font-family: "Fontcons";
 	}
-	#message-toolbar li .new {
-		background-image: url("/plugins/members/messages/images/compose.png");
-		background-repeat: no-repeat;
-		background-position: 8px 50%;
+	#message-toolbar li .new:before {
+		content: "\270D";
+		font-family: "Fontcons";
 	}
-	#message-options li .settings {
-		background-image: url("/plugins/members/messages/images/settings.png");
-		background-repeat: no-repeat;
-		background-position: 8px 45%;
+	#message-options li .settings:before {
+		content: "\2699";
+		font-family: "Fontcons";
 	}
 	#message-toolbar li .inbox:before,
 	#message-toolbar li .sent:before,
@@ -93,7 +85,7 @@
 	#message-options li .settings:before,
 	#message-toolbar li .trash:before,
 	#message-toolbar li .archive:before {
-		display: none;
+		margin-right: 0.4em;
 	}
 	#messages-container {
 		margin-top: -2px;
@@ -136,24 +128,43 @@
 		width: 12px;
 	}
 	table.data tbody .status {
-		width: 11px;
+		width: 1em;
 	}
 	table.data tbody .status span {
-		text-indent: -555em;
 		display: block;
+		width: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+		font-size: 0.5em;
 	}
-	table.data tbody .status .unread {
-		background: url("/plugins/members/messages/images/new-mail.png") 50% 50% no-repeat;
+	table.data tbody .status span:before {
+		content: " ";
+		margin-right: 1em;
+	}
+	table.data tbody .status .unread:before {
+		content: "\26AB";
+		font-family: "Fontcons";
+		color: #53bce8;
 	}
 	table.data tbody a.unread {
 		font-weight: bold;
 	}
 	table.data tbody a.trash {
 		display: block;
-		text-indent: -555em;
-		background: url("/plugins/members/messages/images/trash.png") no-repeat 50% 50%;
-		width: 20px;
-		border-bottom: 1px solid transparent;
+		width: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+		font-size: 1.2em;
+		border: none;
+	}
+	table.data tbody a.trash:before {
+		content: "\f014";
+		font-family: "Fontcons";
+		margin-right: 1em;
+		color: #999;
+	}
+	table.data tbody a.trash:hover:before {
+		color: #c00;
 	}
 	table.data tfoot td {
 		padding: 0;
@@ -168,7 +179,7 @@
 	}
 	table.data .message-link {
 		position: relative;
-	}	
+	}
 	table.data .message-link .preview {
 		position: absolute;
 		left: -9999px;
@@ -228,19 +239,18 @@
 	tr.section-header th {
 		font-weight: bold;
 		padding-top: 20px;
-	}	
-	.settings .email {
-		background: url("/plugins/members/messages/images/compose.png") no-repeat 0 0;
-		padding-left: 20px;
 	}
-	.settings .internal {
-		background: url("/plugins/members/messages/images/inbox.png") no-repeat 0 0;
-		padding-left: 20px;
-	}
-	.settings .internal:before,
 	.settings .email:before {
-		content: "";
-		display: none;
+		content: "\2709";
+		font-family: "Fontcons";
+		margin-right: 0.5em;
+		font-weight: normal;
+	}
+	.settings .internal:before {
+		content: "\f01c";
+		font-family: "Fontcons";
+		margin-right: 0.5em;
+		font-weight: normal;
 	}
 
 /* Compose */

@@ -70,7 +70,7 @@ $options = array(
 //no html?
 $no_html = JRequest::getVar("no_html", 0);
 ?>
-<?php if(!$no_html) : ?>
+<?php if (!$no_html) : ?>
 <h3 class="section-header">
 	<?php echo JText::_('PLG_MEMBERS_MESSAGES'); ?>
 </h3>

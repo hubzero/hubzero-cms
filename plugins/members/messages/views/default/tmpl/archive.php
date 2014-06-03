@@ -31,11 +31,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //get the database object
 $database = JFactory::getDBO();
+
+$this->css()
+     ->js();
 ?>
 
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive'); ?>" method="post">
-	
+
 	<div id="filters">
 		<input type="hidden" name="inaction" value="archive" />
 		<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?> 
@@ -56,7 +59,7 @@ $database = JFactory::getDBO();
 		</select> 
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
 	</div>
-	
+
 	<div id="actions">
 		<select class="option" name="action">
 			<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
@@ -67,11 +70,11 @@ $database = JFactory::getDBO();
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 	</div>
 	<br class="clear" />
-	
-	<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_OVERVIEW'); ?>">
+
+	<table class="data">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all" onclick="HUB.MembersMsg.checkAll(this, 'chkbox');" /></th>
+				<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all" /></th>
 				<th scope="col"> </th>
 				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
 				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
@@ -87,7 +90,7 @@ $database = JFactory::getDBO();
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if($this->rows) : ?>
+			<?php if ($this->rows) : ?>
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
 						$check = "<input class=\"chkbox\" type=\"checkbox\" id=\"msg{$row->id}\" value=\"{$row->id}\" name=\"mid[]\" />";

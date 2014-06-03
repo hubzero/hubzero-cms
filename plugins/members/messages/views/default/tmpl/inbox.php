@@ -31,8 +31,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //get the database object
 $database = JFactory::getDBO();
-?>
 
+$this->css()
+     ->js();
+?>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post">
 	<div id="filters">
@@ -56,7 +58,7 @@ $database = JFactory::getDBO();
 		</select> 
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
 	</div>
-	
+
 	<div id="actions">
 		<select class="option" name="action">
 			<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
@@ -69,11 +71,11 @@ $database = JFactory::getDBO();
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 	</div>
 	<br class="clear" />
-	
-	<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_OVERVIEW'); ?>">
+
+	<table class="data">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all" onclick="HUB.MembersMsg.checkAll(this, 'chkbox');" /></th>
+				<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all" /></th>
 				<th scope="col"> </th>
 				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
 				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
@@ -116,9 +118,9 @@ $database = JFactory::getDBO();
 						//$preview = ($row->message) ? "<h3>Message Preview:</h3>" . nl2br(stripslashes($row->message)) : '';
 
 						//subject link
-						$subject_cls  = "message-link";
+						$subject_cls  = 'message-link';
 						$subject_cls .= ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
-						
+
 						//$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}";
 						//$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
 						//$subject .= "</a>";

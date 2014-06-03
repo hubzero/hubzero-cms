@@ -107,8 +107,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->app = JFactory::getApplication();
 			$this->jconfig = JFactory::getConfig();
 
-			\Hubzero\Document\Assets::addPluginStylesheet('members', 'messages');
-
 			$task = JRequest::getVar('action','');
 			if (!$task) 
 			{
@@ -140,7 +138,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				case 'send':          $body = $this->send($database, $option, $member);          break;
 				case 'new':           $body = $this->create($database, $option, $member);        break;
 				
-				case 'view':          $body = $this->view($database, $option, $member, $mid);    break;
+				case 'view':          $body = $this->message($database, $option, $member, $mid); break;
 				case 'sent':          $body = $this->sent($database, $option, $member);          break;
 				case 'settings':      $body = $this->settings($database, $option, $member);      break;
 				case 'archive':       $body = $this->archive($database, $option, $member);       break;
@@ -213,9 +211,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	public function inbox($database, $option, $member) 
 	{
-		// Push some scripts to the template
-		\Hubzero\Document\Assets::addPluginScript('members', 'messages');
-
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
@@ -282,9 +277,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	public function archive($database, $option, $member) 
 	{
-		// Push some scripts to the template
-		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
-
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
@@ -350,9 +342,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	public function trash($database, $option, $member) 
 	{
-		// Push some scripts to the template
-		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
-
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
@@ -425,9 +414,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	public function sent($database, $option, $member) 
 	{
-		// Push some scripts to the template
-		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
-
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'members',
@@ -495,9 +481,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	public function settings($database, $option, $member) 
 	{
-		// Push some scripts to the template
-		\Hubzero\Document\Assets::addPluginScript('members', 'messages', 'messages');
-
 		$xmc = new \Hubzero\Message\Component($database);
 		$components = $xmc->getRecords();
 
@@ -634,7 +617,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 * @param      integer $mid      MEssage ID
 	 * @return     void
 	 */
-	public function view($database, $option, $member, $mid) 
+	public function message($database, $option, $member, $mid) 
 	{
 		$xmessage = new \Hubzero\Message\Message($database);
 		$xmessage->load($mid);
@@ -645,7 +628,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$xmessage->message = str_replace("\n","\n ",$xmessage->message);
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-		$xmessage->message = preg_replace_callback("/$UrlPtrn/", array('plgMembersMessages','autolink'), $xmessage->message);
+		$xmessage->message = preg_replace_callback("/$UrlPtrn/", array($this,'autolink'), $xmessage->message);
 		$xmessage->message = nl2br($xmessage->message);
 		$xmessage->message = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;', $xmessage->message);
 
@@ -1160,7 +1143,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (substr($name, 0, 7) == 'mailto:') 
 		{
 			$name = substr($name, 7, strlen($name));
-			$name = self::obfuscate($name);
+			$name = \Hubzero\Utility\String::obfuscate($name);
 
 			$href = 'mailto:' . $name;
 		}
@@ -1168,24 +1151,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			' <a class="ext-link" href="%s" rel="external">%s</a>', $href, $name
 		);
 		return $l;
-	}
-
-	/**
-	 * Obfuscate an email address
-	 * 
-	 * @param      string $email Address to obfuscate
-	 * @return     string
-	 */
-	public static function obfuscate($email)
-	{
-		$length = strlen($email);
-		$obfuscatedEmail = '';
-		for ($i = 0; $i < $length; $i++) 
-		{
-			$obfuscatedEmail .= '&#'. ord($email[$i]) . ';';
-		}
-
-		return $obfuscatedEmail;
 	}
 
 	/**

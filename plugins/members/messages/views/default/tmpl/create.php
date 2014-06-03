@@ -39,6 +39,7 @@ $disabled = ($this->tos) ? true : false;
 //get autocompleter
 $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', 'members', '', $this->tos, '', $disabled)) );
 
+$this->css();
 ?>
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset class="hub-mail">
@@ -71,7 +72,7 @@ $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', '
 			</p>
 		</div>
 	</fieldset>
-	
+
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="task" value="view" />
 	<input type="hidden" name="active" value="messages" />
@@ -80,16 +81,16 @@ $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', '
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 </form>
 
-<?php if($this->no_html && !JPluginHelper::isEnabled('system', 'jquery')) : ?>
+<?php if ($this->no_html && !JPluginHelper::isEnabled('system', 'jquery')) : ?>
 	<script>
 		var dochead = document.head,
 			scripts = [
-				"/plugins/hubzero/autocompleter/textboxlist.js",
-				"/plugins/hubzero/autocompleter/observer.js",
-				"/plugins/hubzero/autocompleter/autocompleter.js",
+				"<?php echo JRUI::base(true); ?>/plugins/hubzero/autocompleter/textboxlist.js",
+				"<?php echo JRUI::base(true); ?>/plugins/hubzero/autocompleter/observer.js",
+				"<?php echo JRUI::base(true); ?>/plugins/hubzero/autocompleter/autocompleter.js",
 			];
 
-		for(i=0;i<scripts.length; i++)
+		for (i=0;i<scripts.length; i++)
 		{
 			var include = document.createElement('script');
 			include.src = scripts[i];
