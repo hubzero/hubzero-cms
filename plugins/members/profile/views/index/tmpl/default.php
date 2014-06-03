@@ -29,6 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js()
+     ->js('jquery.fileuploader.js', 'system');
+
 //get user object
 $juser = JFactory::getUser();
 
@@ -50,7 +54,7 @@ if ($juser->get("id") == $this->profile->get("uidNumber"))
 
 //registration update
 $update_missing = array();
-if(isset($this->registration_update))
+if (isset($this->registration_update))
 {
 	$update_missing = $this->registration_update->_missing;
 }
@@ -84,7 +88,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>
-	
+
 	<?php if ($isUser) : ?>
 	<ul>
 		<li id="member-profile-completeness" class="hide">
@@ -96,30 +100,30 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<span id="completeness-info"><?php echo JText::_('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS'); ?></span>
 			<?php endif; ?>
 		</li>
-	</ul>	
+	</ul>
 	<?php endif; ?>
-	
+
 	<?php 
 		if ($isUser && $isIncrementalEnabled) 
 		{ 
 			$awards = new ModIncrementalRegistrationAwards($this->profile);
 			$awards = $awards->award();
-			
+
 			$increm  = '<div id="award-info">';
 			$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', JRoute::_('index.php?option=com_store')) . '</p>';
-			
+
 			if ($awards['prior']) 
 			{
 				$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_AWARDED_POINTS', $awards['prior']) . '</p>';
 			}
-		
+
 			if ($awards['new']) 
 			{
 				$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
 			}
 			
 			$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), JRoute::_('index.php?option=com_store'), JRoute::_('index.php?option=com_answers'), JRoute::_('index.php?option=com_wishlist')) .'</p>';
-			
+
 			$increm .= '</div>';
 			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']).'</span></div>';
 			$increm .= '<script type="text/javascript">
@@ -131,7 +135,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			\Hubzero\Document\Assets::addComponentScript('assets/js/incremental');
 		}
 	?>
-	
+
 	<?php if (isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
 		<div id="usage-agreement-popup">
 			<form action="index.php" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
@@ -160,7 +164,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			</form>
 		</div>
 	<?php endif; ?>
-	
+
 	<ul id="profile">
 		<?php if($isUser) : ?> 
 			<li class="profile-name section hidden">
@@ -198,7 +202,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</div>
 			</li>
 		<?php endif; ?>
-		
+
 		<?php if(!JPluginHelper::isEnabled('members', 'account')) : ?>
 			<?php if($isUser) : ?>
 				<li class="profile-password section hidden">
@@ -251,7 +255,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					|| ($this->params->get('access_org') == 1 && $loggedin) 
 					|| ($this->params->get('access_org') == 2 && $isUser)
 					) : ?>
-				
 					<?php
 						$cls = "";
 						if($this->params->get('access_org') == 2) 
@@ -279,7 +282,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$database = JFactory::getDBO();
 							$xo = new MembersTableOrganization( $database );
 							$orgs = $xo->getOrgs();
-						
+
 							//create select for organizations and optional text input
 							$organizations  = '<select name="org" class="input-select">';
 							$organizations .= '<option value="">' . JText::_('PLG_MEMBERS_PROFILE_SELECT_OR_ENTER_BELOW') . '</option>';
@@ -288,7 +291,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$sel = ($o == $this->profile->get("organization")) ? "selected=\"selected\"" : "";
 								$organizations .= "<option {$sel} value=\"{$o}\">{$o}</option>";
 							}
-							$organizations .= "</select>";
+							$organizations .= '</select>';
 							$organization_alt = (!in_array($this->profile->get("organization"), $orgs)) ? $this->escape($this->profile->get('organization')) : "";
 							$organizations_text = "<input type=\"text\" name=\"orgtext\" class=\"input-text\" value=\"{$organization_alt}\" />";
 
@@ -320,11 +323,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Employment != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_orgtype') == 0 
-			 		|| ($this->params->get('access_orgtype') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_orgtype') == 2 && $isUser)
+					|| ($this->params->get('access_orgtype') == 1 && $loggedin) 
+					|| ($this->params->get('access_orgtype') == 2 && $isUser)
 					) : ?>
 					<?php
 						$cls = "";
@@ -396,7 +399,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->profile->get('email')) : ?>
 			<?php if ($this->params->get('access_email', 2) == 0 
 			 		|| ($this->params->get('access_email', 2) == 1 && $loggedin) 
@@ -525,22 +528,22 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 		<?php if ($this->registration->Phone != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_phone') == 0 
-			 		|| ($this->params->get('access_phone') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_phone') == 2 && $isUser)
+					|| ($this->params->get('access_phone') == 1 && $loggedin) 
+					|| ($this->params->get('access_phone') == 2 && $isUser)
 				) : ?>
 					<?php
-						$cls = "";
+						$cls = '';
 						if ($this->params->get('access_phone') == 2) 
 						{
-							$cls .= "private";
-						}                     
-						if ($this->profile->get("phone") == "" || is_null($this->profile->get("phone")))
+							$cls .= 'private';
+						}
+						if ($this->profile->get("phone") == '' || is_null($this->profile->get("phone")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
 						if (isset($update_missing) && in_array("phone",array_keys($update_missing))) 
-						{            
-							$cls = str_replace(" hide", "", $cls);
+						{
+							$cls = str_replace(" hide", '', $cls);
 							$cls .= " missing";
 						}
 					?>
@@ -585,17 +588,17 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-		
+
 		<?php if ($this->registration->address != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_address') == 0 
-			 		|| ($this->params->get('access_address') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_address') == 2 && $isUser)
+					|| ($this->params->get('access_address') == 1 && $loggedin) 
+					|| ($this->params->get('access_address') == 2 && $isUser)
 				) : ?>
 				<?php
 					//get member addresses
 					$membersAddress = new MembersAddress( JFactory::getDBO() );
 					$addresses = $membersAddress->getAddressesForMember( $this->profile->get("uidNumber") );
-				
+
 					$cls = "";
 					if ($this->params->get('access_address') == 2) 
 					{
@@ -652,23 +655,23 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->params->get('access_bio') == 0 
-		 		|| ($this->params->get('access_bio') == 1 && $loggedin) 
-		 		|| ($this->params->get('access_bio') == 2 && $isUser)
+				|| ($this->params->get('access_bio') == 1 && $loggedin) 
+				|| ($this->params->get('access_bio') == 2 && $isUser)
 			) : ?>
 				<?php
 					$cls = "";
-					if($this->params->get('access_bio') == 2) 
+					if ($this->params->get('access_bio') == 2) 
 					{
 						$cls .= "private";
-					}                     
-					if($this->profile->get("bio") == "" || is_null($this->profile->get("bio")))
+					}
+					if ($this->profile->get("bio") == "" || is_null($this->profile->get("bio")))
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if(isset($update_missing) && in_array("bio",array_keys($update_missing))) 
-					{            
+					if (isset($update_missing) && in_array("bio",array_keys($update_missing))) 
+					{
 						$cls = str_replace(" hide", "", $cls);
 						$cls .= " missing";
 					}
@@ -688,7 +691,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 					<div class="value"><?php echo $bio; ?></div>
 					<br class="clear" />
-					
 					<?php
 						$editview = new \Hubzero\Plugin\View(
 							array(
@@ -697,7 +699,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								'name'    => 'edit'
 							)
 						);
-
 						$bio = \JFactory::getEditor()->display('profile[bio]', $this->escape(stripslashes($this->profile->getBio('raw'))), '', '', 100, 15, false, 'profile_bio', null, null, array('class' => 'minimal no-footer'));
 						$editview->registration_field = "bio";
 						$editview->profile_field = "bio";
@@ -719,7 +720,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<?php endif; ?>
 			</li>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Interests != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_tags') == 0 
 			 		|| ($this->params->get('access_tags') == 1 && $loggedin) 
@@ -761,11 +762,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-						
+
 							JPluginHelper::importPlugin( 'hubzero' );
 							$dispatcher = JDispatcher::getInstance();
 							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($tag_string))) );
-						
+
 							if (count($tf) > 0) 
 							{
 								$interests = $tf[0];
@@ -795,30 +796,30 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Citizenship != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_countryorigin') == 0 
-			 		|| ($this->params->get('access_countryorigin') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_countryorigin') == 2 && $isUser)
+					|| ($this->params->get('access_countryorigin') == 1 && $loggedin) 
+					|| ($this->params->get('access_countryorigin') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = "";
 						if ($this->params->get('access_countryorigin') == 2) 
 						{
 							$cls .= "private";
-						}                     
+						}
 						if ($this->profile->get("countryorigin") == '' || is_null($this->profile->get("countryorigin")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
 						if (isset($update_missing) && in_array("countryorigin",array_keys($update_missing))) 
-						{            
+						{
 							$cls = str_replace(" hide", '', $cls);
 							$cls .= " missing";
 						}
-						
+
 						// get countries list
-						$co = Hubzero\Geocode\Geocode::countries();
+						$co = \Hubzero\Geocode\Geocode::countries();
 					?>
 				<li class="profile-countryorigin section <?php echo $cls; ?>">
 					<div class="section-content">
@@ -829,7 +830,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							if (is_file(JPATH_ROOT.DS.'components'.DS.$this->option.DS.'images'.DS.'flags'.DS.strtolower($this->profile->get('countryorigin')).'.gif')) {
 								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/'.$this->option.'/images/flags/'.strtolower($this->profile->get('countryorigin')).'.gif" alt="'.$this->escape($this->profile->get('countryorigin')).' '.JText::_('PLG_MEMBERS_PROFILE_FLAG').'" /> ';
 							}
-							
+
 							// get the country name
 							foreach($co as $c)
 							{
@@ -903,29 +904,29 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Residency != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_countryresident') == 0 
-			 		|| ($this->params->get('access_countryresident') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_countryresident') == 2 && $isUser)
+					|| ($this->params->get('access_countryresident') == 1 && $loggedin) 
+					|| ($this->params->get('access_countryresident') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = "";
 						if ($this->params->get('access_countryresident') == 2) 
 						{
 							$cls .= "private";
-						}                     
+						}
 						if ($this->profile->get("countryresident") == "" || is_null($this->profile->get("countryresident")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
 						if (isset($update_missing) && in_array("countryresident", array_keys($update_missing))) 
-						{            
+						{
 							$cls = str_replace(" hide", "", $cls);
 							$cls .= " missing";
 						}
 						// get countries list
-						$co = Hubzero\Geocode\Geocode::countries();
+						$co = \Hubzero\Geocode\Geocode::countries();
 					?>
 				<li class="profile-countryresident section <?php echo $cls; ?>">
 					<div class="section-content">
@@ -973,8 +974,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$countries .= '>' . $this->escape($c->name) . '</option>';
 							}
 							$countries .= '</select>';
-						
-						
+
 							$yes = ""; $no = "";
 							if(strcasecmp($this->profile->get('countryresident'),'US') == 0)
 							{
@@ -984,7 +984,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							{
 								$no = 'checked="checked"';
 							}
-						 
+
 							$citizenship  = '<br /><input type="radio" name="cresident_us" id="cresident_usyes" value="yes" '.$yes.' /> ' . JText::_('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
 							$citizenship .= '<input type="radio" name="cresident_us" id="cresident_usno" value="no" '.$no.' /> ' . JText::_('PLG_MEMBERS_PROFILE_NO') . ' ';
 
@@ -1010,24 +1010,24 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Sex != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_gender') == 0 
-			 		|| ($this->params->get('access_gender') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_gender') == 2 && $isUser)
+					|| ($this->params->get('access_gender') == 1 && $loggedin) 
+					|| ($this->params->get('access_gender') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = "";
-						if($this->params->get('access_gender') == 2) 
+						if ($this->params->get('access_gender') == 2) 
 						{
 							$cls .= "private";
-						}                     
-						if($this->profile->get("gender") == "" || is_null($this->profile->get("gender")))
+						}
+						if ($this->profile->get("gender") == "" || is_null($this->profile->get("gender")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
-						if(isset($update_missing) && in_array("sex",array_keys($update_missing))) 
-						{            
+						if (isset($update_missing) && in_array("sex",array_keys($update_missing))) 
+						{
 							$cls = str_replace(" hide", "", $cls);
 							$cls .= " missing";
 						}
@@ -1042,7 +1042,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							?>
 						</div>
 						<br class="clear" />
-						
 						<?php
 							$editview = new \Hubzero\Plugin\View(
 								array(
@@ -1051,17 +1050,17 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-						
+
 							$sexes = array(
 								'male'    => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_MALE'),
 								'female'  => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_FEMALE'),
 								'refused' => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_REFUSED')
 							);
-						
+
 							$sex = '<select name="sex" class="input-select">';
 							//$sex .= '<option value="unspecified">Unspecified</option>';
-							foreach($sexes as $k=>$v)
-							{   
+							foreach ($sexes as $k=>$v)
+							{
 								$sel = ($k == $this->profile->get('gender')) ? 'selected="selected"' : '';
 								$sex .= '<option '.$sel.' value="'.$k.'">'.$v.'</option>';
 							}
@@ -1088,7 +1087,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Disability != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_disability') == 0 
 			 		|| ($this->params->get('access_disability') == 1 && $loggedin) 
@@ -1096,19 +1095,19 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				) : ?>
 				<?php
 					$cls = "";
-					if($this->params->get('access_disability') == 2) 
+					if ($this->params->get('access_disability') == 2) 
 					{
 						$cls .= "private";
-					}                     
-					if($this->profile->get("disability") == "" || is_null($this->profile->get("disability")) || count($this->profile->get("disability")) < 1)
+					}
+					if ($this->profile->get("disability") == "" || is_null($this->profile->get("disability")) || count($this->profile->get("disability")) < 1)
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if(isset($update_missing) && in_array("disability",array_keys($update_missing))) 
-					{            
+					if (isset($update_missing) && in_array("disability",array_keys($update_missing))) 
+					{
 						$cls = str_replace(" hide", "", $cls);
 						$cls .= " missing";
-					}                                  
+					}
 					//dont show meant for stats only
 					$cls .= (!$isUser) ? " hide" : "" ;
 				?>
@@ -1131,7 +1130,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-						
+
 							$disabilities = $this->profile->get('disability');
 							if (!is_array($disabilities)) {
 								$disabilities = array();
@@ -1157,9 +1156,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									}
 								}
 							}
-						
+
 							$disability_html = "";
-						
+
 							$disability_html .= "\t\t".'<fieldset class="sub">'."\n";
 							$disability_html .= "\t\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityyes" value="yes"';
 							if ($disabilityyes) {
@@ -1176,7 +1175,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							if (in_array('deaf', $disabilities)) {
 								$disability_html .= 'checked="checked" ';
 							}
-						   	$disability_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_DISABILITY_OPT_HEARING').'</label>'."\n";
+							$disability_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_DISABILITY_OPT_HEARING').'</label>'."\n";
 							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityphysical" id="disabilityphysical" ';
 							if (in_array('physical', $disabilities)) {
 								$disability_html .= 'checked="checked" ';
@@ -1228,24 +1227,24 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Hispanic != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_hispanic') == 0 
-			 		|| ($this->params->get('access_hispanic') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_hispanic') == 2 && $isUser)
+					|| ($this->params->get('access_hispanic') == 1 && $loggedin) 
+					|| ($this->params->get('access_hispanic') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = "";
 					if ($this->params->get('access_hispanic') == 2) 
 					{
 						$cls .= "private";
-					}                     
+					}
 					if ($this->profile->get("hispanic") == "" || is_null($this->profile->get("hispanic")) || count($this->profile->get("hispanic")) < 1)
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
 					if (isset($update_missing) && in_array("hispanic",array_keys($update_missing))) 
-					{            
+					{
 						$cls = str_replace(" hide", "", $cls);
 						$cls .= " missing";
 					}
@@ -1262,7 +1261,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							?>
 						</div>
 						<br class="clear" />
-						
 						<?php
 							$editview = new \Hubzero\Plugin\View(
 								array(
@@ -1271,9 +1269,10 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-						
+
 							$hispanic = $this->profile->get('hispanic');
-							if (!is_array($hispanic)) {
+							if (!is_array($hispanic))
+							{
 								$hispanic = array();
 							}
 
@@ -1282,19 +1281,22 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							foreach ($hispanic as $hispanicitem)
 							{
 								if ($hispanicitem != 'no'
-								 && $hispanicitem != 'refused') {
-									if (!$hispanicyes) {
+								 && $hispanicitem != 'refused')
+								{
+									if (!$hispanicyes)
+									{
 										$hispanicyes = true;
 									}
 
 									if ($hispanicitem != 'cuban'
 									 && $hispanicitem != 'mexican'
-									 && $hispanicitem != 'puertorican') {
+									 && $hispanicitem != 'puertorican')
+									{
 										$hispanicother = $hispanicitem;
 									}
 								}
 							}
-						
+
 							$hispanic_html = "";
 							$hispanic_html .= "\t\t".'<fieldset class="sub">'."\n";
 							$hispanic_html .= "\t\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicyes" value="yes" ';
@@ -1354,11 +1356,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->Race != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_race') == 0 
-			 		|| ($this->params->get('access_race') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_race') == 2 && $isUser)
+					|| ($this->params->get('access_race') == 1 && $loggedin) 
+					|| ($this->params->get('access_race') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = "";
@@ -1388,7 +1390,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							?>
 						</div>
 						<br class="clear" />
-						
 						<?php
 							$editview = new \Hubzero\Plugin\View(
 								array(
@@ -1397,12 +1398,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-						
+
 							$race = $this->profile->get('race');
-							if (!is_array($race)) {
+							if (!is_array($race))
+							{
 								$race = array();
 							}
-						
+
 							$race_html = "";
 							$race_html .= "\t\t".'<fieldset class="sub">'."\n";
 							$race_html .= "\t\t\t".'<p class="hint">'.JText::_('PLG_MEMBERS_PROFILE_SELECT_MULTIPLE').'</p>'."\n";
@@ -1462,37 +1464,37 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
-	
+
 		<?php if ($this->registration->OptIn != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_optin') == 0 
-			 		|| ($this->params->get('access_optin') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_optin') == 2 && $isUser)
+					|| ($this->params->get('access_optin') == 1 && $loggedin) 
+					|| ($this->params->get('access_optin') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = "";
-					if($this->params->get('access_optin') == 2) 
+					if ($this->params->get('access_optin') == 2) 
 					{
 						$cls .= "private";
-					}                     
-					if($this->profile->get("mailPreferenceOption") == "" || is_null($this->profile->get("mailPreferenceOption")))
+					}
+					if ($this->profile->get("mailPreferenceOption") == "" || is_null($this->profile->get("mailPreferenceOption")))
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if(isset($update_missing) && in_array("optin",array_keys($update_missing))) 
-					{            
+					if (isset($update_missing) && in_array("optin",array_keys($update_missing))) 
+					{
 						$cls = str_replace(" hide", "", $cls);
 						$cls .= " missing";
 					}
 					//dont show meant for stats only
 					$cls .= (!$isUser) ? ' hide' : '' ;
-					
+
 					//get value of mail preference option
 					switch($this->profile->get('mailPreferenceOption'))
 					{
-						case '1':    $mailPreferenceValue = 'Yes, send me emails';          break;
-						case '0':    $mailPreferenceValue = 'No, don\'t send me emails';    break;
+						case '1':  $mailPreferenceValue = 'Yes, send me emails';       break;
+						case '0':  $mailPreferenceValue = 'No, don\'t send me emails'; break;
 						case '-1':
-						default:     $mailPreferenceValue = 'Unanswered';                   break;
+						default:   $mailPreferenceValue = 'Unanswered';                break;
 					}
 				?>
 				<li class="profile-optin section <?php echo $cls; ?>">
@@ -1508,14 +1510,14 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-							
+
 							//define mail preference options
 							$options = array(
 								'-1' => JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
 								'1'  => JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
 								'0'  => JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
 							);
-							
+
 							//build option list
 							$optin_html  = '<strong>' . JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION') . '</strong>';
 							$optin_html .= '<label for="mailPreferenceOption">';
@@ -1527,7 +1529,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 							$optin_html .= '</select>';
 							$optin_html .= '</label>';
-							
+
 							$editview->registration_field = 'mailPreferenceOption';
 							$editview->profile_field = 'mailPreferenceOption';
 							$editview->registration = $this->registration->OptIn;
