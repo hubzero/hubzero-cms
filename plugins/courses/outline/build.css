@@ -6,7 +6,7 @@
  */
 
 /* Main outline styles */
-#page_content {
+#page_content.course_outline {
 	margin: 0;
 }
 .outline-main {
