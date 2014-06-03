@@ -30,13 +30,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $cls = 'even';
+
+$this->css('usage', 'com_usage');
 ?>
-<h3 class="section-header"><a name="usage"></a><?php echo JText::_('PLG_MEMBERS_USAGE'); ?></h3>
+<h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_USAGE'); ?></h3>
+
 <div class="aside">
 	<p class="info"><?php echo JText::_('PLG_MEMBERS_USAGE_EXPLANATION'); ?></p>
 </div><!-- / .aside -->
 <div class="subject" id="statistics">
-	<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_USAGE_TBL_SUMMARY_OVERVIEW'); ?>">
+	<table class="data">
 		<caption><?php echo JText::_('PLG_MEMBERS_USAGE_TBL_CAPTION_OVERVIEW'); ?></caption>
 		<thead>
 			<tr>
@@ -49,24 +52,18 @@ $cls = 'even';
 				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS'); ?>:</th>
 				<td><?php echo $this->contribution['contribs']; ?></td>
 			</tr>
-<?php
-	if ($this->total_tool_users) {
-?>
+		<?php if ($this->total_tool_users) { ?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_TBL_TH_USERS_SERVED_TOOLS'); ?>:</th>
 				<td><?php echo number_format($this->total_tool_users); ?></td>
 			</tr>
-<?php
-	}
-	if ($this->total_andmore_users) {
-?>
+		<?php } ?>
+		<?php if ($this->total_andmore_users) { ?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_TBL_TH_USERS_SERVED_ANDMORE'); ?>:</th>
 				<td><?php echo number_format($this->total_andmore_users); ?></td>
 			</tr>
-<?php
-	}
-?>
+		<?php } ?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_RANK'); ?>:</th>
 				<td><?php echo $this->rank; ?></td>
@@ -83,16 +80,16 @@ $cls = 'even';
 				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_CITATIONS'); ?>:</th>
 				<td><?php echo $this->citation_count; ?></td>
 			</tr>
-			<?php if ($this->cluster_users) { ?>
+		<?php if ($this->cluster_users) { ?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
 				<td><?php echo number_format($this->cluster_users).' users served in '.number_format($this->cluster_classes).' courses from '.number_format($this->cluster_schools).' institutions'; ?></td>
 			</tr>
-			<?php } ?>
+		<?php } ?>
 		</tbody>
 	</table>
-	
-	<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_USAGE_TBL_SUMMARY_TOOLS'); ?>">
+
+	<table class="data">
 		<caption><?php echo JText::_('PLG_MEMBERS_USAGE_TBL_CAPTION_TOOLS'); ?></caption>
 		<thead>
 			<tr>
@@ -107,19 +104,20 @@ $cls = 'even';
 			</tr>
 		</thead>
 		<tbody>
-<?php
-	if ($this->tool_stats) {	
-		$count = 1;
-		$cls = 'even';
-		$sum_simcount_12 = 0;
-		$sum_simcount_14 = 0;
-		foreach ($this->tool_stats as $row) 
+		<?php
+		if ($this->tool_stats)
 		{
-			$sim_count_12 = plgMembersUsage::get_simcount($row->id, 12);
-			$sim_count_14 = plgMembersUsage::get_simcount($row->id, 14);
-			$sum_simcount_12 += $sim_count_12;
-			$sum_simcount_14 += $sim_count_14;
-?>
+			$count = 1;
+			$cls = 'even';
+			$sum_simcount_12 = 0;
+			$sum_simcount_14 = 0;
+			foreach ($this->tool_stats as $row) 
+			{
+				$sim_count_12 = plgMembersUsage::get_simcount($row->id, 12);
+				$sim_count_14 = plgMembersUsage::get_simcount($row->id, 14);
+				$sum_simcount_12 += $sim_count_12;
+				$sum_simcount_14 += $sim_count_14;
+			?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<td><?php echo $count; ?></td>
 				<td class="textual-data"><a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a></td>
@@ -130,11 +128,11 @@ $cls = 'even';
 				<td><?php echo plgMembersUsage::get_citationcount($row->id, 0); ?></td>
 				<td><?php echo $row->publish_up; ?></td>
 			</tr>
-<?php
-			$count++;
-    	}
-		if ($this->tool_total_14 && $this->tool_total_12) {
-?>
+			<?php
+				$count++;
+			}
+			if ($this->tool_total_14 && $this->tool_total_12) {
+			?>
 			<tr class="summary">
 				<td></td>
 				<td class="textual-data"><?php echo JText::_('TOTAL'); ?></td>
@@ -145,20 +143,17 @@ $cls = 'even';
 				<td></td>
 				<td></td>
 			</tr>
-<?php
-		}
-	} else {
-?>
+			<?php
+			}
+		} else { ?>
 			<tr class="odd">
 				<td colspan="8" class="textual-data"><?php echo JText::_('PLG_MEMBERS_USAGE_NO_RESULTS'); ?></td>
 			</tr>
-<?php
-	}
-?>
+		<?php } ?>
 		</tbody>
 	</table>
-	
-	<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_USAGE_TBL_SUMMARY_RESOURCES'); ?>">
+
+	<table class="data">
 		<caption><?php echo JText::_('PLG_MEMBERS_USAGE_TBL_CAPTION_RESOURCES'); ?></caption>
 		<thead>
 			<tr>
@@ -171,13 +166,14 @@ $cls = 'even';
 			</tr>
 		</thead>
 		<tbody>
-<?php 
-	if ($this->andmore_stats) {
-		$cls = 'even';
-		$count = 1;
-		foreach ($this->andmore_stats as $row) 
+		<?php 
+		if ($this->andmore_stats)
 		{
-?>
+			$cls = 'even';
+			$count = 1;
+			foreach ($this->andmore_stats as $row) 
+			{
+			?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<td><?php echo $count; ?></td>
 				<td class="textual-data"><a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a> <span class="small"><?php echo $row->type; ?></span></td>
@@ -189,11 +185,11 @@ $cls = 'even';
 				<td><?php echo plgMembersUsage::get_citationcount($row->id, 0); ?></td>
 				<td><?php echo $row->publish_up; ?></td>
 			</tr>
-<?php
-			$count++;
-    	}
-		if ($this->andmore_total_14 && $this->andmore_total_12) {
-?>
+			<?php
+				$count++;
+			}
+			if ($this->andmore_total_14 && $this->andmore_total_12) {
+			?>
 			<tr class="summary">
 				<td></td>
 				<td><?php echo JText::_('TOTAL'); ?></td>
@@ -202,16 +198,13 @@ $cls = 'even';
 				<td></td>
 				<td></td>
 			</tr>
-<?php
-		}
-	} else {
-?>
+			<?php
+			}
+		} else { ?>
 			<tr class="odd">
 				<td colspan="6" class="textual-data"><?php echo JText::_('PLG_MEMBERS_USAGE_NO_RESULTS'); ?></td>
 			</tr>
-<?php
-	}
-?>
+		<?php } ?>
 		</tbody>
 	</table>
 	<?php echo '* Total only includes versions of the tools this author contributed to.'; ?>

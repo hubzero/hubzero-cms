@@ -36,8 +36,15 @@ jimport('joomla.plugin.plugin');
 /**
  * Members Plugin class for resources
  */
-class plgMembersResources extends JPlugin
+class plgMembersResources extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
 	/**
 	 * Resource areas
 	 * 
@@ -69,8 +76,6 @@ class plgMembersResources extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
@@ -334,16 +339,8 @@ class plgMembersResources extends JPlugin
 
 		// Get the component params and merge with resource params
 		$config = JComponentHelper::getParams('com_resources');
-		$paramClass = 'JParameter';
-		$dformat = '%d %b %Y';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-			$dformat = 'd M Y';
-			$tz = true;
-		}
-		$rparams = new $paramClass($row->params);
+
+		$rparams = new JRegistry($row->params);
 		$params = $config;
 		$params->merge($rparams);
 
@@ -351,9 +348,9 @@ class plgMembersResources extends JPlugin
 		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, $dformat, $tz);    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, $dformat, $tz);   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, $dformat, $tz); break;
+			case 1: $thedate = JHTML::_('date', $row->created, 'd M Y');    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, 'd M Y');   break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, 'd M Y'); break;
 		}
 
 		$html  = "\t" . '<li class="';

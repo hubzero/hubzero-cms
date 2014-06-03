@@ -37,18 +37,11 @@ defined('_JEXEC') or die('Restricted access');
 class plgMembersUsage extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -59,7 +52,10 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		$areas = array('usage' => JText::_('PLG_MEMBERS_USAGE'), 'icon' => 'f080');
+		$areas = array(
+			'usage' => JText::_('PLG_MEMBERS_USAGE'),
+			'icon'  => 'f080'
+		);
 		return $areas;
 	}
 
@@ -104,12 +100,10 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 		if ($returnhtml) 
 		{
-			\Hubzero\Document\Assets::addComponentStylesheet('com_usage');
-
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'members',
-					'element' => 'usage',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'summary'
 				)
 			);

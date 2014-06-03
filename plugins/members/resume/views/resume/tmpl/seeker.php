@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
 		<div class="thumb">
-			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile); ?>" alt="<?php echo $this->seeker->name; ?>" />
+			<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
 		</div>
 
 		<div class="aboutlb">
