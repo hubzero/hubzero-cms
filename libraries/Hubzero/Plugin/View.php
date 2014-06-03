@@ -315,6 +315,11 @@ class View extends AbstractView
 			return $this;
 		}
 
+		if (substr($folder, 0, strlen('com_')) == 'com_')
+		{
+			Assets::addComponentStylesheet($folder, $stylesheet, $type, $media, $attribs);
+		}
+
 		Assets::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
 		return $this;
 	}
@@ -340,16 +345,21 @@ class View extends AbstractView
 			$element = $this->_element;
 		}
 
+		if ($folder === true || strstr($script, '(') || strstr($script, ';'))
+		{
+			\JFactory::getDocument()->addScriptDeclaration($script);
+			return $this;
+		}
+
 		if ($folder == 'system')
 		{
 			Assets::addSystemScript($script);
 			return $this;
 		}
 
-		if ($folder === true || strstr($script, '(') || strstr($script, ';'))
+		if (substr($folder, 0, strlen('com_')) == 'com_')
 		{
-			\JFactory::getDocument()->addScriptDeclaration($script);
-			return $this;
+			Assets::addComponentScript($folder, $script, $type, $defer, $async);
 		}
 
 		Assets::addPluginScript($folder, $element, $script, $type, $defer, $async);
