@@ -1829,7 +1829,7 @@ HUB.CoursesOutline = {
 					200: function ( data, textStatus, jqXHR ) {
 						// Trigger update and click to close edit form
 						$('.outline-main').trigger('unitUpdate', [form.parents('.unit-item')[0].id, data]);
-						form.parent('.unit-edit').siblings('.unit-title').trigger('click');
+						form.parents('.unit-edit').siblings('.unit-title').trigger('click');
 					}
 				}
 			});
