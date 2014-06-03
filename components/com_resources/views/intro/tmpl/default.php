@@ -30,6 +30,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+$this->css('introduction.css', 'system')
+     ->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -45,15 +48,19 @@ defined('_JEXEC') or die('Restricted access');
 
 <section id="introduction" class="section">
 	<div class="grid">
-		<div class="col span5">
-			<h3><?php echo JText::_('What are resources?'); ?></h3>
-			<p><?php echo JText::_('Resources are user-submitted pieces of content that range from video presentations to publications to simulation tools.'); ?></p>
+		<div class="col span9">
+			<div class="grid">
+				<div class="col span6">
+					<h3><?php echo JText::_('What are resources?'); ?></h3>
+					<p><?php echo JText::_('Resources are user-submitted pieces of content that range from video presentations to publications to simulation tools.'); ?></p>
+				</div>
+				<div class="col span6 omega">
+					<h3><?php echo JText::_('Who can submit a resource?'); ?></h3>
+					<p><?php echo JText::_('Anyone can submit a resource! Resources must be relevant to the community and may undergo a short approval process to ensure all appropriate files and information are included.'); ?></p>
+				</div>
+			</div>
 		</div>
-		<div class="col span5">
-			<h3><?php echo JText::_('Who can submit a resource?'); ?></h3>
-			<p><?php echo JText::_('Anyone can submit a resource! Resources must be relevant to the community and may undergo a short approval process to ensure all appropriate files and information are included.'); ?></p>
-		</div>
-		<div class="col span2 omega">
+		<div class="col span3 omega">
 			<p>
 				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=resources&page=index'); ?>">
 					<?php echo JText::_('Need Help?'); ?>

@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('hubpresenter.css')
+     ->js('hubpresenter.js')
+     ->js('hubpresenter.plugins.js');
+
 //get the manifest for the presentation
 $contents = file_get_contents(JPATH_ROOT.$this->manifest);
 

@@ -41,6 +41,9 @@ if ($this->config->get('show_ranking')) {
 $sortbys['date'] = JText::_('COM_RESOURCES_DATE_PUBLISHED');
 $sortbys['date_modified'] = JText::_('COM_RESOURCES_DATE_MODIFIED');
 $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
+
+$this->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

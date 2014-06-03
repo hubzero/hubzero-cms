@@ -32,6 +32,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('video.css')
+     ->js('video.js')
+     ->js('hubpresenter.plugins.js');
+
 //base url for the resource
 $base = DS . trim($this->config->get('uploadpath'), DS);
 

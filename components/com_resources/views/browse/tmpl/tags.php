@@ -33,6 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Import share CSS to style share features on right side of trifold
 \Hubzero\Document\Assets::addPluginStylesheet('resources', 'share');
+
+$this->css()
+     ->js()
+     ->js('tagbrowser');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

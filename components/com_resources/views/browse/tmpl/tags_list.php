@@ -247,10 +247,7 @@ switch ($this->level)
 		}
 
 		if ($params->get('show_metadata')) {
-			$view = new JView(array(
-				'name'   => 'view',
-				'layout' => '_metadata',
-			));
+			$view = $this->view('_metadata', 'view');
 			$view->option = 'com_resources';
 			$view->sections = $sections;
 			$view->model = ResourcesModelResource::getInstance($resource->id);
@@ -258,7 +255,7 @@ switch ($this->level)
 			$html .= $view->loadTemplate();
 		}
 		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" /></li>';
-		$html .= '</ul><script type="text/javascript">HUB.Base.popups();HUB.Base.launchTool();</script>';
+		$html .= '</ul>';
 	break;
 }
 echo $html;

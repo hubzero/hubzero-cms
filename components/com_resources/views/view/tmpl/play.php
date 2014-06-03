@@ -33,120 +33,25 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $html = '';
-$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
 
-if ($this->resource->type == 4) {
-	$parameters = new $paramsClass( $this->resource->params );
-
-	$this->helper->getChildren();
-
-	$children = $this->helper->children;
-
-	// We're going through a learning module
-	$html .= '<div class="aside">'."\n";
-	$n = count($children);
-	$i = 0;
-	$blorp = 0;
-
-	$html .= '<ul class="sub-nav">'."\n";
-	foreach ($children as $child)
-	{
-		$attribs = new $paramsClass( $child->attribs );
-
-		if ($attribs->get( 'exclude', '' ) != 1) {
-			$params = new $paramsClass( $child->params );
-			$link_action = $params->get( 'link_action', '' );
-			switch ($child->logicaltype)
-			{
-				case 19: $class = ' class="withoutaudio'; break;
-				case 20: $class = ' class="withaudio';    break;
-				default:
-					if ($child->type == 33) {
-						$class = ' class="pdf';
-					} else {
-						$class = ' class="';
-					}
-					break;
-			}
-			$class .= ($this->resid == $child->id || ($this->resid == '' && $i == 0)) ? ' active"': '"';
-
-			$i++;
-			if ((!$child->grouping && $blorp) || ($child->grouping && $blorp && $child->grouping != $blorp)) {
-				$blorp = '';
-				$html .= "\t".'</ul>'."\n";
-				$html .= ' </li>'."\n";
-			}
-			if ($child->grouping && !$blorp) {
-				$blorp = $child->grouping;
-
-				$type = new ResourcesType( $this->database );
-				$type->load( $child->grouping );
-
-				$html .= ' <li class="grouping"><span>'.$type->type.'</span>'."\n";
-				$html .= "\t".'<ul id="'.strtolower($type->type).$i.'">'."\n";
-			}
-			$html .= ($blorp) ? "\t" : '';
-			$html .= ' <li'.$class.'>';
-
-			$url  = ($link_action == 1)
-				  ? checkPath($child->path, $child->type, $child->logicaltype)
-				  : JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&resid='. $child->id);
-			$html .= '<a href="'.$url.'" ';
-			if ($link_action == 1) {
-				$html .= 'target="_blank" ';
-			} elseif($link_action == 2) {
-				$html .= 'onclick="popupWindow(\''.$child->path.'\', \''.$child->title.'\', 400, 400, \'auto\');" ';
-			}
-			$html .= '>'. $child->title .'</a>';
-			$html .= ($child->type == 33)
-				   ? ' '.ResourcesHtml::getFileAttribs( $child->path, '', $this->fsize )
-				   : '';
-			$html .= '</li>'."\n";
-			if ($i == $n && $blorp) {
-				$html .= "\t".'</ul>'."\n";
-				$html .= ' </li>'."\n";
-			}
-		}
-	}
-	$html .= '</ul>'."\n";
-	$html .= ResourcesHtml::license( $parameters->get( 'license', '' ) );
-	$html .= '</div><!-- / .aside -->'."\n";
-	$html .= '<div class="subject">'."\n";
-
-	// Playing a learning module
-	if (is_object($this->activechild)) {
-		if (!$this->activechild->path) {
-			// Output just text
-			$html .= '<h3>'.stripslashes($this->activechild->title).'</h3>';
-			$html .= stripslashes($this->activechild->fulltxt);
-		} else {
-			// Output content in iFrame
-			$html .= '<iframe src="'.$this->activechild->path.'" width="97%" height="500" name="lm_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
-		}
-	}
-
-	$html .= '</div><!-- / .subject -->'."\n";
-	$html .= '<div class="clear"></div>'."\n";
-} else {
 	$url = $this->activechild->path;
 
 	// Get some attributes
-	$attribs = new $paramsClass( $this->activechild->attribs );
+	$attribs = new JRegistry( $this->activechild->attribs );
 	$width  = $attribs->get('width', '');
 	$height = $attribs->get('height', '');
 
 	$attributes = $attribs->get('attributes', '');
-	if ($attributes) {
+	if ($attributes) 
+	{
 		$a = explode(',', $attributes);
 		$bits = array();
-		if ($a && is_array($a)) {
+		if ($a && is_array($a)) 
+		{
 			foreach ($a as $b)
 			{
-				if (strstr($b, ':')) {
+				if (strstr($b, ':')) 
+				{
 					$b = preg_split('#:#', $b);
 					$bits[] = trim($b[0]) . '="' . trim($b[1]) . '"';
 				}
@@ -165,10 +70,9 @@ if ($this->resource->type == 4) {
 	$height = (intval($height) > 0) ? $height : 0;
 
 	$images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
-	$files = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
+	$files  = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
 
-	$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
-		           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+	$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
 	if (preg_match("/$UrlPtn/", $url))
 	{
@@ -269,5 +173,5 @@ if ($this->resource->type == 4) {
 	{
 		$html .= '<p class="error">'.JText::_('COM_RESOURCES_FILE_NOT_FOUND').'</p>'."\n";
 	}
-}
+
 echo $html;
