@@ -29,6 +29,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css('form.css')
+     ->css('tablesorter.themes.blue.css', 'system')
+     ->js('select.js')
+     ->js('jquery.tablesorter.min', 'system');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

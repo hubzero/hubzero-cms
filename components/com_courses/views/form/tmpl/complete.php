@@ -1,4 +1,7 @@
 <?php
+$this->css('form.css')
+     ->js('complete.js');
+
 $pdf = $this->pdf;
 $progress = $this->resp->getProgress();
 $realLimit = $this->dep->getRealTimeLimit();
@@ -28,7 +31,7 @@ $incomplete = $this->incomplete;
 	?>
 	<form action="" method="post">
 		<ol id="pages" class="complete">
-		<? $pdf->eachPage(function($url, $idx) use($layout, $progress, $incomplete) { ?>
+		<?php $pdf->eachPage(function($url, $idx) use ($layout, $progress, $incomplete) { ?>
 			<li>
 				<img src="<?php echo $url ?>" alt="" />
 				<?
@@ -52,8 +55,8 @@ $incomplete = $this->incomplete;
 				<input type="hidden" name="option" value="com_courses" />
 				<input type="hidden" name="controller" value="form" />
 				<input type="hidden" name="task" value="submit" />
-				<input type="hidden" name="crumb" value="<?= $this->dep->getCrumb() ?>" />
-				<input type="hidden" name="attempt" value="<?= $this->resp->getAttemptNumber() ?>" />
+				<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
+				<input type="hidden" name="attempt" value="<?php echo $this->resp->getAttemptNumber() ?>" />
 				<button class="btn btn-primary" type="submit">Submit</button>
 			</p>
 		</fieldset>

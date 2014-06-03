@@ -29,6 +29,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css('form.css')
+     ->css('tablesorter.themes.blue.css', 'system')
+     ->js('timepicker.js')
+     ->js('deploy.js')
+     ->js('jquery.tablesorter.min', 'system');
 ?>
 <header id="content-header" class="full">
 	<h2>Deploy: <?php echo $this->escape($this->title) ?></h2>
