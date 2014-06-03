@@ -1,78 +1,187 @@
 /* HUB Forms */
-	#hubForm {
-		position: relative;
-	}
-	/* Side fade */
-	#hubForm small.hubform-before,
-	#hubForm:before {
-		content: "";
-		display: block;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		height: auto;
-		border: 0;
-		_display: none;
-		width: 1px;
-		background-color: #ddd;
-		right: 239px;
-	}
-	#hubForm.login .explaination small.explaination-after,
-	#hubForm.login .explaination:first-child:after {
-		display: none;
-	}
-	form fieldset {
-		color: #333;
-		background: #fff;
-		border: 1px solid #e5e5e5;
-		margin: 0.7em 270px 1.7em 0;
-		border-radius: 0.25em;
+	form {
+		label {
+			display: block;
+			color: #777;
+			padding: 1.5em 0 0 0;
+		}
+		input, 
+		select, 
+		textarea {
+			margin-top: 0.25em;
+			width: 100%;
+		}
 
-		position: relative;
-		padding: 3.5em 2em 2em 2em;
-	}
-	#hubForm .explaination + fieldset {
-		margin-right: 0px;
-	}
-	form legend {
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		border-bottom: 1px solid #e5e5e5;
-		margin: 0 0 1em 0;
-		padding: 1.2em 2em;
-		*padding: 0.8em 0;
-		*text-indent: 2em;
+		legend {
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			border-bottom: 1px solid #e5e5e5;
+			margin: 0 0 1em 0;
+			padding: 1.2em 2em;
+			text-transform: uppercase;
+			font-weight: 500;
+			letter-spacing: 0.15em;
+			line-height: 1;
+			.box-sizing(border-box);
 
-		text-transform: uppercase;
-		font-weight: 500;
-		letter-spacing: 0.15em;
-		line-height: 1;
-		.box-sizing(border-box);
+			&:before,
+			&:after {
+				content: "";
+				display: table;
+				line-height: 0;
+			}
+			&:after {
+				clear: right;
+			}
+		}
+
+		fieldset {
+			color: #333;
+			background: #fff;
+			border: 1px solid #e5e5e5;
+			margin: 0.7em 260px 1.7em 0;
+			border-radius: 0.25em;
+			position: relative;
+			padding: 4em 2em 2em 2em;
+
+			fieldset {
+				margin: 1.5em 0;
+				padding: 0 1em 1.5em 1em;
+				border: 1px solid #e5e5e5;
+				float: none;
+				width: auto;
+
+				label {
+					padding-top: 0.7em;
+				}
+				legend {
+					float: none;
+					position: static;
+					left: auto;
+					right: auto;
+					background: #fff;
+					color: #747474;
+					border: none;
+					width: auto;
+					padding: 0 1em;
+					margin: 0;
+					text-indent: 0;
+					text-shadow: none;
+					text-transform: none;
+					font-size: 1em;
+				}
+			}
+		}
+		.explaination + fieldset {
+			margin-right: 0px;
+		}
+
+		.grid {
+			//margin: 0 2em;
+
+			.options label {
+				display: inline;
+				float: none;
+				width: auto;
+			}
+			label {
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
+
+		.options label,
+		.options input,
+		.option {
+			display: inline;
+			margin: 0 0.25em 0 0 !important;
+			margin: 0;
+			width: auto;
+		}
+
+		/*span.field-wrap,
+		label + .field-wrap {
+			margin: 0 2em 0 2em;
+		}*/
+		legend + .grid label {
+			padding-top: 0.5em;
+		}
+		legend + .grid p {
+			margin-top: 0.5em;
+		}
+		/*label + input {
+			margin-left: 2em;
+			margin-right: 2em;
+			width: 92.5%;
+		}*/
+
+		.optional,
+		.required {
+			text-transform: uppercase;
+			font-size: xx-small;
+		}
+		.required {
+			color: red;
+		}
+		.optional {
+			color: #999;
+		}
+		.hint {
+			color: #999;
+			font-size: 90%;
+		}
+		.inactive {
+			color: #aa9;
+		}
+
+		.submit {
+			padding: 1em 0 0 0;
+			text-align: center;
+
+			input {
+				display: inline;
+				width: auto;
+			}
+		}
+
+		span.warning,
+		span.information,
+		span.help,
+		span.error {
+			margin: 0.5em 0 0 0;
+			display: inline-block;
+		}
+		.error p,
+		.warning p,
+		.information p,
+		.help p {
+			margin: 1em 0;
+		}
+
+		ul {
+			margin: 1em 0;
+
+			li {
+				margin-left: 2em;
+			}
+		}
+
+		.list-footer label,
+		.list-footer select,
+		table input,
+		table select {
+			width: auto;
+			display: inline;
+		}
+		.list-footer label {
+			margin: 0;
+			padding: 0;
+		}
 	}
-	form legend:before,
-	form legend:after {
-		content: "";
-		display: table;
-		line-height: 0;
-	}
-	form legend:after {
-		clear: right;
-	}
-	form label {
-		display: block;
-		color: #777;
-		/*padding: 1.5em 2em 0 2em;*/
-		padding: 1.5em 0 0 0;
-	}
-	form input, 
-	form select, 
-	form textarea {
-		margin-top: 0.25em;
-		width: 100%;
-	}
+
 	form.full fieldset {
 		margin: 0.7em 0 1.7em 0;
 	}
@@ -80,34 +189,8 @@
 	form.full:after {
 		display: none;
 	}
-	#form.full fieldset fieldset,
-	form fieldset fieldset {
-		margin: 1.5em 0;
-		padding: 0 1em 1.5em 1em;
-		border: 1px solid #e5e5e5;
-		float: none;
-		width: auto;
-	}
-	form fieldset fieldset label {
-		padding-top: 0.7em;
-	}
-	form fieldset fieldset legend {
-		float: none;
-		position: static;
-		left: auto;
-		right: auto;
-		background: #fff;
-		color: #747474;
-		border: none;
-		width: auto;
-		padding: 0 1em;
-		margin: 0;
-		text-indent: 0;
-		text-shadow: none;
-		text-transform: none;
-		font-size: 1em;
-	}
-	form.full fieldset fieldset fieldset,
+
+	/*form.full fieldset fieldset fieldset,
 	form fieldset fieldset fieldset {
 		margin: 0;
 		padding: 0;
@@ -120,237 +203,111 @@
 	}
 	form fieldset fieldset fieldset legend label {
 		margin-left: 0;
-	}
-	form .options label,
-	form .options input,
-	form .option {
-		display: inline;
-		margin: 0 0.25em 0 0 !important;
-		margin: 0;
-		width: auto;
-	}
+	}*/
 	form.indent { 
 		margin-left: 1.75em; 
 	}
-	form .group {
-		margin: 0;
-	}
-	/*form .field-wrap,
-	form fieldset>p {
-		display: block;
-		margin: 1.5em 2em 0 2em;
-	}*/
-	form span.field-wrap,
-	form label + .field-wrap {
-		margin: 0 2em 0 2em;
-	}
-	form legend + .group label{
-		padding-top: 0.5em;
-	}
-	form legend + .group p {
-		margin-top: 0.5em;
-	}
-	form label + input {
-		margin-left: 2em;
-		margin-right: 2em;
-		width: 92.5%;
-	}
-	form .group label,
-	form .group p {
-		padding-left: 0;
-		padding-right: 0;
-		float: left;
-		width: 47.5%;
-		margin-left: 5%;
-	}
-	form .group p {
-		margin-right: 0;
-	}
-	form .group label:first-child {
-		margin-left: 0;
-	}
-	form .threeup label {
-		width: 30%;
-	}
-	form .group:after {
-		content: ".";
-		display: block;
-		height: 0;
-		clear: both;
-		visibility: hidden;
-	}
-	form .group .options label {
-		display: inline;
-		float: none;
-		width: auto;
-	}
-	/*form label em {
-		display: block;
-		margin: -1.5em 0 0 10em;
-		text-align: right;
-		font: inherit;
-		color: #aa9;
-	}*/
-	form .submit {
-		padding: 1em 0 0 0;
-		text-align: center;
-		margin-right: 30%;
-	}
+
 	form.full .submit {
 		margin-right: 0;
 	}
-	form .submit input {
-		display: inline;
-		width: auto;
-	}
-	form .inactive {
-		color: #aa9;
-	}
-	#hubForm .explaination {
-		float: right;
-		min-height: 10px;
-		width: 210px;
-		padding: 10px 0 0 30px;
-		margin: 0 0 0 30px;
-		border-top: 1px solid #ddd;
+
+	#hubForm {
 		position: relative;
-		border-left: 8px solid #ddd;
-		padding: 10px 0 0 22px;
-	}
-	#hubForm .explaination:after,
-	#hubForm .explaination:after {
-		border: 8px solid #f9f9f9;
-		border-color: transparent transparent transparent #f9f9f9;
-		position: absolute;
-		top: 1.9em;
-		left: -9px;
-		content: "";
-		width: 0;
-		height: 0;
-	}
-	#hubForm .explaination a:hover {
-		color: #222;
-	}
-	#hubForm .explaination p {
-		margin: 1em 0;
-	}
-	#hubForm .explaination h2 {
-		position: relative;
-		margin: 1.5em 0 0.5em;
-		padding: 0;
-		border: none;
-		width: 100%;
-	}
-	#hubForm .explaination ul {
-		position: relative;
-		list-style: none;
-		color: #57b;
-	}
-	form .optional,
-	form .required {
-		text-transform: uppercase;
-		font-size: xx-small;
-	}
-	form .required {
-		color: red;
-	}
-	form .optional {
-		color: #999;
-	}
-	form .hint {
-		color: #999;
-		font-size: 90%;
-	}
-	#hubForm span.hint {
-		line-height: 2em;
-	}
-	#hubForm .warning,
-	#hubForm .error {
-		margin-top: 0;
-	}
-	#hubForm fieldset .error,
-	#hubForm fieldset .warning,
-	#hubForm fieldset .information,
-	#hubForm fieldset .help {
-		margin: 1em 2em;
-	}
-	#hubForm ul {
-		margin: 1em 2em;
-	}
-	#hubForm ul li {
-		margin-left: 2em;
-	}
-	#hubForm ul li.error {
-		margin-left: 0;
-	}
-	#hubForm span.warning,
-	#hubForm span.information,
-	#hubForm span.help,
-	#hubForm span.error {
-		margin: 0.5em 0 0 0;
-		display: inline-block;
-	}
-	#hubForm .error p,
-	#hubForm .warning p,
-	#hubForm .information p,
-	#hubForm .help p {
-		margin: 1em 0;
-	}
-	/*#hubForm table {
-		margin: 1em 0;
-		border-top: 2px solid #DEE4CD;
-		border-color: #DEE4CD;
-	}
-	#hubForm table td,
-	#hubForm table th {
-		border-color: #DEE4CD;
-	}
-	#hubForm table input,
-	#hubForm table select {
-		width: auto;
-	}
-	#hubForm fieldset fieldset.fieldsWithErrors,
-	#hubForm .fieldsWithErrors {
-		border: 1px solid #c00;
-	}
-	#hubForm fieldset fieldset.fieldsWithErrors legend,
-	#hubForm .fieldWithErrors { 
-		color: #c00;
-		font-weight: bold;
-	}
-	#hubForm .fieldWithErrors input,
-	#hubForm .fieldWithErrors select,
-	#hubForm .fieldWithErrors textarea {
-		background-color: #F8E5E5;
-	}
-	#hubForm .fieldWithErrors .required,
-	#hubForm .fieldWithErrors .optional {
-		font-weight: normal;
-	}*/
-	form .list-footer label,
-	form .list-footer select,
-	form table input,
-	form table select {
-		width: auto;
-		display: inline;
-	}
-	form .list-footer label {
-		margin: 0;
-		padding: 0;
+		padding: 30px 60px;
+
+		// Side fade
+		small.hubform-before,
+		&:before {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			height: auto;
+			border: 0;
+			_display: none;
+			width: 1px;
+			border-left: 1px solid rgba(0, 0, 0, 0.05);
+			background: #f6f6f6;
+			width: 289px;
+			right: 0;
+		}
+
+		.submit {
+			margin-right: 30%;
+		}
+		.explaination {
+			float: right;
+			min-height: 10px;
+			width: 200px;
+			padding: 0 0 0 30px;
+			margin: 0 0 0 30px;
+			position: relative;
+		}
+		/*.explaination:after,
+		.explaination:after {
+			border: 8px solid #f9f9f9;
+			border-color: transparent transparent transparent #f9f9f9;
+			position: absolute;
+			top: 1.9em;
+			left: -9px;
+			content: "";
+			width: 0;
+			height: 0;
+		}*/
+		.explaination a:hover {
+			color: #222;
+		}
+		.explaination p {
+			margin: 1em 0;
+		}
+		.explaination h2 {
+			position: relative;
+			margin: 1.5em 0 0.5em;
+			padding: 0;
+			border: none;
+			width: 100%;
+		}
+		.explaination ul {
+			position: relative;
+			list-style: none;
+			color: #57b;
+		}
+
+		span.hint {
+			line-height: 2em;
+		}
+		/*.warning,
+		.error {
+			margin-top: 0;
+		}
+		#hubForm fieldset .error,
+		#hubForm fieldset .warning,
+		#hubForm fieldset .information,
+		#hubForm fieldset .help {
+			margin: 1em 2em;
+		}*/
+		/*ul li.error {
+			margin-left: 0;
+		}*/
 	}
 
-	form.search fieldset {
-		background: transparent;
-		border: none;
-		padding: 0;
-		margin: 0;
-	}
-	form.search fieldset input {
-		width: auto;
-		display: inline-block;
+	form.search {
+		fieldset {
+			background: transparent;
+			border: none;
+			padding: 0;
+			margin: 0;
+
+			input {
+				width: auto;
+				display: inline-block;
+			}
+		}
 	}
 
-	.com_content .subject #hubForm fieldset {
+	/*.com_content .subject #hubForm fieldset {
 		margin-bottom: 1em;
 		padding-bottom: 1em;
 	}
@@ -363,4 +320,4 @@
 	}
 	.subject #hubForm .submit {
 		margin-right: 0;
-	}
+	}*/
