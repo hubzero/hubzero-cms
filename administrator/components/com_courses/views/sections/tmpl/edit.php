@@ -378,6 +378,7 @@ jQuery(document).ready(function($){
 							<option value="all"<?php echo ($params->get('progress_calculation', '') == 'all') ? 'selected="selected"' : '' ?>>All published assets</option>
 							<option value="graded"<?php echo ($params->get('progress_calculation', '') == 'graded') ? 'selected="selected"' : '' ?>>All published, graded assets</option>
 							<option value="videos"<?php echo ($params->get('progress_calculation', '') == 'videos') ? 'selected="selected"' : '' ?>>All published, video assets</option>
+							<option value="manual"<?php echo ($params->get('progress_calculation', '') == 'manual') ? 'selected="selected"' : '' ?>>All published, manually selected assets</option>
 						</select>
 					</div>
 				</fieldset>

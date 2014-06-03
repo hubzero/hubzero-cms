@@ -83,6 +83,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="all">All published assets</option>
 			<option value="graded">All published, graded assets</option>
 			<option value="videos">All published, video assets</option>
+			<option value="manual">All published, manually selected assets</option>
 		</field>
 		<field name="tool_path" type="text" menu="hide" default="" label="Tool parameter path" description="Path to shared directory used when crafting tool file passing path" size="50" />
 		<field type="spacer" />

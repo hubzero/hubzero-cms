@@ -143,6 +143,13 @@ class CoursesTableAssetViews extends JTable
 		$from[] = "INNER JOIN #__courses_members AS cm ON cav.viewed_by = cm.id";
 		$from[] = "INNER JOIN #__courses_units AS cu ON cag.unit_id = cu.id AND cm.offering_id = cu.offering_id";
 
+		if (isset($filters['progress_calculation']) && $filters['progress_calculation'])
+		{
+			$from[] = "INNER JOIN #__courses_progress_factors AS cpf ON ca.id = cpf.asset_id"
+					. ((isset($filters['section_id']) && $filters['section_id'])
+						? " AND cpf.section_id = " . $this->_db->quote($filters['section_id'])
+						: '');
+		}
 
 		$where[] = "cm.student = 1";
 		$where[] = "ca.state = 1";

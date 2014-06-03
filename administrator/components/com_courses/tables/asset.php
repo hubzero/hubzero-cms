@@ -196,6 +196,16 @@ class CoursesTableAsset extends JTable
 			$query .= " LEFT JOIN `#__courses_units` AS cu ON cag.unit_id = cu.id";
 		}
 
+		if (isset($filters['progress_calculation']) && $filters['progress_calculation'])
+		{
+			$query .= " INNER JOIN `#__courses_progress_factors` AS cpf ON ca.id = cpf.asset_id";
+
+			if (isset($filters['section_id']))
+			{
+				$query .= " AND cpf.section_id = " . $this->_db->quote($filters['section_id']);
+			}
+		}
+
 		$where = array();
 
 		if (!empty($filters['asset_id']))

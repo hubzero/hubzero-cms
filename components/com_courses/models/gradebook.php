@@ -35,6 +35,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'progress.factors.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php');
@@ -222,6 +223,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			'member_id'  => $member_id
 		);
 
+		$dbo = JFactory::getDBO();
+
 		switch ($progress_calculation)
 		{
 			// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
@@ -230,13 +233,27 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				$views = $this->_tbl->getGradedItemCompletions($this->course->get('id'), $member_id);
 			break;
 
+			case 'manual':
+				$filters['progress_calculation'] = true;
+
+				// Get the asset views
+				$assetViews = new CoursesTableAssetViews($dbo);
+				$views      = $assetViews->find($filters);
+			break;
+
 			case 'videos':
 				// Add another filter
 				$filters['asset_type'] = 'video';
+
+				// Get the asset views
+				$assetViews = new CoursesTableAssetViews($dbo);
+				$views      = $assetViews->find($filters);
+			break;
+
+			case 'all':
 			default:
 				// Get the asset views
-				$database   = JFactory::getDBO();
-				$assetViews = new CoursesTableAssetViews($database);
+				$assetViews = new CoursesTableAssetViews($dbo);
 				$views      = $assetViews->find($filters);
 			break;
 		}
@@ -260,7 +277,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				if (!isset($counts[$unit_id]))
 				{
 					// Get the assets
-					$asset = new CoursesTableAsset(JFactory::getDBO());
+					$asset = new CoursesTableAsset($dbo);
 					$filters = array(
 						'w' => array(
 							'course_id'   => $this->course->get('id'),
@@ -276,6 +293,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						case 'forms':
 						case 'graded':
 							$filters['w']['graded'] = true;
+						break;
+
+						case 'manual':
+							$filters['w']['section_id'] = $this->course->offering()->section()->get('id');
+							$filters['w']['progress_calculation'] = true;
 						break;
 
 						case 'videos':
