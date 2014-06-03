@@ -736,6 +736,17 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$asset->set('graded', 0);
 		}
 
+		// If we're saving progress calculation var
+		if ($progress = JRequest::getInt('progress_factors', false))
+		{
+			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>$this->course->offering()->section()->get('id')));
+		}
+		elseif (JRequest::getInt('edit_progress_factors', false))
+		{
+			$asset->set('section_id', $this->course->offering()->section()->get('id'));
+			$asset->set('progress_factors', 'delete');
+		}
+
 		// If we have content
 		if($content = JRequest::getVar('content', false, 'default', 'none', 2))
 		{

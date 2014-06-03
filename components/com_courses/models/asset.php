@@ -64,6 +64,13 @@ class CoursesModelAsset extends CoursesModelAbstract
 	protected $_params = null;
 
 	/**
+	 * Auxiliary keys for assets (links to other tables)
+	 *
+	 * @var array
+	 **/
+	protected static $_aux_tablekeys = array('progress_factors'=>array('id', 'section_id'));
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -104,6 +111,32 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 			return $tbl->get($property, $default);
 		}
+		else if (strpos($property, '.') !== false)
+		{
+			$parts = explode('.', $property);
+			if (isset($parts[0]) && array_key_exists($parts[0], self::$_aux_tablekeys))
+			{
+				$key = str_replace('_', ' ', $parts[0]);
+				$key = ucwords($key);
+				$key = str_replace(' ', '', $key);
+				$tbl = "CoursesTable{$key}";
+				$tbl = new $tbl($this->_db);
+				$aux = array();
+				foreach (self::$_aux_tablekeys[$parts[0]] as $item)
+				{
+					$k = $item;
+					if ($item == 'id')
+					{
+						$k = $this->_scope . '_' . $item;
+					}
+					$aux[$k] = $this->get((string)$item);
+				}
+				$tbl->load($aux);
+
+				return $tbl->get($parts[1], $default);
+			}
+		}
+
 		return $default;
 	}
 
@@ -160,6 +193,41 @@ class CoursesModelAsset extends CoursesModelAbstract
 			if (!$dt->store())
 			{
 				$this->setError($dt->getError());
+			}
+		}
+
+		$properties = get_object_vars($this->_tbl);
+		foreach ($properties as $k => $v)
+		{
+			if (array_key_exists(substr($k, 2), self::$_aux_tablekeys))
+			{
+				$key = substr($k, 2);
+				$key = str_replace('_', ' ', $key);
+				$key = ucwords($key);
+				$key = str_replace(' ', '', $key);
+				$tbl = "CoursesTable{$key}";
+				$tbl = new $tbl($this->_db);
+
+				if ($v == 'delete')
+				{
+					$aux = array();
+					foreach (self::$_aux_tablekeys[substr($k, 2)] as $item)
+					{
+						$k = $item;
+						if ($item == 'id')
+						{
+							$k = $this->_scope . '_' . $item;
+						}
+						$aux[$k] = $this->get((string)$item);
+					}
+
+					$tbl->load($aux);
+					$tbl->delete();
+				}
+				else
+				{
+					$tbl->save($v);
+				}
 			}
 		}
 
