@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for contributions
  */
-class plgMembersContributions extends JPlugin
+class plgMembersContributions extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Perform actions when viewing a member profile
@@ -63,21 +54,21 @@ class plgMembersContributions extends JPlugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		$areas['contributions'] = JText::_('PLG_MEMBERS_CONTRIBUTIONS');
-		$areas['icon'] = 'f02d';
+		$areas = array(
+			'contributions' => JText::_('PLG_MEMBERS_CONTRIBUTIONS'),
+			'icon' => 'f02d'
+		);
 		return $areas;
 	}
 
 	/**
-	 * Short description for 'onMembers'
+	 * Event call to return data for a specific member
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $member Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @param      array $areas Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      object  $user   JUser
+	 * @param      object  $member MembersProfile
+	 * @param      string  $option Component name
+	 * @param      string  $areas  Plugins to return data
+	 * @return     array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -195,9 +186,6 @@ class plgMembersContributions extends JPlugin
 		// Build the HTML
 		if ($returnhtml) 
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('members', 'contributions');
-			\Hubzero\Document\Assets::addComponentScript('com_resources', 'resources');
-
 			$limit = ($limit == 0) ? 'all' : $limit;
 
 			// Get the search results
@@ -222,8 +210,8 @@ class plgMembersContributions extends JPlugin
 
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'members',
-					'element' => 'contributions',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'display'
 				)
 			);
@@ -262,7 +250,7 @@ class plgMembersContributions extends JPlugin
 
 		//do we have a total?
 		if ($total > 0) 
-		{   
+		{
 			$prefix = ($juser->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
 			$title = $prefix . " {$total} resources.";
 			$arr['metadata']['count'] = $total;  

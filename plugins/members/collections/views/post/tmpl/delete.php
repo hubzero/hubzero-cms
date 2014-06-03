@@ -42,6 +42,8 @@ if (!$identifier)
 		$identifier = '#' . $this->post->item()->get('id');
 	}
 }
+
+$this->css();
 ?>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -70,9 +72,10 @@ if (!$identifier)
 		<?php echo JHTML::_('form.token'); ?>
 		
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
-<?php if (!$this->no_html) { ?>
-			<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>"><?php echo JText::_('Cancel'); ?></a>
-<?php } ?>
+			<input type="submit" class="btn btn-danger" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
+
+			<?php if (!$this->no_html) { ?>
+				<a class="btn btn-secondary" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>"><?php echo JText::_('Cancel'); ?></a>
+			<?php } ?>
 		</p>
 	</form>

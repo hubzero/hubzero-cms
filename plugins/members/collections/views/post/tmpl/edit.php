@@ -63,6 +63,9 @@ if (!$dir)
 }
 
 $jbase = rtrim(JURI::getInstance()->base(true), '/');
+
+$this->css()
+     ->js();
 ?>
 
 <?php if ($this->getError()) { ?>

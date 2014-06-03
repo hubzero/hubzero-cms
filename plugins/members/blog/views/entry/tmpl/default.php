@@ -35,6 +35,9 @@ $entry_year  = substr($this->row->get('publish_up'), 0, 4);
 $entry_month = substr($this->row->get('publish_up'), 5, 2);
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog';
+
+$this->css()
+     ->js();
 ?>
 
 <ul id="page_options">
@@ -52,55 +55,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	</li>
 </ul>
 
-<div class="entry-container">
-	<div class="aside">
-		<?php 
-		$limit = $this->filters['limit']; 
-		$this->filters['limit'] = 5;
-		?>
-		<div class="container blog-popular-entries">
-			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
-		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
-			<ol>
-			<?php foreach ($popular as $row) { ?>
-				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				</li>
-			<?php } ?>
-			</ol>
-		<?php } else { ?>
-			<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
-		</div><!-- / .blog-popular-entries -->
-
-		<div class="container blog-recent-entries">
-			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_RECENT_ENTRIES'); ?></h4>
-		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
-			<ol>
-			<?php foreach ($recent as $row) { ?>
-				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				</li>
-			<?php } ?>
-			</ol>
-		<?php } else { ?>
-			<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
-		</div><!-- / .blog-recent-entries -->
-		<?php
-		$this->filters['limit'] = $limit; 
-		?>
-	</div><!-- /.aside -->
-
+<section class="main section entry-container">
 	<div class="subject">
 		<?php if ($this->getError()) : ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php endif; ?>
-	
+
 		<div class="entry">
 			<h2 class="entry-title">
 				<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>
@@ -149,27 +109,61 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 				</dd>
 			<?php } ?>
 			</dl>
-		
+
 			<div class="entry-content">
 				<?php echo $this->row->content('parsed'); ?>
 				<?php echo $this->row->tags('cloud'); ?>
 			</div>
 		</div>
 	</div><!-- /.subject -->
-	<div class="clear"></div>
+	<aside class="aside">
+		<?php 
+		$limit = $this->filters['limit']; 
+		$this->filters['limit'] = 5;
+		?>
+		<div class="container blog-popular-entries">
+			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
+		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
+			<ol>
+			<?php foreach ($popular as $row) { ?>
+				<li>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</li>
+			<?php } ?>
+			</ol>
+		<?php } else { ?>
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+		<?php } ?>
+		</div><!-- / .blog-popular-entries -->
 
-	<?php if ($this->row->get('allow_comments')) { ?>
-		<div class="aside aside-below">
-			<p>
-				<a class="add btn" href="#post-comment">
-					<?php echo JText::_('PLG_MEMBERS_BLOG_ADD_A_COMMENT'); ?>
-				</a>
-			</p>
-		</div><!-- / .aside -->
-	
-		<div class="subject below">
+		<div class="container blog-recent-entries">
+			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_RECENT_ENTRIES'); ?></h4>
+		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
+			<ol>
+			<?php foreach ($recent as $row) { ?>
+				<li>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</li>
+			<?php } ?>
+			</ol>
+		<?php } else { ?>
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+		<?php } ?>
+		</div><!-- / .blog-recent-entries -->
+		<?php
+		$this->filters['limit'] = $limit; 
+		?>
+	</aside><!-- /.aside -->
+</section>
+
+<?php if ($this->row->get('allow_comments')) { ?>
+	<section class="section below">
+		<div class="subject">
 			<h3>
-				<a name="comments"></a>
 				<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
@@ -192,7 +186,6 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<?php } ?>
 
 			<h3>
-				<a name="post-comment"></a>
 				<?php echo JText::_('Post a comment'); ?>
 			</h3>
 			<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
@@ -280,5 +273,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 				</fieldset>
 			</form>
 		</div><!-- /.subject -->
-	<?php } ?>
-</div><!-- /.entry-container -->
+		<aside class="aside aside-below">
+			<p>
+				<a class="add btn" href="#post-comment">
+					<?php echo JText::_('PLG_MEMBERS_BLOG_ADD_A_COMMENT'); ?>
+				</a>
+			</p>
+		</aside><!-- / .aside -->
+	</section>
+<?php } ?>

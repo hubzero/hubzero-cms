@@ -34,6 +34,11 @@ defined('_JEXEC') or die('Restricted access');
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+
+$this->css()
+     ->js('jquery.masonry', 'com_collections')
+     ->js('jquery.infinitescroll', 'com_collections')
+     ->js();
 ?>
 
 <?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
@@ -53,16 +58,15 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&task=posts'); ?>" id="collections">
-
 	<fieldset class="filters">
 		<ul>
-<?php if ($this->params->get('access-manage-collection')) { ?>
+		<?php if ($this->params->get('access-manage-collection')) { ?>
 			<li>
 				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Live feed :: View posts from everything you\'re following'); ?>">
 					<span><?php echo JText::_('Feed'); ?></span>
 				</a>
 			</li>
-<?php } ?>
+		<?php } ?>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
 					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
@@ -94,33 +98,23 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<div class="clear"></div>
 	</fieldset>
 
-<?php 
-if ($this->rows->total() > 0) 
-{
-	?>
+<?php if ($this->rows->total() > 0) { ?>
 	<div id="posts">
 	<?php
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
-?>
+		?>
 		<div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'members',
-						'element' => $this->name,
-						'name'    => 'post',
-						'layout'  => 'default_' . $item->type()
-					)
-				);
-				$view->name       = $this->name;
-				$view->option     = $this->option;
-				$view->member     = $this->member;
-				$view->params     = $this->params;
-				$view->row        = $row;
-				$view->display();
+				$this->view('default_' . $item->type(), 'post')
+				     ->set('name', $this->name)
+				     ->set('option', $this->option)
+				     ->set('member', $this->member)
+				     ->set('params', $this->params)
+				     ->set('row', $row)
+				     ->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
 				<div class="tags-wrap">
@@ -139,34 +133,34 @@ if ($this->rows->total() > 0)
 							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
-			<?php if (!$this->juser->get('guest')) { ?>
+				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-				<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+					<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
 							<span><?php echo JText::_('Edit'); ?></span>
 						</a>
-				<?php } else { ?>
+					<?php } else { ?>
 						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
 							<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
 						</a>
-				<?php } ?>
+					<?php } ?>
 						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
 							<span><?php echo JText::_('Comment'); ?></span>
 						</a>
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
 							<span><?php echo JText::_('Collect'); ?></span>
 						</a>
-				<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
+					<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-				<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+					<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
 						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
 							<span><?php echo JText::_('Remove'); ?></span>
 						</a>
-				<?php } ?>
+					<?php } ?>
 					</div><!-- / .actions -->
-			<?php } ?>
+				<?php } ?>
 				</div><!-- / .meta -->
 
 			<?php /*if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>

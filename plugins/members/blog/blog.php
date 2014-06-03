@@ -29,26 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for blog entries
  */
-class plgMembersBlog extends JPlugin
+class plgMembersBlog extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -57,8 +48,10 @@ class plgMembersBlog extends JPlugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		$areas['blog'] = JText::_('PLG_MEMBERS_BLOG');
-		$areas['icon'] = 'f075';
+		$areas = array(
+			'blog' => JText::_('PLG_MEMBERS_BLOG'),
+			'icon' => 'f075'
+		);
 		return $areas;
 	}
 
@@ -105,10 +98,6 @@ class plgMembersBlog extends JPlugin
 
 			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
-
-			// Push styles to the template
-			\Hubzero\Document\Assets::addPluginStylesheet('members', $this->_name);
-			\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
 
 			// Append to document the title
 			$document = JFactory::getDocument();
@@ -270,7 +259,7 @@ class plgMembersBlog extends JPlugin
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'members',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'browse'
 			)
@@ -439,7 +428,7 @@ class plgMembersBlog extends JPlugin
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'members',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'entry'
 			)
@@ -556,7 +545,7 @@ class plgMembersBlog extends JPlugin
 		// Instantiate view
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'members',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'edit'
 			)
@@ -594,10 +583,6 @@ class plgMembersBlog extends JPlugin
 				$view->setError($error);
 			}
 		}
-
-		\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.datepicker.css');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.timepicker.css');
 
 		// Render view
 		return $view->loadTemplate();
@@ -702,7 +687,7 @@ class plgMembersBlog extends JPlugin
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'members',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'delete'
 				)
@@ -865,7 +850,7 @@ class plgMembersBlog extends JPlugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'members',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'settings'
 			)

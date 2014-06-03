@@ -25,6 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('impact.css', 'publications', 'projects');
+
 $thisMonth = date('M Y');
 $lastMonth = date('M Y', strtotime("-1 month"));
 

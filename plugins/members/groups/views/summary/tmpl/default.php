@@ -32,6 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $base = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=groups';
+
+$this->css();
 ?>
 <h3 class="section-header">
 	<?php echo JText::_('PLG_MEMBERS_GROUPS'); ?>
@@ -81,49 +83,49 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '
 				<span>(<?php echo count($this->groups); ?>)</span>
 			</caption>
 			<tbody>
-<?php
-if ($this->groups)
-{
-	foreach ($this->groups as $group)
-	{
-		$status = '';
-		$options = '';
-		$approved = false;
+			<?php
+			if ($this->groups)
+			{
+				foreach ($this->groups as $group)
+				{
+					$status = '';
+					$options = '';
+					$approved = false;
 
-		if ($group->manager)
-		{
-			$status = 'manager';
+					if ($group->manager)
+					{
+						$status = 'manager';
 
-			$options  = '<a class="manage tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
-			$options .= ' <a class="customize tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
-			$options .= ' <a class="delete tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
-		}
-		else if ($group->registered && $group->regconfirmed)
-		{
-			$status = 'member';
-			
-			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-		}
-		else if ($group->registered && !$group->regconfirmed)
-		{
-			$status = 'pending';
-			
-			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-		}
-		else if (!$group->registered && $group->regconfirmed)
-		{
-			$status = 'invitee';
-			
-			$options  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
-			$options .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-		}
+						$options  = '<a class="manage tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
+						$options .= ' <a class="customize tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
+						$options .= ' <a class="delete tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
+					}
+					else if ($group->registered && $group->regconfirmed)
+					{
+						$status = 'member';
+						
+						$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+					}
+					else if ($group->registered && !$group->regconfirmed)
+					{
+						$status = 'pending';
+						
+						$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+					}
+					else if (!$group->registered && $group->regconfirmed)
+					{
+						$status = 'invitee';
+						
+						$options  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
+						$options .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+					}
 
-		//do we have a new unpublished group
-		$approved = (!$group->approved) ? true : false;
+					//do we have a new unpublished group
+					$approved = (!$group->approved) ? true : false;
 
-		//are we published
-		$published = ($group->published) ? true : false;
-?>
+					//are we published
+					$published = ($group->published) ? true : false;
+			?>
 				<tr class=" <?php echo (!$published) ? 'notpublished' : '' ?>">
 					<th>
 						<span class="entry-id"><?php echo $group->gidNumber; ?></span>
@@ -185,34 +187,33 @@ if ($this->groups)
 						<?php endif; ?>
 					</td>
 				</tr>
-<?php
-	}
-}
-else
-{
-?>
+			<?php
+				}
+			}
+			else
+			{
+			?>
 				<tr>
 					<td colspan="6">
 						<?php echo JText::_('PLG_MEMBERS_GROUPS_NONE_FOUND'); ?>
 					</td>
 				</tr>
-<?php 
-}
-?>
+			<?php 
+			}
+			?>
 			</tbody>
 		</table>
-<?php } else { ?>
-		<div class="grid">
-			<div class="col span-half">
-				<h4><?php echo JText::_('PLG_MEMBERS_GROUPS_YOURS'); ?></h4>
-				<p><?php echo JText::_('PLG_MEMBERS_GROUPS_YOURS_EXPLANATION'); ?></p>
-			</div><!-- / .col -->
-			<div class="col span-half omega">
-				<h4><?php echo JText::_('PLG_MEMBERS_GROUPS_WHAT_ARE_GROUPS'); ?></h4>
-				<p><?php echo JText::_('PLG_MEMBERS_GROUPS_EXPLANATION'); ?></p>
-				<p><?php echo JText::sprintf('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', JRoute::_('index.php?option=com_groups')); ?></p>
-			</div><!-- / .col -->
-		</div>
-<?php } ?>
 	</div><!-- / .container -->
-
+<?php } else { ?>
+	<div class="grid">
+		<div class="col span-half">
+			<h4><?php echo JText::_('PLG_MEMBERS_GROUPS_YOURS'); ?></h4>
+			<p><?php echo JText::_('PLG_MEMBERS_GROUPS_YOURS_EXPLANATION'); ?></p>
+		</div><!-- / .col -->
+		<div class="col span-half omega">
+			<h4><?php echo JText::_('PLG_MEMBERS_GROUPS_WHAT_ARE_GROUPS'); ?></h4>
+			<p><?php echo JText::_('PLG_MEMBERS_GROUPS_EXPLANATION'); ?></p>
+			<p><?php echo JText::sprintf('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', JRoute::_('index.php?option=com_groups')); ?></p>
+		</div><!-- / .col -->
+	</div>
+<?php } ?>

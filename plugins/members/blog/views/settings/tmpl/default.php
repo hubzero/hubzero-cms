@@ -28,6 +28,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css()
+     ->js();
 ?>
 <ul id="page_options">
 	<li>

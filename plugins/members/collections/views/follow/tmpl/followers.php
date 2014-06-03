@@ -32,6 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+
+$this->css()
+     ->js();
 ?>
 
 <?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
@@ -54,13 +57,13 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 	<fieldset class="filters">
 		<ul>
-<?php if ($this->params->get('access-manage-collection')) { ?>
+		<?php if ($this->params->get('access-manage-collection')) { ?>
 			<li>
 				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Live feed :: View posts from everything you\'re following'); ?>">
 					<span><?php echo JText::_('Feed'); ?></span>
 				</a>
 			</li>
-<?php } ?>
+		<?php } ?>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
 					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
@@ -87,12 +90,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 <?php if ($this->rows->total() > 0) { ?>
 	<div class="container">
-		<table class="followers entries" summary="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_TBL_SUMMARY'); ?>">
+		<table class="followers entries">
 			<caption>
 				<?php echo JText::_('People following you'); ?>
 			</caption>
 			<tbody>
-	<?php foreach ($this->rows as $row) { ?>
+			<?php foreach ($this->rows as $row) { ?>
 				<tr class="<?php echo $row->get('follower_type'); ?>">
 					<th class="entry-img">
 						<img src="<?php echo $row->follower()->image(); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->follower()->title())); ?>" />
@@ -111,7 +114,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 						<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time>
 					</td>
 				</tr>
-	<?php } ?>
+			<?php } ?>
 			</tbody>
 		</table>
 		<?php echo $this->pageNav->getListFooter(); ?>
@@ -120,7 +123,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <?php } else { ?>
 		<div id="collection-introduction">
 			<div class="instructions">
-	<?php if ($this->params->get('access-manage-collection')) { ?>
+		<?php if ($this->params->get('access-manage-collection')) { ?>
 				<p><?php echo JText::_('You currently do not have anyone following you or any of your collections. :('); ?></p>
 			</div><!-- / .instructions -->
 			<div class="questions">
@@ -128,12 +131,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 				<p><?php echo JText::_('"Followers" are members that have decided to receive all public posts you make or all posts in one of your collections.'); ?><p>
 				<p><?php echo JText::_('Followers cannot see of your private collections or posts made to private collections.'); ?><p>
 			</div>
-	<?php } else { ?>
+		<?php } else { ?>
 				<p>
 					<?php echo JText::_('This member is not following anyone or any collections.'); ?>
 				</p>
 			</div><!-- / .instructions -->
-	<?php } ?>
+		<?php } ?>
 		</div><!-- / #collection-introduction -->
 <?php } ?>
 		<div class="clear"></div>

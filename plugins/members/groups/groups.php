@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for groups
  */
-class plgMembersGroups extends JPlugin
+class plgMembersGroups extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -98,22 +89,15 @@ class plgMembersGroups extends JPlugin
 			}
 		}
 
-		/*
-		if (!$authorized) {
-			$returnhtml = false;
-			$returnmeta = false;
-		}
-		*/
-
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
 
-		$applicants = $member->getGroups('applicants'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'applicants', 1);
-		$invitees   = $member->getGroups('invitees'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'invitees', 1);
-		$members    = $member->getGroups('members'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'members', 1);
-		$managers   = $member->getGroups('managers'); //\Hubzero\User\Helper::getGroups($member->get('uidNumber'), 'managers', 1);
+		$applicants = $member->getGroups('applicants');
+		$invitees   = $member->getGroups('invitees');
+		$members    = $member->getGroups('members');
+		$managers   = $member->getGroups('managers');
 
 		$applicants = (is_array($applicants)) ? $applicants : array();
 		$invitees   = (is_array($invitees))   ? $invitees   : array();
@@ -139,12 +123,10 @@ class plgMembersGroups extends JPlugin
 		// Build the final HTML
 		if ($returnhtml) 
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('members', 'groups');
-
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'members',
-					'element' => 'groups',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'summary'
 				)
 			);

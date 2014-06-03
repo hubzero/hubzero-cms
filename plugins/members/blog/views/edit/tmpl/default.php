@@ -37,6 +37,12 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 {
 	$this->entry->set('publish_down', '');
 }
+
+$this->css('jquery.datepicker.css', 'system')
+     ->css('jquery.timepicker.css', 'system')
+     ->css()
+     ->js('jquery.timepicker', 'system')
+     ->js();
 ?>
 <ul id="page_options">
 	<li>
@@ -58,9 +64,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				<?php echo JText::_('PLG_MEMBERS_BLOG_TITLE'); ?>
 				<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 			</label>
-<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
-			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
-<?php } ?>
+			<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
+				<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
+			<?php } ?>
 
 			<label for="entrycontent">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
@@ -68,9 +74,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				echo JFactory::getEditor()->display('entry[content]', stripslashes($this->entry->get('content')), '', '', 50, 30, false, 'entrycontent');
 				?>
 			</label>
-		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
-			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
-		<?php } ?>
+			<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
+				<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
+			<?php } ?>
 
 			<fieldset>
 				<legend><?php echo JText::_('Uploaded files'); ?></legend>
@@ -88,7 +94,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<?php } ?>
 				<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_TAGS_HINT'); ?></span>
 			</label>
-			
+
 			<div class="grid">
 				<div class="col span6">
 					<label for="field-allow_comments">
@@ -137,14 +143,15 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 		<input type="hidden" name="active" value="blog" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="action" value="save" />
-		
+
 		<p class="submit">
 			<input class="btn btn-succes" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
-		<?php if ($this->entry->get('id')) { ?>
-			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->entry->link()); ?>">
-				<?php echo JText::_('PLG_MEMBERS_BLOG_CANCEL'); ?>
-			</a>
-		<?php } ?>
+
+			<?php if ($this->entry->get('id')) { ?>
+				<a class="btn btn-secondary" href="<?php echo JRoute::_($this->entry->link()); ?>">
+					<?php echo JText::_('PLG_MEMBERS_BLOG_CANCEL'); ?>
+				</a>
+			<?php } ?>
 		</p>
 	</form>
 </div><!-- / .section -->

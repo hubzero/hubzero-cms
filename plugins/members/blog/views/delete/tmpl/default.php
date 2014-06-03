@@ -30,6 +30,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog';
+
+$this->css()
+     ->js();
 ?>
 
 <ul id="page_options">

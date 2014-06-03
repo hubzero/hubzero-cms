@@ -41,6 +41,8 @@ else
 {
 	$legend = 'Edit collection';
 }
+
+$this->css();
 ?>
 
 <?php if ($this->getError()) { ?>

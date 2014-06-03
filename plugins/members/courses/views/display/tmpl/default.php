@@ -32,37 +32,39 @@
 defined('_JEXEC') or die('Restricted access');
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=courses';
+
+$this->css();
 ?>
 <h3 class="section-header">
 	<?php echo JText::_('PLG_MEMBERS_COURSES'); ?>
 </h3>
 
-<div class="section">
-<?php if ($this->hasRoles) {?>
+<section class="section">
+<?php if ($this->hasRoles) { ?>
 
-<?php if ($this->roles && $this->hasRoles > 1) { ?>
-	<ul class="entries-menu user-options">
-		<?php foreach ($this->roles as $s) { ?>
-			<?php 
-			if ($s->total <= 0)
-			{
-				continue;
-			}
-			$sel = '';
-			if ($this->filters['task'] == $s->alias)
-			{
-				//$active = $s;
-				$sel = 'active';
-			}
-			?>
-			<li>
-				<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo JRoute::_($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
-					<?php echo $this->escape(stripslashes($s->title)); ?> (<?php echo $this->escape($s->total); ?>)
-				</a>
-			</li>
-		<?php } ?>
-	</ul>
-<?php } ?>
+	<?php if ($this->roles && $this->hasRoles > 1) { ?>
+		<ul class="entries-menu user-options">
+			<?php foreach ($this->roles as $s) { ?>
+				<?php 
+				if ($s->total <= 0)
+				{
+					continue;
+				}
+				$sel = '';
+				if ($this->filters['task'] == $s->alias)
+				{
+					//$active = $s;
+					$sel = 'active';
+				}
+				?>
+				<li>
+					<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo JRoute::_($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
+						<?php echo $this->escape(stripslashes($s->title)); ?> (<?php echo $this->escape($s->total); ?>)
+					</a>
+				</li>
+			<?php } ?>
+		</ul>
+	<?php } ?>
 
 	<div class="container" id="courses-container">
 		<form method="get" action="<?php JRoute::_($base); ?>">
@@ -80,7 +82,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 				</li>
 			</ul>
 
-			<table class="courses entries" summary="<?php echo JText::_('PLG_MEMBERS_COURSES_RESULTS_SUMMARY'); ?>">
+			<table class="courses entries">
 				<caption>
 					<?php 
 					$s = ($this->total > 0) ? $this->filters['start']+1 : 0; //($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
@@ -224,4 +226,4 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		</div><!-- / .post-type -->
 	</div><!-- / #collection-introduction -->
 <?php } ?>
-</div>
+</section>

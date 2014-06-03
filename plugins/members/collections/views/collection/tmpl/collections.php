@@ -32,6 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+
+$this->css()
+     ->js('jquery.masonry', 'com_collections')
+     ->js('jquery.infinitescroll', 'com_collections')
+     ->js();
 ?>
 
 <?php if (!$this->juser->get('guest') && !$this->params->get('access-create-collection')) { ?>
@@ -51,16 +56,15 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base); ?>" id="collections">
-
 	<fieldset class="filters">
 		<ul>
-<?php if ($this->params->get('access-manage-collection')) { ?>
+		<?php if ($this->params->get('access-manage-collection')) { ?>
 			<li>
 				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
 					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED'); ?></span>
 				</a>
 			</li>
-<?php } ?>
+		<?php } ?>
 			<li>
 				<a class="collections count active" href="<?php echo JRoute::_($base . '&task=all'); ?>">
 					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->rows->total()); ?></span>
@@ -94,29 +98,16 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<div class="clear"></div>
 	</fieldset>
 
-<?php 
-if ($this->rows->total() > 0) 
-{
-	?>
+<?php if ($this->rows->total() > 0) { ?>
 	<div id="posts">
-	<?php
-	foreach ($this->rows as $row)
-	{
-?>
+	<?php foreach ($this->rows as $row) { ?>
 		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; echo ($row->get('is_default')) ? ' default' : ''; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'  => 'members',
-								'element' => $this->name,
-								'name'    => 'post',
-								'layout'  => 'default_collection'
-							)
-						);
-						$view->row        = $row;
-						$view->collection = $row;
-						$view->display();
+				$this->view('default_collection', 'post')
+				     ->set('row', $row)
+				     ->set('collection', $row)
+				     ->display();
 				?>
 				<div class="meta">
 					<p class="stats">
@@ -166,7 +157,6 @@ if ($this->rows->total() > 0)
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
-
 						<br />
 						<span class="entry-date">
 							<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_AT'); ?></span> 

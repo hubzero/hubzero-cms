@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for courses
  */
-class plgMembersCourses extends JPlugin
+class plgMembersCourses extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -128,12 +119,10 @@ class plgMembersCourses extends JPlugin
 			$this->app = JFactory::getApplication();
 			$this->jconfig = JFactory::getConfig();
 
-			\Hubzero\Document\Assets::addPluginStylesheet('members', $this->_name);
-
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'members',
-					'element' => 'courses',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'display'
 				)
 			);

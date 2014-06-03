@@ -35,19 +35,24 @@ defined('_JEXEC') or die('Restricted access');
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+
+$this->css()
+     ->js('jquery.masonry', 'com_collections')
+     ->js('jquery.infinitescroll', 'com_collections')
+     ->js();
 ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
 
 	<fieldset class="filters">
 		<ul>
-<?php if ($this->params->get('access-manage-collection')) { ?>
+		<?php if ($this->params->get('access-manage-collection')) { ?>
 			<li>
 				<a class="livefeed active tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
 					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED'); ?></span>
 				</a>
 			</li>
-<?php } ?>
+		<?php } ?>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
 					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
@@ -72,34 +77,24 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<div class="clear"></div>
 	</fieldset>
 
-<?php 
-if ($this->rows->total() > 0) 
-{
-	?>
+<?php if ($this->rows->total() > 0) { ?>
 	<div id="posts">
 	<?php
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
-?>
+		?>
 		<div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'members',
-						'element' => $this->name,
-						'name'    => 'post',
-						'layout'  => 'default_' . $item->type()
-					)
-				);
-				$view->name       = $this->name;
-				$view->option     = $this->option;
-				$view->member     = $this->member;
-				$view->params     = $this->params;
-				$view->row        = $row;
-				$view->board      = $this->collection;
-				$view->display();
+				$this->view('default_' . $item->type(), 'post')
+				     ->set('name', $this->name)
+				     ->set('option', $this->option)
+				     ->set('member', $this->member)
+				     ->set('params', $this->params)
+				     ->set('row', $row)
+				     ->set('board', $this->collection)
+				     ->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
 				<div class="tags-wrap">
@@ -118,30 +113,30 @@ if ($this->rows->total() > 0)
 							<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
-			<?php if (!$this->juser->get('guest')) { ?>
+				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-				<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+					<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
 							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
 						</a>
-				<?php } else { ?>
+					<?php } else { ?>
 						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNLIKE'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
 							<span><?php echo ($item->get('voted')) ? JText::_('PLG_MEMBERS_COLLECTIONS_UNLIKE') : JText::_('PLG_MEMBERS_COLLECTIONS_LIKE'); ?></span>
 						</a>
-				<?php } ?>
+					<?php } ?>
 						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
 							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
 						</a>
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
 							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
 						</a>
-				<?php if ($row->get('original') && $item->get('created_by') == $this->juser->get('id')) { ?>
+					<?php if ($row->get('original') && $item->get('created_by') == $this->juser->get('id')) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
 							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
 						</a>
-				<?php } ?>
+					<?php } ?>
 					</div><!-- / .actions -->
-			<?php } ?>
+				<?php } ?>
 				</div><!-- / .meta -->
 
 				<div class="convo attribution reposted clearfix">

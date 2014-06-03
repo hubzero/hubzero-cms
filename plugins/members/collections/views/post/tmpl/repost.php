@@ -37,6 +37,8 @@ if ($this->collection_id)
 {
 	$task = JRequest::getVar('board', 0) . '/collect';
 }
+
+$this->css();
 ?>
 
 <?php if ($this->getError()) { ?>

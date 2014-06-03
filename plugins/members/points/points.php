@@ -109,12 +109,10 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		// Build the final HTML
 		if ($returnhtml) 
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('members', 'points');
-
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'members',
-					'element' => 'points',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'history'
 				)
 			);

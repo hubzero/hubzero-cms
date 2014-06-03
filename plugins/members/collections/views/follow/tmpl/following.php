@@ -35,6 +35,9 @@ $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+
+$this->css()
+     ->js();
 ?>
 
 <?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
@@ -57,13 +60,13 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 	<fieldset class="filters">
 		<ul>
-<?php if ($this->params->get('access-manage-collection')) { ?>
+		<?php if ($this->params->get('access-manage-collection')) { ?>
 			<li>
 				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Live feed :: View posts from everything you\'re following'); ?>">
 					<span><?php echo JText::_('Feed'); ?></span>
 				</a>
 			</li>
-<?php } ?>
+		<?php } ?>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
 					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
@@ -90,12 +93,9 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div class="container">
-			<table class="following entries" summary="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_TBL_SUMMARY'); ?>">
-				<!-- <caption>
-					<?php echo JText::_('People and collections you are following'); ?>
-				</caption> -->
+			<table class="following entries">
 				<tbody>
-		<?php foreach ($this->rows as $row) { ?>
+				<?php foreach ($this->rows as $row) { ?>
 					<tr class="<?php echo $row->get('following_type'); ?>">
 						<th>
 						<?php if ($row->following()->image()) { ?>
@@ -129,7 +129,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							<?php } ?>
 						</td>
 					</tr>
-		<?php } ?>
+				<?php } ?>
 				</tbody>
 			</table>
 			<?php echo $this->pageNav->getListFooter(); ?>
@@ -138,10 +138,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	<?php } else { ?>
 			<div id="collection-introduction">
 				<div class="instructions">
-		<?php if ($this->params->get('access-manage-collection')) { ?>
-					<!-- <p>
-						<?php echo JText::_('You are not following anyone or any collections.'); ?>
-					</p> -->
+			<?php if ($this->params->get('access-manage-collection')) { ?>
 					<ol>
 						<li><?php echo JText::_('Find a member or collection you like.'); ?></li>
 						<li><?php echo JText::_('Click on the "follow" button.'); ?></li>
@@ -154,12 +151,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					<p><?php echo JText::_('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
 					<p><?php echo JText::_('You can unfollow other people or collections at any time.'); ?></p>
 				</div>
-		<?php } else { ?>
+			<?php } else { ?>
 					<p>
 						<?php echo JText::_('This member is not following anyone or any collections.'); ?>
 					</p>
 				</div><!-- / .instructions -->
-		<?php } ?>
+			<?php } ?>
 			</div><!-- / #collection-introduction -->
 	<?php } ?>
 	<div class="clear"></div>

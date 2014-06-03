@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js('resources', 'com_resources');
+
 // Add the "all" category
 $all = array(
 	'category' => '',
@@ -101,9 +104,9 @@ foreach ($this->cats as $cat)
 <form method="get" action="<?php JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions'); ?>">
 	<input type="hidden" name="area" value="<?php echo $this->escape($this->active) ?>" />
 
-		<div class="container">
+	<div class="container">
 
-<?php if (count($links) > 0) { ?>
+		<?php if (count($links) > 0) { ?>
 			<ul class="entries-menu filter-options">
 				<li>
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&sort=date'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'); ?></a>
@@ -112,17 +115,17 @@ foreach ($this->cats as $cat)
 					</ul>
 				</li>
 			</ul>
-<?php } ?>
+		<?php } ?>
 
-			<ul class="entries-menu">
-				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
-			</ul>
+		<ul class="entries-menu">
+			<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
+			<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
+			<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
+		</ul>
 
-			<div class="clearfix"></div>
+		<div class="clearfix"></div>
 
-			<div class="container-block">
+		<div class="container-block">
 <?php
 $foundresults = false;
 $dopaging = false;
@@ -283,20 +286,20 @@ if (!$foundresults) {
 	echo '<p class="warning">' . JText::_('PLG_MEMBERS_CONTRIBUTIONS_NONE') . '</p>';
 }
 ?>
-				</div><!-- / .container-block -->
-<?php
-if ($dopaging) 
-{
-	jimport('joomla.html.pagination');
-	$pageNav = new JPagination($total, $this->start, $this->limit);
+		</div><!-- / .container-block -->
+		<?php
+		if ($dopaging) 
+		{
+			jimport('joomla.html.pagination');
+			$pageNav = new JPagination($total, $this->start, $this->limit);
 
-	$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
-	$pageNav->setAdditionalUrlParam('active', 'contributions');
-	$pageNav->setAdditionalUrlParam('area', urlencode(stripslashes($this->active)));
-	$pageNav->setAdditionalUrlParam('sort', $this->sort);
-	echo $pageNav->getListFooter();
-}
-?>
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+			$pageNav->setAdditionalUrlParam('active', 'contributions');
+			$pageNav->setAdditionalUrlParam('area', urlencode(stripslashes($this->active)));
+			$pageNav->setAdditionalUrlParam('sort', $this->sort);
+			echo $pageNav->getListFooter();
+		}
+		?>
 		<div class="clearfix"></div>
 	</div><!-- / .container -->
 </form>
