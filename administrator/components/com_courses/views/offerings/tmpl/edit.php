@@ -269,6 +269,21 @@ function submitbutton(pressbutton)
 			?>
 		</fieldset>
 
+		<?php $params = new JRegistry($this->row->get('params')); ?>
+
+		<fieldset class="adminform offeringparams">
+			<legend><?php echo JText::_('Parameters'); ?></legend>
+			<div class="input-wrap">
+				<label for="params-progress-calculation"><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION'); ?>:</label><br />
+				<select name="params[progress_calculation]" id="params-progress-calculation">
+					<option value=""<?php echo ($params->get('progress_calculation', '') == '') ? 'selected="selected"' : '' ?>>Inherit from courses defaults</option>
+					<option value="all"<?php echo ($params->get('progress_calculation', '') == 'all') ? 'selected="selected"' : '' ?>>All published assets</option>
+					<option value="graded"<?php echo ($params->get('progress_calculation', '') == 'graded') ? 'selected="selected"' : '' ?>>All published, graded assets</option>
+					<option value="videos"<?php echo ($params->get('progress_calculation', '') == 'videos') ? 'selected="selected"' : '' ?>>All published, video assets</option>
+				</select>
+			</div>
+		</fieldset>
+
 		<?php
 			JPluginHelper::importPlugin('courses');
 			$dispatcher = JDispatcher::getInstance();
