@@ -123,7 +123,7 @@ if ($label == "none") {
 						$formatter->setTemplate($template);
 
 						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-						$counter = $this->filters['start'];
+						$counter = $this->filters['start'] + 1;
 
 						if($counter == '')
 						{
