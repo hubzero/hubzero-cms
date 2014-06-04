@@ -100,13 +100,7 @@ if ($this->getError()) {
 			<ul class="sample">
 				<?php
 					// Display list item with file data
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder'=>'projects',
-							'element'=>'files',
-							'name'=>'selected'
-						)
-					);
+					$view = $this->view('selected', 'default');
 					$view->skip 		= false;
 					$view->item 		= $this->file;
 					$view->subdir 		= $this->subdir;

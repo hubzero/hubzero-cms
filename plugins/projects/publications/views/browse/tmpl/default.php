@@ -33,7 +33,7 @@ $prev_start = $prev_start < 0 ? 0 : $prev_start;
 $next_start = $this->filters['start'] + $this->filters['limit'];
 
 // URL
-$route 	= 'index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . '&active=publications';
+$route 	= 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications';
 $url 	= JRoute::_($route);
 
 // Check used space against quota (percentage)
@@ -54,7 +54,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 $showStats = false;
 
 ?>
-<form action="<?php echo $url; ?>" method="post" id="plg-form" >	
+<form action="<?php echo $url; ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 		<h3 class="publications"><?php echo $this->title; ?></h3>
 	</div>
@@ -78,50 +78,53 @@ $showStats = false;
 				</tr>
 			</thead>
 			<tbody>
-	<?php 
-		foreach ($this->rows as $row) {	
-				// What's the publication status?
-				$status = PublicationHelper::getPubStateProperty($row, 'status', 0);
-				$class 	= PublicationHelper::getPubStateProperty($row, 'class');
-				$date 	= PublicationHelper::getPubStateProperty($row, 'date');
-				
-				// Normalize type title
-				$cat_name = PublicationHelper::writePubCategory($row->cat_alias, $row->cat_name);
-				
-				$abstract = $row->abstract ? stripslashes($row->abstract) : '';
-				
-				if ($row->state == 1)
-				{
-					$showStats = true;
-				}
-				
-			?>
-			<tr class="mline" id="tr_<?php echo $row->id; ?>">
-				<td class="restype"><?php echo $cat_name; ?></td>
-				<td><a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" <?php if($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a></td>
-				<td class="mini faded"><?php echo $row->id; ?></td>
-				<td class="restype"><?php echo $row->base; ?></td>
-				<td class="version_label">v.<?php echo $row->version_label; ?></td>
-				<td class="showstatus">
-					<span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span>
-					<span class="mini faded block"><?php echo $date; ?></span>
-				</td>
-				<td class="mini faded">
-				<?php if($row->dev_version_label && $row->dev_version_label != $row->version_label) 
-				{ echo '<a href="'. JRoute::_($route . '&pid=' . $row->id) . '/?version=dev'
-				.'">&raquo; '. JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
-				.' <strong>'.$row->dev_version_label.'</strong></a>'
-				.JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS'); } ?></td>
-				
-				<td class="centeralign mini faded"><?php if ($row->versions > 0) { ?><a href="<?php echo $url . '/?pid='.$row->id.a.'action=versions'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->versions; ?><?php if ($row->versions > 0) { ?></a><?php } ?></td>
-				<td class="mini faded">
-					<a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" class="manageit"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?></a>
-
-					<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a></td>
-			</tr>
 			<?php 
-		}
-	?>
+				foreach ($this->rows as $row)
+				{
+					// What's the publication status?
+					$status = PublicationHelper::getPubStateProperty($row, 'status', 0);
+					$class 	= PublicationHelper::getPubStateProperty($row, 'class');
+					$date 	= PublicationHelper::getPubStateProperty($row, 'date');
+					
+					// Normalize type title
+					$cat_name = PublicationHelper::writePubCategory($row->cat_alias, $row->cat_name);
+					
+					$abstract = $row->abstract ? stripslashes($row->abstract) : '';
+					
+					if ($row->state == 1)
+					{
+						$showStats = true;
+					}
+					?>
+					<tr class="mline" id="tr_<?php echo $row->id; ?>">
+						<td class="restype"><?php echo $cat_name; ?></td>
+						<td><a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" <?php if($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a></td>
+						<td class="mini faded"><?php echo $row->id; ?></td>
+						<td class="restype"><?php echo $row->base; ?></td>
+						<td class="version_label">v.<?php echo $row->version_label; ?></td>
+						<td class="showstatus">
+							<span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span>
+							<span class="mini faded block"><?php echo $date; ?></span>
+						</td>
+						<td class="mini faded">
+							<?php if($row->dev_version_label && $row->dev_version_label != $row->version_label) 
+							{ echo '<a href="'. JRoute::_($route . '&pid=' . $row->id) . '/?version=dev'
+							.'">&raquo; '. JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
+							.' <strong>'.$row->dev_version_label.'</strong></a>'
+							.JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS'); } ?>
+						</td>
+						<td class="centeralign mini faded">
+							<?php if ($row->versions > 0) { ?><a href="<?php echo $url . '/?pid=' . $row->id . '&action=versions'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->versions; ?><?php if ($row->versions > 0) { ?></a><?php } ?>
+						</td>
+						<td class="mini faded">
+							<a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" class="manageit"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?></a>
+
+							<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+						</td>
+					</tr>
+					<?php 
+				}
+			?>
 			</tbody>
 		</table>
 			<div class="nav_pager"><p>
@@ -129,13 +132,13 @@ $showStats = false;
 				if($this->filters['start'] == 0) {	?>
 					<span>&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></span>
 				<?php	} else {  ?>
-					<a href="<?php echo $url . '/?t_sortby='.$this->filters['sortby'].a.'limitstart='.$prev_start.a.'t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action">&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></a>
+					<a href="<?php echo $url . '/?t_sortby=' . $this->filters['sortby'] . '&limitstart=' . $prev_start . '&t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action">&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></a>
 				<?php } ?><span>&nbsp; | &nbsp;</span>
 				<?php 
 				if( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
 					<span><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</span>
 				<?php	} else { ?>
-					<a href="<?php echo $url . '/?t_sortby='.$this->filters['sortby'].a.'limitstart='.$next_start.a.'t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</a>
+					<a href="<?php echo $url . '/?t_sortby=' . $this->filters['sortby'] . '&limitstart=' . $next_start . '&t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</a>
 				<?php } ?></p>
 			</div>
 			
@@ -151,22 +154,16 @@ $showStats = false;
 			<?php } ?>
 	<?php 
 	}
-	else {
+	else 
+	{
 		echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND').' <span class="addnew"><a href="'. $url .'/?action=start"  >'.JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION').'</a></span></p>');
-		
-			// Show intro banner with publication steps	
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'projects',
-					'element'=>'publications',
-					'name'=>'browse',
-					'layout'=>'intro'
-				)
-			);
-			$view->option 	= $this->option;
-			$view->project 	= $this->project;
-			$view->choices 	= $this->choices;
-			$view->goto 	= '&alias=' . $this->project->alias;
-			echo $view->loadTemplate();
+
+		// Show intro banner with publication steps	
+		$this->view('intro')
+		     ->set('option', $this->option)
+		     ->set('project', $this->project)
+		     ->set('choices', $this->choices)
+		     ->set('goto', '&alias=' . $this->project->alias)
+		     ->display();
 	} ?>
 </form>

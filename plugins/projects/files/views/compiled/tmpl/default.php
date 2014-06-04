@@ -50,29 +50,22 @@ if (!$this->getError()) {
 <ul class="sample">
 	<?php
 		// Display list item with file data
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'files',
-				'name'=>'selected'
-			)
-		);
+		$view = $this->view('default', 'selected');
 		$view->skip 		= false;
 		$view->item 		= $this->item;
 		$view->remote		= $this->remote;
 		$view->type			= 'file';
 		$view->action		= 'compile';
 		$view->multi		= NULL;	
-				
+
 		if ($this->ext == 'tex' && is_file(JPATH_ROOT . $this->outputDir . DS . $this->embed))
-		{			
+		{
 			$view->extras  = '<span class="rightfloat">';
 			$view->extras .= '<a href="' . $this->url . '/?' . $this->do . '=compile' . $subdirlink . a . 'download=1' . a . 'file=' . $this->item . '" class="i-download">' . JText::_('COM_PROJECTS_DOWNLOAD') . ' PDF</a> ';
 			$view->extras .= '<a href="' . $this->url . '/?' . $this->do . '=compile' . $subdirlink . a . 'commit=1' . a . 'file=' . $this->item . '" class="i-commit">' . JText::_('COM_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
 			$view->extras .= '</span>';
-		}	
+		}
 		echo $view->loadTemplate();
-	
 	?>
 </ul>
 <?php } ?>

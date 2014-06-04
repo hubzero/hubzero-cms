@@ -107,21 +107,14 @@ $services = $this->connect->getActive();
 	<?php if (!$this->tool) { ?>
 		<?php 
 			// NEW: connections to external services
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'connect',
-					'layout' => 'link'
-				)
-			);
-			$view->option = $this->option;
-			$view->project = $this->project;
-			$view->uid = $this->uid;
-			$view->database = $this->database;
-			$view->connect = $this->connect;
-			$view->oparams = $this->oparams;
-			echo $view->loadTemplate();
+			$this->view('link', 'connect')
+			     ->set('option', $this->option)
+			     ->set('project', $this->project)
+			     ->set('uid', $this->uid)
+			     ->set('database', $this->database)
+			     ->set('connect', $this->connect)
+			     ->set('oparams', $this->oparams)
+			     ->display();
 		 ?>
 	<?php } ?>
 
@@ -220,58 +213,44 @@ $services = $this->connect->getActive();
 					?>
 					<?php 
 						if (!$remote) 
-						{ 	
+						{
 							// Local file
-							$view = new \Hubzero\Plugin\View(
-								array(
-									'folder'=>'projects',
-									'element'=>'files',
-									'name'=>'item',
-									'layout' => 'document'
-								)
-							);
-							$view->subdir 		= $this->subdir;
-							$view->item 		= $combined['item'];
-							$view->option 		= $this->option;
-							$view->project 		= $this->project;
-							$view->juser 		= $this->juser;
-							$view->gConnected 	= $gConnected;
-							$view->c			= $c;
-							$view->connect 		= $this->connect;
-							$view->publishing 	= $publishing;
-							$view->oparams 		= $this->oparams;
-							$view->case 		= $this->case;
-							echo $view->loadTemplate();
-						} 
-				 	}	
+							$this->view('document', 'item')
+							     ->set('subdir', $this->subdir)
+							     ->set('item', $combined['item'])
+							     ->set('option', $this->option)
+							     ->set('project', $this->project)
+							     ->set('juser', $this->juser)
+							     ->set('gConnected', $gConnected)
+							     ->set('c', $c)
+							     ->set('connect', $this->connect)
+							     ->set('publishing', $publishing)
+							     ->set('oparams', $this->oparams)
+							     ->set('case', $this->case)
+							     ->display();
+						}
+					}
 					elseif ($combined['type'] == 'remote')
 					{
 						// Google file
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'=>'projects',
-								'element'=>'files',
-								'name'=>'item',
-								'layout' => $combined['remote']
-							)
-						);
-						$view->subdir 		= $this->subdir;
-						$view->item 		= $combined['item'];
-						$view->option 		= $this->option;
-						$view->project 		= $this->project;
-						$view->sync 		= $this->sync;
-						$view->connected 	= $gConnected;
-						$view->connect 		= $this->connect;
-						$view->publishing 	= $publishing;
-						$view->oparams 		= $this->oparams;
-						echo $view->loadTemplate();
+						$this->view($combined['remote'], 'item')
+						     ->set('subdir', $this->subdir)
+						     ->set('item', $combined['item'])
+						     ->set('option', $this->option)
+						     ->set('project', $this->project)
+						     ->set('sync', $this->sync)
+						     ->set('connected', $gConnected)
+						     ->set('connect', $this->connect)
+						     ->set('publishing', $publishing)
+						     ->set('oparams', $this->oparams)
+						     ->display();
 					}
 					
-			 		$c++;
+					$c++;
 				}
 			}
 			
-			// Show directory as empty			
+			// Show directory as empty
 			if(count($this->combined) == 0 || $empty) { ?>
 				<tr>
 					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini faded">

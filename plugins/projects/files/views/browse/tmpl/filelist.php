@@ -104,39 +104,33 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			<?php if ($this->subdir) { ?><a href="<?php echo $this->url; ?>"><?php } ?>
 			<?php echo $this->title; ?>
 			<?php if ($this->subdir) { ?></a><?php echo $path_bc; ?><?php } ?>
-			<?php if($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?>		</h3>
+			<?php if($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?>
+		</h3>
 	</div>
 	<?php 
 	} ?>
 	
 	<?php if ($this->tool && $this->tool->name ) 
 	{ 
-		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);		
+		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
 	} ?>
 	<?php if (!$this->tool) { ?>
 		<?php 
 			// NEW: connections to external services
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'connect',
-					'layout' => 'link'
-				)
-			);
-			$view->option 		= $this->option;
-			$view->project 		= $this->project;
-			$view->uid 			= $this->uid;
-			$view->database 	= $this->database;
-			$view->connect 		= $this->connect;
-			$view->oparams 		= $this->oparams;
-			$view->params		= $this->fileparams;
-			$view->sizelimit	= $this->sizelimit;
-			echo $view->loadTemplate();
+			$this->view('link', 'connect')
+			     ->set('option', $this->option)
+			     ->set('project', $this->project)
+			     ->set('uid', $this->uid)
+			     ->set('database', $this->database)
+			     ->set('connect', $this->connect)
+			     ->set('oparams', $this->oparams)
+			     ->set('params', $this->fileparams)
+			     ->set('sizelimit', $this->sizelimit)
+			     ->display();
 		 ?>
 	<?php } ?>
 	<div class="list-editing">
-		<p>			
+		<p>
 			<span id="manage_assets">
 				<a href="<?php echo $this->url . '/?' . $this->do . '=upload' . $subdirlink; ?>" class="fmanage" id="a-upload" title="<?php echo JText::_('COM_PROJECTS_UPLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_UPLOAD'); ?></span></a>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=newdir' . $subdirlink; ?>" id="a-folder" title="<?php echo JText::_('COM_PROJECTS_FOLDER_TOOLTIP'); ?>" class="fmanage<?php if($this->task == 'newdir') { echo ' inactive'; } ?>"><span><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?></span></a>
@@ -233,28 +227,21 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						$dir = $item['item'];
 						
 						// Folder view
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'=>'projects',
-								'element'=>'files',
-								'name'=>'item',
-								'layout' => 'folder'
-							)
-						);
-						$view->subdir 		= $this->subdir;
-						$view->item 		= $dir;
-						$view->option 		= $this->option;
-						$view->project 		= $this->project;
-						$view->juser 		= $this->juser;
-						$view->c			= $c;
-						$view->connect 		= $this->connect;
-						$view->publishing 	= $publishing;
-						$view->oparams 		= $this->oparams;
-						$view->params		= $this->fileparams;
-						$view->case 		= $this->case;
-						$view->url			= $this->url;
-						$view->do 			= $this->do;
-						echo $view->loadTemplate();
+						$this->view('folder', 'item')
+						     ->set('subdir', $this->subdir)
+						     ->set('item', $dir)
+						     ->set('option', $this->option)
+						     ->set('project', $this->project)
+						     ->set('juser', $this->juser)
+						     ->set('c', $c)
+						     ->set('connect', $this->connect)
+						     ->set('publishing', $publishing)
+						     ->set('oparams', $this->oparams)
+						     ->set('params', $this->fileparams)
+						     ->set('case', $this->case)
+						     ->set('url', $this->url)
+						     ->set('do', $this->do)
+						     ->display();
 					}
 					elseif ($type == 'document')
 					{
@@ -271,54 +258,40 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						}
 						
 						// Document view
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'=>'projects',
-								'element'=>'files',
-								'name'=>'item',
-								'layout' => 'document'
-							)
-						);
-						$view->subdir 		= $this->subdir;
-						$view->item 		= $file;
-						$view->option 		= $this->option;
-						$view->project 		= $this->project;
-						$view->juser 		= $this->juser;
-						$view->c			= $c;
-						$view->connect 		= $this->connect;
-						$view->publishing 	= $publishing;
-						$view->oparams 		= $this->oparams;
-						$view->params		= $this->fileparams;
-						$view->case 		= $this->case;
-						$view->url			= $this->url;
-						$view->do 			= $this->do;
-						echo $view->loadTemplate();
+						$this->view('document', 'item')
+						     ->set('subdir', $this->subdir)
+						     ->set('item', $file)
+						     ->set('option', $this->option)
+						     ->set('project', $this->project)
+						     ->set('juser', $this->juser)
+						     ->set('c', $c)
+						     ->set('connect', $this->connect)
+						     ->set('publishing', $publishing)
+						     ->set('oparams', $this->oparams)
+						     ->set('params', $this->fileparams)
+						     ->set('case', $this->case)
+						     ->set('url', $this->url)
+						     ->set('do', $this->do)
+						     ->display();
 					}
 					elseif ($type == 'remote')
 					{						
 						// Remote file
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'=>'projects',
-								'element'=>'files',
-								'name'=>'item',
-								'layout' => $item['remote']
-							)
-						);
-						$view->subdir 		= $this->subdir;
-						$view->item 		= $item['item'];
-						$view->option 		= $this->option;
-						$view->project 		= $this->project;
-						$view->juser 		= $this->juser;
-						$view->c			= $c;
-						$view->connect 		= $this->connect;
-						$view->publishing 	= $publishing;
-						$view->oparams 		= $this->oparams;
-						$view->params		= $this->fileparams;
-						$view->case 		= $this->case;
-						$view->url			= $this->url;
-						$view->do 			= $this->do;
-						echo $view->loadTemplate();
+						$this->view($item['remote'], 'item')
+						     ->set('subdir', $this->subdir)
+						     ->set('item', $item['item'])
+						     ->set('option', $this->option)
+						     ->set('project', $this->project)
+						     ->set('juser', $this->juser)
+						     ->set('c', $c)
+						     ->set('connect', $this->connect)
+						     ->set('publishing', $publishing)
+						     ->set('oparams', $this->oparams)
+						     ->set('params', $this->fileparams)
+						     ->set('case', $this->case)
+						     ->set('url', $this->url)
+						     ->set('do', $this->do)
+						     ->display();
 					}
 			 		$c++;
 				}

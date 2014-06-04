@@ -84,20 +84,14 @@ if (!$this->getError()) {
 			}
 				
 			// Display list item with file data
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'selected'
-				)
-			);
-			$view->skip 		= $skip;
-			$view->item 		= $item;
-			$view->remote		= $remote;
-			$view->type			= $type;
-			$view->action		= 'delete';
-			$view->multi		= 'multi';
-			echo $view->loadTemplate();
+			$this->view('default', 'selected')
+			     ->set('skip', $skip)
+			     ->set('item', $item)
+			     ->set('remote', $remote)
+			     ->set('type', $type)
+			     ->set('action', 'delete')
+			     ->set('multi', 'multi');
+			     ->display();
 		} ?>
 		</ul>
 		

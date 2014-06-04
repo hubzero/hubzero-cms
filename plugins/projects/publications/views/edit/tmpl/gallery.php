@@ -118,26 +118,20 @@ else
 									$gone = is_file($this->prefix.$this->fpath.DS.$shot->filename) ? 0 : 1;
 									?>
 								<li class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo 'i-missing'; } ?>" id="clone-file::<?php echo urlencode($shot->filename); ?>">
-									<?php								
+									<?php
 										// Screenshot HTML
-										$view = new \Hubzero\Plugin\View(
-											array(
-												'folder'=>'projects',
-												'element'=>'publications',
-												'name'=>'screenshot'
-											)
-										);
-										$view->url = $this->url;
-										$view->project = $this->project;
-										$view->option = $this->option;
-										$view->pid = $this->row->publication_id;
-										$view->vid = $this->row->id;
-										$view->ima = $shot->filename;
-										$view->title = $shot->title;
-										$view->src = $src;
-										$view->move = $this->move;
-										$view->canedit = $canedit;
-										$view->display();
+										$this->view('default', 'screenshot')
+										     ->set('url', $this->url)
+										     ->set('project', $this->project)
+										     ->set('option', $this->option)
+										     ->set('pid', $this->row->publication_id)
+										     ->set('vid', $this->row->id)
+										     ->set('ima', $shot->filename)
+										     ->set('title', $shot->title)
+										     ->set('src', $src)
+										     ->set('move', $this->move)
+										     ->set('canedit', $canedit)
+										     ->display();
 									?>
 								</li>
 							<?php $i++; } }  ?>
