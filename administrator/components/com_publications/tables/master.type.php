@@ -90,6 +90,20 @@ class PublicationMasterType extends JTable
 	 * @var text
 	 */	
 	var $params      		= NULL;
+	
+	/**
+	 * Curation group id
+	 * 
+	 * @var int(11)
+	 */	
+	var $curatorgroup      	= NULL;
+	
+	/**
+	 * Curation flow
+	 * 
+	 * @var text
+	 */	
+	var $curation      		= NULL;
 		
 	/**
 	 * Constructor
@@ -123,18 +137,20 @@ class PublicationMasterType extends JTable
 	}
 		
 	/**
-	 * Get record by alias name
+	 * Get record by alias name or ID
 	 * 
-	 * @param      string 		$alias
+	 * @param      string 	$id
 	 * @return     object or false
 	 */	
-	public function getType( $alias='' ) 
+	public function getType( $id = '' ) 
 	{
-		if (!$alias) 
+		if (!$id) 
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='".$alias."' LIMIT 1" );
+		$field = is_numeric($id) ? 'id' : 'alias';
+		
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $field='".$id."' LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -169,6 +185,84 @@ class PublicationMasterType extends JTable
 		}
 		$this->_db->setQuery( "SELECT alias FROM $this->_tbl WHERE id='".$id."' LIMIT 1" );
 		return $this->_db->loadResult();
+	}
+	
+	/**
+	 * Get curator groups
+	 * 
+	 * @return     array
+	 */	
+	public function getCuratorGroups() 
+	{
+		$groups = array();
+		
+		$query = "SELECT curatorgroup FROM $this->_tbl WHERE contributable=1 
+				  AND curatorgroup !=0 AND curatorgroup IS NOT NULL";
+		
+		$this->_db->setQuery( $query );
+		$results = $this->_db->loadObjectList();
+
+		if ($results)
+		{
+			foreach ($results as $result)
+			{
+				if (trim($result->curatorgroup))
+				{
+					$groups[] = $result->curatorgroup;
+				}
+			}
+		}
+		
+		return $groups;
+	}
+	
+	/**
+	 * Get types for which user is authorized (curation)
+	 * 
+	 * @return     array
+	 */	
+	public function getAuthTypes( $usergroups = array(), $curatorgroup = '', $authorized = false ) 
+	{
+		$types = array();
+		
+		if (empty($usergroups))
+		{
+			return false;
+		}
+		if ($authorized == 'admin' || ($curatorgroup && $group = \Hubzero\User\Group::getInstance($curatorgroup)))
+		{
+			// Authorized access to all types
+			$query = "SELECT id FROM $this->_tbl WHERE contributable=1";
+		}
+		else
+		{
+			$query = "SELECT id FROM $this->_tbl WHERE contributable=1 
+					  AND curatorgroup !=0 AND curatorgroup IS NOT NULL ";
+			
+			$tquery = '';
+			foreach ($usergroups as $g)
+			{
+				$tquery .= "'" . $g->gidNumber . "',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$query .= " AND (curatorgroup IN (" . $tquery . ") ) ";
+		}
+				
+		$this->_db->setQuery( $query );
+		$results = $this->_db->loadObjectList();
+
+		if ($results)
+		{
+			foreach ($results as $result)
+			{
+				if (trim($result->id))
+				{
+					$types[] = $result->id;
+				}
+			}
+		}
+		
+		return $types;
 	}
 	
 	/**

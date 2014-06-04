@@ -293,6 +293,57 @@ class PublicationLicense extends JTable
 	}
 	
 	/**
+	 * Get licenses
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @return     object
+	 */	
+	public function getBlockLicenses ( $manifest = NULL ) 
+	{		
+		if (!$manifest)
+		{
+			return false;
+		}
+		
+		$include = isset($manifest->params->include) ? $manifest->params->include : array();
+		$exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : array();
+		
+		$apps_only = isset($filters['apps_only']) ? $filters['apps_only'] : '';
+		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
+		
+		$query = "SELECT * FROM $this->_tbl WHERE active=1 ";
+		if ($include && !empty($include))
+		{
+			$query .= " AND (";
+			$i = 0;
+			foreach ($include as $inc)
+			{
+				$i++;
+				$query .= "id=" . $inc;
+				$query .= $i == count($include) ? " " : " OR ";
+			}
+			$query .= " )";
+		}
+		if ($exclude && !empty($exclude))
+		{
+			$query .= " AND (";
+			$i = 0;
+			foreach ($exclude as $ex)
+			{
+				$i++;
+				$query .= "id != " . $ex;
+				$query .= $i == count($exclude) ? " " : " AND ";
+			}
+			$query .= " )";
+		}
+
+		$query.= " ORDER BY ordering";
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+	}
+	
+	/**
 	 * Get default license
 	 * 
 	 * @return     object

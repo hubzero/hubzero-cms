@@ -416,5 +416,90 @@ class PublicationUtilities
 		</resource>';
 		return $xmlfile;	
 	}
+	
+	/**
+	 * Collect DOI metadata
+	 * 
+	 * @param      object $pub      Publication
+	 * @return     void
+	 */
+	public static function collectMetadata($pub)
+	{
+		if (!$pub || !$pub->id)
+		{
+			return false;
+		}
+				
+		$database = JFactory::getDBO();
+		
+		// Load version
+		$row = new PublicationVersion($database);
+		
+		// Collect metadata
+		$metadata = array();
+		
+		if (!isset($pub->_category))
+		{
+			// Get type info
+			$pub->_category = new PublicationCategory( $database );
+			$pub->_category->load($pub->category);
+			$pub->_category->_params = new JParameter( $pub->_category->params );
+		}
+		
+		if (!$pub->_category)
+		{
+			return false;
+		}
+		
+		$metadata['typetitle'] 		= $pub->_category->alias;
+		$metadata['resourceType'] 	= $pub->_category->dc_type ? $pub->_category->dc_type : 'Dataset';
+		
+		$metadata['language'] 		= 'en';
+		$metadata['version']		= $pub->version_label;
+		$metadata['title'] 			= stripslashes(htmlspecialchars($pub->title));
+		
+		if (!isset($pub->_project))
+		{
+			// Get project
+			$pub->_project = new Project($database);
+			$pub->_project->load($pub->project_id);
+		}
+		
+		if (!$pub->_project)
+		{
+			return false;
+		}
+		
+		// Get dc:contibutor
+		$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
+		$owner 	 = $pub->_project->owned_by_user ? $pub->_project->owned_by_user : $pub->_project->created_by_user;
+		if ($profile->load( $owner ))
+		{
+			$metadata['contributor'] = $profile->get('name');	
+		}
+		
+		// Get previous version DOI
+		$lastPub = $row->getLastPubRelease($objP->id);
+		if ($lastPub && $lastPub->doi)
+		{
+			$metadata['relatedDoi'] = $row->version_number > 1 ? $lastPub->doi : '';	
+		}
+		
+		// Get previous version DOI
+		$lastPub = $row->getLastPubRelease($pub->id);
+		if ($lastPub && $lastPub->doi)
+		{
+			$metadata['relatedDoi'] = $pub->version_number > 1 ? $lastPub->doi : '';	
+		}
+		
+		// Get license type
+		$objL = new PublicationLicense( $database);
+		if ($objL->loadLicense($pub->license_type))
+		{
+			$metadata['license']    = $objL->title;
+		}
+				
+		return $metadata;		
+	}
 }
 

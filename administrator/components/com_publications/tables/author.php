@@ -244,7 +244,9 @@ class PublicationAuthor extends JTable
 			return false;
 		}
 		
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE publication_version_id=".$vid." AND project_owner_id=".$owner_id );
+		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id=".$vid." AND project_owner_id=".$owner_id;
+		$query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
+		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind( $result );
@@ -298,7 +300,7 @@ class PublicationAuthor extends JTable
 		
 		if ($incSubmitter == false)
 		{
-			$query .= " AND A.role != 'submitter'";
+			$query .= " AND (A.role != 'submitter' || A.role IS NULL)";
 		}
 		
 		$query .= " ORDER BY A.ordering ASC ";
@@ -508,7 +510,8 @@ class PublicationAuthor extends JTable
 		$query .= " LEFT JOIN $this->_tbl as A ON po.id=A.project_owner_id AND A.publication_version_id=".$vid." ";
 		$query .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=po.userid ";
 		$query .= " AND po.status!=2 ";
-		$query .= " WHERE po.id=".$owner_id;	
+		$query .= " WHERE po.id=".$owner_id;
+		$query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";	
 		$query .= " LIMIT 1 ";
 		
 		$this->_db->setQuery( $query );
@@ -568,10 +571,12 @@ class PublicationAuthor extends JTable
 		if ($delete == 1) 
 		{
 			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid." AND user_id=".$uid;
+			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 		else 
 		{
 			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=".$vid." AND user_id=".$uid;
+			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}		
 		
 		$this->_db->setQuery( $query );
@@ -612,10 +617,12 @@ class PublicationAuthor extends JTable
 		if ($delete == 1) 
 		{
 			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid." AND project_owner_id=".$owner_id;
+			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 		else 
 		{
 			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=".$vid." AND project_owner_id=".$owner_id;
+			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}		
 		
 		$this->_db->setQuery( $query );
@@ -642,9 +649,9 @@ class PublicationAuthor extends JTable
 		$org = mysql_real_escape_string($this->organization);
 		
 		$query = "INSERT INTO $this->_tbl (publication_version_id, user_id, ordering, 
-			role, name, firstName, lastName, organization, credit, created, 
+			name, firstName, lastName, organization, credit, created, 
 			created_by, status, project_owner_id) VALUES ($this->publication_version_id, $this->user_id, 
-			$this->ordering, '$this->role', '$name', '$firstName' , '$lastName', '$org', '$credit', 
+			$this->ordering, '$name', '$firstName' , '$lastName', '$org', '$credit', 
 			'$now', '$this->created_by', '$this->status', '$this->project_owner_id')";
 		
 		$this->_db->setQuery( $query );
@@ -669,7 +676,7 @@ class PublicationAuthor extends JTable
 		$credit = mysql_real_escape_string($this->credit);
 		$org = mysql_real_escape_string($this->organization);
 		
-		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, role='$this->role', 
+		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, 
 			name='$name', firstName='$firstName', lastName='$lastName', organization='$org', 
 			credit='$credit', status='$this->status', modified='$this->modified', 
 			modified_by='$this->modified_by' WHERE publication_version_id=$this->publication_version_id 
@@ -697,7 +704,7 @@ class PublicationAuthor extends JTable
 		$credit = mysql_real_escape_string($this->credit);
 		$org = mysql_real_escape_string($this->organization);
 		
-		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, role='$this->role', 
+		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, 
 			name='$name', firstName='$firstName', lastName='$lastName', organization='$org', 
 			credit='$credit', status='$this->status', modified='$this->modified', 
 			modified_by='$this->modified_by' WHERE publication_version_id=$this->publication_version_id 
@@ -773,7 +780,9 @@ class PublicationAuthor extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl WHERE publication_version_id=$vid ORDER BY ordering DESC LIMIT 1" );
+		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl 
+			WHERE publication_version_id=$vid 
+			ORDER BY ordering DESC LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 	

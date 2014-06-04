@@ -125,7 +125,7 @@ class PublicationVersion extends JTable
 	 * @var string
 	 */
 	var $submitted					= NULL;
-	
+		
 	/**
 	 * datetime(0000-00-00 00:00:00)
 	 * 
@@ -181,6 +181,20 @@ class PublicationVersion extends JTable
 	 * @var text
 	 */
 	var $license_text				= NULL;
+	
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $reviewed					= NULL;
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $reviewed_by				= NULL;	
 	
 	/**
 	 * Int(1)
@@ -244,6 +258,13 @@ class PublicationVersion extends JTable
 	 * @var text
 	 */
 	var $release_notes				= NULL;
+	
+	/**
+	 * Original curation manifest at time of publication approval
+	 * 
+	 * @var text
+	 */
+	var $curation					= NULL;
 
 	/**
 	 * Constructor
@@ -629,6 +650,33 @@ class PublicationVersion extends JTable
 	}
 	
 	/**
+	 * Get title for new draft
+	 * 
+	 * @param      integer   $projectid  Project ID
+	 * @param      string    $title
+	 * @return     void
+	 */	
+	public function getDefaultTitle( $projectid = 0, $title = '' )
+	{
+		if (intval($projectid) == 0) 
+		{
+			return false;
+		}
+		$query  = "SELECT COUNT(*)";
+		$query.= " FROM $this->_tbl AS v ";
+		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
+		$query.= " WHERE v.main=1 AND v.title LIKE '" . $title . "%' AND p.project_id = " .$projectid . " AND v.state != 2";
+		
+		$this->_db->setQuery( $query );
+		$result = $this->_db->loadResult();
+		$result = $result ? ($result + 1) : 1;
+		
+		$title .= ' (' . $result . ')';
+		
+		return $title; 
+	}
+	
+	/**
 	 * Create new version
 	 * 
 	 * @param      object   $dev 				Version to duplicate
@@ -769,7 +817,9 @@ class PublicationVersion extends JTable
 			}
 			$this->params = $in;
 			$this->store();
-		}		
+		}
+		
+		return true;		
 	}
 	
 	/**

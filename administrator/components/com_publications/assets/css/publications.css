@@ -45,6 +45,7 @@
 	.draftexternal,
 	.new,
 	.check,
+	.preserving,
 	.published,
 	.pending,
 	.expired,
@@ -52,7 +53,8 @@
 	.deleted,
 	.upload,
 	.archived,
-	.ready { 
+	.ready,
+	.wip { 
 		padding: 0; 
 		display: block; 
 		width: 12px; 
@@ -65,6 +67,7 @@
 	.new span,
 	.hasassoc span,
 	.noassoc span,
+	.preserving span,
 	.published span,
 	.pending span,
 	.expired span,
@@ -72,25 +75,10 @@
 	.deleted span,
 	.upload span,
 	.ready span,
-	.archived span { 
+	.archived span,
+	.wip span { 
 		display: none; 
 		}	
-	
-	/*
-	.check,
-	.published { background: url("../img/check.gif") 0 0 no-repeat; }
-	.posted { background: url("../img/check_blue.gif") 0 0 no-repeat; }
-	.pending { background: url("../img/check_circle.gif") 0 0 no-repeat; }
-	.expired { background: url("../img/check_star.gif") 0 0 no-repeat; }
-	.unpublished { background: url("../img/check_disabled.gif") 0 0 no-repeat; }
-	.upload { background: url("../img/upload.gif") 0 0 no-repeat; }
-	.new { background: url("../img/pending.gif") 0 0 no-repeat; }
-	.draftexternal, .draft { background: url("../img/draft_external.gif") 0 0 no-repeat; }
-	.draftinternal { background: url("../img/draft_internal.gif") 0 0 no-repeat; }
-	.deleted { background: url("../img/deleted.gif") 0 0 no-repeat; }
-	.ready { background: url("../img/draft_ready.gif") 0 0 no-repeat; }
-	.archived { background: url("../img/archive.gif") 0 0 no-repeat; }
-	*/
 	
 	/* Status color 
 	--------------------------------------------- */
@@ -109,13 +97,17 @@
 	.unpublished {
 		color: #999;
 	}
-	.pending, .new {
+	.pending, .new, .wip {
 		color: red;
+	}
+	.preserving {
+		color: blue;
 	}
 	
 	/* Publication status
 	--------------------------------------------- */
-	.draft, .published, .unpublished, .expired, .pending, .posted, .archived, .ready, .new {
+	.draft, .published, .unpublished, .expired, .pending, 
+	.preserving, .posted, .archived, .ready, .new, .wip {
 		padding: 0.2em 0.5em;
 	}
 	.archived:before,
@@ -123,13 +115,15 @@
 	.posted:before,
 	.expired:before,
 	.unpublished:before,
+	.preserving:before,
 	.published:before,
 	.draft:before,
 	.pending:before,
 	.new:before,
 	.archival:before,
 	.item_on:before,
-	.item_off:before {
+	.item_off:before,
+	.wip:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -143,17 +137,21 @@
 		content: "\f005";
 	}
 	.published:before, 
+	.preserving:before, 
 	.ready:before,
 	.unpublished:before,
 	.pending:before,
 	.new:before,
-	.archived:before {
+	.archived:before,
+	.expired:before {
 		content: "\f058";
 	}
 	.draft:before {
 		content: "\f05d";
 	}
-	
+	.wip:before {
+		content: "\2757";
+	}
 	.item_on:before {
 		content: "\2714";
 		color: green;
@@ -200,17 +198,7 @@
 		padding: 0;
 		list-style: none;
 		}
-	.key li.draft,
-	.key li.draftinternal,
-	.key li.draftexternal,
-	.key li.new,
-	.key li.published,
-	.key li.pending,
-	.key li.expired,
-	.key li.deleted,
-	.key li.unpublished,
-	.key li.archived,
-	.key li.ready { 
+	.key li { 
 		margin: 0;
 		padding-left: 18px;
 		width: auto;
@@ -221,14 +209,17 @@
 	.draftinternal:hover,
 	.draftexternal:hover,
 	.new:hover,
+	.preserving:hover,
 	.published:hover,
+	.preserving:hover,
 	.pending:hover,
 	.expired:hover,
 	.unpublished:hover,
 	.deleted:hover,
 	.ready:hover,
 	.archived:hover,
-	.upload:hover { border: none; }
+	.upload:hover,
+	.wip:hover { border: none; }
 	
 	.check { text-indent: 50px; overflow: hidden; }
 	
@@ -444,6 +435,3 @@
 		margin-right: 5em;
 		color: #ccc;
 	}
-	
-	
-

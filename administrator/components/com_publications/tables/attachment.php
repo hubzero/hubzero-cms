@@ -58,6 +58,13 @@ class PublicationAttachment extends JTable
 	var $publication_id 		= NULL;
 	
 	/**
+	 * ID of block element
+	 * 
+	 * @var integer
+	 */
+	var $element_id 			= NULL;
+	
+	/**
 	 * Attached object ID
 	 * 
 	 * @var integer
@@ -222,6 +229,220 @@ class PublicationAttachment extends JTable
 		
 		return $result;
 	}
+	
+	/**
+	 * Get attachment used as default publication thumbnail
+	 * 
+	 * @param      integer 	$versionid		pub version id
+	 * @return     object
+	 */	
+	public function getDefault( $versionid ) 
+	{
+		if ($versionid === NULL) 
+		{
+			$versionid = $this->publication_version_id;
+		}
+		
+		if (!$versionid)
+		{
+			return false;
+		}
+		
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $versionid;
+		$query .= " AND params LIKE '%pubThumb=1%' LIMIT 1";
+		
+		$this->_db->setQuery( $query );
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind( $result );
+		} 
+		else 
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}		
+	}
+	
+	/**
+	 * Save project parameter
+	 * 
+	 * @param      object $record
+	 * @param      string $param
+	 * @param      string $value
+	 * @return     void
+	 */	
+	public function saveParam ( $record = NULL, $param = '', $value = 0 ) 
+	{
+		if (!is_object($record)) 
+		{
+			return false;
+		}
+		
+		// Clean up value
+		$value = preg_replace('/=/', '', $value);
+		
+		if ($record->params) 
+		{
+			$params = explode("\n", $record->params);
+			$in = '';
+			$found = 0;
+		
+			// Change param
+			if (!empty($params)) 
+			{
+				foreach ($params as $p) 
+				{
+					if (trim($p) != '' && trim($p) != '=') 
+					{				
+						$extracted = explode('=', $p);
+						if (!empty($extracted)) 
+						{
+							$in .= $extracted[0] . '=';
+							$default = isset($extracted[1]) ? $extracted[1] : 0;
+							$in .= $extracted[0] == $param ? $value : $default;
+							$in	.= n;
+							if ($extracted[0] == $param) {
+								$found = 1;
+							}
+						}
+					}
+				}
+			}
+			if (!$found) 
+			{
+				$in .= n . $param . '=' . $value;	
+			}
+		} 
+		else 
+		{
+			$in = $param . '=' . $value;
+		}
+		
+		$record->params = $in;
+		$record->store();		
+	}
+	
+	/**
+	 * Update records for all publications in a project
+	 * 
+	 * @param      integer 	$projectid		project id
+	 * @return     void
+	 */	
+	public function updateRecords( $projectid, $field, $from, $to ) 
+	{
+		$query = "UPDATE $this->_tbl AS A ";
+		$query.= "JOIN #__publications AS B ON B.id=A.publication_id ";
+		$query.= " SET A." . $field . "='$to' ";
+		$query.= "WHERE A." . $field . "='$from' AND B.project_id=" . $projectid;
+		
+		$this->_db->setQuery( $query );
+		if ($this->_db->query())
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Get attachments
+	 * 
+	 * @param      integer 	$versionid		pub version id
+	 * @return     object
+	 */	
+	public function sortAttachments( $versionid ) 
+	{
+		if ($versionid === NULL) 
+		{
+			$versionid = $this->publication_version_id;
+		}
+		
+		if (!$versionid)
+		{
+			return false;
+		}
+		
+		$query = "SELECT a.* ";
+		$query.= "FROM $this->_tbl AS a ";
+		$query.= "WHERE a.publication_version_id=" . $versionid;
+		$query .= " ORDER BY a.ordering ASC";
+		
+		$this->_db->setQuery( $query );
+		$results = $this->_db->loadObjectList();
+		
+		if ($results)
+		{
+			$attachments = array(
+				'1' 		=> array(), 
+				'2' 		=> array(), 
+				'3' 		=> array(), 
+				'elements' 	=> array()
+			);
+			
+			foreach ($results as $result)
+			{
+				// Sort by role
+				if ($result->role == 1)
+				{
+					$attachments['1'][] = $result;
+				}
+				elseif ($result->role == 2 || $result->role == 0)
+				{
+					$attachments['2'][] = $result;
+				}
+				else
+				{
+					$attachments['3'][] = $result;
+				}
+				
+				$elementId = $result->element_id ? $result->element_id : 1;
+				
+				if (!isset($attachments['elements'][$elementId]))
+				{
+					$attachments['elements'][$elementId] = array();
+				}
+				
+				// Add to elements array
+				$attachments['elements'][$elementId][] = $result;
+			}
+			
+			return $attachments;
+		}
+		
+		return false;
+		
+	}
+	
+	/**
+	 * Get connections
+	 * 
+	 * @param      integer 	$vid		pub version id
+	 * @param      array 	$find
+	 * @return     object
+	 */	
+	public function getConnections ( $vid = NULL, $find = array() ) 
+	{
+		if (!$vid) 
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid) 
+		{
+			return false;
+		}
+		if (empty($find)) 
+		{
+			return false;
+		}
+		
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $vid;		
+		foreach ($find as $property => $value )
+		{
+			$query .= " AND " . $property ."='" . $value . "'";
+		}
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+	}
 		
 	/**
 	 * Get attachments
@@ -242,6 +463,7 @@ class PublicationAttachment extends JTable
 		$select  = isset($filters['select']) && $filters['select'] != '' ? $filters['select'] : '';
 		$aid  	 = isset($filters['id']) && intval($filters['id']) != 0 ? intval($filters['id']) : '';
 		$type  	 = isset($filters['type']) && $filters['type'] != '' ? $filters['type'] : '';
+		$element = isset($filters['element']) ? $filters['element'] : '';
 	
 		if ($versionid === NULL && !$project) 
 		{
@@ -279,7 +501,17 @@ class PublicationAttachment extends JTable
 		{
 			$query.= intval($project) ? " p.project_id=".$project : " a.publication_version_id=".$versionid;	
 		}
-	
+		if ($element) 
+		{
+			if (intval($element))
+			{
+				$query .= " AND a.element_id='".$element."' ";	
+			}
+			elseif (is_array($element))
+			{
+				// multiple elements, TBD
+			}
+		}
 		if (isset($filters['role']) && $filters['role'] != '') 
 		{
 			$role 	= $filters['role'] == 4 ? 0 : $filters['role'];
@@ -305,6 +537,95 @@ class PublicationAttachment extends JTable
 		$this->_db->setQuery( $query );
 		return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
 
+	}
+	
+	/**
+	 * Delete element attachment
+	 * 
+	 * @return     object or FALSE
+	 */	
+	public function deleteElementAttachment( $vid = NULL, $find = array(), $elementId = 0, $type = 'file', $role = '' ) 
+	{
+		if (!$vid) 
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid) 
+		{
+			return false;
+		}
+		if (empty($find)) 
+		{
+			return false;
+		}
+		
+		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $vid . " AND type='" . $type . "'";
+		$query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
+		
+		if ($role)
+		{
+			$query .= $role == 2 ? " AND (role = 0 OR role = 2)" : " AND role=" . intval($role);
+		}
+		
+		foreach ($find as $property => $value )
+		{
+			$query .= " AND " . $property ."='" . $value . "'";
+		}
+		
+		$this->_db->setQuery( $query );
+		if (!$this->_db->query()) 
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Load element attachment
+	 * 
+	 * @return     object or FALSE
+	 */	
+	public function loadElementAttachment( $vid = NULL, $find = array(), $elementId = 0, $type = 'file', $role = '' ) 
+	{
+		if (!$vid) 
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid) 
+		{
+			return false;
+		}
+		if (empty($find)) 
+		{
+			return false;
+		}
+		
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $vid . " AND type='" . $type . "'";
+		$query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
+		
+		if ($role)
+		{
+			$query .= $role == 2 ? " AND (role = 0 OR role = 2)" : " AND role=" . intval($role);
+		}
+		
+		foreach ($find as $property => $value )
+		{
+			$query .= " AND " . $property ."='" . $value . "'";
+		}
+		
+		$query .= " LIMIT 1";
+		
+		$this->_db->setQuery( $query );
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind( $result );
+		} 
+		else 
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
 	}
 	
 	/**

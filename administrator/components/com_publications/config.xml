@@ -44,6 +44,15 @@
 		<param name="email_image" type="text" menu="hide" default="" label="Email header image" description="Default image for HTML email header" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
+		<param name="curation" type="list" default="0" label="Curation" description="Use curation flow for all publications.">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</param>
+		<param name="curatorgroup" type="text" menu="hide" default="" label="Name of group of curators" description="Group of members authorized to perform pre-publication curation (all publication types)." />
+		<param name="graceperiod" type="list" default="0" label="Grace period for changes" description="Allow authors to make changes to a published resource within the grace period after approval">
+			<option value="0">None</option>
+			<option value="1">1 month</option>
+		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what Digital Object Identifiers (DOI) are [optional]" />
 		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for issuing DOIs (what goes after doi:)" />
@@ -54,6 +63,10 @@
 		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for DOI service" />
 		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<param name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
+		<param name="graceperiod" type="list" default="0" label="Grace period for changes" description="Allow authors to make changes to a published resource within the grace period after approval">
+			<option value="0">None</option>
+			<option value="1">1 month</option>
+		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate organization-supported tools" />
 		<param name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe organization-supported tools" />
@@ -127,6 +140,17 @@
 		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
+		</field>
+	</fieldset>
+	<fieldset name="CURATION">
+		<field name="curation" type="list" default="0" label="Curation" description="Use curation flow for all publications.">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="curatorgroup" type="text" menu="hide" default="" label="Name of group of curators" description="Group of members authorized to perform pre-publication curation (all publication types)." />
+		<field name="graceperiod" type="list" default="0" label="Grace period for changes" description="Allow authors to make changes to a published resource within the grace period after approval">
+			<option value="0">None</option>
+			<option value="1">1 month</option>
 		</field>
 	</fieldset>
 	<fieldset name="DOI">

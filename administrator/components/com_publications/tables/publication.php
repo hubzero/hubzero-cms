@@ -179,32 +179,29 @@ class Publication extends JTable
 	 */	
 	public function buildQuery( $filters = array(), $usergroups = array() ) 
 	{
-		$juser = JFactory::getUser();
-		$now = JFactory::getDate()->toSql();
+		$juser 		= JFactory::getUser();
+		$now 		= JFactory::getDate()->toSql();
 		$restricted = 0;
-		$groupby = ' GROUP BY C.id ';
+		$groupby 	= ' GROUP BY C.id ';
 		
-		$project = isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
-		$dev = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
-		$projects = isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
-		$mine = isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
-		$coauthor = isset($filters['coauthor']) && $filters['coauthor'] == 1 ? 1 : 0;
-		$sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';  
+		$project 		= isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
+		$dev 			= isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
+		$projects 		= isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
+		$mine 			= isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
+		$coauthor 		= isset($filters['coauthor']) && $filters['coauthor'] == 1 ? 1 : 0;
+		$sortby  		= isset($filters['sortby']) ? $filters['sortby'] : 'title';  
 		
-		$query  = "";
+		$query  = "FROM ";
 		if (isset($filters['tag']) && $filters['tag'] != '') 
 		{
-			$query .= "FROM #__tags_object AS RTA ";
+			$query .= "#__tags_object AS RTA ";
 			$query .= "INNER JOIN #__tags AS TA ON RTA.tagid = TA.id AND RTA.tbl='publications', ";
-			$query .= "#__publication_versions as V, #__projects as PP,  #__publication_master_types AS MT, $this->_tbl AS C ";
 		} 
-		else 
-		{
-			$query .= " FROM #__publication_versions as V, #__projects as PP, #__publication_master_types AS MT, $this->_tbl AS C ";
-		}
+
+		$query .= " #__publication_versions as V, #__projects as PP, 
+				  #__publication_master_types AS MT, $this->_tbl AS C ";
 	
-		$query .= "LEFT JOIN #__publication_categories AS t ON t.id=C.category ";
-				
+		$query .= "LEFT JOIN #__publication_categories AS t ON t.id=C.category ";				
 		$query .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id ";
 
 		if ($dev) 
@@ -212,7 +209,20 @@ class Publication extends JTable
 			$query .= " AND V.main=1 ";
 			if (isset($filters['status']) && $filters['status'] != 'all') 
 			{
-				$query .= " AND V.state=".$filters['status'];
+				if (is_array($filters['status']))
+				{
+					$squery = '';
+					foreach ($filters['status'] as $s)
+					{
+						$squery .= "'".$s."',";
+					}
+					$squery = substr($squery,0,strlen($squery) - 1);
+					$query .= " AND (V.state IN (" . $squery . ")) ";
+				}
+				elseif (intval($filters['status']))
+				{
+					$query .= " AND V.state=".$filters['status'];	
+				}
 			}
 			if ($mine) 
 			{
@@ -225,7 +235,9 @@ class Publication extends JTable
 					}
 					$p_query = substr($p_query,0,strlen($p_query) - 1);
 					$query .= " AND (C.project_id IN (".$p_query.")) ";
-					$query .= $coauthor ? " AND C.created_by != ".intval($filters['mine']) : " AND C.created_by=".intval($filters['mine']);
+					$query .= $coauthor 
+							? " AND C.created_by != ".intval($filters['mine']) 
+							: " AND C.created_by=".intval($filters['mine']);
 				}
 				else 
 				{
@@ -268,7 +280,17 @@ class Publication extends JTable
 		// Master type
 		if (isset($filters['master_type']) && $filters['master_type'] != '') 
 		{
-			if (is_numeric($filters['master_type']))
+			if (is_array($filters['master_type']) && !empty($filters['master_type']))
+			{
+				$tquery = '';
+				foreach ($filters['master_type'] as $type)
+				{
+					$tquery .= "'".$type."',";
+				}
+				$tquery = substr($tquery,0,strlen($tquery) - 1);
+				$query .= " AND (C.master_type IN (" . $tquery . ") ) ";
+			}
+			elseif (is_numeric($filters['master_type']))
 			{
 				$query .= " AND C.master_type=".$filters['master_type']." ";
 			}
@@ -277,7 +299,7 @@ class Publication extends JTable
 				$query .= " AND MT.alias='".$filters['master_type']."' ";
 			}
 		}
-		
+						
 		if (isset($filters['minranking']) && $filters['minranking'] != '' && $filters['minranking'] > 0) 
 		{
 			$query .= " AND C.ranking > ".$filters['minranking']." ";
