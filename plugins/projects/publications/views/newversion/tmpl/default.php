@@ -77,9 +77,9 @@ if ($this->getError()) {
 		</label>
 	</div>
 		<p class="submitarea">
-			<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION'); ?>" />
+			<input type="submit" class="btn active btn-success" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION'); ?>" />
 				<?php if($this->ajax) { ?>	
-				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 				<?php } else { 
 					$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
 				?>
