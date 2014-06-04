@@ -1174,7 +1174,9 @@
 		content: "\2716";
 		margin-right: 0.5em;
 	}
-	#suggestions a:before, .suggestions a:before {
+	#suggestions a:before, 
+	.suggestions a:before,
+	#suggestions a:after {
 		content: "";
 		width: 32px;
 		height: 32px;
@@ -2492,8 +2494,7 @@
 		/*padding-left: 10px;*/
 	}
 	ul#status-bar.moving li.active:after,
-	ul#status-bar li a.c_passed:before,
-	ul#status-bar li a.c_failed:before {
+	ul#status-bar li a:before {
 		width: 8px;
 		height: 10px;
 		font-size: 10px;
@@ -2513,6 +2514,10 @@
 	ul#status-bar li a.c_passed:before {
 		content: "\2714";
 		color: #64a16e;
+	}
+	ul#status-bar li a.c_wip:before {
+		content: "\2714";
+		color: orange;
 	}
 	ul#status-bar li a.c_failed:before {
 		content: "\2716";

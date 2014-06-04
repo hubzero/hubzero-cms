@@ -70,8 +70,9 @@ HUB.Projects = {
 		
 		if ($("#status-msg").length > 0)
 		{
-			var keyupTimer = setTimeout((function() {  
-				if (!$("#status-msg").hasClass('ajax-loading'))
+			var keyupTimer = setTimeout((function() 
+			{  
+				if (!$("#status-msg").hasClass('ajax-loading') && $('#status-msg').html() != '')
 				{
 					$("#status-msg").animate({opacity:0.0}, 2000, function() {
 					    $('#status-msg').html('');
