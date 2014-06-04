@@ -55,18 +55,11 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 					if ($this->params->get('comments_votable', 1))
 					{
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'  => 'hubzero',
-								'element' => 'comments',
-								'name'    => 'view',
-								'layout'  => 'vote'
-							)
-						);
-						$view->option = $this->option;
-						$view->item   = $this->comment;
-						$view->url    = $this->url;
-						$view->display();
+						$this->view( 'vote')
+						     ->set('option', $this->option)
+						     ->set('item', $this->comment)
+						     ->set('url', $this->url)
+						     ->display();
 					}
 				?>
 
@@ -172,23 +165,16 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 				if ($this->comment->replies) 
 				{
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder'  => 'hubzero',
-							'element' => 'comments',
-							'name'    => 'view',
-							'layout'  => 'list'
-						)
-					);
-					$view->option     = $this->option;
-					$view->comments   = $this->comment->get('replies');
-					$view->obj_type   = $this->obj_type;
-					$view->obj        = $this->obj;
-					$view->params     = $this->params;
-					$view->depth      = $this->depth;
-					$view->url        = $this->url;
-					$view->cls        = $cls;
-					$view->display();
+					$this->view('list')
+					     ->set('option', $this->option)
+					     ->set('comments', $this->comment->get('replies'))
+					     ->set('obj_type', $this->obj_type)
+					     ->set('obj', $this->obj)
+					     ->set('params', $this->params)
+					     ->set('depth', $this->depth)
+					     ->set('url', $this->url)
+					     ->set('cls', $cls)
+					     ->display();
 				}
 			?>
 		</li>

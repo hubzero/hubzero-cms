@@ -30,6 +30,10 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js('jquery.fileuploader', 'system')
+     ->js();
+
 $this->view('default_menu')
      ->set('option', $this->option)
      ->set('controller', $this->controller)
@@ -129,5 +133,5 @@ $base = $this->offering->link() . '&active=pages';
 		</form>
 
 		<div class="clear"></div>
-	</div><!-- / .below section -->
+	</div>
 </div>

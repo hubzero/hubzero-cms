@@ -24,53 +24,43 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->js();
 ?>
 
 <?php if ($this->params->get('access-view-comment')) { ?>
-	<div class="below section">
-		<h3 class="post-comment-title">
-			<?php echo JText::_('PLG_HUBZERO_COMMENTS'); ?>
-		</h3>
-
+	<section class="below section">
+		<div class="subject thread">
+			<h3 class="post-comment-title">
+				<?php echo JText::_('PLG_HUBZERO_COMMENTS'); ?>
+			</h3>
+			<?php if ($this->comments) {
+				$this->view('list')
+				     ->set('option', $this->option)
+				     ->set('comments', $this->comments)
+				     ->set('obj_type', $this->obj_type)
+				     ->set('obj', $this->obj)
+				     ->set('params', $this->params)
+				     ->set('depth', $this->depth)
+				     ->set('url', $this->url)
+				     ->set('cls', 'odd')
+				     ->display();
+			} else if ($this->depth <= 1) { ?>
+				<p class="no-comments">
+					<?php echo JText::_('PLG_HUBZERO_COMMENTS_NO_COMMENTS'); ?>
+				</p>
+			<?php } ?>
+		</div><!-- / .subject -->
 		<div class="aside">
 		</div><!-- / .aside -->
-		<div class="subject thread">
-		<?php if ($this->comments) {
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'hubzero',
-					'element' => 'comments',
-					'name'    => 'view',
-					'layout'  => 'list'
-				)
-			);
-			$view->option     = $this->option;
-			$view->comments   = $this->comments;
-			$view->obj_type   = $this->obj_type;
-			$view->obj        = $this->obj;
-			$view->params     = $this->params;
-			$view->depth      = $this->depth;
-			$view->url        = $this->url;
-			$view->cls        = 'odd';
-			$view->display();
-		} else if ($this->depth <= 1) { ?>
-			<p class="no-comments">
-				<?php echo JText::_('PLG_HUBZERO_COMMENTS_NO_COMMENTS'); ?>
-			</p>
-		<?php } ?>
-		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</div><!-- / .below section -->
+	</section><!-- / .below section -->
 
 	<?php if ($this->params->get('access-create-comment')) { ?>
-	<div class="below section" id="post-comment">
-		<h3 class="post-comment-title">
-			<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_A_COMMENT'); ?>
-		</h3>
-		<div class="aside">
-
-		</div><!-- / .aside -->
+	<section class="below section" id="post-comment">
 		<div class="subject">
+			<h3 class="post-comment-title">
+				<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_A_COMMENT'); ?>
+			</h3>
 			<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform" enctype="multipart/form-data">
 				<p class="comment-member-photo">
 					<?php
@@ -170,8 +160,9 @@ defined('_JEXEC') or die('Restricted access');
 				</fieldset>
 			</form>
 		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</div><!-- / .section -->
+		<div class="aside">
+		</div><!-- / .aside -->
+	</section><!-- / .section -->
 	<?php } ?>
 <?php } else { ?>
 	<p class="warning">

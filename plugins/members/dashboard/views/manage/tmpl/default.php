@@ -50,17 +50,10 @@ defined('_JEXEC') or die('Restricted access');
 			foreach ($this->modules as $module)
 			{
 				// create view object
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'members',
-						'element' => 'dashboard',
-						'name'    => 'display',
-						'layout'  => 'module'
-					)
-				);
-				$view->admin  = $this->admin;
-				$view->module = $module;
-				echo $view->loadTemplate();
+				$this->view('module', 'display');
+				     ->set('admin', $this->admin)
+				     ->set('module', $module)
+				     ->display();
 			}
 		?>
 	</div>

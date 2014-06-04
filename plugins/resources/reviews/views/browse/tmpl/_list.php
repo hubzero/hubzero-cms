@@ -39,22 +39,15 @@ if (isset($this->comments) && $this->comments instanceof \Hubzero\Base\ItemList)
 
 	foreach ($this->comments as $comment) 
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'resources',
-				'element' => 'reviews',
-				'name'    => 'browse',
-				'layout'  => '_comment'
-			)
-		);
-		$view->option     = $this->option;
-		$view->comment    = $comment;
-		$view->config     = $this->config;
-		$view->depth      = $this->depth;
-		$view->resource   = $this->resource;
-		$view->cls        = $cls;
-		$view->base       = $this->base;
-		$view->display();
+		$this->view('_comment')
+		     ->set('option', $this->option)
+		     ->set('comment', $comment)
+		     ->set('config', $this->config)
+		     ->set('depth', $this->depth)
+		     ->set('resource', $this->resource)
+		     ->set('cls', $cls)
+		     ->set('base', $this->base)
+		     ->display();
 	}
 } 
 ?>

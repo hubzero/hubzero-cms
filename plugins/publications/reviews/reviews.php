@@ -161,9 +161,6 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		{
 			include_once(__DIR__ . '/models/review.php');
 
-			\Hubzero\Document\Assets::addPluginStylesheet('publications', 'reviews');
-			\Hubzero\Document\Assets::addPluginScript('publications', 'reviews');
-
 			// Did they perform an action?
 			// If so, they need to be logged in first.
 			if (!$h->loggedin) 

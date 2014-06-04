@@ -164,9 +164,6 @@ class plgResourcesReviews extends JPlugin
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('resources', 'reviews');
-			\Hubzero\Document\Assets::addPluginScript('resources', 'reviews');
-
 			// Did they perform an action?
 			// If so, they need to be logged in first.
 			if (!$h->loggedin) 
@@ -174,7 +171,7 @@ class plgResourcesReviews extends JPlugin
 				// Instantiate a view
 				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews', false, true), 'server');
 				//$this->_redirect = JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn));
-				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)));
+				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)));
 				return;
 			} 
 

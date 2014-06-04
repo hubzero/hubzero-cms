@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 if (!isset($this->reviews) || !$this->reviews) 
 {
 	$this->reviews = array();
@@ -47,15 +50,16 @@ $juser = JFactory::getUser();
 <h3 class="section-header">
 	<?php echo JText::_('PLG_RESOURCES_REVIEWS'); ?>
 </h3>
+
 <p class="section-options">
 	<?php if ($juser->get('guest')) { ?>
-			<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
-				<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
-			</a>
+		<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
+			<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
+		</a>
 	<?php } else { ?>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>" class="icon-add add btn">
-				<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
-			</a>
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>" class="icon-add add btn">
+			<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
+		</a>
 	<?php } ?>
 </p>
 
@@ -66,23 +70,16 @@ $juser = JFactory::getUser();
 <?php
 if ($this->reviews->total() > 0)
 {
-	$view = new \Hubzero\Plugin\View(
-		array(
-			'folder'  => 'resources',
-			'element' => 'reviews',
-			'name'    => 'browse',
-			'layout'  => '_list'
-		)
-	);
-	$view->parent     = 0;
-	$view->cls        = 'odd';
-	$view->depth      = 0;
-	$view->option     = $this->option;
-	$view->resource   = $this->resource;
-	$view->comments   = $this->reviews;
-	$view->config     = $this->config;
-	$view->base       = 'index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews';
-	$view->display();
+	$this->view('_list')
+	     ->set('parent', 0)
+	     ->set('cls', 'odd')
+	     ->set('depth', 0)
+	     ->set('option', $this->option)
+	     ->set('resource', $this->resource)
+	     ->set('comments', $this->reviews)
+	     ->set('config', $this->config)
+	     ->set('base', 'index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews')
+	     ->display();
 }
 else
 {
@@ -95,19 +92,13 @@ if (!$juser->get('guest'))
 	$myreview = $this->h->myreview;
 	if (is_object($myreview)) 
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'resources',
-				'element' => 'reviews',
-				'name'    => 'review'
-			)
-		);
-		$view->option   = $this->option;
-		$view->review   = $this->h->myreview;
-		$view->banking  = $this->banking;
-		$view->infolink = $this->infolink;
-		$view->resource = $this->resource;
-		$view->juser    = $juser;
-		$view->display();
+		$this->view('default', 'review')
+		     ->set('option', $this->option)
+		     ->set('review', $this->h->myreview)
+		     ->set('banking', $this->banking)
+		     ->set('infolink', $this->infolink)
+		     ->set('resource', $this->resource)
+		     ->set('juser', $juser)
+		     ->display();
 	}
 }

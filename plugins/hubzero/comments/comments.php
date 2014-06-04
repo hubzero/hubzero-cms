@@ -31,19 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * HUBzero plugin class for displaying comments
  */
-class plgHubzeroComments extends JPlugin
+class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Push scripts to the document?
-	 * 
-	 * @var boolean
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	private $_pushscripts = true;
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * List of allowed extensions
@@ -51,20 +49,6 @@ class plgHubzeroComments extends JPlugin
 	 * @var array
 	 */
 	private $_allowedExtensions = null;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
 
 	/**
 	 * Display comments on an object
@@ -394,14 +378,6 @@ class plgHubzeroComments extends JPlugin
 	 */
 	protected function _view() 
 	{
-		// Push some needed scripts and stylings to the template but ensure we do it only once
-		if ($this->_pushscripts) 
-		{
-			\Hubzero\Document\Assets::addPluginScript('hubzero', 'comments');
-
-			$this->_pushscripts = false;
-		}
-
 		$this->view->comments = $this->comment->getComments(
 			$this->obj_type, 
 			$this->obj->id,

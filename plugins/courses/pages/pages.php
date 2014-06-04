@@ -125,9 +125,6 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
-			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name);
-
 			$action = strtolower(JRequest::getWord('group', ''));
 			if ($action && $action != 'edit' && $action != 'delete')
 			{
@@ -256,7 +253,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -265,7 +262,6 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
-		\Hubzero\Document\Assets::addSystemScript('jquery.fileuploader');
 		$this->view->setLayout('edit');
 
 		if (is_object($model))
@@ -327,7 +323,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -378,7 +374,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}

@@ -103,17 +103,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
-						$view = new \Hubzero\Plugin\View(
-							array(
-								'folder'  => 'groups',
-								'element' => $this->name,
-								'name'    => 'post',
-								'layout'  => 'default_collection'
-							)
-						);
-						$view->row        = $row;
-						$view->collection = $row;
-						$view->display();
+					$this->view('default_collection', 'post')
+					     ->set('row', $row)
+					     ->set('collection', $row)
+					     ->display();
 				?>
 				<div class="meta">
 					<p class="stats">

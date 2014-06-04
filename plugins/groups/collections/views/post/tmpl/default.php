@@ -55,20 +55,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			</p>
 		</div><!-- / .attribution -->
 		<?php
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => $this->name,
-				'name'    => 'post',
-				'layout'  => 'default_' . $item->type()
-			)
-		);
-		$view->name       = $this->name;
-		$view->option     = $this->option;
-		$view->group      = $this->group;
-		$view->params     = $this->params;
-		$view->row        = $this->post;
-		$view->display();
+		$this->view('default_' . $item->type(), 'post')
+		     ->set('name', $this->name)
+		     ->set('option', $this->option)
+		     ->set('group', $this->group)
+		     ->set('params', $this->params)
+		     ->set('row', $this->post)
+		     ->display();
 		?>
 	<?php if (count($item->tags()) > 0) { ?>
 		<div class="tags-wrap">

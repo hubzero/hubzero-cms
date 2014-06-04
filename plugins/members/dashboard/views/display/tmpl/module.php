@@ -34,17 +34,10 @@ $params = new JRegistry($this->module->params);
 
 // load module params fields
 $fields = new JForm($this->module->module);
-$fields->loadFile(JPATH_ROOT.DS.'modules'.DS.$this->module->module.DS.$this->module->module.'.xml', true, 'config/fields');
+$fields->loadFile(JPATH_ROOT . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml', true, 'config/fields');
 
 // create settings sub view
-$view = new \Hubzero\Plugin\View(
-	array(
-		'folder'  => 'members',
-		'element' => 'dashboard',
-		'name'    => 'display',
-		'layout'  => 'parameters'
-	)
-);
+$view = $this->view('parameters');
 $view->admin  = $this->admin;
 $view->module = $this->module;
 $view->params = $params->toArray();
@@ -78,9 +71,7 @@ $settingsHtml = trim($view->loadTemplate());
 	</div>
 
 	<div class="module-main">
-		
 		<?php echo $settingsHtml; ?>
-		
 		<div class="module-content">
 			<?php
 				if ($this->admin)

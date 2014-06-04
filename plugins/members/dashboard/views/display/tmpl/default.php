@@ -60,17 +60,10 @@ if ($this->params->get('allow_customization', 1) == 0)
 		foreach ($this->modules as $module)
 		{
 			// create view object
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'members',
-					'element' => 'dashboard',
-					'name'    => 'display',
-					'layout'  => 'module'
-				)
-			);
-			$view->admin  = $this->admin;
-			$view->module = $module;
-			echo $view->loadTemplate();
+			$this->view('module')
+			     ->set('admin', $this->admin)
+			     ->set('module', $module)
+			     ->display();
 		}
 	?>
 </div>

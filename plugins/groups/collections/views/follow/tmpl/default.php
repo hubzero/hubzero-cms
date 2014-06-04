@@ -81,21 +81,13 @@ if ($this->rows->total() > 0)
 		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'members',
-						'element' => $this->name,
-						'name'    => 'post',
-						'layout'  => 'default_' . $type
-					)
-				);
-				$view->name       = $this->name;
-				$view->option     = $this->option;
-				$view->member     = $this->member;
-				$view->params     = $this->params;
-				$view->row        = $row;
-				$view->board      = $this->collection;
-				$view->display();
+				$this->view('default_' . $type, 'post')
+				     ->set('name', $this->name)
+				     ->set('option', $this->option)
+				     ->set('group', $this->group)
+				     ->set('params', $this->params)
+				     ->set('row', $row)
+				     ->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
 				<div class="tags-wrap">
