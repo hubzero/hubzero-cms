@@ -91,7 +91,7 @@ foreach($assets as $asset)
 	$crumb = $asset->url;
 	$title = $asset->title;
 	$url   = JRoute::_($this->base . '&asset=' . $asset->id);
-	$unit  = $this->course->offering()->unit($asset->unit_id);
+	$unit  = (isset($asset->unit_id)) ? $this->course->offering()->unit($asset->unit_id) : null;
 
 	if (!$crumb || strlen($crumb) != 20)
 	{
@@ -108,7 +108,7 @@ foreach($assets as $asset)
 			$score = '--';
 		}
 
-		if ($asset->unit_id)
+		if (isset($asset->unit_id) && $asset->unit_id)
 		{
 			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>'N/A', 'url'=>$url);
 		}
